@@ -1,26 +1,3 @@
-diff --git a/Dilithium2-AES_META.yml b/Dilithium2-AES_META.yml
-index bad46d3..9b03b9a 100644
---- a/Dilithium2-AES_META.yml
-+++ b/Dilithium2-AES_META.yml
-@@ -24,16 +24,14 @@ implementations:
-     signature_keypair: pqcrystals_dilithium2aes_ref_keypair
-     signature_signature: pqcrystals_dilithium2aes_ref_signature
-     signature_verify: pqcrystals_dilithium2aes_ref_verify
--    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-aes.c aes256ctr.h
--    common_dep: common_ref
-+    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-aes.c
-   - name: avx2
-     version: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
-     compile_opts: -DDILITHIUM_MODE=2 -DDILITHIUM_USE_AES -DDILITHIUM_RANDOMIZED_SIGNING
-     signature_keypair: pqcrystals_dilithium2aes_avx2_keypair
-     signature_signature: pqcrystals_dilithium2aes_avx2_signature
-     signature_verify: pqcrystals_dilithium2aes_avx2_verify
--    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h aes256ctr.h
--    common_dep: common_avx2 common_aes
-+    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h
-     supported_platforms:
-       - architecture: x86_64
-         operating_systems:
 diff --git a/Dilithium2_META.yml b/Dilithium2_META.yml
 index 0e2e6fc..f4b7e8f 100644
 --- a/Dilithium2_META.yml
@@ -44,29 +21,6 @@ index 0e2e6fc..f4b7e8f 100644
      supported_platforms:
        - architecture: x86_64
          operating_systems:
-diff --git a/Dilithium3-AES_META.yml b/Dilithium3-AES_META.yml
-index 0269442..f3b63b3 100644
---- a/Dilithium3-AES_META.yml
-+++ b/Dilithium3-AES_META.yml
-@@ -24,16 +24,14 @@ implementations:
-     signature_keypair: pqcrystals_dilithium3aes_ref_keypair
-     signature_signature: pqcrystals_dilithium3aes_ref_signature
-     signature_verify: pqcrystals_dilithium3aes_ref_verify
--    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-aes.c aes256ctr.h
--    common_dep: common_ref
-+    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-aes.c
-   - name: avx2
-     version: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
-     compile_opts: -DDILITHIUM_MODE=3 -DDILITHIUM_USE_AES -DDILITHIUM_RANDOMIZED_SIGNING
-     signature_keypair: pqcrystals_dilithium3aes_avx2_keypair
-     signature_signature: pqcrystals_dilithium3aes_avx2_signature
-     signature_verify: pqcrystals_dilithium3aes_avx2_verify
--    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h aes256ctr.h
--    common_dep: common_avx2 common_aes
-+    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h 
-     supported_platforms:
-       - architecture: x86_64
-         operating_systems:
 diff --git a/Dilithium3_META.yml b/Dilithium3_META.yml
 index d1bca64..f45c859 100644
 --- a/Dilithium3_META.yml
@@ -87,29 +41,6 @@ index d1bca64..f45c859 100644
 -    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
 -    common_dep: common_avx2
 +    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h symmetric-shake.c
-     supported_platforms:
-       - architecture: x86_64
-         operating_systems:
-diff --git a/Dilithium5-AES_META.yml b/Dilithium5-AES_META.yml
-index 0128a32..d7268ca 100644
---- a/Dilithium5-AES_META.yml
-+++ b/Dilithium5-AES_META.yml
-@@ -24,16 +24,14 @@ implementations:
-     signature_keypair: pqcrystals_dilithium5aes_ref_keypair
-     signature_signature: pqcrystals_dilithium5aes_ref_signature
-     signature_verify: pqcrystals_dilithium5aes_ref_verify
--    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-aes.c aes256ctr.h
--    common_dep: common_ref
-+    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-aes.c
-   - name: avx2
-     version: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
-     compile_opts: -DDILITHIUM_MODE=5 -DDILITHIUM_USE_AES -DDILITHIUM_RANDOMIZED_SIGNING
-     signature_keypair: pqcrystals_dilithium5aes_avx2_keypair
-     signature_signature: pqcrystals_dilithium5aes_avx2_signature
-     signature_verify: pqcrystals_dilithium5aes_avx2_verify
--    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h aes256ctr.h
--    common_dep: common_avx2 common_aes
-+    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h
      supported_platforms:
        - architecture: x86_64
          operating_systems:

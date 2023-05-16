@@ -22,10 +22,7 @@
   "HQC-192": ["hqc_fast_convolution_mult", "hqc_vect_set_random_fixed_weight", "hqc_gf_mul"],
   "HQC-256": ["hqc_fast_convolution_mult", "hqc_vect_set_random_fixed_weight", "hqc_gf_mul"],
   "Kyber1024": [],
-  "Kyber1024-90s": [],
   "Kyber512": [],
-  "Kyber512-90s": [],
   "Kyber768": [],
-  "Kyber768-90s": [],
   "sntrup761": []
 }
