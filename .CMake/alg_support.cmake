@@ -17,7 +17,7 @@ function(filter_algs alglist)
           # Case 1, family name
 	  foreach (_alg ${ARGV0})
              string(TOUPPER ${_alg} upalg)
-	     if("OQS_ENABLE_${upalg}i" MATCHES "^${_var}")
+	     if("OQS_ENABLE_${upalg}" MATCHES "^${_var}")
                  set(${_var} ON PARENT_SCOPE)
              endif()
           endforeach()
@@ -249,27 +249,6 @@ endif()
 endif()
 endif()
 
-cmake_dependent_option(OQS_ENABLE_KEM_kyber_512_90s "" ON "OQS_ENABLE_KEM_KYBER" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_kyber_512_90s_avx2 "" ON "OQS_ENABLE_KEM_kyber_512_90s" OFF)
-endif()
-endif()
-
-cmake_dependent_option(OQS_ENABLE_KEM_kyber_768_90s "" ON "OQS_ENABLE_KEM_KYBER" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_kyber_768_90s_avx2 "" ON "OQS_ENABLE_KEM_kyber_768_90s" OFF)
-endif()
-endif()
-
-cmake_dependent_option(OQS_ENABLE_KEM_kyber_1024_90s "" ON "OQS_ENABLE_KEM_KYBER" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_kyber_1024_90s_avx2 "" ON "OQS_ENABLE_KEM_kyber_1024_90s" OFF)
-endif()
-endif()
-
 
 option(OQS_ENABLE_SIG_DILITHIUM "Enable dilithium algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2 "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
@@ -311,27 +290,6 @@ if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEO
 endif()
 endif()
 
-cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2_aes "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2_aes_avx2 "" ON "OQS_ENABLE_SIG_dilithium_2_aes" OFF)
-endif()
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_dilithium_3_aes "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_3_aes_avx2 "" ON "OQS_ENABLE_SIG_dilithium_3_aes" OFF)
-endif()
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_dilithium_5_aes "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_5_aes_avx2 "" ON "OQS_ENABLE_SIG_dilithium_5_aes" OFF)
-endif()
-endif()
-
 
 option(OQS_ENABLE_SIG_FALCON "Enable falcon algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_falcon_512 "" ON "OQS_ENABLE_SIG_FALCON" OFF)
@@ -346,79 +304,9 @@ endif()
 
 
 option(OQS_ENABLE_SIG_SPHINCS "Enable sphincs algorithm family" ON)
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128f_robust_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_128f_robust" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128f_simple_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_128f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128s_robust_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_128s_robust" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128s_simple_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_128s_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192f_robust_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_192f_robust" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192f_simple_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_192f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192s_robust_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_192s_robust" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_192s_simple_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_192s_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256f_robust_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_256f_robust" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256f_simple_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_256f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256s_robust_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_256s_robust" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_256s_simple_aesni "" ON "OQS_ENABLE_SIG_sphincs_haraka_256s_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128f_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_128f_robust" OFF)
-endif()
-
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128f_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_128f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128s_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_128s_robust" OFF)
 endif()
 
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
@@ -426,19 +314,9 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_128s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_128s_simple" OFF)
 endif()
 
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192f_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_192f_robust" OFF)
-endif()
-
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192f_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_192f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192s_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_192s_robust" OFF)
 endif()
 
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
@@ -446,19 +324,9 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_192s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_192s_simple" OFF)
 endif()
 
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256f_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_256f_robust" OFF)
-endif()
-
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256f_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_256f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256s_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_256s_robust" OFF)
 endif()
 
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
@@ -466,19 +334,9 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_sha256_256s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_sha256_256s_simple" OFF)
 endif()
 
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128f_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_128f_robust" OFF)
-endif()
-
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128f_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_128f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128s_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_128s_robust" OFF)
 endif()
 
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
@@ -486,19 +344,9 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_128s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_128s_simple" OFF)
 endif()
 
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192f_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_192f_robust" OFF)
-endif()
-
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192f_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_192f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192s_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_192s_robust" OFF)
 endif()
 
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
@@ -506,19 +354,9 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_192s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_192s_simple" OFF)
 endif()
 
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256f_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_256f_robust" OFF)
-endif()
-
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256f_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_256f_simple" OFF)
-endif()
-
-cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256s_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256s_robust_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_256s_robust" OFF)
 endif()
 
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
@@ -546,4 +384,17 @@ else()
 	message(STATUS "Alg enablement unchanged")
 endif()
 
+# Set XKCP (Keccak) required for Sphincs AVX2 code even if OpenSSL3 SHA3 is used:
+if (${OQS_ENABLE_SIG_SPHINCS} OR NOT ${OQS_USE_SHA3_OPENSSL})
+    set(OQS_ENABLE_SHA3_xkcp_low ON)
+else()
+    set(OQS_ENABLE_SHA3_xkcp_low OFF)
+endif()
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+    if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
+        set(OQS_ENABLE_SHA3_xkcp_low_avx2 ON)
+    else()
+        set(OQS_ENABLE_SHA3_xkcp_low_avx2 OFF)
+    endif()
+endif()
 

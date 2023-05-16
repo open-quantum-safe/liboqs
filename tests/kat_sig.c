@@ -80,36 +80,6 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Dilithium2-AES")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Dilithium3-AES")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Dilithium5-AES")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Falcon-512")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x29 || sig
 		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
@@ -150,147 +120,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		(*signed_msg)[42 + msg_len] = 0x2A;
 		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 41);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128s-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128s-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192s-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192s-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256s-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256s-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-128f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-128f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-128s-robust")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
@@ -310,27 +140,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-192f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-192f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-192s-robust")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
@@ -350,27 +160,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-256f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-256f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-256s-robust")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
@@ -390,27 +180,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-128f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-128f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-128s-robust")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
@@ -430,27 +200,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-192f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-192f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-192s-robust")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
@@ -470,27 +220,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-256f-robust")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-256f-simple")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-256s-robust")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);

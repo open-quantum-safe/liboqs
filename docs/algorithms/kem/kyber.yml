@@ -22,7 +22,7 @@ primary-upstream:
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
   pqclean-aarch64:
-    source: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
+    source: https://github.com/PQClean/PQClean/commit/c1b19a865de329e87e9b3e9152362fcb709da8ab
       with copy_from_upstream patches
     spdx-license-identifier: CC0-1.0
 parameter-sets:
@@ -71,42 +71,6 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-- name: Kyber512-90s
-  claimed-nist-level: 1
-  claimed-security: IND-CCA2
-  length-public-key: 800
-  length-ciphertext: 768
-  length-secret-key: 1632
-  length-shared-secret: 32
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: ref
-    supported-platforms: all
-    common-crypto:
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      - Darwin
-      required_flags:
-      - aes
-      - avx2
-      - bmi2
-      - popcnt
-      - sse2
-      - ssse3
-    common-crypto:
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
 - name: Kyber768
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -152,42 +116,6 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-- name: Kyber768-90s
-  claimed-nist-level: 3
-  claimed-security: IND-CCA2
-  length-public-key: 1184
-  length-ciphertext: 1088
-  length-secret-key: 2400
-  length-shared-secret: 32
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: ref
-    supported-platforms: all
-    common-crypto:
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      - Darwin
-      required_flags:
-      - aes
-      - avx2
-      - bmi2
-      - popcnt
-      - sse2
-      - ssse3
-    common-crypto:
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
 - name: Kyber1024
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -232,40 +160,4 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
-    large-stack-usage: false
-- name: Kyber1024-90s
-  claimed-nist-level: 5
-  claimed-security: IND-CCA2
-  length-public-key: 1568
-  length-ciphertext: 1568
-  length-secret-key: 3168
-  length-shared-secret: 32
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: ref
-    supported-platforms: all
-    common-crypto:
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      - Darwin
-      required_flags:
-      - aes
-      - avx2
-      - bmi2
-      - popcnt
-      - sse2
-      - ssse3
-    common-crypto:
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false

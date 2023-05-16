@@ -1,12 +1,12 @@
-diff --git a/crypto_sign/sphincs-shake256-128f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-128f-robust/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.c
 deleted file mode 100644
-index ed4fe62..0000000
---- a/crypto_sign/sphincs-shake256-128f-robust/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -42,18 +42,19 @@ index ed4fe62..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -68,22 +69,30 @@ index ed4fe62..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -121,16 +130,14 @@ index ed4fe62..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -144,7 +151,7 @@ index ed4fe62..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -166,16 +173,14 @@ index ed4fe62..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -189,7 +194,7 @@ index ed4fe62..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -209,48 +214,49 @@ index ed4fe62..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-128f-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-128f-robust/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.h
 deleted file mode 100644
-index 7d01578..0000000
---- a/crypto_sign/sphincs-shake256-128f-robust/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-128f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-128f-simple/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.c
 deleted file mode 100644
-index 3f1a5e0..0000000
---- a/crypto_sign/sphincs-shake256-128f-simple/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -286,18 +292,19 @@ index 3f1a5e0..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -312,22 +319,30 @@ index 3f1a5e0..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -365,16 +380,14 @@ index 3f1a5e0..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128FSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -388,7 +401,7 @@ index 3f1a5e0..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -410,16 +423,14 @@ index 3f1a5e0..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128FSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -433,7 +444,7 @@ index 3f1a5e0..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -453,48 +464,49 @@ index 3f1a5e0..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-128f-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-128f-simple/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.h
 deleted file mode 100644
-index a68603b..0000000
---- a/crypto_sign/sphincs-shake256-128f-simple/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256128FSIMPLE_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256128FSIMPLE_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256128FSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256128FSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-128s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-128s-robust/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.c
 deleted file mode 100644
-index b23ebc6..0000000
---- a/crypto_sign/sphincs-shake256-128s-robust/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -530,18 +542,19 @@ index b23ebc6..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -556,22 +569,30 @@ index b23ebc6..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -609,16 +630,14 @@ index b23ebc6..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128SROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -632,7 +651,7 @@ index b23ebc6..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -654,16 +673,14 @@ index b23ebc6..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128SROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -677,7 +694,7 @@ index b23ebc6..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -697,48 +714,49 @@ index b23ebc6..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-128s-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-128s-robust/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.h
 deleted file mode 100644
-index fd35c87..0000000
---- a/crypto_sign/sphincs-shake256-128s-robust/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256128SROBUST_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256128SROBUST_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256128SROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256128SROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-128s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-128s-simple/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.c
 deleted file mode 100644
-index 58f98b3..0000000
---- a/crypto_sign/sphincs-shake256-128s-simple/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -774,18 +792,19 @@ index 58f98b3..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -800,22 +819,30 @@ index 58f98b3..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -853,16 +880,14 @@ index 58f98b3..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128SSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -876,7 +901,7 @@ index 58f98b3..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -898,16 +923,14 @@ index 58f98b3..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256128SSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -921,7 +944,7 @@ index 58f98b3..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -941,48 +964,49 @@ index 58f98b3..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-128s-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-128s-simple/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.h
 deleted file mode 100644
-index 30b7349..0000000
---- a/crypto_sign/sphincs-shake256-128s-simple/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256128SSIMPLE_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256128SSIMPLE_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256128SSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256128SSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-192f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-192f-robust/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.c
 deleted file mode 100644
-index 3138800..0000000
---- a/crypto_sign/sphincs-shake256-192f-robust/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -1018,18 +1042,19 @@ index 3138800..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -1044,22 +1069,30 @@ index 3138800..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -1097,16 +1130,14 @@ index 3138800..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192FROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -1120,7 +1151,7 @@ index 3138800..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -1142,16 +1173,14 @@ index 3138800..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192FROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -1165,7 +1194,7 @@ index 3138800..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -1185,48 +1214,49 @@ index 3138800..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-192f-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-192f-robust/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.h
 deleted file mode 100644
-index 936fa6f..0000000
---- a/crypto_sign/sphincs-shake256-192f-robust/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256192FROBUST_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256192FROBUST_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256192FROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256192FROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-192f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-192f-simple/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.c
 deleted file mode 100644
-index 01dbf7d..0000000
---- a/crypto_sign/sphincs-shake256-192f-simple/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -1262,18 +1292,19 @@ index 01dbf7d..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -1288,22 +1319,30 @@ index 01dbf7d..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -1341,16 +1380,14 @@ index 01dbf7d..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192FSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -1364,7 +1401,7 @@ index 01dbf7d..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -1386,16 +1423,14 @@ index 01dbf7d..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192FSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -1409,7 +1444,7 @@ index 01dbf7d..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -1429,48 +1464,49 @@ index 01dbf7d..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-192f-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-192f-simple/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.h
 deleted file mode 100644
-index c400b86..0000000
---- a/crypto_sign/sphincs-shake256-192f-simple/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256192FSIMPLE_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256192FSIMPLE_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256192FSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256192FSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-192s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-192s-robust/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.c
 deleted file mode 100644
-index 8f33cfa..0000000
---- a/crypto_sign/sphincs-shake256-192s-robust/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -1506,18 +1542,19 @@ index 8f33cfa..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -1532,22 +1569,30 @@ index 8f33cfa..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -1585,16 +1630,14 @@ index 8f33cfa..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192SROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -1608,7 +1651,7 @@ index 8f33cfa..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -1630,16 +1673,14 @@ index 8f33cfa..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192SROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -1653,7 +1694,7 @@ index 8f33cfa..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -1673,48 +1714,49 @@ index 8f33cfa..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-192s-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-192s-robust/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.h
 deleted file mode 100644
-index 409f9f0..0000000
---- a/crypto_sign/sphincs-shake256-192s-robust/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256192SROBUST_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256192SROBUST_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256192SROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256192SROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-192s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-192s-simple/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.c
 deleted file mode 100644
-index b34d28c..0000000
---- a/crypto_sign/sphincs-shake256-192s-simple/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -1750,18 +1792,19 @@ index b34d28c..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -1776,22 +1819,30 @@ index b34d28c..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -1829,16 +1880,14 @@ index b34d28c..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192SSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -1852,7 +1901,7 @@ index b34d28c..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -1874,16 +1923,14 @@ index b34d28c..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256192SSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -1897,7 +1944,7 @@ index b34d28c..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -1917,48 +1964,49 @@ index b34d28c..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-192s-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-192s-simple/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.h
 deleted file mode 100644
-index 1fe7acd..0000000
---- a/crypto_sign/sphincs-shake256-192s-simple/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256192SSIMPLE_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256192SSIMPLE_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256192SSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256192SSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-256f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-256f-robust/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.c
 deleted file mode 100644
-index e1a01a9..0000000
---- a/crypto_sign/sphincs-shake256-256f-robust/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -1994,18 +2042,19 @@ index e1a01a9..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -2020,22 +2069,30 @@ index e1a01a9..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -2073,16 +2130,14 @@ index e1a01a9..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256FROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -2096,7 +2151,7 @@ index e1a01a9..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -2118,16 +2173,14 @@ index e1a01a9..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256FROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -2141,7 +2194,7 @@ index e1a01a9..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -2161,48 +2214,49 @@ index e1a01a9..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-256f-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-256f-robust/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.h
 deleted file mode 100644
-index dbe65cc..0000000
---- a/crypto_sign/sphincs-shake256-256f-robust/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256256FROBUST_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256256FROBUST_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256256FROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256256FROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-256f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-256f-simple/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.c
 deleted file mode 100644
-index 3cfeadc..0000000
---- a/crypto_sign/sphincs-shake256-256f-simple/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -2238,18 +2292,19 @@ index 3cfeadc..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -2264,22 +2319,30 @@ index 3cfeadc..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -2317,16 +2380,14 @@ index 3cfeadc..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256FSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -2340,7 +2401,7 @@ index 3cfeadc..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -2362,16 +2423,14 @@ index 3cfeadc..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256FSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -2385,7 +2444,7 @@ index 3cfeadc..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -2405,48 +2464,49 @@ index 3cfeadc..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-256f-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-256f-simple/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.h
 deleted file mode 100644
-index e628d87..0000000
---- a/crypto_sign/sphincs-shake256-256f-simple/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256256FSIMPLE_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256256FSIMPLE_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256256FSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256256FSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-256s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-256s-robust/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.c
 deleted file mode 100644
-index 0684756..0000000
---- a/crypto_sign/sphincs-shake256-256s-robust/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -2482,18 +2542,19 @@ index 0684756..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -2508,22 +2569,30 @@ index 0684756..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -2561,16 +2630,14 @@ index 0684756..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256SROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -2584,7 +2651,7 @@ index 0684756..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -2606,16 +2673,14 @@ index 0684756..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256SROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -2629,7 +2694,7 @@ index 0684756..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -2649,48 +2714,49 @@ index 0684756..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-256s-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-256s-robust/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.h b/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.h
 deleted file mode 100644
-index daa02fe..0000000
---- a/crypto_sign/sphincs-shake256-256s-robust/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256256SROBUST_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256256SROBUST_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256256SROBUST_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256256SROBUST_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
-diff --git a/crypto_sign/sphincs-shake256-256s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake256-256s-simple/avx2/fips202x4.c
+diff --git a/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.c
 deleted file mode 100644
-index 18061a7..0000000
---- a/crypto_sign/sphincs-shake256-256s-simple/avx2/fips202x4.c
+index 1e06fef..0000000
+--- a/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.c
 +++ /dev/null
-@@ -1,205 +0,0 @@
+@@ -1,210 +0,0 @@
+-#include <assert.h>
 -#include <immintrin.h>
 -#include <stdint.h>
--#include <string.h>
 -
 -#include "fips202.h"
 -#include "fips202x4.h"
@@ -2726,18 +2792,19 @@ index 18061a7..0000000
 -                            const unsigned char *m1,
 -                            const unsigned char *m2,
 -                            const unsigned char *m3,
--                            size_t mlen,
+-                            unsigned long long int mlen,
 -                            unsigned char p) {
--    unsigned char t0[200] = {0};
--    unsigned char t1[200] = {0};
--    unsigned char t2[200] = {0};
--    unsigned char t3[200] = {0};
+-    unsigned long long i;
+-    unsigned char t0[200];
+-    unsigned char t1[200];
+-    unsigned char t2[200];
+-    unsigned char t3[200];
 -
 -    unsigned long long *ss = (unsigned long long *)s;
 -
 -
 -    while (mlen >= r) {
--        for (size_t i = 0; i < r / 8; ++i) {
+-        for (i = 0; i < r / 8; ++i) {
 -            ss[4 * i + 0] ^= load64(m0 + 8 * i);
 -            ss[4 * i + 1] ^= load64(m1 + 8 * i);
 -            ss[4 * i + 2] ^= load64(m2 + 8 * i);
@@ -2752,22 +2819,30 @@ index 18061a7..0000000
 -        m3 += r;
 -    }
 -
--    memcpy(t0, m0, mlen);
--    memcpy(t1, m1, mlen);
--    memcpy(t2, m2, mlen);
--    memcpy(t3, m3, mlen);
+-    for (i = 0; i < r; ++i) {
+-        t0[i] = 0;
+-        t1[i] = 0;
+-        t2[i] = 0;
+-        t3[i] = 0;
+-    }
+-    for (i = 0; i < mlen; ++i) {
+-        t0[i] = m0[i];
+-        t1[i] = m1[i];
+-        t2[i] = m2[i];
+-        t3[i] = m3[i];
+-    }
 -
--    t0[mlen] = p;
--    t1[mlen] = p;
--    t2[mlen] = p;
--    t3[mlen] = p;
+-    t0[i] = p;
+-    t1[i] = p;
+-    t2[i] = p;
+-    t3[i] = p;
 -
 -    t0[r - 1] |= 128;
 -    t1[r - 1] |= 128;
 -    t2[r - 1] |= 128;
 -    t3[r - 1] |= 128;
 -
--    for (size_t i = 0; i < r / 8; ++i) {
+-    for (i = 0; i < r / 8; ++i) {
 -        ss[4 * i + 0] ^= load64(t0 + 8 * i);
 -        ss[4 * i + 1] ^= load64(t1 + 8 * i);
 -        ss[4 * i + 2] ^= load64(t2 + 8 * i);
@@ -2805,16 +2880,14 @@ index 18061a7..0000000
 -
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE128_RATE];
 -    unsigned char t1[SHAKE128_RATE];
@@ -2828,7 +2901,7 @@ index 18061a7..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -2850,16 +2923,14 @@ index 18061a7..0000000
 -}
 -
 -
--void PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen) {
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen) {
 -    __m256i s[25];
 -    unsigned char t0[SHAKE256_RATE];
 -    unsigned char t1[SHAKE256_RATE];
@@ -2873,7 +2944,7 @@ index 18061a7..0000000
 -    }
 -
 -    /* absorb 4 message of identical length in parallel */
--    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
+-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
 -
 -    /* Squeeze output */
 -    keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);
@@ -2893,36 +2964,37 @@ index 18061a7..0000000
 -        }
 -    }
 -}
-diff --git a/crypto_sign/sphincs-shake256-256s-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake256-256s-simple/avx2/fips202x4.h
+diff --git a/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.h b/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.h
 deleted file mode 100644
-index ebcd58d..0000000
---- a/crypto_sign/sphincs-shake256-256s-simple/avx2/fips202x4.h
+index 2b93c9c..0000000
+--- a/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_FIPS202X4_H
--#define PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_FIPS202X4_H
+@@ -1,28 +0,0 @@
+-#ifndef SPX_FIPS202X4_H
+-#define SPX_FIPS202X4_H
 -
 -#include <immintrin.h>
 -
--void PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_shake128x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3, unsigned long long inlen);
+-#include "params.h"
 -
--void PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_shake256x4(unsigned char *out0,
--        unsigned char *out1,
--        unsigned char *out2,
--        unsigned char *out3,
--        unsigned long long outlen,
--        unsigned char *in0,
--        unsigned char *in1,
--        unsigned char *in2,
--        unsigned char *in3,
--        unsigned long long inlen);
+-#define shake128x4 SPX_NAMESPACE(shake128x4)
+-void shake128x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
+-
+-#define shake256x4 SPX_NAMESPACE(shake256x4)
+-void shake256x4(unsigned char *out0,
+-                unsigned char *out1,
+-                unsigned char *out2,
+-                unsigned char *out3, unsigned long long outlen,
+-                unsigned char *in0,
+-                unsigned char *in1,
+-                unsigned char *in2,
+-                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
