@@ -156,62 +156,62 @@ sigs:
     upstream_location: pqclean
     schemes:
       -
-        scheme: sha256_128f_simple
+        scheme: sha2_128f_simple
         pqclean_scheme: sphincs-sha2-128f-simple
-        pretty_name_full: SPHINCS+-SHA256-128f-simple
+        pretty_name_full: SPHINCS+-SHA2-128f-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: sha256_128s_simple
+        scheme: sha2_128s_simple
         pqclean_scheme: sphincs-sha2-128s-simple
-        pretty_name_full: SPHINCS+-SHA256-128s-simple
+        pretty_name_full: SPHINCS+-SHA2-128s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: sha256_192f_simple
+        scheme: sha2_192f_simple
         pqclean_scheme: sphincs-sha2-192f-simple
-        pretty_name_full: SPHINCS+-SHA256-192f-simple
+        pretty_name_full: SPHINCS+-SHA2-192f-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: sha256_192s_simple
+        scheme: sha2_192s_simple
         pqclean_scheme: sphincs-sha2-192s-simple
-        pretty_name_full: SPHINCS+-SHA256-192s-simple
+        pretty_name_full: SPHINCS+-SHA2-192s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: sha256_256f_simple
+        scheme: sha2_256f_simple
         pqclean_scheme: sphincs-sha2-256f-simple
-        pretty_name_full: SPHINCS+-SHA256-256f-simple
+        pretty_name_full: SPHINCS+-SHA2-256f-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: sha256_256s_simple
+        scheme: sha2_256s_simple
         pqclean_scheme: sphincs-sha2-256s-simple
-        pretty_name_full: SPHINCS+-SHA256-256s-simple
+        pretty_name_full: SPHINCS+-SHA2-256s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_128f_simple
+        scheme: shake_128f_simple
         pqclean_scheme: sphincs-shake-128f-simple
-        pretty_name_full: SPHINCS+-SHAKE256-128f-simple
+        pretty_name_full: SPHINCS+-SHAKE-128f-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_128s_simple
+        scheme: shake_128s_simple
         pqclean_scheme: sphincs-shake-128s-simple
-        pretty_name_full: SPHINCS+-SHAKE256-128s-simple
+        pretty_name_full: SPHINCS+-SHAKE-128s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_192f_simple
+        scheme: shake_192f_simple
         pqclean_scheme: sphincs-shake-192f-simple
-        pretty_name_full: SPHINCS+-SHAKE256-192f-simple
+        pretty_name_full: SPHINCS+-SHAKE-192f-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_192s_simple
+        scheme: shake_192s_simple
         pqclean_scheme: sphincs-shake-192s-simple
-        pretty_name_full: SPHINCS+-SHAKE256-192s-simple
+        pretty_name_full: SPHINCS+-SHAKE-192s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_256f_simple
+        scheme: shake_256f_simple
         pqclean_scheme: sphincs-shake-256f-simple
-        pretty_name_full: SPHINCS+-SHAKE256-256f-simple
+        pretty_name_full: SPHINCS+-SHAKE-256f-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_256s_simple
+        scheme: shake_256s_simple
         pqclean_scheme: sphincs-shake-256s-simple
-        pretty_name_full: SPHINCS+-SHAKE256-256s-simple
+        pretty_name_full: SPHINCS+-SHAKE-256s-simple
         signed_msg_order: sig_then_msg
