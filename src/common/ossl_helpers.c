@@ -14,29 +14,24 @@ static EVP_CIPHER *aes128_ecb_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 void oqs_fetch_ossl_objects(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
 	sha256_ptr = EVP_MD_fetch(NULL, "SHA256", NULL);
-	OQS_EXIT_IF_NULLPTR(sha256_ptr, "OpenSSL");
 	sha384_ptr = EVP_MD_fetch(NULL, "SHA384", NULL);
-	OQS_EXIT_IF_NULLPTR(sha384_ptr, "OpenSSL");
 	sha512_ptr = EVP_MD_fetch(NULL, "SHA512", NULL);
-	OQS_EXIT_IF_NULLPTR(sha512_ptr, "OpenSSL");
 
 	sha3_256_ptr = EVP_MD_fetch(NULL, "SHA3-256", NULL);
-	OQS_EXIT_IF_NULLPTR(sha3_256_ptr, "OpenSSL");
 	sha3_384_ptr = EVP_MD_fetch(NULL, "SHA3-384", NULL);
-	OQS_EXIT_IF_NULLPTR(sha3_384_ptr, "OpenSSL");
 	sha3_512_ptr = EVP_MD_fetch(NULL, "SHA3-512", NULL);
-	OQS_EXIT_IF_NULLPTR(sha3_512_ptr, "OpenSSL");
 	shake128_ptr = EVP_MD_fetch(NULL, "SHAKE128", NULL);
-	OQS_EXIT_IF_NULLPTR(shake128_ptr, "OpenSSL");
 	shake256_ptr = EVP_MD_fetch(NULL, "SHAKE256", NULL);
-	OQS_EXIT_IF_NULLPTR(shake256_ptr, "OpenSSL");
 
 	aes128_ecb_ptr = EVP_CIPHER_fetch(NULL, "AES-128-ECB", NULL);
-	OQS_EXIT_IF_NULLPTR(aes128_ecb_ptr, "OpenSSL");
 	aes256_ecb_ptr = EVP_CIPHER_fetch(NULL, "AES-256-ECB", NULL);
-	OQS_EXIT_IF_NULLPTR(aes256_ecb_ptr, "OpenSSL");
 	aes256_ctr_ptr = EVP_CIPHER_fetch(NULL, "AES-256-CTR", NULL);
-	OQS_EXIT_IF_NULLPTR(aes256_ctr_ptr, "OpenSSL");
+
+	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
+	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
+	        !aes128_ecb_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
+		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
+	}
 #endif
 }
 
