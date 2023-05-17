@@ -11,7 +11,9 @@ static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr,
 static EVP_CIPHER *aes128_ecb_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 #endif
 
-void oqs_fetch_ossl_objects(void) {
+CRYPTO_ONCE OQS_ONCE_STATIC_INIT;
+
+static void oqs_fetch_ossl_objects(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
 	sha256_ptr = EVP_MD_fetch(NULL, "SHA256", NULL);
 	sha384_ptr = EVP_MD_fetch(NULL, "SHA384", NULL);
@@ -53,6 +55,11 @@ void oqs_free_ossl_objects(void) {
 
 const EVP_MD *oqs_sha256(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!sha256_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return sha256_ptr;
 #else
 	return EVP_sha256();
@@ -61,6 +68,11 @@ const EVP_MD *oqs_sha256(void) {
 
 const EVP_MD *oqs_sha384(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!sha384_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return sha384_ptr;
 #else
 	return EVP_sha384();
@@ -69,6 +81,11 @@ const EVP_MD *oqs_sha384(void) {
 
 const EVP_MD *oqs_sha512(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!sha512_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return sha512_ptr;
 #else
 	return EVP_sha512();
@@ -77,6 +94,11 @@ const EVP_MD *oqs_sha512(void) {
 
 const EVP_MD *oqs_shake128(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!shake128_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return shake128_ptr;
 #else
 	return EVP_shake128();
@@ -85,6 +107,11 @@ const EVP_MD *oqs_shake128(void) {
 
 const EVP_MD *oqs_shake256(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!shake256_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return shake256_ptr;
 #else
 	return EVP_shake256();
@@ -93,6 +120,11 @@ const EVP_MD *oqs_shake256(void) {
 
 const EVP_MD *oqs_sha3_256(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!sha3_256_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return sha3_256_ptr;
 #else
 	return EVP_sha3_256();
@@ -101,6 +133,11 @@ const EVP_MD *oqs_sha3_256(void) {
 
 const EVP_MD *oqs_sha3_384(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!sha3_384_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return sha3_384_ptr;
 #else
 	return EVP_sha3_384();
@@ -109,6 +146,11 @@ const EVP_MD *oqs_sha3_384(void) {
 
 const EVP_MD *oqs_sha3_512(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!sha3_512_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return sha3_512_ptr;
 #else
 	return EVP_sha3_512();
@@ -117,6 +159,11 @@ const EVP_MD *oqs_sha3_512(void) {
 
 const EVP_CIPHER *oqs_aes_128_ecb(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!aes128_ecb_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return aes128_ecb_ptr;
 #else
 	return EVP_aes_128_ecb();
@@ -125,6 +172,11 @@ const EVP_CIPHER *oqs_aes_128_ecb(void) {
 
 const EVP_CIPHER *oqs_aes_256_ecb(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!aes256_ecb_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return aes256_ecb_ptr;
 #else
 	return EVP_aes_256_ecb();
@@ -133,6 +185,11 @@ const EVP_CIPHER *oqs_aes_256_ecb(void) {
 
 const EVP_CIPHER *oqs_aes_256_ctr(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	if (!aes256_ctr_ptr) {
+		if (!CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_INIT, oqs_fetch_ossl_objects)) {
+			return NULL;
+		}
+	}
 	return aes256_ctr_ptr;
 #else
 	return EVP_aes_256_ctr();

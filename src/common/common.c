@@ -207,9 +207,6 @@ OQS_API void OQS_init(void) {
 #if defined(OQS_DIST_BUILD)
 	OQS_CPU_has_extension(OQS_CPU_EXT_INIT);
 #endif
-#if defined(OQS_USE_OPENSSL)
-	oqs_fetch_ossl_objects();
-#endif
 	return;
 }
 
