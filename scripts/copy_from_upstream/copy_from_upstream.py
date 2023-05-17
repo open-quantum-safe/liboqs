@@ -514,15 +514,6 @@ def process_families(instructions, basedir, with_kat, with_generator):
                                                          imp['name'] == impl]
                 scheme['metadata']['implementations'][0]['sources'] = srcs
             else:
-                # If no scheme['implementation'] given, get the list from META.yml and add all implementations
-                # our code generator logic assumes only one default and one optimized implementation
-                # so, for mceliece, kill off "clean" and "sse" implementations until this is fixed TBD
-                if family['name'] == "classic_mceliece":
-                     mceimps = []
-                     for i in scheme['metadata']['implementations']:
-                        if i['name'] != "sse" and i['name'] != "clean":
-                           mceimps.append(i)
-                     scheme['metadata']['implementations'] = mceimps
                 for impl in scheme['metadata']['implementations']:
                     srcs = handle_implementation(impl['name'], family, scheme, basedir)
                     if DEBUG > 2:
