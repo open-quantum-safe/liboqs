@@ -328,7 +328,7 @@ def do_it(liboqs_root):
             readme.write('\n')
 
         sphincs_yml = sig_yamls[-1]
-        for hash_func in ['SHA256', 'SHAKE256']:
+        for hash_func in ['SHA2', 'SHAKE']:
             parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hash_func in pset['name']]
             if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
                 readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
