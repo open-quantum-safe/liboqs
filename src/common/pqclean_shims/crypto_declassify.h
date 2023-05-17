@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: CC0
 
 #ifndef PQCLEAN_CRYPTO_DECLASSIFY
 #define PQCLEAN_CRYPTO_DECLASSIFY
