@@ -7,7 +7,7 @@
 - **Authors' website**: https://sphincs.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/c1b19a865de329e87e9b3e9152362fcb709da8ab with copy_from_upstream patches
+  - **Source**: https://github.com/PQClean/PQClean/commit/d742438e5c541958bfd58070cd8668d757d88e07 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
