@@ -5,7 +5,7 @@
 - **Principal submitters**: Andreas Hülsing.
 - **Auxiliary submitters**: Jean-Philippe Aumasson, Daniel J. Bernstein,, Ward Beullens, Christoph Dobraunig, Maria Eichlseder, Scott Fluhrer, Stefan-Lukas Gazdag, Panos Kampanakis, Stefan Kölbl, Tanja Lange, Martin M. Lauridsen, Florian Mendel, Ruben Niederhagen, Christian Rechberger, Joost Rijneveld, Peter Schwabe, Bas Westerbaan.
 - **Authors' website**: https://sphincs.org/
-- **Specification version**: NIST Round 3 submission.
+- **Specification version**: NIST Round 3 submission, v3.1 (June 10, 2022).
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/c1b19a865de329e87e9b3e9152362fcb709da8ab with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
