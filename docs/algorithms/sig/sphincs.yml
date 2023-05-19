@@ -23,7 +23,7 @@ auxiliary-submitters:
 crypto-assumption: hash-based signatures
 website: https://sphincs.org/
 nist-round: 3
-spec-version: NIST Round 3 submission
+spec-version: NIST Round 3 submission, v3.1 (June 10, 2022)
 spdx-license-identifier: CC0-1.0
 primary-upstream:
   source: https://github.com/PQClean/PQClean/commit/c1b19a865de329e87e9b3e9152362fcb709da8ab
