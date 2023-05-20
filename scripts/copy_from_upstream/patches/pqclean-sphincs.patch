@@ -1,3 +1,149 @@
+diff --git a/crypto_sign/sphincs-sha2-128f-robust/META.yml b/crypto_sign/sphincs-sha2-128f-robust/META.yml
+index 6dfc899..f991e5b 100644
+--- a/crypto_sign/sphincs-sha2-128f-robust/META.yml
++++ b/crypto_sign/sphincs-sha2-128f-robust/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-128f-simple/META.yml b/crypto_sign/sphincs-sha2-128f-simple/META.yml
+index 08b3fcc..7752a6f 100644
+--- a/crypto_sign/sphincs-sha2-128f-simple/META.yml
++++ b/crypto_sign/sphincs-sha2-128f-simple/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-128s-robust/META.yml b/crypto_sign/sphincs-sha2-128s-robust/META.yml
+index dbe2ffd..70ac219 100644
+--- a/crypto_sign/sphincs-sha2-128s-robust/META.yml
++++ b/crypto_sign/sphincs-sha2-128s-robust/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-128s-simple/META.yml b/crypto_sign/sphincs-sha2-128s-simple/META.yml
+index c1d355a..d7c5b40 100644
+--- a/crypto_sign/sphincs-sha2-128s-simple/META.yml
++++ b/crypto_sign/sphincs-sha2-128s-simple/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-192f-robust/META.yml b/crypto_sign/sphincs-sha2-192f-robust/META.yml
+index 0d6f9fe..6b7167d 100644
+--- a/crypto_sign/sphincs-sha2-192f-robust/META.yml
++++ b/crypto_sign/sphincs-sha2-192f-robust/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-192f-simple/META.yml b/crypto_sign/sphincs-sha2-192f-simple/META.yml
+index e3de597..4865aac 100644
+--- a/crypto_sign/sphincs-sha2-192f-simple/META.yml
++++ b/crypto_sign/sphincs-sha2-192f-simple/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-192s-robust/META.yml b/crypto_sign/sphincs-sha2-192s-robust/META.yml
+index 0593604..7a0d6d8 100644
+--- a/crypto_sign/sphincs-sha2-192s-robust/META.yml
++++ b/crypto_sign/sphincs-sha2-192s-robust/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-192s-simple/META.yml b/crypto_sign/sphincs-sha2-192s-simple/META.yml
+index eea6ef5..1ca9aa8 100644
+--- a/crypto_sign/sphincs-sha2-192s-simple/META.yml
++++ b/crypto_sign/sphincs-sha2-192s-simple/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-256f-robust/META.yml b/crypto_sign/sphincs-sha2-256f-robust/META.yml
+index 1069de9..921056e 100644
+--- a/crypto_sign/sphincs-sha2-256f-robust/META.yml
++++ b/crypto_sign/sphincs-sha2-256f-robust/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-256f-simple/META.yml b/crypto_sign/sphincs-sha2-256f-simple/META.yml
+index 9dc3b5e..add1fa8 100644
+--- a/crypto_sign/sphincs-sha2-256f-simple/META.yml
++++ b/crypto_sign/sphincs-sha2-256f-simple/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-256s-robust/META.yml b/crypto_sign/sphincs-sha2-256s-robust/META.yml
+index 1930288..344d761 100644
+--- a/crypto_sign/sphincs-sha2-256s-robust/META.yml
++++ b/crypto_sign/sphincs-sha2-256s-robust/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-sha2-256s-simple/META.yml b/crypto_sign/sphincs-sha2-256s-simple/META.yml
+index a92feb7..0ffd034 100644
+--- a/crypto_sign/sphincs-sha2-256s-simple/META.yml
++++ b/crypto_sign/sphincs-sha2-256s-simple/META.yml
+@@ -34,3 +34,6 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+diff --git a/crypto_sign/sphincs-shake-128f-robust/META.yml b/crypto_sign/sphincs-shake-128f-robust/META.yml
+index 5fe71d5..abe113e 100644
+--- a/crypto_sign/sphincs-shake-128f-robust/META.yml
++++ b/crypto_sign/sphincs-shake-128f-robust/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128f-robust/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -248,6 +394,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-128f-simple/META.yml b/crypto_sign/sphincs-shake-128f-simple/META.yml
+index ae8083d..c8497dc 100644
+--- a/crypto_sign/sphincs-shake-128f-simple/META.yml
++++ b/crypto_sign/sphincs-shake-128f-simple/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128f-simple/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -498,6 +658,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-128s-robust/META.yml b/crypto_sign/sphincs-shake-128s-robust/META.yml
+index bff72cb..f7dc076 100644
+--- a/crypto_sign/sphincs-shake-128s-robust/META.yml
++++ b/crypto_sign/sphincs-shake-128s-robust/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128s-robust/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -748,6 +922,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-128s-simple/META.yml b/crypto_sign/sphincs-shake-128s-simple/META.yml
+index 4effd0a..eb436b2 100644
+--- a/crypto_sign/sphincs-shake-128s-simple/META.yml
++++ b/crypto_sign/sphincs-shake-128s-simple/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-128s-simple/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -998,6 +1186,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-192f-robust/META.yml b/crypto_sign/sphincs-shake-192f-robust/META.yml
+index 2ec5f1b..370481e 100644
+--- a/crypto_sign/sphincs-shake-192f-robust/META.yml
++++ b/crypto_sign/sphincs-shake-192f-robust/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192f-robust/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -1248,6 +1450,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-192f-simple/META.yml b/crypto_sign/sphincs-shake-192f-simple/META.yml
+index ad7e420..cb8385a 100644
+--- a/crypto_sign/sphincs-shake-192f-simple/META.yml
++++ b/crypto_sign/sphincs-shake-192f-simple/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192f-simple/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -1498,6 +1714,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-192s-robust/META.yml b/crypto_sign/sphincs-shake-192s-robust/META.yml
+index 3003eac..6a4c03c 100644
+--- a/crypto_sign/sphincs-shake-192s-robust/META.yml
++++ b/crypto_sign/sphincs-shake-192s-robust/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192s-robust/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -1748,6 +1978,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-192s-simple/META.yml b/crypto_sign/sphincs-shake-192s-simple/META.yml
+index 2c10b1e..df28047 100644
+--- a/crypto_sign/sphincs-shake-192s-simple/META.yml
++++ b/crypto_sign/sphincs-shake-192s-simple/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-192s-simple/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -1998,6 +2242,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-256f-robust/META.yml b/crypto_sign/sphincs-shake-256f-robust/META.yml
+index 92601fe..51da213 100644
+--- a/crypto_sign/sphincs-shake-256f-robust/META.yml
++++ b/crypto_sign/sphincs-shake-256f-robust/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256f-robust/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -2248,6 +2506,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-256f-simple/META.yml b/crypto_sign/sphincs-shake-256f-simple/META.yml
+index 315495a..845b9ea 100644
+--- a/crypto_sign/sphincs-shake-256f-simple/META.yml
++++ b/crypto_sign/sphincs-shake-256f-simple/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256f-simple/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -2498,6 +2770,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-256s-robust/META.yml b/crypto_sign/sphincs-shake-256s-robust/META.yml
+index 2bcff18..e332501 100644
+--- a/crypto_sign/sphincs-shake-256s-robust/META.yml
++++ b/crypto_sign/sphincs-shake-256s-robust/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256s-robust/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
@@ -2748,6 +3034,20 @@ index 2b93c9c..0000000
 -                unsigned char *in3, unsigned long long inlen);
 -
 -#endif
+diff --git a/crypto_sign/sphincs-shake-256s-simple/META.yml b/crypto_sign/sphincs-shake-256s-simple/META.yml
+index 84898ac..544022e 100644
+--- a/crypto_sign/sphincs-shake-256s-simple/META.yml
++++ b/crypto_sign/sphincs-shake-256s-simple/META.yml
+@@ -34,6 +34,9 @@ implementations:
+     supported_platforms:
+       - architecture: x86_64
+         required_flags: ['avx2']
++        operating_systems:
++          - Linux
++          - Darwin
+   - name: aarch64
+     version: https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637
+     supported_platforms:
 diff --git a/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.c b/crypto_sign/sphincs-shake-256s-simple/avx2/fips202x4.c
 deleted file mode 100644
 index 1e06fef..0000000
