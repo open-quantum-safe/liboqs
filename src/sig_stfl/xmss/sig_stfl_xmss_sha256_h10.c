@@ -35,6 +35,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
 	sig->keypair = OQS_SIG_STFL_alg_xmss_sha256_h10_keypair;
 	sig->sign = OQS_SIG_STFL_alg_xmss_sha256_h10_sign;
 	sig->verify = OQS_SIG_STFL_alg_xmss_sha256_h10_verify;
+	sig->sigs_remaining = OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_remaining;
+	sig->sigs_total = OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_total;
 
 	return sig;
 }
