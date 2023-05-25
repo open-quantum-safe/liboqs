@@ -200,7 +200,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 		printf("ERROR: unable to read 'seed' from <%s>\n", katfile);
 		goto err;
 	}
-	
+
 	fprintBstr(fh, "seed = ", seed, 48);
 	OQS_randombytes_nist_kat_init_256bit(seed, NULL);
 
