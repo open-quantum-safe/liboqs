@@ -128,6 +128,7 @@ int xmss_remaining_signatures(unsigned long long *remain, const unsigned  char *
     }
 
     if (xmss_parse_oid(&params, oid)) {
+        *remain = 0;
         return -1;
     }
 
@@ -135,6 +136,37 @@ int xmss_remaining_signatures(unsigned long long *remain, const unsigned  char *
     max = ((1ULL << params.full_height) - 1);
 
     *remain = max - idx;
+
+    return 0;
+}
+
+/**
+ * The function calculates the maximum number of signatures that can be generated for a given XMSS private key.
+ * 
+ * @param max a pointer to an unsigned long long variable that will store the maximum number of
+ * signatures that can be generated with the given XMSS private key.
+ * @param sk The secret key used for XMSS signature scheme. It is a pointer to an array of unsigned
+ * characters.
+ * 
+ * @return an integer value. If the XMSS OID cannot be parsed, it returns -1. Otherwise, it sets the
+ * value of the variable pointed to by the "max" parameter to the maximum number of signatures that can
+ * be generated with the given XMSS private key and returns 0.
+ */
+int xmss_total_signatures(unsigned long long *max, const unsigned  char *sk)
+{
+    xmss_params params;
+    uint32_t oid = 0;
+
+    for (unsigned i = 0; i < XMSS_OID_LEN; i++) {
+        oid |= sk[XMSS_OID_LEN - i - 1] << (i * 8);
+    }
+
+    if (xmss_parse_oid(&params, oid)) {
+        *max = 0;
+        return -1;
+    }
+
+    *max = ((1ULL << params.full_height) - 1);
 
     return 0;
 }
@@ -189,6 +221,18 @@ int xmssmt_sign_open(const unsigned char *m, unsigned long long mlen,
 }
 
 
+/**
+ * The function calculates the remaining number of signatures that can be generated using a given
+ * XMSSMT private key.
+ * 
+ * @param remain a pointer to an unsigned long long variable that will store the number of remaining
+ * signatures that can be generated using the given secret key.
+ * @param sk The `sk` parameter is a pointer to an array of unsigned characters representing the secret
+ * key used in the XMSSMT signature scheme.
+ * 
+ * @return This function returns an integer value. If the function executes successfully, it returns 0.
+ * If there is an error, it returns -1.
+ */
 int xmssmt_remaining_signatures(unsigned long long *remain, const unsigned  char *sk)
 {
     xmss_params params;
@@ -201,6 +245,7 @@ int xmssmt_remaining_signatures(unsigned long long *remain, const unsigned  char
     }
 
     if (xmssmt_parse_oid(&params, oid)) {
+        *remain = 0;
         return -1;
     }
 
@@ -208,6 +253,35 @@ int xmssmt_remaining_signatures(unsigned long long *remain, const unsigned  char
     max = ((1ULL << params.full_height) - 1);
 
     *remain = max - idx;
+
+    return 0;
+}
+
+/**
+ * The function calculates the maximum number of signatures that can be generated for a given XMSSMT private key.
+ * 
+ * @param max a pointer to an unsigned long long variable that will store the maximum number of
+ * signatures that can be generated with the given secret key.
+ * @param sk The `sk` parameter is a pointer to an array of unsigned characters representing the secret
+ * key used in the XMSS signature scheme.
+ * 
+ * @return an integer value. If the XMSS OID cannot be parsed, it returns -1. Otherwise, it returns 0.
+ */
+int xmssmt_total_signatures(unsigned long long *max, const unsigned  char *sk)
+{
+    xmss_params params;
+    uint32_t oid = 0;
+
+    for (unsigned i = 0; i < XMSS_OID_LEN; i++) {
+        oid |= sk[XMSS_OID_LEN - i - 1] << (i * 8);
+    }
+
+    if (xmss_parse_oid(&params, oid)) {
+        *max = 0;
+        return -1;
+    }
+
+    *max = ((1ULL << params.full_height) - 1);
 
     return 0;
 }

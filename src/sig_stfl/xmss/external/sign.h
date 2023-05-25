@@ -14,9 +14,9 @@
  * Description: Generates public and private key.
  *
  * Arguments:   - uint8_t *pk: pointer to output public key (allocated
- *                             array of CRYPTO_PUBLIC_KEY bytes)
+ *                             array of CRYPTO_PUBLICKEYBYTES bytes)
  *              - uint8_t *sk: pointer to output private key (allocated
- *                             array of CRYPTO_SECRET_KEY bytes)
+ *                             array of CRYPTO_SECRETKEYBYTES bytes)
  *
  * Returns 0 (success), -1 otherwise
  **************************************************/
@@ -71,6 +71,20 @@ int crypto_sign_open(const unsigned char *m, unsigned long long mlen,
  **************************************************/
 #define crypto_remaining_signatures XMSS_NAMESPACE(crypto_remaining_signatures)
 int crypto_remaining_signatures(unsigned long long *remain, const unsigned char *sk);
+
+
+/*************************************************
+ * Name:        XMSS_crypto_total_signatures
+ *
+ * Description: Return number of total signatures
+ *
+ * Arguments:   - uint64_t *max: maximum number of signatures
+ *              - uint8_t *sk: pointer to bit-packed private key
+ *
+ * Returns 0 (sucess), -1 otherwise
+ **************************************************/
+#define crypto_total_signatures XMSS_NAMESPACE(crypto_total_signatures)
+int crypto_total_signatures(unsigned long long *max, const unsigned char *sk);
 
 #endif 
 

@@ -13,4 +13,8 @@
 #define randombytes XMSS_INNER_NAMESPACE(randombytes)
 void randombytes(unsigned char *x, unsigned long long xlen);
 
+
+#define randombytes_init XMSS_INNER_NAMESPACE(randombytes_init)
+int randombytes_init(unsigned char buf[48]);
+
 #endif

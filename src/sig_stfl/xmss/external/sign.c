@@ -15,9 +15,9 @@
  * Description: Generates public and private key.
  *
  * Arguments:   - uint8_t *pk: pointer to output public key (allocated
- *                             array of CRYPTO_PUBLIC_KEY bytes)
+ *                             array of CRYPTO_PUBLICKEYBYTES bytes)
  *              - uint8_t *sk: pointer to output private key (allocated
- *                             array of CRYPTO_SECRET_KEY bytes)
+ *                             array of CRYPTO_SECRETKEYBYTES bytes)
  *
  * Returns 0 (success), -1 otherwise
  **************************************************/
@@ -103,7 +103,7 @@ int crypto_sign_open(const unsigned char *m, unsigned long long mlen,
 /*************************************************
  * Name:        XMSS_crypto_remaining_signatures
  *
- * Description: Return number of signatures left
+ * Description: Return number of remaining signatures
  *
  * Arguments:   - uint64_t *remain: remaining signatures
  *              - uint8_t *sk: pointer to bit-packed private key
@@ -113,6 +113,25 @@ int crypto_sign_open(const unsigned char *m, unsigned long long mlen,
 int crypto_remaining_signatures(unsigned long long *remain, const unsigned char *sk)
 {
     if (XMSS_REMAINING_SIG(remain, sk))
+    {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
+}
+
+/*************************************************
+ * Name:        XMSS_crypto_total_signatures
+ *
+ * Description: Return number of total signatures
+ *
+ * Arguments:   - uint64_t *max: maximum number of signatures
+ *              - uint8_t *sk: pointer to bit-packed private key
+ *
+ * Returns 0 (sucess), -1 otherwise
+ **************************************************/
+int crypto_total_signatures(unsigned long long *max, const unsigned char *sk)
+{
+    if (XMSS_TOTAL_SIG(max, sk))
     {
         return OQS_ERROR;
     }

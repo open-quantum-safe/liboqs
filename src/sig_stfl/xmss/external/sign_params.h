@@ -14,7 +14,7 @@
 
 #if XMSSMT == 0
     /* 
-    * Maximum signatures: 2^h = 2^10
+    * Maximum signatures: 2^h - 1 = 2^10 - 1
     */
     #if TREE_LEVEL == 0
 
@@ -27,7 +27,7 @@
     #define XMSS_SIGNBYTES 2500
 
     /* 
-    * Maximum signatures: 2^h = 2^16
+    * Maximum signatures: 2^h - 1 = 2^16 - 1
     */
     #elif TREE_LEVEL == 1
 
@@ -40,7 +40,7 @@
     #define XMSS_SIGNBYTES 2692
 
     /* 
-    * Maximum signatures: 2^h = 2^20
+    * Maximum signatures: 2^h - 1 = 2^20 - 1
     */
     #elif TREE_LEVEL == 2
 
@@ -60,7 +60,7 @@
     #endif
 #else 
     /* 
-    * Maximum signatures: 2^h = 2^20
+    * Maximum signatures: 2^h - 1 = 2^20 - 1
     * XMSS^MT has bigger signature and secret key (secret is not transfer), but better speed
     */
     #if TREE_LEVEL == 0
@@ -74,7 +74,7 @@
     #define XMSS_SIGNBYTES 4963
 
     /* 
-    * Maximum signatures: 2^h = 2^40
+    * Maximum signatures: 2^h - 1 = 2^40 - 1
     * XMSS^MT has bigger signature and secret key (secret is not transfer), but better speed
     */
     #elif TREE_LEVEL == 1
@@ -88,7 +88,7 @@
     #define XMSS_SIGNBYTES 5605
 
     /* 
-    * Maximum signatures: 2^h = 2^60
+    * Maximum signatures: 2^h - 1 = 2^60 - 1
     * XMSS^MT has bigger signature and secret key (secret is not transfer), but better speed
     */
     #elif TREE_LEVEL == 2
@@ -117,6 +117,7 @@
     #define XMSS_SIGN xmssmt_sign
     #define XMSS_SIGN_OPEN xmssmt_sign_open
     #define XMSS_REMAINING_SIG xmssmt_remaining_signatures
+    #define XMSS_TOTAL_SIG xmssmt_total_signatures
 #else
     #define XMSS_PARSE_OID xmss_parse_oid
     #define XMSS_STR_TO_OID xmss_str_to_oid
@@ -124,15 +125,18 @@
     #define XMSS_SIGN xmss_sign
     #define XMSS_SIGN_OPEN xmss_sign_open
     #define XMSS_REMAINING_SIG xmss_remaining_signatures
+    #define XMSS_TOTAL_SIG xmss_total_signatures
 #endif
 
 #if XMSS_SECRETKEYBYTES_SMALL_ENABLE
-#define CRYPTO_SECRET_KEY (XMSS_SECRETKEYBYTES_SMALL + XMSS_OID_LEN)
+#define CRYPTO_SECRETKEYBYTES (XMSS_SECRETKEYBYTES_SMALL + XMSS_OID_LEN)
+#define CRYPTO_ALGNAME XMSS_OID
 #else
-#define CRYPTO_SECRET_KEY (XMSS_SECRETKEYBYTES + XMSS_OID_LEN)
+#define CRYPTO_SECRETKEYBYTES (XMSS_SECRETKEYBYTES + XMSS_OID_LEN)
+#define CRYPTO_ALGNAME (XMSS_OID "_fast")
 #endif
 
-#define CRYPTO_PUBLIC_KEY (XMSS_PUBLICKEYBYTES + XMSS_OID_LEN)
+#define CRYPTO_PUBLICKEYBYTES (XMSS_PUBLICKEYBYTES + XMSS_OID_LEN)
 #define CRYPTO_BYTES XMSS_SIGNBYTES
 
 #endif

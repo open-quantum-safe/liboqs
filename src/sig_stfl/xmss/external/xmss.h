@@ -36,11 +36,16 @@ int xmss_sign_open(const unsigned char *m, unsigned long long mlen,
                    const unsigned char *pk);
 
 /* 
- * Returns:
- * The number of remaining signatures
+ * Write number of remaining signature to `remain` variable given `sk`
  */
 #define xmss_remaining_signatures XMSS_NAMESPACE(xmss_remaining_signatures)
 int xmss_remaining_signatures(unsigned long long *remain, const unsigned  char *sk);
+
+/*
+ * Write number of maximum signature to `max` variable given `sk`
+ */
+#define xmss_total_signatures XMSS_NAMESPACE(xmss_total_signatures)
+int xmss_total_signatures(unsigned long long *max, const unsigned  char *sk);
 
 /*
  * Generates a XMSSMT key pair for a given parameter set.
@@ -74,10 +79,15 @@ int xmssmt_sign_open(const unsigned char *m, unsigned long long mlen,
                      const unsigned char *pk);
 
 /* 
- * Returns:
- * The number of remaining signatures
+ * Write number of remaining signature to `remain` variable given `sk`
  */
 #define xmssmt_remaining_signatures XMSS_NAMESPACE(xmssmt_remaining_signatures)
 int xmssmt_remaining_signatures(unsigned long long *remain, const unsigned  char *sk);
+
+/*
+ * Write number of maximum signature to `max` variable given `sk`
+ */
+#define xmssmt_total_signatures XMSS_NAMESPACE(xmssmt_total_signatures)
+int xmssmt_total_signatures(unsigned long long *max, const unsigned  char *sk);
 
 #endif
