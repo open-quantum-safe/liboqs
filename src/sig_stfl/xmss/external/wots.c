@@ -40,7 +40,7 @@ static void gen_chain(const xmss_params *params,
                       unsigned int start, unsigned int steps,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
-    uint32_t i;
+    unsigned int i;
 
     /* Initialize out with the value at position 'start'. */
     memcpy(out, in, params->n);
@@ -118,7 +118,7 @@ void wots_pkgen(const xmss_params *params,
                 unsigned char *pk, const unsigned char *seed,
                 const unsigned char *pub_seed, uint32_t addr[8])
 {
-    uint32_t i;
+    unsigned int i;
 
     /* The WOTS+ private key is derived from the seed. */
     expand_seed(params, pk, seed, pub_seed, addr);
@@ -140,7 +140,7 @@ void wots_sign(const xmss_params *params,
                uint32_t addr[8])
 {
     unsigned int lengths[params->wots_len] = {0};
-    uint32_t i;
+    unsigned int i;
 
     chain_lengths(params, lengths, msg);
 
@@ -164,7 +164,7 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned int lengths[params->wots_len] = {0};
-    uint32_t i;
+    unsigned int i;
 
     chain_lengths(params, lengths, msg);
 
