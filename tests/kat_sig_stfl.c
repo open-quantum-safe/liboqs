@@ -170,7 +170,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	// Grab the pk and sk from KAT file
 	public_key = malloc(sig->length_public_key);
-	secret_key = malloc(sig->length_secret_key);
+	secret_key = calloc(sig->length_secret_key, sizeof(uint8_t));
 	signature = malloc(sig->length_signature);
 
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
