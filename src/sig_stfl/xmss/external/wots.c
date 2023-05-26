@@ -58,7 +58,7 @@ static void gen_chain(const xmss_params *params,
  * This only works when log_w is a divisor of 8.
  */
 static void base_w(const xmss_params *params,
-                   unsigned int *output, const int out_len, const unsigned char *input)
+                   unsigned int *output, const unsigned int out_len, const unsigned char *input)
 {
     unsigned int in = 0;
     unsigned int out = 0;
