@@ -2,8 +2,7 @@
 
 set(_XMSS_OBJS "")
 
-set(SRCS external/randombytes.c  #TODO: This is for deterministic test only
-         external/hash.c  
+set(SRCS external/hash.c  
          external/hash_address.c  
          external/params.c  
          external/utils.c  
