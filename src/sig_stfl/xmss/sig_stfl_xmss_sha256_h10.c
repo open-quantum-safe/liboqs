@@ -61,9 +61,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sign(uint8_t *signature, siz
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_xmss_xmss_sign(secret_key, signature, (unsigned long long *) signature_len, message, message_len)) {
+	unsigned long long sig_length = 0;
+	if (oqs_sig_stfl_xmss_xmss_sign(secret_key, signature, &sig_length, message, message_len)) {
 		return OQS_ERROR;
 	}
+	*signature_len = (size_t) sig_length;
 
 	return OQS_SUCCESS;
 }
@@ -86,9 +88,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_remaining(size_t *remai
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_xmss_xmss_remaining_signatures((unsigned long long *) remain, secret_key)) {
+	unsigned long long remaining_signatures = 0;
+	if (oqs_sig_stfl_xmss_xmss_remaining_signatures(&remaining_signatures, secret_key)) {
 		return OQS_ERROR;
 	}
+	*remain = (size_t) remaining_signatures;
 
 	return OQS_SUCCESS;
 }
@@ -98,9 +102,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_total(size_t *total, co
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_xmss_xmss_total_signatures((unsigned long long *) total, secret_key)) {
+	unsigned long long total_signatures = 0;
+	if (oqs_sig_stfl_xmss_xmss_total_signatures(&total_signatures, secret_key)) {
 		return OQS_ERROR;
 	}
+	*total = (size_t) total_signatures;
 
 	return OQS_SUCCESS;
 }
