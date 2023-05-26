@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <oqs/rand.h>
 
 #include "hash.h"
 #include "hash_address.h"
 #include "params.h"
-#include "randombytes.h"
 #include "wots.h"
 #include "utils.h"
 #include "xmss_commons.h"
@@ -170,7 +170,7 @@ int xmssmt_core_keypair(const xmss_params *params,
 {
     unsigned char seed[3 * params->n];
 
-    randombytes(seed, 3 * params->n);
+    OQS_randombytes(seed, 3 * params->n);
     xmssmt_core_seed_keypair(params, pk, sk, seed);
 
     return 0;

@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <oqs/rand.h>
 
 #include "hash.h"
 #include "hash_address.h"
 #include "params.h"
-#include "randombytes.h"
 #include "wots.h"
 #include "utils.h"
 #include "xmss_commons.h"
@@ -556,10 +556,10 @@ int xmss_core_keypair(const xmss_params *params,
     sk[2] = 0;
     sk[3] = 0;
     // Init SK_SEED (n byte) and SK_PRF (n byte)
-    randombytes(sk + params->index_bytes, 2*params->n);
+    OQS_randombytes(sk + params->index_bytes, 2*params->n);
 
     // Init PUB_SEED (n byte)
-    randombytes(sk + params->index_bytes + 3*params->n, params->n);
+    OQS_randombytes(sk + params->index_bytes + 3*params->n, params->n);
     // Copy PUB_SEED to public key
     memcpy(pk + params->n, sk + params->index_bytes + 3*params->n, params->n);
 
@@ -750,10 +750,10 @@ int xmssmt_core_keypair(const xmss_params *params,
         sk[i] = 0;
     }
     // Init SK_SEED (params->n byte) and SK_PRF (params->n byte)
-    randombytes(sk+params->index_bytes, 2*params->n);
+    OQS_randombytes(sk+params->index_bytes, 2*params->n);
 
     // Init PUB_SEED (params->n byte)
-    randombytes(sk+params->index_bytes + 3*params->n, params->n);
+    OQS_randombytes(sk+params->index_bytes + 3*params->n, params->n);
     // Copy PUB_SEED to public key
     memcpy(pk+params->n, sk+params->index_bytes+3*params->n, params->n);
 
