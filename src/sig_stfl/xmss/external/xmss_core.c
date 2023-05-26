@@ -230,7 +230,7 @@ int xmssmt_core_sign(const xmss_params *params,
         memset(sk + params->index_bytes, 0, (params->sk_bytes - params->index_bytes));
         if (idx > ((1ULL << params->full_height) - 1))
             return -2; // We already used all one-time keys
-        if ((params->full_height == 64) && (idx == ((1ULL << params->full_height) - 1))) 
+        if ((params->full_height == 64) && (idx == UINT64_MAX))
                 return -2; // We already used all one-time keys
     }
     
