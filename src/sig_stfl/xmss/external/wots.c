@@ -139,8 +139,10 @@ void wots_sign(const xmss_params *params,
                const unsigned char *seed, const unsigned char *pub_seed,
                uint32_t addr[8])
 {
-    unsigned int lengths[params->wots_len] = {0};
+    unsigned int lengths[params->wots_len];
     unsigned int i;
+
+    memset(lengths, 0, sizeof(unsigned int)*params->wots_len);
 
     chain_lengths(params, lengths, msg);
 
@@ -163,8 +165,10 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *sig, const unsigned char *msg,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned int lengths[params->wots_len] = {0};
+    unsigned int lengths[params->wots_len];
     unsigned int i;
+
+    memset(lengths, 0, sizeof(unsigned int)*params->wots_len);
 
     chain_lengths(params, lengths, msg);
 
