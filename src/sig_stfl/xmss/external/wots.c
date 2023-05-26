@@ -58,13 +58,13 @@ static void gen_chain(const xmss_params *params,
  * This only works when log_w is a divisor of 8.
  */
 static void base_w(const xmss_params *params,
-                   int *output, const int out_len, const unsigned char *input)
+                   unsigned int *output, const int out_len, const unsigned char *input)
 {
-    int in = 0;
-    int out = 0;
+    unsigned int in = 0;
+    unsigned int out = 0;
     unsigned char total;
-    int bits = 0;
-    int consumed;
+    unsigned int bits = 0;
+    unsigned int consumed;
 
     for (consumed = 0; consumed < out_len; consumed++) {
         if (bits == 0) {
@@ -80,7 +80,7 @@ static void base_w(const xmss_params *params,
 
 /* Computes the WOTS+ checksum over a message (in base_w). */
 static void wots_checksum(const xmss_params *params,
-                          int *csum_base_w, const int *msg_base_w)
+                          unsigned int *csum_base_w, const int *msg_base_w)
 {
     int csum = 0;
     unsigned char csum_bytes[(params->wots_len2 * params->wots_log_w + 7) / 8];
@@ -100,7 +100,7 @@ static void wots_checksum(const xmss_params *params,
 
 /* Takes a message and derives the matching chain lengths. */
 static void chain_lengths(const xmss_params *params,
-                          int *lengths, const unsigned char *msg)
+                          unsigned int *lengths, const unsigned char *msg)
 {
     base_w(params, lengths, params->wots_len1, msg);
     wots_checksum(params, lengths + params->wots_len1, lengths);
@@ -139,7 +139,7 @@ void wots_sign(const xmss_params *params,
                const unsigned char *seed, const unsigned char *pub_seed,
                uint32_t addr[8])
 {
-    int lengths[params->wots_len];
+    unsigned int lengths[params->wots_len] = {0};
     uint32_t i;
 
     chain_lengths(params, lengths, msg);
@@ -163,7 +163,7 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *sig, const unsigned char *msg,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
-    int lengths[params->wots_len];
+    unsigned int lengths[params->wots_len] = {0};
     uint32_t i;
 
     chain_lengths(params, lengths, msg);
