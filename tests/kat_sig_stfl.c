@@ -175,7 +175,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: malloc failed!\n", method_name);
-		return OQS_ERROR;
+		goto err;
 	}
 
 	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, "pk = ")) {
