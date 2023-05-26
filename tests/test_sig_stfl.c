@@ -121,15 +121,43 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name) {
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	/* check magic values */
 	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: public_key Magic numbers do not match\n");
+		goto err;
+	}
 	rv |= memcmp(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: secret_key Magic numbers do not match\n");
+		goto err;
+	}
 	rv |= memcmp(message + message_len, magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: message Magic numbers do not match\n");
+		goto err;
+	}
 	rv |= memcmp(signature + sig->length_signature, magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: signature Magic numbers do not match\n");
+		goto err;
+	}
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: public_key1 Magic numbers do not match\n");
+		goto err;
+	}
 	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: secret_key1 Magic numbers do not match\n");
+		goto err;
+	}
 	rv |= memcmp(message - sizeof(magic_t), magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: message1 Magic numbers do not match\n");
+		goto err;
+	}
 	rv |= memcmp(signature - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv) {
-		fprintf(stderr, "ERROR: Magic numbers do not mtach\n");
+		fprintf(stderr, "ERROR: signature1 Magic numbers do not match\n");
 		goto err;
 	}
 #endif
