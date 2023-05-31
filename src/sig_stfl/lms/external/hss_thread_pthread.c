@@ -90,13 +90,13 @@ struct thread_collection *hss_thread_init(int num_thread) {
     col->num_thread = num_thread;
 
     if (0 != pthread_mutex_init( &col->lock, 0 )) {
-        free(col);
+        free(col); // IGNORE free-check
         return 0;
     }
 
     if (0 != pthread_mutex_init( &col->write_lock, 0 )) {
         pthread_mutex_destroy( &col->lock );
-        free(col);
+        free(col); // IGNORE free-check
         return 0;
     }
 
@@ -125,7 +125,7 @@ static void *worker_thread( void *arg ) {
         (w->function)(w->x.detail, col);
 
         /* Ok, we did that */
-        free(w);
+        free(w); // IGNORE free-check
 
         /* Check if there's anything else to do */
         pthread_mutex_lock( &col->lock );
@@ -218,7 +218,7 @@ void hss_thread_issue_work(struct thread_collection *col,
                     /* Hmmm, couldn't spawn it; fall back */
                     default: /* On error condition */
                     pthread_mutex_unlock( &col->lock );
-                    free(w);
+                    free(w); // IGNORE free-check
                     function( detail, col );
                     return;
                 }
@@ -276,7 +276,7 @@ void hss_thread_done(struct thread_collection *col) {
 
     pthread_mutex_destroy( &col->lock );
     pthread_mutex_destroy( &col->write_lock );
-    free(col);
+    free(col);  // IGNORE free-check
 }
 
 void hss_thread_before_write(struct thread_collection *col) {
