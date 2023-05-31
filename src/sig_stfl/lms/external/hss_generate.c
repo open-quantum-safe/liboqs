@@ -795,7 +795,7 @@ bool hss_generate_working_key(
 #if DO_FLOATING_POINT
             /* Don't leak suborders on an intermediate error */
         for (i=0; i<(sequence_t)count_order; i++) {
-            free( order[i].sub );
+            free( order[i].sub ); // IGNORE free-check
         }
 #endif
         info->error_code = got_error;
@@ -830,7 +830,7 @@ bool hss_generate_working_key(
                           hash_size, tree->h, I);
         }
 
-        free( sub );
+        free( sub ); // IGNORE free-check
         p_order->sub = 0;
     }
 #endif

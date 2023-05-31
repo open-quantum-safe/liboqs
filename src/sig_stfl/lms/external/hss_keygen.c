@@ -275,7 +275,7 @@ bool hss_generate_private_key(
         } else {
             hss_zeroize( context, PRIVATE_KEY_LEN );
         }
-        free(temp_buffer);
+        free(temp_buffer); // IGNORE free-check
         return false;
     }
 
@@ -349,7 +349,7 @@ bool hss_generate_private_key(
     /* Hey, what do you know -- it all worked! */
     hss_zeroize( private_key, sizeof private_key ); /* Zeroize local copy of */
                                                    /* the private key */
-    free(temp_buffer);
+    free(temp_buffer); // IGNORE free-check
     return true;
 }
 

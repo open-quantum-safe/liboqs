@@ -541,15 +541,15 @@ void hss_free_working_key(struct hss_working_key *w) {
             unsigned j, k;
             for (j=0; j<MAX_SUBLEVELS; j++)
                 for (k=0; k<3; k++)
-                    free(tree->subtree[j][k]);
+                    free(tree->subtree[j][k]); // IGNORE free-check
             hss_zeroize( tree, sizeof *tree ); /* We have seeds here */
         }
-        free(tree);
+        free(tree); // IGNORE free-check
     }
     for (i=0; i<MAX_HSS_LEVELS-1; i++) {
-        free(w->signed_pk[i]);
+        free(w->signed_pk[i]); // IGNORE free-check
     }
-    free(w->stack);
+    free(w->stack); // IGNORE free-check
     hss_zeroize( w, sizeof *w ); /* We have secret information here */
-    free(w);
+    free(w); // IGNORE free-check
 }
