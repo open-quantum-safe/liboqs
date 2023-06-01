@@ -129,7 +129,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name) {
 	rv |= memcmp(message - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(signature - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv) {
-		fprintf(stderr, "ERROR: Magic numbers do not mtach\n");
+		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
 	}
 #endif
