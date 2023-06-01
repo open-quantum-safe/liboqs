@@ -83,6 +83,9 @@ target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 add_executable(kat_sig kat_sig.c test_helpers.c)
 target_link_libraries(kat_sig PRIVATE ${TEST_DEPS})
 
+add_executable(kat_sig_stfl kat_sig_stfl.c test_helpers.c)
+target_link_libraries(kat_sig_stfl PRIVATE ${TEST_DEPS})
+
 add_executable(test_sig test_sig.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
 
@@ -97,10 +100,12 @@ set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig)
 # SIG_STFL API tests
 add_executable(test_sig_stfl test_sig_stfl.c)
 if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
-    target_link_libraries(test_sig_stfl PRIVATE ${API_TEST_DEPS} Threads::Threads)
+    target_link_libraries(test_sig_stfl PRIVATE ${TEST_DEPS} Threads::Threads)
 else ()
-    target_link_libraries(test_sig_stfl PRIVATE ${API_TEST_DEPS})
+    target_link_libraries(test_sig_stfl PRIVATE ${TEST_DEPS})
 endif()
+
+set(SIG_STFL_TESTS kat_sig_stfl test_sig_stfl)
 
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})
@@ -135,5 +140,5 @@ add_custom_target(
     # skip long KAT tests
     COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${UNIX_TESTS}
+    DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS} ${UNIX_TESTS}
     USES_TERMINAL)
