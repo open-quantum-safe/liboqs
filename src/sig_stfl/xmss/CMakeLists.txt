@@ -2,17 +2,18 @@
 
 set(_XMSS_OBJS "")
 
-set(SRCS external/hash.c  
-         external/hash_address.c  
-         external/params.c  
-         external/utils.c  
-         external/wots.c  
-         external/xmss.c  
-         external/xmss_commons.c  
+set(SRCS external/hash.c
+         external/hash_address.c
+         external/params.c
+         external/utils.c 
+         external/wots.c 
+         external/xmss.c
+         external/xmss_commons.c
+         external/core_hash.c
     )
     
 if (OQS_ENABLE_SIG_STFL_xmss_sha256_h10)
-    set (SRCS ${SRCS} sig_stfl_xmss_sha256_h10.c external/core_hash_n32_sha2.c external/xmss_core.c)
+    set (SRCS ${SRCS} sig_stfl_xmss_sha256_h10.c external/xmss_core.c)
 endif()
 
 
