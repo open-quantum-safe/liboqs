@@ -201,7 +201,7 @@ def get_kats(t):
             kats[t] = json.load(fp)
     return kats[t]
 
-def get_katfile(t, sig_stfl_name: str) -> str:
+def get_katfile(t: str, sig_stfl_name: str) -> str:
     algo_dir = ''
     if "XMSS" in sig_stfl_name:
         algo_dir = 'xmss'
