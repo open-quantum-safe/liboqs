@@ -88,6 +88,22 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 	}
 }
 
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, size_t *remain, const uint8_t *secret_key) {
+	if (sig == NULL || sig->sigs_remaining == NULL || sig->sigs_remaining(remain, secret_key) != 0) {
+		return OQS_ERROR;
+	} else {
+		return OQS_SUCCESS;
+	}
+}
+
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, size_t *max, const uint8_t *secret_key) {
+	if (sig == NULL || sig->sigs_total == NULL || sig->sigs_total(max, secret_key) != 0) {
+		return OQS_ERROR;
+	} else {
+		return OQS_SUCCESS;
+	}
+}
+
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {
 	OQS_MEM_insecure_free(sig);
 }

@@ -12,6 +12,7 @@ import json
 kats = {}
 kats["kem"] = None
 kats["sig"] = None
+kats["sig_stfl"] = None
 
 def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, input=None, ignore_returncode=False):
     """
@@ -195,10 +196,20 @@ def is_use_option_enabled_by_name(name):
     return name in available_use_options_by_name()
 
 def get_kats(t):
-   if kats[t] is None:
-     with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
-      kats[t] = json.load(fp)
-   return kats[t]
+    if kats[t] is None:
+        with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
+            kats[t] = json.load(fp)
+    return kats[t]
+
+def get_katfile(t: str, sig_stfl_name: str) -> str:
+    algo_dir = ''
+    if "XMSS" in sig_stfl_name:
+        algo_dir = 'xmss'
+    if not algo_dir:
+        return '' 
+    kat_filename = f"{sig_stfl_name}.rsp"
+    katfile = os.path.join('tests', 'KATs', t, algo_dir, kat_filename)
+    return katfile
 
 @functools.lru_cache()
 def get_valgrind_version():
