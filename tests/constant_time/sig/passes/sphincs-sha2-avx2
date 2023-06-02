@@ -68,7 +68,7 @@
    fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
 }
 {
-   Starting position of chain is not secret
+   Signing leaf is not secret
    Memcheck:Cond
    src:wots.c:196 # fun:wots_gen_leafx8
    fun:PQCLEAN_SPHINCSSHA2*_AVX2_treehashx8
@@ -76,7 +76,7 @@
    fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
 }
 {
-   Starting position of chain is not secret
+   Signing leaf is not secret
    Memcheck:Cond
    fun:memmove
    src:wots.c:196 # fun:wots_gen_leafx8
@@ -85,7 +85,7 @@
    fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
 }
 {
-   Starting position of chain is not secret
+   WOTS signature is not secret
    Memcheck:Cond
    fun:memmove
    src:wots.c:242 # fun:wots_gen_leafx8
@@ -94,7 +94,7 @@
    fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
 }
 {
-   Starting position of chain is not secret
+   WOTS signature is not secret
    Memcheck:Value8
    fun:memmove
    src:wots.c:242 # fun:wots_gen_leafx8
