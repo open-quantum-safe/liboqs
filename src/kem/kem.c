@@ -436,6 +436,16 @@ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint
 	}
 }
 
+#if OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+OQS_API OQS_STATUS OQS_KEM_derive_keypair(const OQS_KEM *kem, const uint8_t *randomness, uint8_t *public_key, uint8_t *secret_key) {
+	if (kem == NULL) {
+		return OQS_ERROR;
+	} else {
+		return kem->derive_keypair(randomness, public_key, secret_key);
+	}
+}
+#endif
+
 OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;

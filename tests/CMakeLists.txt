@@ -80,6 +80,11 @@ target_link_libraries(test_kem_mem PRIVATE ${API_TEST_DEPS})
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${API_TEST_DEPS})
 
+if(OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR)
+add_executable(test_derive_keypair test_derive_keypair.c)
+target_link_libraries(test_derive_keypair PRIVATE ${API_TEST_DEPS})
+endif()
+
 # SIG API tests
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${API_TEST_DEPS})

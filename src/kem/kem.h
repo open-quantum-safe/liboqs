@@ -156,6 +156,11 @@ typedef struct OQS_KEM {
 	size_t length_ciphertext;
 	/** The (maximum) length, in bytes, of shared secrets for this KEM. */
 	size_t length_shared_secret;
+#ifdef OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+	/** The length, in bytes, of cryptographically suitable randomness
+	 * required for key derivation */
+	size_t length_randomness;
+#endif
 
 	/**
 	 * Keypair generation algorithm.
@@ -169,6 +174,27 @@ typedef struct OQS_KEM {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
+
+#if OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+	/**
+	 * Deterministic derivation of keypair
+	 *
+	 * Caller is responsible to ensure that the randomness consists of sufficient
+	 * high entropy material that is cryptographically suitable to derive a
+	 * secret key from. The length required can be determined from the
+	 * `length_randomness' member in this object or the per-scheme
+	 * compile-time macro `OQS_KEM_*_length_randomness'.
+	 * Caller is responsible for allocating sufficient memory for `public_key` and
+	 * `secret_key`, based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_KEM_*_length_*`.
+	 *
+	 * @param[in] randomness The randomness used to derive the keypair
+	 * @param[out] public_key The public key represented as a byte string
+	 * @param[out] secret_key The secret key represented as a byte string
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*derive_keypair)(const uint8_t *randomness, uint8_t *public_key, uint8_t *secret_key);
+#endif
 
 	/**
 	 * Encapsulation algorithm.
@@ -224,6 +250,28 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name);
  * @return OQS_SUCCESS or OQS_ERROR
  */
 OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
+
+#ifdef OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+/**
+ * Deterministic derivation of keypair
+ *
+ * Caller is responsible to ensure that the randomness consists of sufficient
+ * high entropy material that is cryptographically suitable to derive a
+ * secret key from. The length required can be determined from the
+ * `length_randomness' member in this object or the per-scheme
+ * compile-time macro `OQS_KEM_*_length_randomness'.
+ * Caller is responsible for allocating sufficient memory for `public_key` and
+ * `secret_key`, based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_KEM_*_length_*`.
+ *
+ * @param[in] randomness The randomness used to derive the keypair
+ * @param[out] public_key The public key represented as a byte string
+ * @param[out] secret_key The secret key represented as a byte string
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_KEM_derive_keypair(const OQS_KEM *kem, const uint8_t *randomness, uint8_t *public_key, uint8_t *secret_key);
+#endif
+
 
 /**
  * Encapsulation algorithm.

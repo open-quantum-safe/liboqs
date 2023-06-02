@@ -50,6 +50,8 @@
 
 #cmakedefine OQS_ENABLE_SHA3_xkcp_low_avx2 1
 
+#cmakedefine OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR 1
+
 #cmakedefine OQS_ENABLE_KEM_BIKE 1
 #cmakedefine OQS_ENABLE_KEM_bike_l1 1
 #cmakedefine OQS_ENABLE_KEM_bike_l3 1

@@ -109,6 +109,7 @@ else()
 endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
+option(OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR "Enable ability to derive KEM keypair from a seed" OFF)
 
 if(WIN32)
     set(CMAKE_GENERATOR_CC cl)
