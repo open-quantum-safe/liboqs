@@ -16,4 +16,8 @@ int PQCLEAN_KYBER512_AARCH64_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint
 
 int PQCLEAN_KYBER512_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
+#ifdef OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+int PQCLEAN_KYBER512_AARCH64_crypto_kem_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+#endif
+
 #endif

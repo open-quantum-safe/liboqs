@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 /*************************************************
 * Name:        pack_pk
@@ -275,6 +276,62 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
     pack_sk(sk, skpv);
     pack_pk(pk, pkpv, publicseed);
 }
+
+#ifdef OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+/*************************************************
+* Name:        deterministic_indcpa_keypair
+*
+* Description: Generates public and private key for the CPA-secure
+*              public-key encryption scheme underlying Kyber
+*
+* Arguments:   - const uint8_t *randomness: pointer to input randomness
+*                             (of length KYBER_SYMBYTES bytes)
+*              - uint8_t *pk: pointer to output public key
+*                             (of length KYBER_INDCPA_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output private key
+                              (of length KYBER_INDCPA_SECRETKEYBYTES bytes)
+**************************************************/
+void deterministic_indcpa_keypair(const uint8_t randomness[KYBER_SYMBYTES],
+                                  uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
+                                  uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES])
+{
+    unsigned int i;
+    uint8_t buf[2 * KYBER_SYMBYTES];
+    const uint8_t *publicseed = buf;
+    const uint8_t *noiseseed = buf + KYBER_SYMBYTES;
+    int16_t a[KYBER_K][KYBER_K][KYBER_N];
+    int16_t e[KYBER_K][KYBER_N];
+    int16_t pkpv[KYBER_K][KYBER_N];
+    int16_t skpv[KYBER_K][KYBER_N];
+    int16_t skpv_asymmetric[KYBER_K][KYBER_N >> 1];
+
+    memcpy(buf, randomness, KYBER_SYMBYTES);
+    hash_g(buf, buf, KYBER_SYMBYTES);
+
+    gen_a(a, publicseed);
+
+    neon_poly_getnoise_eta1_2x(&(skpv[0][0]), &(skpv[1][0]), noiseseed, 0, 1);
+    neon_poly_getnoise_eta1_2x(&(skpv[2][0]), &(skpv[3][0]), noiseseed, 2, 3);
+    neon_poly_getnoise_eta1_2x(&(e[0][0]), &(e[1][0]), noiseseed, 4, 5);
+    neon_poly_getnoise_eta1_2x(&(e[2][0]), &(e[3][0]), noiseseed, 6, 7);
+
+    neon_polyvec_ntt(skpv);
+    neon_polyvec_ntt(e);
+
+    for (i = 0; i < KYBER_K; i++) {
+        PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended(&(skpv_asymmetric[i][0]), &(skpv[i][0]), pre_asymmetric_table_Q1_extended, asymmetric_const);
+    }
+
+    for (i = 0; i < KYBER_K; i++) {
+        PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul_montgomery(&(a[i][0][0]), &(skpv[0][0]), &(skpv_asymmetric[0][0]), asymmetric_const, pkpv[i]);
+    }
+
+    neon_polyvec_add_reduce(pkpv, e);
+
+    pack_sk(sk, skpv);
+    pack_pk(pk, pkpv, publicseed);
+}
+#endif
 
 /*************************************************
 * Name:        indcpa_enc
