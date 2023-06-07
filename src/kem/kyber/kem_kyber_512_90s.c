@@ -27,17 +27,28 @@ OQS_KEM *OQS_KEM_kyber_512_90s_new(void) {
 	kem->encaps = OQS_KEM_kyber_512_90s_encaps;
 	kem->decaps = OQS_KEM_kyber_512_90s_decaps;
 
+#if defined(OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR)
+	kem->length_randomness = OQS_KEM_kyber_512_90s_length_randomness;
+	kem->derive_keypair = OQS_KEM_kyber_512_90s_derive_keypair;
+#endif
+
 	return kem;
 }
 
 extern int pqcrystals_kyber512_90s_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber512_90s_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_kyber512_90s_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#if defined(OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR)
+extern int pqcrystals_kyber512_90s_ref_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+#endif
 
 #if defined(OQS_ENABLE_KEM_kyber_512_90s_avx2)
 extern int pqcrystals_kyber512_90s_avx2_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber512_90s_avx2_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_kyber512_90s_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#if defined(OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR)
+extern int pqcrystals_kyber512_90s_avx2_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+#endif
 #endif
 
 OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -55,6 +66,24 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_keypair(uint8_t *public_key, uint8_t *s
 	return (OQS_STATUS) pqcrystals_kyber512_90s_ref_keypair(public_key, secret_key);
 #endif
 }
+
+#if defined(OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR)
+OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_derive_keypair(const uint8_t *randomness, uint8_t *public_key, uint8_t *secret_key) {
+#if defined(OQS_ENABLE_KEM_kyber_512_90s_avx2)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AES) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) pqcrystals_kyber512_90s_avx2_derive_keypair(randomness, public_key, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) pqcrystals_kyber512_90s_ref_derive_keypair(randomness, public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) pqcrystals_kyber512_90s_ref_derive_keypair(randomness, public_key, secret_key);
+#endif
+}
+#endif
 
 OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_KEM_kyber_512_90s_avx2)
