@@ -32,6 +32,11 @@
 #define crypto_kem_keypair KYBER_NAMESPACE(keypair)
 int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
 
+#ifdef OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+#define crypto_kem_derive_keypair KYBER_NAMESPACE(derive_keypair)
+int crypto_kem_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+#endif
+
 #define crypto_kem_enc KYBER_NAMESPACE(enc)
 int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 

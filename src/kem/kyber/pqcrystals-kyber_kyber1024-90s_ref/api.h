@@ -72,4 +72,13 @@ int pqcrystals_kyber1024_90s_ref_keypair(uint8_t *pk, uint8_t *sk);
 int pqcrystals_kyber1024_90s_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 int pqcrystals_kyber1024_90s_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
+#ifdef OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+int pqcrystals_kyber512_ref_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+int pqcrystals_kyber512_90s_ref_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+int pqcrystals_kyber768_ref_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+int pqcrystlas_kyber768_90s_ref_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+int pqcrystals_kyber1024_ref_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+int pqcrystals_kyber1024_90s_ref_derive_keypair(const uint8_t *randomness, uint8_t *pk, uint8_t *sk);
+#endif
+
 #endif

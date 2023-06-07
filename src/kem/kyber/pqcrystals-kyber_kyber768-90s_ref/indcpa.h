@@ -11,6 +11,14 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed);
 void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
                     uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES]);
 
+#ifdef OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+#define deterministic_indcpa_keypair KYBER_NAMESPACE(deterministic_indcpa_keypair)
+void deterministic_indcpa_keypair(const uint8_t randomness[KYBER_SYMBYTES],
+                                  uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
+                                  uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES]);
+#endif
+
+
 #define indcpa_enc KYBER_NAMESPACE(indcpa_enc)
 void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
                 const uint8_t m[KYBER_INDCPA_MSGBYTES],

@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 #include "params.h"
 #include "indcpa.h"
 #include "polyvec.h"
@@ -239,6 +240,59 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   pack_sk(sk, &skpv);
   pack_pk(pk, &pkpv, publicseed);
 }
+
+#if OQS_HAZARDOUS_ENABLE_DERIVE_KEYPAIR
+/*************************************************
+* Name:        deterministic_indcpa_keypair
+*
+* Description: Generates public and private key for the CPA-secure
+*              public-key encryption scheme underlying Kyber from
+*              a provided random seed
+*
+* Arguments:   - uint8_t *randomness: pointer to input randomness
+*                                     (of length KYBER_SYMBYTES bytes)
+*              - uint8_t *pk: pointer to output public key
+*                             (of length KYBER_INDCPA_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output private key
+                              (of length KYBER_INDCPA_SECRETKEYBYTES bytes)
+**************************************************/
+void deterministic_indcpa_keypair(const uint8_t randomness[KYBER_SYMBYTES],
+                                  uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
+                                  uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES])
+{
+  unsigned int i;
+  uint8_t buf[2*KYBER_SYMBYTES];
+  const uint8_t *publicseed = buf;
+  const uint8_t *noiseseed = buf+KYBER_SYMBYTES;
+  uint8_t nonce = 0;
+  polyvec a[KYBER_K], e, pkpv, skpv;
+
+  memcpy(buf, randomness, KYBER_SYMBYTES);
+  hash_g(buf, buf, KYBER_SYMBYTES);
+
+  gen_a(a, publicseed);
+
+  for(i=0;i<KYBER_K;i++)
+    poly_getnoise_eta1(&skpv.vec[i], noiseseed, nonce++);
+  for(i=0;i<KYBER_K;i++)
+    poly_getnoise_eta1(&e.vec[i], noiseseed, nonce++);
+
+  polyvec_ntt(&skpv);
+  polyvec_ntt(&e);
+
+  // matrix-vector multiplication
+  for(i=0;i<KYBER_K;i++) {
+    polyvec_basemul_acc_montgomery(&pkpv.vec[i], &a[i], &skpv);
+    poly_tomont(&pkpv.vec[i]);
+  }
+
+  polyvec_add(&pkpv, &pkpv, &e);
+  polyvec_reduce(&pkpv);
+
+  pack_sk(sk, &skpv);
+  pack_pk(pk, &pkpv, publicseed);
+}
+#endif
 
 /*************************************************
 * Name:        indcpa_enc
