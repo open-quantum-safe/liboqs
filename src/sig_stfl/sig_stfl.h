@@ -55,6 +55,74 @@ OQS_API int OQS_SIG_STFL_alg_count(void);
 OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
 /**
+ * @brief OQS_SECRET_KEY object for stateful signature schemes
+ */
+typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
+
+typedef struct OQS_SECRET_KEY {
+    /** A local ordinal representing the LMS parameter of the signature scheme. */
+    uint32_t oid;
+
+    /** Printable string representing the name of the signature scheme. */
+    const char *method_name;
+
+    /* The (maximum) length, in bytes, of secret keys for this signature scheme. */
+    size_t length_secret_key;
+
+    /* The variant specific secret key data */
+    void *secret_key_data;
+
+    /* User defined data that may be used for the SAFETY functions */
+    void *data;
+
+    /* Function that returns the total number of signatures for the secret key */
+    unsigned long long (*sigs_total)(const OQS_SECRET_KEY *secret_key);
+
+    /* Function that returns the number of signatures left for the secret key */
+    unsigned long long (*sigs_left)(const OQS_SECRET_KEY *secret_key);
+
+    /**
+     * Secret Key retrieval Function
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return byte pointer or null
+     */
+    uint8_t * (*get_key)(OQS_SECRET_KEY *sk);
+
+    /**
+     * Secret Key Locking Function
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
+     */
+    OQS_STATUS (*lock_key)(OQS_SECRET_KEY *sk);
+
+    /**
+     * Secret Key Saving Function
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
+     */
+    OQS_STATUS (*save_secret_key)(const OQS_SECRET_KEY *sk);
+
+    /**
+     * Secret Key Unlocking / Releasing Function
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
+     */
+    OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
+
+    /**
+     * Secret Key free internal data
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return none
+     */
+    void (*free_key)(OQS_SECRET_KEY *sk);
+} OQS_SECRET_KEY;
+
+/**
  * Stateful signature scheme object
  */
 typedef struct OQS_SIG_STFL {
@@ -227,6 +295,25 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, size_t *max,
  * @param[in] sig The OQS_SIG_STFL object to free.
  */
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
+
+/**
+ * Constructs an OQS_SECRET_KEY object for a particular algorithm.
+ *
+ * Callers should always check whether the return value is `NULL`, which indicates either than an
+ * invalid algorithm name was provided, or that the requested algorithm was disabled at compile-time.
+ *
+ * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_SIG_STFL_algs`.
+ * @return An OQS_SECRET_KEY for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
+ */
+OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name);
+
+/**
+ * Frees an OQS_SECRET_KEY object that was constructed by OQS_SECRET_KEY_new.
+ *
+ * @param[in] sig The OQS_SECRET_KEY object to free.
+ * @return OQS_SUCCESS if successful, or OQS_ERROR if the object could not be freed.
+ */
+OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk);
 
 #if defined(__cplusplus)
 } // extern "C"
