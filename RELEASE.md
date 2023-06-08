@@ -1,5 +1,5 @@
-liboqs version 0.8.0-rc1
-========================
+liboqs version 0.8.0
+====================
 
 About
 -----
@@ -29,7 +29,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 of version 0.8.0 of liboqs.  It was released on May 22, 2023.
+This is version 0.8.0 of liboqs.  It was released on June 7, 2023.
 
 What's New
 ----------
@@ -138,10 +138,10 @@ Detailed changelog
 * protect ossl cleanup from multithreading errors by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1472
 * Update SPHINCS+ specification version [skip ci] by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1477
 * Patch AVX2 support: No Win for Sphincs+ by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1478
+* Don't use cycle counter on ARM32 by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1485
+* Fix SPHINCS+ constant-time suppression files by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1480
 
-New Contributors
-----------------
-
+## New Contributors
 * @thb-sb made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1295
 * @malbert1 made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1327
 * @ryndia made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1328
@@ -151,4 +151,4 @@ New Contributors
 * @beldmit made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1431
 * @distorted-mdw made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1447
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.7.2...0.8.0-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.7.2...0.8.0
