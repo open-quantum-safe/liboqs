@@ -60,6 +60,8 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H10_new(void) {
 	sk->secret_key_data = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
 	memset(sk->secret_key_data, 0, sk->length_secret_key);
 
+	sk->free_key = OQS_SECRET_KEY_XMSS_free;
+
 	return sk;
 }
 
