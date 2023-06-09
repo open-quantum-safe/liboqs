@@ -160,32 +160,32 @@ cleanup:
 }
 
 static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
-    OQS_STATUS rc = OQS_SUCCESS;
-    OQS_SECRET_KEY *sk = NULL;
+	OQS_STATUS rc = OQS_SUCCESS;
+	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
 
-    sk = OQS_SECRET_KEY_new(method_name);
-    if (sk == NULL) {
-        fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
-        goto err;
-    }
+	sk = OQS_SIG_STFL_SECRET_KEY_new(method_name);
+	if (sk == NULL) {
+		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
+		goto err;
+	}
 
-        printf("================================================================================\n");
-        printf("Create for statefull Secret Key  %s\n", sk->method_name);
-        printf("================================================================================\n");
+	printf("================================================================================\n");
+	printf("Create for statefull Secret Key  %s\n", method_name);
+	printf("================================================================================\n");
 
-    if (!sk->secret_key_data) {
-        fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
-        goto err;
-    }
+	if (!sk->secret_key_data) {
+		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
+		goto err;
+	}
 
-    OQS_SECRET_KEY_free(sk);
-    printf("Secret Key created as expected.\n");
-    goto end_it;
+	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	printf("Secret Key created as expected.\n");
+	goto end_it;
 
 err:
-    rc = OQS_ERROR;
+	rc = OQS_ERROR;
 end_it:
-    return rc;
+	return rc;
 }
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME

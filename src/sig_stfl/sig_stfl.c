@@ -110,32 +110,33 @@ OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {
 
 
 
-// ================================= OQS_SECRET_KEY FUNCTION ===============================================
+// ================================= OQS_SIG_STFL_SECRET_KEY FUNCTION ===============================================
 
 
-OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name) {
-    assert(method_name != NULL);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_name) {
+	assert(method_name != NULL);
 
-    if (0) {
+	if (0) {
 
-    } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h10)) {
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h10)) {
 #ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h10
-        return OQS_SECRET_KEY_XMSS_SHA256_H10_new();
+		return OQS_SECRET_KEY_XMSS_SHA256_H10_new();
 #else
-        return NULL;
+		return NULL;
 #endif
-    } else {
-        return NULL;
-    }
+	} else {
+		return NULL;
+	}
 }
 
-OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk) {
-    if (sk == NULL)
-        return;
+OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL) {
+		return;
+	}
 
-    /* Call object specif free */
-    if (sk->free_key) {
-        sk->free_key(sk);
-    }
-    OQS_MEM_secure_free(sk, sizeof(sk));
+	/* Call object specif free */
+	if (sk->free_key) {
+		sk->free_key(sk);
+	}
+	OQS_MEM_secure_free(sk, sizeof(sk));
 }
