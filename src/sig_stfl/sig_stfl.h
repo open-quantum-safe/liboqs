@@ -163,9 +163,6 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/* The variant specific secret key data */
 	void *secret_key_data;
 
-	/* User defined data that may be used for the SAFETY functions */
-	void *data;
-
 	/* Function that returns the total number of signatures for the secret key */
 	unsigned long long (*sigs_total)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
@@ -200,6 +197,14 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 */
 	OQS_STATUS (*lock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
 
+    /**
+     * Secret Key Unlocking / Releasing Function
+     *
+     * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
+     */
+    OQS_STATUS (*unlock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
+
 	/**
 	 * Secret Key Saving Function
 	 *
@@ -207,14 +212,6 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*save_secret_key)(const OQS_SIG_STFL_SECRET_KEY *sk);
-
-	/**
-	 * Secret Key Unlocking / Releasing Function
-	 *
-	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
-	 * @return OQS_SUCCESS or OQS_ERROR
-	 */
-	OQS_STATUS (*release_key)(OQS_SIG_STFL_SECRET_KEY *sk);
 
 	/**
 	 * Secret Key free internal variant specific data
