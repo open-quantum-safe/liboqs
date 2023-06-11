@@ -197,13 +197,13 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 */
 	OQS_STATUS (*lock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
 
-    /**
-     * Secret Key Unlocking / Releasing Function
-     *
-     * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
-     * @return OQS_SUCCESS or OQS_ERROR
-     */
-    OQS_STATUS (*unlock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
+	/**
+	 * Secret Key Unlocking / Releasing Function
+	 *
+	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*unlock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
 
 	/**
 	 * Secret Key Saving Function
