@@ -295,16 +295,6 @@ jobs:
                  --data '{ "branch": "master" }' \
                  https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-java/pipeline | tee curl_out \
             && grep -q "201" curl_out
-      - run:
-          name: Trigger liboqs-python CI
-          command: |2
-            curl --silent \
-                 --write-out "\n%{response_code}\n" \
-                 --user ${BUILD_TRIGGER_TOKEN}: \
-                 --request POST \
-                 --data '{ "branch": "main" }' \
-                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-python/pipeline | tee curl_out \
-            && grep -q "201" curl_out
 
 workflows:
   version: 2.1
