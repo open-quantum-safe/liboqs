@@ -1,0 +1,400 @@
+diff --git a/crypto_kem/mceliece348864/avx2/controlbits.c b/crypto_kem/mceliece348864/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece348864/avx2/controlbits.c
++++ b/crypto_kem/mceliece348864/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece348864/clean/controlbits.c b/crypto_kem/mceliece348864/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece348864/clean/controlbits.c
++++ b/crypto_kem/mceliece348864/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece348864f/avx2/controlbits.c b/crypto_kem/mceliece348864f/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece348864f/avx2/controlbits.c
++++ b/crypto_kem/mceliece348864f/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece348864f/clean/controlbits.c b/crypto_kem/mceliece348864f/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece348864f/clean/controlbits.c
++++ b/crypto_kem/mceliece348864f/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece460896/avx2/controlbits.c b/crypto_kem/mceliece460896/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece460896/avx2/controlbits.c
++++ b/crypto_kem/mceliece460896/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece460896/clean/controlbits.c b/crypto_kem/mceliece460896/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece460896/clean/controlbits.c
++++ b/crypto_kem/mceliece460896/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece460896f/avx2/controlbits.c b/crypto_kem/mceliece460896f/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece460896f/avx2/controlbits.c
++++ b/crypto_kem/mceliece460896f/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece460896f/clean/controlbits.c b/crypto_kem/mceliece460896f/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece460896f/clean/controlbits.c
++++ b/crypto_kem/mceliece460896f/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6688128/avx2/controlbits.c b/crypto_kem/mceliece6688128/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6688128/avx2/controlbits.c
++++ b/crypto_kem/mceliece6688128/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6688128/clean/controlbits.c b/crypto_kem/mceliece6688128/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6688128/clean/controlbits.c
++++ b/crypto_kem/mceliece6688128/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6688128f/avx2/controlbits.c b/crypto_kem/mceliece6688128f/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6688128f/avx2/controlbits.c
++++ b/crypto_kem/mceliece6688128f/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6688128f/clean/controlbits.c b/crypto_kem/mceliece6688128f/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6688128f/clean/controlbits.c
++++ b/crypto_kem/mceliece6688128f/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6960119/avx2/controlbits.c b/crypto_kem/mceliece6960119/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6960119/avx2/controlbits.c
++++ b/crypto_kem/mceliece6960119/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6960119/clean/controlbits.c b/crypto_kem/mceliece6960119/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6960119/clean/controlbits.c
++++ b/crypto_kem/mceliece6960119/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6960119f/avx2/controlbits.c b/crypto_kem/mceliece6960119f/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6960119f/avx2/controlbits.c
++++ b/crypto_kem/mceliece6960119f/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece6960119f/clean/controlbits.c b/crypto_kem/mceliece6960119f/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece6960119f/clean/controlbits.c
++++ b/crypto_kem/mceliece6960119f/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece8192128/avx2/controlbits.c b/crypto_kem/mceliece8192128/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece8192128/avx2/controlbits.c
++++ b/crypto_kem/mceliece8192128/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece8192128/clean/controlbits.c b/crypto_kem/mceliece8192128/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece8192128/clean/controlbits.c
++++ b/crypto_kem/mceliece8192128/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece8192128f/avx2/controlbits.c b/crypto_kem/mceliece8192128f/avx2/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece8192128f/avx2/controlbits.c
++++ b/crypto_kem/mceliece8192128f/avx2/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
+diff --git a/crypto_kem/mceliece8192128f/clean/controlbits.c b/crypto_kem/mceliece8192128f/clean/controlbits.c
+index 423aa979..db4045ec 100644
+--- a/crypto_kem/mceliece8192128f/clean/controlbits.c
++++ b/crypto_kem/mceliece8192128f/clean/controlbits.c
+@@ -7,6 +7,7 @@
+ #include "crypto_declassify.h"
+ #include "int32_sort.h"
+ #include <string.h>
++#include <assert.h>
+ typedef int16_t int16;
+ typedef int32_t int32;
+ #include "crypto_int32.h"
+@@ -181,6 +182,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
+ /* output: the result of apply the control bits to p */
+ static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
+     int i, j;
++    assert(s < 255);
+     int stride = 1 << (uint8_t)s;
+     int index = 0;
+     int16_t d, m;
