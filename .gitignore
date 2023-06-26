@@ -26,3 +26,6 @@ __pycache__
 .cache
 .CMake/a.out
 
+# MacOS
+.DS_Store
+
