@@ -80,13 +80,13 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF
             PYTEST_ARGS: --ignore=tests/test_alg_info.py
-          - name: focal-std-openssl
+          - name: focal-nistr4-openssl
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD
-            PYTEST_ARGS: --ignore=tests/test_leaks.py
-          - name: jammy-nistr4-openssl3
-            container: openquantumsafe/ci-ubuntu-jammy:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_R4
+            PYTEST_ARGS: --ignore=tests/test_leaks.py
+          - name: jammy-std-openssl3
+            container: openquantumsafe/ci-ubuntu-jammy:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON
             PYTEST_ARGS: --ignore=tests/test_leaks.py
           - name: address-sanitizer
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
@@ -105,6 +105,16 @@ jobs:
       - name: Run tests
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
+      - name: Package .deb
+        if: ${{ matrix.name }} == 'jammy-std-openssl3'
+        run: cpack
+        working-directory: build
+      - name: Retain .deb file
+        if: ${{ matrix.name }} == 'jammy-std-openssl3'
+        uses: actions/upload-artifact@v3
+        with:
+          name: liboqs-openssl3-shared-x64
+          path: build/*.deb
 
   linux_arm_emulated:
     needs: [stylecheck, buildcheck]
