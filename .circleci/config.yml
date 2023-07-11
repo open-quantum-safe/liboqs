@@ -308,27 +308,6 @@ jobs:
                  https://api.github.com/repos/open-quantum-safe/liboqs-python/dispatches | tee curl_out \
             && grep -q "204" curl_out
 
-  temporary-liboqs-python:
-    docker:
-      - image: cimg/base:2020.01
-# Re-enable iff docker enforces rate limitations without auth:
-#        auth:
-#          username: $DOCKER_LOGIN
-#          password: $DOCKER_PASSWORD
-    steps:
-      - run:
-          name: Trigger liboqs-python CI
-          command: |2
-            curl --silent \
-                 --write-out "\n%{response_code}\n" \
-                 --request POST \
-                 --header "Accept: application/vnd.github+json" \
-                 --header "Authorization: Bearer $OQSBOT_GITHUB_ACTIONS" \
-                 --header "X-GitHub-Api-Version: 2022-11-28" \
-                 --data '{"event_type":"liboqs-upstream-trigger"}' \
-                 https://api.github.com/repos/open-quantum-safe/liboqs-python/dispatches | tee curl_out \
-            && grep -q "204" curl_out
-
 workflows:
   version: 2.1
   build:
@@ -411,7 +390,7 @@ workflows:
           <<: *require_buildcheck
           name: macOS-shared
           CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF -DOQS_ENABLE_KEM_CLASSIC_MCELIECE=OFF
-      - temporary-liboqs-python
+      - trigger-downstream-ci
 
   commit-to-main:
     when:
