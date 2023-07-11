@@ -390,7 +390,6 @@ workflows:
           <<: *require_buildcheck
           name: macOS-shared
           CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF -DOQS_ENABLE_KEM_CLASSIC_MCELIECE=OFF
-      - trigger-downstream-ci
 
   commit-to-main:
     when:
