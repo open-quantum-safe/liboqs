@@ -1,0 +1,15 @@
+
+	filter_algs("
+{%- for family in instructions['kems'] if family['name'] == 'kyber' -%}
+    {%- for scheme in family['schemes'] -%}
+        KEM_{{ family['name'] }}_{{ scheme['scheme'] }};
+    {%- endfor -%}
+{%- endfor -%}
+{%- for family in instructions['sigs'] -%}
+    {%- set outer_loop = loop -%}
+    {%- for scheme in family['schemes'] -%}
+        SIG_{{ family['name'] }}_{{ scheme['scheme'] }}{%- if not (outer_loop.last and loop.last) -%};{%- endif -%}
+    {%- endfor -%}
+{%- endfor -%}
+")
+

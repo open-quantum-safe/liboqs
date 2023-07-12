@@ -23,7 +23,7 @@ auxiliary-submitters:
 crypto-assumption: hash-based signatures
 website: https://sphincs.org/
 nist-round: 3
-spec-version: NIST Round 3 submission
+spec-version: NIST Round 3 submission, v3.1 (June 10, 2022)
 spdx-license-identifier: CC0-1.0
 primary-upstream:
   source: https://github.com/PQClean/PQClean/commit/d742438e5c541958bfd58070cd8668d757d88e07
@@ -34,7 +34,7 @@ primary-upstream:
 advisories:
 - This algorithm is not tested under Windows.
 parameter-sets:
-- name: SPHINCS+-SHA256-128f-simple
+- name: SPHINCS+-SHA2-128f-simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -61,7 +61,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHA256-128s-simple
+- name: SPHINCS+-SHA2-128s-simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -88,7 +88,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHA256-192f-simple
+- name: SPHINCS+-SHA2-192f-simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -115,7 +115,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHA256-192s-simple
+- name: SPHINCS+-SHA2-192s-simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -142,7 +142,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHA256-256f-simple
+- name: SPHINCS+-SHA2-256f-simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -169,7 +169,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHA256-256s-simple
+- name: SPHINCS+-SHA2-256s-simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -196,7 +196,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHAKE256-128f-simple
+- name: SPHINCS+-SHAKE-128f-simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -223,7 +223,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHAKE256-128s-simple
+- name: SPHINCS+-SHAKE-128s-simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -250,7 +250,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHAKE256-192f-simple
+- name: SPHINCS+-SHAKE-192f-simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -277,7 +277,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHAKE256-192s-simple
+- name: SPHINCS+-SHAKE-192s-simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -304,7 +304,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHAKE256-256f-simple
+- name: SPHINCS+-SHAKE-256f-simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -331,7 +331,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SPHINCS+-SHAKE256-256s-simple
+- name: SPHINCS+-SHAKE-256s-simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64

@@ -1,0 +1,104 @@
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   src:utilsx8.c:95 # fun:treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_fors_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   src:utilsx8.c:96 # fun:treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_fors_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Value8
+   src:utilsx8.c:96 # fun:treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_*_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Starting position of chain is not secret
+   Memcheck:Cond
+   src:wots.c:241 # fun:wots_gen_leafx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_merkle_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Starting position of chain is not secret
+   Memcheck:Value8
+   src:wots.c:242 # fun:wots_gen_leafx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_merkle_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   src:utilsx8.c:95 # fun:treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_*_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   fun:memmove
+   src:utilsx8.c:95 # fun:treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_*_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   fun:memmove
+   src:utilsx8.c:96 # fun:treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_*_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Value8
+   fun:memmove
+   src:utilsx8.c:96 # fun:treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_*_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Signing leaf is not secret
+   Memcheck:Cond
+   src:wots.c:196 # fun:wots_gen_leafx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_merkle_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   Signing leaf is not secret
+   Memcheck:Cond
+   fun:memmove
+   src:wots.c:196 # fun:wots_gen_leafx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_merkle_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   WOTS signature is not secret
+   Memcheck:Cond
+   fun:memmove
+   src:wots.c:242 # fun:wots_gen_leafx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_merkle_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}
+{
+   WOTS signature is not secret
+   Memcheck:Value8
+   fun:memmove
+   src:wots.c:242 # fun:wots_gen_leafx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_treehashx8
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_merkle_sign
+   fun:PQCLEAN_SPHINCSSHA2*_AVX2_crypto_sign_signature
+}

@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:d3a68186-b121-4a7c-a5d3-19fcdb523e84",
+  "serialNumber": "urn:uuid:76fbea76-f6a8-441a-9ad0-4f3df1b91d3c",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-05-15T07:12:08.268259",
+    "timestamp": "2023-05-16T14:01:59.927404",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@79988c6d7388d4e33fa49792ca1c1d8ac2901096",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@3052cb8e01343126bb7eb1de0c9b90f9b9230ed4",
       "name": "liboqs",
-      "version": "79988c6d7388d4e33fa49792ca1c1d8ac2901096"
+      "version": "3052cb8e01343126bb7eb1de0c9b90f9b9230ed4"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@79988c6d7388d4e33fa49792ca1c1d8ac2901096",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@3052cb8e01343126bb7eb1de0c9b90f9b9230ed4",
       "name": "liboqs",
-      "version": "79988c6d7388d4e33fa49792ca1c1d8ac2901096"
+      "version": "3052cb8e01343126bb7eb1de0c9b90f9b9230ed4"
     },
     {
       "type": "crypto-asset",
@@ -1321,12 +1321,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128f-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHA2-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128f-simple",
+          "variant": "SPHINCS+-SHA2-128f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1341,12 +1341,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128f-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA2-128f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128f-simple",
+          "variant": "SPHINCS+-SHA2-128f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1361,12 +1361,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128s-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHA2-128s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128s-simple",
+          "variant": "SPHINCS+-SHA2-128s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1381,12 +1381,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128s-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA2-128s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128s-simple",
+          "variant": "SPHINCS+-SHA2-128s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1401,12 +1401,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192f-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHA2-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192f-simple",
+          "variant": "SPHINCS+-SHA2-192f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1421,12 +1421,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192f-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA2-192f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192f-simple",
+          "variant": "SPHINCS+-SHA2-192f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1441,12 +1441,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192s-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHA2-192s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192s-simple",
+          "variant": "SPHINCS+-SHA2-192s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1461,12 +1461,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192s-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA2-192s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192s-simple",
+          "variant": "SPHINCS+-SHA2-192s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1481,12 +1481,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256f-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHA2-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256f-simple",
+          "variant": "SPHINCS+-SHA2-256f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1501,12 +1501,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256f-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA2-256f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256f-simple",
+          "variant": "SPHINCS+-SHA2-256f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1521,12 +1521,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256s-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHA2-256s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256s-simple",
+          "variant": "SPHINCS+-SHA2-256s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1541,12 +1541,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256s-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA2-256s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256s-simple",
+          "variant": "SPHINCS+-SHA2-256s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1561,12 +1561,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128f-simple",
+          "variant": "SPHINCS+-SHAKE-128f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1581,12 +1581,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE-128f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128f-simple",
+          "variant": "SPHINCS+-SHAKE-128f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1601,12 +1601,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE-128s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128s-simple",
+          "variant": "SPHINCS+-SHAKE-128s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1621,12 +1621,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE-128s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128s-simple",
+          "variant": "SPHINCS+-SHAKE-128s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1641,12 +1641,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192f-simple",
+          "variant": "SPHINCS+-SHAKE-192f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1661,12 +1661,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE-192f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192f-simple",
+          "variant": "SPHINCS+-SHAKE-192f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1681,12 +1681,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE-192s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192s-simple",
+          "variant": "SPHINCS+-SHAKE-192s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1701,12 +1701,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE-192s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192s-simple",
+          "variant": "SPHINCS+-SHAKE-192s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1721,12 +1721,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256f-simple",
+          "variant": "SPHINCS+-SHAKE-256f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1741,12 +1741,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256f-simple",
+          "variant": "SPHINCS+-SHAKE-256f-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1761,12 +1761,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-simple:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE-256s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256s-simple",
+          "variant": "SPHINCS+-SHAKE-256s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1781,12 +1781,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-simple:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256s-simple",
+          "variant": "SPHINCS+-SHAKE-256s-simple",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1828,7 +1828,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@79988c6d7388d4e33fa49792ca1c1d8ac2901096",
+      "ref": "pkg:github/open-quantum-safe/liboqs@3052cb8e01343126bb7eb1de0c9b90f9b9230ed4",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -1895,30 +1895,30 @@
         "alg:Falcon-512:x86_64",
         "alg:Falcon-1024:generic",
         "alg:Falcon-1024:x86_64",
-        "alg:SPHINCS+-SHA256-128f-simple:generic",
-        "alg:SPHINCS+-SHA256-128f-simple:x86_64",
-        "alg:SPHINCS+-SHA256-128s-simple:generic",
-        "alg:SPHINCS+-SHA256-128s-simple:x86_64",
-        "alg:SPHINCS+-SHA256-192f-simple:generic",
-        "alg:SPHINCS+-SHA256-192f-simple:x86_64",
-        "alg:SPHINCS+-SHA256-192s-simple:generic",
-        "alg:SPHINCS+-SHA256-192s-simple:x86_64",
-        "alg:SPHINCS+-SHA256-256f-simple:generic",
-        "alg:SPHINCS+-SHA256-256f-simple:x86_64",
-        "alg:SPHINCS+-SHA256-256s-simple:generic",
-        "alg:SPHINCS+-SHA256-256s-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-128f-simple:generic",
-        "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-128s-simple:generic",
-        "alg:SPHINCS+-SHAKE256-128s-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-192f-simple:generic",
-        "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-192s-simple:generic",
-        "alg:SPHINCS+-SHAKE256-192s-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-256f-simple:generic",
-        "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-256s-simple:generic",
-        "alg:SPHINCS+-SHAKE256-256s-simple:x86_64"
+        "alg:SPHINCS+-SHA2-128f-simple:generic",
+        "alg:SPHINCS+-SHA2-128f-simple:x86_64",
+        "alg:SPHINCS+-SHA2-128s-simple:generic",
+        "alg:SPHINCS+-SHA2-128s-simple:x86_64",
+        "alg:SPHINCS+-SHA2-192f-simple:generic",
+        "alg:SPHINCS+-SHA2-192f-simple:x86_64",
+        "alg:SPHINCS+-SHA2-192s-simple:generic",
+        "alg:SPHINCS+-SHA2-192s-simple:x86_64",
+        "alg:SPHINCS+-SHA2-256f-simple:generic",
+        "alg:SPHINCS+-SHA2-256f-simple:x86_64",
+        "alg:SPHINCS+-SHA2-256s-simple:generic",
+        "alg:SPHINCS+-SHA2-256s-simple:x86_64",
+        "alg:SPHINCS+-SHAKE-128f-simple:generic",
+        "alg:SPHINCS+-SHAKE-128f-simple:x86_64",
+        "alg:SPHINCS+-SHAKE-128s-simple:generic",
+        "alg:SPHINCS+-SHAKE-128s-simple:x86_64",
+        "alg:SPHINCS+-SHAKE-192f-simple:generic",
+        "alg:SPHINCS+-SHAKE-192f-simple:x86_64",
+        "alg:SPHINCS+-SHAKE-192s-simple:generic",
+        "alg:SPHINCS+-SHAKE-192s-simple:x86_64",
+        "alg:SPHINCS+-SHAKE-256f-simple:generic",
+        "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
+        "alg:SPHINCS+-SHAKE-256s-simple:generic",
+        "alg:SPHINCS+-SHAKE-256s-simple:x86_64"
       ],
       "dependencyType": "implements"
     },
@@ -2410,84 +2410,84 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-128f-simple:generic",
+      "ref": "alg:SPHINCS+-SHAKE-128f-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE-128f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-128s-simple:generic",
+      "ref": "alg:SPHINCS+-SHAKE-128s-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-128s-simple:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE-128s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-192f-simple:generic",
+      "ref": "alg:SPHINCS+-SHAKE-192f-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE-192f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-192s-simple:generic",
+      "ref": "alg:SPHINCS+-SHAKE-192s-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-192s-simple:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE-192s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-256f-simple:generic",
+      "ref": "alg:SPHINCS+-SHAKE-256f-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-256s-simple:generic",
+      "ref": "alg:SPHINCS+-SHAKE-256s-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-256s-simple:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
