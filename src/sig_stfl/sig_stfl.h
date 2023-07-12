@@ -151,8 +151,6 @@ typedef struct OQS_SIG_STFL {
 typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
 
 typedef struct OQS_SIG_STFL_SECRET_KEY {
-	/** A local ordinal representing the LMS parameter of the signature scheme. */
-	uint32_t oid;
 
 	/** Associated signature object */
 	OQS_SIG_STFL *sig;
