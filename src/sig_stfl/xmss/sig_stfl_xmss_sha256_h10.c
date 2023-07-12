@@ -41,6 +41,30 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
 	return sig;
 }
 
+OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H10_new(void) {
+
+	// Initialize the secret key in the heap with adequate memory
+	OQS_SIG_STFL_SECRET_KEY *sk = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
+	if (sk == NULL) {
+		return NULL;
+	}
+	memset(sk, 0, sizeof(OQS_SIG_STFL_SECRET_KEY));
+
+	sk->length_secret_key = OQS_SIG_STFL_alg_xmss_sha256_h10_length_sk;
+
+	// Assign the sigs_left and sigs_max functions
+	sk->sigs_left = NULL;
+	sk->sigs_total = NULL;
+
+	// Initialize the key with length_secret_key amount of bytes.
+	sk->secret_key_data = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+	memset(sk->secret_key_data, 0, sk->length_secret_key);
+
+	sk->free_key = OQS_SECRET_KEY_XMSS_free;
+
+	return sk;
+}
+
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(XMSS_UNUSED_ATT uint8_t *public_key, XMSS_UNUSED_ATT uint8_t *secret_key) {
 
 	if (public_key == NULL || secret_key == NULL) {
@@ -109,4 +133,13 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_total(size_t *total, co
 	*total = (size_t) total_signatures;
 
 	return OQS_SUCCESS;
+}
+
+void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL) {
+		return;
+	}
+
+	OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
+	sk->secret_key_data = NULL;
 }
