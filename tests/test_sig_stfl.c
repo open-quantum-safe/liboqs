@@ -159,6 +159,35 @@ cleanup:
 	return ret;
 }
 
+static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
+	OQS_STATUS rc = OQS_SUCCESS;
+	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
+
+	sk = OQS_SIG_STFL_SECRET_KEY_new(method_name);
+	if (sk == NULL) {
+		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
+		goto err;
+	}
+
+	printf("================================================================================\n");
+	printf("Create for statefull Secret Key  %s\n", method_name);
+	printf("================================================================================\n");
+
+	if (!sk->secret_key_data) {
+		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
+		goto err;
+	}
+
+	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	printf("Secret Key created as expected.\n");
+	goto end_it;
+
+err:
+	rc = OQS_ERROR;
+end_it:
+	return rc;
+}
+
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
@@ -178,11 +207,13 @@ static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_rea
 struct thread_data {
 	char *alg_name;
 	OQS_STATUS rc;
+	OQS_STATUS rc1;
 };
 
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name);
+	td->rc1 = sig_stfl_test_secret_key(td->alg_name);
 	return NULL;
 }
 #endif
@@ -221,7 +252,7 @@ int main(int argc, char **argv) {
 	OQS_randombytes_switch_algorithm("system");
 #endif
 
-	OQS_STATUS rc;
+	OQS_STATUS rc, rc1;
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_SIG_NAME_ 64
 	pthread_t thread;
@@ -235,10 +266,12 @@ int main(int argc, char **argv) {
 	}
 	pthread_join(thread, NULL);
 	rc = td.rc;
+	rc1 = td.rc1;
 #else
 	rc = sig_stfl_test_correctness(alg_name);
+	rc1 = sig_stfl_test_secret_key(alg_name);
 #endif
-	if (rc != OQS_SUCCESS) {
+	if ((rc != OQS_SUCCESS) || (rc1 != OQS_SUCCESS)) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
