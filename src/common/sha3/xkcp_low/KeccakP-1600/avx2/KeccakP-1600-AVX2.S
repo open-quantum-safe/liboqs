@@ -1042,6 +1042,7 @@ KeccakP1600_12rounds_FastLoop_Absorb_LanesAddLoop:
 .size   KeccakP1600_12rounds_FastLoop_Absorb,.-KeccakP1600_12rounds_FastLoop_Absorb
 #endif
 
+.section .rodata
 .equ    ALLON,        0xFFFFFFFFFFFFFFFF
 
 .balign 64
