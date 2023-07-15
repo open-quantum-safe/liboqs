@@ -49,8 +49,8 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }})
         {%- if impl['compile_opts'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
         {%- endif %}
-        {%- if family == 'classic_mceliece' and impl['name'] == 'avx' %}
-    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE -Wno-language-extension-token)
+        {%- if family == 'classic_mceliece' and impl['name'] == 'avx2' %}
+    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE -Wno-language-extension-token -O1)
         {%- endif %}
         {%- if family == 'hqc' and impl['name'] == 'avx2' %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE -Wno-missing-braces)
