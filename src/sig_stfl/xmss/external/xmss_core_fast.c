@@ -231,7 +231,7 @@ static void treehash_init(const xmss_params *params,
     set_type(node_addr, 2);
 
     uint32_t lastnode, i;
-    unsigned char stack[(height+1)*params->n] = {0};
+    unsigned char *stack = calloc((height+1)*params->n, sizeof(unsigned char));
     unsigned int stacklevels[height+1];
     unsigned int stackoffset=0;
     unsigned int nodeh;
@@ -279,6 +279,8 @@ static void treehash_init(const xmss_params *params,
     for (i = 0; i < params->n; i++) {
         node[i] = stack[i];
     }
+
+    OQS_MEM_insecure_free(stack);
 }
 
 static void treehash_update(const xmss_params *params,
