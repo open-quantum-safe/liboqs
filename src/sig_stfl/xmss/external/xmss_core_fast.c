@@ -983,7 +983,7 @@ int xmssmt_core_sign(const xmss_params *params,
 
     xmssmt_serialize_state(params, sk, states);
 
-    free(states);
+    OQS_MEM_insecure_free(states);
 
     return 0;
 }
