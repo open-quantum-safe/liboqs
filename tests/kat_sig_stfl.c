@@ -146,8 +146,8 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	uint8_t *signed_msg = NULL;
 	size_t signature_len = 0;
 	size_t signed_msg_len = 0;
-	size_t sigs_remain = 0;
-	size_t sigs_maximum = 0;
+	unsigned long long sigs_remain = 0;
+	unsigned long long sigs_maximum = 0;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
 	sig = OQS_SIG_STFL_new(method_name);
