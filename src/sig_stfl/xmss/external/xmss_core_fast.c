@@ -231,7 +231,7 @@ static void treehash_init(const xmss_params *params,
     set_type(node_addr, 2);
 
     uint32_t lastnode, i;
-    unsigned char stack[(height+1)*params->n];
+    unsigned char stack[(height+1)*params->n] = {0};
     unsigned int stacklevels[height+1];
     unsigned int stackoffset=0;
     unsigned int nodeh;
@@ -599,8 +599,8 @@ int xmss_core_sign(const xmss_params *params,
     xmss_deserialize_state(params, &state, sk);
 
     // Extract SK
-    unsigned long idx = ((unsigned long)sk[0] << 24) | ((unsigned long)sk[1] << 16) | ((unsigned long)sk[2] << 8) | sk[3];
-    
+    unsigned long long idx = ((unsigned long long)sk[0] << 24) | ((unsigned long long)sk[1] << 16) | ((unsigned long long)sk[2] << 8) | sk[3];
+
     /* Check if we can still sign with this sk.
      * If not, return -2
      * 
@@ -710,7 +710,6 @@ int xmss_core_sign(const xmss_params *params,
         bds_treehash_update(params, &state, (params->tree_height - params->bds_k) >> 1, sk_seed, pub_seed, ots_addr);
     }
 
-    sm += params->tree_height*params->n;
     *smlen += params->tree_height*params->n;
 
     /* Write the updated BDS state back into sk. */
@@ -808,7 +807,7 @@ int xmssmt_core_sign(const xmss_params *params,
     unsigned char *wots_sigs;
 
     // TODO refactor BDS state not to need separate treehash instances
-    bds_state states[2*params->d - 1];
+    bds_state *states = calloc(2*params->d - 1, sizeof(bds_state));
     treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].treehash = treehash + i * (params->tree_height - params->bds_k);
@@ -983,6 +982,8 @@ int xmssmt_core_sign(const xmss_params *params,
     }
 
     xmssmt_serialize_state(params, sk, states);
+
+    free(states);
 
     return 0;
 }
