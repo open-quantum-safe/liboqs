@@ -259,14 +259,14 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_remaining failed!\n", method_name);
 		goto err;
 	}
-	fprintf(fh, "remain = %zu\n", sigs_remain);
+	fprintf(fh, "remain = %llu\n", sigs_remain);
 
 	rc = OQS_SIG_STFL_sigs_total(sig, &sigs_maximum, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
 		goto err;
 	}
-	fprintf(fh, "max = %zu", sigs_maximum);
+	fprintf(fh, "max = %llu", sigs_maximum);
 
 	ret = OQS_SUCCESS;
 	goto cleanup;
