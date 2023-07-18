@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "__locale": "c",
-        "ios": "c",
-        "pthread.h": "c"
-    }
-}
