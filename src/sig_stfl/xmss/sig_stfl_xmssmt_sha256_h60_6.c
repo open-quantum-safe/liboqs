@@ -107,30 +107,30 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_verify(XMSS_UNUSED_ATT c
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_remaining(size_t *remain, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_remaining(uint64_t *remain, const uint8_t *secret_key) {
 	if (remain == NULL || secret_key == NULL) {
 		return OQS_ERROR;
 	}
 
-	unsigned long long remaining_signatures = 0;
+	uint64_t remaining_signatures = 0;
 	if (xmssmt_remaining_signatures(&remaining_signatures, secret_key)) {
 		return OQS_ERROR;
 	}
-	*remain = (size_t) remaining_signatures;
+	*remain = (uint64_t) remaining_signatures;
 
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_total(size_t *total, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_total(uint64_t *total, const uint8_t *secret_key) {
 	if (total == NULL || secret_key == NULL) {
 		return OQS_ERROR;
 	}
 
-	unsigned long long total_signatures = 0;
+	uint64_t total_signatures = 0;
 	if (xmssmt_total_signatures(&total_signatures, secret_key)) {
 		return OQS_ERROR;
 	}
-	*total = (size_t) total_signatures;
+	*total = (uint64_t) total_signatures;
 
 	return OQS_SUCCESS;
 }

@@ -159,7 +159,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_remaining)(size_t *remain, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_remaining)(uint64_t *remain, const uint8_t *secret_key);
 
 	/**
 	 * Total number of signatures
@@ -168,7 +168,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_total)(size_t *total, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_total)(uint64_t *total, const uint8_t *secret_key);
 
 } OQS_SIG_STFL;
 
@@ -189,10 +189,10 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	void *secret_key_data;
 
 	/* Function that returns the total number of signatures for the secret key */
-	unsigned long long (*sigs_total)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
+	uint64_t (*sigs_total)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 	/* Function that returns the number of signatures left for the secret key */
-	unsigned long long (*sigs_left)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
+	uint64_t (*sigs_left)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 	/**
 	 * Secret Key retrieval Function
@@ -311,7 +311,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, size_t *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, uint64_t *remain, const uint8_t *secret_key);
 
 /**
  * * Total number of signatures
@@ -321,7 +321,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, size_t *
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, size_t *max, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, uint64_t *max, const uint8_t *secret_key);
 
 /**
  * Frees an OQS_SIG_STFL object that was constructed by OQS_SIG_STFL_new.
