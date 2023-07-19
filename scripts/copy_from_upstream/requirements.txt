@@ -5,7 +5,7 @@ Jinja2==2.11.3
 markdown-it-py==2.2.0
 MarkupSafe==1.1.1
 mdit-py-plugins==0.3.4
-PyYAML==5.4.1
+PyYAML==6.0.1
 tabulate==0.8.10
 typing-extensions==3.7.4.3
 wget==3.2

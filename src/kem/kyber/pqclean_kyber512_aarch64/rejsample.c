@@ -1,7 +1,15 @@
-#include "params.h"
-#include "rejsample.h"
-#include "symmetric.h"
+
+/*
+ * This file is licensed
+ * under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html)
+ * at https://github.com/GMUCERG/PQC_NEON/blob/main/neon/kyber or
+ * public domain at https://github.com/cothan/kyber/blob/master/neon
+ */
+
 #include <arm_neon.h>
+#include "params.h"
+#include "symmetric.h"
+#include "rejsample.h"
 
 // Define NEON operation
 // Load 8x16

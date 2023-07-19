@@ -6,7 +6,7 @@
 - **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/d742438e5c541958bfd58070cd8668d757d88e07
+  - **Source**: https://github.com/PQClean/PQClean/commit/66e50172055aaf1b9a16d8f35fe03b0807f2723e
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:

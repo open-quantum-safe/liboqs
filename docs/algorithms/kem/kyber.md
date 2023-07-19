@@ -7,11 +7,11 @@
 - **Authors' website**: https://pq-crystals.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b with copy_from_upstream patches
+  - **Source**: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
-- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b with copy_from_upstream patches
+- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b
   - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
-      - **Source**: https://github.com/PQClean/PQClean/commit/d742438e5c541958bfd58070cd8668d757d88e07 with copy_from_upstream patches
+      - **Source**: https://github.com/PQClean/PQClean/commit/66e50172055aaf1b9a16d8f35fe03b0807f2723e
       - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 

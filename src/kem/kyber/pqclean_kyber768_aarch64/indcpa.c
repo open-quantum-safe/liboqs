@@ -1,15 +1,50 @@
-#include "NTT_params.h"
-#include "indcpa.h"
-#include "ntt.h"
-#include "params.h"
-#include "poly.h"
-#include "polyvec.h"
-#include "randombytes.h"
-#include "rejsample.h"
-#include "symmetric.h"
+
+/*
+ * This file was originally licensed
+ * under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html)
+ * at https://github.com/GMUCERG/PQC_NEON/blob/main/neon/kyber or
+ * public domain at https://github.com/cothan/kyber/blob/master/neon
+ *
+ * We choose
+ * CC0 1.0 Universal or the following MIT License for this file.
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023: Hanno Becker, Vincent Hwang, Matthias J. Kannwischer, Bo-Yin Yang, and Shang-Yi Yang
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "params.h"
+#include "rejsample.h"
+#include "indcpa.h"
+#include "poly.h"
+#include "polyvec.h"
+#include "randombytes.h"
+#include "symmetric.h"
+
+#include "NTT_params.h"
+#include "ntt.h"
 
 /*************************************************
 * Name:        pack_pk
@@ -132,60 +167,19 @@ void gen_matrix(int16_t a[KYBER_K][KYBER_K][KYBER_N], const uint8_t seed[KYBER_S
             buf1[GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES + 2];
     neon_xof_state state;
 
-    int16_t *s1 = NULL, *s2 = NULL;
-    unsigned int x1, x2, y1, y2;
-    xof_state c_state;
-    xof_init(&c_state);
-
-    for (unsigned int j = 0; j < KYBER_K * KYBER_K - 1; j += 2) {
-        switch (j) {
-        case 0:
-            s1 = &(a[0][0][0]);
-            s2 = &(a[0][1][0]);
-            x1 = 0;
-            y1 = 0;
-            x2 = 0;
-            y2 = 1;
-            break;
-        case 2:
-            s1 = &(a[0][2][0]);
-            s2 = &(a[1][0][0]);
-            x1 = 0;
-            y1 = 2;
-            x2 = 1;
-            y2 = 0;
-            break;
-        case 4:
-            s1 = &(a[1][1][0]);
-            s2 = &(a[1][2][0]);
-            x1 = 1;
-            y1 = 1;
-            x2 = 1;
-            y2 = 2;
-            break;
-        default:
-            s1 = &(a[2][0][0]);
-            s2 = &(a[2][1][0]);
-            x1 = 2;
-            y1 = 0;
-            x2 = 2;
-            y2 = 1;
-            break;
-        }
-
+    for (unsigned int i = 0; i < KYBER_K; i++) {
         if (transposed) {
-            neon_xof_absorb(&state, seed, x1, x2, y1, y2);
+            neon_xof_absorb(&state, seed, i, i, 0, 1);
         } else {
-            neon_xof_absorb(&state, seed, y1, y2, x1, x2);
+            neon_xof_absorb(&state, seed, 0, 1, i, i);
         }
 
         neon_xof_squeezeblocks(buf0, buf1, GEN_MATRIX_NBLOCKS, &state);
 
         buflen = GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES;
 
-        ctr0 = neon_rej_uniform(s1, buf0);
-        ctr1 = neon_rej_uniform(s2, buf1);
-
+        ctr0 = neon_rej_uniform(&(a[i][0][0]), buf0);
+        ctr1 = neon_rej_uniform(&(a[i][1][0]), buf1);
         while (ctr0 < KYBER_N || ctr1 < KYBER_N) {
             off = buflen % 3;
             for (k = 0; k < off; k++) {
@@ -195,36 +189,10 @@ void gen_matrix(int16_t a[KYBER_K][KYBER_K][KYBER_N], const uint8_t seed[KYBER_S
             neon_xof_squeezeblocks(buf0 + off, buf1 + off, 1, &state);
 
             buflen = off + XOF_BLOCKBYTES;
-            ctr0 += rej_uniform(s1 + ctr0, KYBER_N - ctr0, buf0, buflen);
-            ctr1 += rej_uniform(s2 + ctr1, KYBER_N - ctr1, buf1, buflen);
+            ctr0 += rej_uniform(&(a[i][0][0]) + ctr0, KYBER_N - ctr0, buf0, buflen);
+            ctr1 += rej_uniform(&(a[i][1][0]) + ctr1, KYBER_N - ctr1, buf1, buflen);
         }
     }
-
-    // Last iteration [2][2]
-    if (transposed) {
-        xof_absorb(&c_state, seed, 2, 2);
-    } else {
-        xof_absorb(&c_state, seed, 2, 2);
-    }
-
-    xof_squeezeblocks(buf0, GEN_MATRIX_NBLOCKS, &c_state);
-
-    buflen = GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES;
-
-    ctr0 = neon_rej_uniform(&(a[2][2][0]), buf0);
-
-    while (ctr0 < KYBER_N) {
-        off = buflen % 3;
-        for (k = 0; k < off; k++) {
-            buf0[k] = buf0[buflen - off + k];
-        }
-        xof_squeezeblocks(buf0 + off, 1, &c_state);
-
-        buflen = off + XOF_BLOCKBYTES;
-        ctr0 += rej_uniform(&(a[2][2][0]) + ctr0, KYBER_N - ctr0, buf0, buflen);
-    }
-    shake128_inc_ctx_release(&c_state);
-
 }
 
 /*************************************************
@@ -256,18 +224,17 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
     gen_a(a, publicseed);
 
     neon_poly_getnoise_eta1_2x(&(skpv[0][0]), &(skpv[1][0]), noiseseed, 0, 1);
-    neon_poly_getnoise_eta1_2x(&(skpv[2][0]), &(e[0][0]), noiseseed, 2, 3);
-    neon_poly_getnoise_eta1_2x(&(e[1][0]), &(e[2][0]), noiseseed, 4, 5);
+    neon_poly_getnoise_eta1_2x(&(e[0][0]), &(e[1][0]), noiseseed, 2, 3);
 
     neon_polyvec_ntt(skpv);
     neon_polyvec_ntt(e);
 
     for (i = 0; i < KYBER_K; i++) {
-        PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended(&(skpv_asymmetric[i][0]), &(skpv[i][0]), pre_asymmetric_table_Q1_extended, asymmetric_const);
+        PQCLEAN_KYBER768_AARCH64__asm_point_mul_extended(&(skpv_asymmetric[i][0]), &(skpv[i][0]), pre_asymmetric_table_Q1_extended, asymmetric_const);
     }
 
     for (i = 0; i < KYBER_K; i++) {
-        PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul_montgomery(&(a[i][0][0]), &(skpv[0][0]), &(skpv_asymmetric[0][0]), asymmetric_const, pkpv[i]);
+        PQCLEAN_KYBER768_AARCH64__asm_asymmetric_mul_montgomery(&(a[i][0][0]), &(skpv[0][0]), &(skpv_asymmetric[0][0]), asymmetric_const, pkpv[i]);
     }
 
     neon_polyvec_add_reduce(pkpv, e);
@@ -313,23 +280,22 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
     poly_frommsg(k, m);
     gen_at(at, seed);
 
-    // Because ETA1 == ETA2
-    neon_poly_getnoise_eta1_2x(&(sp[0][0]), &(sp[1][0]), coins, 0, 1);
-    neon_poly_getnoise_eta1_2x(&(sp[2][0]), &(ep[0][0]), coins, 2, 3);
-    neon_poly_getnoise_eta1_2x(&(ep[1][0]), &(ep[2][0]), coins, 4, 5);
-    neon_poly_getnoise_eta2(&(epp[0]), coins, 6);
+  // ETA1 != ETA2 (3 != 2)
+  neon_poly_getnoise_eta1_2x(&(sp[0][0]), &(sp[1][0]), coins, 0, 1);
+  neon_poly_getnoise_eta2_2x(&(ep[0][0]), &(ep[1][0]), coins, 2, 3);
+  neon_poly_getnoise_eta2(&(epp[0]), coins, 4);
 
     neon_polyvec_ntt(sp);
 
-    for (i = 0; i < KYBER_K; i++) {
-        PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended(&(sp_asymmetric[i][0]), &(sp[i][0]), pre_asymmetric_table_Q1_extended, asymmetric_const);
+    for(i = 0; i < KYBER_K; i++){
+        PQCLEAN_KYBER768_AARCH64__asm_point_mul_extended(&(sp_asymmetric[i][0]), &(sp[i][0]), pre_asymmetric_table_Q1_extended, asymmetric_const);
     }
 
-    for (i = 0; i < KYBER_K; i++) {
-        PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul(&(at[i][0][0]), &(sp[0][0]), &(sp_asymmetric[0][0]), asymmetric_const, b[i]);
+    for(i = 0; i < KYBER_K; i++){
+        PQCLEAN_KYBER768_AARCH64__asm_asymmetric_mul(&(at[i][0][0]), &(sp[0][0]), &(sp_asymmetric[0][0]), asymmetric_const, b[i]);
     }
 
-    PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul(&(pkpv[0][0]), &(sp[0][0]), &(sp_asymmetric[0][0]), asymmetric_const, v);
+    PQCLEAN_KYBER768_AARCH64__asm_asymmetric_mul(&(pkpv[0][0]), &(sp[0][0]), &(sp_asymmetric[0][0]), asymmetric_const, v);
 
     neon_polyvec_invntt_to_mont(b);
     invntt(v);
@@ -371,10 +337,10 @@ void indcpa_dec(uint8_t m[KYBER_INDCPA_MSGBYTES],
     neon_polyvec_ntt(b);
 
     for (i = 0; i < KYBER_K; i++) {
-        PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended(&(b_asymmetric[i][0]), &(b[i][0]), pre_asymmetric_table_Q1_extended, asymmetric_const);
+        PQCLEAN_KYBER768_AARCH64__asm_point_mul_extended(&(b_asymmetric[i][0]), &(b[i][0]), pre_asymmetric_table_Q1_extended, asymmetric_const);
     }
 
-    PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul(&(skpv[0][0]), &(b[0][0]), &(b_asymmetric[0][0]), asymmetric_const, mp);
+    PQCLEAN_KYBER768_AARCH64__asm_asymmetric_mul(&(skpv[0][0]), &(b[0][0]), &(b_asymmetric[0][0]), asymmetric_const, mp);
 
     invntt(mp);
 

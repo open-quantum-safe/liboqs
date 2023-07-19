@@ -1,8 +1,42 @@
-#include "fips202x2.h"
-#include "params.h"
-#include "symmetric.h"
+
+/*
+ * This file was originally licensed
+ * under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html)
+ * at https://github.com/GMUCERG/PQC_NEON/blob/main/neon/kyber or
+ * public domain at https://github.com/cothan/kyber/blob/master/neon
+ *
+ * We choose
+ * CC0 1.0 Universal or the following MIT License for this file.
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023: Hanno Becker, Vincent Hwang, Matthias J. Kannwischer, Bo-Yin Yang, and Shang-Yi Yang
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include <stddef.h>
 #include <stdint.h>
+#include "params.h"
+#include "fips202x2.h"
+#include "symmetric.h"
 
 /*************************************************
 * Name:        kyber_shake128_absorb
@@ -19,22 +53,23 @@
 void neon_kyber_shake128_absorb(keccakx2_state *state,
                                 const uint8_t seed[KYBER_SYMBYTES],
                                 uint8_t x1, uint8_t x2,
-                                uint8_t y1, uint8_t y2) {
-    unsigned int i;
-    uint8_t extseed1[KYBER_SYMBYTES + 2 + 14];
-    uint8_t extseed2[KYBER_SYMBYTES + 2 + 14];
+                                uint8_t y1, uint8_t y2)
+{
+  unsigned int i;
+  uint8_t extseed1[KYBER_SYMBYTES+2];
+  uint8_t extseed2[KYBER_SYMBYTES+2];
 
-    for (i = 0; i < KYBER_SYMBYTES; i++) {
-        extseed1[i] = seed[i];
-        extseed2[i] = seed[i];
-    }
-    extseed1[KYBER_SYMBYTES  ] = x1;
-    extseed1[KYBER_SYMBYTES + 1] = y1;
+  for(i=0;i<KYBER_SYMBYTES;i++){
+    extseed1[i] = seed[i];
+    extseed2[i] = seed[i];
+  }
+  extseed1[KYBER_SYMBYTES  ] = x1;
+  extseed1[KYBER_SYMBYTES+1] = y1;
 
-    extseed2[KYBER_SYMBYTES  ] = x2;
-    extseed2[KYBER_SYMBYTES + 1] = y2;
+  extseed2[KYBER_SYMBYTES  ] = x2;
+  extseed2[KYBER_SYMBYTES+1] = y2;
 
-    shake128x2_absorb(state, extseed1, extseed2, KYBER_SYMBYTES + 2);
+  shake128x2_absorb(state, extseed1, extseed2, sizeof(extseed1));
 }
 
 /*************************************************

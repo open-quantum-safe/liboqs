@@ -1,16 +1,39 @@
 
+/*
+ * CC0 1.0 Universal or the following MIT License
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023: Hanno Becker, Vincent Hwang, Matthias J. Kannwischer, Bo-Yin Yang, and Shang-Yi Yang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "macros.inc"
 
 #include "params.h"
 
 .align 2
-.global PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended
-.global _PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended
-#if !defined(__clang__) && !defined(old_gas_syntax)
-  .type PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended, %function
-#endif
-PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended:
-_PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended:
+.global PQCLEAN_KYBER512_AARCH64__asm_point_mul_extended
+.global _PQCLEAN_KYBER512_AARCH64__asm_point_mul_extended
+PQCLEAN_KYBER512_AARCH64__asm_point_mul_extended:
+_PQCLEAN_KYBER512_AARCH64__asm_point_mul_extended:
 
     push_all
     Q         .req w20
@@ -71,13 +94,10 @@ _PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended:
 
 
 .align 2
-.global PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul
-.global _PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul
-#if !defined(__clang__) && !defined(old_gas_syntax)
-.type PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul, %function
-#endif
-PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul:
-_PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul:
+.global PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul
+.global _PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul
+PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul:
+_PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul:
 
     push_all
     Q         .req w28
@@ -226,13 +246,10 @@ _PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul:
 
 
 .align 2
-.global PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery
-.global _PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery
-#if !defined(__clang__) && !defined(old_gas_syntax)
-.type PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery, %function
-#endif
-PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery:
-_PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery:
+.global PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul_montgomery
+.global _PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul_montgomery
+PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul_montgomery:
+_PQCLEAN_KYBER512_AARCH64__asm_asymmetric_mul_montgomery:
 
     push_all
     Q         .req w28

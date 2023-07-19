@@ -1,11 +1,18 @@
-#include "indcpa.h"
-#include "kem.h"
-#include "params.h"
-#include "randombytes.h"
-#include "symmetric.h"
-#include "verify.h"
+
+/*
+ * This file is licensed
+ * under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html) or
+ * public domain at https://github.com/pq-crystals/kyber/tree/master/ref
+ */
+
 #include <stddef.h>
 #include <stdint.h>
+#include "params.h"
+#include "indcpa.h"
+#include "verify.h"
+#include "symmetric.h"
+#include "randombytes.h"
+#include "kem.h"
 
 
 /*************************************************

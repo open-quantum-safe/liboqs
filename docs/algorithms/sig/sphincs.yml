@@ -26,7 +26,7 @@ nist-round: 3
 spec-version: NIST Round 3 submission, v3.1 (June 10, 2022)
 spdx-license-identifier: CC0-1.0
 primary-upstream:
-  source: https://github.com/PQClean/PQClean/commit/d742438e5c541958bfd58070cd8668d757d88e07
+  source: https://github.com/PQClean/PQClean/commit/66e50172055aaf1b9a16d8f35fe03b0807f2723e
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0
   upstream-ancestors:

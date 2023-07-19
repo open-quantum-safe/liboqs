@@ -1,14 +1,37 @@
 
+/*
+ * CC0 1.0 Universal or the following MIT License
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023: Hanno Becker, Vincent Hwang, Matthias J. Kannwischer, Bo-Yin Yang, and Shang-Yi Yang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "macros.inc"
 
 .align 2
-.global PQCLEAN_KYBER768_AARCH64_asm_add_reduce
-.global _PQCLEAN_KYBER768_AARCH64_asm_add_reduce
-#if !defined(__clang__) && !defined(old_gas_syntax)
-.type PQCLEAN_KYBER768_AARCH64_asm_add_reduce, %function
-#endif
-PQCLEAN_KYBER768_AARCH64_asm_add_reduce:
-_PQCLEAN_KYBER768_AARCH64_asm_add_reduce:
+.global PQCLEAN_KYBER768_AARCH64__asm_add_reduce
+.global _PQCLEAN_KYBER768_AARCH64__asm_add_reduce
+PQCLEAN_KYBER768_AARCH64__asm_add_reduce:
+_PQCLEAN_KYBER768_AARCH64__asm_add_reduce:
 
     mov w4, #3329
     mov w5, #25519
@@ -66,13 +89,10 @@ _PQCLEAN_KYBER768_AARCH64_asm_add_reduce:
     br lr
 
 .align 2
-.global PQCLEAN_KYBER768_AARCH64_asm_sub_reduce
-.global _PQCLEAN_KYBER768_AARCH64_asm_sub_reduce
-#if !defined(__clang__) && !defined(old_gas_syntax)
-.type PQCLEAN_KYBER768_AARCH64_asm_sub_reduce, %function
-#endif
-PQCLEAN_KYBER768_AARCH64_asm_sub_reduce:
-_PQCLEAN_KYBER768_AARCH64_asm_sub_reduce:
+.global PQCLEAN_KYBER768_AARCH64__asm_sub_reduce
+.global _PQCLEAN_KYBER768_AARCH64__asm_sub_reduce
+PQCLEAN_KYBER768_AARCH64__asm_sub_reduce:
+_PQCLEAN_KYBER768_AARCH64__asm_sub_reduce:
 
     mov w4, #3329
     mov w5, #25519
@@ -130,13 +150,10 @@ _PQCLEAN_KYBER768_AARCH64_asm_sub_reduce:
     br lr
 
 .align 2
-.global PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce
-.global _PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce
-#if !defined(__clang__) && !defined(old_gas_syntax)
-.type PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce, %function
-#endif
-PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce:
-_PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce:
+.global PQCLEAN_KYBER768_AARCH64__asm_add_add_reduce
+.global _PQCLEAN_KYBER768_AARCH64__asm_add_add_reduce
+PQCLEAN_KYBER768_AARCH64__asm_add_add_reduce:
+_PQCLEAN_KYBER768_AARCH64__asm_add_add_reduce:
 
     mov w4, #3329
     mov w5, #25519

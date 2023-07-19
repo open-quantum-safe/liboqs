@@ -1,15 +1,38 @@
 
+/*
+ * CC0 1.0 Universal or the following MIT License
+ *
+ * MIT License
+ *
+ * Copyright (c) 2023: Hanno Becker, Vincent Hwang, Matthias J. Kannwischer, Bo-Yin Yang, and Shang-Yi Yang
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "macros.inc"
 #include "params.h"
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_10_to_32
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_10_to_32
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_10_to_32, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_10_to_32:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_10_to_32:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_10_to_32
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_10_to_32
+PQCLEAN_DILITHIUM2_AARCH64__asm_10_to_32:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_10_to_32:
 
     mov x7, #16
     _10_to_32_loop:
@@ -79,13 +102,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_10_to_32:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_reduce
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_reduce
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_reduce:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_reduce:
 
     ldr w4, [x1]
 
@@ -175,13 +195,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_caddq
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_caddq
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_caddq:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_caddq:
 
     ldr w4, [x1]
 
@@ -271,13 +288,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_freeze
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_freeze
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_freeze:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_freeze:
 
     ldr w4, [x1]
 
@@ -403,13 +417,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_power2round
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_power2round
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_power2round:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_power2round:
 
     mov w4, #1
 
@@ -552,13 +563,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_add
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_add
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_add:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_add:
 
     ld1 {v0.4S}, [x1], #16
     ld1 {v4.4S}, [x2], #16
@@ -604,13 +612,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_sub
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_sub
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_sub:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_sub:
 
     ld1 {v0.4S}, [x1], #16
     ld1 {v4.4S}, [x2], #16
@@ -656,13 +661,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_shiftl
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_shiftl
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_shiftl:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_shiftl:
 
     add x1, x0, #0
 
@@ -726,13 +728,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl:
     br lr
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_poly_pointwise_montgomery
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_poly_pointwise_montgomery
+PQCLEAN_DILITHIUM2_AARCH64__asm_poly_pointwise_montgomery:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_poly_pointwise_montgomery:
 
     push_all
 
@@ -848,13 +847,10 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery:
 
 
 .align 2
-.global PQCLEAN_DILITHIUM2_AARCH64_asm_polyvecl_pointwise_acc_montgomery
-.global _PQCLEAN_DILITHIUM2_AARCH64_asm_polyvecl_pointwise_acc_montgomery
-#ifndef __clang__
-.type PQCLEAN_DILITHIUM2_AARCH64_asm_polyvecl_pointwise_acc_montgomery, %function
-#endif
-PQCLEAN_DILITHIUM2_AARCH64_asm_polyvecl_pointwise_acc_montgomery:
-_PQCLEAN_DILITHIUM2_AARCH64_asm_polyvecl_pointwise_acc_montgomery:
+.global PQCLEAN_DILITHIUM2_AARCH64__asm_polyvecl_pointwise_acc_montgomery
+.global _PQCLEAN_DILITHIUM2_AARCH64__asm_polyvecl_pointwise_acc_montgomery
+PQCLEAN_DILITHIUM2_AARCH64__asm_polyvecl_pointwise_acc_montgomery:
+_PQCLEAN_DILITHIUM2_AARCH64__asm_polyvecl_pointwise_acc_montgomery:
 
     push_all
 
