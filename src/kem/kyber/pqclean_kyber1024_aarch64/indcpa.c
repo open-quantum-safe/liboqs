@@ -160,39 +160,44 @@ static void unpack_ciphertext(int16_t b[KYBER_K][KYBER_N], int16_t *v, const uin
 **************************************************/
 #define GEN_MATRIX_NBLOCKS ((12*KYBER_N/8*(1 << 12)/KYBER_Q + XOF_BLOCKBYTES)/XOF_BLOCKBYTES)
 // Not static for benchmarking
-void gen_matrix(int16_t a[KYBER_K][KYBER_K][KYBER_N], const uint8_t seed[KYBER_SYMBYTES], int transposed) {
-    unsigned int ctr0, ctr1, k;
-    unsigned int buflen, off;
-    uint8_t buf0[GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES + 2],
-            buf1[GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES + 2];
-    neon_xof_state state;
+void gen_matrix(int16_t a[KYBER_K][KYBER_K][KYBER_N], const uint8_t seed[KYBER_SYMBYTES], int transposed)
+{
+  unsigned int ctr0, ctr1, k;
+  unsigned int buflen, off;
+  uint8_t buf0[GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES + 2],
+      buf1[GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES + 2];
+  neon_xof_state state;
 
-    for (unsigned int i = 0; i < KYBER_K; i++) {
-        if (transposed) {
-            neon_xof_absorb(&state, seed, i, i, 0, 1);
-        } else {
-            neon_xof_absorb(&state, seed, 0, 1, i, i);
+  for (unsigned int i = 0; i < KYBER_K; i++)
+  {
+    for (unsigned int j = 0; j < KYBER_K; j += 2)
+    {
+      if (transposed)
+        neon_xof_absorb(&state, seed, i, i, j, j + 1);
+      else
+        neon_xof_absorb(&state, seed, j, j + 1, i, i);
+
+      neon_xof_squeezeblocks(buf0, buf1, GEN_MATRIX_NBLOCKS, &state);
+      buflen = GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES;
+      ctr0 = neon_rej_uniform(&(a[i][j][0]), buf0);
+      ctr1 = neon_rej_uniform(&(a[i][j + 1][0]), buf1);
+
+      while (ctr0 < KYBER_N || ctr1 < KYBER_N)
+      {
+        off = buflen % 3;
+        for (k = 0; k < off; k++)
+        {
+          buf0[k] = buf0[buflen - off + k];
+          buf1[k] = buf1[buflen - off + k];
         }
+        neon_xof_squeezeblocks(buf0 + off, buf1 + off, 1, &state);
 
-        neon_xof_squeezeblocks(buf0, buf1, GEN_MATRIX_NBLOCKS, &state);
-
-        buflen = GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES;
-
-        ctr0 = neon_rej_uniform(&(a[i][0][0]), buf0);
-        ctr1 = neon_rej_uniform(&(a[i][1][0]), buf1);
-        while (ctr0 < KYBER_N || ctr1 < KYBER_N) {
-            off = buflen % 3;
-            for (k = 0; k < off; k++) {
-                buf0[k] = buf0[buflen - off + k];
-                buf1[k] = buf1[buflen - off + k];
-            }
-            neon_xof_squeezeblocks(buf0 + off, buf1 + off, 1, &state);
-
-            buflen = off + XOF_BLOCKBYTES;
-            ctr0 += rej_uniform(&(a[i][0][0]) + ctr0, KYBER_N - ctr0, buf0, buflen);
-            ctr1 += rej_uniform(&(a[i][1][0]) + ctr1, KYBER_N - ctr1, buf1, buflen);
-        }
+        buflen = off + XOF_BLOCKBYTES;
+        ctr0 += rej_uniform(&(a[i][j][0]) + ctr0, KYBER_N - ctr0, buf0, buflen);
+        ctr1 += rej_uniform(&(a[i][j + 1][0]) + ctr1, KYBER_N - ctr1, buf1, buflen);
+      }
     }
+  }
 }
 
 /*************************************************
@@ -224,7 +229,9 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
     gen_a(a, publicseed);
 
     neon_poly_getnoise_eta1_2x(&(skpv[0][0]), &(skpv[1][0]), noiseseed, 0, 1);
-    neon_poly_getnoise_eta1_2x(&(e[0][0]), &(e[1][0]), noiseseed, 2, 3);
+    neon_poly_getnoise_eta1_2x(&(skpv[2][0]), &(skpv[3][0]), noiseseed, 2, 3);
+    neon_poly_getnoise_eta1_2x(&(e[0][0]), &(e[1][0]), noiseseed, 4, 5);
+    neon_poly_getnoise_eta1_2x(&(e[2][0]), &(e[3][0]), noiseseed, 6, 7);
 
     neon_polyvec_ntt(skpv);
     neon_polyvec_ntt(e);
@@ -280,10 +287,11 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
     poly_frommsg(k, m);
     gen_at(at, seed);
 
-  // ETA1 != ETA2 (3 != 2)
-  neon_poly_getnoise_eta1_2x(&(sp[0][0]), &(sp[1][0]), coins, 0, 1);
-  neon_poly_getnoise_eta2_2x(&(ep[0][0]), &(ep[1][0]), coins, 2, 3);
-  neon_poly_getnoise_eta2(&(epp[0]), coins, 4);
+    neon_poly_getnoise_eta1_2x(&(sp[0][0]), &(sp[1][0]), coins, 0, 1);
+    neon_poly_getnoise_eta1_2x(&(sp[2][0]), &(sp[3][0]), coins, 2, 3);
+    neon_poly_getnoise_eta1_2x(&(ep[0][0]), &(ep[1][0]), coins, 4, 5);
+    neon_poly_getnoise_eta1_2x(&(ep[2][0]), &(ep[3][0]), coins, 6, 7);
+    neon_poly_getnoise_eta2(&(epp[0]), coins, 8);
 
     neon_polyvec_ntt(sp);
 
