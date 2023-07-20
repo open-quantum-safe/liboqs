@@ -222,13 +222,13 @@ int oqs_sig_stfl_lms_sign(uint8_t *sk,
 
 	if (!status) {
 		hss_free_working_key(w);
-		free(sig);
+		OQS_MEM_insecure_free(sig);
 		return -1;
 	}
 
 	*smlen = sig_len;
 	memcpy(sm, sig, sig_len);
-	free(sig);
+	OQS_MEM_insecure_free(sig);
 
 	return 0;
 }
