@@ -528,6 +528,8 @@ endif()
 option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 
+option(OQS_ENABLE_SIG_STFL_LMS "Enable LMS algorithm family" ON)
+
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
 endif()

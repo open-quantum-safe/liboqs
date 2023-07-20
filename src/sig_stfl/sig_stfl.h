@@ -23,7 +23,14 @@ extern "C" {
 /* Algorithm identifier for XMSS-SHA2_10_256 */
 #define OQS_SIG_STFL_alg_xmss_sha256_h10 "XMSS-SHA2_10_256"
 
-#define OQS_SIG_STFL_algs_length 1
+#define OQS_SIG_STFL_algs_length 2
+
+/* Defined LM parameter sets */
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1 "LMS_SHA256_H5_W1" //"5/1"
+
+/* Defined LM parameter sets */
+/* Algorithm identifier for LMS-SHA256_N32_H5 */
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5 "LMS-SHA256_N32_H5"   //0x00000005
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
@@ -329,5 +336,9 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
 #ifdef OQS_ENABLE_SIG_STFL_XMSS
 #include <oqs/sig_stfl_xmss.h>
 #endif // OQS_ENABLE_SIG_STFL_XMSS
+
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+#include <oqs/sig_stfl_lms.h>
+#endif // OQS_ENABLE_SIG_STFL_LMS
 
 #endif /* OQS_SIG_STATEFUL_H */
