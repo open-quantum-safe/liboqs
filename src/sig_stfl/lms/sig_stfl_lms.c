@@ -81,6 +81,14 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 		return;
 	}
 
+	//TODO: cleanup lock_key
+
+	if (sk->sig) {
+		OQS_MEM_insecure_free(sk->sig);
+		sk->sig = NULL;
+	}
 	OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
 	sk->secret_key_data = NULL;
+
+	OQS_MEM_insecure_free(sk);
 }

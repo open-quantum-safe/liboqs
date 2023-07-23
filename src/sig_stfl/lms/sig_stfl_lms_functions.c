@@ -199,6 +199,7 @@ int oqs_sig_stfl_lms_sign(uint8_t *sk,
 	if (!sig) {
 		printf( "Error during malloc\n" );
 		hss_free_working_key(w);
+		return -1;
 	}
 
 	(void)hss_sign_init(
