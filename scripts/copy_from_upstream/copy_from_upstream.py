@@ -462,11 +462,17 @@ def handle_implementation(impl, family, scheme, dst_basedir):
 
 
     try:
+        ul = scheme['upstream_location']
+        if 'arch_specific_upstream_locations' in family and impl in family['arch_specific_upstream_locations']:
+            ul = family['arch_specific_upstream_locations'][impl]
+        elif 'arch_specific_upstream_locations' in scheme and impl in scheme['arch_specific_upstream_locations']:
+            ul = scheme['arch_specific_upstream_locations'][impl]
+        
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl),
+                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
                                'Makefile'))
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl),
+                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
                                'Makefile.Microsoft_nmake'))
     except FileNotFoundError:
         pass
