@@ -2,6 +2,7 @@
 #define HSS_ZEROIZE_H_
 
 #include <stdlib.h>
+#include "lms_namespace.h"
 
 /* Zeroize an area, that is, scrub it from holding any potentially secret */
 /* information */

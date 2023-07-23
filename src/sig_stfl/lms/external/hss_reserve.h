@@ -7,6 +7,7 @@
  */
 
 #include "common_defs.h"
+#include "lms_namespace.h"
 
 struct hss_working_key;
 
