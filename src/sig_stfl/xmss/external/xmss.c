@@ -276,7 +276,7 @@ int xmssmt_total_signatures(unsigned long long *max, const unsigned  char *sk)
         oid |= sk[XMSS_OID_LEN - i - 1] << (i * 8);
     }
 
-    if (xmss_parse_oid(&params, oid)) {
+    if (xmssmt_parse_oid(&params, oid)) {
         *max = 0;
         return -1;
     }

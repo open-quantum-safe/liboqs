@@ -207,7 +207,9 @@ def get_katfile(t: str, sig_stfl_name: str) -> str:
         algo_dir = 'xmss'
     if not algo_dir:
         return '' 
-    kat_filename = f"{sig_stfl_name}.rsp"
+    # Replace the "/" to "-" in XMSSMT parameters
+    clean_sig_stfl_name = sig_stfl_name.replace("/", "-", 1)
+    kat_filename = f"{clean_sig_stfl_name}.rsp"
     katfile = os.path.join('tests', 'KATs', t, algo_dir, kat_filename)
     return katfile
 
