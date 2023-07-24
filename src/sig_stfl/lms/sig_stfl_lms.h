@@ -15,8 +15,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key
 OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void);
 OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w1_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(size_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(size_t *totaln, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(uint64_t *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(uint64_t *totaln, const uint8_t *secret_key);
 
 void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 

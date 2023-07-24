@@ -18,7 +18,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 
 	/* TODO: Make sure we have a way to update the private key */
 
-
 	if (oqs_sig_stfl_lms_sign(secret_key, signature,
 	                          signature_length,
 	                          message, message_len) != 0) {
@@ -46,7 +45,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t me
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(size_t *remain, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(uint64_t *remain, const uint8_t *secret_key) {
 
 	if (remain == NULL  || secret_key == NULL) {
 		return OQS_ERROR;
@@ -56,7 +55,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(size_t *remain, const uint8_t *sec
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(size_t *total, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(uint64_t *total, const uint8_t *secret_key) {
 
 	if (total == NULL  || secret_key == NULL) {
 		return OQS_ERROR;
