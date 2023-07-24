@@ -42,7 +42,7 @@ OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_3,
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_6,
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_12,
-    OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1,
+		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1,
 	};
 
 	if (i >= OQS_SIG_STFL_algs_length) {
@@ -235,7 +235,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 #ifdef OQS_ENABLE_SIG_STFL_LMS
 		return 1;
 #else
-    return 0;
+		return 0;
 #endif
 	} else {
 		return 0;
@@ -654,7 +654,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 #ifdef OQS_ENABLE_SIG_STFL_LMS
 		return OQS_SECRET_KEY_LMS_SHA256_H5_W1_new();
 #else
-    return NULL;
+		return NULL;
 #endif
 	} else {
 		return NULL;
