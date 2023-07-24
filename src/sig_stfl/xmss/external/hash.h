@@ -3,14 +3,10 @@
 
 #include <stdint.h>
 #include "params.h"
+#include "core_hash.h"
 
 #define addr_to_bytes XMSS_INNER_NAMESPACE(addr_to_bytes)
 void addr_to_bytes(unsigned char *bytes, const uint32_t addr[8]);
-
-#define core_hash XMSS_INNER_NAMESPACE(core_hash)
-int core_hash(const xmss_params *params,
-              unsigned char *out,
-              const unsigned char *in, unsigned long long inlen);
 
 #define prf XMSS_INNER_NAMESPACE(prf)
 int prf(const xmss_params *params,
