@@ -173,9 +173,9 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/kem/bike/additional`: Apache License v2.0
 - `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqcrystals-*`: public domain (CC0) or Apache License v2.0
-- `src/kem/kyber/pqclean_*`: public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
+- `src/kem/kyber/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 - `src/sig/dilithium/pqcrystals-*`: public domain (CC0) or Apache License v2.0
-- `src/sig/dilithium/pqclean_*`: public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
+- `src/sig/dilithium/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 - `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 
 ## Acknowledgements

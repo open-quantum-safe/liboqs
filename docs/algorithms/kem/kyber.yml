@@ -24,7 +24,7 @@ optimized-upstreams:
   pqclean-aarch64:
     source: https://github.com/PQClean/PQClean/commit/66e50172055aaf1b9a16d8f35fe03b0807f2723e
       with copy_from_upstream patches
-    spdx-license-identifier: (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
+    spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
 parameter-sets:
 - name: Kyber512
   claimed-nist-level: 1
