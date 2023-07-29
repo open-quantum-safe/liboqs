@@ -166,7 +166,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_remaining)(uint64_t *remain, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_remaining)(unsigned long long *remain, const uint8_t *secret_key);
 
 	/**
 	 * Total number of signatures
@@ -175,7 +175,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_total)(uint64_t *total, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_total)(unsigned long long *total, const uint8_t *secret_key);
 
 } OQS_SIG_STFL;
 
@@ -318,7 +318,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, uint64_t *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const uint8_t *secret_key);
 
 /**
  * * Total number of signatures
@@ -328,7 +328,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, uint64_t
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, uint64_t *max, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const uint8_t *secret_key);
 
 /**
  * Frees an OQS_SIG_STFL object that was constructed by OQS_SIG_STFL_new.

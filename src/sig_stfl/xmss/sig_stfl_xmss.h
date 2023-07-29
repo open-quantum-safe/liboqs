@@ -57,8 +57,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H10_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -73,8 +73,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H16_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -89,8 +89,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H20_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -105,8 +105,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE128_H10_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h10_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h10_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h10_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h10_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h10_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h10_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -121,8 +121,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE128_H16_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h16_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h16_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h16_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h16_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h16_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h16_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -137,8 +137,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE128_H20_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h20_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h20_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h20_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h20_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h20_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake128_h20_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -153,8 +153,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -169,8 +169,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -185,8 +185,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H20_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -201,8 +201,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H10_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -217,8 +217,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H16_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -233,8 +233,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H20_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -249,8 +249,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H20_2_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -265,8 +265,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H20_4_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -281,8 +281,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_2_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -297,8 +297,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_4_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -313,8 +313,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_8_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -329,8 +329,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H60_3_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -345,8 +345,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H60_6_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -361,8 +361,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H60_12_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -377,8 +377,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H20_2_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -393,8 +393,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H20_4_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -409,8 +409,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H40_2_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -425,8 +425,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H40_4_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -441,8 +441,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H40_8_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -457,8 +457,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_3_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -473,8 +473,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_6_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
@@ -489,8 +489,8 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_12_new(void)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_remaining(uint64_t *remain, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_total(uint64_t *total, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_total(unsigned long long *total, const uint8_t *secret_key);
 
 #endif
 
