@@ -66,6 +66,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void) {
 			memset(sk->secret_key_data, 0, sk->length_secret_key);
 		} else {
 			OQS_SECRET_KEY_LMS_free(sk);
+			OQS_MEM_insecure_free(sk);
 			sk = NULL;
 			return NULL;
 		}

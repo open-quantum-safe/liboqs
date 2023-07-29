@@ -45,7 +45,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t me
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(uint64_t *remain, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const uint8_t *secret_key) {
 
 	if (remain == NULL  || secret_key == NULL) {
 		return OQS_ERROR;
