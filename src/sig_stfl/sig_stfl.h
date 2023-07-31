@@ -50,7 +50,14 @@ extern "C" {
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6 "XMSSMT-SHAKE_60/6_256"
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
 
-#define OQS_SIG_STFL_algs_length 28
+/* Defined LMS parameter identifiers */
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1 "LMS_SHA256_H5_W1" //"5/1"
+
+#define OQS_SIG_STFL_algs_length 29
+
+/* Defined LM parameter identifiers */
+/* Algorithm identifier for LMS-SHA256_N32_H5 */
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5 "LMS-SHA256_N32_H5"   //0x00000005
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
@@ -159,7 +166,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_remaining)(uint64_t *remain, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_remaining)(unsigned long long *remain, const uint8_t *secret_key);
 
 	/**
 	 * Total number of signatures
@@ -168,7 +175,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_total)(uint64_t *total, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_total)(unsigned long long *total, const uint8_t *secret_key);
 
 } OQS_SIG_STFL;
 
@@ -311,7 +318,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, uint64_t *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const uint8_t *secret_key);
 
 /**
  * * Total number of signatures
@@ -321,7 +328,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, uint64_t
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, uint64_t *max, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const uint8_t *secret_key);
 
 /**
  * Frees an OQS_SIG_STFL object that was constructed by OQS_SIG_STFL_new.
@@ -364,5 +371,9 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
 #ifdef OQS_ENABLE_SIG_STFL_XMSS
 #include <oqs/sig_stfl_xmss.h>
 #endif // OQS_ENABLE_SIG_STFL_XMSS
+
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+#include <oqs/sig_stfl_lms.h>
+#endif // OQS_ENABLE_SIG_STFL_LMS
 
 #endif /* OQS_SIG_STATEFUL_H */

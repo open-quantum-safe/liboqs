@@ -5,6 +5,7 @@
 #include "hash.h"
 #include "common_defs.h"
 #include "hss.h"
+#include "lms_namespace.h"
 
 /*
  * These are the functions to validate a signature incrementally.

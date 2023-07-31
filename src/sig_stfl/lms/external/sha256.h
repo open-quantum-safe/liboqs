@@ -14,6 +14,7 @@
 #include <openssl/sha.h>
 
 #else
+#include "lms_namespace.h"
 
 /* SHA256 context. */
 typedef struct {

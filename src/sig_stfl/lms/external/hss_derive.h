@@ -4,6 +4,7 @@
 #include "common_defs.h"
 
 #include "config.h"
+#include "lms_namespace.h"
 
 #if SECRET_MAX > 31
 #error The code is not designed for a SECRET_MAX that high

@@ -393,7 +393,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	}
 
 	printf("================================================================================\n");
-	printf("Create for statefull Secret Key  %s\n", method_name);
+	printf("Create stateful Secret Key  %s\n", method_name);
 	printf("================================================================================\n");
 
 	if (!sk->secret_key_data) {

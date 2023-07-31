@@ -5,6 +5,7 @@
 #include "common_defs.h"
 #include "hss.h"
 #include "config.h"
+#include "lms_namespace.h"
 
 /*
  * This is the central internal include file for the functions that make up
