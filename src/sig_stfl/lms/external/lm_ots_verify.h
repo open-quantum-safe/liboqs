@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include "common_defs.h"
+#include "lms_namespace.h"
 
 /*
  * This validates an OTS signature, but instead of producing a SUCCESS/FAILURE

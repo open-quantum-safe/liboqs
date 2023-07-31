@@ -42,6 +42,7 @@ OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_3,
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_6,
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_12,
+		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1,
 	};
 
 	if (i >= OQS_SIG_STFL_algs_length) {
@@ -230,6 +231,12 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+		return 1;
+#else
+		return 0;
+#endif
 	} else {
 		return 0;
 	}
@@ -409,6 +416,12 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+	}  else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+		return OQS_SIG_STFL_alg_lms_sha256_h5_w1_new();
+#else
+		return NULL;
+#endif //OQS_ENABLE_SIG_STFL_LMS
 	} else {
 		return NULL;
 	}
@@ -439,7 +452,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 	}
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, uint64_t *remain, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const uint8_t *secret_key) {
 	if (sig == NULL || sig->sigs_remaining == NULL || sig->sigs_remaining(remain, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
@@ -447,7 +460,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, uint64_t
 	}
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, uint64_t *max, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const uint8_t *secret_key) {
 	if (sig == NULL || sig->sigs_total == NULL || sig->sigs_total(max, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
@@ -634,6 +647,12 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_12)) {
 #ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_12
 		return OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_12_new();
+#else
+		return NULL;
+#endif
+	}  else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+		return OQS_SECRET_KEY_LMS_SHA256_H5_W1_new();
 #else
 		return NULL;
 #endif

@@ -3,6 +3,7 @@
 #include "sha256.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include "lms_namespace.h"
 
 /*
  * This defines the hash interface used within HSS.

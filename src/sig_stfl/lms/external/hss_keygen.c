@@ -345,6 +345,9 @@ bool hss_generate_private_key(
     public_key += I_LEN; len_public_key -= I_LEN;
     memcpy( public_key, root_hash, size_hash );
     public_key += size_hash; len_public_key -= size_hash;
+    /* Address static analysis issue*/
+    LMS_UNUSED(public_key);
+    LMS_UNUSED(len_public_key);
 
     /* Hey, what do you know -- it all worked! */
     hss_zeroize( private_key, sizeof private_key ); /* Zeroize local copy of */

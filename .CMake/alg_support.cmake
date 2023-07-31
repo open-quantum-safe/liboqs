@@ -415,6 +415,8 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_6 "" ON "OQS_ENAB
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_12 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 
 
+option(OQS_ENABLE_SIG_STFL_LMS "Enable LMS algorithm family" ON)
+
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
 endif()
