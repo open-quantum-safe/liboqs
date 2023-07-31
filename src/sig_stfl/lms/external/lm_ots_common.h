@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include "common_defs.h"
+#include "lms_namespace.h"
 
 bool lm_ots_look_up_parameter_set(param_set_t parameter_set,
      unsigned *h, unsigned *n, unsigned *w, unsigned *p, unsigned *ls);
