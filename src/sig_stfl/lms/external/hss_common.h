@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include "common_defs.h"
+#include "lms_namespace.h"
 
 /*
  * This returns the length of the public key for the given parameter set
