@@ -54,6 +54,11 @@ if(OQS_ENABLE_SIG_STFL_XMSS)
     set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${XMSS_OBJS})
 endif()
 
+if(OQS_ENABLE_SIG_STFL_LMS)
+    add_subdirectory(sig_stfl/lms)
+    set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${LMS_OBJS})
+endif()
+
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c

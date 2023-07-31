@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include "common_defs.h"
+#include "lms_namespace.h"
 
 /*
  * This is intended to be a usable (nontoy) implementation of the LMS

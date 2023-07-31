@@ -2,6 +2,7 @@
 #define HSS_VERIFY_H_
 
 #include <stdbool.h>
+#include "lms_namespace.h"
 
 struct hss_extra_info;
 /*
