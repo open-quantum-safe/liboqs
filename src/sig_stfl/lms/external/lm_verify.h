@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include "lms_namespace.h"
 
 bool lm_validate_signature(
     const unsigned char *public_key,

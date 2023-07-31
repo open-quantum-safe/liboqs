@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include "hash.h"
 #include "common_defs.h"
+#include "lms_namespace.h"
 
 /*
  * These are the functions to sign a message incrementally.

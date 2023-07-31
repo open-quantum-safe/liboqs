@@ -182,3 +182,5 @@
 #cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3 1
 #cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_6 1
 #cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_12 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_LMS 1

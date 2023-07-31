@@ -3,6 +3,7 @@
 
 #include "common_defs.h"
 #include <stddef.h>
+#include "lms_namespace.h"
 
 /*
  * These are routines that implement the OTS signature scheme.  These routines
