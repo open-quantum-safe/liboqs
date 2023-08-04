@@ -1,9 +1,16 @@
-#include "fips202.h"
-#include "params.h"
-#include "symmetric.h"
+
+/*
+ * This file is licensed
+ * under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html) or
+ * public domain at https://github.com/pq-crystals/kyber/tree/master/ref
+ */
+
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include "params.h"
+#include "symmetric.h"
+#include "fips202.h"
 
 /*************************************************
 * Name:        kyber_shake128_absorb

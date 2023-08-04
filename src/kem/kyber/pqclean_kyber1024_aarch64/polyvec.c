@@ -1,7 +1,14 @@
+
+/*
+ * This file is licensed
+ * under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html) or
+ * public domain at https://github.com/pq-crystals/kyber/tree/master/ref
+ */
+
+#include <stdint.h>
 #include "params.h"
 #include "poly.h"
 #include "polyvec.h"
-#include <stdint.h>
 
 /*************************************************
 * Name:        polyvec_compress
@@ -15,6 +22,7 @@
 void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K][KYBER_N]) {
     unsigned int i, j, k;
 
+    #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352))
     uint16_t t[8];
     for (i = 0; i < KYBER_K; i++) {
         for (j = 0; j < KYBER_N / 8; j++) {
@@ -38,6 +46,27 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
             r += 11;
         }
     }
+    #elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 320))
+    uint16_t t[4];
+    for (i = 0; i < KYBER_K; i++) {
+        for (j = 0; j < KYBER_N / 4; j++) {
+            for (k = 0; k < 4; k++) {
+                t[k]  = a[i][4 * j + k];
+                t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
+                t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
+            }
+
+            r[0] = (t[0] >> 0);
+            r[1] = (t[0] >> 8) | (t[1] << 2);
+            r[2] = (t[1] >> 6) | (t[2] << 4);
+            r[3] = (t[2] >> 4) | (t[3] << 6);
+            r[4] = (t[3] >> 2);
+            r += 5;
+        }
+    }
+    #else
+#error "KYBER_POLYVECCOMPRESSEDBYTES needs to be in {320*KYBER_K, 352*KYBER_K}"
+    #endif
 }
 
 /*************************************************
@@ -53,6 +82,7 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
 void polyvec_decompress(int16_t r[KYBER_K][KYBER_N], const uint8_t a[KYBER_POLYVECCOMPRESSEDBYTES]) {
     unsigned int i, j, k;
 
+    #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352))
     uint16_t t[8];
     for (i = 0; i < KYBER_K; i++) {
         for (j = 0; j < KYBER_N / 8; j++) {
@@ -71,6 +101,24 @@ void polyvec_decompress(int16_t r[KYBER_K][KYBER_N], const uint8_t a[KYBER_POLYV
             }
         }
     }
+    #elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 320))
+    uint16_t t[4];
+    for (i = 0; i < KYBER_K; i++) {
+        for (j = 0; j < KYBER_N / 4; j++) {
+            t[0] = (a[0] >> 0) | ((uint16_t)a[1] << 8);
+            t[1] = (a[1] >> 2) | ((uint16_t)a[2] << 6);
+            t[2] = (a[2] >> 4) | ((uint16_t)a[3] << 4);
+            t[3] = (a[3] >> 6) | ((uint16_t)a[4] << 2);
+            a += 5;
+
+            for (k = 0; k < 4; k++) {
+                r[i][4 * j + k] = ((uint32_t)(t[k] & 0x3FF) * KYBER_Q + 512) >> 10;
+            }
+        }
+    }
+    #else
+#error "KYBER_POLYVECCOMPRESSEDBYTES needs to be in {320*KYBER_K, 352*KYBER_K}"
+    #endif
 }
 
 /*************************************************

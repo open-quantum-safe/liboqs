@@ -1,3 +1,10 @@
+
+/*
+ * This file is dual licensed
+ * under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html)
+ * or public domain at https://github.com/pq-crystals/dilithium
+ */
+
 #include "params.h"
 #include "reduce.h"
 #include <stdint.h>

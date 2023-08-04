@@ -70,7 +70,7 @@ static inline void aes256_armv8_encrypt(const unsigned char *rkeys, const unsign
 }
 
 void oqs_aes256_enc_sch_block_armv8(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
-	const unsigned char *schedule = (const unsigned char *) ((aes256ctx_nobitslice *) _schedule)->sk_exp;
+	const unsigned char *schedule = (const unsigned char *) ((const aes256ctx_nobitslice *) _schedule)->sk_exp;
 	aes256_armv8_encrypt(schedule, plaintext, ciphertext);
 }
 
