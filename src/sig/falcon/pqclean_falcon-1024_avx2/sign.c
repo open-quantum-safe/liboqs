@@ -1030,9 +1030,9 @@ PQCLEAN_FALCON1024_AVX2_gaussian0_sampler(prng *p) {
      * On 32-bit systems, 'lo' really is two registers, requiring
      * some extra code.
      */
-#if defined(__x86_64__) || defined(_M_X64)
+    #if defined(__x86_64__) || defined(_M_X64)
     xlo = _mm256_broadcastq_epi64(_mm_cvtsi64_si128(*(int64_t *)&lo));
-#else
+    #else
     {
         uint32_t e0, e1;
         int32_t f0, f1;
@@ -1043,7 +1043,7 @@ PQCLEAN_FALCON1024_AVX2_gaussian0_sampler(prng *p) {
         f1 = *(int32_t *)&e1;
         xlo = _mm256_set_epi32(f1, f0, f1, f0, f1, f0, f1, f0);
     }
-#endif
+    #endif
     gtlo0 = _mm256_cmpgt_epi64(_mm256_loadu_si256(&rlo57.ymm[0]), xlo);
     gtlo1 = _mm256_cmpgt_epi64(_mm256_loadu_si256(&rlo57.ymm[1]), xlo);
     gtlo2 = _mm256_cmpgt_epi64(_mm256_loadu_si256(&rlo57.ymm[2]), xlo);

@@ -375,4 +375,4 @@ parameter-sets:
 auxiliary-submitters: []
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://github.com/PQClean/PQClean/commit/66e50172055aaf1b9a16d8f35fe03b0807f2723e
+  source: https://github.com/PQClean/PQClean/commit/c3abebf4ab1ff516ffa71e6337f06d898952c299

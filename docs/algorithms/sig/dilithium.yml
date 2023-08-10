@@ -20,9 +20,10 @@ primary-upstream:
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
   pqclean-aarch64:
-    source: https://github.com/PQClean/PQClean/commit/66e50172055aaf1b9a16d8f35fe03b0807f2723e
+    source: https://github.com/PQClean/PQClean/commit/c3abebf4ab1ff516ffa71e6337f06d898952c299
       with copy_from_upstream patches
-    spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
+    spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT)
+      and MIT
 parameter-sets:
 - name: Dilithium2
   oqs_alg: OQS_SIG_alg_dilithium_2
