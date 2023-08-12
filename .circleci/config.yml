@@ -201,7 +201,7 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Install dependencies
-          command: env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja gcc@11 && pip3 install pytest pytest-xdist pyyaml
+          command: env HOMEBREW_NO_AUTO_UPDATE=1 brew install openssl cmake ninja gcc@11 && pip3 install pytest pytest-xdist pyyaml
       - run:
           name: Get system information
           command: sysctl -a | grep machdep.cpu
