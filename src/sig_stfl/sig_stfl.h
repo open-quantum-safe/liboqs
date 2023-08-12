@@ -59,6 +59,8 @@ extern "C" {
 /* Algorithm identifier for LMS-SHA256_N32_H5 */
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h5 "LMS-SHA256_N32_H5"   //0x00000005
 
+typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
+
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
  *
@@ -129,7 +131,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[out] secret_key The secret key represented as a byt string
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
+	OQS_STATUS (*keypair)(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 	/**
 	 * Signature generation algorithm.
@@ -145,7 +147,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
+	OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 	/**
 	 * Signature verification algorithm.
@@ -166,7 +168,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_remaining)(unsigned long long *remain, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_remaining)(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 	/**
 	 * Total number of signatures
@@ -175,14 +177,13 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*sigs_total)(unsigned long long *total, const uint8_t *secret_key);
+	OQS_STATUS (*sigs_total)(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 } OQS_SIG_STFL;
 
 /**
  * @brief OQS_SIG_STFL_SECRET_KEY object for stateful signature schemes
  */
-typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
 
 typedef struct OQS_SIG_STFL_SECRET_KEY {
 
@@ -278,7 +279,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name);
  * @param[out] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *pk, uint8_t *sk);
+OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * Signature generation algorithm.
@@ -295,7 +296,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *pk, ui
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 /**
  * Signature verification algorithm.
@@ -318,7 +319,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 /**
  * * Total number of signatures
@@ -328,7 +329,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 /**
  * Frees an OQS_SIG_STFL object that was constructed by OQS_SIG_STFL_new.
