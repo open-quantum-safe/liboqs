@@ -147,7 +147,7 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-    OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+	OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 	/**
 	 * Signature verification algorithm.
@@ -184,7 +184,6 @@ typedef struct OQS_SIG_STFL {
 /**
  * @brief OQS_SIG_STFL_SECRET_KEY object for stateful signature schemes
  */
-//typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
 
 typedef struct OQS_SIG_STFL_SECRET_KEY {
 

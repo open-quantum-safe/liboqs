@@ -434,7 +434,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public
 	} else {
 		return OQS_SUCCESS;
 	}
-    return OQS_ERROR;
+	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message,
