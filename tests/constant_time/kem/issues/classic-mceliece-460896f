@@ -1,5 +1,5 @@
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:201
    # fun:to_bitslicing_2x
@@ -7,7 +7,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:199
    # fun:to_bitslicing_2x
@@ -15,7 +15,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:196
    # fun:to_bitslicing_2x
@@ -23,7 +23,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:423
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -31,7 +31,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:437
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -39,7 +39,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:sk_gen.c:176
    # fun:PQCLEAN_MCELIECE460896F_AVX2_genpoly_gen
@@ -47,7 +47,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:378
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -55,7 +55,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:386
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -63,7 +63,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:385
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -71,7 +71,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:385
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -79,7 +79,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:410
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -87,7 +87,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:409
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -95,7 +95,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:409
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -103,7 +103,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:101
    # fun:vec256_cswap
@@ -111,7 +111,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:101
    # fun:vec256_cswap
@@ -119,7 +119,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:433
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -127,7 +127,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:442
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -135,7 +135,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:237
    # fun:mov_columns
@@ -143,7 +143,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:241
    # fun:mov_columns
@@ -151,7 +151,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:245
    # fun:mov_columns
@@ -159,7 +159,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:248
    # fun:mov_columns
@@ -167,7 +167,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:253
    # fun:mov_columns
@@ -175,7 +175,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:275
    # fun:mov_columns
@@ -183,7 +183,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:273
    # fun:mov_columns
@@ -191,7 +191,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:295
    # fun:composeinv
@@ -199,7 +199,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:297
    # fun:composeinv
@@ -207,7 +207,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:294
    # fun:composeinv
@@ -215,7 +215,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:303
    # fun:composeinv
@@ -223,7 +223,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:302
    # fun:composeinv
@@ -231,7 +231,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:302
    # fun:composeinv
@@ -239,7 +239,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:475
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -247,7 +247,7 @@
 }
  
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:pk_gen.c:474
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -255,7 +255,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:pk_gen.c:474
    # fun:PQCLEAN_MCELIECE460896F_AVX2_pk_gen
@@ -263,7 +263,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:controlbits.c:245
    # fun:PQCLEAN_MCELIECE460896F_AVX2_controlbitsfrompermutation
@@ -271,7 +271,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:encrypt.c:63
    # fun:gen_e
@@ -279,7 +279,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:encrypt.c:83
    # fun:gen_e
@@ -287,7 +287,7 @@
 }
 
 {
-   <insert_a_suppression_name_here>
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
    src:encrypt.c:92
    # fun:gen_e
