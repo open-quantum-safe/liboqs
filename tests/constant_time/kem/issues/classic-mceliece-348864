@@ -1,0 +1,295 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   src:pk_gen.c:161
+   # fun:to_bitslicing_2x
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   src:pk_gen.c:159
+   # fun:to_bitslicing_2x
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   src:pk_gen.c:156
+   # fun:to_bitslicing_2x
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   src:pk_gen.c:318
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:sk_gen.c:122
+   # fun:PQCLEAN_MCELIECE348864_AVX2_genpoly_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:265
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:273
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:272
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:272
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:297
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:296
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:296
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:34
+   # fun:extract_01_masks
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:62
+   # fun:vec256_cswap
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+ 
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:309
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:304
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:314
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:319
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:42
+   # fun:extract_mask256
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:323
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:322
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:326
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:181
+   # fun:composeinv
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:183
+   # fun:composeinv
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:180
+   # fun:composeinv
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:189
+   # fun:composeinv
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+ 
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:188
+   # fun:composeinv
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:188
+   # fun:composeinv
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:355
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:354
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+ 
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:pk_gen.c:354
+   # fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:util.h:20
+   # fun:store_i
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:util.h:19
+   # fun:store_i
+   fun:PQCLEAN_MCELIECE348864_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:controlbits.c:245
+   # fun:PQCLEAN_MCELIECE348864_AVX2_controlbitsfrompermutation
+   fun:PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:encrypt.c:63
+   # fun:gen_e
+   fun:PQCLEAN_MCELIECE348864_AVX2_encrypt
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:encrypt.c:83
+   # fun:gen_e
+   fun:PQCLEAN_MCELIECE348864_AVX2_encrypt
+}
+ 
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:encrypt.c:92
+   # fun:gen_e
+   fun:PQCLEAN_MCELIECE348864_AVX2_encrypt
+}
