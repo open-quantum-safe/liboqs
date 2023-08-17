@@ -168,17 +168,11 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	// Grab the pk and sk from KAT file
 	public_key = malloc(sig->length_public_key);
-	secret_key = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
+	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
 	signature = calloc(sig->length_signature, sizeof(uint8_t));
 	signature_kat = calloc(sig->length_signature, sizeof(uint8_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: malloc failed!\n", method_name);
-		goto err;
-	}
-	secret_key->secret_key_data = calloc(sig->length_secret_key, sizeof(uint8_t));
-	if (secret_key->secret_key_data == NULL)
-	{
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: malloc failed!\n", method_name);
 		goto err;
 	}
@@ -286,11 +280,10 @@ algo_not_enabled:
 
 cleanup:
 	if (sig != NULL) {
-		OQS_MEM_secure_free(secret_key->secret_key_data, sig->length_secret_key);
 		OQS_MEM_secure_free(signed_msg, signed_msg_len);
 	}
 	OQS_MEM_insecure_free(public_key);
-	OQS_MEM_insecure_free(secret_key);
+	OQS_SIG_STFL_SECRET_KEY_free(secret_key);
 	OQS_MEM_insecure_free(signature);
 	OQS_MEM_insecure_free(signature_kat);
 	OQS_MEM_insecure_free(msg);
