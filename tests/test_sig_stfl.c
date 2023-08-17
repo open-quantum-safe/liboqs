@@ -123,7 +123,7 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 	return 1;
 }
 
-OQS_STATUS sig_stfl_keypair_from_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, uint8_t *secret_key) {
+OQS_STATUS sig_stfl_keypair_from_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	OQS_STATUS rc;
 	rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
@@ -133,7 +133,7 @@ OQS_STATUS sig_stfl_keypair_from_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, 
 	return OQS_SUCCESS;
 }
 
-OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, uint8_t *secret_key, const char *katfile) {
+OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, uint8_t *secret_key_data, const char *katfile) {
 	OQS_STATUS ret = OQS_ERROR;
 	FILE *fp_rsp = NULL;
 
@@ -148,7 +148,7 @@ OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, ui
 		goto err;
 	}
 
-	if (!ReadHex(fp_rsp, secret_key, sig->length_secret_key, "sk = ")) {
+	if (!ReadHex(fp_rsp, secret_key_data, sig->length_secret_key, "sk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'sk' from <%s>\n", katfile);
 		goto err;
 	}
@@ -176,7 +176,7 @@ cleanup:
  * XMSSMT-SHAKE_40/2_256
  * XMSSMT-SHAKE_60/3_256
  */
-OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, uint8_t *secret_key, const char *katfile) {
+OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
 
 	printf("%s", sig->method_name);
 	if (0) {
@@ -239,7 +239,7 @@ OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, uint8_t 
 	}
 
 from_kats:
-	return sig_stfl_keypair_from_KATs(sig, public_key, secret_key, katfile);
+	return sig_stfl_keypair_from_KATs(sig, public_key, secret_key->secret_key_data, katfile);
 
 from_keygen:
 	return sig_stfl_keypair_from_keygen(sig, public_key, secret_key);
@@ -253,7 +253,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
-	uint8_t *secret_key = NULL;
+	OQS_SIG_STFL_SECRET_KEY *secret_key = NULL;
 	uint8_t *message = NULL;
 	size_t message_len = 100;
 	uint8_t *signature = NULL;
@@ -276,7 +276,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	printf("================================================================================\n");
 
 	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
-	secret_key = malloc(sig->length_secret_key + 2 * sizeof(magic_t));
+	secret_key = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
 	message = malloc(message_len + 2 * sizeof(magic_t));
 	signature = malloc(sig->length_signature + 2 * sizeof(magic_t));
 
@@ -284,21 +284,27 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
+	secret_key->secret_key_data = malloc(sig->length_secret_key + 2 * sizeof(magic_t));
+	if (secret_key->secret_key_data == NULL)
+	{
+		fprintf(stderr, "ERROR: malloc failed\n");
+		goto err;
+	}
 
 	//Set the magic numbers before
 	memcpy(public_key, magic.val, sizeof(magic_t));
-	memcpy(secret_key, magic.val, sizeof(magic_t));
+	memcpy(secret_key->secret_key_data, magic.val, sizeof(magic_t));
 	memcpy(message, magic.val, sizeof(magic_t));
 	memcpy(signature, magic.val, sizeof(magic_t));
 
 	public_key += sizeof(magic_t);
-	secret_key += sizeof(magic_t);
+	secret_key->secret_key_data += sizeof(magic_t);
 	message += sizeof(magic_t);
 	signature += sizeof(magic_t);
 
 	// and after
 	memcpy(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
-	memcpy(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
+	memcpy(secret_key->secret_key_data + sig->length_secret_key, magic.val, sizeof(magic_t));
 	memcpy(message + message_len, magic.val, sizeof(magic_t));
 	memcpy(signature + sig->length_signature, magic.val, sizeof(magic_t));
 
@@ -344,11 +350,11 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	/* check magic values */
 	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
-	rv |= memcmp(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
+	rv |= memcmp(secret_key->secret_key_data + sig->length_secret_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(message + message_len, magic.val, sizeof(magic_t));
 	rv |= memcmp(signature + sig->length_signature, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(secret_key->secret_key_data - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(message - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(signature - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv) {
@@ -365,8 +371,12 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	if (secret_key) {
-		OQS_MEM_secure_free(secret_key - sizeof(magic_t), sig->length_secret_key + 2 * sizeof(magic_t));
+	if (secret_key->secret_key_data) {
+		OQS_MEM_secure_free(secret_key->secret_key_data - sizeof(magic_t), sig->length_secret_key + 2 * sizeof(magic_t));
+	}
+	if (secret_key)
+	{
+		OQS_MEM_insecure_free(secret_key - sizeof(magic_t));
 	}
 	if (public_key) {
 		OQS_MEM_insecure_free(public_key - sizeof(magic_t));

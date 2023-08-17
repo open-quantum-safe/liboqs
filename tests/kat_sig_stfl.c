@@ -141,7 +141,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	uint8_t *msg = NULL, *msg_rand = NULL;
 	size_t msg_len = 0;
 	uint8_t *public_key = NULL;
-	uint8_t *secret_key = NULL;
+	OQS_SIG_STFL_SECRET_KEY *secret_key = NULL;
 	uint8_t *signature = NULL, *signature_kat = NULL;
 	uint8_t *signed_msg = NULL;
 	size_t signature_len = 0;
@@ -168,11 +168,17 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	// Grab the pk and sk from KAT file
 	public_key = malloc(sig->length_public_key);
-	secret_key = calloc(sig->length_secret_key, sizeof(uint8_t));
+	secret_key = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
 	signature = calloc(sig->length_signature, sizeof(uint8_t));
 	signature_kat = calloc(sig->length_signature, sizeof(uint8_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
+		fprintf(stderr, "[kat_stfl_sig] %s ERROR: malloc failed!\n", method_name);
+		goto err;
+	}
+	secret_key->secret_key_data = calloc(sig->length_secret_key, sizeof(uint8_t));
+	if (secret_key->secret_key_data == NULL)
+	{
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: malloc failed!\n", method_name);
 		goto err;
 	}
@@ -182,7 +188,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 
-	if (!ReadHex(fp_rsp, secret_key, sig->length_secret_key, "sk = ")) {
+	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, "sk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'sk' from <%s>\n", katfile);
 		goto err;
 	}
@@ -191,7 +197,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	fprintf(fh, "# %s\n\n", sig->method_name);
 
 	fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
-	fprintBstr(fh, "sk = ", secret_key, sig->length_secret_key);
+	fprintBstr(fh, "sk = ", secret_key->secret_key_data, sig->length_secret_key);
 	fprintf(fh, "\n\n");
 
 	fprintf(fh, "count = 0\n");
@@ -280,10 +286,11 @@ algo_not_enabled:
 
 cleanup:
 	if (sig != NULL) {
-		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
+		OQS_MEM_secure_free(secret_key->secret_key_data, sig->length_secret_key);
 		OQS_MEM_secure_free(signed_msg, signed_msg_len);
 	}
 	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(secret_key);
 	OQS_MEM_insecure_free(signature);
 	OQS_MEM_insecure_free(signature_kat);
 	OQS_MEM_insecure_free(msg);
