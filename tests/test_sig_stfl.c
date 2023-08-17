@@ -133,7 +133,7 @@ OQS_STATUS sig_stfl_keypair_from_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, 
 	return OQS_SUCCESS;
 }
 
-OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, uint8_t *secret_key_data, const char *katfile) {
+OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
 	OQS_STATUS ret = OQS_ERROR;
 	FILE *fp_rsp = NULL;
 
@@ -148,7 +148,7 @@ OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, ui
 		goto err;
 	}
 
-	if (!ReadHex(fp_rsp, secret_key_data, sig->length_secret_key, "sk = ")) {
+	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, "sk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'sk' from <%s>\n", katfile);
 		goto err;
 	}
@@ -239,7 +239,7 @@ OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_
 	}
 
 from_kats:
-	return sig_stfl_keypair_from_KATs(sig, public_key, secret_key->secret_key_data, katfile);
+	return sig_stfl_keypair_from_KATs(sig, public_key, secret_key, katfile);
 
 from_keygen:
 	return sig_stfl_keypair_from_keygen(sig, public_key, secret_key);
@@ -360,6 +360,7 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
+	OQS_SIG_STFL_SECRET_KEY_free(secret_key);
 	if (public_key) {
 		OQS_MEM_insecure_free(public_key - sizeof(magic_t));
 	}
@@ -369,7 +370,6 @@ cleanup:
 	if (signature) {
 		OQS_MEM_insecure_free(signature - sizeof(magic_t));
 	}
-	OQS_SIG_STFL_SECRET_KEY_free(secret_key);
 	OQS_SIG_STFL_free(sig);
 
 	return ret;
