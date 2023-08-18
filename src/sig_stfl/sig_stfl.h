@@ -333,6 +333,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned lon
 /**
  * Frees an OQS_SIG_STFL object that was constructed by OQS_SIG_STFL_new.
  *
+ */
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 
 /**
