@@ -65,28 +65,28 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_4_new(void) {
 	return sk;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_keypair(XMSS_UNUSED_ATT uint8_t *public_key, XMSS_UNUSED_ATT uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_keypair(XMSS_UNUSED_ATT uint8_t *public_key, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
-	if (public_key == NULL || secret_key == NULL) {
+	if (public_key == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {
 		return OQS_ERROR;
 	}
 
 	const uint32_t xmssmt_sha256_h40_4_oid = 0x04;
-	if (xmssmt_keypair(public_key, secret_key, xmssmt_sha256_h40_4_oid)) {
+	if (xmssmt_keypair(public_key, secret_key->secret_key_data, xmssmt_sha256_h40_4_oid)) {
 		return OQS_ERROR;
 	}
 
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
-	if (signature == NULL || signature_len == NULL || message == NULL || secret_key == NULL) {
+	if (signature == NULL || signature_len == NULL || message == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {
 		return OQS_ERROR;
 	}
 
 	unsigned long long sig_length = 0;
-	if (xmssmt_sign(secret_key, signature, &sig_length, message, message_len)) {
+	if (xmssmt_sign(secret_key->secret_key_data, signature, &sig_length, message, message_len)) {
 		return OQS_ERROR;
 	}
 	*signature_len = (size_t) sig_length;
@@ -107,24 +107,24 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_verify(XMSS_UNUSED_ATT c
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_remaining(unsigned long long *remain, const uint8_t *secret_key) {
-	if (remain == NULL || secret_key == NULL) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
+	if (remain == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {
 		return OQS_ERROR;
 	}
 
-	if (xmssmt_remaining_signatures(remain, secret_key)) {
+	if (xmssmt_remaining_signatures(remain, secret_key->secret_key_data)) {
 		return OQS_ERROR;
 	}
 
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_total(unsigned long long *total, const uint8_t *secret_key) {
-	if (total == NULL || secret_key == NULL) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
+	if (total == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {
 		return OQS_ERROR;
 	}
 
-	if (xmssmt_total_signatures(total, secret_key)) {
+	if (xmssmt_total_signatures(total, secret_key->secret_key_data)) {
 		return OQS_ERROR;
 	}
 
