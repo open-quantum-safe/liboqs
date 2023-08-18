@@ -65,6 +65,8 @@ add_library(oqs kem/kem.c
                 ${SIG_OBJS}
                 sig_stfl/sig_stfl.c
                 ${SIG_STFL_OBJS}
+                sig_stfl/sig_stfl.c
+                ${SIG_STFL_OBJS}
                 ${COMMON_OBJS})
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
