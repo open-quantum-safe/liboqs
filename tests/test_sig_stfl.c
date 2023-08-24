@@ -178,7 +178,7 @@ cleanup:
  */
 OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
 
-	printf("%s", sig->method_name);
+	printf("%s ", sig->method_name);
 	if (0) {
 
 #ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
@@ -379,6 +379,25 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
 
+	OQS_SIG_STFL *sig_obj = NULL;
+	uint8_t *public_key = NULL;
+
+	printf("================================================================================\n");
+	printf("Create stateful Signature  %s\n", method_name);
+	printf("================================================================================\n");
+
+	sig_obj = OQS_SIG_STFL_new(method_name);
+	if (sig_obj == NULL) {
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_new failed\n");
+		goto err;
+	}
+
+	public_key = malloc(sig_obj->length_public_key * sizeof(uint8_t));
+
+	printf("================================================================================\n");
+	printf("Create stateful Secret Key  %s\n", method_name);
+	printf("================================================================================\n");
+
 	sk = OQS_SIG_STFL_SECRET_KEY_new(method_name);
 	if (sk == NULL) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
@@ -386,8 +405,9 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	}
 
 	printf("================================================================================\n");
-	printf("Create stateful Secret Key  %s\n", method_name);
+	printf("Generate keypair  %s\n", method_name);
 	printf("================================================================================\n");
+	rc = OQS_SIG_STFL_keypair(sig_obj, public_key, sk);
 
 	if (!sk->secret_key_data) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
@@ -395,6 +415,9 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	}
 
 	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	OQS_MEM_insecure_free(public_key);
+	OQS_SIG_STFL_free(sig_obj);
+
 	printf("Secret Key created as expected.\n");
 	goto end_it;
 
