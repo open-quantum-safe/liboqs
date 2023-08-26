@@ -126,7 +126,7 @@ jobs:
           - name: armhf
             ARCH: armhf
             CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_speed.py
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py
           # no longer supporting armel
           # - name: armel
           #   ARCH: armel
