@@ -100,7 +100,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void) {
 }
 
 void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
-	return oqs_secret_lms_key_free(sk);
+	oqs_secret_lms_key_free(sk);
 }
 
 /* Convert LMS secret key object to byte string */
