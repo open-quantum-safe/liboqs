@@ -408,7 +408,7 @@ size_t oqs_serialize_lms_key(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_ke
 						}
 
 						if (lms_key_data->len_aux_data) {
-							memcpy(sk_key_buf + lms_key_data->len_sec_key, lms_key_data->sec_key, lms_key_data->len_aux_data);
+							memcpy(sk_key_buf + lms_key_data->len_sec_key, lms_key_data->aux_data, lms_key_data->len_aux_data);
 						}
 
 						*sk_key = sk_key_buf;
