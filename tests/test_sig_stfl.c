@@ -480,12 +480,9 @@ keep_going:
 
 	if (!sk->secret_key_data) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
+		OQS_MEM_insecure_free(public_key);
 		goto err;
 	}
-
-	OQS_SIG_STFL_SECRET_KEY_free(sk);
-	OQS_MEM_insecure_free(public_key);
-	OQS_SIG_STFL_free(sig_obj);
 
 	printf("Secret Key created as expected.\n");
 	goto end_it;
@@ -493,6 +490,10 @@ keep_going:
 err:
 	rc = OQS_ERROR;
 end_it:
+
+	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	OQS_MEM_insecure_free(public_key);
+	OQS_SIG_STFL_free(sig_obj);
 	return rc;
 }
 
