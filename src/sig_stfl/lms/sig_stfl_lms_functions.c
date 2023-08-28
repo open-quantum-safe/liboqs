@@ -18,7 +18,7 @@
 typedef struct OQS_LMS_KEY_DATA {
 
 	/* Tree levels. */
-	unsigned levels;
+	uint32_t levels;
 
 	/* Array, 8 levels max, of LMS types */
 	param_set_t lm_type[8];
@@ -27,18 +27,18 @@ typedef struct OQS_LMS_KEY_DATA {
 	param_set_t lm_ots_type[8];
 
 	/* LMS public key */
-	unsigned char public_key[60];
+	uint8_t public_key[60];
 
 	/* Length of aux data */
 	size_t len_aux_data;
 	/* internal nodes info of the Merkle tree */
-	unsigned char *aux_data;
+	uint8_t *aux_data;
 
 	/* Length of sec_key */
 	size_t len_sec_key;
 
 	/* secret key data */
-	unsigned char *sec_key;
+	uint8_t *sec_key;
 
 	/* User defined data that may be used for the SAFETY functions */
 	void *data;
@@ -144,6 +144,8 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 				return -1;
 			}
 		} else {
+			OQS_MEM_insecure_free(oqs_key_data);
+			oqs_key_data = NULL;
 			return -1;
 		}
 
@@ -247,7 +249,7 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 
 	size_t sig_len;
 	bool status;
-	unsigned char *sig = NULL;
+	uint8_t *sig = NULL;
 	uint8_t *priv_key = NULL;
 	oqs_lms_key_data *oqs_key_data = NULL;
 	struct hss_working_key *w = NULL;
@@ -381,14 +383,14 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
  * Convert LMS secret key object to byte string
  * Writes secret key + aux data if present
  */
-size_t oqs_serialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_key) {
+size_t oqs_serialize_lms_key(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_key) {
 
 	oqs_lms_key_data *lms_key_data = NULL;
 	size_t key_len = 0;
 	if (sk) {
 		uint8_t *sk_key_buf = NULL;
 		lms_key_data = sk->secret_key_data;
-		if (lms_key_data->sec_key) {
+		if (lms_key_data && lms_key_data->sec_key) {
 			size_t buf_size_needed = lms_key_data->len_aux_data + lms_key_data->len_sec_key;
 			key_len = buf_size_needed;
 			/* pass back serialized data */
@@ -397,6 +399,10 @@ size_t oqs_serialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_key) {
 					sk_key_buf = malloc(buf_size_needed * sizeof(uint8_t));
 					if (sk_key_buf) {
 
+						/*
+						 * Serialized data is sec_key followed by aux data
+						 * So aux data begins after buffer top + sec_key length
+						 */
 						if (lms_key_data->len_sec_key) {
 							memcpy(sk_key_buf, lms_key_data->sec_key, lms_key_data->len_sec_key);
 						}
@@ -407,8 +413,6 @@ size_t oqs_serialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_key) {
 
 						*sk_key = sk_key_buf;
 						key_len = sk->length_secret_key + lms_key_data->len_aux_data;
-					} else {
-						OQS_MEM_insecure_free(sk_key_buf);
 					}
 				}
 			} //sk_key
@@ -418,11 +422,11 @@ size_t oqs_serialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_key) {
 }
 
 /*
- * Convert LMS secret key object to byte string
+ * Convert LMS byte string to secret key object
  * Writes secret key + aux data if present
  * key_len is priv key length + aux length
  */
-int oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, uint8_t *sk_buf) {
+int oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf) {
 	int oqs_status = -1;
 	oqs_lms_key_data *lms_key_data = NULL;
 	uint8_t priv_ky_len = hss_get_private_key_len((unsigned )(1), NULL, NULL);
@@ -484,5 +488,5 @@ int oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, uint8_t
 		sk->secret_key_data = lms_key_data;
 		oqs_status = 0;
 	}
-	return oqs_status;;
+	return oqs_status;
 }

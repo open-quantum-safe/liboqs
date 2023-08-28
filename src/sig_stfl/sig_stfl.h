@@ -210,7 +210,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @returns length of key material data available
 	 * Caller deletes the buffer if memory was allocated.
 	 */
-	size_t (*serialize_key)(OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_buf);
+	size_t (*serialize_key)(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_buf);
 
 	/**
 	 * set Secret Key to internal structure Function
@@ -222,7 +222,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @returns  status of the operation populated with key material none-zero length. Caller
 	 * deletes the buffer. if sk_buf is NULL the function returns the length
 	 */
-	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, uint8_t *sk_buf);
+	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf);
 
 	/**
 	 * Secret Key Locking Function
