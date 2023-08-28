@@ -133,7 +133,6 @@ static inline uint16_t UINT16_TO_BE(const uint16_t x) {
 
 OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
-	uint8_t entropy_input[48];
 	uint8_t seed[48];
 	FILE *fh = NULL;
 	FILE *fp_rsp = NULL;
