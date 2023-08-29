@@ -78,7 +78,8 @@ int FindMarker(FILE *infile, const char *marker) {
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
 //
 int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
-	int i, ch, started;
+	int ch, started;
+	unsigned long i;
 	unsigned char ich;
 
 	if (Length == 0) {
@@ -178,7 +179,7 @@ cleanup:
  */
 OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
 
-	printf("%s", sig->method_name);
+	printf("%s ", sig->method_name);
 	if (0) {
 
 #ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
@@ -379,6 +380,93 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
 
+	OQS_SIG_STFL *sig_obj = NULL;
+	uint8_t *public_key = NULL;
+
+	/*
+	 * Temporarily skip algs with long key generation times.
+	 */
+
+	if (0) {
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
+		goto skip_test;
+#endif
+	} else {
+		goto keep_going;
+	}
+skip_test:
+	printf("Skip slow test %s.\n", method_name);
+	return rc;
+
+keep_going:
+
+	printf("================================================================================\n");
+	printf("Create stateful Signature  %s\n", method_name);
+	printf("================================================================================\n");
+
+	sig_obj = OQS_SIG_STFL_new(method_name);
+	if (sig_obj == NULL) {
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_new failed\n");
+		goto err;
+	}
+
+	public_key = malloc(sig_obj->length_public_key * sizeof(uint8_t));
+
+	printf("================================================================================\n");
+	printf("Create stateful Secret Key  %s\n", method_name);
+	printf("================================================================================\n");
+
 	sk = OQS_SIG_STFL_SECRET_KEY_new(method_name);
 	if (sk == NULL) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
@@ -386,21 +474,27 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	}
 
 	printf("================================================================================\n");
-	printf("Create stateful Secret Key  %s\n", method_name);
+	printf("Generate keypair  %s\n", method_name);
 	printf("================================================================================\n");
+
+	rc = OQS_SIG_STFL_keypair(sig_obj, public_key, sk);
 
 	if (!sk->secret_key_data) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
+		OQS_MEM_insecure_free(public_key);
 		goto err;
 	}
 
-	OQS_SIG_STFL_SECRET_KEY_free(sk);
 	printf("Secret Key created as expected.\n");
 	goto end_it;
 
 err:
 	rc = OQS_ERROR;
 end_it:
+
+	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	OQS_MEM_insecure_free(public_key);
+	OQS_SIG_STFL_free(sig_obj);
 	return rc;
 }
 
