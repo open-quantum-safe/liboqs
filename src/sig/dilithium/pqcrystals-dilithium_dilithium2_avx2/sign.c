@@ -9,11 +9,7 @@
 #include "randombytes.h"
 #include "symmetric.h"
 #include "fips202.h"
-#ifdef DILITHIUM_USE_AES
-#include "aes256ctr.h"
-#endif
 
-#ifndef DILITHIUM_USE_AES
 static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], const uint8_t rho[SEEDBYTES], unsigned int i) {
   switch(i) {
     case 0:
@@ -54,7 +50,6 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
 #endif
   }
 }
-#endif
 
 /*************************************************
 * Name:        crypto_sign_keypair
@@ -72,13 +67,7 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   unsigned int i;
   uint8_t seedbuf[2*SEEDBYTES + CRHBYTES];
   const uint8_t *rho, *rhoprime, *key;
-#ifdef DILITHIUM_USE_AES
-  uint64_t nonce;
-  aes256ctr_ctx aesctx;
-  polyvecl rowbuf[1];
-#else
   polyvecl rowbuf[2];
-#endif
   polyvecl s1, *row = rowbuf;
   polyveck s2;
   poly t1, t0;
@@ -96,20 +85,7 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   memcpy(sk + SEEDBYTES, key, SEEDBYTES);
 
   /* Sample short vectors s1 and s2 */
-#ifdef DILITHIUM_USE_AES
-  aes256ctr_init_u64(&aesctx, rhoprime, 0);
-  for(i = 0; i < L; ++i) {
-    nonce = i;
-    aes256ctr_init_iv_u64(&aesctx, nonce);
-    poly_uniform_eta_preinit(&s1.vec[i], &aesctx);
-  }
-  for(i = 0; i < K; ++i) {
-    nonce = L + i;
-    aes256ctr_init_iv_u64(&aesctx, nonce);
-    poly_uniform_eta_preinit(&s2.vec[i], &aesctx);
-  }
-  aes256_ctx_release(&aesctx);
-#elif K == 4 && L == 4
+#if K == 4 && L == 4
   poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime, 0, 1, 2, 3);
   poly_uniform_eta_4x(&s2.vec[0], &s2.vec[1], &s2.vec[2], &s2.vec[3], rhoprime, 4, 5, 6, 7);
 #elif K == 6 && L == 5
@@ -127,29 +103,16 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 
   /* Pack secret vectors */
   for(i = 0; i < L; i++)
-    polyeta_pack(sk + 3*SEEDBYTES + i*POLYETA_PACKEDBYTES, &s1.vec[i]);
+    polyeta_pack(sk + 2*SEEDBYTES + TRBYTES + i*POLYETA_PACKEDBYTES, &s1.vec[i]);
   for(i = 0; i < K; i++)
-    polyeta_pack(sk + 3*SEEDBYTES + (L + i)*POLYETA_PACKEDBYTES, &s2.vec[i]);
+    polyeta_pack(sk + 2*SEEDBYTES + TRBYTES + (L + i)*POLYETA_PACKEDBYTES, &s2.vec[i]);
 
   /* Transform s1 */
   polyvecl_ntt(&s1);
 
-#ifdef DILITHIUM_USE_AES
-  aes256ctr_init_u64(&aesctx, rho, 0);
-#endif
-
   for(i = 0; i < K; i++) {
     /* Expand matrix row */
-#ifdef DILITHIUM_USE_AES
-    for(unsigned int j = 0; j < L; j++) {
-      nonce = (i << 8) + j;
-      aes256ctr_init_iv_u64(&aesctx, nonce);
-      poly_uniform_preinit(&row->vec[j], &aesctx);
-      poly_nttunpack(&row->vec[j]);
-    }
-#else
     polyvec_matrix_expand_row(&row, rowbuf, rho, i);
-#endif
 
     /* Compute inner-product */
     polyvecl_pointwise_acc_montgomery(&t1, row, &s1);
@@ -162,15 +125,11 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     poly_caddq(&t1);
     poly_power2round(&t1, &t0, &t1);
     polyt1_pack(pk + SEEDBYTES + i*POLYT1_PACKEDBYTES, &t1);
-    polyt0_pack(sk + 3*SEEDBYTES + (L+K)*POLYETA_PACKEDBYTES + i*POLYT0_PACKEDBYTES, &t0);
+    polyt0_pack(sk + 2*SEEDBYTES + TRBYTES + (L+K)*POLYETA_PACKEDBYTES + i*POLYT0_PACKEDBYTES, &t0);
   }
 
-#ifdef DILITHIUM_USE_AES
-  aes256_ctx_release(&aesctx);
-#endif
-
   /* Compute H(rho, t1) and store in secret key */
-  shake256(sk + 2*SEEDBYTES, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+  shake256(sk + 2*SEEDBYTES, TRBYTES, pk, CRYPTO_PUBLICKEYBYTES);
 
   return 0;
 }
@@ -190,10 +149,10 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 **************************************************/
 int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk) {
   unsigned int i, n, pos;
-  uint8_t seedbuf[3*SEEDBYTES + 2*CRHBYTES];
-  uint8_t *rho, *tr, *key, *mu, *rhoprime;
+  uint8_t seedbuf[2*SEEDBYTES + TRBYTES + RNDBYTES + 2*CRHBYTES];
+  uint8_t *rho, *tr, *key, *rnd, *mu, *rhoprime;
   uint8_t hintbuf[N];
-  uint8_t *hint = sig + SEEDBYTES + L*POLYZ_PACKEDBYTES;
+  uint8_t *hint = sig + CTILDEBYTES + L*POLYZ_PACKEDBYTES;
   uint64_t nonce = 0;
   polyvecl mat[K], s1, z;
   polyveck t0, s2, w1;
@@ -206,23 +165,25 @@ int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t
 
   rho = seedbuf;
   tr = rho + SEEDBYTES;
-  key = tr + SEEDBYTES;
-  mu = key + SEEDBYTES;
+  key = tr + TRBYTES;
+  rnd = key + SEEDBYTES;
+  mu = rnd + RNDBYTES;
   rhoprime = mu + CRHBYTES;
   unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
 
   /* Compute CRH(tr, msg) */
   shake256_inc_init(&state);
-  shake256_inc_absorb(&state, tr, SEEDBYTES);
+  shake256_inc_absorb(&state, tr, TRBYTES);
   shake256_inc_absorb(&state, m, mlen);
   shake256_inc_finalize(&state);
   shake256_inc_squeeze(mu, CRHBYTES, &state);
 
 #ifdef DILITHIUM_RANDOMIZED_SIGNING
-  randombytes(rhoprime, CRHBYTES);
+  randombytes(rnd, RNDBYTES);
 #else
-  shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
+  memset(rnd, 0, RNDBYTES);
 #endif
+  shake256(rhoprime, CRHBYTES, key, SEEDBYTES + RNDBYTES + CRHBYTES);
 
   /* Expand matrix and transform vectors */
   polyvec_matrix_expand(mat, rho);
@@ -230,20 +191,9 @@ int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t
   polyveck_ntt(&s2);
   polyveck_ntt(&t0);
 
-#ifdef DILITHIUM_USE_AES
-  aes256ctr_ctx aesctx;
-  aes256ctr_init_u64(&aesctx, rhoprime, 0);
-#endif
-
 rej:
   /* Sample intermediate vector y */
-#ifdef DILITHIUM_USE_AES
-  for(i = 0; i < L; ++i) {
-    aes256ctr_init_iv_u64(&aesctx, nonce);
-    nonce++;
-    poly_uniform_gamma1_preinit(&z.vec[i], &aesctx);
-  }
-#elif L == 4
+#if L == 4
   poly_uniform_gamma1_4x(&z.vec[0], &z.vec[1], &z.vec[2], &z.vec[3],
                          rhoprime, nonce, nonce + 1, nonce + 2, nonce + 3);
   nonce += 4;
@@ -277,7 +227,7 @@ rej:
   shake256_inc_absorb(&state, mu, CRHBYTES);
   shake256_inc_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
   shake256_inc_finalize(&state);
-  shake256_inc_squeeze(sig, SEEDBYTES, &state);
+  shake256_inc_squeeze(sig, CTILDEBYTES, &state);
   poly_challenge(&c, sig);
   poly_ntt(&c);
 
@@ -322,14 +272,10 @@ rej:
     hint[OMEGA + i] = pos = pos + n;
   }
 
-#ifdef DILITHIUM_USE_AES
-  aes256_ctx_release(&aesctx);
-#endif
-
   shake256_inc_ctx_release(&state);
   /* Pack z into signature */
   for(i = 0; i < L; i++)
-    polyz_pack(sig + SEEDBYTES + i*POLYZ_PACKEDBYTES, &z.vec[i]);
+    polyz_pack(sig + CTILDEBYTES + i*POLYZ_PACKEDBYTES, &z.vec[i]);
 
   *siglen = CRYPTO_BYTES;
   return 0;
@@ -379,14 +325,8 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
   /* polyw1_pack writes additional 14 bytes */
   ALIGNED_UINT8(K*POLYW1_PACKEDBYTES+14) buf;
   uint8_t mu[CRHBYTES];
-  const uint8_t *hint = sig + SEEDBYTES + L*POLYZ_PACKEDBYTES;
-#ifdef DILITHIUM_USE_AES
-  uint64_t nonce;
-  aes256ctr_ctx aesctx;
-  polyvecl rowbuf[1];
-#else
+  const uint8_t *hint = sig + CTILDEBYTES + L*POLYZ_PACKEDBYTES;
   polyvecl rowbuf[2];
-#endif
   polyvecl *row = rowbuf;
   polyvecl z;
   poly c, w1, h;
@@ -396,9 +336,9 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
     return -1;
 
   /* Compute CRH(H(rho, t1), msg) */
-  shake256(mu, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+  shake256(mu, CRHBYTES, pk, CRYPTO_PUBLICKEYBYTES);
   shake256_inc_init(&state);
-  shake256_inc_absorb(&state, mu, SEEDBYTES);
+  shake256_inc_absorb(&state, mu, CRHBYTES);
   shake256_inc_absorb(&state, m, mlen);
   shake256_inc_finalize(&state);
   shake256_inc_squeeze(mu, CRHBYTES, &state);
@@ -410,26 +350,13 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
 
   /* Unpack z; shortness follows from unpacking */
   for(i = 0; i < L; i++) {
-    polyz_unpack(&z.vec[i], sig + SEEDBYTES + i*POLYZ_PACKEDBYTES);
+    polyz_unpack(&z.vec[i], sig + CTILDEBYTES + i*POLYZ_PACKEDBYTES);
     poly_ntt(&z.vec[i]);
   }
 
-#ifdef DILITHIUM_USE_AES
-  aes256ctr_init_u64(&aesctx, pk, 0);
-#endif
-
   for(i = 0; i < K; i++) {
     /* Expand matrix row */
-#ifdef DILITHIUM_USE_AES
-    for(j = 0; j < L; j++) {
-      nonce = (i << 8) + j;
-      aes256ctr_init_iv_u64(&aesctx, nonce);
-      poly_uniform_preinit(&row->vec[j], &aesctx);
-      poly_nttunpack(&row->vec[j]);
-    }
-#else
     polyvec_matrix_expand_row(&row, rowbuf, pk, i);
-#endif
 
     /* Compute i-th row of Az - c2^Dt1 */
     polyvecl_pointwise_acc_montgomery(&w1, row, &z);
@@ -445,21 +372,12 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
 
     /* Get hint polynomial and reconstruct w1 */
     memset(h.vec, 0, sizeof(poly));
-    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA) {
-#ifdef DILITHIUM_USE_AES
-      aes256_ctx_release(&aesctx);
-#endif
+    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA)
       return -1;
-    }
 
     for(j = pos; j < hint[OMEGA + i]; ++j) {
       /* Coefficients are ordered for strong unforgeability */
-      if(j > pos && hint[j] <= hint[j-1]) {
-#ifdef DILITHIUM_USE_AES
-        aes256_ctx_release(&aesctx);
-#endif
-        return -1;
-      }
+      if(j > pos && hint[j] <= hint[j-1]) return -1;
       h.coeffs[hint[j]] = 1;
     }
     pos = hint[OMEGA + i];
@@ -468,10 +386,6 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
     poly_use_hint(&w1, &w1, &h);
     polyw1_pack(buf.coeffs + i*POLYW1_PACKEDBYTES, &w1);
   }
-
-#ifdef DILITHIUM_USE_AES
-  aes256_ctx_release(&aesctx);
-#endif
 
   /* Extra indices are zero for strong unforgeability */
   for(j = pos; j < OMEGA; ++j)
@@ -482,9 +396,9 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
   shake256_inc_absorb(&state, mu, CRHBYTES);
   shake256_inc_absorb(&state, buf.coeffs, K*POLYW1_PACKEDBYTES);
   shake256_inc_finalize(&state);
-  shake256_inc_squeeze(buf.coeffs, SEEDBYTES, &state);
+  shake256_inc_squeeze(buf.coeffs, CTILDEBYTES, &state);
   shake256_inc_ctx_release(&state);
-  for(i = 0; i < SEEDBYTES; ++i)
+  for(i = 0; i < CTILDEBYTES; ++i)
     if(buf.coeffs[i] != sig[i])
       return -1;
 
