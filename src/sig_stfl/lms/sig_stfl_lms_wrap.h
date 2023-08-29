@@ -13,32 +13,6 @@
  */
 typedef struct OQS_LMS_KEY_DATA oqs_lms_key_data;
 
-typedef struct OQS_LMS_KEY_DATA {
-
-	/* Tree levels. */
-	unsigned levels;
-
-	/* Array, 8 levels max, of LMS types */
-	param_set_t lm_type[8];
-
-	/* Array, 8 levels max, of LM OTS types */
-	param_set_t lm_ots_type[8];
-
-	/* LMS public key */
-	unsigned char public_key[60];
-
-	/* internal nodes info of the Merkle tree */
-	unsigned char *aux_data;
-
-	/* Length of aux data */
-	size_t len_aux_data;
-
-	/* User defined data that may be used for the SAFETY functions */
-	void *data;
-
-} oqs_lms_key_data;
-
-
 typedef struct OQS_LMS_SIG_DATA oqs_lms_sig_data;
 
 typedef struct OQS_LMS_SIG_DATA {

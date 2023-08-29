@@ -206,21 +206,23 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * Secret Key retrieval Function
 	 *
 	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
-	 * @param[out] key_len length of the returned byte string
-	 * @returns newly created pointer to ley byte string if none-zero length. Caller
-	 * deletes the buffer.
+	 * @param[out] sk_buf private key data as a byte stream
+	 * @returns length of key material data available
+	 * Caller deletes the buffer if memory was allocated.
 	 */
-	uint8_t *(*serialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len);
+	size_t (*serialize_key)(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_buf);
 
 	/**
 	 * set Secret Key to internal structure Function
 	 *
-	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
-	 * @param[out] key_len length of the returned byte string
-	 * @returns newly created pointer to ley byte string if none-zero length. Caller
-	 * deletes the buffer.
+	 * @param[in]  sk OQS_SIG_STFL_SECRET_KEY object
+	 * @param[in]  key_len length of the returned byte string
+	 * @param[in]  sk_key The secret key represented as OQS_SIG_STFL_SECRET_KEY object
+	 * @param[in]  key_len length of the returned byte string
+	 * @returns  status of the operation populated with key material none-zero length. Caller
+	 * deletes the buffer. if sk_buf is NULL the function returns the length
 	 */
-	uint8_t *(*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, uint8_t *sk_key);
+	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf);
 
 	/**
 	 * Secret Key Locking Function

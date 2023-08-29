@@ -10,7 +10,7 @@
 
 // ======================== LMS-SHA256 H5/W1 ======================== //
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
 		return OQS_ERROR;
 	}
@@ -60,34 +60,55 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void) {
 	// Initialize the key with length_secret_key amount of bytes.
 	sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h5_w1_length_sk;
 
-	if (sk->length_secret_key) {
-		sk->secret_key_data = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
-		if (sk->secret_key_data) {
-			memset(sk->secret_key_data, 0, sk->length_secret_key);
-		} else {
-			OQS_SECRET_KEY_LMS_free(sk);
-			OQS_MEM_insecure_free(sk);
-			sk = NULL;
-			return NULL;
-		}
-	}
+	/* Function that returns the total number of signatures for the secret key */
+	sk->sigs_total = NULL;
 
+	/* set Function to returns the number of signatures left for the secret key */
+	sk->sigs_left = NULL;
+
+	/*
+	 * Secret Key retrieval Function
+	 */
+	sk->serialize_key = OQS_SECRET_KEY_LMS_serialize_key;
+
+	/*
+	 * set Secret Key to internal structure Function
+	 */
+	sk->deserialize_key = OQS_SECRET_KEY_LMS_deserialize_key;
+
+	/*
+	 * Set Secret Key Locking Function
+	 */
+	sk->lock_key = NULL;
+
+	/*
+	 * Set Secret Key Unlocking / Releasing Function
+	 */
+	sk->unlock_key = NULL;
+
+	/*
+	 * Set Secret Key Saving Function
+	 */
+	sk->save_secret_key = NULL;
+
+	/*
+	 * Set Secret Key free function
+	 */
 	sk->free_key = OQS_SECRET_KEY_LMS_free;
 
 	return sk;
 }
 
 void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
-	if (sk == NULL) {
-		return;
-	}
+	oqs_secret_lms_key_free(sk);
+}
 
-	//TODO: cleanup lock_key
+/* Convert LMS secret key object to byte string */
+size_t OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_buf) {
+	return oqs_serialize_lms_key(sk, sk_buf);
+}
 
-	if (sk->sig) {
-		OQS_MEM_insecure_free(sk->sig);
-		sk->sig = NULL;
-	}
-	OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
-	sk->secret_key_data = NULL;
+/* Insert lms byte string in an LMS secret key object */
+OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf) {
+	return oqs_deserialize_lms_key(sk, key_len, sk_buf);
 }
