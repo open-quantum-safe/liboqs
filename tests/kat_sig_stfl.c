@@ -122,16 +122,6 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	fprintf(fp, "\n");
 }
 
-static inline uint16_t UINT16_TO_BE(const uint16_t x) {
-	union {
-		uint16_t val;
-		uint8_t bytes[2];
-	} y;
-	y.bytes[0] = (x >> 8) & 0xFF;
-	y.bytes[1] = x & 0xFF;
-	return y.val;
-}
-
 OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	uint8_t seed[48];

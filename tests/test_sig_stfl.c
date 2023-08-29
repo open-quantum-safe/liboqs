@@ -78,7 +78,8 @@ int FindMarker(FILE *infile, const char *marker) {
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
 //
 int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
-	int i, ch, started;
+	int ch, started;
+	unsigned long i;
 	unsigned char ich;
 
 	if (Length == 0) {
