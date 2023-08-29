@@ -39,10 +39,6 @@ typedef struct OQS_LMS_KEY_DATA {
 
 	/* secret key data */
 	uint8_t *sec_key;
-
-	/* User defined data that may be used for the SAFETY functions */
-	void *data;
-
 } oqs_lms_key_data;
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
@@ -373,7 +369,6 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 			OQS_MEM_secure_free(key_data->aux_data, key_data->len_aux_data);
 		}
 
-		OQS_MEM_insecure_free(key_data->data);
 		OQS_MEM_insecure_free(key_data);
 		sk->secret_key_data = NULL;
 	}
