@@ -64,7 +64,8 @@ int FindMarker(FILE *infile, const char *marker) {
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
 //
 int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
-	int i, ch, started;
+	int ch, started;
+	unsigned long i;
 	unsigned char ich;
 
 	if (Length == 0) {
@@ -121,19 +122,8 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	fprintf(fp, "\n");
 }
 
-static inline uint16_t UINT16_TO_BE(const uint16_t x) {
-	union {
-		uint16_t val;
-		uint8_t bytes[2];
-	} y;
-	y.bytes[0] = (x >> 8) & 0xFF;
-	y.bytes[1] = x & 0xFF;
-	return y.val;
-}
-
 OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
-	uint8_t entropy_input[48];
 	uint8_t seed[48];
 	FILE *fh = NULL;
 	FILE *fp_rsp = NULL;
