@@ -1,9 +1,8 @@
-47bee8a95b1d9446c27e667efbd8f82ac2733bef
 diff --git a/ref/indcpa.c b/ref/indcpa.c
-index 60f4059..96022ea 100644
+index 5d74518..4a8b4c8 100644
 --- a/ref/indcpa.c
 +++ b/ref/indcpa.c
-@@ -167,6 +167,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
+@@ -164,6 +164,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
    unsigned int buflen, off;
    uint8_t buf[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2];
    xof_state state;
@@ -11,7 +10,7 @@ index 60f4059..96022ea 100644
  
    for(i=0;i<KYBER_K;i++) {
      for(j=0;j<KYBER_K;j++) {
-@@ -189,6 +190,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
+@@ -186,6 +187,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
        }
      }
    }
@@ -20,7 +19,7 @@ index 60f4059..96022ea 100644
  
  /*************************************************
 diff --git a/ref/symmetric-shake.c b/ref/symmetric-shake.c
-index 4d9560a..2317c06 100644
+index 6a99071..20f4518 100644
 --- a/ref/symmetric-shake.c
 +++ b/ref/symmetric-shake.c
 @@ -15,7 +15,7 @@
@@ -32,39 +31,30 @@ index 4d9560a..2317c06 100644
                             const uint8_t seed[KYBER_SYMBYTES],
                             uint8_t x,
                             uint8_t y)
-diff --git a/ref/symmetric-shake.c b/ref/symmetric-aes.c
-index 4d9560a..2317c06 100644
---- a/ref/symmetric-aes.c
-+++ b/ref/symmetric-aes.c
-@@ -6,10 +6,11 @@
- 
- void kyber_aes256xof_absorb(aes256ctr_ctx *state, const uint8_t seed[32], uint8_t x, uint8_t y)
+@@ -63,11 +63,12 @@ void kyber_shake256_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYM
+ **************************************************/
+ void kyber_shake256_rkprf(uint8_t out[KYBER_SSBYTES], const uint8_t key[KYBER_SYMBYTES], const uint8_t input[KYBER_CIPHERTEXTBYTES])
  {
-+  (void) seed;
-   uint8_t expnonce[12] = {0};
-   expnonce[0] = x;
-   expnonce[1] = y;
--  aes256ctr_init(state, seed, expnonce);
-+  aes256ctr_init_iv(state, expnonce);
- }
+-  keccak_state s;
++  shake256incctx s;
  
- void kyber_aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[32], uint8_t nonce)
+-  shake256_init(&s);
+-  shake256_absorb(&s, key, KYBER_SYMBYTES);
+-  shake256_absorb(&s, input, KYBER_CIPHERTEXTBYTES);
+-  shake256_finalize(&s);
+-  shake256_squeeze(out, KYBER_SSBYTES, &s);
++  shake256_inc_init(&s);
++  shake256_inc_absorb(&s, key, KYBER_SYMBYTES);
++  shake256_inc_absorb(&s, input, KYBER_CIPHERTEXTBYTES);
++  shake256_inc_finalize(&s);
++  shake256_inc_squeeze(out, KYBER_SSBYTES, &s);
++  shake256_inc_ctx_release(&s);
+ }
 diff --git a/ref/symmetric.h b/ref/symmetric.h
-index 28339e6..bb8086f 100644
+index 58e6ece..2acc66f 100644
 --- a/ref/symmetric.h
 +++ b/ref/symmetric.h
-@@ -26,8 +26,10 @@ void kyber_aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[32], uin
- 
- #define hash_h(OUT, IN, INBYTES) sha256(OUT, IN, INBYTES)
- #define hash_g(OUT, IN, INBYTES) sha512(OUT, IN, INBYTES)
-+#define xof_init(STATE, SEED) aes256ctr_init_key(STATE, SEED)
- #define xof_absorb(STATE, SEED, X, Y) kyber_aes256xof_absorb(STATE, SEED, X, Y)
- #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-+#define xof_release(STATE) aes256_ctx_release(STATE)
- #define prf(OUT, OUTBYTES, KEY, NONCE) kyber_aes256ctr_prf(OUT, OUTBYTES, KEY, NONCE)
- #define kdf(OUT, IN, INBYTES) sha256(OUT, IN, INBYTES)
- 
-@@ -35,10 +37,10 @@ void kyber_aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[32], uin
+@@ -7,10 +7,10 @@
  
  #include "fips202.h"
  
@@ -77,7 +67,7 @@ index 28339e6..bb8086f 100644
                             const uint8_t seed[KYBER_SYMBYTES],
                             uint8_t x,
                             uint8_t y);
-@@ -50,8 +52,10 @@ void kyber_shake256_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYM
+@@ -25,8 +25,10 @@ void kyber_shake256_rkprf(uint8_t out[KYBER_SSBYTES], const uint8_t key[KYBER_SY
  
  #define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
  #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
@@ -86,5 +76,5 @@ index 28339e6..bb8086f 100644
  #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
 +#define xof_release(STATE) shake128_inc_ctx_release(STATE)
  #define prf(OUT, OUTBYTES, KEY, NONCE) kyber_shake256_prf(OUT, OUTBYTES, KEY, NONCE)
- #define kdf(OUT, IN, INBYTES) shake256(OUT, KYBER_SSBYTES, IN, INBYTES)
+ #define rkprf(OUT, KEY, INPUT) kyber_shake256_rkprf(OUT, KEY, INPUT)
  
