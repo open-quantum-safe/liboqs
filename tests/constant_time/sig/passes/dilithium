@@ -36,28 +36,28 @@
    Rejection sampling for signature distribution
    Memcheck:Cond
    ...
-   src:sign.c:150 # Call to polyvecl_chknorm
+   src:sign.c:154 # Call to polyvecl_chknorm
    # fun:pqcrystals_dilithium*_ref_signature
 }
 {
    Rejection sampling for signature distribution
    Memcheck:Cond
    ...
-   src:sign.c:159 # Call to polyveck_chknorm
+   src:sign.c:163 # Call to polyveck_chknorm
    # fun:pqcrystals_dilithium*_ref_signature
 }
 {
    Rejection sampling for signature distribution
    Memcheck:Cond
    ...
-   src:sign.c:166 # Call to polyveck_chknorm
+   src:sign.c:170 # Call to polyveck_chknorm
    # fun:pqcrystals_dilithium*_ref_signature
 }
 {
    Hint does not need to be computed in constant time
    Memcheck:Cond
    ...
-   src:sign.c:170 # Call to polyveck_make_hint
+   src:sign.c:174 # Call to polyveck_make_hint
    # fun:pqcrystals_dilithium*_ref_signature
 }
 {
