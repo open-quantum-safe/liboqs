@@ -1,5 +1,3 @@
-// TODO: remove
-
 /*=============================================================================
  * Copyright (c) 2022 by SandboxAQ Inc
  * Author: Duc Tri Nguyen (ductri.nguyen@sandboxaq.com)
