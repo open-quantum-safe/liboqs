@@ -88,7 +88,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const 
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(uint64_t *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
 	if (total == NULL  || secret_key == NULL) {
 		return OQS_ERROR;
@@ -437,7 +437,7 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 		return OQS_ERROR;
 	}
 
-	if (sk->secret_key_data != NULL) {
+	if (sk->secret_key_data) {
 		//Key data already present
 		//We dont want to trample over data
 		return OQS_ERROR;
