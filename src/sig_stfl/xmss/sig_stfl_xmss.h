@@ -4,6 +4,7 @@
 #define OQS_SIG_STFL_XMSS_H
 
 #include <oqs/oqs.h>
+#include "external/namespace.h"
 
 #define XMSS_OID_LEN 4
 void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
@@ -498,9 +499,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_total(unsigned l
  * Secret key functions
  */
 /* Serialize XMSS secret key data into a byte string */
+#define OQS_SECRET_KEY_XMSS_serialize_key XMSS_NAMESPACE(OQS_SECRET_KEY_XMSS_serialize_key)
 OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
 
 /* Deserialize XMSS byte string into an XMSS secret key data */
+#define OQS_SECRET_KEY_XMSS_deserialize_key XMSS_NAMESPACE(OQS_SECRET_KEY_XMSS_deserialize_key)
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf);
 
 #endif /* OQS_SIG_STFL_XMSS_H */
