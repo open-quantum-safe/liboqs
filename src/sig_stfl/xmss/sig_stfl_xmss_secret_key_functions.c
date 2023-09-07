@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <oqs/oqs.h>
 #include <string.h>
 #include "sig_stfl_xmss.h"
