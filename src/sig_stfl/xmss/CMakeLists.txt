@@ -11,6 +11,7 @@ set(SRCS external/core_hash.c
          external/xmss.c
          external/xmss_commons.c
          external/xmss_core_fast.c
+         sig_stfl_xmss_secret_key_functions.c
 )
 
 if (OQS_ENABLE_SIG_STFL_xmss_sha256_h10)

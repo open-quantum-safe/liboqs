@@ -1,3 +1,5 @@
+// TODO: remove
+
 #ifndef NIST_PARAM_H
 #define NIST_PARAM_H
 

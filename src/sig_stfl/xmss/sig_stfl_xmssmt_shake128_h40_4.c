@@ -56,6 +56,10 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H40_4_new(void) {
 	sk->sigs_left = NULL;
 	sk->sigs_total = NULL;
 
+	// Secret serialize/deserialize function
+	sk->serialize_key = OQS_SECRET_KEY_XMSS_serialize_key;
+	sk->deserialize_key = OQS_SECRET_KEY_XMSS_deserialize_key;
+
 	// Initialize the key with length_secret_key amount of bytes.
 	sk->secret_key_data = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
 	memset(sk->secret_key_data, 0, sk->length_secret_key);
