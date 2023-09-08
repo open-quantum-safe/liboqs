@@ -60,10 +60,6 @@ endif()
 if(${OQS_USE_OPENSSL})
     target_link_libraries(oqs PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
 endif()
-if(IOS)
-    find_library(IOS_SECURITY Security)
-    target_link_libraries(oqs PUBLIC ${IOS_SECURITY})
-endif()
 
 target_include_directories(oqs
                            PUBLIC
