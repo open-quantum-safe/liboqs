@@ -438,8 +438,8 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	}
 
 	if (sk->secret_key_data) {
-		//Key data already present
-		//We dont want to trample over data
+		// Key data already present
+		// We dont want to trample over data
 		return OQS_ERROR;
 	}
 
@@ -485,9 +485,9 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	goto success;
 
 err:
-	OQS_MEM_insecure_free(lms_key_data);
-	OQS_MEM_insecure_free(lms_sk);
-	OQS_MEM_insecure_free(lms_aux);
+	OQS_MEM_secure_free(lms_key_data, sizeof(oqs_lms_key_data));
+	OQS_MEM_secure_free(lms_sk, lms_sk_len);
+	OQS_MEM_secure_free(lms_aux, key_buf_left);
 	return OQS_ERROR;
 
 success:
