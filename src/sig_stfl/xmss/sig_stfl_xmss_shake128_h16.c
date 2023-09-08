@@ -62,6 +62,11 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE128_H16_new(void) {
 
 	// Initialize the key with length_secret_key amount of bytes.
 	sk->secret_key_data = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+
+	if (sk->secret_key_data == NULL) {
+		OQS_MEM_insecure_free(sk);
+		return NULL;
+	}
 	memset(sk->secret_key_data, 0, sk->length_secret_key);
 
 	sk->free_key = OQS_SECRET_KEY_XMSS_free;
