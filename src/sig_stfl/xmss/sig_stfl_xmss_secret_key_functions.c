@@ -30,6 +30,12 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, cons
 		return OQS_ERROR;
 	}
 
+	if (sk->secret_key_data) {
+		// Key data already present
+		// We dont want to trample over data
+		return OQS_ERROR;
+	}
+
 	memcpy(sk->secret_key_data, sk_buf, sk_len);
 
 	return OQS_SUCCESS;
