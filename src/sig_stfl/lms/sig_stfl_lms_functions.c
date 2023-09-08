@@ -431,12 +431,14 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	oqs_lms_key_data *lms_key_data = NULL;
 	uint8_t *lms_sk = NULL;
 	uint8_t *lms_aux = NULL;
+	int aux_buf_len = 0;
 	uint8_t lms_sk_len = hss_get_private_key_len((unsigned )(1), NULL, NULL);
 
 	if (sk == NULL || sk_buf == NULL || (sk_len == 0) || (sk_len < lms_sk_len )) {
 		return OQS_ERROR;
 	}
 
+	aux_buf_len = sk_len - lms_sk_len;
 	if (sk->secret_key_data) {
 		// Key data already present
 		// We dont want to trample over data
@@ -468,17 +470,16 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	lms_key_data->sec_key = lms_sk;
 	lms_key_data->len_sec_key = lms_sk_len;
 
-	int key_buf_left = sk_len - lms_sk_len;
-	if (key_buf_left) {
-		lms_aux = malloc(key_buf_left * sizeof(uint8_t));
+	if (aux_buf_len) {
+		lms_aux = malloc(aux_buf_len * sizeof(uint8_t));
 
 		if (lms_aux == NULL) {
 			goto err;
 		}
 
-		memcpy(lms_aux, sk_buf + lms_sk_len, key_buf_left);
+		memcpy(lms_aux, sk_buf + lms_sk_len, aux_buf_len);
 		lms_key_data->aux_data = lms_aux;
-		lms_key_data->len_aux_data = key_buf_left;
+		lms_key_data->len_aux_data = aux_buf_len;
 	}
 
 	sk->secret_key_data = lms_key_data;
@@ -487,7 +488,7 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 err:
 	OQS_MEM_secure_free(lms_key_data, sizeof(oqs_lms_key_data));
 	OQS_MEM_secure_free(lms_sk, lms_sk_len);
-	OQS_MEM_secure_free(lms_aux, key_buf_left);
+	OQS_MEM_secure_free(lms_aux, aux_buf_len);
 	return OQS_ERROR;
 
 success:
