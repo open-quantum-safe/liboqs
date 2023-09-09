@@ -7,7 +7,6 @@
 #include "sig_stfl_lms_wrap.h"
 #include "sig_stfl_lms.h"
 
-
 // ======================== LMS-SHA256 H5/W1 ======================== //
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {
@@ -104,11 +103,11 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 }
 
 /* Convert LMS secret key object to byte string */
-size_t OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_buf) {
-	return oqs_serialize_lms_key(sk, sk_buf);
+OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
+	return oqs_serialize_lms_key(sk, sk_len, sk_buf_ptr);
 }
 
 /* Insert lms byte string in an LMS secret key object */
-OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf) {
-	return oqs_deserialize_lms_key(sk, key_len, sk_buf);
+OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf) {
+	return oqs_deserialize_lms_key(sk, sk_len, sk_buf);
 }
