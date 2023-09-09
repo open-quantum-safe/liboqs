@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <string.h>
+#include <oqs/oqs.h>
 #include "sig_stfl_lms.h"
 #include "external/config.h"
 #include "external/hss_verify_inc.h"
@@ -87,7 +88,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const 
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(uint64_t *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
 	if (total == NULL  || secret_key == NULL) {
 		return OQS_ERROR;
@@ -378,42 +379,46 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
  * Convert LMS secret key object to byte string
  * Writes secret key + aux data if present
  */
-size_t oqs_serialize_lms_key(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_key) {
+OQS_STATUS oqs_serialize_lms_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_key) {
 
-	oqs_lms_key_data *lms_key_data = NULL;
-	size_t key_len = 0;
-	if (sk) {
-		uint8_t *sk_key_buf = NULL;
-		lms_key_data = sk->secret_key_data;
-		if (lms_key_data && lms_key_data->sec_key) {
-			size_t buf_size_needed = lms_key_data->len_aux_data + lms_key_data->len_sec_key;
-			key_len = buf_size_needed;
-			/* pass back serialized data */
-			if (sk_key) {
-				if (buf_size_needed) {
-					sk_key_buf = malloc(buf_size_needed * sizeof(uint8_t));
-					if (sk_key_buf) {
+	if (sk == NULL || sk_len == NULL || sk_key == NULL) {
+		return OQS_ERROR;
+	}
 
-						/*
-						 * Serialized data is sec_key followed by aux data
-						 * So aux data begins after buffer top + sec_key length
-						 */
-						if (lms_key_data->len_sec_key) {
-							memcpy(sk_key_buf, lms_key_data->sec_key, lms_key_data->len_sec_key);
-						}
+	oqs_lms_key_data *lms_key_data = sk->secret_key_data;
 
-						if (lms_key_data->len_aux_data) {
-							memcpy(sk_key_buf + lms_key_data->len_sec_key, lms_key_data->aux_data, lms_key_data->len_aux_data);
-						}
+	if (lms_key_data == NULL || lms_key_data->sec_key == NULL) {
+		return OQS_ERROR;
+	}
 
-						*sk_key = sk_key_buf;
-						key_len = sk->length_secret_key + lms_key_data->len_aux_data;
-					}
-				}
-			} //sk_key
-		}
-	} //sk
-	return key_len;
+	size_t key_len = lms_key_data->len_aux_data + lms_key_data->len_sec_key;
+
+	if (key_len == 0) {
+		return OQS_ERROR;
+	}
+
+	uint8_t *sk_key_buf = malloc(key_len * sizeof(uint8_t));
+
+	if (sk_key_buf == NULL) {
+		return OQS_ERROR;
+	}
+	/* pass back serialized data */
+	/*
+	 * Serialized data is sec_key followed by aux data
+	 * So aux data begins after buffer top + sec_key length
+	 */
+	if (lms_key_data->len_sec_key != 0) {
+		memcpy(sk_key_buf, lms_key_data->sec_key, lms_key_data->len_sec_key);
+	}
+
+	if (lms_key_data->len_aux_data != 0) {
+		memcpy(sk_key_buf + lms_key_data->len_sec_key, lms_key_data->aux_data, lms_key_data->len_aux_data);
+	}
+
+	*sk_key = sk_key_buf;
+	*sk_len = sk->length_secret_key + lms_key_data->len_aux_data;
+
+	return OQS_SUCCESS;
 }
 
 /*
@@ -421,27 +426,26 @@ size_t oqs_serialize_lms_key(const OQS_SIG_STFL_SECRET_KEY *sk,  uint8_t **sk_ke
  * Writes secret key + aux data if present
  * key_len is priv key length + aux length
  */
-int oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf) {
-	int oqs_status = -1;
+OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf) {
+
 	oqs_lms_key_data *lms_key_data = NULL;
-	uint8_t priv_ky_len = hss_get_private_key_len((unsigned )(1), NULL, NULL);
-
-	if ((!sk) || (key_len == 0) || (key_len < priv_ky_len) || (!sk_buf)) {
-		return oqs_status;
-	}
-
-	if (sk->secret_key_data) {
-		//Key data already present
-		//We dont want to trample over data
-		return oqs_status;
-	}
-
 	uint8_t *lms_sk = NULL;
 	uint8_t *lms_aux = NULL;
+	int aux_buf_len = 0;
+	uint8_t lms_sk_len = hss_get_private_key_len((unsigned )(1), NULL, NULL);
+
+	if (sk == NULL || sk_buf == NULL || (sk_len == 0) || (sk_len < lms_sk_len )) {
+		return OQS_ERROR;
+	}
+
+	aux_buf_len = sk_len - lms_sk_len;
+	if (sk->secret_key_data) {
+		// Key data already present
+		// We dont want to trample over data
+		return OQS_ERROR;
+	}
 
 	unsigned levels = 0;
-
-	int key_buf_left = key_len - priv_ky_len;
 
 	param_set_t lm_type[ MAX_HSS_LEVELS ];
 	param_set_t lm_ots_type[ MAX_HSS_LEVELS ];
@@ -452,36 +456,41 @@ int oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const u
 	                          lm_ots_type,
 	                          NULL,
 	                          (void *)sk_buf)) {
-		return oqs_status;
+		return OQS_ERROR;
 	}
 
 	lms_key_data = malloc(sizeof(oqs_lms_key_data));
-	if (lms_key_data) {
-		lms_sk = malloc(priv_ky_len * sizeof(uint8_t));
-		if (lms_sk) {
-			memcpy(lms_sk, sk_buf, priv_ky_len);
-			lms_key_data->sec_key = lms_sk;
-			lms_key_data->len_sec_key = priv_ky_len;
-		} else {
-			OQS_MEM_insecure_free(lms_key_data);
-			return oqs_status;
-		}
+	lms_sk = malloc(lms_sk_len * sizeof(uint8_t));
 
-		if (key_buf_left) {
-			lms_aux = malloc(key_buf_left * sizeof(uint8_t));
-			if (lms_aux) {
-				memcpy(lms_aux, (sk_buf + priv_ky_len), key_buf_left);
-				lms_key_data->aux_data = lms_aux;
-				lms_key_data->len_aux_data = key_buf_left;
-			} else {
-				OQS_MEM_insecure_free(lms_key_data);
-				OQS_MEM_insecure_free(lms_sk);
-				return oqs_status;
-			}
-		}
-
-		sk->secret_key_data = lms_key_data;
-		oqs_status = 0;
+	if (lms_key_data == NULL || lms_sk == NULL) {
+		goto err;
 	}
-	return oqs_status;
+
+	memcpy(lms_sk, sk_buf, lms_sk_len);
+	lms_key_data->sec_key = lms_sk;
+	lms_key_data->len_sec_key = lms_sk_len;
+
+	if (aux_buf_len) {
+		lms_aux = malloc(aux_buf_len * sizeof(uint8_t));
+
+		if (lms_aux == NULL) {
+			goto err;
+		}
+
+		memcpy(lms_aux, sk_buf + lms_sk_len, aux_buf_len);
+		lms_key_data->aux_data = lms_aux;
+		lms_key_data->len_aux_data = aux_buf_len;
+	}
+
+	sk->secret_key_data = lms_key_data;
+	goto success;
+
+err:
+	OQS_MEM_secure_free(lms_key_data, sizeof(oqs_lms_key_data));
+	OQS_MEM_secure_free(lms_sk, lms_sk_len);
+	OQS_MEM_secure_free(lms_aux, aux_buf_len);
+	return OQS_ERROR;
+
+success:
+	return OQS_SUCCESS;
 }
