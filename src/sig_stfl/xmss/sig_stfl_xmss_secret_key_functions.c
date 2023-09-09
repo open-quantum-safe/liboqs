@@ -26,13 +26,19 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, 
 
 /* Deserialize XMSS byte string into an XMSS secret key data */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf) {
-	if (sk == NULL || sk_buf == NULL || (sk_len == 0) || (sk_len != sk->length_secret_key)) {
+	if (sk == NULL || sk_buf == NULL || (sk_len != sk->length_secret_key)) {
 		return OQS_ERROR;
 	}
 
-	if (sk->secret_key_data) {
+	if (sk->secret_key_data != NULL) {
 		// Key data already present
 		// We dont want to trample over data
+		return OQS_ERROR;
+	}
+
+	// Assume key data is not present
+	sk->secret_key_data = malloc(sk_len);
+	if (sk->secret_key_data == NULL) {
 		return OQS_ERROR;
 	}
 
