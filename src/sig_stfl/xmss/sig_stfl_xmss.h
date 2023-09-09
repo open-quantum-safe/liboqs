@@ -494,4 +494,13 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_total(unsigned l
 
 #endif
 
+/*
+ * Secret key functions
+ */
+/* Serialize XMSS secret key data into a byte string */
+OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
+
+/* Deserialize XMSS byte string into an XMSS secret key data */
+OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf);
+
 #endif /* OQS_SIG_STFL_XMSS_H */

@@ -13,6 +13,9 @@ set(SRCS external/core_hash.c
          external/xmss_core_fast.c
 )
 
+add_library(sig_stfl_xmss_secret_key_functions OBJECT sig_stfl_xmss_secret_key_functions.c)
+set(_XMSS_OBJS ${_XMSS_OBJS} $<TARGET_OBJECTS:sig_stfl_xmss_secret_key_functions>)
+
 if (OQS_ENABLE_SIG_STFL_xmss_sha256_h10)
     add_library(xmss_sha256_h10 OBJECT sig_stfl_xmss_sha256_h10.c ${SRCS})
     target_compile_options(xmss_sha256_h10 PRIVATE -DXMSS_PARAMS_NAMESPACE=xmss_sha256_h10 -DHASH=3)
