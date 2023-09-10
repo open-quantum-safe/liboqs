@@ -8,14 +8,7 @@
 #else
 #include <unistd.h>
 #include <strings.h>
-#if defined(__APPLE__)
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-#include <Security/SecRandom.h>
-#else
-#include <sys/random.h>
-#endif
-#else
+#if !defined(__APPLE__)
 #include <unistd.h>
 #endif
 #endif
@@ -65,6 +58,11 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 }
 
 #if !defined(_WIN32)
+#if defined(__APPLE__)
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
+	arc4random_buf(random_array, bytes_to_read);
+}
+#else
 #if defined(OQS_HAVE_GETENTROPY)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	while (bytes_to_read > 256) {
@@ -75,17 +73,6 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 		bytes_to_read -= 256;
 	}
 	if (getentropy(random_array, bytes_to_read)) {
-		exit(EXIT_FAILURE);
-	}
-}
-#else
-#if defined(__APPLE__) && (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
-void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
-	int status =
-	    SecRandomCopyBytes(kSecRandomDefault, bytes_to_read, random_array);
-
-	if (status == errSecSuccess) {
-		perror("OQS_randombytes");
 		exit(EXIT_FAILURE);
 	}
 }
