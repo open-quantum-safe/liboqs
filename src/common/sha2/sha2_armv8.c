@@ -6,7 +6,9 @@
 
 #include <stdint.h>
 // ARM includes
+#ifndef WIN32
 #include <arm_acle.h>
+#endif
 #include <arm_neon.h>
 /* Based on the public domain implementation in
  * crypto_hashblocks/sha256/dolbeau/armv8crypto
@@ -82,8 +84,8 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 	uint32x4_t d1 = vld1q_u32((uint32_t *)(statebytes + 16));
 	uint32x4_t s0, s1, h0, h1;
 	/* make state big-endian */
-	d0 = (uint32x4_t)vrev32q_u8((uint8x16_t)d0);
-	d1 = (uint32x4_t)vrev32q_u8((uint8x16_t)d1);
+	d0 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d0)));
+	d1 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d1)));
 	while (length   >= 64) {
 		/* load one block */
 		uint32x4_t i0 = vld1q_u32((const uint32_t *)(data + pos + 0));
@@ -98,10 +100,10 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 		s1 = d1;
 
 		/* make block big-endian */
-		i0 = (uint32x4_t)vrev32q_u8((uint8x16_t)i0);
-		i1 = (uint32x4_t)vrev32q_u8((uint8x16_t)i1);
-		i2 = (uint32x4_t)vrev32q_u8((uint8x16_t)i2);
-		i3 = (uint32x4_t)vrev32q_u8((uint8x16_t)i3);
+		i0 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(i0)));
+		i1 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(i1)));
+		i2 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(i2)));
+		i3 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(i3)));
 
 		/*
 		 * This computes 16 rounds in i0..i3
@@ -159,8 +161,8 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 	}
 
 	/* store back to little-endian */
-	d0 = (uint32x4_t)vrev32q_u8((uint8x16_t)d0);
-	d1 = (uint32x4_t)vrev32q_u8((uint8x16_t)d1);
+	d0 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d0)));
+	d1 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d1)));
 	vst1q_u32((uint32_t *)(statebytes +  0), d0);
 	vst1q_u32((uint32_t *)(statebytes + 16), d1);
 
