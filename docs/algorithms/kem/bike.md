@@ -11,6 +11,9 @@
 - **Ancestors of primary source**:
   - https://bikesuite.org/files/v5.0/Reference_Implementation.2022.10.04.1.zip
 
+## Advisories
+This implementation of BIKE is not constant time.
+
 ## Parameter set summary
 
 |  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
