@@ -8,6 +8,9 @@
 #include <oqs/common.h>
 #include <oqs/oqsconfig.h>
 
+#if CMAKE_USE_PTHREADS_INIT
+#include <pthread.h>
+#endif
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -18,17 +21,17 @@
 #define KECCAK_X4_CTX_BYTES (KECCAK_X4_CTX_ALIGNMENT * \
   ((_KECCAK_X4_CTX_BYTES + KECCAK_X4_CTX_ALIGNMENT - 1)/KECCAK_X4_CTX_ALIGNMENT))
 
-/* The first call to Keccak_Initialize will be routed through dispatch, which
- * updates all of the function pointers used below.
- */
-static KeccakX4InitFn Keccak_X4_Dispatch;
-static KeccakX4InitFn *Keccak_X4_Initialize_ptr = &Keccak_X4_Dispatch;
+#if CMAKE_USE_PTHREADS_INIT
+static pthread_once_t dispatch_once_control = PTHREAD_ONCE_INIT;
+#endif
+
+static KeccakX4InitFn *Keccak_X4_Initialize_ptr = NULL;
 static KeccakX4AddByteFn *Keccak_X4_AddByte_ptr = NULL;
 static KeccakX4AddBytesFn *Keccak_X4_AddBytes_ptr = NULL;
 static KeccakX4PermuteFn *Keccak_X4_Permute_ptr = NULL;
 static KeccakX4ExtractBytesFn *Keccak_X4_ExtractBytes_ptr = NULL;
 
-static void Keccak_X4_Dispatch(void *state) {
+static void Keccak_X4_Dispatch(void) {
 // TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
 #if defined(OQS_DIST_X86_64_BUILD)
 #if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
@@ -59,11 +62,16 @@ static void Keccak_X4_Dispatch(void *state) {
 	Keccak_X4_Permute_ptr = &KeccakP1600times4_PermuteAll_24rounds;
 	Keccak_X4_ExtractBytes_ptr = &KeccakP1600times4_ExtractBytes;
 #endif
-
-	(*Keccak_X4_Initialize_ptr)(state);
 }
 
 static void keccak_x4_inc_reset(uint64_t *s) {
+#if CMAKE_USE_PTHREADS_INIT
+	pthread_once(&dispatch_once_control, Keccak_X4_Dispatch);
+#else
+	if (Keccak_X4_Initialize_ptr == NULL) {
+		Keccak_X4_Dispatch();
+	}
+#endif
 	(*Keccak_X4_Initialize_ptr)(s);
 	s[100] = 0;
 }
@@ -234,4 +242,3 @@ void OQS_SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state) {
 void OQS_SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	keccak_x4_inc_reset((uint64_t *)state->ctx);
 }
-
