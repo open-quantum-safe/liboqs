@@ -136,4 +136,3 @@ void GF_mul(gf *out, gf *in0, gf *in1) {
         out[i] = prod[i];
     }
 }
-

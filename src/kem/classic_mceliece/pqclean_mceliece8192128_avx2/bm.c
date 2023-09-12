@@ -223,4 +223,3 @@ void bm(vec128 *out, vec256 *in) {
 
     vec128_mul_asm(out, prod, BC.v[0] + 1, 32);
 }
-

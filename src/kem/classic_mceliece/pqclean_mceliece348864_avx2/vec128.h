@@ -5,7 +5,6 @@
   including functions for bitsliced field operations
 */
 
-
 #include "namespace.h"
 
 #define vec128_mul_asm CRYPTO_NAMESPACE(vec128_mul_asm)
@@ -99,4 +98,3 @@ static inline void vec128_mul(vec128 *h, vec128 *f, const vec128 *g) {
 }
 
 #endif
-

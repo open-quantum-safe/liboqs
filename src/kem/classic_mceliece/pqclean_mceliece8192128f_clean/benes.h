@@ -4,7 +4,6 @@
   This file is for Benes network related functions
 */
 
-
 #include "namespace.h"
 
 #define apply_benes CRYPTO_NAMESPACE(apply_benes)
@@ -16,4 +15,3 @@ void apply_benes(unsigned char *r, const unsigned char *bits, int rev);
 void support_gen(gf *s, const unsigned char *c);
 
 #endif
-

@@ -49,4 +49,3 @@ static inline void vec_mul_gf(vec out[ GFBITS ], vec v[ GFBITS ], gf a) {
 void vec_GF_mul(vec out[GFBITS], vec v[GFBITS], gf a[SYS_T]);
 
 #endif
-

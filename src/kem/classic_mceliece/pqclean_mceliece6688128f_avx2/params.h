@@ -3,7 +3,6 @@
 
 #include "namespace.h"
 
-
 #define GFBITS 13
 #define SYS_N 6688
 #define SYS_T 128
@@ -20,4 +19,3 @@
 #define GFMASK ((1 << GFBITS) - 1)
 
 #endif
-

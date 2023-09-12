@@ -4,9 +4,7 @@
   This file is for loading/storing data in a little-endian fashion
 */
 
-
 #include "namespace.h"
-
 
 #include "vec128.h"
 
@@ -48,7 +46,6 @@ static inline uint32_t load4(const unsigned char *src) {
 
     return a;
 }
-
 
 static inline void irr_load(vec128 *out, const unsigned char *in) {
     int i, j;
@@ -110,4 +107,3 @@ static inline void store16(unsigned char *out, vec128 in) {
 }
 
 #endif
-

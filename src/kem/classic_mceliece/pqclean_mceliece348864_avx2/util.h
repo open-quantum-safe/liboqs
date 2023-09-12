@@ -4,9 +4,7 @@
   This file is for loading/storing data in a little-endian fashion
 */
 
-
 #include "namespace.h"
-
 
 #include "gf.h"
 #include "vec128.h"
@@ -114,4 +112,3 @@ static inline void store16(unsigned char *out, vec128 in) {
 }
 
 #endif
-

@@ -5,7 +5,6 @@
   sse http://www.math.clemson.edu/~sgao/papers/GM10.pdf
 */
 
-
 #include "namespace.h"
 
 #define fft CRYPTO_NAMESPACE(fft)
@@ -18,4 +17,3 @@
 void fft(vec256 out[][GFBITS], uint64_t *in);
 
 #endif
-

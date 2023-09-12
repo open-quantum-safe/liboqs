@@ -4,9 +4,7 @@
 /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
 /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
 
-
 #include "namespace.h"
-
 
 #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
 

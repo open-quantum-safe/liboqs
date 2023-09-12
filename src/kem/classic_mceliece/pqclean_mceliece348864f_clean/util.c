@@ -64,4 +64,3 @@ gf bitrev(gf a) {
 
     return a >> 4;
 }
-

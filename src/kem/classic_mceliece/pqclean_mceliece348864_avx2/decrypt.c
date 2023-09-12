@@ -229,7 +229,5 @@ int decrypt(unsigned char *e, const unsigned char *sk, const unsigned char *s) {
 
     check_weight = weight_check(e, error128);
 
-
     return 1 - (check_synd & check_weight);
 }
-

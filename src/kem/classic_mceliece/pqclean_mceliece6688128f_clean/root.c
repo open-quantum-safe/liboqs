@@ -33,4 +33,3 @@ void root(gf *out, gf *f, gf *L) {
         out[i] = eval(f, L[i]);
     }
 }
-

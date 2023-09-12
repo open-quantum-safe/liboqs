@@ -186,7 +186,6 @@ static void butterflies_tr(vec256 *out, vec256 in[][ GFBITS ]) {
         }
     }
 
-
     // boradcast
 
     for (i = 0; i < GFBITS; i += 2) {
@@ -382,4 +381,3 @@ void fft_tr(vec256 *out, vec256 in[][ GFBITS ]) {
     butterflies_tr(out, in);
     radix_conversions_tr(out);
 }
-

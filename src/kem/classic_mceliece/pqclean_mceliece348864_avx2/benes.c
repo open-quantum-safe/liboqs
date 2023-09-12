@@ -286,4 +286,3 @@ void benes(uint64_t *r, uint64_t cond[][32], int rev) {
 
     transpose_64x64(bs);
 }
-

@@ -4,7 +4,6 @@
   This file is for functions for field arithmetic
 */
 
-
 #include "namespace.h"
 
 #define gf_add CRYPTO_NAMESPACE(gf_add)
@@ -59,4 +58,3 @@ static inline uint64_t gf_mul2(gf a, gf b0, gf b1) {
 }
 
 #endif
-

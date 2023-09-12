@@ -66,4 +66,3 @@ void vec_GF_mul(vec out[ GFBITS ], vec v[ GFBITS ], gf a[ SYS_T ]) {
         out[i] = buf[i][0];
     }
 }
-

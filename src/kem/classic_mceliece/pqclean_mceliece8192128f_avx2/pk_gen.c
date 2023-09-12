@@ -152,7 +152,6 @@ static void sort_rows(int n, int bound, uint16_t *x, vec256 (*mat)[par_width], i
     merge_rows(n / 2, bound, x, mat, off, 1);
 }
 
-
 /* extract numbers represented in bitsliced form */
 static void de_bitslicing(uint64_t *out, vec256 in[][GFBITS]) {
     int i, j, r;
@@ -530,4 +529,3 @@ int pk_gen(unsigned char *pk, const unsigned char *irr, const uint32_t *perm, in
 
     return 0;
 }
-

@@ -198,4 +198,3 @@ int genpoly_gen(gf *out, gf *f) {
 
     return 0;
 }
-

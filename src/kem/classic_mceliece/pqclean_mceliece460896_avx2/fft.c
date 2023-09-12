@@ -266,4 +266,3 @@ void fft(vec256 out[][GFBITS], vec128 *in) {
     radix_conversions(in);
     butterflies(out, in);
 }
-

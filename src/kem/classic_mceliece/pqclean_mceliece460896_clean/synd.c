@@ -31,4 +31,3 @@ void synd(gf *out, gf *f, gf *L, const unsigned char *r) {
         }
     }
 }
-

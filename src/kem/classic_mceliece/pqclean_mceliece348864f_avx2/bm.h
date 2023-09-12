@@ -5,7 +5,6 @@
   see https://ieeexplore.ieee.org/document/87857
 */
 
-
 #include "namespace.h"
 
 #define bm CRYPTO_NAMESPACE(bm)
@@ -15,4 +14,3 @@
 void bm(uint64_t out[GFBITS], vec128 in[GFBITS]);
 
 #endif
-

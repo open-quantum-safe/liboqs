@@ -71,7 +71,6 @@ int decrypt(unsigned char *e, const unsigned char *sk, const unsigned char *c) {
 
     }
 
-
     synd(s_cmp, g, L, e);
 
     //
@@ -88,4 +87,3 @@ int decrypt(unsigned char *e, const unsigned char *sk, const unsigned char *c) {
 
     return check ^ 1;
 }
-

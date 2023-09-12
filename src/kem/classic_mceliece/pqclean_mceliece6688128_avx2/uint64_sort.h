@@ -3,7 +3,6 @@
 
 #include "namespace.h"
 
-
 #define int64_sort CRYPTO_NAMESPACE(int64_sort)
 
 #include <inttypes.h>
@@ -51,4 +50,3 @@ static void uint64_sort(uint64_t *x, long long n) {
 }
 
 #endif
-
