@@ -4,7 +4,6 @@
   This file is for secret-key generation
 */
 
-
 #include "namespace.h"
 
 #define genpoly_gen CRYPTO_NAMESPACE(genpoly_gen)
@@ -16,4 +15,3 @@
 int genpoly_gen(gf *out, gf *f);
 
 #endif
-

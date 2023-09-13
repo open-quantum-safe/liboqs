@@ -80,4 +80,3 @@ void bm(gf *out, gf *s) {
         out[i] = C[ SYS_T - i ];
     }
 }
-

@@ -4,7 +4,6 @@
   This file is for functions for field arithmetic
 */
 
-
 #include "namespace.h"
 
 #define gf_add CRYPTO_NAMESPACE(gf_add)
@@ -28,4 +27,3 @@ gf gf_inv(gf den);
 void GF_mul(gf *out, gf *in0, gf *in1);
 
 #endif
-

@@ -57,4 +57,3 @@ void crypto_uint64_minmax(crypto_uint64 *crypto_uint64_a, crypto_uint64 *crypto_
     *crypto_uint64_a = crypto_uint64_x ^ crypto_uint64_z;
     *crypto_uint64_b = crypto_uint64_y ^ crypto_uint64_z;
 }
-

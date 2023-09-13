@@ -219,4 +219,3 @@ void bm(vec128 *out, vec256 *in) {
         out[i] = vec128_set2x((v[0] >> 8) | (v[1] << 56), v[1] >> 8);
     }
 }
-

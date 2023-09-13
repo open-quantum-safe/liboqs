@@ -4,7 +4,6 @@
   This file is for syndrome computation
 */
 
-
 #include "namespace.h"
 
 #define synd CRYPTO_NAMESPACE(synd)
@@ -14,4 +13,3 @@
 void synd(gf *out, gf *f, gf *L, const unsigned char *r);
 
 #endif
-

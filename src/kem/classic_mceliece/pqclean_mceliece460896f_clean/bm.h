@@ -5,7 +5,6 @@
   see http://crypto.stanford.edu/~mironov/cs359/massey.pdf
 */
 
-
 #include "gf.h"
 #include "namespace.h"
 
@@ -14,4 +13,3 @@
 void bm(gf *out, gf *s);
 
 #endif
-

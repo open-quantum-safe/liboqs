@@ -4,7 +4,6 @@
   This file is for loading/storing data in a little-endian fashion
 */
 
-
 #include "namespace.h"
 
 #define bitrev CRYPTO_NAMESPACE(bitrev)
@@ -28,4 +27,3 @@ uint64_t load8(const unsigned char *in);
 gf bitrev(gf a);
 
 #endif
-

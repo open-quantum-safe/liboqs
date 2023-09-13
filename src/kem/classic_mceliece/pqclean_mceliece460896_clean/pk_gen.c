@@ -163,4 +163,3 @@ int pk_gen(unsigned char *pk, unsigned char *sk, const uint32_t *perm, int16_t *
 
     return 0;
 }
-

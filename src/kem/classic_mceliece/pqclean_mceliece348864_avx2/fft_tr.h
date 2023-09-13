@@ -4,7 +4,6 @@
   This file is for transpose of the Gao-Mateer FFT
 */
 
-
 #include "namespace.h"
 
 #define fft_tr CRYPTO_NAMESPACE(fft_tr)
@@ -15,4 +14,3 @@
 void fft_tr(vec128 out[GFBITS], vec256 in[][ GFBITS ]);
 
 #endif
-

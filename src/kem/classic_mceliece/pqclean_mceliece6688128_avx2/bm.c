@@ -158,7 +158,6 @@ void bm(vec128 *out, vec256 *in) {
         vec256 V[GFBITS];
     } db_t;
 
-
     db_t db;
     db_t BC_tmp;
     db_t BC;
@@ -224,4 +223,3 @@ void bm(vec128 *out, vec256 *in) {
 
     vec128_mul_asm(out, prod, BC.v[0] + 1, 32);
 }
-

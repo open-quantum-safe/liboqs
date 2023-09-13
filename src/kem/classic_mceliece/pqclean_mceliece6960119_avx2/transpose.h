@@ -4,7 +4,6 @@
   This file is for matrix transposition
 */
 
-
 #include "namespace.h"
 
 #define transpose_64x128_sp_asm CRYPTO_NAMESPACE(transpose_64x128_sp_asm)
@@ -34,5 +33,3 @@ static inline void transpose_64x256_sp(vec256 *in) {
 }
 
 #endif
-
-

@@ -420,4 +420,3 @@ int pk_gen(unsigned char *pk, const unsigned char *irr, const uint32_t *perm, in
 
     return 0;
 }
-

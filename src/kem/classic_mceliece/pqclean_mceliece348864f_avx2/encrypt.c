@@ -4,7 +4,6 @@
   This file is for Niederreiter encryption
 */
 
-
 #include "util.h"
 #include "crypto_declassify.h"
 #include "crypto_uint16.h"
@@ -115,7 +114,5 @@ static void gen_e(unsigned char *e) {
 void encrypt(unsigned char *s, const unsigned char *pk, unsigned char *e) {
     gen_e(e);
 
-
     syndrome_asm(s, pk, e);
 }
-

@@ -68,4 +68,3 @@ void vec128_mul_GF(vec128 out[ GFBITS ], vec128 v[ GFBITS ], gf a[ SYS_T ]) {
         out[i] = vec128_set2x(buf[i][0], buf[i][1] & 0xFFFFFFFF);
     }
 }
-

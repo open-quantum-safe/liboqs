@@ -5,7 +5,6 @@
   including functions for bitsliced field operations
 */
 
-
 #include "namespace.h"
 
 #define vec256_ama_asm CRYPTO_NAMESPACE(vec256_ama_asm)
@@ -108,4 +107,3 @@ extern void vec256_maa_asm(vec256 *, vec256 *, const vec256 *);
 extern void vec256_ama_asm(vec256 *, vec256 *, const vec256 *);
 
 #endif
-

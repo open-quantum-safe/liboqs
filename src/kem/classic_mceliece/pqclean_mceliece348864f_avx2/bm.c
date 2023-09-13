@@ -224,4 +224,3 @@ void bm(uint64_t out[ GFBITS ], vec128 in[ GFBITS ]) {
 
     vec_mul_sp(out, out, &BC[0][0]);
 }
-

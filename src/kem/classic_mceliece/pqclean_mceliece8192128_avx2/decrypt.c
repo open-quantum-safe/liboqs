@@ -202,7 +202,5 @@ int decrypt(unsigned char *e, const unsigned char *sk, const unsigned char *s) {
         store16(e + i * 16, error128[i]);
     }
 
-
     return 1 - (check_synd & check_weight);
 }
-

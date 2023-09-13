@@ -7,7 +7,6 @@
 #include "crypto_declassify.h"
 #include "int32_sort.h"
 #include <string.h>
-#include <assert.h>
 typedef int16_t int16;
 typedef int32_t int32;
 #include "crypto_int32.h"
@@ -182,8 +181,7 @@ static void cbrecursion(unsigned char *out, long long pos, long long step, const
 /* output: the result of apply the control bits to p */
 static void layer(int16_t *p, const unsigned char *cb, int s, int n) {
     int i, j;
-    assert(s < 255);
-    int stride = 1 << (uint8_t)s;
+    int stride = 1 << (uint8_t)(s & 0x1F);
     int index = 0;
     int16_t d, m;
 
@@ -247,4 +245,3 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
         }
     }
 }
-

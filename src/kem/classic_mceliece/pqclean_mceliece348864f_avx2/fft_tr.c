@@ -355,4 +355,3 @@ void fft_tr(vec128 out[GFBITS], vec256 in[][ GFBITS ]) {
     butterflies_tr(out, in);
     radix_conversions_tr(out);
 }
-

@@ -3,12 +3,12 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: c3abebf4ab1ff516ffa71e6337f06d898952c299
+    git_commit: 8e220a87308154d48fdfac40abbb191ac7fce06a
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-sphincs.patch, pqclean-dilithium-arm-randomized-signing.patch, pqclean-dilithium-symbolnames.patch, pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-classicmceliece.patch]
+    patches: [pqclean-sphincs.patch, pqclean-dilithium-arm-randomized-signing.patch, pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch]
     ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
   -
     name: pqcrystals-kyber

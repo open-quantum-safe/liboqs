@@ -180,4 +180,3 @@ void support_gen(gf *s, const unsigned char *c) {
         }
     }
 }
-

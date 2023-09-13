@@ -125,7 +125,5 @@ static void syndrome(unsigned char *s, const unsigned char *pk, const unsigned c
 void encrypt(unsigned char *s, const unsigned char *pk, unsigned char *e) {
     gen_e(e);
 
-
     syndrome(s, pk, e);
 }
-

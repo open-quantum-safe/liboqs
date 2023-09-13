@@ -39,4 +39,3 @@ void transpose_64x64(uint64_t *out, const uint64_t *in) {
         }
     }
 }
-

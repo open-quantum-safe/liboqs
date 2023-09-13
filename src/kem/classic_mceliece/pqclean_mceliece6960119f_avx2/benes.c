@@ -310,4 +310,3 @@ void benes(vec128 *r, vec128 b[][32], int rev) {
 
     transpose_64x128_sp( r );
 }
-

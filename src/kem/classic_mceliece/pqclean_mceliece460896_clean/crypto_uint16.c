@@ -57,4 +57,3 @@ void crypto_uint16_minmax(crypto_uint16 *crypto_uint16_a, crypto_uint16 *crypto_
     *crypto_uint16_a = crypto_uint16_x ^ crypto_uint16_z;
     *crypto_uint16_b = crypto_uint16_y ^ crypto_uint16_z;
 }
-
