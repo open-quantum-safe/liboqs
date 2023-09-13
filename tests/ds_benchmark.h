@@ -122,7 +122,11 @@ int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 
 static uint64_t _bench_rdtsc(void) {
 #if defined(_WIN32) || defined(_WIN64)
-	return __rdtsc();
+	LARGE_INTEGER li;
+	if (!QueryPerformanceCounter(&li)) {
+		return 0;
+	}
+	return li.QuadPart;
 #elif defined(__i586__) || defined(__amd64__)
 	uint64_t x;
 	__asm__ volatile(".byte 0x0f, 0x31"

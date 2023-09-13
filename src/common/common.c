@@ -134,6 +134,20 @@ static void set_available_cpu_extensions(void) {
 	}
 #endif
 }
+#elif defined(_WIN32)
+static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
+	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+	BOOL crypto = IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE);
+	if (crypto) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
+		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
+	}
+	BOOL neon = IsProcessorFeaturePresent(PF_ARM_VFP_32_REGISTERS_AVAILABLE);
+	if (neon) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
+	}
+}
 #else
 #include <sys/auxv.h>
 #include <asm/hwcap.h>
