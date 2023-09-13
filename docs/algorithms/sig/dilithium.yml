@@ -12,8 +12,8 @@ auxiliary-submitters:
 - Damien Stehlé
 crypto-assumption: hardness of lattice problems over module lattices
 website: https://pq-crystals.org/dilithium/
-nist-round: FIPS draft
-spec-version: FIPS 204 (Draft, August 24, 2023)
+nist-round: standard draft
+spec-version: pq-crystals 20230825
 primary-upstream:
   source: https://github.com/bhess/dilithium/commit/588562ac2cc777dfa407e34532d945b5f06b8ffd
     with copy_from_upstream patches

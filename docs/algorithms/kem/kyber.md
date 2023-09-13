@@ -5,7 +5,7 @@
 - **Principal submitters**: Peter Schwabe.
 - **Auxiliary submitters**: Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, John M. Schanck, Gregor Seiler, Damien Stehlé.
 - **Authors' website**: https://pq-crystals.org/
-- **Specification version**: FIPS 203 (Draft, August 24, 2023).
+- **Specification version**: pq-crystals 20230726.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/bhess/kyber/commit/0bf4adf5a0a93d7ff51b89fac228d0f65e148fea with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0

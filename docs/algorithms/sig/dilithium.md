@@ -5,7 +5,7 @@
 - **Principal submitters**: Vadim Lyubashevsky.
 - **Auxiliary submitters**: Shi Bai, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Peter Schwabe, Gregor Seiler, Damien Stehlé.
 - **Authors' website**: https://pq-crystals.org/dilithium/
-- **Specification version**: FIPS 204 (Draft, August 24, 2023).
+- **Specification version**: pq-crystals 20230825.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/bhess/dilithium/commit/588562ac2cc777dfa407e34532d945b5f06b8ffd with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0

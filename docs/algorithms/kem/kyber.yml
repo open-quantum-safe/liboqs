@@ -14,8 +14,8 @@ auxiliary-submitters:
 - Damien Stehlé
 crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
 website: https://pq-crystals.org/
-nist-round: FIPS draft
-spec-version: FIPS 203 (Draft, August 24, 2023)
+nist-round: standard draft
+spec-version: pq-crystals 20230726
 primary-upstream:
   source: https://github.com/bhess/kyber/commit/0bf4adf5a0a93d7ff51b89fac228d0f65e148fea
     with copy_from_upstream patches
