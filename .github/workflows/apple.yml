@@ -1,0 +1,19 @@
+name: apple build
+
+on: [push, pull_request]
+
+jobs:
+
+  apple-mobile:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [OS64, TVOS]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Generate project
+        run: cmake -B build --toolchain .CMake/apple.cmake -DOQS_USE_OPENSSL=OFF -DPLATFORM=${{ matrix.platform }} .
+      - name: Build project
+        run: cmake --build build
