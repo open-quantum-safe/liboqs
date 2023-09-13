@@ -4,6 +4,12 @@
 #include <string.h>
 #include "sig_stfl_xmss.h"
 
+#if defined(__GNUC__) || defined(__clang__)
+#define XMSS_UNUSED_ATT __attribute__((unused))
+#else
+#define XMSS_UNUSED_ATT
+#endif
+
 /* Serialize XMSS secret key data into a byte string */
 OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
 	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL) {
@@ -25,7 +31,7 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, 
 }
 
 /* Deserialize XMSS byte string into an XMSS secret key data */
-OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf) {
+OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, XMSS_UNUSED_ATT void *context) {
 	if (sk == NULL || sk_buf == NULL || (sk_len != sk->length_secret_key)) {
 		return OQS_ERROR;
 	}
