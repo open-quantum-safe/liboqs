@@ -38,7 +38,7 @@
  */
 static OQS_STATUS test_save_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
 	uint8_t *kb = key_buf;
-    fprintf(stderr, "\n%s test saved STFL SK  <%s>.\n",__FUNCTION__, (const char *)context);
+	fprintf(stderr, "\n%s test saved STFL SK  <%s>.\n", __FUNCTION__, (const char *)context);
 
 	if (key_buf && context && buf_len != 0) {
 		if (oqs_fstore("sk", (const char *)context, kb, buf_len) == OQS_SUCCESS) {
@@ -289,7 +289,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	uint8_t *sk_buf = NULL;
 	uint8_t *read_pk_buf = NULL;
 	char *context = NULL;
-    const char *file_store = NULL;
+	const char *file_store = NULL;
 	size_t sk_buf_len = 0;
 	size_t read_pk_len = 0;
 
@@ -348,72 +348,72 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		fprintf(stderr, "ERROR: OQS_SIG_STFL_keypair failed\n");
 		goto err;
 	}
-/*
- #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2 "XMSSMT-SHA2_20/2_256"
- #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4 "XMSSMT-SHA2_20/4_256"
-#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2 "XMSSMT-SHA2_40/2_256"
-#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4 "XMSSMT-SHA2_40/4_256"
-#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8 "XMSSMT-SHA2_40/8_256"
-#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3 "XMSSMT-SHA2_60/3_256"
-#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6 "XMSSMT-SHA2_60/6_256"
-#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12 "XMSSMT-SHA2_60/12_256"
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2 "XMSSMT-SHAKE_20/2_256"
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4 "XMSSMT-SHAKE_20/4_256"
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2 "XMSSMT-SHAKE_40/2_256"
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4 "XMSSMT-SHAKE_40/4_256"
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8 "XMSSMT-SHAKE_40/8_256"
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3 "XMSSMT-SHAKE_60/3_256"
+	/*
+	 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2 "XMSSMT-SHA2_20/2_256"
+	 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4 "XMSSMT-SHA2_20/4_256"
+	#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2 "XMSSMT-SHA2_40/2_256"
+	#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4 "XMSSMT-SHA2_40/4_256"
+	#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8 "XMSSMT-SHA2_40/8_256"
+	#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3 "XMSSMT-SHA2_60/3_256"
+	#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6 "XMSSMT-SHA2_60/6_256"
+	#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12 "XMSSMT-SHA2_60/12_256"
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2 "XMSSMT-SHAKE_20/2_256"
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4 "XMSSMT-SHAKE_20/4_256"
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2 "XMSSMT-SHAKE_40/2_256"
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4 "XMSSMT-SHAKE_40/4_256"
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8 "XMSSMT-SHAKE_40/8_256"
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3 "XMSSMT-SHAKE_60/3_256"
 
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6 "XMSSMT-SHAKE_60/6_256"
-#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
- */
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6 "XMSSMT-SHAKE_60/6_256"
+	#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
+	 */
 
-    rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &sk_buf_len, &sk_buf);
+	rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &sk_buf_len, &sk_buf);
 
 	if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_2) == 0) {
-	    file_store = "XMSSMT-SHA2_20-2_256";
+		file_store = "XMSSMT-SHA2_20-2_256";
 	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_4) == 0) {
-	    file_store = "XMSSMT-SHA2_20-4_256";
+		file_store = "XMSSMT-SHA2_20-4_256";
 	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2) == 0) {
-	    file_store = "XMSSMT-SHA2_40-2_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_4) == 0) {
-        file_store = "XMSSMT-SHA2_40-4_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_8) == 0) {
-        file_store = "XMSSMT-SHA2_40-8_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3) == 0) {
-        file_store = "XMSSMT-SHA2_60-3_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_6) == 0) {
-        file_store = "XMSSMT-SHA2_60-6_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_12) == 0) {
-        file_store = "XMSSMT-SHA2_60-12_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_2) == 0) {
-        file_store = "XMSSMT-SHAKE_20-2_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_4) == 0) {
-        file_store = "XMSSMT-SHAKE_20-4_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2) == 0) {
-        file_store = "XMSSMT-SHAKE_40-2_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_4) == 0) {
-        file_store = "XMSSMT-SHAKE_40-4_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_8) == 0) {
-        file_store = "XMSSMT-SHAKE_40-8_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3) == 0) {
-        file_store = "XMSSMT-SHAKE_60-3_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_6) == 0) {
-        file_store = "XMSSMT-SHAKE_60-6_256";
-    } else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_12) == 0) {
-        file_store = "XMSSMT-SHAKE_60-12_256";
-    } else {
-        file_store = sig->method_name;
-    }
+		file_store = "XMSSMT-SHA2_40-2_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_4) == 0) {
+		file_store = "XMSSMT-SHA2_40-4_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_8) == 0) {
+		file_store = "XMSSMT-SHA2_40-8_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3) == 0) {
+		file_store = "XMSSMT-SHA2_60-3_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_6) == 0) {
+		file_store = "XMSSMT-SHA2_60-6_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_12) == 0) {
+		file_store = "XMSSMT-SHA2_60-12_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_2) == 0) {
+		file_store = "XMSSMT-SHAKE_20-2_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_4) == 0) {
+		file_store = "XMSSMT-SHAKE_20-4_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2) == 0) {
+		file_store = "XMSSMT-SHAKE_40-2_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_4) == 0) {
+		file_store = "XMSSMT-SHAKE_40-4_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_8) == 0) {
+		file_store = "XMSSMT-SHAKE_40-8_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3) == 0) {
+		file_store = "XMSSMT-SHAKE_60-3_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_6) == 0) {
+		file_store = "XMSSMT-SHAKE_60-6_256";
+	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_12) == 0) {
+		file_store = "XMSSMT-SHAKE_60-12_256";
+	} else {
+		file_store = sig->method_name;
+	}
 
-    /* write key pair to disk */
-    if (oqs_fstore("sk", file_store, sk_buf, sk_buf_len) != OQS_SUCCESS) {
-        goto err;
-    }
+	/* write key pair to disk */
+	if (oqs_fstore("sk", file_store, sk_buf, sk_buf_len) != OQS_SUCCESS) {
+		goto err;
+	}
 
-    if (oqs_fstore("pk", file_store, public_key, sig->length_public_key) != OQS_SUCCESS) {
-        goto err;
-    }
+	if (oqs_fstore("pk", file_store, public_key, sig->length_public_key) != OQS_SUCCESS) {
+		goto err;
+	}
 
 	/* set context and secure store callback */
 	context = strdup(((file_store)));
