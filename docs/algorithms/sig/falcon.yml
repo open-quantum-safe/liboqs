@@ -36,8 +36,8 @@ parameter-sets:
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -47,8 +47,8 @@ parameter-sets:
       - avx2
     common-crypto:
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Falcon-1024
   claimed-nist-level: 5
@@ -63,8 +63,8 @@ parameter-sets:
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -74,6 +74,6 @@ parameter-sets:
       - avx2
     common-crypto:
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
