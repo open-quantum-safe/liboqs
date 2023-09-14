@@ -50,6 +50,18 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
 - name: Falcon-1024
   claimed-nist-level: 5
   claimed-security: EUF-CMA
@@ -72,6 +84,18 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false

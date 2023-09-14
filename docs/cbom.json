@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:76fbea76-f6a8-441a-9ad0-4f3df1b91d3c",
+  "serialNumber": "urn:uuid:c2efdd72-2a86-4ba2-ad1b-870e67bdcdab",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-05-16T14:01:59.927404",
+    "timestamp": "2023-09-14T13:03:34.914420",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@3052cb8e01343126bb7eb1de0c9b90f9b9230ed4",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f6acbec0428a6f6d46b5d55fabfd9192ad63b89c",
       "name": "liboqs",
-      "version": "3052cb8e01343126bb7eb1de0c9b90f9b9230ed4"
+      "version": "f6acbec0428a6f6d46b5d55fabfd9192ad63b89c"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@3052cb8e01343126bb7eb1de0c9b90f9b9230ed4",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f6acbec0428a6f6d46b5d55fabfd9192ad63b89c",
       "name": "liboqs",
-      "version": "3052cb8e01343126bb7eb1de0c9b90f9b9230ed4"
+      "version": "f6acbec0428a6f6d46b5d55fabfd9192ad63b89c"
     },
     {
       "type": "crypto-asset",
@@ -1281,6 +1281,26 @@
     },
     {
       "type": "crypto-asset",
+      "bom-ref": "alg:Falcon-512:armv8-a",
+      "name": "Falcon",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "Falcon-512",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "armv8-a"
+        },
+        "nistQuantumSecurityLevel": 1
+      }
+    },
+    {
+      "type": "crypto-asset",
       "bom-ref": "alg:Falcon-1024:generic",
       "name": "Falcon",
       "cryptoProperties": {
@@ -1315,6 +1335,26 @@
             "verify"
           ],
           "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 5
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:Falcon-1024:armv8-a",
+      "name": "Falcon",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "Falcon-1024",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "armv8-a"
         },
         "nistQuantumSecurityLevel": 5
       }
@@ -1828,7 +1868,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@3052cb8e01343126bb7eb1de0c9b90f9b9230ed4",
+      "ref": "pkg:github/open-quantum-safe/liboqs@f6acbec0428a6f6d46b5d55fabfd9192ad63b89c",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -1893,8 +1933,10 @@
         "alg:Dilithium5:armv8-a",
         "alg:Falcon-512:generic",
         "alg:Falcon-512:x86_64",
+        "alg:Falcon-512:armv8-a",
         "alg:Falcon-1024:generic",
         "alg:Falcon-1024:x86_64",
+        "alg:Falcon-1024:armv8-a",
         "alg:SPHINCS+-SHA2-128f-simple:generic",
         "alg:SPHINCS+-SHA2-128f-simple:x86_64",
         "alg:SPHINCS+-SHA2-128s-simple:generic",
@@ -2396,6 +2438,13 @@
       "dependencyType": "uses"
     },
     {
+      "ref": "alg:Falcon-512:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
       "ref": "alg:Falcon-1024:generic",
       "dependsOn": [
         "alg:sha3"
@@ -2404,6 +2453,13 @@
     },
     {
       "ref": "alg:Falcon-1024:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Falcon-1024:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ],
