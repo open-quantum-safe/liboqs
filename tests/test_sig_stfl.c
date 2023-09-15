@@ -476,6 +476,7 @@ cleanup:
 	OQS_SIG_STFL_free(sig);
 
 	OQS_MEM_insecure_free(read_pk_buf);
+	OQS_MEM_insecure_free(context);
 	return ret;
 }
 
@@ -662,6 +663,8 @@ end_it:
 	OQS_MEM_secure_free(to_file_sk_buf, to_file_sk_len);
 	OQS_MEM_secure_free(frm_file_sk_buf, frm_file_sk_len);
 	OQS_SIG_STFL_free(sig_obj);
+	OQS_MEM_insecure_free(context);
+	OQS_MEM_insecure_free(context_2);
 	return rc;
 }
 

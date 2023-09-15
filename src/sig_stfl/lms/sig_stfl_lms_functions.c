@@ -390,7 +390,6 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 			OQS_MEM_secure_free(key_data->aux_data, key_data->len_aux_data);
 		}
 
-		OQS_MEM_insecure_free(key_data->context);
 		OQS_MEM_insecure_free(key_data);
 		sk->secret_key_data = NULL;
 	}
