@@ -348,27 +348,11 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		fprintf(stderr, "ERROR: OQS_SIG_STFL_keypair failed\n");
 		goto err;
 	}
-	/*
-	 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2 "XMSSMT-SHA2_20/2_256"
-	 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4 "XMSSMT-SHA2_20/4_256"
-	#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2 "XMSSMT-SHA2_40/2_256"
-	#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4 "XMSSMT-SHA2_40/4_256"
-	#define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8 "XMSSMT-SHA2_40/8_256"
-	#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3 "XMSSMT-SHA2_60/3_256"
-	#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6 "XMSSMT-SHA2_60/6_256"
-	#define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12 "XMSSMT-SHA2_60/12_256"
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2 "XMSSMT-SHAKE_20/2_256"
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4 "XMSSMT-SHAKE_20/4_256"
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2 "XMSSMT-SHAKE_40/2_256"
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4 "XMSSMT-SHAKE_40/4_256"
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8 "XMSSMT-SHAKE_40/8_256"
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3 "XMSSMT-SHAKE_60/3_256"
-
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6 "XMSSMT-SHAKE_60/6_256"
-	#define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
-	 */
 
 	rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &sk_buf_len, &sk_buf);
+	if (rc != OQS_SUCCESS) {
+		goto err;
+	}
 
 	if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_2) == 0) {
 		file_store = "XMSSMT-SHA2_20-2_256";
@@ -619,6 +603,10 @@ keep_going:
 
 	/* write sk key to disk */
 	rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &to_file_sk_len, &to_file_sk_buf);
+	if (rc != OQS_SUCCESS) {
+		goto err;
+	}
+
 	if (oqs_fstore("sk", sig_obj->method_name, to_file_sk_buf, to_file_sk_len) != OQS_SUCCESS) {
 		goto err;
 	}
