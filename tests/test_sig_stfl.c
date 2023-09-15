@@ -473,6 +473,7 @@ cleanup:
 	if (signature) {
 		OQS_MEM_insecure_free(signature - sizeof(magic_t));
 	}
+	OQS_MEM_secure_free(sk_buf, sk_buf_len);
 	OQS_SIG_STFL_free(sig);
 
 	OQS_MEM_insecure_free(read_pk_buf);
