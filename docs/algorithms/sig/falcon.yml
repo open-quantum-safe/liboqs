@@ -36,8 +36,8 @@ parameter-sets:
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -75,8 +75,8 @@ parameter-sets:
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
