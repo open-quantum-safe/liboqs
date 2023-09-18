@@ -42,8 +42,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -59,7 +59,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-348864f
@@ -76,8 +76,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -94,7 +94,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-460896
@@ -111,8 +111,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -128,7 +128,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-460896f
@@ -145,8 +145,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -163,7 +163,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6688128
@@ -180,8 +180,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -197,7 +197,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6688128f
@@ -214,8 +214,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -232,7 +232,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6960119
@@ -249,8 +249,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -266,7 +266,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6960119f
@@ -283,8 +283,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -301,7 +301,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-8192128
@@ -318,8 +318,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -335,7 +335,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-8192128f
@@ -352,8 +352,8 @@ parameter-sets:
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
   - upstream-id: avx2
@@ -370,7 +370,7 @@ parameter-sets:
     - AES: liboqs
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
     upstream: primary-upstream
 auxiliary-submitters: []

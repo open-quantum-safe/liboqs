@@ -22,8 +22,9 @@
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | False                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | False                              | False                                          | False                 |
+| [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | False                              | False                                          | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -33,8 +34,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | False                |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | False                              | False                                          | False                |
+| [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | False                              | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
