@@ -11,11 +11,19 @@
 #define MAXPATHLEN 128
 
 #if (defined(_WIN32) || defined(__WIN32__))
-#define mkdir(A, B) mkdir(A)
+#include <windows.h>
 #endif
 
 static OQS_STATUS oqs_fstore_init(void) {
+#ifndef _WIN32
 	return mkdir(OQS_STORE_DIR, 0755);
+#else
+	if (CreateDirectory(OQS_STORE_DIR, NULL)) {
+		return OQS_SUCCESS;
+	} else {
+		return OQS_ERROR;
+	}
+#endif
 }
 
 static OQS_STATUS oqs_fstore(const char *fname, const char *mname, uint8_t *data, size_t len) {
