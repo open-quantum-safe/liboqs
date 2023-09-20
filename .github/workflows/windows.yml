@@ -12,3 +12,21 @@ jobs:
         run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake .
       - name: Build Project
         run: cmake --build build
+
+  windows-x86:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [.CMake/toolchain_windows_x86.cmake, .CMake/toolchain_windows_amd64.cmake]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate Project
+        run: cmake -B build --toolchain ${{ matrix.toolchain }} .
+      - name: Build Project
+        run: cmake --build build
+      - name: Test dependencies
+        run: pip.exe install pytest pytest-xdist pyyaml
+      - name: Run tests
+        run: |
+          python -m pytest --numprocesses=auto -vv --maxfail=10 --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
