@@ -28,4 +28,14 @@ void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const ui
  */
 void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
 
+/**
+ * Saves the state of the NIST DRBG, allowing it to be recovered later.
+ */
+void OQS_randombytes_nist_kat_save_state(void);
+
+/**
+ * Restores a previously saved NIST DRBG state.
+ */
+void OQS_randombytes_nist_kat_restore_state(void);
+
 #endif // OQS_RAND_NIST_H

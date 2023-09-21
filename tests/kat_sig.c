@@ -247,7 +247,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	}
 }
 
-OQS_STATUS sig_kat(const char *method_name) {
+OQS_STATUS sig_kat(const char *method_name, bool all) {
 
 	uint8_t entropy_input[48];
 	uint8_t seed[48];
@@ -279,34 +279,60 @@ OQS_STATUS sig_kat(const char *method_name) {
 
 	fh = stdout;
 
-	fprintf(fh, "count = 0\n");
-	OQS_randombytes(seed, 48);
-	fprintBstr(fh, "seed = ", seed, 48);
-
-	msg_len = 33 * (0 + 1);
-	fprintf(fh, "mlen = %zu\n", msg_len);
-
-	msg = malloc(msg_len);
-	OQS_randombytes(msg, msg_len);
-	fprintBstr(fh, "msg = ", msg, msg_len);
-
-	OQS_randombytes_nist_kat_init_256bit(seed, NULL);
+	max_count = all ? 100 : 1;
 
 	public_key = malloc(sig->length_public_key);
 	secret_key = malloc(sig->length_secret_key);
 	signature = malloc(sig->length_signature);
-	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
+	// allocate maximum length for msg
+	msg = malloc(33 * max_count);
+	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL) || (msg == NULL)) {
 		fprintf(stderr, "[kat_sig] %s ERROR: malloc failed!\n", method_name);
 		goto err;
 	}
 
-	rc = OQS_SIG_keypair(sig, public_key, secret_key);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_keypair failed!\n", method_name);
-		goto err;
-	}
-	fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
-	fprintBstr(fh, "sk = ", secret_key, sig->length_secret_key);
+	for (int count = 0; count < max_count; ++count) {
+	fprintf(fh, "count = 0\n");
+	OQS_randombytes(seed, 48);
+	fprintBstr(fh, "seed = ", seed, 48);
+
+		msg_len = 33 * (count + 1);
+		fprintf(fh, "mlen = %zu\n", msg_len);
+
+		OQS_randombytes(msg, msg_len);
+		fprintBstr(fh, "msg = ", msg, msg_len);
+
+		OQS_randombytes_nist_kat_save_state();
+		OQS_randombytes_nist_kat_init_256bit(seed, NULL);
+
+		rc = OQS_SIG_keypair(sig, public_key, secret_key);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_keypair failed!\n", method_name);
+			goto err;
+		}
+		fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
+		fprintBstr(fh, "sk = ", secret_key, sig->length_secret_key);
+
+		rc = OQS_SIG_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_sign failed!\n", method_name);
+			goto err;
+		}
+		rc = combine_message_signature(&signed_msg, &signed_msg_len, msg, msg_len, signature, signature_len, sig);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "[kat_sig] %s ERROR: combine_message_signature failed!\n", method_name);
+			OQS_MEM_secure_free(signed_msg, signed_msg_len);
+			goto err;
+		}
+		fprintf(fh, "smlen = %zu\n", signed_msg_len);
+		fprintBstr(fh, "sm = ", signed_msg, signed_msg_len);
+
+		OQS_MEM_secure_free(signed_msg, signed_msg_len);
+
+		// The NIST program generates KAT response files with a trailing newline.
+		if (count != max_count - 1) {
+			fprintf(fh, "\n");
+		}
 
 	rc = OQS_SIG_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
 	if (rc != OQS_SUCCESS) {
@@ -340,7 +366,6 @@ algo_not_enabled:
 cleanup:
 	if (sig != NULL) {
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
-		OQS_MEM_secure_free(signed_msg, signed_msg_len);
 	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(signature);
@@ -352,8 +377,8 @@ cleanup:
 int main(int argc, char **argv) {
 	OQS_init();
 
-	if (argc != 2) {
-		fprintf(stderr, "Usage: kat_sig algname\n");
+	if (argc < 2 || argc > 3 || (argc == 3 && strcmp(argv[2], "--all"))) {
+		fprintf(stderr, "Usage: kat_sig algname [--all]\n");
 		fprintf(stderr, "  algname: ");
 		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
 			if (i > 0) {
@@ -369,7 +394,8 @@ int main(int argc, char **argv) {
 	}
 
 	char *alg_name = argv[1];
-	OQS_STATUS rc = sig_kat(alg_name);
+	bool all = (argc == 3);
+	OQS_STATUS rc = sig_kat(alg_name, all);
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;

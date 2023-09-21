@@ -38,6 +38,7 @@ typedef struct {
 } AES256_CTR_DRBG_struct;
 
 static AES256_CTR_DRBG_struct DRBG_ctx;
+static AES256_CTR_DRBG_struct DRBG_ctx_backup;
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
 #ifdef OQS_USE_OPENSSL
@@ -125,6 +126,18 @@ void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 	}
 	AES256_CTR_DRBG_Update(NULL, DRBG_ctx.Key, DRBG_ctx.V);
 	DRBG_ctx.reseed_counter++;
+}
+
+void OQS_randombytes_nist_kat_save_state() {
+    memcpy(DRBG_ctx_backup.Key, DRBG_ctx.Key, 32);
+    memcpy(DRBG_ctx_backup.V, DRBG_ctx.V, 16);
+    DRBG_ctx_backup.reseed_counter = DRBG_ctx.reseed_counter;
+}
+
+void OQS_randombytes_nist_kat_restore_state() {
+    memcpy(DRBG_ctx.Key, DRBG_ctx_backup.Key, 32);
+    memcpy(DRBG_ctx.V, DRBG_ctx_backup.V, 16);
+    DRBG_ctx.reseed_counter = DRBG_ctx_backup.reseed_counter;
 }
 
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V) {
