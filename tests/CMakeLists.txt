@@ -113,6 +113,18 @@ endif()
 get_property(OQS_COMPILE_OPTIONS TARGET speed_kem PROPERTY COMPILE_OPTIONS)
 add_definitions(-DOQS_COMPILE_OPTIONS="[${OQS_COMPILE_OPTIONS}]")
 
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+    # With Visual studio the output of tests go into a folder with the configuration option. Force it to the same folder as if
+    # generating with Ninja
+    set_target_properties(
+        dump_alg_info example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_kem_mem speed_kem speed_sig
+        PROPERTIES 
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG          "${CMAKE_BINARY_DIR}/tests"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE        "${CMAKE_BINARY_DIR}/tests"
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/tests"
+        RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL     "${CMAKE_BINARY_DIR}/tests")
+endif()
+
 # TODO: Get CMake to find python.
 # and set PATH variable in Windows
 # for DLL builds.
