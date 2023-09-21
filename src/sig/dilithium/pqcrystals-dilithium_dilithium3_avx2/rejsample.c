@@ -291,12 +291,9 @@ unsigned int rej_uniform_avx(int32_t * restrict r, const uint8_t buf[REJ_UNIFORM
     _mm256_storeu_si256((__m256i *)&r[ctr], d);
     ctr += _mm_popcnt_u32(good);
 
-#ifndef DILITHIUM_USE_AES
     if(ctr > N - 8) break;
-#endif
   }
 
-#ifndef DILITHIUM_USE_AES
   uint32_t t;
   while(ctr < N && pos <= REJ_UNIFORM_BUFLEN - 3) {
     t  = buf[pos++];
@@ -307,7 +304,6 @@ unsigned int rej_uniform_avx(int32_t * restrict r, const uint8_t buf[REJ_UNIFORM
     if(t < Q)
       r[ctr++] = t;
   }
-#endif
 
   return ctr;
 }

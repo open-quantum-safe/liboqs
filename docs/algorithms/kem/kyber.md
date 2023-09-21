@@ -5,14 +5,10 @@
 - **Principal submitters**: Peter Schwabe.
 - **Auxiliary submitters**: Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, John M. Schanck, Gregor Seiler, Damien Stehlé.
 - **Authors' website**: https://pq-crystals.org/
-- **Specification version**: NIST Round 3 submission.
+- **Specification version**: pq-crystals 20230726.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b with copy_from_upstream patches
+  - **Source**: https://github.com/bhess/kyber/commit/0bf4adf5a0a93d7ff51b89fac228d0f65e148fea with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
-- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b with copy_from_upstream patches
-  - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
-      - **Source**: https://github.com/PQClean/PQClean/commit/c3abebf4ab1ff516ffa71e6337f06d898952c299 with copy_from_upstream patches
-      - **Implementation license (SPDX-Identifier)**: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
 
 
 ## Parameter set summary
@@ -25,11 +21,10 @@
 
 ## Kyber512 implementation characteristics
 
-|        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:-----------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
-|  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
-| [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -37,21 +32,19 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Kyber768 implementation characteristics
 
-|        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:-----------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
-|  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
-| [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Kyber1024 implementation characteristics
 
-|        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:-----------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
-|  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
-| [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

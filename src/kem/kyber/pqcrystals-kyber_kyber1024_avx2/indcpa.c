@@ -169,44 +169,6 @@ static unsigned int rej_uniform(int16_t *r,
 *              - const uint8_t *seed: pointer to input seed
 *              - int transposed: boolean deciding whether A or A^T is generated
 **************************************************/
-#ifdef KYBER_90S
-void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
-{
-  unsigned int ctr, i, j, k;
-  unsigned int buflen, off;
-  uint64_t nonce = 0;
-  ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*AES256CTR_BLOCKBYTES) buf;
-  aes256ctr_ctx state;
-
-  aes256ctr_init_key(&state, seed);
-
-  for(i=0;i<KYBER_K;i++) {
-    for(j=0;j<KYBER_K;j++) {
-      if(transposed)
-        nonce = (j << 8) | i;
-      else
-        nonce = (i << 8) | j;
-
-      aes256ctr_init_iv_u64(&state, nonce);
-      aes256ctr_squeezeblocks(buf.coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
-      buflen = REJ_UNIFORM_AVX_NBLOCKS*AES256CTR_BLOCKBYTES;
-      ctr = rej_uniform_avx(a[i].vec[j].coeffs, buf.coeffs);
-
-      while(ctr < KYBER_N) {
-        off = buflen % 3;
-        for(k = 0; k < off; k++)
-          buf.coeffs[k] = buf.coeffs[buflen - off + k];
-        aes256ctr_squeezeblocks(buf.coeffs + off, 1, &state);
-        buflen = off + AES256CTR_BLOCKBYTES;
-        ctr += rej_uniform(a[i].vec[j].coeffs + ctr, KYBER_N - ctr, buf.coeffs, buflen);
-      }
-
-      poly_nttunpack(&a[i].vec[j]);
-    }
-  }
-  aes256_ctx_release(&state);
-}
-#else
 #if KYBER_K == 2
 void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
 {
@@ -454,10 +416,9 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
   shake128x4_inc_ctx_release(&state);
 }
 #endif
-#endif
 
 /*************************************************
-* Name:        indcpa_keypair
+* Name:        indcpa_keypair_derand
 *
 * Description: Generates public and private key for the CPA-secure
 *              public-key encryption scheme underlying Kyber
@@ -465,10 +426,13 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
 * Arguments:   - uint8_t *pk: pointer to output public key
 *                             (of length KYBER_INDCPA_PUBLICKEYBYTES bytes)
 *              - uint8_t *sk: pointer to output private key
-                              (of length KYBER_INDCPA_SECRETKEYBYTES bytes)
+*                             (of length KYBER_INDCPA_SECRETKEYBYTES bytes)
+*              - const uint8_t *coins: pointer to input randomness
+*                             (of length KYBER_SYMBYTES bytes)
 **************************************************/
-void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
-                    uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES])
+void indcpa_keypair_derand(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
+                           uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES],
+                           const uint8_t coins[KYBER_SYMBYTES])
 {
   unsigned int i;
   uint8_t buf[2*KYBER_SYMBYTES];
@@ -476,31 +440,10 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   const uint8_t *noiseseed = buf + KYBER_SYMBYTES;
   polyvec a[KYBER_K], e, pkpv, skpv;
 
-  randombytes(buf, KYBER_SYMBYTES);
-  hash_g(buf, buf, KYBER_SYMBYTES);
+  hash_g(buf, coins, KYBER_SYMBYTES);
 
   gen_a(a, publicseed);
 
-#ifdef KYBER_90S
-#define NOISE_NBLOCKS ((KYBER_ETA1*KYBER_N/4)/AES256CTR_BLOCKBYTES) /* Assumes divisibility */
-  uint64_t nonce = 0;
-  ALIGNED_UINT8(NOISE_NBLOCKS*AES256CTR_BLOCKBYTES+32) coins; // +32 bytes as required by poly_cbd_eta1
-  aes256ctr_ctx state;
-  aes256ctr_init_u64(&state, noiseseed, nonce++);
-  for(i=0;i<KYBER_K;i++) {
-    aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
-    aes256ctr_init_iv_u64(&state, nonce);
-    nonce += 1;
-    poly_cbd_eta1(&skpv.vec[i], coins.vec);
-  }
-  for(i=0;i<KYBER_K;i++) {
-    aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
-    aes256ctr_init_iv_u64(&state, nonce);
-    nonce += 1;
-    poly_cbd_eta1(&e.vec[i], coins.vec);
-  }
-  aes256_ctx_release(&state);
-#else
 #if KYBER_K == 2
   poly_getnoise_eta1_4x(skpv.vec+0, skpv.vec+1, e.vec+0, e.vec+1, noiseseed, 0, 1, 2, 3);
 #elif KYBER_K == 3
@@ -509,7 +452,6 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
 #elif KYBER_K == 4
   poly_getnoise_eta1_4x(skpv.vec+0, skpv.vec+1, skpv.vec+2, skpv.vec+3, noiseseed,  0, 1, 2, 3);
   poly_getnoise_eta1_4x(e.vec+0, e.vec+1, e.vec+2, e.vec+3, noiseseed, 4, 5, 6, 7);
-#endif
 #endif
 
   polyvec_ntt(&skpv);
@@ -559,30 +501,6 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
   poly_frommsg(&k, m);
   gen_at(at, seed);
 
-#ifdef KYBER_90S
-#define NOISE_NBLOCKS ((KYBER_ETA1*KYBER_N/4)/AES256CTR_BLOCKBYTES) /* Assumes divisibility */
-#define CIPHERTEXTNOISE_NBLOCKS ((KYBER_ETA2*KYBER_N/4)/AES256CTR_BLOCKBYTES) /* Assumes divisibility */
-  uint64_t nonce = 0;
-  ALIGNED_UINT8(NOISE_NBLOCKS*AES256CTR_BLOCKBYTES+32) buf; /* +32 bytes as required by poly_cbd_eta1 */
-  aes256ctr_ctx state;
-  aes256ctr_init_u64(&state, coins, nonce++);
-  for(i=0;i<KYBER_K;i++) {
-    aes256ctr_squeezeblocks(buf.coeffs, NOISE_NBLOCKS, &state);
-    aes256ctr_init_iv_u64(&state, nonce);
-    nonce += 1;
-    poly_cbd_eta1(&sp.vec[i], buf.vec);
-  }
-  for(i=0;i<KYBER_K;i++) {
-    aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
-    aes256ctr_init_iv_u64(&state, nonce);
-    nonce += 1;
-    poly_cbd_eta2(&ep.vec[i], buf.vec);
-  }
-  aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
-  aes256_ctx_release(&state);
-
-  poly_cbd_eta2(&epp, buf.vec);
-#else
 #if KYBER_K == 2
   poly_getnoise_eta1122_4x(sp.vec+0, sp.vec+1, ep.vec+0, ep.vec+1, coins, 0, 1, 2, 3);
   poly_getnoise_eta2(&epp, coins, 4);
@@ -593,7 +511,6 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
   poly_getnoise_eta1_4x(sp.vec+0, sp.vec+1, sp.vec+2, sp.vec+3, coins, 0, 1, 2, 3);
   poly_getnoise_eta1_4x(ep.vec+0, ep.vec+1, ep.vec+2, ep.vec+3, coins, 4, 5, 6, 7);
   poly_getnoise_eta2(&epp, coins, 8);
-#endif
 #endif
 
   polyvec_ntt(&sp);

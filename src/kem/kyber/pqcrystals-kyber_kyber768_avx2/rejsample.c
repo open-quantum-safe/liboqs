@@ -290,7 +290,7 @@ unsigned int rej_uniform_avx(int16_t * restrict r, const uint8_t *buf)
   __m128i f, t, pilo, pihi;
 
   ctr = pos = 0;
-  while(ctr <= KYBER_N - 32 && pos <= REJ_UNIFORM_AVX_BUFLEN - 48) {
+  while(ctr <= KYBER_N - 32 && pos <= REJ_UNIFORM_AVX_BUFLEN - 56) {
     f0 = _mm256_loadu_si256((__m256i *)&buf[pos]);
     f1 = _mm256_loadu_si256((__m256i *)&buf[pos+24]);
     f0 = _mm256_permute4x64_epi64(f0, 0x94);
@@ -354,7 +354,7 @@ unsigned int rej_uniform_avx(int16_t * restrict r, const uint8_t *buf)
     ctr += _mm_popcnt_u32((good >> 24) & 0xFF);
   }
 
-  while(ctr <= KYBER_N - 8 && pos <= REJ_UNIFORM_AVX_BUFLEN - 12) {
+  while(ctr <= KYBER_N - 8 && pos <= REJ_UNIFORM_AVX_BUFLEN - 16) {
     f = _mm_loadu_si128((__m128i *)&buf[pos]);
     f = _mm_shuffle_epi8(f, _mm256_castsi256_si128(idx8));
     t = _mm_srli_epi16(f, 4);

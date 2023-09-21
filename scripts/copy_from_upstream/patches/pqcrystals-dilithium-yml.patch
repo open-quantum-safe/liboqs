@@ -1,5 +1,5 @@
 diff --git a/Dilithium2_META.yml b/Dilithium2_META.yml
-index 0e2e6fc..f4b7e8f 100644
+index 78a3b82..1e37507 100644
 --- a/Dilithium2_META.yml
 +++ b/Dilithium2_META.yml
 @@ -24,16 +24,14 @@ implementations:
@@ -10,8 +10,8 @@ index 0e2e6fc..f4b7e8f 100644
 -    common_dep: common_ref
 +    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
-     compile_opts: -DDILITHIUM_MODE=2 -DDILITHIUM_RANDOMIZED_SIGNING
+     version: https://github.com/pq-crystals/dilithium/tree/standard
+     compile_opts: -DDILITHIUM_MODE=2
      signature_keypair: pqcrystals_dilithium2_avx2_keypair
      signature_signature: pqcrystals_dilithium2_avx2_signature
      signature_verify: pqcrystals_dilithium2_avx2_verify
@@ -22,7 +22,7 @@ index 0e2e6fc..f4b7e8f 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Dilithium3_META.yml b/Dilithium3_META.yml
-index d1bca64..f45c859 100644
+index d9b76e2..dbd3677 100644
 --- a/Dilithium3_META.yml
 +++ b/Dilithium3_META.yml
 @@ -24,16 +24,14 @@ implementations:
@@ -33,8 +33,8 @@ index d1bca64..f45c859 100644
 -    common_dep: common_ref
 +    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
-     compile_opts: -DDILITHIUM_MODE=3 -DDILITHIUM_RANDOMIZED_SIGNING
+     version: https://github.com/pq-crystals/dilithium/tree/standard
+     compile_opts: -DDILITHIUM_MODE=3
      signature_keypair: pqcrystals_dilithium3_avx2_keypair
      signature_signature: pqcrystals_dilithium3_avx2_signature
      signature_verify: pqcrystals_dilithium3_avx2_verify
@@ -45,7 +45,7 @@ index d1bca64..f45c859 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Dilithium5_META.yml b/Dilithium5_META.yml
-index a4dbdbf..618b617 100644
+index c2ea5f0..3eb4bf5 100644
 --- a/Dilithium5_META.yml
 +++ b/Dilithium5_META.yml
 @@ -24,16 +24,14 @@ implementations:
@@ -56,8 +56,8 @@ index a4dbdbf..618b617 100644
 -    common_dep: common_ref
 +    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
-     compile_opts: -DDILITHIUM_MODE=5 -DDILITHIUM_RANDOMIZED_SIGNING
+     version: https://github.com/pq-crystals/dilithium/tree/standard
+     compile_opts: -DDILITHIUM_MODE=5
      signature_keypair: pqcrystals_dilithium5_avx2_keypair
      signature_signature: pqcrystals_dilithium5_avx2_signature
      signature_verify: pqcrystals_dilithium5_avx2_verify

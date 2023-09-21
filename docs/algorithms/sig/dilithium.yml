@@ -12,25 +12,19 @@ auxiliary-submitters:
 - Damien Stehlé
 crypto-assumption: hardness of lattice problems over module lattices
 website: https://pq-crystals.org/dilithium/
-nist-round: 3
-spec-version: 3.1
+nist-round: standard draft
+spec-version: pq-crystals 20230825
 primary-upstream:
-  source: https://github.com/pq-crystals/dilithium/commit/3e9b9f1412f6c7435dbeb4e10692ea58f181ee51
+  source: https://github.com/bhess/dilithium/commit/588562ac2cc777dfa407e34532d945b5f06b8ffd
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
-optimized-upstreams:
-  pqclean-aarch64:
-    source: https://github.com/PQClean/PQClean/commit/c3abebf4ab1ff516ffa71e6337f06d898952c299
-      with copy_from_upstream patches
-    spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT)
-      and MIT
 parameter-sets:
 - name: Dilithium2
   oqs_alg: OQS_SIG_alg_dilithium_2
   claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 1312
-  length-secret-key: 2528
+  length-secret-key: 2560
   length-signature: 2420
   implementations-switch-on-runtime-cpu-features: true
   implementations:
@@ -57,25 +51,13 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream: pqclean-aarch64
-    upstream-id: aarch64
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Linux
-      - Darwin
-    common-crypto:
-    - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
-    large-stack-usage: false
 - name: Dilithium3
   oqs_alg: OQS_SIG_alg_dilithium_3
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 1952
-  length-secret-key: 4000
-  length-signature: 3293
+  length-secret-key: 4032
+  length-signature: 3309
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -100,26 +82,14 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-  - upstream: pqclean-aarch64
-    upstream-id: aarch64
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Linux
-      - Darwin
-    common-crypto:
-    - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Dilithium5
   oqs_alg: OQS_SIG_alg_dilithium_5
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 2592
-  length-secret-key: 4864
-  length-signature: 4595
+  length-secret-key: 4896
+  length-signature: 4627
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -144,16 +114,4 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-  - upstream: pqclean-aarch64
-    upstream-id: aarch64
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Linux
-      - Darwin
-    common-crypto:
-    - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false

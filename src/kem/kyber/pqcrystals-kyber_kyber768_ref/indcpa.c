@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 #include "params.h"
 #include "indcpa.h"
 #include "polyvec.h"
@@ -23,10 +24,8 @@ static void pack_pk(uint8_t r[KYBER_INDCPA_PUBLICKEYBYTES],
                     polyvec *pk,
                     const uint8_t seed[KYBER_SYMBYTES])
 {
-  size_t i;
   polyvec_tobytes(r, pk);
-  for(i=0;i<KYBER_SYMBYTES;i++)
-    r[i+KYBER_POLYVECBYTES] = seed[i];
+  memcpy(r+KYBER_POLYVECBYTES, seed, KYBER_SYMBYTES);
 }
 
 /*************************************************
@@ -43,10 +42,8 @@ static void unpack_pk(polyvec *pk,
                       uint8_t seed[KYBER_SYMBYTES],
                       const uint8_t packedpk[KYBER_INDCPA_PUBLICKEYBYTES])
 {
-  size_t i;
   polyvec_frombytes(pk, packedpk);
-  for(i=0;i<KYBER_SYMBYTES;i++)
-    seed[i] = packedpk[i+KYBER_POLYVECBYTES];
+  memcpy(seed, packedpk+KYBER_POLYVECBYTES, KYBER_SYMBYTES);
 }
 
 /*************************************************
@@ -194,7 +191,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
 }
 
 /*************************************************
-* Name:        indcpa_keypair
+* Name:        indcpa_keypair_derand
 *
 * Description: Generates public and private key for the CPA-secure
 *              public-key encryption scheme underlying Kyber
@@ -202,10 +199,13 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
 * Arguments:   - uint8_t *pk: pointer to output public key
 *                             (of length KYBER_INDCPA_PUBLICKEYBYTES bytes)
 *              - uint8_t *sk: pointer to output private key
-                              (of length KYBER_INDCPA_SECRETKEYBYTES bytes)
+*                             (of length KYBER_INDCPA_SECRETKEYBYTES bytes)
+*              - const uint8_t *coins: pointer to input randomness
+*                             (of length KYBER_SYMBYTES bytes)
 **************************************************/
-void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
-                    uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES])
+void indcpa_keypair_derand(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
+                           uint8_t sk[KYBER_INDCPA_SECRETKEYBYTES],
+                           const uint8_t coins[KYBER_SYMBYTES])
 {
   unsigned int i;
   uint8_t buf[2*KYBER_SYMBYTES];
@@ -214,8 +214,7 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   uint8_t nonce = 0;
   polyvec a[KYBER_K], e, pkpv, skpv;
 
-  randombytes(buf, KYBER_SYMBYTES);
-  hash_g(buf, buf, KYBER_SYMBYTES);
+  hash_g(buf, coins, KYBER_SYMBYTES);
 
   gen_a(a, publicseed);
 
@@ -239,6 +238,7 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   pack_sk(sk, &skpv);
   pack_pk(pk, &pkpv, publicseed);
 }
+
 
 /*************************************************
 * Name:        indcpa_enc

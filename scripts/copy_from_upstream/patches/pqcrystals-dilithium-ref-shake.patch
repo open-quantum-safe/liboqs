@@ -1,6 +1,5 @@
-88ad24c7c247d0f2f4c6b22a7e0a4696053b41d5
 diff --git a/ref/poly.c b/ref/poly.c
-index a6ba074..006e83c 100644
+index 054ed98..d44063f 100644
 --- a/ref/poly.c
 +++ b/ref/poly.c
 @@ -365,6 +365,7 @@ void poly_uniform(poly *a,
@@ -52,7 +51,7 @@ index a6ba074..006e83c 100644
  
  /*************************************************
 diff --git a/ref/sign.c b/ref/sign.c
-index 5d0455c..16333eb 100644
+index d25a399..5f57036 100644
 --- a/ref/sign.c
 +++ b/ref/sign.c
 @@ -90,7 +90,7 @@ int crypto_sign_signature(uint8_t *sig,
@@ -64,24 +63,24 @@ index 5d0455c..16333eb 100644
  
    rho = seedbuf;
    tr = rho + SEEDBYTES;
-@@ -100,11 +100,11 @@ int crypto_sign_signature(uint8_t *sig,
-   unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
+@@ -102,11 +102,11 @@ int crypto_sign_signature(uint8_t *sig,
  
-   /* Compute CRH(tr, msg) */
+ 
+   /* Compute mu = CRH(tr, msg) */
 -  shake256_init(&state);
--  shake256_absorb(&state, tr, SEEDBYTES);
+-  shake256_absorb(&state, tr, TRBYTES);
 -  shake256_absorb(&state, m, mlen);
 -  shake256_finalize(&state);
 -  shake256_squeeze(mu, CRHBYTES, &state);
 +  shake256_inc_init(&state);
-+  shake256_inc_absorb(&state, tr, SEEDBYTES);
++  shake256_inc_absorb(&state, tr, TRBYTES);
 +  shake256_inc_absorb(&state, m, mlen);
 +  shake256_inc_finalize(&state);
 +  shake256_inc_squeeze(mu, CRHBYTES, &state);
  
  #ifdef DILITHIUM_RANDOMIZED_SIGNING
-   randombytes(rhoprime, CRHBYTES);
-@@ -134,11 +134,11 @@ rej:
+   randombytes(rnd, RNDBYTES);
+@@ -138,11 +138,11 @@ rej:
    polyveck_decompose(&w1, &w0, &w1);
    polyveck_pack_w1(sig, &w1);
  
@@ -89,16 +88,16 @@ index 5d0455c..16333eb 100644
 -  shake256_absorb(&state, mu, CRHBYTES);
 -  shake256_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
 -  shake256_finalize(&state);
--  shake256_squeeze(sig, SEEDBYTES, &state);
+-  shake256_squeeze(sig, CTILDEBYTES, &state);
 +  shake256_inc_ctx_reset(&state);
 +  shake256_inc_absorb(&state, mu, CRHBYTES);
 +  shake256_inc_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
 +  shake256_inc_finalize(&state);
-+  shake256_inc_squeeze(sig, SEEDBYTES, &state);
-   poly_challenge(&cp, sig);
++  shake256_inc_squeeze(sig, CTILDEBYTES, &state);
+   poly_challenge(&cp, sig); /* uses only the first SEEDBYTES bytes of sig */
    poly_ntt(&cp);
  
-@@ -171,6 +171,8 @@ rej:
+@@ -175,6 +175,8 @@ rej:
    if(n > OMEGA)
      goto rej;
  
@@ -107,7 +106,7 @@ index 5d0455c..16333eb 100644
    /* Write signature */
    pack_sig(sig, sig, &z, &h);
    *siglen = CRYPTO_BYTES;
-@@ -236,7 +238,7 @@ int crypto_sign_verify(const uint8_t *sig,
+@@ -240,7 +242,7 @@ int crypto_sign_verify(const uint8_t *sig,
    poly cp;
    polyvecl mat[K], z;
    polyveck t1, w1, h;
@@ -116,24 +115,24 @@ index 5d0455c..16333eb 100644
  
    if(siglen != CRYPTO_BYTES)
      return -1;
-@@ -249,11 +251,11 @@ int crypto_sign_verify(const uint8_t *sig,
+@@ -253,11 +255,11 @@ int crypto_sign_verify(const uint8_t *sig,
  
    /* Compute CRH(H(rho, t1), msg) */
-   shake256(mu, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+   shake256(mu, CRHBYTES, pk, CRYPTO_PUBLICKEYBYTES);
 -  shake256_init(&state);
--  shake256_absorb(&state, mu, SEEDBYTES);
+-  shake256_absorb(&state, mu, CRHBYTES);
 -  shake256_absorb(&state, m, mlen);
 -  shake256_finalize(&state);
 -  shake256_squeeze(mu, CRHBYTES, &state);
 +  shake256_inc_init(&state);
-+  shake256_inc_absorb(&state, mu, SEEDBYTES);
++  shake256_inc_absorb(&state, mu, CRHBYTES);
 +  shake256_inc_absorb(&state, m, mlen);
 +  shake256_inc_finalize(&state);
 +  shake256_inc_squeeze(mu, CRHBYTES, &state);
  
    /* Matrix-vector multiplication; compute Az - c2^dt1 */
-   poly_challenge(&cp, c);
-@@ -277,11 +279,12 @@ int crypto_sign_verify(const uint8_t *sig,
+   poly_challenge(&cp, c); /* uses only the first SEEDBYTES bytes of c */
+@@ -281,11 +283,12 @@ int crypto_sign_verify(const uint8_t *sig,
    polyveck_pack_w1(buf, &w1);
  
    /* Call random oracle and verify challenge */
@@ -141,14 +140,14 @@ index 5d0455c..16333eb 100644
 -  shake256_absorb(&state, mu, CRHBYTES);
 -  shake256_absorb(&state, buf, K*POLYW1_PACKEDBYTES);
 -  shake256_finalize(&state);
--  shake256_squeeze(c2, SEEDBYTES, &state);
+-  shake256_squeeze(c2, CTILDEBYTES, &state);
 +  shake256_inc_ctx_reset(&state);
 +  shake256_inc_absorb(&state, mu, CRHBYTES);
 +  shake256_inc_absorb(&state, buf, K*POLYW1_PACKEDBYTES);
 +  shake256_inc_finalize(&state);
-+  shake256_inc_squeeze(c2, SEEDBYTES, &state);
++  shake256_inc_squeeze(c2, CTILDEBYTES, &state);
 +  shake256_inc_ctx_release(&state);
-   for(i = 0; i < SEEDBYTES; ++i)
+   for(i = 0; i < CTILDEBYTES; ++i)
      if(c[i] != c2[i])
        return -1;
 diff --git a/ref/symmetric-shake.c b/ref/symmetric-shake.c
@@ -193,23 +192,10 @@ index 11ec09c..963f649 100644
 +  shake256_inc_finalize(state);
  }
 diff --git a/ref/symmetric.h b/ref/symmetric.h
-index 0b34fb6..13c88da 100644
+index cba12d1..211de3b 100644
 --- a/ref/symmetric.h
 +++ b/ref/symmetric.h
-@@ -24,25 +24,29 @@ void dilithium_aes256ctr_init(aes256ctr_ctx *state,
-         dilithium_aes256ctr_init(STATE, SEED, NONCE)
- #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) \
-         aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-+#define stream128_release(STATE) \
-+        aes256_ctx_release(STATE)
- #define stream256_init(STATE, SEED, NONCE) \
-         dilithium_aes256ctr_init(STATE, SEED, NONCE)
- #define stream256_squeezeblocks(OUT, OUTBLOCKS, STATE) \
-         aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-+#define stream256_release(STATE) \
-+        aes256_ctx_release(STATE)
- 
- #else
+@@ -6,16 +6,16 @@
  
  #include "fips202.h"
  
@@ -230,7 +216,7 @@ index 0b34fb6..13c88da 100644
                                      const uint8_t seed[CRHBYTES],
                                      uint16_t nonce);
  
-@@ -53,10 +57,12 @@ void dilithium_shake256_stream_init(keccak_state *state,
+@@ -26,9 +26,11 @@ void dilithium_shake256_stream_init(keccak_state *state,
          dilithium_shake128_stream_init(STATE, SEED, NONCE)
  #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) \
          shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
@@ -242,4 +228,3 @@ index 0b34fb6..13c88da 100644
 +#define stream256_release(STATE) shake256_inc_ctx_release(STATE)
  
  #endif
- 

@@ -55,7 +55,6 @@ void poly_uniform_gamma1(poly *a, const uint8_t seed[CRHBYTES], uint16_t nonce);
 #define poly_challenge DILITHIUM_NAMESPACE(poly_challenge)
 void poly_challenge(poly *c, const uint8_t seed[SEEDBYTES]);
 
-#ifndef DILITHIUM_USE_AES
 #define poly_uniform_4x DILITHIUM_NAMESPACE(poly_uniform_4x)
 void poly_uniform_4x(poly *a0,
                      poly *a1,
@@ -86,7 +85,6 @@ void poly_uniform_gamma1_4x(poly *a0,
                             uint16_t nonce1,
                             uint16_t nonce2,
                             uint16_t nonce3);
-#endif
 
 #define polyeta_pack DILITHIUM_NAMESPACE(polyeta_pack)
 void polyeta_pack(uint8_t r[POLYETA_PACKEDBYTES], const poly *a);

@@ -8,24 +8,24 @@ upstreams:
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-sphincs.patch, pqclean-dilithium-arm-randomized-signing.patch, pqclean-dilithium-symbolnames.patch, pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-classicmceliece.patch]
+    patches: [pqclean-sphincs.patch, pqclean-classicmceliece.patch]
     ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
   -
     name: pqcrystals-kyber
-    git_url: https://github.com/pq-crystals/kyber.git
-    git_branch: master
-    git_commit: 518de2414a85052bb91349bcbcc347f391292d5b
+    git_url: https://github.com/bhess/kyber.git
+    git_branch: bhe-ymlupd
+    git_commit: 0bf4adf5a0a93d7ff51b89fac228d0f65e148fea
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
+    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake.patch, pqcrystals-kyber-avx2-shake.patch]
   -
     name: pqcrystals-dilithium
-    git_url: https://github.com/pq-crystals/dilithium.git
-    git_branch: master
-    git_commit: 3e9b9f1412f6c7435dbeb4e10692ea58f181ee51
+    git_url: https://github.com/bhess/dilithium.git
+    git_branch: bhe-standard-fixes
+    git_commit: 588562ac2cc777dfa407e34532d945b5f06b8ffd
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
+    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake.patch, pqcrystals-dilithium-avx2-shake.patch]
 kems:
   -
     name: classic_mceliece
@@ -92,11 +92,7 @@ kems:
   -
     name: kyber
     default_implementation: ref
-    arch_specific_implementations:
-                                      aarch64: aarch64
     upstream_location: pqcrystals-kyber
-    arch_specific_upstream_locations:
-                                      aarch64: pqclean
     schemes:
       -
         scheme: "512"
@@ -115,10 +111,6 @@ sigs:
     name: dilithium
     default_implementation: ref
     upstream_location: pqcrystals-dilithium
-    arch_specific_implementations:
-                                      aarch64: aarch64
-    arch_specific_upstream_locations:
-                                      aarch64: pqclean
     schemes:
       -
         scheme: "2"

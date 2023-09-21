@@ -14,18 +14,12 @@ auxiliary-submitters:
 - Damien Stehlé
 crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
 website: https://pq-crystals.org/
-nist-round: 3
-spec-version: NIST Round 3 submission
+nist-round: standard draft
+spec-version: pq-crystals 20230726
 primary-upstream:
-  source: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b
+  source: https://github.com/bhess/kyber/commit/0bf4adf5a0a93d7ff51b89fac228d0f65e148fea
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
-optimized-upstreams:
-  pqclean-aarch64:
-    source: https://github.com/PQClean/PQClean/commit/c3abebf4ab1ff516ffa71e6337f06d898952c299
-      with copy_from_upstream patches
-    spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT)
-      and MIT
 parameter-sets:
 - name: Kyber512
   claimed-nist-level: 1
@@ -60,18 +54,6 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream: pqclean-aarch64
-    upstream-id: aarch64
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Linux
-      - Darwin
-    common-crypto:
-    - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
-    large-stack-usage: false
 - name: Kyber768
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -105,18 +87,6 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream: pqclean-aarch64
-    upstream-id: aarch64
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Linux
-      - Darwin
-    common-crypto:
-    - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
-    large-stack-usage: false
 - name: Kyber1024
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -149,16 +119,4 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-  - upstream: pqclean-aarch64
-    upstream-id: aarch64
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Linux
-      - Darwin
-    common-crypto:
-    - SHA3: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
