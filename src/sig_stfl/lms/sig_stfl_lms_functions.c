@@ -52,7 +52,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 	oqs_lms_key_data *lms_key_data = NULL;
 	const OQS_SIG_STFL_SECRET_KEY *sk;
 	uint8_t *sk_key_buf = NULL;
-	size_t sk_key_buf_len;
+	size_t sk_key_buf_len = 0;
 	void *context;
 
 	if (secret_key == NULL || message == NULL || signature == NULL || signature_length == NULL) {
@@ -83,7 +83,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 	 */
 
 	sk = secret_key;
-	sk_key_buf_len = 0;
 	rc_keyupdate = oqs_serialize_lms_key(sk, &sk_key_buf_len, &sk_key_buf);
 	if (rc_keyupdate != OQS_SUCCESS) {
 		goto err;
