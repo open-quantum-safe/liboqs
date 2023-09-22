@@ -1,19 +1,70 @@
 {
-  "Dilithium2": "26ae9c1224171e957dbe38672942d31edb7dffbe700825e0cb52128cdb45280a",
-  "Dilithium3": "eea584803c3d6991a4acbf9f117147bbdd246faf822cfb1a17effe20b2052ba9",
-  "Dilithium5": "3f6e58603a38be57cf08d79b01fcfd0ccc1129a09e14a6122c6fe22c906ddc3b",
-  "Falcon-1024": "e699d88eb214fef30597385f40814baeb84ac505d5f05f5c257b0726fc4530b8",
-  "Falcon-512": "da27fe8a462de7307ddf1f9b00072a457d9c5b14e838c148fbe2662094b9a2ca",
-  "SPHINCS+-SHA2-128f-simple": "cd1e13db3a56c0a6b3486a7b12bcddfda50cf5d1e4d14d3113e6456e969b8114",
-  "SPHINCS+-SHA2-128s-simple": "08c2e0f08bd96f50d065ca0ced04874c709d192864bfeaccb6daa4bfa9c58a28",
-  "SPHINCS+-SHA2-192f-simple": "fd4e301339b29ed5dc392c628d6c6db3d77a46ea61d16f7ff0e2b414f962f44c",
-  "SPHINCS+-SHA2-192s-simple": "0fa07f3f77752233b382911bcc19e671522bd57069f9edca39b3924ba2713839",
-  "SPHINCS+-SHA2-256f-simple": "bd88b49453162a9b527e14228f037615d0fcbd13d24b48ece41ae1370ed13480",
-  "SPHINCS+-SHA2-256s-simple": "05d15a74253962d35912bab3a9ee3230c2e721c798f4e757ecffa529071b0748",
-  "SPHINCS+-SHAKE-128f-simple": "46f4f87949dc994aa2b63b31c7307f44ca5ed025d7308ff408c8ba33473324dc",
-  "SPHINCS+-SHAKE-128s-simple": "bae2979565dabad96d885a1e264bc213ab54aff3c3b4308880b788e87702af3b",
-  "SPHINCS+-SHAKE-192f-simple": "60a9d2fd74adbef971a74477eca3170599beb4476d6428ced78b43b9641cc929",
-  "SPHINCS+-SHAKE-192s-simple": "87aedb87a77cb46f939a3bfd0099b08b0d889c9fa46be00f15c36827c117c838",
-  "SPHINCS+-SHAKE-256f-simple": "f6d0825afeb4ce25943c974a0efde5659ceea927d2507b0ea1a92e092f536acd",
-  "SPHINCS+-SHAKE-256s-simple": "37d37c9b43d71341b7dd5da7f8ebbe8bbae3d7bfc53f5378446023cbcf6e04f2"
+  "Dilithium2": {
+    "single": "26ae9c1224171e957dbe38672942d31edb7dffbe700825e0cb52128cdb45280a",
+    "all": "38337ea2e165cc1161de2da5af515a187d20d65f1aaffde844121c3c21b27c07"
+  },
+  "Dilithium3": {
+    "single": "eea584803c3d6991a4acbf9f117147bbdd246faf822cfb1a17effe20b2052ba9",
+    "all": "020a69d51c3ee0332e119780451b4cdfaf5ddbd627db37e7f78c641e98e223a9"
+  },
+  "Dilithium5": {
+    "single": "3f6e58603a38be57cf08d79b01fcfd0ccc1129a09e14a6122c6fe22c906ddc3b",
+    "all": "a76f63375cb3897b4fb01190976367f7cde73808f0166533a94be7c7942705ab"
+  },
+  "Falcon-1024": {
+    "single": "e699d88eb214fef30597385f40814baeb84ac505d5f05f5c257b0726fc4530b8",
+    "all": ""
+  },
+  "Falcon-512": {
+    "single": "da27fe8a462de7307ddf1f9b00072a457d9c5b14e838c148fbe2662094b9a2ca",
+    "all": ""
+  },
+  "SPHINCS+-SHA2-128f-simple": {
+    "single": "cd1e13db3a56c0a6b3486a7b12bcddfda50cf5d1e4d14d3113e6456e969b8114",
+    "all": ""
+  },
+  "SPHINCS+-SHA2-128s-simple": {
+    "single": "08c2e0f08bd96f50d065ca0ced04874c709d192864bfeaccb6daa4bfa9c58a28",
+    "all": ""
+  },
+  "SPHINCS+-SHA2-192f-simple": {
+    "single": "fd4e301339b29ed5dc392c628d6c6db3d77a46ea61d16f7ff0e2b414f962f44c",
+    "all": ""
+  },
+  "SPHINCS+-SHA2-192s-simple": {
+    "single": "0fa07f3f77752233b382911bcc19e671522bd57069f9edca39b3924ba2713839",
+    "all": ""
+  },
+  "SPHINCS+-SHA2-256f-simple": {
+    "single": "bd88b49453162a9b527e14228f037615d0fcbd13d24b48ece41ae1370ed13480",
+    "all": ""
+  },
+  "SPHINCS+-SHA2-256s-simple": {
+    "single": "05d15a74253962d35912bab3a9ee3230c2e721c798f4e757ecffa529071b0748",
+    "all": ""
+  },
+  "SPHINCS+-SHAKE-128f-simple": {
+    "single": "46f4f87949dc994aa2b63b31c7307f44ca5ed025d7308ff408c8ba33473324dc",
+    "all": ""
+  },
+  "SPHINCS+-SHAKE-128s-simple": {
+    "single": "bae2979565dabad96d885a1e264bc213ab54aff3c3b4308880b788e87702af3b",
+    "all": ""
+  },
+  "SPHINCS+-SHAKE-192f-simple": {
+    "single": "60a9d2fd74adbef971a74477eca3170599beb4476d6428ced78b43b9641cc929",
+    "all": ""
+  },
+  "SPHINCS+-SHAKE-192s-simple": {
+    "single": "87aedb87a77cb46f939a3bfd0099b08b0d889c9fa46be00f15c36827c117c838",
+    "all": ""
+  },
+  "SPHINCS+-SHAKE-256f-simple": {
+    "single": "f6d0825afeb4ce25943c974a0efde5659ceea927d2507b0ea1a92e092f536acd",
+    "all": ""
+  },
+  "SPHINCS+-SHAKE-256s-simple": {
+    "single": "37d37c9b43d71341b7dd5da7f8ebbe8bbae3d7bfc53f5378446023cbcf6e04f2",
+    "all": ""
+  }
 }
