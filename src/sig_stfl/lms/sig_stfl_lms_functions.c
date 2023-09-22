@@ -40,25 +40,70 @@ typedef struct OQS_LMS_KEY_DATA {
 
 	/* secret key data */
 	uint8_t *sec_key;
+
+	/* app specific */
+	void *context;
 } oqs_lms_key_data;
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
         size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
-	if (secret_key == NULL || message == NULL || signature == NULL) {
+	OQS_STATUS rc_keyupdate = OQS_ERROR;
+	oqs_lms_key_data *lms_key_data = NULL;
+	const OQS_SIG_STFL_SECRET_KEY *sk;
+	uint8_t *sk_key_buf = NULL;
+	size_t sk_key_buf_len = 0;
+	void *context;
+
+	if (secret_key == NULL || message == NULL || signature == NULL || signature_length == NULL) {
 		return OQS_ERROR;
 	}
 
-	/* TODO: Make sure we have a way to update the private key */
+	/*
+	 * Don't even attempt signing without a way to safe the updated private key
+	 */
+	if (secret_key->secure_store_scrt_key == NULL) {
+		goto err;
+	}
+
+	lms_key_data = (oqs_lms_key_data *)secret_key->secret_key_data;
+	if (lms_key_data == NULL) {
+		goto err;
+	}
 
 	if (oqs_sig_stfl_lms_sign(secret_key, signature,
 	                          signature_length,
 	                          message, message_len) != 0) {
-		return OQS_ERROR;
+		goto err;
 	}
 
-	/* TODO: Update private key */
+	/*
+	 * serialize and securely store the updated private key
+	 * but, delete signature and the serialized key other wise
+	 */
+
+	sk = secret_key;
+	rc_keyupdate = oqs_serialize_lms_key(sk, &sk_key_buf_len, &sk_key_buf);
+	if (rc_keyupdate != OQS_SUCCESS) {
+		goto err;
+	}
+
+	context = lms_key_data->context;
+	rc_keyupdate = secret_key->secure_store_scrt_key(sk_key_buf, sk_key_buf_len, context);
+	if (rc_keyupdate != OQS_SUCCESS) {
+		goto err;
+	}
+
+	OQS_MEM_secure_free(sk_key_buf, sk_key_buf_len);
 	return OQS_SUCCESS;
+
+err:
+	OQS_MEM_secure_free(sk_key_buf, sk_key_buf_len);
+	if (*signature_length) {
+		memset(signature, 0, *signature_length);
+	}
+	*signature_length = 0;
+	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,
@@ -356,11 +401,6 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 
 	//TODO: cleanup lock_key
 
-	if (sk->sig) {
-		OQS_MEM_insecure_free(sk->sig);
-		sk->sig = NULL;
-	}
-
 	if (sk->secret_key_data) {
 		oqs_lms_key_data *key_data = (oqs_lms_key_data *)sk->secret_key_data;
 		if (key_data) {
@@ -426,7 +466,7 @@ OQS_STATUS oqs_serialize_lms_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_l
  * Writes secret key + aux data if present
  * key_len is priv key length + aux length
  */
-OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf) {
+OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context) {
 
 	oqs_lms_key_data *lms_key_data = NULL;
 	uint8_t *lms_sk = NULL;
@@ -451,11 +491,11 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	param_set_t lm_ots_type[ MAX_HSS_LEVELS ];
 
 	// validate sk_buf for lms params
-	if (hss_get_parameter_set(&levels,
-	                          lm_type,
-	                          lm_ots_type,
-	                          NULL,
-	                          (void *)sk_buf)) {
+	if (!hss_get_parameter_set(&levels,
+	                           lm_type,
+	                           lm_ots_type,
+	                           NULL,
+	                           (void *)sk_buf)) {
 		return OQS_ERROR;
 	}
 
@@ -469,6 +509,7 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	memcpy(lms_sk, sk_buf, lms_sk_len);
 	lms_key_data->sec_key = lms_sk;
 	lms_key_data->len_sec_key = lms_sk_len;
+	lms_key_data->context = context;
 
 	if (aux_buf_len) {
 		lms_aux = malloc(aux_buf_len * sizeof(uint8_t));
@@ -493,4 +534,12 @@ err:
 
 success:
 	return OQS_SUCCESS;
+}
+
+void oqs_lms_key_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
+	oqs_lms_key_data *lms_key_data = (oqs_lms_key_data *)sk->secret_key_data;
+	if (lms_key_data) {
+		lms_key_data->context = context;
+		sk->secure_store_scrt_key = store_cb;
+	}
 }
