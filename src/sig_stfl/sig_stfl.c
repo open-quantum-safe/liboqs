@@ -692,7 +692,7 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, s
 	}
 }
 
-/* Convert LMS secret key object to byte string */
+/* Convert secret key object to byte string */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf) {
 	if ((sk == NULL) || (sk_len == NULL) || (sk_buf == NULL)) {
 		return 0;
@@ -704,16 +704,15 @@ OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(const OQS_SIG_STFL_SECRET_K
 	}
 }
 
-/* Insert lms byte string in an LMS secret key object */
+/* Insert secret key byte string in an Stateful secret key object */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t key_len, const uint8_t *sk_buf, void *context) {
 	if ((sk == NULL) || (sk_buf == NULL)) {
-		fprintf(stderr, "NMA %s input validation failed\n", __FUNCTION__);
 		return OQS_ERROR;
 	}
-	if (sk->deserialize_key) {
-		return sk->deserialize_key(sk, key_len, sk_buf, context);
-	} else {
-		fprintf(stderr, "NMA %s deserialize_key function pointer is mising.\n", __FUNCTION__);
+
+	if (sk->deserialize_key == NULL) {
 		return OQS_ERROR;
 	}
+
+	return sk->deserialize_key(sk, key_len, sk_buf, context);
 }

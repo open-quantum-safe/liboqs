@@ -48,42 +48,63 @@ typedef struct OQS_LMS_KEY_DATA {
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
         size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
-	OQS_STATUS status = OQS_ERROR;
 	OQS_STATUS rc_keyupdate = OQS_ERROR;
-	if (secret_key == NULL || message == NULL || signature == NULL) {
-		return status;
+	oqs_lms_key_data *lms_key_data = NULL;
+	const OQS_SIG_STFL_SECRET_KEY *sk;
+	uint8_t *sk_key_buf = NULL;
+	size_t sk_key_buf_len;
+	void *context;
+
+	if (secret_key == NULL || message == NULL || signature == NULL || signature_length == NULL) {
+		return OQS_ERROR;
+	}
+
+	/*
+	 * Don't even attempt signing without a way to safe the updated private key
+	 */
+	if (secret_key->secure_store_scrt_key == NULL) {
+		goto err;
+	}
+
+	lms_key_data = (oqs_lms_key_data *)secret_key->secret_key_data;
+	if (lms_key_data == NULL) {
+		goto err;
 	}
 
 	if (oqs_sig_stfl_lms_sign(secret_key, signature,
 	                          signature_length,
 	                          message, message_len) != 0) {
-		return status;
+		goto err;
 	}
 
-	/* Update/increment to the next private key */
-	if (secret_key->secure_store_scrt_key) {
-		oqs_lms_key_data *lms_key_data = (oqs_lms_key_data *)secret_key->secret_key_data;
-		if (lms_key_data) {
-			const OQS_SIG_STFL_SECRET_KEY *sk = secret_key;
-			size_t sk_key_buf_len = 0;
-			uint8_t *sk_key_buf = NULL;
-			void *context = lms_key_data->context;
+	/*
+	 * serialize and securely store the updated private key
+	 * but, delete signature and the serialized key other wise
+	 */
 
-			rc_keyupdate = oqs_serialize_lms_key(sk, &sk_key_buf_len, &sk_key_buf);
-			if (rc_keyupdate == OQS_SUCCESS) {
-				rc_keyupdate = secret_key->secure_store_scrt_key(sk_key_buf, sk_key_buf_len, context);
-				if (rc_keyupdate == OQS_SUCCESS) {
-					return OQS_SUCCESS;
-				} else {
-					return OQS_ERROR;
-				}
-			}
-			return status;
-		}
-	} else {
-		return status;
+	sk = secret_key;
+	sk_key_buf_len = 0;
+	rc_keyupdate = oqs_serialize_lms_key(sk, &sk_key_buf_len, &sk_key_buf);
+	if (rc_keyupdate != OQS_SUCCESS) {
+		goto err;
 	}
-	return status;
+
+	context = lms_key_data->context;
+	rc_keyupdate = secret_key->secure_store_scrt_key(sk_key_buf, sk_key_buf_len, context);
+	if (rc_keyupdate != OQS_SUCCESS) {
+		goto err;
+	}
+
+	OQS_MEM_secure_free(sk_key_buf, sk_key_buf_len);
+	return OQS_SUCCESS;
+
+err:
+	OQS_MEM_secure_free(sk_key_buf, sk_key_buf_len);
+	if (*signature_length) {
+		memset(signature, 0, *signature_length);
+	}
+	*signature_length = 0;
+	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,

@@ -232,7 +232,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @returns  status of the operation populated with key material none-zero length. Caller
 	 * deletes the buffer. if sk_buf is NULL the function returns the length
 	 */
-	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t key_len, const uint8_t *sk_buf, void *context);
+	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
 	/**
 	 * Secret Key Locking Function

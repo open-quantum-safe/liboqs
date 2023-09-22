@@ -38,11 +38,12 @@
  */
 static OQS_STATUS test_save_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
 	uint8_t *kb = key_buf;
-	fprintf(stderr, "\n%s test saved STFL SK  <%s>.\n", __FUNCTION__, (const char *)context);
 
 	if (key_buf && context && buf_len != 0) {
 		if (oqs_fstore("sk", (const char *)context, kb, buf_len) == OQS_SUCCESS) {
-			fprintf(stderr, "\nUpdated saved STFL SK  <%s>.\n", (const char *)context);
+			printf("\n================================================================================\n");
+			printf("Updated STFL SK  <%s>.\n", (const char *)context);
+			printf("================================================================================\n");
 			return OQS_SUCCESS;
 		} else {
 			return OQS_ERROR;
