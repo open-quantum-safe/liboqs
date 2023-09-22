@@ -263,6 +263,7 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 	size_t signed_msg_len = 0;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	// int rv;
+	int max_count;
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
@@ -292,9 +293,9 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 	}
 
 	for (int count = 0; count < max_count; ++count) {
-	fprintf(fh, "count = 0\n");
-	OQS_randombytes(seed, 48);
-	fprintBstr(fh, "seed = ", seed, 48);
+		fprintf(fh, "count = %d\n", count);
+		OQS_randombytes(seed, 48);
+		fprintBstr(fh, "seed = ", seed, 48);
 
 		msg_len = 33 * (count + 1);
 		fprintf(fh, "mlen = %zu\n", msg_len);
@@ -334,23 +335,13 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 			fprintf(fh, "\n");
 		}
 
-	rc = OQS_SIG_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_sign failed!\n", method_name);
-		goto err;
-	}
-	rc = combine_message_signature(&signed_msg, &signed_msg_len, msg, msg_len, signature, signature_len, sig);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_sig] %s ERROR: combine_message_signature failed!\n", method_name);
-		goto err;
-	}
-	fprintf(fh, "smlen = %zu\n", signed_msg_len);
-	fprintBstr(fh, "sm = ", signed_msg, signed_msg_len);
+		rc = OQS_SIG_verify(sig, msg, msg_len, signature, signature_len, public_key);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_verify failed!\n", method_name);
+			goto err;
+		}
 
-	rc = OQS_SIG_verify(sig, msg, msg_len, signature, signature_len, public_key);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_verify failed!\n", method_name);
-		goto err;
+		OQS_randombytes_nist_kat_restore_state();
 	}
 
 	ret = OQS_SUCCESS;

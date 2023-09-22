@@ -92,6 +92,7 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
 	void (*randombytes_free)(void) = NULL;
     int max_count;
+	int max_count;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
