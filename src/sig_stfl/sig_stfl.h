@@ -62,6 +62,15 @@ extern "C" {
 typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
 
 /**
+ * Application provided function to securely store data
+ * @param[in] sk_buf pointer to the data to be saved
+ * @param[in] buf_len length of the the data to be store
+ * @param[out] context pointer to application relevant data.
+ * @retrun OQS_SUCCESS if successful, otherwise OQS_ERROR
+ */
+typedef OQS_STATUS (*secure_store_sk)(/*const*/ uint8_t *sk_buf, size_t buf_len, void *context);
+
+/**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
  *
  * Note that algorithm identifiers are present in this list even when the algorithm is disabled
@@ -216,13 +225,14 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/**
 	 * set Secret Key to internal structure Function
 	 *
-	 * @param[out] sk OQS_SIG_STFL_SECRET_KEY object
-	 * @param[in] sk_len length of the returned byte string
-	 * @param[in] sk_buf The secret key represented as OQS_SIG_STFL_SECRET_KEY object
+	 * @param[in] sk OQS_SIG_STFL_SECRET_KEY object
+	 * @param[in] key_len length of the returned byte string
+	 * @param[in] sk_buf The secret key data to populate key obj
+	 * @param[in]  context application specific data
 	 * @returns  status of the operation populated with key material none-zero length. Caller
 	 * deletes the buffer. if sk_buf is NULL the function returns the length
 	 */
-	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf);
+	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
 	/**
 	 * Secret Key Locking Function
@@ -241,12 +251,16 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	OQS_STATUS (*unlock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
 
 	/**
-	 * Secret Key Saving Function
+	 * Store Secret Key Function
+	 * Callback function used to securely store key data
+	 * @param[in] sk_buf The serialized secret key data to secure store
+	 * @param[in] buf_len length of data to secure
+	 * @param[in] context aides the secure writing of data
 	 *
-	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
 	 * @return OQS_SUCCESS or OQS_ERROR
+	 * Idealy written to secure device
 	 */
-	OQS_STATUS (*save_secret_key)(const OQS_SIG_STFL_SECRET_KEY *sk);
+	OQS_STATUS (*secure_store_scrt_key)(/*const*/ uint8_t *sk_buf, size_t buf_len, void *context);
 
 	/**
 	 * Secret Key free internal variant specific data
@@ -255,6 +269,15 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @return none
 	 */
 	void (*free_key)(OQS_SIG_STFL_SECRET_KEY *sk);
+
+	/**
+	 * Set Secret Key store callback Function
+	 *
+	 * @param[in] sk secret key pointer to be updated
+	 * @param[in] store_cb callback pointer
+	 * @param[in] context secret key specific data/identifier
+	 */
+	void (*set_scrt_key_store_cb)(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 } OQS_SIG_STFL_SECRET_KEY;
 
 /**
@@ -281,7 +304,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name);
  * @param[out] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 /**
  * Signature generation algorithm.
@@ -364,6 +387,25 @@ void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
  * @return OQS_SUCCESS if successful, or OQS_ERROR if the object could not be freed.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
+
+
+/**
+ * OQS_SIG_STFL_SECRET_KEY_SET_store_cb .
+ *
+ * Can be called after creating a new stateful secret key has been generated.
+ * Allows the lib to securely store and update secret key after a sign operation.
+ *
+ * @param[in] sk secret key pointer to be updated
+ * @param[in] store_cb callback pointer
+ * @param[in] context secret key specific data/identifier
+ *
+ */
+void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
+
+OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk,  size_t *sk_len, uint8_t **sk_buf);
+
+/* Insert lms byte string in an LMS secret key object */
+OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
 
 #if defined(__cplusplus)
 } // extern "C"
