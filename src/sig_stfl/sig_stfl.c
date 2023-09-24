@@ -716,3 +716,52 @@ OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *
 
 	return sk->deserialize_key(sk, key_len, sk_buf, context);
 }
+
+
+
+/*  OQS_SIG_STFL_SECRET_KEY_SET_lock callback function*/
+OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_key lock) {
+    if (sk == NULL) {
+        return;
+    }
+    sk->lock_key = lock;
+}
+
+/*  OQS_SIG_STFL_SECRET_KEY_SET_unlock callback function */
+OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unlock_key unlock) {
+    if (sk == NULL) {
+        return;
+    }
+    sk->unlock_key = unlock;
+}
+
+/*  OQS_SIG_STFL_SECRET_KEY_SET_mutex */
+OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void *mutex) {
+    if (sk == NULL) {
+        return;
+    }
+    sk->mutex = mutex;
+}
+
+/* OQS_SIG_STFL_SECRET_KEY_lock  */
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
+    if (sk == NULL) {
+        return OQS_ERROR;
+    }
+    if (sk->lock_key == NULL) {
+        return OQS_SUCCESS;
+    }
+
+    return (sk->lock_key(sk->mutex));
+}
+
+/* OQS_SIG_STFL_SECRET_KEY_unlock */
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk) {
+    if (sk == NULL) {
+        return OQS_ERROR;
+    }
+    if(sk->unlock_key == NULL) {
+        return OQS_SUCCESS;
+    }
+    return (sk->unlock_key(sk->mutex));
+}

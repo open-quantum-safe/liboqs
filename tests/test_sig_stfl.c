@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <time.h>
+#include <unistd.h>
+
 #include <oqs/oqs.h>
 #include "tmp_store.c"
 
@@ -33,6 +36,18 @@
  */
 #define MAX_MARKER_LEN 50
 
+static OQS_SIG_STFL_SECRET_KEY *lock_test_sk = NULL;
+static OQS_SIG_STFL *lock_test_sig_obj = NULL;
+static uint8_t *lock_test_public_key = NULL;
+static char *lock_test_context = NULL;
+static uint8_t *signature_1 = NULL;
+static uint8_t *signature_2 = NULL;
+static size_t signature_len_1;
+static size_t signature_len_2;
+static uint8_t message_1[] = "The quick brown fox ...";
+static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
+static pthread_mutex_t *test_sk_lock = NULL;
+
 /*
  * Write stateful secret keys to disk.
  */
@@ -51,6 +66,38 @@ static OQS_STATUS test_save_secret_key(uint8_t *key_buf, size_t buf_len, void *c
 	}
 	return OQS_ERROR;
 }
+
+#if OQS_USE_PTHREADS_IN_TESTS
+static OQS_STATUS lock_sk_key(void *mutex) {
+    if (mutex == NULL) {
+        return OQS_ERROR;
+    }
+
+    if (!(pthread_mutex_lock((pthread_mutex_t*)mutex))) {
+        return OQS_SUCCESS;
+    }
+    return  OQS_ERROR;
+}
+
+static OQS_STATUS unlock_sk_key(void *mutex) {
+    if (mutex == NULL) {
+        return OQS_ERROR;
+    }
+
+    if (!(pthread_mutex_unlock((pthread_mutex_t*)mutex))) {
+        return OQS_SUCCESS;
+    }
+    return  OQS_ERROR;
+}
+#else
+static OQS_STATUS lock_sk_key(void *mutex) {
+    return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
+}
+
+static OQS_STATUS unlock_sk_key(void *mutex) {
+    return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
+}
+#endif
 
 //
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
@@ -313,6 +360,22 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
 	secret_key_rd = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
+
+	OQS_SIG_STFL_SECRET_KEY_SET_lock(secret_key, lock_sk_key);
+	OQS_SIG_STFL_SECRET_KEY_SET_unlock(secret_key, unlock_sk_key);
+
+#if OQS_USE_PTHREADS_IN_TESTS
+	pthread_mutex_t *sk_lock;
+	sk_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (sk_lock == NULL) {
+	    goto err;
+	}
+
+    if (0 != pthread_mutex_init(sk_lock, 0)) {
+        goto err;
+    }
+    OQS_SIG_STFL_SECRET_KEY_SET_mutex(secret_key, sk_lock);
+#endif
 	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
 	message = malloc(message_len + 2 * sizeof(magic_t));
 	signature = malloc(sig->length_signature + 2 * sizeof(magic_t));
@@ -479,6 +542,13 @@ cleanup:
 
 	OQS_MEM_insecure_free(read_pk_buf);
 	OQS_MEM_insecure_free(context);
+
+#if OQS_USE_PTHREADS_IN_TESTS
+    if(sk_lock) {
+        pthread_mutex_destroy(sk_lock);
+        OQS_MEM_insecure_free(sk_lock);
+    }
+#endif
 	return ret;
 }
 
@@ -616,7 +686,6 @@ keep_going:
 
 	if (!sk->secret_key_data) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
-		OQS_MEM_insecure_free(public_key);
 		goto err;
 	}
 
@@ -670,10 +739,211 @@ end_it:
 	return rc;
 }
 
+static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
+    OQS_STATUS rc = OQS_SUCCESS;
+
+    uint8_t message_1[] = "The quick brown fox ...";
+    uint8_t message_2[] = "The quick brown fox jumped from the tree.";
+    size_t message_len_1 = sizeof(message_1);
+    size_t message_len_2 = sizeof(message_2);
+
+    printf("================================================================================\n");
+    printf("Testing stateful Signature Verification %s\n", method_name);
+    printf("================================================================================\n");
+
+    if( lock_test_sk == NULL || lock_test_sig_obj == NULL || signature_1 == NULL
+                             || signature_2 == NULL || lock_test_public_key == NULL) {
+        return OQS_ERROR;
+    }
+
+
+    printf("================================================================================\n");
+    printf("Sig Verify 1  %s\n", method_name);
+    printf("================================================================================\n");
+
+    rc = OQS_SIG_STFL_verify(lock_test_sig_obj, message_1, message_len_1, signature_1, signature_len_1, lock_test_public_key);
+    OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_verify failed\n");
+        goto err;
+    }
+
+    printf("================================================================================\n");
+    printf("Sig Verify 2 %s\n", method_name);
+    printf("================================================================================\n");
+
+    rc = OQS_SIG_STFL_verify(lock_test_sig_obj, message_2, message_len_2, signature_2, signature_len_2, lock_test_public_key);
+    OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_verify failed\n");
+        goto err;
+    }
+    rc = OQS_SUCCESS;
+    printf("================================================================================\n");
+    printf("Stateful Signature Verification %s Passed.\n", method_name);
+    printf("================================================================================\n");
+    goto end_it;
+err:
+    rc = OQS_ERROR;
+end_it:
+
+    return rc;
+}
+
+static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
+    OQS_STATUS rc = OQS_SUCCESS;
+    size_t message_len_1 = sizeof(message_1);
+    size_t message_len_2 = sizeof(message_2);
+
+
+    printf("================================================================================\n");
+    printf("Testing stateful Signature Generation %s\n", method_name);
+    printf("================================================================================\n");
+
+    if( lock_test_sk == NULL || lock_test_sig_obj == NULL) {
+        return OQS_ERROR;
+    }
+
+
+    printf("================================================================================\n");
+    printf("Sig Gen 1  %s\n", method_name);
+    printf("================================================================================\n");
+
+    signature_1 = malloc(lock_test_sig_obj->length_signature);
+
+    rc = OQS_SIG_STFL_sign(lock_test_sig_obj, signature_1, &signature_len_1, message_1, message_len_1, lock_test_sk);
+    OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_sign failed\n");
+        goto err;
+    }
+
+//    sleep(3);
+
+    printf("================================================================================\n");
+    printf("Sig Gen 2 %s\n", method_name);
+    printf("================================================================================\n");
+
+    signature_2 = malloc(lock_test_sig_obj->length_signature);
+
+    rc = OQS_SIG_STFL_sign(lock_test_sig_obj, signature_2, &signature_len_2, message_2, message_len_2, lock_test_sk);
+    OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_sign failed\n");
+        goto err;
+    }
+    rc = OQS_SUCCESS;
+    printf("================================================================================\n");
+    printf("Stateful Key Gen %s Passed.\n", method_name);
+    printf("================================================================================\n");
+    goto end_it;
+err:
+    rc = OQS_ERROR;
+end_it:
+
+    return rc;
+}
+
+
+static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name) {
+    OQS_STATUS rc = OQS_SUCCESS;
+
+    /*
+     * Temporarily skip algs with long key generation times.
+     */
+
+    if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) != 0) {
+        goto skip_test;
+    } else {
+        goto keep_going;
+    }
+
+skip_test:
+    printf("Skip slow test %s.\n", method_name);
+    return rc;
+
+keep_going:
+
+    printf("================================================================================\n");
+    printf("Testing stateful Signature locks %s\n", method_name);
+    printf("================================================================================\n");
+
+    printf("================================================================================\n");
+    printf("Create stateful Signature  %s\n", method_name);
+    printf("================================================================================\n");
+
+    lock_test_sig_obj = OQS_SIG_STFL_new(method_name);
+    if (lock_test_sig_obj == NULL) {
+        fprintf(stderr, "ERROR: OQS_SIG_STFL_new failed\n");
+        goto err;
+    }
+
+    lock_test_public_key = malloc(lock_test_sig_obj->length_public_key * sizeof(uint8_t));
+
+    printf("================================================================================\n");
+    printf("Create stateful Secret Key  %s\n", method_name);
+    printf("================================================================================\n");
+
+    lock_test_sk = OQS_SIG_STFL_SECRET_KEY_new(method_name);
+    if (lock_test_sk == NULL) {
+        fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
+        goto err;
+    }
+
+    OQS_SIG_STFL_SECRET_KEY_SET_lock(lock_test_sk, lock_sk_key);
+    OQS_SIG_STFL_SECRET_KEY_SET_unlock(lock_test_sk, unlock_sk_key);
+
+#if OQS_USE_PTHREADS_IN_TESTS
+
+    test_sk_lock=(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    if (test_sk_lock == NULL) {
+        goto err;
+    }
+
+    if (0 != pthread_mutex_init(test_sk_lock, 0)) {
+        goto err;
+    }
+    OQS_SIG_STFL_SECRET_KEY_SET_mutex(lock_test_sk, test_sk_lock);
+#endif
+
+    printf("================================================================================\n");
+    printf("Generate keypair  %s\n", method_name);
+    printf("================================================================================\n");
+
+    rc = OQS_SIG_STFL_keypair(lock_test_sig_obj, lock_test_public_key, lock_test_sk);
+
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "OQS STFL key gen failed.\n");
+        goto err;
+    }
+
+
+
+    if (!lock_test_sk->secret_key_data) {
+        fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
+        goto err;
+    }
+
+    /* set context and secure store callback */
+    if (lock_test_sk->set_scrt_key_store_cb) {
+        lock_test_context = strdup(((method_name)));
+        lock_test_sk->set_scrt_key_store_cb(lock_test_sk, test_save_secret_key, (void *)lock_test_context);
+    }
+
+    printf("Test Secret Key Creator Thread created Stateful Signature and Secret Key objects.\n");
+    goto end_it;
+
+err:
+    rc = OQS_ERROR;
+end_it:
+    return rc;
+}
+
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
 	// so we have to swap out the OQS_randombytes provider.
+
 	OQS_randombytes_switch_algorithm("system");
 	OQS_randombytes(random_array, bytes_to_read);
 	OQS_randombytes_custom_algorithm(&TEST_SIG_STFL_randombytes);
@@ -693,11 +963,45 @@ struct thread_data {
 	OQS_STATUS rc1;
 };
 
-void *test_wrapper(void *arg) {
-	struct thread_data *td = arg;
-	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile);
-	td->rc1 = sig_stfl_test_secret_key(td->alg_name);
+struct lock_test_data {
+    const char *alg_name;
+    OQS_STATUS rc;
+};
+
+struct lock_sign_data {
+    const char *alg_name;
+    OQS_STATUS rc;
+};
+
+void *test_query_key(void *arg) {
+    struct lock_test_data *td = arg;
+    printf("%s: Start Query Stateful Key info\n", __FUNCTION__);
+    td->rc = sig_stfl_test_query_key(td->alg_name);
+    printf("%s: End Query Stateful Key info\n", __FUNCTION__);
+    return NULL;
+}
+
+void *test_sig_gen(void *arg) {
+    struct lock_test_data *td = arg;
+    printf("%s: Start Generate Stateful Signature\n", __FUNCTION__);
+    td->rc = sig_stfl_test_sig_gen(td->alg_name);
+    printf("%s: End Generate Stateful Signature\n", __FUNCTION__);
+    return NULL;
+}
+
+void *test_locks(void *arg) {
+	struct lock_test_data *td = arg;
+	printf("%s: Start Generate Keys\n", __FUNCTION__);
+	td->rc = sig_stfl_test_secret_key_lock(td->alg_name);
+	printf("%s: End Generate Stateful Keys\n", __FUNCTION__);
 	return NULL;
+}
+
+void *test_wrapper(void *arg) {
+    struct thread_data *td = arg;
+    td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile);
+    td->rc1 = sig_stfl_test_secret_key(td->alg_name);
+    return NULL;
 }
 #endif
 
@@ -737,13 +1041,21 @@ int main(int argc, char **argv) {
 	OQS_randombytes_switch_algorithm("system");
 #endif
 
-	OQS_STATUS rc, rc1;
+	OQS_STATUS rc, rc1, rc_lck, rc_sig, rc_qry;
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_SIG_NAME_ 64
+
 	pthread_t thread;
+    pthread_t tst_lck_thread;
+	pthread_mutex_t *lock;
 	struct thread_data td;
 	td.alg_name = alg_name;
 	td.katfile = katfile;
+
+    struct lock_test_data td_lock;
+    td_lock.alg_name = alg_name;
+
+
 	int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 	if (trc) {
 		fprintf(stderr, "ERROR: Creating pthread\n");
@@ -753,11 +1065,47 @@ int main(int argc, char **argv) {
 	pthread_join(thread, NULL);
 	rc = td.rc;
 	rc1 = td.rc1;
+
+    int trc_2 = pthread_create(&thread, NULL, test_locks, &td_lock);
+    if (trc_2) {
+        fprintf(stderr, "ERROR: Creating pthread for stateful key gen test\n");
+        OQS_destroy();
+        return EXIT_FAILURE;
+    }
+    pthread_join(thread, NULL);
+    rc_lck = td_lock.rc;
+
+    int trc_3 = pthread_create(&thread, NULL, test_sig_gen, &td_lock);
+    if (trc_3) {
+        fprintf(stderr, "ERROR: Creating pthread for sig gen test\n");
+        OQS_destroy();
+        return EXIT_FAILURE;
+    }
+    pthread_join(thread, NULL);
+    rc_sig = td_lock.rc;
+
+    int trc_4 = pthread_create(&thread, NULL, test_query_key, &td_lock);
+    if (trc_4) {
+        fprintf(stderr, "ERROR: Creating pthread for query key test.\n");
+        OQS_destroy();
+        return EXIT_FAILURE;
+    }
+    pthread_join(thread, NULL);
+    rc_qry = td_lock.rc;
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
 	rc1 = sig_stfl_test_secret_key(alg_name);
 #endif
-	if ((rc != OQS_SUCCESS) || (rc1 != OQS_SUCCESS)) {
+
+    OQS_SIG_STFL_SECRET_KEY_free(lock_test_sk);
+    OQS_MEM_insecure_free(lock_test_public_key);
+    OQS_SIG_STFL_free(lock_test_sig_obj);
+    OQS_MEM_insecure_free(lock_test_context);
+    OQS_MEM_insecure_free(signature_1);
+    OQS_MEM_insecure_free(signature_2);
+
+	if ((rc != OQS_SUCCESS) || (rc1 != OQS_SUCCESS) || (rc_lck != OQS_SUCCESS) || (rc_sig != OQS_SUCCESS)
+	        || (rc_qry != OQS_SUCCESS)) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}

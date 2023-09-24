@@ -47,7 +47,7 @@ typedef struct OQS_LMS_KEY_DATA {
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
         size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
-
+    OQS_STATUS status = OQS_ERROR;
 	OQS_STATUS rc_keyupdate = OQS_ERROR;
 	oqs_lms_key_data *lms_key_data = NULL;
 	const OQS_SIG_STFL_SECRET_KEY *sk;
@@ -57,6 +57,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 
 	if (secret_key == NULL || message == NULL || signature == NULL || signature_length == NULL) {
 		return OQS_ERROR;
+	}
+
+	/* Lock secret to ensure OTS use */
+	if ((secret_key->lock_key) && (secret_key->mutex)) {
+	    secret_key->lock_key(secret_key->mutex);
 	}
 
 	/*
@@ -94,16 +99,23 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 		goto err;
 	}
 
-	OQS_MEM_secure_free(sk_key_buf, sk_key_buf_len);
-	return OQS_SUCCESS;
+	status = OQS_SUCCESS;
+	goto passed;
 
 err:
-	OQS_MEM_secure_free(sk_key_buf, sk_key_buf_len);
 	if (*signature_length) {
 		memset(signature, 0, *signature_length);
 	}
 	*signature_length = 0;
-	return OQS_ERROR;
+
+passed:
+    OQS_MEM_secure_free(sk_key_buf, sk_key_buf_len);
+
+    /* Unlock secret to ensure OTS use */
+    if ((secret_key->unlock_key) && (secret_key->mutex)) {
+        secret_key->unlock_key(secret_key->mutex);
+    }
+	return status;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,
@@ -128,8 +140,17 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const 
 	if (remain == NULL  || secret_key == NULL) {
 		return OQS_ERROR;
 	}
+    /* Lock secret key to ensure data integrity use */
+    if ((secret_key->lock_key) && (secret_key->mutex)) {
+        secret_key->lock_key(secret_key->mutex);
+    }
 
 	remain = 0;
+
+    /* Unlock secret key */
+    if ((secret_key->unlock_key) && (secret_key->mutex)) {
+        secret_key->unlock_key(secret_key->mutex);
+    }
 	return OQS_SUCCESS;
 }
 

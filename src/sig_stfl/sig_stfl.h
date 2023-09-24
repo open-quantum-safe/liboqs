@@ -66,9 +66,25 @@ typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
  * @param[in] sk_buf pointer to the data to be saved
  * @param[in] buf_len length of the the data to be store
  * @param[out] context pointer to application relevant data.
- * @retrun OQS_SUCCESS if successful, otherwise OQS_ERROR
+ * return OQS_SUCCESS if successful, otherwise OQS_ERROR
  */
-typedef OQS_STATUS (*secure_store_sk)(/*const*/ uint8_t *sk_buf, size_t buf_len, void *context);
+typedef OQS_STATUS (*secure_store_sk)(uint8_t *sk_buf, size_t buf_len, void *context);
+
+/**
+ * Application provided function to lock secret key object serialize access
+ * @param[in] sk pointer to secret key object to lock
+ * @param[in] mutex pointer to mutex struct
+ * return OQS_SUCCESS if successful, otherwise OQS_ERROR
+ */
+typedef OQS_STATUS (*lock_key)(void *mutex);
+
+/**
+ * Application provided function to unlock secret key object
+ * @param[in] sk pointer to secret key object to unlock
+ * @param[in] mutex pointer to mutex struct
+ * return OQS_SUCCESS if successful, otherwise OQS_ERROR
+ */
+typedef OQS_STATUS (*unlock_key)(void *mutex);
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
@@ -205,6 +221,9 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/* The variant specific secret key data */
 	void *secret_key_data;
 
+	/* mutual exclusion struct */
+	void *mutex;
+
 	/* Function that returns the total number of signatures for the secret key */
 	uint64_t (*sigs_total)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
@@ -237,18 +256,18 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/**
 	 * Secret Key Locking Function
 	 *
-	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
+	 * @param[in] mutex application defined mutex
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*lock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
+	OQS_STATUS (*lock_key)(void *mutex);
 
 	/**
 	 * Secret Key Unlocking / Releasing Function
 	 *
-	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
+	 * @param[in]  mutex application defined mutex
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*unlock_key)(OQS_SIG_STFL_SECRET_KEY *sk);
+	OQS_STATUS (*unlock_key)(void *mutex);
 
 	/**
 	 * Store Secret Key Function
@@ -388,6 +407,60 @@ void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
+/**
+ * OQS_SIG_STFL_SECRET_KEY_SET_lock .
+ *
+ * Sets function to prevent multiple processes from using the sk at the same time.
+ *
+ * @param[in] sk secret key pointer to be updated
+ * @param[in] lock function pointer
+ *
+ */
+void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_key lock);
+
+/**
+ * OQS_SIG_STFL_SECRET_KEY_SET_unlock .
+ *
+ * Sets function to prevent multiple processes from using the sk at the same time.
+ *
+ * @param[in] sk secret key pointer to be updated
+ * @param[in] unlock function pointer
+ *
+ */
+void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unlock_key unlock);
+
+/**
+ * OQS_SIG_STFL_SECRET_KEY_SET_mutex .
+ *
+ * Sets function to prevent multiple processes from using the sk at the same time.
+ *
+ * @param[in] sk secret key pointer to be updated
+ * @param[in] mutex function pointer
+ *
+ */
+void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void *mutex);
+
+/**
+ * OQS_SIG_STFL_SECRET_KEY_lock .
+ *
+ * Locks sk so only one application that holds the lock can access it.
+ *
+ * @param[in] sk secret key pointer to be locked
+ * @return OQS_SUCCESS if successful, or OQS_ERROR if the object fails to apply the lock
+ *
+ */
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
+
+/**
+ * OQS_SIG_STFL_SECRET_KEY_unlock .
+ *
+ * Unlocks the resouces so that th enext process can access it.
+ *
+ * @param[in] sk secret key pointer
+ * @return OQS_SUCCESS if successful, or OQS_ERROR if the object fails to release the lock
+ *
+ */
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * OQS_SIG_STFL_SECRET_KEY_SET_store_cb .
