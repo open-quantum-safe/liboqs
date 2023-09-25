@@ -365,7 +365,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	OQS_SIG_STFL_SECRET_KEY_SET_unlock(secret_key, unlock_sk_key);
 
 #if OQS_USE_PTHREADS_IN_TESTS
-	pthread_mutex_t *sk_lock;
+	pthread_mutex_t *sk_lock = NULL;
 	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (sk_lock == NULL) {
 		goto err;
@@ -818,7 +818,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 		goto err;
 	}
 
-//    sleep(3);
+	sleep(3);
 
 	printf("================================================================================\n");
 	printf("Sig Gen 2 %s\n", method_name);
@@ -968,32 +968,27 @@ struct lock_test_data {
 	OQS_STATUS rc;
 };
 
-struct lock_sign_data {
-	const char *alg_name;
-	OQS_STATUS rc;
-};
-
 void *test_query_key(void *arg) {
 	struct lock_test_data *td = arg;
-	printf("%s: Start Query Stateful Key info\n", __FUNCTION__);
+	printf("\n%s: Start Query Stateful Key info\n", __FUNCTION__);
 	td->rc = sig_stfl_test_query_key(td->alg_name);
-	printf("%s: End Query Stateful Key info\n", __FUNCTION__);
+	printf("%s: End Query Stateful Key info\n\n", __FUNCTION__);
 	return NULL;
 }
 
 void *test_sig_gen(void *arg) {
 	struct lock_test_data *td = arg;
-	printf("%s: Start Generate Stateful Signature\n", __FUNCTION__);
+	printf("\n%s: Start Generate Stateful Signature\n", __FUNCTION__);
 	td->rc = sig_stfl_test_sig_gen(td->alg_name);
-	printf("%s: End Generate Stateful Signature\n", __FUNCTION__);
+	printf("%s: End Generate Stateful Signature\n\n", __FUNCTION__);
 	return NULL;
 }
 
-void *test_locks(void *arg) {
+void *test_create_keys(void *arg) {
 	struct lock_test_data *td = arg;
-	printf("%s: Start Generate Keys\n", __FUNCTION__);
+	printf("\n%s: Start Generate Keys\n", __FUNCTION__);
 	td->rc = sig_stfl_test_secret_key_lock(td->alg_name);
-	printf("%s: End Generate Stateful Keys\n", __FUNCTION__);
+	printf("%s: End Generate Stateful Keys\n\n", __FUNCTION__);
 	return NULL;
 }
 
@@ -1046,14 +1041,19 @@ int main(int argc, char **argv) {
 #define MAX_LEN_SIG_NAME_ 64
 
 	pthread_t thread;
-	pthread_t tst_lck_thread;
-	pthread_mutex_t *lock;
+	pthread_t create_key_thread;
+	pthread_t sign_key_thread;
+	pthread_t query_key_thread;
 	struct thread_data td;
 	td.alg_name = alg_name;
 	td.katfile = katfile;
 
-	struct lock_test_data td_lock;
-	td_lock.alg_name = alg_name;
+	struct lock_test_data td_create;
+	struct lock_test_data td_sign;
+	struct lock_test_data td_query;
+	td_create.alg_name = alg_name;
+	td_sign.alg_name = alg_name;
+	td_query.alg_name = alg_name;
 
 
 	int trc = pthread_create(&thread, NULL, test_wrapper, &td);
@@ -1066,32 +1066,32 @@ int main(int argc, char **argv) {
 	rc = td.rc;
 	rc1 = td.rc1;
 
-	int trc_2 = pthread_create(&thread, NULL, test_locks, &td_lock);
+	int trc_2 = pthread_create(&create_key_thread, NULL, test_create_keys, &td_create);
 	if (trc_2) {
 		fprintf(stderr, "ERROR: Creating pthread for stateful key gen test\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
-	pthread_join(thread, NULL);
-	rc_lck = td_lock.rc;
+	pthread_join(create_key_thread, NULL);
+	rc_lck = td_create.rc;
 
-	int trc_3 = pthread_create(&thread, NULL, test_sig_gen, &td_lock);
+	int trc_3 = pthread_create(&sign_key_thread, NULL, test_sig_gen, &td_sign);
 	if (trc_3) {
 		fprintf(stderr, "ERROR: Creating pthread for sig gen test\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
-	pthread_join(thread, NULL);
-	rc_sig = td_lock.rc;
+	pthread_join(sign_key_thread, NULL);
+	rc_sig = td_sign.rc;
 
-	int trc_4 = pthread_create(&thread, NULL, test_query_key, &td_lock);
+	int trc_4 = pthread_create(&query_key_thread, NULL, test_query_key, &td_query);
 	if (trc_4) {
 		fprintf(stderr, "ERROR: Creating pthread for query key test.\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
-	pthread_join(thread, NULL);
-	rc_qry = td_lock.rc;
+	pthread_join(query_key_thread, NULL);
+	rc_qry = td_query.rc;
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
 	rc1 = sig_stfl_test_secret_key(alg_name);
