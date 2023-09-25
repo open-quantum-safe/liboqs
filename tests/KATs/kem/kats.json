@@ -11,61 +11,45 @@
     "single": "885fbb436472d61c4eaac3a616272ebee29accc0cf60dc7205bee06477d13905",
     "all": "a94692ee958a57c0de7f098a5b7d982abb590a9e613d221836558df0e9e36e2a"
   },
-  "BIKE1-L1-CPA": {
-    "single": "596d1fd7e592a69288214505a9b2f443b8a8f3b465dbc174aab5129869f9eb00",
-    "all": ""
-  },
-  "BIKE1-L1-FO": {
-    "single": "ad3afc61446ad32b4e2d0dad0d789cb5649578cf1847c5eed3cc272718dcd33f",
-    "all": ""
-  },
-  "BIKE1-L3-CPA": {
-    "single": "7d3572fc1085fca3e113635a07bbc6dde071e91154e8abb2266ad47a7023fe7a",
-    "all": ""
-  },
-  "BIKE1-L3-FO": {
-    "single": "9c2719c8d948142d2983480bb26b1b4c294e4a75b9bf30fdd1ea8cc055b28844",
-    "all": ""
-  },
   "Classic-McEliece-348864": {
     "single": "6f0f50626df15ce403c0c1d5f91648245282afebcac90e5db3595ce9b20b1817",
-    "all": ""
+    "all": "6dcd5dd585437593a5abbaad23ce560b1651909f2868085234a27ada5034be8e"
   },
   "Classic-McEliece-348864f": {
     "single": "9b17b21becc1d3acf9df0a6d87875790259c075abeb50f97ea254c8d29395a41",
-    "all": ""
+    "all": "4a3d89647e1f23e463eb7cebe8b663d57026c310070068b3600de9ee7084e580"
   },
   "Classic-McEliece-460896": {
     "single": "03124a66e44aea18a3c1fcd63be22f2217ec5514b7d84166b1da71094c251769",
-    "all": ""
+    "all": "9aa66c72b1e53ae09faf8f8d3e91d9bb94fddc9b0f6e2f93d6626489eb74186a"
   },
   "Classic-McEliece-460896f": {
     "single": "a027478ab01849de3d492176ea95c071110bcb8f7e4e6afa136a30cd1a1f6074",
-    "all": ""
+    "all": "fff312c1d39db961fc8f640804646b96a6dbe57a2f19febc5ba3c25bab08aee7"
   },
   "Classic-McEliece-6688128": {
     "single": "4c825bf86378d76b197caca6f957942c0cc98b50ce4a6b26cad6efa25d1d20c6",
-    "all": ""
+    "all": "e770433a0594f0a3ec95892370eadce1ab6b298b5ebbf5c8b2ff475f8f6406f6"
   },
   "Classic-McEliece-6688128f": {
     "single": "1fa84d1abd8ef104cdcf75277ca4399475945e97087dde3183a09415e1d61987",
-    "all": ""
+    "all": "16299fe24fadd0094dee10eaecb0003aa844728e39e641d36cc17a4c8440e2ae"
   },
   "Classic-McEliece-6960119": {
     "single": "8feea532732502134b7965fd495e6618b09f0b4747c2d94b29a85a90a0b6cc8a",
-    "all": ""
+    "all": "f8749bfcbdc9750879a76585740a9031f5ac610caf092a541c9eb4ecd49f510c"
   },
   "Classic-McEliece-6960119f": {
     "single": "9a586a40d1af4819efb3f7343a05c260bd27d7e5d450945fee0ace5593761c3b",
-    "all": ""
+    "all": "b7e07552276ba64133c8ccb0bac8169768c927a5ec0613aca7d5c62c821d8935"
   },
   "Classic-McEliece-8192128": {
     "single": "cbe9b802465df7a7b3a59a08d3bd3ea603b6277532c15f89418b8d0d6508ee24",
-    "all": ""
+    "all": "8c6a912012c40331c1ba27509a08e725be5b25e860dcdaef75bfaa4069d8ac9f"
   },
   "Classic-McEliece-8192128f": {
     "single": "f497b217022465568f0ed6c7987c462b74ba2d3e39f963ac357436c727ed9bdb",
-    "all": ""
+    "all": "0d0088952265b2b28db8a47d13218b741ba265f10d80e25ed594fa6958ee29e5"
   },
   "FrodoKEM-1344-AES": {
     "single": "2f4f1c352c1b343cce386c54234ca39fe29b48e45c66300f7311f5d3060d82b3",
