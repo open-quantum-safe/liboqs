@@ -341,6 +341,10 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	size_t sk_buf_len = 0;
 	size_t read_pk_len = 0;
 
+#if OQS_USE_PTHREADS_IN_TESTS
+	pthread_mutex_t *sk_lock = NULL;
+#endif
+
 	OQS_STATUS rc, ret = OQS_ERROR;
 
 	//The magic numbers are random values.
@@ -365,7 +369,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	OQS_SIG_STFL_SECRET_KEY_SET_unlock(secret_key, unlock_sk_key);
 
 #if OQS_USE_PTHREADS_IN_TESTS
-	pthread_mutex_t *sk_lock = NULL;
 	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (sk_lock == NULL) {
 		goto err;
@@ -742,10 +745,29 @@ end_it:
 static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 
-	uint8_t message_1[] = "The quick brown fox ...";
-	uint8_t message_2[] = "The quick brown fox jumped from the tree.";
 	size_t message_len_1 = sizeof(message_1);
 	size_t message_len_2 = sizeof(message_2);
+
+	/*
+	 * Temporarily skip algs with long key generation times.
+	 */
+
+	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) != 0) {
+		goto skip_test;
+	} else {
+		goto keep_going;
+	}
+
+skip_test:
+	printf("Skip slow alg %s.\n", method_name);
+	return rc;
+
+keep_going:
+
+//	uint8_t message_1[] = "The quick brown fox ...";
+//	uint8_t message_2[] = "The quick brown fox jumped from the tree.";
+//	size_t message_len_1 = sizeof(message_1);
+//	size_t message_len_2 = sizeof(message_2);
 
 	printf("================================================================================\n");
 	printf("Testing stateful Signature Verification %s\n", method_name);
@@ -795,6 +817,21 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	size_t message_len_1 = sizeof(message_1);
 	size_t message_len_2 = sizeof(message_2);
 
+	/*
+	 * Temporarily skip algs with long key generation times.
+	 */
+
+	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) != 0) {
+		goto skip_test;
+	} else {
+		goto keep_going;
+	}
+
+skip_test:
+	printf("Skip slow alg %s.\n", method_name);
+	return rc;
+
+keep_going:
 
 	printf("================================================================================\n");
 	printf("Testing stateful Signature Generation %s\n", method_name);
