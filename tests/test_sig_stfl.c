@@ -764,11 +764,6 @@ skip_test:
 
 keep_going:
 
-//	uint8_t message_1[] = "The quick brown fox ...";
-//	uint8_t message_2[] = "The quick brown fox jumped from the tree.";
-//	size_t message_len_1 = sizeof(message_1);
-//	size_t message_len_2 = sizeof(message_2);
-
 	printf("================================================================================\n");
 	printf("Testing stateful Signature Verification %s\n", method_name);
 	printf("================================================================================\n");
