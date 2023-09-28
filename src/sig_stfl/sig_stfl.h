@@ -16,6 +16,29 @@
 
 #include <oqs/oqs.h>
 
+/*
+ * Developer's Notes:
+ * Stateful signatures are based on one-time use of a secret key. A pool of secret keys are created for this purpose.
+ * The state of these keys are tracked to ensure that they are used only once to generate a signature.
+ *
+ * As such, product specific environments do play a role in ensuring the safety of the keys.
+ * Secret keys must be store securely.
+ * The key index/counter must be updated after each signature generation.
+ * Secret key must be protected in a thread-save manner.
+ *
+ * Application therefore are required to provide environment specific callback functions to
+ *  - store private key
+ *  - lock/unlock private key
+ *
+ *  See below for details
+ *  OQS_SIG_STFL_SECRET_KEY_SET_lock
+ *  OQS_SIG_STFL_SECRET_KEY_SET_unlock
+ *  OQS_SIG_STFL_SECRET_KEY_SET_mutex
+ *  OQS_SIG_STFL_SECRET_KEY_SET_store_cb
+ *
+ */
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -279,7 +302,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 * Idealy written to secure device
 	 */
-	OQS_STATUS (*secure_store_scrt_key)(/*const*/ uint8_t *sk_buf, size_t buf_len, void *context);
+	OQS_STATUS (*secure_store_scrt_key)(uint8_t *sk_buf, size_t buf_len, void *context);
 
 	/**
 	 * Secret Key free internal variant specific data
