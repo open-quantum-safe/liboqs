@@ -114,7 +114,17 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 
 /* Convert LMS secret key object to byte string */
 static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
-	return oqs_serialize_lms_key(sk, sk_len, sk_buf_ptr);
+	OQS_STATUS status;
+	if (sk->lock_key && sk->mutex) {
+		sk->lock_key(sk->mutex);
+	}
+
+	status = oqs_serialize_lms_key(sk, sk_len, sk_buf_ptr);
+
+	if (sk->unlock_key && sk->mutex) {
+		sk->unlock_key(sk->mutex);
+	}
+	return status;
 }
 
 /* Insert lms byte string in an LMS secret key object */
