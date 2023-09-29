@@ -29,7 +29,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 of version 0.9.0 of liboqs. It was released on September 28, 2023.
+This is release candidate 1 of version 0.9.0 of liboqs. It was released on September 29, 2023.
 
 This release features an update to the Classic McEliece KEM, bringing it in line with NIST Round 4. It also adds or updates ARM implementations for Kyber, Dilithium, and Falcon.
 
