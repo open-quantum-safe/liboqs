@@ -24,7 +24,7 @@ fi
 
 # transform results into JSON files for simple comparison
 
-cd tmp && git clone --depth 1 https://github.com/open-quantum-safe/profiling.git && python3 profiling/perf/scripts/parse_liboqs_speed.py speed_kem.log && python3 profiling/perf/scripts/parse_liboqs_speed.py speed_sig.log && cd ..
+cd tmp && git clone --depth 1 https://github.com/open-quantum-safe/profiling.git && cd profiling/perf/scripts && python3 parse_liboqs_speed.py ../../../speed_kem.log && python3 parse_liboqs_speed.py ../../../speed_sig.log && cd ../../../..
 
 if [ $? -ne 0 ]; then
    echo "Failure converting results. Exiting."
@@ -32,7 +32,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # obtain current base speed results
-rm -rf build && mkdir build && cd build && cmake $2 .. && $MAKECMD && ./tests/speed_kem > speed_kem.log && ./tests/speed_sig > speed_sig.log && python3 ../tmp/profiling/perf/scripts/parse_liboqs_speed.py speed_kem.log && python3 ../tmp/profiling/perf/scripts/parse_liboqs_speed.py speed_sig.log && cd ..
+rm -rf build && mkdir build && cd build && cmake $2 .. && $MAKECMD && ./tests/speed_kem > speed_kem.log && ./tests/speed_sig > speed_sig.log && cd ../tmp/profiling/perf/scripts && python3 parse_liboqs_speed.py ../../../../build/speed_kem.log && python3 parse_liboqs_speed.py ../../../../build/speed_sig.log && cd ../../../..
 
 if [ $? -ne 0 ]; then
    echo "Failure creating current results. Exiting."
