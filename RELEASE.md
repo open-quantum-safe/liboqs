@@ -1,4 +1,4 @@
-liboqs version 0.8.1-dev
+liboqs version 0.9.0-rc1
 ========================
 
 About
@@ -29,10 +29,67 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.8.1-dev of liboqs.
+This is release candidate 1 of version 0.9.0 of liboqs. It was released on September 29, 2023.
+
+This release features an update to the Classic McEliece KEM, bringing it in line with NIST Round 4. It also adds or updates ARM implementations for Kyber, Dilithium, and Falcon.
 
 What's New
 ----------
 
 This release continues from the 0.8.0 release of liboqs. 
 
+### Key encapsulation mechanisms
+
+- Classic McEliece: updated to Round 4 version.
+- Kyber: aarch64 implementation updated.
+
+### Digital signature schemes
+
+- Dilithium: aarch64 implementation updated.
+- Falcon: aarch64 implementation added.
+
+### Other changes
+
+- Update algorithm documentation
+- Support compilation for Windows on ARM64, Apple mobile, and Android platforms
+- Improve resilience of randombytes on Apple systems
+
+---
+
+Detailed changelog
+------------------
+
+* Fix libdir value in liboqs.pc by @vt-alt in https://github.com/open-quantum-safe/liboqs/pull/1496
+* update version and remove CCI triggers by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1498
+* create deb package and retain as artifact by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1501
+* README correction to docs path & additional gitignore to macos + vscode by @planetf1 in https://github.com/open-quantum-safe/liboqs/pull/1503
+* Trigger liboqs-python CI via GitHub API by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1507
+* Update Classic McEliece by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1470
+* update BIKE documentation by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1509
+* kyber/dilithium aarch64 pull from pqclean + patches by @bhess in https://github.com/open-quantum-safe/liboqs/pull/1512
+* Pull Falcon updates from PQClean by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1523
+* Bump XCode by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1526
+* Update Classic McEliece supression files by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1527
+* Bump gitpython from 3.1.30 to 3.1.32 in /scripts/copy_from_upstream by @dependabot in https://github.com/open-quantum-safe/liboqs/pull/1524
+* ci: add CI for android by @res0nance in https://github.com/open-quantum-safe/liboqs/pull/1531
+* re-enable armhf speed testing by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1535
+* Bump gitpython from 3.1.32 to 3.1.34 in /scripts/copy_from_upstream by @dependabot in https://github.com/open-quantum-safe/liboqs/pull/1538
+* Prefer arc4random on Apple platforms by @res0nance in https://github.com/open-quantum-safe/liboqs/pull/1544
+* Bump gitpython from 3.1.34 to 3.1.35 in /scripts/copy_from_upstream by @dependabot in https://github.com/open-quantum-safe/liboqs/pull/1551
+* Update Classic McEliece suppression files by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1541
+* Pull Neon implementation of Falcon from PQClean by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1547
+* ci: add CI for apple mobile platforms by @res0nance in https://github.com/open-quantum-safe/liboqs/pull/1546
+* Add Windows ARM64 support by @res0nance in https://github.com/open-quantum-safe/liboqs/pull/1545
+* Document Falcon constant time errors by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1552
+* ci: github actions CI for Windows x86 and x64 by @res0nance in https://github.com/open-quantum-safe/liboqs/pull/1554
+* build: Align VS test folder with all other Generators by @res0nance in https://github.com/open-quantum-safe/liboqs/pull/1557
+* Fix weekly.yml to skip McEliece by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1562
+* Enable extensions in constant-time tests by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1567
+
+## New Contributors
+* @planetf1 made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1503
+* @SWilson4 made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1507
+* @praveksharma made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1470
+* @res0nance made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1531
+
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.8.0...0.9.0-rc1
