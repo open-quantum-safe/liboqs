@@ -128,13 +128,13 @@ void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 	DRBG_ctx.reseed_counter++;
 }
 
-void OQS_randombytes_nist_kat_save_state() {
+void OQS_randombytes_nist_kat_save_state(void) {
 	memcpy(DRBG_ctx_backup.Key, DRBG_ctx.Key, 32);
 	memcpy(DRBG_ctx_backup.V, DRBG_ctx.V, 16);
 	DRBG_ctx_backup.reseed_counter = DRBG_ctx.reseed_counter;
 }
 
-void OQS_randombytes_nist_kat_restore_state() {
+void OQS_randombytes_nist_kat_restore_state(void) {
 	memcpy(DRBG_ctx.Key, DRBG_ctx_backup.Key, 32);
 	memcpy(DRBG_ctx.V, DRBG_ctx_backup.V, 16);
 	DRBG_ctx.reseed_counter = DRBG_ctx_backup.reseed_counter;
