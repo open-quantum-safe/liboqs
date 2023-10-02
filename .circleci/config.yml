@@ -316,6 +316,8 @@ workflows:
         - not:
             equal: [ main, << pipeline.git.branch >> ]
         - not:
+            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        - not:
             matches: { pattern: "^ghactionsonly-.*", value: << pipeline.git.branch >> }
     jobs:
       - stylecheck
@@ -393,7 +395,36 @@ workflows:
 
   commit-to-main:
     when:
-      equal: [ main, << pipeline.git.branch >> ]
+      and:
+        - not:
+            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        - equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - trigger-downstream-ci:
           context: openquantumsafe
+
+  nistkat:
+    when:
+      and:
+        - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        - equal: [ "NIST KATs", << pipeline.schedule.name >> ]
+    jobs:
+      - linux_oqs:
+          <<: *require_buildcheck
+          name: nistkat-generic
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+          CMAKE_ARGS: -DOQS_OPT_TARGET=generic
+          PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+      - linux_oqs:
+          <<: *require_buildcheck
+          name: nistkat-avx2
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+          CMAKE_ARGS: -DOQS_DIST_BUILD=OFF
+          PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+      - arm_machine:
+          <<: *require_buildcheck
+          name: nistkat-aarch64
+          CMAKE_ARGS: -DOQS_DIST_BUILD=OFF
+          PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 -k 'test_kat_all'
