@@ -172,14 +172,14 @@ jobs:
                            -e PYTEST_ARGS="<< parameters.PYTEST_ARGS >>" \
                            -v `pwd`:/root/project \
                            openquantumsafe/ci-ubuntu-focal-arm64:latest bash \
-                           -c "cd /root/project && \
+                           -c 'cd /root/project && \
                                uname -a && \
                                mkdir build && cd build && source ~/.bashrc && \
                                cmake -GNinja -DOQS_STRICT_WARNINGS=ON $CMAKE_ARGS .. && cmake -LA .. && ninja && \
                                cd .. && mkdir -p tmp && \
                                python3 -m pytest --verbose \
                                                  --ignore=tests/test_code_conventions.py \
-                                                 --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS"
+                                                 --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS'
       - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
           path: build/test-results
       - store_artifacts:
