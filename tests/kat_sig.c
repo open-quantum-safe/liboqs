@@ -293,7 +293,7 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 	}
 
 	for (size_t count = 0; count < max_count; ++count) {
-		fprintf(fh, "count = %d\n", count);
+		fprintf(fh, "count = %zu\n", count);
 		OQS_randombytes(seed, 48);
 		fprintBstr(fh, "seed = ", seed, 48);
 
