@@ -917,7 +917,7 @@ keep_going:
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_sign failed\n");
 		goto err;
 	}
-	rc = OQS_SUCCESS;
+	
 	printf("================================================================================\n");
 	printf("Stateful Key Gen %s Passed.\n", method_name);
 	printf("================================================================================\n");
