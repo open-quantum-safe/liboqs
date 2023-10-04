@@ -559,7 +559,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
 	OQS_SIG_STFL_SECRET_KEY *sk_frm_file = NULL;
-
+	unsigned long long num_sig_left = 0, max_num_sigs = 0;
 	OQS_SIG_STFL *sig_obj = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *frm_file_sk_buf = NULL;
@@ -680,7 +680,6 @@ keep_going:
 	/*
 	 * Get max num signature and the amount remaining
 	 */
-	unsigned long long num_sig_left = 0, max_num_sigs = 0;
 	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)sk);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
@@ -917,7 +916,7 @@ keep_going:
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_sign failed\n");
 		goto err;
 	}
-	
+
 	printf("================================================================================\n");
 	printf("Stateful Key Gen %s Passed.\n", method_name);
 	printf("================================================================================\n");
