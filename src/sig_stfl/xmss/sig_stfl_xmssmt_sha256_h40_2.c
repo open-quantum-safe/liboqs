@@ -52,10 +52,6 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_2_new(void) {
 
 	sk->length_secret_key = OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_length_sk;
 
-	// Assign the sigs_left and sigs_max functions
-	sk->sigs_left = NULL;
-	sk->sigs_total = NULL;
-
 	// Secret serialize/deserialize function
 	sk->serialize_key = OQS_SECRET_KEY_XMSS_serialize_key;
 	sk->deserialize_key = OQS_SECRET_KEY_XMSS_deserialize_key;

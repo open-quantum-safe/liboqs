@@ -75,8 +75,11 @@ extern "C" {
 
 /* Defined LMS parameter identifiers */
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1 "LMS_SHA256_H5_W1" //"5/1"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2 "LMS_SHA256_H5_W2" //"5/2"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4 "LMS_SHA256_H5_W4" //"5/4"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8 "LMS_SHA256_H5_W8" //"5/8"
 
-#define OQS_SIG_STFL_algs_length 29
+#define OQS_SIG_STFL_algs_length 32
 
 /* Defined LM parameter identifiers */
 /* Algorithm identifier for LMS-SHA256_N32_H5 */
@@ -246,12 +249,6 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 
 	/* mutual exclusion struct */
 	void *mutex;
-
-	/* Function that returns the total number of signatures for the secret key */
-	uint64_t (*sigs_total)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
-
-	/* Function that returns the number of signatures left for the secret key */
-	uint64_t (*sigs_left)(const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 	/**
 	 * Secret Key retrieval Function

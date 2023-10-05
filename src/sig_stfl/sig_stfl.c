@@ -43,6 +43,9 @@ OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_6,
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_12,
 		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1,
+		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2,
+		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4,
+		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8,
 	};
 
 	if (i >= OQS_SIG_STFL_algs_length) {
@@ -231,13 +234,19 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+	}
 #ifdef OQS_ENABLE_SIG_STFL_LMS
+	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
 		return 1;
-#else
-		return 0;
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2)) {
+		return 1;
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4)) {
+		return 1;
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8)) {
+		return 1;
+	}
 #endif
-	} else {
+	else {
 		return 0;
 	}
 }
@@ -416,13 +425,19 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	}  else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+	}
 #ifdef OQS_ENABLE_SIG_STFL_LMS
+	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
 		return OQS_SIG_STFL_alg_lms_sha256_h5_w1_new();
-#else
-		return NULL;
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2)) {
+		return OQS_SIG_STFL_alg_lms_sha256_h5_w2_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4)) {
+		return OQS_SIG_STFL_alg_lms_sha256_h5_w4_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8)) {
+		return OQS_SIG_STFL_alg_lms_sha256_h5_w8_new();
+	}
 #endif //OQS_ENABLE_SIG_STFL_LMS
-	} else {
+	else {
 		return NULL;
 	}
 }
@@ -652,13 +667,19 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 #else
 		return NULL;
 #endif
-	}  else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+	}
 #ifdef OQS_ENABLE_SIG_STFL_LMS
+	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
 		return OQS_SECRET_KEY_LMS_SHA256_H5_W1_new();
-#else
-		return NULL;
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2)) {
+		return OQS_SECRET_KEY_LMS_SHA256_H5_W2_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4)) {
+		return OQS_SECRET_KEY_LMS_SHA256_H5_W4_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8)) {
+		return OQS_SECRET_KEY_LMS_SHA256_H5_W8_new();
+	}
 #endif
-	} else {
+	else {
 		return NULL;
 	}
 }

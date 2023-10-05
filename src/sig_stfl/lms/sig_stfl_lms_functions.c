@@ -280,11 +280,22 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	/* Set lms param set */
 	switch (oid) {
-	case 0x1:
+	case OQS_LMS_ID_sha256_n32_h5_w1:
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
 		break;
-	default:
+	case OQS_LMS_ID_sha256_n32_h5_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+		break;
+	case OQS_LMS_ID_sha256_n32_h5_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+		break;
+	case OQS_LMS_ID_sha256_n32_h5_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		break;
 		oqs_key_data->lm_type[0] = 0;
 		oqs_key_data->lm_ots_type[0] = 0;
 		parse_err = 1;

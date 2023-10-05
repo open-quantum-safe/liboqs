@@ -573,10 +573,13 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) != 0) {
-		goto skip_test;
-	} else {
+	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0) {
 		goto keep_going;
+	} else {
+		goto skip_test;
 	}
 
 //	if (0) {
@@ -769,10 +772,14 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) != 0) {
-		goto skip_test;
-	} else {
+	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+	   ) {
 		goto keep_going;
+	} else {
+		goto skip_test;
 	}
 
 skip_test:
@@ -833,10 +840,13 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) != 0) {
-		goto skip_test;
+	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0) {
+		goto  keep_going;
 	} else {
-		goto keep_going;
+		goto skip_test;
 	}
 
 skip_test:
@@ -955,10 +965,13 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name) {
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) != 0) {
-		goto skip_test;
-	} else {
+	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0) {
 		goto keep_going;
+	} else {
+		goto skip_test;
 	}
 
 skip_test:
