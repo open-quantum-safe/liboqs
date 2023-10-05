@@ -559,7 +559,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
 	OQS_SIG_STFL_SECRET_KEY *sk_frm_file = NULL;
-
+	unsigned long long num_sig_left = 0, max_num_sigs = 0;
 	OQS_SIG_STFL *sig_obj = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *frm_file_sk_buf = NULL;
@@ -676,6 +676,23 @@ keep_going:
 		fprintf(stderr, "OQS STFL key gen failed.\n");
 		goto err;
 	}
+
+	/*
+	 * Get max num signature and the amount remaining
+	 */
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
+
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
 
 	/* write sk key to disk */
 	rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &to_file_sk_len, &to_file_sk_buf);
@@ -837,6 +854,25 @@ keep_going:
 	}
 
 
+	/*
+	 * Get max num signature and the amount remaining
+	 */
+	unsigned long long num_sig_left = 0, max_num_sigs = 0;
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
+
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
+
+
 	printf("================================================================================\n");
 	printf("Sig Gen 1  %s\n", method_name);
 	printf("================================================================================\n");
@@ -850,7 +886,23 @@ keep_going:
 		goto err;
 	}
 
-	sleep(3);
+	/*
+	 * Get max num signature and the amount remaining
+	 */
+	num_sig_left = 0, max_num_sigs = 0;
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
+
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
 
 	printf("================================================================================\n");
 	printf("Sig Gen 2 %s\n", method_name);
@@ -864,10 +916,29 @@ keep_going:
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_sign failed\n");
 		goto err;
 	}
-	rc = OQS_SUCCESS;
+
 	printf("================================================================================\n");
 	printf("Stateful Key Gen %s Passed.\n", method_name);
 	printf("================================================================================\n");
+
+	/*
+	 * Get max num signature and the amount remaining
+	 */
+	num_sig_left = 0, max_num_sigs = 0;
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
+
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
+		goto err;
+	}
+	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
+
 	goto end_it;
 err:
 	rc = OQS_ERROR;
