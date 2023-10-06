@@ -576,7 +576,10 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0) {
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
 		goto keep_going;
 	} else {
 		goto skip_test;
@@ -718,7 +721,6 @@ keep_going:
 		sk->set_scrt_key_store_cb(sk, test_save_secret_key, (void *)context);
 	}
 
-
 	/* read secret key from disk */
 	frm_file_sk_buf = malloc(to_file_sk_len);
 	if (oqs_fload("sk", method_name, frm_file_sk_buf, to_file_sk_len, &frm_file_sk_len) != OQS_SUCCESS) {
@@ -776,7 +778,9 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
-	   ) {
+
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
 		goto keep_going;
 	} else {
 		goto skip_test;
@@ -796,7 +800,6 @@ keep_going:
 	        || signature_2 == NULL || lock_test_public_key == NULL) {
 		return OQS_ERROR;
 	}
-
 
 	printf("================================================================================\n");
 	printf("Sig Verify 1  %s\n", method_name);
@@ -843,7 +846,10 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0) {
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
 		goto  keep_going;
 	} else {
 		goto skip_test;
@@ -863,7 +869,6 @@ keep_going:
 		return OQS_ERROR;
 	}
 
-
 	/*
 	 * Get max num signature and the amount remaining
 	 */
@@ -881,7 +886,6 @@ keep_going:
 		goto err;
 	}
 	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
-
 
 	printf("================================================================================\n");
 	printf("Sig Gen 1  %s\n", method_name);
@@ -957,7 +961,6 @@ end_it:
 	return rc;
 }
 
-
 static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 
@@ -968,7 +971,10 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name) {
 	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
 	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0) {
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
+	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
 		goto keep_going;
 	} else {
 		goto skip_test;
@@ -1032,8 +1038,6 @@ keep_going:
 		fprintf(stderr, "OQS STFL key gen failed.\n");
 		goto err;
 	}
-
-
 
 	if (!lock_test_sk->secret_key_data) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
@@ -1170,7 +1174,6 @@ int main(int argc, char **argv) {
 	td_create.alg_name = alg_name;
 	td_sign.alg_name = alg_name;
 	td_query.alg_name = alg_name;
-
 
 	int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 	if (trc) {

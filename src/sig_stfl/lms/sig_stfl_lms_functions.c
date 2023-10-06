@@ -47,7 +47,7 @@ typedef struct OQS_LMS_KEY_DATA {
 } oqs_lms_key_data;
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
-        size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+    size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	OQS_STATUS status = OQS_ERROR;
 	OQS_STATUS rc_keyupdate = OQS_ERROR;
 	oqs_lms_key_data *lms_key_data = NULL;
@@ -120,8 +120,8 @@ passed:
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,
-        const uint8_t *signature, size_t signature_len,
-        const uint8_t *public_key) {
+    const uint8_t *signature, size_t signature_len,
+    const uint8_t *public_key) {
 
 	if (message == NULL || signature == NULL || public_key == NULL) {
 		return OQS_ERROR;
@@ -183,7 +183,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *total, const 
 	oqs_lms_key_data *oqs_key_data = NULL;
 	struct hss_working_key *working_key = NULL;
 
-
 	if (total == NULL  || secret_key == NULL) {
 		return OQS_ERROR;
 	}
@@ -206,8 +205,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *total, const 
 	if (!working_key) {
 		return OQS_ERROR;
 	}
-
-
 
 	*total = (unsigned long long)working_key->max_count;
 	OQS_MEM_secure_free(working_key, sizeof(struct hss_working_key));
@@ -296,6 +293,75 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
 		break;
+
+	case OQS_LMS_ID_sha256_n32_h10_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+		break;
+	case OQS_LMS_ID_sha256_n32_h10_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+		break;
+	case OQS_LMS_ID_sha256_n32_h10_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+		break;
+	case OQS_LMS_ID_sha256_n32_h10_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		break;
+
+	case OQS_LMS_ID_sha256_n32_h15_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+		break;
+	case OQS_LMS_ID_sha256_n32_h15_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+		break;
+	case OQS_LMS_ID_sha256_n32_h15_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+		break;
+	case OQS_LMS_ID_sha256_n32_h15_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		break;
+
+	case OQS_LMS_ID_sha256_n32_h20_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+		break;
+	case OQS_LMS_ID_sha256_n32_h20_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+		break;
+	case OQS_LMS_ID_sha256_n32_h20_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+		break;
+	case OQS_LMS_ID_sha256_n32_h20_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		break;
+
+	case OQS_LMS_ID_sha256_n32_h25_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+		break;
+	case OQS_LMS_ID_sha256_n32_h25_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+		break;
+	case OQS_LMS_ID_sha256_n32_h25_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+		break;
+	case OQS_LMS_ID_sha256_n32_h25_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		break;
+
 		oqs_key_data->lm_type[0] = 0;
 		oqs_key_data->lm_ots_type[0] = 0;
 		parse_err = 1;
