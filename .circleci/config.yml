@@ -410,8 +410,6 @@ workflows:
   nistkat:
     when:
       and:
-        - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-        - equal: [ "NIST KATs", << pipeline.schedule.name >> ]
         - equal: [ sw-full-kat, << pipeline.git.branch >> ]
     jobs:
       - linux_oqs:
