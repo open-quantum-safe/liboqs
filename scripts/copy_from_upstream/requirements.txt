@@ -1,5 +1,5 @@
 attrs==20.3.0
-GitPython==3.1.35
+GitPython==3.1.37
 importlib-metadata==3.7.0
 Jinja2==2.11.3
 markdown-it-py==2.2.0
