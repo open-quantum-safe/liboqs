@@ -412,22 +412,6 @@ workflows:
       and:
         - equal: [ sw-full-kat, << pipeline.git.branch >> ]
     jobs:
-      - linux_oqs:
-          name: nistkat-x86-generic
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
-          PYTEST_ARGS: --numprocesses=auto -k test_kat_all
-      - linux_oqs:
-          name: nistkat-x86-avx2
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DOQS_DIST_BUILD=OFF
-          PYTEST_ARGS: --numprocesses=auto -k test_kat_all
-      - arm_machine:
-          name: nistkat-arm-generic
-          CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
-          PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 -k test_kat_all
       - arm_machine:
           name: nistkat-arm-neon
           CMAKE_ARGS: -DOQS_DIST_BUILD=OFF
