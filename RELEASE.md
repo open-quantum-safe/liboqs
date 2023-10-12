@@ -1,5 +1,5 @@
-liboqs version 0.9.0-rc1
-========================
+liboqs version 0.9.0
+====================
 
 About
 -----
@@ -11,7 +11,6 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 liboqs can be used with the following Open Quantum Safe application integrations:
 
 - **oqs-provider**: A standalone prototype [OpenSSL 3 provider](https://www.openssl.org/docs/manmaster/man7/provider.html) enabling liboqs-based quantum-safe and hybrid key authentication and exchange for TLS 1.3, X.509 certificate generation and CMS operations.
-- **OQS-OpenSSL 1.1.1**: A prototype integration of liboqs-based authentication and key exchange into TLS 1.3 in our fork of OpenSSL 1.1.1; see the [OQS-OpenSSL-1\_1\_1-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_1_1-stable) branch of our OpenSSL fork's repository. This project is not actively maintained any more.
 - **OQS-BoringSSL**: A prototype integration of liboqs-based authentication and key exchange into TLS 1.3 in our fork of BoringSSL; see https://github.com/open-quantum-safe/boringssl.
 - **OQS-OpenSSH**: A prototype integration of liboqs-based authentication and key exchange into Secure Shell (SSH) version 2 in our fork of OpenSSH; see https://github.com/open-quantum-safe/openssh.
 
@@ -29,14 +28,14 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 of version 0.9.0 of liboqs. It was released on September 29, 2023.
+This is version 0.9.0 of liboqs. It was released on October 12, 2023.
 
 This release features an update to the Classic McEliece KEM, bringing it in line with NIST Round 4. It also adds or updates ARM implementations for Kyber, Dilithium, and Falcon.
 
 What's New
 ----------
 
-This release continues from the 0.8.0 release of liboqs. 
+This release continues from the 0.8.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
@@ -53,6 +52,13 @@ This release continues from the 0.8.0 release of liboqs.
 - Update algorithm documentation
 - Support compilation for Windows on ARM64, Apple mobile, and Android platforms
 - Improve resilience of randombytes on Apple systems
+
+Release call
+============
+
+Users of liboqs are invited to join a webinar on Thursday, November 2, 2023, from 12-1pm US Eastern time for information on this release, plans for the next release cycle, and to provide feedback on OQS usage and features.  
+
+The Zoom link for the webinar is: https://uwaterloo.zoom.us/j/98288698086
 
 ---
 
@@ -85,6 +91,10 @@ Detailed changelog
 * build: Align VS test folder with all other Generators by @res0nance in https://github.com/open-quantum-safe/liboqs/pull/1557
 * Fix weekly.yml to skip McEliece by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1562
 * Enable extensions in constant-time tests by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1567
+* Update Classic McEliece supression files by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1568
+* liboqs 0.9.0 release candidate 1 by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1570
+* add community standard documentation [skip ci] by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1565
+* Bump gitpython from 3.1.35 to 3.1.37 in /scripts/copy_from_upstream by @dependabot in https://github.com/open-quantum-safe/liboqs/pull/1575
 
 ## New Contributors
 * @planetf1 made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1503
@@ -92,4 +102,4 @@ Detailed changelog
 * @praveksharma made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1470
 * @res0nance made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1531
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.8.0...0.9.0-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.8.0...0.9.0
