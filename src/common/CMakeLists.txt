@@ -89,6 +89,9 @@ else()
         target_compile_definitions(common PRIVATE OQS_HAVE_GETENTROPY)
     endif()
 endif()
+if(CMAKE_USE_PTHREADS_INIT)
+    target_link_libraries(common PRIVATE Threads::Threads)
+endif()
 
 # check available functions to perform aligned mallocs
 check_symbol_exists(aligned_alloc stdlib.h CMAKE_HAVE_ALIGNED_ALLOC)
