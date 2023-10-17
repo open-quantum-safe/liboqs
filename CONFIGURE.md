@@ -106,7 +106,7 @@ By default,
 
 These default choices have been made in order to optimize the default performance of all algorithms. Changing them implies performance penalties.
 
-When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The `OPENSSL_ROOT_DIR` option can be set to aid CMake in its search.
+When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The [OPENSSL_ROOT_DIR](https://cmake.org/cmake/help/latest/module/FindOpenSSL.html) option can be set to aid CMake in its search.
 
 **Default**: `ON`.
 
