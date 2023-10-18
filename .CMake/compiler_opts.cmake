@@ -106,8 +106,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 
     if(NOT ${OQS_BUILD_ONLY_LIB})
         set(THREADS_PREFER_PTHREAD_FLAG ON)
-        find_package(Threads REQUIRED)
-        set(OQS_USE_PTHREADS_IN_TESTS 1)
+        find_package(Threads)
     endif()
 
     if(${OQS_DEBUG_BUILD})
@@ -168,8 +167,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 
     if(NOT ${OQS_BUILD_ONLY_LIB})
         set(THREADS_PREFER_PTHREAD_FLAG ON)
-        find_package(Threads REQUIRED)
-        set(OQS_USE_PTHREADS_IN_TESTS 1)
+        find_package(Threads)
     endif()
 
     if(${OQS_DEBUG_BUILD})

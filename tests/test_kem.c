@@ -7,7 +7,7 @@
 
 #include <oqs/oqs.h>
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if CMAKE_USE_PTHREADS_INIT
 #include <pthread.h>
 #endif
 
@@ -197,7 +197,7 @@ static void TEST_KEM_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 }
 #endif
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if CMAKE_USE_PTHREADS_INIT
 struct thread_data {
 	char *alg_name;
 	OQS_STATUS rc;
@@ -245,7 +245,7 @@ int main(int argc, char **argv) {
 #endif
 
 	OQS_STATUS rc;
-#if OQS_USE_PTHREADS_IN_TESTS
+#if CMAKE_USE_PTHREADS_INIT
 #define MAX_LEN_KEM_NAME_ 64
 	// don't run Classic McEliece in threads because of large stack usage
 	char no_thread_kem_patterns[][MAX_LEN_KEM_NAME_]  = {"Classic-McEliece", "HQC-256-"};
