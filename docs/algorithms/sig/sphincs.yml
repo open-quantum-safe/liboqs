@@ -56,9 +56,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
@@ -86,9 +83,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
@@ -116,9 +110,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
@@ -146,9 +137,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
@@ -176,9 +164,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
@@ -206,9 +191,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
@@ -236,9 +218,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -266,9 +245,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -296,9 +272,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -326,9 +299,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -356,9 +326,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -386,9 +353,6 @@ parameter-sets:
     - architecture: x86_64
       required_flags:
       - avx2
-      operating_systems:
-      - Linux
-      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
