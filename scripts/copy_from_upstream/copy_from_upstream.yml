@@ -14,7 +14,7 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: 8e220a87308154d48fdfac40abbb191ac7fce06a
+    git_commit: 0657749a785db30e7f49e9435452cb042edb1852
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
@@ -90,15 +90,15 @@ kems:
     schemes:
       -
         scheme: "128"
-        pqclean_scheme: hqc-rmrs-128
+        pqclean_scheme: hqc-128
         pretty_name_full: HQC-128
       -
         scheme: "192"
-        pqclean_scheme: hqc-rmrs-192
+        pqclean_scheme: hqc-192
         pretty_name_full: HQC-192
       -
         scheme: "256"
-        pqclean_scheme: hqc-rmrs-256
+        pqclean_scheme: hqc-256
         pretty_name_full: HQC-256
   -
     name: kyber
