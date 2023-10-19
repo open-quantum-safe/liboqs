@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:c2efdd72-2a86-4ba2-ad1b-870e67bdcdab",
+  "serialNumber": "urn:uuid:043e6cd4-f2a6-4828-ae97-7cbdbd372414",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-09-14T13:03:34.914420",
+    "timestamp": "2023-10-19T08:58:49.361520",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f6acbec0428a6f6d46b5d55fabfd9192ad63b89c",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@4846f81a98232e6c90f08578e8f122146550be8d",
       "name": "liboqs",
-      "version": "f6acbec0428a6f6d46b5d55fabfd9192ad63b89c"
+      "version": "4846f81a98232e6c90f08578e8f122146550be8d"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f6acbec0428a6f6d46b5d55fabfd9192ad63b89c",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@4846f81a98232e6c90f08578e8f122146550be8d",
       "name": "liboqs",
-      "version": "f6acbec0428a6f6d46b5d55fabfd9192ad63b89c"
+      "version": "4846f81a98232e6c90f08578e8f122146550be8d"
     },
     {
       "type": "crypto-asset",
@@ -741,26 +741,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:HQC-128:x86_64",
-      "name": "HQC",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "HQC-128",
-          "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:HQC-192:generic",
       "name": "HQC",
       "cryptoProperties": {
@@ -781,26 +761,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:HQC-192:x86_64",
-      "name": "HQC",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "HQC-192",
-          "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:HQC-256:generic",
       "name": "HQC",
       "cryptoProperties": {
@@ -815,26 +775,6 @@
             "decapsulate"
           ],
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:HQC-256:x86_64",
-      "name": "HQC",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "HQC-256",
-          "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "implementationPlatform": "x86_64"
         },
         "nistQuantumSecurityLevel": 5
       }
@@ -1868,7 +1808,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@f6acbec0428a6f6d46b5d55fabfd9192ad63b89c",
+      "ref": "pkg:github/open-quantum-safe/liboqs@4846f81a98232e6c90f08578e8f122146550be8d",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -1906,11 +1846,8 @@
         "alg:FrodoKEM-1344-SHAKE:generic",
         "alg:FrodoKEM-1344-SHAKE:x86_64",
         "alg:HQC-128:generic",
-        "alg:HQC-128:x86_64",
         "alg:HQC-192:generic",
-        "alg:HQC-192:x86_64",
         "alg:HQC-256:generic",
-        "alg:HQC-256:x86_64",
         "alg:Kyber512:generic",
         "alg:Kyber512:x86_64",
         "alg:Kyber512:armv8-a",
@@ -2249,13 +2186,6 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:HQC-128:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
       "ref": "alg:HQC-192:generic",
       "dependsOn": [
         "alg:sha3"
@@ -2263,21 +2193,7 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:HQC-192:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
       "ref": "alg:HQC-256:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:HQC-256:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],

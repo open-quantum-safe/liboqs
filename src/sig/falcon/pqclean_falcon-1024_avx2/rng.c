@@ -33,7 +33,6 @@
 
 #include "inner.h"
 
-
 /* see inner.h */
 void
 PQCLEAN_FALCON1024_AVX2_prng_init(prng *p, inner_shake256_context *src) {
@@ -152,7 +151,6 @@ PQCLEAN_FALCON1024_AVX2_prng_refill(prng *p) {
         _mm256_storeu_si256((__m256i *)&p->buf.d[u << 5],
                             _mm256_add_epi32(state[u], init[u]));
     }
-
 
     p->ptr = 0;
 }

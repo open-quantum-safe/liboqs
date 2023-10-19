@@ -2179,7 +2179,6 @@ poly_sub_scaled_ntt(uint32_t *F, size_t Flen, size_t Fstride,
 
 /* ==================================================================== */
 
-
 #define RNG_CONTEXT   inner_shake256_context
 
 /*
@@ -2205,7 +2204,6 @@ get_rng_u64(inner_shake256_context *rng) {
     inner_shake256_extract(rng, (uint8_t *)&r, sizeof r);
     return r;
 }
-
 
 /*
  * Table below incarnates a discrete Gaussian distribution:

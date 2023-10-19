@@ -23,7 +23,6 @@ static void seed_state(spx_ctx *ctx) {
     sha512_inc_blocks(&ctx->state_seeded_512, block, 1);
 }
 
-
 /* We initialize the state for the hash functions */
 void initialize_hash_function(spx_ctx *ctx) {
     seed_state(ctx);

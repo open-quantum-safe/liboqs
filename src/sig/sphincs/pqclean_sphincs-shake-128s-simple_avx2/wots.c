@@ -199,7 +199,7 @@ void wots_gen_leafx4(unsigned char *dest,
         /* 4 slots do the signatures come from */
     } else {
         /* Nope, we're just generating pk's; turn off the signature logic */
-        wots_k_mask = (uint32_t)~0;
+        wots_k_mask = ~0U;
         wots_sign_index = 0;
     }
 

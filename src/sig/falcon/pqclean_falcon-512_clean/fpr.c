@@ -34,7 +34,6 @@
 
 #include "inner.h"
 
-
 /*
  * Normalize a provided unsigned integer to the 2^63..2^64-1 range by
  * left-shifting it if necessary. The exponent e is adjusted accordingly
@@ -76,7 +75,6 @@
         (m) ^= ((m) ^ ((m) <<  1)) & ((uint64_t)nt - 1); \
         (e) += (int)(nt); \
     } while (0)
-
 
 fpr
 fpr_scaled(int64_t i, int sc) {
@@ -132,8 +130,6 @@ fpr_scaled(int64_t i, int sc) {
      */
     return FPR(s, e, m);
 }
-
-
 
 fpr
 fpr_add(fpr x, fpr y) {
@@ -242,8 +238,6 @@ fpr_add(fpr x, fpr y) {
     return FPR(sx, ex, xu);
 }
 
-
-
 fpr
 fpr_mul(fpr x, fpr y) {
     uint64_t xu, yu, w, zu, zv;
@@ -339,8 +333,6 @@ fpr_mul(fpr x, fpr y) {
     return FPR(s, e, zu);
 }
 
-
-
 fpr
 fpr_div(fpr x, fpr y) {
     uint64_t xu, yu, q, q2, w;
@@ -427,8 +419,6 @@ fpr_div(fpr x, fpr y) {
     return FPR(s, e, q);
 }
 
-
-
 fpr
 fpr_sqrt(fpr x) {
     uint64_t xu, q, s, r;
@@ -504,7 +494,6 @@ fpr_sqrt(fpr x) {
      */
     return FPR(0, e, q);
 }
-
 
 uint64_t
 fpr_expm_p63(fpr x, fpr ccs) {
@@ -1631,4 +1620,3 @@ const fpr fpr_p2_tab[] = {
     4571153621781053440U,
     4566650022153682944U
 };
-

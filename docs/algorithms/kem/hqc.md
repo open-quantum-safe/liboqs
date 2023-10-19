@@ -2,11 +2,11 @@
 
 - **Algorithm type**: Key encapsulation mechanism.
 - **Main cryptographic assumption**: Syndrome decoding of structure codes (Hamming Quasi-Cyclic).
-- **Principal submitters**: Carlos Aguilar Melchor, Nicolas Aragon, Slim Bettaieb, Olivier Blazy, Jurjen Bos, Jean-Christophe Deneuville, Philippe Gaborit, Edoardo Persichetti, Jean-Marc Robert, Pascal Véron, Gilles Zémor, Loïc Bidoux.
+- **Principal submitters**: Carlos Aguilar Melchor, Nicolas Aragon, Slim Bettaieb, Loïc Bidoux, Olivier Blazy, Jurjen Bos, Jean-Christophe Deneuville, Arnaud Dion, Philippe Gaborit, Jérôme Lacan, Edoardo Persichetti, Jean-Marc Robert, Pascal Véron, Gilles Zémor.
 - **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a
+  - **Source**: https://github.com/PQClean/PQClean/commit/0657749a785db30e7f49e9435452cb042edb1852
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:
@@ -20,16 +20,15 @@
 
 |  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
 |:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
-|     HQC-128     | IND-CCA2         |                    1 |                      2249 |                      2289 |                      4481 |                           64 |
-|     HQC-192     | IND-CCA2         |                    3 |                      4522 |                      4562 |                      9026 |                           64 |
-|     HQC-256     | IND-CCA2         |                    5 |                      7245 |                      7285 |                     14469 |                           64 |
+|     HQC-128     | IND-CCA2         |                    1 |                      2249 |                      2305 |                      4433 |                           64 |
+|     HQC-192     | IND-CCA2         |                    3 |                      4522 |                      4586 |                      8978 |                           64 |
+|     HQC-256     | IND-CCA2         |                    5 |                      7245 |                      7317 |                     14421 |                           64 |
 
 ## HQC-128 implementation characteristics
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,PCLMULQDQ     | False                              | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -40,7 +39,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,PCLMULQDQ     | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -49,7 +47,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,PCLMULQDQ     | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

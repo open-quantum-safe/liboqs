@@ -9,7 +9,6 @@
 #include "sha2.h"
 #include "utils.h"
 
-
 /**
  * Takes an array of inblocks concatenated arrays of SPX_N bytes.
  */
@@ -29,4 +28,3 @@ void thash(unsigned char *out, const unsigned char *in, unsigned int inblocks,
     sha256_inc_finalize(outbuf, &sha2_state, buf, SPX_SHA256_ADDR_BYTES + inblocks * SPX_N);
     memcpy(out, outbuf, SPX_N);
 }
-

@@ -13,7 +13,7 @@ OQS_SIG *OQS_SIG_sphincs_sha2_256f_simple_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_sphincs_sha2_256f_simple;
-	sig->alg_version = "https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637";
+	sig->alg_version = "https://github.com/sphincs/sphincsplus/commit/f38d4fdaff9c5889a086955a027f6bd71d8a4a96";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;

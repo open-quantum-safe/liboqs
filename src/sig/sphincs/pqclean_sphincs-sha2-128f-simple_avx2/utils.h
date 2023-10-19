@@ -7,9 +7,7 @@
 #include "context.h"
 #include "params.h"
 
-
 /* To support MSVC use alloca() instead of VLAs. See #20. */
-
 
 /**
  * Converts the value of 'in' to 'outlen' bytes in big-endian byte order.
@@ -53,6 +51,5 @@ void treehash(unsigned char *root, unsigned char *auth_path,
                   const spx_ctx *ctx /* ctx */,
                   uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */),
               uint32_t tree_addr[8]);
-
 
 #endif

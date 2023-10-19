@@ -197,7 +197,6 @@ do_sign(uint8_t *nonce, uint8_t *sigbuf, size_t *sigbuflen,
     inner_shake256_inject(&sc, seed, sizeof seed);
     inner_shake256_flip(&sc);
 
-
     /*
      * Compute and return the signature. This loops until a signature
      * value is found that fits in the provided buffer.

@@ -29,7 +29,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-
 /* ====================================================================== */
 
 #include <math.h>
@@ -296,7 +295,6 @@ fpr_expm_p63(fpr x, fpr ccs) {
      * 2^(-50) from the true mathematical value.
      */
 
-
     /*
      * AVX2 implementation uses more operations than Horner's method,
      * but with a lower expression tree depth. This helps because
@@ -362,4 +360,3 @@ extern const fpr fpr_gm_tab[];
 extern const fpr fpr_p2_tab[];
 
 /* ====================================================================== */
-

@@ -25,7 +25,7 @@ struct leaf_info_x8 {
 /* Used only by the benchmark code */
 #define INITIALIZE_LEAF_INFO_X8(info, addr, step_buffer) { \
         (info).wots_sig = 0;             \
-        (info).wots_sign_leaf = ~0;      \
+        (info).wots_sign_leaf = ~0U;     \
         (info).wots_steps = step_buffer; \
         int i;                         \
         for (i=0; i<8; i++) {          \
