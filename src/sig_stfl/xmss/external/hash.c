@@ -30,13 +30,17 @@ int prf(const xmss_params *params,
         unsigned char *out, const unsigned char in[32],
         const unsigned char *key)
 {
-    unsigned char buf[params->padding_len + params->n + 32];
+    unsigned char* buf = malloc(params->padding_len + params->n + 32);
 
     ull_to_bytes(buf, params->padding_len, XMSS_HASH_PADDING_PRF);
     memcpy(buf + params->padding_len, key, params->n);
     memcpy(buf + params->padding_len + params->n, in, 32);
 
-    return core_hash(params, out, buf, params->padding_len + params->n + 32);
+    int ret = core_hash(params, out, buf, params->padding_len + params->n + 32);
+
+    OQS_MEM_insecure_free(buf);
+
+    return ret;
 }
 
 /*
@@ -47,13 +51,17 @@ int prf_keygen(const xmss_params *params,
         unsigned char *out, const unsigned char *in,
         const unsigned char *key)
 {
-    unsigned char buf[params->padding_len + 2*params->n + 32];
+    unsigned char *buf = malloc(params->padding_len + 2*params->n + 32);
 
     ull_to_bytes(buf, params->padding_len, XMSS_HASH_PADDING_PRF_KEYGEN);
     memcpy(buf + params->padding_len, key, params->n);
     memcpy(buf + params->padding_len + params->n, in, params->n + 32);
 
-    return core_hash(params, out, buf, params->padding_len + 2*params->n + 32);
+    int ret = core_hash(params, out, buf, params->padding_len + 2*params->n + 32);
+
+    OQS_MEM_insecure_free(buf);
+
+    return ret;
 }
 
 /*
@@ -85,8 +93,11 @@ int thash_h(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
             const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned char buf[params->padding_len + 3 * params->n];
-    unsigned char bitmask[2 * params->n];
+    unsigned char *tmp = malloc(params->padding_len + 3 * params->n + 2 * params->n);
+
+    unsigned char *buf = tmp;
+    unsigned char *bitmask = tmp + (params->padding_len + 3 * params->n);
+
     unsigned char addr_as_bytes[32];
     unsigned int i;
 
@@ -110,15 +121,21 @@ int thash_h(const xmss_params *params,
     for (i = 0; i < 2 * params->n; i++) {
         buf[params->padding_len + params->n + i] = in[i] ^ bitmask[i];
     }
-    return core_hash(params, out, buf, params->padding_len + 3 * params->n);
+    int ret = core_hash(params, out, buf, params->padding_len + 3 * params->n);
+
+    OQS_MEM_insecure_free(tmp);
+
+    return ret;
 }
 
 int thash_f(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
             const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned char buf[params->padding_len + 2 * params->n];
-    unsigned char bitmask[params->n];
+    unsigned char *tmp = malloc(params->padding_len + 2 * params->n + params->n);
+    unsigned char *buf = tmp;
+    unsigned char *bitmask = tmp + (params->padding_len + 2 * params->n);
+
     unsigned char addr_as_bytes[32];
     unsigned int i;
 
@@ -138,5 +155,9 @@ int thash_f(const xmss_params *params,
     for (i = 0; i < params->n; i++) {
         buf[params->padding_len + params->n + i] = in[i] ^ bitmask[i];
     }
-    return core_hash(params, out, buf, params->padding_len + 2 * params->n);
+    int ret = core_hash(params, out, buf, params->padding_len + 2 * params->n);
+
+    OQS_MEM_insecure_free(tmp);
+
+    return ret;
 }
