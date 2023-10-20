@@ -268,6 +268,9 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/* mutual exclusion struct */
 	void *mutex;
 
+	/* file storage handle */
+	void *context;
+
 	/**
 	 * Secret Key retrieval Function
 	 *
