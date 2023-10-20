@@ -19,9 +19,9 @@
 #define MAX_MARKER_LEN 50
 
 static OQS_STATUS do_nothing_save(uint8_t *key_buf, size_t buf_len, void *context) {
-    (void)(context);
-    (void)(buf_len);
-    return key_buf != NULL ? OQS_SUCCESS : OQS_ERROR;
+	(void)(context);
+	(void)(buf_len);
+	return key_buf != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
 //
