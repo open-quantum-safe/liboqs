@@ -893,7 +893,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	size_t message_len_2 = sizeof(message_2);
 
 	char *context = NULL;
-	char *key_store_name = convert_method_name_to_file_name(method_name);
+	char *key_store_name = NULL;
 
 	printf("================================================================================\n");
 	printf("Testing stateful Signature Generation %s\n", method_name);
@@ -903,6 +903,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 		return OQS_ERROR;
 	}
 
+	key_store_name = convert_method_name_to_file_name(method_name);
 	/* set context and secure store callback */
 	context = strdup(((key_store_name)));
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, test_save_secret_key, (void *)context);
