@@ -37,8 +37,8 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, cons
 	}
 
 	if (sk->secret_key_data != NULL) {
-	    OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
-	    sk->secret_key_data = NULL;
+		OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
+		sk->secret_key_data = NULL;
 	}
 
 	// Assume key data is not present
@@ -54,10 +54,10 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, cons
 }
 
 void OQS_SECRET_KEY_XMSS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
-    if (!sk || !store_cb || !context) {
-        return;
-    }
+	if (!sk || !store_cb || !context) {
+		return;
+	}
 
-    sk->context = context;
-    sk->secure_store_scrt_key = store_cb;
+	sk->context = context;
+	sk->secure_store_scrt_key = store_cb;
 }

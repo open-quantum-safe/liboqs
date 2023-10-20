@@ -324,48 +324,48 @@ typedef struct magic_s {
 
 static const char *convert_method_name_to_file_name(const char *method_name) {
 
-    const char *file_store = NULL;
-    char *name = NULL;
-    if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_2) == 0) {
-        file_store = "XMSSMT-SHA2_20-2_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_4) == 0) {
-        file_store = "XMSSMT-SHA2_20-4_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2) == 0) {
-        file_store = "XMSSMT-SHA2_40-2_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_4) == 0) {
-        file_store = "XMSSMT-SHA2_40-4_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_8) == 0) {
-        file_store = "XMSSMT-SHA2_40-8_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3) == 0) {
-        file_store = "XMSSMT-SHA2_60-3_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_6) == 0) {
-        file_store = "XMSSMT-SHA2_60-6_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_12) == 0) {
-        file_store = "XMSSMT-SHA2_60-12_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_2) == 0) {
-        file_store = "XMSSMT-SHAKE_20-2_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_4) == 0) {
-        file_store = "XMSSMT-SHAKE_20-4_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2) == 0) {
-        file_store = "XMSSMT-SHAKE_40-2_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_4) == 0) {
-        file_store = "XMSSMT-SHAKE_40-4_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_8) == 0) {
-        file_store = "XMSSMT-SHAKE_40-8_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3) == 0) {
-        file_store = "XMSSMT-SHAKE_60-3_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_6) == 0) {
-        file_store = "XMSSMT-SHAKE_60-6_256";
-    } else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_12) == 0) {
-        file_store = "XMSSMT-SHAKE_60-12_256";
-    } else {
-        file_store = method_name;
-    }
+	const char *file_store = NULL;
+	char *name = NULL;
+	if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_2) == 0) {
+		file_store = "XMSSMT-SHA2_20-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_4) == 0) {
+		file_store = "XMSSMT-SHA2_20-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2) == 0) {
+		file_store = "XMSSMT-SHA2_40-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_4) == 0) {
+		file_store = "XMSSMT-SHA2_40-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_8) == 0) {
+		file_store = "XMSSMT-SHA2_40-8_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3) == 0) {
+		file_store = "XMSSMT-SHA2_60-3_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_6) == 0) {
+		file_store = "XMSSMT-SHA2_60-6_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_12) == 0) {
+		file_store = "XMSSMT-SHA2_60-12_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_2) == 0) {
+		file_store = "XMSSMT-SHAKE_20-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_4) == 0) {
+		file_store = "XMSSMT-SHAKE_20-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2) == 0) {
+		file_store = "XMSSMT-SHAKE_40-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_4) == 0) {
+		file_store = "XMSSMT-SHAKE_40-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_8) == 0) {
+		file_store = "XMSSMT-SHAKE_40-8_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3) == 0) {
+		file_store = "XMSSMT-SHAKE_60-3_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_6) == 0) {
+		file_store = "XMSSMT-SHAKE_60-6_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_12) == 0) {
+		file_store = "XMSSMT-SHAKE_60-12_256";
+	} else {
+		file_store = method_name;
+	}
 
-    if (file_store) {
-        name = strdup(file_store);
-    }
-    return name;
+	if (file_store) {
+		name = strdup(file_store);
+	}
+	return name;
 }
 
 static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile) {
@@ -414,15 +414,15 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	OQS_SIG_STFL_SECRET_KEY_SET_lock(secret_key, lock_sk_key);
 	OQS_SIG_STFL_SECRET_KEY_SET_unlock(secret_key, unlock_sk_key);
 
-    file_store = convert_method_name_to_file_name(sig->method_name);
-    if (file_store == NULL) {
-        fprintf(stderr, "%s: file_store is null\n", __FUNCTION__);
-        goto err;
-    }
+	file_store = convert_method_name_to_file_name(sig->method_name);
+	if (file_store == NULL) {
+		fprintf(stderr, "%s: file_store is null\n", __FUNCTION__);
+		goto err;
+	}
 
-    /* set context and secure store callback */
-    context = strdup(((file_store)));
-    OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, test_save_secret_key, (void *)context);
+	/* set context and secure store callback */
+	context = strdup(((file_store)));
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, test_save_secret_key, (void *)context);
 
 #if OQS_USE_PTHREADS_IN_TESTS
 	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -834,9 +834,9 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 		return OQS_ERROR;
 	}
 
-    /* set context and secure store callback */
-    context = strdup(((key_store_name)));
-    OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, test_save_secret_key, (void *)context);
+	/* set context and secure store callback */
+	context = strdup(((key_store_name)));
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, test_save_secret_key, (void *)context);
 
 	/*
 	 * Get max num signature and the amount remaining
@@ -926,7 +926,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 err:
 	rc = OQS_ERROR;
 end_it:
-    OQS_MEM_insecure_free(context);
+	OQS_MEM_insecure_free(context);
 
 	return rc;
 }
