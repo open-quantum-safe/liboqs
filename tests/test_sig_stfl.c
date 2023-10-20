@@ -322,6 +322,52 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
+static char *convert_method_name_to_file_name(const char *method_name) {
+
+	const char *file_store = NULL;
+	char *name = NULL;
+	if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_2) == 0) {
+		file_store = "XMSSMT-SHA2_20-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_4) == 0) {
+		file_store = "XMSSMT-SHA2_20-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2) == 0) {
+		file_store = "XMSSMT-SHA2_40-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_4) == 0) {
+		file_store = "XMSSMT-SHA2_40-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_8) == 0) {
+		file_store = "XMSSMT-SHA2_40-8_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3) == 0) {
+		file_store = "XMSSMT-SHA2_60-3_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_6) == 0) {
+		file_store = "XMSSMT-SHA2_60-6_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_12) == 0) {
+		file_store = "XMSSMT-SHA2_60-12_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_2) == 0) {
+		file_store = "XMSSMT-SHAKE_20-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_4) == 0) {
+		file_store = "XMSSMT-SHAKE_20-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2) == 0) {
+		file_store = "XMSSMT-SHAKE_40-2_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_4) == 0) {
+		file_store = "XMSSMT-SHAKE_40-4_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_8) == 0) {
+		file_store = "XMSSMT-SHAKE_40-8_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3) == 0) {
+		file_store = "XMSSMT-SHAKE_60-3_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_6) == 0) {
+		file_store = "XMSSMT-SHAKE_60-6_256";
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_12) == 0) {
+		file_store = "XMSSMT-SHAKE_60-12_256";
+	} else {
+		file_store = method_name;
+	}
+
+	if (file_store) {
+		name = strdup(file_store);
+	}
+	return name;
+}
+
 static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile) {
 
 	OQS_SIG_STFL *sig = NULL;
@@ -337,9 +383,11 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	uint8_t *sk_buf = NULL;
 	uint8_t *read_pk_buf = NULL;
 	char *context = NULL;
-	const char *file_store = NULL;
+	char *file_store = NULL;
 	size_t sk_buf_len = 0;
 	size_t read_pk_len = 0;
+
+	magic_t magic;
 
 #if OQS_USE_PTHREADS_IN_TESTS
 	pthread_mutex_t *sk_lock = NULL;
@@ -347,9 +395,74 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	OQS_STATUS rc, ret = OQS_ERROR;
 
+	if (0) {
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
+		goto skip_test;
+#endif
+	} else {
+		goto test_on;
+	}
+skip_test:
+	printf("skipping slow test %s\n", method_name);
+	return OQS_SUCCESS;
+
+test_on:
+
 	//The magic numbers are random values.
 	//The length of the magic number was chosen to be 31 to break alignment
-	magic_t magic;
+
+
 	OQS_randombytes(magic.val, sizeof(magic_t));
 
 	sig = OQS_SIG_STFL_new(method_name);
@@ -367,6 +480,16 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	OQS_SIG_STFL_SECRET_KEY_SET_lock(secret_key, lock_sk_key);
 	OQS_SIG_STFL_SECRET_KEY_SET_unlock(secret_key, unlock_sk_key);
+
+	file_store = convert_method_name_to_file_name(sig->method_name);
+	if (file_store == NULL) {
+		fprintf(stderr, "%s: file_store is null\n", __FUNCTION__);
+		goto err;
+	}
+
+	/* set context and secure store callback */
+	context = strdup(((file_store)));
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, test_save_secret_key, (void *)context);
 
 #if OQS_USE_PTHREADS_IN_TESTS
 	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -421,42 +544,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		goto err;
 	}
 
-	if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_2) == 0) {
-		file_store = "XMSSMT-SHA2_20-2_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_4) == 0) {
-		file_store = "XMSSMT-SHA2_20-4_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2) == 0) {
-		file_store = "XMSSMT-SHA2_40-2_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_4) == 0) {
-		file_store = "XMSSMT-SHA2_40-4_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_8) == 0) {
-		file_store = "XMSSMT-SHA2_40-8_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3) == 0) {
-		file_store = "XMSSMT-SHA2_60-3_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_6) == 0) {
-		file_store = "XMSSMT-SHA2_60-6_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_12) == 0) {
-		file_store = "XMSSMT-SHA2_60-12_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_2) == 0) {
-		file_store = "XMSSMT-SHAKE_20-2_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h20_4) == 0) {
-		file_store = "XMSSMT-SHAKE_20-4_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2) == 0) {
-		file_store = "XMSSMT-SHAKE_40-2_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_4) == 0) {
-		file_store = "XMSSMT-SHAKE_40-4_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_8) == 0) {
-		file_store = "XMSSMT-SHAKE_40-8_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3) == 0) {
-		file_store = "XMSSMT-SHAKE_60-3_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_6) == 0) {
-		file_store = "XMSSMT-SHAKE_60-6_256";
-	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_12) == 0) {
-		file_store = "XMSSMT-SHAKE_60-12_256";
-	} else {
-		file_store = sig->method_name;
-	}
-
 	/* write key pair to disk */
 	if (oqs_fstore("sk", file_store, sk_buf, sk_buf_len) != OQS_SUCCESS) {
 		goto err;
@@ -465,10 +552,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	if (oqs_fstore("pk", file_store, public_key, sig->length_public_key) != OQS_SUCCESS) {
 		goto err;
 	}
-
-	/* set context and secure store callback */
-	context = strdup(((file_store)));
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, test_save_secret_key, (void *)context);
 
 	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
@@ -545,6 +628,7 @@ cleanup:
 
 	OQS_MEM_insecure_free(read_pk_buf);
 	OQS_MEM_insecure_free(context);
+	OQS_MEM_insecure_free(file_store);
 
 #if OQS_USE_PTHREADS_IN_TESTS
 	if (sk_lock) {
@@ -568,81 +652,70 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	size_t to_file_sk_len = 0;
 	char *context = NULL;
 	char *context_2 = NULL;
+	char *file_store_name = NULL;
 
 	/*
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+	if (0) {
 
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
-		goto keep_going;
-	} else {
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
 		goto skip_test;
-	}
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
+		goto skip_test;
+#endif
 
-//	if (0) {
-//
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
-//	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
-//		goto skip_test;
-//#endif
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
-//	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
-//		goto skip_test;
-//#endif
-//
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
-//		goto skip_test;
-//#endif
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
-//		goto skip_test;
-//#endif
-//
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
-//		goto skip_test;
-//#endif
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
-//		goto skip_test;
-//#endif
-//
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
-//		goto skip_test;
-//#endif
-//#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
-//		goto skip_test;
-//#endif
-//
-//#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
-//		goto skip_test;
-//#endif
-//#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
-//		goto skip_test;
-//#endif
-//
-//#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
-//		goto skip_test;
-//#endif
-//#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
-//	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
-//		goto skip_test;
-//#endif
-//	} else {
-//		goto keep_going;
-//	}
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
+		goto skip_test;
+#endif
+	} else {
+		goto keep_going;
+	}
 
 skip_test:
 	printf("Skip slow test %s.\n", method_name);
@@ -706,7 +779,8 @@ keep_going:
 		goto err;
 	}
 
-	if (oqs_fstore("sk", sig_obj->method_name, to_file_sk_buf, to_file_sk_len) != OQS_SUCCESS) {
+	file_store_name  = convert_method_name_to_file_name(sig_obj->method_name);
+	if (oqs_fstore("sk", file_store_name, to_file_sk_buf, to_file_sk_len) != OQS_SUCCESS) {
 		goto err;
 	}
 
@@ -717,13 +791,13 @@ keep_going:
 
 	/* set context and secure store callback */
 	if (sk->set_scrt_key_store_cb) {
-		context = strdup(((method_name)));
+		context = strdup(file_store_name);
 		sk->set_scrt_key_store_cb(sk, test_save_secret_key, (void *)context);
 	}
 
 	/* read secret key from disk */
 	frm_file_sk_buf = malloc(to_file_sk_len);
-	if (oqs_fload("sk", method_name, frm_file_sk_buf, to_file_sk_len, &frm_file_sk_len) != OQS_SUCCESS) {
+	if (oqs_fload("sk", file_store_name, frm_file_sk_buf, to_file_sk_len, &frm_file_sk_len) != OQS_SUCCESS) {
 		goto err;
 	}
 	if (to_file_sk_len != frm_file_sk_len) {
@@ -737,7 +811,7 @@ keep_going:
 		goto err;
 	}
 
-	context_2 = strdup(((method_name)));
+	context_2 = strdup(file_store_name);
 	rc = OQS_SECRET_KEY_STFL_deserialize_key(sk_frm_file, frm_file_sk_len, frm_file_sk_buf, (void *)context_2);
 
 	if (rc != OQS_SUCCESS) {
@@ -761,12 +835,12 @@ end_it:
 	OQS_SIG_STFL_free(sig_obj);
 	OQS_MEM_insecure_free(context);
 	OQS_MEM_insecure_free(context_2);
+	OQS_MEM_insecure_free(file_store_name);
 	return rc;
 }
 
 static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
-
 	size_t message_len_1 = sizeof(message_1);
 	size_t message_len_2 = sizeof(message_2);
 
@@ -774,20 +848,67 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+	if (0) {
 
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
-		goto keep_going;
-	} else {
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
 		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
+		goto skip_test;
+#endif
+	} else {
+		goto keep_going;
 	}
 
 skip_test:
-	printf("Skip slow alg %s.\n", method_name);
+	printf("Skip slow test %s.\n", method_name);
 	return rc;
 
 keep_going:
@@ -839,24 +960,74 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	size_t message_len_1 = sizeof(message_1);
 	size_t message_len_2 = sizeof(message_2);
 
+	char *context = NULL;
+	char *key_store_name = NULL;
+
 	/*
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+	if (0) {
 
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
-		goto  keep_going;
-	} else {
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
 		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
+		goto skip_test;
+#endif
+	} else {
+		goto keep_going;
 	}
 
 skip_test:
-	printf("Skip slow alg %s.\n", method_name);
+	printf("Skip slow test %s.\n", method_name);
 	return rc;
 
 keep_going:
@@ -868,6 +1039,11 @@ keep_going:
 	if ( lock_test_sk == NULL || lock_test_sig_obj == NULL) {
 		return OQS_ERROR;
 	}
+
+	key_store_name = convert_method_name_to_file_name(method_name);
+	/* set context and secure store callback */
+	context = strdup(((key_store_name)));
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, test_save_secret_key, (void *)context);
 
 	/*
 	 * Get max num signature and the amount remaining
@@ -957,6 +1133,8 @@ keep_going:
 err:
 	rc = OQS_ERROR;
 end_it:
+	OQS_MEM_insecure_free(context);
+	OQS_MEM_insecure_free(key_store_name);
 
 	return rc;
 }
@@ -964,20 +1142,71 @@ end_it:
 static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 
+	printf("================================================================================\n");
+	printf("Testing stateful Signature locks %s\n", method_name);
+	printf("================================================================================\n");
+
 	/*
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8) == 0
+	if (0) {
 
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1) == 0
-	        || strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1) == 0) {
-		goto keep_going;
-	} else {
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
 		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
+	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
+		goto skip_test;
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
+		goto skip_test;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
+		goto skip_test;
+#endif
+	} else {
+		goto keep_going;
 	}
 
 skip_test:
@@ -985,10 +1214,6 @@ skip_test:
 	return rc;
 
 keep_going:
-
-	printf("================================================================================\n");
-	printf("Testing stateful Signature locks %s\n", method_name);
-	printf("================================================================================\n");
 
 	printf("================================================================================\n");
 	printf("Create stateful Signature  %s\n", method_name);
@@ -1046,7 +1271,7 @@ keep_going:
 
 	/* set context and secure store callback */
 	if (lock_test_sk->set_scrt_key_store_cb) {
-		lock_test_context = strdup(((method_name)));
+		lock_test_context = convert_method_name_to_file_name(method_name);
 		lock_test_sk->set_scrt_key_store_cb(lock_test_sk, test_save_secret_key, (void *)lock_test_context);
 	}
 

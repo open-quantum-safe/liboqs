@@ -20,6 +20,12 @@
 
 #define MAX_MARKER_LEN 50
 
+static OQS_STATUS do_nothing_save(uint8_t *key_buf, size_t buf_len, void *context) {
+	(void)(context);
+	(void)(buf_len);
+	return key_buf != NULL ? OQS_SUCCESS : OQS_ERROR;
+}
+
 //
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
 //
@@ -150,6 +156,8 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	// Grab the pk and sk from KAT file
 	public_key = malloc(sig->length_public_key);
 	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, do_nothing_save, NULL);
+
 	signature = calloc(sig->length_signature, sizeof(uint8_t));
 	signature_kat = calloc(sig->length_signature, sizeof(uint8_t));
 
