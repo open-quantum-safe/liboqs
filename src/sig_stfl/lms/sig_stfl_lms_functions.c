@@ -69,6 +69,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 	 * Don't even attempt signing without a way to safe the updated private key
 	 */
 	if (secret_key->secure_store_scrt_key == NULL) {
+		fprintf(stderr, "No Secure-store set for secret key.\n.");
 		goto err;
 	}
 
@@ -94,7 +95,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 		goto err;
 	}
 
-	context = lms_key_data->context;
+	context = secret_key->context;
 	rc_keyupdate = secret_key->secure_store_scrt_key(sk_key_buf, sk_key_buf_len, context);
 	if (rc_keyupdate != OQS_SUCCESS) {
 		goto err;
@@ -241,39 +242,40 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 	}
 
 	oqs_key_data = malloc(sizeof(oqs_lms_key_data));
-	if (oqs_key_data) {
-		oqs_key_data->levels = 1;
-		if (sk->length_secret_key) {
-			oqs_key_data->len_sec_key = sk->length_secret_key;
-			oqs_key_data->sec_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
-			if (oqs_key_data->sec_key) {
-				memset(oqs_key_data->sec_key, 0, sk->length_secret_key);
-			} else {
-				OQS_MEM_insecure_free(oqs_key_data);
-				oqs_key_data = NULL;
-				return -1;
-			}
-		} else {
-			OQS_MEM_insecure_free(oqs_key_data);
-			oqs_key_data = NULL;
-			return -1;
-		}
-
-		//Aux Data
-		size_t len_aux_data = DEFAULT_AUX_DATA;
-		uint8_t *aux_data =  malloc(sizeof(uint8_t) * len_aux_data);
-		if (aux_data) {
-			oqs_key_data->aux_data = aux_data;
-			oqs_key_data->len_aux_data = len_aux_data;
-		} else {
-			OQS_MEM_insecure_free( oqs_key_data->sec_key);
-			OQS_MEM_insecure_free(oqs_key_data);
-			return -1;
-		}
-	} else {
-		//TODO log error
+	if (oqs_key_data == NULL) {
 		return -1;
 	}
+
+	memset(oqs_key_data, 0, sizeof(oqs_lms_key_data));
+	if (sk->length_secret_key == 0) {
+		OQS_MEM_insecure_free(oqs_key_data);
+		oqs_key_data = NULL;
+		return -1;
+	}
+
+	oqs_key_data->levels = 1;
+	oqs_key_data->len_sec_key = sk->length_secret_key;
+	oqs_key_data->sec_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+	if (oqs_key_data->sec_key == NULL) {
+		OQS_MEM_insecure_free(oqs_key_data);
+		oqs_key_data = NULL;
+		return -1;
+	}
+
+	memset(oqs_key_data->sec_key, 0, sk->length_secret_key);
+
+	//Aux Data
+	size_t len_aux_data = DEFAULT_AUX_DATA;
+	uint8_t *aux_data =  malloc(sizeof(uint8_t) * len_aux_data);
+	if (aux_data == NULL) {
+		OQS_MEM_insecure_free( oqs_key_data->sec_key);
+		OQS_MEM_insecure_free(oqs_key_data);
+		return -1;
+	}
+
+	oqs_key_data->aux_data = aux_data;
+	oqs_key_data->len_aux_data = len_aux_data;
+	oqs_key_data->context = sk->context;
 
 	/* Set lms param set */
 	switch (oid) {
@@ -668,6 +670,7 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 		lms_key_data->len_aux_data = aux_buf_len;
 	}
 
+	sk->context = context;
 	sk->secret_key_data = lms_key_data;
 	goto success;
 
@@ -682,9 +685,10 @@ success:
 }
 
 void oqs_lms_key_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
-	oqs_lms_key_data *lms_key_data = (oqs_lms_key_data *)sk->secret_key_data;
-	if (lms_key_data) {
-		lms_key_data->context = context;
-		sk->secure_store_scrt_key = store_cb;
+
+	if (sk == NULL) {
+		return;
 	}
+	sk->secure_store_scrt_key = store_cb;
+	sk->context = context;
 }

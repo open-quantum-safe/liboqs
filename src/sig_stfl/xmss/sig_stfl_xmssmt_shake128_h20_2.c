@@ -67,6 +67,8 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H20_2_new(void) {
 
 	sk->free_key = OQS_SECRET_KEY_XMSS_free;
 
+	sk->set_scrt_key_store_cb = OQS_SECRET_KEY_XMSS_set_store_cb;
+
 	return sk;
 }
 
@@ -86,17 +88,56 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_keypair(XMSS_UNUSED_AT
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
+	OQS_STATUS rc_keyupdate, status = OQS_SUCCESS;
+	const OQS_SIG_STFL_SECRET_KEY *sk;
+	uint8_t *sk_key_buf_ptr = NULL;
+	unsigned long long sig_length = 0;
+	size_t sk_key_buf_len = 0;
+
 	if (signature == NULL || signature_len == NULL || message == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {
 		return OQS_ERROR;
 	}
 
-	unsigned long long sig_length = 0;
-	if (xmssmt_sign(secret_key->secret_key_data, signature, &sig_length, message, message_len)) {
+	/* check for secret key update function */
+	if (secret_key->secure_store_scrt_key == NULL) {
 		return OQS_ERROR;
 	}
-	*signature_len = (size_t) sig_length;
 
-	return OQS_SUCCESS;
+	/* Lock secret to ensure OTS use */
+	if ((secret_key->lock_key) && (secret_key->mutex)) {
+		secret_key->lock_key(secret_key->mutex);
+	}
+
+	if (xmss_sign(secret_key->secret_key_data, signature, &sig_length, message, message_len)) {
+		status = OQS_ERROR;
+		goto err;
+	}
+	*signature_len = (size_t)sig_length;
+
+	/*
+	 * serialize and securely store the updated private key
+	 * but, delete signature and the serialized key other wise
+	 */
+
+	sk = secret_key;
+	rc_keyupdate = OQS_SECRET_KEY_XMSS_serialize_key(sk, &sk_key_buf_len, &sk_key_buf_ptr);
+	if (rc_keyupdate != OQS_SUCCESS) {
+		status = OQS_ERROR;
+		goto err;
+	}
+
+	rc_keyupdate = secret_key->secure_store_scrt_key(sk_key_buf_ptr, sk_key_buf_len, secret_key->context);
+	if (rc_keyupdate != OQS_SUCCESS) {
+		status = OQS_ERROR;
+	}
+
+	OQS_MEM_secure_free(sk_key_buf_ptr, sk_key_buf_len);
+err:
+	/* Unlock secret to ensure OTS use */
+	if ((secret_key->unlock_key) && (secret_key->mutex)) {
+		secret_key->unlock_key(secret_key->mutex);
+	}
+	return status;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, const uint8_t *signature, size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key) {
