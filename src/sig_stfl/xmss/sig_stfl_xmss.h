@@ -503,4 +503,7 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, 
 /* Deserialize XMSS byte string into an XMSS secret key data */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
+/* Set XMSS byte string into an XMSS secret key data */
+void OQS_SECRET_KEY_XMSS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
+
 #endif /* OQS_SIG_STFL_XMSS_H */

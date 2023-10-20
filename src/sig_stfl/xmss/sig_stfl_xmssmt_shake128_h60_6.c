@@ -67,6 +67,8 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_6_new(void) {
 
 	sk->free_key = OQS_SECRET_KEY_XMSS_free;
 
+	sk->set_scrt_key_store_cb = OQS_SECRET_KEY_XMSS_set_store_cb;
+
 	return sk;
 }
 
