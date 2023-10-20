@@ -24,6 +24,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
+	sig->oid = OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_oid;
 	sig->method_name = "XMSSMT-SHA2_40/4_256";
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391";
 	sig->euf_cma = true;
@@ -65,6 +66,25 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_4_new(void) {
 	}
 	memset(sk->secret_key_data, 0, sk->length_secret_key);
 
+	// Point to associated OQS_SIG_STFL object
+	sk->sig = NULL;
+
+	// Mutual exclusion struct
+	sk->mutex = NULL;
+
+	// Set Secret Key locking function
+	sk->lock_key = NULL;
+
+	// Set Secret Key unlocking / releasing function
+	sk->unlock_key = NULL;
+
+	// Set Secret Key saving function
+	sk->secure_store_scrt_key = NULL;
+
+	// Set Secret Key store callback function
+	sk->set_scrt_key_store_cb = OQS_SECRET_KEY_XMSS_set_store_cb;
+
+	// Set Secret Key free function
 	sk->free_key = OQS_SECRET_KEY_XMSS_free;
 
 	return sk;
@@ -76,8 +96,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_keypair(XMSS_UNUSED_ATT 
 		return OQS_ERROR;
 	}
 
-	const uint32_t xmssmt_sha256_h40_4_oid = 0x04;
-	if (xmssmt_keypair(public_key, secret_key->secret_key_data, xmssmt_sha256_h40_4_oid)) {
+	if (xmssmt_keypair(public_key, secret_key->secret_key_data, OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_oid)) {
 		return OQS_ERROR;
 	}
 

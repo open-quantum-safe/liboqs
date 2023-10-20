@@ -14,6 +14,7 @@
 OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 
 	const char *a[OQS_SIG_STFL_algs_length] = {
+		// XMSS
 		OQS_SIG_STFL_alg_xmss_sha256_h10,
 		OQS_SIG_STFL_alg_xmss_sha256_h16,
 		OQS_SIG_STFL_alg_xmss_sha256_h20,
@@ -42,6 +43,7 @@ OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_3,
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_6,
 		OQS_SIG_STFL_alg_xmssmt_shake128_h60_12,
+		// LMS
 		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1,
 		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2,
 		OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4,
@@ -799,54 +801,38 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 	}
 }
 
-void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
-	if (sk == NULL) {
-		return;
-	}
-
-	OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
-	sk->secret_key_data = NULL;
-}
-
 OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk) {
-	if (sk == NULL) {
+	if (sk == NULL || sk->free_key == NULL) {
 		return;
 	}
 
 	/* Call object specific free */
-	if (sk->free_key) {
-		sk->free_key(sk);
-	}
+	sk->free_key(sk);
+
+	/* Free sk object */
 	OQS_MEM_secure_free(sk, sizeof(sk));
+	sk = NULL;
 }
 
 OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
-	if (sk) {
-		if (sk->set_scrt_key_store_cb) {
-			sk->set_scrt_key_store_cb(sk, store_cb, context);
-		}
+	if (sk == NULL || sk->set_scrt_key_store_cb == NULL) {
+		return;
 	}
+	sk->set_scrt_key_store_cb(sk, store_cb, context);
 }
 
 /* Convert secret key object to byte string */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf) {
-	if ((sk == NULL) || (sk_len == NULL) || (sk_buf == NULL)) {
-		return 0;
+	if (sk == NULL || sk_len == NULL || sk_buf == NULL || sk->serialize_key == NULL) {
+		return OQS_ERROR;
 	}
-	if (sk->serialize_key) {
-		return sk->serialize_key(sk, sk_len, sk_buf);
-	} else {
-		return 0;
-	}
+
+	return sk->serialize_key(sk, sk_len, sk_buf);
 }
 
 /* Insert secret key byte string in an Stateful secret key object */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t key_len, const uint8_t *sk_buf, void *context) {
-	if ((sk == NULL) || (sk_buf == NULL)) {
-		return OQS_ERROR;
-	}
-
-	if (sk->deserialize_key == NULL) {
+	if (sk == NULL || sk_buf == NULL || sk->deserialize_key == NULL) {
 		return OQS_ERROR;
 	}
 

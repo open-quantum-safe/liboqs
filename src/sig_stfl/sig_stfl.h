@@ -165,7 +165,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
  */
 typedef struct OQS_SIG_STFL {
 
-	/** A local ordinal representing the LMS parameter of the signature scheme. */
+	/** A local ordinal representing the OID parameter of the signature scheme. */
 	uint32_t oid;
 
 	/** Printable string representing the name of the signature scheme. */
@@ -280,12 +280,12 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	OQS_STATUS (*serialize_key)(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
 
 	/**
-	 * set Secret Key to internal structure Function
+	 * Secret Key to internal structure Function
 	 *
 	 * @param[in] sk OQS_SIG_STFL_SECRET_KEY object
 	 * @param[in] key_len length of the returned byte string
-	 * @param[in] sk_buf The secret key data to populate key obj
-	 * @param[in]  context application specific data
+	 * @param[in] sk_buf The secret key data to populate key object
+	 * @param[in] context application specific data
 	 * @returns  status of the operation populated with key material none-zero length. Caller
 	 * deletes the buffer. if sk_buf is NULL the function returns the length
 	 */
