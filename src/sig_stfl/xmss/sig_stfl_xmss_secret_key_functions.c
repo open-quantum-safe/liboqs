@@ -16,6 +16,11 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, 
 		return OQS_ERROR;
 	}
 
+	// Lock the key if possible
+	if (sk->lock_key != NULL && sk->mutex != NULL) {
+		sk->lock_key(sk->mutex);
+	}
+
 	uint8_t *sk_buf = malloc(sk->length_secret_key * sizeof(uint8_t));
 	if (sk_buf == NULL) {
 		return OQS_ERROR;
@@ -27,6 +32,11 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, 
 	*sk_buf_ptr = sk_buf;
 	*sk_len = sk->length_secret_key;
 
+	// Unlock the key if possible
+	if (sk->unlock_key != NULL && sk->mutex != NULL) {
+		sk->unlock_key(sk->mutex);
+	}
+
 	return OQS_SUCCESS;
 }
 
@@ -36,12 +46,11 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, cons
 		return OQS_ERROR;
 	}
 
-	if (sk->secret_key_data != NULL) {
-		OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
-		sk->secret_key_data = NULL;
+	// Lock the key if possible
+	if (sk->lock_key != NULL && sk->mutex != NULL) {
+		sk->lock_key(sk->mutex);
 	}
 
-	// Assume key data is not present
 	sk->secret_key_data = malloc(sk_len);
 	if (sk->secret_key_data == NULL) {
 		return OQS_ERROR;
@@ -50,14 +59,27 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, cons
 	sk->context = context;
 	memcpy(sk->secret_key_data, sk_buf, sk_len);
 
+	// Unlock the key if possible
+	if (sk->unlock_key != NULL && sk->mutex != NULL) {
+		sk->unlock_key(sk->mutex);
+	}
+
 	return OQS_SUCCESS;
 }
 
 void OQS_SECRET_KEY_XMSS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
-	if (!sk || !store_cb || !context) {
+	if (sk == NULL || store_cb == NULL) {
+		return;
+	}
+	sk->secure_store_scrt_key = store_cb;
+	sk->context = context;
+}
+
+void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL) {
 		return;
 	}
 
-	sk->context = context;
-	sk->secure_store_scrt_key = store_cb;
+	OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
+	sk->secret_key_data = NULL;
 }
