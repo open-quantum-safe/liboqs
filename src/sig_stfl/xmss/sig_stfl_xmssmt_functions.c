@@ -34,9 +34,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *sign
 	}
 
 	/* Lock secret to ensure OTS use */
-	if ((secret_key->lock_key != NULL) && (secret_key->mutex != NULL)) {
-		secret_key->lock_key(secret_key->mutex);
-	}
+	OQS_SECRET_KEY_XMSS_activate_lock(secret_key);
+
 	if (xmssmt_sign(secret_key->secret_key_data, signature, &sig_length, message, message_len)) {
 		status = OQS_ERROR;
 		goto err;
@@ -58,9 +57,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *sign
 
 err:
 	/* Unlock secret to ensure OTS use */
-	if ((secret_key->unlock_key != NULL) && (secret_key->mutex != NULL)) {
-		secret_key->unlock_key(secret_key->mutex);
-	}
+	OQS_SECRET_KEY_XMSS_activate_unlock(secret_key);
+
 	return status;
 }
 

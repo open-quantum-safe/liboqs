@@ -550,7 +550,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sigs_total(unsigned long long *total,
 OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key);
 
 /* Serialize XMSS secret key data into a byte string */
-OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
+OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
 
 /* Deserialize XMSS byte string into an XMSS secret key data */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
@@ -560,5 +560,11 @@ void OQS_SECRET_KEY_XMSS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_
 
 /* Free Secret key object */
 void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
+
+/* Lock the key if possible */
+void OQS_SECRET_KEY_XMSS_activate_lock(OQS_SIG_STFL_SECRET_KEY *sk);
+
+/* Unlock the key if possible */
+void OQS_SECRET_KEY_XMSS_activate_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
 
 #endif /* OQS_SIG_STFL_XMSS_H */

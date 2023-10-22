@@ -2,6 +2,7 @@
 
 #include <oqs/oqs.h>
 #include <string.h>
+#include <stdbool.h>
 #include "sig_stfl_xmss.h"
 
 #if defined(__GNUC__) || defined(__clang__)
@@ -51,6 +52,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 	// Set Secret Key unlocking / releasing function
 	sk->unlock_key = NULL;
 
+	// Boolean if the secret key is locked
+	sk->is_locked = false;
+
 	// Set Secret Key saving function
 	sk->secure_store_scrt_key = NULL;
 
@@ -64,10 +68,13 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 }
 
 /* Serialize XMSS secret key data into a byte string, assume the key is locked before serializing */
-OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
+OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
 	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL) {
 		return OQS_ERROR;
 	}
+
+	/* Lock the key if possible */
+	OQS_SECRET_KEY_XMSS_activate_lock(sk);
 
 	uint8_t *sk_buf = malloc(sk->length_secret_key * sizeof(uint8_t));
 	if (sk_buf == NULL) {
@@ -79,6 +86,9 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, 
 
 	*sk_buf_ptr = sk_buf;
 	*sk_len = sk->length_secret_key;
+
+	/* Unlock the key if possible */
+	OQS_SECRET_KEY_XMSS_activate_unlock(sk);
 
 	return OQS_SUCCESS;
 }
@@ -115,4 +125,32 @@ void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 
 	OQS_MEM_secure_free(sk->secret_key_data, sk->length_secret_key);
 	sk->secret_key_data = NULL;
+}
+
+void OQS_SECRET_KEY_XMSS_activate_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL) {
+		return;
+	}
+
+	if (sk->is_locked == false) {
+		/* Lock the key if possible */
+		if ((sk->lock_key != NULL) && (sk->mutex != NULL)) {
+			sk->lock_key(sk->mutex);
+			sk->is_locked = true;
+		}
+	}
+}
+
+void OQS_SECRET_KEY_XMSS_activate_unlock(OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL) {
+		return;
+	}
+
+	if (sk->is_locked == true) {
+		/* Unlock the key if possible */
+		if ((sk->unlock_key != NULL) && (sk->mutex != NULL)) {
+			sk->unlock_key(sk->mutex);
+			sk->is_locked = false;
+		}
+	}
 }
