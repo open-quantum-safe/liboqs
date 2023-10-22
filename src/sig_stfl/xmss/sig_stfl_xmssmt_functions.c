@@ -18,8 +18,7 @@
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
 
-	OQS_STATUS rc_keyupdate, status = OQS_SUCCESS;
-	const OQS_SIG_STFL_SECRET_KEY *sk;
+	OQS_STATUS status = OQS_SUCCESS;
 	uint8_t *sk_key_buf_ptr = NULL;
 	unsigned long long sig_length = 0;
 	size_t sk_key_buf_len = 0;
