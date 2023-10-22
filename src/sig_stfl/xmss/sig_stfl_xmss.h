@@ -527,20 +527,38 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_total(unsigned l
 
 #endif
 
+#define __alg_xmss_XMSS(funcname, postfix) funcname##_##postfix
+#define _alg_xmss_XMSS(funcname, postfix) __alg_xmss_XMSS(funcname, postfix)
+#define OQS_SIG_STFL_alg_xmss_NAMESPACE(funcname) _alg_xmss_XMSS(funcname, XMSS_PARAMS_NAMESPACE)
+
 /*
  * Generic XMSS APIs
  */
+#define OQS_SIG_STFL_alg_xmss_sign OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmss_sign)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#define OQS_SIG_STFL_alg_xmss_verify OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmss_verify)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, const uint8_t *signature, size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key);
+
+#define OQS_SIG_STFL_alg_xmss_sigs_remaining OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmss_sigs_remaining)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#define OQS_SIG_STFL_alg_xmss_sigs_total OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmss_sigs_total)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 /*
  * Generic XMSS^MT APIs
  */
+#define OQS_SIG_STFL_alg_xmssmt_sign OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmssmt_sign)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#define OQS_SIG_STFL_alg_xmssmt_verify OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmssmt_verify)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, const uint8_t *signature, size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key);
+
+#define OQS_SIG_STFL_alg_xmssmt_sigs_remaining OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmssmt_sigs_remaining)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#define OQS_SIG_STFL_alg_xmssmt_sigs_total OQS_SIG_STFL_alg_xmss_NAMESPACE(OQS_SIG_STFL_alg_xmssmt_sigs_total)
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 /*
