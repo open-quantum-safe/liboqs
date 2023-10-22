@@ -689,7 +689,7 @@ err:
 cleanup:
 
 	OQS_SIG_STFL_SECRET_KEY_free(sk);
-	OQS_SIG_STFL_SECRET_KEY_free(sk_frm_file);
+	OQS_SIG_STFL_SECRET_KEY_free(sk_from_file);
 
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_secure_free(to_file_sk_buf, to_file_sk_len);
