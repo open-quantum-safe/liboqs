@@ -17,6 +17,8 @@
 
 #if OQS_USE_PTHREADS_IN_TESTS
 #include <pthread.h>
+
+static pthread_mutex_t *test_sk_lock = NULL;
 #endif
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -46,24 +48,23 @@ static size_t signature_len_1;
 static size_t signature_len_2;
 static uint8_t message_1[] = "The quick brown fox ...";
 static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
-static pthread_mutex_t *test_sk_lock = NULL;
 
 /*
  * Write stateful secret keys to disk.
  */
 static OQS_STATUS test_save_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
-	uint8_t *kb = key_buf;
-
-	if (key_buf && context && buf_len != 0) {
-		if (oqs_fstore("sk", (const char *)context, kb, buf_len) == OQS_SUCCESS) {
-			printf("\n================================================================================\n");
-			printf("Updated STFL SK  <%s>.\n", (const char *)context);
-			printf("================================================================================\n");
-			return OQS_SUCCESS;
-		} else {
-			return OQS_ERROR;
-		}
+	if (key_buf == NULL || buf_len == 0 || context == NULL) {
+		return OQS_ERROR;
 	}
+	const char *context_char = context;
+
+	if (oqs_fstore("sk", context_char, key_buf, buf_len) == OQS_SUCCESS) {
+		printf("\n================================================================================\n");
+		printf("Updated STFL SK  <%s>.\n", context_char);
+		printf("================================================================================\n");
+		return OQS_SUCCESS;
+	}
+
 	return OQS_ERROR;
 }
 
@@ -91,11 +92,11 @@ static OQS_STATUS unlock_sk_key(void *mutex) {
 }
 #else
 static OQS_STATUS lock_sk_key(void *mutex) {
-	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
+	return OQS_SUCCESS;
 }
 
 static OQS_STATUS unlock_sk_key(void *mutex) {
-	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
+	return OQS_SUCCESS;
 }
 #endif
 
@@ -194,10 +195,6 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 OQS_STATUS sig_stfl_keypair_from_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	OQS_STATUS rc;
 
-	if ((sig == NULL) || (public_key == NULL) || (secret_key == NULL)) {
-		return OQS_ERROR;
-	}
-
 	rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
@@ -250,8 +247,10 @@ cleanup:
  * XMSSMT-SHAKE_60/3_256
  */
 OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
+	if (sig == NULL || public_key == NULL || secret_key == NULL || katfile == NULL) {
+		return OQS_ERROR;
+	}
 
-	printf("%s ", sig->method_name);
 	if (0) {
 
 #ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
@@ -323,9 +322,11 @@ typedef struct magic_s {
 } magic_t;
 
 static char *convert_method_name_to_file_name(const char *method_name) {
+	if (method_name == NULL) {
+		return NULL;
+	}
 
 	const char *file_store = NULL;
-	char *name = NULL;
 	if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_2) == 0) {
 		file_store = "XMSSMT-SHA2_20-2_256";
 	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h20_4) == 0) {
@@ -362,10 +363,7 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 		file_store = method_name;
 	}
 
-	if (file_store) {
-		name = strdup(file_store);
-	}
-	return name;
+	return strdup(file_store);
 }
 
 static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile) {
@@ -373,7 +371,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
 	OQS_SIG_STFL_SECRET_KEY *secret_key = NULL;
-	const OQS_SIG_STFL_SECRET_KEY *sk = NULL;
 	OQS_SIG_STFL_SECRET_KEY *secret_key_rd = NULL;
 	uint8_t *message = NULL;
 	size_t message_len = 100;
@@ -395,74 +392,8 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	OQS_STATUS rc, ret = OQS_ERROR;
 
-	if (0) {
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
-		goto skip_test;
-#endif
-	} else {
-		goto test_on;
-	}
-skip_test:
-	printf("skipping slow test %s\n", method_name);
-	return OQS_SUCCESS;
-
-test_on:
-
 	//The magic numbers are random values.
 	//The length of the magic number was chosen to be 31 to break alignment
-
-
 	OQS_randombytes(magic.val, sizeof(magic_t));
 
 	sig = OQS_SIG_STFL_new(method_name);
@@ -532,14 +463,13 @@ test_on:
 	 * Some keypair generation is fast, so we only read keypair from KATs for slow XMSS parameters
 	 */
 	rc = sig_stfl_KATs_keygen(sig, public_key, secret_key, katfile);
-	sk = secret_key;
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_STFL_keypair failed\n");
 		goto err;
 	}
 
-	rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &sk_buf_len, &sk_buf);
+	rc = OQS_SECRET_KEY_STFL_serialize_key(secret_key, &sk_buf_len, &sk_buf);
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
@@ -604,7 +534,6 @@ test_on:
 	}
 #endif
 
-	printf("verification passes as expected\n");
 	ret = OQS_SUCCESS;
 	goto cleanup;
 
@@ -639,7 +568,7 @@ cleanup:
 	return ret;
 }
 
-static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
+static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *katfile) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
 	OQS_SIG_STFL_SECRET_KEY *sk_frm_file = NULL;
@@ -657,71 +586,6 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name) {
 	/*
 	 * Temporarily skip algs with long key generation times.
 	 */
-
-	if (0) {
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
-		goto skip_test;
-#endif
-	} else {
-		goto keep_going;
-	}
-
-skip_test:
-	printf("Skip slow test %s.\n", method_name);
-	return rc;
-
-keep_going:
 
 	printf("================================================================================\n");
 	printf("Create stateful Signature  %s\n", method_name);
@@ -749,7 +613,7 @@ keep_going:
 	printf("Generate keypair  %s\n", method_name);
 	printf("================================================================================\n");
 
-	rc = OQS_SIG_STFL_keypair(sig_obj, public_key, sk);
+	rc = sig_stfl_KATs_keygen(sig_obj, public_key, sk, katfile);
 
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key gen failed.\n");
@@ -764,14 +628,12 @@ keep_going:
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)sk);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
 
 	/* write sk key to disk */
 	rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &to_file_sk_len, &to_file_sk_buf);
@@ -819,12 +681,12 @@ keep_going:
 		goto err;
 	}
 
-	printf("Secret Key created as expected.\n");
-	goto end_it;
+	rc = OQS_SUCCESS;
+	goto cleanup;
 
 err:
 	rc = OQS_ERROR;
-end_it:
+cleanup:
 
 	OQS_SIG_STFL_SECRET_KEY_free(sk);
 	OQS_SIG_STFL_SECRET_KEY_free(sk_frm_file);
@@ -848,77 +710,13 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	 * Temporarily skip algs with long key generation times.
 	 */
 
-	if (0) {
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
-		goto skip_test;
-#endif
-	} else {
-		goto keep_going;
-	}
-
-skip_test:
-	printf("Skip slow test %s.\n", method_name);
-	return rc;
-
-keep_going:
-
 	printf("================================================================================\n");
 	printf("Testing stateful Signature Verification %s\n", method_name);
 	printf("================================================================================\n");
 
-	if ( lock_test_sk == NULL || lock_test_sig_obj == NULL || signature_1 == NULL
-	        || signature_2 == NULL || lock_test_public_key == NULL) {
+	if ( lock_test_sk == NULL || lock_test_sig_obj == NULL ||
+	        signature_1 == NULL || signature_2 == NULL ||
+	        lock_test_public_key == NULL) {
 		return OQS_ERROR;
 	}
 
@@ -943,16 +741,14 @@ keep_going:
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_verify failed\n");
 		goto err;
 	}
-	rc = OQS_SUCCESS;
 	printf("================================================================================\n");
 	printf("Stateful Signature Verification %s Passed.\n", method_name);
 	printf("================================================================================\n");
-	goto end_it;
-err:
-	rc = OQS_ERROR;
-end_it:
 
-	return rc;
+	return OQS_SUCCESS;
+
+err:
+	return OQS_ERROR;
 }
 
 static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
@@ -966,71 +762,6 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	/*
 	 * Temporarily skip algs with long key generation times.
 	 */
-
-	if (0) {
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
-		goto skip_test;
-#endif
-	} else {
-		goto keep_going;
-	}
-
-skip_test:
-	printf("Skip slow test %s.\n", method_name);
-	return rc;
-
-keep_going:
 
 	printf("================================================================================\n");
 	printf("Testing stateful Signature Generation %s\n", method_name);
@@ -1054,14 +785,12 @@ keep_going:
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
 
 	printf("================================================================================\n");
 	printf("Sig Gen 1  %s\n", method_name);
@@ -1085,14 +814,12 @@ keep_going:
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
 
 	printf("================================================================================\n");
 	printf("Sig Gen 2 %s\n", method_name);
@@ -1120,26 +847,25 @@ keep_going:
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Maximum num of sign operations = %llu\n", method_name, max_num_sigs);
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
 	}
-	printf("%s Remaining number of sign operations = %llu\n", method_name, num_sig_left);
 
-	goto end_it;
+	rc = OQS_SUCCESS;
+	goto cleanup;
 err:
 	rc = OQS_ERROR;
-end_it:
+cleanup:
 	OQS_MEM_insecure_free(context);
 	OQS_MEM_insecure_free(key_store_name);
 
 	return rc;
 }
 
-static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name) {
+static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const char *katfile) {
 	OQS_STATUS rc = OQS_SUCCESS;
 
 	printf("================================================================================\n");
@@ -1149,71 +875,6 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name) {
 	/*
 	 * Temporarily skip algs with long key generation times.
 	 */
-
-	if (0) {
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20
-	} else if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20) == 0) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake128_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake128_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_sha512_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h60_3)) {
-		goto skip_test;
-#endif
-
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h40_2)) {
-		goto skip_test;
-#endif
-#ifdef OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3
-	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmssmt_shake128_h60_3)) {
-		goto skip_test;
-#endif
-	} else {
-		goto keep_going;
-	}
-
-skip_test:
-	printf("Skip slow test %s.\n", method_name);
-	return rc;
-
-keep_going:
 
 	printf("================================================================================\n");
 	printf("Create stateful Signature  %s\n", method_name);
@@ -1257,7 +918,7 @@ keep_going:
 	printf("Generate keypair  %s\n", method_name);
 	printf("================================================================================\n");
 
-	rc = OQS_SIG_STFL_keypair(lock_test_sig_obj, lock_test_public_key, lock_test_sk);
+	rc = sig_stfl_KATs_keygen(lock_test_sig_obj, lock_test_public_key, lock_test_sk, katfile);
 
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key gen failed.\n");
@@ -1275,13 +936,10 @@ keep_going:
 		lock_test_sk->set_scrt_key_store_cb(lock_test_sk, test_save_secret_key, (void *)lock_test_context);
 	}
 
-	printf("Test Secret Key Creator Thread created Stateful Signature and Secret Key objects.\n");
-	goto end_it;
+	return OQS_SUCCESS;
 
 err:
-	rc = OQS_ERROR;
-end_it:
-	return rc;
+	return OQS_ERROR;
 }
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -1310,6 +968,7 @@ struct thread_data {
 
 struct lock_test_data {
 	const char *alg_name;
+	const char *katfile;
 	OQS_STATUS rc;
 };
 
@@ -1332,7 +991,7 @@ void *test_sig_gen(void *arg) {
 void *test_create_keys(void *arg) {
 	struct lock_test_data *td = arg;
 	printf("\n%s: Start Generate Keys\n", __FUNCTION__);
-	td->rc = sig_stfl_test_secret_key_lock(td->alg_name);
+	td->rc = sig_stfl_test_secret_key_lock(td->alg_name, td->katfile);
 	printf("%s: End Generate Stateful Keys\n\n", __FUNCTION__);
 	return NULL;
 }
@@ -1340,7 +999,7 @@ void *test_create_keys(void *arg) {
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile);
-	td->rc1 = sig_stfl_test_secret_key(td->alg_name);
+	td->rc1 = sig_stfl_test_secret_key(td->alg_name, td->katfile);
 	return NULL;
 }
 #endif
@@ -1381,7 +1040,8 @@ int main(int argc, char **argv) {
 	OQS_randombytes_switch_algorithm("system");
 #endif
 
-	OQS_STATUS rc, rc1, rc_lck, rc_sig, rc_qry;
+	OQS_STATUS  rc = OQS_SUCCESS, rc1 = OQS_SUCCESS,
+	            rc_lck = OQS_SUCCESS, rc_sig = OQS_SUCCESS, rc_qry = OQS_SUCCESS;
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_SIG_NAME_ 64
 
@@ -1399,6 +1059,10 @@ int main(int argc, char **argv) {
 	td_create.alg_name = alg_name;
 	td_sign.alg_name = alg_name;
 	td_query.alg_name = alg_name;
+
+	td_create.katfile = katfile;
+	td_sign.katfile = katfile;
+	td_query.katfile = katfile;
 
 	int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 	if (trc) {
@@ -1438,7 +1102,7 @@ int main(int argc, char **argv) {
 	rc_qry = td_query.rc;
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
-	rc1 = sig_stfl_test_secret_key(alg_name);
+	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
 #endif
 
 	OQS_SIG_STFL_SECRET_KEY_free(lock_test_sk);
@@ -1448,11 +1112,10 @@ int main(int argc, char **argv) {
 	OQS_MEM_insecure_free(signature_1);
 	OQS_MEM_insecure_free(signature_2);
 
-	if ((rc != OQS_SUCCESS) || (rc1 != OQS_SUCCESS) || (rc_lck != OQS_SUCCESS) || (rc_sig != OQS_SUCCESS)
-	        || (rc_qry != OQS_SUCCESS)) {
-		OQS_destroy();
+	OQS_destroy();
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS ||
+	        rc_lck != OQS_SUCCESS || rc_sig != OQS_SUCCESS || rc_qry != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
-	OQS_destroy();
 	return EXIT_SUCCESS;
 }
