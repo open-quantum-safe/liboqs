@@ -47,7 +47,7 @@ typedef struct OQS_LMS_KEY_DATA {
 } oqs_lms_key_data;
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
-    size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+        size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	OQS_STATUS status = OQS_ERROR;
 	OQS_STATUS rc_keyupdate = OQS_ERROR;
 	oqs_lms_key_data *lms_key_data = NULL;
@@ -119,7 +119,7 @@ passed:
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,
-    const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+        const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 
 	if (message == NULL || signature == NULL || public_key == NULL) {
 		return OQS_ERROR;
