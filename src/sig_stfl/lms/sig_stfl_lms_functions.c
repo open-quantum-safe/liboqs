@@ -47,11 +47,10 @@ typedef struct OQS_LMS_KEY_DATA {
 } oqs_lms_key_data;
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
-        size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+    size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	OQS_STATUS status = OQS_ERROR;
 	OQS_STATUS rc_keyupdate = OQS_ERROR;
 	oqs_lms_key_data *lms_key_data = NULL;
-	const OQS_SIG_STFL_SECRET_KEY *sk;
 	uint8_t *sk_key_buf = NULL;
 	size_t sk_key_buf_len = 0;
 	void *context;
@@ -89,8 +88,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 	 * but, delete signature and the serialized key other wise
 	 */
 
-	sk = secret_key;
-	rc_keyupdate = oqs_serialize_lms_key(sk, &sk_key_buf_len, &sk_key_buf);
+	rc_keyupdate = oqs_serialize_lms_key(secret_key, &sk_key_buf_len, &sk_key_buf);
 	if (rc_keyupdate != OQS_SUCCESS) {
 		goto err;
 	}
@@ -121,8 +119,7 @@ passed:
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,
-        const uint8_t *signature, size_t signature_len,
-        const uint8_t *public_key) {
+    const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 
 	if (message == NULL || signature == NULL || public_key == NULL) {
 		return OQS_ERROR;
@@ -566,7 +563,7 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
  * Convert LMS secret key object to byte string
  * Writes secret key + aux data if present
  */
-OQS_STATUS oqs_serialize_lms_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_key) {
+OQS_STATUS oqs_serialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_key) {
 
 	if (sk == NULL || sk_len == NULL || sk_key == NULL) {
 		return OQS_ERROR;

@@ -8,7 +8,7 @@
 #include "sig_stfl_lms.h"
 
 /* Convert LMS secret key object to byte string */
-static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
+static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
 
 /* Insert lms byte string in an LMS secret key object */
 static OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
@@ -81,6 +81,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -169,6 +172,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W2_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -255,6 +261,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W4_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -343,6 +352,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W8_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -429,6 +441,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W1_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -517,6 +532,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W2_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -603,6 +621,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W4_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -691,6 +712,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W8_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -777,6 +801,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W1_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -865,6 +892,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W2_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -951,6 +981,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W4_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -1039,6 +1072,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W8_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -1125,6 +1161,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W1_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -1213,6 +1252,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W2_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -1299,6 +1341,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W4_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -1387,6 +1432,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W8_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -1473,6 +1521,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W1_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -1561,6 +1612,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W2_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -1647,6 +1701,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W4_new(void) {
 	 * Set Secret Key Locking Function
 	 */
 	sk->lock_key = NULL;
+
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
 
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
@@ -1735,6 +1792,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W8_new(void) {
 	 */
 	sk->lock_key = NULL;
 
+	/* Boolean if the secret key is locked */
+	sk->is_locked = false;
+
 	/*
 	 * Set Secret Key Unlocking / Releasing Function
 	 */
@@ -1760,7 +1820,7 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 }
 
 /* Convert LMS secret key object to byte string */
-static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
+static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
 	OQS_STATUS status;
 	if (sk->lock_key && sk->mutex) {
 		sk->lock_key(sk->mutex);
