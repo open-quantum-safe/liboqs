@@ -10,15 +10,63 @@
 #define XMSS_UNUSED_ATT
 #endif
 
-/* Serialize XMSS secret key data into a byte string */
+extern inline
+OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
+
+	// Initialize the secret key in the heap with adequate memory
+	OQS_SIG_STFL_SECRET_KEY *sk = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
+	if (sk == NULL) {
+		return NULL;
+	}
+	memset(sk, 0, sizeof(OQS_SIG_STFL_SECRET_KEY));
+
+	sk->length_secret_key = length_secret_key;
+
+	// Secret serialize/deserialize function
+	sk->serialize_key = OQS_SECRET_KEY_XMSS_serialize_key;
+	sk->deserialize_key = OQS_SECRET_KEY_XMSS_deserialize_key;
+
+	// Initialize the key with length_secret_key amount of bytes.
+	sk->secret_key_data = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+
+	if (sk->secret_key_data == NULL) {
+		OQS_MEM_insecure_free(sk);
+		return NULL;
+	}
+
+	memset(sk->secret_key_data, 0, sk->length_secret_key);
+
+	// Set application specific context
+	sk->context = NULL;
+
+	// Point to associated OQS_SIG_STFL object
+	sk->sig = NULL;
+
+	// Mutual exclusion struct
+	sk->mutex = NULL;
+
+	// Set Secret Key locking function
+	sk->lock_key = NULL;
+
+	// Set Secret Key unlocking / releasing function
+	sk->unlock_key = NULL;
+
+	// Set Secret Key saving function
+	sk->secure_store_scrt_key = NULL;
+
+	// Set Secret Key store callback function
+	sk->set_scrt_key_store_cb = OQS_SECRET_KEY_XMSS_set_store_cb;
+
+	// Set Secret Key free function
+	sk->free_key = OQS_SECRET_KEY_XMSS_free;
+
+	return sk;
+}
+
+/* Serialize XMSS secret key data into a byte string, assume the key is locked before serializing */
 OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
 	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL) {
 		return OQS_ERROR;
-	}
-
-	// Lock the key if possible
-	if (sk->lock_key != NULL && sk->mutex != NULL) {
-		sk->lock_key(sk->mutex);
 	}
 
 	uint8_t *sk_buf = malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -32,23 +80,13 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, 
 	*sk_buf_ptr = sk_buf;
 	*sk_len = sk->length_secret_key;
 
-	// Unlock the key if possible
-	if (sk->unlock_key != NULL && sk->mutex != NULL) {
-		sk->unlock_key(sk->mutex);
-	}
-
 	return OQS_SUCCESS;
 }
 
-/* Deserialize XMSS byte string into an XMSS secret key data */
+/* Deserialize XMSS byte string into an XMSS secret key data. assume the key is locked before serializing */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, XMSS_UNUSED_ATT void *context) {
 	if (sk == NULL || sk_buf == NULL || (sk_len != sk->length_secret_key)) {
 		return OQS_ERROR;
-	}
-
-	// Lock the key if possible
-	if (sk->lock_key != NULL && sk->mutex != NULL) {
-		sk->lock_key(sk->mutex);
 	}
 
 	sk->secret_key_data = malloc(sk_len);
@@ -56,13 +94,8 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, cons
 		return OQS_ERROR;
 	}
 
-	sk->context = context;
 	memcpy(sk->secret_key_data, sk_buf, sk_len);
-
-	// Unlock the key if possible
-	if (sk->unlock_key != NULL && sk->mutex != NULL) {
-		sk->unlock_key(sk->mutex);
-	}
+	sk->context = context;
 
 	return OQS_SUCCESS;
 }

@@ -4,6 +4,11 @@
 #define OQS_SIG_STFL_XMSS_H
 
 #include <oqs/oqs.h>
+#if defined(__GNUC__) || defined(__clang__)
+#define XMSS_UNUSED_ATT __attribute__((unused))
+#else
+#define XMSS_UNUSED_ATT
+#endif
 
 #define XMSS_OID_LEN 4
 void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
@@ -523,8 +528,27 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_sigs_total(unsigned l
 #endif
 
 /*
+ * Generic XMSS APIs
+ */
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, const uint8_t *signature, size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+/*
+ * Generic XMSS^MT APIs
+ */
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, const uint8_t *signature, size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+/*
  * Secret key functions
  */
+/* Generic XMSS SECRET_KEY object initialization */
+OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key);
+
 /* Serialize XMSS secret key data into a byte string */
 OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
 
