@@ -646,13 +646,13 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 		goto err;
 	}
 
-	if (!sk->secret_key_data) {
+	if (sk->secret_key_data == NULL) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
 		goto err;
 	}
 
 	/* set context and secure store callback */
-	if (sk->set_scrt_key_store_cb) {
+	if (sk->set_scrt_key_store_cb != NULL) {
 		context = strdup(file_store_name);
 		sk->set_scrt_key_store_cb(sk, save_secret_key, (void *)context);
 	}
@@ -925,7 +925,7 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 		goto err;
 	}
 
-	if (!lock_test_sk->secret_key_data) {
+	if (lock_test_sk->secret_key_data == NULL) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new incomplete.\n");
 		goto err;
 	}
