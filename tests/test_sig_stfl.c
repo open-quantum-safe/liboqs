@@ -52,7 +52,7 @@ static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
 /*
  * Write stateful secret keys to disk.
  */
-static OQS_STATUS test_save_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
+static OQS_STATUS save_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
 	if (key_buf == NULL || buf_len == 0 || context == NULL) {
 		return OQS_ERROR;
 	}
@@ -420,7 +420,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	/* set context and secure store callback */
 	context = strdup(((file_store)));
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, test_save_secret_key, (void *)context);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, save_secret_key, (void *)context);
 
 #if OQS_USE_PTHREADS_IN_TESTS
 	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -571,13 +571,13 @@ cleanup:
 static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *katfile) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
-	OQS_SIG_STFL_SECRET_KEY *sk_frm_file = NULL;
+	OQS_SIG_STFL_SECRET_KEY *sk_from_file = NULL;
 	unsigned long long num_sig_left = 0, max_num_sigs = 0;
 	OQS_SIG_STFL *sig_obj = NULL;
 	uint8_t *public_key = NULL;
-	uint8_t *frm_file_sk_buf = NULL;
+	uint8_t *from_file_sk_buf = NULL;
 	uint8_t *to_file_sk_buf = NULL;
-	size_t frm_file_sk_len = 0;
+	size_t from_file_sk_len = 0;
 	size_t to_file_sk_len = 0;
 	char *context = NULL;
 	char *context_2 = NULL;
@@ -654,27 +654,27 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	/* set context and secure store callback */
 	if (sk->set_scrt_key_store_cb) {
 		context = strdup(file_store_name);
-		sk->set_scrt_key_store_cb(sk, test_save_secret_key, (void *)context);
+		sk->set_scrt_key_store_cb(sk, save_secret_key, (void *)context);
 	}
 
 	/* read secret key from disk */
-	frm_file_sk_buf = malloc(to_file_sk_len);
-	if (oqs_fload("sk", file_store_name, frm_file_sk_buf, to_file_sk_len, &frm_file_sk_len) != OQS_SUCCESS) {
+	from_file_sk_buf = malloc(to_file_sk_len);
+	if (oqs_fload("sk", file_store_name, from_file_sk_buf, to_file_sk_len, &from_file_sk_len) != OQS_SUCCESS) {
 		goto err;
 	}
-	if (to_file_sk_len != frm_file_sk_len) {
+	if (to_file_sk_len != from_file_sk_len) {
 		fprintf(stderr, "ERROR:  OQS_SECRET_KEY_new stored length not equal read length\n");
 		goto err;
 	}
 
-	sk_frm_file = OQS_SIG_STFL_SECRET_KEY_new(method_name);
-	if (sk_frm_file == NULL) {
+	sk_from_file = OQS_SIG_STFL_SECRET_KEY_new(method_name);
+	if (sk_from_file == NULL) {
 		fprintf(stderr, "ERROR: 2nd OQS_SECRET_KEY_new failed\n");
 		goto err;
 	}
 
 	context_2 = strdup(file_store_name);
-	rc = OQS_SECRET_KEY_STFL_deserialize_key(sk_frm_file, frm_file_sk_len, frm_file_sk_buf, (void *)context_2);
+	rc = OQS_SECRET_KEY_STFL_deserialize_key(sk_from_file, from_file_sk_len, from_file_sk_buf, (void *)context_2);
 
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS restore %s from file failed.\n", method_name);
@@ -693,7 +693,7 @@ cleanup:
 
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_secure_free(to_file_sk_buf, to_file_sk_len);
-	OQS_MEM_secure_free(frm_file_sk_buf, frm_file_sk_len);
+	OQS_MEM_secure_free(from_file_sk_buf, from_file_sk_len);
 	OQS_SIG_STFL_free(sig_obj);
 	OQS_MEM_insecure_free(context);
 	OQS_MEM_insecure_free(context_2);
@@ -774,7 +774,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	key_store_name = convert_method_name_to_file_name(method_name);
 	/* set context and secure store callback */
 	context = strdup(((key_store_name)));
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, test_save_secret_key, (void *)context);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, save_secret_key, (void *)context);
 
 	/*
 	 * Get max num signature and the amount remaining
@@ -933,7 +933,7 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 	/* set context and secure store callback */
 	if (lock_test_sk->set_scrt_key_store_cb) {
 		lock_test_context = convert_method_name_to_file_name(method_name);
-		lock_test_sk->set_scrt_key_store_cb(lock_test_sk, test_save_secret_key, (void *)lock_test_context);
+		lock_test_sk->set_scrt_key_store_cb(lock_test_sk, save_secret_key, (void *)lock_test_context);
 	}
 
 	return OQS_SUCCESS;

@@ -67,7 +67,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 	return sk;
 }
 
-/* Serialize XMSS secret key data into a byte string. */
+/* Serialize XMSS secret key data into a byte string, return an allocated buffer. Users have to unallocated the buffer. */
 OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
 	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL) {
 		return OQS_ERROR;
@@ -99,12 +99,7 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, cons
 		return OQS_ERROR;
 	}
 
-	sk->secret_key_data = malloc(sk_len);
-	if (sk->secret_key_data == NULL) {
-		return OQS_ERROR;
-	}
-
-	memcpy(sk->secret_key_data, sk_buf, sk_len);
+	memcpy(sk->secret_key_data, sk_buf, sk->length_secret_key);
 	sk->context = context;
 
 	return OQS_SUCCESS;

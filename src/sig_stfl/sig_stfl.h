@@ -262,7 +262,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/* The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	size_t length_secret_key;
 
-	/* The variant specific secret key data */
+	/* The variant specific secret key data, must be allocated at the initialization. */
 	void *secret_key_data;
 
 	/* mutual exclusion struct */
@@ -281,7 +281,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @param[out] sk_len length of private key as a byte stream
 	 * @param[out] sk_buf_ptr pointer to private key data as a byte stream
 	 * @returns length of key material data available
-	 * Caller deletes the buffer if memory was allocated.
+	 * Caller is responsible to **unallocate** the pointer to buffer `sk_buf_ptr`.
 	 */
 	OQS_STATUS (*serialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
 
@@ -292,8 +292,8 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @param[in] key_len length of the returned byte string
 	 * @param[in] sk_buf The secret key data to populate key object
 	 * @param[in] context application specific data
-	 * @returns  status of the operation populated with key material none-zero length. Caller
-	 * deletes the buffer. if sk_buf is NULL the function returns the length
+	 * @returns  status of the operation populated with key material none-zero length. 
+	 * Caller is responsible to **unallocate** the buffer `sk_buf`. 
 	 */
 	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
@@ -511,9 +511,10 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
  */
 void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
+/* Serialize stateful secret key data into a byte string, return an allocated buffer. Users is responsible to unallocate the buffer `sk_buf`. */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk,  size_t *sk_len, uint8_t **sk_buf);
 
-/* Insert lms byte string in an LMS secret key object */
+/* Insert stateful byte string into an secret key object. User is responsible to unallocate buffer `sk_buf`. */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
 
 #if defined(__cplusplus)
