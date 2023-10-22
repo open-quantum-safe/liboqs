@@ -67,7 +67,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 	return sk;
 }
 
-/* Serialize XMSS secret key data into a byte string, assume the key is locked before serializing */
+/* Serialize XMSS secret key data into a byte string. */
 OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
 	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL) {
 		return OQS_ERROR;
@@ -93,7 +93,7 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t
 	return OQS_SUCCESS;
 }
 
-/* Deserialize XMSS byte string into an XMSS secret key data. assume the key is locked before serializing */
+/* Deserialize XMSS byte string into an XMSS secret key data. */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, XMSS_UNUSED_ATT void *context) {
 	if (sk == NULL || sk_buf == NULL || (sk_len != sk->length_secret_key)) {
 		return OQS_ERROR;
