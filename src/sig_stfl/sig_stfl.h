@@ -292,8 +292,8 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @param[in] key_len length of the returned byte string
 	 * @param[in] sk_buf The secret key data to populate key object
 	 * @param[in] context application specific data
-	 * @returns  status of the operation populated with key material none-zero length. 
-	 * Caller is responsible to **unallocate** the buffer `sk_buf`. 
+	 * @returns  status of the operation populated with key material none-zero length.
+	 * Caller is responsible to **unallocate** the buffer `sk_buf`.
 	 */
 	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
