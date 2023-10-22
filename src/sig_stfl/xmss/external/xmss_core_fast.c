@@ -641,9 +641,10 @@ int xmss_core_sign(const xmss_params *params,
         // has to make sure that this happens on disk.
         memset(sk, 0xFF, params->index_bytes);
         memset(sk + params->index_bytes, 0, (params->sk_bytes - params->index_bytes));
-        if (idx > ((1ULL << params->full_height) - 1))
+        if (idx > ((1ULL << params->full_height) - 1)) {
             ret = -2; // We already used all one-time keys
             goto cleanup;
+        }
     }
     unsigned char *tmp = malloc(5 * params->n);
 
