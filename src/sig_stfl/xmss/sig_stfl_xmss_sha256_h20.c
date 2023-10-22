@@ -59,18 +59,18 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_keypair(XMSS_UNUSED_ATT uint
 	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key){
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return OQS_SIG_STFL_alg_xmss_sign(signature, signature_len, message, message_len, secret_key);
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key){
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return OQS_SIG_STFL_alg_xmss_verify(message, message_len, signature, signature_len, public_key);
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key){
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return OQS_SIG_STFL_alg_xmss_sigs_remaining(remain, secret_key);
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key){
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return OQS_SIG_STFL_alg_xmss_sigs_total(total, secret_key);
 }
