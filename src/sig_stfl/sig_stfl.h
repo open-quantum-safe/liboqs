@@ -436,14 +436,6 @@ OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_name);
 
 /**
- * Frees an OQS_SIG_STFL_SECRET_KEY **inner** data that was constructed by OQS_SECRET_KEY_new.
- *
- * @param[in] sig The OQS_SIG_STFL_SECRET_KEY object to free.
- * @return OQS_SUCCESS if successful, or OQS_ERROR if the object could not be freed.
- */
-void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
-
-/**
  * Frees an OQS_SIG_STFL_SECRET_KEY object that was constructed by OQS_SECRET_KEY_new.
  *
  * @param[in] sig The OQS_SIG_STFL_SECRET_KEY object to free.

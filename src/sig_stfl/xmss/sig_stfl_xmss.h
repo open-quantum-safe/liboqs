@@ -11,7 +11,6 @@
 #endif
 
 #define XMSS_OID_LEN 4
-void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
 /*
  * | Algorithms                    | oid  | sk (b) | pk (b) | sig (b) | n  |
