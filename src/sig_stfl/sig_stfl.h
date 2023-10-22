@@ -271,6 +271,9 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/* file storage handle */
 	void *context;
 
+	/* Secret key lock status: 0: key is locked, otherwise key is unlocked */
+	bool is_locked;
+
 	/**
 	 * Secret Key retrieval Function
 	 *
@@ -280,7 +283,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @returns length of key material data available
 	 * Caller deletes the buffer if memory was allocated.
 	 */
-	OQS_STATUS (*serialize_key)(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
+	OQS_STATUS (*serialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
 
 	/**
 	 * Secret Key to internal structure Function
@@ -516,7 +519,7 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
  */
 void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
-OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk,  size_t *sk_len, uint8_t **sk_buf);
+OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk,  size_t *sk_len, uint8_t **sk_buf);
 
 /* Insert lms byte string in an LMS secret key object */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
