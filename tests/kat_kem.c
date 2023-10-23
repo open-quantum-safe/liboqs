@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: MIT
-//
-// TODO fix leak
 
 // This KAT test only generates a subset of the NIST KAT files.
 // To extract the subset from a submission file, use the command:

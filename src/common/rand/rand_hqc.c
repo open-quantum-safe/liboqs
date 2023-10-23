@@ -2,7 +2,9 @@
 
 #define PRNG_DOMAIN 1
 
-// TODO document licence etc
+// SPDX-License-Identifier: Public domain
+// Based on shake_prng.c in hqc-submission_2023-04-30 (https://pqc-hqc.org)
+// Modified for liboqs by Spencer Wilson
 
 OQS_SHA3_shake256_inc_ctx shake_prng_state = { NULL };
 

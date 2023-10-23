@@ -169,8 +169,8 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/common/crypto/sha3/xkcp_low` : CC0 (public domain), except `brg_endian.h` and `KeccakP-1600-AVX2.s`
 - `src/common/crypto/sha3/xkcp_low/.../brg_endian.h` : BSD 3-Clause License
 - `src/common/crypto/sha3/xkcp_low/.../KeccakP-1600-AVX2.s` : BSD-like [CRYPTOGAMS license](http://www.openssl.org/~appro/cryptogams/)
+- `src/common/rand/rand_hqc.c`: public domain
 - `src/common/rand/rand_nist.c`: See file
-- TODO: update for hqc
 - `src/kem/bike/additional`: Apache License v2.0
 - `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqcrystals-*`: public domain (CC0) or Apache License v2.0
