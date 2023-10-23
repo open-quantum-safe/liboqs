@@ -22,6 +22,8 @@ extern "C" {
 #define OQS_RAND_alg_system "system"
 /** Algorithm identifier for NIST deterministic RNG for KATs. */
 #define OQS_RAND_alg_nist_kat "NIST-KAT"
+/** Algorithm identifier for HQC deterministic RNG for KATs. */
+#define OQS_RAND_alg_hqc_kat "HQC-KAT"
 /** Algorithm identifier for using OpenSSL's PRNG. */
 #define OQS_RAND_alg_openssl "OpenSSL"
 
@@ -65,6 +67,21 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
  * may be NULL; if not NULL, must be at least 48 bytes long
  */
 OQS_API void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string);
+
+/**
+ * Initializes the HQC PRNG with a given seed.
+ * OQS_randombytes_hqc_kat_release should be called afterwards to clean up memory.
+ *
+ * @param[in] entropy_input The seed; must be exactly 48 bytes
+ * @param[in] personalization_string An optional personalization string;
+ * may be NULL; if not NULL, must be at least 48 bytes long
+ */
+OQS_API void OQS_randombytes_hqc_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string);
+
+/**
+ * Releases the HQC PRNG context. Can be called safely even if OQS_randombytes_hqc_kat_init was not called.
+ */
+OQS_API void OQS_randombytes_hqc_kat_free(void);
 
 #if defined(__cplusplus)
 } // extern "C"

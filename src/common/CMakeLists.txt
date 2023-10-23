@@ -79,7 +79,8 @@ add_library(common OBJECT ${AES_IMPL}
                           pqclean_shims/fips202.c
                           pqclean_shims/fips202x4.c
                           rand/rand.c
-                          rand/rand_nist.c)
+                          rand/rand_nist.c
+                          rand/rand_hqc.c)
 
 if(${OQS_USE_OPENSSL})
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
