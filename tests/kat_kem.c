@@ -40,9 +40,9 @@ static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 }
 
 static inline bool is_hqc(const char *method_name) {
-    return (0 == strcmp(method_name, OQS_KEM_alg_hqc_128))
-        || (0 == strcmp(method_name, OQS_KEM_alg_hqc_192))
-        || (0 == strcmp(method_name, OQS_KEM_alg_hqc_256));
+	return (0 == strcmp(method_name, OQS_KEM_alg_hqc_128))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_192))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_256));
 }
 
 static OQS_STATUS kem_kat(const char *method_name) {
@@ -58,7 +58,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
-    char *rand_alg;
+	char *rand_alg;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -70,20 +70,20 @@ static OQS_STATUS kem_kat(const char *method_name) {
 		entropy_input[i] = i;
 	}
 
-    rand_alg = OQS_RAND_alg_nist_kat;
-    if (is_hqc(method_name)) {
-        rand_alg = OQS_RAND_alg_hqc_kat;
-    }
+	rand_alg = OQS_RAND_alg_nist_kat;
+	if (is_hqc(method_name)) {
+		rand_alg = OQS_RAND_alg_hqc_kat;
+	}
 	rc = OQS_randombytes_switch_algorithm(rand_alg);
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
 
-    if (is_hqc(method_name)) {
-        OQS_randombytes_hqc_kat_init(entropy_input, NULL);
-    } else {
-        OQS_randombytes_nist_kat_init_256bit(entropy_input, NULL);
-    }
+	if (is_hqc(method_name)) {
+		OQS_randombytes_hqc_kat_init(entropy_input, NULL);
+	} else {
+		OQS_randombytes_nist_kat_init_256bit(entropy_input, NULL);
+	}
 
 	fh = stdout;
 
@@ -91,12 +91,11 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	OQS_randombytes(seed, 48);
 	fprintBstr(fh, "seed = ", seed, 48);
 
-    if (is_hqc(method_name)) {
-        OQS_randombytes_hqc_kat_init(seed, NULL);
-    } else {
-        OQS_randombytes_nist_kat_init_256bit(seed, NULL);
-    }
-
+	if (is_hqc(method_name)) {
+		OQS_randombytes_hqc_kat_init(seed, NULL);
+	} else {
+		OQS_randombytes_nist_kat_init_256bit(seed, NULL);
+	}
 
 	public_key = malloc(kem->length_public_key);
 	secret_key = malloc(kem->length_secret_key);
@@ -154,9 +153,9 @@ cleanup:
 		OQS_MEM_secure_free(shared_secret_e, kem->length_shared_secret);
 		OQS_MEM_secure_free(shared_secret_d, kem->length_shared_secret);
 	}
-    if (is_hqc(method_name)) {
-        OQS_randombytes_hqc_kat_free();
-    }
+	if (is_hqc(method_name)) {
+		OQS_randombytes_hqc_kat_free();
+	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
