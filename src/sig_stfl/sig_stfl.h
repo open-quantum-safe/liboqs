@@ -165,8 +165,8 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
  */
 typedef struct OQS_SIG_STFL {
 
-	/** 
-	 * A local ordinal representing the LMS/XMSS OID parameter of the signature scheme. 
+	/**
+	 * A local ordinal representing the LMS/XMSS OID parameter of the signature scheme.
 	 * This OID is unrelated to ASN.1 OID or anything, it's only for LMS/XMSS internal usage.
 	 */
 	uint32_t oid;
