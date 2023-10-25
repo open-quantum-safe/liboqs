@@ -52,9 +52,6 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 	// Set Secret Key unlocking / releasing function
 	sk->unlock_key = NULL;
 
-	// Boolean if the secret key is locked
-	sk->is_locked = false;
-
 	// Set Secret Key saving function
 	sk->secure_store_scrt_key = NULL;
 
@@ -127,12 +124,9 @@ void OQS_SECRET_KEY_XMSS_activate_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
 		return;
 	}
 
-	if (sk->is_locked == false) {
-		/* Lock the key if possible */
-		if ((sk->lock_key != NULL) && (sk->mutex != NULL)) {
-			sk->lock_key(sk->mutex);
-			sk->is_locked = true;
-		}
+	/* Lock the key if possible */
+	if ((sk->lock_key != NULL) && (sk->mutex != NULL)) {
+		sk->lock_key(sk->mutex);
 	}
 }
 
@@ -141,11 +135,8 @@ void OQS_SECRET_KEY_XMSS_activate_unlock(OQS_SIG_STFL_SECRET_KEY *sk) {
 		return;
 	}
 
-	if (sk->is_locked == true) {
-		/* Unlock the key if possible */
-		if ((sk->unlock_key != NULL) && (sk->mutex != NULL)) {
-			sk->unlock_key(sk->mutex);
-			sk->is_locked = false;
-		}
+	/* Unlock the key if possible */
+	if ((sk->unlock_key != NULL) && (sk->mutex != NULL)) {
+		sk->unlock_key(sk->mutex);
 	}
 }

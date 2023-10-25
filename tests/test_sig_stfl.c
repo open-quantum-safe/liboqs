@@ -19,6 +19,7 @@
 #include <pthread.h>
 
 static pthread_mutex_t *test_sk_lock = NULL;
+static pthread_mutex_t *sk_lock = NULL;
 #endif
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -247,7 +248,7 @@ cleanup:
  * XMSSMT-SHAKE_60/3_256
  */
 OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
-	if (sig == NULL || public_key == NULL || secret_key == NULL || katfile == NULL) {
+	if (sig == NULL || public_key == NULL || secret_key == NULL ) {
 		return OQS_ERROR;
 	}
 
@@ -386,10 +387,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	magic_t magic;
 
-#if OQS_USE_PTHREADS_IN_TESTS
-	pthread_mutex_t *sk_lock = NULL;
-#endif
-
 	OQS_STATUS rc, ret = OQS_ERROR;
 
 	//The magic numbers are random values.
@@ -423,14 +420,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, save_secret_key, (void *)context);
 
 #if OQS_USE_PTHREADS_IN_TESTS
-	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (sk_lock == NULL) {
-		goto err;
-	}
-
-	if (0 != pthread_mutex_init(sk_lock, 0)) {
-		goto err;
-	}
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(secret_key, sk_lock);
 #endif
 	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
@@ -559,12 +548,6 @@ cleanup:
 	OQS_MEM_insecure_free(context);
 	OQS_MEM_insecure_free(file_store);
 
-#if OQS_USE_PTHREADS_IN_TESTS
-	if (sk_lock) {
-		pthread_mutex_destroy(sk_lock);
-		OQS_MEM_insecure_free(sk_lock);
-	}
-#endif
 	return ret;
 }
 
@@ -902,15 +885,6 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 	OQS_SIG_STFL_SECRET_KEY_SET_unlock(lock_test_sk, unlock_sk_key);
 
 #if OQS_USE_PTHREADS_IN_TESTS
-
-	test_sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (test_sk_lock == NULL) {
-		goto err;
-	}
-
-	if (0 != pthread_mutex_init(test_sk_lock, 0)) {
-		goto err;
-	}
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(lock_test_sk, test_sk_lock);
 #endif
 
@@ -1063,6 +1037,33 @@ int main(int argc, char **argv) {
 	td_create.katfile = katfile;
 	td_sign.katfile = katfile;
 	td_query.katfile = katfile;
+	pthread_mutexattr_t attr1, attr2;
+
+	test_sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (test_sk_lock == NULL) {
+		goto err;
+	}
+	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (sk_lock == NULL) {
+		goto err;
+	}
+
+	if (0 != pthread_mutexattr_init(&attr1)) {
+		goto err;
+	}
+	if (0 != pthread_mutexattr_init(&attr2)) {
+		goto err;
+	}
+
+	pthread_mutexattr_settype(&attr1, PTHREAD_MUTEX_RECURSIVE);
+	pthread_mutexattr_settype(&attr2, PTHREAD_MUTEX_RECURSIVE);
+
+	if (0 != pthread_mutex_init(test_sk_lock, &attr1)) {
+		goto err;
+	}
+	if (0 != pthread_mutex_init(test_sk_lock, &attr2)) {
+		goto err;
+	}
 
 	int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 	if (trc) {
@@ -1100,6 +1101,14 @@ int main(int argc, char **argv) {
 	}
 	pthread_join(query_key_thread, NULL);
 	rc_qry = td_query.rc;
+
+err:
+	if (test_sk_lock) {
+		pthread_mutex_destroy(test_sk_lock);
+	}
+	if (sk_lock) {
+		pthread_mutex_destroy(sk_lock);
+	}
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
