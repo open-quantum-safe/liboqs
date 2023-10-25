@@ -17,14 +17,11 @@ principal-submitters:
 - Gilles Zémor
 crypto-assumption: Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
 website: https://pqc-hqc.org/
-nist-round: 3
-spec-version: NIST Round 3 submission
+nist-round: 4
+spec-version: 2023-04-30
 upstream-ancestors:
-- https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc
-- submission 2020-10-01 at https://pqc-hqc.org/implementation.html
-advisories:
-- 'The implementations for all parameter sets DO NOT provide constant time execution
-  properties. See: https://github.com/open-quantum-safe/liboqs/issues/995.'
+- https://github.com/SWilson4/package-pqclean/tree/8db1b24b/hqc
+- submission 2023-04-30 at https://pqc-hqc.org/implementation.html
 parameter-sets:
 - name: HQC-128
   claimed-nist-level: 1

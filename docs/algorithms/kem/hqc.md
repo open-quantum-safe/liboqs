@@ -4,17 +4,13 @@
 - **Main cryptographic assumption**: Syndrome decoding of structure codes (Hamming Quasi-Cyclic).
 - **Principal submitters**: Carlos Aguilar Melchor, Nicolas Aragon, Slim Bettaieb, Loïc Bidoux, Olivier Blazy, Jurjen Bos, Jean-Christophe Deneuville, Arnaud Dion, Philippe Gaborit, Jérôme Lacan, Edoardo Persichetti, Jean-Marc Robert, Pascal Véron, Gilles Zémor.
 - **Authors' website**: https://pqc-hqc.org/
-- **Specification version**: NIST Round 3 submission.
+- **Specification version**: 2023-04-30.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/0657749a785db30e7f49e9435452cb042edb1852
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
-  - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:
-  - submission 2020-10-01 at https://pqc-hqc.org/implementation.html
-
-## Advisories
-
-- The implementations for all parameter sets DO NOT provide constant time execution properties. See: https://github.com/open-quantum-safe/liboqs/issues/995.
+  - https://github.com/SWilson4/package-pqclean/tree/8db1b24b/hqc, which takes it from:
+  - submission 2023-04-30 at https://pqc-hqc.org/implementation.html
 
 ## Parameter set summary
 
