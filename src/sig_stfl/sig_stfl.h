@@ -274,9 +274,6 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	/* file storage handle */
 	void *context;
 
-	/* Secret key lock status boolean: (true) key is locked, (false) key is unlocked */
-	bool is_locked;
-
 	/**
 	 * Secret Key retrieval Function
 	 *
