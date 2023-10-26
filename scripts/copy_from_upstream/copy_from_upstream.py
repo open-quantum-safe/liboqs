@@ -611,8 +611,10 @@ def copy_from_upstream():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
-    if not keepdata:
-        shutil.rmtree('repos')
+
+# TBD: What's the purpose of this rmtree? It destroys patches to the documentation
+#    if not keepdata:
+#        shutil.rmtree('repos')
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
