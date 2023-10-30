@@ -104,7 +104,6 @@ def load_instructions():
     instructions = yaml.safe_load(instructions)
     upstreams = {}
     for upstream in instructions['upstreams']:
-        os.makedirs('repos', exist_ok=True)
         upstream_name = upstream['name']
         upstream_git_url = upstream['git_url']
         upstream_git_commit = upstream['git_commit']
@@ -113,13 +112,16 @@ def load_instructions():
 
         work_dir = os.path.join('repos', upstream_name)
         work_dotgit = os.path.join(work_dir, '.git')
-        if not os.path.exists(work_dotgit):
+
+        if not os.path.exists(work_dir):
+          os.makedirs(work_dir)
+          if not os.path.exists(work_dotgit):
             shell(['git', 'init', work_dir])
             shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
-        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
-        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
-        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
-        if 'patches' in upstream:
+          shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
+          shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
+          shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
+          if 'patches' in upstream:
             for patch in upstream['patches']:
                 patch_file = os.path.join('patches', patch)
                 shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
@@ -141,16 +143,6 @@ def load_instructions():
                         req = common_dep['supported_platforms'][i]
                         common_dep['required_flags'] = req['required_flags']
             upstream['commons'] = dict(map(lambda x: (x['name'], x), common_deps['commons'] ))
-
-    # drop instructions selectively if not ready
-    if ("NOT_READY" in os.environ):
-        not_ready = os.environ['NOT_READY'].split(" ")
-        for family in instructions['kems']:
-            if family['name'] in not_ready:
-                instructions["kems"].remove(family)
-        for family in instructions['sigs']:
-            if family['name'] in not_ready:
-                instructions["sigs"].remove(family)
 
     for family in instructions['kems']:
         family['type'] = 'kem'
@@ -619,10 +611,8 @@ def copy_from_upstream():
     import update_cbom
     update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
     update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
-
     if not keepdata:
         shutil.rmtree('repos')
-
 
 def verify_from_upstream():
     instructions = load_instructions()
