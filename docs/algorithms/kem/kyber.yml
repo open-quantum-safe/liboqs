@@ -21,7 +21,7 @@ primary-upstream:
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
-  pqclean-aarch64:
+  oldpqclean-aarch64:
     source: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a
       with copy_from_upstream patches
     spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT)
@@ -60,7 +60,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream: pqclean-aarch64
+  - upstream: oldpqclean-aarch64
     upstream-id: aarch64
     supported-platforms:
     - architecture: ARM64_V8
@@ -105,7 +105,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream: pqclean-aarch64
+  - upstream: oldpqclean-aarch64
     upstream-id: aarch64
     supported-platforms:
     - architecture: ARM64_V8
@@ -150,7 +150,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream: pqclean-aarch64
+  - upstream: oldpqclean-aarch64
     upstream-id: aarch64
     supported-platforms:
     - architecture: ARM64_V8

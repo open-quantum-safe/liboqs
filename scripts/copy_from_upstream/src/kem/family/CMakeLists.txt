@@ -55,7 +55,7 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }})
         {%- if family == 'hqc' and impl['name'] == 'avx2' %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE -Wno-missing-braces)
         {%- endif %}
-        {%- if impl['upstream']['name'] == 'pqclean' %}
+        {%- if impl['upstream']['name'].endswith('pqclean') %}
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         target_compile_definitions({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE old_gas_syntax)
     endif()
