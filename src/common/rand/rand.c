@@ -19,7 +19,6 @@
 
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
 void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
-void OQS_randombytes_hqc_kat(uint8_t *random_array, size_t bytes_to_read);
 #ifdef OQS_USE_OPENSSL
 void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read);
 #endif
@@ -37,9 +36,6 @@ OQS_API OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 		return OQS_SUCCESS;
 	} else if (0 == strcasecmp(OQS_RAND_alg_nist_kat, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_nist_kat;
-		return OQS_SUCCESS;
-	} else if (0 == strcasecmp(OQS_RAND_alg_hqc_kat, algorithm)) {
-		oqs_randombytes_algorithm = &OQS_randombytes_hqc_kat;
 		return OQS_SUCCESS;
 	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {
 #ifdef OQS_USE_OPENSSL

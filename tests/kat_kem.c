@@ -13,8 +13,13 @@
 #include <sys/stat.h>
 
 #include <oqs/oqs.h>
+#include <oqs/sha3.h>
 
 #include "system_info.c"
+
+#define HQC_PRNG_DOMAIN 1
+
+OQS_SHA3_shake256_inc_ctx shake_prng_state = { NULL };
 
 /* Displays hexadecimal strings */
 static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
@@ -37,10 +42,37 @@ static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	fprintf(fp, "\n");
 }
 
+/* HQC-specific functions */
 static inline bool is_hqc(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_hqc_128))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_192))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_256));
+}
+
+static void HQC_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
+	uint8_t domain = HQC_PRNG_DOMAIN;
+	if (shake_prng_state.ctx != NULL) {
+		OQS_SHA3_shake256_inc_ctx_reset(&shake_prng_state);
+	} else {
+		OQS_SHA3_shake256_inc_init(&shake_prng_state);
+	}
+	OQS_SHA3_shake256_inc_absorb(&shake_prng_state, entropy_input, 48);
+	if (personalization_string != NULL) {
+		OQS_SHA3_shake256_inc_absorb(&shake_prng_state, personalization_string, 48);
+	}
+	OQS_SHA3_shake256_inc_absorb(&shake_prng_state, &domain, 1);
+	OQS_SHA3_shake256_inc_finalize(&shake_prng_state);
+}
+
+static void HQC_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	OQS_SHA3_shake256_inc_squeeze(random_array, bytes_to_read, &shake_prng_state);
+}
+
+static void HQC_randombytes_free(void) {
+	if (shake_prng_state.ctx != NULL) {
+		OQS_SHA3_shake256_inc_ctx_release(&shake_prng_state);
+		shake_prng_state.ctx = NULL;
+	}
 }
 
 static OQS_STATUS kem_kat(const char *method_name) {
@@ -56,7 +88,8 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
-	char *rand_alg;
+    void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
+    void (*randombytes_free)(void) = NULL;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -68,20 +101,19 @@ static OQS_STATUS kem_kat(const char *method_name) {
 		entropy_input[i] = i;
 	}
 
-	rand_alg = OQS_RAND_alg_nist_kat;
 	if (is_hqc(method_name)) {
-		rand_alg = OQS_RAND_alg_hqc_kat;
-	}
-	rc = OQS_randombytes_switch_algorithm(rand_alg);
-	if (rc != OQS_SUCCESS) {
-		goto err;
-	}
+		OQS_randombytes_custom_algorithm(&HQC_randombytes);
+        randombytes_init = &HQC_randombytes_init;
+        randombytes_free = &HQC_randombytes_free;
+    } else {
+        rc = OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
+        if (rc != OQS_SUCCESS) {
+            goto err;
+        }
+        randombytes_init = &OQS_randombytes_nist_kat_init_256bit;
+    }
 
-	if (is_hqc(method_name)) {
-		OQS_randombytes_hqc_kat_init(entropy_input, NULL);
-	} else {
-		OQS_randombytes_nist_kat_init_256bit(entropy_input, NULL);
-	}
+    randombytes_init(entropy_input, NULL);
 
 	fh = stdout;
 
@@ -89,11 +121,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	OQS_randombytes(seed, 48);
 	fprintBstr(fh, "seed = ", seed, 48);
 
-	if (is_hqc(method_name)) {
-		OQS_randombytes_hqc_kat_init(seed, NULL);
-	} else {
-		OQS_randombytes_nist_kat_init_256bit(seed, NULL);
-	}
+    randombytes_init(seed, NULL);
 
 	public_key = malloc(kem->length_public_key);
 	secret_key = malloc(kem->length_secret_key);
@@ -151,9 +179,9 @@ cleanup:
 		OQS_MEM_secure_free(shared_secret_e, kem->length_shared_secret);
 		OQS_MEM_secure_free(shared_secret_d, kem->length_shared_secret);
 	}
-	if (is_hqc(method_name)) {
-		OQS_randombytes_hqc_kat_free();
-	}
+    if (randombytes_free != NULL) {
+        randombytes_free();
+    }
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
