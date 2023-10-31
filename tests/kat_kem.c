@@ -88,8 +88,8 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
-    void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-    void (*randombytes_free)(void) = NULL;
+	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
+	void (*randombytes_free)(void) = NULL;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -103,17 +103,17 @@ static OQS_STATUS kem_kat(const char *method_name) {
 
 	if (is_hqc(method_name)) {
 		OQS_randombytes_custom_algorithm(&HQC_randombytes);
-        randombytes_init = &HQC_randombytes_init;
-        randombytes_free = &HQC_randombytes_free;
-    } else {
-        rc = OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
-        if (rc != OQS_SUCCESS) {
-            goto err;
-        }
-        randombytes_init = &OQS_randombytes_nist_kat_init_256bit;
-    }
+		randombytes_init = &HQC_randombytes_init;
+		randombytes_free = &HQC_randombytes_free;
+	} else {
+		rc = OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
+		if (rc != OQS_SUCCESS) {
+			goto err;
+		}
+		randombytes_init = &OQS_randombytes_nist_kat_init_256bit;
+	}
 
-    randombytes_init(entropy_input, NULL);
+	randombytes_init(entropy_input, NULL);
 
 	fh = stdout;
 
@@ -121,7 +121,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	OQS_randombytes(seed, 48);
 	fprintBstr(fh, "seed = ", seed, 48);
 
-    randombytes_init(seed, NULL);
+	randombytes_init(seed, NULL);
 
 	public_key = malloc(kem->length_public_key);
 	secret_key = malloc(kem->length_secret_key);
@@ -179,9 +179,9 @@ cleanup:
 		OQS_MEM_secure_free(shared_secret_e, kem->length_shared_secret);
 		OQS_MEM_secure_free(shared_secret_d, kem->length_shared_secret);
 	}
-    if (randombytes_free != NULL) {
-        randombytes_free();
-    }
+	if (randombytes_free != NULL) {
+		randombytes_free();
+	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
