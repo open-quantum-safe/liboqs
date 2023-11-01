@@ -14,6 +14,7 @@
 
 #include <oqs/oqs.h>
 #include "tmp_store.c"
+#include "system_info.c"
 
 #if OQS_USE_PTHREADS_IN_TESTS
 #include <pthread.h>
@@ -30,8 +31,6 @@ static pthread_mutex_t *sk_lock = NULL;
 #define OQS_TEST_CT_CLASSIFY(addr, len)
 #define OQS_TEST_CT_DECLASSIFY(addr, len)
 #endif
-
-#include "system_info.c"
 
 /*
  * For stateful signature, we skip key generation because it can takes hours to complete.
@@ -1015,6 +1014,7 @@ int main(int argc, char **argv) {
 #endif
 
 	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR;
+	int exit_status = EXIT_SUCCESS;
 
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_SIG_NAME_ 64
@@ -1041,11 +1041,13 @@ int main(int argc, char **argv) {
 
 	if (pthread_mutex_init(test_sk_lock, NULL) || pthread_mutex_init(sk_lock, NULL)) {
 		fprintf(stderr, "ERROR: Initializing mutex\n");
+		exit_status = EXIT_FAILURE;
 		goto err;
 	}
 
 	if (pthread_create(&thread, NULL, test_wrapper, &td)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_wrapper\n");
+		exit_status = EXIT_FAILURE;
 		goto err;
 	}
 	pthread_join(thread, NULL);
@@ -1054,6 +1056,7 @@ int main(int argc, char **argv) {
 
 	if (pthread_create(&create_key_thread, NULL, test_create_keys, &td_create)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_create_keys\n");
+		exit_status = EXIT_FAILURE;
 		goto err;
 	}
 	pthread_join(create_key_thread, NULL);
@@ -1061,6 +1064,7 @@ int main(int argc, char **argv) {
 
 	if (pthread_create(&sign_key_thread, NULL, test_sig_gen, &td_sign)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_sig_gen\n");
+		exit_status = EXIT_FAILURE;
 		goto err;
 	}
 	pthread_join(sign_key_thread, NULL);
@@ -1068,19 +1072,15 @@ int main(int argc, char **argv) {
 
 	if (pthread_create(&query_key_thread, NULL, test_query_key, &td_query)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_query_key\n");
+		exit_status = EXIT_FAILURE;
 		goto err;
 	}
 	pthread_join(query_key_thread, NULL);
 	rc_query = td_query.rc;
 
 err:
-	if (test_sk_lock) {
-		pthread_mutex_destroy(test_sk_lock);
-	}
-
-	if (sk_lock) {
-		pthread_mutex_destroy(sk_lock);
-	}
+	pthread_mutex_destroy(test_sk_lock);
+	pthread_mutex_destroy(sk_lock);
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
@@ -1098,5 +1098,5 @@ err:
 	        rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
-	return EXIT_SUCCESS;
+	return exit_status;
 }
