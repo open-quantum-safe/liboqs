@@ -64,8 +64,9 @@ set(API_TEST_DEPS oqs ${LIBM})
 add_executable(example_kem example_kem.c)
 target_link_libraries(example_kem PRIVATE ${API_TEST_DEPS})
 
+# KAT KEM needs to call the internal SHA3 functions directly, hence the extra dependencies
 add_executable(kat_kem kat_kem.c ${COMMON_OBJS})
-target_link_libraries(kat_kem PRIVATE ${API_TEST_DEPS})
+target_link_libraries(kat_kem PRIVATE ${API_TEST_DEPS} ${INTERNAL_TEST_DEPS})
 
 add_executable(test_kem test_kem.c)
 if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
