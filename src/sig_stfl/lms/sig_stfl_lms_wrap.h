@@ -7,7 +7,6 @@
 #include "external/hss.h"
 #include "external/hss_sign_inc.h"
 
-
 /**
  * @brief OQS_LMS_KEY object for HSS key pair
  */
@@ -16,7 +15,6 @@ typedef struct OQS_LMS_KEY_DATA oqs_lms_key_data;
 typedef struct OQS_LMS_SIG_DATA oqs_lms_sig_data;
 
 typedef struct OQS_LMS_SIG_DATA {
-
 
 	/* message buffer */
 	unsigned char *message;
@@ -33,4 +31,3 @@ typedef struct OQS_LMS_SIG_DATA {
 } oqs_lms_sig_data;
 
 #endif //OQS_SIG_STFL_LMS_H
-

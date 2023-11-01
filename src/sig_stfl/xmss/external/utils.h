@@ -2,7 +2,7 @@
 #define XMSS_UTILS_H
 
 #include "namespace.h"
-
+#include <oqs/common.h>
 /**
  * Converts the value of 'in' to 'outlen' bytes in big-endian byte order.
  */

@@ -12,11 +12,11 @@
  * Expands an n-byte array into a len*n byte array using the `prf_keygen` function.
  */
 static void expand_seed(const xmss_params *params,
-                        unsigned char *outseeds, const unsigned char *inseed, 
+                        unsigned char *outseeds, const unsigned char *inseed,
                         const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned int i;
-    unsigned char buf[params->n + 32];
+    unsigned char *buf = malloc(params->n + 32);
 
     set_hash_addr(addr, 0);
     set_key_and_mask(addr, 0);
@@ -26,6 +26,8 @@ static void expand_seed(const xmss_params *params,
         addr_to_bytes(buf + params->n, addr);
         prf_keygen(params, outseeds + i*params->n, buf, inseed);
     }
+
+    OQS_MEM_insecure_free(buf);
 }
 
 /**
@@ -83,7 +85,8 @@ static void wots_checksum(const xmss_params *params,
                           unsigned int *csum_base_w, const unsigned int *msg_base_w)
 {
     int csum = 0;
-    unsigned char csum_bytes[(params->wots_len2 * params->wots_log_w + 7) / 8];
+    unsigned int csum_bytes_length =  (params->wots_len2 * params->wots_log_w + 7) / 8;
+    unsigned char *csum_bytes = malloc(csum_bytes_length);
     unsigned int i;
 
     /* Compute checksum. */
@@ -94,8 +97,10 @@ static void wots_checksum(const xmss_params *params,
     /* Convert checksum to base_w. */
     /* Make sure expected empty zero bits are the least significant bits. */
     csum = csum << (8 - ((params->wots_len2 * params->wots_log_w) % 8));
-    ull_to_bytes(csum_bytes, sizeof(csum_bytes), csum);
+    ull_to_bytes(csum_bytes, csum_bytes_length, csum);
     base_w(params, csum_base_w, params->wots_len2, csum_bytes);
+
+    OQS_MEM_insecure_free(csum_bytes);
 }
 
 /* Takes a message and derives the matching chain lengths. */
@@ -139,10 +144,8 @@ void wots_sign(const xmss_params *params,
                const unsigned char *seed, const unsigned char *pub_seed,
                uint32_t addr[8])
 {
-    unsigned int lengths[params->wots_len];
+    unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int));
     unsigned int i;
-
-    memset(lengths, 0, sizeof(unsigned int)*params->wots_len);
 
     chain_lengths(params, lengths, msg);
 
@@ -154,6 +157,8 @@ void wots_sign(const xmss_params *params,
         gen_chain(params, sig + i*params->n, sig + i*params->n,
                   0, lengths[i], pub_seed, addr);
     }
+
+    OQS_MEM_insecure_free(lengths);
 }
 
 /**
@@ -165,10 +170,8 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *sig, const unsigned char *msg,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned int lengths[params->wots_len];
+    unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int ));
     unsigned int i;
-
-    memset(lengths, 0, sizeof(unsigned int)*params->wots_len);
 
     chain_lengths(params, lengths, msg);
 
@@ -177,4 +180,6 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
         gen_chain(params, pk + i*params->n, sig + i*params->n,
                   lengths[i], params->wots_w - 1 - lengths[i], pub_seed, addr);
     }
+
+    OQS_MEM_insecure_free(lengths);
 }
