@@ -822,12 +822,12 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, s
 }
 
 /* Convert secret key object to byte string */
-OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf) {
-	if (sk == NULL || sk_len == NULL || sk_buf == NULL || sk->serialize_key == NULL) {
+OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL || sk->serialize_key == NULL) {
 		return OQS_ERROR;
 	}
 
-	return sk->serialize_key(sk, sk_len, sk_buf);
+	return sk->serialize_key(sk_buf_ptr, sk_len, sk);
 }
 
 /* Insert secret key byte string in an Stateful secret key object */

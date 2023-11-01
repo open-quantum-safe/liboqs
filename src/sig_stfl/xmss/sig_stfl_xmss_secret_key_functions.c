@@ -65,7 +65,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 }
 
 /* Serialize XMSS secret key data into a byte string, return an allocated buffer. Users have to unallocated the buffer. */
-OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
+OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL) {
 		return OQS_ERROR;
 	}
@@ -119,7 +119,7 @@ void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 	sk->secret_key_data = NULL;
 }
 
-void OQS_SECRET_KEY_XMSS_acquire_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
+void OQS_SECRET_KEY_XMSS_acquire_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
 		return;
 	}
@@ -130,7 +130,7 @@ void OQS_SECRET_KEY_XMSS_acquire_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
 	}
 }
 
-void OQS_SECRET_KEY_XMSS_release_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
+void OQS_SECRET_KEY_XMSS_release_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
 		return;
 	}

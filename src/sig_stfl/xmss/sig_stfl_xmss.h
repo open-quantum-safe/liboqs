@@ -566,22 +566,22 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sigs_total(unsigned long long *total,
 /* Generic XMSS SECRET_KEY object initialization */
 OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key);
 
-/* Serialize XMSS secret key data into a byte string, return an allocated buffer. Users have to unallocated the buffer. */
-OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
+/* Serialize XMSS secret key data into a byte string, and return an allocated buffer. Users must deallocate the buffer. */
+OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /* Deserialize XMSS byte string into an XMSS secret key data */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
-/* Store Secret Key Function, idealy written to secure device */
+/* Store Secret Key Function, ideally written to secure device */
 void OQS_SECRET_KEY_XMSS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
 /* Free Secret key object */
 void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
 /* Lock the key if possible */
-void OQS_SECRET_KEY_XMSS_acquire_lock(OQS_SIG_STFL_SECRET_KEY *sk);
+void OQS_SECRET_KEY_XMSS_acquire_lock(const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /* Unlock the key if possible */
-void OQS_SECRET_KEY_XMSS_release_lock(OQS_SIG_STFL_SECRET_KEY *sk);
+void OQS_SECRET_KEY_XMSS_release_lock(const OQS_SIG_STFL_SECRET_KEY *sk);
 
 #endif /* OQS_SIG_STFL_XMSS_H */

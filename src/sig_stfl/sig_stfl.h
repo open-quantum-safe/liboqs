@@ -281,9 +281,9 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @param[out] sk_len length of the private key as a byte stream
 	 * @param[out] sk_buf_ptr pointer to private key data as a byte stream
 	 * @returns length of key material data available
-	 * Caller is responsible to **unallocate** the pointer to buffer `sk_buf_ptr`.
+	 * Caller is responsible for **deallocating** the pointer to buffer `sk_buf_ptr`.
 	 */
-	OQS_STATUS (*serialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
+	OQS_STATUS (*serialize_key)(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 	/**
 	 * Secret Key to internal structure Function
@@ -512,7 +512,7 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
 void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
 /* Serialize stateful secret key data into a byte string, and return an allocated buffer. Users are responsible for deallocating the buffer `sk_buf`. */
-OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(OQS_SIG_STFL_SECRET_KEY *sk,  size_t *sk_len, uint8_t **sk_buf);
+OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /* Insert stateful byte string into a secret key object. Users are responsible for deallocating buffer `sk_buf`. */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);

@@ -458,7 +458,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		goto err;
 	}
 
-	rc = OQS_SECRET_KEY_STFL_serialize_key(secret_key, &sk_buf_len, &sk_buf);
+	rc = OQS_SECRET_KEY_STFL_serialize_key(&sk_buf, &sk_buf_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
@@ -619,7 +619,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	}
 
 	/* write sk key to disk */
-	rc = OQS_SECRET_KEY_STFL_serialize_key(sk, &to_file_sk_len, &to_file_sk_buf);
+	rc = OQS_SECRET_KEY_STFL_serialize_key(&to_file_sk_buf, &to_file_sk_len, sk);
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}

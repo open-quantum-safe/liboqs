@@ -88,7 +88,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 	 * but, delete signature and the serialized key other wise
 	 */
 
-	rc_keyupdate = oqs_serialize_lms_key(secret_key, &sk_key_buf_len, &sk_key_buf);
+	rc_keyupdate = oqs_serialize_lms_key(&sk_key_buf, &sk_key_buf_len, secret_key);
 	if (rc_keyupdate != OQS_SUCCESS) {
 		goto err;
 	}
@@ -563,7 +563,7 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
  * Convert LMS secret key object to byte string
  * Writes secret key + aux data if present
  */
-OQS_STATUS oqs_serialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_key) {
+OQS_STATUS oqs_serialize_lms_key(uint8_t **sk_key, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
 
 	if (sk == NULL || sk_len == NULL || sk_key == NULL) {
 		return OQS_ERROR;
