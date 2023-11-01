@@ -170,11 +170,11 @@ static void deep_state_swap(const xmss_params *params,
     }
     // TODO this is extremely ugly and should be refactored
     // TODO right now, this ensures that both 'stack' and 'retain' fit
-    unsigned char t[
+    unsigned char *t = malloc(
         ((params->tree_height + 1) > ((1 << params->bds_k) - params->bds_k - 1)
          ? (params->tree_height + 1)
          : ((1 << params->bds_k) - params->bds_k - 1))
-        * params->n];
+        * params->n);
     unsigned int i;
 
     memswap(a->stack, b->stack, t, (params->tree_height + 1) * params->n);
@@ -193,6 +193,8 @@ static void deep_state_swap(const xmss_params *params,
 
     memswap(a->retain, b->retain, t, ((1 << params->bds_k) - params->bds_k - 1) * params->n);
     memswap(&a->next_leaf, &b->next_leaf, t, sizeof(a->next_leaf));
+
+    OQS_MEM_insecure_free(t);
 }
 
 static int treehash_minheight_on_stack(const xmss_params *params,
@@ -235,7 +237,7 @@ static void treehash_init(const xmss_params *params,
 
     uint32_t lastnode, i;
     unsigned char *stack = calloc((height+1)*params->n, sizeof(unsigned char));
-    unsigned int stacklevels[height+1];
+    unsigned int *stacklevels = malloc((height + 1)*sizeof(unsigned int));
     unsigned int stackoffset=0;
     unsigned int nodeh;
 
@@ -283,6 +285,7 @@ static void treehash_init(const xmss_params *params,
         node[i] = stack[i];
     }
 
+    OQS_MEM_insecure_free(stacklevels);
     OQS_MEM_insecure_free(stack);
 }
 
@@ -307,7 +310,7 @@ static void treehash_update(const xmss_params *params,
     set_ltree_addr(ltree_addr, treehash->next_idx);
     set_ots_addr(ots_addr, treehash->next_idx);
 
-    unsigned char nodebuffer[2 * params->n];
+    unsigned char *nodebuffer = malloc(2 * params->n);
     unsigned int nodeheight = 0;
     gen_leaf_wots(params, nodebuffer, sk_seed, pub_seed, ltree_addr, ots_addr);
     while (treehash->stackusage > 0 && state->stacklevels[state->stackoffset-1] == nodeheight) {
@@ -331,6 +334,8 @@ static void treehash_update(const xmss_params *params,
         state->stackoffset++;
         treehash->next_idx++;
     }
+
+    OQS_MEM_insecure_free(nodebuffer);
 }
 
 /**
@@ -454,7 +459,7 @@ static void bds_round(const xmss_params *params,
     unsigned int tau = params->tree_height;
     unsigned int startidx;
     unsigned int offset, rowidx;
-    unsigned char buf[2 * params->n];
+    unsigned char *buf = malloc(2 * params->n);
 
     uint32_t ots_addr[8] = {0};
     uint32_t ltree_addr[8] = {0};
@@ -514,6 +519,8 @@ static void bds_round(const xmss_params *params,
             }
         }
     }
+
+    OQS_MEM_insecure_free(buf);
 }
 
 /**
@@ -551,7 +558,7 @@ int xmss_core_keypair(const xmss_params *params,
 
     // TODO refactor BDS state not to need separate treehash instances
     bds_state state;
-    treehash_inst treehash[params->tree_height - params->bds_k];
+    treehash_inst *treehash = calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
     state.treehash = treehash;
 
     xmss_deserialize_state(params, &state, sk);
@@ -580,6 +587,8 @@ int xmss_core_keypair(const xmss_params *params,
     /* Write the BDS state into sk. */
     xmss_serialize_state(params, sk, &state);
 
+    OQS_MEM_insecure_free(treehash);
+
     return 0;
 }
 
@@ -601,12 +610,13 @@ int xmss_core_sign(const xmss_params *params,
     }
 
     const unsigned char *pub_root = sk + params->index_bytes + 2*params->n;
+    int ret;
 
     uint16_t i = 0;
 
     // TODO refactor BDS state not to need separate treehash instances
     bds_state state;
-    treehash_inst treehash[params->tree_height - params->bds_k];
+    treehash_inst *treehash = calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
     state.treehash = treehash;
 
     /* Load the BDS state from sk. */
@@ -617,29 +627,33 @@ int xmss_core_sign(const xmss_params *params,
 
     /* Check if we can still sign with this sk.
      * If not, return -2
-     * 
-     * If this is the last possible signature (because the max index value 
-     * is reached), production implementations should delete the secret key 
+     *
+     * If this is the last possible signature (because the max index value
+     * is reached), production implementations should delete the secret key
      * to prevent accidental further use.
-     * 
-     * For the case of total tree height of 64 we do not use the last signature 
-     * to be on the safe side (there is no index value left to indicate that the 
+     *
+     * For the case of total tree height of 64 we do not use the last signature
+     * to be on the safe side (there is no index value left to indicate that the
      * key is finished, hence external handling would be necessary)
-     */ 
+     */
     if (idx >= ((1ULL << params->full_height) - 1)) {
         // Delete secret key here. We only do this in memory, production code
         // has to make sure that this happens on disk.
         memset(sk, 0xFF, params->index_bytes);
         memset(sk + params->index_bytes, 0, (params->sk_bytes - params->index_bytes));
-        if (idx > ((1ULL << params->full_height) - 1))
-            return -2; // We already used all one-time keys
+        if (idx > ((1ULL << params->full_height) - 1)) {
+            ret = -2; // We already used all one-time keys
+            goto cleanup;
+        }
     }
-    
-    unsigned char sk_seed[params->n];
+    unsigned char *tmp = malloc(5 * params->n);
+
+    unsigned char *sk_seed = tmp;
+    unsigned char *sk_prf = sk_seed + params->n;
+    unsigned char *pub_seed = sk_prf + params->n;
+
     memcpy(sk_seed, sk + params->index_bytes, params->n);
-    unsigned char sk_prf[params->n];
     memcpy(sk_prf, sk + params->index_bytes + params->n, params->n);
-    unsigned char pub_seed[params->n];
     memcpy(pub_seed, sk + params->index_bytes + 3*params->n, params->n);
 
     // index as 32 bytes string
@@ -656,8 +670,8 @@ int xmss_core_sign(const xmss_params *params,
     //  and write the updated secret key at this point!
 
     // Init working params
-    unsigned char R[params->n];
-    unsigned char msg_h[params->n];
+    unsigned char *R = pub_seed + params->n;
+    unsigned char *msg_h = R + params->n;
     uint32_t ots_addr[8] = {0};
 
     // ---------------------------------
@@ -671,7 +685,7 @@ int xmss_core_sign(const xmss_params *params,
     /* Already put the message in the right place, to make it easier to prepend
      * things when computing the hash over the message. */
     unsigned long long prefix_length = params->padding_len + 3*params->n;
-    unsigned char m_with_prefix[mlen + prefix_length];
+    unsigned char *m_with_prefix = malloc(mlen + prefix_length);
     memcpy(m_with_prefix, sm + params->sig_bytes - prefix_length, prefix_length);
     memcpy(m_with_prefix + prefix_length, m, mlen);
 
@@ -727,7 +741,15 @@ int xmss_core_sign(const xmss_params *params,
     /* Write the updated BDS state back into sk. */
     xmss_serialize_state(params, sk, &state);
 
-    return 0;
+    ret = 0;
+
+    OQS_MEM_insecure_free(m_with_prefix);
+    OQS_MEM_insecure_free(tmp);
+
+cleanup:
+    OQS_MEM_insecure_free(treehash);
+
+    return ret;
 }
 
 /*
@@ -743,8 +765,8 @@ int xmssmt_core_keypair(const xmss_params *params,
     unsigned char *wots_sigs;
 
     // TODO refactor BDS state not to need separate treehash instances
-    bds_state states[2*params->d - 1];
-    treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
+    bds_state *states = calloc(2*params->d - 1, sizeof(bds_state));
+    treehash_inst *treehash = calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].treehash = treehash + i * (params->tree_height - params->bds_k);
     }
@@ -783,6 +805,9 @@ int xmssmt_core_keypair(const xmss_params *params,
 
     xmssmt_serialize_state(params, sk, states);
 
+    OQS_MEM_insecure_free(treehash);
+    OQS_MEM_insecure_free(states);
+
     return 0;
 }
 
@@ -811,12 +836,14 @@ int xmssmt_core_sign(const xmss_params *params,
     int needswap_upto = -1;
     unsigned int updates;
 
-    unsigned char sk_seed[params->n];
-    unsigned char sk_prf[params->n];
-    unsigned char pub_seed[params->n];
+    unsigned char *tmp = malloc(5 * params->n);
+
+    unsigned char *sk_seed = tmp;
+    unsigned char *sk_prf = sk_seed + params->n;
+    unsigned char *pub_seed = sk_prf + params->n;
     // Init working params
-    unsigned char R[params->n];
-    unsigned char msg_h[params->n];
+    unsigned char *R = pub_seed + params->n;
+    unsigned char *msg_h = R + params->n;
     uint32_t addr[8] = {0};
     uint32_t ots_addr[8] = {0};
     unsigned char idx_bytes_32[32];
@@ -828,7 +855,7 @@ int xmssmt_core_sign(const xmss_params *params,
 
     // TODO refactor BDS state not to need separate treehash instances
     bds_state *states = calloc(2*params->d - 1, sizeof(bds_state));
-    treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
+    treehash_inst *treehash = calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].stack = NULL;
         states[i].stackoffset = 0;
@@ -850,15 +877,15 @@ int xmssmt_core_sign(const xmss_params *params,
 
     /* Check if we can still sign with this sk.
      * If not, return -2
-     * 
-     * If this is the last possible signature (because the max index value 
-     * is reached), production implementations should delete the secret key 
+     *
+     * If this is the last possible signature (because the max index value
+     * is reached), production implementations should delete the secret key
      * to prevent accidental further use.
-     * 
-     * For the case of total tree height of 64 we do not use the last signature 
-     * to be on the safe side (there is no index value left to indicate that the 
+     *
+     * For the case of total tree height of 64 we do not use the last signature
+     * to be on the safe side (there is no index value left to indicate that the
      * key is finished, hence external handling would be necessary)
-     */ 
+     */
     if (idx >= ((1ULL << params->full_height) - 1)) {
         // Delete secret key here. We only do this in memory, production code
         // has to make sure that this happens on disk.
@@ -870,7 +897,7 @@ int xmssmt_core_sign(const xmss_params *params,
             goto cleanup;
         }
     }
-    
+
     memcpy(sk_seed, sk+params->index_bytes, params->n);
     memcpy(sk_prf, sk+params->index_bytes+params->n, params->n);
     memcpy(pub_seed, sk+params->index_bytes+3*params->n, params->n);
@@ -1012,10 +1039,11 @@ int xmssmt_core_sign(const xmss_params *params,
     }
 
     xmssmt_serialize_state(params, sk, states);
-    goto cleanup;
 
 cleanup:
+    OQS_MEM_insecure_free(treehash);
     OQS_MEM_insecure_free(states);
+    OQS_MEM_insecure_free(tmp);
 
     return ret;
 }
