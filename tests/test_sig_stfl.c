@@ -1048,20 +1048,20 @@ int main(int argc, char **argv) {
 		goto err;
 	}
 
-	if (0 != pthread_mutexattr_init(&attr1)) {
+	if (pthread_mutexattr_init(&attr1)) {
 		goto err;
 	}
-	if (0 != pthread_mutexattr_init(&attr2)) {
+	if (pthread_mutexattr_init(&attr2)) {
 		goto err;
 	}
 
 	pthread_mutexattr_settype(&attr1, PTHREAD_MUTEX_RECURSIVE);
 	pthread_mutexattr_settype(&attr2, PTHREAD_MUTEX_RECURSIVE);
 
-	if (0 != pthread_mutex_init(test_sk_lock, &attr1)) {
+	if (pthread_mutex_init(test_sk_lock, &attr1)) {
 		goto err;
 	}
-	if (0 != pthread_mutex_init(test_sk_lock, &attr2)) {
+	if (pthread_mutex_init(test_sk_lock, &attr2)) {
 		goto err;
 	}
 
