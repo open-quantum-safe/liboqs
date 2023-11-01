@@ -8,7 +8,7 @@
 #include "sig_stfl_lms.h"
 
 /* Convert LMS secret key object to byte string */
-static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr);
+static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /* Insert lms byte string in an LMS secret key object */
 static OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
@@ -1760,13 +1760,13 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 }
 
 /* Convert LMS secret key object to byte string */
-static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(const OQS_SIG_STFL_SECRET_KEY *sk, size_t *sk_len, uint8_t **sk_buf_ptr) {
+static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
 	OQS_STATUS status;
 	if (sk->lock_key && sk->mutex) {
 		sk->lock_key(sk->mutex);
 	}
 
-	status = oqs_serialize_lms_key(sk, sk_len, sk_buf_ptr);
+	status = oqs_serialize_lms_key(sk_buf_ptr, sk_len, sk);
 
 	if (sk->unlock_key && sk->mutex) {
 		sk->unlock_key(sk->mutex);
