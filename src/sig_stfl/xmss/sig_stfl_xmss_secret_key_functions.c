@@ -90,6 +90,26 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_le
 	return OQS_SUCCESS;
 }
 
+/* Only for internal use. Similar to OQS_SECRET_KEY_XMSS_serialize_key, but this function does not aquire and release lock. */
+OQS_STATUS OQS_SECRET_KEY_XMSS_inner_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL) {
+		return OQS_ERROR;
+	}
+
+	uint8_t *sk_buf = malloc(sk->length_secret_key * sizeof(uint8_t));
+	if (sk_buf == NULL) {
+		return OQS_ERROR;
+	}
+
+	// Simply copy byte string of secret_key_data
+	memcpy(sk_buf, sk->secret_key_data, sk->length_secret_key);
+
+	*sk_buf_ptr = sk_buf;
+	*sk_len = sk->length_secret_key;
+
+	return OQS_SUCCESS;
+}
+
 /* Deserialize XMSS byte string into an XMSS secret key data. */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, XMSS_UNUSED_ATT void *context) {
 	if (sk == NULL || sk_buf == NULL || (sk_len != sk->length_secret_key)) {

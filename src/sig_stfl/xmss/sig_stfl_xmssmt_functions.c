@@ -45,7 +45,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *sign
 	 * regardless, delete signature and the serialized key other wise
 	 */
 
-	status = OQS_SECRET_KEY_XMSS_serialize_key(&sk_key_buf_ptr, &sk_key_buf_len, secret_key);
+	status = OQS_SECRET_KEY_XMSS_inner_serialize_key(&sk_key_buf_ptr, &sk_key_buf_len, secret_key);
 	if (status != OQS_SUCCESS) {
 		goto err;
 	}

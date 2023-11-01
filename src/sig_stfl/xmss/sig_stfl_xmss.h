@@ -569,6 +569,9 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key);
 /* Serialize XMSS secret key data into a byte string, and return an allocated buffer. Users must deallocate the buffer. */
 OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
+/* Only for internal use. Similar to OQS_SECRET_KEY_XMSS_serialize_key, this function does not acquire and release a lock. */
+OQS_STATUS OQS_SECRET_KEY_XMSS_inner_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
+
 /* Deserialize XMSS byte string into an XMSS secret key data */
 OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
