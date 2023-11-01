@@ -13,6 +13,9 @@
 
 #include <oqs/common.h>
 
+#if CMAKE_USE_PTHREADS_INIT
+#include <pthread.h>
+#endif
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -23,18 +26,18 @@
 #define KECCAK_CTX_BYTES (KECCAK_CTX_ALIGNMENT * \
   ((_KECCAK_CTX_BYTES + KECCAK_CTX_ALIGNMENT - 1)/KECCAK_CTX_ALIGNMENT))
 
-/* The first call to Keccak_Initialize will be routed through dispatch, which
- * updates all of the function pointers used below.
- */
-static KeccakInitFn Keccak_Dispatch;
-static KeccakInitFn *Keccak_Initialize_ptr = &Keccak_Dispatch;
+#if CMAKE_USE_PTHREADS_INIT
+static pthread_once_t dispatch_once_control = PTHREAD_ONCE_INIT;
+#endif
+
+static KeccakInitFn *Keccak_Initialize_ptr = NULL;
 static KeccakAddByteFn *Keccak_AddByte_ptr = NULL;
 static KeccakAddBytesFn *Keccak_AddBytes_ptr = NULL;
 static KeccakPermuteFn *Keccak_Permute_ptr = NULL;
 static KeccakExtractBytesFn *Keccak_ExtractBytes_ptr = NULL;
 static KeccakFastLoopAbsorbFn *Keccak_FastLoopAbsorb_ptr = NULL;
 
-static void Keccak_Dispatch(void *state) {
+static void Keccak_Dispatch(void) {
 // TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
 #if defined(OQS_DIST_X86_64_BUILD)
 #if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
@@ -69,8 +72,6 @@ static void Keccak_Dispatch(void *state) {
 	Keccak_ExtractBytes_ptr = &KeccakP1600_ExtractBytes;
 	Keccak_FastLoopAbsorb_ptr = &KeccakF1600_FastLoop_Absorb;
 #endif
-
-	(*Keccak_Initialize_ptr)(state);
 }
 
 /*************************************************
@@ -84,6 +85,13 @@ static void Keccak_Dispatch(void *state) {
  *                that have not been permuted, or not-yet-squeezed bytes.
  **************************************************/
 static void keccak_inc_reset(uint64_t *s) {
+#if CMAKE_USE_PTHREADS_INIT
+	pthread_once(&dispatch_once_control, Keccak_Dispatch);
+#else
+	if (Keccak_Initialize_ptr == NULL) {
+		Keccak_Dispatch();
+	}
+#endif
 	(*Keccak_Initialize_ptr)(s);
 	s[25] = 0;
 }

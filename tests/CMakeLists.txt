@@ -30,8 +30,11 @@ if(NOT WIN32)
     else()
         set(INTERNAL_TEST_DEPS ${LIBM})
     endif()
+    if(CMAKE_USE_PTHREADS_INIT)
+        set(INTERNAL_TEST_DEPS ${INTERNAL_TEST_DEPS} Threads::Threads)
+    endif()
     if(DEFINED SANITIZER_LD_FLAGS)
-        set(INTERNAL_TEST_DEPS "${INTERNAL_TEST_DEPS} ${SANITIZER_LD_FLAGS}")
+        set(INTERNAL_TEST_DEPS ${INTERNAL_TEST_DEPS} ${SANITIZER_LD_FLAGS})
     endif()
     execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
     add_definitions(-DOQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
@@ -59,6 +62,9 @@ else()
 endif()
 
 set(API_TEST_DEPS oqs ${LIBM})
+if(CMAKE_USE_PTHREADS_INIT)
+    set(API_TEST_DEPS ${API_TEST_DEPS} Threads::Threads)
+endif()
 
 # KEM API tests
 add_executable(example_kem example_kem.c)
@@ -68,11 +74,7 @@ add_executable(kat_kem kat_kem.c)
 target_link_libraries(kat_kem PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_kem test_kem.c)
-if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
-    target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS} Threads::Threads)
-else ()
-    target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS})
-endif()
+target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_kem_mem test_kem_mem.c)
 target_link_libraries(test_kem_mem PRIVATE ${API_TEST_DEPS})
@@ -88,11 +90,7 @@ add_executable(kat_sig kat_sig.c)
 target_link_libraries(kat_sig PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_sig test_sig.c)
-if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
-    target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS} Threads::Threads)
-else ()
-    target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS})
-endif()
+target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_sig_mem test_sig_mem.c)
 target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
@@ -118,7 +116,7 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
     # generating with Ninja
     set_target_properties(
         dump_alg_info example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_kem_mem speed_kem speed_sig
-        PROPERTIES 
+        PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY_DEBUG          "${CMAKE_BINARY_DIR}/tests"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE        "${CMAKE_BINARY_DIR}/tests"
         RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/tests"
