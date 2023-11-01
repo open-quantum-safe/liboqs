@@ -57,7 +57,7 @@ static void compute_root(const xmss_params *params, unsigned char *root,
                          const unsigned char *pub_seed, uint32_t addr[8])
 {
     uint32_t i;
-    unsigned char buffer[2*params->n];
+    unsigned char *buffer = malloc(2*params->n);
 
     /* If leafidx is odd (last bit = 1), current path element is a right child
        and auth_path has to go left. Otherwise it is the other way around. */
@@ -93,6 +93,8 @@ static void compute_root(const xmss_params *params, unsigned char *root,
     leafidx >>= 1;
     set_tree_index(addr, leafidx);
     thash_h(params, root, buffer, pub_seed, addr);
+
+    OQS_MEM_insecure_free(buffer);
 }
 
 
@@ -105,11 +107,13 @@ void gen_leaf_wots(const xmss_params *params, unsigned char *leaf,
                    const unsigned char *sk_seed, const unsigned char *pub_seed,
                    uint32_t ltree_addr[8], uint32_t ots_addr[8])
 {
-    unsigned char pk[params->wots_sig_bytes];
+    unsigned char *pk = malloc(params->wots_sig_bytes);
 
     wots_pkgen(params, pk, sk_seed, pub_seed, ots_addr);
 
     l_tree(params, leaf, pk, pub_seed, ltree_addr);
+
+    OQS_MEM_insecure_free(pk);
 }
 
 
@@ -140,16 +144,18 @@ int xmssmt_core_sign_open(const xmss_params *params,
 {
     const unsigned char *pub_root = pk;
     const unsigned char *pub_seed = pk + params->n;
-    unsigned char wots_pk[params->wots_sig_bytes];
-    unsigned char leaf[params->n];
-    unsigned char root[params->n];
+
+    unsigned char *tmp = malloc(params->wots_sig_bytes + params->n + params->n);
+    unsigned char *wots_pk = tmp;
+    unsigned char *leaf = tmp + params->wots_sig_bytes;
+    unsigned char *root = leaf + params->n;
 
     unsigned long long prefix_length = params->padding_len + 3*params->n;
     unsigned char m_with_prefix[mlen + prefix_length];
-    
+
     unsigned char *mhash = root;
     unsigned long long idx = 0;
-    unsigned int i;
+    unsigned int i, ret;
     uint32_t idx_leaf;
 
     uint32_t ots_addr[8] = {0};
@@ -209,8 +215,12 @@ int xmssmt_core_sign_open(const xmss_params *params,
     /* Check if the root node equals the root node in the public key. */
     if (memcmp(root, pub_root, params->n)) {
         /* If not, return fail */
-        return -1;
+        ret = -1;
+        goto fail;
     }
+    ret = 0;
+fail:
+    OQS_MEM_insecure_free(tmp);
+    return ret;
 
-    return 0;
 }
