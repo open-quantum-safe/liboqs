@@ -64,7 +64,7 @@ set(API_TEST_DEPS oqs ${LIBM})
 add_executable(example_kem example_kem.c)
 target_link_libraries(example_kem PRIVATE ${API_TEST_DEPS})
 
-add_executable(kat_kem kat_kem.c)
+add_executable(kat_kem kat_kem.c ${COMMON_OBJS})
 target_link_libraries(kat_kem PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_kem test_kem.c)
