@@ -1079,8 +1079,12 @@ int main(int argc, char **argv) {
 	rc_query = td_query.rc;
 
 err:
-	pthread_mutex_destroy(test_sk_lock);
-	pthread_mutex_destroy(sk_lock);
+	if (test_sk_lock) {
+		pthread_mutex_destroy(test_sk_lock);
+	}
+	if (sk_lock) {
+		pthread_mutex_destroy(sk_lock);
+	}
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
