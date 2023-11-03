@@ -307,18 +307,6 @@ jobs:
                  --data '{"event_type":"liboqs-upstream-trigger"}' \
                  https://api.github.com/repos/open-quantum-safe/liboqs-python/dispatches | tee curl_out \
             && grep -q "204" curl_out
-  macro-check:
-    machine:
-      image: ubuntu-2004:202101-01
-    resource_class: arm.medium
-    steps:
-      - checkout
-      # It seems the machine doesn't contain all preprequisites, and we don't have permission to add them explicitly, 
-      # so we can only run in a prepared ARM64 CI image
-      - run:
-          name: Print defined ARM macros
-          no_output_timeout: 1h
-          command: gcc macros.c -o macros && ./macros
 
 workflows:
   version: 2.1
@@ -327,8 +315,6 @@ workflows:
       and:
         - not:
             equal: [ main, << pipeline.git.branch >> ]
-        - not:
-            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         - not:
             matches: { pattern: "^ghactionsonly-.*", value: << pipeline.git.branch >> }
     jobs:
@@ -411,17 +397,7 @@ workflows:
 
   commit-to-main:
     when:
-      and:
-        - not:
-            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-        - equal: [ main, << pipeline.git.branch >> ]
+      equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - trigger-downstream-ci:
           context: openquantumsafe
-
-  nistkat:
-    when:
-      and:
-        - equal: [ sw-full-kat, << pipeline.git.branch >> ]
-    jobs:
-      - macro-check
