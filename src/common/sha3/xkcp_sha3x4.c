@@ -155,7 +155,7 @@ static void keccak_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, u
 
 /********** SHAKE128 ***********/
 
-void OQS_SHA3_shake128_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
+static void SHA3_shake128_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
 	OQS_SHA3_shake128_x4_inc_ctx s;
 	OQS_SHA3_shake128_x4_inc_init(&s);
 	OQS_SHA3_shake128_x4_inc_absorb(&s, in0, in1, in2, in3, inlen);
@@ -166,7 +166,7 @@ void OQS_SHA3_shake128_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *
 
 /* SHAKE128 incremental */
 
-void OQS_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
+static void SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_X4_CTX_ALIGNMENT, KECCAK_X4_CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
@@ -174,33 +174,33 @@ void OQS_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	keccak_x4_inc_reset((uint64_t *)state->ctx);
 }
 
-void OQS_SHA3_shake128_x4_inc_absorb(OQS_SHA3_shake128_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
+static void SHA3_shake128_x4_inc_absorb(OQS_SHA3_shake128_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
 	keccak_x4_inc_absorb((uint64_t *)state->ctx, OQS_SHA3_SHAKE128_RATE, in0, in1, in2, in3, inlen);
 }
 
-void OQS_SHA3_shake128_x4_inc_finalize(OQS_SHA3_shake128_x4_inc_ctx *state) {
+static void SHA3_shake128_x4_inc_finalize(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	keccak_x4_inc_finalize((uint64_t *)state->ctx, OQS_SHA3_SHAKE128_RATE, 0x1F);
 }
 
-void OQS_SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake128_x4_inc_ctx *state) {
+static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake128_x4_inc_ctx *state) {
 	keccak_x4_inc_squeeze(out0, out1, out2, out3, outlen, (uint64_t *)state->ctx, OQS_SHA3_SHAKE128_RATE);
 }
 
-void OQS_SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, const OQS_SHA3_shake128_x4_inc_ctx *src) {
+static void SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, const OQS_SHA3_shake128_x4_inc_ctx *src) {
 	memcpy(dest->ctx, src->ctx, KECCAK_X4_CTX_BYTES);
 }
 
-void OQS_SHA3_shake128_x4_inc_ctx_release(OQS_SHA3_shake128_x4_inc_ctx *state) {
+static void SHA3_shake128_x4_inc_ctx_release(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	OQS_MEM_aligned_free(state->ctx);
 }
 
-void OQS_SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
+static void SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	keccak_x4_inc_reset((uint64_t *)state->ctx);
 }
 
 /********** SHAKE256 ***********/
 
-void OQS_SHA3_shake256_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
+static void SHA3_shake256_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
 	OQS_SHA3_shake256_x4_inc_ctx s;
 	OQS_SHA3_shake256_x4_inc_init(&s);
 	OQS_SHA3_shake256_x4_inc_absorb(&s, in0, in1, in2, in3, inlen);
@@ -211,7 +211,7 @@ void OQS_SHA3_shake256_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *
 
 /* SHAKE256 incremental */
 
-void OQS_SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
+static void SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_X4_CTX_ALIGNMENT, KECCAK_X4_CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
@@ -219,26 +219,47 @@ void OQS_SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	keccak_x4_inc_reset((uint64_t *)state->ctx);
 }
 
-void OQS_SHA3_shake256_x4_inc_absorb(OQS_SHA3_shake256_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
+static void SHA3_shake256_x4_inc_absorb(OQS_SHA3_shake256_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
 	keccak_x4_inc_absorb((uint64_t *)state->ctx, OQS_SHA3_SHAKE256_RATE, in0, in1, in2, in3, inlen);
 }
 
-void OQS_SHA3_shake256_x4_inc_finalize(OQS_SHA3_shake256_x4_inc_ctx *state) {
+static void SHA3_shake256_x4_inc_finalize(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	keccak_x4_inc_finalize((uint64_t *)state->ctx, OQS_SHA3_SHAKE256_RATE, 0x1F);
 }
 
-void OQS_SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake256_x4_inc_ctx *state) {
+static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake256_x4_inc_ctx *state) {
 	keccak_x4_inc_squeeze(out0, out1, out2, out3, outlen, (uint64_t *)state->ctx, OQS_SHA3_SHAKE256_RATE);
 }
 
-void OQS_SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, const OQS_SHA3_shake256_x4_inc_ctx *src) {
+static void SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, const OQS_SHA3_shake256_x4_inc_ctx *src) {
 	memcpy(dest->ctx, src->ctx, KECCAK_X4_CTX_BYTES);
 }
 
-void OQS_SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state) {
+static void SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	OQS_MEM_aligned_free(state->ctx);
 }
 
-void OQS_SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
+static void SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	keccak_x4_inc_reset((uint64_t *)state->ctx);
 }
+
+extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
+
+struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks = {
+	SHA3_shake128_x4,
+	SHA3_shake128_x4_inc_init,
+	SHA3_shake128_x4_inc_absorb,
+	SHA3_shake128_x4_inc_finalize,
+	SHA3_shake128_x4_inc_squeeze,
+	SHA3_shake128_x4_inc_ctx_release,
+	SHA3_shake128_x4_inc_ctx_clone,
+	SHA3_shake128_x4_inc_ctx_reset,
+	SHA3_shake256_x4,
+	SHA3_shake256_x4_inc_init,
+	SHA3_shake256_x4_inc_absorb,
+	SHA3_shake256_x4_inc_finalize,
+	SHA3_shake256_x4_inc_squeeze,
+	SHA3_shake256_x4_inc_ctx_release,
+	SHA3_shake256_x4_inc_ctx_clone,
+	SHA3_shake256_x4_inc_ctx_reset,
+};

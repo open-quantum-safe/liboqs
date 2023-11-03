@@ -22,7 +22,7 @@ if(${OQS_USE_AES_OPENSSL})
     set(AES_IMPL aes/aes_ossl.c)
     set(OSSL_HELPERS ossl_helpers.c)
 else()
-   set(AES_IMPL aes/aes.c aes/aes_c.c)
+   set(AES_IMPL aes/aes_impl.c aes/aes_c.c)
    if (OQS_DIST_X86_64_BUILD OR OQS_USE_AES_INSTRUCTIONS)
       set(AES_IMPL ${AES_IMPL} aes/aes128_ni.c)
       set(AES_IMPL ${AES_IMPL} aes/aes256_ni.c)
@@ -47,7 +47,7 @@ if(${OQS_USE_SHA2_OPENSSL})
     set(SHA2_IMPL sha2/sha2_ossl.c)
     set(OSSL_HELPERS ossl_helpers.c)
 else()
-    set(SHA2_IMPL sha2/sha2.c sha2/sha2_c.c)
+    set(SHA2_IMPL sha2/sha2_impl.c sha2/sha2_c.c)
     if (OQS_DIST_ARM64_V8_BUILD)
        set(SHA2_IMPL ${SHA2_IMPL} sha2/sha2_armv8.c)
        set_source_files_properties(sha2/sha2_armv8.c PROPERTIES COMPILE_FLAGS -mcpu=cortex-a53+crypto)
@@ -71,9 +71,9 @@ else() # using XKCP
     set(SHA3_IMPL sha3/xkcp_sha3.c sha3/xkcp_sha3x4.c)
 endif()
 
-add_library(common OBJECT ${AES_IMPL}
-                          ${SHA2_IMPL}
-                          ${SHA3_IMPL}
+add_library(common OBJECT ${AES_IMPL} aes/aes.c
+                          ${SHA2_IMPL} sha2/sha2.c
+                          ${SHA3_IMPL} sha3/sha3.c sha3/sha3x4.c
                           ${OSSL_HELPERS}
                           common.c
                           pqclean_shims/fips202.c
@@ -81,9 +81,9 @@ add_library(common OBJECT ${AES_IMPL}
                           rand/rand.c)
 
 # Implementations of the internal API to be exposed to test programs
-add_library(internal OBJECT ${AES_IMPL}
-                            ${SHA2_IMPL}
-                            ${SHA3_IMPL}
+add_library(internal OBJECT ${AES_IMPL} aes/aes.c
+                            ${SHA2_IMPL} sha2/sha2.c
+                            ${SHA3_IMPL} sha3/sha3.c sha3/sha3x4.c
                             ${OSSL_HELPERS}
                             common.c
                             rand/rand_nist.c)
