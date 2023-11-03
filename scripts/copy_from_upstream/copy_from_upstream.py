@@ -544,20 +544,20 @@ def process_families(instructions, basedir, with_kat, with_generator):
             if with_kat:
                 if family in instructions['kems']:
                     try:
-                        if kats['kem'][scheme['pretty_name_full']] != scheme['metadata']['nistkat-sha256']:
+                        if kats['kem'][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:
                             print("Info: Updating KAT for %s" % (scheme['pretty_name_full']))
                     except KeyError:  # new key
                         print("Adding new KAT for %s" % (scheme['pretty_name_full']))
                         pass
-                    kats['kem'][scheme['pretty_name_full']] = scheme['metadata']['nistkat-sha256']
+                    kats['kem'][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
                 else:
                     try:
-                        if kats['sig'][scheme['pretty_name_full']] != scheme['metadata']['nistkat-sha256']:
+                        if kats['sig'][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:
                             print("Info: Updating KAT for %s" % (scheme['pretty_name_full']))
                     except KeyError:  # new key
                         print("Adding new KAT for %s" % (scheme['pretty_name_full']))
                         pass
-                    kats['sig'][scheme['pretty_name_full']] = scheme['metadata']['nistkat-sha256']
+                    kats['sig'][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
 
         if with_generator:
             generator(
