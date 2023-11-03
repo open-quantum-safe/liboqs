@@ -180,7 +180,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 
 ## Acknowledgements
 
-Various companies, including Amazon Web Services, Cisco Systems, evolutionQ, IBM Research, Microsoft Research, sandboxAQ and softwareQ have dedicated programmer time to contribute source code to OQS. [Various people](https://github.com/open-quantum-safe/liboqs/blob/main/CONTRIBUTORS) have contributed source code to liboqs.
+Various companies, including Amazon Web Services, Cisco Systems, evolutionQ, IBM Research, Microsoft Research, SandboxAQ, and softwareQ have dedicated programmer time to contribute source code to OQS. [Various people](https://github.com/open-quantum-safe/liboqs/blob/main/CONTRIBUTORS) have contributed source code to liboqs.
 
 Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services, the Canadian Centre for Cyber Security, the Unitary Fund, the NGI Assure Fund, and VeriSign Inc.
 
