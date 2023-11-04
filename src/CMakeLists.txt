@@ -54,6 +54,8 @@ add_library(oqs kem/kem.c
                 ${SIG_OBJS}
                 ${COMMON_OBJS})
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
+set(_ALL_OBJS ${KEM_OBJS} ${SIG_OBJS} ${COMMON_OBJS} $<TARGET_OBJECTS:oqs>)
+set(ALL_OBJS ${_ALL_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
 endif()
