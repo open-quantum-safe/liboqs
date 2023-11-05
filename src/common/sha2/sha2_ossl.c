@@ -74,7 +74,7 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, cons
 }
 
 void OQS_SHA2_sha256_inc_ctx_release(OQS_SHA2_sha256_ctx *state) {
-	EVP_MD_CTX_destroy((EVP_MD_CTX *) state->ctx);
+	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
@@ -109,7 +109,7 @@ void OQS_SHA2_sha384_inc_finalize(uint8_t *out, OQS_SHA2_sha384_ctx *state, cons
 }
 
 void OQS_SHA2_sha384_inc_ctx_release(OQS_SHA2_sha384_ctx *state) {
-	EVP_MD_CTX_destroy((EVP_MD_CTX *) state->ctx);
+	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
@@ -144,7 +144,7 @@ void OQS_SHA2_sha512_inc_finalize(uint8_t *out, OQS_SHA2_sha512_ctx *state, cons
 }
 
 void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {
-	EVP_MD_CTX_destroy((EVP_MD_CTX *) state->ctx);
+	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
