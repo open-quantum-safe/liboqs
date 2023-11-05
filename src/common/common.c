@@ -26,7 +26,6 @@
 #endif
 
 #if defined(OQS_USE_OPENSSL)
-#include <openssl/evp.h>
 #include "ossl_helpers.h"
 #endif
 
@@ -232,7 +231,6 @@ OQS_API void OQS_init(void) {
 #if defined(OQS_DIST_BUILD)
 	OQS_CPU_has_extension(OQS_CPU_EXT_INIT);
 #endif
-	return;
 }
 
 OQS_API const char *OQS_version(void) {

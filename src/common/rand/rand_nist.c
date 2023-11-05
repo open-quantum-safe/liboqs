@@ -22,9 +22,6 @@ You are solely responsible for determining the appropriateness of using and dist
 #include <oqs/rand_nist.h>
 
 #ifdef OQS_USE_OPENSSL
-#include <openssl/conf.h>
-#include <openssl/evp.h>
-#include <openssl/err.h>
 #include "../ossl_helpers.h"
 #else
 #include <oqs/aes.h>
@@ -42,7 +39,7 @@ __declspec(noreturn)
 __attribute__((noreturn))
 # endif
 static void handleErrors(void) {
-	ERR_print_errors_fp(stderr);
+	OSSL_FUNC(ERR_print_errors_fp)(stderr);
 	abort();
 }
 #endif
@@ -58,20 +55,20 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	int len;
 
 	/* Create and initialise the context */
-	if (!(ctx = EVP_CIPHER_CTX_new())) {
+	if (!(ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)())) {
 		handleErrors();
 	}
 
-	if (1 != EVP_EncryptInit_ex(ctx, oqs_aes_256_ecb(), NULL, key, NULL)) {
+	if (1 != OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL)) {
 		handleErrors();
 	}
 
-	if (1 != EVP_EncryptUpdate(ctx, buffer, &len, ctr, 16)) {
+	if (1 != OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16)) {
 		handleErrors();
 	}
 
 	/* Clean up */
-	EVP_CIPHER_CTX_free(ctx);
+	OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
 #else
 	void *schedule = NULL;
 	OQS_AES256_ECB_load_schedule(key, &schedule);
