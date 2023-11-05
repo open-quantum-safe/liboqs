@@ -133,6 +133,20 @@ if(${OQS_USE_OPENSSL})
         endif()
     endif()
     find_package(OpenSSL 1.1.1 REQUIRED)
+
+    if(OQS_DLOPEN_OPENSSL)
+      find_program(OBJDUMP objdump)
+      if(NOT OBJDUMP)
+	message(FATAL_ERROR "objdump not found. Please install it from binutils.")
+      endif()
+      execute_process(
+	COMMAND ${OBJDUMP} -p ${OPENSSL_CRYPTO_LIBRARY}
+	COMMAND sed -n "s/[ 	]\\{1,\\}SONAME[ 	]\\{1,\\}//p"
+	OUTPUT_VARIABLE OQS_OPENSSL_CRYPTO_SONAME
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+	COMMAND_ERROR_IS_FATAL ANY)
+      message(STATUS "OpenSSL dlopen SONAME: " ${OQS_OPENSSL_CRYPTO_SONAME})
+    endif()
 endif()
 
 set(PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
