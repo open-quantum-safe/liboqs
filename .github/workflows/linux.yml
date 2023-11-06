@@ -117,47 +117,46 @@ jobs:
           name: liboqs-openssl3-shared-x64
           path: build/*.deb
 
-# Does anyone care if we delete support for this platform?
-#  linux_arm_emulated:
-#    needs: [stylecheck, buildcheck]
-#    runs-on: ubuntu-latest
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        include:
-#          - name: armhf
-#            ARCH: armhf
-#            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-#            PYTEST_ARGS: --ignore=tests/test_alg_info.py
-#          # no longer supporting armel
-#          # - name: armel
-#          #   ARCH: armel
-#          #   CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#      - name: Install the emulation handlers
-#        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-#      - name: Build in an x86_64 container
-#        run: |
-#          docker run --rm \
-#                     -v `pwd`:`pwd` \
-#                     -w `pwd` \
-#                     openquantumsafe/ci-debian-buster-amd64:latest /bin/bash \
-#                     -c "mkdir build && \
-#                         (cd build && \
-#                          cmake .. -GNinja ${{ matrix.CMAKE_ARGS }} \
-#                                   -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_${{ matrix.ARCH }}.cmake && \
-#                          cmake -LA .. && \
-#                          ninja)"
-#      - name: Run the tests in an ${{ matrix.ARCH }} container
-#        timeout-minutes: 60
-#        run: |
-#          docker run --rm -e SKIP_TESTS=style,mem_kem,mem_sig \
-#                          -v `pwd`:`pwd` \
-#                          -w `pwd` \
-#                          openquantumsafe/ci-debian-buster-${{ matrix.ARCH }}:latest /bin/bash \
-#                          -c "mkdir -p tmp && \
-#                              python3 -m pytest --verbose \
-#                                                --numprocesses=auto \
-#                                                --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
+  linux_arm_emulated:
+    needs: [stylecheck, buildcheck]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: armhf
+            ARCH: armhf
+            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py
+          # no longer supporting armel
+          # - name: armel
+          #   ARCH: armel
+          #   CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install the emulation handlers
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build in an x86_64 container
+        run: |
+          docker run --rm \
+                     -v `pwd`:`pwd` \
+                     -w `pwd` \
+                     openquantumsafe/ci-debian-buster-amd64:latest /bin/bash \
+                     -c "mkdir build && \
+                         (cd build && \
+                          cmake .. -GNinja ${{ matrix.CMAKE_ARGS }} \
+                                   -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_${{ matrix.ARCH }}.cmake && \
+                          cmake -LA .. && \
+                          ninja)"
+      - name: Run the tests in an ${{ matrix.ARCH }} container
+        timeout-minutes: 60
+        run: |
+          docker run --rm -e SKIP_TESTS=style,mem_kem,mem_sig \
+                          -v `pwd`:`pwd` \
+                          -w `pwd` \
+                          openquantumsafe/ci-debian-buster-${{ matrix.ARCH }}:latest /bin/bash \
+                          -c "mkdir -p tmp && \
+                              python3 -m pytest --verbose \
+                                                --numprocesses=auto \
+                                                --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
