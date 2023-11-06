@@ -135,6 +135,8 @@ The following instructions assume we are in `build`.
 
 4. `ninja install` can be run to install the built library and `include` files to a location of choice, which can be specified by passing the `-DCMAKE_INSTALL_PREFIX=<dir>` option to `cmake` at configure time. Alternatively, `ninja package` can be run to create an install package.
 
+5. `ninja uninstall` can be run to remove all installation files.
+
 
 ### Windows
 
