@@ -23,6 +23,4 @@ void hash_message(unsigned char *digest, uint64_t *tree, uint32_t *leaf_idx,
                   const unsigned char *m, size_t mlen,
                   const spx_ctx *ctx);
 
-
-
 #endif

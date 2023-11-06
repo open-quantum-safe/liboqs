@@ -10,7 +10,6 @@ typedef struct {
     uint8_t pub_seed[SPX_N];
     uint8_t sk_seed[SPX_N];
 
-
 } spx_ctx;
 
 #define initialize_hash_function SPX_NAMESPACE(initialize_hash_function)

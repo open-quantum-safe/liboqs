@@ -93,11 +93,8 @@
 
 #cmakedefine OQS_ENABLE_KEM_HQC 1
 #cmakedefine OQS_ENABLE_KEM_hqc_128 1
-#cmakedefine OQS_ENABLE_KEM_hqc_128_avx2 1
 #cmakedefine OQS_ENABLE_KEM_hqc_192 1
-#cmakedefine OQS_ENABLE_KEM_hqc_192_avx2 1
 #cmakedefine OQS_ENABLE_KEM_hqc_256 1
-#cmakedefine OQS_ENABLE_KEM_hqc_256_avx2 1
 
 #cmakedefine OQS_ENABLE_KEM_KYBER 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512 1

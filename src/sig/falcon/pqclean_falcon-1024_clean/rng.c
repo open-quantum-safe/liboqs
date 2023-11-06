@@ -33,7 +33,6 @@
 
 #include "inner.h"
 
-
 /* see inner.h */
 void
 PQCLEAN_FALCON1024_CLEAN_prng_init(prng *p, inner_shake256_context *src) {
@@ -161,7 +160,6 @@ PQCLEAN_FALCON1024_CLEAN_prng_refill(prng *p) {
         }
     }
     *(uint64_t *)(p->state.d + 48) = cc;
-
 
     p->ptr = 0;
 }

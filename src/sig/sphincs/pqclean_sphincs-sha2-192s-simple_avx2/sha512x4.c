@@ -41,7 +41,6 @@ static void transpose(u256 s[4]) {
     s[3] = _mm256_permute2x128_si256(tmp[1], tmp[3], 0x31);
 }
 
-
 void sha512_init4x(sha512x4ctx *ctx) {
 #define SET4(x) _mm256_set_epi64x((long long)(x), (long long)(x), (long long)(x), (long long)(x))
     ctx->s[0] = SET4(0x6a09e667f3bcc908ULL);
@@ -361,7 +360,6 @@ static void _sha512x4(
     STORE(out + 1, BYTESWAP(ctx->s[7]));
     memcpy(out3, out, 64);
 }
-
 
 /**
  * Note that inlen should be sufficiently small that it still allows for

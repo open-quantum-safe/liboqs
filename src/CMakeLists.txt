@@ -54,6 +54,8 @@ add_library(oqs kem/kem.c
                 ${SIG_OBJS}
                 ${COMMON_OBJS})
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
+set(_ALL_OBJS ${KEM_OBJS} ${SIG_OBJS} ${COMMON_OBJS} $<TARGET_OBJECTS:oqs>)
+set(ALL_OBJS ${_ALL_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
 endif()
@@ -71,7 +73,7 @@ set_target_properties(oqs
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     VERSION ${OQS_VERSION_TEXT}
-    SOVERSION 4
+    SOVERSION 5
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 

@@ -176,26 +176,8 @@ endif()
 
 option(OQS_ENABLE_KEM_HQC "Enable hqc algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_hqc_128 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI1_INSTRUCTIONS AND OQS_USE_PCLMULQDQ_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_hqc_128_avx2 "" ON "OQS_ENABLE_KEM_hqc_128" OFF)
-endif()
-endif()
-
 cmake_dependent_option(OQS_ENABLE_KEM_hqc_192 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI1_INSTRUCTIONS AND OQS_USE_PCLMULQDQ_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_hqc_192_avx2 "" ON "OQS_ENABLE_KEM_hqc_192" OFF)
-endif()
-endif()
-
 cmake_dependent_option(OQS_ENABLE_KEM_hqc_256 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI1_INSTRUCTIONS AND OQS_USE_PCLMULQDQ_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_hqc_256_avx2 "" ON "OQS_ENABLE_KEM_hqc_256" OFF)
-endif()
-endif()
-
 
 option(OQS_ENABLE_KEM_KYBER "Enable kyber algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_512 "" ON "OQS_ENABLE_KEM_KYBER" OFF)

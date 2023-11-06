@@ -11,7 +11,6 @@
 #include "sha256x8.h"
 #include "utils.h"
 
-
 /**
  * 8-way parallel version of thash; takes 8x as much input and output
  */
@@ -93,4 +92,3 @@ void thashx8(unsigned char *out0,
     memcpy(out6, outbufx8 + 6 * SPX_SHA256_OUTPUT_BYTES, SPX_N);
     memcpy(out7, outbufx8 + 7 * SPX_SHA256_OUTPUT_BYTES, SPX_N);
 }
-

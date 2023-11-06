@@ -29,7 +29,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-
 /* ====================================================================== */
 /*
  * Custom floating-point implementation with integer arithmetics. We
@@ -490,4 +489,3 @@ extern const fpr fpr_gm_tab[];
 extern const fpr fpr_p2_tab[];
 
 /* ====================================================================== */
-

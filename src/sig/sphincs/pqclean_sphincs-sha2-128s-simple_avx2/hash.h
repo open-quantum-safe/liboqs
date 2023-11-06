@@ -23,7 +23,6 @@ void hash_message(unsigned char *digest, uint64_t *tree, uint32_t *leaf_idx,
                   const unsigned char *m, size_t mlen,
                   const spx_ctx *ctx);
 
-
 #   define SPX_SHA256_ADDR_BYTES 22
 
 #   define mgf1_256 SPX_NAMESPACE(mgf1_256)

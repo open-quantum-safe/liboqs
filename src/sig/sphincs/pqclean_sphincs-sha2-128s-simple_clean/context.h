@@ -14,7 +14,6 @@ typedef struct {
     // sha256 state that absorbed pub_seed
     sha256ctx state_seeded;
 
-
 } spx_ctx;
 
 #define initialize_hash_function SPX_NAMESPACE(initialize_hash_function)

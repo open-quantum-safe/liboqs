@@ -4,7 +4,6 @@
 
 #include "fors.h"
 
-
 #include "address.h"
 #include "hash.h"
 #include "hashx8.h"

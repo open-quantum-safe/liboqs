@@ -7,8 +7,6 @@
 #include "sha2.h"
 #include "utils.h"
 
-
-
 #define SPX_SHAX_OUTPUT_BYTES SPX_SHA512_OUTPUT_BYTES
 #define SPX_SHAX_BLOCK_BYTES SPX_SHA512_BLOCK_BYTES
 #define shaX_inc_init sha512_inc_init
@@ -110,7 +108,6 @@ void gen_message_random(unsigned char *R, const unsigned char *sk_prf,
     shaXstate state;
     int i;
 
-
     /* This implements HMAC-SHA */
     for (i = 0; i < SPX_N; i++) {
         buf[i] = 0x36 ^ sk_prf[i];
@@ -207,7 +204,6 @@ void hash_message(unsigned char *digest, uint64_t *tree, uint32_t *leaf_idx,
     memcpy(digest, bufp, SPX_FORS_MSG_BYTES);
     bufp += SPX_FORS_MSG_BYTES;
 
-
     *tree = bytes_to_ull(bufp, SPX_TREE_BYTES);
     *tree &= (~(uint64_t)0) >> (64 - SPX_TREE_BITS);
     bufp += SPX_TREE_BYTES;
@@ -215,5 +211,3 @@ void hash_message(unsigned char *digest, uint64_t *tree, uint32_t *leaf_idx,
     *leaf_idx = (uint32_t)bytes_to_ull(bufp, SPX_LEAF_BYTES);
     *leaf_idx &= (~(uint32_t)0) >> (32 - SPX_LEAF_BITS);
 }
-
-

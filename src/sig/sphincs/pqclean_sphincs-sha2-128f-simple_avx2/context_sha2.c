@@ -32,7 +32,6 @@ static void seed_state(spx_ctx *ctx) {
 
 }
 
-
 /* For SHA, we initialize the hash function at the start */
 void initialize_hash_function(spx_ctx *ctx) {
     seed_state(ctx);

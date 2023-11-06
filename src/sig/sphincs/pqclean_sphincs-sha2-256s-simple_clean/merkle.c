@@ -55,5 +55,5 @@ void merkle_gen_root(unsigned char *root, const spx_ctx *ctx) {
 
     merkle_sign(auth_path, root, ctx,
                 wots_addr, top_tree_addr,
-                (uint32_t)~0 /* ~0 means "don't bother generating an auth path */ );
+                ~0U /* ~0 means "don't bother generating an auth path */ );
 }

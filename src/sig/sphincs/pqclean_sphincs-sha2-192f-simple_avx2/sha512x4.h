@@ -4,7 +4,6 @@
 #include <immintrin.h>
 #include <stdint.h>
 
-
 #include "params.h"
 
 typedef struct SHA512state4x {
@@ -24,7 +23,6 @@ void sha512_transform4x(
     const unsigned char *d1,
     const unsigned char *d2,
     const unsigned char *d3);
-
 
 #define sha512x4_seeded SPX_NAMESPACE(sha512x4_seeded)
 void sha512x4_seeded(

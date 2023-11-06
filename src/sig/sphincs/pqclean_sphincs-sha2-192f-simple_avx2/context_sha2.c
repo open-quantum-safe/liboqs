@@ -40,9 +40,7 @@ static void seed_state(spx_ctx *ctx) {
     ctx->statex4_seeded_512.datalen = 0;
     ctx->statex4_seeded_512.msglen = 1024;
 
-
 }
-
 
 /* For SHA, we initialize the hash function at the start */
 void initialize_hash_function(spx_ctx *ctx) {

@@ -240,7 +240,6 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen,
     return 0;
 }
 
-
 /**
  * Returns an array containing the signature followed by the message.
  */
