@@ -89,6 +89,39 @@ static int is_mceliece(const char *method_name) {
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128f) );
 }
 
+/* HQC-specific functions */
+static inline bool is_hqc(const char *method_name) {
+	return (0 == strcmp(method_name, OQS_KEM_alg_hqc_128))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_192))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_256));
+}
+
+static void HQC_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
+	uint8_t domain = HQC_PRNG_DOMAIN;
+	if (shake_prng_state.ctx != NULL) {
+		OQS_SHA3_shake256_inc_ctx_reset(&shake_prng_state);
+	} else {
+		OQS_SHA3_shake256_inc_init(&shake_prng_state);
+	}
+	OQS_SHA3_shake256_inc_absorb(&shake_prng_state, entropy_input, 48);
+	if (personalization_string != NULL) {
+		OQS_SHA3_shake256_inc_absorb(&shake_prng_state, personalization_string, 48);
+	}
+	OQS_SHA3_shake256_inc_absorb(&shake_prng_state, &domain, 1);
+	OQS_SHA3_shake256_inc_finalize(&shake_prng_state);
+}
+
+static void HQC_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	OQS_SHA3_shake256_inc_squeeze(random_array, bytes_to_read, &shake_prng_state);
+}
+
+static void HQC_randombytes_free(void) {
+	if (shake_prng_state.ctx != NULL) {
+		OQS_SHA3_shake256_inc_ctx_release(&shake_prng_state);
+		shake_prng_state.ctx = NULL;
+	}
+}
+
 static OQS_STATUS kem_kat(const char *method_name, bool all) {
 
 	uint8_t entropy_input[48];
@@ -106,6 +139,8 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 	void (*randombytes_free)(void) = NULL;
     int max_count;
 	int max_count;
+	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
+	void (*randombytes_free)(void) = NULL;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
