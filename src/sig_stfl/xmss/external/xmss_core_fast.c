@@ -221,7 +221,6 @@ static void treehash_init(const xmss_params *params,
                           bds_state *state, const unsigned char *sk_seed,
                           const unsigned char *pub_seed, const uint32_t addr[8])
 {
-    unsigned int idx = index;
     // use three different addresses because at this point we use all three formats in parallel
     uint32_t ots_addr[8] = {0};
     uint32_t ltree_addr[8] = {0};
@@ -235,13 +234,13 @@ static void treehash_init(const xmss_params *params,
     copy_subtree_addr(node_addr, addr);
     set_type(node_addr, 2);
 
-    uint32_t lastnode, i;
+    /* The subtree has at most 2^20 leafs, so uint32_t suffices. */
+    uint32_t idx = index;
+    uint32_t lastnode = index +(1<<height), i;
     unsigned char *stack = calloc((height+1)*params->n, sizeof(unsigned char));
     unsigned int *stacklevels = malloc((height + 1)*sizeof(unsigned int));
     unsigned int stackoffset=0;
     unsigned int nodeh;
-
-    lastnode = idx+(1<<height);
 
     for (i = 0; i < params->tree_height-params->bds_k; i++) {
         state->treehash[i].h = i;
@@ -281,9 +280,7 @@ static void treehash_init(const xmss_params *params,
         i++;
     }
 
-    for (i = 0; i < params->n; i++) {
-        node[i] = stack[i];
-    }
+    memcpy(node, stack, params->n);
 
     OQS_MEM_insecure_free(stacklevels);
     OQS_MEM_insecure_free(stack);
