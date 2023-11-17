@@ -3,7 +3,7 @@
 #include <oqs/oqs.h>
 
 #include "sha2_local.h"
-
+#include <string.h>
 #include <stdint.h>
 // ARM includes
 #include <arm_acle.h>
@@ -167,23 +167,43 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 	return length;
 
 }
+
 void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t padded[128];
-	uint64_t bytes = load_bigendian_64(state->ctx + 32) + inlen;
 
-	crypto_hashblocks_sha256_armv8(state->ctx, in, inlen);
-	in += inlen;
-	inlen &= 63;
-	in -= inlen;
+	size_t new_inlen = state->data_len + inlen;
+	const uint8_t *new_in;
+	uint8_t *tmp_in = NULL;
 
-
-	for (size_t i = 0; i < inlen; ++i) {
-		padded[i] = in[i];
+	if (new_inlen == inlen) {
+		new_in = in;
+	} else { //Combine incremental data with final input
+		tmp_in = malloc(new_inlen);
+		size_t i, j;
+		for (i = 0; i < state->data_len; ++i) {
+			tmp_in[i] = state->data[i];
+		}
+		for (j = 0; j < inlen; i++, j++) {
+			tmp_in[i] = in[j];
+		}
+		new_in = tmp_in;
 	}
-	padded[inlen] = 0x80;
 
-	if (inlen < 56) {
-		for (size_t i = inlen + 1; i < 56; ++i) {
+	uint64_t bytes = load_bigendian_64(state->ctx + 32) + new_inlen;
+
+	crypto_hashblocks_sha256_armv8(state->ctx, new_in, new_inlen);
+	new_in += new_inlen;
+	new_inlen &= 63;
+	new_in -= new_inlen;
+
+
+	for (size_t i = 0; i < new_inlen; ++i) {
+		padded[i] = new_in[i];
+	}
+	padded[new_inlen] = 0x80;
+
+	if (new_inlen < 56) {
+		for (size_t i = new_inlen + 1; i < 56; ++i) {
 			padded[i] = 0;
 		}
 		padded[56] = (uint8_t) (bytes >> 53);
@@ -196,7 +216,7 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 		padded[63] = (uint8_t) (bytes << 3);
 		crypto_hashblocks_sha256_armv8(state->ctx, padded, 64);
 	} else {
-		for (size_t i = inlen + 1; i < 120; ++i) {
+		for (size_t i = new_inlen + 1; i < 120; ++i) {
 			padded[i] = 0;
 		}
 		padded[120] = (uint8_t) (bytes >> 53);
@@ -214,6 +234,7 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 		out[i] = state->ctx[i];
 	}
 	oqs_sha2_sha256_inc_ctx_release_c(state);
+	free(tmp_in);
 }
 
 void oqs_sha2_sha224_inc_finalize_armv8(uint8_t *out, sha224ctx *state, const uint8_t *in, size_t inlen) {
@@ -227,11 +248,59 @@ void oqs_sha2_sha224_inc_finalize_armv8(uint8_t *out, sha224ctx *state, const ui
 
 void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_t inblocks) {
 	uint64_t bytes = load_bigendian_64(state->ctx + 32);
+	const uint8_t *new_in;
+	uint8_t *tmp_in = NULL;
 
-	crypto_hashblocks_sha256_armv8(state->ctx, in, 64 * inblocks);
+	/* Process any existing incremental data first */
+	if (state->data_len) {
+		size_t buf_len = 64 * inblocks;
+		tmp_in = malloc(buf_len);
+		memcpy(tmp_in, state->data, state->data_len);
+		memcpy(tmp_in + state->data_len, in, buf_len - state->data_len);
+
+		/* store the reminder input as incremental data */
+		memcpy(state->data, in + (buf_len - state->data_len), state->data_len);
+		new_in = tmp_in;
+	} else {
+		new_in = in;
+	}
+
+	crypto_hashblocks_sha256_armv8(state->ctx, new_in, 64 * inblocks);
 	bytes += 64 * inblocks;
 
 	store_bigendian_64(state->ctx + 32, bytes);
+	free(tmp_in);
+}
+
+void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) {
+	uint64_t bytes = 0;
+	while (len) {
+		size_t incr = 64 - state->data_len;
+		if (incr > len) {
+			incr = len;
+		}
+
+		for (size_t i = 0; i < incr; ++i, state->data_len++) {
+			state->data[state->data_len] = in[i];
+		}
+
+		if (state->data_len < 64) {
+			break;
+		}
+
+		/*
+		 * Process a complete block now
+		 */
+		bytes = load_bigendian_64(state->ctx + 32) + 64;
+		crypto_hashblocks_sha256_armv8(state->ctx, state->data, 64);
+		store_bigendian_64(state->ctx + 32, bytes);
+
+		/*
+		 * update the remaining input
+		 */
+		len -= incr;
+		state->data_len = 0;
+	}
 }
 
 void oqs_sha2_sha224_inc_blocks_armv8(sha224ctx *state, const uint8_t *in, size_t inblocks) {
