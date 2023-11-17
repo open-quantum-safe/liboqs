@@ -93,7 +93,7 @@ static int do_sha256(void) {
 	}
 
 	// hash with increment API less than block size
-	int i = 0;
+	size_t i = 0;
 	for (i = 0; i < msg_len; i++) {
 		OQS_SHA2_sha256_inc(&state3, &msg[i], 1);
 	}
