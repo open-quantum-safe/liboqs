@@ -26,7 +26,9 @@ extern "C" {
 typedef struct {
 	/** Internal state */
 	void *ctx;
+	/** current number of bytes in data */
 	size_t data_len;
+	/** unprocessed data buffer */
 	uint8_t data[128];
 } OQS_SHA2_sha224_ctx;
 
@@ -45,7 +47,9 @@ void OQS_SHA2_sha256(uint8_t *output, const uint8_t *input, size_t inplen);
 typedef struct {
 	/** Internal state */
 	void *ctx;
+	/** current number of bytes in data */
 	size_t data_len;
+	/** unprocessed data buffer */
 	uint8_t data[128];
 } OQS_SHA2_sha256_ctx;
 
@@ -132,7 +136,9 @@ void OQS_SHA2_sha384(uint8_t *output, const uint8_t *input, size_t inplen);
 typedef struct {
 	/** Internal state. */
 	void *ctx;
+	/** current number of bytes in data */
 	size_t data_len;
+	/** unprocessed data buffer */
 	uint8_t data[128];
 } OQS_SHA2_sha384_ctx;
 
@@ -208,7 +214,9 @@ void OQS_SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen);
 typedef struct {
 	/** Internal state. */
 	void *ctx;
+	/** current number of bytes in data */
 	size_t data_len;
+	/** unprocessed data buffer */
 	uint8_t data[128];
 } OQS_SHA2_sha512_ctx;
 
