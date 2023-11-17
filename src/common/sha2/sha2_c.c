@@ -653,7 +653,7 @@ void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t in
 	bytes += 64 * inblocks;
 
 	store_bigendian_64(state->ctx + 32, bytes);
-	free(tmp_in);
+	free(tmp_in); // IGNORE free-check
 }
 
 void oqs_sha2_sha256_inc_c(sha256ctx *state, const uint8_t *in, size_t len) {
@@ -770,7 +770,7 @@ void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_
 		out[i] = state->ctx[i];
 	}
 	oqs_sha2_sha256_inc_ctx_release_c(state);
-	free(tmp_in);
+	free(tmp_in);  // IGNORE free-check   
 }
 
 void oqs_sha2_sha224_inc_finalize_c(uint8_t *out, sha224ctx *state, const uint8_t *in, size_t inlen) {
