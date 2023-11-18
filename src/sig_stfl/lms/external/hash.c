@@ -1,6 +1,5 @@
 #include <string.h>
 #include "hash.h"
-#include "sha256.h"
 #include "hss_zeroize.h"
 
 #define ALLOW_VERBOSE 0  /* 1 -> we allow the dumping of intermediate */
@@ -39,8 +38,8 @@ void hss_hash_ctx(void *result, int hash_type, union hash_context *ctx,
 
     switch (hash_type) {
     case HASH_SHA256: {
-        SHA256_Init(&ctx->sha256);
-        SHA256_Update(&ctx->sha256, message, message_len);
+        OQS_SHA2_sha256_inc_init(&ctx->sha256);
+        OQS_SHA2_sha256_inc(&ctx->sha256, message, message_len);
         SHA256_Final(result, &ctx->sha256);
 #if ALLOW_VERBOSE
         if (hss_verbose) {
@@ -69,7 +68,7 @@ void hss_hash(void *result, int hash_type,
 void hss_init_hash_context(int h, union hash_context *ctx) {
     switch (h) {
     case HASH_SHA256:
-        SHA256_Init( &ctx->sha256 );
+        OQS_SHA2_sha256_inc_init( &ctx->sha256 );
         break;
     }
 }
@@ -83,7 +82,7 @@ void hss_update_hash_context(int h, union hash_context *ctx,
 #endif
     switch (h) {
     case HASH_SHA256:
-        SHA256_Update(&ctx->sha256, msg, len_msg);
+        OQS_SHA2_sha256_inc(&ctx->sha256, msg, len_msg);
         break;
     }
 }
@@ -116,4 +115,8 @@ unsigned hss_hash_blocksize(int hash_type) {
     case HASH_SHA256: return 64;
     }
     return 0;
+}
+
+void SHA256_Final(unsigned char *output, OQS_SHA2_sha256_ctx *ctx) {
+    OQS_SHA2_sha256_inc_finalize(output, ctx,  NULL, 0);
 }

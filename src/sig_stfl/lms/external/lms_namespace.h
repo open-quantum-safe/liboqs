@@ -89,8 +89,6 @@
 #define lm_validate_signature LMS_NAMESPACE(lm_validate_signature)
 
 #define SHA256_Final LMS_NAMESPACE(SHA256_Final)
-#define SHA256_Init LMS_NAMESPACE(SHA256_Init)
-#define SHA256_Update LMS_NAMESPACE(SHA256_Update)
 #define LMS_randombytes LMS_NAMESPACE(LMS_randombytes)
 
 #endif //_LMS_NAMESPACE_H
