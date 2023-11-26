@@ -172,13 +172,14 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 	uint8_t padded[128];
 
 	size_t new_inlen = state->data_len + inlen;
+	size_t tmp_len = new_inlen;
 	const uint8_t *new_in;
 	uint8_t *tmp_in = NULL;
 
 	if (new_inlen == inlen) {
 		new_in = in;
 	} else { //Combine incremental data with final input
-		tmp_in = malloc(new_inlen);
+		tmp_in = malloc(tmp_len);
 		size_t i, j;
 		for (i = 0; i < state->data_len; ++i) {
 			tmp_in[i] = state->data[i];
@@ -234,7 +235,7 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 		out[i] = state->ctx[i];
 	}
 	oqs_sha2_sha256_inc_ctx_release_c(state);
-	free(tmp_in); // IGNORE free-check
+	OQS_MEM_secure_free(tmp_in, tmp_len);
 }
 
 void oqs_sha2_sha224_inc_finalize_armv8(uint8_t *out, sha224ctx *state, const uint8_t *in, size_t inlen) {
@@ -249,11 +250,11 @@ void oqs_sha2_sha224_inc_finalize_armv8(uint8_t *out, sha224ctx *state, const ui
 void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_t inblocks) {
 	uint64_t bytes = load_bigendian_64(state->ctx + 32);
 	const uint8_t *new_in;
+	size_t buf_len = 64 * inblocks;
 	uint8_t *tmp_in = NULL;
 
 	/* Process any existing incremental data first */
 	if (state->data_len) {
-		size_t buf_len = 64 * inblocks;
 		tmp_in = malloc(buf_len);
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, buf_len - state->data_len);
@@ -269,7 +270,7 @@ void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_
 	bytes += 64 * inblocks;
 
 	store_bigendian_64(state->ctx + 32, bytes);
-	free(tmp_in); // IGNORE free-check
+	OQS_MEM_secure_free(tmp_in, buf_len);
 }
 
 void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) {
