@@ -180,13 +180,11 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 		new_in = in;
 	} else { //Combine incremental data with final input
 		tmp_in = malloc(tmp_len);
-		size_t i, j;
-		for (i = 0; i < state->data_len; ++i) {
-			tmp_in[i] = state->data[i];
-		}
-		for (j = 0; j < inlen; i++, j++) {
-			tmp_in[i] = in[j];
-		}
+		if (tmp_in == NULL)
+			exit(111);
+
+		memcpy(tmp_in, state->data, state->data_len);
+		memcpy(tmp_in + state->data_len, in, inlen);
 		new_in = tmp_in;
 	}
 
@@ -233,7 +231,7 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 
 	for (size_t i = 0; i < 32; ++i) {
 		out[i] = state->ctx[i];
-	}
+	}	
 	oqs_sha2_sha256_inc_ctx_release_c(state);
 	OQS_MEM_secure_free(tmp_in, tmp_len);
 }
@@ -256,6 +254,9 @@ void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_
 	/* Process any existing incremental data first */
 	if (state->data_len) {
 		tmp_in = malloc(buf_len);
+		if (tmp_in == NULL)
+			exit(111);
+
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, buf_len - state->data_len);
 

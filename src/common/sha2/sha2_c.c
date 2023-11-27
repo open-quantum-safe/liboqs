@@ -513,9 +513,7 @@ void oqs_sha2_sha224_inc_init_c(sha224ctx *state) {
 		state->ctx[i] = 0;
 	}
 	state->data_len = 0;
-	for (size_t i = 0; i < 128; ++i) {
-		state->data[i] = 0;
-	}
+	memset(state->data, 0, 128);
 }
 
 void oqs_sha2_sha256_inc_init_c(sha256ctx *state) {
@@ -531,9 +529,7 @@ void oqs_sha2_sha256_inc_init_c(sha256ctx *state) {
 		state->ctx[i] = 0;
 	}
 	state->data_len = 0;
-	for (size_t i = 0; i < 128; ++i) {
-		state->data[i] = 0;
-	}
+	memset(state->data, 0, 128);
 }
 
 void oqs_sha2_sha384_inc_init_c(sha384ctx *state) {
@@ -548,9 +544,7 @@ void oqs_sha2_sha384_inc_init_c(sha384ctx *state) {
 		state->ctx[i] = 0;
 	}
 	state->data_len = 0;
-	for (size_t i = 0; i < 128; ++i) {
-		state->data[i] = 0;
-	}
+	memset(state->data, 0, 128);
 }
 
 void oqs_sha2_sha512_inc_init_c(sha512ctx *state) {
@@ -565,9 +559,7 @@ void oqs_sha2_sha512_inc_init_c(sha512ctx *state) {
 		state->ctx[i] = 0;
 	}
 	state->data_len = 0;
-	for (size_t i = 0; i < 128; ++i) {
-		state->data[i] = 0;
-	}
+	memset(state->data, 0, 128);
 }
 
 void oqs_sha2_sha224_inc_ctx_clone_c(sha224ctx *stateout, const sha224ctx *statein) {
@@ -639,6 +631,9 @@ void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t in
 	/*  Process any existing incremental data first */
 	if (state->data_len) {
 		tmp_in = malloc(tmp_buflen);
+		if (tmp_in == NULL)
+			exit(111);
+
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, tmp_buflen - state->data_len);
 
@@ -717,13 +712,11 @@ void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_
 		new_in = in;
 	} else { //Combine incremental data with final input
 		tmp_in = malloc(tmp_len);
-		size_t i, j;
-		for (i = 0; i < state->data_len; ++i) {
-			tmp_in[i] = state->data[i];
-		}
-		for (j = 0; j < inlen; i++, j++) {
-			tmp_in[i] = in[j];
-		}
+		if (tmp_in == NULL)
+			exit(111);
+		
+		memcpy(tmp_in, state->data, state->data_len);
+		memcpy(tmp_in + state->data_len, in, inlen);
 		new_in = tmp_in;
 	}
 
