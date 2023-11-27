@@ -23,18 +23,26 @@ extern "C" {
 
 typedef struct {
 	uint8_t *ctx;
+	size_t data_len;      /* current number of bytes in data */
+	uint8_t data[128];    /* msg buffer */
 } sha224ctx;
 
 typedef struct {
 	uint8_t *ctx;
+	size_t data_len;      /* current number of bytes in data */
+	uint8_t data[128];    /* msg buffer */
 } sha256ctx;
 
 typedef struct {
 	uint8_t *ctx;
+	size_t data_len;      /* current number of bytes in data */
+	uint8_t data[128];    /* msg buffer */
 } sha384ctx;
 
 typedef struct {
 	uint8_t *ctx;
+	size_t data_len;      /* current number of bytes in data */
+	uint8_t data[128];    /* msg buffer */
 } sha512ctx;
 
 void oqs_sha2_sha224_inc_init_c(sha224ctx *state);
@@ -46,6 +54,7 @@ void oqs_sha2_sha224_inc_ctx_release_c(sha224ctx *state);
 void oqs_sha2_sha256_inc_init_c(sha256ctx *state);
 void oqs_sha2_sha256_inc_ctx_clone_c(sha256ctx *dest, const sha256ctx *src);
 void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t inblocks);
+void oqs_sha2_sha256_inc_c(sha256ctx *state, const uint8_t *in, size_t len);
 void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha256_inc_ctx_release_c(sha256ctx *state);
 
@@ -66,6 +75,7 @@ void oqs_sha2_sha512_inc_ctx_release_c(sha512ctx *state);
 void oqs_sha2_sha224_inc_blocks_armv8(sha224ctx *state, const uint8_t *in, size_t inblocks);
 void oqs_sha2_sha224_armv8(uint8_t *out, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_t inblocks);
+void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len);
 void oqs_sha2_sha256_armv8(uint8_t *out, const uint8_t *in, size_t inlen);
 
 void oqs_sha2_sha384_inc_init_armv8(sha384ctx *state);
