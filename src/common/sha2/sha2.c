@@ -60,6 +60,13 @@ void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, s
 	);
 }
 
+void OQS_SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
+	C_OR_ARM(
+	    oqs_sha2_sha256_inc_c((sha256ctx *) state, in, len),
+	    oqs_sha2_sha256_inc_armv8((sha256ctx *) state, in, len)
+	);
+}
+
 void OQS_SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inlen) {
 	oqs_sha2_sha256_inc_finalize_c(out, (sha256ctx *) state, in, inlen);
 }
