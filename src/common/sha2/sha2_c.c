@@ -631,8 +631,9 @@ void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t in
 	/*  Process any existing incremental data first */
 	if (state->data_len) {
 		tmp_in = malloc(tmp_buflen);
-		if (tmp_in == NULL)
+		if (tmp_in == NULL) {
 			exit(111);
+		}
 
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, tmp_buflen - state->data_len);
@@ -712,9 +713,10 @@ void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_
 		new_in = in;
 	} else { //Combine incremental data with final input
 		tmp_in = malloc(tmp_len);
-		if (tmp_in == NULL)
+		if (tmp_in == NULL) {
 			exit(111);
-		
+		}
+
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, inlen);
 		new_in = tmp_in;
