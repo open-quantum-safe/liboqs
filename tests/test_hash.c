@@ -50,16 +50,24 @@ static int do_sha256(void) {
 		fprintf(stderr, "ERROR reading from stdin\n");
 		return -1;
 	}
+
 	// run main SHA-256 API
 	uint8_t output[32];
 	OQS_SHA2_sha256(output, msg, msg_len);
+
 	// run incremental SHA-256 API
 	uint8_t output_inc[32];
+	uint8_t output_inc_2[32];
 	OQS_SHA2_sha256_ctx state;
 	OQS_SHA2_sha256_inc_init(&state);
+
 	// clone state
-	OQS_SHA2_sha256_ctx state2;
+	OQS_SHA2_sha256_ctx state2, state3, state4, state5;
 	OQS_SHA2_sha256_inc_ctx_clone(&state2, &state);
+	OQS_SHA2_sha256_inc_ctx_clone(&state3, &state);
+	OQS_SHA2_sha256_inc_ctx_clone(&state4, &state);
+	OQS_SHA2_sha256_inc_ctx_clone(&state5, &state);
+
 	// hash with first state
 	if (msg_len > 64) {
 		OQS_SHA2_sha256_inc_blocks(&state, msg, 1);
@@ -67,6 +75,7 @@ static int do_sha256(void) {
 	} else {
 		OQS_SHA2_sha256_inc_finalize(output_inc, &state, msg, msg_len);
 	}
+
 	if (memcmp(output, output_inc, 32) != 0) {
 		fprintf(stderr, "ERROR: Incremental API does not match main API\n");
 		free(msg);
@@ -84,6 +93,49 @@ static int do_sha256(void) {
 		free(msg);
 		return -3;
 	}
+
+	// hash with increment API less than block size
+	size_t i = 0;
+	for (i = 0; i < msg_len; i++) {
+		OQS_SHA2_sha256_inc(&state3, &msg[i], 1);
+	}
+	OQS_SHA2_sha256_inc_finalize(output_inc_2, &state3, &msg[i], 0);
+	if (memcmp(output, output_inc_2, 32) != 0) {
+		fprintf(stderr, "ERROR: Non-block Incremental API with cloned state does not match main API\n");
+		free(msg);
+		return -4;
+	}
+
+	// hash with combination of block-size increments and non block-size increments  [64 bytes] + [n < 64 bytes]
+	if (msg_len > 64) {
+		OQS_SHA2_sha256_inc_blocks(&state4, msg, 1);
+		for (i = 0; i < (msg_len - 64); i++) {
+			OQS_SHA2_sha256_inc(&state4, &msg[64 + i], 1);
+		}
+		OQS_SHA2_sha256_inc_finalize(output_inc_2, &state4, &msg[msg_len - 1], 0);
+	} else {
+		OQS_SHA2_sha256_inc_finalize(output_inc_2, &state4, msg, msg_len);
+	}
+	if (memcmp(output, output_inc_2, 32) != 0) {
+		fprintf(stderr, "ERROR: Combined block increments with non-block size failed to match main API\n");
+		free(msg);
+		return -5;
+	}
+
+	// hash with combination of non block-size and block-size [n < 64 bytes] + [64 bytes]
+	if (msg_len > 64) {
+		OQS_SHA2_sha256_inc(&state5, msg, 1);
+		OQS_SHA2_sha256_inc_blocks(&state5, &msg[1], 1);
+		OQS_SHA2_sha256_inc_finalize(output_inc_2, &state5, &msg[65], msg_len - 65);
+	} else {
+		OQS_SHA2_sha256_inc_finalize(output_inc_2, &state5, msg, msg_len);
+	}
+	if (memcmp(output, output_inc_2, 32) != 0) {
+		fprintf(stderr, "ERROR: Combined non-block size and block increments failed to match main API\n");
+		free(msg);
+		return -5;
+	}
+	//Test inc API
 	print_hex(output, 32);
 	free(msg);
 	return 0;
