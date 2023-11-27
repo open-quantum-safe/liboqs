@@ -1,6 +1,6 @@
 #if !defined( HASH_H__ )
 #define HASH_H__
-#include "sha256.h"
+#include <oqs/sha2.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include "lms_namespace.h"
@@ -19,7 +19,7 @@ enum {
 };
 
 union hash_context {
-    SHA256_CTX sha256;
+    OQS_SHA2_sha256_ctx sha256;
     /* Any other hash contexts would go here */
 };
 
@@ -54,5 +54,6 @@ void hss_update_hash_context( int h, union hash_context *ctx,
                           const void *msg, size_t len_msg );
 void hss_finalize_hash_context( int h, union hash_context *ctx,
                           void *buffer);
+void SHA256_Final(unsigned char *output, OQS_SHA2_sha256_ctx *ctx);
 
 #endif /* HASH_H__  */

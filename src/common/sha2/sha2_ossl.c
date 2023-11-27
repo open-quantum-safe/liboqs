@@ -63,6 +63,10 @@ void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, s
 	OQS_OPENSSL_GUARD(EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * SHA2_BLOCK_SIZE));
 }
 
+void OQS_SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
+	OQS_OPENSSL_GUARD(EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, len));
+}
+
 void OQS_SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inlen) {
 	unsigned int md_len;
 	if (inlen > 0) {
