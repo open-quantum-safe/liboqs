@@ -3,10 +3,16 @@
 # Only add liboqs Zephyr module if enabled in Kconfig
 if(CONFIG_LIBOQS)
         # Workarounds for Zephyr
-        if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
+        if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+                # We have to set that manually as CMake can't detect it properly in Zephyr
+                set(CMAKE_SIZEOF_VOID_P 8)
+        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
                 # Workaround as the generic name "arm" is not a supported architecture in liboqs.
                 # In Zephyr, however, it is exclusively used for 32-bit ARM architectures.
                 set(CMAKE_SYSTEM_PROCESSOR "armv7")
+
+                # We have to set that manually as CMake can't detect it properly in Zephyr
+                set(CMAKE_SIZEOF_VOID_P 4)
         elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "posix")
                 # Workaround to enable the native Zephyr builds on the Linux host system.
                 if(BOARD MATCHES "native_posix|native_sim")
@@ -14,6 +20,12 @@ if(CONFIG_LIBOQS)
                 else()
                         message(FATAL_ERROR "Unsupported board ${BOARD} with posix architecture")
                 endif()
+
+                # We have to set that manually as CMake can't detect it properly in Zephyr
+                set(CMAKE_SIZEOF_VOID_P 8)
+        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86")
+                # We have to set that manually as CMake can't detect it properly in Zephyr
+                set(CMAKE_SIZEOF_VOID_P 4)
         endif()
 
         # Configuration for liboqs
@@ -23,7 +35,6 @@ if(CONFIG_LIBOQS)
         set(OQS_EMBEDDED_BUILD ON)
 
         set(CMAKE_CROSSCOMPILING ON)
-        set(CMAKE_SIZEOF_VOID_P 4) # Not really needed, only for surpressing unrelated warnings
 
         # Disable features by hand, as CMake won't find them properly with Zephyr
         set(CMAKE_HAVE_GETENTROPY OFF)
@@ -35,7 +46,62 @@ if(CONFIG_LIBOQS)
         set(CC_SUPPORTS_WA_NOEXECSTACK OFF)
         set(LD_SUPPORTS_WL_Z_NOEXECSTACK OFF)
 
-        # Add the actual liboqs targets
+        # Algorithm selection (based on Kconfig)
+        if(CONFIG_LIBOQS_ENABLE_KEM_BIKE)
+                set(OQS_ENABLE_KEM_BIKE ON)
+        else()
+                set(OQS_ENABLE_KEM_BIKE OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_KEM_FRODOKEM)
+                set(OQS_ENABLE_KEM_FRODOKEM ON)
+        else()
+                set(OQS_ENABLE_KEM_FRODOKEM OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_KEM_NTRUPRIME)
+                set(OQS_ENABLE_KEM_NTRUPRIME ON)
+        else()
+                set(OQS_ENABLE_KEM_NTRUPRIME OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_KEM_CLASSIC_MCELIECE)
+                set(OQS_ENABLE_KEM_CLASSIC_MCELIECE ON)
+        else()
+                set(OQS_ENABLE_KEM_CLASSIC_MCELIECE OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_KEM_HQC)
+                set(OQS_ENABLE_KEM_HQC ON)
+        else()
+                set(OQS_ENABLE_KEM_HQC OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_KEM_KYBER)
+                set(OQS_ENABLE_KEM_KYBER ON)
+        else()
+                set(OQS_ENABLE_KEM_KYBER OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_SIG_DILITHIUM)
+                set(OQS_ENABLE_SIG_DILITHIUM ON)
+        else()
+                set(OQS_ENABLE_SIG_DILITHIUM OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_SIG_FALCON)
+                set(OQS_ENABLE_SIG_FALCON ON)
+        else()
+                set(OQS_ENABLE_SIG_FALCON OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_SIG_SPHINCS)
+                set(OQS_ENABLE_SIG_SPHINCS ON)
+        else()
+                set(OQS_ENABLE_SIG_SPHINCS OFF)
+        endif()
+
+        # Add the actual liboqs targets 
         add_subdirectory(.. build)
 
         # Add target specific options to all liboqs targets
