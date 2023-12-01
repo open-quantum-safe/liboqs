@@ -360,7 +360,77 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
 		break;
-
+	case OQS_LMS_ID_sha256_n32_h5_w8_h5_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h10_w8_h5_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h10_w8_h10_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h15_w8_h5_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h15_w8_h10_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h15_w8_h15_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h20_w8_h5_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h20_w8_h10_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h20_w8_h15_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	case OQS_LMS_ID_sha256_n32_h20_w8_h20_w8:
+		oqs_key_data->levels = 2;
+		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
+		break;
+	default:
 		oqs_key_data->lm_type[0] = 0;
 		oqs_key_data->lm_ots_type[0] = 0;
 		parse_err = 1;
