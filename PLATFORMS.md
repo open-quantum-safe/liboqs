@@ -54,8 +54,6 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 - x86_64/amd64/x64 for MacOS (XCode 14)
 - aarch64 for Ubuntu (Focal)
 - armhf/ARM7 and aarch64 emulation on Ubuntu
-- ppc64le for Ubuntu (Focal)
-- s390x for Ubuntu (Focal)
 
 ### Tier 2
 
@@ -67,4 +65,6 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 
 - x86 for Windows
 - aarch64 for MacOS
+- ppc64le for Ubuntu (Focal)
+- s390x for Ubuntu (Focal)
 
