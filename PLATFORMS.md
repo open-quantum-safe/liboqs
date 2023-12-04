@@ -18,6 +18,10 @@ Tier 2 targets can be thought of as "guaranteed to build". The `liboqs` CI syste
 
 Tier 3 targets are those which the `liboqs` codebase has support for, but which the CI system does not build or test automatically, so they may or may not work. Platform-specific build documentation should exist.
 
+### Tier 0
+
+Tier 0 targets satisfy the same criteria as Tier 1 targets but are additionally tested for constant-time behaviour. The CI system contains automated constant-time testing for each tier 0 target, and all failures are documented in the `tests/constant_time` directory. IMPORTANT: This does not mean that constant-time behaviour is guaranteed on these targets, or that non-constant-time behaviour is limited to documented exceptions. It does, however, mean that `liboqs` developers should track constant-time issues on these platforms.
+
 ## Platform tier policy
 
 Tier 2 and tier 1 targets place work on `liboqs` core project developers as a whole, to avoid breaking the target. The broader `liboqs` community may also feel more inclined to support higher-tier targets in their work. Thus, these tiers require commensurate and ongoing efforts from the maintainers of the target, to demonstrate value and to minimize any disruptions to ongoing `liboqs` development.
@@ -42,9 +46,12 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 
 ## Platforms supported
 
+### Tier 0
+- x86_64/amd64/x64 for Ubuntu Linux (Focal)
+
 ### Tier 1
 
-- x86_64/amd64/x64 for Ubuntu Linux (Focal) and MacOS (XCode 14)
+- x86_64/amd64/x64 for MacOS (XCode 14)
 - aarch64 for Ubuntu (Focal)
 - armhf/ARM7 and aarch64 emulation on Ubuntu
 - ppc64le for Ubuntu (Focal)
