@@ -8,7 +8,7 @@ This classification is roughly based on the [rust platform support tier classifi
 
 ### Tier 1
 
-Tier 1 targets can be thought of as "guaranteed to work". The CI system builds and tests binary versions for each tier 1 target to make sure any change does not negatively affect those platforms. Platform-specific build documentation must exist.
+Tier 1 targets can be thought of as "guaranteed to work". The CI system builds and tests binary versions for each tier 1 target to make sure any change does not negatively affect those platforms. Platform-specific build documentation must exist. Tier 1 targets marked with an asterisk are additionally tested for constant-time behaviour. The CI system contains automated constant-time testing for each of these starred targets, and all failures are documented in the `tests/constant_time` directory. IMPORTANT: This does not mean that constant-time behaviour is guaranteed on these targets, or that non-constant-time behaviour is limited to documented exceptions. It does, however, mean that `liboqs` developers should track constant-time issues on these platforms.
 
 ### Tier 2
 
@@ -17,10 +17,6 @@ Tier 2 targets can be thought of as "guaranteed to build". The `liboqs` CI syste
 ### Tier 3
 
 Tier 3 targets are those which the `liboqs` codebase has support for, but which the CI system does not build or test automatically, so they may or may not work. Platform-specific build documentation should exist.
-
-### Tier 0
-
-Tier 0 targets satisfy the same criteria as Tier 1 targets but are additionally tested for constant-time behaviour. The CI system contains automated constant-time testing for each tier 0 target, and all failures are documented in the `tests/constant_time` directory. IMPORTANT: This does not mean that constant-time behaviour is guaranteed on these targets, or that non-constant-time behaviour is limited to documented exceptions. It does, however, mean that `liboqs` developers should track constant-time issues on these platforms.
 
 ## Platform tier policy
 
@@ -46,14 +42,14 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 
 ## Platforms supported
 
-### Tier 0
-- x86_64/amd64/x64 for Ubuntu Linux (Focal)
-
 ### Tier 1
 
+- x86_64/amd64/x64 for Ubuntu Linux (Focal)[^*]
 - x86_64/amd64/x64 for MacOS (XCode 14)
 - aarch64 for Ubuntu (Focal)
 - armhf/ARM7 and aarch64 emulation on Ubuntu
+
+[^*] Tested for constant-time behaviour.
 
 ### Tier 2
 
