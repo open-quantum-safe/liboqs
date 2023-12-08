@@ -56,6 +56,8 @@ The list below indicates all algorithms supported by liboqs, but not all those a
 - **Falcon**: Falcon-512, Falcon-1024
 - **SPHINCS+-SHA2**: SPHINCS+-SHA2-128f-simple, SPHINCS+-SHA2-128s-simple, SPHINCS+-SHA2-192f-simple, SPHINCS+-SHA2-192s-simple, SPHINCS+-SHA2-256f-simple, SPHINCS+-SHA2-256s-simple
 - **SPHINCS+-SHAKE**: SPHINCS+-SHAKE-128f-simple, SPHINCS+-SHAKE-128s-simple, SPHINCS+-SHAKE-192f-simple, SPHINCS+-SHAKE-192s-simple, SPHINCS+-SHAKE-256f-simple, SPHINCS+-SHAKE-256s-simple
+- **XMSS**: Variants of XMSS stateful signature scheames. e.g XMSS-SHA2_10_256, XMSSMT-SHA2_60/6, XMSSMT-SHA2_40/4_256 
+- **LMS**: Variants of LMS stateful signature scheames. e.g LMS_SHA256_H5_W8, LMS_SHA256_H10_W8, LMS_SHA256_H10_W8_H10_W8
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_END -->
 
 Note that for algorithms marked with a dagger (†), liboqs contains at least one implementation that uses a large amount of stack space; this may cause failures when run in threads or in constrained environments. For more information, consult the algorithm information sheets in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
@@ -112,10 +114,12 @@ The following instructions assume we are in `build`.
 
 	- `test_kem`: Simple test harness for key encapsulation mechanisms
 	- `test_sig`: Simple test harness for key signature schemes
+	- `test_sig_stfl`: Simple test harness for stateful key signature schemes
 	- `test_kem_mem`: Simple test harness for checking memory consumption of key encapsulation mechanisms
 	- `test_sig_mem`: Simple test harness for checking memory consumption of key signature schemes
 	- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
 	- `kat_sig`: Program that generates known answer test (KAT) values for signature schemes using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
+	- `kat_stfl_sig`: Program for checking results against submitted KAT values using `tests/test_kat.py`
 	- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 	- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 	- `example_kem`: Minimal runnable example showing the usage of the KEM API
