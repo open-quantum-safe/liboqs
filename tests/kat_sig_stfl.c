@@ -319,8 +319,6 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 	uint8_t *msg = NULL;
 	size_t msg_len = 0;
 	uint8_t *sm = NULL;
-
-	OQS_STATUS ret = OQS_ERROR;
 	FILE *fp_rsp = NULL;
 
 	if ((fp_rsp = fopen(katfile, "r")) == NULL) {
