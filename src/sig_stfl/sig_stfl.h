@@ -101,6 +101,9 @@ extern "C" {
 //2-Level LMS
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8_h5_w8   "LMS_SHA256_H5_W8_H5_W8" //"5/8, 5/8"
 
+//RFC 6554
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4_h5_w8  "LMS_SHA256_H10_W4_H5_W8" //"10/4, 5/8"
+
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8_h5_w8  "LMS_SHA256_H10_W8_H5_W8" //"10/8, 5/8"
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2_h10_w2 "LMS_SHA256_H10_W2_H10_W2" //"10/2, 10/2"
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4_h10_w4 "LMS_SHA256_H10_W4_H10_W4" //"10/4, 10/4"
@@ -115,7 +118,7 @@ extern "C" {
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h15_w8 "LMS_SHA256_H20_W8_H15_W8" //"20/8, 15/8"
 #define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h20_w8 "LMS_SHA256_H20_W8_H20_W8" //"20/8, 20/8"
 
-#define OQS_SIG_STFL_algs_length 60
+#define OQS_SIG_STFL_algs_length 61
 
 /* Defined LM parameter identifiers */
 /* Algorithm identifier for LMS-SHA256_N32_H5 */

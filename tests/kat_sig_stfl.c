@@ -69,10 +69,28 @@ int FindMarker(FILE *infile, const char *marker) {
 //
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
 //
-int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, const char *str) {
+size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length, const char *str) {
 	int ch, started;
 	unsigned long i;
 	unsigned char ich;
+
+	/*
+	 * Caller is just trying to get the length target data
+	 */
+	if ((Length == 0) && (a == NULL)) {
+		i = 0;
+		if (FindMarker(infile, str)) {
+			while ((ch = fgetc(infile)) != EOF) {
+				if (!isxdigit(ch)) {
+					if (ch == '\n') {
+						break;
+					}
+				}
+				i += 1;
+			}
+		}
+		return (i / 2);
+	}
 
 	if (Length == 0) {
 		a[0] = 0x00;
@@ -291,7 +309,102 @@ cleanup:
 	return ret;
 }
 
+/*
+ * LMS Test Vector
+ */
+static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
+	OQS_STATUS rc = OQS_ERROR;
+	OQS_SIG_STFL *sig = NULL;
+	uint8_t *public_key = NULL;
+	uint8_t *msg = NULL;
+	size_t msg_len = 0;
+	uint8_t *sm = NULL;
+
+	OQS_STATUS ret = OQS_ERROR;
+	FILE *fp_rsp = NULL;
+
+	if ((fp_rsp = fopen(katfile, "r")) == NULL) {
+		fprintf(stderr, "Couldn't open <%s> for read\n", katfile);
+		goto err;
+	}
+
+	//Allocate a OQS stateful signature struct
+	sig = OQS_SIG_STFL_new(method_name);
+	if (sig == NULL) {
+		fprintf(stderr, "ERROR: Failed to create signature object for %s\n", method_name);
+		goto err;
+	}
+
+	/*
+	 * Get the message length
+	 */
+	msg_len = ReadHex(fp_rsp, 0, 0, "msg = ");
+	if (!(msg_len > 0)) {
+		fprintf(stderr, "ERROR: unable to read 'msg_len' from <%s>\n", katfile);
+		goto err;
+	}
+
+	fclose(fp_rsp);
+	if ((fp_rsp = fopen(katfile, "r")) == NULL) {
+		fprintf(stderr, "Couldn't open <%s> for read\n", katfile);
+		goto err;
+	}
+
+	public_key = malloc(sig->length_public_key);
+	sm = malloc(sig->length_signature);
+	msg = malloc((unsigned long)msg_len);
+
+	if ((!msg || !sm || !public_key)) {
+		fprintf(stderr, "ERROR: unable to allocate memory.\n");
+		goto err;
+	}
+
+	/*
+	 * Read signature and public key, msg and signature data from KAT file
+	 */
+	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, "pk = ")) {
+		fprintf(stderr, "ERROR: unable to read 'pk' from <%s>\n", katfile);
+		goto err;
+	}
+	fclose(fp_rsp);
+	if ((fp_rsp = fopen(katfile, "r")) == NULL) {
+		fprintf(stderr, "Couldn't open <%s> for read\n", katfile);
+		goto err;
+	}
+
+	if (!ReadHex(fp_rsp, msg, msg_len, "msg = ")) {
+		fprintf(stderr, "ERROR: unable to read 'msg' from <%s>\n", katfile);
+		goto err;
+	}
+	fclose(fp_rsp);
+	if ((fp_rsp = fopen(katfile, "r")) == NULL) {
+		fprintf(stderr, "Couldn't open <%s> for read\n", katfile);
+		goto err;
+	}
+
+	if (!ReadHex(fp_rsp, sm, sig->length_signature, "sm = ")) {
+		fprintf(stderr, "ERROR: unable to read 'sm' from <%s>\n", katfile);
+		goto err;
+	}
+
+	//Verify KAT
+	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, sm, sig->length_signature, public_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: Verify test vector failed: %s\n", method_name);
+	}
+err:
+	OQS_SIG_STFL_free(sig);
+	OQS_MEM_insecure_free(sm);
+	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(msg);
+	if (fp_rsp) {
+		fclose(fp_rsp);
+	}
+	return rc;
+}
+
 int main(int argc, char **argv) {
+	OQS_STATUS rc;
 	OQS_init();
 
 	if (argc != 3) {
@@ -312,7 +425,11 @@ int main(int argc, char **argv) {
 
 	char *alg_name = argv[1];
 	char *katfile = argv[2];
-	OQS_STATUS rc = sig_stfl_kat(alg_name, katfile);
+	if (strncmp(alg_name, "LMS", 3) != 0) {
+		rc = sig_stfl_kat(alg_name, katfile);
+	} else {
+		rc = test_lms_kat(alg_name, katfile);
+	}
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;

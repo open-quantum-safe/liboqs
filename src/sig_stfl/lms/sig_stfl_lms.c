@@ -1921,6 +1921,88 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W2_H10_W2_new(void) {
 	return sk;
 }
 
+// ======================== LMS-SHA256 H10/W4, H5/W8 ======================== //
+
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+	if (secret_key == NULL || public_key == NULL) {
+		return OQS_ERROR;
+	}
+
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w4_h5_w8) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
+}
+
+OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_new(void) {
+
+	OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
+	if (sig == NULL) {
+		return NULL;
+	}
+	memset(sig, 0, sizeof(OQS_SIG_STFL));
+
+	sig->oid = OQS_LMS_ID_sha256_n32_h10_w4_h5_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4_h5_w8;
+	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
+	sig->euf_cma = true;
+
+	sig->length_public_key = OQS_SIG_STFL_alg_lms_length_public_key;
+	sig->length_signature = OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_length_signature;
+	sig->length_secret_key = OQS_SIG_STFL_alg_lms_length_private_key;
+
+	sig->keypair = OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_keypair;
+	sig->sign = OQS_SIG_STFL_alg_lms_sign;
+	sig->verify = OQS_SIG_STFL_alg_lms_verify;
+
+	sig->sigs_remaining = OQS_SIG_STFL_lms_sigs_left;
+	sig->sigs_total = OQS_SIG_STFL_lms_sigs_total;
+
+	return sig;
+}
+
+OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W4_H5_W8_new(void) {
+
+	// Initialize the secret key in the heap with adequate memory
+	OQS_SIG_STFL_SECRET_KEY *sk = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
+	if (sk == NULL) {
+		return NULL;
+	}
+	memset(sk, 0, sizeof(OQS_SIG_STFL_SECRET_KEY));
+
+	// Initialize the key with length_secret_key amount of bytes.
+	sk->length_secret_key = OQS_SIG_STFL_alg_lms_length_private_key;
+
+	/*
+	 * Secret Key retrieval Function
+	 */
+	sk->serialize_key = OQS_SECRET_KEY_LMS_serialize_key;
+
+	/*
+	 * set Secret Key to internal structure Function
+	 */
+	sk->deserialize_key = OQS_SECRET_KEY_LMS_deserialize_key;
+
+	/*
+	 * Set Secret Key Locking Function
+	 */
+	sk->lock_key = NULL;
+
+	/*
+	 * Set Secret Key Saving Function
+	 */
+	sk->secure_store_scrt_key = NULL;
+
+	/*
+	 * Set Secret Key free function
+	 */
+	sk->free_key = OQS_SECRET_KEY_LMS_free;
+
+	sk->set_scrt_key_store_cb = OQS_SECRET_KEY_LMS_set_store_cb;
+
+	return sk;
+}
+
 // ======================== LMS-SHA256 H10/W4, H10/W4 ======================== //
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {

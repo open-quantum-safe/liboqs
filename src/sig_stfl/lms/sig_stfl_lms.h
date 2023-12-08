@@ -27,7 +27,20 @@
  * e.g.
  * OQS_LMS_ID_sha256_n32_h5_w1 -- "5/1"     -----   0x0151
  *                                "5/1,5/2" ----- 0x025152
- 0x0LHS0H0W
+ *                    Number of levels L {1, 2, 3, ..., 8}
+ * 0x0LH(l1))W(l1)H(l2)W(l2)
+ * e.g
+ * For OQS_LMS_ID_sha256_n32_h5_w1 the oid is 0x0151
+ * Number of levels                    is.....0x01
+ * H5 ID                               is.........5
+ * W1 ID                               is..........1
+ *
+* For OQS_LMS_ID_sha256_n32_h10_w4_h5_w8 the is 0x026354
+ * Number of levels                    is.......0x02
+ * Level 1 H10 ID                      is...........6
+ * Level 1 W4 ID                       is............3
+ * Level 2 H5 ID                       is.............5
+ * Level 2 W8 ID                       is..............4
  */
 #define OQS_LMS_ID_sha256_n32_h5_w1  0x0151 //"5/1"
 #define OQS_LMS_ID_sha256_n32_h5_w2  0x0152 //"5/2"
@@ -55,7 +68,12 @@
 #define OQS_LMS_ID_sha256_n32_h25_w8 0x0194 //"25/8"
 
 //2-Level LMS
+
+//RFC 8554 example
 #define OQS_LMS_ID_sha256_n32_h5_w8_h5_w8    0x025454  //"5/8,5/8"
+
+//RFC 8554 example
+#define OQS_LMS_ID_sha256_n32_h10_w4_h5_w8   0x026354  //"10/4,5/8"
 
 //Wolf
 #define OQS_LMS_ID_sha256_n32_h10_w2_h10_w2   0x026262  //"10/2,10/2"
@@ -246,6 +264,8 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8_length_signature 2804
 
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_length_signature 3860
+
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2_length_signature 9300
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4_length_signature 5076
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8_length_signature 2964
@@ -262,6 +282,10 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W8_H5_W8_new(void);
 OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_new(void);
+
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W4_H5_W8_new(void);
+OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_new(void);
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W8_H5_W8_new(void);
