@@ -84,6 +84,10 @@ target_link_libraries(speed_kem PRIVATE ${API_TEST_DEPS})
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${API_TEST_DEPS})
 
+# Stateful SIG API tests
+add_executable(example_sig_stfl example_sig_stfl.c)
+target_link_libraries(example_sig_stfl PRIVATE ${API_TEST_DEPS})
+
 add_executable(kat_sig kat_sig.c)
 target_link_libraries(kat_sig PRIVATE ${API_TEST_DEPS})
 

@@ -340,7 +340,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 
 	/**
 	 * Store Secret Key Function
-	 * Callback function used to securely store key data
+	 * Callback function used to securely store key data after a signature generation
 	 * @param[in] sk_buf The serialized secret key data to secure store
 	 * @param[in] buf_len length of data to secure
 	 * @param[in] context application supplied data used to locate where this secret key
@@ -364,7 +364,8 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 *
 	 * @param[in] sk secret key pointer to be updated
 	 * @param[in] store_cb callback pointer
-	 * @param[in] context application data related to secret key data/identifier storage
+	 * @param[in] context application data related to secret key data/identifier storage.
+	 *                    Provided when OQS_SIG_STFL_SECRET_KEY_SET_store_cb() is called.
 	 */
 	void (*set_scrt_key_store_cb)(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 } OQS_SIG_STFL_SECRET_KEY;
@@ -532,7 +533,8 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
  *
  * @param[in] sk secret key pointer to be updated
  * @param[in] store_cb callback pointer
- * @param[in] context application data related to where how secret key data storage
+ * @param[in] context application data related to where/how secret key data storage.
+ *                    Applications allocates, tracks, deallocates this. Signature generation fails without this set.
  *
  */
 void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
@@ -551,14 +553,14 @@ void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_st
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
- * OQS_SECRET_KEY_STFL_serialize_key .
+ * OQS_SECRET_KEY_STFL_deserialize_key .
  *
  * Insert stateful byte string into a secret key object.
  * Users are responsible for deallocating buffer `sk_buf`.
  *
- * @param[in] sk secret key pointer to be serialize
- * @param[in] sk_len size of the buffer returned
- * @param[in] sk_buf secret key buffer returned. Caller deletes.
+ * @param[in] sk secret key pointer to be populated
+ * @param[in] sk_len size of the supplied buffer
+ * @param[in] sk_buf secret key buffer. Caller deletes.
  * @param[in] context application managed data related to where/how secret key data is stored.
  */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
