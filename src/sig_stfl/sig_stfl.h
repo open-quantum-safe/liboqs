@@ -340,11 +340,12 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 
 	/**
 	 * Store Secret Key Function
-	 * Callback function used to securely store key data after a signature generation
+	 * Callback function used to securely store key data after a signature generation.
+	 * When populated, this pointer points to the application supplied secure storage function.
 	 * @param[in] sk_buf The serialized secret key data to secure store
 	 * @param[in] buf_len length of data to secure
 	 * @param[in] context application supplied data used to locate where this secret key
-	 *            is stored
+	 *            is stored (passed in at the time the function pointer was set).
 	 *
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 * Ideally written to secure device
@@ -359,6 +360,15 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 */
 	void (*free_key)(OQS_SIG_STFL_SECRET_KEY *sk);
 
+	/*
+	 * Secure storage for private keys used in stateful signature schemes is outside the scope of the OQS library.
+	 * This is the responsibility of any adopting application. The application must supply
+	 * a function to for this purpose. A callback function and context data must be set in-order
+	 * to perform stateful signature generation.
+	 * The context var may contain, for example an HSM context, a filename or other such data that
+	 * is used to store the private key. This var is passed into the OQS lib when the application sets
+	 * the callback function use to save/update the private key.
+	*/
 	/**
 	 * Set Secret Key store callback Function
 	 *
