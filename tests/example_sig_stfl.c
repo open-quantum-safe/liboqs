@@ -39,7 +39,7 @@ static OQS_STATUS stfl_example(char *method_name) {
 	size_t message_len = MESSAGE_LEN;
 	size_t signature_len;
 	char *sk_fname = NULL;
-	OQS_STATUS rc;
+	OQS_STATUS rc = OQS_ERROR;
 
 	/*
 	 * Steps
