@@ -185,3 +185,4 @@
 #cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_12 1
 
 #cmakedefine OQS_ENABLE_SIG_STFL_LMS 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_n32_h5_w1 1
