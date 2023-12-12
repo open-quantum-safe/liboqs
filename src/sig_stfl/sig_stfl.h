@@ -73,59 +73,55 @@ extern "C" {
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
 
 /* Defined LMS parameter identifiers */
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1 "LMS_SHA256_N32_H5_W1" //"5/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2 "LMS_SHA256_N32_H5_W2" //"5/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4 "LMS_SHA256_N32_H5_W4" //"5/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8 "LMS_SHA256_N32_H5_W8" //"5/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h5_w1 "LMS_SHA256_H5_W1" //"5/1"
+#define OQS_SIG_STFL_alg_lms_sha256_h5_w2 "LMS_SHA256_H5_W2" //"5/2"
+#define OQS_SIG_STFL_alg_lms_sha256_h5_w4 "LMS_SHA256_H5_W4" //"5/4"
+#define OQS_SIG_STFL_alg_lms_sha256_h5_w8 "LMS_SHA256_H5_W8" //"5/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1 "LMS_SHA256_N32_H10_W1" //"10/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2 "LMS_SHA256_N32_H10_W2" //"10/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4 "LMS_SHA256_N32_H10_W4" //"10/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8 "LMS_SHA256_N32_H10_W8" //"10/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w1 "LMS_SHA256_H10_W1" //"10/1"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w2 "LMS_SHA256_H10_W2" //"10/2"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w4 "LMS_SHA256_H10_W4" //"10/4"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w8 "LMS_SHA256_H10_W8" //"10/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1 "LMS_SHA256_N32_H15_W1" //"15/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w2 "LMS_SHA256_N32_H15_W2" //"15/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w4 "LMS_SHA256_N32_H15_W4" //"15/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8 "LMS_SHA256_N32_H15_W8" //"15/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h15_w1 "LMS_SHA256_H15_W1" //"15/1"
+#define OQS_SIG_STFL_alg_lms_sha256_h15_w2 "LMS_SHA256_H15_W2" //"15/2"
+#define OQS_SIG_STFL_alg_lms_sha256_h15_w4 "LMS_SHA256_H15_W4" //"15/4"
+#define OQS_SIG_STFL_alg_lms_sha256_h15_w8 "LMS_SHA256_H15_W8" //"15/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w1 "LMS_SHA256_N32_H20_W1" //"20/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w2 "LMS_SHA256_N32_H20_W2" //"20/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w4 "LMS_SHA256_N32_H20_W4" //"20/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8 "LMS_SHA256_N32_H20_W8" //"20/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w1 "LMS_SHA256_H20_W1" //"20/1"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w2 "LMS_SHA256_H20_W2" //"20/2"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w4 "LMS_SHA256_H20_W4" //"20/4"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w8 "LMS_SHA256_H20_W8" //"20/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w1 "LMS_SHA256_N32_H25_W1" //"25/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w2 "LMS_SHA256_N32_H25_W2" //"25/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w4 "LMS_SHA256_N32_H25_W4" //"25/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w8 "LMS_SHA256_N32_H25_W8" //"25/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h25_w1 "LMS_SHA256_H25_W1" //"25/1"
+#define OQS_SIG_STFL_alg_lms_sha256_h25_w2 "LMS_SHA256_H25_W2" //"25/2"
+#define OQS_SIG_STFL_alg_lms_sha256_h25_w4 "LMS_SHA256_H25_W4" //"25/4"
+#define OQS_SIG_STFL_alg_lms_sha256_h25_w8 "LMS_SHA256_H25_W8" //"25/8"
 
 //2-Level LMS
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8_h5_w8 "LMS_SHA256_N32_H5_W8_H5_W8" //"5/8, 5/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8 "LMS_SHA256_H5_W8_H5_W8" //"5/8, 5/8"
 
 //RFC 6554
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4_h5_w8 "LMS_SHA256_N32_H10_W4_H5_W8" //"10/4, 5/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8 "LMS_SHA256_H10_W4_H5_W8" //"10/4, 5/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8_h5_w8 "LMS_SHA256_N32_H10_W8_H5_W8" //"10/8, 5/8"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2_h10_w2 "LMS_SHA256_N32_H10_W2_H10_W2" //"10/2, 10/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4_h10_w4 "LMS_SHA256_N32_H10_W4_H10_W4" //"10/4, 10/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8_h10_w8 "LMS_SHA256_N32_H10_W8_H10_W8" //"10/8, 10/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8 "LMS_SHA256_H10_W8_H5_W8" //"10/8, 5/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2 "LMS_SHA256_H10_W2_H10_W2" //"10/2, 10/2"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4 "LMS_SHA256_H10_W4_H10_W4" //"10/4, 10/4"
+#define OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8 "LMS_SHA256_H10_W8_H10_W8" //"10/8, 10/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8_h5_w8 "LMS_SHA256_N32_H15_W8_H5_W8" //"15/8, 5/8"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8_h10_w8 "LMS_SHA256_N32_H15_W8_H10_W8" //"15/8, 10/8"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8_h15_w8 "LMS_SHA256_N32_H15_W8_H15_W8" //"15/8, 15/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h15_w8_h5_w8 "LMS_SHA256_H15_W8_H5_W8" //"15/8, 5/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8 "LMS_SHA256_H15_W8_H10_W8" //"15/8, 10/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h15_w8_h15_w8 "LMS_SHA256_H15_W8_H15_W8" //"15/8, 15/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h5_w8 "LMS_SHA256_N32_H20_W8_H5_W8" //"20/8, 5/8"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h10_w8 "LMS_SHA256_N32_H20_W8_H10_W8" //"20/8, 10/8"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h15_w8 "LMS_SHA256_N32_H20_W8_H15_W8" //"20/8, 15/8"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h20_w8 "LMS_SHA256_N32_H20_W8_H20_W8" //"20/8, 20/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h5_w8 "LMS_SHA256_H20_W8_H5_W8" //"20/8, 5/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8 "LMS_SHA256_H20_W8_H10_W8" //"20/8, 10/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8 "LMS_SHA256_H20_W8_H15_W8" //"20/8, 15/8"
+#define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8 "LMS_SHA256_H20_W8_H20_W8" //"20/8, 20/8"
 
 /*
  * Total number of stateful variants defined above, used to create the tracking array
  */
 #define OQS_SIG_STFL_algs_length 61
-
-/* Defined LM parameter identifiers */
-/* Algorithm identifier for LMS-SHA256_N32_H5 */
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5 "LMS-SHA256_N32_H5"   //0x00000005
 
 typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
 

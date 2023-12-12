@@ -22,7 +22,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h5_w1) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h5_w1) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -36,8 +36,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w1_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h5_w1;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1;
+	sig->oid = OQS_LMS_ID_sha256_h5_w1;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h5_w1;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -109,7 +109,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w2_keypair(uint8_t *public_key
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h5_w2) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h5_w2) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -123,8 +123,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w2_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h5_w2;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2;
+	sig->oid = OQS_LMS_ID_sha256_h5_w2;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h5_w2;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -196,7 +196,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w4_keypair(uint8_t *public_key
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h5_w4) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h5_w4) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -210,8 +210,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w4_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h5_w4;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4;
+	sig->oid = OQS_LMS_ID_sha256_h5_w4;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h5_w4;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -283,7 +283,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w8_keypair(uint8_t *public_key
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h5_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h5_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -297,8 +297,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h5_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8;
+	sig->oid = OQS_LMS_ID_sha256_h5_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h5_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -370,7 +370,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w1_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w1) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w1) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -384,8 +384,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w1_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w1;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1;
+	sig->oid = OQS_LMS_ID_sha256_h10_w1;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w1;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -457,7 +457,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w2_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w2) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w2) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -471,8 +471,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w2_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w2;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2;
+	sig->oid = OQS_LMS_ID_sha256_h10_w2;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w2;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -544,7 +544,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w4) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w4) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -558,8 +558,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w4_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w4;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4;
+	sig->oid = OQS_LMS_ID_sha256_h10_w4;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w4;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -631,7 +631,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w8_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -645,8 +645,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8;
+	sig->oid = OQS_LMS_ID_sha256_h10_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -718,7 +718,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w1_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h15_w1) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h15_w1) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -732,8 +732,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w1_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w1;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1;
+	sig->oid = OQS_LMS_ID_sha256_h15_w1;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h15_w1;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -805,7 +805,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w2_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h15_w2) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h15_w2) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -819,8 +819,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w2_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w2;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h15_w2;
+	sig->oid = OQS_LMS_ID_sha256_h15_w2;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h15_w2;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -892,7 +892,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w4_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h15_w4) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h15_w4) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -906,8 +906,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w4_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w4;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h15_w4;
+	sig->oid = OQS_LMS_ID_sha256_h15_w4;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h15_w4;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -979,7 +979,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w8_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h15_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h15_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -993,8 +993,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8;
+	sig->oid = OQS_LMS_ID_sha256_h15_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h15_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1066,7 +1066,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w1_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w1) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w1) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1080,8 +1080,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w1_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w1;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w1;
+	sig->oid = OQS_LMS_ID_sha256_h20_w1;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w1;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1153,7 +1153,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w2_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w2) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w2) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1167,8 +1167,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w2_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w2;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w2;
+	sig->oid = OQS_LMS_ID_sha256_h20_w2;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w2;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1240,7 +1240,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w4_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w4) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w4) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1254,8 +1254,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w4_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w4;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w4;
+	sig->oid = OQS_LMS_ID_sha256_h20_w4;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w4;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1327,7 +1327,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1341,8 +1341,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8;
+	sig->oid = OQS_LMS_ID_sha256_h20_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1414,7 +1414,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w1_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h25_w1) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h25_w1) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1428,8 +1428,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h25_w1_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h25_w1;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h25_w1;
+	sig->oid = OQS_LMS_ID_sha256_h25_w1;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h25_w1;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1501,7 +1501,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w2_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h25_w2) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h25_w2) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1515,8 +1515,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h25_w2_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h25_w2;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h25_w2;
+	sig->oid = OQS_LMS_ID_sha256_h25_w2;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h25_w2;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1588,7 +1588,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w4_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h25_w4) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h25_w4) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1602,8 +1602,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h25_w4_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h25_w4;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h25_w4;
+	sig->oid = OQS_LMS_ID_sha256_h25_w4;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h25_w4;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1675,7 +1675,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w8_keypair(uint8_t *public_ke
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h25_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h25_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1689,8 +1689,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h25_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h25_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h25_w8;
+	sig->oid = OQS_LMS_ID_sha256_h25_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h25_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1764,7 +1764,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_keypair(uint8_t *publ
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h5_w8_h5_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h5_w8_h5_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1778,8 +1778,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h5_w8_h5_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8_h5_w8;
+	sig->oid = OQS_LMS_ID_sha256_h5_w8_h5_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1846,7 +1846,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w2_h10_w2) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w2_h10_w2) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1860,8 +1860,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w2_h10_w2;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2_h10_w2;
+	sig->oid = OQS_LMS_ID_sha256_h10_w2_h10_w2;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -1928,7 +1928,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_keypair(uint8_t *pub
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w4_h5_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w4_h5_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -1942,8 +1942,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w4_h5_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4_h5_w8;
+	sig->oid = OQS_LMS_ID_sha256_h10_w4_h5_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2010,7 +2010,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w4_h10_w4) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w4_h10_w4) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2024,8 +2024,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w4_h10_w4;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4_h10_w4;
+	sig->oid = OQS_LMS_ID_sha256_h10_w4_h10_w4;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2092,7 +2092,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8_keypair(uint8_t *pub
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w8_h5_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w8_h5_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2106,8 +2106,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h10_w8_h5_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8_h5_w8;
+	sig->oid = OQS_LMS_ID_sha256_h10_w8_h5_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2179,7 +2179,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h10_w8_h10_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h10_w8_h10_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2193,8 +2193,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w4;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8_h10_w8;
+	sig->oid = OQS_LMS_ID_sha256_h15_w4;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2266,7 +2266,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w8_h5_w8_keypair(uint8_t *pub
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h15_w8_h5_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h15_w8_h5_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2280,8 +2280,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w8_h5_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w8_h5_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8_h5_w8;
+	sig->oid = OQS_LMS_ID_sha256_h15_w8_h5_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h15_w8_h5_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2353,7 +2353,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h15_w8_h10_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h15_w8_h10_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2367,8 +2367,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w8_h10_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8_h10_w8;
+	sig->oid = OQS_LMS_ID_sha256_h15_w8_h10_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2440,7 +2440,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w8_h15_w8_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h15_w8_h15_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h15_w8_h15_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2454,8 +2454,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w8_h15_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h15_w8_h15_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8_h15_w8;
+	sig->oid = OQS_LMS_ID_sha256_h15_w8_h15_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h15_w8_h15_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2527,7 +2527,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h5_w8_keypair(uint8_t *pub
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w8_h5_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w8_h5_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2541,8 +2541,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h5_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w8_h5_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h5_w8;
+	sig->oid = OQS_LMS_ID_sha256_h20_w8_h5_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w8_h5_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2614,7 +2614,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w8_h10_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w8_h10_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2628,8 +2628,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w8_h10_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h10_w8;
+	sig->oid = OQS_LMS_ID_sha256_h20_w8_h10_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2701,7 +2701,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w8_h15_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w8_h15_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2715,8 +2715,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w8_h15_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h15_w8;
+	sig->oid = OQS_LMS_ID_sha256_h20_w8_h15_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
@@ -2788,7 +2788,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_keypair(uint8_t *pu
 		return OQS_ERROR;
 	}
 
-	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_n32_h20_w8_h20_w8) != 0) {
+	if (oqs_sig_stfl_lms_keypair(public_key, secret_key, (const uint32_t)OQS_LMS_ID_sha256_h20_w8_h20_w8) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -2802,8 +2802,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->oid = OQS_LMS_ID_sha256_n32_h20_w8_h20_w8;
-	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8_h20_w8;
+	sig->oid = OQS_LMS_ID_sha256_h20_w8_h20_w8;
+	sig->method_name = OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554";
 	sig->euf_cma = true;
 
