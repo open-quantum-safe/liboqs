@@ -205,7 +205,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *total, const 
 	}
 
 	*total = (unsigned long long)working_key->max_count;
-	OQS_MEM_secure_free(working_key, sizeof(struct hss_working_key));
+	hss_free_working_key(working_key);
 	return OQS_SUCCESS;
 }
 
@@ -594,6 +594,7 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 	*smlen = sig_len;
 	memcpy(sm, sig, sig_len);
 	OQS_MEM_insecure_free(sig);
+	hss_free_working_key(w);
 
 	return 0;
 }
