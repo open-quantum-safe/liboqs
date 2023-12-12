@@ -145,6 +145,17 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	}
 	fprintf(fp, "\n");
 }
+void fprint_l_str(FILE *fp, const char *S, const uint8_t *A, size_t L) {
+	size_t i;
+	fprintf(fp, "%s", S);
+	for (i = 0; i < L; i++) {
+		fprintf(fp, "%02x", A[i]);
+	}
+	if (L == 0) {
+		fprintf(fp, "00");
+	}
+	fprintf(fp, "\n");
+}
 
 OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
@@ -320,6 +331,7 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 	size_t msg_len = 0;
 	uint8_t *sm = NULL;
 	FILE *fp_rsp = NULL;
+	FILE *fh = NULL;
 
 	if ((fp_rsp = fopen(katfile, "r")) == NULL) {
 		fprintf(stderr, "Couldn't open <%s> for read\n", katfile);
@@ -335,10 +347,12 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 
 	/*
 	 * Get the message length
+	 * Zero length means no KAT is currently available, so skip this method
+	 * and return success
 	 */
 	msg_len = ReadHex(fp_rsp, 0, 0, "msg = ");
 	if (!(msg_len > 0)) {
-		fprintf(stderr, "ERROR: unable to read 'msg_len' from <%s>\n", katfile);
+		fprintf(stderr, "No msg present\n");
 		goto err;
 	}
 
@@ -389,6 +403,15 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, sm, sig->length_signature, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: Verify test vector failed: %s\n", method_name);
+	} else {
+		fh = stdout;
+		fprintf(fh, "# %s\n\n", sig->method_name);
+		fprint_l_str(fh, "msg = ", msg, msg_len);
+		fprintf(fh, "\n");
+		fprint_l_str(fh, "sm = ", sm, sig->length_signature);
+		fprintf(fh, "\n");
+		fprint_l_str(fh, "pk = ", public_key, sig->length_public_key);
+		fprintf(fh, "\n");	
 	}
 err:
 	OQS_SIG_STFL_free(sig);

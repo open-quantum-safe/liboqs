@@ -275,11 +275,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 	}
 #ifdef OQS_ENABLE_SIG_STFL_LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
 		return 1;
-#else
-		return 0;
-#endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w2)) {
 		return 1;
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w4)) {
