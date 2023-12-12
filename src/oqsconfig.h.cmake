@@ -120,6 +120,14 @@
 #cmakedefine OQS_ENABLE_SIG_dilithium_5_avx2 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_5_aarch64 1
 
+#cmakedefine OQS_ENABLE_SIG_ML_DSA 1
+#cmakedefine OQS_ENABLE_SIG_ml_dsa_44 1
+#cmakedefine OQS_ENABLE_SIG_ml_dsa_44_avx2 1
+#cmakedefine OQS_ENABLE_SIG_ml_dsa_65 1
+#cmakedefine OQS_ENABLE_SIG_ml_dsa_65_avx2 1
+#cmakedefine OQS_ENABLE_SIG_ml_dsa_87 1
+#cmakedefine OQS_ENABLE_SIG_ml_dsa_87_avx2 1
+
 #cmakedefine OQS_ENABLE_SIG_FALCON 1
 #cmakedefine OQS_ENABLE_SIG_falcon_512 1
 #cmakedefine OQS_ENABLE_SIG_falcon_512_avx2 1

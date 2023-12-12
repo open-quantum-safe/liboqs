@@ -1,0 +1,69 @@
+diff --git a/Dilithium2_META.yml b/Dilithium2_META.yml
+index 78a3b82..1e37507 100644
+--- a/Dilithium2_META.yml
++++ b/Dilithium2_META.yml
+@@ -24,16 +24,14 @@ implementations:
+     signature_keypair: pqcrystals_dilithium2_ref_keypair
+     signature_signature: pqcrystals_dilithium2_ref_signature
+     signature_verify: pqcrystals_dilithium2_ref_verify
+-    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/dilithium/tree/standard
+     compile_opts: -DDILITHIUM_MODE=2
+     signature_keypair: pqcrystals_dilithium2_avx2_keypair
+     signature_signature: pqcrystals_dilithium2_avx2_signature
+     signature_verify: pqcrystals_dilithium2_avx2_verify
+-    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2
++    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:
+diff --git a/Dilithium3_META.yml b/Dilithium3_META.yml
+index d9b76e2..dbd3677 100644
+--- a/Dilithium3_META.yml
++++ b/Dilithium3_META.yml
+@@ -24,16 +24,14 @@ implementations:
+     signature_keypair: pqcrystals_dilithium3_ref_keypair
+     signature_signature: pqcrystals_dilithium3_ref_signature
+     signature_verify: pqcrystals_dilithium3_ref_verify
+-    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/dilithium/tree/standard
+     compile_opts: -DDILITHIUM_MODE=3
+     signature_keypair: pqcrystals_dilithium3_avx2_keypair
+     signature_signature: pqcrystals_dilithium3_avx2_signature
+     signature_verify: pqcrystals_dilithium3_avx2_verify
+-    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2
++    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:
+diff --git a/Dilithium5_META.yml b/Dilithium5_META.yml
+index c2ea5f0..3eb4bf5 100644
+--- a/Dilithium5_META.yml
++++ b/Dilithium5_META.yml
+@@ -24,16 +24,14 @@ implementations:
+     signature_keypair: pqcrystals_dilithium5_ref_keypair
+     signature_signature: pqcrystals_dilithium5_ref_signature
+     signature_verify: pqcrystals_dilithium5_ref_verify
+-    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/dilithium/tree/standard
+     compile_opts: -DDILITHIUM_MODE=5
+     signature_keypair: pqcrystals_dilithium5_avx2_keypair
+     signature_signature: pqcrystals_dilithium5_avx2_signature
+     signature_verify: pqcrystals_dilithium5_avx2_verify
+-    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2
++    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:

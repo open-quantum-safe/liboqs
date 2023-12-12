@@ -273,6 +273,29 @@ endif()
 endif()
 
 
+option(OQS_ENABLE_SIG_ML_DSA "Enable ml_dsa algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44_avx2 "" ON "OQS_ENABLE_SIG_ml_dsa_44" OFF)
+endif()
+endif()
+
+cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65_avx2 "" ON "OQS_ENABLE_SIG_ml_dsa_65" OFF)
+endif()
+endif()
+
+cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87_avx2 "" ON "OQS_ENABLE_SIG_ml_dsa_87" OFF)
+endif()
+endif()
+
+
 option(OQS_ENABLE_SIG_FALCON "Enable falcon algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_falcon_512 "" ON "OQS_ENABLE_SIG_FALCON" OFF)
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
@@ -396,7 +419,7 @@ if(NOT ((OQS_MINIMAL_BUILD STREQUAL "") OR (OQS_MINIMAL_BUILD STREQUAL "OFF")))
 	filter_algs("${OQS_MINIMAL_BUILD}")
 elseif (${OQS_ALGS_ENABLED} STREQUAL "STD")
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_LIST_STANDARDIZED_ALGS_START
-	filter_algs("KEM_kyber_512;KEM_kyber_768;KEM_kyber_1024;SIG_dilithium_2;SIG_dilithium_3;SIG_dilithium_5;SIG_falcon_512;SIG_falcon_1024;SIG_sphincs_sha2_128f_simple;SIG_sphincs_sha2_128s_simple;SIG_sphincs_sha2_192f_simple;SIG_sphincs_sha2_192s_simple;SIG_sphincs_sha2_256f_simple;SIG_sphincs_sha2_256s_simple;SIG_sphincs_shake_128f_simple;SIG_sphincs_shake_128s_simple;SIG_sphincs_shake_192f_simple;SIG_sphincs_shake_192s_simple;SIG_sphincs_shake_256f_simple;SIG_sphincs_shake_256s_simple")
+	filter_algs("KEM_kyber_512;KEM_kyber_768;KEM_kyber_1024;SIG_dilithium_2;SIG_dilithium_3;SIG_dilithium_5;SIG_ml_dsa_44;SIG_ml_dsa_65;SIG_ml_dsa_87;SIG_falcon_512;SIG_falcon_1024;SIG_sphincs_sha2_128f_simple;SIG_sphincs_sha2_128s_simple;SIG_sphincs_sha2_192f_simple;SIG_sphincs_sha2_192s_simple;SIG_sphincs_sha2_256f_simple;SIG_sphincs_sha2_256s_simple;SIG_sphincs_shake_128f_simple;SIG_sphincs_shake_128s_simple;SIG_sphincs_shake_192f_simple;SIG_sphincs_shake_192s_simple;SIG_sphincs_shake_256f_simple;SIG_sphincs_shake_256s_simple")
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_LIST_STANDARDIZED_ALGS_END
 elseif(${OQS_ALGS_ENABLED} STREQUAL "NIST_R4")
 	filter_algs("KEM_classic_mceliece_348864;KEM_classic_mceliece_348864f;KEM_classic_mceliece_460896;KEM_classic_mceliece_460896f;KEM_classic_mceliece_6688128;KEM_classic_mceliece_6688128f;KEM_classic_mceliece_6960119;KEM_classic_mceliece_6960119f;KEM_classic_mceliece_8192128;KEM_classic_mceliece_8192128f;KEM_hqc_128;KEM_hqc_192;KEM_hqc_256;KEM_bike_l1;KEM_bike_l3")

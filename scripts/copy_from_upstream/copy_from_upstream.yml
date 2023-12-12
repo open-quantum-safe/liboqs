@@ -37,6 +37,14 @@ upstreams:
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
+  -
+    name: pqcrystals-dilithium-standard
+    git_url: https://github.com/bhess/dilithium.git
+    git_branch: bhe-standard-fixes
+    git_commit: 588562ac2cc777dfa407e34532d945b5f06b8ffd
+    sig_meta_path: '{pretty_name_full}_META.yml'
+    sig_scheme_path: '.'
+    patches: [pqcrystals-dilithium-standard-yml.patch, pqcrystals-dilithium-standard-ref-shake-aes.patch, pqcrystals-dilithium-standard-avx2-shake-aes.patch]
 kems:
   -
     name: classic_mceliece
@@ -121,6 +129,23 @@ kems:
         scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
+#  -
+#    name: ml-kem
+#    default_implementation: ref
+#    upstream_location: pqcrystals-kyber-standard
+#    schemes:
+#      -
+#        scheme: "512"
+#        pqclean_scheme: ml-kem-512-ipd
+#        pretty_name_full: ML-KEM-512-ipd
+#      -
+#        scheme: "768"
+#        pqclean_scheme: ml-kem-768-ipd
+#        pretty_name_full: ML-KEM-768-ipd
+#      -
+#        scheme: "1024"
+#        pqclean_scheme: ml-kem-1024-ipd
+#        pretty_name_full: ML-KEM-512-ipd
 sigs:
   -
     name: dilithium
@@ -145,6 +170,26 @@ sigs:
         scheme: "5"
         pqclean_scheme: dilithium5
         pretty_name_full: Dilithium5
+        signed_msg_order: sig_then_msg
+  -
+    name: ml_dsa
+    default_implementation: ref
+    upstream_location: pqcrystals-dilithium-standard
+    schemes:
+      -
+        scheme: "44"
+        pqclean_scheme: ml-dsa-44-ipd
+        pretty_name_full: ML-DSA-44-ipd
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "65"
+        pqclean_scheme: ml-dsa-65-ipd
+        pretty_name_full: ML-DSA-65-ipd
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "87"
+        pqclean_scheme: ml-dsa-87-ipd
+        pretty_name_full: ML-DSA-87-ipd
         signed_msg_order: sig_then_msg
   -
     name: falcon
