@@ -411,7 +411,7 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		fprint_l_str(fh, "sm = ", sm, sig->length_signature);
 		fprintf(fh, "\n");
 		fprint_l_str(fh, "pk = ", public_key, sig->length_public_key);
-		fprintf(fh, "\n");	
+		fprintf(fh, "\n");
 	}
 err:
 	OQS_SIG_STFL_free(sig);
