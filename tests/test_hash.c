@@ -105,14 +105,14 @@ static int do_sha256(void) {
 		return -4;
 	}
 
-    // hash increment with the entire msg len
-     OQS_SHA2_sha256_inc(&state6, msg, msg_len);
-     OQS_SHA2_sha256_inc_finalize(output_inc, &state6, NULL, 0);
-    if (memcmp(output, output_inc, 32) != 0) {
-        fprintf(stderr, "ERROR: Incremental API with the entire msg.\n");
-        free(msg);
-        return -3;
-    }
+	// hash increment with the entire msg len
+	OQS_SHA2_sha256_inc(&state6, msg, msg_len);
+	OQS_SHA2_sha256_inc_finalize(output_inc, &state6, NULL, 0);
+	if (memcmp(output, output_inc, 32) != 0) {
+		fprintf(stderr, "ERROR: Incremental API with the entire msg.\n");
+		free(msg);
+		return -3;
+	}
 
 	// hash with combination of block-size increments and non block-size increments  [64 bytes] + [n < 64 bytes]
 	if (msg_len > 64) {

@@ -293,22 +293,22 @@ void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) 
 		}
 
 		if (state->data_len < 64) {
-			break;
-		}
-
-		/*
-		 * Process a complete block now
-		 */
-		bytes = load_bigendian_64(state->ctx + 32) + 64;
-		crypto_hashblocks_sha256_armv8(state->ctx, state->data, 64);
-		store_bigendian_64(state->ctx + 32, bytes);
-
-		/*
-		 * update the remaining input
-		 */
-		len -= incr;
-		state->data_len = 0;
+		break;
 	}
+
+	/*
+	 * Process a complete block now
+	 */
+	bytes = load_bigendian_64(state->ctx + 32) + 64;
+	crypto_hashblocks_sha256_armv8(state->ctx, state->data, 64);
+	store_bigendian_64(state->ctx + 32, bytes);
+
+	/*
+	 * update the remaining input
+	 */
+	len -= incr;
+	state->data_len = 0;
+}
 }
 
 void oqs_sha2_sha224_inc_blocks_armv8(sha224ctx *state, const uint8_t *in, size_t inblocks) {
