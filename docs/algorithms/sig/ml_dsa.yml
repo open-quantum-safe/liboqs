@@ -1,0 +1,120 @@
+name: ML-DSA
+type: signature
+principal-submitters:
+- Vadim Lyubashevsky
+auxiliary-submitters:
+- Shi Bai
+- Léo Ducas
+- Eike Kiltz
+- Tancrède Lepoint
+- Peter Schwabe
+- Gregor Seiler
+- Damien Stehlé
+crypto-assumption: hardness of lattice problems over module lattices
+website: https://pq-crystals.org/dilithium/
+nist-round: ipd
+spec-version: pq-crystals 20230825
+primary-upstream:
+  source: https://github.com/pq-crystals/dilithium/commit/918af1a6eaedcedf9fdd8aaaca6c1fccd5a7a51f
+    with copy_from_upstream patches
+  spdx-license-identifier: CC0-1.0 or Apache-2.0
+optimized-upstreams:
+  oldpqclean-aarch64:
+    source: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a
+      with copy_from_upstream patches
+    spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT)
+      and MIT
+parameter-sets:
+- name: ML-DSA-44-ipd
+  claimed-nist-level: 2
+  claimed-security: EUF-CMA
+  length-public-key: 1312
+  length-secret-key: 2560
+  length-signature: 2420
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: ML-DSA-65-ipd
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 1952
+  length-secret-key: 4032
+  length-signature: 3309
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: ML-DSA-87-ipd
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 2592
+  length-secret-key: 4896
+  length-signature: 4627
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false

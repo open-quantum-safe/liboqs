@@ -1,8 +1,8 @@
 diff --git a/Kyber1024_META.yml b/ML-KEM-1024-ipd_META.yml
-similarity index 72%
+similarity index 55%
 rename from Kyber1024_META.yml
 rename to ML-KEM-1024-ipd_META.yml
-index 7c586ea..ffafcf0 100644
+index baa5ca3..ffafcf0 100644
 --- a/Kyber1024_META.yml
 +++ b/ML-KEM-1024-ipd_META.yml
 @@ -1,4 +1,4 @@
@@ -11,8 +11,23 @@ index 7c586ea..ffafcf0 100644
  type: kem
  claimed-nist-level: 5
  claimed-security: IND-CCA2
-@@ -25,19 +25,17 @@ implementations:
-     version: https://github.com/pq-crystals/kyber/tree/standard
+@@ -6,8 +6,8 @@ length-public-key: 1568
+ length-ciphertext: 1568
+ length-secret-key: 3168
+ length-shared-secret: 32
+-nistkat-sha256: 5afcf2a568ad32d49b55105b032af1850f03f3888ff9e2a72f4059c58e968f60
+-testvectors-sha256: ff1a854b9b6761a70c65ccae85246fe0596a949e72eae0866a8a2a2d4ea54b10
++nistkat-sha256: 03d6494b74c45d010e61b0328c1ab318c4df3b7f9dbd04d0e35b3468848584b7
++testvectors-sha256: 85ab251d6e749e6b27507a8a6ec473ba2e8419c1aef87d0cd5ec9903c1bb92df
+ principal-submitters:
+   - Peter Schwabe
+ auxiliary-submitters:
+@@ -22,22 +22,20 @@ auxiliary-submitters:
+   - Damien Stehlé
+ implementations:
+   - name: ref
+-    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
++    version: https://github.com/pq-crystals/kyber/tree/standard
      folder_name: ref
      compile_opts: -DKYBER_K=4
 -    signature_keypair: pqcrystals_kyber1024_ref_keypair
@@ -25,7 +40,8 @@ index 7c586ea..ffafcf0 100644
 +    signature_dec: pqcrystals_ml_kem_1024_ipd_ref_dec
 +    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/kyber/tree/standard
+-    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
++    version: https://github.com/pq-crystals/kyber/tree/standard
      compile_opts: -DKYBER_K=4
 -    signature_keypair: pqcrystals_kyber1024_avx2_keypair
 -    signature_enc: pqcrystals_kyber1024_avx2_enc
@@ -40,10 +56,10 @@ index 7c586ea..ffafcf0 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Kyber512_META.yml b/ML-KEM-512-ipd_META.yml
-similarity index 72%
+similarity index 55%
 rename from Kyber512_META.yml
 rename to ML-KEM-512-ipd_META.yml
-index d7b07e7..d20f0b1 100644
+index b251701..d20f0b1 100644
 --- a/Kyber512_META.yml
 +++ b/ML-KEM-512-ipd_META.yml
 @@ -1,4 +1,4 @@
@@ -52,8 +68,23 @@ index d7b07e7..d20f0b1 100644
  type: kem
  claimed-nist-level: 1
  claimed-security: IND-CCA2
-@@ -25,19 +25,17 @@ implementations:
-     version: https://github.com/pq-crystals/kyber/tree/standard
+@@ -6,8 +6,8 @@ length-public-key: 800
+ length-ciphertext: 768
+ length-secret-key: 1632
+ length-shared-secret: 32
+-nistkat-sha256: bb0481d3325d828817900b709d23917cefbc10026fc857f098979451f67bb0ca
+-testvectors-sha256: 6730bb552c22d9d2176ffb5568e48eb30952cf1f065073ec5f9724f6a3c6ea85
++nistkat-sha256: 76aae1fa3f8367522700b22da635a5bc4ced4298edb0eb9947aa3ba60d62676f
++testvectors-sha256: e1ac6fb45e2511f4170a3527c0c50dcd61336f47113df7a299a61ef8394bd669
+ principal-submitters:
+   - Peter Schwabe
+ auxiliary-submitters:
+@@ -22,22 +22,20 @@ auxiliary-submitters:
+   - Damien Stehlé
+ implementations:
+   - name: ref
+-    version: https://github.com/pq-crystals/kyber/commit/74cad307858b61e434490c75f812cb9b9ef7279b
++    version: https://github.com/pq-crystals/kyber/tree/standard
      folder_name: ref
      compile_opts: -DKYBER_K=2 
 -    signature_keypair: pqcrystals_kyber512_ref_keypair
@@ -66,7 +97,8 @@ index d7b07e7..d20f0b1 100644
 +    signature_dec: pqcrystals_ml_kem_512_ipd_ref_dec
 +    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/kyber/tree/standard
+-    version: https://github.com/pq-crystals/kyber/commit/36414d64fc1890ed58d1ca8b1e0cab23635d1ac2
++    version: https://github.com/pq-crystals/kyber/tree/standard
      compile_opts: -DKYBER_K=2 
 -    signature_keypair: pqcrystals_kyber512_avx2_keypair
 -    signature_enc: pqcrystals_kyber512_avx2_enc
@@ -81,10 +113,10 @@ index d7b07e7..d20f0b1 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Kyber768_META.yml b/ML-KEM-768-ipd_META.yml
-similarity index 72%
+similarity index 55%
 rename from Kyber768_META.yml
 rename to ML-KEM-768-ipd_META.yml
-index 92747ea..e768cd5 100644
+index 7a0cc3d..e768cd5 100644
 --- a/Kyber768_META.yml
 +++ b/ML-KEM-768-ipd_META.yml
 @@ -1,4 +1,4 @@
@@ -93,8 +125,23 @@ index 92747ea..e768cd5 100644
  type: kem
  claimed-nist-level: 3
  claimed-security: IND-CCA2
-@@ -25,19 +25,17 @@ implementations:
-     version: https://github.com/pq-crystals/kyber/tree/standard
+@@ -6,8 +6,8 @@ length-public-key: 1184
+ length-ciphertext: 1088
+ length-secret-key: 2400
+ length-shared-secret: 32
+-nistkat-sha256: 89e82a5bf2d4ddb2c6444e10409e6d9ca65dafbca67d1a0db2c9b54920a29172
+-testvectors-sha256: 667c8ca2ca93729c0df6ff24588460bad1bbdbfb64ece0fe8563852a7ff348c6
++nistkat-sha256: c7e76b4b30c786b5b70c152a446e7832c1cb42b3816ec048dbeaf7041211b310
++testvectors-sha256: 2586721a714c439f6fef26e29ee1c4c67c6207186f810617f278e6ce3e67ea0d
+ principal-submitters:
+   - Peter Schwabe
+ auxiliary-submitters:
+@@ -22,22 +22,20 @@ auxiliary-submitters:
+   - Damien Stehlé
+ implementations:
+   - name: ref
+-    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
++    version: https://github.com/pq-crystals/kyber/tree/standard
      folder_name: ref
      compile_opts: -DKYBER_K=3
 -    signature_keypair: pqcrystals_kyber768_ref_keypair
@@ -107,7 +154,8 @@ index 92747ea..e768cd5 100644
 +    signature_dec: pqcrystals_ml_kem_768_ipd_ref_dec
 +    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/kyber/tree/standard
+-    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
++    version: https://github.com/pq-crystals/kyber/tree/standard
      compile_opts: -DKYBER_K=3
 -    signature_keypair: pqcrystals_kyber768_avx2_keypair
 -    signature_enc: pqcrystals_kyber768_avx2_enc
@@ -347,6 +395,33 @@ index 0802c74..36b2b98 100644
  #else
  #error "KYBER_K must be in {2,3,4}"
  #endif
+diff --git a/ref/poly.c b/ref/poly.c
+index 017cacf..9556ee5 100644
+--- a/ref/poly.c
++++ b/ref/poly.c
+@@ -180,19 +180,14 @@ void poly_frommsg(poly *r, const uint8_t msg[KYBER_INDCPA_MSGBYTES])
+ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const poly *a)
+ {
+   unsigned int i,j;
+-  uint32_t t;
++  uint16_t t;
+ 
+   for(i=0;i<KYBER_N/8;i++) {
+     msg[i] = 0;
+     for(j=0;j<8;j++) {
+       t  = a->coeffs[8*i+j];
+-      // t += ((int16_t)t >> 15) & KYBER_Q;
+-      // t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
+-      t <<= 1;
+-      t += 1665;
+-      t *= 80635;
+-      t >>= 28;
+-      t &= 1;
++      t += ((int16_t)t >> 15) & KYBER_Q;
++      t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
+       msg[i] |= t << j;
+     }
+   }
 diff --git a/ref/symmetric-shake.c b/ref/symmetric-shake.c
 index 6a99071..20f4518 100644
 --- a/ref/symmetric-shake.c

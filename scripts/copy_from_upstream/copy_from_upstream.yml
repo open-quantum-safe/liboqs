@@ -31,12 +31,12 @@ upstreams:
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
     name: pqcrystals-kyber-standard
-    git_url: https://github.com/bhess/kyber.git
-    git_branch: bhe-ymlupd
-    git_commit: 0bf4adf5a0a93d7ff51b89fac228d0f65e148fea
+    git_url: https://github.com/pq-crystals/kyber.git
+    git_branch: standard
+    git_commit: bc8e640727b5178eb1c65867d6ba6599b3ad88e5
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-kyber-standard-alldiff.patch]
+    patches: [pqcrystals-ml_kem_ipd.patch]
     #patches: [pqcrystals-kyber-standard-yml.patch, pqcrystals-kyber-standard-ref-shake-aes.patch, pqcrystals-kyber-standard-avx2-shake-aes.patch]
   -
     name: pqcrystals-dilithium
@@ -48,12 +48,12 @@ upstreams:
     patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
   -
     name: pqcrystals-dilithium-standard
-    git_url: https://github.com/bhess/dilithium.git
-    git_branch: bhe-standard-fixes
-    git_commit: 588562ac2cc777dfa407e34532d945b5f06b8ffd
+    git_url: https://github.com/pq-crystals/dilithium.git
+    git_branch: standard
+    git_commit: 918af1a6eaedcedf9fdd8aaaca6c1fccd5a7a51f
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-dilithium-standard-alldiff.patch]
+    patches: [pqcrystals-ml_dsa_ipd.patch]
     #patches: [pqcrystals-dilithium-standard-yml.patch, pqcrystals-dilithium-standard-ref-shake-aes.patch, pqcrystals-dilithium-standard-avx2-shake-aes.patch]
 kems:
   -
