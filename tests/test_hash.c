@@ -60,11 +60,12 @@ static int do_sha256(void) {
 	OQS_SHA2_sha256_inc_init(&state);
 
 	// clone state
-	OQS_SHA2_sha256_ctx state2, state3, state4, state5;
+	OQS_SHA2_sha256_ctx state2, state3, state4, state5, state6;
 	OQS_SHA2_sha256_inc_ctx_clone(&state2, &state);
 	OQS_SHA2_sha256_inc_ctx_clone(&state3, &state);
 	OQS_SHA2_sha256_inc_ctx_clone(&state4, &state);
 	OQS_SHA2_sha256_inc_ctx_clone(&state5, &state);
+	OQS_SHA2_sha256_inc_ctx_clone(&state6, &state);
 
 	// hash with first state
 	if (msg_len > 64) {
@@ -92,7 +93,7 @@ static int do_sha256(void) {
 		return -3;
 	}
 
-	// hash with increment API less than block size
+	// hash with increment 1 byte at a time
 	size_t i = 0;
 	for (i = 0; i < msg_len; i++) {
 		OQS_SHA2_sha256_inc(&state3, &msg[i], 1);
@@ -102,6 +103,15 @@ static int do_sha256(void) {
 		fprintf(stderr, "ERROR: Non-block Incremental API with cloned state does not match main API\n");
 		free(msg);
 		return -4;
+	}
+
+	// hash increment with the entire msg len
+	OQS_SHA2_sha256_inc(&state6, msg, msg_len);
+	OQS_SHA2_sha256_inc_finalize(output_inc, &state6, NULL, 0);
+	if (memcmp(output, output_inc, 32) != 0) {
+		fprintf(stderr, "ERROR: Incremental API with the entire msg.\n");
+		free(msg);
+		return -3;
 	}
 
 	// hash with combination of block-size increments and non block-size increments  [64 bytes] + [n < 64 bytes]
