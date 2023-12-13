@@ -15,7 +15,7 @@
 #include "system_info.c"
 
 typedef struct {
-	const uint8_t* pos;
+	const uint8_t *pos;
 } fixed_prng_state;
 
 fixed_prng_state prng_state = { .pos = 0 };
@@ -42,29 +42,29 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 }
 
 static uint8_t hexCharToDecimal(char c) {
-    if (c >= '0' && c <= '9') {
-        return (uint8_t) (c - '0');
-    } else if (c >= 'a' && c <= 'f') {
-        return (uint8_t) (c - 'a' + 10);
-    } else if (c >= 'A' && c <= 'F') {
-        return (uint8_t) (c - 'A' + 10);
-    } else {
-        fprintf(stderr, "Invalid hex character: %c\n", c);
+	if (c >= '0' && c <= '9') {
+		return (uint8_t) (c - '0');
+	} else if (c >= 'a' && c <= 'f') {
+		return (uint8_t) (c - 'a' + 10);
+	} else if (c >= 'A' && c <= 'F') {
+		return (uint8_t) (c - 'A' + 10);
+	} else {
+		fprintf(stderr, "Invalid hex character: %c\n", c);
 		return 0;
-    }
+	}
 }
 
 static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
-    size_t len = strlen(hexString);
+	size_t len = strlen(hexString);
 
-    if (len % 2 != 0) {
-        fprintf(stderr, "Hex string must have an even number of characters\n");
-        exit(EXIT_FAILURE);
-    }
+	if (len % 2 != 0) {
+		fprintf(stderr, "Hex string must have an even number of characters\n");
+		exit(EXIT_FAILURE);
+	}
 
-    for (size_t i = 0, j = 0; i < len; i += 2, j++) {
-        byteArray[j] = (uint8_t) ((hexCharToDecimal(hexString[i]) << 4) | hexCharToDecimal(hexString[i + 1]));
-    }
+	for (size_t i = 0, j = 0; i < len; i += 2, j++) {
+		byteArray[j] = (uint8_t) ((hexCharToDecimal(hexString[i]) << 4) | hexCharToDecimal(hexString[i + 1]));
+	}
 }
 
 static inline uint16_t UINT16_TO_BE(const uint16_t x) {
@@ -91,17 +91,17 @@ static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *
 
 static void MLDSA_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	memcpy(random_array, prng_state.pos, bytes_to_read);
-	prng_state.pos += bytes_to_read;	
+	prng_state.pos += bytes_to_read;
 }
 
 static void MLDSA_randombytes_free(void) {
 	prng_state.pos = 0;
 }
 
-OQS_STATUS sig_vector(const char *method_name, 
-	uint8_t *prng_output_stream,
-	const uint8_t *sig_msg, size_t sig_msg_len, const uint8_t *sig_sk, 
-	const uint8_t *verif_sig, const uint8_t *verif_pk, const uint8_t *verif_msg, size_t verif_msg_len) {
+OQS_STATUS sig_vector(const char *method_name,
+                      uint8_t *prng_output_stream,
+                      const uint8_t *sig_msg, size_t sig_msg_len, const uint8_t *sig_sk,
+                      const uint8_t *verif_sig, const uint8_t *verif_pk, const uint8_t *verif_msg, size_t verif_msg_len) {
 
 	uint8_t *entropy_input;
 	uint8_t seed[48];
@@ -221,12 +221,12 @@ int main(int argc, char **argv) {
 	char *verif_msg = argv[7];
 	size_t verif_msg_len = strlen(verif_msg) / 2;
 
-	if (strlen(prng_output_stream) % 2 != 0 || 
-		strlen(sig_msg) % 2 != 0 || 
-		strlen(sig_sk) % 2 != 0 || 
-		strlen(verif_sig) % 2 != 0 || 
-		strlen(verif_pk) % 2 != 0 || 
-		strlen(verif_msg) % 2 != 0) {
+	if (strlen(prng_output_stream) % 2 != 0 ||
+	        strlen(sig_msg) % 2 != 0 ||
+	        strlen(sig_sk) % 2 != 0 ||
+	        strlen(verif_sig) % 2 != 0 ||
+	        strlen(verif_pk) % 2 != 0 ||
+	        strlen(verif_msg) % 2 != 0) {
 		return EXIT_FAILURE;
 	}
 
