@@ -654,14 +654,15 @@ void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t in
 
 void oqs_sha2_sha256_inc_c(sha256ctx *state, const uint8_t *in, size_t len) {
 	uint64_t bytes = 0;
+	size_t in_index = 0;
 	while (len) {
 		size_t incr = 64 - state->data_len;
 		if (incr > len) {
 			incr = len;
 		}
 
-		for (size_t i = 0; i < incr; ++i, state->data_len++) {
-			state->data[state->data_len] = in[i];
+		for (size_t i = 0; i < incr; ++i, state->data_len++, in_index++) {
+			state->data[state->data_len] = in[in_index];
 		}
 
 		if (state->data_len < 64) {
@@ -718,8 +719,11 @@ void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_
 		}
 
 		memcpy(tmp_in, state->data, state->data_len);
-		memcpy(tmp_in + state->data_len, in, inlen);
+		if (in && inlen) {
+			memcpy(tmp_in + state->data_len, in, inlen);
+		}
 		new_in = tmp_in;
+		state->data_len = 0;
 	}
 
 	uint64_t bytes = load_bigendian_64(state->ctx + 32) + new_inlen;

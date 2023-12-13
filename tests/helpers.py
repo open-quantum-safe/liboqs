@@ -114,8 +114,8 @@ def available_sig_stfls_by_name():
     with open(os.path.join('src', 'sig_stfl', 'sig_stfl.h')) as fh:
         for line in fh:
             if line.startswith("#define OQS_SIG_STFL_alg_"):
-                sig_stfl_name = line.split(' ')[2]
-                sig_stfl_name = sig_stfl_name[1:-2]
+                sig_stfl_name = line.split(' ')[2].strip()
+                sig_stfl_name = sig_stfl_name[1:-1]
                 available_names.append(sig_stfl_name)
     return available_names
 
@@ -126,8 +126,8 @@ def is_sig_stfl_enabled_by_name(name):
             if line.startswith("#define OQS_SIG_STFL_alg_"):
                 sig_stfl_symbol = line.split(' ')[1]
                 sig_stfl_symbol = sig_stfl_symbol[len("OQS_SIG_STFL_alg_"):]
-                sig_stfl_name = line.split(' ')[2]
-                sig_stfl_name = sig_stfl_name[1:-2]
+                sig_stfl_name = line.split(' ')[2].strip()
+                sig_stfl_name = sig_stfl_name[1:-1]
                 if sig_stfl_name == name:
                     symbol = sig_stfl_symbol
                     break
@@ -202,8 +202,10 @@ def get_katfile(t: str, sig_stfl_name: str) -> str:
     algo_dir = ''
     if "XMSS" in sig_stfl_name:
         algo_dir = 'xmss'
-    if not algo_dir:
-        return '' 
+    if "LMS" in sig_stfl_name:
+        algo_dir = 'lms'
+    if algo_dir == '':
+        return ''
     # Replace the "/" to "-" in XMSSMT parameters
     clean_sig_stfl_name = sig_stfl_name.replace("/", "-", 1)
     kat_filename = f"{clean_sig_stfl_name}.rsp"

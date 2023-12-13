@@ -88,6 +88,10 @@ set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
+# Stateful SIG API tests
+add_executable(example_sig_stfl example_sig_stfl.c)
+target_link_libraries(example_sig_stfl PRIVATE ${TEST_DEPS})
+
 add_executable(kat_sig kat_sig.c test_helpers.c)
 target_link_libraries(kat_sig PRIVATE ${TEST_DEPS})
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)

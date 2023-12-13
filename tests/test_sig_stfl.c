@@ -1001,6 +1001,7 @@ int main(int argc, char **argv) {
 
 	const char *alg_name = argv[1];
 	const char *katfile = argv[2];
+
 	if (!OQS_SIG_STFL_alg_is_enabled(alg_name)) {
 		printf("Stateful signature algorithm %s not enabled!\n", alg_name);
 		OQS_destroy();
