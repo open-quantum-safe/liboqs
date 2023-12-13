@@ -30,6 +30,15 @@ upstreams:
     kem_scheme_path: '.'
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
+    name: pqcrystals-kyber-standard
+    git_url: https://github.com/bhess/kyber.git
+    git_branch: bhe-ymlupd
+    git_commit: 0bf4adf5a0a93d7ff51b89fac228d0f65e148fea
+    kem_meta_path: '{pretty_name_full}_META.yml'
+    kem_scheme_path: '.'
+    patches: [pqcrystals-kyber-standard-alldiff.patch]
+    #patches: [pqcrystals-kyber-standard-yml.patch, pqcrystals-kyber-standard-ref-shake-aes.patch, pqcrystals-kyber-standard-avx2-shake-aes.patch]
+  -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
@@ -44,7 +53,8 @@ upstreams:
     git_commit: 588562ac2cc777dfa407e34532d945b5f06b8ffd
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-dilithium-standard-yml.patch, pqcrystals-dilithium-standard-ref-shake-aes.patch, pqcrystals-dilithium-standard-avx2-shake-aes.patch]
+    patches: [pqcrystals-dilithium-standard-alldiff.patch]
+    #patches: [pqcrystals-dilithium-standard-yml.patch, pqcrystals-dilithium-standard-ref-shake-aes.patch, pqcrystals-dilithium-standard-avx2-shake-aes.patch]
 kems:
   -
     name: classic_mceliece
@@ -129,23 +139,23 @@ kems:
         scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
-#  -
-#    name: ml-kem
-#    default_implementation: ref
-#    upstream_location: pqcrystals-kyber-standard
-#    schemes:
-#      -
-#        scheme: "512"
-#        pqclean_scheme: ml-kem-512-ipd
-#        pretty_name_full: ML-KEM-512-ipd
-#      -
-#        scheme: "768"
-#        pqclean_scheme: ml-kem-768-ipd
-#        pretty_name_full: ML-KEM-768-ipd
-#      -
-#        scheme: "1024"
-#        pqclean_scheme: ml-kem-1024-ipd
-#        pretty_name_full: ML-KEM-512-ipd
+  -
+    name: ml_kem
+    default_implementation: ref
+    upstream_location: pqcrystals-kyber-standard
+    schemes:
+      -
+        scheme: "512"
+        pqclean_scheme: ml-kem-512-ipd
+        pretty_name_full: ML-KEM-512-ipd
+      -
+        scheme: "768"
+        pqclean_scheme: ml-kem-768-ipd
+        pretty_name_full: ML-KEM-768-ipd
+      -
+        scheme: "1024"
+        pqclean_scheme: ml-kem-1024-ipd
+        pretty_name_full: ML-KEM-1024-ipd
 sigs:
   -
     name: dilithium

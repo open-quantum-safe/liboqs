@@ -78,10 +78,10 @@ static inline uint16_t UINT16_TO_BE(const uint16_t x) {
 }
 
 /* HQC-specific functions */
-static inline bool is_kyber(const char *method_name) {
-	return (0 == strcmp(method_name, OQS_KEM_alg_kyber_512))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_kyber_768))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_kyber_1024));
+static inline bool is_ml_kem(const char *method_name) {
+	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
 }
 
 static void MLKEM_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
@@ -126,7 +126,7 @@ OQS_STATUS kem_vector(const char *method_name,
 		goto algo_not_enabled;
 	}
 
-	if (is_kyber(method_name)) {
+	if (is_ml_kem(method_name)) {
 		OQS_randombytes_custom_algorithm(&MLKEM_randombytes);
 		randombytes_init = &MLKEM_randombytes_init;
 		randombytes_free = &MLKEM_randombytes_free;

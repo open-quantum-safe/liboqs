@@ -84,13 +84,6 @@ static inline bool is_ml_dsa(const char *method_name) {
 	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
 }
 
-//const uint8_t mldsa_44_stream[] = { 
-//	// seed for keygen
-//	0x6C, 0xAE, 0x2E, 0x9C, 0x2C, 0xF6, 0x4D, 0x26, 0x86, 0xC3, 0x1C, 0x21, 0x18, 0xE0, 0xF2, 0x4A, 0x47, 0xDD, 0x46, 0xDB, 0x85, 0x59, 0x09, 0x10, 0xAA, 0xC9, 0xDF, 0x4C, 0x1B, 0x85, 0x4E, 0x44,
-//	// deterministic signing
-//	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-//};
-
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
 	(void) personalization_string;
 	prng_state.pos = entropy_input;

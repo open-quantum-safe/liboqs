@@ -37,32 +37,32 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-#file_keygen=tests/PQC\ Intermediate\ Values/Key\ Generation\ --\ ML-KEM-512.txt
-#file_encaps=tests/PQC\ Intermediate\ Values/Encapsulation\ --\ ML-KEM-512.txt
-#file_decaps=tests/PQC\ Intermediate\ Values/Decapsulation\ --\ ML-KEM-512.txt
-#scheme_name=Kyber512
-#
-#sh tests/vector_test_kem.sh "$scheme_name" "$file_keygen" "$file_encaps" "$file_decaps"
-#if [ $? != 0 ]; then
-#    exit 1
-#fi
-#
-#file_keygen=tests/PQC\ Intermediate\ Values/Key\ Generation\ --\ ML-KEM-768.txt
-#file_encaps=tests/PQC\ Intermediate\ Values/Encapsulation\ --\ ML-KEM-768.txt
-#file_decaps=tests/PQC\ Intermediate\ Values/Decapsulation\ --\ ML-KEM-768.txt
-#scheme_name=Kyber768
-#
-#sh ./vector_test_kem.sh "$scheme_name" "$file_keygen" "$file_encaps" "$file_decaps"
-#if [ $? != 0 ]; then
-#    exit 1
-#fi
-#
-#file_keygen=tests/PQC\ Intermediate\ Values/Key\ Generation\ --\ ML-KEM-1024.txt
-#file_encaps=tests/PQC\ Intermediate\ Values/Encapsulation\ --\ ML-KEM-1024.txt
-#file_decaps=tests/PQC\ Intermediate\ Values/Decapsulation\ --\ ML-KEM-1024.txt
-#scheme_name=Kyber1024
-#
-#sh ./vector_test_kem.sh "$scheme_name" "$file_keygen" "$file_encaps" "$file_decaps"
-#if [ $? != 0 ]; then
-#    exit 1
-#fi
+file_keygen=tests/PQC\ Intermediate\ Values/Key\ Generation\ --\ ML-KEM-512.txt
+file_encaps=tests/PQC\ Intermediate\ Values/Encapsulation\ --\ ML-KEM-512.txt
+file_decaps=tests/PQC\ Intermediate\ Values/Decapsulation\ --\ ML-KEM-512.txt
+scheme_name=ML-KEM-512-ipd
+
+sh tests/vector_test_kem.sh "$scheme_name" "$file_keygen" "$file_encaps" "$file_decaps" "$build_dir"
+if [ $? != 0 ]; then
+    exit 1
+fi
+
+file_keygen=tests/PQC\ Intermediate\ Values/Key\ Generation\ --\ ML-KEM-768.txt
+file_encaps=tests/PQC\ Intermediate\ Values/Encapsulation\ --\ ML-KEM-768.txt
+file_decaps=tests/PQC\ Intermediate\ Values/Decapsulation\ --\ ML-KEM-768.txt
+scheme_name=ML-KEM-768-ipd
+
+sh tests/vector_test_kem.sh "$scheme_name" "$file_keygen" "$file_encaps" "$file_decaps" "$build_dir"
+if [ $? != 0 ]; then
+    exit 1
+fi
+
+file_keygen=tests/PQC\ Intermediate\ Values/Key\ Generation\ --\ ML-KEM-1024.txt
+file_encaps=tests/PQC\ Intermediate\ Values/Encapsulation\ --\ ML-KEM-1024.txt
+file_decaps=tests/PQC\ Intermediate\ Values/Decapsulation\ --\ ML-KEM-1024.txt
+scheme_name=ML-KEM-1024-ipd
+
+sh tests/vector_test_kem.sh "$scheme_name" "$file_keygen" "$file_encaps" "$file_decaps" "$build_dir"
+if [ $? != 0 ]; then
+    exit 1
+fi

@@ -99,6 +99,15 @@
     "all": "b3a12005fe1ce49f5df510aea6a56bfa4bdc2d3d706afb0361d70dc88188a2a6",
     "single": "89e82a5bf2d4ddb2c6444e10409e6d9ca65dafbca67d1a0db2c9b54920a29172"
   },
+  "ML-KEM-1024-ipd": {
+    "single": "03d6494b74c45d010e61b0328c1ab318c4df3b7f9dbd04d0e35b3468848584b7"
+  },
+  "ML-KEM-512-ipd": {
+    "single": "76aae1fa3f8367522700b22da635a5bc4ced4298edb0eb9947aa3ba60d62676f"
+  },
+  "ML-KEM-768-ipd": {
+    "single": "c7e76b4b30c786b5b70c152a446e7832c1cb42b3816ec048dbeaf7041211b310"
+  }
   "sntrup761": {
     "all": "36e1e53d4e6e295e8fb804449958ad9a3719aa350e91933c65791b9117382d57",
     "single": "afc42c3a5b10f4ef69654250097ebda9b9564570f4086744b24a6daf2bd1f89a"

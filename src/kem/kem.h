@@ -70,6 +70,12 @@ extern "C" {
 #define OQS_KEM_alg_kyber_768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber_1024 "Kyber1024"
+/** Algorithm identifier for ML-KEM-512-ipd KEM. */
+#define OQS_KEM_alg_ml_kem_512 "ML-KEM-512-ipd"
+/** Algorithm identifier for ML-KEM-768-ipd KEM. */
+#define OQS_KEM_alg_ml_kem_768 "ML-KEM-768-ipd"
+/** Algorithm identifier for ML-KEM-1024-ipd KEM. */
+#define OQS_KEM_alg_ml_kem_1024 "ML-KEM-1024-ipd"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for sntrup761 KEM. */
 #define OQS_KEM_alg_ntruprime_sntrup761 "sntrup761"
@@ -88,7 +94,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 26
+#define OQS_KEM_algs_length 29
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -269,6 +275,9 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_KYBER
 #include <oqs/kem_kyber.h>
 #endif /* OQS_ENABLE_KEM_KYBER */
+#ifdef OQS_ENABLE_KEM_ML_KEM
+#include <oqs/kem_ml_kem.h>
+#endif /* OQS_ENABLE_KEM_ML_KEM */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 #ifdef OQS_ENABLE_KEM_NTRUPRIME
 #include <oqs/kem_ntruprime.h>
