@@ -53,7 +53,7 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 
 - x86_64/amd64/x64 for Windows 2022
 - armeabi-v7a, arm64-v8a, x86, x86_64 for Android
-- OS64, TVOS for Apple Mobile
+- aarch64 for Apple iOS and tvOS (CMake `-DPLATFORM=OS64` and `TVOS`)
 
 ### Tier 3
 
