@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: MIT
 
 if [[ -z "${OQS_BUILD_DIR}" ]]; then

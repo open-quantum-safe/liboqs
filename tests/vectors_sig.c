@@ -185,6 +185,9 @@ cleanup:
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
 		OQS_MEM_secure_free(signed_msg, signed_msg_len);
 	}
+	if (randombytes_free != NULL) {
+		randombytes_free();
+	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(signature);
 	OQS_MEM_insecure_free(msg);
@@ -245,11 +248,6 @@ int main(int argc, char **argv) {
 	hexStringToByteArray(verif_msg, verif_msg_bytes);
 
 	OQS_STATUS rc = sig_vector(alg_name, prng_output_stream_bytes, sig_msg_bytes, sig_msg_len, sig_sk_bytes, verif_sig_bytes, verif_pk_bytes, verif_msg_bytes, verif_msg_len);
-	if (rc != OQS_SUCCESS) {
-		OQS_destroy();
-		return EXIT_FAILURE;
-	}
-
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
 	OQS_MEM_insecure_free(sig_msg_bytes);
 	OQS_MEM_insecure_free(sig_sk_bytes);
@@ -258,5 +256,10 @@ int main(int argc, char **argv) {
 	OQS_MEM_insecure_free(verif_msg_bytes);
 
 	OQS_destroy();
-	return EXIT_SUCCESS;
+
+	if (rc != OQS_SUCCESS) {
+		return EXIT_FAILURE;
+	} else {
+		return EXIT_SUCCESS;
+	}
 }

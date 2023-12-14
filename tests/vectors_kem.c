@@ -150,6 +150,11 @@ OQS_STATUS kem_vector(const char *method_name,
 		goto err;
 	}
 
+	if ((prng_output_stream == NULL) || (encaps_pk == NULL) || (encaps_K == NULL) || (decaps_sk == NULL) || (decaps_ciphertext == NULL) || (decaps_kprime == NULL)) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
+		goto err;
+	}
+
 	rc = OQS_KEM_keypair(kem, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_keypair failed!\n", method_name);
@@ -197,12 +202,18 @@ cleanup:
 		OQS_MEM_secure_free(ss_encaps, kem->length_shared_secret);
 		OQS_MEM_secure_free(ss_decaps, kem->length_shared_secret);
 	}
+	if (randombytes_free != NULL) {
+		randombytes_free();
+	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(ct_encaps);
+	OQS_KEM_free(kem);
 	return ret;
 }
 
 int main(int argc, char **argv) {
+	OQS_STATUS rc;
+
 	OQS_init();
 
 	if (argc != 8) {
@@ -241,12 +252,18 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	uint8_t *prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
+	uint8_t *prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2); // TODO: allocate real sizes and check before to real sizes!
 	uint8_t *encaps_pk_bytes = malloc(strlen(encaps_pk) / 2);
 	uint8_t *encaps_K_bytes = malloc(strlen(encaps_K) / 2);
 	uint8_t *decaps_sk_bytes = malloc(strlen(decaps_sk) / 2);
 	uint8_t *decaps_ciphertext_bytes = malloc(strlen(decaps_ciphertext) / 2);
 	uint8_t *decaps_kprime_bytes = malloc(strlen(decaps_kprime) / 2);
+
+	if ((prng_output_stream_bytes == NULL) || (encaps_pk_bytes == NULL) || (encaps_K_bytes == NULL) || (decaps_sk_bytes == NULL) || (decaps_ciphertext_bytes == NULL) || (decaps_kprime_bytes == NULL)) {
+		fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
+		rc = OQS_ERROR;
+		goto err;
+	}
 
 	hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 	hexStringToByteArray(encaps_pk, encaps_pk_bytes);
@@ -255,12 +272,9 @@ int main(int argc, char **argv) {
 	hexStringToByteArray(decaps_ciphertext, decaps_ciphertext_bytes);
 	hexStringToByteArray(decaps_kprime, decaps_kprime_bytes);
 
-	OQS_STATUS rc = kem_vector(alg_name, prng_output_stream_bytes, encaps_pk_bytes, encaps_K_bytes, decaps_sk_bytes, decaps_ciphertext_bytes, decaps_kprime_bytes);
-	if (rc != OQS_SUCCESS) {
-		OQS_destroy();
-		return EXIT_FAILURE;
-	}
+	rc = kem_vector(alg_name, prng_output_stream_bytes, encaps_pk_bytes, encaps_K_bytes, decaps_sk_bytes, decaps_ciphertext_bytes, decaps_kprime_bytes);
 
+err:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
 	OQS_MEM_insecure_free(encaps_pk_bytes);
 	OQS_MEM_insecure_free(encaps_K_bytes);
@@ -269,5 +283,10 @@ int main(int argc, char **argv) {
 	OQS_MEM_insecure_free(decaps_kprime_bytes);
 
 	OQS_destroy();
-	return EXIT_SUCCESS;
+
+	if (rc != OQS_SUCCESS) {
+		return EXIT_FAILURE;
+	} else {
+		return EXIT_SUCCESS;
+	}
 }
