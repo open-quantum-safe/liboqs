@@ -117,15 +117,15 @@ static void HQC_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 }
 
 static void HQC_randombytes_save_state(void) {
-    // initialize backup if necessary
-    if (shake_prng_state_backup.ctx == NULL) {
-        OQS_SHA3_shake256_inc_init(&shake_prng_state_backup);
-    }
-    OQS_SHA3_shake256_inc_ctx_clone(&shake_prng_state_backup, &shake_prng_state);
+	// initialize backup if necessary
+	if (shake_prng_state_backup.ctx == NULL) {
+		OQS_SHA3_shake256_inc_init(&shake_prng_state_backup);
+	}
+	OQS_SHA3_shake256_inc_ctx_clone(&shake_prng_state_backup, &shake_prng_state);
 }
 
 static void HQC_randombytes_restore_state(void) {
-    OQS_SHA3_shake256_inc_ctx_clone(&shake_prng_state, &shake_prng_state_backup);
+	OQS_SHA3_shake256_inc_ctx_clone(&shake_prng_state, &shake_prng_state_backup);
 }
 
 static void HQC_randombytes_free(void) {
@@ -142,47 +142,47 @@ static void HQC_randombytes_free(void) {
 static void NIST_randombytes_free(void) {}
 
 typedef struct {
-    void (*init)(const uint8_t *, const uint8_t *);
-    void (*save_state)(void);
-    void (*restore_state)(void);
-    void (*free)(void);
+	void (*init)(const uint8_t *, const uint8_t *);
+	void (*save_state)(void);
+	void (*restore_state)(void);
+	void (*free)(void);
 } KAT_PRNG;
 
 // Initialize function pointers and set up OQS_randombytes
 static KAT_PRNG *KAT_PRNG_new(const char *method_name) {
-    KAT_PRNG *prng;
+	KAT_PRNG *prng;
 
-    prng = malloc(sizeof(KAT_PRNG));
-    if (prng != NULL) {
-        if (is_hqc(method_name)) {
-            // set up randombytes
-            OQS_randombytes_custom_algorithm(&HQC_randombytes);
-            prng->init = &HQC_randombytes_init;
-            prng->save_state = &HQC_randombytes_save_state;
-            prng->restore_state = &HQC_randombytes_restore_state;
-            prng->free = &HQC_randombytes_free;
-        } else {
-            // set NIST algs
-            if (OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat) == OQS_SUCCESS) {
-                prng->init = &OQS_randombytes_nist_kat_init_256bit;
-                prng->save_state = &OQS_randombytes_nist_kat_save_state;
-                prng->restore_state = &OQS_randombytes_nist_kat_restore_state;
-                prng->free = &NIST_randombytes_free;
-            } else {
-                OQS_MEM_insecure_free(prng);
-                prng = NULL;
-            }
-        }
-    }
-    return prng;
+	prng = malloc(sizeof(KAT_PRNG));
+	if (prng != NULL) {
+		if (is_hqc(method_name)) {
+			// set up randombytes
+			OQS_randombytes_custom_algorithm(&HQC_randombytes);
+			prng->init = &HQC_randombytes_init;
+			prng->save_state = &HQC_randombytes_save_state;
+			prng->restore_state = &HQC_randombytes_restore_state;
+			prng->free = &HQC_randombytes_free;
+		} else {
+			// set NIST algs
+			if (OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat) == OQS_SUCCESS) {
+				prng->init = &OQS_randombytes_nist_kat_init_256bit;
+				prng->save_state = &OQS_randombytes_nist_kat_save_state;
+				prng->restore_state = &OQS_randombytes_nist_kat_restore_state;
+				prng->free = &NIST_randombytes_free;
+			} else {
+				OQS_MEM_insecure_free(prng);
+				prng = NULL;
+			}
+		}
+	}
+	return prng;
 }
 
 // Clean up memory
 static void KAT_PRNG_free(KAT_PRNG *prng) {
-    if (prng != NULL) {
-        prng->free();
-    }
-    OQS_MEM_insecure_free(prng);
+	if (prng != NULL) {
+		prng->free();
+	}
+	OQS_MEM_insecure_free(prng);
 }
 
 static OQS_STATUS kem_kat(const char *method_name, bool all) {
@@ -200,9 +200,9 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 	int rv;
 	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
 	void (*randombytes_free)(void) = NULL;
-    int max_count;
 	int max_count;
-    KAT_PRNG *prng;
+	int max_count;
+	KAT_PRNG *prng;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -210,10 +210,10 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 		goto algo_not_enabled;
 	}
 
-    prng = KAT_PRNG_new(method_name);
-    if (prng == NULL) {
-        goto err;
-    }
+	prng = KAT_PRNG_new(method_name);
+	if (prng == NULL) {
+		goto err;
+	}
 
 	for (uint8_t i = 0; i < 48; i++) {
 		entropy_input[i] = i;
@@ -300,7 +300,7 @@ cleanup:
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
-    KAT_PRNG_free(prng);
+	KAT_PRNG_free(prng);
 	return ret;
 }
 
