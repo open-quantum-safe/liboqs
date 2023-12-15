@@ -44,7 +44,7 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 
 ### Tier 1
 
-- x86_64/amd64/x64 for Ubuntu Linux (Focal)*
+- x86_64/amd64/x64 for Ubuntu Linux (Focal)†
 - x86_64/amd64/x64 for MacOS (XCode 14)
 - aarch64 for Ubuntu (Focal)
 - armhf/ARM7 and aarch64 emulation on Ubuntu
