@@ -1086,10 +1086,6 @@ err:
 	if (sk_lock) {
 		pthread_mutex_destroy(sk_lock);
 	}
-#else
-	rc = sig_stfl_test_correctness(alg_name, katfile);
-	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
-#endif
 
 	OQS_SIG_STFL_SECRET_KEY_free(lock_test_sk);
 	OQS_MEM_insecure_free(lock_test_public_key);
@@ -1097,11 +1093,22 @@ err:
 	OQS_MEM_insecure_free(lock_test_context);
 	OQS_MEM_insecure_free(signature_1);
 	OQS_MEM_insecure_free(signature_2);
-
-	OQS_destroy();
 	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS ||
 	        rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
 	return exit_status;
+#else
+	rc = sig_stfl_test_correctness(alg_name, katfile);
+	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
+	OQS_MEM_insecure_free(signature_1);
+	OQS_MEM_insecure_free(signature_2);
+
+	OQS_destroy();
+
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
+		return EXIT_FAILURE;
+	}
+	return exit_status;
+#endif
 }
