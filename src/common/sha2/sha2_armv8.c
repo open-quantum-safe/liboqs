@@ -291,7 +291,7 @@ void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) 
 		}
 
 		for (size_t i = 0; i < incr; ++i, state->data_len++, in_index++) {
-			state->data[state->data_len] = in[in_index++)];
+			state->data[state->data_len] = in[in_index++];
 		}
 
 		if (state->data_len < 64) {
