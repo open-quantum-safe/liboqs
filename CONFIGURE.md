@@ -18,6 +18,7 @@ The following options can be passed to CMake before the build file generation pr
 - [USE_SANITIZER](#USE_SANITIZER)
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
+- [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 
 ## BUILD_SHARED_LIBS
 
@@ -155,4 +156,12 @@ Can be `ON` or `OFF`. When `ON`, all compiler warnings are enabled and treated a
 
 **Default**: `OFF`.
 
+## OQS_EMBEDDED_BUILD
 
+Can be `ON` or `OFF`. When `ON`, calls to standard library functions typically not present in a bare-metal embedded environment are excluded from compilation. 
+
+At the moment, this is **only** considered for random number generation, as both `getentropy()` and a file based `/dev/urandom` are not available on embedded targets (e.g. the Zephyr port).
+
+**Attention**: When this option is enabled, you have to supply a custom callback for obtaining random numbers using the `OQS_randombytes_custom_algorithm()` API before accessing the cryptographic API. Otherwise, all key generation and signing operations will fail. 
+
+**Default**: `OFF`.
