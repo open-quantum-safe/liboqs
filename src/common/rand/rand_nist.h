@@ -30,11 +30,13 @@ void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
 
 /**
  * Saves the state of the NIST DRBG, allowing it to be recovered later.
+ * Calls to this function overwrite previously saved state; hence, only
+ * the most recently saved state can be restored.
  */
 void OQS_randombytes_nist_kat_save_state(void);
 
 /**
- * Restores a previously saved NIST DRBG state.
+ * Restores the most recently saved NIST DRBG state.
  */
 void OQS_randombytes_nist_kat_restore_state(void);
 
