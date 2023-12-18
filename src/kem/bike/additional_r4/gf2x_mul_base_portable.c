@@ -20,7 +20,7 @@ void gf2x_mul_base_port(OUT uint64_t *c,
                         IN const uint64_t *a,
                         IN const uint64_t *b)
 {
-  uint64_t       h = 0, l = 0, g1, g2, u[8];
+  uint64_t       h = 0, l = 0, g1, g2, u[8], mask;
   const uint64_t w  = 64;
   const uint64_t s  = 3;
   const uint64_t a0 = a[0];
@@ -41,14 +41,29 @@ void gf2x_mul_base_port(OUT uint64_t *c,
   u[7] = u[6] ^ b0m;
 
   // Step 2: Multiply two elements in parallel in positions i, i+s
-  l = u[LSB3(a0)] ^ (u[LSB3(a0 >> 3)] << 3);
-  h = (u[LSB3(a0 >> 3)] >> 61);
+  for (size_t i = 0; i < 8; ++i) {
+      // use a mask for secret-independent memory access
+      mask = LSB3(a0) - i;
+      l ^= (u[i] & (uint64_t)(0 - (1 - ((uint64_t)(mask | (0 - mask)) >> 63))));
+
+      mask = LSB3(a0 >> 3) - i;
+      l ^= ((u[i] << 3) & (uint64_t)(0 - (1 - ((uint64_t)(mask | (0 - mask)) >> 63))));
+      h ^= ((u[i] >> 61) & (uint64_t)(0 - (1 - ((uint64_t)(mask | (0 - mask)) >> 63))));
+  }
 
   for(size_t i = (2 * s); i < w; i += (2 * s)) {
     const size_t i2 = (i + s);
 
-    g1 = u[LSB3(a0 >> i)];
-    g2 = u[LSB3(a0 >> i2)];
+    g1 = 0;
+    g2 = 0;
+    for (size_t j = 0; j < 8; ++j) {
+        // use a mask for secret-independent memory access
+        mask = LSB3(a0 >> i) - j;
+        g1 ^= (u[j] & (uint64_t)(0 - (1 - ((uint64_t)(mask | (0 - mask)) >> 63))));
+
+        mask = LSB3(a0 >> i2) - j;
+        g2 ^= (u[j] & (uint64_t)(0 - (1 - ((uint64_t)(mask | (0 - mask)) >> 63))));
+    }
 
     l ^= (g1 << i) ^ (g2 << i2);
     h ^= (g1 >> (w - i)) ^ (g2 >> (w - i2));
