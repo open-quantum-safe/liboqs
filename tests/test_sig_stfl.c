@@ -32,6 +32,12 @@ static pthread_mutex_t *sk_lock = NULL;
 #define OQS_TEST_CT_DECLASSIFY(addr, len)
 #endif
 
+#ifdef __GNUC__
+#define UNUSED __attribute__((unused))
+#else
+#define UNUSED
+#endif
+
 /*
  * For stateful signature, we skip key generation because it can takes hours to complete.
  * So the ReadHex and and FindMarker serve the purpose of reading pre-generate keypair from KATs.
@@ -130,16 +136,16 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 	return 1;
 }
 
-static OQS_SIG_STFL_SECRET_KEY *lock_test_sk = NULL;
-static OQS_SIG_STFL *lock_test_sig_obj = NULL;
-static uint8_t *lock_test_public_key = NULL;
-static char *lock_test_context = NULL;
-static uint8_t *signature_1 = NULL;
-static uint8_t *signature_2 = NULL;
-static size_t signature_len_1;
-static size_t signature_len_2;
-static uint8_t message_1[] = "The quick brown fox ...";
-static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
+// static OQS_SIG_STFL_SECRET_KEY *lock_test_sk = NULL;
+// static OQS_SIG_STFL *lock_test_sig_obj = NULL;
+// static uint8_t *lock_test_public_key = NULL;
+// static char *lock_test_context = NULL;
+// static uint8_t *signature_1 = NULL;
+// static uint8_t *signature_2 = NULL;
+// static size_t signature_len_1;
+// static size_t signature_len_2;
+// static uint8_t message_1[] = "The quick brown fox ...";
+// static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
 
 /*
  * Write stateful secret keys to disk.
@@ -161,6 +167,18 @@ static OQS_STATUS save_secret_key(uint8_t *key_buf, size_t buf_len, void *contex
 }
 
 #if OQS_USE_PTHREADS_IN_TESTS
+
+static OQS_SIG_STFL_SECRET_KEY *lock_test_sk = NULL;
+static OQS_SIG_STFL *lock_test_sig_obj = NULL;
+static uint8_t *lock_test_public_key = NULL;
+static char *lock_test_context = NULL;
+static uint8_t *signature_1 = NULL;
+static uint8_t *signature_2 = NULL;
+static size_t signature_len_1;
+static size_t signature_len_2;
+static uint8_t message_1[] = "The quick brown fox ...";
+static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
+
 static OQS_STATUS lock_sk_key(void *mutex) {
 	if (mutex == NULL) {
 		return OQS_ERROR;
@@ -183,11 +201,13 @@ static OQS_STATUS unlock_sk_key(void *mutex) {
 	return  OQS_SUCCESS;
 }
 #else
-static OQS_STATUS lock_sk_key(void *mutex) {
+static OQS_STATUS lock_sk_key(UNUSED void *mutex) {
+	// void(*mutex);
 	return OQS_SUCCESS;
 }
 
-static OQS_STATUS unlock_sk_key(void *mutex) {
+static OQS_STATUS unlock_sk_key(UNUSED void *mutex) {
+	// void(mutex);
 	return OQS_SUCCESS;
 }
 #endif
@@ -213,12 +233,12 @@ OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, OQ
 	}
 
 	// Grab the pk and sk from KAT file
-	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, "pk = ")) {
+	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, (char *)"pk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'pk' from <%s>\n", katfile);
 		goto err;
 	}
 
-	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, "sk = ")) {
+	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, (char *)"sk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'sk' from <%s>\n", katfile);
 		goto err;
 	}
@@ -410,7 +430,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	file_store = convert_method_name_to_file_name(sig->method_name);
 	if (file_store == NULL) {
-		fprintf(stderr, "%s: file_store is null\n", __FUNCTION__);
+		fprintf(stderr, "%s: file_store is null\n", __func__);
 		goto err;
 	}
 
@@ -683,6 +703,23 @@ cleanup:
 	return rc;
 }
 
+#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
+static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	// We can't make direct calls to the system randombytes on some platforms,
+	// so we have to swap out the OQS_randombytes provider.
+
+	OQS_randombytes_switch_algorithm("system");
+	OQS_randombytes(random_array, bytes_to_read);
+	OQS_randombytes_custom_algorithm(&TEST_SIG_STFL_randombytes);
+
+	// OQS_TEST_CT_CLASSIFY tells Valgrind's memcheck tool to issue a warning if
+	// the program branches on any byte that depends on random_array. This helps us
+	// identify timing side-channels, as these bytes often contain secret data.
+	OQS_TEST_CT_CLASSIFY(random_array, bytes_to_read);
+}
+#endif
+
+#if OQS_USE_PTHREADS_IN_TESTS
 static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	size_t message_len_1 = sizeof(message_1);
@@ -883,9 +920,9 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 	OQS_SIG_STFL_SECRET_KEY_SET_lock(lock_test_sk, lock_sk_key);
 	OQS_SIG_STFL_SECRET_KEY_SET_unlock(lock_test_sk, unlock_sk_key);
 
-#if OQS_USE_PTHREADS_IN_TESTS
+//#if OQS_USE_PTHREADS_IN_TESTS
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(lock_test_sk, test_sk_lock);
-#endif
+//#endif
 
 	printf("================================================================================\n");
 	printf("Generate keypair  %s\n", method_name);
@@ -915,23 +952,7 @@ err:
 	return OQS_ERROR;
 }
 
-#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
-static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_read) {
-	// We can't make direct calls to the system randombytes on some platforms,
-	// so we have to swap out the OQS_randombytes provider.
 
-	OQS_randombytes_switch_algorithm("system");
-	OQS_randombytes(random_array, bytes_to_read);
-	OQS_randombytes_custom_algorithm(&TEST_SIG_STFL_randombytes);
-
-	// OQS_TEST_CT_CLASSIFY tells Valgrind's memcheck tool to issue a warning if
-	// the program branches on any byte that depends on random_array. This helps us
-	// identify timing side-channels, as these bytes often contain secret data.
-	OQS_TEST_CT_CLASSIFY(random_array, bytes_to_read);
-}
-#endif
-
-#if OQS_USE_PTHREADS_IN_TESTS
 typedef struct thread_data {
 	const char *alg_name;
 	const char *katfile;
@@ -947,25 +968,25 @@ typedef struct lock_test_data {
 
 void *test_query_key(void *arg) {
 	struct lock_test_data *td = arg;
-	printf("\n%s: Start Query Stateful Key info\n", __FUNCTION__);
+	printf("\n%s: Start Query Stateful Key info\n", __func__);
 	td->rc = sig_stfl_test_query_key(td->alg_name);
-	printf("%s: End Query Stateful Key info\n\n", __FUNCTION__);
+	printf("%s: End Query Stateful Key info\n\n", __func__);
 	return NULL;
 }
 
 void *test_sig_gen(void *arg) {
 	struct lock_test_data *td = arg;
-	printf("\n%s: Start Generate Stateful Signature\n", __FUNCTION__);
+	printf("\n%s: Start Generate Stateful Signature\n", __func__);
 	td->rc = sig_stfl_test_sig_gen(td->alg_name);
-	printf("%s: End Generate Stateful Signature\n\n", __FUNCTION__);
+	printf("%s: End Generate Stateful Signature\n\n", __func__);
 	return NULL;
 }
 
 void *test_create_keys(void *arg) {
 	struct lock_test_data *td = arg;
-	printf("\n%s: Start Generate Keys\n", __FUNCTION__);
+	printf("\n%s: Start Generate Keys\n", __func__);
 	td->rc = sig_stfl_test_secret_key_lock(td->alg_name, td->katfile);
-	printf("%s: End Generate Stateful Keys\n\n", __FUNCTION__);
+	printf("%s: End Generate Stateful Keys\n\n", __func__);
 	return NULL;
 }
 
@@ -1101,8 +1122,10 @@ err:
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
-	OQS_MEM_insecure_free(signature_1);
-	OQS_MEM_insecure_free(signature_2);
+//	OQS_MEM_insecure_free(signature_1);
+//	signature_1 = NULL;
+//	OQS_MEM_insecure_free(signature_2);
+//	signature_2 = NULL;
 
 	OQS_destroy();
 
