@@ -36,8 +36,8 @@ bool lm_validate_signature(
     const unsigned char *signature, size_t signature_len) {
     union hash_context ctx;
 
-    param_set_t lm_type = get_bigendian( public_key + LM_PUB_PARM_SET, 4 );
-    param_set_t ots_type = get_bigendian( public_key + LM_PUB_OTS_PARM_SET, 4 );
+    param_set_t lm_type = (param_set_t)get_bigendian( public_key + LM_PUB_PARM_SET, 4 );
+    param_set_t ots_type = (param_set_t)get_bigendian( public_key + LM_PUB_OTS_PARM_SET, 4 );
 
     unsigned h, n, height;
     if (!lm_look_up_parameter_set(lm_type, &h, &n, &height)) return false;
@@ -47,7 +47,7 @@ bool lm_validate_signature(
     const unsigned char *I = public_key + LM_PUB_I;
 
     if (signature_len < 8) return false;
-    merkle_index_t count = get_bigendian( signature, 4 );
+    merkle_index_t count = (param_set_t)get_bigendian( signature, 4 );
     signature += 4; signature_len -= 4;  /* 4 bytes, rather then 8 */
         /*  the OTS type is expected to be a part of the OTS signature, */
         /* which lm_ots_validate_signature_compute will expect */
@@ -67,7 +67,7 @@ bool lm_validate_signature(
     /* Get the parameter set declared in the sigature; make sure it matches */
     /* what we expect */
     if (signature_len < 4) return false;
-    param_set_t parameter_set = get_bigendian( signature, 4 );
+    param_set_t parameter_set = (param_set_t)get_bigendian( signature, 4 );
     if (parameter_set != lm_type) return false;
     signature += 4; signature_len -= 4;
 
