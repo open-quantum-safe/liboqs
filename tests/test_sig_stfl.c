@@ -52,7 +52,7 @@ int FindMarker(FILE *infile, const char *marker) {
 	unsigned long i, len;
 	int curr_line;
 
-    memset(line, 0, MAX_MARKER_LEN);
+	memset(line, 0, MAX_MARKER_LEN);
 	len = strlen(marker);
 	if (len > MAX_MARKER_LEN - 1) {
 		len = MAX_MARKER_LEN - 1;
