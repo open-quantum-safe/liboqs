@@ -41,7 +41,7 @@ static enum subtree_build_status subtree_add_next_node(
 
     /* Compute the leaf node */
     merkle_index_t i;
-    unsigned ots_len = lm_ots_get_public_key_len(tree->lm_ots_type);
+    unsigned ots_len = (unsigned int)lm_ots_get_public_key_len(tree->lm_ots_type);
     unsigned char pub_key[ LEAF_MAX_LEN ];
     const unsigned char *I = (next_tree ? tree->I_next : tree->I);
     memcpy( pub_key + LEAF_I, I, I_LEN );
@@ -253,7 +253,7 @@ bool hss_create_signed_public_key(unsigned char *signed_key,
     unsigned len_public_key = 8 + I_LEN + hash_size;
 
         /* Now, generate the signature */
-    if (!generate_merkle_signature( signed_key, len_signature,
+    if (!(unsigned int)generate_merkle_signature( signed_key, len_signature,
                          parent, w, public_key, len_public_key)) {
         return false;
     }
@@ -303,7 +303,7 @@ static void do_gen_sig( const void *detail, struct thread_collection *col) {
     const unsigned char *message = d->message;
     size_t message_len = d->message_len;
 
-    if (!generate_merkle_signature(signature, signature_len,
+    if (!(unsigned int)generate_merkle_signature(signature, signature_len,
               w->tree[ levels-1 ], w, message, message_len)) {
         goto failed;
     }

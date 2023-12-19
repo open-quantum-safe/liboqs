@@ -101,7 +101,7 @@ bool hss_generate_private_key(
         return false;
     }
 
-    unsigned len_ots_pub = lm_ots_get_public_key_len(lm_ots_type[0]);
+    unsigned len_ots_pub = (unsigned)lm_ots_get_public_key_len(lm_ots_type[0]);
     if (len_ots_pub == 0) {
         info->error_code = hss_error_bad_param_set;
         return false;
