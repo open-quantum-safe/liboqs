@@ -51,7 +51,7 @@ static enum hss_error_code hss_compute_internal_node( unsigned char *dest,
     merkle_index_t q = r - tree_size;
 
     merkle_index_t i;
-    unsigned ots_len = lm_ots_get_public_key_len(lm_ots_type);
+    unsigned ots_len = (unsigned)lm_ots_get_public_key_len(lm_ots_type);
     unsigned char pub_key[ LEAF_MAX_LEN ];
     memcpy( pub_key + LEAF_I, I, I_LEN );
     SET_D( pub_key + LEAF_D, D_LEAF );

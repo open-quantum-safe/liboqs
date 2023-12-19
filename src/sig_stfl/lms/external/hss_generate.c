@@ -695,7 +695,7 @@ bool hss_generate_working_key(
                 if (ratio > 1000) {
                     core_target = 1;
                 } else {
-                    core_target = core_target / ratio;
+                    core_target = (unsigned)(core_target / ratio);
                     if (core_target == 0) core_target = 1;
                 }
                 prev_cost = p_order->cost;

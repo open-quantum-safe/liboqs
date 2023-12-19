@@ -38,7 +38,7 @@ bool lm_ots_validate_signature_compute(
     if (signature_len < 4) return false;  /* Ha, ha, very funny... */
 
     /* We don't trust the parameter set that's in the signature; verify it */
-    param_set_t parameter_set = get_bigendian( signature, 4 );
+    param_set_t parameter_set = (param_set_t)get_bigendian( signature, 4 );
     if (parameter_set != expected_parameter_set) {
         return false;
     }

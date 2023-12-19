@@ -133,7 +133,7 @@ struct expanded_aux_data *hss_expand_aux_data( const unsigned char *aux_data,
     if (!aux_data || aux_data[AUX_DATA_MARKER] == NO_AUX_DATA) return 0;
 
     const unsigned char *orig_aux_data = aux_data;
-    unsigned long aux_level = get_bigendian( aux_data, 4 );
+    unsigned long aux_level = (unsigned long)get_bigendian( aux_data, 4 );
     aux_data += 4;
     aux_level &= 0x7ffffffffL;  /* Turn off the 'used' marker */
 
