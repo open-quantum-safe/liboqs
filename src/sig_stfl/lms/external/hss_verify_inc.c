@@ -44,15 +44,15 @@ bool hss_validate_signature_init(
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
     }
-    uint_fast32_t levels = get_bigendian( signature, 4 ) + 1;
+    uint_fast32_t levels = (uint_fast32_t)get_bigendian( signature, 4 ) + 1;
         /* +1 because what's in the signature is levels-1 */
     signature += 4; signature_len -= 4;
     if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS ||
-                               levels != get_bigendian( public_key, 4 )) {
+                               levels != (uint_fast32_t)get_bigendian( public_key, 4 )) {
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
     }
-    uint_fast32_t pub_levels = get_bigendian( public_key, 4 );
+    uint_fast32_t pub_levels = (uint_fast32_t)get_bigendian( public_key, 4 );
     if (levels != pub_levels) {
         /* Signature and public key don't agree */
         ctx->status = info->error_code = hss_error_bad_signature;
@@ -72,9 +72,9 @@ bool hss_validate_signature_init(
         /* as we go.  Note that we don't validate the bottom level yet */
         for (i=0; i<levels-1; i++) {
             /* The next thing is the signature of this public key */
-            param_set_t lm_type = get_bigendian( public_key, 4 );
-            param_set_t lm_ots_type = get_bigendian( public_key+4, 4 );
-            unsigned l_siglen = lm_get_signature_len(lm_type, lm_ots_type);
+            param_set_t lm_type = (param_set_t)get_bigendian( public_key, 4 );
+            param_set_t lm_ots_type = (param_set_t)get_bigendian( public_key+4, 4 );
+            unsigned l_siglen = (unsigned)lm_get_signature_len(lm_type, lm_ots_type);
             if (l_siglen == 0 || l_siglen > signature_len) goto failed;
             const unsigned char *l_sig = signature;
             signature += l_siglen; signature_len -= l_siglen;
@@ -82,7 +82,7 @@ bool hss_validate_signature_init(
             /* The next thing is the next level public key (which we need */
             /* to validate) */
             if (signature_len < 4) goto failed;
-            lm_type = get_bigendian( signature, 4 );
+            lm_type = (param_set_t)get_bigendian( signature, 4 );
             unsigned l_pubkeylen = lm_get_public_key_len(lm_type);
             if (l_pubkeylen == 0 || l_pubkeylen > signature_len) goto failed;
             const unsigned char *l_pubkey = signature;
@@ -122,7 +122,7 @@ bool hss_validate_signature_init(
     memcpy( ctx->final_public_key, public_key, 8 + I_LEN + MAX_HASH );
 
     /* Now, initialize the context */
-    param_set_t ots_type = get_bigendian( public_key+4, 4 );
+    param_set_t ots_type = (param_set_t)get_bigendian( public_key+4, 4 );
 
     unsigned h, n;
     if (!lm_ots_look_up_parameter_set(ots_type, &h, &n, NULL, NULL, NULL)) {
