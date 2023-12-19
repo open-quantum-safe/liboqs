@@ -167,7 +167,7 @@ struct hss_working_key *allocate_working_key(
     if (memory_target > LONG_MAX) {
         mem_target = LONG_MAX;
     } else {
-        mem_target = memory_target;
+        mem_target = (unsigned long)memory_target;
     }
 #if 0
 signed long initial_mem_target = mem_target; /* DEBUG HACK */
@@ -178,7 +178,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
         info->error_code = hss_error_out_of_memory;
         return NULL;
     }
-    mem_target -= sizeof(*w) + MALLOC_OVERHEAD;
+    mem_target -= (unsigned long)sizeof(*w) + MALLOC_OVERHEAD;
     unsigned i;
     w->levels = levels;
     w->status = hss_error_key_uninitialized; /* Not usable until we see a */
@@ -220,13 +220,13 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
             info->error_code = hss_error_out_of_memory;
             return 0;
         }
-        mem_target -= w->signed_pk_len[i] + MALLOC_OVERHEAD;
+        mem_target -= (unsigned long)w->signed_pk_len[i] + MALLOC_OVERHEAD;
     }
     w->signature_len = signature_len;
 
     /* Also account for the overhead for the stack allocation (the memory */
     /* used by the stack will be accounted as a part of the tree level size */
-     mem_target -= MALLOC_OVERHEAD;
+     mem_target -= (unsigned long)MALLOC_OVERHEAD;
 
     /*
      * Plot out how many subtree sizes we have at each level.  We start by
@@ -305,7 +305,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
                        level_height[i], hash_size[i], &subtree_levels[i],
                         &stack_used );
 
-        mem_target -= mem;
+        mem_target -= (unsigned long)mem;
         stack_usage += stack_used;
     }
 

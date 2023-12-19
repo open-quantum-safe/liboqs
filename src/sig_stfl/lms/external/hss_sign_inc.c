@@ -159,7 +159,7 @@ bool hss_sign_finalize(
 
     int i;
     for (i=0; i<L-1; i++) {
-        merkle_index_t q = get_bigendian( signature, 4 );
+        merkle_index_t q = (merkle_index_t)get_bigendian( signature, 4 );
         if (q > working_key->tree[i]->max_index) {
             hss_zeroize( seed_buff, sizeof seed_buff );
             return 0;
