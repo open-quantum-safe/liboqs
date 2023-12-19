@@ -66,7 +66,7 @@ size_t lm_get_signature_len(param_set_t lm_type,
     if (!lm_look_up_parameter_set( lm_type, 0, &n, &height ))
         return 0;
 
-    int ots_sig_len = lm_ots_get_signature_len(lm_ots_type);
+    int ots_sig_len = (int)lm_ots_get_signature_len(lm_ots_type);
     if (ots_sig_len == 0)
         return 0;
 

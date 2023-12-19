@@ -122,7 +122,7 @@ err:
 
 int main(void) {
 	OQS_init();
-	if (stfl_example("XMSS-SHA2_10_256") == OQS_SUCCESS && stfl_example("LMS_SHA256_H10_W4") == OQS_SUCCESS) {
+	if (stfl_example((char *)"XMSS-SHA2_10_256") == OQS_SUCCESS && stfl_example((char *)"LMS_SHA256_H10_W4") == OQS_SUCCESS) {
 		OQS_destroy();
 		return EXIT_SUCCESS;
 	} else {
