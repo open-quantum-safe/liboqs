@@ -575,5 +575,4 @@ OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *
 // extern "C"
 #endif
 
-
 #endif /* OQS_SIG_STATEFUL_H */

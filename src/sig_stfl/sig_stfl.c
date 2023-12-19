@@ -11,6 +11,14 @@
 
 #include <oqs/oqs.h>
 
+#ifdef OQS_ENABLE_SIG_STFL_XMSS
+#include <oqs/sig_stfl_xmss.h>
+#endif // OQS_ENABLE_SIG_STFL_XMSS
+
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+#include <oqs/sig_stfl_lms.h>
+#endif // OQS_ENABLE_SIG_STFL_LMS
+
 OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 
 	const char *a[OQS_SIG_STFL_algs_length] = {
