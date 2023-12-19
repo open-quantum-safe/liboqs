@@ -40,3 +40,11 @@ This release continues from the 0.9.0 release of liboqs.
 ### Key encapsulation mechanisms
 
 - Kyber: C, AVX2, and aarch64 implementation
+
+Detailed changelog
+------------------
+
+* pull kyber from upstream: dda29cc63af721981ee2c831cf00822e69be3220 (#1631) by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1633
+* Apply patch to Kyber aarch64 code from PQClean for variable-time division issue -> targeting 0.9.1 by @bhess in https://github.com/open-quantum-safe/liboqs/pull/1637
+
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.9.0...0.9.1-rc1
