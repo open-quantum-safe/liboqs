@@ -151,7 +151,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
     unsigned char *root = leaf + params->n;
 
     unsigned long long prefix_length = params->padding_len + 3*params->n;
-    unsigned char m_with_prefix[mlen + prefix_length];
+    unsigned char *m_with_prefix = malloc(mlen + prefix_length);
 
     unsigned char *mhash = root;
     unsigned long long idx = 0;
@@ -221,6 +221,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
     ret = 0;
 fail:
     OQS_MEM_insecure_free(tmp);
+    OQS_MEM_insecure_free(m_with_prefix);
     return ret;
 
 }

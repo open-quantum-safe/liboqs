@@ -13,7 +13,7 @@
 
 typedef struct{
     unsigned char h;
-    unsigned long next_idx;
+    unsigned long long next_idx;
     unsigned char stackusage;
     unsigned char completed;
     unsigned char *node;
@@ -27,7 +27,7 @@ typedef struct {
     unsigned char *keep;
     treehash_inst *treehash;
     unsigned char *retain;
-    unsigned int next_leaf;
+    unsigned long long next_leaf;
 } bds_state;
 
 /* These serialization functions provide a transition between the current
@@ -717,7 +717,7 @@ int xmss_core_sign(const xmss_params *params,
 
     // Prepare Address
     set_type(ots_addr, 0);
-    set_ots_addr(ots_addr, idx);
+    set_ots_addr(ots_addr, (uint32_t) idx);
 
     // Compute WOTS signature
     wots_sign(params, sm, msg_h, sk_seed, pub_seed, ots_addr);
@@ -728,7 +728,7 @@ int xmss_core_sign(const xmss_params *params,
     // the auth path was already computed during the previous round
     memcpy(sm, state.auth, params->tree_height*params->n);
 
-    if (idx < (1U << params->tree_height) - 1) {
+    if (idx < (1ULL << params->tree_height) - 1) {
         bds_round(params, &state, idx, sk_seed, pub_seed, ots_addr);
         bds_treehash_update(params, &state, (params->tree_height - params->bds_k) >> 1, sk_seed, pub_seed, ots_addr);
     }
@@ -829,7 +829,7 @@ int xmssmt_core_sign(const xmss_params *params,
 
     uint64_t idx_tree;
     uint32_t idx_leaf;
-    uint64_t i, j;
+    unsigned int i, j;
     int needswap_upto = -1;
     unsigned int updates;
 
@@ -847,7 +847,7 @@ int xmssmt_core_sign(const xmss_params *params,
 
     unsigned char *wots_sigs = NULL;
     unsigned long long prefix_length = params->padding_len + 3*params->n;
-    unsigned char m_with_prefix[mlen + prefix_length];
+    unsigned char *m_with_prefix = malloc(mlen + prefix_length);
     int ret = 0;
 
     // TODO refactor BDS state not to need separate treehash instances
@@ -991,14 +991,14 @@ int xmssmt_core_sign(const xmss_params *params,
 
     set_tree_addr(addr, (idx_tree + 1));
     // mandatory update for NEXT_0 (does not count towards h-k/2) if NEXT_0 exists
-    if ((1 + idx_tree) * (1 << params->tree_height) + idx_leaf < (1ULL << params->full_height)) {
+    if ((1 + idx_tree) * (1ULL << params->tree_height) + idx_leaf < (1ULL << params->full_height)) {
         bds_state_update(params, &states[params->d], sk_seed, pub_seed, addr);
     }
 
     for (i = 0; i < params->d; i++) {
         // check if we're not at the end of a tree
         if (! (((idx + 1) & ((1ULL << ((i+1)*params->tree_height)) - 1)) == 0)) {
-            idx_leaf = (idx >> (params->tree_height * i)) & ((1 << params->tree_height)-1);
+            idx_leaf = (uint32_t)((idx >> (params->tree_height * i)) & ((1 << params->tree_height)-1));
             idx_tree = (idx >> (params->tree_height * (i+1)));
             set_layer_addr(addr, i);
             set_tree_addr(addr, idx_tree);
@@ -1008,7 +1008,7 @@ int xmssmt_core_sign(const xmss_params *params,
             updates = bds_treehash_update(params, &states[i], updates, sk_seed, pub_seed, addr);
             set_tree_addr(addr, (idx_tree + 1));
             // if a NEXT-tree exists for this level;
-            if ((1 + idx_tree) * (1 << params->tree_height) + idx_leaf < (1ULL << (params->full_height - params->tree_height * i))) {
+            if ((1 + idx_tree) * (1ULL << params->tree_height) + idx_leaf < (1ULL << (params->full_height - params->tree_height * i))) {
                 if (i > 0 && updates > 0 && states[params->d + i].next_leaf < (1ULL << params->full_height)) {
                     bds_state_update(params, &states[params->d + i], sk_seed, pub_seed, addr);
                     updates--;
@@ -1041,6 +1041,7 @@ cleanup:
     OQS_MEM_insecure_free(treehash);
     OQS_MEM_insecure_free(states);
     OQS_MEM_insecure_free(tmp);
+    OQS_MEM_insecure_free(m_with_prefix);
 
     return ret;
 }

@@ -1099,9 +1099,14 @@ err:
 	OQS_MEM_insecure_free(signature_2);
 
 	OQS_destroy();
-	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS ||
-	        rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
+
+#if OQS_USE_PTHREADS_IN_TESTS
+	if (rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
+		return EXIT_FAILURE;
+	}
+#endif
 	return exit_status;
 }
