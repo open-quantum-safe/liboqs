@@ -575,12 +575,4 @@ OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *
 } // extern "C"
 #endif
 
-#ifdef OQS_ENABLE_SIG_STFL_XMSS
-#include <oqs/sig_stfl_xmss.h>
-#endif // OQS_ENABLE_SIG_STFL_XMSS
-
-#ifdef OQS_ENABLE_SIG_STFL_LMS
-#include <oqs/sig_stfl_lms.h>
-#endif // OQS_ENABLE_SIG_STFL_LMS
-
 #endif /* OQS_SIG_STATEFUL_H */
