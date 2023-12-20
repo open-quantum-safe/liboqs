@@ -62,7 +62,7 @@ endif()
 add_executable(example_kem example_kem.c)
 target_link_libraries(example_kem PRIVATE ${TEST_DEPS})
 
-add_executable(kat_kem kat_kem.c)
+add_executable(kat_kem kat_kem.c test_helpers.c)
 target_link_libraries(kat_kem PRIVATE ${TEST_DEPS})
 
 add_executable(test_kem test_kem.c)
@@ -80,8 +80,8 @@ set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem)
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
-add_executable(kat_sig kat_sig.c)
-target_link_libraries(kat_sig PRIVATE ${TEST_DEPS})
+add_executable(kat_sig kat_sig.c test_helpers.c)
+target_link_libraries(kat_sig PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_sig test_sig.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})

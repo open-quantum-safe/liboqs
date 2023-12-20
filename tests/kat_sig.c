@@ -15,28 +15,9 @@
 #include <oqs/oqs.h>
 #include <oqs/rand_nist.h>
 
+#include "test_helpers.h"
+
 #include "system_info.c"
-
-/* Displays hexadecimal strings */
-void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", str[i]);
-	}
-	printf("\n");
-}
-
-void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
-	size_t i;
-	fprintf(fp, "%s", S);
-	for (i = 0; i < L; i++) {
-		fprintf(fp, "%02X", A[i]);
-	}
-	if (L == 0) {
-		fprintf(fp, "00");
-	}
-	fprintf(fp, "\n");
-}
 
 static inline uint16_t UINT16_TO_BE(const uint16_t x) {
 	union {
@@ -262,8 +243,13 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 	size_t signature_len = 0;
 	size_t signed_msg_len = 0;
 	OQS_STATUS rc, ret = OQS_ERROR;
-	// int rv;
-	size_t max_count;
+    OQS_KAT_PRNG *prng = NULL;
+    int max_count;
+
+    prng = OQS_KAT_PRNG_new(method_name);
+    if (prng == NULL) {
+        goto err;
+    }
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
@@ -275,12 +261,11 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 		entropy_input[i] = i;
 	}
 
-	OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
-	OQS_randombytes_nist_kat_init_256bit(entropy_input, NULL);
+	OQS_KAT_PRNG_seed(prng, entropy_input, NULL);
 
 	fh = stdout;
 
-	max_count = all ? 100 : 1;
+	max_count = all ? prng->max_kats : 1;
 
 	public_key = malloc(sig->length_public_key);
 	secret_key = malloc(sig->length_secret_key);
@@ -292,27 +277,27 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 		goto err;
 	}
 
-	for (size_t count = 0; count < max_count; ++count) {
-		fprintf(fh, "count = %zu\n", count);
+	for (int count = 0; count < max_count; ++count) {
+		fprintf(fh, "count = %d\n", count);
 		OQS_randombytes(seed, 48);
-		fprintBstr(fh, "seed = ", seed, 48);
+		OQS_fprintBstr(fh, "seed = ", seed, 48);
 
 		msg_len = 33 * (count + 1);
 		fprintf(fh, "mlen = %zu\n", msg_len);
 
 		OQS_randombytes(msg, msg_len);
-		fprintBstr(fh, "msg = ", msg, msg_len);
+		OQS_fprintBstr(fh, "msg = ", msg, msg_len);
 
-		OQS_randombytes_nist_kat_save_state();
-		OQS_randombytes_nist_kat_init_256bit(seed, NULL);
+		OQS_KAT_PRNG_save_state(prng);
+		OQS_KAT_PRNG_seed(prng, seed, NULL);
 
 		rc = OQS_SIG_keypair(sig, public_key, secret_key);
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_keypair failed!\n", method_name);
 			goto err;
 		}
-		fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
-		fprintBstr(fh, "sk = ", secret_key, sig->length_secret_key);
+		OQS_fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
+		OQS_fprintBstr(fh, "sk = ", secret_key, sig->length_secret_key);
 
 		rc = OQS_SIG_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
 		if (rc != OQS_SUCCESS) {
@@ -326,7 +311,7 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 			goto err;
 		}
 		fprintf(fh, "smlen = %zu\n", signed_msg_len);
-		fprintBstr(fh, "sm = ", signed_msg, signed_msg_len);
+		OQS_fprintBstr(fh, "sm = ", signed_msg, signed_msg_len);
 
 		OQS_MEM_secure_free(signed_msg, signed_msg_len);
 
@@ -341,7 +326,7 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 			goto err;
 		}
 
-		OQS_randombytes_nist_kat_restore_state();
+		OQS_KAT_PRNG_restore_state(prng);
 	}
 
 	ret = OQS_SUCCESS;
@@ -362,6 +347,7 @@ cleanup:
 	OQS_MEM_insecure_free(signature);
 	OQS_MEM_insecure_free(msg);
 	OQS_SIG_free(sig);
+    OQS_KAT_PRNG_free(prng);
 	return ret;
 }
 
