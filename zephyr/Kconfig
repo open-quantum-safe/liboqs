@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: MIT
+
+config LIBOQS
+	bool "Enable liboqs"
+	depends on ARM || ARM64 || X86 || ARCH_POSIX
+	help
+	  This option enables the liboqs as a Zephyr module. Currenty, the port is only
+	  available for ARM, ARM64, and x86 architectures and the native Posix simulators.
+
+menu "Liboqs algorithm configuration"
+
+config LIBOQS_ENABLE_KEM_BIKE
+	bool "Enable the BIKE KEM algorithm"
+	default n
+	depends on LIBOQS
+	help
+	  This option enables the BIKE KEM algorithm.
+
+config LIBOQS_ENABLE_KEM_FRODOKEM
+	bool "Enable the FRODOKEM KEM algorithm"
+	default n
+	depends on LIBOQS
+
+config LIBOQS_ENABLE_KEM_NTRUPRIME
+	bool "Enable the NRTUPRIME KEM algorithm"
+	default n
+	depends on LIBOQS
+
+config LIBOQS_ENABLE_KEM_CLASSIC_MCELIECE
+	bool "Enable the CLASSIC_MCELIECE KEM algorithm"
+	default n
+	depends on LIBOQS
+
+config LIBOQS_ENABLE_KEM_HQC
+	bool "Enable the HQC KEM algorithm"
+	default n
+	depends on LIBOQS
+
+config LIBOQS_ENABLE_KEM_KYBER
+	bool "Enable the KYBER KEM algorithm"
+	default y
+	depends on LIBOQS
+	
+config LIBOQS_ENABLE_SIG_DILITHIUM
+	bool "Enable the DILITHIUM signature algorithm"
+	default y
+	depends on LIBOQS
+
+config LIBOQS_ENABLE_SIG_FALCON
+	bool "Enable the FALCON signature algorithm"
+	default y
+	depends on LIBOQS
+
+config LIBOQS_ENABLE_SIG_SPHINCS
+	bool "Enable the SPHINCS signature algorithm"
+	default y
+	depends on LIBOQS
+
+endmenu

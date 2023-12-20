@@ -57,13 +57,27 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	oqs_randombytes_algorithm(random_array, bytes_to_read);
 }
 
-#if !defined(_WIN32)
-#if defined(__APPLE__)
+// Select the implementation for OQS_randombytes_system
+#if defined(_WIN32)
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
+	HCRYPTPROV hCryptProv;
+	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
+	        !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
+		exit(EXIT_FAILURE); // better to fail than to return bad random data
+	}
+	CryptReleaseContext(hCryptProv, 0);
+}
+#elif defined(__APPLE__)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	arc4random_buf(random_array, bytes_to_read);
 }
-#else
-#if defined(OQS_HAVE_GETENTROPY)
+#elif defined(OQS_EMBEDDED_BUILD)
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
+	fprintf(stderr, "OQS_randombytes_system is not available in an embedded build.\n");
+	fprintf(stderr, "Call OQS_randombytes_custom_algorithm() to set a custom method for your system.\n");
+	exit(EXIT_FAILURE);
+}
+#elif defined(OQS_HAVE_GETENTROPY)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	while (bytes_to_read > 256) {
 		if (getentropy(random_array, 256)) {
@@ -94,17 +108,6 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	}
 
 	fclose(handle);
-}
-#endif
-#endif
-#else
-void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
-	HCRYPTPROV hCryptProv;
-	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	        !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
-		exit(EXIT_FAILURE); // better to fail than to return bad random data
-	}
-	CryptReleaseContext(hCryptProv, 0);
 }
 #endif
 

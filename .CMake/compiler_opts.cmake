@@ -85,7 +85,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     add_compile_options(${OQS_OPT_FLAG})
 
     # If this is not a dist build we also need to set the OQS_USE_[EXTENSION] flags
-    if(NOT ${OQS_DIST_BUILD})
+    if(NOT ${OQS_DIST_BUILD} AND NOT CMAKE_CROSSCOMPILING)
         include(${CMAKE_CURRENT_LIST_DIR}/gcc_clang_intrinsics.cmake)
     endif()
 endif()

@@ -25,6 +25,8 @@
 #cmakedefine OQS_USE_SHA2_OPENSSL 1
 #cmakedefine OQS_USE_SHA3_OPENSSL 1
 
+#cmakedefine OQS_EMBEDDED_BUILD 1
+
 #cmakedefine OQS_USE_ADX_INSTRUCTIONS 1
 #cmakedefine OQS_USE_AES_INSTRUCTIONS 1
 #cmakedefine OQS_USE_AVX_INSTRUCTIONS 1

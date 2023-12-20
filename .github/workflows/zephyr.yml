@@ -1,0 +1,46 @@
+name: Zephyr tests
+
+on: [push, pull_request]
+
+jobs:
+
+  zephyr_test:
+    runs-on: ubuntu-22.04
+    container: ghcr.io/zephyrproject-rtos/ci:latest
+    env:
+        CMAKE_PREFIX_PATH: /opt/toolchains
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - zephyr-ref: v3.4.0
+            - zephyr-ref: v3.5.0
+
+    steps:
+        - name: Init west workspace
+          run: west init --mr ${{ matrix.config.zephyr-ref }} zephyr
+
+        - name: Update west.yml
+          working-directory: zephyr/zephyr
+          run: |
+            REF=$(echo '${{ github.ref }}' | sed -e 's/\//\\\//g')
+            sed -e 's/remotes:/remotes:\n    \- name: liboqs\n      url\-base: https:\/\/github.com\/${{ github.repository_owner }}/' -i west.yml
+            sed -e "s/projects:/projects:\n    \- name: liboqs\n      path: modules\/crypto\/liboqs\n      remote: liboqs\n      revision: $REF/" -i west.yml
+
+        - name: Update west workspace
+          working-directory: zephyr
+          run: west update -n -o=--depth=1
+
+        - name: Export zephyr
+          working-directory: zephyr
+          run: west zephyr-export
+
+        - name: Run Signature test
+          working-directory: zephyr
+          run: |
+            west twister --integration -T modules/crypto/liboqs/zephyr -s samples/Signatures/sample.crypto.liboqs_signature_example -vvv
+
+        - name: Run KEM test
+          working-directory: zephyr
+          run: |
+            west twister --integration -T modules/crypto/liboqs/zephyr -s samples/KEMs/sample.crypto.liboqs_kem_example -vvv
