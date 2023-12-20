@@ -137,17 +137,6 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 	return 1;
 }
 
-// static OQS_SIG_STFL_SECRET_KEY *lock_test_sk = NULL;
-// static OQS_SIG_STFL *lock_test_sig_obj = NULL;
-// static uint8_t *lock_test_public_key = NULL;
-// static char *lock_test_context = NULL;
-// static uint8_t *signature_1 = NULL;
-// static uint8_t *signature_2 = NULL;
-// static size_t signature_len_1;
-// static size_t signature_len_2;
-// static uint8_t message_1[] = "The quick brown fox ...";
-// static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
-
 /*
  * Write stateful secret keys to disk.
  */
@@ -203,12 +192,10 @@ static OQS_STATUS unlock_sk_key(void *mutex) {
 }
 #else
 static OQS_STATUS lock_sk_key(UNUSED void *mutex) {
-	// void(*mutex);
 	return OQS_SUCCESS;
 }
 
 static OQS_STATUS unlock_sk_key(UNUSED void *mutex) {
-	// void(mutex);
 	return OQS_SUCCESS;
 }
 #endif
@@ -921,9 +908,7 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 	OQS_SIG_STFL_SECRET_KEY_SET_lock(lock_test_sk, lock_sk_key);
 	OQS_SIG_STFL_SECRET_KEY_SET_unlock(lock_test_sk, unlock_sk_key);
 
-//#if OQS_USE_PTHREADS_IN_TESTS
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(lock_test_sk, test_sk_lock);
-//#endif
 
 	printf("================================================================================\n");
 	printf("Generate keypair  %s\n", method_name);
@@ -1123,10 +1108,6 @@ err:
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
-//	OQS_MEM_insecure_free(signature_1);
-//	signature_1 = NULL;
-//	OQS_MEM_insecure_free(signature_2);
-//	signature_2 = NULL;
 
 	OQS_destroy();
 

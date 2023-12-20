@@ -707,8 +707,8 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	oqs_lms_key_data *lms_key_data = NULL;
 	uint8_t *lms_sk = NULL;
 	uint8_t *lms_aux = NULL;
-	int aux_buf_len = 0;
-	uint8_t lms_sk_len = hss_get_private_key_len((unsigned )(1), NULL, NULL);
+	size_t aux_buf_len = 0;
+	size_t lms_sk_len = hss_get_private_key_len((unsigned )(1), NULL, NULL);
 
 	if (sk == NULL || sk_buf == NULL || (sk_len == 0) || (sk_len < lms_sk_len )) {
 		return OQS_ERROR;

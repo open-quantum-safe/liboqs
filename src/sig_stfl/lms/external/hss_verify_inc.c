@@ -83,7 +83,7 @@ bool hss_validate_signature_init(
             /* to validate) */
             if (signature_len < 4) goto failed;
             lm_type = (param_set_t)get_bigendian( signature, 4 );
-            unsigned l_pubkeylen = lm_get_public_key_len(lm_type);
+            unsigned l_pubkeylen = (unsigned)lm_get_public_key_len(lm_type);
             if (l_pubkeylen == 0 || l_pubkeylen > signature_len) goto failed;
             const unsigned char *l_pubkey = signature;
             signature += l_pubkeylen; signature_len -= l_pubkeylen;
