@@ -7,7 +7,12 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#if defined(_WIN32)
 #include <string.h>
+#define strcasecmp _stricmp
+#else
+#include <strings.h>
+#endif
 
 #include <time.h>
 
