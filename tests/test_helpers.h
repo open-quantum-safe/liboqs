@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #ifndef OQS_TEST_HELPERS_H
 #define OQS_TEST_HELPERS_H
 
@@ -8,23 +9,23 @@
 #include <oqs/sha3.h>
 
 typedef union {
-    OQS_SHA3_shake256_inc_ctx hqc_state;
-    // struct definition copied from rand_nist.c
-    struct {
-        unsigned char Key[32];
-        unsigned char V[16];
-        int reseed_counter;
-    } nist_state;
+	OQS_SHA3_shake256_inc_ctx hqc_state;
+	// struct definition copied from rand_nist.c
+	struct {
+		unsigned char Key[32];
+		unsigned char V[16];
+		int reseed_counter;
+	} nist_state;
 } OQS_KAT_PRNG_state;
 
 typedef struct {
-    int max_kats;
-    OQS_KAT_PRNG_state saved_state;
-    // The caller should use the OQS_KAT_PRNG_* functions instead of these callbacks.
+	int max_kats;
+	OQS_KAT_PRNG_state saved_state;
+	// The caller should use the OQS_KAT_PRNG_* functions instead of these callbacks.
 	void (*seed)(const uint8_t *, const uint8_t *);
 	void (*get_state)(void *);
 	void (*set_state)(const void *);
-	void (*free)(void *);
+	void (*free)(OQS_KAT_PRNG_state *);
 } OQS_KAT_PRNG;
 
 OQS_KAT_PRNG *OQS_KAT_PRNG_new(const char *method_name);

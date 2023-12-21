@@ -243,13 +243,13 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 	size_t signature_len = 0;
 	size_t signed_msg_len = 0;
 	OQS_STATUS rc, ret = OQS_ERROR;
-    OQS_KAT_PRNG *prng = NULL;
-    int max_count;
+	OQS_KAT_PRNG *prng = NULL;
+	int max_count;
 
-    prng = OQS_KAT_PRNG_new(method_name);
-    if (prng == NULL) {
-        goto err;
-    }
+	prng = OQS_KAT_PRNG_new(method_name);
+	if (prng == NULL) {
+		goto err;
+	}
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
@@ -347,7 +347,7 @@ cleanup:
 	OQS_MEM_insecure_free(signature);
 	OQS_MEM_insecure_free(msg);
 	OQS_SIG_free(sig);
-    OQS_KAT_PRNG_free(prng);
+	OQS_KAT_PRNG_free(prng);
 	return ret;
 }
 
