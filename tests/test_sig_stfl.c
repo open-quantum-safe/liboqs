@@ -10,7 +10,6 @@
 #include <string.h>
 
 #include <time.h>
-#include <unistd.h>
 
 #include <oqs/oqs.h>
 #include "tmp_store.c"
