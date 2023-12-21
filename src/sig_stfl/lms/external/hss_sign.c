@@ -253,7 +253,7 @@ bool hss_create_signed_public_key(unsigned char *signed_key,
     unsigned len_public_key = 8 + I_LEN + hash_size;
 
         /* Now, generate the signature */
-    if ((int)0 == generate_merkle_signature( signed_key, len_signature,
+    if (!generate_merkle_signature( signed_key, (unsigned)len_signature,
                          parent, w, public_key, len_public_key)) {
         return false;
     }
@@ -303,7 +303,7 @@ static void do_gen_sig( const void *detail, struct thread_collection *col) {
     const unsigned char *message = d->message;
     size_t message_len = d->message_len;
 
-    if ((int)0 == generate_merkle_signature(signature, signature_len,
+    if (!generate_merkle_signature(signature, (unsigned)signature_len,
               w->tree[ levels-1 ], w, message, message_len)) {
         goto failed;
     }
