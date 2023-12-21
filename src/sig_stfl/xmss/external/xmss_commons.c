@@ -151,8 +151,8 @@ int xmssmt_core_sign_open(const xmss_params *params,
     unsigned char *root = leaf + params->n;
 
     unsigned long long prefix_length = params->padding_len + 3*params->n;
-    unsigned char *m_with_prefix = malloc(mlen + prefix_length);
-
+    unsigned long long m_with_prefix_len = mlen + prefix_length;
+    unsigned char *m_with_prefix = NULL;
     unsigned char *mhash = root;
     unsigned long long idx = 0;
     unsigned int i, ret;
@@ -169,13 +169,18 @@ int xmssmt_core_sign_open(const xmss_params *params,
     // Unused since smlen is a constant
     (void) smlen;
 
+    if ((m_with_prefix_len == 0) || (m_with_prefix = malloc(m_with_prefix_len)) == NULL){
+        ret = -1;
+        goto fail;
+    }
+
     /* Convert the index bytes from the signature to an integer. */
     idx = bytes_to_ull(sm, params->index_bytes);
 
     /* Put the message at the m_with_prefix buffer, so that we can
      * prepend the required other inputs for the hash function. */
-    memcpy(m_with_prefix, sm + params->sig_bytes - prefix_length, prefix_length);
-    memcpy(m_with_prefix + prefix_length, m, mlen);
+    memcpy(m_with_prefix, sm + params->sig_bytes - prefix_length, (size_t)prefix_length);
+    memcpy(m_with_prefix + prefix_length, m, (size_t)mlen);
 
     /* Compute the message hash. */
     hash_message(params, mhash, sm + params->index_bytes, pk, idx,
