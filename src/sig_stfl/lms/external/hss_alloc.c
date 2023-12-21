@@ -361,7 +361,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
             /* This is a signed type so that the comparison works as */
             /* expected if mem_target is negative */
         size_t stack_used;
-        unsigned long mem = compute_level_memory_usage(i, j,
+        unsigned long mem = (unsigned long)compute_level_memory_usage(i, j,
                        level_height[i], hash_size[i], &subtree_levels[i],
                        &stack_used );
             /* # of sublevels this would have */

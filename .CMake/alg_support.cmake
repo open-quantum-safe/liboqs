@@ -450,6 +450,7 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h10_w8 "" ON "OQS_E
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h15_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h20_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 
+
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
 endif()
