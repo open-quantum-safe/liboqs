@@ -1,5 +1,5 @@
-liboqs version 0.9.1-rc1
-========================
+liboqs version 0.9.1
+====================
 
 About
 -----
@@ -28,7 +28,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.9.1 of liboqs. It was released on December 19, 2023.
+This is version 0.9.1 of liboqs. It was released on December 22, 2023.
 
 This release is a security release which fixes potential non-constant-time behaviour in Kyber based on https://github.com/pq-crystals/kyber/commit/dda29cc63af721981ee2c831cf00822e69be3220
 
@@ -39,7 +39,7 @@ This release continues from the 0.9.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- Kyber: C, AVX2, and aarch64 implementation
+- Kyber: C, AVX2, and aarch64 implementation updated
 
 Detailed changelog
 ------------------
@@ -47,4 +47,4 @@ Detailed changelog
 * pull kyber from upstream: dda29cc63af721981ee2c831cf00822e69be3220 (#1631) by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1633
 * Apply patch to Kyber aarch64 code from PQClean for variable-time division issue -> targeting 0.9.1 by @bhess in https://github.com/open-quantum-safe/liboqs/pull/1637
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.9.0...0.9.1-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.9.0...0.9.1
