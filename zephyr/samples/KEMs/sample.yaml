@@ -14,3 +14,4 @@ tests:
     integration_platforms:
       - qemu_x86
       - qemu_cortex_a53
+      - qemu_riscv32

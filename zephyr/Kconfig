@@ -2,7 +2,7 @@
 
 config LIBOQS
 	bool "Enable liboqs"
-	depends on ARM || ARM64 || X86 || ARCH_POSIX
+	depends on ARM || ARM64 || X86 || ARCH_POSIX || RISCV
 	help
 	  This option enables the liboqs as a Zephyr module. Currenty, the port is only
 	  available for ARM, ARM64, and x86 architectures and the native Posix simulators.
