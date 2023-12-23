@@ -13,8 +13,7 @@ if(CONFIG_LIBOQS)
                 # We have to set that manually as CMake can't detect it properly in Zephyr
                 set(CMAKE_SIZEOF_VOID_P 4)
         elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "riscv")
-                # Workaround as the generic name "arm" is not a supported architecture in liboqs.
-                # In Zephyr, however, it is exclusively used for 32-bit ARM architectures.
+                # In Zephyr, "riscv" is used for "qemu-riscv32"
                 set(CMAKE_SYSTEM_PROCESSOR "riscv32")
                 # We have to set that manually as CMake can't detect it properly in Zephyr
                 set(CMAKE_SIZEOF_VOID_P 4)
