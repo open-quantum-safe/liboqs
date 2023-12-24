@@ -2,6 +2,9 @@
 
 # Only add liboqs Zephyr module if enabled in Kconfig
 if(CONFIG_LIBOQS)
+
+        message(STATUS "CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
+
         # Workarounds for Zephyr
         if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
                 # We have to set that manually as CMake can't detect it properly in Zephyr
@@ -13,10 +16,15 @@ if(CONFIG_LIBOQS)
                 # We have to set that manually as CMake can't detect it properly in Zephyr
                 set(CMAKE_SIZEOF_VOID_P 4)
         elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "riscv")
-                # In Zephyr, "riscv" is used for "qemu-riscv32"
-                set(CMAKE_SYSTEM_PROCESSOR "riscv32")
-                # We have to set that manually as CMake can't detect it properly in Zephyr
-                set(CMAKE_SIZEOF_VOID_P 4)
+                if(BOARD MATCHES "qemu_riscv32")
+                        set(CMAKE_SYSTEM_PROCESSOR "riscv32")
+                        # We have to set that manually as CMake can't detect it properly in Zephyr
+                        set(CMAKE_SIZEOF_VOID_P 4)
+                elseif(BOARD MATCHES "qemu_riscv64")
+                        set(CMAKE_SYSTEM_PROCESSOR "riscv64")
+                        # We have to set that manually as CMake can't detect it properly in Zephyr
+                        set(CMAKE_SIZEOF_VOID_P 8)
+                endif()
         elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "posix")
                 # Workaround to enable the native Zephyr builds on the Linux host system.
                 if(BOARD MATCHES "native_posix|native_sim")
