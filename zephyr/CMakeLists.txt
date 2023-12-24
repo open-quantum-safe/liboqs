@@ -3,8 +3,6 @@
 # Only add liboqs Zephyr module if enabled in Kconfig
 if(CONFIG_LIBOQS)
 
-        message(STATUS "CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
-
         # Workarounds for Zephyr
         if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
                 # We have to set that manually as CMake can't detect it properly in Zephyr
