@@ -18,10 +18,16 @@ if(CONFIG_LIBOQS)
                         set(CMAKE_SYSTEM_PROCESSOR "riscv32")
                         # We have to set that manually as CMake can't detect it properly in Zephyr
                         set(CMAKE_SIZEOF_VOID_P 4)
+                elseif(BOARD MATCHES "hifive1_revb")
+                        set(CMAKE_SYSTEM_PROCESSOR "riscv32")
+                        # We have to set that manually as CMake can't detect it properly in Zephyr
+                        set(CMAKE_SIZEOF_VOID_P 4)
                 elseif(BOARD MATCHES "qemu_riscv64")
                         set(CMAKE_SYSTEM_PROCESSOR "riscv64")
                         # We have to set that manually as CMake can't detect it properly in Zephyr
                         set(CMAKE_SIZEOF_VOID_P 8)
+                else()
+                        message(FATAL_ERROR "Unsupported board ${BOARD} with riscv architecture")
                 endif()
         elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "posix")
                 # Workaround to enable the native Zephyr builds on the Linux host system.
