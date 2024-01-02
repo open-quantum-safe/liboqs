@@ -632,7 +632,7 @@ def verify_from_upstream():
                                       '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
                 verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
                                          '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
-                if not os.path.isdir(oqsdir) and os.path.isdir(erifydir):
+                if not os.path.isdir(oqsdir) and os.path.isdir(verifydir):
                     print('Available implementation in upstream that isn\'t integrated into LIBOQS: {}_{}_{}'.format(impl['upstream']['name'],
                                                                                                                 scheme['pqclean_scheme'], impl))
                 else:
