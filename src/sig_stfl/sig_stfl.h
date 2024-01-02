@@ -485,7 +485,7 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
  * @param[in] lock function pointer
  *
  */
-void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_key lock);
+OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_key lock);
 
 /**
  * OQS_SIG_STFL_SECRET_KEY_SET_unlock .
@@ -496,7 +496,7 @@ void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_key lock
  * @param[in] unlock function pointer
  *
  */
-void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unlock_key unlock);
+OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unlock_key unlock);
 
 /**
  * OQS_SIG_STFL_SECRET_KEY_SET_mutex .
@@ -507,7 +507,7 @@ void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unlock_key 
  * @param[in] mutex function pointer
  *
  */
-void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void *mutex);
+OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void *mutex);
 
 /**
  * OQS_SIG_STFL_SECRET_KEY_lock .
@@ -518,7 +518,7 @@ void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void *mutex)
  * @return OQS_SUCCESS if successful, or OQS_ERROR if the object fails to apply the lock
  *
  */
-OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * OQS_SIG_STFL_SECRET_KEY_unlock .
@@ -529,7 +529,7 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
  * @return OQS_SUCCESS if successful, or OQS_ERROR if the object fails to release the lock
  *
  */
-OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * OQS_SIG_STFL_SECRET_KEY_SET_store_cb .
@@ -543,7 +543,7 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
  *                    Applications allocates, tracks, deallocates this. Signature generation fails without this set.
  *
  */
-void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
+OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
 /**
  * OQS_SECRET_KEY_STFL_serialize_key .
@@ -572,7 +572,7 @@ OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
 
 #if defined(__cplusplus)
-} // extern "C"
+// extern "C"
 #endif
 
 #endif /* OQS_SIG_STATEFUL_H */
