@@ -251,8 +251,8 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h25_w4_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h25_w8_new(void);
 
-OQS_API OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
-OQS_API OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *totaln, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *totaln, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 

@@ -15,7 +15,6 @@
  * from http://bench.cr.yp.to/supercop.html
  * by D. J. Bernstein */
 
-
 static uint64_t load_bigendian_64(const uint8_t *x) {
 	return (uint64_t)(x[7]) | (((uint64_t)(x[6])) << 8) |
 	       (((uint64_t)(x[5])) << 16) | (((uint64_t)(x[4])) << 24) |
@@ -24,21 +23,21 @@ static uint64_t load_bigendian_64(const uint8_t *x) {
 }
 
 static void store_bigendian_64(uint8_t *x, uint64_t u) {
-	x[7] = (uint8_t) u;
+	x[7] = (uint8_t)u;
 	u >>= 8;
-	x[6] = (uint8_t) u;
+	x[6] = (uint8_t)u;
 	u >>= 8;
-	x[5] = (uint8_t) u;
+	x[5] = (uint8_t)u;
 	u >>= 8;
-	x[4] = (uint8_t) u;
+	x[4] = (uint8_t)u;
 	u >>= 8;
-	x[3] = (uint8_t) u;
+	x[3] = (uint8_t)u;
 	u >>= 8;
-	x[2] = (uint8_t) u;
+	x[2] = (uint8_t)u;
 	u >>= 8;
-	x[1] = (uint8_t) u;
+	x[1] = (uint8_t)u;
 	u >>= 8;
-	x[0] = (uint8_t) u;
+	x[0] = (uint8_t)u;
 }
 
 static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
@@ -63,9 +62,9 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 	};
 	unsigned long long pos = 0;
 	/* load constants */
-	uint32x4_t c0 = vld1q_u32(s256cst +  0);
-	uint32x4_t c1 = vld1q_u32(s256cst +  4);
-	uint32x4_t c2 = vld1q_u32(s256cst +  8);
+	uint32x4_t c0 = vld1q_u32(s256cst + 0);
+	uint32x4_t c1 = vld1q_u32(s256cst + 4);
+	uint32x4_t c2 = vld1q_u32(s256cst + 8);
 	uint32x4_t c3 = vld1q_u32(s256cst + 12);
 	uint32x4_t c4 = vld1q_u32(s256cst + 16);
 	uint32x4_t c5 = vld1q_u32(s256cst + 20);
@@ -80,13 +79,13 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 	uint32x4_t ce = vld1q_u32(s256cst + 56);
 	uint32x4_t cf = vld1q_u32(s256cst + 60);
 	/* load state */
-	uint32x4_t d0 = vld1q_u32((uint32_t *)(statebytes +  0));
+	uint32x4_t d0 = vld1q_u32((uint32_t *)(statebytes + 0));
 	uint32x4_t d1 = vld1q_u32((uint32_t *)(statebytes + 16));
 	uint32x4_t s0, s1, h0, h1;
 	/* make state big-endian */
 	d0 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d0)));
 	d1 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d1)));
-	while (length   >= 64) {
+	while (length >= 64) {
 		/* load one block */
 		uint32x4_t i0 = vld1q_u32((const uint32_t *)(data + pos + 0));
 		uint32x4_t i1 = vld1q_u32((const uint32_t *)(data + pos + 16));
@@ -110,33 +109,33 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 		 * using 16 constants in c0..c3
 		 * we need h0,h1,x0,x1 as scratch
 		 */
-#define DO16ROUNDS(i0, i1, i2, i3, c0, c1, c2, c3)  \
-        h0 = vaddq_u32(i0, c0);         \
-        x0 = vsha256hq_u32(s0, s1, h0);     \
-        x1 = vsha256h2q_u32(s1, s0, h0);    \
-        h1 = vaddq_u32(i1, c1);         \
-        s0 = vsha256hq_u32(x0, x1, h1);     \
-        s1 = vsha256h2q_u32(x1, x0, h1);    \
-        h0 = vaddq_u32(i2, c2);         \
-        x0 = vsha256hq_u32(s0, s1, h0);     \
-        x1 = vsha256h2q_u32(s1, s0, h0);    \
-        h1 = vaddq_u32(i3, c3);         \
-        s0 = vsha256hq_u32(x0, x1, h1);     \
-        s1 = vsha256h2q_u32(x1, x0, h1)
+#define DO16ROUNDS(i0, i1, i2, i3, c0, c1, c2, c3) \
+    h0 = vaddq_u32(i0, c0);                        \
+    x0 = vsha256hq_u32(s0, s1, h0);                \
+    x1 = vsha256h2q_u32(s1, s0, h0);               \
+    h1 = vaddq_u32(i1, c1);                        \
+    s0 = vsha256hq_u32(x0, x1, h1);                \
+    s1 = vsha256h2q_u32(x1, x0, h1);               \
+    h0 = vaddq_u32(i2, c2);                        \
+    x0 = vsha256hq_u32(s0, s1, h0);                \
+    x1 = vsha256h2q_u32(s1, s0, h0);               \
+    h1 = vaddq_u32(i3, c3);                        \
+    s0 = vsha256hq_u32(x0, x1, h1);                \
+    s1 = vsha256h2q_u32(x1, x0, h1)
 
 		/*
 		 * this expands the block (or previously
 		 * expanded) in i0..i3 to j0..j3
 		 */
 #define DO16EXPANDS(i0, i1, i2, i3, j0, j1, j2, j3) \
-        j0 = vsha256su0q_u32(i0, i1);       \
-        j0 = vsha256su1q_u32(j0, i2, i3);   \
-        j1 = vsha256su0q_u32(i1, i2);       \
-        j1 = vsha256su1q_u32(j1, i3, j0);   \
-        j2 = vsha256su0q_u32(i2, i3);       \
-        j2 = vsha256su1q_u32(j2, j0, j1);   \
-        j3 = vsha256su0q_u32(i3, j0);       \
-        j3 = vsha256su1q_u32(j3, j1, j2)
+    j0 = vsha256su0q_u32(i0, i1);                   \
+    j0 = vsha256su1q_u32(j0, i2, i3);               \
+    j1 = vsha256su0q_u32(i1, i2);                   \
+    j1 = vsha256su1q_u32(j1, i3, j0);               \
+    j2 = vsha256su0q_u32(i2, i3);                   \
+    j2 = vsha256su1q_u32(j2, j0, j1);               \
+    j3 = vsha256su0q_u32(i3, j0);                   \
+    j3 = vsha256su1q_u32(j3, j1, j2)
 
 		DO16ROUNDS(i0, i1, i2, i3, c0, c1, c2, c3);
 
@@ -163,11 +162,10 @@ static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
 	/* store back to little-endian */
 	d0 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d0)));
 	d1 = vreinterpretq_u32_u8(vrev32q_u8(vreinterpretq_u8_u32(d1)));
-	vst1q_u32((uint32_t *)(statebytes +  0), d0);
+	vst1q_u32((uint32_t *)(statebytes + 0), d0);
 	vst1q_u32((uint32_t *)(statebytes + 16), d1);
 
 	return length;
-
 }
 
 void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const uint8_t *in, size_t inlen) {
@@ -180,7 +178,8 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 
 	if (new_inlen == inlen) {
 		new_in = in;
-	} else { //Combine incremental data with final input
+	} else {
+		// Combine incremental data with final input
 		tmp_in = malloc(tmp_len);
 		if (tmp_in == NULL) {
 			exit(111);
@@ -201,7 +200,6 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 	new_inlen &= 63;
 	new_in -= new_inlen;
 
-
 	for (size_t i = 0; i < new_inlen; ++i) {
 		padded[i] = new_in[i];
 	}
@@ -211,27 +209,27 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 		for (size_t i = new_inlen + 1; i < 56; ++i) {
 			padded[i] = 0;
 		}
-		padded[56] = (uint8_t) (bytes >> 53);
-		padded[57] = (uint8_t) (bytes >> 45);
-		padded[58] = (uint8_t) (bytes >> 37);
-		padded[59] = (uint8_t) (bytes >> 29);
-		padded[60] = (uint8_t) (bytes >> 21);
-		padded[61] = (uint8_t) (bytes >> 13);
-		padded[62] = (uint8_t) (bytes >> 5);
-		padded[63] = (uint8_t) (bytes << 3);
+		padded[56] = (uint8_t)(bytes >> 53);
+		padded[57] = (uint8_t)(bytes >> 45);
+		padded[58] = (uint8_t)(bytes >> 37);
+		padded[59] = (uint8_t)(bytes >> 29);
+		padded[60] = (uint8_t)(bytes >> 21);
+		padded[61] = (uint8_t)(bytes >> 13);
+		padded[62] = (uint8_t)(bytes >> 5);
+		padded[63] = (uint8_t)(bytes << 3);
 		crypto_hashblocks_sha256_armv8(state->ctx, padded, 64);
 	} else {
 		for (size_t i = new_inlen + 1; i < 120; ++i) {
 			padded[i] = 0;
 		}
-		padded[120] = (uint8_t) (bytes >> 53);
-		padded[121] = (uint8_t) (bytes >> 45);
-		padded[122] = (uint8_t) (bytes >> 37);
-		padded[123] = (uint8_t) (bytes >> 29);
-		padded[124] = (uint8_t) (bytes >> 21);
-		padded[125] = (uint8_t) (bytes >> 13);
-		padded[126] = (uint8_t) (bytes >> 5);
-		padded[127] = (uint8_t) (bytes << 3);
+		padded[120] = (uint8_t)(bytes >> 53);
+		padded[121] = (uint8_t)(bytes >> 45);
+		padded[122] = (uint8_t)(bytes >> 37);
+		padded[123] = (uint8_t)(bytes >> 29);
+		padded[124] = (uint8_t)(bytes >> 21);
+		padded[125] = (uint8_t)(bytes >> 13);
+		padded[126] = (uint8_t)(bytes >> 5);
+		padded[127] = (uint8_t)(bytes << 3);
 		crypto_hashblocks_sha256_armv8(state->ctx, padded, 128);
 	}
 
@@ -314,7 +312,7 @@ void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) 
 }
 
 void oqs_sha2_sha224_inc_blocks_armv8(sha224ctx *state, const uint8_t *in, size_t inblocks) {
-	oqs_sha2_sha256_inc_blocks_armv8((sha256ctx *) state, in, inblocks);
+	oqs_sha2_sha256_inc_blocks_armv8((sha256ctx *)state, in, inblocks);
 }
 
 void oqs_sha2_sha256_armv8(uint8_t *out, const uint8_t *in, size_t inlen) {

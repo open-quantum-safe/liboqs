@@ -7,10 +7,14 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#if defined(_WIN32)
 #include <string.h>
+#define strcasecmp _stricmp
+#else
+#include <strings.h>
+#endif
 
 #include <time.h>
-#include <unistd.h>
 
 #include <oqs/oqs.h>
 #include "tmp_store.c"
@@ -1100,10 +1104,17 @@ err:
 	OQS_MEM_insecure_free(lock_test_context);
 	OQS_MEM_insecure_free(signature_1);
 	OQS_MEM_insecure_free(signature_2);
-	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS ||
-	        rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
+
+	OQS_destroy();
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
+
+#if OQS_USE_PTHREADS_IN_TESTS
+	if (rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
+		return EXIT_FAILURE;
+	}
+#endif
 	return exit_status;
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile);

@@ -175,7 +175,8 @@ def path_to_executable(program_name):
     for executable in [
         os.path.join(path, program_name),
         os.path.join(path, program_name + ".EXE"),
-        os.path.join(path, program_name + ".exe")]:
+        os.path.join(path, program_name + ".exe"),
+        os.path.join(path, "Debug", program_name + ".exe"),]:
             if os.path.isfile(executable):
                 return executable
     assert False, "Unable to find executable file {}".format(program_name)
