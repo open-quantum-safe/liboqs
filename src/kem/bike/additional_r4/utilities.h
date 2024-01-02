@@ -138,6 +138,11 @@ _INLINE_ uint32_t secure_l32_mask(IN const uint32_t v1, IN const uint32_t v2)
 #endif
 }
 
+// Return (-1) if v1 == v2, 0 otherwise
+_INLINE_ uint64_t secure_cmpeq64_mask(IN const uint64_t v1, IN const uint64_t v2) {
+    return -(1 - ((uint64_t)((v1-v2) | (v2-v1)) >> 63));
+}
+
 // bike_memcpy avoids the undefined behaviour of memcpy when byte_len=0
 _INLINE_ void *bike_memcpy(void *dst, const void *src, size_t byte_len)
 {
