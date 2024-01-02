@@ -8,7 +8,7 @@
 {
 	Rejection sampling for small (f,g) coefficients
 	Memcheck:Cond
-	src:keygen.c:4153 # fun:PQCLEAN_FALCON*_*_keyge
+	src:keygen.c:4153 # fun:PQCLEAN_FALCON*_*_keygen
 	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
 }
 {
