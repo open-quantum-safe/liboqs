@@ -25,7 +25,7 @@ upstreams:
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
     git_branch: master
-    git_commit: 272125f6acc8e8b6850fd68ceb901a660ff48196
+    git_commit: b628ba78711bc28327dc7d2d5c074a00f061884e
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
