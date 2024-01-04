@@ -2,9 +2,9 @@ name: Release tests
 
 on: # TODO: do we want to run this on pull request only? push only? need to have standardized release process
   push:
-    branches: [ 'dev-**' ] # TODO: settle on prefix / suffix for release candidates
+    branches: [ 'sw-provider-**' ] # TODO: settle on prefix / suffix for release candidates
   pull_request:
-    branches: [ 'dev-**' ]
+    branches: [ 'sw-provider-**' ]
 
 
 jobs:
