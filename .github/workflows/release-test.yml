@@ -24,4 +24,5 @@ jobs:
           path: liboqs
       - name: Display everything
         run: pwd && ls
-
+      - name: Run release-test
+        run: scripts/release-test.sh # oqs-provider release-test
