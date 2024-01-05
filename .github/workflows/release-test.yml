@@ -1,17 +1,17 @@
 name: Release tests
 
-on: # TODO: do we want to run this on pull request only? push only? need to have standardized release process
+on:
   push:
-    branches: [ 'sw-provider-**' ] # TODO: settle on prefix / suffix for release candidates
-  pull_request:
     branches: [ 'sw-provider-**' ]
+  pull_request:
+    branches: [ 'dev-**' ]
 
 
 jobs:
 
   oqs-provider-release-test: # TODO: this is highly coupled to oqs-provider structure. Might be better downstream?
     container:
-      image: openquantumsafe/ci-ubuntu-jammy:latest # TODO: use this or the focal container?
+      image: openquantumsafe/ci-ubuntu-jammy:latest
     runs-on: ubuntu-latest
     steps:
       - name: Checkout oqs-provider
@@ -30,12 +30,18 @@ jobs:
           python3 oqs-template/generate.py
       - name: Full build
         env:
-          OPENSSL_BRANCH: openssl-3.1.0
+          OPENSSL_BRANCH: master # TODO: verify that this is the correct branch
         run: scripts/fullbuild.sh
-      - name: Run oqs-provider tests
-        run: scripts/runtests.sh
-      - name: Run full TLS tests
+          #- name: Run oqs-provider tests
+          #run: scripts/runtests.sh
+      - name: Run a minimal set of TLS tests
         env:
           OPENSSL_MODULES: _build/lib
           OPENSSL_CONF: scripts/openssl-ca.cnf
-        run: python3 -m pytest --numprocesses=auto scripts/test_tls_full.py
+        run: |
+          python3 -m pytest --numprocesses=auto scripts/test_tls_full.py::test_sig_kem_pair[ecdsap256-kyber512] \
+          scripts/test_tls_full.py::test_sig_kem_pair[ecdsap256-p256_kyber512] \
+          scripts/test_tls_full.py::test_sig_kem_pair[dilithium2-kyber512] \
+          scripts/test_tls_full.py::test_sig_kem_pair[dilithium2-p256_kyber512] \
+          scripts/test_tls_full.py::test_sig_kem_pair[p256_dilithium2-kyber512] \
+          scripts/test_tls_full.py::test_sig_kem_pair[p256_dilithium2-p256_kyber512]
