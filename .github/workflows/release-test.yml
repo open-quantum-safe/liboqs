@@ -9,7 +9,7 @@ on: # TODO: do we want to run this on pull request only? push only? need to have
 
 jobs:
 
-  oqs-provider-release-test:
+  oqs-provider-release-test: # TODO: this is highly coupled to oqs-provider structure. Might be better downstream?
     container:
       image: openquantumsafe/ci-ubuntu-jammy:latest # TODO: use this or the focal container?
     runs-on: ubuntu-latest
@@ -22,7 +22,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: liboqs
-      - name: Display everything
-        run: pwd && ls
-      - name: Run release-test
-        run: scripts/release-test.sh # oqs-provider release-test
+      - name: Activate all algorithms
+        run: sed -i "s/enable\: false/enable\: true/g" oqs-template/generate.yml && python3 oqs-template/generate.py
+      - name: Full build
+        run: scripts/fullbuild.sh
+      - name: Run oqs-provider tests
+        run: scripts/runtests.sh
+      - name: Run full TLS tests
+        run: OPENSSL_MODULES=`pwd`/_build/lib OPENSSL_CONF=`pwd`/scripts/openssl-ca.cnf python3 -m pytest --numprocesses=auto scripts/test_tls_full.py
