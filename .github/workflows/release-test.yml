@@ -29,6 +29,8 @@ jobs:
           sed -i "s/enable\: false/enable\: true/g" oqs-template/generate.yml && \
           python3 oqs-template/generate.py
       - name: Full build
+        env:
+          OPENSSL_BRANCH: openssl-3.1.0
         run: scripts/fullbuild.sh
       - name: Run oqs-provider tests
         run: scripts/runtests.sh
