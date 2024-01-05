@@ -2,7 +2,7 @@ name: Release tests
 
 on:
   pull_request:
-    branches: [ 'dev-**' ]
+    branches: [ 'dev-**' ] # TODO: settle on standard prefix
 
 
 jobs:
@@ -26,13 +26,13 @@ jobs:
         run: |
           sed -i "s/enable\: false/enable\: true/g" oqs-template/generate.yml && \
           python3 oqs-template/generate.py
-      - name: Full build
+      - name: Full build of oqs-provider
         env:
           OPENSSL_BRANCH: master # TODO: verify that this is the correct branch
         run: scripts/fullbuild.sh
-      - name: Run oqs-provider tests
+      - name: Run basic tests for oqs-provider
         run: scripts/runtests.sh
-      - name: Run a minimal set of TLS tests
+      - name: Test all TLS KEM/signature algorithm combinations
         env:
           OPENSSL_MODULES: _build/lib
           OPENSSL_CONF: scripts/openssl-ca.cnf
