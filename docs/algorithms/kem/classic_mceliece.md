@@ -14,7 +14,7 @@
 ## Advisories
 
 - Classic-McEliece-460896, Classic-McEliece-460896f, Classic-McEliece-6960119, and Classic-McEliece-6960119f parameter sets fail memory leak testing on x86-64 when building with ``clang`` using optimization level ``-O2`` and ``-O3``. Care is advised when using the algorithm at higher optimization levels, and any other compiler and architecture.
-- Current implementation of the algorithm may not be constant-time. Additionally, environment specific constant-time leaks may not be documented; please report potential constant-time leaks when found. 
+- Current implementation of the algorithm may not be constant-time. Additionally, environment specific constant-time leaks may not be documented; please report potential constant-time leaks when found.
 
 ## Parameter set summary
 
@@ -35,8 +35,8 @@
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                  |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                  |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                  |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | False                                          | True                  |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -46,8 +46,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -55,8 +55,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -64,8 +64,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -73,8 +73,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -82,8 +82,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -91,8 +91,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -100,8 +100,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -109,8 +109,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -118,8 +118,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | False                              | False                                          | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
