@@ -15,14 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout oqs-provider
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: open-quantum-safe/oqs-provider
       - name: Checkout liboqs
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: liboqs
       - name: Activate all algorithms
+        env:
+          LIBOQS_SRC_DIR: liboqs
         run: |
           sed -i "s/enable\: false/enable\: true/g" oqs-template/generate.yml && \
           python3 oqs-template/generate.py
