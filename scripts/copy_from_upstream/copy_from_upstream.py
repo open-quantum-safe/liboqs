@@ -611,8 +611,6 @@ def copy_from_upstream():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
-    if not keepdata:
-        shutil.rmtree('repos')
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
@@ -621,6 +619,10 @@ def copy_from_upstream():
     import update_cbom
     update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
     update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
+
+    if not keepdata:
+        shutil.rmtree('repos')
+
 
 def verify_from_upstream():
     instructions = load_instructions()
