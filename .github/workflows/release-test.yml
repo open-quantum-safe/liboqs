@@ -23,10 +23,15 @@ jobs:
         with:
           path: liboqs
       - name: Activate all algorithms
-        run: sed -i "s/enable\: false/enable\: true/g" oqs-template/generate.yml && python3 oqs-template/generate.py
+        run: |
+          sed -i "s/enable\: false/enable\: true/g" oqs-template/generate.yml && \
+          python3 oqs-template/generate.py
       - name: Full build
         run: scripts/fullbuild.sh
       - name: Run oqs-provider tests
         run: scripts/runtests.sh
       - name: Run full TLS tests
-        run: OPENSSL_MODULES=`pwd`/_build/lib OPENSSL_CONF=`pwd`/scripts/openssl-ca.cnf python3 -m pytest --numprocesses=auto scripts/test_tls_full.py
+        env:
+          OPENSSL_MODULES: _build/lib
+          OPENSSL_CONF: scripts/openssl-ca.cnf
+        run: python3 -m pytest --numprocesses=auto scripts/test_tls_full.py
