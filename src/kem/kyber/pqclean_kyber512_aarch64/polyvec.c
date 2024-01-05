@@ -21,6 +21,7 @@
 **************************************************/
 void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K][KYBER_N]) {
     unsigned int i, j, k;
+    uint64_t d0;
 
     #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352))
     uint16_t t[8];
@@ -29,7 +30,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
             for (k = 0; k < 8; k++) {
                 t[k]  = a[i][8 * j + k];
                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
-                t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
+                // t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
+                d0 = t[k];
+                d0 <<= 11;
+                d0 += 1664;
+                d0 *= 645084;
+                d0 >>= 31;
+                t[k] = d0 & 0x7ff;
             }
 
             r[ 0] = (t[0] >>  0);
@@ -53,7 +60,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
             for (k = 0; k < 4; k++) {
                 t[k]  = a[i][4 * j + k];
                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
-                t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
+                // t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
+                d0 = t[k];
+                d0 <<= 10;
+                d0 += 1665;
+                d0 *= 1290167;
+                d0 >>= 32;
+                t[k] = d0 & 0x3ff;
             }
 
             r[0] = (t[0] >> 0);
