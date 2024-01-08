@@ -161,12 +161,12 @@ typedef OQS_STATUS (*unlock_key)(void *mutex);
 OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i);
 
 /**
- * Returns the number of signature mechanisms in liboqs.  They can be enumerated with
+ * Returns the number of stateful signature mechanisms in liboqs.  They can be enumerated with
  * OQS_SIG_STFL_alg_identifier.
  *
  * Note that some mechanisms may be disabled at compile time.
  *
- * @return The number of signature mechanisms.
+ * @return The number of stateful signature mechanisms.
  */
 OQS_API int OQS_SIG_STFL_alg_count(void);
 
@@ -293,27 +293,36 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	void *context;
 
 	/**
-	 * Secret Key retrieval Function
+	 * Serialize the stateful secret key.
 	 *
-	 * @param[in] sk The secret key represented as OQS_SIG_STFL_SECRET_KEY object
-	 * @param[out] sk_len length of the private key as a byte stream
-	 * @param[out] sk_buf_ptr pointer to private key data as a byte stream
-	 * @returns length of key material data available
-	 * Caller is responsible for **deallocating** the pointer to buffer `sk_buf_ptr`.
+	 * This function encodes the stateful secret key represented by `sk` into a byte stream
+	 * for storage or transfer. The `sk_buf_ptr` will point to the allocated memory containing
+	 * the byte stream. Users must free the `sk_buf_ptr` using `OQS_MEM_secure_free` after use.
+	 * The `sk_len` will contain the length of the byte stream.
+	 *
+	 * @param[out] sk_buf_ptr Pointer to the byte stream representing the serialized secret key.
+	 * @param[out] sk_len Pointer to the length of the serialized byte stream.
+	 * @param[in] sk Pointer to the `OQS_SIG_STFL_SECRET_KEY` object to serialize.
+	 * @return The number of bytes in the serialized byte stream upon success, or an OQS error code on failure.
+	 *
+	 * @remark The caller is responsible for ensuring that `sk` is a valid object before calling this function.
 	 */
 	OQS_STATUS (*serialize_key)(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 	/**
-	 * Secret Key to internal structure Function
+	 * Deserialize a byte stream into the internal representation of a stateful secret key.
 	 *
-	 * @param[in] sk OQS_SIG_STFL_SECRET_KEY object
-	 * @param[in] key_len length of the returned byte string
-	 * @param[in] sk_buf The secret key data to populate the key object
-	 * @param[in] context application-specific data
-	 *            used to keep track of this secret key stored securely.
-	 *            The application manages this memory.
-	 * @returns  status of the operation populated with key material none zero length.
-	 * Caller is responsible to **deallocate** the buffer `sk_buf`.
+	 * This function takes a series of bytes representing a stateful secret key and initializes
+	 * the internal `OQS_SIG_STFL_SECRET_KEY` object with the key material. This is particularly
+	 * useful for reconstructing key objects from persisted or transmitted state.
+	 *
+	 * @param[out] sk Pointer to an uninitialized `OQS_SIG_STFL_SECRET_KEY` object to hold the secret key.
+	 * @param[in] sk_len The length of the secret key byte stream.
+	 * @param[in] sk_buf Pointer to the byte stream containing the serialized secret key data.
+	 * @param[in] context Pointer to application-specific data, handled externally, associated with the key.
+	 * @returns OQS_SUCCESS if the deserialization succeeds, with the `sk` object populated with the key material.
+	 *
+	 * @remark The caller must ensure that resources (e.g., memory for `sk_buf`) are properly managed.
 	 */
 	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
@@ -335,6 +344,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 
 	/**
 	 * Store Secret Key Function
+	 *
 	 * Callback function used to securely store key data after a signature generation.
 	 * When populated, this pointer points to the application-supplied secure storage function.
 	 * @param[in] sk_buf The serialized secret key data to secure store
