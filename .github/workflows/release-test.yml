@@ -1,12 +1,9 @@
 name: Release tests
 
-on:
-  pull_request:
-    branches: [ 'dev-**' ] # TODO: settle on standard prefix
-
+on: pull_request
 
 jobs:
-
+  if:  startsWith(github.head_ref, 'dev-') # TODO: settle on standard prefix
   oqs-provider-release-test: # TODO: this is highly coupled to oqs-provider structure. Might be better downstream?
     container:
       image: openquantumsafe/ci-ubuntu-jammy:latest
