@@ -2,7 +2,7 @@ name: Release tests
 
 on:
   pull_request:
-    branches: [ 'sw-provider-**' ] # TODO: settle on standard prefix
+    branches: [ 'dev-**' ] # TODO: settle on standard prefix
 
 
 jobs:
