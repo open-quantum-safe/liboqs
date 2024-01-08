@@ -274,33 +274,33 @@ void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_
 }
 
 void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) {
-    while (len) {
-        size_t incr = 64 - state->data_len;
-        if (incr > len) {
-            incr = len;
-        }
+	while (len) {
+		size_t incr = 64 - state->data_len;
+		if (incr > len) {
+			incr = len;
+		}
 
-        memcpy(state->data + state->data_len, in, incr);
-        state->data_len += incr;
-        in += incr;
+		memcpy(state->data + state->data_len, in, incr);
+		state->data_len += incr;
+		in += incr;
 
-        if (state->data_len < 64) {
-            break;
-        }
+		if (state->data_len < 64) {
+			break;
+		}
 
-        /*
-         * Process a complete block now
-         */
-        uint64_t bytes = load_bigendian_64(state->ctx + 32) + 64;
-        crypto_hashblocks_sha256_armv8(state->ctx, state->data, 64);
-        store_bigendian_64(state->ctx + 32, bytes);
+		/*
+		 * Process a complete block now
+		 */
+		uint64_t bytes = load_bigendian_64(state->ctx + 32) + 64;
+		crypto_hashblocks_sha256_armv8(state->ctx, state->data, 64);
+		store_bigendian_64(state->ctx + 32, bytes);
 
-        /*
-         * update the remaining input
-         */
-        len -= incr;
-        state->data_len = 0;
-    }
+		/*
+		 * update the remaining input
+		 */
+		len -= incr;
+		state->data_len = 0;
+	}
 }
 
 void oqs_sha2_sha224_inc_blocks_armv8(sha224ctx *state, const uint8_t *in, size_t inblocks) {

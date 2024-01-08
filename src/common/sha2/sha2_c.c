@@ -571,7 +571,7 @@ void oqs_sha2_sha256_inc_ctx_clone_c(sha256ctx *stateout, const sha256ctx *state
 }
 
 void oqs_sha2_sha384_inc_ctx_clone_c(sha384ctx *stateout, const sha384ctx *statein) {
-    stateout->ctx = OQS_MEM_checked_malloc(PQC_SHA512CTX_BYTES);
+	stateout->ctx = OQS_MEM_checked_malloc(PQC_SHA512CTX_BYTES);
 
 	stateout->data_len = statein->data_len;
 	memcpy(stateout->data, statein->data, 128);
@@ -579,7 +579,7 @@ void oqs_sha2_sha384_inc_ctx_clone_c(sha384ctx *stateout, const sha384ctx *state
 }
 
 void oqs_sha2_sha512_inc_ctx_clone_c(sha512ctx *stateout, const sha512ctx *statein) {
-    stateout->ctx = OQS_MEM_checked_malloc(PQC_SHA512CTX_BYTES);
+	stateout->ctx = OQS_MEM_checked_malloc(PQC_SHA512CTX_BYTES);
 
 	stateout->data_len = statein->data_len;
 	memcpy(stateout->data, statein->data, 128);
@@ -614,7 +614,7 @@ void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t in
 
 	/*  Process any existing incremental data first */
 	if (state->data_len) {
-        tmp_in = OQS_MEM_checked_malloc(tmp_buflen);
+		tmp_in = OQS_MEM_checked_malloc(tmp_buflen);
 
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, tmp_buflen - state->data_len);
@@ -641,8 +641,8 @@ void oqs_sha2_sha256_inc_c(sha256ctx *state, const uint8_t *in, size_t len) {
 		}
 
 		memcpy(state->data + state->data_len, in, incr);
-        state->data_len += incr;
-        in += incr;
+		state->data_len += incr;
+		in += incr;
 
 		if (state->data_len < 64) {
 			break;
@@ -843,4 +843,3 @@ void oqs_sha2_sha512_c(uint8_t *out, const uint8_t *in, size_t inlen) {
 	oqs_sha2_sha512_inc_init_c(&state);
 	oqs_sha2_sha512_inc_finalize_c(out, &state, in, inlen);
 }
-
