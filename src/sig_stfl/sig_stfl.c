@@ -1378,7 +1378,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
 		return OQS_SUCCESS;
 	}
 
-	// Try to unlock the private key but the mutex is unset.
+	// Try to lock the private key but the mutex is unset.
 	if (sk->mutex == NULL) {
 		return OQS_ERROR;
 	}
