@@ -563,7 +563,7 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void
  * If the `mutex` is not set, this operation will fail.
  * This operation is essential in multi-threaded or multi-process contexts
  * in order to prevent simultaneous operations that could compromise the stateful signature security.
- * 
+ *
  * @warning If the `lock` function is set and `mutex` is not set, this operation will fail.
  *
  * @param[in] sk Pointer to the secret key to be locked.
