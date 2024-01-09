@@ -226,6 +226,10 @@ typedef struct OQS_SIG_STFL {
 	/**
 	 * Signature generation algorithm.
 	 *
+	 * For stateful signatures, there is always a limited number of signatures that can be used,
+	 * The private key signature counter is increased by one once a signature is successfully generated,
+	 * When the signature counter reaches the maximum number of available signatures, the signature generation always fails.
+	 *
 	 * Caller is responsible for allocating sufficient memory for `signature`,
 	 * based on the `length_*` members in this object or the per-scheme
 	 * compile-time macros `OQS_SIG_STFL_*_length_*`.
@@ -254,6 +258,8 @@ typedef struct OQS_SIG_STFL {
 	/**
 	 * Query the number of remaining signatures.
 	 *
+	 * The remaining signatures are the number of signatures available before the private key runs out of its total signature and expires.
+	 *
 	 * @param[out] remain The number of remaining signatures
 	 * @param[in] secret_key The secret key object pointer.
 	 * @return OQS_SUCCESS or OQS_ERROR
@@ -262,6 +268,8 @@ typedef struct OQS_SIG_STFL {
 
 	/**
 	 * Query the total number of signatures.
+	 *
+	 * The total number of signatures is the constant number present in how many signatures can be generated from a private key.
 	 *
 	 * @param[out] total The total number of signatures
 	 * @param[in] secret_key The secret key key object pointer.
@@ -305,7 +313,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @param[in] sk Pointer to the `OQS_SIG_STFL_SECRET_KEY` object to serialize.
 	 * @return The number of bytes in the serialized byte stream upon success, or an OQS error code on failure.
 	 *
-	 * @remark The caller is responsible for ensuring that `sk` is a valid object before calling this function.
+	 * @attention The caller is responsible for ensuring that `sk` is a valid object before calling this function.
 	 */
 	OQS_STATUS (*serialize_key)(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
@@ -322,7 +330,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * @param[in] context Pointer to application-specific data, handled externally, associated with the key.
 	 * @returns OQS_SUCCESS if the deserialization succeeds, with the `sk` object populated with the key material.
 	 *
-	 * @remark The caller must ensure that resources (e.g., memory for `sk_buf`) are properly managed.
+	 * @attention The caller is responsible for ensuring that `sk_buf` is securely deallocated when it's no longer needed.
 	 */
 	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
 
@@ -419,6 +427,10 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public
 /**
  * Signature generation algorithm.
  *
+ * For stateful signatures, there is always a limited number of signatures that can be used,
+ * The private key signature counter is increased by one once a signature is successfully generated,
+ * When the signature counter reaches the maximum number of available signatures, the signature generation always fails.
+ *
  * Caller is responsible for allocating sufficient memory for `signature`,
  * based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_SIG_STFL_*_length_*`.
@@ -449,6 +461,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 /**
  * Query the number of remaining signatures.
  *
+ * The remaining signatures are the number of signatures available before the private key runs out of its total signature and expires.
+ *
  * @param[in] sig The OQS_SIG_STFL object representing the signature scheme.
  * @param[in] secret_key The secret key object.
  * @return OQS_SUCCESS or OQS_ERROR
@@ -457,6 +471,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned
 
 /**
  * Query the total number of signatures.
+ *
+ * The total number of signatures is the constant number present in how many signatures can be generated from a private key.
  *
  * @param[in] sig The OQS_SIG_STFL object representing the signature scheme.
  * @param[out] max The number of remaining signatures
@@ -500,19 +516,29 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
  * @param[in] lock Function pointer to the locking routine provided by the application.
  * @return None.
  *
+ * @note It's not required to set the lock and unlock functions in a single-threaded environment.
+ *
+ * @note Once the `lock` function is set, users must also set the `mutex` and `unlock` functions.
+ *
+ * @note By default, the internal value of `sk->lock` is NULL, which does nothing to lock the private key.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_key lock);
 
 /**
  * Attach an unlock mechanism to a secret key object.
  *
- * This allows for proper synchronization * in a multi-threaded or multi-process environment,
+ * This allows for proper synchronization in a multi-threaded or multi-process environment,
  * by ensuring that a secret key is not used concurrently by multiple entities, which could otherwise lead to security issues.
  *
  * @param[in] sk Pointer to the secret key object whose unlock function is to be set.
  * @param[in] unlock Function pointer to the unlock routine provided by the application.
  * @return None.
  *
+ * @note It's not required to set the lock and unlock functions in a single-threaded environment.
+ *
+ * @note Once the `unlock` function is set, users must also set the `mutex` and `lock` functions.
+ *
+ * @note By default, the internal value of `sk->unlock` is NULL, which does nothing to unlock the private key.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unlock_key unlock);
 
@@ -525,17 +551,27 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unl
  * @param[in] mutex A function pointer to the desired concurrency control mechanism.
  * @return None.
  *
+ * @note It's not required to set the lock and unlock functions in a single-threaded environment.
+ *
+ * @note By default, the internal value of `sk->mutex` is NULL, it must be set to be used in `lock` or `unlock` the private key.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void *mutex);
 
 /**
  * Lock the secret key to ensure exclusive access in a concurrent environment.
  *
+ * If the `mutex` is not set, this operation will fail.
  * This operation is essential in multi-threaded or multi-process contexts
  * in order to prevent simultaneous operations that could compromise the stateful signature security.
+ * 
+ * @warning If the `lock` function is set and `mutex` is not set, this operation will fail.
  *
  * @param[in] sk Pointer to the secret key to be locked.
  * @return OQS_SUCCESS if the lock is successfully applied; OQS_ERROR otherwise.
+ *
+ * @note It's not required to use lock and unlock functions in a single-threaded environment.
+ *
+ * @note If the `lock` function and `mutex` are both set, proceed to lock the private key.
  */
 OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
 
@@ -546,9 +582,14 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
  * the secret key, as it allows a process to signal that it has finished using the key, so
  * others can safely use it.
  *
+ * @warning If the `unlock` function is set and `mutex` is not set, this operation will fail.
+ *
  * @param[in] sk Pointer to the secret key whose lock should be released.
  * @return OQS_SUCCESS if the lock was successfully released; otherwise, OQS_ERROR.
  *
+ * @note It's not required to use lock and unlock functions in a single-threaded environment.
+ *
+ * @note If the `unlock` function and `mutex` are both set, proceed to unlock the private key.
  */
 OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
 
@@ -588,13 +629,14 @@ OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_
  *
  * Transforms a binary representation of a secret key into an OQS_SIG_STFL_SECRET_KEY structure.
  * After deserialization, the secret key object can be used for subsequent cryptographic operations.
- * The caller is responsible for freeing the `sk_buf` memory once it is no longer needed.
  *
  * @param[out] sk A pointer to the secret key object that will be populated from the binary data.
  * @param[in] key_len The length of the binary secret key data in bytes.
  * @param[in] sk_buf The buffer containing the serialized secret key data.
  * @param[in] context Application-specific data used to maintain context about the secret key.
  * @return OQS_SUCCESS if deserialization was successful; otherwise, OQS_ERROR.
+ *
+ * @attention The caller is responsible for freeing the `sk_buf` memory when it is no longer needed.
  */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
 
