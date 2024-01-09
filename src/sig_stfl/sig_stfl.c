@@ -1378,6 +1378,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
 		return OQS_SUCCESS;
 	}
 
+	// Try to unlock the private key but the mutex is unset.
+	if (sk->mutex == NULL) {
+		return OQS_ERROR;
+	}
+
 	return (sk->lock_key(sk->mutex));
 }
 
@@ -1389,5 +1394,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk->unlock_key == NULL) {
 		return OQS_SUCCESS;
 	}
+
+	// Try to unlock the private key but the mutex is unset.
+	if (sk->mutex == NULL) {
+		return OQS_ERROR;
+	}
+
 	return (sk->unlock_key(sk->mutex));
 }
