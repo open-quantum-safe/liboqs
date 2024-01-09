@@ -203,7 +203,7 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len);
  * @note The allocated memory should be freed using the standard `free` function
  *       when it is no longer needed.
  */
-OQS_API void *OQS_MEM_checked_malloc(size_t len);
+void *OQS_MEM_checked_malloc(size_t len);
 
 /**
  * Allocates memory of a specified size and alignment and checks for successful allocation.
@@ -231,7 +231,7 @@ OQS_API void *OQS_MEM_checked_malloc(size_t len);
  * @note The allocated memory should be freed with `OQS_MEM_aligned_free` when it
  *       is no longer needed.
  */
-OQS_API void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size);
+void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size);
 
 /**
  * Zeros out `len` bytes of memory starting at `ptr`, then frees `ptr`.
