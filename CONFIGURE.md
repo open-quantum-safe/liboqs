@@ -8,7 +8,7 @@ The following options can be passed to CMake before the build file generation pr
 - [CMAKE_INSTALL_PREFIX](#CMAKE_INSTALL_PREFIX)
 - [OQS_ALGS_ENABLED](#OQS_ALGS_ENABLED)
 - [OQS_BUILD_ONLY_LIB](#OQS_BUILD_ONLY_LIB)
-- [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG)
+- [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG)
 - [OQS_MINIMAL_BUILD](#OQS_MINIMAL_BUILD)
 - [OQS_DIST_BUILD](#OQS_DIST_BUILD)
 - [OQS_USE_CPUFEATURE_INSTRUCTIONS](OQS_USE_CPUFEATURE_INSTRUCTIONS)
@@ -49,7 +49,7 @@ This can be set to `ON` or `OFF`, and is `ON` by default. When `OFF`, `ALG` and 
 
 For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KEM_bike1_l1_cpa`, `OQS_ENABLE_KEM_bike1_l1_fo`, `OQS_ENABLE_KEM_bike1_l3_cpa`, `OQS_ENABLE_KEM_bike1_l3_fo` are made available (and are set to be `ON` by default). 
 
-To enable `XMSS` stateful signature, set `OQS_ENABLE_SIG_STFL_XMSS` to `ON`, the options `OQS_ENABLE_SIG_STFL_xmss_sha256_h10` and its variants are also set to be `ON` by default. `LMS` stateful signature family can also be enabled by setting `OQS_ENABLE_SIG_STFL_LMS` to `ON`.
+To enable `XMSS` stateful signature, set `OQS_ENABLE_SIG_STFL_XMSS` to `ON`, the options `OQS_ENABLE_SIG_STFL_xmss_sha256_h10` and its variants are also set to be `ON` by default. Similarly, `LMS` stateful signature family can also be enabled by setting `OQS_ENABLE_SIG_STFL_LMS` to `ON`.
 
 For a full list of such options and their default values, consult [.CMake/alg_support.cmake](https://github.com/open-quantum-safe/liboqs/blob/master/.CMake/alg_support.cmake).
 
