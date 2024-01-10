@@ -3,28 +3,27 @@
 # Only add liboqs Zephyr module if enabled in Kconfig
 if(CONFIG_LIBOQS)
         # Workarounds for Zephyr
-        if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
-                # We have to set that manually as CMake can't detect it properly in Zephyr
-                set(CMAKE_SIZEOF_VOID_P 8)
-        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
+        if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
                 # Workaround as the generic name "arm" is not a supported architecture in liboqs.
                 # In Zephyr, however, it is exclusively used for 32-bit ARM architectures.
                 set(CMAKE_SYSTEM_PROCESSOR "armv7")
-
-                # We have to set that manually as CMake can't detect it properly in Zephyr
-                set(CMAKE_SIZEOF_VOID_P 4)
-        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "posix")
+        elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "posix")
                 # Workaround to enable the native Zephyr builds on the Linux host system.
                 if(BOARD MATCHES "native_posix|native_sim")
                         set(CMAKE_SYSTEM_PROCESSOR ${CMAKE_HOST_SYSTEM_PROCESSOR})
                 else()
                         message(FATAL_ERROR "Unsupported board ${BOARD} with posix architecture")
                 endif()
+        elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86")
+                if(CONFIG_64BIT)
+                        set(CMAKE_SYSTEM_PROCESSOR "x86_64")
+                endif()
+        endif()
 
-                # We have to set that manually as CMake can't detect it properly in Zephyr
+        # We have to set CMAKE_SIZEOF_VOID_P manually as CMake can't detect it properly in Zephyr
+        if(CONFIG_64BIT)
                 set(CMAKE_SIZEOF_VOID_P 8)
-        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86")
-                # We have to set that manually as CMake can't detect it properly in Zephyr
+        else()
                 set(CMAKE_SIZEOF_VOID_P 4)
         endif()
 
@@ -143,7 +142,7 @@ if(CONFIG_LIBOQS)
         # Include the liboqs headers
         zephyr_include_directories(${CMAKE_CURRENT_BINARY_DIR}/build/include)
 
-        if(CMAKE_SYSTEM_PROCESSOR MATCHES "armv7")
+        if(CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7")
                 # Undo the workaround from above to not interfere with other modules
                 set(CMAKE_SYSTEM_PROCESSOR "arm")
         elseif(CMAKE_SYSTEM_PROCESSOR EQUAL CMAKE_HOST_SYSTEM_PROCESSOR)
