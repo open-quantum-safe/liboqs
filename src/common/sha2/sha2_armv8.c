@@ -180,10 +180,7 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 		new_in = in;
 	} else {
 		// Combine incremental data with final input
-		tmp_in = malloc(tmp_len);
-		if (tmp_in == NULL) {
-			exit(111);
-		}
+		tmp_in = OQS_MEM_checked_malloc(tmp_len);
 
 		memcpy(tmp_in, state->data, state->data_len);
 		if (in && inlen) {
@@ -257,10 +254,7 @@ void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_
 
 	/* Process any existing incremental data first */
 	if (state->data_len) {
-		tmp_in = malloc(buf_len);
-		if (tmp_in == NULL) {
-			exit(111);
-		}
+		tmp_in = OQS_MEM_checked_malloc(buf_len);
 
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, buf_len - state->data_len);
@@ -280,17 +274,15 @@ void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_
 }
 
 void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) {
-	uint64_t bytes = 0;
-	size_t in_index = 0;
 	while (len) {
 		size_t incr = 64 - state->data_len;
 		if (incr > len) {
 			incr = len;
 		}
 
-		for (size_t i = 0; i < incr; ++i, state->data_len++, in_index++) {
-			state->data[state->data_len] = in[in_index];
-		}
+		memcpy(state->data + state->data_len, in, incr);
+		state->data_len += incr;
+		in += incr;
 
 		if (state->data_len < 64) {
 			break;
@@ -299,7 +291,7 @@ void oqs_sha2_sha256_inc_armv8(sha256ctx *state, const uint8_t *in, size_t len) 
 		/*
 		 * Process a complete block now
 		 */
-		bytes = load_bigendian_64(state->ctx + 32) + 64;
+		uint64_t bytes = load_bigendian_64(state->ctx + 32) + 64;
 		crypto_hashblocks_sha256_armv8(state->ctx, state->data, 64);
 		store_bigendian_64(state->ctx + 32, bytes);
 
