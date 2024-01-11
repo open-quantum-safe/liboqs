@@ -240,6 +240,9 @@ typedef struct OQS_SIG_STFL {
 	 * @param[in] message_len The length of the message to sign.
 	 * @param[in] secret_key The secret key object pointer.
 	 * @return OQS_SUCCESS or OQS_ERROR
+	 *
+	 * @note Internally, if `lock/unlock` functions and `mutex` are set, it will attempt to lock the private key and unlock
+	 *       the private key after the Signing operation is completed.
 	 */
 	OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
@@ -442,6 +445,9 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public
  * @param[in] message_len The length of the message to sign.
  * @param[in] secret_key The secret key object pointer.
  * @return OQS_SUCCESS or OQS_ERROR
+ *
+ * @note Internally, if `lock/unlock` functions and `mutex` are set, it will attempt to lock the private key and unlock
+ *       the private key after the Signing operation is completed.
  */
 OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
@@ -575,7 +581,7 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void
  *
  * @note If the `lock` function and `mutex` are both set, proceed to lock the private key.
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * Unlock the secret key, making it accessible to other processes.
@@ -595,7 +601,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
  *
  * @note If the `unlock` function and `mutex` are both set, proceed to unlock the private key.
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * Set the callback and context for securely storing a stateful secret key.
