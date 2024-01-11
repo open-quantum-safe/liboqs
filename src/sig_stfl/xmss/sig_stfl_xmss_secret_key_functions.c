@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0 AND MIT
 
 #include <oqs/oqs.h>
 #include <string.h>
