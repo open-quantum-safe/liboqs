@@ -1370,7 +1370,7 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void
 }
 
 /* OQS_SIG_STFL_SECRET_KEY_lock  */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
 		return OQS_ERROR;
 	}
@@ -1378,16 +1378,27 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
 		return OQS_SUCCESS;
 	}
 
+	// Try to lock the private key but the mutex is unset.
+	if (sk->mutex == NULL) {
+		return OQS_ERROR;
+	}
+
 	return (sk->lock_key(sk->mutex));
 }
 
 /* OQS_SIG_STFL_SECRET_KEY_unlock */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk) {
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
 		return OQS_ERROR;
 	}
 	if (sk->unlock_key == NULL) {
 		return OQS_SUCCESS;
 	}
+
+	// Try to unlock the private key but the mutex is unset.
+	if (sk->mutex == NULL) {
+		return OQS_ERROR;
+	}
+
 	return (sk->unlock_key(sk->mutex));
 }
