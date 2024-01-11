@@ -75,11 +75,8 @@ void OQS_SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out
 		EVP_MD_CTX_copy_ex(clone, s->mdctx3);
 		EVP_DigestFinalXOF(clone, out3, outlen);
 	} else {
-		uint8_t *tmp;
-		tmp = malloc(s->n_out + outlen);
-		if (tmp == NULL) {
-			exit(111);
-		}
+		uint8_t *tmp = OQS_MEM_checked_malloc(s->n_out + outlen);
+
 		EVP_MD_CTX_copy_ex(clone, s->mdctx0);
 		EVP_DigestFinalXOF(clone, tmp, s->n_out + outlen);
 		memcpy(out0, tmp + s->n_out, outlen);
@@ -193,11 +190,8 @@ void OQS_SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out
 		EVP_MD_CTX_copy_ex(clone, s->mdctx3);
 		EVP_DigestFinalXOF(clone, out3, outlen);
 	} else {
-		uint8_t *tmp;
-		tmp = malloc(s->n_out + outlen);
-		if (tmp == NULL) {
-			exit(111);
-		}
+		uint8_t *tmp = OQS_MEM_checked_malloc(s->n_out + outlen);
+
 		EVP_MD_CTX_copy_ex(clone, s->mdctx0);
 		EVP_DigestFinalXOF(clone, tmp, s->n_out + outlen);
 		memcpy(out0, tmp + s->n_out, outlen);
