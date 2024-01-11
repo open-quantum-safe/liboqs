@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0 AND MIT
 #include <oqs/sha2.h>
 #include <oqs/sha3.h>
 #include "core_hash.h"

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0 AND MIT
 #ifndef CORE_HASH
 #define CORE_HASH
 
