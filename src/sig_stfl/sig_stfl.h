@@ -377,7 +377,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * Set Secret Key Store Callback Function
 	 *
 	 * This function is used to establish a callback mechanism for secure storage
-	 * of private keys involved in stateful signature operations. The secure storage
+	 * of private keys involved in stateful signature Signing operation. The secure storage
 	 * and the management of private keys is the responsibility of the adopting application.
 	 * Therefore, before invoking stateful signature generation, a callback function and
 	 * associated context data must be provided by the application to manage the storage.
@@ -387,7 +387,7 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * This context is passed to the libOQS when the callback function is registered.
 	 *
 	 * @param[in] sk A pointer to the secret key object that requires secure storage management
-	 *               after signature operations.
+	 *               after signature Signing operations.
 	 * @param[in] store_cb A pointer to the callback function provided by the application
 	 *                     for storing and updating the private key securely.
 	 * @param[in] context Application-specific context information for the private key storage,
@@ -560,16 +560,18 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void
 /**
  * Lock the secret key to ensure exclusive access in a concurrent environment.
  *
- * If the `mutex` is not set, this operation will fail.
- * This operation is essential in multi-threaded or multi-process contexts
- * in order to prevent simultaneous operations that could compromise the stateful signature security.
+ * If the `mutex` is not set, this lock operation will fail.
+ * This lock operation is essential in multi-threaded or multi-process contexts
+ * to prevent simultaneous Signing operations that could compromise the stateful signature security.
  *
- * @warning If the `lock` function is set and `mutex` is not set, this operation will fail.
+ * @warning If the `lock` function is set and `mutex` is not set, this lock operation will fail.
  *
  * @param[in] sk Pointer to the secret key to be locked.
  * @return OQS_SUCCESS if the lock is successfully applied; OQS_ERROR otherwise.
  *
- * @note It's not required to use lock and unlock functions in a single-threaded environment.
+ * @note It's not necessary to use this function in either Keygen or Verifying operations.
+ *       In a concurrent environment, the user is responsible for locking and unlocking the private key,
+ *       to make sure that only one thread can access the private key during a Signing operation.
  *
  * @note If the `lock` function and `mutex` are both set, proceed to lock the private key.
  */
@@ -582,12 +584,14 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
  * the secret key, as it allows a process to signal that it has finished using the key, so
  * others can safely use it.
  *
- * @warning If the `unlock` function is set and `mutex` is not set, this operation will fail.
+ * @warning If the `unlock` function is set and `mutex` is not set, this unlock operation will fail.
  *
  * @param[in] sk Pointer to the secret key whose lock should be released.
  * @return OQS_SUCCESS if the lock was successfully released; otherwise, OQS_ERROR.
  *
- * @note It's not required to use lock and unlock functions in a single-threaded environment.
+ * @note It's not necessary to use this function in either Keygen or Verifying operations.
+ *       In a concurrent environment, the user is responsible for locking and unlocking the private key,
+ *       to make sure that only one thread can access the private key during a Signing operation.
  *
  * @note If the `unlock` function and `mutex` are both set, proceed to unlock the private key.
  */
@@ -598,7 +602,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
  *
  * This function is designed to be called after a new stateful secret key
  * has been generated. It enables the library to securely store secret key
- * and update it every time a signature operation occurs.
+ * and update it every time a Signing operation occurs.
  * Without properly setting this callback and context, signature generation
  * will not succeed as the updated state of the secret key cannot be preserved.
  *
@@ -615,12 +619,13 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, s
  * Serialize the stateful secret key data into a byte array.
  *
  * Converts an OQS_SIG_STFL_SECRET_KEY object into a byte array for storage or transmission.
- * The function allocates memory for the byte array, and it is the caller's responsibility to free this memory after use.
  *
  * @param[out] sk_buf_ptr Pointer to the allocated byte array containing the serialized key.
  * @param[out] sk_len Length of the serialized key byte array.
  * @param[in] sk Pointer to the OQS_SIG_STFL_SECRET_KEY object to be serialized.
  * @return OQS_SUCCESS on success, or an OQS error code on failure.
+ *
+ * @note The function allocates memory for the byte array, and it is the caller's responsibility to free this memory after use.
  */
 OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
