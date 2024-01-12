@@ -1,6 +1,9 @@
 /**
  * \file aes.h
- * \brief Header defining the API for OQS AES
+ * \brief Header defining the API for OQS AES; not part of the public OQS API
+ *
+ * <b>Note this is not part of the OQS public API: implementations within liboqs can use these
+ * functions, but external consumers of liboqs should not use these functions.</b>
  *
  * SPDX-License-Identifier: MIT
  */

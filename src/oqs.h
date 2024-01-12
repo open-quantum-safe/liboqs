@@ -1,6 +1,6 @@
 /**
  * \file oqs.h
- * \brief Overall header file for liboqs.
+ * \brief Overall header file for the liboqs public API.
  *
  * C programs using liboqs can include just this one file, and it will include all
  * other necessary headers from liboqs.
