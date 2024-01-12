@@ -53,14 +53,20 @@ add_library(oqs kem/kem.c
                 sig/sig.c
                 ${SIG_OBJS}
                 ${COMMON_OBJS})
+
+# Internal library to be used only by test programs
+add_library(oqs-internal ${INTERNAL_OBJS})
+
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 set(_ALL_OBJS ${KEM_OBJS} ${SIG_OBJS} ${COMMON_OBJS} $<TARGET_OBJECTS:oqs>)
 set(ALL_OBJS ${_ALL_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
+    target_link_libraries(oqs-internal PUBLIC ${SANITIZER_LD_FLAGS})
 endif()
 if(${OQS_USE_OPENSSL})
     target_link_libraries(oqs PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
+    target_link_libraries(oqs-internal PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
 endif()
 
 target_include_directories(oqs
@@ -68,12 +74,27 @@ target_include_directories(oqs
                            "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
                            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
+
+target_include_directories(oqs-internal
+                           PUBLIC
+                           "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+)
+
 set_target_properties(oqs
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     VERSION ${OQS_VERSION_TEXT}
     SOVERSION 5
+    # For Windows DLLs
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
+
+set_target_properties(oqs-internal
+    PROPERTIES
+    C_VISIBILITY_PRESET default
+    ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 

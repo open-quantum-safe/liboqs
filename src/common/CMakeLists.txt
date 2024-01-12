@@ -4,6 +4,7 @@ include(CheckSymbolExists)
 
 # initialize to avoid --warn-uninitialized report
 set(_COMMON_OBJS "")
+set(_INTERNAL_OBJS "")
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
@@ -81,8 +82,17 @@ add_library(common OBJECT ${AES_IMPL}
                           rand/rand.c
                           rand/rand_nist.c)
 
+# Implementations of the internal API to be exposed to test programs
+add_library(internal OBJECT ${AES_IMPL}
+                            ${SHA2_IMPL}
+                            ${SHA3_IMPL}
+                            ${OSSL_HELPERS}
+                            common.c)
+set_property(TARGET internal PROPERTY C_VISIBILITY_PRESET default)
+
 if(${OQS_USE_OPENSSL})
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
+    target_include_directories(internal PRIVATE ${OPENSSL_INCLUDE_DIR})
 else()
     check_symbol_exists(getentropy "unistd.h;sys/random.h" CMAKE_HAVE_GETENTROPY)
     if(${CMAKE_HAVE_GETENTROPY})
@@ -91,6 +101,7 @@ else()
 endif()
 if(CMAKE_USE_PTHREADS_INIT)
     target_link_libraries(common PRIVATE Threads::Threads)
+    target_link_libraries(internal PRIVATE Threads::Threads)
 endif()
 
 # check available functions to perform aligned mallocs
@@ -100,14 +111,17 @@ check_symbol_exists(memalign malloc.h CMAKE_HAVE_MEMALIGN)
 
 if(CMAKE_HAVE_ALIGNED_ALLOC)
     target_compile_definitions(common PRIVATE OQS_HAVE_ALIGNED_ALLOC)
+    target_compile_definitions(internal PRIVATE OQS_HAVE_ALIGNED_ALLOC)
 endif()
 
 if(CMAKE_HAVE_POSIX_MEMALIGN)
     target_compile_definitions(common PRIVATE OQS_HAVE_POSIX_MEMALIGN)
+    target_compile_definitions(internal PRIVATE OQS_HAVE_POSIX_MEMALIGN)
 endif()
 
 if(CMAKE_HAVE_MEMALIGN)
     target_compile_definitions(common PRIVATE OQS_HAVE_MEMALIGN)
+    target_compile_definitions(internal PRIVATE OQS_HAVE_MEMALIGN)
 endif()
 
 # check if explicit_bzero exists or memset_s
@@ -116,15 +130,20 @@ check_symbol_exists(memset_s string.h CMAKE_HAVE_MEMSET_S)
 
 if(CMAKE_HAVE_EXPLICIT_BZERO)
     target_compile_definitions(common PRIVATE OQS_HAVE_EXPLICIT_BZERO)
+    target_compile_definitions(internal PRIVATE OQS_HAVE_EXPLICIT_BZERO)
 endif()
 
 if(CMAKE_HAVE_MEMSET_S)
     target_compile_definitions(common PRIVATE OQS_HAVE_MEMSET_S)
+    target_compile_definitions(internal PRIVATE OQS_HAVE_MEMSET_S)
 endif()
 
 if(${OQS_ENABLE_SHA3_xkcp_low}) # using XKCP
     set(_COMMON_OBJS ${_COMMON_OBJS} ${XKCP_LOW_OBJS})
+    set(_INTERNAL_OBJS ${_INTERNAL_OBJS} ${XKCP_LOW_OBJS})
 endif()
 
 set(_COMMON_OBJS ${_COMMON_OBJS} $<TARGET_OBJECTS:common>)
 set(COMMON_OBJS ${_COMMON_OBJS} PARENT_SCOPE)
+set(_INTERNAL_OBJS ${_INTERNAL_OBJS} $<TARGET_OBJECTS:internal>)
+set(INTERNAL_OBJS ${_INTERNAL_OBJS} PARENT_SCOPE)
