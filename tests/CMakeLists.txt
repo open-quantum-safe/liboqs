@@ -52,7 +52,7 @@ if(NOT WIN32)
     add_executable(speed_common speed_common.c)
     target_link_libraries(speed_common PRIVATE ${TEST_DEPS})
 
-    set(UNIX_TESTS test_aes test_hash test_sha3)
+    set(UNIX_TESTS test_aes test_hash test_sha3 speed_common)
 
     set(PYTHON3_EXEC python3)
 else()
@@ -75,6 +75,8 @@ target_link_libraries(test_kem_mem PRIVATE ${TEST_DEPS})
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${TEST_DEPS})
 
+set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem)
+
 # SIG API tests
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
@@ -90,6 +92,8 @@ target_link_libraries(test_sig_mem PRIVATE ${TEST_DEPS})
 
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${TEST_DEPS})
+
+set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig)
 
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})
@@ -108,7 +112,7 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
     # With Visual studio the output of tests go into a folder with the configuration option. Force it to the same folder as if
     # generating with Ninja
     set_target_properties(
-        dump_alg_info example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_kem_mem speed_kem speed_sig
+        dump_alg_info ${KEM_TESTS} ${SIG_TESTS}
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY_DEBUG          "${CMAKE_BINARY_DIR}/tests"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE        "${CMAKE_BINARY_DIR}/tests"
@@ -123,5 +127,5 @@ add_custom_target(
     run_tests
     COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs dump_alg_info example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_kem_mem ${UNIX_TESTS}
+    DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${UNIX_TESTS}
     USES_TERMINAL)
