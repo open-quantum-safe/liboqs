@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #include "hss_zeroize.h"
 #include <string.h>
 

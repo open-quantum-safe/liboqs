@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( HASH_H__ )
 #define HASH_H__
 #include <oqs/sha2.h>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the code which allocates a working key (and initializes the fields
  * that are independent of the key)
@@ -417,7 +418,8 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
         return 0;
     }
 #if 0
-printf( "Allocation = %ld\n", initial_mem_target - mem_target + best_mem ); /* DEBUG HACK */
+printf( "Allocation = %ld
+", initial_mem_target - mem_target + best_mem ); /* DEBUG HACK */
 #endif
 
     subtree_size[i] = best_j;

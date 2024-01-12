@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the implementation of the aux data within the HSS tree
  */

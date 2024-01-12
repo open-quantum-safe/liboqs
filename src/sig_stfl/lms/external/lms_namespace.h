@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #ifndef _LMS_NAMESPACE_H
 #define _LMS_NAMESPACE_H 
 

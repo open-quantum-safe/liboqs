@@ -17,6 +17,7 @@ def file_get_contents(filename, encoding=None):
 
 kem_yamls = []
 sig_yamls = []
+sig_stfl_yamls = []
 
 ########################################
 # Update the KEM markdown documentation.
@@ -263,6 +264,66 @@ def do_it(liboqs_root):
 
             out_md.write('\n## Explanation of Terms\n\n')
             out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
+
+
+    ##############################################
+    # Update the stateful signature markdown documentation.
+    ##############################################
+    for sig_stfl_yaml_path in sorted(glob.glob(os.path.join(liboqs_root, 'docs', 'algorithms', 'sig_stfl', '*.yml'))):
+        sig_stfl_yaml = load_yaml(sig_stfl_yaml_path)
+        sig_stfl_yamls.append(sig_stfl_yaml)
+        sig_stfl_name = os.path.splitext(os.path.basename(sig_stfl_yaml_path))[0]
+        print('Updating {}/{}.md'.format(os.path.dirname(sig_stfl_yaml_path), sig_stfl_name))
+
+        with open(os.path.join(liboqs_root, 'docs', 'algorithms', 'sig_stfl', '{}.md'.format(sig_stfl_name)), mode='w', encoding='utf-8') as out_md:
+            out_md.write('# {}\n\n'.format(sig_stfl_yaml['name']))
+            out_md.write('- **Algorithm type**: Digital signature scheme.\n')
+            out_md.write('- **Main cryptographic assumption**: {}.\n'.format(sig_stfl_yaml['crypto-assumption']))
+            out_md.write('- **Principal submitters**: {}.\n'.format(', '.join(sig_stfl_yaml['principal-submitters'])))
+            if 'auxiliary-submitters' in sig_stfl_yaml and sig_stfl_yaml['auxiliary-submitters']:
+                out_md.write('- **Auxiliary submitters**: {}.\n'.format(', '.join(sig_stfl_yaml['auxiliary-submitters'])))
+            out_md.write('- **Authors\' website**: {}\n'.format(sig_stfl_yaml['website']))
+            out_md.write('- **Specification version**: {}.\n'.format(sig_stfl_yaml['spec-version']))
+
+            out_md.write('- **Primary Source**<a name="primary-source"></a>:\n')
+            out_md.write('  - **Source**: {}\n'.format(sig_stfl_yaml['primary-upstream']['source']))
+            out_md.write('  - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_stfl_yaml['primary-upstream']['spdx-license-identifier']))
+            if 'optimized-upstreams' in sig_stfl_yaml:
+                out_md.write('- **Optimized Implementation sources**: {}\n'.format(sig_stfl_yaml['primary-upstream']['source']))
+                for opt_upstream in sig_stfl_yaml['optimized-upstreams']:
+                    out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
+                    out_md.write('      - **Source**: {}\n'.format(sig_stfl_yaml['optimized-upstreams'][opt_upstream]['source']))
+                    out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_stfl_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
+
+            if 'upstream-ancestors' in sig_stfl_yaml:
+                out_md.write(', which takes it from:\n')
+                for url in sig_stfl_yaml['upstream-ancestors'][:-1]:
+                    out_md.write('  - {}, which takes it from:\n'.format(url))
+                out_md.write('  - {}\n'.format(sig_stfl_yaml['upstream-ancestors'][-1]))
+            else:
+                out_md.write('\n')
+
+            if 'advisories' in sig_stfl_yaml:
+                out_md.write('\n## Advisories\n\n')
+                for advisory in sig_stfl_yaml['advisories']:
+                    out_md.write('- {}\n'.format(advisory))
+
+            out_md.write('\n## Parameter set summary\n\n')
+            table = [['Parameter set',
+                      'Security model',
+                      'Claimed NIST Level',
+                      'Public key size (bytes)',
+                      'Secret key size (bytes)',
+                      'Signature size (bytes)']]
+            for parameter_set in sig_stfl_yaml['parameter-sets']:
+                table.append([parameter_set['name'],
+                              parameter_set['claimed-security'],
+                              parameter_set['claimed-nist-level'],
+                              parameter_set['length-public-key'],
+                              parameter_set['length-secret-key'],
+                              parameter_set['length-signature']])
+            out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
+            out_md.write('\n')
 
 
 

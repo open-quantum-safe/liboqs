@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( HSS_VERIFY_INC_H_ )
 #define HSS_VERIFY_INC_H_
 #include <stdbool.h>
@@ -20,7 +21,8 @@
  *    hss_validate_update( &ctx, message_part_2, len_2 );
  *    hss_validate_update( &ctx, message_part_3, len_3 );
  *    success = hss_validate_finalize( &ctx, signature );
- *    if (success) printf( "The signature validated\n" );
+ *    if (success) printf( "The signature validated
+" );
  *
  * This is in its own include file because we need to import some
  * 'not-generally-for-general-consumption' include files to make

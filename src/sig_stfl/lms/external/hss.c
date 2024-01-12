@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is an implementation of the HSS signature scheme from LMS
  * This is designed to be full-featured
