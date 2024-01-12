@@ -1,3 +1,5 @@
+#include <oqs/sha3.h> // for shake macro
+
 #define CRYPTO_PUBLICKEYBYTES OQS_KEM_frodokem_976_aes_length_public_key
 #define CRYPTO_SECRETKEYBYTES OQS_KEM_frodokem_976_aes_length_secret_key
 #define CRYPTO_CIPHERTEXTBYTES OQS_KEM_frodokem_976_aes_length_ciphertext
