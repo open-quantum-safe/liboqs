@@ -131,7 +131,7 @@ The following instructions assume we are in `build`.
 	- `test_sig_mem`: Simple test harness for checking memory consumption of signature schemes
 	- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
 	- `kat_sig`: Program that generates known answer test (KAT) values for signature schemes using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
-	- `kat_stfl_sig`: Program for checking results against submitted KAT values using `tests/test_kat.py`
+	- `kat_sig_stfl`: Program for checking results against submitted KAT values using `tests/test_kat.py`
 	- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 	- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 	- `example_kem`: Minimal runnable example showing the usage of the KEM API
