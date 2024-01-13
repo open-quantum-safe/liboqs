@@ -113,7 +113,7 @@ The following instructions assume we are in `build`.
 3. By default the main build result is `lib/liboqs.a`, a static library. If you want to build a shared/dynamic library, append [`-DBUILD_SHARED_LIBS=ON`](CONFIGURE.md#build_shared_libs) to the `cmake -GNinja ..` command above and the result will be `lib/liboqs.so|dylib|dll`. The public headers are located in the `include` directory. There are also a variety of programs built under the `tests` directory:
 
 	- `test_kem`: Simple test harness for key encapsulation mechanisms
-	- `test_sig`: Simple test harness for key signature schemes
+	- `test_sig`: Simple test harness for signature schemes
 	- `test_sig_stfl`: Simple test harness for stateful signature schemes
 	- `test_kem_mem`: Simple test harness for checking memory consumption of key encapsulation mechanisms
 	- `test_sig_mem`: Simple test harness for checking memory consumption of key signature schemes
