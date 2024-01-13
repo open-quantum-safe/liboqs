@@ -124,6 +124,7 @@ The following instructions assume we are in `build`.
 	- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 	- `example_kem`: Minimal runnable example showing the usage of the KEM API
 	- `example_sig`: Minimal runnable example showing the usage of the signature API
+	- `example_sig_stfl`: Minimal runnable example showing the usage of the stateful signature API
 	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 	- `test_portability`: Simple test harnesses for checking cross-CPU code portability; requires presence of `qemu`; proper operation validated only on Ubuntu
 
