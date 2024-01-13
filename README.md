@@ -116,7 +116,7 @@ The following instructions assume we are in `build`.
 	- `test_sig`: Simple test harness for signature schemes
 	- `test_sig_stfl`: Simple test harness for stateful signature schemes
 	- `test_kem_mem`: Simple test harness for checking memory consumption of key encapsulation mechanisms
-	- `test_sig_mem`: Simple test harness for checking memory consumption of key signature schemes
+	- `test_sig_mem`: Simple test harness for checking memory consumption of signature schemes
 	- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
 	- `kat_sig`: Program that generates known answer test (KAT) values for signature schemes using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
 	- `kat_stfl_sig`: Program for checking results against submitted KAT values using `tests/test_kat.py`
