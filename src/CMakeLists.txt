@@ -65,8 +65,6 @@ add_library(oqs kem/kem.c
                 ${SIG_OBJS}
                 sig_stfl/sig_stfl.c
                 ${SIG_STFL_OBJS}
-                sig_stfl/sig_stfl.c
-                ${SIG_STFL_OBJS}
                 ${COMMON_OBJS})
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 set(_ALL_OBJS ${KEM_OBJS} ${SIG_OBJS} ${COMMON_OBJS} $<TARGET_OBJECTS:oqs>)
