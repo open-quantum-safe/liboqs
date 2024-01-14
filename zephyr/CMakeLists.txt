@@ -2,14 +2,33 @@
 
 # Only add liboqs Zephyr module if enabled in Kconfig
 if(CONFIG_LIBOQS)
+
         # Workarounds for Zephyr
         if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
                 # Workaround as the generic name "arm" is not a supported architecture in liboqs.
                 # In Zephyr, however, it is exclusively used for 32-bit ARM architectures.
                 set(CMAKE_SYSTEM_PROCESSOR "armv7")
+                # We have to set that manually as CMake can't detect it properly in Zephyr
+                set(CMAKE_SIZEOF_VOID_P 4)
+        elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv")
+                if(BOARD STREQUAL "qemu_riscv32")
+                        set(CMAKE_SYSTEM_PROCESSOR "riscv32")
+                        # We have to set that manually as CMake can't detect it properly in Zephyr
+                        set(CMAKE_SIZEOF_VOID_P 4)
+                elseif(BOARD STREQUAL "hifive1_revb")
+                        set(CMAKE_SYSTEM_PROCESSOR "riscv32")
+                        # We have to set that manually as CMake can't detect it properly in Zephyr
+                        set(CMAKE_SIZEOF_VOID_P 4)
+                elseif(BOARD STREQUAL "qemu_riscv64")
+                        set(CMAKE_SYSTEM_PROCESSOR "riscv64")
+                        # We have to set that manually as CMake can't detect it properly in Zephyr
+                        set(CMAKE_SIZEOF_VOID_P 8)
+                else()
+                        message(FATAL_ERROR "Unsupported board ${BOARD} with riscv architecture")
+                endif()
         elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "posix")
                 # Workaround to enable the native Zephyr builds on the Linux host system.
-                if(BOARD MATCHES "native_posix|native_sim")
+                if(BOARD STREQUAL "native_posix|native_sim")
                         set(CMAKE_SYSTEM_PROCESSOR ${CMAKE_HOST_SYSTEM_PROCESSOR})
                 else()
                         message(FATAL_ERROR "Unsupported board ${BOARD} with posix architecture")
