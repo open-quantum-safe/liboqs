@@ -76,7 +76,6 @@ add_library(common OBJECT ${AES_IMPL}
                           ${SHA3_IMPL}
                           ${OSSL_HELPERS}
                           common.c
-                          pqclean_shims/nistseedexpander.c
                           pqclean_shims/fips202.c
                           pqclean_shims/fips202x4.c
                           rand/rand.c)
