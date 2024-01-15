@@ -79,15 +79,15 @@ add_library(common OBJECT ${AES_IMPL}
                           pqclean_shims/nistseedexpander.c
                           pqclean_shims/fips202.c
                           pqclean_shims/fips202x4.c
-                          rand/rand.c
-                          rand/rand_nist.c)
+                          rand/rand.c)
 
 # Implementations of the internal API to be exposed to test programs
 add_library(internal OBJECT ${AES_IMPL}
                             ${SHA2_IMPL}
                             ${SHA3_IMPL}
                             ${OSSL_HELPERS}
-                            common.c)
+                            common.c
+                            rand/rand_nist.c)
 set_property(TARGET internal PROPERTY C_VISIBILITY_PRESET default)
 
 if(${OQS_USE_OPENSSL})
@@ -97,6 +97,7 @@ else()
     check_symbol_exists(getentropy "unistd.h;sys/random.h" CMAKE_HAVE_GETENTROPY)
     if(${CMAKE_HAVE_GETENTROPY})
         target_compile_definitions(common PRIVATE OQS_HAVE_GETENTROPY)
+        target_compile_definitions(internal PRIVATE OQS_HAVE_GETENTROPY)
     endif()
 endif()
 if(CMAKE_USE_PTHREADS_INIT)

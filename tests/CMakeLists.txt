@@ -29,8 +29,7 @@ if(NOT WIN32)
     set(LIBM m)
 endif()
 
-# There should in principle be no linking conflict between oqs and oqs-internal.
-# Nonetheless, list oqs-internal after oqs to be safe.
+# List oqs-internal after oqs so that oqs has linking precedence.
 set(TEST_DEPS oqs oqs-internal ${LIBM})
 if(CMAKE_USE_PTHREADS_INIT)
     set(TEST_DEPS ${TEST_DEPS} Threads::Threads)

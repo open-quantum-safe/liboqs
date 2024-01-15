@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 
 #include <oqs/oqs.h>
+#include <oqs/rand_nist.h>
 
 #include "system_info.c"
 
@@ -273,10 +274,7 @@ OQS_STATUS sig_kat(const char *method_name) {
 		entropy_input[i] = i;
 	}
 
-	rc = OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
-	if (rc != OQS_SUCCESS) {
-		goto err;
-	}
+	OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
 	OQS_randombytes_nist_kat_init_256bit(entropy_input, NULL);
 
 	fh = stdout;
