@@ -1,0 +1,112 @@
+name: MAYO
+type: signature
+principal-submitters:
+- Ward Beullens
+- Fabio Campos
+- Sofía Celi
+- Basil Hess
+- Matthias J. Kannwischer
+crypto-assumption: multivariable quadratic equations, oil and vinegar
+website: https://pqmayo.org
+nist-round: 1
+spec-version: 1.1
+primary-upstream:
+  source: https://github.com/PQCMayo/MAYO-C/commit/933e58d62773d80477506f7fcfdbc8574db3f5ad
+    with copy_from_upstream patches
+  spdx-license-identifier: Apache-2.0
+parameter-sets:
+- name: MAYO_1
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 1168
+  length-secret-key: 24
+  length-signature: 321
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: MAYO_2
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 5488
+  length-secret-key: 24
+  length-signature: 180
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: MAYO_3
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 2656
+  length-secret-key: 32
+  length-signature: 577
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false

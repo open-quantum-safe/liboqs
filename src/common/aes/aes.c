@@ -19,6 +19,18 @@ void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	callbacks->AES128_ECB_load_schedule(key, schedule);
 }
 
+void OQS_AES128_CTR_inc_init(const uint8_t *key, void **_schedule) {
+	callbacks->AES128_CTR_inc_init(key, _schedule);
+}
+
+void OQS_AES128_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	callbacks->AES128_CTR_inc_iv(iv, iv_len, _schedule);
+}
+
+void OQS_AES128_CTR_inc_ivu64(uint64_t iv, void *_schedule) {
+	callbacks->AES128_CTR_inc_ivu64(iv, _schedule);
+}
+
 void OQS_AES128_free_schedule(void *schedule) {
 	callbacks->AES128_free_schedule(schedule);
 }
@@ -49,6 +61,10 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
 
 void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	callbacks->AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+}
+
+void OQS_AES128_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	callbacks->AES128_CTR_inc_stream_iv(iv, iv_len, schedule, out, out_len);
 }
 
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {

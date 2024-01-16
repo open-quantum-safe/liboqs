@@ -166,6 +166,11 @@ cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake_192f_simple "" ON "OQS_ENABL
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake_192s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake_256f_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake_256s_simple "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
+
+option(OQS_ENABLE_SIG_MAYO "Enable mayo algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_mayo_1 "" ON "OQS_ENABLE_SIG_MAYO" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_mayo_2 "" ON "OQS_ENABLE_SIG_MAYO" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_mayo_3 "" ON "OQS_ENABLE_SIG_MAYO" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
@@ -492,6 +497,25 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake_256s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake_256s_simple" OFF)
+endif()
+endif()
+
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_mayo_1_avx2 "" ON "OQS_ENABLE_SIG_mayo_1" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_mayo_2_avx2 "" ON "OQS_ENABLE_SIG_mayo_2" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_mayo_3_avx2 "" ON "OQS_ENABLE_SIG_mayo_3" OFF)
 endif()
 endif()
 
