@@ -65,6 +65,7 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_START -->
 - **CRYSTALS-Dilithium**: Dilithium2, Dilithium3, Dilithium5
 - **Falcon**: Falcon-512, Falcon-1024, Falcon-padded-512, Falcon-padded-1024
+- **MAYO**: MAYO\_1, MAYO\_2, MAYO\_3
 - **ML-DSA**: ML-DSA-44-ipd (alias: ML-DSA-44), ML-DSA-65-ipd (alias: ML-DSA-65), ML-DSA-87-ipd (alias: ML-DSA-87)
 - **SPHINCS+-SHA2**: SPHINCS+-SHA2-128f-simple, SPHINCS+-SHA2-128s-simple, SPHINCS+-SHA2-192f-simple, SPHINCS+-SHA2-192s-simple, SPHINCS+-SHA2-256f-simple, SPHINCS+-SHA2-256s-simple
 - **SPHINCS+-SHAKE**: SPHINCS+-SHAKE-128f-simple, SPHINCS+-SHAKE-128s-simple, SPHINCS+-SHAKE-192f-simple, SPHINCS+-SHAKE-192s-simple, SPHINCS+-SHAKE-256f-simple, SPHINCS+-SHAKE-256s-simple
@@ -197,6 +198,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/sig/dilithium/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/sig/dilithium/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 -  src/sig/falcon/pqclean_\*\_aarch64 : Apache License v2.0
+- `src/sig/mayo/*`: Apache License v2.0
 - `src/sig/ml_dsa/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 

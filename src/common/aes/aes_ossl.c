@@ -66,6 +66,75 @@ static void AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptFinal_ex)(ks->ctx, ciphertext, &outlen));
 }
 
+static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	EVP_CIPHER_CTX *ctr_ctx = OSSL_FUNC(EVP_CIPHER_CTX_new());
+	assert(ctr_ctx != NULL);
+	uint8_t iv_ctr[16];
+	if (iv_len == 12) {
+		memcpy(iv_ctr, iv, 12);
+		iv_ctr[12] = 0;
+		iv_ctr[13] = 0;
+		iv_ctr[14] = 0;
+		iv_ctr[15] = 0;
+	} else if (iv_len == 16) {
+		memcpy(iv_ctr, iv, 16);
+	} else {
+		exit(EXIT_FAILURE);
+	}
+	const struct key_schedule *ks = (const struct key_schedule *) schedule;
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctr_ctx, oqs_aes_128_ctr(), NULL, ks->key, iv_ctr));
+
+	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int)
+	memset(out, 0, (size_t)out_len_input_int);
+	int out_len_output;
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctr_ctx, out, &out_len_output, out, out_len_input_int));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptFinal_ex)(ctr_ctx, out + out_len_output, &out_len_output));
+	OSSL_FUNC(EVP_CIPHER_CTX_free)(ctr_ctx);
+}
+
+static void AES128_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blks) {
+	size_t out_len = out_blks * 16;
+	struct key_schedule *ks = (struct key_schedule *) schedule;
+	int out_len_output;
+	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int);
+	memset(out, 0, (size_t)out_len_input_int);
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ks->ctx, out, &out_len_output, out, (int) out_len));
+}
+
+static void AES128_CTR_inc_init(const uint8_t *key, void **schedule) {
+	*schedule = malloc(sizeof(struct key_schedule));
+	struct key_schedule *ks = (struct key_schedule *) *schedule;
+	EVP_CIPHER_CTX *ctr_ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
+	assert(ctr_ctx != NULL);
+
+	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
+	ks->for_ECB = 0;
+	ks->ctx = ctr_ctx;
+	memcpy(ks->key, key, 16);
+}
+
+static void AES128_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *schedule) {
+	OQS_EXIT_IF_NULLPTR(schedule, "OpenSSL");
+	struct key_schedule *ks = (struct key_schedule *) schedule;
+	if (iv_len == 12) {
+		memcpy(ks->iv, iv, 12);
+		memset(&ks->iv[12], 0, 4);
+	} else if (iv_len == 16) {
+		memcpy(ks->iv, iv, 16);
+	} else {
+		exit(EXIT_FAILURE);
+	}
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_128_ctr(), NULL, ks->key, ks->iv));
+}
+
+static void AES128_CTR_inc_ivu64(uint64_t iv, void *schedule) {
+	OQS_EXIT_IF_NULLPTR(schedule, "OpenSSL");
+	struct key_schedule *ks = (struct key_schedule *) schedule;
+	br_enc64be(ks->iv, iv);
+	memset(&ks->iv[8], 0, 8);
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_128_ctr(), NULL, ks->key, ks->iv));
+}
+
 static void AES256_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	*schedule = malloc(sizeof(struct key_schedule));
 	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
@@ -164,17 +233,22 @@ static void AES256_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_
 }
 
 struct OQS_AES_callbacks aes_default_callbacks = {
-	AES128_ECB_load_schedule,
-	AES128_free_schedule,
-	AES128_ECB_enc,
-	AES128_ECB_enc_sch,
-	AES256_ECB_load_schedule,
-	AES256_CTR_inc_init,
-	AES256_CTR_inc_iv,
-	AES256_CTR_inc_ivu64,
-	AES256_free_schedule,
-	AES256_ECB_enc,
-	AES256_ECB_enc_sch,
-	AES256_CTR_inc_stream_iv,
-	AES256_CTR_inc_stream_blks,
+	.AES128_ECB_load_schedule = AES128_ECB_load_schedule,
+	.AES128_CTR_inc_init = AES128_CTR_inc_init,
+	.AES128_CTR_inc_iv = AES128_CTR_inc_iv,
+	.AES128_CTR_inc_ivu64 = AES128_CTR_inc_ivu64,
+	.AES128_free_schedule = AES128_free_schedule,
+	.AES128_ECB_enc = AES128_ECB_enc,
+	.AES128_ECB_enc_sch = AES128_ECB_enc_sch,
+	.AES256_ECB_load_schedule = AES256_ECB_load_schedule,
+	.AES128_CTR_inc_stream_iv = AES128_CTR_inc_stream_iv,
+	.AES128_CTR_inc_stream_blks = AES128_CTR_inc_stream_blks,
+	.AES256_CTR_inc_init = AES256_CTR_inc_init,
+	.AES256_CTR_inc_iv = AES256_CTR_inc_iv,
+	.AES256_CTR_inc_ivu64 = AES256_CTR_inc_ivu64,
+	.AES256_free_schedule = AES256_free_schedule,
+	.AES256_ECB_enc = AES256_ECB_enc,
+	.AES256_ECB_enc_sch = AES256_ECB_enc_sch,
+	.AES256_CTR_inc_stream_iv = AES256_CTR_inc_stream_iv,
+	.AES256_CTR_inc_stream_blks = AES256_CTR_inc_stream_blks,
 };

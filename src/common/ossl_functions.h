@@ -25,6 +25,7 @@ VOID_FUNC(void, EVP_MD_CTX_free, (EVP_MD_CTX *ctx), (ctx))
 FUNC(EVP_MD_CTX *, EVP_MD_CTX_new, (void), ())
 FUNC(int, EVP_MD_CTX_reset, (EVP_MD_CTX *ctx), (ctx))
 FUNC(const EVP_CIPHER *, EVP_aes_128_ecb, (void), ())
+FUNC(const EVP_CIPHER *, EVP_aes_128_ctr, (void), ())
 FUNC(const EVP_CIPHER *, EVP_aes_256_ecb, (void), ())
 FUNC(const EVP_CIPHER *, EVP_aes_256_ctr, (void), ())
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
