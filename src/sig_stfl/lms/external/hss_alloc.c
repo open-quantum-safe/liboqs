@@ -418,8 +418,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
         return 0;
     }
 #if 0
-printf( "Allocation = %ld
-", initial_mem_target - mem_target + best_mem ); /* DEBUG HACK */
+printf( "Allocation = %ld\n", initial_mem_target - mem_target + best_mem ); /* DEBUG HACK */
 #endif
 
     subtree_size[i] = best_j;

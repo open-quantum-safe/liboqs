@@ -23,8 +23,7 @@
  *    hss_sign_update( &ctx, message_part_2, len_2 );
  *    hss_sign_update( &ctx, message_part_3, len_3 );
  *    success = hss_sign_finalize( &ctx, working_key, signature );
- *    if (success) printf( "We generated the signature
-" );
+ *    if (success) printf( "We generated the signature\n" );
  *
  * This is in its own include file because we need to import some
  * 'not-generally-for-general-consumption' include files to make

@@ -21,8 +21,7 @@
  *    hss_validate_update( &ctx, message_part_2, len_2 );
  *    hss_validate_update( &ctx, message_part_3, len_3 );
  *    success = hss_validate_finalize( &ctx, signature );
- *    if (success) printf( "The signature validated
-" );
+ *    if (success) printf( "The signature validated\n" );
  *
  * This is in its own include file because we need to import some
  * 'not-generally-for-general-consumption' include files to make

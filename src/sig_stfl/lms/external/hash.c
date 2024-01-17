@@ -33,8 +33,7 @@ void hss_hash_ctx(void *result, int hash_type, union hash_context *ctx,
           const void *message, size_t message_len) {
 #if ALLOW_VERBOSE
     if (hss_verbose) {
-        int i; for (i=0; i< message_len; i++) printf( " %02x%s", ((unsigned char*)message)[i], (i%16 == 15) ? "
-" : "" );
+        int i; for (i=0; i< message_len; i++) printf( " %02x%s", ((unsigned char*)message)[i], (i%16 == 15) ? "\n" : "" );
     }
 #endif
 
@@ -46,8 +45,7 @@ void hss_hash_ctx(void *result, int hash_type, union hash_context *ctx,
 #if ALLOW_VERBOSE
         if (hss_verbose) {
             printf( " ->" );
-            int i; for (i=0; i<32; i++) printf( " %02x", ((unsigned char *)result)[i] ); printf( "
-" );
+            int i; for (i=0; i<32; i++) printf( " %02x", ((unsigned char *)result)[i] ); printf( "\n" );
         }
 #endif
         break;
@@ -98,8 +96,7 @@ void hss_finalize_hash_context(int h, union hash_context *ctx, void *buffer) {
     if (hss_verbose) {
         printf( " -->" );
         int i; for (i=0; i<32; i++) printf( " %02x", ((unsigned char*)buffer)[i] );
-        printf( "
-" );
+        printf( "\n" );
     }
 #endif
         break;
