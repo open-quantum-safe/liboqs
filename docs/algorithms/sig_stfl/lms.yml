@@ -3,14 +3,16 @@ type: stateful signature
 principal-submitters:
 - Scott Fluhrer
 auxiliary-submitters:
+- C Martin
+- Maurice Hieronymus
 
-crypto-assumption: stateful hash-based signatures
+crypto-assumption: hash function second-preimage resistance
 website: https://www.rfc-editor.org/info/rfc8554
 nist-round: 
 spec-version: 
 spdx-license-identifier: 
 primary-upstream:
-  source: 
+  source: https://github.com/cisco/hash-sigs
   spdx-license-identifier: MIT
   upstream-ancestors:
 parameter-sets:

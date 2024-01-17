@@ -1,12 +1,13 @@
 # LMS
 
 - **Algorithm type**: Digital signature scheme.
-- **Main cryptographic assumption**: stateful hash-based signatures.
+- **Main cryptographic assumption**: hash function second-preimage resistance.
 - **Principal submitters**: Scott Fluhrer.
+- **Auxiliary submitters**: C Martin, Maurice Hieronymus.
 - **Authors' website**: https://www.rfc-editor.org/info/rfc8554
 - **Specification version**: None.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: None
+  - **Source**: https://github.com/cisco/hash-sigs
   - **Implementation license (SPDX-Identifier)**: MIT
 
 

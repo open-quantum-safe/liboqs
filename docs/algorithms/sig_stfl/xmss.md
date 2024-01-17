@@ -1,7 +1,7 @@
 # XMSS
 
 - **Algorithm type**: Digital signature scheme.
-- **Main cryptographic assumption**: stateful hash-based signatures.
+- **Main cryptographic assumption**: hash function second-preimage resistance.
 - **Principal submitters**: Joost Rijneveld, A. Huelsing, David Cooper, Bas Westerbaan.
 - **Authors' website**: https://www.rfc-editor.org/info/rfc8391
 - **Specification version**: None.

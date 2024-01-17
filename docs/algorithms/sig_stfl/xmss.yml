@@ -7,7 +7,7 @@ principal-submitters:
 - Bas Westerbaan
 auxiliary-submitters:
 
-crypto-assumption: stateful hash-based signatures
+crypto-assumption: hash function second-preimage resistance
 website: https://www.rfc-editor.org/info/rfc8391
 nist-round: 
 spec-version: 
