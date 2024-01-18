@@ -8,7 +8,7 @@
 #include <oqs/common.h>
 #include <oqs/oqsconfig.h>
 
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 #include <pthread.h>
 #endif
 #include <stddef.h>
@@ -21,7 +21,7 @@
 #define KECCAK_X4_CTX_BYTES (KECCAK_X4_CTX_ALIGNMENT * \
   ((_KECCAK_X4_CTX_BYTES + KECCAK_X4_CTX_ALIGNMENT - 1)/KECCAK_X4_CTX_ALIGNMENT))
 
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 static pthread_once_t dispatch_once_control = PTHREAD_ONCE_INIT;
 #endif
 
@@ -65,7 +65,7 @@ static void Keccak_X4_Dispatch(void) {
 }
 
 static void keccak_x4_inc_reset(uint64_t *s) {
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 	pthread_once(&dispatch_once_control, Keccak_X4_Dispatch);
 #else
 	if (Keccak_X4_Initialize_ptr == NULL) {

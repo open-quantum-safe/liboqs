@@ -106,6 +106,9 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads)
+    if (CMAKE_USE_PTHREADS_INIT AND NOT OQS_EMBEDDED_BUILD)
+        set(OQS_USE_PTHREADS ON)
+    endif()
 
     if(${OQS_DEBUG_BUILD})
         add_compile_options(-g3)
@@ -165,6 +168,9 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads)
+    if (CMAKE_USE_PTHREADS_INIT AND NOT OQS_EMBEDDED_BUILD)
+        set(OQS_USE_PTHREADS ON)
+    endif()
 
     if(${OQS_DEBUG_BUILD})
         add_compile_options (-Wstrict-overflow)

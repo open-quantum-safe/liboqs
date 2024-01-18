@@ -10,7 +10,7 @@
 
 #include <oqs/oqs.h>
 
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 #include <pthread.h>
 #endif
 
@@ -174,7 +174,7 @@ static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 }
 #endif
 
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 struct thread_data {
 	char *alg_name;
 	OQS_STATUS rc;
@@ -222,7 +222,7 @@ int main(int argc, char **argv) {
 #endif
 
 	OQS_STATUS rc;
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 #define MAX_LEN_SIG_NAME_ 64
 	pthread_t thread;
 	struct thread_data td;
