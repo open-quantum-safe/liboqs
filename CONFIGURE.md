@@ -48,7 +48,7 @@ Note: `ALG` in `OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG` should be replaced with t
 
 This can be set to `ON` or `OFF`, and is `ON` by default. When `OFF`, `ALG` and its code are excluded from the build process. When `ON`, made available are additional options whereby individual variants of `ALG` can be excluded from the build process. 
 
-For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KEM_bike1_l1_cpa`, `OQS_ENABLE_KEM_bike1_l1_fo`, `OQS_ENABLE_KEM_bike1_l3_cpa`, `OQS_ENABLE_KEM_bike1_l3_fo` are made available (and are set to be `ON` by default). 
+For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KEM_bike_l1`, `OQS_ENABLE_KEM_bike_l3`, and `OQS_ENABLE_KEM_bike_l5` are made available (and are set to be `ON` by default).
 
 For a full list of such options and their default values, consult [.CMake/alg_support.cmake](https://github.com/open-quantum-safe/liboqs/blob/master/.CMake/alg_support.cmake).
 
