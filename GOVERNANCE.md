@@ -5,7 +5,7 @@
 The Open Quantum Safe project aims to operate by the following principles:
 
 - **Openness**: The project is will be open in its operation, open to contributions, and produce open source software.
-- **Respect**: The project will foster respectfu interactions with all participants and contributors.
+- **Respect**: The project will foster respectful interactions with all participants and contributors.
 - **Scientific integrity**: The project will be follow advancements in cryptographic research and will be guided by standards and best practices.
 
 Decision making in the project will follow the principles above, and be governed first and foremost by reason and mutually respectful interaction between all contributors.
@@ -14,7 +14,7 @@ If decisions cannot be reached using lazy consensus, voting will be used to come
 
 ## Community and Roles
 
-The OQS community is open to all who would like to participate in the project following its principles. 
+The OQS community is open to all who would like to participate in the project following its principles, including contributors in academia, government, or industry, and individual contributors.
 
 The following roles exist in the project:
 
