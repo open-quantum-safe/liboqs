@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the code which allocates a working key (and initializes the fields
  * that are independent of the key)

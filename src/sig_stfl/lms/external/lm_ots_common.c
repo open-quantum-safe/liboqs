@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the code that implements the one-time-signature part of the LMS hash
  * based signatures

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #include "endian.h"
 
 void put_bigendian( void *target, unsigned long long value, size_t bytes ) {

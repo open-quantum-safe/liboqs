@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #include <stdlib.h>
 #include <string.h>
 #include "common_defs.h"
