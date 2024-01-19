@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0 AND MIT
 #ifndef XMSS_CORE_H
 #define XMSS_CORE_H
 
