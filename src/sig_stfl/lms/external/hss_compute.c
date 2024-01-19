@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This includes some computation methods that are shared between different
  * subsystems of the HSS signature package

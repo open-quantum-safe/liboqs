@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the routine that generates the ephemeral ("working") key from the
  * short private value.  It builds all the various current, building and
