@@ -396,3 +396,59 @@
    # fun:gen_e
    fun:PQCLEAN_MCELIECE348864F_AVX2_encrypt
 }
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:sk_gen.c:58
+   # fun:PQCLEAN_MCELIECE348864F_CLEAN_genpoly_gen
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:166
+   # fun:PQCLEAN_MCELIECE348864F_CLEAN_pk_gen
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair
+}
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:248
+   # fun:PQCLEAN_MCELIECE348864F_CLEAN_pk_gen
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair
+}
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:pk_gen.c:82
+   # fun:mov_columns
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_pk_gen
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:controlbits.c:243
+   # fun:PQCLEAN_MCELIECE348864F_CLEAN_controlbitsfrompermutation
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:encrypt.c:69
+   # fun:gen_e
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_encrypt
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_enc
+}
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:encrypt.c:84
+   # fun:gen_e
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_encrypt
+   fun:PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_enc
+}
