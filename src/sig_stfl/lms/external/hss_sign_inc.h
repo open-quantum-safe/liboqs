@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( HSS_SIGN_INC_H_ )
 #define HSS_SIGN_INC_H_
 #include <stdbool.h>

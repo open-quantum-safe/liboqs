@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( LM_OTS_H_ )
 #define LM_OTS_H_
 

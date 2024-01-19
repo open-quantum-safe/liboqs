@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the code that implements the hierarchical part of the LMS hash
  * based signatures; in this case, incremental signing

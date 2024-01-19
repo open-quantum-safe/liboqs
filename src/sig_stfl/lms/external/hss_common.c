@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the code that is common between an HSS verifier, and a full HSS
  * implementation that both signs and verifies

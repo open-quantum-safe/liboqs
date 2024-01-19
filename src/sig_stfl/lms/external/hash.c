@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #include <string.h>
 #include "hash.h"
 #include "hss_zeroize.h"

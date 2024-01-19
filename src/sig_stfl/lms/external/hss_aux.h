@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( HSS_AUX_H_ )
 #define HSS_AUX_H_
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /*
  * This is the file that contains the routines that generate various 'random'
  * values from the master seed.
