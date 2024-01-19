@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0 AND MIT
 
 #ifndef OQS_SIG_STFL_XMSS_H
 #define OQS_SIG_STFL_XMSS_H
