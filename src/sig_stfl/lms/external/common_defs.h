@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( COMMON_DEFS_H_ )
 #define COMMON_DEFS_H_
 

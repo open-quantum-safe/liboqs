@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined(LM_VERIFY_H_)
 #define LM_VERIFY_H_
 

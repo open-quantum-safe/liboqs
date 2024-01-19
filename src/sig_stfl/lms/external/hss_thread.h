@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( HSS_THREAD_H_ )
 #define HSS_THREAD_H_
 /*

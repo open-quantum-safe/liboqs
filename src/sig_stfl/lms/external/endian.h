@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 #if !defined( ENDIAN_H_ )
 #define ENDIAN_H_
 
