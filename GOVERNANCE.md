@@ -47,7 +47,7 @@ Responsibilities:
 
 ### Maintainers
 
-A **Maintainer** is Committer who makes significant and sustained contributions to the project, and is committed to guiding the direction of the project. Maintainers will have "administrative" permissions in GitHub.
+A **Maintainer** is a Committer who makes significant and sustained contributions to the project, and is committed to guiding the direction of the project. Maintainers will have "administrative" permissions in GitHub.
 
 Responsibilities:
 
