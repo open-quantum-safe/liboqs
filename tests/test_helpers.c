@@ -4,8 +4,8 @@
 #include <string.h>
 
 #include <oqs/oqs.h>
-#include <oqs/rand_nist_internal.h> // Internal NIST DRBG API
-#include <oqs/sha3.h>               // Internal SHA3 API
+#include <oqs/rand_nist.h>  // Internal NIST DRBG API
+#include <oqs/sha3.h>       // Internal SHA3 API
 
 #include "test_helpers.h"
 
@@ -92,24 +92,18 @@ OQS_KAT_PRNG *OQS_KAT_PRNG_new(const char *method_name) {
 			hqc_prng_new();
 			// initialize saved state
 			OQS_SHA3_shake256_inc_init(&prng->saved_state.hqc_state);
-			// TODO set callbacks
 			prng->seed = &hqc_prng_seed;
 			prng->get_state = &hqc_prng_get_state;
 			prng->set_state = &hqc_prng_set_state;
 			prng->free = &hqc_prng_free;
-		} else {
-			// set randombytes function
-			if (OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat) == OQS_SUCCESS) {
-				// TODO set callbacks
-				prng->seed = &OQS_randombytes_nist_kat_init_256bit;
-				prng->get_state = &OQS_randombytes_nist_kat_get_state;
-				prng->set_state = &OQS_randombytes_nist_kat_set_state;
-				prng->free = &nist_drbg_free;
-			} else {
-				OQS_MEM_insecure_free(prng);
-				prng = NULL;
-			}
-		}
+        } else {
+            // set randombytes function
+            OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
+            prng->seed = &OQS_randombytes_nist_kat_init_256bit;
+            prng->get_state = &OQS_randombytes_nist_kat_get_state;
+            prng->set_state = &OQS_randombytes_nist_kat_set_state;
+            prng->free = &nist_drbg_free;
+        }
 	}
 	return prng;
 }

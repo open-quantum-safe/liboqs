@@ -10,12 +10,7 @@
 
 typedef union {
 	OQS_SHA3_shake256_inc_ctx hqc_state;
-	// struct definition copied from rand_nist.c
-	struct {
-		unsigned char Key[32];
-		unsigned char V[16];
-		int reseed_counter;
-	} nist_state;
+	OQS_NIST_DRBG_struct nist_state;
 } OQS_KAT_PRNG_state;
 
 typedef struct {

@@ -11,6 +11,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
+typedef struct {
+	unsigned char Key[32];
+	unsigned char V[16];
+	int reseed_counter;
+} OQS_NIST_DRBG_struct;
+
 /**
  * Initializes the NIST DRBG with a given seed and with 256-bit security.
  *

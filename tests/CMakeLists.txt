@@ -81,7 +81,7 @@ add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
 add_executable(kat_sig kat_sig.c test_helpers.c)
-target_link_libraries(kat_sig PRIVATE ${API_TEST_DEPS})
+target_link_libraries(kat_sig PRIVATE ${TEST_DEPS})
 
 add_executable(test_sig test_sig.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
