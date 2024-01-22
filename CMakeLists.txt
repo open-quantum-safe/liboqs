@@ -139,12 +139,14 @@ endif()
 set(PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
                    ${PROJECT_SOURCE_DIR}/src/common/common.h
                    ${PROJECT_SOURCE_DIR}/src/common/rand/rand.h
-                   ${PROJECT_SOURCE_DIR}/src/common/aes/aes.h
-                   ${PROJECT_SOURCE_DIR}/src/common/sha2/sha2.h
-                   ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3.h
-                   ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3x4.h
                    ${PROJECT_SOURCE_DIR}/src/kem/kem.h
                    ${PROJECT_SOURCE_DIR}/src/sig/sig.h)
+
+set(INTERNAL_HEADERS ${PROJECT_SOURCE_DIR}/src/common/aes/aes.h
+                     ${PROJECT_SOURCE_DIR}/src/common/rand/rand_nist.h
+                     ${PROJECT_SOURCE_DIR}/src/common/sha2/sha2.h
+                     ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3.h
+                     ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3x4.h)
 
 if(${OQS_ENABLE_KEM_BIKE})
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/bike/kem_bike.h)
@@ -177,6 +179,7 @@ endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_END
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/include/oqs)
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${PUBLIC_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs)
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${INTERNAL_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs)
 configure_file(src/oqsconfig.h.cmake ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
 set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
 

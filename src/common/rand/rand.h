@@ -20,8 +20,6 @@ extern "C" {
 
 /** Algorithm identifier for system PRNG. */
 #define OQS_RAND_alg_system "system"
-/** Algorithm identifier for NIST deterministic RNG for KATs. */
-#define OQS_RAND_alg_nist_kat "NIST-KAT"
 /** Algorithm identifier for using OpenSSL's PRNG. */
 #define OQS_RAND_alg_openssl "OpenSSL"
 
@@ -60,15 +58,6 @@ OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, s
  * @param[in] bytes_to_read The number of random bytes to read into memory
  */
 OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
-
-/**
- * Initializes the NIST DRBG with a given seed and with 256-bit security.
- *
- * @param[in] entropy_input The seed; must be exactly 48 bytes
- * @param[in] personalization_string An optional personalization string;
- * may be NULL; if not NULL, must be at least 48 bytes long
- */
-OQS_API void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string);
 
 #if defined(__cplusplus)
 } // extern "C"

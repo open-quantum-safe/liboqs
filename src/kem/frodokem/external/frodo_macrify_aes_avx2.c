@@ -1,4 +1,5 @@
 #include <immintrin.h>
+#include <oqs/aes.h>
 
 int frodo_mul_add_sa_plus_e_aes_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
 { // Generate-and-multiply: generate matrix A (N x N) column-wise, multiply by s' on the left.

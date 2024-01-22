@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 
 #include <oqs/oqs.h>
+#include <oqs/rand_nist.h>
 #include <oqs/sha3.h>
 
 #include "system_info.c"
@@ -106,10 +107,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 		randombytes_init = &HQC_randombytes_init;
 		randombytes_free = &HQC_randombytes_free;
 	} else {
-		rc = OQS_randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
-		if (rc != OQS_SUCCESS) {
-			goto err;
-		}
+		OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
 		randombytes_init = &OQS_randombytes_nist_kat_init_256bit;
 	}
 
