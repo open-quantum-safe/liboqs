@@ -56,9 +56,6 @@ static void hqc_prng_free(OQS_KAT_PRNG_state *saved_state) {
 	}
 }
 
-/* Additional NIST DRBG implementation */
-static void nist_drbg_free(OQS_KAT_PRNG_state *saved_state) {}
-
 /* Helpers for identifying algorithms */
 static int is_mceliece(const char *method_name) {
 	return ( !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864)
@@ -102,7 +99,7 @@ OQS_KAT_PRNG *OQS_KAT_PRNG_new(const char *method_name) {
 			prng->seed = &OQS_randombytes_nist_kat_init_256bit;
 			prng->get_state = &OQS_randombytes_nist_kat_get_state;
 			prng->set_state = &OQS_randombytes_nist_kat_set_state;
-			prng->free = &nist_drbg_free;
+			prng->free = NULL;
 		}
 	}
 	return prng;
@@ -131,7 +128,9 @@ void OQS_KAT_PRNG_restore_state(OQS_KAT_PRNG *prng) {
 void OQS_KAT_PRNG_free(OQS_KAT_PRNG *prng) {
 	if (prng != NULL) {
 		// saved_state needs to be handled dynamically
-		prng->free(&prng->saved_state);
+		if (prng->free != NULL) {
+			prng->free(&prng->saved_state);
+		}
 	}
 	OQS_MEM_insecure_free(prng);
 }
