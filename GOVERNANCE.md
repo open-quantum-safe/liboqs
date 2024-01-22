@@ -6,7 +6,7 @@ The Open Quantum Safe project aims to operate by the following principles:
 
 - **Openness**: The project is will be open in its operation, open to contributions, and produce open source software.
 - **Respect**: The project will foster respectful interactions with all participants and contributors.
-- **Scientific integrity**: The project will be follow advancements in cryptographic research and will be guided by standards and best practices.
+- **Scientific integrity**: The project will follow advancements in cryptographic research and will be guided by standards and best practices.
 
 Decision making in the project will follow the principles above, and be governed first and foremost by reason and mutually respectful interaction between all contributors.
 The project will aim to build consensus for decisions, and will where possible operate by the approach of [lazy consensus](https://community.apache.org/committers/decisionMaking.html).
