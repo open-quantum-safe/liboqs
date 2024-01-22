@@ -96,14 +96,14 @@ OQS_KAT_PRNG *OQS_KAT_PRNG_new(const char *method_name) {
 			prng->get_state = &hqc_prng_get_state;
 			prng->set_state = &hqc_prng_set_state;
 			prng->free = &hqc_prng_free;
-        } else {
-            // set randombytes function
-            OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
-            prng->seed = &OQS_randombytes_nist_kat_init_256bit;
-            prng->get_state = &OQS_randombytes_nist_kat_get_state;
-            prng->set_state = &OQS_randombytes_nist_kat_set_state;
-            prng->free = &nist_drbg_free;
-        }
+		} else {
+			// set randombytes function
+			OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
+			prng->seed = &OQS_randombytes_nist_kat_init_256bit;
+			prng->get_state = &OQS_randombytes_nist_kat_get_state;
+			prng->set_state = &OQS_randombytes_nist_kat_set_state;
+			prng->free = &nist_drbg_free;
+		}
 	}
 	return prng;
 }
