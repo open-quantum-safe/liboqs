@@ -4,23 +4,28 @@
 
 The Open Quantum Safe project aims to operate by the following principles:
 
-- **Openness**: The project is will be open in its operation, open to contributions, and produce open source software.
-- **Respect**: The project will foster respectful interactions with all participants and contributors.
+- **Openness**: The project will be open in its operation, open to contributions, and produce open source software.
+- **Respect**: The project will foster respectful interactions with all participants.
 - **Scientific integrity**: The project will follow advancements in cryptographic research and will be guided by standards and best practices.
 
-Decision making in the project will follow the principles above, and be governed first and foremost by reason and mutually respectful interaction between all contributors.
+Decision making in the project will follow the principles above, and be governed first and foremost by reason and mutually respectful interaction between all participants.
 The project will aim to build consensus for decisions, and will where possible operate by the approach of [lazy consensus](https://community.apache.org/committers/decisionMaking.html).
 If decisions cannot be reached using lazy consensus, voting will be used to come to a resolution.
 
 ## Community and Roles
 
-The OQS community is open to all who would like to participate in the project following its principles, including contributors in academia, government, or industry, and individual contributors.
+The OQS community is open to all who would like to participate in the project following its principles, including academic, industry, public sector, and individual contributors.
 
 The following roles exist in the project:
 
 ### Users
 
 A **User** is a person or organization using software produced by the project.
+
+Responsibilities:
+
+- Abide by the [license][LICENSE.txt]
+- Consider participating in the project!
 
 ### Community Members
 
@@ -40,6 +45,7 @@ A **Committer** is a Contributor with increased experience in the project who he
 
 Responsibilities:
 
+- Further the goals of the project.
 - Monitor and respond to GitHub issues.
 - Review and merge pull requests.
 - Assist with security releases when required.
@@ -99,10 +105,10 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 @bhess
 @christianpaquin
 @dstebila
-@swilson4
 @jschanck
 @Martyrshot
 @praveksharma
+@swilson4
 @vsoftco
 
 ## Afterword
