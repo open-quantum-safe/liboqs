@@ -62,7 +62,7 @@ Any Community Member may become a Contributor by creating a pull request (PR) an
 
 Any Contributor can become a Committer by contributing sufficient code and displaying deep subject matter knowledge in discussions such that a majority of Committers vote for this change of role. A Maintainer can veto such a vote. Such a veto can be overruled by a 2/3 majority of Committers.
 
-As such a voting decision may be considered subjective, Contributors striving to become Committers are encouraged to ask for advice by Committers as to what they can do to obtain this role. Baseline requirements for contributions are documented in [CONTRIBUTING.md](CONTRIBUTING.md). Any Contributor can create a discussion item to request a vote to become Committer.
+As such a voting decision may be considered subjective, Contributors striving to become Committers are encouraged to ask for advice from Committers/Maintainers as to what they can do to obtain this role. Baseline requirements for contributions are documented in [CONTRIBUTING.md](CONTRIBUTING.md). Any Contributor can create a discussion item to request a vote to become Committer.
 
 Any Committer can become a Maintainer by majority vote of voting Committers. A current Maintainer can veto such a vote. Such a veto can be overruled by a 2/3 majority of all Committers.
 
