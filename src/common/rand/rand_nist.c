@@ -80,7 +80,7 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 #endif
 }
 
-OQS_API void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string) {
+void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string) {
 	unsigned char seed_material[48];
 
 	memcpy(seed_material, entropy_input, 48);
