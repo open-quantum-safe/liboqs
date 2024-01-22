@@ -14,7 +14,7 @@ typedef union {
 } OQS_KAT_PRNG_state;
 
 typedef struct {
-	int max_kats;
+	size_t max_kats;
 	OQS_KAT_PRNG_state saved_state;
 	// The caller should use the OQS_KAT_PRNG_* functions instead of these callbacks.
 	void (*seed)(const uint8_t *, const uint8_t *);

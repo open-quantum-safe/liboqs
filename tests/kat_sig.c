@@ -244,7 +244,7 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 	size_t signed_msg_len = 0;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	OQS_KAT_PRNG *prng = NULL;
-	int max_count;
+	size_t max_count;
 
 	prng = OQS_KAT_PRNG_new(method_name);
 	if (prng == NULL) {
@@ -277,8 +277,8 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 		goto err;
 	}
 
-	for (int count = 0; count < max_count; ++count) {
-		fprintf(fh, "count = %d\n", count);
+	for (size_t count = 0; count < max_count; ++count) {
+		fprintf(fh, "count = %zu\n", count);
 		OQS_randombytes(seed, 48);
 		OQS_fprintBstr(fh, "seed = ", seed, 48);
 

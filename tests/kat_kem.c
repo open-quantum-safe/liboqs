@@ -33,7 +33,7 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
-	int max_count;
+	size_t max_count;
 	OQS_KAT_PRNG *prng;
 
 	prng = OQS_KAT_PRNG_new(method_name);
@@ -67,8 +67,8 @@ static OQS_STATUS kem_kat(const char *method_name, bool all) {
 
 	max_count = all ? prng->max_kats : 1;
 
-	for (int count = 0; count < max_count; ++count) {
-		fprintf(fh, "count = %d\n", count);
+	for (size_t count = 0; count < max_count; ++count) {
+		fprintf(fh, "count = %zu\n", count);
 		OQS_randombytes(seed, 48);
 		OQS_fprintBstr(fh, "seed = ", seed, 48);
 
