@@ -132,7 +132,7 @@ void OQS_randombytes_nist_kat_get_state(void *out) {
 }
 
 void OQS_randombytes_nist_kat_set_state(const void *in) {
-	OQS_NIST_DRBG_struct *in_state = (OQS_NIST_DRBG_struct *)in;
+	const OQS_NIST_DRBG_struct *in_state = (OQS_NIST_DRBG_struct *)in;
 	if (in_state != NULL) {
 		memcpy(DRBG_ctx.Key, in_state->Key, sizeof(DRBG_ctx.Key));
 		memcpy(DRBG_ctx.V, in_state->V, sizeof(DRBG_ctx.V));
