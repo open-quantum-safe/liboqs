@@ -1,7 +1,4 @@
 diff --git a/Kyber1024_META.yml b/ML-KEM-1024-ipd_META.yml
-similarity index 55%
-rename from Kyber1024_META.yml
-rename to ML-KEM-1024-ipd_META.yml
 index baa5ca3..ffafcf0 100644
 --- a/Kyber1024_META.yml
 +++ b/ML-KEM-1024-ipd_META.yml
@@ -56,9 +53,6 @@ index baa5ca3..ffafcf0 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Kyber512_META.yml b/ML-KEM-512-ipd_META.yml
-similarity index 55%
-rename from Kyber512_META.yml
-rename to ML-KEM-512-ipd_META.yml
 index b251701..d20f0b1 100644
 --- a/Kyber512_META.yml
 +++ b/ML-KEM-512-ipd_META.yml
@@ -113,9 +107,6 @@ index b251701..d20f0b1 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Kyber768_META.yml b/ML-KEM-768-ipd_META.yml
-similarity index 55%
-rename from Kyber768_META.yml
-rename to ML-KEM-768-ipd_META.yml
 index 7a0cc3d..e768cd5 100644
 --- a/Kyber768_META.yml
 +++ b/ML-KEM-768-ipd_META.yml
@@ -395,33 +386,6 @@ index 0802c74..36b2b98 100644
  #else
  #error "KYBER_K must be in {2,3,4}"
  #endif
-diff --git a/ref/poly.c b/ref/poly.c
-index 017cacf..9556ee5 100644
---- a/ref/poly.c
-+++ b/ref/poly.c
-@@ -180,19 +180,14 @@ void poly_frommsg(poly *r, const uint8_t msg[KYBER_INDCPA_MSGBYTES])
- void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const poly *a)
- {
-   unsigned int i,j;
--  uint32_t t;
-+  uint16_t t;
- 
-   for(i=0;i<KYBER_N/8;i++) {
-     msg[i] = 0;
-     for(j=0;j<8;j++) {
-       t  = a->coeffs[8*i+j];
--      // t += ((int16_t)t >> 15) & KYBER_Q;
--      // t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
--      t <<= 1;
--      t += 1665;
--      t *= 80635;
--      t >>= 28;
--      t &= 1;
-+      t += ((int16_t)t >> 15) & KYBER_Q;
-+      t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
-       msg[i] |= t << j;
-     }
-   }
 diff --git a/ref/symmetric-shake.c b/ref/symmetric-shake.c
 index 6a99071..20f4518 100644
 --- a/ref/symmetric-shake.c

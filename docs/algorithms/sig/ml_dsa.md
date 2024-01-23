@@ -7,9 +7,9 @@
 - **Authors' website**: https://pq-crystals.org/dilithium/
 - **Specification version**: pq-crystals 20230825.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/dilithium/commit/918af1a6eaedcedf9fdd8aaaca6c1fccd5a7a51f with copy_from_upstream patches
+  - **Source**: https://github.com/pq-crystals/dilithium/commit/e7bed6258b9a3703ce78d4ec38021c86382ce31c with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
-- **Optimized Implementation sources**: https://github.com/pq-crystals/dilithium/commit/918af1a6eaedcedf9fdd8aaaca6c1fccd5a7a51f with copy_from_upstream patches
+- **Optimized Implementation sources**: https://github.com/pq-crystals/dilithium/commit/e7bed6258b9a3703ce78d4ec38021c86382ce31c with copy_from_upstream patches
   - **oldpqclean-aarch64**:<a name="oldpqclean-aarch64"></a>
       - **Source**: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT

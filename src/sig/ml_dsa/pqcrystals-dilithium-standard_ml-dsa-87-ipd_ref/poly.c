@@ -869,7 +869,7 @@ void polyz_unpack(poly *r, const uint8_t *a) {
     r->coeffs[2*i+1]  = a[5*i+2] >> 4;
     r->coeffs[2*i+1] |= (uint32_t)a[5*i+3] << 4;
     r->coeffs[2*i+1] |= (uint32_t)a[5*i+4] << 12;
-    r->coeffs[2*i+0] &= 0xFFFFF;
+    /* r->coeffs[2*i+1] &= 0xFFFFF; */ /* No effect, since we're anyway at 20 bits */
 
     r->coeffs[2*i+0] = GAMMA1 - r->coeffs[2*i+0];
     r->coeffs[2*i+1] = GAMMA1 - r->coeffs[2*i+1];

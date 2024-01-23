@@ -7,9 +7,9 @@
 - **Authors' website**: https://pq-crystals.org/
 - **Specification version**: pq-crystals 20230726.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/bc8e640727b5178eb1c65867d6ba6599b3ad88e5 with copy_from_upstream patches
+  - **Source**: https://github.com/pq-crystals/kyber/commit/11d00ff1f20cfca1f72d819e5a45165c1e0a2816 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
-- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/bc8e640727b5178eb1c65867d6ba6599b3ad88e5 with copy_from_upstream patches
+- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/11d00ff1f20cfca1f72d819e5a45165c1e0a2816 with copy_from_upstream patches
   - **oldpqclean-aarch64**:<a name="oldpqclean-aarch64"></a>
       - **Source**: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
