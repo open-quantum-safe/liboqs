@@ -6,6 +6,13 @@
 #include "utils.h"
 #include "xmss.h"
 
+ 
+#if defined(__GNUC__) || defined(__clang__)
+#define XMSS_UNUSED_ATT __attribute__((unused))
+#else
+#define XMSS_UNUSED_ATT
+#endif
+
 /* This file provides wrapper functions that take keys that include OIDs to
 identify the parameter set to be used. After setting the parameters accordingly
 it falls back to the regular XMSS core functions. */
@@ -25,6 +32,12 @@ it falls back to the regular XMSS core functions. */
  * @return an integer value. If the function executes successfully, it will return 0. If there is an
  * error, it will return -1.
  */
+#ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
+int xmss_keypair(XMSS_UNUSED_ATT unsigned char *pk, XMSS_UNUSED_ATT unsigned char *sk, XMSS_UNUSED_ATT const uint32_t oid)
+{
+    return -1;
+}
+#else
 int xmss_keypair(unsigned char *pk, unsigned char *sk, const uint32_t oid)
 {
     xmss_params params;
@@ -42,6 +55,7 @@ int xmss_keypair(unsigned char *pk, unsigned char *sk, const uint32_t oid)
     }
     return xmss_core_keypair(&params, pk + XMSS_OID_LEN, sk + XMSS_OID_LEN);
 }
+#endif
 
 /**
  * This function parses the XMSS OID from a secret key, uses it to determine the XMSS parameters, and
@@ -57,6 +71,13 @@ int xmss_keypair(unsigned char *pk, unsigned char *sk, const uint32_t oid)
  * @return an integer value. If the function executes successfully, it will return 0. If there is an
  * error, it will return -1.
  */
+#ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
+int xmss_sign(XMSS_UNUSED_ATT unsigned char *sk, XMSS_UNUSED_ATT unsigned char *sm, XMSS_UNUSED_ATT unsigned long long *smlen,
+              XMSS_UNUSED_ATT const unsigned char *m, XMSS_UNUSED_ATT unsigned long long mlen)
+{
+    return -1;
+}
+#else
 int xmss_sign(unsigned char *sk,
               unsigned char *sm, unsigned long long *smlen,
               const unsigned char *m, unsigned long long mlen)
@@ -73,6 +94,7 @@ int xmss_sign(unsigned char *sk,
     }
     return xmss_core_sign(&params, sk + XMSS_OID_LEN, sm, smlen, m, mlen);
 }
+#endif
 
 /**
  * The function xmss_sign_open verifies a signature and retrieves the original message using the XMSS

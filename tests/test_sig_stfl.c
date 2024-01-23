@@ -989,6 +989,10 @@ void *test_wrapper(void *arg) {
 #endif
 
 int main(int argc, char **argv) {
+#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+	printf("Stateful signature algorithms key and signature generation is not enabled.\n");
+	return EXIT_SUCCESS;
+#else
 	OQS_init();
 	oqs_fstore_init();
 
@@ -1127,4 +1131,5 @@ err:
 	}
 	return exit_status;
 #endif
+#endif //OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
 }
