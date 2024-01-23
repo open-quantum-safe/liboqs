@@ -15,8 +15,8 @@
 
 /* -------------- XMSS -------------- */
 #ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(XMSS_UNUSED_ATT uint8_t *signature, XMSS_UNUSED_ATT size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, 
-                                                                                               XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(XMSS_UNUSED_ATT uint8_t *signature, XMSS_UNUSED_ATT size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len,
+        XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return OQS_ERROR;
 }
 #else
@@ -64,7 +64,7 @@ err:
 
 	return status;
 }
-#endif 
+#endif
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, const uint8_t *signature, size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key) {
 

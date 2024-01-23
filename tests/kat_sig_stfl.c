@@ -324,7 +324,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 	//Update value to keep the test tool happy
-	fprintf(fh, "remain = %llu\n", sigs_remain-1);
+	fprintf(fh, "remain = %llu\n", sigs_remain - 1);
 
 	rc = OQS_SIG_STFL_sigs_total(sig, &sigs_maximum, secret_key);
 	if (rc != OQS_SUCCESS) {
@@ -335,7 +335,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	ret = OQS_SUCCESS;
 	goto cleanup;
-#endif 
+#endif
 err:
 	ret = OQS_ERROR;
 	goto cleanup;
