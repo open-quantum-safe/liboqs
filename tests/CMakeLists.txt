@@ -74,7 +74,7 @@ target_link_libraries(test_kem_mem PRIVATE ${TEST_DEPS})
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${TEST_DEPS})
 
-set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem)
+set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
 
 # SIG API tests
 add_executable(example_sig example_sig.c)
@@ -92,17 +92,17 @@ target_link_libraries(test_sig_mem PRIVATE ${TEST_DEPS})
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${TEST_DEPS})
 
-set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig)
+set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig vectors_sig)
 
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})
 
 # Intermediate values vector tests
 add_executable(vectors_sig vectors_sig.c)
-target_link_libraries(vectors_sig PRIVATE ${API_TEST_DEPS})
+target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
 
 add_executable(vectors_kem vectors_kem.c)
-target_link_libraries(vectors_kem PRIVATE ${API_TEST_DEPS})
+target_link_libraries(vectors_kem PRIVATE ${TEST_DEPS})
 
 # Enable Valgrind-based timing side-channel analysis for test_kem and test_sig
 if(OQS_ENABLE_TEST_CONSTANT_TIME AND NOT OQS_DEBUG_BUILD)
