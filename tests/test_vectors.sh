@@ -9,7 +9,7 @@ fi
 
 if [ "$1" = "ML-DSA-44-ipd" ]; then
 
-  file=tests/PQC\ Intermediate\ Values/ML-DSA-44.txt
+  file=tests/PQC_Intermediate_Values/ML-DSA-44.txt
   scheme_name=ML-DSA-44-ipd
   
   sh tests/test_sig_vectors.sh "$scheme_name" "$file" "$build_dir"
@@ -19,7 +19,7 @@ if [ "$1" = "ML-DSA-44-ipd" ]; then
 
 elif [ "$1" = "ML-DSA-65-ipd" ]; then
 
-  file=tests/PQC\ Intermediate\ Values/ML-DSA-65.txt
+  file=tests/PQC_Intermediate_Values/ML-DSA-65.txt
   scheme_name=ML-DSA-65-ipd
   
   sh tests/test_sig_vectors.sh "$scheme_name" "$file" "$build_dir"
@@ -29,7 +29,7 @@ elif [ "$1" = "ML-DSA-65-ipd" ]; then
 
 elif [ "$1" = "ML-DSA-87-ipd" ]; then
 
-  file=tests/PQC\ Intermediate\ Values/ML-DSA-87.txt
+  file=tests/PQC_Intermediate_Values/ML-DSA-87.txt
   scheme_name=ML-DSA-87-ipd
   
   sh tests/test_sig_vectors.sh "$scheme_name" "$file" "$build_dir"
@@ -39,7 +39,7 @@ elif [ "$1" = "ML-DSA-87-ipd" ]; then
 
 elif [ "$1" = "ML-KEM-512-ipd" ]; then
 
-  file=tests/PQC\ Intermediate\ Values/ML-KEM-512.txt
+  file=tests/PQC_Intermediate_Values/ML-KEM-512.txt
   scheme_name=ML-KEM-512-ipd
   
   sh tests/test_kem_vectors.sh "$scheme_name" "$file" "$build_dir"
@@ -49,7 +49,7 @@ elif [ "$1" = "ML-KEM-512-ipd" ]; then
 
 elif [ "$1" = "ML-KEM-768-ipd" ]; then
 
-  file=tests/PQC\ Intermediate\ Values/ML-KEM-768.txt
+  file=tests/PQC_Intermediate_Values/ML-KEM-768.txt
   scheme_name=ML-KEM-768-ipd
   
   sh tests/test_kem_vectors.sh "$scheme_name" "$file" "$build_dir"
@@ -59,7 +59,7 @@ elif [ "$1" = "ML-KEM-768-ipd" ]; then
 
 elif [ "$1" = "ML-KEM-1024-ipd" ]; then
 
-  file=tests/PQC\ Intermediate\ Values/ML-KEM-1024.txt
+  file=tests/PQC_Intermediate_Values/ML-KEM-1024.txt
   scheme_name=ML-KEM-1024-ipd
   
   sh tests/test_kem_vectors.sh "$scheme_name" "$file" "$build_dir"

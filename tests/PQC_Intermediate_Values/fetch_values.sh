@@ -4,11 +4,11 @@
 # This script fetches the NIST vectors for the ML-KEM-ipd and ML-DSA-ipd and extracts the values we use for testing
 
 wget https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/example-files/PQC%20Intermediate%20Values.zip
-unzip PQC\ Intermediate\ Values.zip
+unzip PQC_Intermediate_Values.zip
 
-file_keygen="PQC Intermediate Values/Key Generation -- "
-file_signature="PQC Intermediate Values/Signature Generation -- "
-file_verification="PQC Intermediate Values/Signature Verification -- "
+file_keygen="PQC_Intermediate_Values/Key Generation -- "
+file_signature="PQC_Intermediate_Values/Signature Generation -- "
+file_verification="PQC_Intermediate_Values/Signature Verification -- "
 
 for VARIANT in "ML-DSA-44" "ML-DSA-65" "ML-DSA-87"
 do
@@ -27,9 +27,9 @@ do
   grep "signature: " "$file_signature$VARIANT.txt" | sed "s/signature: /sig_signature: /g" >> "$VARIANT.txt"
 done
 
-file_keygen="PQC Intermediate Values/Key Generation -- "
-file_encaps="PQC Intermediate Values/Encapsulation -- "
-file_decaps="PQC Intermediate Values/Decapsulation -- "
+file_keygen="PQC_Intermediate_Values/Key Generation -- "
+file_encaps="PQC_Intermediate_Values/Encapsulation -- "
+file_decaps="PQC_Intermediate_Values/Decapsulation -- "
 
 for VARIANT in "ML-KEM-512" "ML-KEM-768" "ML-KEM-1024"
 do
