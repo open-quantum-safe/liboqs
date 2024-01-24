@@ -466,7 +466,7 @@ else()
 endif()
 
 if(OQS_ALLOW_SFTL_KEY_AND_SIG_GEN  STREQUAL "ON")
-    message(STATUS "Experimental stateful key and signature generation is enabled. Ensure secret keys are securely stored to prevent multiple simultanous sign operations.")
+    message(STATUS "Experimental stateful key and signature generation is enabled. Ensure secret keys are securely stored to prevent multiple simultaneous sign operations.")
 endif()
 
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
