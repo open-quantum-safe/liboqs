@@ -1,26 +1,24 @@
 #!/bin/bash
 # SPDX-License-Identifier: MIT
 
-file_keygen=$2
-file_signature=$3
-file_verification=$4
-build_dir=$5
+file=$2
+build_dir=$3
 
 # input part
-prng_output_stream=$(grep "seed: " "$file_keygen" | sed 's/seed: //g')
+prng_output_stream=$(grep "seed: " "$file" | sed 's/seed: //g')
 
-sig_msg=$(grep "message: " "$file_signature" | sed 's/message: //g')
-sig_sk=$(grep "sk: " "$file_signature" | sed 's/sk: //g')
-sig_rnd=$(grep "rnd: " "$file_signature" | sed "s/rnd: //g")
+sig_msg=$(grep "sig_message: " "$file" | sed 's/sig_message: //g')
+sig_sk=$(grep "sig_sk: " "$file" | sed 's/sig_sk: //g')
+sig_rnd=$(grep "rnd: " "$file" | sed "s/rnd: //g")
 
-verif_sig=$(grep "signature: " "$file_verification" | sed "s/signature: //g")
-verif_pk=$(grep "pk: " "$file_verification" | sed "s/pk: //g")
-verif_msg=$(grep "message: " "$file_verification" | sed "s/message: //g")
+verif_sig=$(grep "verif_signature: " "$file" | sed "s/verif_signature: //g")
+verif_pk=$(grep "verif_pk: " "$file" | sed "s/verif_pk: //g")
+verif_msg=$(grep "verif_message: " "$file" | sed "s/verif_message: //g")
 
 # KAT part
-keygen_pk=$(grep "pk: " "$file_keygen")
-keygen_sk=$(grep "sk: " "$file_keygen")
-sig_signature=$(grep "signature: " "$file_signature")
+keygen_pk=$(grep "keygen_pk: " "$file")
+keygen_sk=$(grep "keygen_sk: " "$file")
+sig_signature=$(grep "sig_signature: " "$file")
 
 output=$($build_dir/tests/vectors_sig $1 "$prng_output_stream$sig_rnd" "$sig_msg" "$sig_sk" "$verif_sig" "$verif_pk" "$verif_msg")
 if [ $? != 0 ]; then
@@ -28,9 +26,9 @@ if [ $? != 0 ]; then
 fi
 
 # Parse output: pk, sk, signature
-output_pk=$(echo "$output" | grep "pk: ")
-output_sk=$(echo "$output" | grep "sk: ")
-output_signature=$(echo "$output" | grep "signature: ")
+output_pk=$(echo "$output" | grep "pk: " | sed "s/pk: /keygen_pk: /g")
+output_sk=$(echo "$output" | grep "sk: " | sed "s/sk: /keygen_sk: /g")
+output_signature=$(echo "$output" | grep "signature: " | sed "s/signature: /sig_signature: /g")
 
 if [ "$keygen_pk" != "$output_pk" ]; then
     echo "keygen_pk mismatch for $1"
