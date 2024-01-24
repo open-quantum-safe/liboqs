@@ -11,19 +11,13 @@ auxiliary-submitters:
 - Gregor Seiler
 - Damien Stehlé
 crypto-assumption: hardness of lattice problems over module lattices
-website: https://pq-crystals.org/dilithium/
+website: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/ipd
 nist-round: ipd
-spec-version: pq-crystals 20230825
+spec-version: ML-DSA-ipd
 primary-upstream:
   source: https://github.com/pq-crystals/dilithium/commit/e7bed6258b9a3703ce78d4ec38021c86382ce31c
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
-optimized-upstreams:
-  oldpqclean-aarch64:
-    source: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a
-      with copy_from_upstream patches
-    spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT)
-      and MIT
 parameter-sets:
 - name: ML-DSA-44-ipd
   claimed-nist-level: 2

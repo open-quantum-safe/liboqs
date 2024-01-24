@@ -4,15 +4,11 @@
 - **Main cryptographic assumption**: Module LWE+R with base ring Z[x]/(3329, x^256+1).
 - **Principal submitters**: Peter Schwabe.
 - **Auxiliary submitters**: Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, John M. Schanck, Gregor Seiler, Damien Stehlé.
-- **Authors' website**: https://pq-crystals.org/
-- **Specification version**: pq-crystals 20230726.
+- **Authors' website**: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203/ipd
+- **Specification version**: ML-KEM-ipd.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/pq-crystals/kyber/commit/11d00ff1f20cfca1f72d819e5a45165c1e0a2816 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
-- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/11d00ff1f20cfca1f72d819e5a45165c1e0a2816 with copy_from_upstream patches
-  - **oldpqclean-aarch64**:<a name="oldpqclean-aarch64"></a>
-      - **Source**: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a with copy_from_upstream patches
-      - **Implementation license (SPDX-Identifier)**: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
 
 
 ## Parameter set summary
