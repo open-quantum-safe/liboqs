@@ -21,7 +21,7 @@ typedef struct {
 fixed_prng_state prng_state = { .pos = 0 };
 
 /* Displays hexadecimal strings */
-void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
+static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (len); i++) {
 		printf("%02X", str[i]);
@@ -29,7 +29,7 @@ void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("\n");
 }
 
-void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
+static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
 	fprintf(fp, "%s", S);
 	for (i = 0; i < L; i++) {
