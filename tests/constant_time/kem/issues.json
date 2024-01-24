@@ -24,5 +24,8 @@
   "Kyber1024": [],
   "Kyber512": [],
   "Kyber768": [],
+  "ML-KEM-512-ipd": [],
+  "ML-KEM-768-ipd": [],
+  "ML-KEM-1024-ipd": [],
   "sntrup761": []
 }

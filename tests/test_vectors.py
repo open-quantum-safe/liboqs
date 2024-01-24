@@ -14,8 +14,7 @@ def test_vectors_kem(kem_name):
     result = helpers.run_subprocess(
         ['tests/test_vectors.sh', kem_name],
     )
-    if kem_name + " not supported" in result:
-        pytest.skip("Not supported")
+    if kem_name + " not supported" in result: pytest.skip("Not supported")
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
@@ -25,8 +24,7 @@ def test_vectors_sig(sig_name):
     result = helpers.run_subprocess(
         ['tests/test_vectors.sh', sig_name],
     )
-    if sig_name + " not supported" in result:
-        pytest.skip("Not supported")
+    if sig_name + " not supported" in result: pytest.skip("Not supported")
 
 if __name__ == "__main__":
     import sys
