@@ -20,15 +20,6 @@ typedef struct {
 
 fixed_prng_state prng_state = { .pos = 0 };
 
-/* Displays hexadecimal strings */
-static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", str[i]);
-	}
-	printf("\n");
-}
-
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
 	fprintf(fp, "%s", S);
@@ -67,16 +58,6 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 	}
 }
 
-static inline uint16_t UINT16_TO_BE(const uint16_t x) {
-	union {
-		uint16_t val;
-		uint8_t bytes[2];
-	} y;
-	y.bytes[0] = (x >> 8) & 0xFF;
-	y.bytes[1] = x & 0xFF;
-	return y.val;
-}
-
 /* HQC-specific functions */
 static inline bool is_ml_dsa(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44))
@@ -104,11 +85,9 @@ OQS_STATUS sig_vector(const char *method_name,
                       const uint8_t *verif_sig, const uint8_t *verif_pk, const uint8_t *verif_msg, size_t verif_msg_len) {
 
 	uint8_t *entropy_input;
-	uint8_t seed[48];
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
 	uint8_t *msg = NULL;
-	size_t msg_len = 0;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
 	uint8_t *signature = NULL;

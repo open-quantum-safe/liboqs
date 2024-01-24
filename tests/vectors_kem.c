@@ -67,16 +67,6 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 	}
 }
 
-static inline uint16_t UINT16_TO_BE(const uint16_t x) {
-	union {
-		uint16_t val;
-		uint8_t bytes[2];
-	} y;
-	y.bytes[0] = (x >> 8) & 0xFF;
-	y.bytes[1] = x & 0xFF;
-	return y.val;
-}
-
 /* HQC-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
@@ -104,11 +94,8 @@ OQS_STATUS kem_vector(const char *method_name,
                       const uint8_t *decaps_sk, const uint8_t *decaps_ciphertext, const uint8_t *decaps_kprime) {
 
 	uint8_t *entropy_input;
-	uint8_t seed[48];
 	FILE *fh = NULL;
 	OQS_KEM *kem = NULL;
-	uint8_t *msg = NULL;
-	size_t msg_len = 0;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
 	uint8_t *ss_encaps = NULL;
