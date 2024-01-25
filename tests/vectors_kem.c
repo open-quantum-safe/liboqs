@@ -14,11 +14,11 @@
 
 #include "system_info.c"
 
-typedef struct {
+struct {
 	const uint8_t *pos;
-} fixed_prng_state;
-
-fixed_prng_state prng_state = { .pos = 0 };
+} prng_state = {
+	.pos = 0
+};
 
 /* Displays hexadecimal strings */
 static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
@@ -228,22 +228,36 @@ int main(int argc, char **argv) {
 	char *decaps_ciphertext = argv[6];
 	char *decaps_kprime = argv[7];
 
+	uint8_t *prng_output_stream_bytes = NULL;
+	uint8_t *encaps_pk_bytes = NULL;
+	uint8_t *encaps_K_bytes = NULL;
+	uint8_t *decaps_sk_bytes = NULL;
+	uint8_t *decaps_ciphertext_bytes = NULL;
+	uint8_t *decaps_kprime_bytes = NULL;
 
-	if (strlen(prng_output_stream) % 2 != 0 ||
-	        strlen(encaps_pk) % 2 != 0 ||
-	        strlen(encaps_K) % 2 != 0 ||
-	        strlen(decaps_sk) % 2 != 0 ||
-	        strlen(decaps_ciphertext) % 2 != 0 ||
-	        strlen(decaps_kprime) % 2 != 0) {
-		return EXIT_FAILURE;
+	OQS_KEM *kem = OQS_KEM_new(alg_name);
+	if (kem == NULL) {
+		printf("[vectors_kem] %s was not enabled at compile-time.\n", alg_name);
+		rc = OQS_ERROR;
+		goto err;
 	}
 
-	uint8_t *prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2); // TODO: allocate real sizes and check before to real sizes!
-	uint8_t *encaps_pk_bytes = malloc(strlen(encaps_pk) / 2);
-	uint8_t *encaps_K_bytes = malloc(strlen(encaps_K) / 2);
-	uint8_t *decaps_sk_bytes = malloc(strlen(decaps_sk) / 2);
-	uint8_t *decaps_ciphertext_bytes = malloc(strlen(decaps_ciphertext) / 2);
-	uint8_t *decaps_kprime_bytes = malloc(strlen(decaps_kprime) / 2);
+	if (strlen(prng_output_stream) % 2 != 0 ||
+	        strlen(encaps_pk) != 2 * kem->length_public_key ||
+	        strlen(encaps_K) != 2 * kem->length_shared_secret ||
+	        strlen(decaps_sk) != 2 * kem->length_secret_key ||
+	        strlen(decaps_ciphertext) != 2 * kem->length_ciphertext ||
+	        strlen(decaps_kprime) != 2 * kem->length_shared_secret ) {
+		rc = OQS_ERROR;
+		goto err;
+	}
+
+	prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
+	encaps_pk_bytes = malloc(kem->length_public_key);
+	encaps_K_bytes = malloc(kem->length_shared_secret);
+	decaps_sk_bytes = malloc(kem->length_secret_key);
+	decaps_ciphertext_bytes = malloc(kem->length_ciphertext);
+	decaps_kprime_bytes = malloc(kem->length_shared_secret);
 
 	if ((prng_output_stream_bytes == NULL) || (encaps_pk_bytes == NULL) || (encaps_K_bytes == NULL) || (decaps_sk_bytes == NULL) || (decaps_ciphertext_bytes == NULL) || (decaps_kprime_bytes == NULL)) {
 		fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
@@ -267,6 +281,8 @@ err:
 	OQS_MEM_insecure_free(decaps_sk_bytes);
 	OQS_MEM_insecure_free(decaps_ciphertext_bytes);
 	OQS_MEM_insecure_free(decaps_kprime_bytes);
+
+	OQS_KEM_free(kem);
 
 	OQS_destroy();
 

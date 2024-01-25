@@ -14,11 +14,11 @@
 
 #include "system_info.c"
 
-typedef struct {
+struct {
 	const uint8_t *pos;
-} fixed_prng_state;
-
-fixed_prng_state prng_state = { .pos = 0 };
+} prng_state = {
+	.pos = 0
+};
 
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
@@ -175,6 +175,8 @@ cleanup:
 }
 
 int main(int argc, char **argv) {
+	OQS_STATUS rc;
+
 	OQS_init();
 
 	if (argc != 8) {
@@ -203,21 +205,43 @@ int main(int argc, char **argv) {
 	char *verif_msg = argv[7];
 	size_t verif_msg_len = strlen(verif_msg) / 2;
 
-	if (strlen(prng_output_stream) % 2 != 0 ||
-	        strlen(sig_msg) % 2 != 0 ||
-	        strlen(sig_sk) % 2 != 0 ||
-	        strlen(verif_sig) % 2 != 0 ||
-	        strlen(verif_pk) % 2 != 0 ||
-	        strlen(verif_msg) % 2 != 0) {
-		return EXIT_FAILURE;
+	uint8_t *prng_output_stream_bytes = NULL;
+	uint8_t *sig_msg_bytes = NULL;
+	uint8_t *sig_sk_bytes = NULL;
+	uint8_t *verif_sig_bytes = NULL;
+	uint8_t *verif_pk_bytes = NULL;
+	uint8_t *verif_msg_bytes = NULL;
+
+	OQS_SIG *sig = OQS_SIG_new(alg_name);
+	if (sig == NULL) {
+		printf("[vectors_sig] %s was not enabled at compile-time.\n", alg_name);
+		rc = OQS_ERROR;
+		goto err;
 	}
 
-	uint8_t *prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
-	uint8_t *sig_msg_bytes = malloc(strlen(sig_msg) / 2);
-	uint8_t *sig_sk_bytes = malloc(strlen(sig_sk) / 2);
-	uint8_t *verif_sig_bytes = malloc(strlen(verif_sig) / 2);
-	uint8_t *verif_pk_bytes = malloc(strlen(verif_pk) / 2);
-	uint8_t *verif_msg_bytes = malloc(strlen(verif_msg) / 2);
+	if (strlen(prng_output_stream) % 2 != 0 ||
+	        strlen(sig_msg) % 2 != 0 || // variable length
+	        strlen(sig_sk) != 2 * sig->length_secret_key ||
+	        strlen(verif_sig) != 2 * sig->length_signature ||
+	        strlen(verif_pk) != 2 * sig->length_public_key ||
+	        strlen(verif_msg) % 2 != 0) { // variable length
+		rc = OQS_ERROR;
+		goto err;
+	}
+
+	prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
+	sig_msg_bytes = malloc(strlen(sig_msg) / 2);
+	sig_sk_bytes = malloc(sig->length_secret_key);
+	verif_sig_bytes = malloc(sig->length_signature);
+	verif_pk_bytes = malloc(sig->length_public_key);
+	verif_msg_bytes = malloc(strlen(verif_msg) / 2);
+
+	if ((prng_output_stream_bytes == NULL) || (sig_msg_bytes == NULL) || (sig_sk_bytes == NULL) || (verif_sig_bytes == NULL) || (verif_pk_bytes == NULL) || (verif_msg_bytes == NULL)) {
+		fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
+		rc = OQS_ERROR;
+		goto err;
+	}
+
 
 	hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 	hexStringToByteArray(sig_msg, sig_msg_bytes);
@@ -226,13 +250,17 @@ int main(int argc, char **argv) {
 	hexStringToByteArray(verif_pk, verif_pk_bytes);
 	hexStringToByteArray(verif_msg, verif_msg_bytes);
 
-	OQS_STATUS rc = sig_vector(alg_name, prng_output_stream_bytes, sig_msg_bytes, sig_msg_len, sig_sk_bytes, verif_sig_bytes, verif_pk_bytes, verif_msg_bytes, verif_msg_len);
+	rc = sig_vector(alg_name, prng_output_stream_bytes, sig_msg_bytes, sig_msg_len, sig_sk_bytes, verif_sig_bytes, verif_pk_bytes, verif_msg_bytes, verif_msg_len);
+
+err:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
 	OQS_MEM_insecure_free(sig_msg_bytes);
 	OQS_MEM_insecure_free(sig_sk_bytes);
 	OQS_MEM_insecure_free(verif_sig_bytes);
 	OQS_MEM_insecure_free(verif_pk_bytes);
 	OQS_MEM_insecure_free(verif_msg_bytes);
+
+	OQS_SIG_free(sig);
 
 	OQS_destroy();
 
