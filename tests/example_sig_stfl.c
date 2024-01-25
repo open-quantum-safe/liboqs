@@ -122,26 +122,43 @@ err:
 
 int main(void) {
 #ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+	OQS_init();
 	printf("Stateful signature algorithms key and signature generation is not enabled.\n");
-	return EXIT_SUCCESS;
-#else
-	OQS_init();
-#   if defined(OQS_ALLOW_XMSS_KEY_AND_SIG_GEN) && defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN)
-	if (stfl_example((char *)"XMSS-SHA2_10_256") == OQS_SUCCESS && stfl_example((char *)"LMS_SHA256_H10_W4") == OQS_SUCCESS) {
-#   elif defined(OQS_ALLOW_XMSS_KEY_AND_SIG_GEN)
-	OQS_init();
-	if (stfl_example((char *)"XMSS-SHA2_10_256") == OQS_SUCCESS) {
-#   elif defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN)
-	if ( stfl_example((char *)"LMS_SHA256_H10_W4") == OQS_SUCCESS) {
-#   else
-	if ( stfl_example((char *)"") == OQS_SUCCESS) {
-#endif
+	if (stfl_example((char *)"XMSS-SHA2_10_256") == OQS_ERROR && stfl_example((char *)"LMS_SHA256_H10_W4") == OQS_ERROR) {
 		OQS_destroy();
 		return EXIT_SUCCESS;
 	} else {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
+#else
+	OQS_STATUS lms_status;
+	OQS_STATUS xmss_status;
+	OQS_init();
+	xmss_status = stfl_example((char *)"XMSS-SHA2_10_256");
+	lms_status = stfl_example((char *)"LMS_SHA256_H10_W4");
+	OQS_destroy();
+
+#ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
+	if (xmss_status == OQS_ERROR) {
+		xmss_status = OQS_SUCCESS;
+	} else {
+		xmss_status = OQS_ERROR;
+	}
+#endif
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+	if (lms_status == OQS_ERROR) {
+		lms_status = OQS_SUCCESS;
+	} else {
+		lms_status = OQS_ERROR;
+	}
+#endif
+	if ((xmss_status == OQS_SUCCESS) && (lms_status == OQS_SUCCESS)) {
+		return EXIT_SUCCESS;
+	} else {
+		return EXIT_FAILURE;
+	}
 #endif
 }
+
 
