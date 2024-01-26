@@ -40,7 +40,7 @@ parameter-sets:
   - upstream: primary-upstream
     upstream-id: master
     supported-platforms:
-    - architecture: little endian
+    - architecture: 64-bit little-endian
       operating_systems:
       - Linux
       - Darwin
@@ -76,7 +76,7 @@ parameter-sets:
   - upstream: primary-upstream
     upstream-id: master
     supported-platforms:
-    - architecture: little endian
+    - architecture: 64-bit little-endian
       operating_systems:
       - Linux
       - Darwin
@@ -112,7 +112,7 @@ parameter-sets:
   - upstream: primary-upstream
     upstream-id: master
     supported-platforms:
-    - architecture: little endian
+    - architecture: 64-bit little-endian
       operating_systems:
       - Linux
       - Darwin
