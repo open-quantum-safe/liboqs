@@ -23,7 +23,7 @@
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-| [Primary Source](#primary-source) | master                   | little endian               | Linux,Darwin                    | None                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | master                   | 64-bit little-endian        | Linux,Darwin                    | None                    | True                               | True                                           | False                 |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
@@ -34,7 +34,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | master                   | little endian               | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | 64-bit little-endian        | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
@@ -43,7 +43,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | master                   | little endian               | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | 64-bit little-endian        | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
