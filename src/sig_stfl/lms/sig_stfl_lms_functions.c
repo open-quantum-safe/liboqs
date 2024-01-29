@@ -742,7 +742,7 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 
 #ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
 	return OQS_ERROR;
-#endif 
+#endif
 
 	aux_buf_len = sk_len - lms_sk_len;
 	if (sk->secret_key_data) {

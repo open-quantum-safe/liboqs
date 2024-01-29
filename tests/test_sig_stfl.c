@@ -1002,22 +1002,22 @@ static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
 	if (xmss_or_lms) {
 		;
 #ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
-        if (rc_update == OQS_ERROR) {
+		if (rc_update == OQS_ERROR) {
 			rc_update = OQS_SUCCESS;
 		} else {
 			rc_update = OQS_ERROR;
 		}
 #endif
-    } else {
+	} else {
 		;
 #ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
-        if (rc_update == OQS_ERROR) {
+		if (rc_update == OQS_ERROR) {
 			rc_update = OQS_SUCCESS;
 		} else {
 			rc_update = OQS_ERROR;
 		}
-#endif			
-    }	
+#endif
+	}
 	return rc_update;
 }
 
@@ -1048,7 +1048,7 @@ int main(int argc, char **argv) {
 	int is_xmss = 0;
 	if (strstr(alg_name, "XMSS") != NULL) {
 		is_xmss = 1;
-    }
+	}
 
 	/*
 	 * Tests executed by CI/DI only run algoritms that have been emabled.
@@ -1059,18 +1059,18 @@ int main(int argc, char **argv) {
 		OQS_destroy();
 		if (is_xmss) {
 #ifndef OQS_ENABLE_SIG_STFL_XMSS
-            return EXIT_SUCCESS;
+			return EXIT_SUCCESS;
 #else
-             return EXIT_FAILURE;
+			return EXIT_FAILURE;
 #endif
-        } else {
+		} else {
 #ifndef OQS_ENABLE_SIG_STFL_LMS
 			return EXIT_SUCCESS;
 #else
-            return EXIT_FAILURE;
-#endif			
-        }
-     }
+			return EXIT_FAILURE;
+#endif
+		}
+	}
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 	OQS_randombytes_custom_algorithm(&TEST_SIG_STFL_randombytes);
@@ -1190,7 +1190,7 @@ err:
 	OQS_destroy();
 	rc = update_test_result(rc, is_xmss);
 	rc1 = update_test_result(rc1, is_xmss);
-	
+
 
 	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
