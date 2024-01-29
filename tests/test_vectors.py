@@ -10,7 +10,7 @@ import sys
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_vectors_kem(kem_name):
-    if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
+    if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled' + kem_name)
     result = helpers.run_subprocess(
         ['tests/test_vectors.sh', kem_name],
     )

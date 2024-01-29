@@ -146,14 +146,20 @@ kems:
         scheme: "512_ipd"
         pqclean_scheme: ml-kem-512-ipd
         pretty_name_full: ML-KEM-512-ipd
+        alias_scheme: "512"
+        alias_pretty_name_full: ML-KEM-512
       -
         scheme: "768_ipd"
         pqclean_scheme: ml-kem-768-ipd
         pretty_name_full: ML-KEM-768-ipd
+        alias_scheme: "768"
+        alias_pretty_name_full: ML-KEM-768
       -
         scheme: "1024_ipd"
         pqclean_scheme: ml-kem-1024-ipd
         pretty_name_full: ML-KEM-1024-ipd
+        alias_scheme: "1024"
+        alias_pretty_name_full: ML-KEM-1024
 sigs:
   -
     name: dilithium

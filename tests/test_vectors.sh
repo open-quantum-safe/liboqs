@@ -37,7 +37,7 @@ elif [ "$1" = "ML-DSA-87-ipd" ]; then
       exit 1
   fi
 
-elif [ "$1" = "ML-KEM-512-ipd" ]; then
+elif [[ "$1" = "ML-KEM-512-ipd" || "$1" = "ML-KEM-512" ]]; then
 
   file=tests/PQC_Intermediate_Values/ML-KEM-512.txt
   scheme_name=ML-KEM-512-ipd
@@ -47,7 +47,7 @@ elif [ "$1" = "ML-KEM-512-ipd" ]; then
       exit 1
   fi
 
-elif [ "$1" = "ML-KEM-768-ipd" ]; then
+elif [[ "$1" = "ML-KEM-768-ipd" || "$1" = "ML-KEM-768" ]]; then
 
   file=tests/PQC_Intermediate_Values/ML-KEM-768.txt
   scheme_name=ML-KEM-768-ipd
@@ -57,7 +57,7 @@ elif [ "$1" = "ML-KEM-768-ipd" ]; then
       exit 1
   fi
 
-elif [ "$1" = "ML-KEM-1024-ipd" ]; then
+elif [[ "$1" = "ML-KEM-1024-ipd" || "$1" = "ML-KEM-1024" ]]; then
 
   file=tests/PQC_Intermediate_Values/ML-KEM-1024.txt
   scheme_name=ML-KEM-1024-ipd

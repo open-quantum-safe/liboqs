@@ -5,7 +5,7 @@
 
 #include <oqs/oqs.h>
 
-#ifdef OQS_ENABLE_KEM_kyber_512
+#if defined(OQS_ENABLE_KEM_kyber_512)
 #define OQS_KEM_kyber_512_length_public_key 800
 #define OQS_KEM_kyber_512_length_secret_key 1632
 #define OQS_KEM_kyber_512_length_ciphertext 768
@@ -16,7 +16,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_encaps(uint8_t *ciphertext, uint8_t *shared
 OQS_API OQS_STATUS OQS_KEM_kyber_512_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
-#ifdef OQS_ENABLE_KEM_kyber_768
+#if defined(OQS_ENABLE_KEM_kyber_768)
 #define OQS_KEM_kyber_768_length_public_key 1184
 #define OQS_KEM_kyber_768_length_secret_key 2400
 #define OQS_KEM_kyber_768_length_ciphertext 1088
@@ -27,7 +27,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps(uint8_t *ciphertext, uint8_t *shared
 OQS_API OQS_STATUS OQS_KEM_kyber_768_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
-#ifdef OQS_ENABLE_KEM_kyber_1024
+#if defined(OQS_ENABLE_KEM_kyber_1024)
 #define OQS_KEM_kyber_1024_length_public_key 1568
 #define OQS_KEM_kyber_1024_length_secret_key 3168
 #define OQS_KEM_kyber_1024_length_ciphertext 1568

@@ -31,6 +31,34 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	return kem;
 }
 
+{%- if 'alias_scheme' in scheme %}
+
+/** Alias */
+OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
+
+	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
+	if (kem == NULL) {
+		return NULL;
+	}
+	kem->method_name = OQS_KEM_alg_{{ family }}_{{ scheme['alias_scheme'] }};
+	kem->alg_version = "{{ scheme['metadata']['implementations'][0]['version'] }}";
+
+	kem->claimed_nist_level = {{ scheme['metadata']['claimed-nist-level'] }};
+	kem->ind_cca = {{ scheme['metadata']['ind_cca'] }};
+
+	kem->length_public_key = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_public_key;
+	kem->length_secret_key = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_secret_key;
+	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_ciphertext;
+	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_shared_secret;
+
+	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair;
+	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps;
+	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_decaps;
+
+	return kem;
+}
+{%- endif -%}
+
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == scheme['default_implementation'] %}
 
         {%- if impl['signature_keypair'] %}

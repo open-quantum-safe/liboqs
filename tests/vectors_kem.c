@@ -71,7 +71,10 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512_ipd))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768_ipd))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024_ipd));
+	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024_ipd))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
 }
 
 static void MLKEM_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {

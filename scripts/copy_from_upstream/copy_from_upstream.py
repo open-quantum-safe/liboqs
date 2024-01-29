@@ -549,7 +549,9 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     except KeyError:  # new key
                         print("Adding new KAT for %s" % (scheme['pretty_name_full']))
                         pass
-                    kats['kem'][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
+                    kats['kem'][scheme['pretty_name_full']] = scheme['metadata']['nistkat-sha256']
+                    if 'alias_pretty_name_full' in scheme:
+                        kats['kem'][scheme['alias_pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
                 else:
                     try:
                         if kats['sig'][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:

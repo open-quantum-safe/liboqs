@@ -30,6 +30,31 @@ OQS_KEM *OQS_KEM_ml_kem_1024_ipd_new(void) {
 	return kem;
 }
 
+/** Alias */
+OQS_KEM *OQS_KEM_ml_kem_1024_new(void) {
+
+	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
+	if (kem == NULL) {
+		return NULL;
+	}
+	kem->method_name = OQS_KEM_alg_ml_kem_1024;
+	kem->alg_version = "https://github.com/pq-crystals/kyber/tree/standard";
+
+	kem->claimed_nist_level = 5;
+	kem->ind_cca = true;
+
+	kem->length_public_key = OQS_KEM_ml_kem_1024_length_public_key;
+	kem->length_secret_key = OQS_KEM_ml_kem_1024_length_secret_key;
+	kem->length_ciphertext = OQS_KEM_ml_kem_1024_length_ciphertext;
+	kem->length_shared_secret = OQS_KEM_ml_kem_1024_length_shared_secret;
+
+	kem->keypair = OQS_KEM_ml_kem_1024_keypair;
+	kem->encaps = OQS_KEM_ml_kem_1024_encaps;
+	kem->decaps = OQS_KEM_ml_kem_1024_decaps;
+
+	return kem;
+}
+
 extern int pqcrystals_ml_kem_1024_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_kem_1024_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_ml_kem_1024_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);

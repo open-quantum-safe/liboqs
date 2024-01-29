@@ -3,6 +3,9 @@
 #cmakedefine OQS_ENABLE_KEM_{{ family['name']|upper }} 1
     {%- for scheme in family['schemes'] %}
 #cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} 1
+{%- if 'alias_scheme' in scheme %}
+#cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }} 1
+{%- endif -%}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
 #cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} 1
         {%- endfor -%}
