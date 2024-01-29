@@ -39,11 +39,11 @@ extern "C" {
 /** Algorithm identifier for Dilithium5 */
 #define OQS_SIG_alg_dilithium_5 "Dilithium5"
 /** Algorithm identifier for ML-DSA-44-ipd */
-#define OQS_SIG_alg_ml_dsa_44 "ML-DSA-44-ipd"
+#define OQS_SIG_alg_ml_dsa_44_ipd "ML-DSA-44-ipd"
 /** Algorithm identifier for ML-DSA-65-ipd */
-#define OQS_SIG_alg_ml_dsa_65 "ML-DSA-65-ipd"
+#define OQS_SIG_alg_ml_dsa_65_ipd "ML-DSA-65-ipd"
 /** Algorithm identifier for ML-DSA-87-ipd */
-#define OQS_SIG_alg_ml_dsa_87 "ML-DSA-87-ipd"
+#define OQS_SIG_alg_ml_dsa_87_ipd "ML-DSA-87-ipd"
 /** Algorithm identifier for Falcon-512 */
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */

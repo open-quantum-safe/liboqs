@@ -143,15 +143,15 @@ kems:
     upstream_location: pqcrystals-kyber-standard
     schemes:
       -
-        scheme: "512"
+        scheme: "512_ipd"
         pqclean_scheme: ml-kem-512-ipd
         pretty_name_full: ML-KEM-512-ipd
       -
-        scheme: "768"
+        scheme: "768_ipd"
         pqclean_scheme: ml-kem-768-ipd
         pretty_name_full: ML-KEM-768-ipd
       -
-        scheme: "1024"
+        scheme: "1024_ipd"
         pqclean_scheme: ml-kem-1024-ipd
         pretty_name_full: ML-KEM-1024-ipd
 sigs:
@@ -185,17 +185,17 @@ sigs:
     upstream_location: pqcrystals-dilithium-standard
     schemes:
       -
-        scheme: "44"
+        scheme: "44_ipd"
         pqclean_scheme: ml-dsa-44-ipd
         pretty_name_full: ML-DSA-44-ipd
         signed_msg_order: sig_then_msg
       -
-        scheme: "65"
+        scheme: "65_ipd"
         pqclean_scheme: ml-dsa-65-ipd
         pretty_name_full: ML-DSA-65-ipd
         signed_msg_order: sig_then_msg
       -
-        scheme: "87"
+        scheme: "87_ipd"
         pqclean_scheme: ml-dsa-87-ipd
         pretty_name_full: ML-DSA-87-ipd
         signed_msg_order: sig_then_msg

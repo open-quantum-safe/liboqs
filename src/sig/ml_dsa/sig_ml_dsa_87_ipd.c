@@ -4,27 +4,27 @@
 
 #include <oqs/sig_ml_dsa.h>
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_87)
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd)
 
-OQS_SIG *OQS_SIG_ml_dsa_87_new(void) {
+OQS_SIG *OQS_SIG_ml_dsa_87_ipd_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}
-	sig->method_name = OQS_SIG_alg_ml_dsa_87;
+	sig->method_name = OQS_SIG_alg_ml_dsa_87_ipd;
 	sig->alg_version = "https://github.com/pq-crystals/dilithium/tree/standard";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
 
-	sig->length_public_key = OQS_SIG_ml_dsa_87_length_public_key;
-	sig->length_secret_key = OQS_SIG_ml_dsa_87_length_secret_key;
-	sig->length_signature = OQS_SIG_ml_dsa_87_length_signature;
+	sig->length_public_key = OQS_SIG_ml_dsa_87_ipd_length_public_key;
+	sig->length_secret_key = OQS_SIG_ml_dsa_87_ipd_length_secret_key;
+	sig->length_signature = OQS_SIG_ml_dsa_87_ipd_length_signature;
 
-	sig->keypair = OQS_SIG_ml_dsa_87_keypair;
-	sig->sign = OQS_SIG_ml_dsa_87_sign;
-	sig->verify = OQS_SIG_ml_dsa_87_verify;
+	sig->keypair = OQS_SIG_ml_dsa_87_ipd_keypair;
+	sig->sign = OQS_SIG_ml_dsa_87_ipd_sign;
+	sig->verify = OQS_SIG_ml_dsa_87_ipd_verify;
 
 	return sig;
 }
@@ -33,14 +33,14 @@ extern int pqcrystals_ml_dsa_87_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
 extern int pqcrystals_ml_dsa_87_ipd_avx2_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 #endif
 
-OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair(uint8_t *public_key, uint8_t *secret_key) {
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_keypair(uint8_t *public_key, uint8_t *secret_key) {
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -55,8 +55,8 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair(uint8_t *public_key, uint8_t *secre
 #endif
 }
 
-OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -71,8 +71,8 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_sign(uint8_t *signature, size_t *signature_
 #endif
 }
 
-OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */

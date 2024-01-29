@@ -71,11 +71,11 @@ extern "C" {
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber_1024 "Kyber1024"
 /** Algorithm identifier for ML-KEM-512-ipd KEM. */
-#define OQS_KEM_alg_ml_kem_512 "ML-KEM-512-ipd"
+#define OQS_KEM_alg_ml_kem_512_ipd "ML-KEM-512-ipd"
 /** Algorithm identifier for ML-KEM-768-ipd KEM. */
-#define OQS_KEM_alg_ml_kem_768 "ML-KEM-768-ipd"
+#define OQS_KEM_alg_ml_kem_768_ipd "ML-KEM-768-ipd"
 /** Algorithm identifier for ML-KEM-1024-ipd KEM. */
-#define OQS_KEM_alg_ml_kem_1024 "ML-KEM-1024-ipd"
+#define OQS_KEM_alg_ml_kem_1024_ipd "ML-KEM-1024-ipd"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for sntrup761 KEM. */
 #define OQS_KEM_alg_ntruprime_sntrup761 "sntrup761"

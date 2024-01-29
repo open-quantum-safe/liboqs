@@ -34,9 +34,9 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_kyber_512,
 		OQS_KEM_alg_kyber_768,
 		OQS_KEM_alg_kyber_1024,
-		OQS_KEM_alg_ml_kem_512,
-		OQS_KEM_alg_ml_kem_768,
-		OQS_KEM_alg_ml_kem_1024,
+		OQS_KEM_alg_ml_kem_512_ipd,
+		OQS_KEM_alg_ml_kem_768_ipd,
+		OQS_KEM_alg_ml_kem_1024_ipd,
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		OQS_KEM_alg_ntruprime_sntrup761,
 		OQS_KEM_alg_frodokem_640_aes,
@@ -175,20 +175,20 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_512)) {
-#ifdef OQS_ENABLE_KEM_ml_kem_512
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_512_ipd)) {
+#ifdef OQS_ENABLE_KEM_ml_kem_512_ipd
 		return 1;
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_768)) {
-#ifdef OQS_ENABLE_KEM_ml_kem_768
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_768_ipd)) {
+#ifdef OQS_ENABLE_KEM_ml_kem_768_ipd
 		return 1;
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_1024)) {
-#ifdef OQS_ENABLE_KEM_ml_kem_1024
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_1024_ipd)) {
+#ifdef OQS_ENABLE_KEM_ml_kem_1024_ipd
 		return 1;
 #else
 		return 0;
@@ -361,21 +361,21 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_512)) {
-#ifdef OQS_ENABLE_KEM_ml_kem_512
-		return OQS_KEM_ml_kem_512_new();
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_512_ipd)) {
+#ifdef OQS_ENABLE_KEM_ml_kem_512_ipd
+		return OQS_KEM_ml_kem_512_ipd_new();
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_768)) {
-#ifdef OQS_ENABLE_KEM_ml_kem_768
-		return OQS_KEM_ml_kem_768_new();
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_768_ipd)) {
+#ifdef OQS_ENABLE_KEM_ml_kem_768_ipd
+		return OQS_KEM_ml_kem_768_ipd_new();
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_1024)) {
-#ifdef OQS_ENABLE_KEM_ml_kem_1024
-		return OQS_KEM_ml_kem_1024_new();
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ml_kem_1024_ipd)) {
+#ifdef OQS_ENABLE_KEM_ml_kem_1024_ipd
+		return OQS_KEM_ml_kem_1024_ipd_new();
 #else
 		return NULL;
 #endif

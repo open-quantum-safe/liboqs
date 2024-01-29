@@ -60,9 +60,9 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 
 /* HQC-specific functions */
 static inline bool is_ml_dsa(const char *method_name) {
-	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
+	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44_ipd))
+	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65_ipd))
+	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87_ipd));
 }
 
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
