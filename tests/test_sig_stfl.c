@@ -327,6 +327,7 @@ from_kats:
 #endif
 
 from_keygen:
+	(void)(katfile);
 	return sig_stfl_keypair_from_keygen(sig, public_key, secret_key);
 }
 
