@@ -384,7 +384,7 @@ endif()
 
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
-option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" ON)
+option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h16 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h20 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
@@ -415,7 +415,7 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_6 "" ON "OQS_ENAB
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_12 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 
 
-option(OQS_ENABLE_SIG_STFL_LMS "Enable LMS algorithm family" ON)
+option(OQS_ENABLE_SIG_STFL_LMS "Enable LMS algorithm family" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w2 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w4 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
@@ -450,6 +450,24 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h10_w8 "" ON "OQS_E
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h15_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h20_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 
+option(OQS_ENABLE_SIG_STFL_KEY_SIG_GEN "Enable stateful key and signature generation for research and experimentation" OFF)
+cmake_dependent_option(OQS_ALLOW_SFTL_KEY_AND_SIG_GEN "" ON "OQS_ENABLE_SIG_STFL_KEY_SIG_GEN" OFF)
+
+if (${OQS_ENABLE_SIG_STFL_KEY_SIG_GEN} AND ${OQS_ENABLE_SIG_STFL_XMSS})
+    set(OQS_ALLOW_XMSS_KEY_AND_SIG_GEN ON)
+else()
+    set(OQS_ALLOW_XMSS_KEY_AND_SIG_GEN OFF)
+endif()
+
+if (${OQS_ENABLE_SIG_STFL_KEY_SIG_GEN} AND ${OQS_ENABLE_SIG_STFL_LMS})
+    set(OQS_ALLOW_LMS_KEY_AND_SIG_GEN ON)
+else()
+    set(OQS_ALLOW_LMS_KEY_AND_SIG_GEN OFF)
+endif()
+
+if(OQS_ALLOW_SFTL_KEY_AND_SIG_GEN  STREQUAL "ON")
+    message(STATUS "Experimental stateful key and signature generation is enabled. Ensure secret keys are securely stored to prevent multiple simultaneous sign operations.")
+endif()
 
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")

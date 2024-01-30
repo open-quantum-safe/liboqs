@@ -11,6 +11,12 @@
 #include "external/hss_internal.h"
 #include "sig_stfl_lms_wrap.h"
 
+#ifdef __GNUC__
+#define UNUSED __attribute__((unused))
+#else
+#define UNUSED
+#endif
+
 #define DEFAULT_AUX_DATA 10916   /* Use 10+k of aux data (which works well */
 /* with the above default parameter set)  */
 /**
@@ -46,6 +52,12 @@ typedef struct OQS_LMS_KEY_DATA {
 	void *context;
 } oqs_lms_key_data;
 
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(UNUSED uint8_t *signature, UNUSED size_t *signature_length, UNUSED const uint8_t *message,
+        UNUSED size_t message_len, UNUSED OQS_SIG_STFL_SECRET_KEY *secret_key) {
+	return OQS_ERROR;
+}
+#else
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
         size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	OQS_STATUS status = OQS_ERROR;
@@ -117,6 +129,7 @@ passed:
 	}
 	return status;
 }
+#endif
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,
         const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
@@ -219,6 +232,11 @@ bool LMS_randombytes(void *buffer, size_t length) {
 	return true;
 }
 
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+int oqs_sig_stfl_lms_keypair(UNUSED uint8_t *pk, UNUSED OQS_SIG_STFL_SECRET_KEY *sk, UNUSED const uint32_t oid) {
+	return -1;
+}
+#else
 int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uint32_t oid) {
 
 	int ret = -1;
@@ -522,7 +540,14 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 	ret = 0;
 	return ret;
 }
+#endif
 
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+int oqs_sig_stfl_lms_sign(UNUSED OQS_SIG_STFL_SECRET_KEY *sk, UNUSED uint8_t *sm, UNUSED size_t *smlen,
+                          UNUSED const uint8_t *m, UNUSED size_t mlen) {
+	return -1;
+}
+#else
 int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
                           uint8_t *sm, size_t *smlen,
                           const uint8_t *m, size_t mlen) {
@@ -598,6 +623,7 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 
 	return 0;
 }
+#endif
 
 int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen,
                             const uint8_t *sm, size_t smlen,
@@ -713,6 +739,10 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_
 	if (sk == NULL || sk_buf == NULL || (sk_len == 0) || (sk_len < lms_sk_len )) {
 		return OQS_ERROR;
 	}
+
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+	return OQS_ERROR;
+#endif
 
 	aux_buf_len = sk_len - lms_sk_len;
 	if (sk->secret_key_data) {

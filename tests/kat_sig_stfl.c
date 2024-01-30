@@ -251,6 +251,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	fprintBstr(fh, "msg = ", msg, msg_len);
 
+#ifdef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
 	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sign failed!\n", method_name);
@@ -297,7 +298,44 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	ret = OQS_SUCCESS;
 	goto cleanup;
+#else
+	/*
+	 * Signature generation is disabled so only signature verification can be tested.
+	 */
+	signature_len =  sig->length_signature;
+	if (!ReadHex(fp_rsp, signature_kat, signature_len, "sm = ")) {
+		fprintf(stderr, "ERROR: unable to read 'msg' from <%s>\n", katfile);
+		goto err;
+	}
 
+	//Echo back the signature read to keep the test tool happy.
+	fprintf(fh, "smlen = %zu\n", sig->length_signature);
+	fprintBstr(fh, "sm = ", signature_kat, sig->length_signature);
+
+	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, signature_kat, signature_len, public_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_verify failed!\n", method_name);
+		goto err;
+	}
+
+	rc = OQS_SIG_STFL_sigs_remaining(sig, &sigs_remain, secret_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_remaining failed!\n", method_name);
+		goto err;
+	}
+	//Update value to keep the test tool happy
+	fprintf(fh, "remain = %llu\n", sigs_remain - 1);
+
+	rc = OQS_SIG_STFL_sigs_total(sig, &sigs_maximum, secret_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
+		goto err;
+	}
+	fprintf(fh, "max = %llu", sigs_maximum);
+
+	ret = OQS_SUCCESS;
+	goto cleanup;
+#endif
 err:
 	ret = OQS_ERROR;
 	goto cleanup;
