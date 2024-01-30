@@ -11,6 +11,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
+typedef struct {
+	unsigned char Key[32];
+	unsigned char V[16];
+	int reseed_counter;
+} OQS_NIST_DRBG_struct;
+
 /**
  * Initializes the NIST DRBG with a given seed and with 256-bit security.
  *
@@ -27,5 +33,15 @@ void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const ui
  * @param[in] bytes_to_read The number of random bytes to read into memory
  */
 void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
+
+/**
+ * Writes the current state of the NIST DRBG into the provided memory.
+ */
+void OQS_randombytes_nist_kat_get_state(void *out);
+
+/**
+ * Overwrites the current state of the NIST DRBG from the provided memory.
+ */
+void OQS_randombytes_nist_kat_set_state(const void *in);
 
 #endif // OQS_RAND_NIST_H

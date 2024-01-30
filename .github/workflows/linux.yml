@@ -72,27 +72,27 @@ jobs:
           - name: alpine
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: alpine-openssl-all
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: alpine-noopenssl
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: focal-nistr4-openssl
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_R4
-            PYTEST_ARGS: --ignore=tests/test_leaks.py
+            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: jammy-std-openssl3
             container: openquantumsafe/ci-ubuntu-jammy:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON
-            PYTEST_ARGS: --ignore=tests/test_leaks.py
+            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: address-sanitizer
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
-            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --numprocesses=auto --maxprocesses=10
+            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=auto --maxprocesses=10
     container:
       image: ${{ matrix.container }}
     steps:
@@ -127,7 +127,7 @@ jobs:
           - name: armhf
             ARCH: armhf
             CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           # no longer supporting armel
           # - name: armel
           #   ARCH: armel

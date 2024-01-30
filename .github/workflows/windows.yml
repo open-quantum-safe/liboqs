@@ -29,4 +29,4 @@ jobs:
         run: pip.exe install pytest pytest-xdist pyyaml
       - name: Run tests
         run: |
-          python -m pytest --numprocesses=auto -vv --maxfail=10 --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
+          python -m pytest --numprocesses=auto -vv --maxfail=10 --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --junitxml=build\test-results\pytest\test-results.xml

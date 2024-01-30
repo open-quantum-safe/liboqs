@@ -62,7 +62,7 @@ endif()
 add_executable(example_kem example_kem.c)
 target_link_libraries(example_kem PRIVATE ${TEST_DEPS})
 
-add_executable(kat_kem kat_kem.c)
+add_executable(kat_kem kat_kem.c test_helpers.c)
 target_link_libraries(kat_kem PRIVATE ${TEST_DEPS})
 
 add_executable(test_kem test_kem.c)
@@ -80,7 +80,7 @@ set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem)
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
-add_executable(kat_sig kat_sig.c)
+add_executable(kat_sig kat_sig.c test_helpers.c)
 target_link_libraries(kat_sig PRIVATE ${TEST_DEPS})
 
 add_executable(test_sig test_sig.c)
@@ -124,7 +124,8 @@ endif()
 # for DLL builds.
 add_custom_target(
     run_tests
-    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos
+    # skip long KAT tests
+    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${UNIX_TESTS}
     USES_TERMINAL)
