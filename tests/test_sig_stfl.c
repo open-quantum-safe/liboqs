@@ -321,11 +321,13 @@ OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_
 	} else {
 		goto from_keygen;
 	}
-
+#ifdef OQS_ENABLE_SIG_STFL_XMSS
 from_kats:
 	return sig_stfl_keypair_from_KATs(sig, public_key, secret_key, katfile);
+#endif
 
 from_keygen:
+	(void)(katfile);
 	return sig_stfl_keypair_from_keygen(sig, public_key, secret_key);
 }
 
@@ -947,7 +949,7 @@ typedef struct thread_data {
 	const char *alg_name;
 	const char *katfile;
 	OQS_STATUS rc;
-	OQS_STATUS rc1;
+	// OQS_STATUS rc1;
 } thread_data_t;
 
 typedef struct lock_test_data {
@@ -980,13 +982,46 @@ void *test_create_keys(void *arg) {
 	return NULL;
 }
 
-void *test_wrapper(void *arg) {
+void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile);
-	td->rc1 = sig_stfl_test_secret_key(td->alg_name, td->katfile);
+	return NULL;
+}
+
+void *test_secret_key_wrapper(void *arg) {
+	struct thread_data *td = arg;
+	td->rc = sig_stfl_test_secret_key(td->alg_name, td->katfile);
 	return NULL;
 }
 #endif
+
+/*
+ * When key and signature generation is off
+ * these operations should fail. So flip the results.
+ */
+static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
+	OQS_STATUS rc_update = rc;
+	if (xmss_or_lms) {
+		;
+#ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
+		if (rc_update == OQS_ERROR) {
+			rc_update = OQS_SUCCESS;
+		} else {
+			rc_update = OQS_ERROR;
+		}
+#endif
+	} else {
+		;
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+		if (rc_update == OQS_ERROR) {
+			rc_update = OQS_SUCCESS;
+		} else {
+			rc_update = OQS_ERROR;
+		}
+#endif
+	}
+	return rc_update;
+}
 
 int main(int argc, char **argv) {
 	OQS_init();
@@ -1012,11 +1047,31 @@ int main(int argc, char **argv) {
 
 	const char *alg_name = argv[1];
 	const char *katfile = argv[2];
+	int is_xmss = 0;
+	if (strstr(alg_name, "XMSS") != NULL) {
+		is_xmss = 1;
+	}
 
+	/*
+	 * Tests executed by CI/DI only run algoritms that have been emabled.
+	 *
+	 */
 	if (!OQS_SIG_STFL_alg_is_enabled(alg_name)) {
 		printf("Stateful signature algorithm %s not enabled!\n", alg_name);
 		OQS_destroy();
-		return EXIT_FAILURE;
+		if (is_xmss) {
+#ifndef OQS_ENABLE_SIG_STFL_XMSS
+			return EXIT_SUCCESS;
+#else
+			return EXIT_FAILURE;
+#endif
+		} else {
+#ifndef OQS_ENABLE_SIG_STFL_LMS
+			return EXIT_SUCCESS;
+#else
+			return EXIT_FAILURE;
+#endif
+		}
 	}
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -1037,7 +1092,9 @@ int main(int argc, char **argv) {
 	pthread_t sign_key_thread;
 	pthread_t query_key_thread;
 
-	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR, .rc1 = OQS_ERROR};
+	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
+	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
+
 	lock_test_data_t td_create = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_query = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
@@ -1057,14 +1114,23 @@ int main(int argc, char **argv) {
 		goto err;
 	}
 
-	if (pthread_create(&thread, NULL, test_wrapper, &td)) {
+	if (pthread_create(&thread, NULL, test_correctness_wrapper, &td)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_wrapper\n");
 		exit_status = EXIT_FAILURE;
 		goto err;
 	}
 	pthread_join(thread, NULL);
 	rc = td.rc;
-	rc1 = td.rc1;
+	rc = update_test_result(rc, is_xmss);
+
+	if (pthread_create(&thread, NULL, test_secret_key_wrapper, &td_2)) {
+		fprintf(stderr, "ERROR: Creating pthread for test_wrapper_2\n");
+		exit_status = EXIT_FAILURE;
+		goto err;
+	}
+	pthread_join(thread, NULL);
+	rc1 = td_2.rc;
+	rc1 = update_test_result(rc1, is_xmss);
 
 	if (pthread_create(&create_key_thread, NULL, test_create_keys, &td_create)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_create_keys\n");
@@ -1073,6 +1139,7 @@ int main(int argc, char **argv) {
 	}
 	pthread_join(create_key_thread, NULL);
 	rc_create = td_create.rc;
+	rc_create = update_test_result(rc_create, is_xmss);
 
 	if (pthread_create(&sign_key_thread, NULL, test_sig_gen, &td_sign)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_sig_gen\n");
@@ -1081,6 +1148,7 @@ int main(int argc, char **argv) {
 	}
 	pthread_join(sign_key_thread, NULL);
 	rc_sign = td_sign.rc;
+	rc_sign = update_test_result(rc_sign, is_xmss);
 
 	if (pthread_create(&query_key_thread, NULL, test_query_key, &td_query)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_query_key\n");
@@ -1089,6 +1157,7 @@ int main(int argc, char **argv) {
 	}
 	pthread_join(query_key_thread, NULL);
 	rc_query = td_query.rc;
+	rc_query = update_test_result(rc_query, is_xmss);
 
 err:
 	if (test_sk_lock) {
@@ -1121,6 +1190,9 @@ err:
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
 
 	OQS_destroy();
+	rc = update_test_result(rc, is_xmss);
+	rc1 = update_test_result(rc1, is_xmss);
+
 
 	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
