@@ -62,6 +62,7 @@ def do_it(liboqs_root):
 
             out_md.write('\n## Parameter set summary\n\n')
             table = [['Parameter set',
+                      'Parameter set alias',
                       'Security model',
                       'Claimed NIST Level',
                       'Public key size (bytes)',
@@ -70,6 +71,7 @@ def do_it(liboqs_root):
                       'Shared secret size (bytes)']]
             for parameter_set in kem_yaml['parameter-sets']:
                 table.append([parameter_set['name'],
+                              parameter_set['alias'] if 'alias' in parameter_set else "NA",
                               parameter_set['claimed-security'],
                               parameter_set['claimed-nist-level'],
                               parameter_set['length-public-key'],
@@ -186,6 +188,7 @@ def do_it(liboqs_root):
 
             out_md.write('\n## Parameter set summary\n\n')
             table = [['Parameter set',
+                      'Parameter set alias',
                       'Security model',
                       'Claimed NIST Level',
                       'Public key size (bytes)',
@@ -193,6 +196,7 @@ def do_it(liboqs_root):
                       'Signature size (bytes)']]
             for parameter_set in sig_yaml['parameter-sets']:
                 table.append([parameter_set['name'].replace('_', '\_'),
+                              parameter_set['alias'] if 'alias' in parameter_set else "NA",
                               parameter_set['claimed-security'],
                               parameter_set['claimed-nist-level'],
                               parameter_set['length-public-key'],

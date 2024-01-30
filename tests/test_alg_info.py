@@ -52,7 +52,7 @@ def test_alg_info_sig(sig_name):
     # find the parameter set in the datasheet
     foundit = False
     for parameter_set in datasheet['parameter-sets']:
-        if parameter_set['name'] == sig_name:
+        if parameter_set['name'] == sig_name or ('alias' in parameter_set and parameter_set['alias'] == sig_name):
             foundit = True
             # check that the values match
             assert(alg_info['claimed-nist-level'] == parameter_set['claimed-nist-level'])

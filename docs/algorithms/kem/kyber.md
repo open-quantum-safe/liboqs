@@ -17,11 +17,11 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
-|:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
-|    Kyber512     | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |
-|    Kyber768     | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |
-|    Kyber1024    | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
+|    Kyber512     | NA                    | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |
+|    Kyber768     | NA                    | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |
+|    Kyber1024    | NA                    | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |
 
 ## Kyber512 implementation characteristics
 

@@ -5,7 +5,7 @@
 
 #include <oqs/oqs.h>
 
-#ifdef OQS_ENABLE_SIG_falcon_512
+#if defined(OQS_ENABLE_SIG_falcon_512)
 #define OQS_SIG_falcon_512_length_public_key 897
 #define OQS_SIG_falcon_512_length_secret_key 1281
 #define OQS_SIG_falcon_512_length_signature 666
@@ -16,7 +16,7 @@ OQS_API OQS_STATUS OQS_SIG_falcon_512_sign(uint8_t *signature, size_t *signature
 OQS_API OQS_STATUS OQS_SIG_falcon_512_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_falcon_1024
+#if defined(OQS_ENABLE_SIG_falcon_1024)
 #define OQS_SIG_falcon_1024_length_public_key 1793
 #define OQS_SIG_falcon_1024_length_secret_key 2305
 #define OQS_SIG_falcon_1024_length_signature 1280

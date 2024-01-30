@@ -195,16 +195,22 @@ sigs:
         pqclean_scheme: ml-dsa-44-ipd
         pretty_name_full: ML-DSA-44-ipd
         signed_msg_order: sig_then_msg
+        alias_scheme: "44"
+        alias_pretty_name_full: ML-DSA-44
       -
         scheme: "65_ipd"
         pqclean_scheme: ml-dsa-65-ipd
         pretty_name_full: ML-DSA-65-ipd
         signed_msg_order: sig_then_msg
+        alias_scheme: "65"
+        alias_pretty_name_full: ML-DSA-65
       -
         scheme: "87_ipd"
         pqclean_scheme: ml-dsa-87-ipd
         pretty_name_full: ML-DSA-87-ipd
         signed_msg_order: sig_then_msg
+        alias_scheme: "87"
+        alias_pretty_name_full: ML-DSA-87
   -
     name: falcon
     default_implementation: clean

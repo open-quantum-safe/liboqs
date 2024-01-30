@@ -17,20 +17,20 @@
 
 ## Parameter set summary
 
-|       Parameter set        | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:--------------------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-| SPHINCS+-SHA2-128f-simple  | EUF-CMA          |                    1 |                        32 |                        64 |                    17088 |
-| SPHINCS+-SHA2-128s-simple  | EUF-CMA          |                    1 |                        32 |                        64 |                     7856 |
-| SPHINCS+-SHA2-192f-simple  | EUF-CMA          |                    3 |                        48 |                        96 |                    35664 |
-| SPHINCS+-SHA2-192s-simple  | EUF-CMA          |                    3 |                        48 |                        96 |                    16224 |
-| SPHINCS+-SHA2-256f-simple  | EUF-CMA          |                    5 |                        64 |                       128 |                    49856 |
-| SPHINCS+-SHA2-256s-simple  | EUF-CMA          |                    5 |                        64 |                       128 |                    29792 |
-| SPHINCS+-SHAKE-128f-simple | EUF-CMA          |                    1 |                        32 |                        64 |                    17088 |
-| SPHINCS+-SHAKE-128s-simple | EUF-CMA          |                    1 |                        32 |                        64 |                     7856 |
-| SPHINCS+-SHAKE-192f-simple | EUF-CMA          |                    3 |                        48 |                        96 |                    35664 |
-| SPHINCS+-SHAKE-192s-simple | EUF-CMA          |                    3 |                        48 |                        96 |                    16224 |
-| SPHINCS+-SHAKE-256f-simple | EUF-CMA          |                    5 |                        64 |                       128 |                    49856 |
-| SPHINCS+-SHAKE-256s-simple | EUF-CMA          |                    5 |                        64 |                       128 |                    29792 |
+|       Parameter set        | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
+|:--------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
+| SPHINCS+-SHA2-128f-simple  | NA                    | EUF-CMA          |                    1 |                        32 |                        64 |                    17088 |
+| SPHINCS+-SHA2-128s-simple  | NA                    | EUF-CMA          |                    1 |                        32 |                        64 |                     7856 |
+| SPHINCS+-SHA2-192f-simple  | NA                    | EUF-CMA          |                    3 |                        48 |                        96 |                    35664 |
+| SPHINCS+-SHA2-192s-simple  | NA                    | EUF-CMA          |                    3 |                        48 |                        96 |                    16224 |
+| SPHINCS+-SHA2-256f-simple  | NA                    | EUF-CMA          |                    5 |                        64 |                       128 |                    49856 |
+| SPHINCS+-SHA2-256s-simple  | NA                    | EUF-CMA          |                    5 |                        64 |                       128 |                    29792 |
+| SPHINCS+-SHAKE-128f-simple | NA                    | EUF-CMA          |                    1 |                        32 |                        64 |                    17088 |
+| SPHINCS+-SHAKE-128s-simple | NA                    | EUF-CMA          |                    1 |                        32 |                        64 |                     7856 |
+| SPHINCS+-SHAKE-192f-simple | NA                    | EUF-CMA          |                    3 |                        48 |                        96 |                    35664 |
+| SPHINCS+-SHAKE-192s-simple | NA                    | EUF-CMA          |                    3 |                        48 |                        96 |                    16224 |
+| SPHINCS+-SHAKE-256f-simple | NA                    | EUF-CMA          |                    5 |                        64 |                       128 |                    49856 |
+| SPHINCS+-SHAKE-256s-simple | NA                    | EUF-CMA          |                    5 |                        64 |                       128 |                    29792 |
 
 ## SPHINCS+-SHA2-128f-simple implementation characteristics
 

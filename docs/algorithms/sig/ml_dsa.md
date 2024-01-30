@@ -13,11 +13,11 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|  ML-DSA-44-ipd  | EUF-CMA          |                    2 |                      1312 |                      2560 |                     2420 |
-|  ML-DSA-65-ipd  | EUF-CMA          |                    3 |                      1952 |                      4032 |                     3309 |
-|  ML-DSA-87-ipd  | EUF-CMA          |                    5 |                      2592 |                      4896 |                     4627 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
+|  ML-DSA-44-ipd  | ML-DSA-44             | EUF-CMA          |                    2 |                      1312 |                      2560 |                     2420 |
+|  ML-DSA-65-ipd  | ML-DSA-65             | EUF-CMA          |                    3 |                      1952 |                      4032 |                     3309 |
+|  ML-DSA-87-ipd  | ML-DSA-87             | EUF-CMA          |                    5 |                      2592 |                      4896 |                     4627 |
 
 ## ML-DSA-44-ipd implementation characteristics
 

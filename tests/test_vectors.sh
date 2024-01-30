@@ -7,7 +7,7 @@ else
   build_dir="${OQS_BUILD_DIR}"
 fi
 
-if [ "$1" = "ML-DSA-44-ipd" ]; then
+if [[ "$1" = "ML-DSA-44-ipd" || "$1" = "ML-DSA-44" ]]; then
 
   file=tests/PQC_Intermediate_Values/ML-DSA-44.txt
   scheme_name=ML-DSA-44-ipd
@@ -17,7 +17,7 @@ if [ "$1" = "ML-DSA-44-ipd" ]; then
       exit 1
   fi
 
-elif [ "$1" = "ML-DSA-65-ipd" ]; then
+elif [[ "$1" = "ML-DSA-65-ipd" || "$1" = "ML-DSA-65" ]]; then
 
   file=tests/PQC_Intermediate_Values/ML-DSA-65.txt
   scheme_name=ML-DSA-65-ipd
@@ -27,7 +27,7 @@ elif [ "$1" = "ML-DSA-65-ipd" ]; then
       exit 1
   fi
 
-elif [ "$1" = "ML-DSA-87-ipd" ]; then
+elif [[ "$1" = "ML-DSA-87-ipd" || "$1" = "ML-DSA-87" ]]; then
 
   file=tests/PQC_Intermediate_Values/ML-DSA-87.txt
   scheme_name=ML-DSA-87-ipd

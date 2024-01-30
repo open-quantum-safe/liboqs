@@ -17,11 +17,11 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|   Dilithium2    | EUF-CMA          |                    2 |                      1312 |                      2528 |                     2420 |
-|   Dilithium3    | EUF-CMA          |                    3 |                      1952 |                      4000 |                     3293 |
-|   Dilithium5    | EUF-CMA          |                    5 |                      2592 |                      4864 |                     4595 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
+|   Dilithium2    | NA                    | EUF-CMA          |                    2 |                      1312 |                      2528 |                     2420 |
+|   Dilithium3    | NA                    | EUF-CMA          |                    3 |                      1952 |                      4000 |                     3293 |
+|   Dilithium5    | NA                    | EUF-CMA          |                    5 |                      2592 |                      4864 |                     4595 |
 
 ## Dilithium2 implementation characteristics
 

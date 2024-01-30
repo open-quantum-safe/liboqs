@@ -40,6 +40,9 @@ endif()
 option(OQS_ENABLE_SIG_{{ family['name']|upper }} "Enable {{ family['name'] }} algorithm family" ON)
     {%- for scheme in family['schemes'] %}
 cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_SIG_{{ family['name']|upper }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }} "" ON "OQS_ENABLE_SIG_{{ family['name']|upper }}" OFF)
+{%- endif -%}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")

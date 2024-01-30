@@ -29,6 +29,30 @@ OQS_SIG *OQS_SIG_ml_dsa_65_ipd_new(void) {
 	return sig;
 }
 
+/** Alias */
+OQS_SIG *OQS_SIG_ml_dsa_65_new(void) {
+
+	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	if (sig == NULL) {
+		return NULL;
+	}
+	sig->method_name = OQS_SIG_alg_ml_dsa_65;
+	sig->alg_version = "https://github.com/pq-crystals/dilithium/tree/standard";
+
+	sig->claimed_nist_level = 3;
+	sig->euf_cma = true;
+
+	sig->length_public_key = OQS_SIG_ml_dsa_65_ipd_length_public_key;
+	sig->length_secret_key = OQS_SIG_ml_dsa_65_ipd_length_secret_key;
+	sig->length_signature = OQS_SIG_ml_dsa_65_ipd_length_signature;
+
+	sig->keypair = OQS_SIG_ml_dsa_65_ipd_keypair;
+	sig->sign = OQS_SIG_ml_dsa_65_ipd_sign;
+	sig->verify = OQS_SIG_ml_dsa_65_ipd_verify;
+
+	return sig;
+}
+
 extern int pqcrystals_ml_dsa_65_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_dsa_65_ipd_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_65_ipd_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);

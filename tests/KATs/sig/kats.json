@@ -19,15 +19,24 @@
     "all": "f4f23c1153682007d5dec02c35e47061c17900fcf0adb3fd0437f1988fa13655",
     "single": "da27fe8a462de7307ddf1f9b00072a457d9c5b14e838c148fbe2662094b9a2ca"
   },
+  "ML-DSA-44": {
+    "single": "e6f3ec4dc0b02dd3bcbbc6b105190e1890ca0bb3f802e2b571f0d70f3993a2e1"
+  },
   "ML-DSA-44-ipd": {
     "single": "e6f3ec4dc0b02dd3bcbbc6b105190e1890ca0bb3f802e2b571f0d70f3993a2e1"
+  },
+  "ML-DSA-65": {
+    "single": "7225c4531086d88c9b7fa18101b0f78dda2d38df88812c65ddc1ae94fe3c01a7"
   },
   "ML-DSA-65-ipd": {
     "single": "7225c4531086d88c9b7fa18101b0f78dda2d38df88812c65ddc1ae94fe3c01a7"
   },
+  "ML-DSA-87": {
+    "single": "f5cb5ed44a261a4118f9cfd5d55b4210939cb5b8531968a10c37060551a8927f"
+  },
   "ML-DSA-87-ipd": {
     "single": "f5cb5ed44a261a4118f9cfd5d55b4210939cb5b8531968a10c37060551a8927f"
-  }
+  },
   "SPHINCS+-SHA2-128f-simple": {
     "all": "4437eb44516630184c3cb5d3a4392e8bb955c2bf59ad17ab3c607fb7b7285780",
     "single": "cd1e13db3a56c0a6b3486a7b12bcddfda50cf5d1e4d14d3113e6456e969b8114"

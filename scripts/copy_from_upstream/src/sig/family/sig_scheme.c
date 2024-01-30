@@ -30,6 +30,33 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	return sig;
 }
 
+{%- if 'alias_scheme' in scheme %}
+
+/** Alias */
+OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
+
+	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	if (sig == NULL) {
+		return NULL;
+	}
+	sig->method_name = OQS_SIG_alg_{{ family }}_{{ scheme['alias_scheme'] }};
+	sig->alg_version = "{{ scheme['metadata']['implementations'][0]['version'] }}";
+
+	sig->claimed_nist_level = {{ scheme['metadata']['claimed-nist-level'] }};
+	sig->euf_cma = {{ scheme['metadata']['euf_cma'] }};
+
+	sig->length_public_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_public_key;
+	sig->length_secret_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_secret_key;
+	sig->length_signature = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature;
+
+	sig->keypair = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair;
+	sig->sign = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign;
+	sig->verify = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify;
+
+	return sig;
+}
+{%- endif -%}
+
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == scheme['default_implementation'] %}
 
         {%- if impl['signature_keypair'] %}

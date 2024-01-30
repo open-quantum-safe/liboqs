@@ -20,6 +20,7 @@ primary-upstream:
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 parameter-sets:
 - name: ML-DSA-44-ipd
+  alias: ML-DSA-44
   claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 1312
@@ -51,6 +52,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: ML-DSA-65-ipd
+  alias: ML-DSA-65
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 1952
@@ -82,6 +84,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: ML-DSA-87-ipd
+  alias: ML-DSA-87
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 2592
