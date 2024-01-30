@@ -16,6 +16,7 @@
 #include "hss_internal.h"
 #include "hss_sign_inc.h"
 #include "hss_derive.h"
+#include <oqs/oqsconfig.h>
 
 /*
  * Start the process of creating an HSS signature incrementally. Parameters:
@@ -28,6 +29,7 @@
  * this_is_the_last_signature - if non-NULL, this will be set if this
  *    signature is the last for this private key
  */
+#ifdef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
 bool hss_sign_init(
     struct hss_sign_inc *ctx,
     struct hss_working_key *w,
@@ -217,3 +219,4 @@ bool hss_sign_finalize(
     hss_zeroize( seed_buff, sizeof seed_buff );
     return success;
 }
+#endif

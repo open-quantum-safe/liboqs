@@ -878,21 +878,38 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+	(void)sig;
+	(void)public_key;
+	(void)secret_key;
+	return OQS_ERROR;
+#else
 	if (sig == NULL || sig->keypair == NULL || sig->keypair(public_key, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
 	return OQS_ERROR;
+#endif
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message,
                                      size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+	(void)sig;
+	(void)signature;
+	(void)signature_len;
+	(void)message;
+	(void)message_len;
+	(void)secret_key;
+	return OQS_ERROR;
+#else
 	if (sig == NULL || sig->sign == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
+#endif
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
