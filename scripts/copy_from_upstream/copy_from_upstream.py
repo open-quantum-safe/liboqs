@@ -24,7 +24,7 @@ non_upstream_kems = 0
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbosity", type=int)
 parser.add_argument("-k", "--keep_data", action='store_true')
-parser.add_argument("operation", choices=["copy", "verify"])
+parser.add_argument("operation", choices=["copy", "verify", "libjade"])
 args = parser.parse_args()
 
 if args.verbosity:
@@ -97,9 +97,9 @@ def replacer(filename, instructions, delimiter):
             {'instructions': instructions, 'non_upstream_kems': non_upstream_kems}) + postamble
     file_put_contents(os.path.join(os.environ['LIBOQS_DIR'], filename), contents)
 
-def load_instructions():
+def load_instructions(file):
     instructions = file_get_contents(
-        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', 'copy_from_upstream.yml'),
+        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', file),
         encoding='utf-8')
     instructions = yaml.safe_load(instructions)
     upstreams = {}
@@ -119,6 +119,8 @@ def load_instructions():
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
+        if file == 'copy_from_libjade.yml':
+            shell(['make', '-C', os.path.join(work_dir, 'src')])
         if 'patches' in upstream:
             for patch in upstream['patches']:
                 patch_file = os.path.join('patches', patch)
@@ -160,6 +162,7 @@ def load_instructions():
         family['common_deps_usedby'] = {}
         family['all_required_flags'] = set()
         for scheme in family['schemes']:
+            scheme['family'] = family['name']
             if not 'upstream_location' in scheme:
                 scheme['upstream_location'] = family['upstream_location']
             if (not 'arch_specific_upstream_locations' in scheme) and 'arch_specific_upstream_locations' in family:
@@ -432,11 +435,9 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             of = impl
         origfolder = os.path.join(scheme['scheme_paths'][impl], of)
         upstream_location = i['upstream']['name']
-        shutil.rmtree(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl)),
-                  ignore_errors=True)
         srcfolder = os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl))
+                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl.replace('/', '_')))
+        shutil.rmtree(srcfolder, ignore_errors=True)
         # Don't copy from PQClean straight but check for origfile list
         try:
             os.mkdir(srcfolder)
@@ -596,7 +597,7 @@ def copy_from_upstream():
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
-    instructions = load_instructions()
+    instructions = load_instructions('copy_from_upstream.yml')
     process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####')
     replacer('CMakeLists.txt', instructions, '#####')
@@ -621,6 +622,16 @@ def copy_from_upstream():
     import update_cbom
     update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
     update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
+
+def copy_from_libjade():
+    for t in ["kem", "sig"]:
+        with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
+            kats[t] = json.load(fp)
+
+    instructions = load_instructions('copy_from_libjade.yml')
+    process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
+    a = 1
+    b = 2
 
 def verify_from_upstream():
     instructions = load_instructions()
@@ -699,5 +710,7 @@ non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime'])
 
 if args.operation == "copy":
     copy_from_upstream()
+elif args.operation == "libjade":
+    copy_from_libjade()
 elif args.operation == "verify":
     verify_from_upstream()

@@ -1,0 +1,257 @@
+diff --git a/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c b/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c
+new file mode 100644
+index 0000000..7317c37
+--- /dev/null
++++ b/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c
+@@ -0,0 +1,17 @@
++#include <stdint.h>
++#include <oqs/rand.h>
++#include "libjade_randombytes.h"
++#include "api.h"
++
++int libjade_kyber512_amd64_avx2_keypair(uint8_t *public_key, uint8_t *secret_key) {
++    uint8_t keypair_coins[JADE_KEM_kyber_kyber512_amd64_avx2_KEYPAIRCOINBYTES];
++    OQS_randombytes(keypair_coins, JADE_KEM_kyber_kyber512_amd64_avx2_KEYPAIRCOINBYTES/2);
++    OQS_randombytes((uint8_t *)(keypair_coins + (JADE_KEM_kyber_kyber512_amd64_avx2_KEYPAIRCOINBYTES/2)), JADE_KEM_kyber_kyber512_amd64_avx2_KEYPAIRCOINBYTES/2);
++    return jade_kem_kyber_kyber512_amd64_avx2_keypair_derand(public_key, secret_key, keypair_coins);
++}
++
++int libjade_kyber512_amd64_avx2_enc(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
++    uint8_t enc_coins[JADE_KEM_kyber_kyber512_amd64_avx2_ENCCOINBYTES];
++    OQS_randombytes(enc_coins, JADE_KEM_kyber_kyber512_amd64_avx2_ENCCOINBYTES);
++    return jade_kem_kyber_kyber512_amd64_avx2_enc_derand(ciphertext, shared_secret, public_key, enc_coins);
++}
+\ No newline at end of file
+diff --git a/src/crypto_kem/kyber/kyber512/amd64/avx2/include/api.h b/src/crypto_kem/kyber/kyber512/amd64/avx2/include/api.h
+index 5148fd5..ced55c9 100644
+--- a/src/crypto_kem/kyber/kyber512/amd64/avx2/include/api.h
++++ b/src/crypto_kem/kyber/kyber512/amd64/avx2/include/api.h
+@@ -3,16 +3,8 @@
+ 
+ #include <stdint.h>
+ 
+-#define JADE_KEM_kyber_kyber512_amd64_avx2_SECRETKEYBYTES   1632
+-#define JADE_KEM_kyber_kyber512_amd64_avx2_PUBLICKEYBYTES   800
+-#define JADE_KEM_kyber_kyber512_amd64_avx2_CIPHERTEXTBYTES  768
+ #define JADE_KEM_kyber_kyber512_amd64_avx2_KEYPAIRCOINBYTES 64
+ #define JADE_KEM_kyber_kyber512_amd64_avx2_ENCCOINBYTES     32
+-#define JADE_KEM_kyber_kyber512_amd64_avx2_BYTES            32
+-
+-#define JADE_KEM_kyber_kyber512_amd64_avx2_ALGNAME         "Kyber512"
+-#define JADE_KEM_kyber_kyber512_amd64_avx2_ARCH            "amd64"
+-#define JADE_KEM_kyber_kyber512_amd64_avx2_IMPL            "avx2"
+ 
+ int jade_kem_kyber_kyber512_amd64_avx2_keypair_derand(
+   uint8_t *public_key,
+@@ -20,7 +12,7 @@ int jade_kem_kyber_kyber512_amd64_avx2_keypair_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber512_amd64_avx2_keypair(
++int libjade_kyber512_amd64_avx2_keypair(
+   uint8_t *public_key,
+   uint8_t *secret_key
+ );
+@@ -32,7 +24,7 @@ int jade_kem_kyber_kyber512_amd64_avx2_enc_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber512_amd64_avx2_enc(
++int libjade_kyber512_amd64_avx2_enc(
+   uint8_t *ciphertext,
+   uint8_t *shared_secret,
+   const uint8_t *public_key
+diff --git a/src/crypto_kem/kyber/kyber512/amd64/ref/api.c b/src/crypto_kem/kyber/kyber512/amd64/ref/api.c
+new file mode 100644
+index 0000000..e7f0133
+--- /dev/null
++++ b/src/crypto_kem/kyber/kyber512/amd64/ref/api.c
+@@ -0,0 +1,21 @@
++// void __jasmin_syscall_randombytes__(uint8_t* _x, uint64_t xlen) __asm__("__jasmin_syscall_randombytes__");#include <stdint.h>
++#include <oqs/rand.h>
++#include "libjade_randombytes.h"
++#include "api.h"
++
++// void __jasmin_syscall_randombytes__(uint8_t* x, uint64_t xlen) {
++//     OQS_randombytes(x, xlen);
++// }
++
++int libjade_kyber512_amd64_ref_keypair(uint8_t *public_key, uint8_t *secret_key) {
++    uint8_t keypair_coins[JADE_KEM_kyber_kyber512_amd64_ref_KEYPAIRCOINBYTES];
++    OQS_randombytes(keypair_coins, JADE_KEM_kyber_kyber512_amd64_ref_KEYPAIRCOINBYTES/2);
++    OQS_randombytes((uint8_t *)(keypair_coins + (JADE_KEM_kyber_kyber512_amd64_ref_KEYPAIRCOINBYTES/2)), JADE_KEM_kyber_kyber512_amd64_ref_KEYPAIRCOINBYTES/2);
++    return jade_kem_kyber_kyber512_amd64_ref_keypair_derand(public_key, secret_key, keypair_coins);
++}
++
++int libjade_kyber512_amd64_ref_enc(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
++    uint8_t enc_coins[JADE_KEM_kyber_kyber512_amd64_ref_ENCCOINBYTES];
++    OQS_randombytes(enc_coins, JADE_KEM_kyber_kyber512_amd64_ref_ENCCOINBYTES);
++    return jade_kem_kyber_kyber512_amd64_ref_enc_derand(ciphertext, shared_secret, public_key, enc_coins);
++}
+\ No newline at end of file
+diff --git a/src/crypto_kem/kyber/kyber512/amd64/ref/include/api.h b/src/crypto_kem/kyber/kyber512/amd64/ref/include/api.h
+index 38127cf..eebea45 100644
+--- a/src/crypto_kem/kyber/kyber512/amd64/ref/include/api.h
++++ b/src/crypto_kem/kyber/kyber512/amd64/ref/include/api.h
+@@ -3,17 +3,8 @@
+ 
+ #include <stdint.h>
+ 
+-#define JADE_KEM_kyber_kyber512_amd64_ref_SECRETKEYBYTES   1632
+-#define JADE_KEM_kyber_kyber512_amd64_ref_PUBLICKEYBYTES   800
+-#define JADE_KEM_kyber_kyber512_amd64_ref_CIPHERTEXTBYTES  768
+ #define JADE_KEM_kyber_kyber512_amd64_ref_KEYPAIRCOINBYTES 64
+ #define JADE_KEM_kyber_kyber512_amd64_ref_ENCCOINBYTES     32
+-#define JADE_KEM_kyber_kyber512_amd64_ref_BYTES            32
+-
+-#define JADE_KEM_kyber_kyber512_amd64_ref_ALGNAME         "Kyber512"
+-#define JADE_KEM_kyber_kyber512_amd64_ref_ARCH            "amd64"
+-#define JADE_KEM_kyber_kyber512_amd64_ref_IMPL            "ref"
+-
+ 
+ int jade_kem_kyber_kyber512_amd64_ref_keypair_derand(
+   uint8_t *public_key,
+@@ -21,7 +12,7 @@ int jade_kem_kyber_kyber512_amd64_ref_keypair_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber512_amd64_ref_keypair(
++int libjade_kyber512_amd64_ref_keypair(
+   uint8_t *public_key,
+   uint8_t *secret_key
+ );
+@@ -33,7 +24,7 @@ int jade_kem_kyber_kyber512_amd64_ref_enc_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber512_amd64_ref_enc(
++int libjade_kyber512_amd64_ref_enc(
+   uint8_t *ciphertext,
+   uint8_t *shared_secret,
+   const uint8_t *public_key
+diff --git a/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c b/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c
+new file mode 100644
+index 0000000..98dd22d
+--- /dev/null
++++ b/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c
+@@ -0,0 +1,17 @@
++#include <stdint.h>
++#include <oqs/rand.h>
++#include "libjade_randombytes.h"
++#include "api.h"
++
++int libjade_kyber768_amd64_avx2_keypair(uint8_t *public_key, uint8_t *secret_key) {
++    uint8_t keypair_coins[JADE_KEM_kyber_kyber768_amd64_avx2_KEYPAIRCOINBYTES];
++    OQS_randombytes(keypair_coins, JADE_KEM_kyber_kyber768_amd64_avx2_KEYPAIRCOINBYTES/2);
++    OQS_randombytes((uint8_t *)(keypair_coins + (JADE_KEM_kyber_kyber768_amd64_avx2_KEYPAIRCOINBYTES/2)), JADE_KEM_kyber_kyber768_amd64_avx2_KEYPAIRCOINBYTES/2);
++    return jade_kem_kyber_kyber768_amd64_avx2_keypair_derand(public_key, secret_key, keypair_coins);
++}
++
++int libjade_kyber768_amd64_avx2_enc(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
++    uint8_t enc_coins[JADE_KEM_kyber_kyber768_amd64_avx2_ENCCOINBYTES];
++    OQS_randombytes(enc_coins, JADE_KEM_kyber_kyber768_amd64_avx2_ENCCOINBYTES);
++    return jade_kem_kyber_kyber768_amd64_avx2_enc_derand(ciphertext, shared_secret, public_key, enc_coins);
++}
+\ No newline at end of file
+diff --git a/src/crypto_kem/kyber/kyber768/amd64/avx2/include/api.h b/src/crypto_kem/kyber/kyber768/amd64/avx2/include/api.h
+index d3b3500..155a237 100644
+--- a/src/crypto_kem/kyber/kyber768/amd64/avx2/include/api.h
++++ b/src/crypto_kem/kyber/kyber768/amd64/avx2/include/api.h
+@@ -3,16 +3,8 @@
+ 
+ #include <stdint.h>
+ 
+-#define JADE_KEM_kyber_kyber768_amd64_avx2_SECRETKEYBYTES    2400
+-#define JADE_KEM_kyber_kyber768_amd64_avx2_PUBLICKEYBYTES    1184
+-#define JADE_KEM_kyber_kyber768_amd64_avx2_CIPHERTEXTBYTES   1088
+ #define JADE_KEM_kyber_kyber768_amd64_avx2_KEYPAIRCOINBYTES  64
+ #define JADE_KEM_kyber_kyber768_amd64_avx2_ENCCOINBYTES      32
+-#define JADE_KEM_kyber_kyber768_amd64_avx2_BYTES             32
+-
+-#define JADE_KEM_kyber_kyber768_amd64_avx2_ALGNAME           "Kyber768"
+-#define JADE_KEM_kyber_kyber768_amd64_avx2_ARCH              "amd64"
+-#define JADE_KEM_kyber_kyber768_amd64_avx2_IMPL              "avx2"
+ 
+ int jade_kem_kyber_kyber768_amd64_avx2_keypair_derand(
+   uint8_t *public_key,
+@@ -20,7 +12,7 @@ int jade_kem_kyber_kyber768_amd64_avx2_keypair_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber768_amd64_avx2_keypair(
++int libjade_kyber768_amd64_avx2_keypair(
+   uint8_t *public_key,
+   uint8_t *secret_key
+ );
+@@ -32,7 +24,7 @@ int jade_kem_kyber_kyber768_amd64_avx2_enc_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber768_amd64_avx2_enc(
++int libjade_kyber768_amd64_avx2_enc(
+   uint8_t *ciphertext,
+   uint8_t *shared_secret,
+   const uint8_t *public_key
+diff --git a/src/crypto_kem/kyber/kyber768/amd64/ref/api.c b/src/crypto_kem/kyber/kyber768/amd64/ref/api.c
+new file mode 100644
+index 0000000..df1302b
+--- /dev/null
++++ b/src/crypto_kem/kyber/kyber768/amd64/ref/api.c
+@@ -0,0 +1,17 @@
++#include <stdint.h>
++#include <oqs/rand.h>
++#include "libjade_randombytes.h"
++#include "api.h"
++
++int libjade_kyber768_amd64_ref_keypair(uint8_t *public_key, uint8_t *secret_key) {
++    uint8_t keypair_coins[JADE_KEM_kyber_kyber768_amd64_ref_KEYPAIRCOINBYTES];
++    OQS_randombytes(keypair_coins, JADE_KEM_kyber_kyber768_amd64_ref_KEYPAIRCOINBYTES/2);
++    OQS_randombytes((uint8_t *)(keypair_coins + (JADE_KEM_kyber_kyber768_amd64_ref_KEYPAIRCOINBYTES/2)), JADE_KEM_kyber_kyber768_amd64_ref_KEYPAIRCOINBYTES/2);
++    return jade_kem_kyber_kyber768_amd64_ref_keypair_derand(public_key, secret_key, keypair_coins);
++}
++
++int libjade_kyber768_amd64_ref_enc(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
++    uint8_t enc_coins[JADE_KEM_kyber_kyber768_amd64_ref_ENCCOINBYTES];
++    OQS_randombytes(enc_coins, JADE_KEM_kyber_kyber768_amd64_ref_ENCCOINBYTES);
++    return jade_kem_kyber_kyber768_amd64_ref_enc_derand(ciphertext, shared_secret, public_key, enc_coins);
++}
+\ No newline at end of file
+diff --git a/src/crypto_kem/kyber/kyber768/amd64/ref/include/api.h b/src/crypto_kem/kyber/kyber768/amd64/ref/include/api.h
+index e23e1bf..a79c4fa 100644
+--- a/src/crypto_kem/kyber/kyber768/amd64/ref/include/api.h
++++ b/src/crypto_kem/kyber/kyber768/amd64/ref/include/api.h
+@@ -3,16 +3,8 @@
+ 
+ #include <stdint.h>
+ 
+-#define JADE_KEM_kyber_kyber768_amd64_ref_SECRETKEYBYTES   2400
+-#define JADE_KEM_kyber_kyber768_amd64_ref_PUBLICKEYBYTES   1184
+-#define JADE_KEM_kyber_kyber768_amd64_ref_CIPHERTEXTBYTES  1088
+ #define JADE_KEM_kyber_kyber768_amd64_ref_KEYPAIRCOINBYTES 64
+ #define JADE_KEM_kyber_kyber768_amd64_ref_ENCCOINBYTES     32
+-#define JADE_KEM_kyber_kyber768_amd64_ref_BYTES            32
+-
+-#define JADE_KEM_kyber_kyber768_amd64_ref_ALGNAME         "Kyber768"
+-#define JADE_KEM_kyber_kyber768_amd64_ref_ARCH            "amd64"
+-#define JADE_KEM_kyber_kyber768_amd64_ref_IMPL            "ref"
+ 
+ int jade_kem_kyber_kyber768_amd64_ref_keypair_derand(
+   uint8_t *public_key,
+@@ -20,7 +12,7 @@ int jade_kem_kyber_kyber768_amd64_ref_keypair_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber768_amd64_ref_keypair(
++int libjade_kyber768_amd64_ref_keypair(
+   uint8_t *public_key,
+   uint8_t *secret_key
+ );
+@@ -32,7 +24,7 @@ int jade_kem_kyber_kyber768_amd64_ref_enc_derand(
+   const uint8_t *coins
+ );
+ 
+-int jade_kem_kyber_kyber768_amd64_ref_enc(
++int libjade_kyber768_amd64_ref_enc(
+   uint8_t *ciphertext,
+   uint8_t *shared_secret,
+   const uint8_t *public_key
