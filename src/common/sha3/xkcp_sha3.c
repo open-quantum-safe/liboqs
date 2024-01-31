@@ -13,7 +13,7 @@
 
 #include <oqs/common.h>
 
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 #include <pthread.h>
 #endif
 #include <stddef.h>
@@ -26,7 +26,7 @@
 #define KECCAK_CTX_BYTES (KECCAK_CTX_ALIGNMENT * \
   ((_KECCAK_CTX_BYTES + KECCAK_CTX_ALIGNMENT - 1)/KECCAK_CTX_ALIGNMENT))
 
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 static pthread_once_t dispatch_once_control = PTHREAD_ONCE_INIT;
 #endif
 
@@ -85,7 +85,7 @@ static void Keccak_Dispatch(void) {
  *                that have not been permuted, or not-yet-squeezed bytes.
  **************************************************/
 static void keccak_inc_reset(uint64_t *s) {
-#if CMAKE_USE_PTHREADS_INIT
+#if OQS_USE_PTHREADS
 	pthread_once(&dispatch_once_control, Keccak_Dispatch);
 #else
 	if (Keccak_Initialize_ptr == NULL) {

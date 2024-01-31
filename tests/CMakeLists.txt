@@ -31,7 +31,7 @@ endif()
 
 # List oqs-internal after oqs so that oqs has linking precedence.
 set(TEST_DEPS oqs oqs-internal ${LIBM})
-if(CMAKE_USE_PTHREADS_INIT)
+if(OQS_USE_PTHREADS)
     set(TEST_DEPS ${TEST_DEPS} Threads::Threads)
 endif()
 
