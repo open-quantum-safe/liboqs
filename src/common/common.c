@@ -13,6 +13,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(OQS_DIST_BUILD) && defined(OQS_USE_PTHREADS)
+#include <pthread.h>
+#endif
+
 #if !defined(OQS_HAVE_POSIX_MEMALIGN) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_MSC_VER)
 #include <malloc.h>
 #endif
@@ -30,6 +34,9 @@ CRYPTO_ONCE OQS_ONCE_STATIC_FREE;
 /* Identifying the CPU is expensive so we cache the results in cpu_ext_data */
 #if defined(OQS_DIST_BUILD)
 static unsigned int cpu_ext_data[OQS_CPU_EXT_COUNT] = {0};
+#if defined(OQS_USE_PTHREADS)
+static pthread_once_t once_control = PTHREAD_ONCE_INIT;
+#endif
 #endif
 
 #if defined(OQS_DIST_X86_64_BUILD)
@@ -206,9 +213,13 @@ static void set_available_cpu_extensions(void) {
 
 OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext) {
 #if defined(OQS_DIST_BUILD)
+#if defined(OQS_USE_PTHREADS)
+	pthread_once(&once_control, &set_available_cpu_extensions);
+#else
 	if (0 == cpu_ext_data[OQS_CPU_EXT_INIT]) {
 		set_available_cpu_extensions();
 	}
+#endif
 	if (0 < ext && ext < OQS_CPU_EXT_COUNT) {
 		return (int)cpu_ext_data[ext];
 	}
