@@ -17,12 +17,12 @@ jobs:
                --header "Accept: application/vnd.github+json" \
                --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
                --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{ \
-                         "event_type": "liboqs-release", \
-                         "client_payload": { \
-                                             "liboqs_ref": "tags/${{ github.event.release.tag_name }}", \
-                                             "provider_ref": "heads/${{ github.event.release.tag_name }}-tracker" \
-                         } \
+               --data '{
+                         "event_type": "liboqs-release",
+                         "client_payload": {
+                                             "liboqs_ref": "${{ github.event.release.tag_name }}",
+                                             "provider_ref": "${{ github.event.release.tag_name }}-tracker"
+                         }
                        }' \
                https://api.github.com/repos/open-quantum-safe/oqs-provider/dispatches | tee curl_out \
             && grep -q "204" curl_out
