@@ -1,4 +1,4 @@
-[AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/main?svg=true), [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main.svg?style=svg), [TravisCI](https://travis-ci.com/github/open-quantum-safe/liboqs): [![Build Status](https://travis-ci.com/open-quantum-safe/liboqs.svg?branch=main)](https://travis-ci.com/open-quantum-safe/liboqs)
+[CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main.svg?style=svg), [TravisCI](https://travis-ci.com/github/open-quantum-safe/liboqs): [![Build Status](https://travis-ci.com/open-quantum-safe/liboqs.svg?branch=main)](https://travis-ci.com/open-quantum-safe/liboqs)
 
 liboqs
 ======================

@@ -24,9 +24,6 @@ def test_kem(kem_name):
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
-    if sys.platform.startswith("win") and 'APPVEYOR' in os.environ:
-        if 'SPHINCS' in sig_name and ('192f' in sig_name or '192s' in sig_name or '256f' in sig_name or '256s' in sig_name):
-            pytest.skip('Skipping SPHINCS+ 192s and 256s tests on Windows AppVeyor builds')
     helpers.run_subprocess(
         [helpers.path_to_executable('test_sig'), sig_name],
     )
