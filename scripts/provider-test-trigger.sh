@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: MIT
+
 # Trigger the oqs-provider release tests in CI.
 
 # Variables:

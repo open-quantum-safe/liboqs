@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            scripts/provider-release-tests.sh
+            scripts/provider-test-trigger.sh
           sparse-checkout-cone-mode: false
       - name: Trigger oqs-provider release tests
         run: |
@@ -27,5 +27,5 @@ jobs:
           ACCESS_TOKEN="${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
           LIBOQS_REF="${{ github.ref_name }}" \
           PROVIDER_REF="${{ github.ref_name }}-tracker" \
-          ./scripts/provider-release-tests.sh | tee curl_out \
+          ./scripts/provider-test-trigger.sh | tee curl_out \
           && grep -q "204" curl_out
