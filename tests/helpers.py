@@ -137,9 +137,6 @@ def get_current_build_dir_name():
 
 def path_to_executable(program_name):
     path = "."
-    if sys.platform.startswith("win"):
-        if 'APPVEYOR_BUILD_FOLDER' not in os.environ: os.environ['APPVEYOR_BUILD_FOLDER'] = "."
-        path = os.path.join(path, os.environ['APPVEYOR_BUILD_FOLDER'])
     path = os.path.join(path, get_current_build_dir_name(), "tests")
     for executable in [
         os.path.join(path, program_name),
