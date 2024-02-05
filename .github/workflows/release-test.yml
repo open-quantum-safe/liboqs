@@ -1,0 +1,31 @@
+name: Release tests
+
+# Trigger oqs-provider release tests.
+# Runs whenever a release is published, or when a commit message ends with "[trigger downstream]"
+# When triggered by a release, the liboqs release tag and the provider "<release tag>-tracker" branch are used.
+# When triggered by a commit message, the triggering liboqs branch and the provider "<liboqs branch>-tracker" branch are used.
+# If the tracker branch does not exist, the downstream pipeline should detect it and run on the main branch instead.
+on:
+  push:
+  release:
+    types: [published]
+
+jobs:
+  oqs-provider-release-test:
+    if: github.event_name == 'release' || endsWith( github.event.head_commit.message, '[trigger downstream]' )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release tests script
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/provider-test-trigger.sh
+          sparse-checkout-cone-mode: false
+      - name: Trigger oqs-provider release tests
+        run: |
+          CURL_FLAGS="--silent --write-out \n%{response_code}\n" \
+          ACCESS_TOKEN="${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+          LIBOQS_REF="${{ github.ref_name }}" \
+          PROVIDER_REF="${{ github.ref_name }}-tracker" \
+          ./scripts/provider-test-trigger.sh | tee curl_out \
+          && grep -q "204" curl_out
