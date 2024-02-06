@@ -24,7 +24,7 @@ A **User** is a person or organization using software produced by the project.
 
 Responsibilities:
 
-- Abide by the [license][LICENSE.txt]
+- Abide by the [license](LICENSE.txt)
 - Consider participating in the project!
 
 ### Community Members
