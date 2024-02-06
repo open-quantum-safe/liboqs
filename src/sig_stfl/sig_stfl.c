@@ -912,6 +912,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature
 #endif
 }
 
+
 OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	if (sig == NULL || sig->verify == NULL || sig->verify(message, message_len, signature, signature_len, public_key) != 0) {
 		return OQS_ERROR;
@@ -920,20 +921,36 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 	}
 }
 
+
 OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
+#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+	(void)sig;
+	(void)remain; 
+	(void)secret_key;
+	return OQS_ERROR;
+#else 
 	if (sig == NULL || sig->sigs_remaining == NULL || sig->sigs_remaining(remain, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
+#endif //OQS_ALLOW_SFTL_KEY_AND_SIG_GEN	
 }
 
+
 OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
+#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+	(void)sig;
+	(void)max; 
+	(void)secret_key;
+	return OQS_ERROR;
+#else
 	if (sig == NULL || sig->sigs_total == NULL || sig->sigs_total(max, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
+#endif //OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
 }
 
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {

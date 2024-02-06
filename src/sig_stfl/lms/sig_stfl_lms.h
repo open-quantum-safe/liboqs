@@ -96,28 +96,24 @@
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w1_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w1_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w2_length_signature 4464
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w2_length_pk 60
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w2_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w2_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W2_new(void);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w2_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w4_length_signature 2352
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w4_length_pk 60
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w4_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w4_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W4_new(void);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w4_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w8_length_signature 1296
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w8_length_pk 60
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w8_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w8_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W8_new(void);
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 //H10
 //  H10           W1            60           8848            64
@@ -279,55 +275,42 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8_length_signature 3444
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_length_signature 3604
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W8_H5_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W4_H5_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W8_H5_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W2_H10_W2_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W4_H10_W4_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W8_H10_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w8_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W8_H5_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w8_h5_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W8_H10_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h15_w8_h15_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W8_H15_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h15_w8_h15_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h5_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W8_H5_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h5_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W8_H10_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W8_H15_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8_new(void);
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W8_H20_W8_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_new(void);
 
