@@ -323,9 +323,9 @@ OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_
 	}
 from_kats:
 	return sig_stfl_keypair_from_KATs(sig, public_key, secret_key, katfile);
-#endif //OQS_ENABLE_SIG_STFL_XMSS
 
 from_keygen:
+#endif //OQS_ENABLE_SIG_STFL_XMSS
 	(void)(katfile);
 	return sig_stfl_keypair_from_keygen(sig, public_key, secret_key);
 }
