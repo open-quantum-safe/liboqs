@@ -22,7 +22,7 @@
         sig->sigs_remaining = OQS_SIG_STFL_alg_xmss##xmss_v##_sigs_remaining;\
         sig->sigs_total = OQS_SIG_STFL_alg_xmss##xmss_v##_sigs_total;\
         sig->keypair = OQS_SIG_STFL_alg_xmss##xmss_v##_keypair;\
-        sig->sign = OQS_SIG_STFL_alg_xmss##xmss_v##_sign;        
+        sig->sign = OQS_SIG_STFL_alg_xmss##xmss_v##_sign;
 #else
 #define XMSS_SIGGEN(xmss_v, XMSS_V)
 #endif

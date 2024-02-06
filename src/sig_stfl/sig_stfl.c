@@ -925,23 +925,23 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 #ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
 	(void)sig;
-	(void)remain; 
+	(void)remain;
 	(void)secret_key;
 	return OQS_ERROR;
-#else 
+#else
 	if (sig == NULL || sig->sigs_remaining == NULL || sig->sigs_remaining(remain, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
-#endif //OQS_ALLOW_SFTL_KEY_AND_SIG_GEN	
+#endif //OQS_ALLOW_SFTL_KEY_AND_SIG_GEN 
 }
 
 
 OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 #ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
 	(void)sig;
-	(void)max; 
+	(void)max;
 	(void)secret_key;
 	return OQS_ERROR;
 #else
