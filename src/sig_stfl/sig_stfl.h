@@ -178,6 +178,9 @@ OQS_API int OQS_SIG_STFL_alg_count(void);
  */
 OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
+#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+#define OQS_SIG_STFL OQS_SIG
+#else
 /**
  * Stateful signature scheme object
  */
@@ -281,6 +284,7 @@ typedef struct OQS_SIG_STFL {
 	OQS_STATUS (*sigs_total)(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 } OQS_SIG_STFL;
+#endif //OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
 
 /**
  * @brief OQS_SIG_STFL_SECRET_KEY object for stateful signature schemes
