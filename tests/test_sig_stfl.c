@@ -263,8 +263,8 @@ OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_
 		return OQS_ERROR;
 	}
 
+#ifdef OQS_ENABLE_SIG_STFL_XMSS
 	if (0) {
-
 #ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16
 	} else if (strcmp(sig->method_name, OQS_SIG_STFL_alg_xmss_sha256_h16) == 0) {
 		goto from_kats;
@@ -321,12 +321,11 @@ OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_
 	} else {
 		goto from_keygen;
 	}
-#ifdef OQS_ENABLE_SIG_STFL_XMSS
 from_kats:
 	return sig_stfl_keypair_from_KATs(sig, public_key, secret_key, katfile);
-#endif
 
 from_keygen:
+#endif //OQS_ENABLE_SIG_STFL_XMSS
 	(void)(katfile);
 	return sig_stfl_keypair_from_keygen(sig, public_key, secret_key);
 }
