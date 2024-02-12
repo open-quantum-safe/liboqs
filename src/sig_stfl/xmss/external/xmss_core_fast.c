@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Apache-2.0 AND MIT
+// SPDX-License-Identifier: (Apache-2.0 OR MIT) AND CC0
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
