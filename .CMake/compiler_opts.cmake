@@ -206,6 +206,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 if(MINGW OR MSYS OR CYGWIN)
+    set(OQS_USE_PTHREADS OFF)
     add_compile_options(-Wno-maybe-uninitialized)
     if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.13.0")
         add_link_options(-Wl,--stack,16777216)
