@@ -173,8 +173,6 @@ jobs:
           - name: windows-dll
             CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DBUILD_SHARED_LIBS=ON
     steps:
-      - name: Install MINGW
-        run: apt-get update && apt-get install gcc-mingw-w64
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Configure
