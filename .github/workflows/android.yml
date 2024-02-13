@@ -16,4 +16,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Build project
-        run: ./scripts/build-android.sh $ANDROID_NDK_HOME -a ${{ matrix.abi }} -f "-DOQS_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }}"
+        run: ./scripts/build-android.sh $ANDROID_NDK_HOME -a ${{ matrix.abi }} -f "-DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }}"
