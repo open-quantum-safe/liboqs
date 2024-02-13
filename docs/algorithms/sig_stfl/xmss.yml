@@ -11,10 +11,10 @@ crypto-assumption: hash function second-preimage resistance
 website: https://www.rfc-editor.org/info/rfc8391
 nist-round: 
 spec-version: 
-spdx-license-identifier: Apache-2.0 AND MIT
+spdx-license-identifier: (Apache-2.0 OR MIT) AND CC0-1.0
 primary-upstream:
   source: https://github.com/XMSS/xmss-reference
-  spdx-license-identifier: Apache-2.0 AND MIT
+  spdx-license-identifier: (Apache-2.0 OR MIT) AND CC0-1.0
   upstream-ancestors:
 parameter-sets:
 - name: XMSS-SHA2_10_256 

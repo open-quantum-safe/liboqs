@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Apache-2.0 AND MIT
+// SPDX-License-Identifier: (Apache-2.0 OR MIT) AND CC0-1.0
 #ifndef XMSS_COMMONS_H
 #define XMSS_COMMONS_H
 
