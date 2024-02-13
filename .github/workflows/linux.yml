@@ -164,6 +164,7 @@ jobs:
   linux_cross_compile:
     needs: [stylecheck, upstreamcheck, buildcheck]
     runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     strategy:
       fail-fast: false
       matrix:
