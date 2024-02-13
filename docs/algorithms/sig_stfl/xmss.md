@@ -7,7 +7,7 @@
 - **Specification version**: None.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/XMSS/xmss-reference
-  - **Implementation license (SPDX-Identifier)**: Apache-2.0 AND MIT
+  - **Implementation license (SPDX-Identifier)**: (Apache-2.0 OR MIT) AND CC0-1.0
 
 
 ## Parameter set summary
