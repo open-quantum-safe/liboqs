@@ -357,7 +357,9 @@ cleanup:
 	OQS_MEM_insecure_free(msg);
 	OQS_MEM_insecure_free(msg_rand);
 	OQS_SIG_STFL_free(sig);
-	fclose(fp_rsp);
+    if (fp_rsp != NULL) {
+        fclose(fp_rsp);
+    }
 	return ret;
 }
 
