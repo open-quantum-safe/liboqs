@@ -57,7 +57,6 @@ add_library(oqs kem/kem.c
 # Internal library to be used only by test programs
 add_library(oqs-internal ${INTERNAL_OBJS})
 
-set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
     target_link_libraries(oqs-internal PUBLIC ${SANITIZER_LD_FLAGS})
@@ -78,6 +77,10 @@ target_include_directories(oqs-internal
                            "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
                            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
+
+if(MINGW)
+    target_link_options(oqs-internal PRIVATE -Wl,--export-all-symbols)
+endif()
 
 set_target_properties(oqs
     PROPERTIES

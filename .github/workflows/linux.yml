@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Ensure code conventions are upheld
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Verify copy_from_upstream state
         run: |
           git config --global user.name "ciuser" && \
@@ -46,7 +46,7 @@ jobs:
       SIG_NAME: dilithium_3
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Configure
         run: |
           mkdir build && \
@@ -97,7 +97,7 @@ jobs:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
       - name: Build
@@ -118,7 +118,7 @@ jobs:
           path: build/*.deb
 
   linux_arm_emulated:
-    needs: [stylecheck, buildcheck]
+    needs: [stylecheck, upstreamcheck, buildcheck]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -134,7 +134,7 @@ jobs:
           #   CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install the emulation handlers
         run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - name: Build in an x86_64 container
@@ -160,3 +160,24 @@ jobs:
                               python3 -m pytest --verbose \
                                                 --numprocesses=auto \
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
+
+  linux_cross_compile:
+    needs: [stylecheck, upstreamcheck, buildcheck]
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-binaries
+            CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake
+          - name: windows-dll
+            CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DBUILD_SHARED_LIBS=ON
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
+      - name: Build
+        run: ninja
+        working-directory: build
