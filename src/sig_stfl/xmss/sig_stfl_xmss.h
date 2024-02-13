@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: (Apache-2.0 OR MIT) AND CC0
+// SPDX-License-Identifier: (Apache-2.0 OR MIT) AND CC0-1.0
 
 #ifndef OQS_SIG_STFL_XMSS_H
 #define OQS_SIG_STFL_XMSS_H

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: (Apache-2.0 OR MIT) AND CC0
+// SPDX-License-Identifier: (Apache-2.0 OR MIT) AND CC0-1.0
 #ifndef XMSS_CORE_H
 #define XMSS_CORE_H
 
