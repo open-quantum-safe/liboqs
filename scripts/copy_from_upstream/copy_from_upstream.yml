@@ -226,6 +226,16 @@ sigs:
         pqclean_scheme: falcon-1024
         pretty_name_full: Falcon-1024
         signed_msg_order: falcon
+      -
+        scheme: "padded_512"
+        pqclean_scheme: falcon-padded-512
+        pretty_name_full: Falcon-padded-512
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "padded_1024"
+        pqclean_scheme: falcon-padded-1024
+        pretty_name_full: Falcon-padded-1024
+        signed_msg_order: sig_then_msg
   -
     name: sphincs
     default_implementation: clean
