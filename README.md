@@ -88,7 +88,7 @@ In order to optimize support effort,
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-		brew install cmake ninja openssl@1.1 wget doxygen graphviz astyle valgrind
+		brew install cmake ninja openssl@3 wget doxygen graphviz astyle valgrind
 		pip3 install pytest pytest-xdist pyyaml
 
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL installed (version 3.x recommended; EOL version 1.1.1 also still possible).
