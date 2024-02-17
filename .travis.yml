@@ -9,13 +9,13 @@ jobs:
       compiler: gcc
       if: NOT branch =~ /^ghactionsonly-/
       script:
-        - mkdir build && cd build && cmake -GNinja .. && cmake -LA .. && ninja
-        - cd build & ninja run_tests
+        - cmake -B build && cmake --build build --parallel
+        - ctest --test-dir build/tests --output-on-failure --parallel $(nproc)
     - arch: s390x
       os: linux
       dist: focal
       compiler: gcc
       if: NOT branch =~ /^ghactionsonly-/
       script:
-        - mkdir build && cd build && cmake -GNinja .. && cmake -LA .. && ninja
-        - cd build & ninja run_tests
+        - cmake -B build && cmake --build build --parallel
+        - ctest --test-dir build/tests --output-on-failure --parallel $(nproc)

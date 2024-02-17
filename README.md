@@ -84,11 +84,11 @@ In order to optimize support effort,
 
 	On Ubuntu:
 
-		 sudo apt install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
+		 sudo apt install astyle cmake gcc libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-		brew install cmake ninja openssl@1.1 wget doxygen graphviz astyle valgrind
+		brew install cmake openssl@1.1 wget doxygen graphviz astyle valgrind
 		pip3 install pytest pytest-xdist pyyaml
 
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL installed (version 3.x recommended; EOL version 1.1.1 also still possible).
@@ -100,9 +100,8 @@ In order to optimize support effort,
 
 	and build:
 
-		mkdir build && cd build
-		cmake -GNinja ..
-		ninja
+		cmake -B build
+		cmake --build build --parallel
 
 Various `cmake` build options to customize the resultant artifacts are available and are [documented in CONFIGURE.md](CONFIGURE.md#options-for-configuring-liboqs-builds). All supported options are also listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory.
 
@@ -125,24 +124,24 @@ The following instructions assume we are in `build`.
 
 	The complete test suite can be run using
 
-		ninja run_tests
+		ctest --test-dir build/tests --parallel $(nproc)
 
 4. To generate HTML documentation of the API, run:
 
-		ninja gen_docs
+		cmake --build build --target gen_docs
 
 	Then open `docs/html/index.html` in your web browser.
 
-4. `ninja install` can be run to install the built library and `include` files to a location of choice, which can be specified by passing the `-DCMAKE_INSTALL_PREFIX=<dir>` option to `cmake` at configure time. Alternatively, `ninja package` can be run to create an install package.
+4. `cmake --install build` can be run to install the built library and `include` files to a location of choice, which can be specified by passing the `-DCMAKE_INSTALL_PREFIX=<dir>` option to `cmake` at configure time. Alternatively, `cmake --build build --target package` can be run to create an install package.
 
-5. `ninja uninstall` can be run to remove all installation files.
+5. `cmake --build build --target uninstall` can be run to remove all installation files.
 
 
 ### Windows
 
 Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed. The same options as explained above for Linux/macOS can be used and build artifacts are generated in the specified `build` folders.
 
-If you want to create Visual Studio build files, e.g., if not using `ninja`, be sure to _not_ pass the parameter `-GNinja` to the `cmake` command as exemplified above. You can then build all components using `msbuild`, e.g. as follows: `msbuild ALL_BUILD.vcxproj` and install all artifacts e.g. using this command `msbuild INSTALL.vcxproj`.
+You can then build all components using `msbuild`, e.g. as follows: `msbuild ALL_BUILD.vcxproj` and install all artifacts e.g. using this command `msbuild INSTALL.vcxproj`.
 
 
 ### Cross compilation

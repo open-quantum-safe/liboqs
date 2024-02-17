@@ -62,7 +62,7 @@ Selects algorithm set enabled. Possible values are "STD" selecting all algorithm
 
 ## OQS_BUILD_ONLY_LIB
 
-Can be `ON` or `OFF`. When `ON`, only liboqs is built, and all the targets: `run_tests`, `gen_docs`, and `prettyprint` are excluded from the build system.
+Can be `ON` or `OFF`. When `ON`, only liboqs is built, and all tests and the targets: `gen_docs`, and `prettyprint` are excluded from the build system.
 
 **Default**: `OFF`.
 

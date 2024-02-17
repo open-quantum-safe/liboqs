@@ -3,8 +3,8 @@ jobs:
     env:
       PYTEST_ARGS: tests/test_code_conventions.py tests/test_kat.py
     cmds:
-      - uname -a && mkdir build && cd build && cmake -GNinja .. && ninja && cd .. && python3 -m pytest --numprocesses=auto --verbose $PYTEST_ARGS ; rm -rf build
+      - uname -a && cmake -B build -DCMAKE_C_COMPILER=gcc-11 -GNinja .. && cmake --build build --parallel && ctest --test-dir build/tests --output-on-failure --parallel $(nproc) -R test_code_conventions -R test_kat -E test_kat_all && ctest --test-dir build/tests --output-on-failure --parallel $(nproc) -R test_code_conventions ; cd .. && rm -rf build
   - name: Building and testing using gcc-11 on M1
     cmds:
-      - uname -a && mkdir build && cd build && cmake -DCMAKE_C_COMPILER=gcc-11 -GNinja .. && ninja && ninja run_tests ; cd .. && rm -rf build
+      - uname -a && cmake -B build -DCMAKE_C_COMPILER=gcc-11 -GNinja .. && cmake --build build --parallel && ctest --test-dir build/tests --output-on-failure --parallel $(nproc) ; cd .. && rm -rf build
 

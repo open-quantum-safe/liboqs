@@ -119,13 +119,108 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
         RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL     "${CMAKE_BINARY_DIR}/tests")
 endif()
 
-# TODO: Get CMake to find python.
-# and set PATH variable in Windows
-# for DLL builds.
-add_custom_target(
-    run_tests
-    # skip long KAT tests
-    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${UNIX_TESTS}
-    USES_TERMINAL)
+add_test(
+	NAME test_alg_info
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_alg_info.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_binary
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_binary.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_cmdline
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_cmdline.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_code_conventions
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_code_conventions.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_constant_time
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_constant_time.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_distbuild
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_distbuild.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_hash
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_hash.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_kat
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_kat.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+# test_kat_all takes a very long time. Disable by default.
+if (OQS_ENABLE_LONG_TESTS)
+	add_test(
+		NAME test_kat_all
+		COMMAND ${PYTHON3_EXEC}
+		-m pytest 
+		tests/test_kat_all.py
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
+	set_tests_properties(test_kat_all
+		PROPERTIES ENVIRONMENT "OQS_BUILD_DIR=${CMAKE_BINARY_DIR}"
+	)
+endif()
+add_test(
+	NAME test_leaks
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_leaks.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_mem
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_mem.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+add_test(
+	NAME test_speed
+	COMMAND ${PYTHON3_EXEC}
+	-m pytest 
+	tests/test_speed.py
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+set_tests_properties(
+	test_alg_info
+	test_binary
+	test_cmdline
+	test_code_conventions
+	test_constant_time
+	test_distbuild
+	test_hash
+	test_kat
+	test_speed
+	test_leaks
+	test_mem
+	test_speed
+	PROPERTIES ENVIRONMENT "OQS_BUILD_DIR=${CMAKE_BINARY_DIR}"
+)
