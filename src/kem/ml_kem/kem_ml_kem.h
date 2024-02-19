@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: MIT
+
+#ifndef OQS_KEM_ML_KEM_H
+#define OQS_KEM_ML_KEM_H
+
+#include <oqs/oqs.h>
+
+#if defined(OQS_ENABLE_KEM_ml_kem_512_ipd) || defined(OQS_ENABLE_KEM_ml_kem_512)
+#define OQS_KEM_ml_kem_512_ipd_length_public_key 800
+#define OQS_KEM_ml_kem_512_ipd_length_secret_key 1632
+#define OQS_KEM_ml_kem_512_ipd_length_ciphertext 768
+#define OQS_KEM_ml_kem_512_ipd_length_shared_secret 32
+OQS_KEM *OQS_KEM_ml_kem_512_ipd_new(void);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+
+#define OQS_KEM_ml_kem_512_length_public_key OQS_KEM_ml_kem_512_ipd_length_public_key
+#define OQS_KEM_ml_kem_512_length_secret_key OQS_KEM_ml_kem_512_ipd_length_secret_key
+#define OQS_KEM_ml_kem_512_length_ciphertext OQS_KEM_ml_kem_512_ipd_length_ciphertext
+#define OQS_KEM_ml_kem_512_length_shared_secret OQS_KEM_ml_kem_512_ipd_length_shared_secret
+OQS_KEM *OQS_KEM_ml_kem_512_new(void);
+#define OQS_KEM_ml_kem_512_keypair OQS_KEM_ml_kem_512_ipd_keypair
+#define OQS_KEM_ml_kem_512_encaps OQS_KEM_ml_kem_512_ipd_encaps
+#define OQS_KEM_ml_kem_512_decaps OQS_KEM_ml_kem_512_ipd_decaps
+#endif
+
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd) || defined(OQS_ENABLE_KEM_ml_kem_768)
+#define OQS_KEM_ml_kem_768_ipd_length_public_key 1184
+#define OQS_KEM_ml_kem_768_ipd_length_secret_key 2400
+#define OQS_KEM_ml_kem_768_ipd_length_ciphertext 1088
+#define OQS_KEM_ml_kem_768_ipd_length_shared_secret 32
+OQS_KEM *OQS_KEM_ml_kem_768_ipd_new(void);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+
+#define OQS_KEM_ml_kem_768_length_public_key OQS_KEM_ml_kem_768_ipd_length_public_key
+#define OQS_KEM_ml_kem_768_length_secret_key OQS_KEM_ml_kem_768_ipd_length_secret_key
+#define OQS_KEM_ml_kem_768_length_ciphertext OQS_KEM_ml_kem_768_ipd_length_ciphertext
+#define OQS_KEM_ml_kem_768_length_shared_secret OQS_KEM_ml_kem_768_ipd_length_shared_secret
+OQS_KEM *OQS_KEM_ml_kem_768_new(void);
+#define OQS_KEM_ml_kem_768_keypair OQS_KEM_ml_kem_768_ipd_keypair
+#define OQS_KEM_ml_kem_768_encaps OQS_KEM_ml_kem_768_ipd_encaps
+#define OQS_KEM_ml_kem_768_decaps OQS_KEM_ml_kem_768_ipd_decaps
+#endif
+
+#if defined(OQS_ENABLE_KEM_ml_kem_1024_ipd) || defined(OQS_ENABLE_KEM_ml_kem_1024)
+#define OQS_KEM_ml_kem_1024_ipd_length_public_key 1568
+#define OQS_KEM_ml_kem_1024_ipd_length_secret_key 3168
+#define OQS_KEM_ml_kem_1024_ipd_length_ciphertext 1568
+#define OQS_KEM_ml_kem_1024_ipd_length_shared_secret 32
+OQS_KEM *OQS_KEM_ml_kem_1024_ipd_new(void);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+
+#define OQS_KEM_ml_kem_1024_length_public_key OQS_KEM_ml_kem_1024_ipd_length_public_key
+#define OQS_KEM_ml_kem_1024_length_secret_key OQS_KEM_ml_kem_1024_ipd_length_secret_key
+#define OQS_KEM_ml_kem_1024_length_ciphertext OQS_KEM_ml_kem_1024_ipd_length_ciphertext
+#define OQS_KEM_ml_kem_1024_length_shared_secret OQS_KEM_ml_kem_1024_ipd_length_shared_secret
+OQS_KEM *OQS_KEM_ml_kem_1024_new(void);
+#define OQS_KEM_ml_kem_1024_keypair OQS_KEM_ml_kem_1024_ipd_keypair
+#define OQS_KEM_ml_kem_1024_encaps OQS_KEM_ml_kem_1024_ipd_encaps
+#define OQS_KEM_ml_kem_1024_decaps OQS_KEM_ml_kem_1024_ipd_decaps
+#endif
+
+#endif
+

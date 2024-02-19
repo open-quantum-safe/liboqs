@@ -5,7 +5,7 @@
 
 #include <oqs/oqs.h>
 
-#ifdef OQS_ENABLE_SIG_sphincs_sha2_128f_simple
+#if defined(OQS_ENABLE_SIG_sphincs_sha2_128f_simple)
 #define OQS_SIG_sphincs_sha2_128f_simple_length_public_key 32
 #define OQS_SIG_sphincs_sha2_128f_simple_length_secret_key 64
 #define OQS_SIG_sphincs_sha2_128f_simple_length_signature 17088
@@ -16,7 +16,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_sign(uint8_t *signature, siz
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_sha2_128s_simple
+#if defined(OQS_ENABLE_SIG_sphincs_sha2_128s_simple)
 #define OQS_SIG_sphincs_sha2_128s_simple_length_public_key 32
 #define OQS_SIG_sphincs_sha2_128s_simple_length_secret_key 64
 #define OQS_SIG_sphincs_sha2_128s_simple_length_signature 7856
@@ -27,7 +27,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_sign(uint8_t *signature, siz
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_sha2_192f_simple
+#if defined(OQS_ENABLE_SIG_sphincs_sha2_192f_simple)
 #define OQS_SIG_sphincs_sha2_192f_simple_length_public_key 48
 #define OQS_SIG_sphincs_sha2_192f_simple_length_secret_key 96
 #define OQS_SIG_sphincs_sha2_192f_simple_length_signature 35664
@@ -38,7 +38,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_sign(uint8_t *signature, siz
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_sha2_192s_simple
+#if defined(OQS_ENABLE_SIG_sphincs_sha2_192s_simple)
 #define OQS_SIG_sphincs_sha2_192s_simple_length_public_key 48
 #define OQS_SIG_sphincs_sha2_192s_simple_length_secret_key 96
 #define OQS_SIG_sphincs_sha2_192s_simple_length_signature 16224
@@ -49,7 +49,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_sign(uint8_t *signature, siz
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_sha2_256f_simple
+#if defined(OQS_ENABLE_SIG_sphincs_sha2_256f_simple)
 #define OQS_SIG_sphincs_sha2_256f_simple_length_public_key 64
 #define OQS_SIG_sphincs_sha2_256f_simple_length_secret_key 128
 #define OQS_SIG_sphincs_sha2_256f_simple_length_signature 49856
@@ -60,7 +60,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_sign(uint8_t *signature, siz
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_sha2_256s_simple
+#if defined(OQS_ENABLE_SIG_sphincs_sha2_256s_simple)
 #define OQS_SIG_sphincs_sha2_256s_simple_length_public_key 64
 #define OQS_SIG_sphincs_sha2_256s_simple_length_secret_key 128
 #define OQS_SIG_sphincs_sha2_256s_simple_length_signature 29792
@@ -71,7 +71,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_sign(uint8_t *signature, siz
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_shake_128f_simple
+#if defined(OQS_ENABLE_SIG_sphincs_shake_128f_simple)
 #define OQS_SIG_sphincs_shake_128f_simple_length_public_key 32
 #define OQS_SIG_sphincs_shake_128f_simple_length_secret_key 64
 #define OQS_SIG_sphincs_shake_128f_simple_length_signature 17088
@@ -82,7 +82,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_sign(uint8_t *signature, si
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_shake_128s_simple
+#if defined(OQS_ENABLE_SIG_sphincs_shake_128s_simple)
 #define OQS_SIG_sphincs_shake_128s_simple_length_public_key 32
 #define OQS_SIG_sphincs_shake_128s_simple_length_secret_key 64
 #define OQS_SIG_sphincs_shake_128s_simple_length_signature 7856
@@ -93,7 +93,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_sign(uint8_t *signature, si
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_shake_192f_simple
+#if defined(OQS_ENABLE_SIG_sphincs_shake_192f_simple)
 #define OQS_SIG_sphincs_shake_192f_simple_length_public_key 48
 #define OQS_SIG_sphincs_shake_192f_simple_length_secret_key 96
 #define OQS_SIG_sphincs_shake_192f_simple_length_signature 35664
@@ -104,7 +104,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_sign(uint8_t *signature, si
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_shake_192s_simple
+#if defined(OQS_ENABLE_SIG_sphincs_shake_192s_simple)
 #define OQS_SIG_sphincs_shake_192s_simple_length_public_key 48
 #define OQS_SIG_sphincs_shake_192s_simple_length_secret_key 96
 #define OQS_SIG_sphincs_shake_192s_simple_length_signature 16224
@@ -115,7 +115,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_sign(uint8_t *signature, si
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_shake_256f_simple
+#if defined(OQS_ENABLE_SIG_sphincs_shake_256f_simple)
 #define OQS_SIG_sphincs_shake_256f_simple_length_public_key 64
 #define OQS_SIG_sphincs_shake_256f_simple_length_secret_key 128
 #define OQS_SIG_sphincs_shake_256f_simple_length_signature 49856
@@ -126,7 +126,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_sign(uint8_t *signature, si
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_sphincs_shake_256s_simple
+#if defined(OQS_ENABLE_SIG_sphincs_shake_256s_simple)
 #define OQS_SIG_sphincs_shake_256s_simple_length_public_key 64
 #define OQS_SIG_sphincs_shake_256s_simple_length_secret_key 128
 #define OQS_SIG_sphincs_shake_256s_simple_length_signature 29792

@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:043e6cd4-f2a6-4828-ae97-7cbdbd372414",
+  "serialNumber": "urn:uuid:c25dad99-ad00-48b6-aa9e-25d4f7c3c8c5",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-10-19T08:58:49.361520",
+    "timestamp": "2023-12-13T17:05:36.137517",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@4846f81a98232e6c90f08578e8f122146550be8d",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5f83324a6c464448b70b1e57b3cd161b6832e0e0",
       "name": "liboqs",
-      "version": "4846f81a98232e6c90f08578e8f122146550be8d"
+      "version": "5f83324a6c464448b70b1e57b3cd161b6832e0e0"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@4846f81a98232e6c90f08578e8f122146550be8d",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5f83324a6c464448b70b1e57b3cd161b6832e0e0",
       "name": "liboqs",
-      "version": "4846f81a98232e6c90f08578e8f122146550be8d"
+      "version": "5f83324a6c464448b70b1e57b3cd161b6832e0e0"
     },
     {
       "type": "crypto-asset",
@@ -961,6 +961,126 @@
     },
     {
       "type": "crypto-asset",
+      "bom-ref": "alg:ML-KEM-512-ipd:generic",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-KEM-512-ipd",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 1
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-KEM-512-ipd:x86_64",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-KEM-512-ipd",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 1
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-KEM-768-ipd:generic",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-KEM-768-ipd",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 3
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-KEM-768-ipd:x86_64",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-KEM-768-ipd",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 3
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-KEM-1024-ipd:generic",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-KEM-1024-ipd",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 5
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-KEM-1024-ipd:x86_64",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-KEM-1024-ipd",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 5
+      }
+    },
+    {
+      "type": "crypto-asset",
       "bom-ref": "alg:sntrup761:generic",
       "name": "NTRU-Prime",
       "cryptoProperties": {
@@ -1295,6 +1415,126 @@
             "verify"
           ],
           "implementationPlatform": "armv8-a"
+        },
+        "nistQuantumSecurityLevel": 5
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-DSA-44-ipd:generic",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-DSA-44-ipd",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 2
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-DSA-44-ipd:x86_64",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-DSA-44-ipd",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 2
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-DSA-65-ipd:generic",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-DSA-65-ipd",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 3
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-DSA-65-ipd:x86_64",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-DSA-65-ipd",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 3
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-DSA-87-ipd:generic",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-DSA-87-ipd",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 5
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:ML-DSA-87-ipd:x86_64",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "ML-DSA-87-ipd",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "x86_64"
         },
         "nistQuantumSecurityLevel": 5
       }
@@ -1808,7 +2048,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@4846f81a98232e6c90f08578e8f122146550be8d",
+      "ref": "pkg:github/open-quantum-safe/liboqs@5f83324a6c464448b70b1e57b3cd161b6832e0e0",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -1857,6 +2097,12 @@
         "alg:Kyber1024:generic",
         "alg:Kyber1024:x86_64",
         "alg:Kyber1024:armv8-a",
+        "alg:ML-KEM-512-ipd:generic",
+        "alg:ML-KEM-512-ipd:x86_64",
+        "alg:ML-KEM-768-ipd:generic",
+        "alg:ML-KEM-768-ipd:x86_64",
+        "alg:ML-KEM-1024-ipd:generic",
+        "alg:ML-KEM-1024-ipd:x86_64",
         "alg:sntrup761:generic",
         "alg:sntrup761:x86_64",
         "alg:Dilithium2:generic",
@@ -1874,6 +2120,12 @@
         "alg:Falcon-1024:generic",
         "alg:Falcon-1024:x86_64",
         "alg:Falcon-1024:armv8-a",
+        "alg:ML-DSA-44-ipd:generic",
+        "alg:ML-DSA-44-ipd:x86_64",
+        "alg:ML-DSA-65-ipd:generic",
+        "alg:ML-DSA-65-ipd:x86_64",
+        "alg:ML-DSA-87-ipd:generic",
+        "alg:ML-DSA-87-ipd:x86_64",
         "alg:SPHINCS+-SHA2-128f-simple:generic",
         "alg:SPHINCS+-SHA2-128f-simple:x86_64",
         "alg:SPHINCS+-SHA2-128s-simple:generic",
@@ -2263,6 +2515,48 @@
       "dependencyType": "uses"
     },
     {
+      "ref": "alg:ML-KEM-512-ipd:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-KEM-512-ipd:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-KEM-768-ipd:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-KEM-768-ipd:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-KEM-1024-ipd:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-KEM-1024-ipd:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
       "ref": "alg:sntrup761:generic",
       "dependsOn": [
         "alg:aes"
@@ -2376,6 +2670,48 @@
     },
     {
       "ref": "alg:Falcon-1024:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-DSA-44-ipd:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-DSA-44-ipd:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-DSA-65-ipd:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-DSA-65-ipd:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-DSA-87-ipd:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:ML-DSA-87-ipd:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],

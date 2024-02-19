@@ -1,0 +1,117 @@
+name: ML-DSA
+type: signature
+principal-submitters:
+- Vadim Lyubashevsky
+auxiliary-submitters:
+- Shi Bai
+- Léo Ducas
+- Eike Kiltz
+- Tancrède Lepoint
+- Peter Schwabe
+- Gregor Seiler
+- Damien Stehlé
+crypto-assumption: hardness of lattice problems over module lattices
+website: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/ipd
+nist-round: ipd
+spec-version: ML-DSA-ipd
+primary-upstream:
+  source: https://github.com/pq-crystals/dilithium/commit/e7bed6258b9a3703ce78d4ec38021c86382ce31c
+    with copy_from_upstream patches
+  spdx-license-identifier: CC0-1.0 or Apache-2.0
+parameter-sets:
+- name: ML-DSA-44-ipd
+  alias: ML-DSA-44
+  claimed-nist-level: 2
+  claimed-security: EUF-CMA
+  length-public-key: 1312
+  length-secret-key: 2560
+  length-signature: 2420
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: ML-DSA-65-ipd
+  alias: ML-DSA-65
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 1952
+  length-secret-key: 4032
+  length-signature: 3309
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: ML-DSA-87-ipd
+  alias: ML-DSA-87
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 2592
+  length-secret-key: 4896
+  length-signature: 4627
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false

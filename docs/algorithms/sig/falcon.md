@@ -13,10 +13,10 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|   Falcon-512    | EUF-CMA          |                    1 |                       897 |                      1281 |                      666 |
-|   Falcon-1024   | EUF-CMA          |                    5 |                      1793 |                      2305 |                     1280 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
+|   Falcon-512    | NA                    | EUF-CMA          |                    1 |                       897 |                      1281 |                      666 |
+|   Falcon-1024   | NA                    | EUF-CMA          |                    5 |                      1793 |                      2305 |                     1280 |
 
 ## Falcon-512 implementation characteristics
 

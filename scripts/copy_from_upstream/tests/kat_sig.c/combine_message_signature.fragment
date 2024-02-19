@@ -1,5 +1,5 @@
 {% for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}
-	} else if (0 == strcmp(sig->method_name, "{{ scheme['pretty_name_full'] }}")) {
+	} else if (0 == strcmp(sig->method_name, "{{ scheme['pretty_name_full'] }}"){%- if 'alias_scheme' in scheme %} || 0 == strcmp(sig->method_name, "{{ scheme['alias_pretty_name_full'] }}"){%- endif -%}) {
 {%- if scheme['signed_msg_order'] == 'sig_then_msg' %}
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;

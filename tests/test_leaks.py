@@ -3,6 +3,7 @@
 import helpers
 import os
 import pytest
+import re
 import sys
 
 @helpers.filtered_test

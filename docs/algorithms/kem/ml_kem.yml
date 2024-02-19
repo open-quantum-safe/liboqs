@@ -1,0 +1,125 @@
+name: ML-KEM
+type: kem
+principal-submitters:
+- Peter Schwabe
+auxiliary-submitters:
+- Roberto Avanzi
+- Joppe Bos
+- Léo Ducas
+- Eike Kiltz
+- Tancrède Lepoint
+- Vadim Lyubashevsky
+- John M. Schanck
+- Gregor Seiler
+- Damien Stehlé
+crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
+website: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203/ipd
+nist-round: ipd
+spec-version: ML-KEM-ipd
+primary-upstream:
+  source: https://github.com/pq-crystals/kyber/commit/11d00ff1f20cfca1f72d819e5a45165c1e0a2816
+    with copy_from_upstream patches
+  spdx-license-identifier: CC0-1.0 or Apache-2.0
+parameter-sets:
+- name: ML-KEM-512-ipd
+  alias: ML-KEM-512
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 800
+  length-ciphertext: 768
+  length-secret-key: 1632
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: ML-KEM-768-ipd
+  alias: ML-KEM-768
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-public-key: 1184
+  length-ciphertext: 1088
+  length-secret-key: 2400
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: ML-KEM-1024-ipd
+  alias: ML-KEM-1024
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1568
+  length-ciphertext: 1568
+  length-secret-key: 3168
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false

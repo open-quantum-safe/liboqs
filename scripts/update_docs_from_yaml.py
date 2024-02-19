@@ -62,6 +62,7 @@ def do_it(liboqs_root):
 
             out_md.write('\n## Parameter set summary\n\n')
             table = [['Parameter set',
+                      'Parameter set alias',
                       'Security model',
                       'Claimed NIST Level',
                       'Public key size (bytes)',
@@ -70,6 +71,7 @@ def do_it(liboqs_root):
                       'Shared secret size (bytes)']]
             for parameter_set in kem_yaml['parameter-sets']:
                 table.append([parameter_set['name'],
+                              parameter_set['alias'] if 'alias' in parameter_set else "NA",
                               parameter_set['claimed-security'],
                               parameter_set['claimed-nist-level'],
                               parameter_set['length-public-key'],
@@ -186,6 +188,7 @@ def do_it(liboqs_root):
 
             out_md.write('\n## Parameter set summary\n\n')
             table = [['Parameter set',
+                      'Parameter set alias',
                       'Security model',
                       'Claimed NIST Level',
                       'Public key size (bytes)',
@@ -193,6 +196,7 @@ def do_it(liboqs_root):
                       'Signature size (bytes)']]
             for parameter_set in sig_yaml['parameter-sets']:
                 table.append([parameter_set['name'].replace('_', '\_'),
+                              parameter_set['alias'] if 'alias' in parameter_set else "NA",
                               parameter_set['claimed-security'],
                               parameter_set['claimed-nist-level'],
                               parameter_set['length-public-key'],
@@ -291,13 +295,21 @@ def do_it(liboqs_root):
             parameter_sets = kem_yaml['parameter-sets']
             if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
                 readme.write('- **{}**: {}†'.format(kem_yaml['name'], parameter_sets[0]['name']))
+                if 'alias' in parameter_sets[0]:
+                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']))
             else:
                 readme.write('- **{}**: {}'.format(kem_yaml['name'], parameter_sets[0]['name']))
+                if 'alias' in parameter_sets[0]:
+                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']))
             for parameter_set in parameter_sets[1:]:
                 if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
                     readme.write(', {}†'.format(parameter_set['name']))
+                    if 'alias' in parameter_set:
+                        readme.write(' (alias: {})'.format(parameter_set['alias']))
                 else:
                     readme.write(', {}'.format(parameter_set['name']))
+                    if 'alias' in parameter_set:
+                        readme.write(' (alias: {})'.format(parameter_set['alias']))
             readme.write('\n')
 
         readme.write(postamble)
@@ -318,13 +330,21 @@ def do_it(liboqs_root):
             parameter_sets = sig_yaml['parameter-sets']
             if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
                 readme.write('- **{}**: {}†'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+                if 'alias' in parameter_sets[0]:
+                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\_'))
             else:
                 readme.write('- **{}**: {}'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+                if 'alias' in parameter_sets[0]:
+                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\_'))
             for parameter_set in parameter_sets[1:]:
                 if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
                     readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+                    if 'alias' in parameter_set:
+                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\_'))
                 else:
                     readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+                    if 'alias' in parameter_set:
+                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\_'))
             readme.write('\n')
 
         sphincs_yml = sig_yamls[-1]
