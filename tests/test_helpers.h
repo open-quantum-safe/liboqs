@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include <oqs/sha3.h>
+#include <oqs/rand_nist.h>
 
 typedef union {
 	OQS_SHA3_shake256_inc_ctx hqc_state;

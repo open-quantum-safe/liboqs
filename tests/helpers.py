@@ -12,6 +12,7 @@ import json
 kats = {}
 kats["kem"] = None
 kats["sig"] = None
+kats["sig_stfl"] = None
 
 def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, input=None, ignore_returncode=False):
     """
@@ -108,6 +109,39 @@ def is_sig_enabled_by_name(name):
                     return True
     return False
 
+def available_sig_stfls_by_name():
+    available_names = []
+    with open(os.path.join('src', 'sig_stfl', 'sig_stfl.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_SIG_STFL_alg_"):
+                sig_stfl_name = line.split(' ')[2].strip()
+                sig_stfl_name = sig_stfl_name[1:-1]
+                available_names.append(sig_stfl_name)
+    return available_names
+
+def is_sig_stfl_enabled_by_name(name):
+    symbol = None
+    with open(os.path.join('src', 'sig_stfl', 'sig_stfl.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_SIG_STFL_alg_"):
+                sig_stfl_symbol = line.split(' ')[1]
+                sig_stfl_symbol = sig_stfl_symbol[len("OQS_SIG_STFL_alg_"):]
+                sig_stfl_name = line.split(' ')[2].strip()
+                sig_stfl_name = sig_stfl_name[1:-1]
+                if sig_stfl_name == name:
+                    symbol = sig_stfl_symbol
+                    break
+    if symbol == None: return False
+    header = os.path.join(get_current_build_dir_name(), 'include', 'oqs', 'oqsconfig.h')
+    with open(header) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_ENABLE_SIG_STFL_"):
+                sig_stfl_symbol = line.split(' ')[1]
+                sig_stfl_symbol = sig_stfl_symbol[len("OQS_ENABLE_SIG_STFL_"):].rstrip()
+                if sig_stfl_symbol == symbol:
+                    return True
+    return False
+
 def filtered_test(func):
     funcname = func.__name__[len("test_"):]
 
@@ -141,7 +175,8 @@ def path_to_executable(program_name):
     for executable in [
         os.path.join(path, program_name),
         os.path.join(path, program_name + ".EXE"),
-        os.path.join(path, program_name + ".exe")]:
+        os.path.join(path, program_name + ".exe"),
+        os.path.join(path, "Debug", program_name + ".exe"),]:
             if os.path.isfile(executable):
                 return executable
     assert False, "Unable to find executable file {}".format(program_name)
@@ -159,10 +194,24 @@ def is_use_option_enabled_by_name(name):
     return name in available_use_options_by_name()
 
 def get_kats(t):
-   if kats[t] is None:
-     with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
-      kats[t] = json.load(fp)
-   return kats[t]
+    if kats[t] is None:
+        with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
+            kats[t] = json.load(fp)
+    return kats[t]
+
+def get_katfile(t: str, sig_stfl_name: str) -> str:
+    algo_dir = ''
+    if "XMSS" in sig_stfl_name:
+        algo_dir = 'xmss'
+    if "LMS" in sig_stfl_name:
+        algo_dir = 'lms'
+    if algo_dir == '':
+        return ''
+    # Replace the "/" to "-" in XMSSMT parameters
+    clean_sig_stfl_name = sig_stfl_name.replace("/", "-", 1)
+    kat_filename = f"{clean_sig_stfl_name}.rsp"
+    katfile = os.path.join('tests', 'KATs', t, algo_dir, kat_filename)
+    return katfile
 
 @functools.lru_cache()
 def get_valgrind_version():
