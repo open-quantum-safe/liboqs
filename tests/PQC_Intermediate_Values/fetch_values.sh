@@ -3,8 +3,8 @@
 
 # This script fetches the NIST vectors for the ML-KEM-ipd and ML-DSA-ipd and extracts the values we use for testing
 
-wget https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/example-files/PQC%20Intermediate%20Values.zip
-unzip PQC_Intermediate_Values.zip
+wget -O PQC_Intermediate_Values.zip https://csrc.nist.gov/csrc/media/Projects/post-quantum-cryptography/documents/example-files/PQC%20Intermediate%20Values.zip
+unzip PQC_Intermediate_Values.zip && mv "PQC Intermediate Values" PQC_Intermediate_Values
 
 file_keygen="PQC_Intermediate_Values/Key Generation -- "
 file_signature="PQC_Intermediate_Values/Signature Generation -- "
