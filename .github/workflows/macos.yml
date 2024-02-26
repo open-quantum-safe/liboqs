@@ -1,11 +1,16 @@
 name: MacOS tests
 
-on: [push, pull_request] # TODO eliminate double-run
+on:
+  workflow_run: # run after minimal tests complete
+    workflows: ["Minimal tests"]
+    types: [completed]
 
 jobs:
   macos:
     runs-on: [macos-12, macos-13, macos-14]
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # only run if minimal tests succeed
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: macOS-gcc13
@@ -22,7 +27,7 @@ jobs:
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
-        run: mkdir build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
+        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
       - name: Build
         run: ninja
         working-directory: build

@@ -1,69 +1,13 @@
 name: Linux tests
 
-on: [push, pull_request]
+on:
+  workflow_run: # only run if the minimal tests pass
+    workflows: ["Minimal tests"]
+    types: [completed]
 
 jobs:
-
-  stylecheck:
-    name: Check code formatting
-    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Ensure code conventions are upheld
-        run: python3 -m pytest --verbose tests/test_code_conventions.py
-      - name: Check that doxygen can parse the documentation
-        run: mkdir -p build/docs && doxygen docs/.Doxyfile
-      - name: Validate CBOM
-        run: scripts/validate_cbom.sh
-
-  upstreamcheck:
-    name: Check upstream code is properly integrated
-    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Verify copy_from_upstream state
-        run: |
-          git config --global user.name "ciuser" && \
-          git config --global user.email "ci@openquantumsafe.org" && \
-          export LIBOQS_DIR=`pwd` && \
-          git config --global --add safe.directory $LIBOQS_DIR && \
-          cd scripts/copy_from_upstream && \
-          ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
-          python3 copy_from_upstream.py copy && \
-          ! git status | grep modified
-
-  buildcheck:
-    name: Check that code passes a basic build before starting heavier tests
-    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    needs: stylecheck
-    runs-on: ubuntu-latest
-    env:
-      KEM_NAME: kyber_768
-      SIG_NAME: dilithium_3
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Configure
-        run: |
-          mkdir build && \
-          cd build && \
-          cmake .. --warn-uninitialized \
-                   -GNinja \
-                   -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
-                   > config.log 2>&1 && \
-          cat config.log && \
-          cmake -LA .. && \
-          ! (grep "uninitialized variable" config.log)
-      - name: Build
-        run: ninja
-        working-directory: build
-
   linux_intel:
-    needs: [stylecheck, upstreamcheck, buildcheck]
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # only run if minimal tests succeed
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -118,7 +62,7 @@ jobs:
           path: build/*.deb
 
   linux_arm_emulated:
-    needs: [stylecheck, upstreamcheck, buildcheck]
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # only run if minimal tests succeed
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -162,7 +106,7 @@ jobs:
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
 
   linux_cross_compile:
-    needs: [stylecheck, upstreamcheck, buildcheck]
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # only run if minimal tests succeed
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     strategy:
