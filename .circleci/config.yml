@@ -185,41 +185,6 @@ jobs:
       - store_artifacts:
           path: build/test-results
 
-  macOS:
-    description: A template for running liboqs tests on macOS
-    parameters:
-      CMAKE_ARGS:
-        description: "Arguments to pass to CMake."
-        type: string
-      PYTEST_ARGS:
-        description: "Arguments to pass to pytest."
-        type: string
-        default: ""
-    macos:
-      xcode: "14.3.1"
-    steps:
-      - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
-      - run:
-          name: Install dependencies
-          command: env HOMEBREW_NO_AUTO_UPDATE=1 brew install openssl cmake ninja gcc@11 && pip3 install pytest pytest-xdist pyyaml
-      - run:
-          name: Get system information
-          command: sysctl -a | grep machdep.cpu
-      - run:
-          name: Configure
-          command: mkdir build && cd build && source ~/.bashrc && cmake -GNinja << parameters.CMAKE_ARGS >> .. && cmake -LA ..
-      - run:
-          name: Build
-          command: ninja
-          working_directory: build
-      - run:
-          name: Run tests
-          command: mkdir tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
-      - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
-
   trigger-downstream-ci:
     docker:
       - image: cimg/base:2020.01
@@ -379,21 +344,6 @@ workflows:
           <<: *require_buildcheck
           name: arm64
           PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 --ignore=tests/test_kat_all.py
-      - macOS:
-          <<: *require_buildcheck
-          name: macOS-gcc11
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-11
-          PYTEST_ARGS: --ignore=tests/test_kat_all.py
-      - macOS:
-          <<: *require_buildcheck
-          name: macOS-noopenssl
-          CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF
-          PYTEST_ARGS: --ignore=tests/test_kat_all.py
-      - macOS:
-          <<: *require_buildcheck
-          name: macOS-shared
-          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF -DOQS_ENABLE_KEM_CLASSIC_MCELIECE=OFF
-          PYTEST_ARGS: --ignore=tests/test_kat_all.py
 
   commit-to-main:
     when:
