@@ -184,21 +184,17 @@ jobs:
 
   macos:
     needs: buildcheck
-    # macos-14 runs on aarch64; the others run on x64
     strategy:
       fail-fast: false
       matrix:
-        os:
+        os: # macos-14 runs on aarch64; the others run on x64
           - macos-12
           - macos-13
           - macos-14
-        include:
-          - name: macOS-gcc13
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-13
-          - name: macOS-noopenssl
-            CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-          - name: macOS-buildshared
-            CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
+        CMAKE_ARGS:
+          - -DCMAKE_C_COMPILER=gcc-13
+          - -DOQS_USE_OPENSSL=OFF
+          - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
