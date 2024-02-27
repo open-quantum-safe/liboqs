@@ -1,0 +1,8 @@
+colorama==0.4.6
+execnet==2.1.1
+iniconfig==2.0.0
+packaging==24.0
+pluggy==1.4.0
+pytest==8.1.1
+pytest-xdist==3.5.0
+pyyaml==6.0.1
