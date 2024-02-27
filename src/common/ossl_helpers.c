@@ -13,8 +13,8 @@ static EVP_CIPHER *aes128_ecb_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 
 CRYPTO_ONCE OQS_ONCE_STATIC_INIT;
 
-static void oqs_fetch_ossl_objects(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+static void oqs_fetch_ossl_objects(void) {
 	sha256_ptr = EVP_MD_fetch(NULL, "SHA256", NULL);
 	sha384_ptr = EVP_MD_fetch(NULL, "SHA384", NULL);
 	sha512_ptr = EVP_MD_fetch(NULL, "SHA512", NULL);
@@ -34,8 +34,8 @@ static void oqs_fetch_ossl_objects(void) {
 	        !aes128_ecb_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
 		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
 	}
-#endif
 }
+#endif
 
 void oqs_free_ossl_objects(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
