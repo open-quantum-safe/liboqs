@@ -5,18 +5,22 @@ liboqs
 
 liboqs is an open source C library for quantum-safe cryptographic algorithms.
 
-- [Overview](#overview)
-- [Status](#status)
-  * [Supported algorithms](#supported-algorithms)
-  * [Limitations and Security](#limitations-and-security)
-- [Quickstart](#quickstart)
-  * [Linux / macOS](#linuxmacOS)
-  * [Windows](#windows)
-  * [Cross compilation](#cross-compilation)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+- [liboqs](#liboqs)
+	- [Overview](#overview)
+	- [Status](#status)
+		- [Supported Algorithms](#supported-algorithms)
+			- [Key encapsulation mechanisms](#key-encapsulation-mechanisms)
+			- [Signature schemes](#signature-schemes)
+		- [Limitations and Security](#limitations-and-security)
+			- [Platform limitations](#platform-limitations)
+	- [Quickstart](#quickstart)
+		- [Linux/macOS](#linuxmacos)
+		- [Windows](#windows)
+		- [Cross compilation](#cross-compilation)
+	- [Documentation](#documentation)
+	- [Contributing](#contributing)
+	- [License](#license)
+	- [Acknowledgements](#acknowledgements)
 
 ## Overview
 
@@ -26,9 +30,9 @@ liboqs provides:
 - a common API for these algorithms
 - a test harness and benchmarking routines
 
-liboqs is part of the **Open Quantum Safe (OQS)** project led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/), which aims to develop and integrate into applications quantum-safe cryptography to facilitate deployment and testing in real world contexts. In particular, OQS provides prototype integrations of liboqs into TLS and SSH, through [OpenSSL](https://github.com/open-quantum-safe/openssl) and [OpenSSH](https://github.com/open-quantum-safe/openssh-portable).
+liboqs is part of the **Open Quantum Safe (OQS)** project, which aims to develop and integrate into applications quantum-safe cryptography to facilitate deployment and testing in real world contexts. In particular, OQS provides prototype integrations of liboqs into protocols like TLS, X.509, and S/MIME, through our [OpenSSL 3 Provider](https://github.com/open-quantum-safe/oqs-provider) and we provide a variety of other [post-quantum-enabled demos](https://github.com/open-quantum-safe/oqs-demos).
 
-More information on OQS can be found [here](https://openquantumsafe.org/) and in the [associated](https://openquantumsafe.org/papers/SAC-SteMos16.pdf) [whitepapers](https://openquantumsafe.org/papers/NISTPQC-CroPaqSte19.pdf).
+The OQS project is supported by the [Post-Quantum Cryptography Alliance](https://pqca.org/) as part of the [Linux Foundation](https://linuxfoundation.org/). More information about the Open Quantum Safe project can be found at [openquantumsafe.org](https://openquantumsafe.org/).
 
 ## Status
 
@@ -186,8 +190,10 @@ liboqs includes some third party libraries or modules that are licensed differen
 
 ## Acknowledgements
 
-Various companies, including Amazon Web Services, Cisco Systems, evolutionQ, IBM Research, Microsoft Research, SandboxAQ, and softwareQ have dedicated programmer time to contribute source code to OQS. [Various people](https://github.com/open-quantum-safe/liboqs/blob/main/CONTRIBUTORS) have contributed source code to liboqs.
+The OQS project is supported by the [Post-Quantum Cryptography Alliance](https://pqca.org/) as part of the [Linux Foundation](https://linuxfoundation.org/).
 
-Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services, the Canadian Centre for Cyber Security, the Unitary Fund, the NGI Assure Fund, and VeriSign Inc.
+The OQS project was founded by Douglas Stebila and Michele Mosca at the University of Waterloo.  [Contributors to liboqs](https://github.com/open-quantum-safe/liboqs/blob/main/CONTRIBUTORS) include individual contributors, academics and researchers, and various companies, including Amazon Web Services, Cisco Systems, evolutionQ, IBM Research, Microsoft Research, SandboxAQ, and softwareQ.
+
+Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services, the Canadian Centre for Cyber Security, Cisco, the Unitary Fund, the NGI Assure Fund, and VeriSign Inc.
 
 Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.
