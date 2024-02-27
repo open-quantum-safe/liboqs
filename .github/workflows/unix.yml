@@ -1,4 +1,4 @@
-name: Linux tests
+name: Linux and MacOS tests
 
 on: [push, pull_request]
 
@@ -39,7 +39,7 @@ jobs:
   buildcheck:
     name: Check that code passes a basic build before starting heavier tests
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    needs: stylecheck
+    needs: [stylecheck, upstreamcheck]
     runs-on: ubuntu-latest
     env:
       KEM_NAME: kyber_768
@@ -63,7 +63,7 @@ jobs:
         working-directory: build
 
   linux_intel:
-    needs: [stylecheck, upstreamcheck, buildcheck]
+    needs: buildcheck
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -118,7 +118,7 @@ jobs:
           path: build/*.deb
 
   linux_arm_emulated:
-    needs: [stylecheck, upstreamcheck, buildcheck]
+    needs: buildcheck
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -162,7 +162,7 @@ jobs:
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
 
   linux_cross_compile:
-    needs: [stylecheck, upstreamcheck, buildcheck]
+    needs: buildcheck
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     strategy:
@@ -181,3 +181,33 @@ jobs:
       - name: Build
         run: ninja
         working-directory: build
+
+  macos:
+    needs: buildcheck
+    strategy:
+      fail-fast: false
+      matrix:
+        os: # macos-14 runs on aarch64; the others run on x64
+          - macos-12
+          - macos-13
+          - macos-14
+        CMAKE_ARGS:
+          - -DCMAKE_C_COMPILER=gcc-13
+          - -DOQS_USE_OPENSSL=OFF
+          - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install pytest pytest-xdist pyyaml
+      - name: Get system information
+        run: sysctl -a | grep machdep.cpu
+      - name: Configure
+        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py ${{ matrix.PYTEST_ARGS }}
+        timeout-minutes: 60
