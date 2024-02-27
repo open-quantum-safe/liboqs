@@ -13,6 +13,7 @@ on:
     - cron: '29 9 * * 4'
   push:
     branches: [ "main" ]
+  pull_request:
 
 # Declare default permissions as read only.
 permissions: read-all
@@ -54,7 +55,7 @@ jobs:
           # For private repositories:
           #   - `publish_results` will always be set to `false`, regardless
           #     of the value entered here.
-          publish_results: true
+          publish_results: false
 
       # Upload the results as artifacts (optional). Commenting out will disable uploads of run results in SARIF
       # format to the repository Actions tab.
@@ -66,7 +67,7 @@ jobs:
           retention-days: 5
 
       # Upload the results to GitHub's code scanning dashboard.
-      - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
-        with:
-          sarif_file: results.sarif
+      #- name: "Upload to code-scanning"
+      #  uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
+      #  with:
+      #    sarif_file: results.sarif
