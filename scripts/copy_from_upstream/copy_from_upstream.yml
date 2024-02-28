@@ -13,8 +13,8 @@ upstreams:
   -
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
-    git_branch: master
-    git_commit: 0657749a785db30e7f49e9435452cb042edb1852
+    git_branch: sw-falcon-padded-rename
+    git_commit: a472dc1c482c7e4ea855b153001f064977f29135
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
