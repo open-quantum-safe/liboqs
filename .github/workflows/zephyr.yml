@@ -17,23 +17,35 @@ jobs:
             - zephyr-ref: v3.5.0
 
     steps:
-        - name: Init west workspace
-          run: west init --mr ${{ matrix.config.zephyr-ref }} zephyr
-
-        - name: Update west.yml
-          working-directory: zephyr/zephyr
+        - name: Init Zephyr workspace
           run: |
-            REF=$(echo '${{ github.ref }}' | sed -e 's/\//\\\//g')
-            sed -e 's/remotes:/remotes:\n    \- name: liboqs\n      url\-base: https:\/\/github.com\/${{ github.repository_owner }}/' -i west.yml
-            sed -e "s/projects:/projects:\n    \- name: liboqs\n      path: modules\/crypto\/liboqs\n      remote: liboqs\n      revision: $REF/" -i west.yml
+            mkdir zephyr && cd zephyr
+            mkdir manifest && cd manifest
+            echo "manifest:" > west.yml
+            echo "  remotes:" >> west.yml
+            echo "    - name: zephyr" >> west.yml
+            echo "      url-base: https://github.com/zephyrproject-rtos" >> west.yml
+            echo "    - name: liboqs" >> west.yml
+            echo "      url-base: https://github.com/${{ github.repository_owner }}" >> west.yml
+            echo "  projects:" >> west.yml
+            echo "    - name: zephyr" >> west.yml
+            echo "      remote: zephyr" >> west.yml
+            echo "      repo-path: zephyr" >> west.yml
+            echo "      revision: ${{ matrix.config.zephyr-ref }}" >> west.yml
+            echo "      import:" >> west.yml
+            echo "        name-allowlist:" >> west.yml
+            echo "          - picolibc" >> west.yml
+            echo "    - name: liboqs" >> west.yml
+            echo "      remote: liboqs" >> west.yml
+            echo "      revision: $(echo '${{ github.ref }}' | sed -e 's/refs\/heads\///')" >> west.yml
+            echo "      path: modules/crypto/liboqs" >> west.yml
+            west init -l --mf west.yml .
 
         - name: Update west workspace
           working-directory: zephyr
-          run: west update -n -o=--depth=1
-
-        - name: Export zephyr
-          working-directory: zephyr
-          run: west zephyr-export
+          run: |
+            west update -n -o=--depth=1
+            west zephyr-export
 
         - name: Run Signature test
           working-directory: zephyr
