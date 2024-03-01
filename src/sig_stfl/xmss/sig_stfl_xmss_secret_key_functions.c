@@ -11,8 +11,7 @@
 #define XMSS_UNUSED_ATT
 #endif
 
-extern inline
-OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
+extern inline OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 
 	// Initialize the secret key in the heap with adequate memory
 	OQS_SIG_STFL_SECRET_KEY *sk = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
@@ -71,7 +70,9 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_le
 	}
 
 	/* Lock the key if possible */
-	OQS_SECRET_KEY_XMSS_acquire_lock(sk);
+	if (OQS_SECRET_KEY_XMSS_acquire_lock(sk) != OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
 
 	uint8_t *sk_buf = malloc(sk->length_secret_key * sizeof(uint8_t));
 	if (sk_buf == NULL) {
@@ -85,7 +86,9 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_le
 	*sk_len = sk->length_secret_key;
 
 	/* Unlock the key if possible */
-	OQS_SECRET_KEY_XMSS_release_lock(sk);
+	if (OQS_SECRET_KEY_XMSS_release_lock(sk) != OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
 
 	return OQS_SUCCESS;
 }
@@ -143,24 +146,32 @@ void OQS_SECRET_KEY_XMSS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 	sk->secret_key_data = NULL;
 }
 
-void OQS_SECRET_KEY_XMSS_acquire_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
+OQS_STATUS OQS_SECRET_KEY_XMSS_acquire_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
-		return;
+		return OQS_ERROR;
 	}
 
-	/* Lock the key if possible */
-	if ((sk->lock_key != NULL) && (sk->mutex != NULL)) {
-		sk->lock_key(sk->mutex);
+	/* Lock the key if possible, otherwise return OQS_ERROR because the lock_key, unlock_key and mutex are not defined.*/
+	if ((sk->lock_key != NULL) && (sk->mutex != NULL) && (sk->unlock_key != NULL)) {
+		if (sk->lock_key(sk->mutex) != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
 	}
+
+	return OQS_SUCCESS;
 }
 
-void OQS_SECRET_KEY_XMSS_release_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
+OQS_STATUS OQS_SECRET_KEY_XMSS_release_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
-		return;
+		return OQS_ERROR;
 	}
 
-	/* Unlock the key if possible */
-	if ((sk->unlock_key != NULL) && (sk->mutex != NULL)) {
-		sk->unlock_key(sk->mutex);
+	/* Unlock the key if possible, otherwise return OQS_ERROR because the lock_key, unlock_key and mutex are not defined. */
+	if ((sk->unlock_key != NULL) && (sk->mutex != NULL) && (sk->lock_key != NULL)) {
+		if (sk->unlock_key(sk->mutex) != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
 	}
+
+	return OQS_SUCCESS;
 }
