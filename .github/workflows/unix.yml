@@ -119,6 +119,10 @@ jobs:
         with:
           name: liboqs-openssl3-shared-x64
           path: build/*.deb
+      - name: Check STD algorithm and alias
+        if: ${{ matrix.name }} == 'jammy-std-openssl3'
+        run: tests/dump_alg_info | grep "ML-DSA-44:" && tests/dump_alg_info | grep "ML-DSA-44-ipd:" && tests/dump_alg_info | grep "ML-KEM-512:" && tests/dump_alg_info | grep "ML-KEM-512-ipd:"
+        working-directory: build
 
   linux_arm_emulated:
     needs: buildcheck
