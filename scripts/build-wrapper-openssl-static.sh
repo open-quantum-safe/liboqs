@@ -1,9 +1,54 @@
 #!/bin/bash
-# tc3-apple-build-wrapper.sh, ABr
+# build-wrapper-openssl-static.sh, ABr
 #
-# TripleCyber build support for liboqs
+# Build support for static liboqs library for macOS / iOS / android.
+# Specifically created to support building oqs-provider.
+#
+# Usage:
+#   ./scripts/build-wrapper-openssl-static.sh [target]
+#     [target] - do_main: Build all, create export
+#              - [function]: Any function such as build_apple_macosx
+#
+# On success, the generated [build/export] folder below can be used as
+# input to the oqs-provider build.
+#
+# Output:
+# ./build - output folder
+# \-> android
+#     \-> [archs] - one of arm64-v8a / armeabi-v7a / x86 / x86_64
+#         \-> [output] - cmake output and build files
+# \-> apple
+#     \-> [device] - one of macOS / iphoneos / iphonesimulator
+#         \-> lib - contains fat lib with all archs
+#         \-> [archs] - one of arm64 / x86_64 architecture
+#             \-> [output] - cmake output and build files
+# \-> export - packaged output
+#     \-> android
+#         \-> [version] - version automatically determined from build output
+#             \-> [archs] - one of arm64-v8a / armeabi-v7a / x86 / x86_64
+#                 \-> include - architecture-specific headers
+#                 \-> lib - static library output
+#     \-> apple
+#         \-> [version] - version automatically determined from build output
+#             \-> [device] - one of macOS / iphoneos / iphonesimulator
+#                 \-> lib - contains fat lib with all archs
+#                 \-> [archs] - one of arm64 / x86_64 architecture
+#                     \-> include - architecture-specific headers
+#
+# Requires the use of openssl assumed to be available as:
+# $the_openssl_dir
+# \-> android
+#     \-> $the_openssl_ver - version info such as 3.2.1
+#         \-> [archs] - one of arm64-v8a / armeabi-v7a / x86 / x86_64
+#             \-> include - headers specific to architecture
+#             \-> lib - contains libcrypto.a / libssl.a
+# \-> apple
+#     \-> $the_openssl_ver - version info such as 3.2.1
+#         \-> [device] - one of macOS / iphoneos / iphonesimulator
+#             \-> include - headers specific to device (note: not by arch)
+#             \-> lib - contains fat lib with all archs
 
-# top-level settings
+# top-level settings - modify in environment from defaults listed here
 the_openssl_ver="${the_openssl_ver:-3.2.1}"
 the_openssl_dir="${the_openssl_dir:-$HOME/proj/git/src/triplecyber.visualstudio.com/abruce-dev/Tc32/External/openssl}"
 the_ios_target="${the_ios_target:-17.0}"
@@ -24,7 +69,7 @@ while [ -h "$SOURCE" ]; do
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 g_SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
-the_top_dir="$g_SCRIPT_DIR"
+the_top_dir="`realpath "$g_SCRIPT_DIR/.."`"
 
 # assume the build directory
 the_build_dir_name='build'
@@ -49,17 +94,17 @@ function build_apple_variant {
 
   # locals
   local l_rc=0
-  local l_platform='apple'
-  local l_openssl_plat_dir="$the_openssl_dir/$l_platform/$the_openssl_ver/$i_device"
+  local l_type='apple'
+  local l_openssl_plat_dir="$the_openssl_dir/$l_type/$the_openssl_ver/$i_device"
 
-  echo "BUILD: $l_platform ($i_device / $i_arch)..."
+  echo "BUILD: $l_type ($i_device / $i_arch)..."
 
   # locate back to script home
   cd "$the_top_dir" || return $?
 
   # create directory and clear - on errors we are done
-  mkdir -p "$the_build_dir_path"/$l_platform/$i_device/$i_arch
-  cd "$the_build_dir_path/$l_platform/$i_device/$i_arch" || return $?
+  mkdir -p "$the_build_dir_path"/$l_type/$i_device/$i_arch
+  cd "$the_build_dir_path/$l_type/$i_device/$i_arch" || return $?
   rm -fR ./*
 
   # the apple.cmake toolchain is managed by the liboqs team - so use it
@@ -85,9 +130,9 @@ function build_apple_fatlib {
   local i_lib_name="$1" ; shift
 
   # local args
-  local l_platform='apple'
+  local l_type='apple'
   local l_args=''
-  local l_device_dir="$the_build_dir_path/$l_platform/$i_device"
+  local l_device_dir="$the_build_dir_path/$l_type/$i_device"
 
   echo "LIPO: $i_device / $i_lib_name..."
 
@@ -129,23 +174,37 @@ function build_apple_fatlibs_std {
   return 0
 }
 
-# build all known apple variants
-function build_apple {
-  local l_device=''
-
-  l_device='macosx'
+# build macox
+function build_apple_macosx {
+  local l_device='macosx'
   build_apple_variant $l_device x86_64 MAC || return $?
   build_apple_variant $l_device arm64 MAC_ARM64 || return $?
   build_apple_fatlibs_std $l_device 'x86_64 arm64' || return $?
+  return 0
+}
 
-  l_device='iphonesimulator'
+# build apple simulator
+function build_apple_iphonesimulator {
+  local l_device='iphonesimulator'
   build_apple_variant $l_device x86_64 SIMULATOR64 || return $?
   build_apple_variant $l_device arm64 SIMULATORARM64 || return $?
   build_apple_fatlibs_std $l_device 'x86_64 arm64' || return $?
+  return 0
+}
 
-  l_device='iphoneos'
+# build apple iphone
+function build_apple_iphoneos {
+  local l_device='iphoneos'
   build_apple_variant $l_device arm64 OS64 || return $?
   build_apple_fatlibs_std $l_device arm64 || return $?
+  return 0
+}
+
+# build all known apple variants
+function build_apple {
+  build_apple_macosx || return $?
+  build_apple_iphonesimulator || return $?
+  build_apple_iphoneos || return $?
   return 0
 }
 
@@ -156,22 +215,23 @@ function build_android_variant {
 
   # locals
   local l_rc=0
-  local l_platform='android'
-  local l_openssl_plat_dir=$the_openssl_dir/$l_platform/$the_openssl_ver/$i_arch
+  local l_type='android'
+  local l_openssl_plat_dir=$the_openssl_dir/$l_type/$the_openssl_ver/$i_arch
 
-  echo "BUILD: $l_platform ($i_arch)..."
+  echo "BUILD: $l_type ($i_arch)..."
 
   # locate back to script home
   cd "$the_top_dir" || return $?
 
   # create directory and clear - on errors we are done
-  mkdir -p "$the_build_dir_path"/$l_platform/$i_arch
-  cd "$the_build_dir_path"/$l_platform/$i_arch || return $?
+  mkdir -p "$the_build_dir_path"/$l_type/$i_arch
+  cd "$the_build_dir_path"/$l_type/$i_arch || return $?
   rm -fR ./*
 
   # NOTES:
   # * we *must* use the Android NDK toolchain; it is not provided by liboqs
-  # * default cmake toolchain fails with names like 'arm64-v8a' with dashes
+  # * default cmake toolchain fails with names like 'arm64-v8a' with dashes;
+  #   this is why we *must set* OPENSSL_INCLUDE_DIR, OPENSSL_SSL_LIBRARY, OPENSSL_CRYPTO_LIBRARY
   set -x
   cmake \
     -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME"/build/cmake/android.toolchain.cmake \
@@ -193,7 +253,11 @@ function build_android_variant {
 
 # build all known android variants
 function build_android {
-  for i in arm64-v8a x86_64 x86 armeabi-v7a ; do
+  # user can pass in the variant desired
+  local l_variants='arm64-v8a x86_64 x86 armeabi-v7a'
+  [ x"$1" != x ] && l_variants="$@"
+  for i in `echo "$l_variants"` ; do
+    set -x
     build_android_variant $i || return $?
   done
   return 0
@@ -214,23 +278,23 @@ function verify_folders {
   cd "$the_top_dir" || return $?
 
   # make sure that all known folders are created
-  l_platform='apple'
-  verify_folder "$the_build_dir_path"/$l_platform
+  l_type='apple'
+  verify_folder "$the_build_dir_path"/$l_type
   for l_device in iphoneos iphonesimulator macosx ; do
-    verify_folder "$the_build_dir_path"/$l_platform/$l_device
-    verify_folder "$the_build_dir_path"/$l_platform/$l_device/lib
+    verify_folder "$the_build_dir_path"/$l_type/$l_device
+    verify_folder "$the_build_dir_path"/$l_type/$l_device/lib
     for l_arch in arm64 ; do
-      verify_folder "$the_build_dir_path"/$l_platform/$l_device/$l_arch
-      verify_folder "$the_build_dir_path"/$l_platform/$l_device/$l_arch/include
+      verify_folder "$the_build_dir_path"/$l_type/$l_device/$l_arch
+      verify_folder "$the_build_dir_path"/$l_type/$l_device/$l_arch/include
     done
   done
 
-  l_platform='android'
-  verify_folder "$the_build_dir_path"/$l_platform
+  l_type='android'
+  verify_folder "$the_build_dir_path"/$l_type
   for l_arch in arm64-v8a armeabi-v7a x86 x86_64 ; do
-    verify_folder "$the_build_dir_path"/$l_platform/$l_arch
-    verify_folder "$the_build_dir_path"/$l_platform/$l_arch/include
-    verify_folder "$the_build_dir_path"/$l_platform/$l_arch/lib
+    verify_folder "$the_build_dir_path"/$l_type/$l_arch
+    verify_folder "$the_build_dir_path"/$l_type/$l_arch/include
+    verify_folder "$the_build_dir_path"/$l_type/$l_arch/lib
   done
 
   return 0
@@ -256,21 +320,28 @@ function get_oqs_version {
 
 # create a single exported folder
 function create_export_folder {
+  local i_type="$1" ; shift
+  local i_version="$1" ; shift
   local i_lib_dir="$1" ; shift
   local i_include_dir="$1" ; shift
 
+  # top folder to use
+  local l_top_folder="$the_export_dir_path/$i_type/$i_version"
+  mkdir -p "$l_top_folder"
+  cd "$l_top_folder" || return $?
+
   # library first
-  mkdir -p "$the_export_dir_path/$i_lib_dir"
-  [ ! -d "$the_export_dir_path/$i_lib_dir" ] && echo "ERROR: Missing '$the_export_dir_path/$i_lib_dir' (mkdir failure?)" && return 2
-  rm -fR "$the_export_dir_path/$i_lib_dir"/* 
-  cp -R "$the_build_dir_path/$i_lib_dir"/* "$the_export_dir_path/$i_lib_dir/" || return $?
+  mkdir -p "$l_top_folder/$i_lib_dir"
+  [ ! -d "$l_top_folder/$i_lib_dir" ] && echo "ERROR: Missing '$l_top_folder/$i_lib_dir' (mkdir failure?)" && return 2
+  rm -fR "$l_top_folder/$i_lib_dir"/* 
+  cp -R "$the_build_dir_path/$i_type/$i_lib_dir"/* "$l_top_folder/$i_lib_dir/" || return $?
 
   # now each include folder
   while [ x"$i_include_dir" != x ] ; do
-    mkdir -p "$the_export_dir_path/$i_include_dir"
-    [ ! -d "$the_export_dir_path/$i_include_dir" ] && echo "ERROR: Missing '$the_export_dir_path/$i_include_dir' (mkdir failure?)" && return 2
-    rm -fR "$the_export_dir_path/$i_include_dir"/* 
-    cp -R "$the_build_dir_path/$i_include_dir"/* "$the_export_dir_path/$i_include_dir/" || return $?
+    mkdir -p "$l_top_folder/$i_include_dir"
+    [ ! -d "$l_top_folder/$i_include_dir" ] && echo "ERROR: Missing '$l_top_folder/$i_include_dir' (mkdir failure?)" && return 2
+    rm -fR "$l_top_folder/$i_include_dir"/* 
+    cp -R "$the_build_dir_path/$i_type/$i_include_dir"/* "$l_top_folder/$i_include_dir/" || return $?
 
     # next include
     i_include_dir="$1" ; shift
@@ -300,28 +371,71 @@ function do_export {
   cd "$the_export_dir_path" || return $?
 
   # load in from everything...
-  create_export_folder android/arm64-v8a/lib android/arm64-v8a/include || return $?
-  create_export_folder android/armeabi-v7a/lib android/armeabi-v7a/include || return $?
-  create_export_folder android/x86/lib android/x86/include || return $?
-  create_export_folder android/x86_64/lib android/x86_64/include || return $?
-  create_export_folder apple/iphoneos/lib apple/iphoneos/arm64/include || return $?
-  create_export_folder apple/iphonesimulator/lib apple/iphonesimulator/arm64/include apple/iphonesimulator/x86_64/include || return $?
-  create_export_folder apple/macosx/lib apple/macosx/arm64/include apple/macosx/x86_64/include || return $?
+  local l_type='android'
+  create_export_folder $l_type "$l_version" arm64-v8a/lib arm64-v8a/include || return $?
+  create_export_folder $l_type "$l_version" armeabi-v7a/lib armeabi-v7a/include || return $?
+  create_export_folder $l_type "$l_version" x86/lib x86/include || return $?
+  create_export_folder $l_type "$l_version" x86_64/lib x86_64/include || return $?
+
+  l_type='apple'
+  create_export_folder $l_type "$l_version" iphoneos/lib iphoneos/arm64/include || return $?
+  create_export_folder $l_type "$l_version" iphonesimulator/lib iphonesimulator/arm64/include iphonesimulator/x86_64/include || return $?
+  create_export_folder $l_type "$l_version" macosx/lib macosx/arm64/include macosx/x86_64/include || return $?
 
   # report on what was exported
   echo ''
   echo "VERSION: $l_version"
   find "$the_export_dir_path" -type d -name '*' -exec ls -lad {} \;
-  find "$the_export_dir_path"/apple -type f -name '*.a' -exec lipo -info {} \;
+  find "$the_export_dir_path"/apple/"$l_version" -type f -name '*.a' -exec lipo -info {} \;
+  return 0
+}
+
+# some projects (oqs-provider for example) assume that we can point directly to
+# liboqs for a build. this is not really true because some files are just not
+# in the correct location. this function fixes this.
+function fix_cmake_provider {
+  echo "FIXUP: Begin..."
+  cd "$the_build_dir_path" || return $?
+
+  # oqs-provider accepts a liboqs_DIR option which must point to liboqs folder.
+  # normally - this will be to the liboqs installed folder.
+  # since we are building from source, in our case we must point liboqs_DIR to
+  # the [src] folder created as part of cmake build.
+  #
+  # example: liboqs_DIR="[liboqs_parent]/liboqs/build/apple/macosx/x86_64/src"
+  # 
+  # oqs-provider assumes that liboqsConfig.cmake is in the liboqs_DIR folder and
+  # actively uses that file as part of its own build.
+  # but there is a big problem with this: liboqsConfig.cmake includes the file
+  # liboqsTargets.cmake which is assumed to be in the same folder as liboqsConfig.cmake.
+  # and this is not the case - liboqsTargets.cmake is actually under the [cmake] folder
+  # in the generated build's [src] folder.
+  # we fix this by creating a symlink so that liboqsTargets.cmake can be found in the
+  # same [src] folder as liboqsConfig.cmake.
+  local l_path=''
+  local l_dir=''
+  local l_parent_dir=''
+  for i in `find . -type f -name liboqsTargets.cmake | grep /cmake/` ; do
+    l_path="`realpath "$i"`"
+    l_dir="`dirname "$l_path"`"
+    l_parent_dir="`dirname "$l_dir"`"
+    echo "ln -fs '$l_path' '$l_parent_dir'/"
+    ln -fs "$l_path" "$l_parent_dir"/
+  done
+  echo ''
+
   return 0
 }
 
 ##############################################################
 # PEP
+
+# build all targets
 function do_main {
   build_android || return $?
   build_apple || return $?
   do_export || return $?
+  fix_cmake_provider || return $?
   return 0
 }
 
@@ -330,7 +444,12 @@ if [ "x$1" != "x" ]; then
   [ "x$1" = "xsource-only" ] && l_do_run=0
 fi
 if [ $l_do_run -eq 1 ]; then
-  [ x"$1" = x ] && l_func='do_main' || l_func="$1"
+  if [ x"$1" = x ] ; then
+    l_func='do_main'
+  else
+    l_func="$1"
+    shift
+  fi
   [ x"$l_func" != x ] && eval "$l_func" "$@" || true
 else
   true
