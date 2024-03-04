@@ -158,7 +158,7 @@ jobs:
         # See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
         default: --numprocesses=auto
     machine:
-      image: ubuntu-2004:202101-01
+      image: default # analogous to ubuntu-latest on GH Actions
     resource_class: arm.medium
     steps:
       - checkout
