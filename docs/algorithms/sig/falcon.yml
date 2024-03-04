@@ -22,6 +22,10 @@ primary-upstream:
   spdx-license-identifier: MIT
   upstream-ancestors:
   - https://www.falcon-sign.info
+optimized-upstreams:
+  pqclean-aarch64:
+    source: https://github.com/PQClean/PQClean/commit/7707d1bcc8ae7f9ffd296dd13b1d76d2767d14f8
+    spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: Falcon-512
   claimed-nist-level: 1
@@ -50,7 +54,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-  - upstream: primary-upstream
+  - upstream: pqclean-aarch64
     upstream-id: aarch64
     supported-platforms:
     - architecture: ARM64_V8
@@ -89,7 +93,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-  - upstream: primary-upstream
+  - upstream: pqclean-aarch64
     upstream-id: aarch64
     supported-platforms:
     - architecture: ARM64_V8
@@ -128,7 +132,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-  - upstream: primary-upstream
+  - upstream: pqclean-aarch64
     upstream-id: aarch64
     supported-platforms:
     - architecture: ARM64_V8
@@ -167,7 +171,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-  - upstream: primary-upstream
+  - upstream: pqclean-aarch64
     upstream-id: aarch64
     supported-platforms:
     - architecture: ARM64_V8
