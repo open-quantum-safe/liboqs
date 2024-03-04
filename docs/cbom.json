@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:c25dad99-ad00-48b6-aa9e-25d4f7c3c8c5",
+  "serialNumber": "urn:uuid:bc72aa9f-48a6-4e9a-aabb-46484f935ea6",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-12-13T17:05:36.137517",
+    "timestamp": "2024-02-21T17:06:48.757417",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5f83324a6c464448b70b1e57b3cd161b6832e0e0",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@721d119aa6fc5f0cfba0e8ef89ec948b43091c2b",
       "name": "liboqs",
-      "version": "5f83324a6c464448b70b1e57b3cd161b6832e0e0"
+      "version": "721d119aa6fc5f0cfba0e8ef89ec948b43091c2b"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5f83324a6c464448b70b1e57b3cd161b6832e0e0",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@721d119aa6fc5f0cfba0e8ef89ec948b43091c2b",
       "name": "liboqs",
-      "version": "5f83324a6c464448b70b1e57b3cd161b6832e0e0"
+      "version": "721d119aa6fc5f0cfba0e8ef89ec948b43091c2b"
     },
     {
       "type": "crypto-asset",
@@ -1421,6 +1421,126 @@
     },
     {
       "type": "crypto-asset",
+      "bom-ref": "alg:MAYO_1:generic",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "MAYO_1",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 1
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:MAYO_1:x86_64",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "MAYO_1",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 1
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:MAYO_2:generic",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "MAYO_2",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 1
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:MAYO_2:x86_64",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "MAYO_2",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 1
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:MAYO_3:generic",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "MAYO_3",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 3
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:MAYO_3:x86_64",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "MAYO_3",
+          "primitive": "signature",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 3
+      }
+    },
+    {
+      "type": "crypto-asset",
       "bom-ref": "alg:ML-DSA-44-ipd:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
@@ -2048,7 +2168,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@5f83324a6c464448b70b1e57b3cd161b6832e0e0",
+      "ref": "pkg:github/open-quantum-safe/liboqs@721d119aa6fc5f0cfba0e8ef89ec948b43091c2b",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -2120,6 +2240,12 @@
         "alg:Falcon-1024:generic",
         "alg:Falcon-1024:x86_64",
         "alg:Falcon-1024:armv8-a",
+        "alg:MAYO_1:generic",
+        "alg:MAYO_1:x86_64",
+        "alg:MAYO_2:generic",
+        "alg:MAYO_2:x86_64",
+        "alg:MAYO_3:generic",
+        "alg:MAYO_3:x86_64",
         "alg:ML-DSA-44-ipd:generic",
         "alg:ML-DSA-44-ipd:x86_64",
         "alg:ML-DSA-65-ipd:generic",
@@ -2672,6 +2798,53 @@
       "ref": "alg:Falcon-1024:armv8-a",
       "dependsOn": [
         "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:MAYO_1:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:MAYO_1:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:MAYO_2:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:MAYO_2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:MAYO_3:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:MAYO_3:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
       ],
       "dependencyType": "uses"
     },

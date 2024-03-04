@@ -27,6 +27,8 @@ const EVP_MD *oqs_sha3_512(void);
 
 const EVP_CIPHER *oqs_aes_128_ecb(void);
 
+const EVP_CIPHER *oqs_aes_128_ctr(void);
+
 const EVP_CIPHER *oqs_aes_256_ecb(void);
 
 const EVP_CIPHER *oqs_aes_256_ctr(void);

@@ -12,6 +12,7 @@
 #define AESCTR_NONCEBYTES 12
 #define AES_BLOCKBYTES 16
 
+typedef void *aes128ctx;
 typedef void *aes256ctx;
 
 #define aes256_ecb_keyexp(r, key) OQS_AES256_ECB_load_schedule((key), (r))
@@ -42,5 +43,13 @@ static inline void aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[
 	OQS_AES256_CTR_inc_stream_iv(nonce, 12, state, out, outlen);
 	OQS_AES256_free_schedule(state);
 }
+
+static inline void aes128ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[16], uint8_t nonce[12]) {
+	aes128ctx state;
+	OQS_AES128_CTR_inc_init(key, &state);
+	OQS_AES128_CTR_inc_stream_iv(nonce, 12, state, out, outlen);
+	OQS_AES128_free_schedule(state);
+}
+
 
 #endif
