@@ -144,7 +144,24 @@ void OQS_SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input, siz
 	do_xof(output, outlen, input, inplen, oqs_shake128());
 }
 
-/* SHAKE-128 incremental */
+/* SHAKE-128 incremental
+ *
+ * Note: the comment below has been addressed in OpenSSL version 3.3.0
+ *
+ * XXX: The OpenSSL XOF API only allows for a single
+ * call to squeeze (EVP_DigestFinalXOF).
+ *
+ * There is work in progress
+ *    https://github.com/openssl/openssl/pull/7921
+ * to fix this. For now we have to fake it.
+ *
+ * When we need to squeeze `k` new bytes from the state, we
+ *      - clone the state,
+ *      - dynamically allocate a buffer of size n+k,
+ *      - call EVP_DigestFinalXOF(clone, internal buffer, n+k)
+ *      - copy the last k bytes of the output back to the caller.
+ * When n=0 we use the output buffer directly.
+ */
 
 typedef struct {
 	EVP_MD_CTX *mdctx;
@@ -171,8 +188,29 @@ void OQS_SHA3_shake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *state) {
 
 void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *state) {
 	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
+#ifdef OPENSSL_VERSION_NUMBER >= 3.3
 	EVP_DigestSqueeze(s->mdctx, output, outlen);
+#else
+	EVP_MD_CTX *clone;
+
+	clone = EVP_MD_CTX_new();
+	EVP_DigestInit_ex(clone, oqs_shake128(), NULL);
+	EVP_MD_CTX_copy_ex(clone, s->mdctx);
+	if (s->n_out == 0) {
+		EVP_DigestFinalXOF(clone, output, outlen);
+	} else {
+		uint8_t *tmp;
+		tmp = malloc(s->n_out + outlen);
+		if (tmp == NULL) {
+			exit(111);
+		}
+		EVP_DigestFinalXOF(clone, tmp, s->n_out + outlen);
+		memcpy(output, tmp + s->n_out, outlen);
+		free(tmp); // IGNORE free-check
+	}
+	EVP_MD_CTX_free(clone);
 	s->n_out += outlen;
+#endif
 }
 
 void OQS_SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
@@ -228,8 +266,29 @@ void OQS_SHA3_shake256_inc_finalize(OQS_SHA3_shake256_inc_ctx *state) {
 
 void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake256_inc_ctx *state) {
 	intrn_shake256_inc_ctx *s = (intrn_shake256_inc_ctx *)state->ctx;
+#ifdef OPENSSL_VERSION_NUMBER >= 3.3
 	EVP_DigestSqueeze(s->mdctx, output, outlen);
+#else
+	EVP_MD_CTX *clone;
+
+	clone = EVP_MD_CTX_new();
+	EVP_DigestInit_ex(clone, oqs_shake256(), NULL);
+	EVP_MD_CTX_copy_ex(clone, s->mdctx);
+	if (s->n_out == 0) {
+		EVP_DigestFinalXOF(clone, output, outlen);
+	} else {
+		uint8_t *tmp;
+		tmp = malloc(s->n_out + outlen);
+		if (tmp == NULL) {
+			exit(111);
+		}
+		EVP_DigestFinalXOF(clone, tmp, s->n_out + outlen);
+		memcpy(output, tmp + s->n_out, outlen);
+		free(tmp); // IGNORE free-check
+	}
+	EVP_MD_CTX_free(clone);
 	s->n_out += outlen;
+#endif
 }
 
 void OQS_SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {
