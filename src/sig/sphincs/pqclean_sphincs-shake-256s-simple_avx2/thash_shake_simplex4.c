@@ -58,9 +58,9 @@ void thashx4(unsigned char *out0,
         }
         state[16] = _mm256_set1_epi64x((long long)(0x80ULL << 56));
         state[(SPX_N / 8) * (1 + inblocks) + 4] = _mm256_xor_si256(
-                    state[(SPX_N / 8) * (1 + inblocks) + 4],
-                    _mm256_set1_epi64x(0x1f)
-                );
+                state[(SPX_N / 8) * (1 + inblocks) + 4],
+                _mm256_set1_epi64x(0x1f)
+            );
         for (int i = 17; i < 25; i++) {
             state[i] = _mm256_set1_epi64x(0);
         }

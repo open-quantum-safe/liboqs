@@ -19,6 +19,12 @@
     "all": "f4f23c1153682007d5dec02c35e47061c17900fcf0adb3fd0437f1988fa13655",
     "single": "da27fe8a462de7307ddf1f9b00072a457d9c5b14e838c148fbe2662094b9a2ca"
   },
+  "Falcon-padded-1024": {
+    "single": "ddcc5683293388249e6fe85e992ea19d0986d34e060a44f82bc3db524a8c8390"
+  },
+  "Falcon-padded-512": {
+    "single": "91842d41138e7cfaf6e2e8f12a03c3b3411302255121e4d07d02f91a003c0395"
+  },
   "ML-DSA-44": {
     "all": "183bc0c4398ade4fc17b6a7d876b82545a96331139a4f27269c95664b8c483f9",
     "single": "e6f3ec4dc0b02dd3bcbbc6b105190e1890ca0bb3f802e2b571f0d70f3993a2e1"

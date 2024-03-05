@@ -18,7 +18,7 @@ website: https://falcon-sign.info
 nist-round: 3
 spec-version: 20211101
 primary-upstream:
-  source: https://github.com/PQClean/PQClean/commit/0657749a785db30e7f49e9435452cb042edb1852
+  source: https://github.com/PQClean/PQClean/commit/a472dc1c482c7e4ea855b153001f064977f29135
   spdx-license-identifier: MIT
   upstream-ancestors:
   - https://www.falcon-sign.info
@@ -28,7 +28,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 897
   length-secret-key: 1281
-  length-signature: 666
+  length-signature: 752
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -67,7 +67,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 1793
   length-secret-key: 2305
-  length-signature: 1280
+  length-signature: 1462
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
