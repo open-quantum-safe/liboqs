@@ -18,7 +18,7 @@
 #     \-> [archs] - one of arm64-v8a / armeabi-v7a / x86 / x86_64
 #         \-> [output] - cmake output and build files
 # \-> apple
-#     \-> [device] - one of macOS / iphoneos / iphonesimulator
+#     \-> [device] - one of macosx / iphoneos / iphonesimulator
 #         \-> lib - contains fat lib with all archs
 #         \-> [archs] - one of arm64 / x86_64 architecture
 #             \-> [output] - cmake output and build files
@@ -30,7 +30,7 @@
 #                 \-> lib - static library output
 #     \-> apple
 #         \-> [version] - version automatically determined from build output
-#             \-> [device] - one of macOS / iphoneos / iphonesimulator
+#             \-> [device] - one of macosx / iphoneos / iphonesimulator
 #                 \-> lib - contains fat lib with all archs
 #                 \-> [archs] - one of arm64 / x86_64 architecture
 #                     \-> include - architecture-specific headers
@@ -44,7 +44,7 @@
 #             \-> lib - contains libcrypto.a / libssl.a
 # \-> apple
 #     \-> $the_openssl_ver - version info such as 3.2.1
-#         \-> [device] - one of macOS / iphoneos / iphonesimulator
+#         \-> [device] - one of macosx / iphoneos / iphonesimulator
 #             \-> include - headers specific to device (note: not by arch)
 #             \-> lib - contains fat lib with all archs
 
@@ -52,6 +52,7 @@
 the_openssl_ver="${the_openssl_ver:-3.2.1}"
 the_openssl_dir="${the_openssl_dir:-$HOME/proj/git/src/triplecyber.visualstudio.com/abruce-dev/Tc32/External/openssl}"
 the_ios_target="${the_ios_target:-17.0}"
+the_macos_target="${the_macos_target:-14.2}"
 the_android_api_level="${the_android_api_level:-34}"
 
 # enable debug to get explicit compiler command lines
@@ -107,18 +108,30 @@ function build_apple_variant {
   cd "$the_build_dir_path/$l_type/$i_device/$i_arch" || return $?
   rm -fR ./*
 
+  # different deployment target for ios vs. macosx
+  local l_deployment_target=''
+  if [ x"$i_device" = xmacosx ] ; then
+    l_deployment_target="$the_macos_target"
+  else
+    l_deployment_target="$the_ios_target"
+  fi
+
   # the apple.cmake toolchain is managed by the liboqs team - so use it
+  set -x
   cmake \
     -DCMAKE_TOOLCHAIN_FILE="$the_cmake_dir_path"/apple.cmake  \
     -DPLATFORM=$i_platform \
-    -DDEPLOYMENT_TARGET=$the_ios_target \
+    -DDEPLOYMENT_TARGET=$l_deployment_target \
+    -DOQS_ALGS_ENABLED=STD \
     -DOQS_USE_OPENSSL=ON \
     -DOQS_USE_SHA3_OPENSSL=ON \
     -DOPENSSL_USE_STATIC_LIBS=ON \
     -DOPENSSL_ROOT_DIR="$l_openssl_plat_dir" \
-    "$the_top_dir"
-  l_rc=$? ; [ $l_rc -ne 0 ] && return $l_rc
-  cmake --build . $the_cmake_build_verbose_option || return $?
+    -B . -S "$the_top_dir"
+  l_rc=$? ; set +x ; [ $l_rc -ne 0 ] && return $l_rc
+  set -x
+  cmake --build . $the_cmake_build_verbose_option
+  l_rc=$? ; set +x ; [ $l_rc -ne 0 ] && return $l_rc
   echo ''
   return 0
 }
@@ -237,6 +250,7 @@ function build_android_variant {
     -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME"/build/cmake/android.toolchain.cmake \
     -DANDROID_ABI=$i_arch \
     -DANDROID_PLATFORM=android-$the_android_api_level \
+    -DOQS_ALGS_ENABLED=STD \
     -DOQS_USE_OPENSSL=ON \
     -DOQS_USE_SHA3_OPENSSL=ON \
     -DOPENSSL_USE_STATIC_LIBS=ON \
