@@ -121,7 +121,7 @@ jobs:
           path: build/*.deb
       - name: Check STD algorithm and alias
         if: ${{ matrix.name }} == 'jammy-std-openssl3'
-        run: tests/dump_alg_info | grep "ML-DSA-44:" && tests/dump_alg_info | grep "ML-DSA-44-ipd:" && tests/dump_alg_info | grep "ML-KEM-512:" && tests/dump_alg_info | grep "ML-KEM-512-ipd:"
+        run: tests/dump_alg_info | grep -zoP "ML-DSA-44:\n    isnull: false" && tests/dump_alg_info | grep -zoP "ML-DSA-44-ipd:\n    isnull: true" && tests/dump_alg_info | grep -zoP "ML-KEM-512:\n    isnull: false" && tests/dump_alg_info | grep -zoP "ML-KEM-512-ipd:\n    isnull: true"
         working-directory: build
 
   linux_arm_emulated:

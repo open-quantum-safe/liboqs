@@ -4,8 +4,9 @@
 
 #include <oqs/kem_ml_kem.h>
 
-#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd)
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd) || defined(OQS_ENABLE_KEM_ml_kem_768)
 
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd)
 OQS_KEM *OQS_KEM_ml_kem_768_ipd_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -29,7 +30,9 @@ OQS_KEM *OQS_KEM_ml_kem_768_ipd_new(void) {
 
 	return kem;
 }
+#endif
 
+#if defined(OQS_ENABLE_KEM_ml_kem_768)
 /** Alias */
 OQS_KEM *OQS_KEM_ml_kem_768_new(void) {
 
@@ -54,19 +57,20 @@ OQS_KEM *OQS_KEM_ml_kem_768_new(void) {
 
 	return kem;
 }
+#endif
 
 extern int pqcrystals_ml_kem_768_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_kem_768_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_ml_kem_768_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
-#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2)
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
 extern int pqcrystals_ml_kem_768_ipd_avx2_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_kem_768_ipd_avx2_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_ml_kem_768_ipd_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair(uint8_t *public_key, uint8_t *secret_key) {
-#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2)
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -82,7 +86,7 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair(uint8_t *public_key, uint8_t *
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2)
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -98,7 +102,7 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_encaps(uint8_t *ciphertext, uint8_t *s
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2)
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */

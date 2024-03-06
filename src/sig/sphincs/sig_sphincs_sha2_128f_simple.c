@@ -6,6 +6,7 @@
 
 #if defined(OQS_ENABLE_SIG_sphincs_sha2_128f_simple)
 
+#if defined(OQS_ENABLE_SIG_sphincs_sha2_128f_simple)
 OQS_SIG *OQS_SIG_sphincs_sha2_128f_simple_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
@@ -28,6 +29,7 @@ OQS_SIG *OQS_SIG_sphincs_sha2_128f_simple_new(void) {
 
 	return sig;
 }
+#endif
 
 extern int PQCLEAN_SPHINCSSHA2128FSIMPLE_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
 extern int PQCLEAN_SPHINCSSHA2128FSIMPLE_CLEAN_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);

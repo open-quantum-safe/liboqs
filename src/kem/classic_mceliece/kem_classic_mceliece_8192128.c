@@ -6,6 +6,7 @@
 
 #if defined(OQS_ENABLE_KEM_classic_mceliece_8192128)
 
+#if defined(OQS_ENABLE_KEM_classic_mceliece_8192128)
 OQS_KEM *OQS_KEM_classic_mceliece_8192128_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -29,6 +30,7 @@ OQS_KEM *OQS_KEM_classic_mceliece_8192128_new(void) {
 
 	return kem;
 }
+#endif
 
 extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
 extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);

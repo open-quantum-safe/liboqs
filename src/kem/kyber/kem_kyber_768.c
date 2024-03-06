@@ -6,6 +6,7 @@
 
 #if defined(OQS_ENABLE_KEM_kyber_768)
 
+#if defined(OQS_ENABLE_KEM_kyber_768)
 OQS_KEM *OQS_KEM_kyber_768_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -29,6 +30,7 @@ OQS_KEM *OQS_KEM_kyber_768_new(void) {
 
 	return kem;
 }
+#endif
 
 extern int pqcrystals_kyber768_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber768_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
