@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 #if defined(OQS_USE_OPENSSL)
-void oqs_free_ossl_objects(void);
+void oqs_ossl_destroy(void);
 
 const EVP_MD *oqs_sha256(void);
 
