@@ -6,6 +6,7 @@ tags
 .tags*
 
 # CMake & testing
+/_build*
 /build*
 /tmp*
 
