@@ -46,12 +46,10 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-            SKIP_ALGS: 'Falcon-1024' # re-enable when #1561 is resolved
           - name: extensions
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=haswell
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-            SKIP_ALGS: 'Falcon-1024' # re-enable when #1561 is resolved
     container:
       image: ${{ matrix.container }}
     steps:

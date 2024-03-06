@@ -27,15 +27,15 @@
  *
  *   signature:
  *      header byte: 0011nnnn
- *      nonce     40 bytes
- *      value     (12 bits by element)
+ *      nonce (r)  40 bytes
+ *      value (s)  compressed format
  *
  *   message + signature:
  *      signature length   (2 bytes, big-endian)
  *      nonce              40 bytes
  *      message
  *      header byte:       0010nnnn
- *      value              (12 bits by element)
+ *      value              compressed format
  *      (signature length is 1+len(value), not counting the nonce)
  */
 
@@ -115,10 +115,7 @@ PQCLEAN_FALCON1024_AVX2_crypto_sign_keypair(
  * receiving the actual value length.
  *
  * If a signature could be computed but not encoded because it would
- * exceed the output buffer size, then a new signature is computed. If
- * the provided buffer size is too low, this could loop indefinitely, so
- * the caller must provide a size that can accommodate signatures with a
- * large enough probability.
+ * exceed the output buffer size, then an error is returned.
  *
  * Return value: 0 on success, -1 on error.
  */
@@ -198,18 +195,16 @@ do_sign(uint8_t *nonce, uint8_t *sigbuf, size_t *sigbuflen,
     inner_shake256_flip(&sc);
 
     /*
-     * Compute and return the signature. This loops until a signature
-     * value is found that fits in the provided buffer.
+     * Compute and return the signature.
      */
-    for (;;) {
-        PQCLEAN_FALCON1024_AVX2_sign_dyn(r.sig, &sc, f, g, F, G, r.hm, 10, tmp.b);
-        v = PQCLEAN_FALCON1024_AVX2_comp_encode(sigbuf, *sigbuflen, r.sig, 10);
-        if (v != 0) {
-            inner_shake256_ctx_release(&sc);
-            *sigbuflen = v;
-            return 0;
-        }
+    PQCLEAN_FALCON1024_AVX2_sign_dyn(r.sig, &sc, f, g, F, G, r.hm, 10, tmp.b);
+    v = PQCLEAN_FALCON1024_AVX2_comp_encode(sigbuf, *sigbuflen, r.sig, 10);
+    if (v != 0) {
+        inner_shake256_ctx_release(&sc);
+        *sigbuflen = v;
+        return 0;
     }
+    return -1;
 }
 
 /*
@@ -229,6 +224,7 @@ do_verify(
     uint16_t h[1024], hm[1024];
     int16_t sig[1024];
     inner_shake256_context sc;
+    size_t v;
 
     /*
      * Decode public key.
@@ -249,8 +245,21 @@ do_verify(
     if (sigbuflen == 0) {
         return -1;
     }
-    if (PQCLEAN_FALCON1024_AVX2_comp_decode(sig, 10, sigbuf, sigbuflen) != sigbuflen) {
+
+    v = PQCLEAN_FALCON1024_AVX2_comp_decode(sig, 10, sigbuf, sigbuflen);
+    if (v == 0) {
         return -1;
+    }
+    if (v != sigbuflen) {
+        if (sigbuflen == PQCLEAN_FALCONPADDED1024_AVX2_CRYPTO_BYTES - NONCELEN - 1) {
+            while (v < sigbuflen) {
+                if (sigbuf[v++] != 0) {
+                    return -1;
+                }
+            }
+        } else {
+            return -1;
+        }
     }
 
     /*
@@ -277,20 +286,9 @@ int
 PQCLEAN_FALCON1024_AVX2_crypto_sign_signature(
     uint8_t *sig, size_t *siglen,
     const uint8_t *m, size_t mlen, const uint8_t *sk) {
-    /*
-     * The PQCLEAN_FALCON1024_AVX2_CRYPTO_BYTES constant is used for
-     * the signed message object (as produced by crypto_sign())
-     * and includes a two-byte length value, so we take care here
-     * to only generate signatures that are two bytes shorter than
-     * the maximum. This is done to ensure that crypto_sign()
-     * and crypto_sign_signature() produce the exact same signature
-     * value, if used on the same message, with the same private key,
-     * and using the same output from randombytes() (this is for
-     * reproducibility of tests).
-     */
     size_t vlen;
 
-    vlen = PQCLEAN_FALCON1024_AVX2_CRYPTO_BYTES - NONCELEN - 3;
+    vlen = PQCLEAN_FALCON1024_AVX2_CRYPTO_BYTES - NONCELEN - 1;
     if (do_sign(sig + 1, sig + 1 + NONCELEN, &vlen, m, mlen, sk) < 0) {
         return -1;
     }
