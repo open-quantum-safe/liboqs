@@ -58,8 +58,11 @@ jobs:
           cat config.log && \
           cmake -LA .. && \
           ! (grep "uninitialized variable" config.log)
-      - name: Build
+      - name: Build code
         run: ninja
+        working-directory: build
+      - name: Build documentation
+        run: ninja gen_docs
         working-directory: build
 
   linux_intel:

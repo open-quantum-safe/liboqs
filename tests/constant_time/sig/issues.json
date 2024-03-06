@@ -5,6 +5,8 @@
   "Dilithium5": [],
   "Falcon-1024": ["falcon"],
   "Falcon-512": ["falcon"],
+  "Falcon-padded-1024": ["falcon"],
+  "Falcon-padded-512": ["falcon"],
   "ML-DSA-44-ipd": [],
   "ML-DSA-65-ipd": [],
   "ML-DSA-87-ipd": [],

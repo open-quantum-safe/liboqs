@@ -54,6 +54,10 @@ extern "C" {
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
 #define OQS_SIG_alg_falcon_1024 "Falcon-1024"
+/** Algorithm identifier for Falcon-padded-512 */
+#define OQS_SIG_alg_falcon_padded_512 "Falcon-padded-512"
+/** Algorithm identifier for Falcon-padded-1024 */
+#define OQS_SIG_alg_falcon_padded_1024 "Falcon-padded-1024"
 /** Algorithm identifier for SPHINCS+-SHA2-128f-simple */
 #define OQS_SIG_alg_sphincs_sha2_128f_simple "SPHINCS+-SHA2-128f-simple"
 /** Algorithm identifier for SPHINCS+-SHA2-128s-simple */
@@ -83,7 +87,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 23
+#define OQS_SIG_algs_length 25
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
