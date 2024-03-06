@@ -6,7 +6,7 @@
 - **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: 2023-04-30.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/a472dc1c482c7e4ea855b153001f064977f29135
+  - **Source**: https://github.com/PQClean/PQClean/commit/8e221ae797b229858a0b0d784577a8cb149d5789
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - https://github.com/SWilson4/package-pqclean/tree/8db1b24b/hqc, which takes it from:

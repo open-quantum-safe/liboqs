@@ -7,9 +7,9 @@
 - **Authors' website**: https://falcon-sign.info
 - **Specification version**: 20211101.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/a472dc1c482c7e4ea855b153001f064977f29135
+  - **Source**: https://github.com/PQClean/PQClean/commit/8e221ae797b229858a0b0d784577a8cb149d5789
   - **Implementation license (SPDX-Identifier)**: MIT
-- **Optimized Implementation sources**: https://github.com/PQClean/PQClean/commit/a472dc1c482c7e4ea855b153001f064977f29135
+- **Optimized Implementation sources**: https://github.com/PQClean/PQClean/commit/8e221ae797b229858a0b0d784577a8cb149d5789
   - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
       - **Source**: https://github.com/PQClean/PQClean/commit/7707d1bcc8ae7f9ffd296dd13b1d76d2767d14f8
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
