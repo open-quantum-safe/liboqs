@@ -6,7 +6,6 @@
 
 #if defined(OQS_ENABLE_KEM_kyber_512)
 
-#if defined(OQS_ENABLE_KEM_kyber_512)
 OQS_KEM *OQS_KEM_kyber_512_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -30,7 +29,6 @@ OQS_KEM *OQS_KEM_kyber_512_new(void) {
 
 	return kem;
 }
-#endif
 
 extern int pqcrystals_kyber512_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber512_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);

@@ -6,8 +6,9 @@
 
 {% for scheme in schemes -%}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}){%- endif %}
-
+{% if 'alias_scheme' in scheme %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }})
+{% endif %}
 OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -31,7 +32,9 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	return kem;
 }
+{%- if 'alias_scheme' in scheme %}
 #endif
+{%- endif -%}
 
 {%- if 'alias_scheme' in scheme %}
 

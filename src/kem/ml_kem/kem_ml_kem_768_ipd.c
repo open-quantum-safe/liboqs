@@ -7,6 +7,7 @@
 #if defined(OQS_ENABLE_KEM_ml_kem_768_ipd) || defined(OQS_ENABLE_KEM_ml_kem_768)
 
 #if defined(OQS_ENABLE_KEM_ml_kem_768_ipd)
+
 OQS_KEM *OQS_KEM_ml_kem_768_ipd_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));

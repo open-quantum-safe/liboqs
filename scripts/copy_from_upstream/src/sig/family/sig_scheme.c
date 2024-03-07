@@ -6,8 +6,9 @@
 
 {% for scheme in schemes -%}
 #if defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}){%- endif %}
-
+{% if 'alias_scheme' in scheme %}
 #if defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }})
+{% endif %}
 OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
@@ -30,7 +31,9 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	return sig;
 }
+{%- if 'alias_scheme' in scheme %}
 #endif
+{%- endif -%}
 
 {%- if 'alias_scheme' in scheme %}
 

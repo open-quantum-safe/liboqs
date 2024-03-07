@@ -6,7 +6,6 @@
 
 #if defined(OQS_ENABLE_SIG_dilithium_3)
 
-#if defined(OQS_ENABLE_SIG_dilithium_3)
 OQS_SIG *OQS_SIG_dilithium_3_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
@@ -29,7 +28,6 @@ OQS_SIG *OQS_SIG_dilithium_3_new(void) {
 
 	return sig;
 }
-#endif
 
 extern int pqcrystals_dilithium3_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_dilithium3_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);

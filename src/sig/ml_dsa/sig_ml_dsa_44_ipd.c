@@ -7,6 +7,7 @@
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_ipd) || defined(OQS_ENABLE_SIG_ml_dsa_44)
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_ipd)
+
 OQS_SIG *OQS_SIG_ml_dsa_44_ipd_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
