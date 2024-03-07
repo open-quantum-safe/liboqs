@@ -40,7 +40,11 @@ The OQS project is supported by the [Post-Quantum Cryptography Alliance](https:/
 
 Details on each supported algorithm can be found in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
 
-The list below indicates all algorithms supported by liboqs, but not all those algorithms have been selected for standardization by NIST, specifically Kyber (excluding the "-90s" variants), Dilithium (excluding the "-AES" variants), Falcon, and SPHINCS+ (excluding the "robust" variants). Activating only those standardized algorithms for use in `liboqs` can be facilitated by setting the [OQS_ALGS_ENABLED](CONFIGURE.md#oqs_algs_enabled) build configuration variable to `STD`. By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
+The list below indicates all algorithms currently supported by liboqs, including experimental algorithms and already excluding algorithm variants pruned during the NIST competition, such as Kyber-90s or Dilithium-AES.
+
+The currently only algorithms selected for standardization are the "ML-KEM" and "ML-DSA" variants with their respective different bit strengths. `liboqs` will retain these algorithm names selected by NIST throughout the finishing stages of the standardization process, so users can rely on their presence going forward. If NIST changes the implementation details of these algorithms, `liboqs` will adapt the implementation such as for users to not be impacted by such potential change. For users interested in explicitly selecting the current "proposed draft standard" code, the variants with the suffix "-ipd" are made available. At this stage, "ml-kem-ipd" and "ml-kem" as well as "ml-dsa-ipd" and "ml-dsa" are functionally equivalent, denoted by the "alias" moniker below.
+
+All other algorithm names are subject to change. `liboqs` makes available a [selection mechanism for algorithms on the NIST standards track, continued NIST competition, or purely experimental nature by way of the configuration variable OQS_ALGS_ENABLED](CONFIGURE.md#oqs_algs_enabled). By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
 
 #### Key encapsulation mechanisms
 
