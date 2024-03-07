@@ -4,6 +4,8 @@
 
 #include <oqs/sig_ml_dsa.h>
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd) || defined(OQS_ENABLE_SIG_ml_dsa_87)
+
 #if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd)
 
 OQS_SIG *OQS_SIG_ml_dsa_87_ipd_new(void) {
@@ -28,7 +30,9 @@ OQS_SIG *OQS_SIG_ml_dsa_87_ipd_new(void) {
 
 	return sig;
 }
+#endif
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_87)
 /** Alias */
 OQS_SIG *OQS_SIG_ml_dsa_87_new(void) {
 
@@ -52,19 +56,20 @@ OQS_SIG *OQS_SIG_ml_dsa_87_new(void) {
 
 	return sig;
 }
+#endif
 
 extern int pqcrystals_ml_dsa_87_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2) || defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
 extern int pqcrystals_ml_dsa_87_ipd_avx2_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ipd_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 #endif
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_keypair(uint8_t *public_key, uint8_t *secret_key) {
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2) || defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -80,7 +85,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_keypair(uint8_t *public_key, uint8_t *s
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2) || defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -96,7 +101,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_sign(uint8_t *signature, size_t *signat
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_ipd_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2)
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_ipd_avx2) || defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
