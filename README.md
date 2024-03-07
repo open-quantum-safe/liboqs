@@ -46,7 +46,7 @@ The only algorithms in `liboqs` that implement NIST standards drafts are the [`M
 
 Falcon and SPHINCS+ have also been [selected for standardization](https://csrc.nist.gov/Projects/post-quantum-cryptography/selected-algorithms-2022), but the `liboqs` implementations of these algorithms are currently tracking Round 3 submissions and not NIST standards drafts.
 
-All other algorithm names are subject to change. `liboqs` makes available a [selection mechanism for algorithms on the NIST standards track, continued NIST competition, or purely experimental nature by way of the configuration variable OQS_ALGS_ENABLED](CONFIGURE.md#oqs_algs_enabled). By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
+All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes available a [selection mechanism for algorithms on the NIST standards track, continued NIST competition, or purely experimental nature by way of the configuration variable OQS_ALGS_ENABLED](CONFIGURE.md#oqs_algs_enabled). By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
 
 #### Key encapsulation mechanisms
 
