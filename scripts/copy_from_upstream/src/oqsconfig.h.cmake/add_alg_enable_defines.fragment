@@ -8,6 +8,9 @@
 {%- endif -%}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
 #cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} 1
+{%- if 'alias_scheme' in scheme %}
+#cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }} 1
+{%- endif -%}
         {%- endfor -%}
     {%- endfor -%}
 {% endfor -%}
@@ -22,6 +25,9 @@
 {%- endif -%}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
 #cmakedefine OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} 1
+{%- if 'alias_scheme' in scheme %}
+#cmakedefine OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }} 1
+{%- endif -%}
         {%- endfor -%}
     {%- endfor -%}
 {% endfor %}
