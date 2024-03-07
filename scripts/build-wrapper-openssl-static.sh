@@ -54,11 +54,16 @@ the_openssl_dir="${the_openssl_dir:-$HOME/proj/git/src/triplecyber.visualstudio.
 the_ios_target="${the_ios_target:-17.0}"
 the_macos_target="${the_macos_target:-14.2}"
 the_android_api_level="${the_android_api_level:-34}"
+the_oqs_algs_enabled="${the_oqs_algs_enabled:-STD}"
 
 # enable debug to get explicit compiler command lines
 the_cmake_build_verbose_flag="${the_cmake_build_verbose_flag:-0}"
 the_cmake_build_verbose_option=''
 [ x"$the_cmake_build_verbose_flag" = x1 ] && the_cmake_build_verbose_option='--verbose'
+
+the_cmake_build_trace_flag="${the_cmake_build_trace_flag:-0}"
+the_cmake_build_trace_option=''
+[ x"$the_cmake_build_trace_flag" = x1 ] && the_cmake_build_trace_option='--trace'
 
 # locate script source directory
 SOURCE="${BASH_SOURCE[0]}"
@@ -71,6 +76,19 @@ while [ -h "$SOURCE" ]; do
 done
 g_SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 the_top_dir="`realpath "$g_SCRIPT_DIR/.."`"
+
+# what is our OS?
+os_is_macos=0 ; os_is_linux=0 ; os_is_windows=0
+case "`uname -s | xargs`" in
+  Darwin) os_is_macos=1;;
+  Linux) os_is_linux=1;;
+  *) os_is_windows=1;;
+esac
+
+# determine our preferred targets
+wants_android=0 ; [ $os_is_macos -eq 1 ] && wants_android=1
+wants_apple=0 ; [ $os_is_macos -eq 1 ] && wants_apple=1
+wants_linux=0 ; [ $os_is_linux -eq 1 ] && wants_linux=1
 
 # assume the build directory
 the_build_dir_name='build'
@@ -119,19 +137,18 @@ function build_apple_variant {
   # the apple.cmake toolchain is managed by the liboqs team - so use it
   set -x
   cmake \
+    $the_cmake_build_trace_option \
     -DCMAKE_TOOLCHAIN_FILE="$the_cmake_dir_path"/apple.cmake  \
     -DPLATFORM=$i_platform \
     -DDEPLOYMENT_TARGET=$l_deployment_target \
-    -DOQS_ALGS_ENABLED=STD \
+    -DOQS_ALGS_ENABLED=$the_oqs_algs_enabled \
     -DOQS_USE_OPENSSL=ON \
     -DOQS_USE_SHA3_OPENSSL=ON \
     -DOPENSSL_USE_STATIC_LIBS=ON \
     -DOPENSSL_ROOT_DIR="$l_openssl_plat_dir" \
     -B . -S "$the_top_dir"
   l_rc=$? ; set +x ; [ $l_rc -ne 0 ] && return $l_rc
-  set -x
-  cmake --build . $the_cmake_build_verbose_option
-  l_rc=$? ; set +x ; [ $l_rc -ne 0 ] && return $l_rc
+  cmake --build . $the_cmake_build_verbose_option || return $?
   echo ''
   return 0
 }
@@ -247,10 +264,11 @@ function build_android_variant {
   #   this is why we *must set* OPENSSL_INCLUDE_DIR, OPENSSL_SSL_LIBRARY, OPENSSL_CRYPTO_LIBRARY
   set -x
   cmake \
+    $the_cmake_build_trace_option \
     -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_HOME"/build/cmake/android.toolchain.cmake \
     -DANDROID_ABI=$i_arch \
     -DANDROID_PLATFORM=android-$the_android_api_level \
-    -DOQS_ALGS_ENABLED=STD \
+    -DOQS_ALGS_ENABLED=$the_oqs_algs_enabled \
     -DOQS_USE_OPENSSL=ON \
     -DOQS_USE_SHA3_OPENSSL=ON \
     -DOPENSSL_USE_STATIC_LIBS=ON \
@@ -271,8 +289,63 @@ function build_android {
   local l_variants='arm64-v8a x86_64 x86 armeabi-v7a'
   [ x"$1" != x ] && l_variants="$@"
   for i in `echo "$l_variants"` ; do
-    set -x
     build_android_variant $i || return $?
+  done
+  return 0
+}
+
+##############################################################
+# LINUX build support
+function build_linux_variant {
+  local i_arch="$1" ; shift
+
+  # locals
+  local l_rc=0
+  local l_type='linux'
+  local l_openssl_plat_dir=$the_openssl_dir/$l_type/$the_openssl_ver/$i_arch
+
+  echo "BUILD: $l_type ($i_arch)..."
+
+  # locate back to script home
+  cd "$the_top_dir" || return $?
+
+  # create directory and clear - on errors we are done
+  local l_build_dir_path="$the_build_dir_path"/$l_type/$i_arch
+  mkdir -p "$l_build_dir_path"
+  cd "$l_build_dir_path" || return $?
+  rm -fR ./*
+
+  set -x
+  cmake \
+    $the_cmake_build_trace_option \
+    -DOQS_ALGS_ENABLED=$the_oqs_algs_enabled \
+    -DOQS_USE_OPENSSL=ON \
+    -DOQS_USE_SHA3_OPENSSL=ON \
+    -DOPENSSL_USE_STATIC_LIBS=ON \
+    -DOPENSSL_ROOT_DIR="$l_openssl_plat_dir" \
+    -DOPENSSL_INCLUDE_DIR="$l_openssl_plat_dir/include" \
+    -DOPENSSL_SSL_LIBRARY="$l_openssl_plat_dir/lib64/libssl.a" \
+    -DOPENSSL_CRYPTO_LIBRARY="$l_openssl_plat_dir/lib64/libcrypto.a" \
+    "$the_top_dir"
+  l_rc=$? ; set +x ; [ $l_rc -ne 0 ] && return $l_rc
+
+  # account for -lz which cannot be appended to link flags
+  # without modifying FindOpenSSL.cmake or other source files.
+  find "$l_build_dir_path"/tests -type f -name link.txt -exec sed -ie 's/libcrypto.a/libcrypto.a -lz/' {} \;
+  find "$l_build_dir_path"/tests -type f -name link.txt -exec cat {} \;
+
+  cmake --build . $the_cmake_build_verbose_option || return $?
+  echo ''
+  return 0
+}
+
+# build all known linux variants
+function build_linux {
+  # user can pass in the variant desired
+  local l_variants='x86_64'
+  [ x"$1" != x ] && l_variants="$@"
+  for i in `echo "$l_variants"` ; do
+    build_linux_variant $i || return $?
   done
   return 0
 }
@@ -291,25 +364,41 @@ function verify_folders {
   # locate back to script home
   cd "$the_top_dir" || return $?
 
-  # make sure that all known folders are created
-  l_type='apple'
-  verify_folder "$the_build_dir_path"/$l_type
-  for l_device in iphoneos iphonesimulator macosx ; do
-    verify_folder "$the_build_dir_path"/$l_type/$l_device
-    verify_folder "$the_build_dir_path"/$l_type/$l_device/lib
-    for l_arch in arm64 ; do
-      verify_folder "$the_build_dir_path"/$l_type/$l_device/$l_arch
-      verify_folder "$the_build_dir_path"/$l_type/$l_device/$l_arch/include
-    done
-  done
+  local l_type=''
 
-  l_type='android'
-  verify_folder "$the_build_dir_path"/$l_type
-  for l_arch in arm64-v8a armeabi-v7a x86 x86_64 ; do
-    verify_folder "$the_build_dir_path"/$l_type/$l_arch
-    verify_folder "$the_build_dir_path"/$l_type/$l_arch/include
-    verify_folder "$the_build_dir_path"/$l_type/$l_arch/lib
-  done
+  # make sure that all known folders are created
+  if [ $wants_apple -eq 1 ] ; then
+    l_type='apple'
+    verify_folder "$the_build_dir_path"/$l_type
+    for l_device in iphoneos iphonesimulator macosx ; do
+      verify_folder "$the_build_dir_path"/$l_type/$l_device
+      verify_folder "$the_build_dir_path"/$l_type/$l_device/lib
+      for l_arch in arm64 ; do
+        verify_folder "$the_build_dir_path"/$l_type/$l_device/$l_arch
+        verify_folder "$the_build_dir_path"/$l_type/$l_device/$l_arch/include
+      done
+    done
+  fi
+
+  if [ $wants_android -eq 1 ] ; then
+    l_type='android'
+    verify_folder "$the_build_dir_path"/$l_type
+    for l_arch in arm64-v8a armeabi-v7a x86 x86_64 ; do
+      verify_folder "$the_build_dir_path"/$l_type/$l_arch
+      verify_folder "$the_build_dir_path"/$l_type/$l_arch/include
+      verify_folder "$the_build_dir_path"/$l_type/$l_arch/lib
+    done
+  fi
+
+  if [ $wants_linux -eq 1 ] ; then
+    l_type='linux'
+    verify_folder "$the_build_dir_path"/$l_type
+    for l_arch in x86_64 ; do
+      verify_folder "$the_build_dir_path"/$l_type/$l_arch
+      verify_folder "$the_build_dir_path"/$l_type/$l_arch/include
+      verify_folder "$the_build_dir_path"/$l_type/$l_arch/lib
+    done
+  fi
 
   return 0
 }
@@ -322,7 +411,10 @@ function get_oqs_version {
   # the version is injected into the generated oqsconfig.h;
   # thus we can read from any folder.
   # we will read from android/arm64-v8a
-  local l_oqs_config_h="$the_build_dir_path/android/arm64-v8a/include/oqs/oqsconfig.h"
+  local l_oqs_config_h=''
+  [ $wants_android -eq 1 ] && l_oqs_config_h="$the_build_dir_path/android/arm64-v8a/include/oqs/oqsconfig.h"
+  [ $wants_apple -eq 1 ] && l_oqs_config_h="$the_build_dir_path/apple/iphoneos/arm64/include/oqs/oqsconfig.h"
+  [ $wants_linux -eq 1 ] && l_oqs_config_h="$the_build_dir_path/linux/x86_64/include/oqs/oqsconfig.h"
   [ ! -s "$l_oqs_config_h" ] && echo "ERROR: Empty or missing '$l_oqs_config_h' (cannot get version)"
 
   # extract the version
@@ -384,23 +476,37 @@ function do_export {
   mkdir -p "$the_export_dir_path"
   cd "$the_export_dir_path" || return $?
 
-  # load in from everything...
-  local l_type='android'
-  create_export_folder $l_type "$l_version" arm64-v8a/lib arm64-v8a/include || return $?
-  create_export_folder $l_type "$l_version" armeabi-v7a/lib armeabi-v7a/include || return $?
-  create_export_folder $l_type "$l_version" x86/lib x86/include || return $?
-  create_export_folder $l_type "$l_version" x86_64/lib x86_64/include || return $?
+  # locals
+  local l_type=''
 
-  l_type='apple'
-  create_export_folder $l_type "$l_version" iphoneos/lib iphoneos/arm64/include || return $?
-  create_export_folder $l_type "$l_version" iphonesimulator/lib iphonesimulator/arm64/include iphonesimulator/x86_64/include || return $?
-  create_export_folder $l_type "$l_version" macosx/lib macosx/arm64/include macosx/x86_64/include || return $?
+  # load in from everything...
+  if [ $wants_android -eq 1 ] ; then
+    l_type='android'
+    create_export_folder $l_type "$l_version" arm64-v8a/lib arm64-v8a/include || return $?
+    create_export_folder $l_type "$l_version" armeabi-v7a/lib armeabi-v7a/include || return $?
+    create_export_folder $l_type "$l_version" x86/lib x86/include || return $?
+    create_export_folder $l_type "$l_version" x86_64/lib x86_64/include || return $?
+  fi
+
+  if [ $wants_apple -eq 1 ] ; then
+    l_type='apple'
+    create_export_folder $l_type "$l_version" iphoneos/lib iphoneos/arm64/include || return $?
+    create_export_folder $l_type "$l_version" iphonesimulator/lib iphonesimulator/arm64/include iphonesimulator/x86_64/include || return $?
+    create_export_folder $l_type "$l_version" macosx/lib macosx/arm64/include macosx/x86_64/include || return $?
+  fi
+
+  if [ $wants_linux -eq 1 ] ; then
+    l_type='linux'
+    create_export_folder $l_type "$l_version" x86_64/lib x86_64/include || return $?
+  fi
 
   # report on what was exported
   echo ''
   echo "VERSION: $l_version"
   find "$the_export_dir_path" -type d -name '*' -exec ls -lad {} \;
-  find "$the_export_dir_path"/apple/"$l_version" -type f -name '*.a' -exec lipo -info {} \;
+  if [ $wants_apple -eq 1 ] ; then
+    find "$the_export_dir_path"/apple/"$l_version" -type f -name '*.a' -exec lipo -info {} \;
+  fi
   return 0
 }
 
@@ -446,8 +552,9 @@ function fix_cmake_provider {
 
 # build all targets
 function do_main {
-  build_android || return $?
-  build_apple || return $?
+  if [ $wants_android -eq 1 ] ; then build_android || return $? ; fi
+  if [ $wants_apple -eq 1 ] ; then build_apple || return $? ; fi
+  if [ $wants_linux -eq 1 ] ; then build_linux || return $? ; fi
   do_export || return $?
   fix_cmake_provider || return $?
   return 0
