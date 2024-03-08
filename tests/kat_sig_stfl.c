@@ -207,7 +207,6 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	}
 
 	fh = stdout;
-	fprintf(fh, "# %s\n\n", sig->method_name);
 
 	OQS_fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
 	OQS_fprintBstr(fh, "sk = ", secret_key->secret_key_data, sig->length_secret_key);
@@ -441,7 +440,6 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		fprintf(stderr, "ERROR: Verify test vector failed: %s\n", method_name);
 	} else {
 		fh = stdout;
-		fprintf(fh, "# %s\n\n", sig->method_name);
 		fprint_l_str(fh, "msg = ", msg, msg_len);
 		fprintf(fh, "\n");
 		fprint_l_str(fh, "sm = ", sm, sig->length_signature);
