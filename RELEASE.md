@@ -28,7 +28,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 of version 0.10.0 of liboqs. It was released on March 7, 2024.
+This is release candidate 1 of version 0.10.0 of liboqs. It was released on March 8, 2024.
 
 This release adds support for ML-KEM (previously known as CRYSTALS-Kyber) and ML-DSA (previously known as CRYSTALS-Dilithium), based on the initial public drafts of [FIPS 203](https://csrc.nist.gov/pubs/fips/203/ipd) and [FIPS 204](https://csrc.nist.gov/pubs/fips/204/ipd), respectively. OQS continues to support the NIST Round 3 versions of Kyber and Dilithium for interoperability purposes. This release additionally updates HQC to the NIST Round 4 version and adds support for fixed-length Falcon signatures.
 
