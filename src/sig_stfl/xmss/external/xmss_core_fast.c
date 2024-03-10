@@ -88,8 +88,8 @@ static void xmssmt_deserialize_state(const xmss_params *params,
     /* Skip past the 'regular' sk */
     sk += params->index_bytes + 4*params->n;
 
-    // TODO These data sizes follow from the (former) test xmss_core_fast.c
-    // TODO They should be reconsidered / motivated more explicitly
+    // TODO (from upstream) These data sizes follow from the (former) test xmss_core_fast.c
+    // TODO (from upstream) They should be reconsidered / motivated more explicitly
 
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].stack = sk;
@@ -162,15 +162,15 @@ static void memswap(void *a, void *b, void *t, unsigned long long len)
  * it is now necessary to make swaps 'real swaps'. This could be done in the
  * serialization function as well, but that causes more overhead
  */
-// TODO this should not be necessary if we keep better track of the states
+// TODO (from upstream) this should not be necessary if we keep better track of the states
 static void deep_state_swap(const xmss_params *params,
                             bds_state *a, bds_state *b)
 {
     if (a->stack == NULL || b->stack == NULL) {
         return;
     }
-    // TODO this is extremely ugly and should be refactored
-    // TODO right now, this ensures that both 'stack' and 'retain' fit
+    // TODO (from upstream) this is extremely ugly and should be refactored
+    // TODO (from upstream) right now, this ensures that both 'stack' and 'retain' fit
     unsigned char *t = OQS_MEM_checked_malloc(
         ((params->tree_height + 1) > ((1 << params->bds_k) - params->bds_k - 1)
          ? (params->tree_height + 1)
@@ -563,7 +563,7 @@ int xmss_core_keypair(const xmss_params *params,
 {
     uint32_t addr[8] = {0};
 
-    // TODO refactor BDS state not to need separate treehash instances
+    // TODO (from upstream) refactor BDS state not to need separate treehash instances
     bds_state state;
     treehash_inst *treehash = calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
     state.treehash = treehash;
@@ -621,7 +621,7 @@ int xmss_core_sign(const xmss_params *params,
 
     uint16_t i = 0;
 
-    // TODO refactor BDS state not to need separate treehash instances
+    // TODO (from upstream) refactor BDS state not to need separate treehash instances
     bds_state state;
     treehash_inst *treehash = calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
     state.treehash = treehash;
@@ -772,7 +772,7 @@ int xmssmt_core_keypair(const xmss_params *params,
     unsigned int i;
     unsigned char *wots_sigs;
 
-    // TODO refactor BDS state not to need separate treehash instances
+    // TODO (from upstream) refactor BDS state not to need separate treehash instances
     bds_state *states = calloc(2*params->d - 1, sizeof(bds_state));
     treehash_inst *treehash = calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
     for (i = 0; i < 2*params->d - 1; i++) {
@@ -863,7 +863,7 @@ int xmssmt_core_sign(const xmss_params *params,
     unsigned char *m_with_prefix = NULL;
     int ret = 0;
 
-    // TODO refactor BDS state not to need separate treehash instances
+    // TODO (from upstream) refactor BDS state not to need separate treehash instances
     bds_state *states = calloc(2*params->d - 1, sizeof(bds_state));
     treehash_inst *treehash = calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
     for (i = 0; i < 2*params->d - 1; i++) {
