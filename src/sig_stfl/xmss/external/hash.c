@@ -87,13 +87,10 @@ int hash_message(const xmss_params *params, unsigned char *out,
  */
 int thash_h(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
-            const unsigned char *pub_seed, uint32_t addr[8])
+            const unsigned char *pub_seed, uint32_t addr[8],
+            unsigned char *buf)
 {
-    unsigned char *tmp = malloc(params->padding_len + 3 * params->n + 2 * params->n +
-                                params->padding_len + params->n + 32);
-
-    unsigned char *buf = tmp;
-    unsigned char *bitmask = tmp + (params->padding_len + 3 * params->n);
+    unsigned char *bitmask = buf + (params->padding_len + 3 * params->n);
     unsigned char *prf_buf = bitmask + 2*params->n;
 
     unsigned char addr_as_bytes[32];
@@ -121,19 +118,15 @@ int thash_h(const xmss_params *params,
     }
     int ret = core_hash(params, out, buf, params->padding_len + 3 * params->n);
 
-    OQS_MEM_insecure_free(tmp);
-
     return ret;
 }
 
 int thash_f(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
-            const unsigned char *pub_seed, uint32_t addr[8])
+            const unsigned char *pub_seed, uint32_t addr[8],
+            unsigned char *buf)
 {
-    unsigned char *tmp = malloc(params->padding_len + 2 * params->n + params->n +
-                                params->padding_len + params->n + 32);
-    unsigned char *buf = tmp;
-    unsigned char *bitmask = tmp + (params->padding_len + 2 * params->n);
+    unsigned char *bitmask = buf + (params->padding_len + 2 * params->n);
     unsigned char *prf_buf = bitmask + params->n;
 
     unsigned char addr_as_bytes[32];
@@ -156,8 +149,6 @@ int thash_f(const xmss_params *params,
         buf[params->padding_len + params->n + i] = in[i] ^ bitmask[i];
     }
     int ret = core_hash(params, out, buf, params->padding_len + 2 * params->n);
-
-    OQS_MEM_insecure_free(tmp);
 
     return ret;
 }
