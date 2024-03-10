@@ -14,10 +14,10 @@
  */
 static void expand_seed(const xmss_params *params,
                         unsigned char *outseeds, const unsigned char *inseed,
-                        const unsigned char *pub_seed, uint32_t addr[8])
+                        const unsigned char *pub_seed, uint32_t addr[8],
+                        unsigned char *buf)
 {
     unsigned int i;
-    unsigned char *buf = malloc(params->n + 32 + params->padding_len + 2*params->n + 32);
     unsigned char *prf_buf = buf + params->n + 32;
 
     set_hash_addr(addr, 0);
@@ -28,8 +28,6 @@ static void expand_seed(const xmss_params *params,
         addr_to_bytes(buf + params->n, addr);
         prf_keygen(params, outseeds + i*params->n, buf, inseed, prf_buf);
     }
-
-    OQS_MEM_insecure_free(buf);
 }
 
 /**
@@ -42,7 +40,8 @@ static void expand_seed(const xmss_params *params,
 static void gen_chain(const xmss_params *params,
                       unsigned char *out, const unsigned char *in,
                       unsigned int start, unsigned int steps,
-                      const unsigned char *pub_seed, uint32_t addr[8])
+                      const unsigned char *pub_seed, uint32_t addr[8],
+                      unsigned char *thash_buf)
 {
     unsigned int i;
 
@@ -52,7 +51,7 @@ static void gen_chain(const xmss_params *params,
     /* Iterate 'steps' calls to the hash function. */
     for (i = start; i < (start+steps) && i < params->wots_w; i++) {
         set_hash_addr(addr, i);
-        thash_f(params, out, out, pub_seed, addr);
+        thash_f(params, out, out, pub_seed, addr, thash_buf);
     }
 }
 
@@ -88,7 +87,7 @@ static void wots_checksum(const xmss_params *params,
 {
     int csum = 0;
     unsigned int csum_bytes_length =  (params->wots_len2 * params->wots_log_w + 7) / 8;
-    unsigned char *csum_bytes = malloc(csum_bytes_length);
+    unsigned char *csum_bytes = OQS_MEM_checked_malloc(csum_bytes_length);
     unsigned int i;
 
     /* Compute checksum. */
@@ -126,15 +125,22 @@ void wots_pkgen(const xmss_params *params,
                 const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned int i;
-
+    // const size_t thash_buf_len = 2 * params->padding_len + 4 * params->n + 32;
+    // const size_t expand_seed_buf_len = params->padding_len + 3 * params->n + 64; 
+    
+    // buf size is the max(thash_buf_len, expand_seed_buf_len)
+    unsigned char *buf = OQS_MEM_checked_malloc(2 * params->padding_len + 4 * params->n + 64);
+    
     /* The WOTS+ private key is derived from the seed. */
-    expand_seed(params, pk, seed, pub_seed, addr);
+    expand_seed(params, pk, seed, pub_seed, addr, buf);
 
     for (i = 0; i < params->wots_len; i++) {
         set_chain_addr(addr, i);
         gen_chain(params, pk + i*params->n, pk + i*params->n,
-                  0, params->wots_w - 1, pub_seed, addr);
+                  0, params->wots_w - 1, pub_seed, addr, buf);
     }
+
+    OQS_MEM_insecure_free(buf);
 }
 
 /**
@@ -147,20 +153,26 @@ void wots_sign(const xmss_params *params,
                uint32_t addr[8])
 {
     unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int));
+    // const size_t thash_buf_len = 2 * params->padding_len + 4 * params->n + 32;
+    // const size_t expand_seed_buf_len = params->padding_len + 3 * params->n + 64; 
+    
+    // buf size is the max(thash_buf_len, expand_seed_buf_len)
+    unsigned char *buf = OQS_MEM_checked_malloc(2 * params->padding_len + 4 * params->n + 64);
     unsigned int i;
 
     chain_lengths(params, lengths, msg);
 
     /* The WOTS+ private key is derived from the seed. */
-    expand_seed(params, sig, seed, pub_seed, addr);
+    expand_seed(params, sig, seed, pub_seed, addr, buf);
 
     for (i = 0; i < params->wots_len; i++) {
         set_chain_addr(addr, i);
         gen_chain(params, sig + i*params->n, sig + i*params->n,
-                  0, lengths[i], pub_seed, addr);
+                  0, lengths[i], pub_seed, addr, buf);
     }
 
     OQS_MEM_insecure_free(lengths);
+    OQS_MEM_insecure_free(buf);
 }
 
 /**
@@ -173,6 +185,8 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int ));
+    const size_t thash_buf_len = 2 * params->padding_len + 4 * params->n + 32;
+    unsigned char *thash_buf = OQS_MEM_checked_malloc(thash_buf_len);
     unsigned int i;
 
     chain_lengths(params, lengths, msg);
@@ -180,8 +194,9 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
     for (i = 0; i < params->wots_len; i++) {
         set_chain_addr(addr, i);
         gen_chain(params, pk + i*params->n, sig + i*params->n,
-                  lengths[i], params->wots_w - 1 - lengths[i], pub_seed, addr);
+                  lengths[i], params->wots_w - 1 - lengths[i], pub_seed, addr, thash_buf);
     }
 
     OQS_MEM_insecure_free(lengths);
+    OQS_MEM_insecure_free(thash_buf);
 }

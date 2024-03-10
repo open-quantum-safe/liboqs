@@ -171,7 +171,7 @@ static void deep_state_swap(const xmss_params *params,
     }
     // TODO this is extremely ugly and should be refactored
     // TODO right now, this ensures that both 'stack' and 'retain' fit
-    unsigned char *t = malloc(
+    unsigned char *t = OQS_MEM_checked_malloc(
         ((params->tree_height + 1) > ((1 << params->bds_k) - params->bds_k - 1)
          ? (params->tree_height + 1)
          : ((1 << params->bds_k) - params->bds_k - 1))
@@ -239,7 +239,8 @@ static void treehash_init(const xmss_params *params,
     uint32_t idx = index;
     uint32_t lastnode = index +(1<<height), i;
     unsigned char *stack = calloc((height+1)*params->n, sizeof(unsigned char));
-    unsigned int *stacklevels = malloc((height + 1)*sizeof(unsigned int));
+    unsigned int *stacklevels = OQS_MEM_checked_malloc((height + 1)*sizeof(unsigned int));
+    unsigned char *thash_buf = OQS_MEM_checked_malloc(2 * params->padding_len + 6 * params->n + 32);
     unsigned int stackoffset=0;
     unsigned int nodeh;
 
@@ -274,7 +275,7 @@ static void treehash_init(const xmss_params *params,
             }
             set_tree_height(node_addr, stacklevels[stackoffset-1]);
             set_tree_index(node_addr, (idx >> (stacklevels[stackoffset-1]+1)));
-            thash_h(params, stack+(stackoffset-2)*params->n, stack+(stackoffset-2)*params->n, pub_seed, node_addr);
+            thash_h(params, stack+(stackoffset-2)*params->n, stack+(stackoffset-2)*params->n, pub_seed, node_addr, thash_buf);
             stacklevels[stackoffset-2]++;
             stackoffset--;
         }
@@ -285,6 +286,7 @@ static void treehash_init(const xmss_params *params,
 
     OQS_MEM_insecure_free(stacklevels);
     OQS_MEM_insecure_free(stack);
+    OQS_MEM_insecure_free(thash_buf);
 }
 
 static void treehash_update(const xmss_params *params,
@@ -308,7 +310,8 @@ static void treehash_update(const xmss_params *params,
     set_ltree_addr(ltree_addr, treehash->next_idx);
     set_ots_addr(ots_addr, treehash->next_idx);
 
-    unsigned char *nodebuffer = malloc(2 * params->n);
+    unsigned char *nodebuffer = OQS_MEM_checked_malloc(2 * params->n);
+    unsigned char *thash_buf = OQS_MEM_checked_malloc(2 * params->padding_len + 6 * params->n + 32);
     unsigned int nodeheight = 0;
     gen_leaf_wots(params, nodebuffer, sk_seed, pub_seed, ltree_addr, ots_addr);
     while (treehash->stackusage > 0 && state->stacklevels[state->stackoffset-1] == nodeheight) {
@@ -316,7 +319,7 @@ static void treehash_update(const xmss_params *params,
         memcpy(nodebuffer, state->stack + (state->stackoffset-1)*params->n, params->n);
         set_tree_height(node_addr, nodeheight);
         set_tree_index(node_addr, (treehash->next_idx >> (nodeheight+1)));
-        thash_h(params, nodebuffer, nodebuffer, pub_seed, node_addr);
+        thash_h(params, nodebuffer, nodebuffer, pub_seed, node_addr, thash_buf);
         nodeheight++;
         treehash->stackusage--;
         state->stackoffset--;
@@ -334,6 +337,7 @@ static void treehash_update(const xmss_params *params,
     }
 
     OQS_MEM_insecure_free(nodebuffer);
+    OQS_MEM_insecure_free(thash_buf);
 }
 
 /**
@@ -393,6 +397,7 @@ static char bds_state_update(const xmss_params *params,
     uint32_t ltree_addr[8] = {0};
     uint32_t node_addr[8] = {0};
     uint32_t ots_addr[8] = {0};
+    unsigned char *thash_buf = OQS_MEM_checked_malloc(2 * params->padding_len + 6 * params->n + 32);
 
     unsigned int nodeh;
     int idx = state->next_leaf;
@@ -434,12 +439,14 @@ static char bds_state_update(const xmss_params *params,
         }
         set_tree_height(node_addr, state->stacklevels[state->stackoffset-1]);
         set_tree_index(node_addr, (idx >> (state->stacklevels[state->stackoffset-1]+1)));
-        thash_h(params, state->stack+(state->stackoffset-2)*params->n, state->stack+(state->stackoffset-2)*params->n, pub_seed, node_addr);
+        thash_h(params, state->stack+(state->stackoffset-2)*params->n, state->stack+(state->stackoffset-2)*params->n, pub_seed, node_addr, thash_buf);
 
         state->stacklevels[state->stackoffset-2]++;
         state->stackoffset--;
     }
     state->next_leaf++;
+
+    OQS_MEM_insecure_free(thash_buf);
     return 0;
 }
 
@@ -457,7 +464,8 @@ static void bds_round(const xmss_params *params,
     unsigned int tau = params->tree_height;
     unsigned int startidx;
     unsigned int offset, rowidx;
-    unsigned char *buf = malloc(2 * params->n);
+    unsigned char *buf = OQS_MEM_checked_malloc(2 * params->n);
+    unsigned char *thash_buf = OQS_MEM_checked_malloc(2 * params->padding_len + 6 * params->n + 32);
 
     uint32_t ots_addr[8] = {0};
     uint32_t ltree_addr[8] = {0};
@@ -495,7 +503,7 @@ static void bds_round(const xmss_params *params,
     else {
         set_tree_height(node_addr, (tau-1));
         set_tree_index(node_addr, leaf_idx >> tau);
-        thash_h(params, state->auth + tau * params->n, buf, pub_seed, node_addr);
+        thash_h(params, state->auth + tau * params->n, buf, pub_seed, node_addr, thash_buf);
         for (i = 0; i < tau; i++) {
             if (i < params->tree_height - params->bds_k) {
                 memcpy(state->auth + i * params->n, state->treehash[i].node, params->n);
@@ -519,6 +527,7 @@ static void bds_round(const xmss_params *params,
     }
 
     OQS_MEM_insecure_free(buf);
+    OQS_MEM_insecure_free(thash_buf);
 }
 
 /**
@@ -644,7 +653,7 @@ int xmss_core_sign(const xmss_params *params,
             goto cleanup;
         }
     }
-    unsigned char *tmp = malloc(5 * params->n + params->padding_len + params->n + 32);
+    unsigned char *tmp = OQS_MEM_checked_malloc(5 * params->n + params->padding_len + params->n + 32);
 
     unsigned char *sk_seed = tmp;
     unsigned char *sk_prf = sk_seed + params->n;
@@ -684,7 +693,7 @@ int xmss_core_sign(const xmss_params *params,
     /* Already put the message in the right place, to make it easier to prepend
      * things when computing the hash over the message. */
     unsigned long long prefix_length = params->padding_len + 3*params->n;
-    unsigned char *m_with_prefix = malloc((size_t)(mlen + prefix_length));
+    unsigned char *m_with_prefix = OQS_MEM_checked_malloc((size_t)(mlen + prefix_length));
     memcpy(m_with_prefix, sm + params->sig_bytes - prefix_length, (size_t)prefix_length);
     memcpy(m_with_prefix + prefix_length, m, (size_t)mlen);
 
@@ -835,7 +844,7 @@ int xmssmt_core_sign(const xmss_params *params,
     int needswap_upto = -1;
     unsigned int updates;
 
-    unsigned char *tmp = malloc(5 * params->n + 
+    unsigned char *tmp = OQS_MEM_checked_malloc(5 * params->n + 
                                 params->padding_len + params->n + 32);
     unsigned char *sk_seed = tmp;
     unsigned char *sk_prf = sk_seed + params->n;
