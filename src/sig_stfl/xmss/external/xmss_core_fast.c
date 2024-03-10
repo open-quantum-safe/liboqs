@@ -644,7 +644,7 @@ int xmss_core_sign(const xmss_params *params,
             goto cleanup;
         }
     }
-    unsigned char *tmp = malloc(5 * params->n);
+    unsigned char *tmp = malloc(5 * params->n + params->padding_len + params->n + 32);
 
     unsigned char *sk_seed = tmp;
     unsigned char *sk_prf = sk_seed + params->n;
@@ -670,6 +670,7 @@ int xmss_core_sign(const xmss_params *params,
     // Init working params
     unsigned char *R = pub_seed + params->n;
     unsigned char *msg_h = R + params->n;
+    unsigned char *prf_buf = msg_h + params->n;
     uint32_t ots_addr[8] = {0};
 
     // ---------------------------------
@@ -678,7 +679,7 @@ int xmss_core_sign(const xmss_params *params,
 
     // Message Hash:
     // First compute pseudorandom value
-    prf(params, R, idx_bytes_32, sk_prf);
+    prf(params, R, idx_bytes_32, sk_prf, prf_buf);
 
     /* Already put the message in the right place, to make it easier to prepend
      * things when computing the hash over the message. */
@@ -834,14 +835,15 @@ int xmssmt_core_sign(const xmss_params *params,
     int needswap_upto = -1;
     unsigned int updates;
 
-    unsigned char *tmp = malloc(5 * params->n);
-
+    unsigned char *tmp = malloc(5 * params->n + 
+                                params->padding_len + params->n + 32);
     unsigned char *sk_seed = tmp;
     unsigned char *sk_prf = sk_seed + params->n;
     unsigned char *pub_seed = sk_prf + params->n;
     // Init working params
     unsigned char *R = pub_seed + params->n;
     unsigned char *msg_h = R + params->n;
+    unsigned char *prf_buf = msg_h + params->n;
     uint32_t addr[8] = {0};
     uint32_t ots_addr[8] = {0};
     unsigned char idx_bytes_32[32];
@@ -921,7 +923,7 @@ int xmssmt_core_sign(const xmss_params *params,
     // Message Hash:
     // First compute pseudorandom value
     ull_to_bytes(idx_bytes_32, 32, idx);
-    prf(params, R, idx_bytes_32, sk_prf);
+    prf(params, R, idx_bytes_32, sk_prf, prf_buf);
 
     /* Already put the message in the right place, to make it easier to prepend
      * things when computing the hash over the message. */

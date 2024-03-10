@@ -17,7 +17,8 @@ static void expand_seed(const xmss_params *params,
                         const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned int i;
-    unsigned char *buf = malloc(params->n + 32);
+    unsigned char *buf = malloc(params->n + 32 + params->padding_len + 2*params->n + 32);
+    unsigned char *prf_buf = buf + params->n + 32;
 
     set_hash_addr(addr, 0);
     set_key_and_mask(addr, 0);
@@ -25,7 +26,7 @@ static void expand_seed(const xmss_params *params,
     for (i = 0; i < params->wots_len; i++) {
         set_chain_addr(addr, i);
         addr_to_bytes(buf + params->n, addr);
-        prf_keygen(params, outseeds + i*params->n, buf, inseed);
+        prf_keygen(params, outseeds + i*params->n, buf, inseed, prf_buf);
     }
 
     OQS_MEM_insecure_free(buf);
