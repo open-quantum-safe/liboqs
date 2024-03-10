@@ -125,10 +125,6 @@ void wots_pkgen(const xmss_params *params,
                 const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned int i;
-    // const size_t thash_buf_len = 2 * params->padding_len + 4 * params->n + 32;
-    // const size_t expand_seed_buf_len = params->padding_len + 3 * params->n + 64; 
-    
-    // buf size is the max(thash_buf_len, expand_seed_buf_len)
     unsigned char *buf = OQS_MEM_checked_malloc(2 * params->padding_len + 4 * params->n + 64);
     
     /* The WOTS+ private key is derived from the seed. */
@@ -153,10 +149,6 @@ void wots_sign(const xmss_params *params,
                uint32_t addr[8])
 {
     unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int));
-    // const size_t thash_buf_len = 2 * params->padding_len + 4 * params->n + 32;
-    // const size_t expand_seed_buf_len = params->padding_len + 3 * params->n + 64; 
-    
-    // buf size is the max(thash_buf_len, expand_seed_buf_len)
     unsigned char *buf = OQS_MEM_checked_malloc(2 * params->padding_len + 4 * params->n + 64);
     unsigned int i;
 
