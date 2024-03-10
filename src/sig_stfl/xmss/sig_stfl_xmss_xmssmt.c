@@ -14,7 +14,6 @@
 #define XMSS_UNUSED_ATT
 #endif
 
-
 // macro to en/disable OQS_SIG_STFL-only structs used only in sig&gen case:
 #ifdef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
 #define XMSS_SIGGEN(xmss_v, XMSS_V) \
