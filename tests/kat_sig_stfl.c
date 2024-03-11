@@ -207,7 +207,6 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	}
 
 	fh = stdout;
-	fprintf(fh, "# %s\n\n", sig->method_name);
 
 	OQS_fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
 	OQS_fprintBstr(fh, "sk = ", secret_key->secret_key_data, sig->length_secret_key);
@@ -286,7 +285,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
 		goto err;
 	}
-	fprintf(fh, "max = %llu", sigs_maximum);
+	fprintf(fh, "max = %llu\n", sigs_maximum);
 
 	ret = OQS_SUCCESS;
 	goto cleanup;
@@ -322,7 +321,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	// Echo back max
 	if (FindMarker(fp_rsp, "max = ")) {
 		fscanf(fp_rsp, "%lld", &sigs_maximum);
-		fprintf(fh, "max = %llu", sigs_maximum);
+		fprintf(fh, "max = %llu\n", sigs_maximum);
 	} else {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
 		goto err;
@@ -441,7 +440,6 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		fprintf(stderr, "ERROR: Verify test vector failed: %s\n", method_name);
 	} else {
 		fh = stdout;
-		fprintf(fh, "# %s\n\n", sig->method_name);
 		fprint_l_str(fh, "msg = ", msg, msg_len);
 		fprintf(fh, "\n");
 		fprint_l_str(fh, "sm = ", sm, sig->length_signature);
