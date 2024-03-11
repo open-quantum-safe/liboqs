@@ -321,7 +321,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	// Echo back max
 	if (FindMarker(fp_rsp, "max = ")) {
 		fscanf(fp_rsp, "%lld", &sigs_maximum);
-		fprintf(fh, "max = %llu", sigs_maximum);
+		fprintf(fh, "max = %llu\n", sigs_maximum);
 	} else {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
 		goto err;
