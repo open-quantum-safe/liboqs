@@ -279,7 +279,7 @@ void *OQS_MEM_checked_malloc(size_t len) {
 	void *ptr = malloc(len);
 	if (ptr == NULL) {
 		fprintf(stderr, "Memory allocation failed\n");
-		exit(EXIT_FAILURE);
+		abort();
 	}
 
 	return ptr;
@@ -289,7 +289,7 @@ void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
 	void *ptr = OQS_MEM_aligned_alloc(alignment, size);
 	if (ptr == NULL) {
 		fprintf(stderr, "Memory allocation failed\n");
-		exit(EXIT_FAILURE);
+		abort();
 	}
 
 	return ptr;
