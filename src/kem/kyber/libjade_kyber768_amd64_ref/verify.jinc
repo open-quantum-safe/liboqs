@@ -1,0 +1,49 @@
+// Note1: KYBER_INDCPA_BYTES vs KYBER_CT_LEN
+
+// from Jade require "crypto_kem/kyber/kyber768/common/params.jinc" // TODO: when hakyber avx2
+from Jade require "crypto_kem/kyber/kyber768/amd64/ref/params.jinc"
+
+inline 
+fn __verify(reg u64 ctp, reg ptr u8[KYBER_CT_LEN] ctpc) -> reg u64
+{
+  reg u64 cnd t64;
+  reg u8 t1 t2;
+  inline int i;
+
+  cnd = 0;
+
+  for i=0 to KYBER_CT_LEN
+  {
+    t1 = ctpc.[i];
+    t2 = (u8)[ctp + i];
+    t1 ^= t2;
+    t64 = (64u)t1;
+    cnd |= t64;
+  }
+
+  cnd = -cnd;
+  cnd >>= 63;
+
+  return cnd;
+}
+
+inline
+fn __cmov(reg ptr u8[KYBER_SYMBYTES] dst, reg u64 src cnd) -> reg ptr u8[KYBER_SYMBYTES]
+{
+  reg u8 t1 t2 bcond;
+  inline int i;
+
+  cnd = -cnd;
+
+  for i=0 to KYBER_SYMBYTES
+  {
+    t1 = dst.[i];
+    t2 = (u8)[src + i];
+    t2 = t2 ^ t1;
+    t2 = t2 & cnd;
+    t1 ^= t2;
+    dst.[u8 i] = t1;
+  }
+
+  return dst;
+}

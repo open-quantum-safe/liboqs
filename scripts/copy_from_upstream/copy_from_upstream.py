@@ -65,16 +65,25 @@ def shell(command, expect=0):
     if ret.returncode != expect:
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
-def generator(destination_file_path, template_filename, family, scheme_desired):
+def generator(destination_file_path, template_filename, delimiter, family, scheme_desired):
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
     f = copy.deepcopy(family)
+    contents = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], destination_file_path))
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
-        assert (len(f['schemes']) == 1)
-    # if scheme['implementation'] is not set, run over all implementations!
-    file_put_contents(destination_file_path, jinja2.Template(template).render(f))
-
+    identifier = '{} OQS_COPY_FROM_{}_FRAGMENT_{}'.format(delimiter, 'LIBJADE', os.path.splitext(os.path.basename(template_filename))[0].upper())
+    # if identifier in contents:
+    #     identifier_start, identifier_end = identifier + '_START', identifier + '_END'
+    #     contents = contents.split('\n')
+    #     libjade_contents = '\n'.join(contents[contents.index(identifier_start) + 1: contents.index(identifier_end)])
+    #     contents = jinja2.Template(template).render(f)
+    #     preamble = contents[:contents.find(identifier_start)]
+    #     postamble = contents[contents.find(identifier_end):]
+    #     contents = preamble + identifier_start + '\n' + libjade_contents + '\n' + postamble
+    # else:
+    contents = jinja2.Template(template).render(f)
+    file_put_contents(destination_file_path, contents)
 
 def generator_all(filename, instructions):
     template = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', filename))
@@ -82,20 +91,34 @@ def generator_all(filename, instructions):
     file_put_contents(filename, contents)
 
 
-def replacer(filename, instructions, delimiter):
+def replacer(filename, instructions, delimiter, libjade=False):
     fragments = glob.glob(
-        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', filename, '*.fragment'))
+        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', filename, '*.{}'.format('libjade' if libjade else 'fragment')))
     contents = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], filename))
     for fragment in fragments:
         template = file_get_contents(fragment)
         identifier = os.path.splitext(os.path.basename(fragment))[0]
-        identifier_start = '{} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{}_START'.format(delimiter, identifier.upper())
-        identifier_end = '{} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{}_END'.format(delimiter, identifier.upper())
+        identifier_start = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_START'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
+        identifier_end = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_END'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
         preamble = contents[:contents.find(identifier_start)]
         postamble = contents[contents.find(identifier_end):]
         contents = preamble + identifier_start + jinja2.Template(template).render(
             {'instructions': instructions, 'non_upstream_kems': non_upstream_kems}) + postamble
     file_put_contents(os.path.join(os.environ['LIBOQS_DIR'], filename), contents)
+
+def replacer_contextual(destination_file_path, template_file_path, delimiter, family, scheme_desired, libjade=False):
+    contents = file_get_contents(destination_file_path)
+    template = file_get_contents(template_file_path)
+    identifier = os.path.basename(template_file_path).split(os.extsep)[0]
+    identifier_start = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_START'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
+    identifier_end = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_END'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
+    f = copy.deepcopy(family)
+    if scheme_desired != None:
+        f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
+    preamble = contents[:contents.find(identifier_start)]
+    postamble = contents[contents.find(identifier_end):]
+    contents = preamble + identifier_start + jinja2.Template(template).render(f) + postamble
+    file_put_contents(destination_file_path, contents)
 
 def load_instructions(file):
     instructions = file_get_contents(
@@ -492,7 +515,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
     return [x[len(srcfolder) + 1:] for x in ffs]
 
 
-def process_families(instructions, basedir, with_kat, with_generator):
+def process_families(instructions, basedir, with_kat, with_generator, with_libjade=False):
     for family in instructions['kems'] + instructions['sigs']:
         try:
             os.makedirs(os.path.join(basedir, 'src', family['type'], family['name']))
@@ -573,12 +596,14 @@ def process_families(instructions, basedir, with_kat, with_generator):
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
                              family['type'] + '_{}.h'.format(family['name'])),
                 os.path.join('src', family['type'], 'family', family['type'] + '_family.h'),
+                '/////',
                 family,
                 None,
             )
             generator(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
                 os.path.join('src', family['type'], 'family', 'CMakeLists.txt'),
+                '#####',
                 family,
                 None,
             )
@@ -588,9 +613,32 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
                                  family['type'] + '_{}_{}.c'.format(family['name'], scheme['scheme_c'])),
                     os.path.join('src', family['type'], 'family', family['type'] + '_scheme.c'),
+                    '/////',
                     family,
                     scheme,
                 )
+        
+        if with_libjade:
+            replacer_contextual(
+                os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
+                os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade'),
+                '#####',
+                family,
+                None,
+                libjade=True
+            )
+
+            for scheme in family['schemes']:
+                for template in instructions['templates'][family['type'] + '_scheme.c']:
+                    replacer_contextual(
+                        os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
+                                    family['type'] + '_{}_{}.c'.format(family['name'], scheme['scheme_c'])),
+                        os.path.join('src', family['type'], 'family', template),
+                        '/////',
+                        family,
+                        scheme,
+                        libjade=True
+                    )
 
 def copy_from_upstream():
     for t in ["kem", "sig"]:
@@ -629,7 +677,9 @@ def copy_from_libjade():
             kats[t] = json.load(fp)
 
     instructions = load_instructions('copy_from_libjade.yml')
-    process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
+    process_families(instructions, os.environ['LIBOQS_DIR'], True, False, True)
+    replacer('.CMake/alg_support.cmake', instructions, '#####', libjade=True)
+    replacer('src/oqsconfig.h.cmake', instructions, '/////', libjade=True)
     a = 1
     b = 2
 

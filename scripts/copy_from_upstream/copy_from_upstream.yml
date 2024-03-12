@@ -91,6 +91,7 @@ kems:
         pretty_name_full: HQC-256
   -
     name: kyber
+    libjade_implementation: True
     default_implementation: ref
     arch_specific_implementations:
                                       aarch64: aarch64
@@ -100,14 +101,17 @@ kems:
     schemes:
       -
         scheme: "512"
+        libjade_implementation: True
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
       -
         scheme: "768"
+        libjade_implementation: True
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
       -
         scheme: "1024"
+        libjade_implementation: False
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
 sigs:

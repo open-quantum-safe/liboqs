@@ -78,6 +78,7 @@ add_library(common OBJECT ${AES_IMPL}
                           pqclean_shims/nistseedexpander.c
                           pqclean_shims/fips202.c
                           pqclean_shims/fips202x4.c
+                          libjade_shims/libjade_randombytes.c
                           rand/rand.c
                           rand/rand_nist.c)
 

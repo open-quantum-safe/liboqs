@@ -1,5 +1,5 @@
 diff --git a/src/crypto_kem/kyber/kyber512/META.yml b/src/crypto_kem/kyber/kyber512/META.yml
-index 000ec75..cfaeff5 100644
+index 000ec75..797fca4 100644
 --- a/src/crypto_kem/kyber/kyber512/META.yml
 +++ b/src/crypto_kem/kyber/kyber512/META.yml
 @@ -1,7 +1,6 @@
@@ -11,8 +11,33 @@ index 000ec75..cfaeff5 100644
  claimed-nist-level: 1
  claimed-security: IND-CCA2
  length-public-key: 800
+@@ -15,17 +14,20 @@ auxiliary-submitters:
+ implementations:
+     - name: amd64/ref
+       version: TODO
++      signature_keypair: libjade_kyber512_amd64_ref_keypair
++      signature_enc: libjade_kyber512_amd64_ref_enc
++      signature_dec: libjade_kyber512_amd64_ref_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:
+               - Linux
+               - Darwin
+-          required_flags: # FIXME
+-              - avx2
+-              - bmi2
+-              - popcnt
++          required_flags: []
+     - name: amd64/avx2
+       version: TODO
++      signature_keypair: libjade_kyber512_amd64_avx2_keypair
++      signature_enc: libjade_kyber512_amd64_avx2_enc
++      signature_dec: libjade_kyber512_amd64_avx2_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:
 diff --git a/src/crypto_kem/kyber/kyber768/META.yml b/src/crypto_kem/kyber/kyber768/META.yml
-index d744938..9d2be3e 100644
+index d744938..0813fe2 100644
 --- a/src/crypto_kem/kyber/kyber768/META.yml
 +++ b/src/crypto_kem/kyber/kyber768/META.yml
 @@ -1,7 +1,6 @@
@@ -24,3 +49,28 @@ index d744938..9d2be3e 100644
  claimed-nist-level: 3
  claimed-security: IND-CCA2
  length-public-key: 1184
+@@ -15,17 +14,20 @@ auxiliary-submitters:
+ implementations:
+     - name: amd64/ref
+       version: TODO
++      signature_keypair: libjade_kyber768_amd64_ref_keypair
++      signature_enc: libjade_kyber768_amd64_ref_enc
++      signature_dec: libjade_kyber768_amd64_ref_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:
+               - Linux
+               - Darwin
+-          required_flags: # FIXME
+-              - avx2
+-              - bmi2
+-              - popcnt
++          required_flags: []
+     - name: amd64/avx2
+       version: TODO
++      signature_keypair: libjade_kyber768_amd64_avx2_keypair
++      signature_enc: libjade_kyber768_amd64_avx2_enc
++      signature_dec: libjade_kyber768_amd64_avx2_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:

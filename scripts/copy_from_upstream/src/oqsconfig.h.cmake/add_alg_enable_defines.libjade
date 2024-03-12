@@ -1,0 +1,20 @@
+{% for family in instructions['kems'] %}
+
+    {%- for scheme in family['schemes'] %}
+#cmakedefine OQS_ENABLE_KEM_LIBJADE_{{ family['name'] }}_{{ scheme['scheme'] }} @OQS_LIBJADE_BUILD_BIN@
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
+#cmakedefine OQS_ENABLE_KEM_LIBJADE_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} @OQS_LIBJADE_BUILD_BIN@
+        {%- endfor -%}
+    {%- endfor -%}
+{% endfor -%}
+
+{% for family in instructions['sigs'] %}
+
+    {%- for scheme in family['schemes'] %}
+#cmakedefine OQS_ENABLE_SIG_LIBJADE_{{ family['name'] }}_{{ scheme['scheme'] }} @OQS_LIBJADE_BUILD_BIN@
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
+#cmakedefine OQS_ENABLE_SIG_LIBJADE_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} @OQS_LIBJADE_BUILD_BIN@
+        {%- endfor -%}
+    {%- endfor -%}
+{% endfor %}
+
