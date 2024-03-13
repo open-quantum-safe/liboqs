@@ -63,7 +63,7 @@ add_library(oqs kem/kem.c
                 ${COMMON_OBJS})
 
 # Internal library to be used only by test programs
-add_library(oqs-internal ${INTERNAL_OBJS})
+add_library(oqs-internal STATIC ${INTERNAL_OBJS})
 
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
