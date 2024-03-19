@@ -36,9 +36,8 @@
 #                     \-> include - architecture-specific headers
 #
 # Requires the use of openssl assumed to be available as:
-# $the_openssl_dir
-# \-> android
-#     \-> $the_openssl_ver - version info such as 3.2.1
+# $the_libs_dir
+# \-> openssl-$the_openssl_ver-$the_type-$the_arch - version info such as 3.2.1
 #         \-> [archs] - one of arm64-v8a / armeabi-v7a / x86 / x86_64
 #             \-> include - headers specific to architecture
 #             \-> lib - contains libcrypto.a / libssl.a
@@ -50,7 +49,7 @@
 
 # top-level settings - modify in environment from defaults listed here
 the_openssl_ver="${the_openssl_ver:-3.2.1}"
-the_openssl_dir="${the_openssl_dir:-$HOME/proj/git/src/triplecyber.visualstudio.com/abruce-dev/Tc32/External/openssl}"
+the_libs_dir="${the_libs_dir:-$HOME/proj/git/src/triplecyber.visualstudio.com/abruce-dev/Tc32/publish/libs}"
 the_ios_target="${the_ios_target:-17.0}"
 the_macos_target="${the_macos_target:-14.2}"
 the_android_api_level="${the_android_api_level:-34}"
@@ -114,7 +113,7 @@ function build_apple_variant {
   # locals
   local l_rc=0
   local l_type='apple'
-  local l_openssl_plat_dir="$the_openssl_dir/$l_type/$the_openssl_ver/$i_device"
+  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_device"
 
   echo "BUILD: $l_type ($i_device / $i_arch)..."
 
@@ -246,7 +245,7 @@ function build_android_variant {
   # locals
   local l_rc=0
   local l_type='android'
-  local l_openssl_plat_dir=$the_openssl_dir/$l_type/$the_openssl_ver/$i_arch
+  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_device"
 
   echo "BUILD: $l_type ($i_arch)..."
 
@@ -302,7 +301,7 @@ function build_linux_variant {
   # locals
   local l_rc=0
   local l_type='linux'
-  local l_openssl_plat_dir=$the_openssl_dir/$l_type/$the_openssl_ver/$i_arch
+  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_device"
 
   echo "BUILD: $l_type ($i_arch)..."
 
