@@ -91,10 +91,22 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_KEM_KYBER OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_KEM_ML_KEM)
+                set(OQS_ENABLE_KEM_ML_KEM ON)
+        else()
+                set(OQS_ENABLE_KEM_ML_KEM OFF)
+        endif()
+
         if(CONFIG_LIBOQS_ENABLE_SIG_DILITHIUM)
                 set(OQS_ENABLE_SIG_DILITHIUM ON)
         else()
                 set(OQS_ENABLE_SIG_DILITHIUM OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_SIG_ML_DSA)
+                set(OQS_ENABLE_SIG_ML_DSA ON)
+        else()
+                set(OQS_ENABLE_SIG_ML_DSA OFF)
         endif()
 
         if(CONFIG_LIBOQS_ENABLE_SIG_FALCON)
@@ -109,7 +121,7 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_SPHINCS OFF)
         endif()
 
-        # Add the actual liboqs targets 
+        # Add the actual liboqs targets
         add_subdirectory(.. build)
 
         # Add target specific options to all liboqs targets
