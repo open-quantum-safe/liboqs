@@ -1,5 +1,5 @@
-liboqs version 0.10.0-rc2
-=========================
+liboqs version 0.10.0
+=====================
 
 About
 -----
@@ -28,7 +28,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 2 of version 0.10.0 of liboqs. It was released on March 13, 2024.
+This is version 0.10.0 of liboqs. It was released on March 20, 2024.
 
 This release adds support for ML-KEM (previously known as CRYSTALS-Kyber) and ML-DSA (previously known as CRYSTALS-Dilithium), based on the initial public drafts of [FIPS 203](https://csrc.nist.gov/pubs/fips/203/ipd) and [FIPS 204](https://csrc.nist.gov/pubs/fips/204/ipd), respectively. OQS continues to support the NIST Round 3 versions of Kyber and Dilithium for interoperability purposes. This release additionally updates HQC to the NIST Round 4 version and adds support for fixed-length Falcon signatures.
 
@@ -127,4 +127,4 @@ Detailed changelog
 * @cothan made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1646
 * @trigpolynom made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1641
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.9.2...0.10.0-rc2
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.9.2...0.10.0
