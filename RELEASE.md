@@ -41,7 +41,7 @@ This release continues from the 0.9.2 release of liboqs.
 
 - BIKE: Updated portable C implementation to include constant-time fixes from upstream.
 - HQC: Updated to NIST Round 4 version.
-- ML-KEM: Added portable C and AVX2 implementations of Initial Public Draft (IPD) versions of ML-KEM-512, ML-KEM-786, and ML-KEM-1024.
+- ML-KEM: Added portable C and AVX2 implementations of Initial Public Draft (IPD) versions of ML-KEM-512, ML-KEM-768, and ML-KEM-1024.
 
 ### Digital signature schemes
 
