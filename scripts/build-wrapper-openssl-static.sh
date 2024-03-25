@@ -48,12 +48,20 @@
 #             \-> lib - contains fat lib with all archs
 
 # top-level settings - modify in environment from defaults listed here
-the_openssl_ver="${the_openssl_ver:-3.2.1}"
-the_libs_dir="${the_libs_dir:-$HOME/proj/git/src/triplecyber.visualstudio.com/abruce-dev/Tc32/publish/libs}"
-the_ios_target="${the_ios_target:-17.0}"
-the_macos_target="${the_macos_target:-14.2}"
-the_android_api_level="${the_android_api_level:-34}"
-the_oqs_algs_enabled="${the_oqs_algs_enabled:-STD}"
+the_openssl_ver="${the_openssl_ver}"
+the_libs_dir="${the_libs_dir}"
+the_ios_target="${the_ios_target}"
+the_macos_target="${the_macos_target}"
+the_android_api_level="${the_android_api_level}"
+the_oqs_algs_enabled="${the_oqs_algs_enabled}"
+
+[ x"$the_libs_dir" = x ] && echo 'Missing the_libs_dir' && return 1
+[ x"$the_openssl_ver" = x ] && echo 'Missing the_openssl_ver' && return 1
+[ x"$the_libs_dir" = x ] && echo 'Missing the_libs_dir' && return 1
+[ x"$the_ios_target" = x ] && echo 'Missing the_ios_target' && return 1
+[ x"$the_macos_target" = x ] && echo 'Missing the_macos_target' && return 1
+[ x"$the_android_api_level" = x ] && echo 'Missing the_android_api_level' && return 1
+[ x"$the_oqs_algs_enabled" = x ] && echo 'Missing the_oqs_algs_enabled' && return 1
 
 # enable debug to get explicit compiler command lines
 the_cmake_build_verbose_flag="${the_cmake_build_verbose_flag:-0}"
@@ -63,6 +71,19 @@ the_cmake_build_verbose_option=''
 the_cmake_build_trace_flag="${the_cmake_build_trace_flag:-0}"
 the_cmake_build_trace_option=''
 [ x"$the_cmake_build_trace_flag" = x1 ] && the_cmake_build_trace_option='--trace'
+
+cat << EOS
+OPTIONS:
+the_openssl_ver="${the_openssl_ver}"
+the_libs_dir="${the_libs_dir}"
+the_ios_target="${the_ios_target}"
+the_macos_target="${the_macos_target}"
+the_android_api_level="${the_android_api_level}"
+the_oqs_algs_enabled="${the_oqs_algs_enabled}"
+the_cmake_build_verbose_flag="${the_cmake_build_verbose_flag}"
+the_cmake_build_trace_flag="${the_cmake_build_trace_flag}"
+
+EOS
 
 # locate script source directory
 SOURCE="${BASH_SOURCE[0]}"
