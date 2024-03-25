@@ -245,7 +245,7 @@ function build_android_variant {
   # locals
   local l_rc=0
   local l_type='android'
-  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_device"
+  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_arch"
 
   echo "BUILD: $l_type ($i_arch)..."
 
@@ -301,7 +301,7 @@ function build_linux_variant {
   # locals
   local l_rc=0
   local l_type='linux'
-  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_device"
+  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_arch"
 
   echo "BUILD: $l_type ($i_arch)..."
 
