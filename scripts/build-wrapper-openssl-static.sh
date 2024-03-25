@@ -323,9 +323,10 @@ function build_linux_variant {
   # locals
   local l_rc=0
   local l_type='linux'
-  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_arch"
+  local l_libc_ver="`ldd --version | grep libc | awk '{print $4}' | xargs`"
+  local l_openssl_plat_dir="$the_libs_dir/openssl-$the_openssl_ver-$l_type-$i_arch-glibc-$l_libc_ver"
 
-  echo "BUILD: $l_type ($i_arch)..."
+  echo "BUILD: $l_type ($i_arch, libc $l_libc_ver)..."
 
   # locate back to script home
   cd "$the_top_dir" || return $?
@@ -334,7 +335,7 @@ function build_linux_variant {
   local l_build_dir_path="$the_build_dir_path"/$l_type/$i_arch
   mkdir -p "$l_build_dir_path"
   cd "$l_build_dir_path" || return $?
-  rm -fR ./*
+  #rm -fR ./*
 
   set -x
   cmake \
