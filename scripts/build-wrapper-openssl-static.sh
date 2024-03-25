@@ -71,19 +71,6 @@ the_cmake_build_trace_flag="${the_cmake_build_trace_flag:-0}"
 the_cmake_build_trace_option=''
 [ x"$the_cmake_build_trace_flag" = x1 ] && the_cmake_build_trace_option='--trace'
 
-cat << EOS
-OPTIONS:
-the_openssl_ver="${the_openssl_ver}"
-the_libs_dir="${the_libs_dir}"
-the_ios_target="${the_ios_target}"
-the_macos_target="${the_macos_target}"
-the_android_api_level="${the_android_api_level}"
-the_oqs_algs_enabled="${the_oqs_algs_enabled}"
-the_cmake_build_verbose_flag="${the_cmake_build_verbose_flag}"
-the_cmake_build_trace_flag="${the_cmake_build_trace_flag}"
-
-EOS
-
 # locate script source directory
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
@@ -673,6 +660,19 @@ function fix_cmake_provider {
 
 # build all targets
 function do_main {
+cat << EOS
+OPTIONS (liboqs):
+the_openssl_ver="${the_openssl_ver}"
+the_libs_dir="${the_libs_dir}"
+the_ios_target="${the_ios_target}"
+the_macos_target="${the_macos_target}"
+the_android_api_level="${the_android_api_level}"
+the_oqs_algs_enabled="${the_oqs_algs_enabled}"
+the_cmake_build_verbose_flag="${the_cmake_build_verbose_flag}"
+the_cmake_build_trace_flag="${the_cmake_build_trace_flag}"
+
+EOS
+
   if [ $wants_android -eq 1 ] ; then build_android || return $? ; fi
   if [ $wants_apple -eq 1 ] ; then build_apple || return $? ; fi
   if [ $wants_linux -eq 1 ] ; then build_linux || return $? ; fi
