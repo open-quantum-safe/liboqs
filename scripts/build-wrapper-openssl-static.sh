@@ -55,13 +55,12 @@ the_macos_target="${the_macos_target}"
 the_android_api_level="${the_android_api_level}"
 the_oqs_algs_enabled="${the_oqs_algs_enabled}"
 
-[ x"$the_libs_dir" = x ] && echo 'Missing the_libs_dir' && return 1
-[ x"$the_openssl_ver" = x ] && echo 'Missing the_openssl_ver' && return 1
-[ x"$the_libs_dir" = x ] && echo 'Missing the_libs_dir' && return 1
-[ x"$the_ios_target" = x ] && echo 'Missing the_ios_target' && return 1
-[ x"$the_macos_target" = x ] && echo 'Missing the_macos_target' && return 1
-[ x"$the_android_api_level" = x ] && echo 'Missing the_android_api_level' && return 1
-[ x"$the_oqs_algs_enabled" = x ] && echo 'Missing the_oqs_algs_enabled' && return 1
+[ x"$the_openssl_ver" = x ] && echo 'Missing the_openssl_ver' && exit 1
+[ x"$the_libs_dir" = x ] && echo 'Missing the_libs_dir' && exit 1
+[ x"$the_ios_target" = x ] && echo 'Missing the_ios_target' && exit 1
+[ x"$the_macos_target" = x ] && echo 'Missing the_macos_target' && exit 1
+[ x"$the_android_api_level" = x ] && echo 'Missing the_android_api_level' && exit 1
+[ x"$the_oqs_algs_enabled" = x ] && echo 'Missing the_oqs_algs_enabled' && exit 1
 
 # enable debug to get explicit compiler command lines
 the_cmake_build_verbose_flag="${the_cmake_build_verbose_flag:-0}"
