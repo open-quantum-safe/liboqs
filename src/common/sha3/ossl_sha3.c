@@ -146,6 +146,8 @@ void OQS_SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input, siz
 
 /* SHAKE-128 incremental
  *
+ * Note: the comment below has been addressed in OpenSSL version 3.3.0
+ *
  * XXX: The OpenSSL XOF API only allows for a single
  * call to squeeze (EVP_DigestFinalXOF).
  *
@@ -186,6 +188,9 @@ void OQS_SHA3_shake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *state) {
 
 void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *state) {
 	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
+#ifdef OPENSSL_VERSION_NUMBER >= 3.3
+	EVP_DigestSqueeze(s->mdctx, output, outlen);
+#else
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
@@ -205,6 +210,7 @@ void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shak
 	}
 	EVP_MD_CTX_free(clone);
 	s->n_out += outlen;
+#endif
 }
 
 void OQS_SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
@@ -233,10 +239,7 @@ void OQS_SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input, siz
 	do_xof(output, outlen, input, inplen, oqs_shake256());
 }
 
-/* SHAKE-256 incremental
- *
- * XXX: See note above regarding SHAKE-128 incremental
- */
+/* SHAKE-256 incremental */
 
 typedef struct {
 	EVP_MD_CTX *mdctx;
@@ -263,6 +266,9 @@ void OQS_SHA3_shake256_inc_finalize(OQS_SHA3_shake256_inc_ctx *state) {
 
 void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake256_inc_ctx *state) {
 	intrn_shake256_inc_ctx *s = (intrn_shake256_inc_ctx *)state->ctx;
+#ifdef OPENSSL_VERSION_NUMBER >= 3.3
+	EVP_DigestSqueeze(s->mdctx, output, outlen);
+#else
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
@@ -282,6 +288,7 @@ void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shak
 	}
 	EVP_MD_CTX_free(clone);
 	s->n_out += outlen;
+#endif
 }
 
 void OQS_SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {

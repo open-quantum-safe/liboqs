@@ -61,6 +61,12 @@ void OQS_SHA3_shake128_x4_inc_finalize(OQS_SHA3_shake128_x4_inc_ctx *state) {
 
 void OQS_SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake128_x4_inc_ctx *state) {
 	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
+#ifdef OPENSSL_VERSION_NUMBER >= 3.3
+	EVP_DigestSqueeze(s->mdctx0, out0, outlen);
+	EVP_DigestSqueeze(s->mdctx1, out1, outlen);
+	EVP_DigestSqueeze(s->mdctx2, out2, outlen);
+	EVP_DigestSqueeze(s->mdctx3, out3, outlen);
+#else
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
@@ -96,6 +102,7 @@ void OQS_SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out
 	}
 	EVP_MD_CTX_free(clone);
 	s->n_out += outlen;
+#endif
 }
 
 void OQS_SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, const OQS_SHA3_shake128_x4_inc_ctx *src) {
@@ -179,6 +186,12 @@ void OQS_SHA3_shake256_x4_inc_finalize(OQS_SHA3_shake256_x4_inc_ctx *state) {
 
 void OQS_SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake256_x4_inc_ctx *state) {
 	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
+#ifdef OPENSSL_VERSION_NUMBER >= 3.3
+	EVP_DigestSqueeze(s->mdctx0, out0, outlen);
+	EVP_DigestSqueeze(s->mdctx1, out1, outlen);
+	EVP_DigestSqueeze(s->mdctx2, out2, outlen);
+	EVP_DigestSqueeze(s->mdctx3, out3, outlen);
+#else
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
@@ -214,6 +227,7 @@ void OQS_SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out
 	}
 	EVP_MD_CTX_free(clone);
 	s->n_out += outlen;
+#endif
 }
 
 void OQS_SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, const OQS_SHA3_shake256_x4_inc_ctx *src) {
