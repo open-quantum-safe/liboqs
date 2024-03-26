@@ -26,9 +26,7 @@
 #endif
 
 #if defined(OQS_USE_OPENSSL)
-#include <openssl/evp.h>
 #include "ossl_helpers.h"
-CRYPTO_ONCE OQS_ONCE_STATIC_FREE;
 #endif
 
 /* Identifying the CPU is expensive so we cache the results in cpu_ext_data */
@@ -233,7 +231,6 @@ OQS_API void OQS_init(void) {
 #if defined(OQS_DIST_BUILD)
 	OQS_CPU_has_extension(OQS_CPU_EXT_INIT);
 #endif
-	return;
 }
 
 OQS_API const char *OQS_version(void) {
@@ -242,9 +239,8 @@ OQS_API const char *OQS_version(void) {
 
 OQS_API void OQS_destroy(void) {
 #if defined(OQS_USE_OPENSSL)
-	CRYPTO_THREAD_run_once(&OQS_ONCE_STATIC_FREE, oqs_free_ossl_objects);
+	oqs_ossl_destroy();
 #endif
-	return;
 }
 
 OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
