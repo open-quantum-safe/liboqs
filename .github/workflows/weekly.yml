@@ -28,6 +28,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      # Use github actions to install nix
       - name: Setup jasmin-compiler
         uses: cachix/install-nix-action@v26
         run: nix-env -iA nixpkgs.jasmin-compiler
