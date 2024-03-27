@@ -374,7 +374,7 @@
      pop             %rcx
      pop             %rdx
      pop             %rsi
-@@ -1010,9 +1038,9 @@
+@@ -1010,10 +1038,13 @@
      cmp             %rsi, %rcx
      jae             KeccakP1600_12rounds_FastLoop_Absorb_Not17Lanes
      jmp             KeccakP1600_12rounds_FastLoop_Absorb_Exit
@@ -384,6 +384,9 @@
 -.endif
 +#endif
  
++#ifndef old_gas_syntax
++.section .rodata
++#endif
  .equ    ALLON,        0xFFFFFFFFFFFFFFFF
  
 
