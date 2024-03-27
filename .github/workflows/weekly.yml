@@ -29,8 +29,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       # Use github actions to install nix
-      - name: Setup jasmin-compiler
+      - name: Setup nix
         uses: cachix/install-nix-action@v26
+      - name: Setup jasmin-compiler
         run: nix-env -iA nixpkgs.jasmin-compiler
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
