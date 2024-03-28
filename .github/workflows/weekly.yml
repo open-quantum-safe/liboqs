@@ -14,12 +14,12 @@ jobs:
       matrix:
         include:
           - name: generic
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: praveksharma/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON -DOQS_LIBJADE_BUILD=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SPHINCS\+-SHA*, Classic-McEliece-(.)*'
           - name: extensions
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: praveksharma/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON -DOQS_LIBJADE_BUILD=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SPHINCS\+-SHA*,Classic-McEliece-6(.)*'
