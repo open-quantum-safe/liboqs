@@ -31,7 +31,7 @@ jobs:
       # Use github actions to install nix
       - name: Setup nix
         uses: cachix/install-nix-action@v26
-      - run: nix-channel --add https://releases.nixos.org/nixpkgs/23.11-darwin/
+      - run: nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs
       - run: nix-channel --update
       - name: Setup jasmin-compiler
         run: nix-env -iA nixpkgs.jasmin-compiler
