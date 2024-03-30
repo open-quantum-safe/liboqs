@@ -16,7 +16,8 @@
  */
 static void l_tree(const xmss_params *params,
                    unsigned char *leaf, unsigned char *wots_pk,
-                   const unsigned char *pub_seed, uint32_t addr[8])
+                   const unsigned char *pub_seed, uint32_t addr[8], 
+                   unsigned char *thash_buf)
 {
     unsigned int l = params->wots_len;
     unsigned int parent_nodes;
@@ -31,7 +32,7 @@ static void l_tree(const xmss_params *params,
             set_tree_index(addr, i);
             /* Hashes the nodes at (i*2)*params->n and (i*2)*params->n + 1 */
             thash_h(params, wots_pk + i*params->n,
-                           wots_pk + (i*2)*params->n, pub_seed, addr);
+                           wots_pk + (i*2)*params->n, pub_seed, addr, thash_buf);
         }
         /* If the row contained an odd number of nodes, the last node was not
            hashed. Instead, we pull it up to the next layer. */
@@ -55,10 +56,11 @@ static void l_tree(const xmss_params *params,
 static void compute_root(const xmss_params *params, unsigned char *root,
                          const unsigned char *leaf, unsigned long leafidx,
                          const unsigned char *auth_path,
-                         const unsigned char *pub_seed, uint32_t addr[8])
+                         const unsigned char *pub_seed, uint32_t addr[8],
+                         unsigned char *buffer,
+                         unsigned char *thash_buf)
 {
-    uint32_t i;
-    unsigned char *buffer = malloc(2*params->n);
+    uint32_t i;    
 
     /* If leafidx is odd (last bit = 1), current path element is a right child
        and auth_path has to go left. Otherwise it is the other way around. */
@@ -79,11 +81,11 @@ static void compute_root(const xmss_params *params, unsigned char *root,
 
         /* Pick the right or left neighbor, depending on parity of the node. */
         if (leafidx & 1) {
-            thash_h(params, buffer + params->n, buffer, pub_seed, addr);
+            thash_h(params, buffer + params->n, buffer, pub_seed, addr, thash_buf);
             memcpy(buffer, auth_path, params->n);
         }
         else {
-            thash_h(params, buffer, buffer, pub_seed, addr);
+            thash_h(params, buffer, buffer, pub_seed, addr, thash_buf);
             memcpy(buffer + params->n, auth_path, params->n);
         }
         auth_path += params->n;
@@ -93,9 +95,8 @@ static void compute_root(const xmss_params *params, unsigned char *root,
     set_tree_height(addr, params->tree_height - 1);
     leafidx >>= 1;
     set_tree_index(addr, leafidx);
-    thash_h(params, root, buffer, pub_seed, addr);
+    thash_h(params, root, buffer, pub_seed, addr, thash_buf);
 
-    OQS_MEM_insecure_free(buffer);
 }
 
 
@@ -108,11 +109,15 @@ void gen_leaf_wots(const xmss_params *params, unsigned char *leaf,
                    const unsigned char *sk_seed, const unsigned char *pub_seed,
                    uint32_t ltree_addr[8], uint32_t ots_addr[8])
 {
-    unsigned char *pk = malloc(params->wots_sig_bytes);
+    unsigned char *pk = malloc(params->wots_sig_bytes + 2 * params->padding_len + 6 * params->n + 32);
+    if (pk == NULL) {
+        return;
+    }
+    unsigned char *thash_buf = pk + params->wots_sig_bytes;
 
     wots_pkgen(params, pk, sk_seed, pub_seed, ots_addr);
 
-    l_tree(params, leaf, pk, pub_seed, ltree_addr);
+    l_tree(params, leaf, pk, pub_seed, ltree_addr, thash_buf);
 
     OQS_MEM_insecure_free(pk);
 }
@@ -146,10 +151,16 @@ int xmssmt_core_sign_open(const xmss_params *params,
     const unsigned char *pub_root = pk;
     const unsigned char *pub_seed = pk + params->n;
 
-    unsigned char *tmp = malloc(params->wots_sig_bytes + params->n + params->n);
+    unsigned char *tmp = malloc(params->wots_sig_bytes + params->n + params->n +
+                                + 2 *params->n + 2 * params->padding_len + 6 * params->n + 32);
+    if (tmp == NULL) {
+        return -1;
+    }
     unsigned char *wots_pk = tmp;
     unsigned char *leaf = tmp + params->wots_sig_bytes;
     unsigned char *root = leaf + params->n;
+    unsigned char *compute_root_buf = root + params->n;
+    unsigned char *thash_buf = compute_root_buf + 2*params->n;
 
     unsigned long long prefix_length = params->padding_len + 3*params->n;
     unsigned long long m_with_prefix_len = mlen + prefix_length;
@@ -211,10 +222,10 @@ int xmssmt_core_sign_open(const xmss_params *params,
 
         /* Compute the leaf node using the WOTS public key. */
         set_ltree_addr(ltree_addr, idx_leaf);
-        l_tree(params, leaf, wots_pk, pub_seed, ltree_addr);
+        l_tree(params, leaf, wots_pk, pub_seed, ltree_addr, thash_buf);
 
         /* Compute the root node of this subtree. */
-        compute_root(params, root, leaf, idx_leaf, sm, pub_seed, node_addr);
+        compute_root(params, root, leaf, idx_leaf, sm, pub_seed, node_addr, compute_root_buf, thash_buf);
         sm += params->tree_height*params->n;
     }
 
