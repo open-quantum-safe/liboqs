@@ -369,7 +369,7 @@ int xmss_parse_oid(xmss_params *params, const uint32_t oid)
     params->d = 1;
     params->wots_w = 16;
 
-    // TODO figure out sensible and legal values for this based on the above
+    // TODO (from upstream) figure out sensible and legal values for this based on the above
     params->bds_k = 0;
 
     return xmss_xmssmt_initialize_params(params);
@@ -692,7 +692,7 @@ int xmssmt_parse_oid(xmss_params *params, const uint32_t oid)
 
     params->wots_w = 16;
 
-    // TODO figure out sensible and legal values for this based on the above
+    // TODO (from upstream) figure out sensible and legal values for this based on the above
     params->bds_k = 0;
 
     return xmss_xmssmt_initialize_params(params);
