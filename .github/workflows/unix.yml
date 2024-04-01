@@ -211,3 +211,50 @@ jobs:
       - name: Run tests
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py ${{ matrix.PYTEST_ARGS }}
         timeout-minutes: 60
+
+  linux_openssl330-dev:
+    needs: buildcheck
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-jammy:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Retrieve OpenSSL330 from cache
+        id: cache-openssl330
+        uses: actions/cache@v3
+        with:
+          path: .localopenssl330
+          key: ${{ runner.os }}-openssl330
+      - name: Checkout the OpenSSL v3.3.0 commit
+        if: steps.cache-openssl330.outputs.cache-hit != 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: 'openssl/openssl'
+          ref: '536649082212e7c643ab8d7bab89f620fbcd37f0'
+          path: openssl
+      - name: Prepare the OpenSSL build directory
+        if: steps.cache-openssl330.outputs.cache-hit != 'true'
+        run: mkdir .localopenssl330
+        working-directory: openssl
+      - name: Build openssl3 if not cached
+        if: steps.cache-openssl330.outputs.cache-hit != 'true'
+        run: |
+          ./config --prefix=`pwd`/../.localopenssl330 && make -j 4 && make install_sw install_ssldirs
+        working-directory: openssl
+      - name: Save OpenSSL
+        id: cache-openssl-save
+        if: steps.cache-openssl330.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            .localopenssl330
+          key: ${{ runner.os }}-openssl330
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja -DOQS_STRICT_WARNINGS=ON -DOPENSSL_ROOT_DIR=../.localopenssl330 -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON .. && cmake -LA ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 60
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
