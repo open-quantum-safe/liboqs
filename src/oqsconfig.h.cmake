@@ -190,3 +190,6 @@
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake_256s_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake_256s_simple_avx2 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
+
+#cmakedefine OQS_ENABLE_SIG_STFL_XMSS 1
+#cmakedefine OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10 1

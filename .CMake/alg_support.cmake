@@ -495,7 +495,30 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
 endif()
 endif()
 
-##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_END
+##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
+
+option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+
+if((OQS_MINIMAL_BUILD STREQUAL "ON"))
+   message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
+endif()
+
+if(NOT DEFINED OQS_ALGS_ENABLED OR OQS_ALGS_ENABLED STREQUAL "")
+	set(OQS_ALGS_ENABLED "All")
+endif()
+
+if(NOT ((OQS_MINIMAL_BUILD STREQUAL "") OR (OQS_MINIMAL_BUILD STREQUAL "OFF")))
+	filter_algs("${OQS_MINIMAL_BUILD}")
+elseif (${OQS_ALGS_ENABLED} STREQUAL "STD")
+##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_LIST_STANDARDIZED_ALGS_START
+	filter_algs("KEM_kyber_512;KEM_kyber_768;KEM_kyber_1024;SIG_dilithium_2;SIG_dilithium_3;SIG_dilithium_5;SIG_falcon_512;SIG_falcon_1024;SIG_sphincs_sha2_128f_simple;SIG_sphincs_sha2_128s_simple;SIG_sphincs_sha2_192f_simple;SIG_sphincs_sha2_192s_simple;SIG_sphincs_sha2_256f_simple;SIG_sphincs_sha2_256s_simple;SIG_sphincs_shake_128f_simple;SIG_sphincs_shake_128s_simple;SIG_sphincs_shake_192f_simple;SIG_sphincs_shake_192s_simple;SIG_sphincs_shake_256f_simple;SIG_sphincs_shake_256s_simple")
+##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_LIST_STANDARDIZED_ALGS_END
+elseif(${OQS_ALGS_ENABLED} STREQUAL "NIST_R4")
+	filter_algs("KEM_classic_mceliece_348864;KEM_classic_mceliece_348864f;KEM_classic_mceliece_460896;KEM_classic_mceliece_460896f;KEM_classic_mceliece_6688128;KEM_classic_mceliece_6688128f;KEM_classic_mceliece_6960119;KEM_classic_mceliece_6960119f;KEM_classic_mceliece_8192128;KEM_classic_mceliece_8192128f;KEM_hqc_128;KEM_hqc_192;KEM_hqc_256;KEM_bike_l1;KEM_bike_l3")
+else()
+	message(STATUS "Alg enablement unchanged")
+endif()
 
 # Set XKCP (Keccak) required for Sphincs AVX2 code even if OpenSSL3 SHA3 is used:
 if (${OQS_ENABLE_SIG_SPHINCS} OR NOT ${OQS_USE_SHA3_OPENSSL})
