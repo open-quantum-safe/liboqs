@@ -758,5 +758,7 @@ non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime'])
 
 if args.operation == "copy":
     copy_from_upstream()
+elif args.operation == "libjade":
+    copy_from_libjade()
 elif args.operation == "verify":
     verify_from_upstream()
