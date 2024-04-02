@@ -1,0 +1,66 @@
+require "params.jinc"
+require "kem.jinc"
+from Jade require "common/tofromstack.jinc"
+
+export fn jade_kem_kyber_kyber768_amd64_ref_keypair_derand(reg u64 public_key secret_key coins) -> reg u64
+{
+  reg u64 r;
+  stack u8[2*KYBER_SYMBYTES] stack_coins;
+
+  public_key = public_key;
+  secret_key = secret_key;
+  stack_coins = __tostack64u8(stack_coins, coins);
+  _crypto_kem_keypair_derand_jazz(public_key, secret_key, stack_coins);
+  ?{}, r = #set0();
+  return r;
+}
+
+export fn jade_kem_kyber_kyber768_amd64_ref_keypair(reg u64 public_key secret_key) -> reg u64
+{
+  reg u64 r;
+  stack u8[2*KYBER_SYMBYTES] stack_coins;
+
+  public_key = public_key;
+  secret_key = secret_key;
+  stack_coins = #randombytes(stack_coins);
+  _crypto_kem_keypair_derand_jazz(public_key, secret_key, stack_coins);
+  ?{}, r = #set0();
+  return r;
+}
+
+export fn jade_kem_kyber_kyber768_amd64_ref_enc_derand(reg u64 ciphertext shared_secret public_key coins) -> reg u64
+{
+  reg u64 r;
+  stack u8[KYBER_SYMBYTES] stack_coins;
+  
+  ciphertext = ciphertext;
+  shared_secret = shared_secret;
+  public_key = public_key;
+  stack_coins = __tostack32u8(stack_coins, coins);
+  _crypto_kem_enc_derand_jazz(ciphertext, shared_secret, public_key, stack_coins);
+  ?{}, r = #set0();
+  return r;
+}
+
+export fn jade_kem_kyber_kyber768_amd64_ref_enc(reg u64 ciphertext shared_secret public_key) -> reg u64
+{
+  reg u64 r;
+  stack u8[KYBER_SYMBYTES] stack_coins;
+
+  ciphertext = ciphertext;
+  shared_secret = shared_secret;
+  public_key = public_key;
+  stack_coins = #randombytes(stack_coins);
+  _crypto_kem_enc_derand_jazz(ciphertext, shared_secret, public_key, stack_coins);
+  ?{}, r = #set0();
+  return r;
+}
+
+export fn jade_kem_kyber_kyber768_amd64_ref_dec(reg u64 shared_secret ciphertext secret_key) -> reg u64
+{
+  reg u64 r;
+  __crypto_kem_dec_jazz(shared_secret, ciphertext, secret_key);
+  ?{}, r = #set0();
+  return r;
+}
+

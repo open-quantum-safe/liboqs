@@ -1,0 +1,285 @@
+require "poly.jinc"
+
+inline
+fn __polyvec_add2(stack u16[KYBER_VECN] r, stack u16[KYBER_VECN] b) -> stack u16[KYBER_VECN]
+{
+  r[0:KYBER_N] = _poly_add2(r[0:KYBER_N], b[0:KYBER_N]);
+  r[KYBER_N:KYBER_N] = _poly_add2(r[KYBER_N:KYBER_N], b[KYBER_N:KYBER_N]);
+  r[2*KYBER_N:KYBER_N] = _poly_add2(r[2*KYBER_N:KYBER_N], b[2*KYBER_N:KYBER_N]);
+
+  return r;
+}
+
+inline
+fn __polyvec_csubq(stack u16[KYBER_VECN] r) -> stack u16[KYBER_VECN]
+{
+  r[0:KYBER_N] = _poly_csubq(r[0:KYBER_N]);
+  r[KYBER_N:KYBER_N] = _poly_csubq(r[KYBER_N:KYBER_N]);
+  r[2*KYBER_N:KYBER_N] = _poly_csubq(r[2*KYBER_N:KYBER_N]);
+
+  return r;
+}
+
+inline
+fn __polyvec_compress(reg u64 rp, stack u16[KYBER_VECN] a)
+{
+  stack u16[KYBER_VECN] aa;
+  reg u16 c, b;
+  reg u16 d;
+  reg u64[4] t;
+  reg u64 i j;
+  inline int k;
+
+  i = 0;
+  j = 0;
+  
+  aa = __polyvec_csubq(a);
+
+  #bounded
+  while (i < KYBER_VECN)
+  {
+    for k = 0 to 4
+    {
+      t[k] = (64u)aa[(int) i];
+      i += 1;
+      t[k] <<= 10;
+      t[k] += 1665;
+      t[k] *= 1290167;
+      t[k] >>= 32;
+      t[k] &= 0x3ff;
+    }
+
+    c = t[0];
+    c &= 0xff;
+    (u8)[rp + j] = c;
+    j += 1;
+
+    b = t[0];
+    b >>= 8;
+    c = t[1];
+    c <<= 2;
+    c |= b;
+    (u8)[rp + j] = c;
+    j += 1;
+
+    b = t[1];
+    b >>= 6;
+    c = t[2];
+    c <<= 4;
+    c |= b;
+    (u8)[rp + j] = c;
+    j += 1;
+    
+    b = t[2];
+    b >>= 4;
+    c = t[3];
+    c <<= 6;
+    c |= b;
+    (u8)[rp + j] = c;
+    j += 1;
+
+    
+    t[3] >>= 2;
+    (u8)[rp + j] = t[3];
+    j += 1;
+  }
+}
+
+inline
+fn __i_polyvec_compress(reg ptr u8[KYBER_POLYVECCOMPRESSEDBYTES] rp, stack u16[KYBER_VECN] a) -> reg ptr u8[KYBER_POLYVECCOMPRESSEDBYTES]
+{
+  stack u16[KYBER_VECN] aa;
+  reg u16 c, b;
+  reg u16 d;
+  reg u64[4] t;
+  reg u64 i j;
+  inline int k;
+
+  i = 0;
+  j = 0;
+  
+  aa = __polyvec_csubq(a);
+
+  #bounded
+  while (i < KYBER_VECN)
+  {
+    for k = 0 to 4
+    {
+      t[k] = (64u)aa[(int) i];
+      i += 1;
+      t[k] <<= 10;
+      t[k] += 1665;
+      t[k] *= 1290167;
+      t[k] >>= 32;
+      t[k] &= 0x3ff;
+    }
+
+    c = t[0];
+    c &= 0xff;
+    rp[(int) j] = c;
+    j += 1;
+
+    b = t[0];
+    b >>= 8;
+    c = t[1];
+    c <<= 2;
+    c |= b;
+    rp[(int) j] = c;
+    j += 1;
+
+    b = t[1];
+    b >>= 6;
+    c = t[2];
+    c <<= 4;
+    c |= b;
+    rp[(int) j] = c;
+    j += 1;
+    
+    b = t[2];
+    b >>= 4;
+    c = t[3];
+    c <<= 6;
+    c |= b;
+    rp[(int) j] = c;
+    j += 1;
+
+    
+    t[3] >>= 2;
+    rp[(int) j] = t[3];
+    j += 1;
+  }
+
+  return rp;
+}
+
+inline
+fn __polyvec_decompress(reg u64 ap) -> stack u16[KYBER_VECN]
+{
+  stack u16[KYBER_VECN] r;
+  reg u32[5] t;
+  reg u32 d;
+  reg u64 i j;
+  inline int k;
+
+  i = 0;
+  j = 0;
+  
+  #bounded
+  while (i < KYBER_VECN)
+  {
+    for k = 0 to 5
+    {
+      t[k] = (32u)(u8)[ap + j];
+      j += 1;
+    }
+
+    d = t[1];
+    t[1] >>= 2;
+    d &= 0x3;
+    d <<= 8;
+    t[0] |= d;
+
+    d = t[2];
+    t[2] >>= 4;
+    d &= 0xf;
+    d <<= 6;
+    t[1] |= d;
+
+    d = t[3];
+    t[3] >>= 6;
+    d &= 0x3f;
+    d <<= 4;
+    t[2] |= d;
+
+    d = t[4];
+    d <<= 2;
+    t[3] |= d;
+    
+    for k = 0 to 4
+    {
+      t[k] *= KYBER_Q;
+      t[k] += 512;
+      t[k] >>= 10;
+      r[(int) i] = t[k];
+      i += 1;
+    }
+  }
+  return r;
+}
+
+inline
+fn __polyvec_frombytes(reg u64 ap) -> stack u16[KYBER_VECN]
+{
+  stack u16[KYBER_VECN] r;
+  reg u64 pp;
+
+  pp = ap;
+  r[0:KYBER_N] = _poly_frombytes(r[0:KYBER_N], pp);
+  pp += KYBER_POLYBYTES;
+  r[KYBER_N:KYBER_N] = _poly_frombytes(r[KYBER_N:KYBER_N], pp);
+  pp += KYBER_POLYBYTES;
+  r[2*KYBER_N:KYBER_N] = _poly_frombytes(r[2*KYBER_N:KYBER_N], pp);
+
+  return r;
+}
+
+inline
+fn __polyvec_invntt(stack u16[KYBER_VECN] r) -> stack u16[KYBER_VECN]
+{
+  r[0:KYBER_N] = _poly_invntt(r[0:KYBER_N]);
+  r[KYBER_N:KYBER_N] = _poly_invntt(r[KYBER_N:KYBER_N]);
+  r[2*KYBER_N:KYBER_N] = _poly_invntt(r[2*KYBER_N:KYBER_N]);
+
+  return r;
+}
+
+inline
+fn __polyvec_ntt(stack u16[KYBER_VECN] r) -> stack u16[KYBER_VECN]
+{
+  r[0:KYBER_N] = _poly_ntt(r[0:KYBER_N]);
+  r[KYBER_N:KYBER_N] = _poly_ntt(r[KYBER_N:KYBER_N]);
+  r[2*KYBER_N:KYBER_N] = _poly_ntt(r[2*KYBER_N:KYBER_N]);
+
+  return r;
+}
+
+
+inline
+fn __polyvec_pointwise_acc(stack u16[KYBER_VECN] a, stack u16[KYBER_VECN] b) -> stack u16[KYBER_N]
+{
+  stack u16[KYBER_N] t;
+  stack u16[KYBER_N] r;
+
+  r = _poly_basemul(r, a[0:KYBER_N], b[0:KYBER_N]);
+  t = _poly_basemul(t, a[KYBER_N:KYBER_N], b[KYBER_N:KYBER_N]);
+  r = _poly_add2(r, t);
+  t = _poly_basemul(t, a[2*KYBER_N:KYBER_N], b[2*KYBER_N:KYBER_N]);
+  r = _poly_add2(r, t);
+
+  r = __poly_reduce(r);
+
+  return r;
+}
+
+inline
+fn __polyvec_reduce(stack u16[KYBER_VECN] r) -> stack u16[KYBER_VECN]
+{
+  r[0:KYBER_N] = __poly_reduce(r[0:KYBER_N]);
+  r[KYBER_N:KYBER_N] = __poly_reduce(r[KYBER_N:KYBER_N]);
+  r[2*KYBER_N:KYBER_N] = __poly_reduce(r[2*KYBER_N:KYBER_N]);
+
+  return r;
+}
+
+inline
+fn __polyvec_tobytes(reg u64 rp, stack u16[KYBER_VECN] a)
+{
+  reg u64 pp;
+
+  pp = rp;
+  a[0:KYBER_N] = _poly_tobytes(pp, a[0:KYBER_N]);
+  pp += KYBER_POLYBYTES;
+  a[KYBER_N:KYBER_N] = _poly_tobytes(pp, a[KYBER_N:KYBER_N]);
+  pp += KYBER_POLYBYTES;
+  a[2*KYBER_N:KYBER_N] = _poly_tobytes(pp, a[2*KYBER_N:KYBER_N]);
+}
