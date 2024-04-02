@@ -204,11 +204,13 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
 #if OQS_LIBJADE_BUILD
 ///// OQS_COPY_FROM_LIBJADE_FRAGMENT_KEM_SCHEME_DECAPS_START
 
 ///// OQS_COPY_FROM_LIBJADE_FRAGMENT_KEM_SCHEME_DECAPS_END
 #else
+{%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
