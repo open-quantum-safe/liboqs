@@ -1,0 +1,26 @@
+upstreams:
+  -
+    name: libjade
+    git_url: https://github.com/formosa-crypto/libjade
+    git_branch: main
+    git_commit: a6845a257a0ebbab4fd93c19423a62557c838a10
+    kem_meta_path: 'src/crypto_kem/{family}/{pqclean_scheme}/META.yml'
+    kem_scheme_path: 'src/crypto_kem/{family}/{pqclean_scheme}'
+    patches: ['libjade-kyber-api.patch', 'libjade-kyber-meta.patch']
+templates:
+    kem_scheme.c: ['kem_scheme.c.libjade', 'kem_scheme_keypair.c.libjade', 'kem_scheme_encaps.c.libjade', 'kem_scheme_decaps.c.libjade']
+kems:
+  -
+    name: kyber
+    default_implementation: amd64/ref
+    upstream_location: libjade
+    schemes:
+      -
+        scheme: "512"
+        pqclean_scheme: kyber512
+        pretty_name_full: Kyber512
+      -
+        scheme: "768"
+        pqclean_scheme: kyber768
+        pretty_name_full: Kyber768
+sigs: []
