@@ -20,7 +20,7 @@
            {%- set cleandec = scheme['metadata'].update({'default_dec_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_dec"}) -%}
         {%- endif %}
 
-#if defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'].replace('/', '_') }}){%- endif %}
+#if defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }}{%- if impl['name'] != scheme['default_implementation'] %}_{{ impl['name'].replace('/', '_') }}{%- endif %}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'].replace('/', '_') }}){%- endif %}
         {%- if impl['signature_keypair'] %}
 extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
         {%- else %}
