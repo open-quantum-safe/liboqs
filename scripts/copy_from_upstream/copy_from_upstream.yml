@@ -119,6 +119,7 @@ kems:
   -
     name: kyber
     default_implementation: ref
+    libjade_implementation: True
     arch_specific_implementations:
                                       aarch64: aarch64
     upstream_location: pqcrystals-kyber
@@ -129,14 +130,17 @@ kems:
         scheme: "512"
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
+        libjade_implementation: True
       -
         scheme: "768"
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
+        libjade_implementation: True
       -
         scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
+        libjade_implementation: False
   -
     name: ml_kem
     default_implementation: ref
