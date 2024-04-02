@@ -73,7 +73,16 @@ def generator(destination_file_path, template_filename, delimiter, family, schem
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
     identifier = '{} OQS_COPY_FROM_{}_FRAGMENT_{}'.format(delimiter, 'LIBJADE', os.path.splitext(os.path.basename(template_filename))[0].upper())
-    contents = jinja2.Template(template).render(f)
+    if identifier in contents:
+        identifier_start, identifier_end = identifier + '_START', identifier + '_END'
+        contents = contents.split('\n')
+        libjade_contents = '\n'.join(contents[contents.index(identifier_start) + 1: contents.index(identifier_end)])
+        contents = jinja2.Template(template).render(f)
+        preamble = contents[:contents.find(identifier_start)]
+        postamble = contents[contents.find(identifier_end):]
+        contents = preamble + identifier_start + '\n' + libjade_contents + '\n' + postamble
+    else:
+        contents = jinja2.Template(template).render(f)
     file_put_contents(destination_file_path, contents)
 
 
