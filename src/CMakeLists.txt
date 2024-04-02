@@ -8,6 +8,7 @@ add_subdirectory(common)
 # initialize KEM|SIG_OBJS for --warn-uninitialized
 set(KEM_OBJS "")
 set(SIG_OBJS "")
+set(SIG_STFL_OBJS "")
 
 if(${OQS_ENABLE_KEM_BIKE})
     add_subdirectory(kem/bike)
@@ -56,10 +57,17 @@ if(OQS_ENABLE_SIG_SPHINCS)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
+if(OQS_ENABLE_SIG_STFL_XMSS)
+    add_subdirectory(sig_stfl/xmss)
+    set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${XMSS_OBJS})
+endif()
+
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
+                sig_stfl/sig_stfl.c
+                ${SIG_STFL_OBJS}
                 ${COMMON_OBJS})
 
 # Internal library to be used only by test programs
