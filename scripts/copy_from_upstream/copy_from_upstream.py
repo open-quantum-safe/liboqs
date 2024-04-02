@@ -443,11 +443,9 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             of = impl
         origfolder = os.path.join(scheme['scheme_paths'][impl], of)
         upstream_location = i['upstream']['name']
-        shutil.rmtree(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl)),
-                  ignore_errors=True)
         srcfolder = os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl))
+                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl.replace('/', '_')))
+        shutil.rmtree(srcfolder, ignore_errors=True)
         # Don't copy from PQClean straight but check for origfile list
         try:
             os.mkdir(srcfolder)
