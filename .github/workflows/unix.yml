@@ -207,7 +207,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install dependencies
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja pipx && pipx install pytest pytest-xdist pyyaml
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja pipx && pipx ensurepath && pipx install --include-deps pytest pytest-xdist pyyaml
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
