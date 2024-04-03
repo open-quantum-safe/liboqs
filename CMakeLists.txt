@@ -18,7 +18,6 @@ if(POLICY CMP0067)
     cmake_policy(SET CMP0067 NEW)
 endif()
 
-
 project(liboqs C ASM)
 
 option(OQS_DIST_BUILD "Build distributable library with optimized code for several CPU microarchitectures. Enables run-time CPU feature detection." ON)
@@ -34,7 +33,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
-set(OQS_VERSION_TEXT "0.10.0")
+set(OQS_VERSION_TEXT "0.10.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 set(OQS_MINIMAL_GCC_VERSION "7.1.0")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
