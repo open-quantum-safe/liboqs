@@ -69,7 +69,7 @@ endif()
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_CMAKELISTS_START
 
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_CMAKELISTS_END
-{%- endif %}
+{% endif -%}
 
 set({{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} PARENT_SCOPE)
 
