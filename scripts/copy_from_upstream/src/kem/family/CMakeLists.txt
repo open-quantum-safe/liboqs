@@ -65,7 +65,7 @@ endif()
     {%- endfor -%}
 {%- endfor %}
 
-{%- if libjade_implementation is defined %}
+{% if libjade_implementation is defined -%}
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_CMAKELISTS_START
 
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_CMAKELISTS_END

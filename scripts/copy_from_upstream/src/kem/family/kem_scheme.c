@@ -129,7 +129,7 @@ extern int libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_{{ impl['name'] }}_dec
 {% endif %}
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
-{%- if libjade_implementation is defined and scheme['libjade_implementation'] -%}
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
 #if OQS_LIBJADE_BUILD
 {%- for scheme in schemes %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
@@ -203,7 +203,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-{%- if libjade_implementation is defined and scheme['libjade_implementation'] -%}
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
 #if OQS_LIBJADE_BUILD
 {%- for scheme in schemes %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
@@ -277,7 +277,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-{%- if libjade_implementation is defined and scheme['libjade_implementation'] -%}
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
 #if OQS_LIBJADE_BUILD
 {%- for scheme in schemes %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
