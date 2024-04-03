@@ -632,18 +632,6 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                 libjade=True
             )
 
-            for scheme in family['schemes']:
-                for template in instructions['templates'][family['type'] + '_scheme.c']:
-                    replacer_contextual(
-                        os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
-                                    family['type'] + '_{}_{}.c'.format(family['name'], scheme['scheme_c'])),
-                        os.path.join('src', family['type'], 'family', template),
-                        '/////',
-                        family,
-                        scheme,
-                        libjade=True
-                    )
-
 
 def copy_from_upstream():
     for t in ["kem", "sig"]:
