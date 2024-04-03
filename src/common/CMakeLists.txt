@@ -78,6 +78,7 @@ add_library(common OBJECT ${AES_IMPL} aes/aes.c
                           common.c
                           pqclean_shims/fips202.c
                           pqclean_shims/fips202x4.c
+                          libjade_shims/libjade_randombytes.c
                           rand/rand.c)
 
 # Implementations of the internal API to be exposed to test programs
