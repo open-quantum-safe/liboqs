@@ -51,13 +51,13 @@ extern int libjade_kyber768_amd64_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int libjade_kyber768_amd64_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int libjade_kyber768_amd64_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
-    
+
 #if defined(OQS_ENABLE_LIBJADE_KEM_kyber_768_amd64_avx2)
 extern int libjade_kyber768_amd64_avx2_keypair(uint8_t *pk, uint8_t *sk);
 extern int libjade_kyber768_amd64_avx2_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int libjade_kyber768_amd64_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
-    
+
 
 OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if OQS_LIBJADE_BUILD
@@ -82,7 +82,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secre
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) libjade_kyber768_amd64_ref_keypair(public_key, secret_key);
+	return (OQS_STATUS) libjade_kyber768_amd64_ref_keypair(public_key, secret_key);
 #endif
 #else /*OQS_LIBJADE_BUILD*/
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
@@ -134,7 +134,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps(uint8_t *ciphertext, uint8_t *shared
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) libjade_kyber768_amd64_ref_enc(public_key, secret_key);
+	return (OQS_STATUS) libjade_kyber768_amd64_ref_enc(public_key, secret_key);
 #endif
 #else /*OQS_LIBJADE_BUILD*/
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
@@ -186,7 +186,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_decaps(uint8_t *shared_secret, const uint8_
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) libjade_kyber768_amd64_ref_dec(public_key, secret_key);
+	return (OQS_STATUS) libjade_kyber768_amd64_ref_dec(public_key, secret_key);
 #endif
 #else /*OQS_LIBJADE_BUILD*/
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
