@@ -31,7 +31,7 @@ jobs:
         run: nix-env -iA nixpkgs.jasmin-compiler
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Verify copy_from_upstream state
+      - name: Verify copy_from_upstream state after "copy"
         run: |
           git config --global user.name "ciuser" && \
           git config --global user.email "ci@openquantumsafe.org" && \
@@ -40,6 +40,10 @@ jobs:
           cd scripts/copy_from_upstream && \
           ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py copy && \
+          ! git status | grep modified
+      - name: Verify copy_from_upstream state after "copy"
+        run: |
+          cd scripts/copy_from_upstream && \
           python3 copy_from_upstream.py libjade && \
           ! git status | grep modified
 
