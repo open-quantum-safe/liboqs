@@ -41,9 +41,14 @@ jobs:
           ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py copy && \
           ! git status | grep modified
-      - name: Verify copy_from_upstream state after "copy"
+      - name: Verify copy_from_upstream state after "libjade"
         run: |
+          git config --global user.name "ciuser" && \
+          git config --global user.email "ci@openquantumsafe.org" && \
+          export LIBOQS_DIR=`pwd` && \
+          git config --global --add safe.directory $LIBOQS_DIR && \
           cd scripts/copy_from_upstream && \
+          ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py libjade && \
           ! git status | grep modified
 
