@@ -118,13 +118,13 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper 
 {%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
 {% for scheme in schemes -%}
 
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] in scheme['libjade_implementations'] %}
+{%- for impl in scheme['metadata']['implementations'] if impl['name'] in scheme['libjade_implementations'] %}
 #if defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }}{%- if impl['name'] != scheme['default_implementation'] %}_{{ 'amd64_' + impl['name'] }}{%- endif %}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ 'amd64_' + impl['name'] }}){%- endif %}
 extern int libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_{{ impl['name'] }}_keypair(uint8_t *pk, uint8_t *sk);
 extern int libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_{{ impl['name'] }}_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_{{ impl['name'] }}_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
-    {% endfor -%}
+{% endfor -%}
 {% endfor -%}
 {% endif %}
 
@@ -159,7 +159,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-    return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_keypair(public_key, secret_key);
+	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_keypair(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
@@ -233,7 +233,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-    return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_enc(public_key, secret_key);
+	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_enc(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif 
     {%- endif %}
@@ -307,7 +307,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-    return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_dec(public_key, secret_key);
+	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_dec(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
