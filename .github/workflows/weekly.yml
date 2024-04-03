@@ -22,6 +22,16 @@ jobs:
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*,Classic-McEliece-[^3](.)*'
+          - name: verified_generic
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_LIBJADE_BUILD=ON -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+            SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*,Classic-McEliece-[^3](.)*'
+          - name: verified_extensions
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_LIBJADE_BUILD=ON -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+            SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*,Classic-McEliece-[^3](.)*'
     container:
       image: ${{ matrix.container }}
     steps:

@@ -23,6 +23,12 @@ jobs:
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
     steps:
+      - name: Setup nix
+        uses: cachix/install-nix-action@v26
+      - run: nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs
+      - run: nix-channel --update
+      - name: Setup jasmin-compiler
+        run: nix-env -iA nixpkgs.jasmin-compiler
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Verify copy_from_upstream state
@@ -34,6 +40,7 @@ jobs:
           cd scripts/copy_from_upstream && \
           ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py copy && \
+          python3 copy_from_upstream.py libjade && \
           ! git status | grep modified
 
   buildcheck:
