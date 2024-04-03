@@ -11,14 +11,14 @@
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
         {%- if impl['name'] in scheme['libjade_implementations'] %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_{{ impl['name'] }}_keypair(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_{{ impl['name'] }}_enc(public_key, secret_key);
         {%- else %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(public_key, secret_key);
         {%- endif %}
         {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_keypair(public_key, secret_key);
+		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_enc(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
@@ -26,7 +26,7 @@
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-    return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_keypair(public_key, secret_key);
+    return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_amd64_ref_enc(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
