@@ -674,6 +674,8 @@ def copy_from_libjade():
     process_families(instructions, os.environ['LIBOQS_DIR'], True, False, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####', libjade=True)
     replacer('src/oqsconfig.h.cmake', instructions, '/////', libjade=True)
+    if not keepdata:
+        shutil.rmtree('repos')
 
 
 def verify_from_upstream():
