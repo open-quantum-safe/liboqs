@@ -131,11 +131,17 @@ kems:
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
         libjade_implementation: True
+        libjade_implementations:
+          - ref
+          - avx2
       -
         scheme: "768"
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
         libjade_implementation: True
+        libjade_implementations:
+          - ref
+          - avx2
       -
         scheme: "1024"
         pqclean_scheme: kyber1024
