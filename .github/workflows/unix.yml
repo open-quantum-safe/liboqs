@@ -238,7 +238,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 'openssl/openssl'
-          ref: '536649082212e7c643ab8d7bab89f620fbcd37f0'
+          ref: 'openssl-3.3.0-beta1'
           path: openssl
       - name: Prepare the OpenSSL build directory
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
