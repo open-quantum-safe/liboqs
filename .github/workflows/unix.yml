@@ -50,7 +50,7 @@ jobs:
           cd scripts/copy_from_upstream && \
           ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py libjade && \
-          ! git status | grep modified
+          ! git diff
 
   buildcheck:
     name: Check that code passes a basic build before starting heavier tests
