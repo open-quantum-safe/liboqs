@@ -5060,8 +5060,8 @@ jade_kem_kyber_kyber768_amd64_avx2_keypair:
 	movq	%r12, 64(%rsp)
 	movq	%rbp, 72(%rsp)
 	movq	%rbx, 80(%rsp)
-	movq	%rdi, %rbx
-	movq	%rsi, %rbp
+	movq	%rdi, %rbp
+	movq	%rsi, %rbx
 	movq	%rsp, %rdi
 	movq	$64, %rsi
 	call	__jasmin_syscall_randombytes__
@@ -5085,8 +5085,8 @@ jade_kem_kyber_kyber768_amd64_avx2_keypair_derand:
 	movq	%r12, 64(%rsp)
 	movq	%rbp, 72(%rsp)
 	movq	%rbx, 80(%rsp)
-	movq	%rdi, %rbx
-	movq	%rsi, %rbp
+	movq	%rdi, %rbp
+	movq	%rsi, %rbx
 	movq	%rsp, %rax
 	movb	(%rdx), %cl
 	movb	%cl, (%rax)
@@ -9436,11 +9436,11 @@ L__crypto_kem_enc_derand_jazz$2:
 	ret
 L__crypto_kem_keypair_derand_jazz$1:
 	movq	%rax, 12928(%rsp)
-	movq	%rbx, 12936(%rsp)
-	movq	%rbp, 12944(%rsp)
+	movq	%rbp, 12936(%rsp)
+	movq	%rbx, 12944(%rsp)
 	movq	%rax, %rcx
-	movq	%rbx, 12952(%rsp)
-	movq	%rbp, 12960(%rsp)
+	movq	%rbp, 12952(%rsp)
+	movq	%rbx, 12960(%rsp)
 	leaq	12968(%rsp), %rax
 	leaq	-248(%rsp), %rsp
 	call	L_sha3_512_32$1
