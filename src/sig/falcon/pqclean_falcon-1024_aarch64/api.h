@@ -6,9 +6,11 @@
 
 #define PQCLEAN_FALCON1024_AARCH64_CRYPTO_SECRETKEYBYTES   2305
 #define PQCLEAN_FALCON1024_AARCH64_CRYPTO_PUBLICKEYBYTES   1793
-#define PQCLEAN_FALCON1024_AARCH64_CRYPTO_BYTES            1280
+#define PQCLEAN_FALCON1024_AARCH64_CRYPTO_BYTES            1462
 
 #define PQCLEAN_FALCON1024_AARCH64_CRYPTO_ALGNAME          "Falcon-1024"
+
+#define PQCLEAN_FALCONPADDED1024_AARCH64_CRYPTO_BYTES      1280 // used in signature verification
 
 /*
  * Generate a new key pair. Public key goes into pk[], private key in sk[].

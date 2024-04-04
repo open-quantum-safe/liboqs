@@ -133,7 +133,7 @@ void mgf1x8(unsigned char *outx8, unsigned long outlen,
     memcpy(inbufx8 + 7 * (inlen + 4), in7, inlen);
 
     /* While we can fit in at least another full block of SHA256 output.. */
-    for (i = 0; (i + 1)*SPX_SHA256_OUTPUT_BYTES <= outlen; i++) {
+    for (i = 0; (i + 1) * SPX_SHA256_OUTPUT_BYTES <= outlen; i++) {
         for (j = 0; j < 8; j++) {
             u32_to_bytes(inbufx8 + inlen + j * (inlen + 4), i);
         }

@@ -58,8 +58,11 @@ jobs:
           cat config.log && \
           cmake -LA .. && \
           ! (grep "uninitialized variable" config.log)
-      - name: Build
+      - name: Build code
         run: ninja
+        working-directory: build
+      - name: Build documentation
+        run: ninja gen_docs
         working-directory: build
 
   linux_intel:
@@ -116,6 +119,10 @@ jobs:
         with:
           name: liboqs-openssl3-shared-x64
           path: build/*.deb
+      - name: Check STD algorithm and alias
+        if: matrix.name == 'jammy-std-openssl3'
+        run: 'tests/dump_alg_info | grep -zoP "ML-DSA-44:\n    isnull: false" && tests/dump_alg_info | grep -zoP "ML-DSA-44-ipd:\n    isnull: true" && tests/dump_alg_info | grep -zoP "ML-KEM-512:\n    isnull: false" && tests/dump_alg_info | grep -zoP "ML-KEM-512-ipd:\n    isnull: true"'
+        working-directory: build
 
   linux_arm_emulated:
     needs: buildcheck
@@ -200,7 +207,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install dependencies
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install pytest pytest-xdist pyyaml
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --break-system-packages pytest pytest-xdist pyyaml
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure

@@ -5,8 +5,10 @@
 #include <oqs/kem_{{ family }}.h>
 
 {% for scheme in schemes -%}
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}){%- endif %}
+{% if 'alias_scheme' in scheme %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }})
-
+{% endif %}
 OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -30,9 +32,13 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	return kem;
 }
+{%- if 'alias_scheme' in scheme %}
+#endif
+{%- endif -%}
 
 {%- if 'alias_scheme' in scheme %}
 
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }})
 /** Alias */
 OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 
@@ -57,6 +63,7 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 
 	return kem;
 }
+#endif
 {%- endif -%}
 
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == scheme['default_implementation'] %}
@@ -87,7 +94,7 @@ extern int {{ scheme['metadata']['default_dec_signature']  }}(uint8_t *ss, const
 
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
 
-#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
         {%- if impl['signature_keypair'] %}
 extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
         {%- else %}
@@ -111,9 +118,9 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
-#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
-#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
@@ -145,9 +152,9 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
-#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
-#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
@@ -179,9 +186,9 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
-#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
-#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)

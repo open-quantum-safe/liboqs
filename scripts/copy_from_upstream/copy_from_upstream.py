@@ -548,6 +548,9 @@ def process_families(instructions, basedir, with_kat, with_generator):
                             print("Info: Updating KAT for %s" % (scheme['pretty_name_full']))
                     except KeyError:  # new key
                         print("Adding new KAT for %s" % (scheme['pretty_name_full']))
+                        # either a new scheme or a new KAT
+                        if scheme['pretty_name_full'] not in kats['kem']:
+                            kats['kem'][scheme['pretty_name_full']] = {}
                         pass
                     kats['kem'][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
                     if 'alias_pretty_name_full' in scheme:
@@ -558,6 +561,9 @@ def process_families(instructions, basedir, with_kat, with_generator):
                             print("Info: Updating KAT for %s" % (scheme['pretty_name_full']))
                     except KeyError:  # new key
                         print("Adding new KAT for %s" % (scheme['pretty_name_full']))
+                        # either a new scheme or a new KAT
+                        if scheme['pretty_name_full'] not in kats['sig']:
+                            kats['sig'][scheme['pretty_name_full']] = {}
                         pass
                     kats['sig'][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
                     if 'alias_pretty_name_full' in scheme:

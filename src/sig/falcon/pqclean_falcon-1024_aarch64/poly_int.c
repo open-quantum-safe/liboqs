@@ -281,10 +281,10 @@ int PQCLEAN_FALCON1024_AARCH64_poly_int16_to_int8(int8_t G[FALCON_N], const int1
     uint16x8_t neon_q;                                  // 1
     neon_127 = vdupq_n_s16(127);
     neon__127 = vdupq_n_s16(-127);
+    neon_q = vdupq_n_u16(FALCON_Q);
     neon_q_2 = vdupq_n_s16(FALCON_Q >> 1);
     neon__q_2 = vdupq_n_s16(-(FALCON_Q >> 1));
 
-    neon_q = vdupq_n_u16(FALCON_Q);
     e.val[1] = vdupq_n_u16(0);
 
     for (int i = 0; i < FALCON_N; i += 64) {
