@@ -32,7 +32,7 @@ if(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_sch
 if(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'].replace('/', '_') }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'].replace('/', '_') }}{%- endif %})
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'].replace('/', '_') }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
         {%- endif %}
-    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'].replace('/', '_') }}/include)
+    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'].replace('/', '_') }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/libjade_shims)
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] -%}
            {%- set opts %}{% for flag in impl['required_flags'] %}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {% elif flag == 'sse4_1' -%} sse4.1 {% elif flag == 'pclmulqdq' -%} pclmul {% else -%}{{ flag }} {% endif %}{% endif -%}{% endfor %}{% endset %}
