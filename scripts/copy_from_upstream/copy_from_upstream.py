@@ -461,19 +461,28 @@ def handle_implementation(impl, family, scheme, dst_basedir):
         except FileExistsError as fee:
             print(fee)
             pass
-        # determine list of files to copy:
-        if 'sources' in i:
-            srcs = i['sources'].split(" ")
-            for s in srcs:
-                # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
-                if os.path.isfile(os.path.join(origfolder, s)):
-                    subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
-                else:
-                    subprocess.run(
-                        ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+        if upstream_location == 'libjade':
+            # Flatten directory structure while copying relevant files from libjade repo
+            for root, _, files in os.walk(origfolder):
+                for file in files:
+                    if os.path.splitext(file)[1].lower() in ['.c', '.h', '.s']:
+                        source_path = os.path.join(root, file)
+                        dest_path = os.path.join(srcfolder, file)
+                        subprocess.run(['cp', source_path, dest_path])
         else:
-            subprocess.run(['cp', '-pr', os.path.join(origfolder, '.'), srcfolder])
-            # raise Exception("Malformed YML file: No sources listed to copy. Check upstream YML file." )
+            # determine list of files to copy:
+            if 'sources' in i:
+                srcs = i['sources'].split(" ")
+                for s in srcs:
+                    # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
+                    if os.path.isfile(os.path.join(origfolder, s)):
+                        subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+                    else:
+                        subprocess.run(
+                            ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+            else:
+                subprocess.run(['cp', '-pr', os.path.join(origfolder, '.'), srcfolder])
+                # raise Exception("Malformed YML file: No sources listed to copy. Check upstream YML file." )
 
     else:
         raise Exception("Mandatory argument upstream_location is missing")
