@@ -14,6 +14,8 @@
 
 #define BUFFER_SIZE 30000
 
+static bool sha2_callback_called = false;
+
 static int read_stdin(uint8_t **msg, size_t *msg_len) {
 	*msg = malloc(BUFFER_SIZE);
 	if (*msg == NULL) {
@@ -198,7 +200,20 @@ static int do_arbitrary_hash(void (*hash)(uint8_t *, const uint8_t *, size_t), s
 	return 0;
 }
 
+extern struct OQS_SHA2_callbacks sha2_default_callbacks;
+
+static void override_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
+	sha2_callback_called = true;
+	sha2_default_callbacks.SHA2_sha256_inc_init(state);
+}
+
 int main(int argc, char **argv) {
+	int ret;
+	struct OQS_SHA2_callbacks sha2_callbacks = sha2_default_callbacks;
+
+	sha2_callbacks.SHA2_sha256_inc_init = override_SHA2_sha256_inc_init;
+	OQS_SHA2_set_callbacks(&sha2_callbacks);
+
 	OQS_init();
 	if (argc != 2) {
 		fprintf(stderr, "Usage: test_hash algname\n");
@@ -213,26 +228,33 @@ int main(int argc, char **argv) {
 	char *hash_alg = argv[1];
 
 	if (strcmp(hash_alg, "sha256inc") == 0) {
-		return do_sha256();
+		ret = do_sha256();
 	} else if (strcmp(hash_alg, "sha384inc") == 0) {
-		return do_sha384();
+		ret = do_sha384();
 	} else if (strcmp(hash_alg, "sha512inc") == 0) {
-		return do_sha512();
+		ret = do_sha512();
 	} else if (strcmp(hash_alg, "sha256") == 0) {
-		return do_arbitrary_hash(&OQS_SHA2_sha256, 32);
+		ret = do_arbitrary_hash(&OQS_SHA2_sha256, 32);
 	} else if (strcmp(hash_alg, "sha384") == 0) {
-		return do_arbitrary_hash(&OQS_SHA2_sha384, 48);
+		ret = do_arbitrary_hash(&OQS_SHA2_sha384, 48);
 	} else if (strcmp(hash_alg, "sha512") == 0) {
-		return do_arbitrary_hash(&OQS_SHA2_sha512, 64);
+		ret = do_arbitrary_hash(&OQS_SHA2_sha512, 64);
 	} else if (strcmp(hash_alg, "sha3_256") == 0) {
-		return do_arbitrary_hash(&OQS_SHA3_sha3_256, 32);
+		ret = do_arbitrary_hash(&OQS_SHA3_sha3_256, 32);
 	} else if (strcmp(hash_alg, "sha3_384") == 0) {
-		return do_arbitrary_hash(&OQS_SHA3_sha3_384, 48);
+		ret = do_arbitrary_hash(&OQS_SHA3_sha3_384, 48);
 	} else if (strcmp(hash_alg, "sha3_512") == 0) {
-		return do_arbitrary_hash(&OQS_SHA3_sha3_512, 64);
+		ret = do_arbitrary_hash(&OQS_SHA3_sha3_512, 64);
 	} else {
 		fprintf(stderr, "ERROR: Test not implemented\n");
-		OQS_destroy();
-		return EXIT_FAILURE;
+		ret = EXIT_FAILURE;
 	}
+
+	if (strcmp(hash_alg, "sha256inc") == 0 && !sha2_callback_called) {
+		fprintf(stderr, "ERROR: SHA2 callback was not called\n");
+		ret = EXIT_FAILURE;
+	}
+
+	OQS_destroy();
+	return ret;
 }

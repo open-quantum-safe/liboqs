@@ -96,7 +96,7 @@ These can be set to `ON` or `OFF` and take an effect if liboqs is built for use 
 
 ## OQS_USE_OPENSSL
 
-In order to save size and limit the mount of different cryptographic code bases, it is possible to use OpenSSL as a crypto code provider by setting this configuration option.
+In order to save size and limit the amount of different cryptographic code bases, it is possible to use OpenSSL as a crypto code provider by setting this configuration option.
 
 This can be set to `ON` or `OFF`. When `ON`, the additional options `OQS_USE_AES_OPENSSL`, `OQS_USE_SHA2_OPENSSL`, and `OQS_USE_SHA3_OPENSSL` are made available to control whether liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
 
@@ -110,6 +110,14 @@ These default choices have been made in order to optimize the default performanc
 When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The [OPENSSL_ROOT_DIR](https://cmake.org/cmake/help/latest/module/FindOpenSSL.html) option can be set to aid CMake in its search.
 
 **Default**: `ON`.
+
+### OQS_DLOPEN_OPENSSL
+
+Dynamically load OpenSSL through `dlopen`. When using liboqs from other cryptographic libraries, hard dependency on OpenSSL is sometimes undesirable. If this option is `ON`, loading of OpenSSL will be deferred until any of the OpenSSL functions is used.
+
+Only has an effect if the system supports `dlopen` and ELF binary format, such as Linux or BSD family.
+
+**Default**: `OFF`.
 
 ## OQS_OPT_TARGET
 
