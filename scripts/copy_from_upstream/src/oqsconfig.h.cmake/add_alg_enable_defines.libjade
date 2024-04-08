@@ -7,9 +7,9 @@
 #cmakedefine OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }} @OQS_LIBJADE_BUILD_BIN@
 {%- endif -%}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
-#cmakedefine OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} @OQS_LIBJADE_BUILD_BIN@
+#cmakedefine OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} @OQS_LIBJADE_BUILD_BIN@
 {%- if 'alias_scheme' in scheme %}
-#cmakedefine OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name'].replace('/', '_') }} @OQS_LIBJADE_BUILD_BIN@
+#cmakedefine OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }} @OQS_LIBJADE_BUILD_BIN@
 {%- endif -%}
         {%- endfor -%}
     {%- endfor -%}
@@ -24,9 +24,9 @@
 #cmakedefine OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }} @OQS_LIBJADE_BUILD_BIN@
 {%- endif -%}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
-#cmakedefine OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'].replace('/', '_') }} @OQS_LIBJADE_BUILD_BIN@
+#cmakedefine OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} @OQS_LIBJADE_BUILD_BIN@
 {%- if 'alias_scheme' in scheme %}
-#cmakedefine OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name'].replace('/', '_') }} @OQS_LIBJADE_BUILD_BIN@
+#cmakedefine OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }} @OQS_LIBJADE_BUILD_BIN@
 {%- endif -%}
         {%- endfor -%}
     {%- endfor -%}

@@ -253,8 +253,8 @@ def load_instructions(file):
                                                                     upstreams[location]['kem_scheme_path'].format_map(scheme)))
             scheme['metadata']['ind_cca'] = 'true' if (
                     scheme['metadata']['claimed-security'] == "IND-CCA2") else 'false'
-            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
-            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme']
+            scheme['scheme_c'] = scheme['scheme']
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
@@ -352,8 +352,8 @@ def load_instructions(file):
                         scheme['scheme_paths'][arch] = (os.path.join('repos', location,
                                                                     upstreams[location]['sig_scheme_path'].format_map(scheme)))
             scheme['metadata']['euf_cma'] = 'true'
-            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
-            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme']
+            scheme['scheme_c'] = scheme['scheme']
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
@@ -453,7 +453,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
         origfolder = os.path.join(scheme['scheme_paths'][impl], of)
         upstream_location = i['upstream']['name']
         srcfolder = os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl.replace('/', '_')))
+                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl))
         shutil.rmtree(srcfolder, ignore_errors=True)
         # Don't copy from PQClean straight but check for origfile list
         try:
