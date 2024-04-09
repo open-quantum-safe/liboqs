@@ -217,6 +217,75 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 
+def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=False):
+    for kem in kems:
+        ui = get_upstream_info(upstream_info, kem['upstream_location'])
+        upstream_root = ui['upstream_root']
+        meta_yaml_path_template = ui['kem_meta_path']
+
+        oqs_yaml_path = os.path.join(liboqs_root, 'docs', 'algorithms', 'kem', '{}.yml'.format(kem['name']))
+        oqs_yaml = load_yaml(oqs_yaml_path)
+        # We cannot assume that the ordering of "parameter-sets"
+        # in the OQS YAML files matches that of copy_from_upstream.yml
+        # hence use helper function get_oqs_yaml(alg_name)
+        for scheme in kem['schemes']:
+            scheme['family'] = kem['name']
+            upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
+            upstream_yaml = load_yaml(upstream_meta_path)
+
+            oqs_yaml['type'] = rhs_if_not_equal(oqs_yaml['type'], upstream_yaml['type'], "type")
+
+            oqs_yaml['principal-submitters'] = rhs_if_not_equal(oqs_yaml['principal-submitters'], upstream_yaml['principal-submitters'], "principal-submitters")
+            if 'auxiliary-submitters' in upstream_yaml:
+                oqs_yaml['auxiliary-submitters'] = rhs_if_not_equal(oqs_yaml['auxiliary-submitters'] if 'auxiliary-submitters' in oqs_yaml else '', upstream_yaml['auxiliary-submitters'], "auxiliary-submitters")
+
+            for upstream in upstream_info:
+                verified_upstream_base_url = upstream['git_url'][:-len(".git")]
+                for patchfilename in upstream['patches']:
+                    if kem['name'] in patchfilename:
+                        patches_done=" with copy_from_upstream patches"
+                patches_done=""
+                if 'patches' in upstream:
+                    for patchfilename in upstream['patches']:
+                        if kem['name'] in patchfilename:
+                            patches_done=" with copy_from_upstream patches"
+                if 'formally-verified-upstreams' in oqs_yaml and upstream['name'] in oqs_yaml['formally-verified-upstreams']:
+                    
+                    lhs = oqs_yaml['formally-verified-upstreams'][upstream['name']]['source']
+                else:
+                    lhs = ''
+                git_commit = upstream['git_commit']
+                oqs_yaml['formally-verified-upstreams'][upstream['name']]['source'] = rhs_if_not_equal(lhs, ("{}/commit/{}"+patches_done).format(verified_upstream_base_url, git_commit), "formally-verified-upstreams")
+
+            index, oqs_scheme_yaml = get_oqs_yaml(oqs_yaml['parameter-sets'], scheme['pretty_name_full'])
+
+            oqs_scheme_yaml['claimed-nist-level'] = rhs_if_not_equal(oqs_scheme_yaml['claimed-nist-level'], upstream_yaml['claimed-nist-level'], "claimed-nist-level")
+            oqs_scheme_yaml['claimed-security'] = rhs_if_not_equal(oqs_scheme_yaml['claimed-security'], upstream_yaml['claimed-security'], "claimed-security")
+            oqs_scheme_yaml['length-public-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-public-key'], upstream_yaml['length-public-key'], "length-public-key")
+            oqs_scheme_yaml['length-ciphertext'] = rhs_if_not_equal(oqs_scheme_yaml['length-ciphertext'], upstream_yaml['length-ciphertext'], "length-ciphertext")
+            oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
+            oqs_scheme_yaml['length-shared-secret'] = rhs_if_not_equal(oqs_scheme_yaml['length-shared-secret'], upstream_yaml['length-shared-secret'], "length-shared-secret")
+
+            for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
+                if impl['upstream'] == kem['upstream_location']:
+                    for upstream_impl in upstream_yaml['implementations']:
+                        if impl['upstream-id'] == upstream_impl['name']:
+                            break
+                        if 'supported_platforms' in upstream_impl:
+                            for i in range(len(upstream_impl['supported_platforms'])):
+                                if not upstream_impl['supported_platforms'][i]['required_flags']:
+                                    del upstream_impl['supported_platforms'][i]['required_flags']
+
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
+                    else:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
+                    oqs_scheme_yaml['implementations'][impl_index] = impl
+
+                oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
+        if write_changes:
+            store_yaml(oqs_yaml_path, oqs_yaml)
+            
+
 
 def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes=False):
     for sig in sigs:
@@ -368,7 +437,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 
-def do_it(liboqs_root):
+def do_it(liboqs_root, upstream_location='upstream'):
    global DEBUG
    if liboqs_root == None:
       parser = argparse.ArgumentParser()
@@ -388,15 +457,18 @@ def do_it(liboqs_root):
    if not write_changes:
        print("--write-changes not set; changes will not be written out.")
    instructions = load_yaml(
-       os.path.join(liboqs_root, 'scripts', 'copy_from_upstream', 'copy_from_upstream.yml'),
+       os.path.join(liboqs_root, 'scripts', 'copy_from_upstream', 'copy_from_{}.yml'.format(upstream_location)),
        encoding='utf-8')
 
    for upstream in instructions['upstreams']:
      if 'git_url' in upstream.keys():
        upstream['upstream_root'] = fetch_upstream(liboqs_root, upstream)
 
-   update_upstream_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
-   update_upstream_sig_alg_docs(liboqs_root, instructions['sigs'], instructions['upstreams'], write_changes)
+   if upstream_location == 'libjade':
+     update_libjade_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
+   else:
+     update_upstream_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
+     update_upstream_sig_alg_docs(liboqs_root, instructions['sigs'], instructions['upstreams'], write_changes)
 
 if __name__ == "__main__":
    do_it(None)

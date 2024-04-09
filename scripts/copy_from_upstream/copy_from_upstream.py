@@ -683,6 +683,17 @@ def copy_from_libjade():
     process_families(instructions, os.environ['LIBOQS_DIR'], True, False, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####', libjade=True)
     replacer('src/oqsconfig.h.cmake', instructions, '/////', libjade=True)
+    for t in ["kem", "sig"]:
+        with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
+            json.dump(kats[t], f, indent=2, sort_keys=True)
+
+    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
+
+    sys.path.insert(1, os.path.join(os.environ['LIBOQS_DIR'], 'scripts'))
+    import update_docs_from_yaml
+    import update_cbom
+    update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
+    update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
     if not keepdata:
         shutil.rmtree('repos')
 

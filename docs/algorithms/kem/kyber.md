@@ -30,6 +30,8 @@
 |     [Primary Source](#primary-source)     | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
 |     [Primary Source](#primary-source)     | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
 | [oldpqclean-aarch64](#oldpqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                 |
+|            [libjade](#libjade)            | ref                      | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                 |
+|            [libjade](#libjade)            | avx2                     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -42,6 +44,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |     [Primary Source](#primary-source)     | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 |     [Primary Source](#primary-source)     | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 | [oldpqclean-aarch64](#oldpqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
+|            [libjade](#libjade)            | ref                      | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|            [libjade](#libjade)            | avx2                     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

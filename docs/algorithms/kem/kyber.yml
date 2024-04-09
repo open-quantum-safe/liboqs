@@ -26,6 +26,11 @@ optimized-upstreams:
       with copy_from_upstream patches
     spdx-license-identifier: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT)
       and MIT
+formally-verified-upstreams:
+  libjade:
+    source: https://github.com/formosa-crypto/lib/commit/a6845a257a0ebbab4fd93c19423a62557c838a10
+      with copy_from_upstream patches
+    spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: Kyber512
   claimed-nist-level: 1
@@ -72,6 +77,26 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+  - upstream: libjade
+    upstream-id: ref
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: libjade
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
 - name: Kyber768
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -116,6 +141,26 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: libjade
+    upstream-id: ref
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: libjade
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: Kyber1024
   claimed-nist-level: 5

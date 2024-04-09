@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: CC0-1.0
 
 #if defined(__unix__) || defined(__APPLE__)
 #include <oqs/rand.h>
@@ -6,6 +6,5 @@
 
 void __jasmin_syscall_randombytes__(uint8_t *_x, uint64_t xlen) {
 	OQS_randombytes(_x, xlen);
-	// return _x;
 }
 #endif

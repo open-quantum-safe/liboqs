@@ -7,12 +7,10 @@ upstreams:
     kem_meta_path: 'src/crypto_kem/{family}/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'src/crypto_kem/{family}/{pqclean_scheme}'
     patches: ['libjade-kyber-api.patch', 'libjade-kyber-meta.patch']
-templates:
-    kem_scheme.c: ['kem_scheme.c.libjade', 'kem_scheme_keypair.c.libjade', 'kem_scheme_encaps.c.libjade', 'kem_scheme_decaps.c.libjade']
 kems:
   -
     name: kyber
-    default_implementation: amd64/ref
+    default_implementation: ref
     upstream_location: libjade
     schemes:
       -
