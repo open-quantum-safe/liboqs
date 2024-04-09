@@ -255,8 +255,8 @@ def load_instructions(file):
                                                                     upstreams[location]['kem_scheme_path'].format_map(scheme)))
             scheme['metadata']['ind_cca'] = 'true' if (
                     scheme['metadata']['claimed-security'] == "IND-CCA2") else 'false'
-            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme']
-            scheme['scheme_c'] = scheme['scheme']
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
+            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
@@ -354,8 +354,8 @@ def load_instructions(file):
                         scheme['scheme_paths'][arch] = (os.path.join('repos', location,
                                                                     upstreams[location]['sig_scheme_path'].format_map(scheme)))
             scheme['metadata']['euf_cma'] = 'true'
-            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme']
-            scheme['scheme_c'] = scheme['scheme']
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
+            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:

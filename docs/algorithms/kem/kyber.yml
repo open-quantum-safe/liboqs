@@ -79,11 +79,7 @@ parameter-sets:
     large-stack-usage: false
   - upstream: libjade
     upstream-id: ref
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      - Darwin
+    supported-platforms: all
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -94,6 +90,10 @@ parameter-sets:
       operating_systems:
       - Linux
       - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -144,11 +144,7 @@ parameter-sets:
     large-stack-usage: false
   - upstream: libjade
     upstream-id: ref
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      - Darwin
+    supported-platforms: all
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -159,6 +155,10 @@ parameter-sets:
       operating_systems:
       - Linux
       - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
