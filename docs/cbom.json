@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:42e1aede-649a-4dec-b7d4-e78f71a822c8",
+  "serialNumber": "urn:uuid:58a975ac-ea6b-4ce9-a5ae-80d35105db30",
   "version": 1,
   "metadata": {
-    "timestamp": "2024-04-09T19:42:40.158663",
+    "timestamp": "2024-04-09T21:46:17.101849",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b7ef00469b3e7d26aafb7390fd73e3b15674ae22",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@2fd65d9ec99a2608149713e5fcaeb9b6402e5872",
       "name": "liboqs",
-      "version": "b7ef00469b3e7d26aafb7390fd73e3b15674ae22"
+      "version": "2fd65d9ec99a2608149713e5fcaeb9b6402e5872"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b7ef00469b3e7d26aafb7390fd73e3b15674ae22",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@2fd65d9ec99a2608149713e5fcaeb9b6402e5872",
       "name": "liboqs",
-      "version": "b7ef00469b3e7d26aafb7390fd73e3b15674ae22"
+      "version": "2fd65d9ec99a2608149713e5fcaeb9b6402e5872"
     },
     {
       "type": "crypto-asset",
@@ -841,7 +841,7 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:Kyber512:x86_64",
+      "bom-ref": "alg:Kyber512:jasmin:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -861,7 +861,7 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:Kyber512:x86_64",
+      "bom-ref": "alg:Kyber512:jasmin:avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -941,7 +941,7 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:Kyber768:x86_64",
+      "bom-ref": "alg:Kyber768:jasmin:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -961,7 +961,7 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:Kyber768:x86_64",
+      "bom-ref": "alg:Kyber768:jasmin:avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2248,7 +2248,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@b7ef00469b3e7d26aafb7390fd73e3b15674ae22",
+      "ref": "pkg:github/open-quantum-safe/liboqs@2fd65d9ec99a2608149713e5fcaeb9b6402e5872",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -2291,13 +2291,13 @@
         "alg:Kyber512:generic",
         "alg:Kyber512:x86_64",
         "alg:Kyber512:armv8-a",
-        "alg:Kyber512:x86_64",
-        "alg:Kyber512:x86_64",
+        "alg:Kyber512:jasmin:x86_64",
+        "alg:Kyber512:jasmin:avx2:x86_64",
         "alg:Kyber768:generic",
         "alg:Kyber768:x86_64",
         "alg:Kyber768:armv8-a",
-        "alg:Kyber768:x86_64",
-        "alg:Kyber768:x86_64",
+        "alg:Kyber768:jasmin:x86_64",
+        "alg:Kyber768:jasmin:avx2:x86_64",
         "alg:Kyber1024:generic",
         "alg:Kyber1024:x86_64",
         "alg:Kyber1024:armv8-a",
