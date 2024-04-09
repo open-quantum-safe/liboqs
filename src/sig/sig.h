@@ -141,9 +141,9 @@ typedef struct OQS_SIG {
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
 	bool euf_cma;
 
-	/** The (maximum) length, in bytes, of public keys for this signature scheme. */
+	/** The length, in bytes, of public keys for this signature scheme. */
 	size_t length_public_key;
-	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	/** The length, in bytes, of secret keys for this signature scheme. */
 	size_t length_secret_key;
 	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
 	size_t length_signature;
