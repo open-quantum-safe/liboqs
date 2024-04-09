@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:50fe9dad-cdcb-4309-8c2e-67b5953686c5",
+  "serialNumber": "urn:uuid:42e1aede-649a-4dec-b7d4-e78f71a822c8",
   "version": 1,
   "metadata": {
-    "timestamp": "2024-04-09T17:32:27.545689",
+    "timestamp": "2024-04-09T19:42:40.158663",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@a4d556f71691c00d045bcdac50a2d60bbba2db19",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b7ef00469b3e7d26aafb7390fd73e3b15674ae22",
       "name": "liboqs",
-      "version": "a4d556f71691c00d045bcdac50a2d60bbba2db19"
+      "version": "b7ef00469b3e7d26aafb7390fd73e3b15674ae22"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@a4d556f71691c00d045bcdac50a2d60bbba2db19",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b7ef00469b3e7d26aafb7390fd73e3b15674ae22",
       "name": "liboqs",
-      "version": "a4d556f71691c00d045bcdac50a2d60bbba2db19"
+      "version": "b7ef00469b3e7d26aafb7390fd73e3b15674ae22"
     },
     {
       "type": "crypto-asset",
@@ -841,7 +841,7 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:Kyber512:generic",
+      "bom-ref": "alg:Kyber512:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -854,7 +854,7 @@
             "encapsulate",
             "decapsulate"
           ],
-          "implementationPlatform": "generic"
+          "implementationPlatform": "x86_64"
         },
         "nistQuantumSecurityLevel": 1
       }
@@ -941,7 +941,7 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:Kyber768:generic",
+      "bom-ref": "alg:Kyber768:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -954,7 +954,7 @@
             "encapsulate",
             "decapsulate"
           ],
-          "implementationPlatform": "generic"
+          "implementationPlatform": "x86_64"
         },
         "nistQuantumSecurityLevel": 3
       }
@@ -2248,7 +2248,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@a4d556f71691c00d045bcdac50a2d60bbba2db19",
+      "ref": "pkg:github/open-quantum-safe/liboqs@b7ef00469b3e7d26aafb7390fd73e3b15674ae22",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -2291,12 +2291,12 @@
         "alg:Kyber512:generic",
         "alg:Kyber512:x86_64",
         "alg:Kyber512:armv8-a",
-        "alg:Kyber512:generic",
+        "alg:Kyber512:x86_64",
         "alg:Kyber512:x86_64",
         "alg:Kyber768:generic",
         "alg:Kyber768:x86_64",
         "alg:Kyber768:armv8-a",
-        "alg:Kyber768:generic",
+        "alg:Kyber768:x86_64",
         "alg:Kyber768:x86_64",
         "alg:Kyber1024:generic",
         "alg:Kyber1024:x86_64",
