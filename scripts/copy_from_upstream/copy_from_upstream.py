@@ -65,6 +65,8 @@ def shell(command, expect=0):
     if ret.returncode != expect:
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
+# Generate template from specified scheme to replace old file in 'copy' mode
+# but preserves additions made to file made in priour runs of 'libjade' mode 
 def generator(destination_file_path, template_filename, delimiter, family, scheme_desired):
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
@@ -673,7 +675,12 @@ def copy_from_upstream():
     if not keepdata:
         shutil.rmtree('repos')
 
-
+# Copy algorithms from libjade specified in copy_from_libjade.yml, apply 
+# patches and generate select templates
+# Can be run independant of 'copy' mode.
+# When adding an algorithm to copy_from_libjade.yml, the boolean 
+# 'libjade_implementation' and list of implementation 'libjade_implementations' 
+# must updated for the relevant algorithm in copy_from_upstream.yml
 def copy_from_libjade():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:

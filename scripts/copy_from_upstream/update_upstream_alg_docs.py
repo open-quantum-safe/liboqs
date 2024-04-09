@@ -217,6 +217,12 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 
+# Merge documentation in liboqs_root/docs/algorithms/kem/kem['name'].yml with 
+# upstream information from libjade (patched with copy_from_upstream.py):
+# Args:
+# kems: List of kems in copy_from_libjade.yml
+# upstream_info: Hashtable of upstream information (keyed by upstream source)
+#  incl. entry: 'upstream_root' pointing to local folder containing source code
 def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=False):
     for kem in kems:
         ui = get_upstream_info(upstream_info, kem['upstream_location'])

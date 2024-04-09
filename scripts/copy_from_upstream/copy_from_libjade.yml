@@ -1,3 +1,6 @@
+# When adding an algorithm to copy_from_libjade.yml, the boolean 
+# 'libjade_implementation' and list of implementation 'libjade_implementations' 
+# must updated for the relevant algorithm in copy_from_upstream.yml
 upstreams:
   -
     name: libjade
