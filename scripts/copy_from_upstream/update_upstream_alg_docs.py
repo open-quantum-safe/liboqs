@@ -171,45 +171,46 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
 
                 _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
-                    upstream_yaml = _upstream_yaml
-                    if impl['upstream'] in ouis:
-                        upstream_name = impl['upstream']
-                        meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
-                        opt_upstream_root = ouis[upstream_name]['upstream_root']
-                        upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
-                        upstream_yaml = load_yaml(upstream_meta_path)
+                    if impl['upstream'] != 'libjade':
+                        upstream_yaml = _upstream_yaml
+                        if impl['upstream'] in ouis:
+                            upstream_name = impl['upstream']
+                            meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
+                            opt_upstream_root = ouis[upstream_name]['upstream_root']
+                            upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
+                            upstream_yaml = load_yaml(upstream_meta_path)
 
-                    for upstream_impl in upstream_yaml['implementations']:
-                        if impl['upstream-id'] == upstream_impl['name']:
-                            break
-                    # Logic to add Common_META.yml components
+                        for upstream_impl in upstream_yaml['implementations']:
+                            if impl['upstream-id'] == upstream_impl['name']:
+                                break
+                        # Logic to add Common_META.yml components
 
-                    implementations = upstream_yaml['implementations']
-                    uir = get_upstream_info(implementations, impl['upstream-id'])
-                    if (uir != None) and ('common_dep' in uir):
-                        upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
-                        upstream_common_yaml = load_yaml(upstream_common_path)
-                        for c in uir['common_dep'].split(' '):
-                            ur = get_upstream_info(upstream_common_yaml['commons'], c)
-                            if (ur != None) and ('supported_platforms' in ur):
-                                if 'required_flags' in ur['supported_platforms'][0] and not ur['supported_platforms'][0]['required_flags']:
-                                    del ur['supported_platforms'][0]['required_flags']
-                                if 'required_flags' in ur['supported_platforms'][0].keys():
-                                    upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
-                                    upstream_impl['supported_platforms'][0]['required_flags'].sort()
-                    if 'supported_platforms' in upstream_impl:
-                        for i in range(len(upstream_impl['supported_platforms'])):
-                            if upstream_impl['supported_platforms'][i]['architecture'] == 'arm_8':
-                                upstream_impl['supported_platforms'][i]['architecture'] = 'ARM64_V8'
-                                if 'asimd' in upstream_impl['supported_platforms'][i]['required_flags']:
-                                    upstream_impl['supported_platforms'][i]['required_flags'].remove('asimd')
-                            if not upstream_impl['supported_platforms'][i]['required_flags']:
-                                del upstream_impl['supported_platforms'][i]['required_flags']
+                        implementations = upstream_yaml['implementations']
+                        uir = get_upstream_info(implementations, impl['upstream-id'])
+                        if (uir != None) and ('common_dep' in uir):
+                            upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
+                            upstream_common_yaml = load_yaml(upstream_common_path)
+                            for c in uir['common_dep'].split(' '):
+                                ur = get_upstream_info(upstream_common_yaml['commons'], c)
+                                if (ur != None) and ('supported_platforms' in ur):
+                                    if 'required_flags' in ur['supported_platforms'][0] and not ur['supported_platforms'][0]['required_flags']:
+                                        del ur['supported_platforms'][0]['required_flags']
+                                    if 'required_flags' in ur['supported_platforms'][0].keys():
+                                        upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
+                                        upstream_impl['supported_platforms'][0]['required_flags'].sort()
+                        if 'supported_platforms' in upstream_impl:
+                            for i in range(len(upstream_impl['supported_platforms'])):
+                                if upstream_impl['supported_platforms'][i]['architecture'] == 'arm_8':
+                                    upstream_impl['supported_platforms'][i]['architecture'] = 'ARM64_V8'
+                                    if 'asimd' in upstream_impl['supported_platforms'][i]['required_flags']:
+                                        upstream_impl['supported_platforms'][i]['required_flags'].remove('asimd')
+                                if not upstream_impl['supported_platforms'][i]['required_flags']:
+                                    del upstream_impl['supported_platforms'][i]['required_flags']
 
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
-                    else:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-                    oqs_scheme_yaml['implementations'][impl_index] = impl
+                            impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
+                        else:
+                            impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
+                        oqs_scheme_yaml['implementations'][impl_index] = impl
 
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
 
@@ -277,14 +278,12 @@ def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=
                     for upstream_impl in upstream_yaml['implementations']:
                         if impl['upstream-id'] == upstream_impl['name']:
                             break
-                        if 'supported_platforms' in upstream_impl:
-                            for i in range(len(upstream_impl['supported_platforms'])):
-                                if not upstream_impl['supported_platforms'][i]['required_flags']:
-                                    del upstream_impl['supported_platforms'][i]['required_flags']
-
+                    if 'supported_platforms' in upstream_impl:
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
-                    else:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
+                        for i in range(len(impl['supported-platforms'])):
+                            if not impl['supported-platforms'][i]['required_flags']:
+                                del impl['supported-platforms'][i]['required_flags']
+
                     oqs_scheme_yaml['implementations'][impl_index] = impl
 
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
