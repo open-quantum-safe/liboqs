@@ -20,15 +20,15 @@ jobs:
 
   upstreamcheck:
     name: Check upstream code is properly integrated
-    container: praveksharma/ci-ubuntu-focal-x86_64:latest
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
     steps:
       - name: Setup nix
         uses: cachix/install-nix-action@v26
-      - run: nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs
-      - run: nix-channel --update
       - name: Setup jasmin-compiler
-        run: nix-env -iA nixpkgs.jasmin-compiler
+        run: |
+          nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs && \
+          nix-channel --update && nix-env -iA nixpkgs.jasmin-compiler
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Verify copy_from_upstream state after "copy"
