@@ -23,7 +23,7 @@ void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, s
 }
 
 void OQS_SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
-    callbacks->SHA2_sha256_inc(state, in, len);
+	callbacks->SHA2_sha256_inc(state, in, len);
 }
 
 void OQS_SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inlen) {

@@ -112,7 +112,7 @@ struct OQS_SHA2_callbacks sha2_default_callbacks = {
 	SHA2_sha256,
 	SHA2_sha256_inc_init,
 	SHA2_sha256_inc_ctx_clone,
-    SHA2_sha256_inc,
+	SHA2_sha256_inc,
 	SHA2_sha256_inc_blocks,
 	SHA2_sha256_inc_finalize,
 	SHA2_sha256_inc_ctx_release,
