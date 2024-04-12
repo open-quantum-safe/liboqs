@@ -237,7 +237,7 @@
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8 1
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w4_h5_w8 1
 
-#cmakedefine OQS_ENABLE_SIG_STFL_KEY_SIG_GEN 1
+#cmakedefine OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN 1
 #cmakedefine OQS_ALLOW_STFL_KEY_AND_SIG_GEN 1
 #cmakedefine OQS_ALLOW_XMSS_KEY_AND_SIG_GEN 1
 #cmakedefine OQS_ALLOW_LMS_KEY_AND_SIG_GEN 1
