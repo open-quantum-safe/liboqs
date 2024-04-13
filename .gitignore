@@ -35,4 +35,5 @@ __pycache__
 .pytest_cache
 .cache
 .CMake/a.out
+compile_commands.json
 
