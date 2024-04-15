@@ -105,6 +105,14 @@ endif()
 
 add_executable(kat_sig_stfl kat_sig_stfl.c test_helpers.c)
 target_link_libraries(kat_sig_stfl PRIVATE ${TEST_DEPS})
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
+    # workaround for Windows .dll
+    if(CMAKE_CROSSCOMPILING)
+        target_link_options(kat_sig_stfl PRIVATE -Wl,--allow-multiple-definition)
+    else()
+        target_link_options(kat_sig_stfl PRIVATE "/FORCE:MULTIPLE")
+    endif()
+endif()
 
 add_executable(test_sig test_sig.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
