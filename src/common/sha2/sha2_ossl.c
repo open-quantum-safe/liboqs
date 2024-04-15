@@ -59,7 +59,7 @@ static void SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 }
 
 static void SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
-	OQS_OPENSSL_GUARD(EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, len));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *) state->ctx, in, len));
 }
 
 static void SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
