@@ -123,7 +123,7 @@ Only has an effect if the system supports `dlopen` and ELF binary format, such a
 
 XMSS and LMS are the two supported Hash-Based Signatures schemes.
 `OQS_ENABLE_SIG_STFL_XMSS` and `OQS_ENABLE_SIG_STFL_LMS` control these algorithms, which are disabled by default.
-A thrid variable, `OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN`, also controls the ability to generate keys and signatures. This is also disabled by default.
+A third variable, `OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN`, also controls the ability to generate keys and signatures. This is also disabled by default.
 Each of these variables can be set to `ON` or `OFF`.
 When all three are `ON`, stateful signatures are fully functional and can generate key pairs, sign data, and verify signatures.
 If `OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN` is `OFF` signature verification is the only functional operation.
