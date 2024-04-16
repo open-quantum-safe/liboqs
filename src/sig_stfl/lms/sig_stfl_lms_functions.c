@@ -287,6 +287,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		OQS_MEM_insecure_free(oqs_key_data);
 		return -1;
 	}
+	memset(aux_data, 0, len_aux_data);
 
 	oqs_key_data->aux_data = aux_data;
 	oqs_key_data->len_aux_data = len_aux_data;
