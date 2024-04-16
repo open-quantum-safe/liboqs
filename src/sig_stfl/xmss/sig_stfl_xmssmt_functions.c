@@ -15,7 +15,7 @@
 #endif
 
 /* -------------- XMSSMT -------------- */
-#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+#ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(XMSS_UNUSED_ATT uint8_t *signature, XMSS_UNUSED_ATT size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len,
         XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return OQS_ERROR;

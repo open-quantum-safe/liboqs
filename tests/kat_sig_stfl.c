@@ -242,7 +242,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	OQS_fprintBstr(fh, "msg = ", msg, msg_len);
 
-#ifdef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+#ifdef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
 	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sign failed!\n", method_name);

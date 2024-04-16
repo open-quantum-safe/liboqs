@@ -121,7 +121,7 @@ err:
 }
 
 int main(void) {
-#ifndef OQS_ALLOW_SFTL_KEY_AND_SIG_GEN
+#ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
 	OQS_init();
 	printf("Stateful signature algorithms key and signature generation is not enabled.\n");
 	if (stfl_example((char *)"XMSS-SHA2_10_256") == OQS_ERROR && stfl_example((char *)"LMS_SHA256_H10_W4") == OQS_ERROR) {
