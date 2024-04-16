@@ -1049,12 +1049,12 @@ int main(int argc, char **argv) {
 	int is_xmss = 0;
 	if (strstr(alg_name, "XMSS") != NULL) {
 		is_xmss = 1;
-        if (argc < 3) {
-            fprintf(stderr, "KAT file must be provided for XMSS.\n");
-            OQS_destroy();
-            return EXIT_FAILURE;
-        }
-    }
+		if (argc < 3) {
+			fprintf(stderr, "KAT file must be provided for XMSS.\n");
+			OQS_destroy();
+			return EXIT_FAILURE;
+		}
+	}
 
 	/*
 	 * Tests executed by CI/DI only run algoritms that have been emabled.
