@@ -563,16 +563,16 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h10_w8 "" ON "OQS_E
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h15_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h20_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 
-option(OQS_ENABLE_SIG_STFL_KEY_SIG_GEN "Enable stateful key and signature generation for research and experimentation" OFF)
-cmake_dependent_option(OQS_ALLOW_STFL_KEY_AND_SIG_GEN "" ON "OQS_ENABLE_SIG_STFL_KEY_SIG_GEN" OFF)
+option(OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN "Enable stateful key and signature generation for research and experimentation" OFF)
+cmake_dependent_option(OQS_ALLOW_STFL_KEY_AND_SIG_GEN "" ON "OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN" OFF)
 
-if (${OQS_ENABLE_SIG_STFL_KEY_SIG_GEN} AND ${OQS_ENABLE_SIG_STFL_XMSS})
+if (${OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN} AND ${OQS_ENABLE_SIG_STFL_XMSS})
     set(OQS_ALLOW_XMSS_KEY_AND_SIG_GEN ON)
 else()
     set(OQS_ALLOW_XMSS_KEY_AND_SIG_GEN OFF)
 endif()
 
-if (${OQS_ENABLE_SIG_STFL_KEY_SIG_GEN} AND ${OQS_ENABLE_SIG_STFL_LMS})
+if (${OQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN} AND ${OQS_ENABLE_SIG_STFL_LMS})
     set(OQS_ALLOW_LMS_KEY_AND_SIG_GEN ON)
 else()
     set(OQS_ALLOW_LMS_KEY_AND_SIG_GEN OFF)
