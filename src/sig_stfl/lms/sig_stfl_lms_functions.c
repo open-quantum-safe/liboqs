@@ -281,7 +281,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	//Aux Data
 	size_t len_aux_data = DEFAULT_AUX_DATA;
-	uint8_t *aux_data =  malloc(sizeof(uint8_t) * len_aux_data);
+	uint8_t *aux_data =  calloc(len_aux_data, sizeof(uint8_t));
 	if (aux_data == NULL) {
 		OQS_MEM_insecure_free( oqs_key_data->sec_key);
 		OQS_MEM_insecure_free(oqs_key_data);

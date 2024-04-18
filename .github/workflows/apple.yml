@@ -17,6 +17,6 @@ jobs:
       - name: Generate project
         run: |
           cmake -B build --toolchain .CMake/apple.cmake -DOQS_USE_OPENSSL=OFF -DPLATFORM=${{ matrix.platform }} \
-            -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
+            -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
       - name: Build project
         run: cmake --build build

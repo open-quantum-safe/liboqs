@@ -1029,7 +1029,7 @@ int main(int argc, char **argv) {
 	printf("Testing stateful signature algorithms using liboqs version %s\n", OQS_version());
 
 	if (argc < 2) {
-		fprintf(stderr, "Usage: test_sig_stfl algname katfile\n");
+		fprintf(stderr, "Usage: test_sig_stfl algname [katfile]\n");
 		fprintf(stderr, "  algname: ");
 		for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
 			if (i > 0) {
@@ -1049,6 +1049,11 @@ int main(int argc, char **argv) {
 	int is_xmss = 0;
 	if (strstr(alg_name, "XMSS") != NULL) {
 		is_xmss = 1;
+		if (argc < 3) {
+			fprintf(stderr, "KAT file must be provided for XMSS.\n");
+			OQS_destroy();
+			return EXIT_FAILURE;
+		}
 	}
 
 	/*
