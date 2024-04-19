@@ -13318,10 +13318,10 @@ L_shake256_64$1:
 	xorq	%rcx, 56(%rax)
 	xorb	$31, 64(%rax)
 	xorb	$-128, 135(%rax)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_shake256_64$9:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	16(%rsp), %rcx
 	movq	8(%rsp), %rdx
 	jmp 	L_shake256_64$6
@@ -13364,10 +13364,10 @@ L_shake256_64$7:
 	addq	$-136, %rcx
 	movq	%rdx, 8(%rsp)
 	movq	%rcx, 16(%rsp)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_shake256_64$8:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	16(%rsp), %rcx
 	movq	8(%rsp), %rdx
 L_shake256_64$6:
@@ -13442,10 +13442,10 @@ L_sha3_512_64$1:
 	xorq	%rcx, 56(%rax)
 	xorb	$6, 64(%rax)
 	xorb	$-128, 71(%rax)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_sha3_512_64$2:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movq	(%rax), %rdx
 	movq	%rdx, (%rcx)
@@ -13503,10 +13503,10 @@ L_sha3_256_32$1:
 	movq	%rcx, 24(%rax)
 	xorb	$6, 32(%rax)
 	movb	$-128, 135(%rax)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_sha3_256_32$2:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movq	(%rax), %rdx
 	movq	%rdx, (%rcx)
@@ -13565,10 +13565,10 @@ L_sha3_256$10:
 	movq	%rsi, 16(%rsp)
 	movq	%rcx, 24(%rsp)
 	movq	%rdx, 32(%rsp)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_sha3_256$9:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	16(%rsp), %rsi
 	movq	24(%rsp), %rcx
 	movq	32(%rsp), %rdx
@@ -13599,10 +13599,10 @@ L_sha3_256$3:
 	xorb	%dil, (%rax,%r9)
 	addq	$-1, %rdx
 	xorb	$-128, (%rax,%rdx)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_sha3_256$2:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movq	(%rax), %rdx
 	movq	%rdx, (%rcx)
@@ -13615,10 +13615,10 @@ L_sha3_256$2:
 	ret
 L_shake128_squeezeblock$1:
 	movq	%rcx, 8(%rsp)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_shake128_squeezeblock$2:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movb	(%rax), %dl
 	movb	%dl, (%rcx)
@@ -14150,10 +14150,10 @@ L_sha3_512_32$1:
 	xorb	%cl, 31(%rax)
 	xorb	$6, 32(%rax)
 	xorb	$-128, 71(%rax)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_sha3_512_32$2:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movb	(%rax), %dl
 	movb	%dl, (%rcx)
@@ -14381,10 +14381,10 @@ L_shake256_192_33$1:
 	xorb	%cl, 32(%rax)
 	xorb	$31, 33(%rax)
 	xorb	$-128, 135(%rax)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_shake256_192_33$3:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movb	(%rax), %dl
 	movb	%dl, (%rcx)
@@ -14659,10 +14659,10 @@ L_shake256_192_33$3:
 	movb	135(%rax), %dl
 	movb	%dl, 135(%rcx)
 	movq	%rcx, 8(%rsp)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_shake256_192_33$2:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movb	(%rax), %dl
 	movb	%dl, 136(%rcx)
@@ -14874,10 +14874,10 @@ L_shake256_128_33$1:
 	xorb	%cl, 32(%rax)
 	xorb	$31, 33(%rax)
 	xorb	$-128, 135(%rax)
-	leaq	-216(%rsp), %rsp
+	leaq	-224(%rsp), %rsp
 	call	L_keccakf1600_ref1$1
 L_shake256_128_33$2:
-	leaq	216(%rsp), %rsp
+	leaq	224(%rsp), %rsp
 	movq	8(%rsp), %rcx
 	movb	(%rax), %dl
 	movb	%dl, (%rcx)
@@ -15139,71 +15139,72 @@ L_shake256_128_33$2:
 L_keccakf1600_ref1$1:
 	leaq	glob_data + 0(%rip), %rcx
 	movq	%rcx, 8(%rsp)
-	leaq	24(%rsp), %rcx
-	movq	$0, %rdx
+	leaq	32(%rsp), %rcx
+	movq	$0, %r10
 	jmp 	L_keccakf1600_ref1$2
 L_keccakf1600_ref1$3:
-	movq	8(%rsp), %rsi
-	movq	(%rsi,%rdx,8), %rsi
-	movq	%rsi, 16(%rsp)
-	movq	(%rax), %r10
-	movq	8(%rax), %r9
+	movq	%r10, 16(%rsp)
+	movq	8(%rsp), %rdx
+	movq	(%rdx,%r10,8), %rdx
+	movq	%rdx, 24(%rsp)
+	movq	(%rax), %r9
+	movq	8(%rax), %r8
 	movq	16(%rax), %r11
 	movq	24(%rax), %rbx
 	movq	32(%rax), %rbp
-	xorq	40(%rax), %r10
-	xorq	48(%rax), %r9
+	xorq	40(%rax), %r9
+	xorq	48(%rax), %r8
 	xorq	56(%rax), %r11
 	xorq	64(%rax), %rbx
 	xorq	72(%rax), %rbp
-	xorq	80(%rax), %r10
-	xorq	88(%rax), %r9
+	xorq	80(%rax), %r9
+	xorq	88(%rax), %r8
 	xorq	96(%rax), %r11
 	xorq	104(%rax), %rbx
 	xorq	112(%rax), %rbp
-	xorq	120(%rax), %r10
-	xorq	128(%rax), %r9
+	xorq	120(%rax), %r9
+	xorq	128(%rax), %r8
 	xorq	136(%rax), %r11
 	xorq	144(%rax), %rbx
 	xorq	152(%rax), %rbp
-	xorq	160(%rax), %r10
-	xorq	168(%rax), %r9
+	xorq	160(%rax), %r9
+	xorq	168(%rax), %r8
 	xorq	176(%rax), %r11
 	xorq	184(%rax), %rbx
 	xorq	192(%rax), %rbp
-	movq	%r9, %rsi
+	movq	%r8, %rdx
+	rolq	$1, %rdx
+	xorq	%rbp, %rdx
+	movq	%r11, %rsi
 	rolq	$1, %rsi
-	xorq	%rbp, %rsi
-	movq	%r11, %rdi
+	xorq	%r9, %rsi
+	movq	%rbx, %rdi
 	rolq	$1, %rdi
-	xorq	%r10, %rdi
-	movq	%rbx, %r8
+	xorq	%r8, %rdi
+	movq	%rbp, %r8
 	rolq	$1, %r8
-	xorq	%r9, %r8
-	movq	%rbp, %r9
+	xorq	%r11, %r8
 	rolq	$1, %r9
-	xorq	%r11, %r9
-	rolq	$1, %r10
-	xorq	%rbx, %r10
+	xorq	%rbx, %r9
 	movq	(%rax), %r11
-	xorq	%rsi, %r11
+	xorq	%rdx, %r11
 	movq	48(%rax), %rbx
-	xorq	%rdi, %rbx
+	xorq	%rsi, %rbx
 	rolq	$44, %rbx
 	movq	96(%rax), %rbp
-	xorq	%r8, %rbp
+	xorq	%rdi, %rbp
 	rolq	$43, %rbp
 	movq	144(%rax), %r12
-	xorq	%r9, %r12
+	xorq	%r8, %r12
 	rolq	$21, %r12
 	movq	192(%rax), %r13
-	xorq	%r10, %r13
+	xorq	%r9, %r13
 	rolq	$14, %r13
 	movq	%rbx, %r14
 	notq	%r14
 	andq	%rbp, %r14
 	xorq	%r11, %r14
-	xorq	16(%rsp), %r14
+	xorq	24(%rsp), %r14
 	movq	%r14, (%rcx)
 	movq	%rbp, %r14
 	notq	%r14
@@ -15225,19 +15226,19 @@ L_keccakf1600_ref1$3:
 	xorq	%r13, %r11
 	movq	%r11, 32(%rcx)
 	movq	24(%rax), %r11
-	xorq	%r9, %r11
+	xorq	%r8, %r11
 	rolq	$28, %r11
 	movq	72(%rax), %rbx
-	xorq	%r10, %rbx
+	xorq	%r9, %rbx
 	rolq	$20, %rbx
 	movq	80(%rax), %rbp
-	xorq	%rsi, %rbp
+	xorq	%rdx, %rbp
 	rolq	$3, %rbp
 	movq	128(%rax), %r12
-	xorq	%rdi, %r12
+	xorq	%rsi, %r12
 	rolq	$45, %r12
 	movq	176(%rax), %r13
-	xorq	%r8, %r13
+	xorq	%rdi, %r13
 	rolq	$61, %r13
 	movq	%rbx, %r14
 	notq	%r14
@@ -15264,19 +15265,19 @@ L_keccakf1600_ref1$3:
 	xorq	%r13, %r11
 	movq	%r11, 72(%rcx)
 	movq	8(%rax), %r11
-	xorq	%rdi, %r11
+	xorq	%rsi, %r11
 	rolq	$1, %r11
 	movq	56(%rax), %rbx
-	xorq	%r8, %rbx
+	xorq	%rdi, %rbx
 	rolq	$6, %rbx
 	movq	104(%rax), %rbp
-	xorq	%r9, %rbp
+	xorq	%r8, %rbp
 	rolq	$25, %rbp
 	movq	152(%rax), %r12
-	xorq	%r10, %r12
+	xorq	%r9, %r12
 	rolq	$8, %r12
 	movq	160(%rax), %r13
-	xorq	%rsi, %r13
+	xorq	%rdx, %r13
 	rolq	$18, %r13
 	movq	%rbx, %r14
 	notq	%r14
@@ -15303,19 +15304,19 @@ L_keccakf1600_ref1$3:
 	xorq	%r13, %r11
 	movq	%r11, 112(%rcx)
 	movq	32(%rax), %r11
-	xorq	%r10, %r11
+	xorq	%r9, %r11
 	rolq	$27, %r11
 	movq	40(%rax), %rbx
-	xorq	%rsi, %rbx
+	xorq	%rdx, %rbx
 	rolq	$36, %rbx
 	movq	88(%rax), %rbp
-	xorq	%rdi, %rbp
+	xorq	%rsi, %rbp
 	rolq	$10, %rbp
 	movq	136(%rax), %r12
-	xorq	%r8, %r12
+	xorq	%rdi, %r12
 	rolq	$15, %r12
 	movq	184(%rax), %r13
-	xorq	%r9, %r13
+	xorq	%r8, %r13
 	rolq	$56, %r13
 	movq	%rbx, %r14
 	notq	%r14
@@ -15342,284 +15343,285 @@ L_keccakf1600_ref1$3:
 	xorq	%r13, %r11
 	movq	%r11, 152(%rcx)
 	movq	16(%rax), %r11
-	xorq	%r8, %r11
+	xorq	%rdi, %r11
 	rolq	$62, %r11
-	movq	64(%rax), %r8
-	xorq	%r9, %r8
-	rolq	$55, %r8
-	movq	112(%rax), %r9
-	xorq	%r10, %r9
-	rolq	$39, %r9
-	movq	120(%rax), %r10
-	xorq	%rsi, %r10
-	rolq	$41, %r10
-	movq	168(%rax), %rsi
-	xorq	%rdi, %rsi
-	rolq	$2, %rsi
-	movq	%r8, %rdi
-	notq	%rdi
-	andq	%r9, %rdi
-	xorq	%r11, %rdi
-	movq	%rdi, 160(%rcx)
-	movq	%r9, %rdi
-	notq	%rdi
-	andq	%r10, %rdi
+	movq	64(%rax), %rdi
 	xorq	%r8, %rdi
-	movq	%rdi, 168(%rcx)
-	movq	%r10, %rdi
-	notq	%rdi
-	andq	%rsi, %rdi
-	xorq	%r9, %rdi
-	movq	%rdi, 176(%rcx)
-	movq	%rsi, %rdi
-	notq	%rdi
-	andq	%r11, %rdi
-	xorq	%r10, %rdi
-	movq	%rdi, 184(%rcx)
-	notq	%r11
-	andq	%r8, %r11
-	xorq	%rsi, %r11
-	movq	%r11, 192(%rcx)
-	movq	8(%rsp), %rsi
-	movq	8(%rsi,%rdx,8), %rsi
-	movq	%rsi, 16(%rsp)
-	movq	(%rcx), %r10
-	movq	8(%rcx), %r9
-	movq	16(%rcx), %r11
-	movq	24(%rcx), %rbx
-	movq	32(%rcx), %rbp
-	xorq	40(%rcx), %r10
-	xorq	48(%rcx), %r9
-	xorq	56(%rcx), %r11
-	xorq	64(%rcx), %rbx
-	xorq	72(%rcx), %rbp
-	xorq	80(%rcx), %r10
-	xorq	88(%rcx), %r9
-	xorq	96(%rcx), %r11
-	xorq	104(%rcx), %rbx
-	xorq	112(%rcx), %rbp
-	xorq	120(%rcx), %r10
-	xorq	128(%rcx), %r9
-	xorq	136(%rcx), %r11
-	xorq	144(%rcx), %rbx
-	xorq	152(%rcx), %rbp
-	xorq	160(%rcx), %r10
-	xorq	168(%rcx), %r9
-	xorq	176(%rcx), %r11
-	xorq	184(%rcx), %rbx
-	xorq	192(%rcx), %rbp
+	rolq	$55, %rdi
+	movq	112(%rax), %r8
+	xorq	%r9, %r8
+	rolq	$39, %r8
+	movq	120(%rax), %r9
+	xorq	%rdx, %r9
+	rolq	$41, %r9
+	movq	168(%rax), %rdx
+	xorq	%rsi, %rdx
+	rolq	$2, %rdx
+	movq	%rdi, %rsi
+	notq	%rsi
+	andq	%r8, %rsi
+	xorq	%r11, %rsi
+	movq	%rsi, 160(%rcx)
+	movq	%r8, %rsi
+	notq	%rsi
+	andq	%r9, %rsi
+	xorq	%rdi, %rsi
+	movq	%rsi, 168(%rcx)
 	movq	%r9, %rsi
+	notq	%rsi
+	andq	%rdx, %rsi
+	xorq	%r8, %rsi
+	movq	%rsi, 176(%rcx)
+	movq	%rdx, %rsi
+	notq	%rsi
+	andq	%r11, %rsi
+	xorq	%r9, %rsi
+	movq	%rsi, 184(%rcx)
+	notq	%r11
+	andq	%rdi, %r11
+	xorq	%rdx, %r11
+	movq	%r11, 192(%rcx)
+	movq	8(%rsp), %rdx
+	movq	8(%rdx,%r10,8), %rdx
+	movq	%rdx, 24(%rsp)
+	movq	(%rcx), %r9
+	movq	8(%rcx), %r8
+	movq	16(%rcx), %r10
+	movq	24(%rcx), %r11
+	movq	32(%rcx), %rbx
+	xorq	40(%rcx), %r9
+	xorq	48(%rcx), %r8
+	xorq	56(%rcx), %r10
+	xorq	64(%rcx), %r11
+	xorq	72(%rcx), %rbx
+	xorq	80(%rcx), %r9
+	xorq	88(%rcx), %r8
+	xorq	96(%rcx), %r10
+	xorq	104(%rcx), %r11
+	xorq	112(%rcx), %rbx
+	xorq	120(%rcx), %r9
+	xorq	128(%rcx), %r8
+	xorq	136(%rcx), %r10
+	xorq	144(%rcx), %r11
+	xorq	152(%rcx), %rbx
+	xorq	160(%rcx), %r9
+	xorq	168(%rcx), %r8
+	xorq	176(%rcx), %r10
+	xorq	184(%rcx), %r11
+	xorq	192(%rcx), %rbx
+	movq	%r8, %rdx
+	rolq	$1, %rdx
+	xorq	%rbx, %rdx
+	movq	%r10, %rsi
 	rolq	$1, %rsi
-	xorq	%rbp, %rsi
+	xorq	%r9, %rsi
 	movq	%r11, %rdi
 	rolq	$1, %rdi
-	xorq	%r10, %rdi
+	xorq	%r8, %rdi
 	movq	%rbx, %r8
 	rolq	$1, %r8
-	xorq	%r9, %r8
-	movq	%rbp, %r9
+	xorq	%r10, %r8
 	rolq	$1, %r9
 	xorq	%r11, %r9
-	rolq	$1, %r10
-	xorq	%rbx, %r10
-	movq	(%rcx), %r11
+	movq	(%rcx), %r10
+	xorq	%rdx, %r10
+	movq	48(%rcx), %r11
 	xorq	%rsi, %r11
-	movq	48(%rcx), %rbx
-	xorq	%rdi, %rbx
-	rolq	$44, %rbx
-	movq	96(%rcx), %rbp
-	xorq	%r8, %rbp
-	rolq	$43, %rbp
-	movq	144(%rcx), %r12
-	xorq	%r9, %r12
-	rolq	$21, %r12
-	movq	192(%rcx), %r13
-	xorq	%r10, %r13
-	rolq	$14, %r13
-	movq	%rbx, %r14
-	notq	%r14
-	andq	%rbp, %r14
-	xorq	%r11, %r14
-	xorq	16(%rsp), %r14
-	movq	%r14, (%rax)
-	movq	%rbp, %r14
-	notq	%r14
-	andq	%r12, %r14
-	xorq	%rbx, %r14
-	movq	%r14, 8(%rax)
-	movq	%r12, %r14
-	notq	%r14
-	andq	%r13, %r14
-	xorq	%rbp, %r14
-	movq	%r14, 16(%rax)
-	movq	%r13, %rbp
-	notq	%rbp
-	andq	%r11, %rbp
-	xorq	%r12, %rbp
-	movq	%rbp, 24(%rax)
-	notq	%r11
-	andq	%rbx, %r11
-	xorq	%r13, %r11
-	movq	%r11, 32(%rax)
-	movq	24(%rcx), %r11
-	xorq	%r9, %r11
-	rolq	$28, %r11
-	movq	72(%rcx), %rbx
-	xorq	%r10, %rbx
-	rolq	$20, %rbx
-	movq	80(%rcx), %rbp
-	xorq	%rsi, %rbp
-	rolq	$3, %rbp
-	movq	128(%rcx), %r12
+	rolq	$44, %r11
+	movq	96(%rcx), %r12
 	xorq	%rdi, %r12
-	rolq	$45, %r12
-	movq	176(%rcx), %r13
-	xorq	%r8, %r13
-	rolq	$61, %r13
-	movq	%rbx, %r14
-	notq	%r14
-	andq	%rbp, %r14
-	xorq	%r11, %r14
-	movq	%r14, 40(%rax)
-	movq	%rbp, %r14
-	notq	%r14
-	andq	%r12, %r14
-	xorq	%rbx, %r14
-	movq	%r14, 48(%rax)
-	movq	%r12, %r14
-	notq	%r14
-	andq	%r13, %r14
-	xorq	%rbp, %r14
-	movq	%r14, 56(%rax)
-	movq	%r13, %rbp
-	notq	%rbp
-	andq	%r11, %rbp
-	xorq	%r12, %rbp
-	movq	%rbp, 64(%rax)
-	notq	%r11
-	andq	%rbx, %r11
-	xorq	%r13, %r11
-	movq	%r11, 72(%rax)
-	movq	8(%rcx), %r11
-	xorq	%rdi, %r11
-	rolq	$1, %r11
-	movq	56(%rcx), %rbx
+	rolq	$43, %r12
+	movq	144(%rcx), %rbx
 	xorq	%r8, %rbx
-	rolq	$6, %rbx
-	movq	104(%rcx), %rbp
+	rolq	$21, %rbx
+	movq	192(%rcx), %rbp
 	xorq	%r9, %rbp
-	rolq	$25, %rbp
-	movq	152(%rcx), %r12
-	xorq	%r10, %r12
-	rolq	$8, %r12
-	movq	160(%rcx), %r13
-	xorq	%rsi, %r13
-	rolq	$18, %r13
-	movq	%rbx, %r14
-	notq	%r14
-	andq	%rbp, %r14
-	xorq	%r11, %r14
-	movq	%r14, 80(%rax)
-	movq	%rbp, %r14
-	notq	%r14
-	andq	%r12, %r14
-	xorq	%rbx, %r14
-	movq	%r14, 88(%rax)
-	movq	%r12, %r14
-	notq	%r14
-	andq	%r13, %r14
-	xorq	%rbp, %r14
-	movq	%r14, 96(%rax)
-	movq	%r13, %rbp
-	notq	%rbp
-	andq	%r11, %rbp
-	xorq	%r12, %rbp
-	movq	%rbp, 104(%rax)
-	notq	%r11
-	andq	%rbx, %r11
-	xorq	%r13, %r11
-	movq	%r11, 112(%rax)
-	movq	32(%rcx), %r11
-	xorq	%r10, %r11
-	rolq	$27, %r11
-	movq	40(%rcx), %rbx
+	rolq	$14, %rbp
+	movq	%r11, %r13
+	notq	%r13
+	andq	%r12, %r13
+	xorq	%r10, %r13
+	xorq	24(%rsp), %r13
+	movq	%r13, (%rax)
+	movq	%r12, %r13
+	notq	%r13
+	andq	%rbx, %r13
+	xorq	%r11, %r13
+	movq	%r13, 8(%rax)
+	movq	%rbx, %r13
+	notq	%r13
+	andq	%rbp, %r13
+	xorq	%r12, %r13
+	movq	%r13, 16(%rax)
+	movq	%rbp, %r12
+	notq	%r12
+	andq	%r10, %r12
+	xorq	%rbx, %r12
+	movq	%r12, 24(%rax)
+	notq	%r10
+	andq	%r11, %r10
+	xorq	%rbp, %r10
+	movq	%r10, 32(%rax)
+	movq	24(%rcx), %r10
+	xorq	%r8, %r10
+	rolq	$28, %r10
+	movq	72(%rcx), %r11
+	xorq	%r9, %r11
+	rolq	$20, %r11
+	movq	80(%rcx), %r12
+	xorq	%rdx, %r12
+	rolq	$3, %r12
+	movq	128(%rcx), %rbx
 	xorq	%rsi, %rbx
-	rolq	$36, %rbx
-	movq	88(%rcx), %rbp
+	rolq	$45, %rbx
+	movq	176(%rcx), %rbp
 	xorq	%rdi, %rbp
-	rolq	$10, %rbp
-	movq	136(%rcx), %r12
-	xorq	%r8, %r12
-	rolq	$15, %r12
-	movq	184(%rcx), %r13
-	xorq	%r9, %r13
-	rolq	$56, %r13
-	movq	%rbx, %r14
-	notq	%r14
-	andq	%rbp, %r14
-	xorq	%r11, %r14
-	movq	%r14, 120(%rax)
-	movq	%rbp, %r14
-	notq	%r14
-	andq	%r12, %r14
-	xorq	%rbx, %r14
-	movq	%r14, 128(%rax)
-	movq	%r12, %r14
-	notq	%r14
-	andq	%r13, %r14
-	xorq	%rbp, %r14
-	movq	%r14, 136(%rax)
-	movq	%r13, %rbp
-	notq	%rbp
-	andq	%r11, %rbp
-	xorq	%r12, %rbp
-	movq	%rbp, 144(%rax)
-	notq	%r11
-	andq	%rbx, %r11
-	xorq	%r13, %r11
-	movq	%r11, 152(%rax)
-	movq	16(%rcx), %r11
-	xorq	%r8, %r11
-	rolq	$62, %r11
-	movq	64(%rcx), %r8
-	xorq	%r9, %r8
-	rolq	$55, %r8
-	movq	112(%rcx), %r9
-	xorq	%r10, %r9
-	rolq	$39, %r9
-	movq	120(%rcx), %r10
+	rolq	$61, %rbp
+	movq	%r11, %r13
+	notq	%r13
+	andq	%r12, %r13
+	xorq	%r10, %r13
+	movq	%r13, 40(%rax)
+	movq	%r12, %r13
+	notq	%r13
+	andq	%rbx, %r13
+	xorq	%r11, %r13
+	movq	%r13, 48(%rax)
+	movq	%rbx, %r13
+	notq	%r13
+	andq	%rbp, %r13
+	xorq	%r12, %r13
+	movq	%r13, 56(%rax)
+	movq	%rbp, %r12
+	notq	%r12
+	andq	%r10, %r12
+	xorq	%rbx, %r12
+	movq	%r12, 64(%rax)
+	notq	%r10
+	andq	%r11, %r10
+	xorq	%rbp, %r10
+	movq	%r10, 72(%rax)
+	movq	8(%rcx), %r10
 	xorq	%rsi, %r10
-	rolq	$41, %r10
-	movq	168(%rcx), %rsi
-	xorq	%rdi, %rsi
-	rolq	$2, %rsi
-	movq	%r8, %rdi
-	notq	%rdi
-	andq	%r9, %rdi
-	xorq	%r11, %rdi
-	movq	%rdi, 160(%rax)
-	movq	%r9, %rdi
-	notq	%rdi
-	andq	%r10, %rdi
+	rolq	$1, %r10
+	movq	56(%rcx), %r11
+	xorq	%rdi, %r11
+	rolq	$6, %r11
+	movq	104(%rcx), %r12
+	xorq	%r8, %r12
+	rolq	$25, %r12
+	movq	152(%rcx), %rbx
+	xorq	%r9, %rbx
+	rolq	$8, %rbx
+	movq	160(%rcx), %rbp
+	xorq	%rdx, %rbp
+	rolq	$18, %rbp
+	movq	%r11, %r13
+	notq	%r13
+	andq	%r12, %r13
+	xorq	%r10, %r13
+	movq	%r13, 80(%rax)
+	movq	%r12, %r13
+	notq	%r13
+	andq	%rbx, %r13
+	xorq	%r11, %r13
+	movq	%r13, 88(%rax)
+	movq	%rbx, %r13
+	notq	%r13
+	andq	%rbp, %r13
+	xorq	%r12, %r13
+	movq	%r13, 96(%rax)
+	movq	%rbp, %r12
+	notq	%r12
+	andq	%r10, %r12
+	xorq	%rbx, %r12
+	movq	%r12, 104(%rax)
+	notq	%r10
+	andq	%r11, %r10
+	xorq	%rbp, %r10
+	movq	%r10, 112(%rax)
+	movq	32(%rcx), %r10
+	xorq	%r9, %r10
+	rolq	$27, %r10
+	movq	40(%rcx), %r11
+	xorq	%rdx, %r11
+	rolq	$36, %r11
+	movq	88(%rcx), %r12
+	xorq	%rsi, %r12
+	rolq	$10, %r12
+	movq	136(%rcx), %rbx
+	xorq	%rdi, %rbx
+	rolq	$15, %rbx
+	movq	184(%rcx), %rbp
+	xorq	%r8, %rbp
+	rolq	$56, %rbp
+	movq	%r11, %r13
+	notq	%r13
+	andq	%r12, %r13
+	xorq	%r10, %r13
+	movq	%r13, 120(%rax)
+	movq	%r12, %r13
+	notq	%r13
+	andq	%rbx, %r13
+	xorq	%r11, %r13
+	movq	%r13, 128(%rax)
+	movq	%rbx, %r13
+	notq	%r13
+	andq	%rbp, %r13
+	xorq	%r12, %r13
+	movq	%r13, 136(%rax)
+	movq	%rbp, %r12
+	notq	%r12
+	andq	%r10, %r12
+	xorq	%rbx, %r12
+	movq	%r12, 144(%rax)
+	notq	%r10
+	andq	%r11, %r10
+	xorq	%rbp, %r10
+	movq	%r10, 152(%rax)
+	movq	16(%rcx), %r10
+	xorq	%rdi, %r10
+	rolq	$62, %r10
+	movq	64(%rcx), %rdi
 	xorq	%r8, %rdi
-	movq	%rdi, 168(%rax)
-	movq	%r10, %rdi
-	notq	%rdi
-	andq	%rsi, %rdi
-	xorq	%r9, %rdi
-	movq	%rdi, 176(%rax)
-	movq	%rsi, %rdi
-	notq	%rdi
-	andq	%r11, %rdi
-	xorq	%r10, %rdi
-	movq	%rdi, 184(%rax)
-	notq	%r11
-	andq	%r8, %r11
-	xorq	%rsi, %r11
-	movq	%r11, 192(%rax)
-	addq	$2, %rdx
+	rolq	$55, %rdi
+	movq	112(%rcx), %r8
+	xorq	%r9, %r8
+	rolq	$39, %r8
+	movq	120(%rcx), %r9
+	xorq	%rdx, %r9
+	rolq	$41, %r9
+	movq	168(%rcx), %rdx
+	xorq	%rsi, %rdx
+	rolq	$2, %rdx
+	movq	%rdi, %rsi
+	notq	%rsi
+	andq	%r8, %rsi
+	xorq	%r10, %rsi
+	movq	%rsi, 160(%rax)
+	movq	%r8, %rsi
+	notq	%rsi
+	andq	%r9, %rsi
+	xorq	%rdi, %rsi
+	movq	%rsi, 168(%rax)
+	movq	%r9, %rsi
+	notq	%rsi
+	andq	%rdx, %rsi
+	xorq	%r8, %rsi
+	movq	%rsi, 176(%rax)
+	movq	%rdx, %rsi
+	notq	%rsi
+	andq	%r10, %rsi
+	xorq	%r9, %rsi
+	movq	%rsi, 184(%rax)
+	notq	%r10
+	andq	%rdi, %r10
+	xorq	%rdx, %r10
+	movq	%r10, 192(%rax)
+	movq	16(%rsp), %r10
+	addq	$2, %r10
 L_keccakf1600_ref1$2:
-	cmpq	$23, %rdx
+	cmpq	$23, %r10
 	jb  	L_keccakf1600_ref1$3
 	ret
 	.data
