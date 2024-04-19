@@ -1,11 +1,10 @@
 diff --git a/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c b/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c
 new file mode 100644
-index 0000000..d71f2df
+index 0000000..028d5ef
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,19 @@
 +#include <oqs/rand.h>
-+#include "libjade_shims.h"
 +#include "api.h"
 +
 +int libjade_kyber512_avx2_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -77,12 +76,11 @@ index 5148fd5..419112e 100644
  #endif
 diff --git a/src/crypto_kem/kyber/kyber512/amd64/ref/api.c b/src/crypto_kem/kyber/kyber512/amd64/ref/api.c
 new file mode 100644
-index 0000000..851a282
+index 0000000..97a698d
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber512/amd64/ref/api.c
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,19 @@
 +#include <oqs/rand.h>
-+#include "libjade_shims.h"
 +#include "api.h"
 +
 +int libjade_kyber512_ref_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -155,12 +153,11 @@ index 38127cf..fcce52b 100644
  #endif
 diff --git a/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c b/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c
 new file mode 100644
-index 0000000..b90330b
+index 0000000..130027f
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,19 @@
 +#include <oqs/rand.h>
-+#include "libjade_shims.h"
 +#include "api.h"
 +
 +int libjade_kyber768_avx2_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -232,12 +229,11 @@ index d3b3500..ac36577 100644
  #endif
 diff --git a/src/crypto_kem/kyber/kyber768/amd64/ref/api.c b/src/crypto_kem/kyber/kyber768/amd64/ref/api.c
 new file mode 100644
-index 0000000..5d178f5
+index 0000000..c2473e8
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber768/amd64/ref/api.c
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,19 @@
 +#include <oqs/rand.h>
-+#include "libjade_shims.h"
 +#include "api.h"
 +
 +int libjade_kyber768_ref_keypair(uint8_t *public_key, uint8_t *secret_key) {

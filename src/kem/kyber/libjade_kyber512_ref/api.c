@@ -1,5 +1,4 @@
 #include <oqs/rand.h>
-// #include <libjade_shims/libjade_randombytes.h>
 #include "api.h"
 
 int libjade_kyber512_ref_keypair(uint8_t *public_key, uint8_t *secret_key) {
