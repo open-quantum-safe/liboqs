@@ -1,5 +1,7 @@
 {% for family in instructions['kems'] %}
 
+#cmakedefine OQS_LIBJADE_BUILD @OQS_LIBJADE_BUILD_BIN@
+
 #cmakedefine OQS_ENABLE_LIBJADE_KEM_{{ family['name']|upper }} @OQS_LIBJADE_BUILD_BIN@
     {%- for scheme in family['schemes'] %}
 #cmakedefine OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} @OQS_LIBJADE_BUILD_BIN@
