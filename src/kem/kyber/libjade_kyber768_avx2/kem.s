@@ -17001,29 +17001,53 @@ L_nttunpack$1:
 L_shake256_absorb4x_33$1:
 	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, (%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 32(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 64(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 96(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 128(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 160(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 192(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 224(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 256(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 288(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 320(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 352(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 384(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 416(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 448(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 480(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 512(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 544(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 576(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 608(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 640(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 672(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 704(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 736(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 768(%rax)
 	movq	(%rcx), %rbx
 	xorq	%rbx, (%rax)
@@ -17077,29 +17101,53 @@ L_shake256_absorb4x_33$1:
 L_shake128_absorb4x_34$1:
 	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, (%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 32(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 64(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 96(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 128(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 160(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 192(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 224(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 256(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 288(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 320(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 352(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 384(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 416(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 448(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 480(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 512(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 544(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 576(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 608(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 640(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 672(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 704(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 736(%rax)
+	vpxor	%ymm0, %ymm0, %ymm0
 	vmovdqu	%ymm0, 768(%rax)
 	movq	(%rcx), %r8
 	xorq	%r8, (%rax)

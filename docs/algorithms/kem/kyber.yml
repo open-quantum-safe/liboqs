@@ -28,7 +28,7 @@ optimized-upstreams:
       and MIT
 formally-verified-upstreams:
   libjade:
-    source: https://github.com/formosa-crypto/lib/commit/a6845a257a0ebbab4fd93c19423a62557c838a10
+    source: https://github.com/formosa-crypto/lib/commit/555e23342471bea8544c356bdae230baf064ed56
       with copy_from_upstream patches
     spdx-license-identifier: CC0-1.0
 parameter-sets:
