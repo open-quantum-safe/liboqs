@@ -5,6 +5,12 @@ on:
   - cron: "5 0 * * 0"
   workflow_dispatch:
 
+env: 
+  # Semi-colon separated list of algorithims with libjade implementations to
+  # be passed as input to CMake option as: -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+  # See CONFIGURE.md under ## OQS_MINIMAL_BUILD
+  LIBJADE_ALG_LIST: "KEM_kyber_512;KEM_kyber_768" 
+
 jobs:
 
   constant-time-x64:
@@ -51,13 +57,18 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=haswell
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+          libjade-build:
+            - -DOQS_LIBJADE_BUILD=OFF
+            # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
+            # libjade to minimise repeated tests
+            - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     container:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }}.. && cmake -LA ..
       - name: Build
         run: ninja
         working-directory: build
