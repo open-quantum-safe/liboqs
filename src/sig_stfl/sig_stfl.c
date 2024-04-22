@@ -1347,8 +1347,7 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 	sk->free_key(sk);
 
 	/* Free sk object */
-	OQS_MEM_secure_free(sk, sizeof(sk));
-	sk = NULL;
+	OQS_MEM_secure_free(sk, sizeof(*sk));
 }
 
 OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
