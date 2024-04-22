@@ -467,9 +467,15 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             # Flatten directory structure while copying relevant files from libjade repo
             for root, _, files in os.walk(origfolder):
                 for file in files:
-                    if os.path.splitext(file)[1].lower() in ['.c', '.h', '.s']:
+                    if os.path.splitext(file)[1] in ['.c', '.h']:
                         source_path = os.path.join(root, file)
                         dest_path = os.path.join(srcfolder, file)
+                        subprocess.run(['cp', source_path, dest_path])
+                    if os.path.splitext(file)[1] in ['.s']:
+                        file_name, file_ext = os.path.splitext(file)
+                        new_file = ''.join([file_name, file_ext.upper()])
+                        source_path = os.path.join(root, file)
+                        dest_path = os.path.join(srcfolder, new_file)
                         subprocess.run(['cp', source_path, dest_path])
         else:
             # determine list of files to copy:
