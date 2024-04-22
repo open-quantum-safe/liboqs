@@ -85,7 +85,7 @@ parameter-sets:
       - Linux
       - Darwin
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
   - upstream: libjade
     upstream-id: avx2
@@ -99,7 +99,7 @@ parameter-sets:
       - bmi2
       - popcnt
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber768
   claimed-nist-level: 3
@@ -154,7 +154,7 @@ parameter-sets:
       - Linux
       - Darwin
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
   - upstream: libjade
     upstream-id: avx2
@@ -168,7 +168,7 @@ parameter-sets:
       - bmi2
       - popcnt
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber1024
   claimed-nist-level: 5
