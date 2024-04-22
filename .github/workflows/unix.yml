@@ -2,6 +2,12 @@ name: Linux and MacOS tests
 
 on: [push, pull_request, workflow_dispatch]
 
+env: 
+  # Semi-colon separated list of algorithims with libjade implementations to
+  # be passed as input to CMake option as: -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+  # See CONFIGURE.md under ## OQS_MINIMAL_BUILD
+  LIBJADE_ALG_LIST: "KEM_kyber_512;KEM_kyber_768" 
+
 jobs:
 
   stylecheck:
@@ -20,6 +26,12 @@ jobs:
 
   upstreamcheck:
     name: Check upstream code is properly integrated
+    strategy:
+      fail-fast: false
+      matrix:
+        copy-mode:
+          - copy
+          - libjade
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +43,7 @@ jobs:
           nix-channel --update && nix-env -iA nixpkgs.jasmin-compiler
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Verify copy_from_upstream state after "copy"
+      - name: Verify copy_from_upstream state after "${{ matrix.copy-mode}}"
         run: |
           git config --global user.name "ciuser" && \
           git config --global user.email "ci@openquantumsafe.org" && \
@@ -39,17 +51,7 @@ jobs:
           git config --global --add safe.directory $LIBOQS_DIR && \
           cd scripts/copy_from_upstream && \
           ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
-          python3 copy_from_upstream.py copy && \
-          ! git status | grep modified
-      - name: Verify copy_from_upstream state after "libjade"
-        run: |
-          git config --global user.name "ciuser" && \
-          git config --global user.email "ci@openquantumsafe.org" && \
-          export LIBOQS_DIR=`pwd` && \
-          git config --global --add safe.directory $LIBOQS_DIR && \
-          cd scripts/copy_from_upstream && \
-          ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
-          python3 copy_from_upstream.py libjade && \
+          python3 copy_from_upstream.py ${{ matrix.copy-mode }} && \
           ! git status | grep modified
 
   buildcheck:
@@ -116,13 +118,18 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
             PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=auto --maxprocesses=10
+        libjade-build:
+          - -DOQS_LIBJADE_BUILD=OFF
+          # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
+          # libjade to minimise repeated tests
+          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     container:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }} .. && cmake -LA ..
       - name: Build
         run: ninja
         working-directory: build
@@ -222,6 +229,11 @@ jobs:
           - -DCMAKE_C_COMPILER=gcc-13
           - -DOQS_USE_OPENSSL=OFF
           - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
+        libjade-build:
+          - -DOQS_LIBJADE_BUILD=OFF
+          # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
+          # libjade to minimise repeated tests
+          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -231,7 +243,7 @@ jobs:
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
-        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
+        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }} .. && cmake -LA ..
       - name: Build
         run: ninja
         working-directory: build
