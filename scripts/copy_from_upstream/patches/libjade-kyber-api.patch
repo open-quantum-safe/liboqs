@@ -1,9 +1,9 @@
 diff --git a/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c b/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c
 new file mode 100644
-index 0000000..028d5ef
+index 0000000..78436e7
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber512/amd64/avx2/api.c
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,20 @@
 +#include <oqs/rand.h>
 +#include "api.h"
 +
@@ -23,7 +23,7 @@ index 0000000..028d5ef
 +int libjade_kyber512_avx2_dec(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 +    return jade_kem_kyber_kyber512_amd64_avx2_dec( shared_secret, ciphertext, secret_key);
 +}
-\ No newline at end of file
++
 diff --git a/src/crypto_kem/kyber/kyber512/amd64/avx2/include/api.h b/src/crypto_kem/kyber/kyber512/amd64/avx2/include/api.h
 index 5148fd5..419112e 100644
 --- a/src/crypto_kem/kyber/kyber512/amd64/avx2/include/api.h
@@ -76,10 +76,10 @@ index 5148fd5..419112e 100644
  #endif
 diff --git a/src/crypto_kem/kyber/kyber512/amd64/ref/api.c b/src/crypto_kem/kyber/kyber512/amd64/ref/api.c
 new file mode 100644
-index 0000000..97a698d
+index 0000000..e06e406
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber512/amd64/ref/api.c
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,20 @@
 +#include <oqs/rand.h>
 +#include "api.h"
 +
@@ -99,7 +99,7 @@ index 0000000..97a698d
 +int libjade_kyber512_ref_dec(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 +    return jade_kem_kyber_kyber512_amd64_ref_dec(shared_secret, ciphertext, secret_key);
 +}
-\ No newline at end of file
++
 diff --git a/src/crypto_kem/kyber/kyber512/amd64/ref/include/api.h b/src/crypto_kem/kyber/kyber512/amd64/ref/include/api.h
 index 38127cf..fcce52b 100644
 --- a/src/crypto_kem/kyber/kyber512/amd64/ref/include/api.h
@@ -153,10 +153,10 @@ index 38127cf..fcce52b 100644
  #endif
 diff --git a/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c b/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c
 new file mode 100644
-index 0000000..130027f
+index 0000000..9eeab1d
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber768/amd64/avx2/api.c
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,20 @@
 +#include <oqs/rand.h>
 +#include "api.h"
 +
@@ -176,7 +176,7 @@ index 0000000..130027f
 +int libjade_kyber768_avx2_dec(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 +    return jade_kem_kyber_kyber768_amd64_avx2_dec(shared_secret, ciphertext, secret_key);
 +}
-\ No newline at end of file
++
 diff --git a/src/crypto_kem/kyber/kyber768/amd64/avx2/include/api.h b/src/crypto_kem/kyber/kyber768/amd64/avx2/include/api.h
 index d3b3500..ac36577 100644
 --- a/src/crypto_kem/kyber/kyber768/amd64/avx2/include/api.h
@@ -229,10 +229,10 @@ index d3b3500..ac36577 100644
  #endif
 diff --git a/src/crypto_kem/kyber/kyber768/amd64/ref/api.c b/src/crypto_kem/kyber/kyber768/amd64/ref/api.c
 new file mode 100644
-index 0000000..c2473e8
+index 0000000..b9a29b6
 --- /dev/null
 +++ b/src/crypto_kem/kyber/kyber768/amd64/ref/api.c
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,20 @@
 +#include <oqs/rand.h>
 +#include "api.h"
 +
@@ -252,7 +252,7 @@ index 0000000..c2473e8
 +int libjade_kyber768_ref_dec(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 +    return jade_kem_kyber_kyber768_amd64_ref_dec(shared_secret, ciphertext, secret_key);
 +}
-\ No newline at end of file
++
 diff --git a/src/crypto_kem/kyber/kyber768/amd64/ref/include/api.h b/src/crypto_kem/kyber/kyber768/amd64/ref/include/api.h
 index e23e1bf..0c453e0 100644
 --- a/src/crypto_kem/kyber/kyber768/amd64/ref/include/api.h
