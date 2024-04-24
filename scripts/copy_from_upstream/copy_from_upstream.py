@@ -145,7 +145,10 @@ def load_instructions(file):
             shell(['git', 'init', work_dir])
             shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
-        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
+        if file == 'copy_from_libjade.yml':
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_branch])
+        else:
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
         if file == 'copy_from_libjade.yml':
             shell(['make', '-C', os.path.join(work_dir, 'src')])
