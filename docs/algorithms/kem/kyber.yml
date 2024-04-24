@@ -28,8 +28,8 @@ optimized-upstreams:
       and MIT
 formally-verified-upstreams:
   libjade:
-    source: https://github.com/formosa-crypto/lib/commit/555e23342471bea8544c356bdae230baf064ed56
-      with copy_from_upstream patches
+    source: https://github.com/formosa-crypto/libjade/tree/release/2023.05-1 with
+      copy_from_upstream patches
     spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: Kyber512

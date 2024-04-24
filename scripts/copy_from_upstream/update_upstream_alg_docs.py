@@ -261,8 +261,8 @@ def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=
                     lhs = oqs_yaml['formally-verified-upstreams'][upstream['name']]['source']
                 else:
                     lhs = ''
-                git_commit = upstream['git_commit']
-                oqs_yaml['formally-verified-upstreams'][upstream['name']]['source'] = rhs_if_not_equal(lhs, ("{}/commit/{}"+patches_done).format(verified_upstream_base_url, git_commit), "formally-verified-upstreams")
+                git_branch = upstream['git_branch']
+                oqs_yaml['formally-verified-upstreams'][upstream['name']]['source'] = rhs_if_not_equal(lhs, ("{}/tree/{}"+patches_done).format(verified_upstream_base_url, git_branch), "formally-verified-upstreams")
 
             index, oqs_scheme_yaml = get_oqs_yaml(oqs_yaml['parameter-sets'], scheme['pretty_name_full'])
 
