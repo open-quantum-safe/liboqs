@@ -234,6 +234,11 @@ jobs:
           # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
           # libjade to minimise repeated tests
           - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+        exclude: 
+          # macos-14 runs on aarch64, libjade targets x86
+          # Skip testing libjade on macos-14
+          - os: macos-14
+            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
