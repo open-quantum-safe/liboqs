@@ -92,7 +92,7 @@ endif()
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_CMAKELISTS_START
 
 if(OQS_ENABLE_LIBJADE_KEM_kyber_512)
-    add_library(jasmin_kyber_512_ref OBJECT kem_kyber_512.c libjade_kyber512_ref/api.c libjade_kyber512_ref/kem.S)
+    add_library(jasmin_kyber_512_ref OBJECT libjade_kyber512_ref/api.c libjade_kyber512_ref/kem.S)
     target_include_directories(jasmin_kyber_512_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/libjade_kyber512_ref)
     target_include_directories(jasmin_kyber_512_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/libjade_shims)
     set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:jasmin_kyber_512_ref>)
@@ -107,7 +107,7 @@ if(OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2)
 endif()
 
 if(OQS_ENABLE_LIBJADE_KEM_kyber_768)
-    add_library(jasmin_kyber_768_ref OBJECT kem_kyber_768.c libjade_kyber768_ref/api.c libjade_kyber768_ref/kem.S)
+    add_library(jasmin_kyber_768_ref OBJECT libjade_kyber768_ref/api.c libjade_kyber768_ref/kem.S)
     target_include_directories(jasmin_kyber_768_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/libjade_kyber768_ref)
     target_include_directories(jasmin_kyber_768_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/libjade_shims)
     set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:jasmin_kyber_768_ref>)
