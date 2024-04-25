@@ -66,7 +66,7 @@ def shell(command, expect=0):
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 # Generate template from specified scheme to replace old file in 'copy' mode
-# but preserves additions made to file made in prior runs of 'libjade' mode 
+# but preserves additions made to file in prior runs of 'libjade' mode 
 def generator(destination_file_path, template_filename, delimiter, family, scheme_desired):
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
