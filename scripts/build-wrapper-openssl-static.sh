@@ -48,12 +48,14 @@
 #             \-> lib - contains fat lib with all archs
 
 # top-level settings - modify in environment from defaults listed here
+#set -x
 the_openssl_ver="${the_openssl_ver}"
 the_libs_dir="${the_libs_dir}"
 the_ios_target="${the_ios_target}"
 the_macos_target="${the_macos_target}"
 the_android_api_level="${the_android_api_level}"
 the_oqs_algs_enabled="${the_oqs_algs_enabled}"
+set +x
 
 [ x"$the_openssl_ver" = x ] && echo 'Missing the_openssl_ver' && exit 1
 [ x"$the_libs_dir" = x ] && echo 'Missing the_libs_dir' && exit 1
