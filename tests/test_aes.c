@@ -116,8 +116,20 @@ static void speed_aes256(void) {
 	OQS_AES256_free_schedule(schedule_dec);
 }
 
+extern struct OQS_AES_callbacks aes_default_callbacks;
+
+static bool aes_callback_called = false;
+static void override_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
+	aes_callback_called = true;
+	aes_default_callbacks.AES128_ECB_load_schedule(key, _schedule);
+}
+
 int main(int argc, char **argv) {
 	bool bench = false;
+
+	struct OQS_AES_callbacks callbacks = aes_default_callbacks;
+	callbacks.AES128_ECB_load_schedule = override_AES128_ECB_load_schedule;
+	OQS_AES_set_callbacks(&callbacks);
 
 	OQS_init();
 	for (int i = 1; i < argc; i++) {
@@ -156,6 +168,13 @@ int main(int argc, char **argv) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
+
+	if (!aes_callback_called) {
+		printf("AES callback was not called\n");
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+
 	printf("Tests passed.\n\n");
 
 	if (bench) {

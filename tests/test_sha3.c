@@ -17,6 +17,9 @@
 #define UNUSED
 #endif
 
+static bool sha3_callback_called = false;
+static bool sha3_x4_callback_called = false;
+
 /**
 * \file sha3_test.h
 * \brief <b>SHA3 Known Answer Tests</b> \n
@@ -1037,11 +1040,35 @@ int shake_256_x4_kat_test(void) {
 	return status;
 }
 
+extern struct OQS_SHA3_callbacks sha3_default_callbacks;
+
+static void override_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
+	sha3_callback_called = true;
+	sha3_default_callbacks.SHA3_sha3_256_inc_init(state);
+}
+
+extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
+
+static void override_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
+	sha3_x4_callback_called = true;
+	sha3_x4_default_callbacks.SHA3_shake128_x4_inc_init(state);
+}
+
 /**
 * \brief Run the SHA3 and SHAKE KAT tests
 */
 int main(UNUSED int argc, UNUSED char **argv) {
 	int ret = EXIT_SUCCESS;
+
+	struct OQS_SHA3_callbacks sha3_callbacks = sha3_default_callbacks;
+
+	sha3_callbacks.SHA3_sha3_256_inc_init = override_SHA3_sha3_256_inc_init;
+	OQS_SHA3_set_callbacks(&sha3_callbacks);
+
+	struct OQS_SHA3_x4_callbacks sha3_x4_callbacks = sha3_x4_default_callbacks;
+
+	sha3_x4_callbacks.SHA3_shake128_x4_inc_init = override_SHA3_shake128_x4_inc_init;
+	OQS_SHA3_x4_set_callbacks(&sha3_x4_callbacks);
 
 	OQS_init();
 	print_system_info();
@@ -1087,6 +1114,17 @@ int main(UNUSED int argc, UNUSED char **argv) {
 		printf("Failure! failed four-way parallel shake-256 known answer tests \n");
 		ret = EXIT_FAILURE;
 	}
+
+	if (!sha3_callback_called) {
+		printf("Failure! SHA3 callback was not called\n");
+		ret = EXIT_FAILURE;
+	}
+
+	if (!sha3_x4_callback_called) {
+		printf("Failure! SHA3_x4 callback was not called\n");
+		ret = EXIT_FAILURE;
+	}
+
 	OQS_destroy();
 
 

@@ -76,7 +76,7 @@ A Maintainer is not permitted to remove another Maintainer's GitHub privileges.
 
 A Committer may be automatically moved to Contributor status if not actively contributing by discussion or PR review during the last 90 days or by voluntarily suspending this status (e.g., by taking a ["Leave of absence"](#leave-of-absence)). If a Maintainer loses or relinquishes the Committer status and, hence, the Maintainer status, the Committers have to determine whether a new Maintainer needs to be elected.
 
-Any person violating the [code of conduct](CODE_OF_CONDUCT.md), consistently not fulfilling the role responsibilities, or for other reasons can lose the role held if a simple majority of Committers votes for such removal and no Maintainer vetos that decision. If a Maintainer is to be removed from that role a 2/3 majority of Committers must agree.
+Any person violating the [code of conduct](CODE_OF_CONDUCT.md), consistently not fulfilling the role responsibilities, or for other reasons can lose the role held if a simple majority of Committers votes for such removal and no Maintainer vetoes that decision. If a Maintainer is to be removed from that role a 2/3 majority of Committers must agree.
 
 Depending on the reason for removal, a Maintainer may be converted to Emeritus status. Emeritus Maintainers may still be consulted on some project matters, and can be returned to Maintainer status if their availability changes and a simple majority of Committers agrees.
 

@@ -64,9 +64,13 @@ target_link_libraries(example_kem PRIVATE ${TEST_DEPS})
 
 add_executable(kat_kem kat_kem.c test_helpers.c)
 target_link_libraries(kat_kem PRIVATE ${TEST_DEPS})
-if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
-    # workaround for Windows .dll cross-compiling
-    target_link_options(kat_kem PRIVATE -Wl,--allow-multiple-definition)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
+    # workaround for Windows .dll
+    if(MINGW OR MSYS OR CYGWIN OR CMAKE_CROSSCOMPILING)
+        target_link_options(kat_kem PRIVATE -Wl,--allow-multiple-definition)
+    else()
+        target_link_options(kat_kem PRIVATE "/FORCE:MULTIPLE")
+    endif()
 endif()
 
 add_executable(test_kem test_kem.c)
@@ -86,9 +90,13 @@ target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
 add_executable(kat_sig kat_sig.c test_helpers.c)
 target_link_libraries(kat_sig PRIVATE ${TEST_DEPS})
-if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
-    # workaround for Windows .dll cross-compiling
-    target_link_options(kat_sig PRIVATE -Wl,--allow-multiple-definition)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
+    # workaround for Windows .dll
+    if(MINGW OR MSYS OR CYGWIN OR CMAKE_CROSSCOMPILING)
+        target_link_options(kat_sig PRIVATE -Wl,--allow-multiple-definition)
+    else()
+        target_link_options(kat_sig PRIVATE "/FORCE:MULTIPLE")
+    endif()
 endif()
 
 add_executable(test_sig test_sig.c)

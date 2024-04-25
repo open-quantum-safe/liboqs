@@ -70,8 +70,13 @@ if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs-internal PUBLIC ${SANITIZER_LD_FLAGS})
 endif()
 if(${OQS_USE_OPENSSL})
+  if(${OQS_DLOPEN_OPENSSL})
+    target_link_libraries(oqs PRIVATE ${CMAKE_DL_LIBS})
+    target_link_libraries(oqs-internal PRIVATE ${CMAKE_DL_LIBS})
+  else()
     target_link_libraries(oqs PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
     target_link_libraries(oqs-internal PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
+  endif()
 endif()
 
 target_include_directories(oqs

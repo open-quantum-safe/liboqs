@@ -155,13 +155,13 @@ typedef struct OQS_KEM {
 	/** Whether the KEM offers IND-CCA security (TRUE) or IND-CPA security (FALSE). */
 	bool ind_cca;
 
-	/** The (maximum) length, in bytes, of public keys for this KEM. */
+	/** The length, in bytes, of public keys for this KEM. */
 	size_t length_public_key;
-	/** The (maximum) length, in bytes, of secret keys for this KEM. */
+	/** The length, in bytes, of secret keys for this KEM. */
 	size_t length_secret_key;
-	/** The (maximum) length, in bytes, of ciphertexts for this KEM. */
+	/** The length, in bytes, of ciphertexts for this KEM. */
 	size_t length_ciphertext;
-	/** The (maximum) length, in bytes, of shared secrets for this KEM. */
+	/** The length, in bytes, of shared secrets for this KEM. */
 	size_t length_shared_secret;
 
 	/**
