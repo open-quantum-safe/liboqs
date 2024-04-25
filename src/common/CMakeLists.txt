@@ -73,6 +73,8 @@ endif()
 
 if ((OQS_LIBJADE_BUILD STREQUAL ON))
     set(LIBJADE_RANDOMBYTES libjade_shims/libjade_randombytes.c)
+else()
+    set(LIBJADE_RANDOMBYTES "")
 endif()
 
 add_library(common OBJECT ${AES_IMPL} aes/aes.c
