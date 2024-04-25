@@ -1,5 +1,5 @@
 
-if(OQS_LIBJADE_BUILD)
+if ((OQS_LIBJADE_BUILD STREQUAL ON))
 {% for family in instructions['kems'] %}
     {%- for scheme in family['schemes'] %}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}

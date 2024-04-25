@@ -30,10 +30,8 @@ option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a 
 
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
 
-if(OQS_LIBJADE_BUILD)
-    set(OQS_LIBJADE_BUILD_BIN 1)
-else()
-    set(OQS_LIBJADE_BUILD_BIN 0)
+if (NOT (CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (OQS_LIBJADE_BUILD STREQUAL ON))
+    message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin.")
 endif()
 
 set(CMAKE_C_STANDARD 11)

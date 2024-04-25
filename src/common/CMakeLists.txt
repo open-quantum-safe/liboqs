@@ -71,6 +71,10 @@ else() # using XKCP
     set(SHA3_IMPL sha3/xkcp_sha3.c sha3/xkcp_sha3x4.c)
 endif()
 
+if ((OQS_LIBJADE_BUILD STREQUAL ON))
+    set(LIBJADE_RANDOMBYTES libjade_shims/libjade_randombytes.c)
+endif()
+
 add_library(common OBJECT ${AES_IMPL} aes/aes.c
                           ${SHA2_IMPL} sha2/sha2.c
                           ${SHA3_IMPL} sha3/sha3.c sha3/sha3x4.c
@@ -78,7 +82,7 @@ add_library(common OBJECT ${AES_IMPL} aes/aes.c
                           common.c
                           pqclean_shims/fips202.c
                           pqclean_shims/fips202x4.c
-                          libjade_shims/libjade_randombytes.c
+                          ${LIBJADE_RANDOMBYTES}
                           rand/rand.c)
 
 # Implementations of the internal API to be exposed to test programs
