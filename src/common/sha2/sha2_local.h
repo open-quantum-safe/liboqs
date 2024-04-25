@@ -79,6 +79,8 @@ void oqs_sha2_sha256_c(uint8_t *out, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha384_c(uint8_t *out, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha512_c(uint8_t *out, const uint8_t *in, size_t inlen);
 
+extern struct OQS_SHA2_callbacks sha2_default_callbacks;
+
 #if defined(__cplusplus)
 } // extern "C"
 #endif

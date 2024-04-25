@@ -52,14 +52,14 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 
 ### Tier 2
 
-- x86_64/amd64/x64 for Windows 2022
+- x86_64/amd64/x64 for Windows (Visual Studio Toolchain) 2022
 - armeabi-v7a, arm64-v8a, x86, x86_64 for Android
 - aarch64 for Apple iOS and tvOS (CMake `-DPLATFORM=OS64` and `TVOS`)
 - arm64, arm (32 bit), x86, x86_64, riscv32, riscv64 for Zephyr
 
 ### Tier 3
 
-- x86 for Windows
+- x86 for Windows (Visual Studio Toolchain)
 - ppc64le for Ubuntu (Focal)
 - s390x for Ubuntu (Focal)
 

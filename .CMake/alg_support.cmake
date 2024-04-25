@@ -69,6 +69,8 @@ cmake_dependent_option(OQS_USE_SHA3_OPENSSL "" OFF "OQS_USE_OPENSSL" OFF)
 # sanity check: Disable OpenSSL if not a single OpenSSL component define is on
 cmake_dependent_option(OQS_USE_OPENSSL "" ON "OQS_USE_AES_OPENSSL OR OQS_USE_SHA2_OPENSSL OR OQS_USE_SHA3_OPENSSL" OFF)
 
+option(OQS_DLOPEN_OPENSSL "Enable OpenSSL through dlopen" OFF)
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
     cmake_dependent_option(OQS_ENABLE_SHA3_xkcp_low_avx2 "" ON "NOT OQS_USE_SHA3_OPENSSL" OFF)

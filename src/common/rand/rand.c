@@ -23,7 +23,7 @@ void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read);
 #endif
 
 #ifdef OQS_USE_OPENSSL
-#include <openssl/rand.h>
+#include "../ossl_helpers.h"
 // Use OpenSSL's RAND_bytes as the default PRNG
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_openssl;
 #else
@@ -113,12 +113,12 @@ void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read) {
 	int rep = OQS_RAND_POLL_RETRY;
 	SIZE_T_TO_INT_OR_EXIT(bytes_to_read, bytes_to_read_int)
 	do {
-		if (RAND_status() == 1) {
+		if (OSSL_FUNC(RAND_status)() == 1) {
 			break;
 		}
-		RAND_poll();
+		OSSL_FUNC(RAND_poll)();
 	} while (rep-- >= 0);
-	if (RAND_bytes(random_array, bytes_to_read_int) != 1) {
+	if (OSSL_FUNC(RAND_bytes)(random_array, bytes_to_read_int) != 1) {
 		fprintf(stderr, "No OpenSSL randomness retrieved. DRBG available?\n");
 		// because of void signature we have no other way to signal the problem
 		// we cannot possibly return without randomness
