@@ -71,7 +71,7 @@ else() # using XKCP
     set(SHA3_IMPL sha3/xkcp_sha3.c sha3/xkcp_sha3x4.c)
 endif()
 
-if ((OQS_LIBJADE_BUILD STREQUAL ON))
+if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
     set(LIBJADE_RANDOMBYTES libjade_shims/libjade_randombytes.c)
 else()
     set(LIBJADE_RANDOMBYTES "")
