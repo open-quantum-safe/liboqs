@@ -30,10 +30,6 @@ option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a 
 
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
 
-if (NOT (CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (OQS_LIBJADE_BUILD STREQUAL ON))
-    message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin.")
-endif()
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -98,6 +94,10 @@ elseif(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE)
     message(WARNING "Compilation on an unsupported processor should only be used for testing, as it may result an insecure configuration, for example due to variable-time instructions leaking secret information.")
 else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR} ". Override by setting OQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON")
+endif()
+
+if (NOT (CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (OQS_LIBJADE_BUILD STREQUAL ON) AND (ARCH_X86_64 STREQUAL "ON"))
+    message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin on x86_64.")
 endif()
 
 # intentionally don't switch to variables to avoid --warn-uninitialized report
