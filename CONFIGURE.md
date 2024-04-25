@@ -183,6 +183,8 @@ Can be `ON` or `OFF`. When `ON` liboqs is built to use high assurance implementa
 
 At the moment, Libjade only provides Kyber512 and Kyber768 KEMs. 
 
+At the moment, libjade only supports Linux and Darwin based operating systems on x86_64 platforms.
+
 **Default** `OFF`.
 
 ## OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG
