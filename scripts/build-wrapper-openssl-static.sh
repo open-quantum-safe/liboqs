@@ -675,8 +675,8 @@ the_cmake_build_trace_flag="${the_cmake_build_trace_flag}"
 
 EOS
 
-  if [ $wants_android -eq 1 ] ; then build_android || return $? ; fi
   if [ $wants_apple -eq 1 ] ; then build_apple || return $? ; fi
+  if [ $wants_android -eq 1 ] ; then build_android || return $? ; fi
   if [ $wants_linux -eq 1 ] ; then build_linux || return $? ; fi
   if [ $wants_windows -eq 1 ] ; then build_windows || return $? ; fi
   do_export || return $?
