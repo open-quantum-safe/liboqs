@@ -39,9 +39,6 @@ extern inline OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_sec
 	// Set application specific context
 	sk->context = NULL;
 
-	// Point to associated OQS_SIG_STFL object
-	sk->sig = NULL;
-
 	// Mutual exclusion struct
 	sk->mutex = NULL;
 
