@@ -1358,21 +1358,21 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, s
 }
 
 /* Convert secret key object to byte string */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
-	if (sk == NULL || sk_len == NULL || sk_buf_ptr == NULL || sk->serialize_key == NULL) {
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_t *sk_buf_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (sk == NULL || sk_buf_len == NULL || sk_buf_ptr == NULL || sk->serialize_key == NULL) {
 		return OQS_ERROR;
 	}
 
-	return sk->serialize_key(sk_buf_ptr, sk_len, sk);
+	return sk->serialize_key(sk_buf_ptr, sk_buf_len, sk);
 }
 
 /* Insert secret key byte string in an Stateful secret key object */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t key_len, void *context) {
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_buf_len, void *context) {
 	if (sk == NULL || sk_buf == NULL || sk->deserialize_key == NULL) {
 		return OQS_ERROR;
 	}
 
-	return sk->deserialize_key(sk, key_len, sk_buf, context);
+	return sk->deserialize_key(sk, sk_buf, sk_buf_len, context);
 }
 
 /*  OQS_SIG_STFL_SECRET_KEY_SET_lock callback function*/

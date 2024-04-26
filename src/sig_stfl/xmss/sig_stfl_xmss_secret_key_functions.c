@@ -111,7 +111,7 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_inner_serialize_key(uint8_t **sk_buf_ptr, size_t 
 }
 
 /* Deserialize XMSS byte string into an XMSS secret key data. */
-OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, XMSS_UNUSED_ATT void *context) {
+OQS_STATUS OQS_SECRET_KEY_XMSS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, XMSS_UNUSED_ATT void *context) {
 #ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
 	return OQS_ERROR;
 #endif

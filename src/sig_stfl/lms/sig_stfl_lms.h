@@ -326,7 +326,7 @@ int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen, const uint8_t *sm, si
 void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
 OQS_STATUS oqs_serialize_lms_key(uint8_t **sk_key, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
-OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
+OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context);
 void oqs_lms_key_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
 // ---------------------------- FUNCTIONS INDEPENDENT OF VARIANT -----------------------------------------
