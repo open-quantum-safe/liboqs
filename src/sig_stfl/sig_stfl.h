@@ -292,9 +292,6 @@ typedef struct OQS_SIG_STFL {
 
 typedef struct OQS_SIG_STFL_SECRET_KEY {
 
-	/** Associated signature object */
-	OQS_SIG_STFL *sig;
-
 	/* The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	size_t length_secret_key;
 
