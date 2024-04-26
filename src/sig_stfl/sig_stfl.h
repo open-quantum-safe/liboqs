@@ -650,7 +650,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_
  *
  * @attention The caller is responsible for freeing the `sk_buf` memory when it is no longer needed.
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, size_t key_len, void *context);
 
 #if defined(__cplusplus)
 // extern "C"
