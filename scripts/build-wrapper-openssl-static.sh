@@ -7,7 +7,7 @@
 # Usage:
 #   ./scripts/build-wrapper-openssl-static.sh [target]
 #     [target] - do_main: Build all, create export
-#              - [function]: Any function such as build_apple_macosx
+#              - [function]: Any function such as build_apple_macos
 #
 # On success, the generated [build/export] folder below can be used as
 # input to the oqs-provider build.
@@ -18,7 +18,7 @@
 #     \-> [archs] - one of arm64-v8a / armeabi-v7a / x86 / x86_64
 #         \-> [output] - cmake output and build files
 # \-> apple
-#     \-> [device] - one of macosx / iphoneos / iphonesimulator
+#     \-> [device] - one of macos / iphoneos / iphonesimulator
 #         \-> lib - contains fat lib with all archs
 #         \-> [archs] - one of arm64 / x86_64 architecture
 #             \-> [output] - cmake output and build files
@@ -30,7 +30,7 @@
 #                 \-> lib - static library output
 #     \-> apple
 #         \-> [version] - version automatically determined from build output
-#             \-> [device] - one of macosx / iphoneos / iphonesimulator
+#             \-> [device] - one of macos / iphoneos / iphonesimulator
 #                 \-> lib - contains fat lib with all archs
 #                 \-> [archs] - one of arm64 / x86_64 architecture
 #                     \-> include - architecture-specific headers
@@ -43,7 +43,7 @@
 #             \-> lib - contains libcrypto.a / libssl.a
 # \-> apple
 #     \-> $the_openssl_ver - version info such as 3.2.1
-#         \-> [device] - one of macosx / iphoneos / iphonesimulator
+#         \-> [device] - one of macos / iphoneos / iphonesimulator
 #             \-> include - headers specific to device (note: not by arch)
 #             \-> lib - contains fat lib with all archs
 
@@ -136,9 +136,9 @@ function build_apple_variant {
   cd "$the_build_dir_path/$l_type/$i_device/$i_arch" || return $?
   rm -fR ./*
 
-  # different deployment target for ios vs. macosx
+  # different deployment target for ios vs. macos
   local l_deployment_target=''
-  if [ x"$i_device" = xmacosx ] ; then
+  if [ x"$i_device" = xmacos ] ; then
     l_deployment_target="$the_macos_target"
   else
     l_deployment_target="$the_ios_target"
@@ -215,8 +215,8 @@ function build_apple_fatlibs_std {
 }
 
 # build macox
-function build_apple_macosx {
-  local l_device='macosx'
+function build_apple_macos {
+  local l_device='macos'
   build_apple_variant $l_device x86_64 MAC || return $?
   build_apple_variant $l_device arm64 MAC_ARM64 || return $?
   build_apple_fatlibs_std $l_device 'x86_64 arm64' || return $?
@@ -242,7 +242,7 @@ function build_apple_iphoneos {
 
 # build all known apple variants
 function build_apple {
-  build_apple_macosx || return $?
+  build_apple_macos || return $?
   build_apple_iphonesimulator || return $?
   build_apple_iphoneos || return $?
   return 0
@@ -459,7 +459,7 @@ function verify_folders {
   if [ $wants_apple -eq 1 ] ; then
     l_type='apple'
     verify_folder "$the_build_dir_path"/$l_type
-    for l_device in iphoneos iphonesimulator macosx ; do
+    for l_device in iphoneos iphonesimulator macos ; do
       verify_folder "$the_build_dir_path"/$l_type/$l_device
       verify_folder "$the_build_dir_path"/$l_type/$l_device/lib
       for l_arch in arm64 ; do
@@ -592,7 +592,7 @@ function do_export {
     l_type='apple'
     create_export_folder $l_type "$l_version" iphoneos/lib iphoneos/arm64/include || return $?
     create_export_folder $l_type "$l_version" iphonesimulator/lib iphonesimulator/arm64/include iphonesimulator/x86_64/include || return $?
-    create_export_folder $l_type "$l_version" macosx/lib macosx/arm64/include macosx/x86_64/include || return $?
+    create_export_folder $l_type "$l_version" macos/lib macos/arm64/include macos/x86_64/include || return $?
   fi
 
   if [ $wants_linux -eq 1 ] ; then
@@ -627,7 +627,7 @@ function fix_cmake_provider {
   # since we are building from source, in our case we must point liboqs_DIR to
   # the [src] folder created as part of cmake build.
   #
-  # example: liboqs_DIR="[liboqs_parent]/liboqs/build/apple/macosx/x86_64/src"
+  # example: liboqs_DIR="[liboqs_parent]/liboqs/build/apple/macos/x86_64/src"
   # 
   # oqs-provider assumes that liboqsConfig.cmake is in the liboqs_DIR folder and
   # actively uses that file as part of its own build.
