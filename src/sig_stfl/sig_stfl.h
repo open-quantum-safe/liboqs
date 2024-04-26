@@ -654,6 +654,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *
 
 #if defined(__cplusplus)
 // extern "C"
+}
 #endif
 
 #endif /* OQS_SIG_STATEFUL_H */
