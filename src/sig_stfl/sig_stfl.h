@@ -313,13 +313,13 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * The `sk_len` will contain the length of the byte stream.
 	 *
 	 * @param[out] sk_buf_ptr Pointer to the byte stream representing the serialized secret key.
-	 * @param[out] sk_len Pointer to the length of the serialized byte stream.
+	 * @param[out] sk_buf_len Pointer to the length of the serialized byte stream.
 	 * @param[in] sk Pointer to the `OQS_SIG_STFL_SECRET_KEY` object to serialize.
 	 * @return The number of bytes in the serialized byte stream upon success, or an OQS error code on failure.
 	 *
 	 * @attention The caller is responsible for ensuring that `sk` is a valid object before calling this function.
 	 */
-	OQS_STATUS (*serialize_key)(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
+	OQS_STATUS (*serialize_key)(uint8_t **sk_buf_ptr, size_t *sk_buf_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 	/**
 	 * Deserialize a byte stream into the internal representation of a stateful secret key.
@@ -329,14 +329,14 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * useful for reconstructing key objects from persisted or transmitted state.
 	 *
 	 * @param[out] sk Pointer to an uninitialized `OQS_SIG_STFL_SECRET_KEY` object to hold the secret key.
-	 * @param[in] sk_len The length of the secret key byte stream.
 	 * @param[in] sk_buf Pointer to the byte stream containing the serialized secret key data.
+	 * @param[in] sk_buf_len The length of the secret key byte stream.
 	 * @param[in] context Pointer to application-specific data, handled externally, associated with the key.
 	 * @returns OQS_SUCCESS if the deserialization succeeds, with the `sk` object populated with the key material.
 	 *
 	 * @attention The caller is responsible for ensuring that `sk_buf` is securely deallocated when it's no longer needed.
 	 */
-	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context);
+	OQS_STATUS (*deserialize_key)(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_buf_len, void *context);
 
 	/**
 	 * Secret Key Locking Function
@@ -360,14 +360,14 @@ typedef struct OQS_SIG_STFL_SECRET_KEY {
 	 * Callback function used to securely store key data after a signature generation.
 	 * When populated, this pointer points to the application-supplied secure storage function.
 	 * @param[in] sk_buf The serialized secret key data to secure store
-	 * @param[in] buf_len length of data to secure
+	 * @param[in] sk_buf_len length of data to secure
 	 * @param[in] context application supplied data used to locate where this secret key
 	 *            is stored (passed in at the time the function pointer was set).
 	 *
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 * Ideally written to a secure device.
 	 */
-	OQS_STATUS (*secure_store_scrt_key)(uint8_t *sk_buf, size_t buf_len, void *context);
+	OQS_STATUS (*secure_store_scrt_key)(uint8_t *sk_buf, size_t sk_buf_len, void *context);
 
 	/**
 	 * Free internal variant-specific data
@@ -628,13 +628,13 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, s
  * Converts an OQS_SIG_STFL_SECRET_KEY object into a byte array for storage or transmission.
  *
  * @param[out] sk_buf_ptr Pointer to the allocated byte array containing the serialized key.
- * @param[out] sk_len Length of the serialized key byte array.
+ * @param[out] sk_buf_len Length of the serialized key byte array.
  * @param[in] sk Pointer to the OQS_SIG_STFL_SECRET_KEY object to be serialized.
  * @return OQS_SUCCESS on success, or an OQS error code on failure.
  *
  * @note The function allocates memory for the byte array, and it is the caller's responsibility to free this memory after use.
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_t *sk_buf_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * Deserialize a byte array into an OQS_SIG_STFL_SECRET_KEY object.
@@ -643,14 +643,14 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_
  * After deserialization, the secret key object can be used for subsequent cryptographic operations.
  *
  * @param[out] sk A pointer to the secret key object that will be populated from the binary data.
- * @param[in] key_len The length of the binary secret key data in bytes.
  * @param[in] sk_buf The buffer containing the serialized secret key data.
+ * @param[in] sk_buf_len The length of the binary secret key data in bytes.
  * @param[in] context Application-specific data used to maintain context about the secret key.
  * @return OQS_SUCCESS if deserialization was successful; otherwise, OQS_ERROR.
  *
  * @attention The caller is responsible for freeing the `sk_buf` memory when it is no longer needed.
  */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, size_t key_len, void *context);
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, size_t sk_buf_len, void *context);
 
 #if defined(__cplusplus)
 // extern "C"

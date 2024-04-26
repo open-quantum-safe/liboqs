@@ -728,7 +728,7 @@ OQS_STATUS oqs_serialize_lms_key(uint8_t **sk_key, size_t *sk_len, const OQS_SIG
  * Writes secret key + aux data if present
  * key_len is priv key length + aux length
  */
-OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const size_t sk_len, const uint8_t *sk_buf, void *context) {
+OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context) {
 
 	oqs_lms_key_data *lms_key_data = NULL;
 	uint8_t *lms_sk = NULL;
