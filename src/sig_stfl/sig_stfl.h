@@ -634,7 +634,7 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, s
  *
  * @note The function allocates memory for the byte array, and it is the caller's responsibility to free this memory after use.
  */
-OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * Deserialize a byte array into an OQS_SIG_STFL_SECRET_KEY object.
@@ -650,7 +650,7 @@ OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_serialize_key(uint8_t **sk_buf_ptr, size_
  *
  * @attention The caller is responsible for freeing the `sk_buf` memory when it is no longer needed.
  */
-OQS_API OQS_STATUS OQS_SECRET_KEY_STFL_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, size_t key_len, const uint8_t *sk_buf, void *context);
 
 #if defined(__cplusplus)
 // extern "C"
