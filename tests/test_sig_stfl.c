@@ -470,7 +470,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		goto err;
 	}
 
-	rc = OQS_SECRET_KEY_STFL_serialize_key(&sk_buf, &sk_buf_len, secret_key);
+	rc = OQS_SIG_STFL_SECRET_KEY_serialize(&sk_buf, &sk_buf_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
@@ -631,7 +631,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	}
 
 	/* write sk key to disk */
-	rc = OQS_SECRET_KEY_STFL_serialize_key(&to_file_sk_buf, &to_file_sk_len, sk);
+	rc = OQS_SIG_STFL_SECRET_KEY_serialize(&to_file_sk_buf, &to_file_sk_len, sk);
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
@@ -669,7 +669,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	}
 
 	context_2 = strdup(file_store_name);
-	rc = OQS_SECRET_KEY_STFL_deserialize_key(sk_from_file, from_file_sk_len, from_file_sk_buf, (void *)context_2);
+	rc = OQS_SIG_STFL_SECRET_KEY_deserialize(sk_from_file, from_file_sk_len, from_file_sk_buf, (void *)context_2);
 
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS restore %s from file failed.\n", method_name);
