@@ -1367,7 +1367,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_serialize(uint8_t **sk_buf_ptr, size_
 }
 
 /* Insert secret key byte string in an Stateful secret key object */
-OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, const size_t key_len, const uint8_t *sk_buf, void *context) {
+OQS_API OQS_STATUS OQS_SIG_STFL_SECRET_KEY_deserialize(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t key_len, void *context) {
 	if (sk == NULL || sk_buf == NULL || sk->deserialize_key == NULL) {
 		return OQS_ERROR;
 	}

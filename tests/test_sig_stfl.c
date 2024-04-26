@@ -669,7 +669,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	}
 
 	context_2 = strdup(file_store_name);
-	rc = OQS_SIG_STFL_SECRET_KEY_deserialize(sk_from_file, from_file_sk_len, from_file_sk_buf, (void *)context_2);
+	rc = OQS_SIG_STFL_SECRET_KEY_deserialize(sk_from_file, from_file_sk_buf, from_file_sk_len, (void *)context_2);
 
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS restore %s from file failed.\n", method_name);
