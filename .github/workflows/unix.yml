@@ -14,7 +14,7 @@ jobs:
       - name: Ensure code conventions are upheld
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
-        run: mkdir -p build/docs && doxygen docs/.Doxyfile
+        run: mkdir build && ./scripts/run_doxygen.sh $(which doxygen) ./docs/.Doxyfile ./build
       - name: Validate CBOM
         run: scripts/validate_cbom.sh
 
