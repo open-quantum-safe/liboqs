@@ -7,6 +7,7 @@ name: Release tests
 # If the tracker branch does not exist, the downstream pipeline should detect it and run on the main branch instead.
 on:
   push:
+  workflow_dispatch:
   release:
     types: [published]
 
