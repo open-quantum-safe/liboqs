@@ -640,7 +640,7 @@ function fix_cmake_provider {
   local l_path=''
   local l_dir=''
   local l_parent_dir=''
-  for i in `find . -type f -name liboqsTargets.cmake | grep /cmake/` ; do
+	for i in `find . -type f \( -name liboqsTargets.cmake -o -name liboqsConfig.cmake \) | grep /cmake/` ; do
     l_path="`realpath "$i"`"
     l_dir="`dirname "$l_path"`"
     l_parent_dir="`dirname "$l_dir"`"
