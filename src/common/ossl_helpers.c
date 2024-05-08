@@ -31,10 +31,10 @@ static void fetch_ossl_objects(void) {
 	shake128_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE128", NULL);
 	shake256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE256", NULL);
 
-	aes128_ecb_ptr = EVP_CIPHER_fetch(NULL, "AES-128-ECB", NULL);
-	aes128_ctr_ptr = EVP_CIPHER_fetch(NULL, "AES-128-CTR", NULL);
-	aes256_ecb_ptr = EVP_CIPHER_fetch(NULL, "AES-256-ECB", NULL);
-	aes256_ctr_ptr = EVP_CIPHER_fetch(NULL, "AES-256-CTR", NULL);
+	aes128_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-ECB", NULL);
+	aes128_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-CTR", NULL);
+	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
+	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
 
 	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
 	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
