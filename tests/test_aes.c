@@ -52,6 +52,30 @@ static int test_aes128_correctness(void) {
 	return EXIT_SUCCESS;
 }
 
+// test vector #3 from https://tools.ietf.org/html/rfc3686#section-6
+static const uint8_t test_aes128ctr_key[] = {0x76, 0x91, 0xBE, 0x03, 0x5E, 0x50, 0x20, 0xA8, 0xAC, 0x6E, 0x61, 0x85, 0x29, 0xF9, 0xA0, 0xDC};
+static const uint8_t test_aes128ctr_iv[] = {0x00, 0xE0, 0x01, 0x7B, 0x27, 0x77, 0x7F, 0x3F, 0x4A, 0x17, 0x86, 0xF0, 0x00, 0x00, 0x00, 0x01};
+static const uint8_t test_aes128ctr_plaintext[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23};
+static const uint8_t test_aes128ctr_ciphertext[] = {0xC1, 0xCF, 0x48, 0xA8, 0x9F, 0x2F, 0xFD, 0xD9, 0xCF, 0x46, 0x52, 0xE9, 0xEF, 0xDB, 0x72, 0xD7, 0x45, 0x40, 0xA4, 0x2B, 0xDE, 0x6D, 0x78, 0x36, 0xD5, 0x9A, 0x5C, 0xEA, 0xAE, 0xF3, 0x10, 0x53, 0x25, 0xB2, 0x07, 0x2F};
+
+static int test_aes128ctr_correctness(void) {
+	uint8_t derived_ciphertext[36];
+	void *schedule = NULL;
+	OQS_AES128_CTR_inc_init(test_aes128ctr_key, &schedule);
+	OQS_AES128_CTR_inc_stream_iv(test_aes128ctr_iv, sizeof(test_aes128ctr_iv), schedule, derived_ciphertext, sizeof(derived_ciphertext));
+	for (size_t i = 0; i < sizeof(derived_ciphertext); i++) {
+		derived_ciphertext[i] ^= test_aes128ctr_plaintext[i];
+	}
+	if (memcmp(test_aes128ctr_ciphertext, derived_ciphertext, 36) != 0) {
+		printf("test_aes128ctr_correctness ciphertext does not match\n");
+		OQS_print_hex_string("expected ciphertext", test_aes128ctr_ciphertext, 36);
+		OQS_print_hex_string("derived  ciphertext", derived_ciphertext, 36);
+		return EXIT_FAILURE;
+	}
+	OQS_AES128_free_schedule(schedule);
+	return EXIT_SUCCESS;
+}
+
 static int test_aes256_correctness(void) {
 	uint8_t derived_ciphertext[16];
 	void *schedule = NULL;
@@ -156,6 +180,10 @@ int main(int argc, char **argv) {
 
 	printf("=== test_aes correctness ===\n");
 	if (test_aes128_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+	if (test_aes128ctr_correctness() != EXIT_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
