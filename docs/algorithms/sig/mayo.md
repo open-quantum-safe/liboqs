@@ -4,7 +4,7 @@
 - **Main cryptographic assumption**: multivariable quadratic equations, oil and vinegar.
 - **Principal submitters**: Ward Beullens, Fabio Campos, Sofía Celi, Basil Hess, Matthias J. Kannwischer.
 - **Authors' website**: https://pqmayo.org
-- **Specification version**: 1.1.
+- **Specification version**: https://eprint.iacr.org/2023/1683.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQCMayo/MAYO-C/commit/933e58d62773d80477506f7fcfdbc8574db3f5ad with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0

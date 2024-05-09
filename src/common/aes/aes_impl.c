@@ -135,6 +135,14 @@ static void AES128_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, con
 	);
 }
 
+static void AES128_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blks) {
+	C_OR_NI_OR_ARM(
+	    oqs_aes128_ctr_enc_sch_upd_blks_c(schedule, out, out_blks),
+	    oqs_aes128_ctr_enc_sch_upd_blks_ni(schedule, out, out_blks),
+	    oqs_aes128_ctr_enc_sch_upd_blks_armv8(schedule, out, out_blks)
+	);
+}
+
 static void AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
 
 static void AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {

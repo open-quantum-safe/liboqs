@@ -92,15 +92,6 @@ static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 	OSSL_FUNC(EVP_CIPHER_CTX_free)(ctr_ctx);
 }
 
-static void AES128_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blks) {
-	size_t out_len = out_blks * 16;
-	struct key_schedule *ks = (struct key_schedule *) schedule;
-	int out_len_output;
-	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int);
-	memset(out, 0, (size_t)out_len_input_int);
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ks->ctx, out, &out_len_output, out, (int) out_len));
-}
-
 static void AES128_CTR_inc_init(const uint8_t *key, void **schedule) {
 	*schedule = malloc(sizeof(struct key_schedule));
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
@@ -242,7 +233,6 @@ struct OQS_AES_callbacks aes_default_callbacks = {
 	.AES128_ECB_enc_sch = AES128_ECB_enc_sch,
 	.AES256_ECB_load_schedule = AES256_ECB_load_schedule,
 	.AES128_CTR_inc_stream_iv = AES128_CTR_inc_stream_iv,
-	.AES128_CTR_inc_stream_blks = AES128_CTR_inc_stream_blks,
 	.AES256_CTR_inc_init = AES256_CTR_inc_init,
 	.AES256_CTR_inc_iv = AES256_CTR_inc_iv,
 	.AES256_CTR_inc_ivu64 = AES256_CTR_inc_ivu64,
