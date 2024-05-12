@@ -252,7 +252,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *totaln, const
 
 void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
-
 //2-Level LMS
 #define OQS_SIG_STFL_alg_lms_length_private_key 64
 #define OQS_SIG_STFL_alg_lms_length_public_key 60
