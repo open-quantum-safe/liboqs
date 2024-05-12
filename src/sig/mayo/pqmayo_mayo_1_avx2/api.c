@@ -14,7 +14,6 @@ crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
     return mayo_keypair(MAYO_PARAMS, pk, sk);
 }
 
-#ifndef PQM4
 int
 crypto_sign(unsigned char *sm, size_t *smlen,
             const unsigned char *m, size_t mlen,
@@ -44,26 +43,4 @@ crypto_sign_verify(const unsigned char *sig, size_t siglen,
         return -1;
     return mayo_verify(MAYO_PARAMS, m, mlen, sig, pk);
 }
-#else
-int
-crypto_sign(unsigned char *sm, size_t *smlen,
-            const unsigned char *m, size_t mlen,
-            const unsigned char *sk) {
-
-    size_t smlen_ll;
-    int rc = mayo_sign(MAYO_PARAMS, sm, &smlen_ll, m, mlen, sk);
-    *smlen = smlen_ll;
-    return rc;
-}
-
-int
-crypto_sign_open(unsigned char *m, size_t *mlen,
-                 const unsigned char *sm, size_t smlen,
-                 const unsigned char *pk) {
-    size_t mlen_ll;
-    int rc = mayo_open(MAYO_PARAMS, m, &mlen_ll, sm, smlen, pk);
-    *mlen = mlen_ll;
-    return rc;
-}
-#endif
 

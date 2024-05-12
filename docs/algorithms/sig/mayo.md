@@ -6,7 +6,7 @@
 - **Authors' website**: https://pqmayo.org
 - **Specification version**: https://eprint.iacr.org/2023/1683.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/933e58d62773d80477506f7fcfdbc8574db3f5ad with copy_from_upstream patches
+  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/fc9079fb5ac5cd4af98e3e0f094a0a3cf2a01499 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
