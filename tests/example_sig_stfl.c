@@ -112,7 +112,7 @@ err:
 //cleanup
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(sk_fname);
-	OQS_MEM_insecure_free(message);
+	OQS_MEM_secure_free(message, message_len);
 	OQS_MEM_insecure_free(signature);
 	OQS_SIG_STFL_free(sig);
 	OQS_SIG_STFL_SECRET_KEY_free(secret_key);
