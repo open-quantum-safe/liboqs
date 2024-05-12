@@ -15,8 +15,6 @@
 int
 crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
 
-
-#ifndef PQM4
 #define crypto_sign MAYO_NAMESPACE(crypto_sign)
 int
 crypto_sign(unsigned char *sm, size_t *smlen,
@@ -40,18 +38,6 @@ int
 crypto_sign_verify(const unsigned char *sig, size_t siglen,
                    const unsigned char *m, size_t mlen,
                    const unsigned char *pk);
-#else
-#include <stddef.h>
 
-int
-crypto_sign(unsigned char *sm, size_t *smlen,
-            const unsigned char *m, size_t mlen,
-            const unsigned char *sk);
-
-int
-crypto_sign_open(unsigned char *m, size_t *mlen,
-                 const unsigned char *sm, size_t smlen,
-                 const unsigned char *pk);
-#endif
 #endif /* api_h */
 

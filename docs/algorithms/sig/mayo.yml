@@ -11,7 +11,7 @@ website: https://pqmayo.org
 nist-round: 1
 spec-version: https://eprint.iacr.org/2023/1683
 primary-upstream:
-  source: https://github.com/PQCMayo/MAYO-C/commit/933e58d62773d80477506f7fcfdbc8574db3f5ad
+  source: https://github.com/PQCMayo/MAYO-C/commit/fc9079fb5ac5cd4af98e3e0f094a0a3cf2a01499
     with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:
