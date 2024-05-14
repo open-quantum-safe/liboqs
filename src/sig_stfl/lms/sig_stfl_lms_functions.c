@@ -116,7 +116,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 
 err:
 	if (*signature_length) {
-		memset(signature, 0, *signature_length);
+		OQS_MEM_cleanse(signature, *signature_length);
 	}
 	*signature_length = 0;
 
@@ -252,7 +252,6 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	if (sk->secret_key_data) {
 		//this means a key pair has already been recreated
-		//TODO log error.
 		return -1;
 	}
 
@@ -535,21 +534,19 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		return -1;
 	}
 
-	/* TODO: store key pair, file handler */
-
 	ret = 0;
 	return ret;
 }
 #endif
 
 #ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
-int oqs_sig_stfl_lms_sign(UNUSED OQS_SIG_STFL_SECRET_KEY *sk, UNUSED uint8_t *sm, UNUSED size_t *smlen,
+int oqs_sig_stfl_lms_sign(UNUSED OQS_SIG_STFL_SECRET_KEY *sk, UNUSED uint8_t *signature, UNUSED size_t *signature_len,
                           UNUSED const uint8_t *m, UNUSED size_t mlen) {
 	return -1;
 }
 #else
 int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
-                          uint8_t *sm, size_t *smlen,
+                          uint8_t *signature, size_t *signature_len,
                           const uint8_t *m, size_t mlen) {
 
 	size_t sig_len;
@@ -616,8 +613,8 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 		return -1;
 	}
 
-	*smlen = sig_len;
-	memcpy(sm, sig, sig_len);
+	*signature_len = sig_len;
+	memcpy(signature, sig, sig_len);
 	OQS_MEM_insecure_free(sig);
 	hss_free_working_key(w);
 
@@ -626,15 +623,15 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 #endif
 
 int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen,
-                            const uint8_t *sm, size_t smlen,
+                            const uint8_t *signature, size_t signature_len,
                             const uint8_t *pk) {
 
 	struct hss_validate_inc ctx;
 	(void)hss_validate_signature_init(
 	    &ctx,               /* Incremental validate context */
 	    (const unsigned char *)pk,                /* Public key */
-	    (const unsigned char *)sm,
-	    (size_t)smlen,       /* Signature */
+	    (const unsigned char *)signature,
+	    (size_t)signature_len,       /* Signature */
 	    0);                 /* Use the defaults for extra info */
 
 	(void)hss_validate_signature_update(
@@ -644,7 +641,7 @@ int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen,
 
 	bool status = hss_validate_signature_finalize(
 	                  &ctx,               /* Incremental validate context */
-	                  (const unsigned char *)sm,                /* Signature */
+	                  (const unsigned char *)signature,                /* Signature */
 	                  0);                 /* Use the defaults for extra info */
 
 	if (status) {
@@ -660,8 +657,6 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
 		return;
 	}
-
-	//TODO: cleanup lock_key
 
 	if (sk->secret_key_data) {
 		oqs_lms_key_data *key_data = (oqs_lms_key_data *)sk->secret_key_data;

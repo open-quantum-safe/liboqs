@@ -6,7 +6,7 @@ auxiliary-submitters:
 - C Martin
 - Maurice Hieronymus
 
-crypto-assumption: hash function second-preimage resistance
+crypto-assumption: hash-based signatures
 website: https://www.rfc-editor.org/info/rfc8554
 nist-round: 
 spec-version: 
