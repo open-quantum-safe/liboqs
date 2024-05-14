@@ -27,7 +27,6 @@ OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w2_keypair(uint8_t *public_key, OQS_S
 OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w4_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w8_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
-
 // OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w1_new(void);
 // OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void);
 OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
@@ -266,7 +265,6 @@ LMS_ALG(sha256_h20_w8_h15_w8, SHA256_H20_W8_H15_W8)
 
 LMS_ALG(sha256_h20_w8_h20_w8, SHA256_H20_W8_H20_W8)
 //2-Level LMS
-
 
 void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 	oqs_secret_lms_key_free(sk);
