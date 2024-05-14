@@ -241,9 +241,10 @@ static void treehash_init(const xmss_params *params,
     /* The subtree has at most 2^20 leafs, so uint32_t suffices. */
     uint32_t idx = index;
     uint32_t lastnode = index +(1<<height), i;
+    const size_t thash_buf_size = 2 * params->padding_len + 6 * params->n + 32;
+    const size_t stack_size = ((height+1)*params->n)* sizeof(unsigned char);
     unsigned char *stack = calloc((height+1)*params->n, sizeof(unsigned char));
     unsigned int *stacklevels = malloc((height + 1)*sizeof(unsigned int));
-    const size_t thash_buf_size = 2 * params->padding_len + 6 * params->n + 32;
     unsigned char *thash_buf = malloc(thash_buf_size);
 
     if (stack == NULL || stacklevels == NULL || thash_buf == NULL) {
@@ -294,7 +295,7 @@ static void treehash_init(const xmss_params *params,
     memcpy(node, stack, params->n);
 
     OQS_MEM_insecure_free(stacklevels);
-    OQS_MEM_insecure_free(stack);
+    OQS_MEM_secure_free(stack, stack_size);
     OQS_MEM_secure_free(thash_buf, thash_buf_size);
 }
 

@@ -128,7 +128,8 @@ void wots_pkgen(const xmss_params *params,
                 const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned int i;
-    unsigned char *buf = malloc(2 * params->padding_len + 4 * params->n + 64);
+    const size_t buf_size = 2 * params->padding_len + 4 * params->n + 64;
+    unsigned char *buf = malloc(buf_size);
     if (buf == NULL) {
         return;
     }
@@ -142,7 +143,7 @@ void wots_pkgen(const xmss_params *params,
                   0, params->wots_w - 1, pub_seed, addr, buf);
     }
 
-    OQS_MEM_insecure_free(buf);
+    OQS_MEM_secure_free(buf, buf_size);
 }
 
 /**
@@ -154,8 +155,9 @@ void wots_sign(const xmss_params *params,
                const unsigned char *seed, const unsigned char *pub_seed,
                uint32_t addr[8])
 {
+    const size_t buf_size = 2 * params->padding_len + 4 * params->n + 64;
     unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int));
-    unsigned char *buf = malloc(2 * params->padding_len + 4 * params->n + 64);
+    unsigned char *buf = malloc(buf_size);
     unsigned int i;
     if (lengths == NULL || buf == NULL) {
         return;
@@ -173,7 +175,7 @@ void wots_sign(const xmss_params *params,
     }
 
     OQS_MEM_insecure_free(lengths);
-    OQS_MEM_insecure_free(buf);
+    OQS_MEM_secure_free(buf, buf_size);
 }
 
 /**
