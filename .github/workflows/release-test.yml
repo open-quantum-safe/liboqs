@@ -17,7 +17,7 @@ on:
 
 jobs:
   oqs-provider-release-test:
-    if: github.event_name == 'release' || endsWith( github.event.head_commit.message, '[trigger downstream]' )
+    if: github.event_name == 'release' || contains( github.event.head_commit.message, '[trigger downstream]' )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout release tests script
