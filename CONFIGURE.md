@@ -8,7 +8,7 @@ The following options can be passed to CMake before the build file generation pr
 - [CMAKE_INSTALL_PREFIX](#CMAKE_INSTALL_PREFIX)
 - [OQS_ALGS_ENABLED](#OQS_ALGS_ENABLED)
 - [OQS_BUILD_ONLY_LIB](#OQS_BUILD_ONLY_LIB)
-- [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG)
+- [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#oqs_enable_kem_algoqs_enable_sig_algoqs_enable_sig_stfl_alg)
 - [OQS_MINIMAL_BUILD](#OQS_MINIMAL_BUILD)
 - [OQS_DIST_BUILD](#OQS_DIST_BUILD)
 - [OQS_USE_CPUFEATURE_INSTRUCTIONS](OQS_USE_CPUFEATURE_INSTRUCTIONS)
@@ -60,7 +60,7 @@ For a full list of such options and their default values, consult [.CMake/alg_su
 
 A selected algorithm set is enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "All" (or any other value) selecting all algorithms integrated into liboqs. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`; e.g., [oqs-provider](https://github.com/open-quantum-safe/oqs-provider) and [oqs-boringssl](https://github.com/open-quantum-safe/boringssl).
 
-**Attention**: If you use any predefined value (`STD` or `NIST_R4` as of now) for this variable, the values added via [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG) variables will be ignored.
+**Attention**: If you use any predefined value (`STD` or `NIST_R4` as of now) for this variable, the values added via [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#oqs_enable_kem_algoqs_enable_sig_algoqs_enable_sig_stfl_alg) variables will be ignored.
 
 **Default**: `All`.
 
