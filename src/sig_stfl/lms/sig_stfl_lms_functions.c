@@ -252,7 +252,6 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	if (sk->secret_key_data) {
 		//this means a key pair has already been recreated
-		//TODO log error.
 		return -1;
 	}
 
@@ -535,8 +534,6 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		return -1;
 	}
 
-	/* TODO: store key pair, file handler */
-
 	ret = 0;
 	return ret;
 }
@@ -660,8 +657,6 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
 		return;
 	}
-
-	//TODO: cleanup lock_key
 
 	if (sk->secret_key_data) {
 		oqs_lms_key_data *key_data = (oqs_lms_key_data *)sk->secret_key_data;
