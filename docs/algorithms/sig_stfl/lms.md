@@ -1,7 +1,7 @@
 # LMS
 
 - **Algorithm type**: Digital signature scheme.
-- **Main cryptographic assumption**: hash function second-preimage resistance.
+- **Main cryptographic assumption**: hash-based signatures.
 - **Principal submitters**: Scott Fluhrer.
 - **Auxiliary submitters**: C Martin, Maurice Hieronymus.
 - **Authors' website**: https://www.rfc-editor.org/info/rfc8554
