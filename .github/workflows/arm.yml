@@ -1,0 +1,34 @@
+name: ARM64 github
+
+on: workflow_dispatch
+
+jobs:
+  ry-arm:
+    runs-on: macos-14
+    description: A template for running liboqs tests on ARM(presently only 64) machines
+    parameters:
+      CMAKE_ARGS:
+        description: Arguments to pass to CMake.
+        type: string
+        default: ''
+      PYTEST_ARGS:
+        description: Arguments to pass to pytest.
+        type: string
+        default: "--numprocesses=auto"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build project
+        run: |
+          docker run -it -e CMAKE_ARGS="<< parameters.CMAKE_ARGS >>" \
+                         -e PYTEST_ARGS="<< parameters.PYTEST_ARGS >>" \
+                         -v `pwd`:/root/project \
+                         openquantumsafe/ci-ubuntu-focal-arm64:latest bash \
+                         -c 'cd /root/project && \
+                             uname -a && \
+                             mkdir build && cd build && source ~/.bashrc && \
+                             cmake -GNinja -DOQS_STRICT_WARNINGS=ON $CMAKE_ARGS .. && cmake -LA .. && ninja && \
+                             cd .. && mkdir -p tmp && \
+                             python3 -m pytest --verbose \
+                                               --ignore=tests/test_code_conventions.py \
+                                               --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS'
