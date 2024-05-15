@@ -160,6 +160,12 @@ OQS_STATUS kem_vector(const char *method_name,
 	}
 
 	fprintBstr(fh, "c: ", ct_encaps, kem->length_ciphertext);
+	rv = memcmp(ss_encaps, encaps_K, kem->length_shared_secret);
+	if (rv != 0) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: shared secrets are not equal in encapsulation\n", method_name);
+		OQS_print_hex_string("ss_encaps", ss_encaps, kem->length_shared_secret);
+		goto err;
+	}
 	fprintBstr(fh, "K: ", ss_encaps, kem->length_shared_secret);
 
 	rc = OQS_KEM_decaps(kem, ss_decaps, decaps_ciphertext, decaps_sk);
