@@ -36,7 +36,7 @@ upstreams:
     git_commit: 11d00ff1f20cfca1f72d819e5a45165c1e0a2816
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-ml_kem_ipd.patch]
+    patches: [pqcrystals-ml_kem_ipd.patch, ml-kem-derand.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
