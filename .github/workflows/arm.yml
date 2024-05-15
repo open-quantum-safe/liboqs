@@ -5,24 +5,12 @@ on: workflow_dispatch
 jobs:
   ry-arm:
     runs-on: macos-14
-    description: A template for running liboqs tests on ARM(presently only 64) machines
-    parameters:
-      CMAKE_ARGS:
-        description: Arguments to pass to CMake.
-        type: string
-        default: ''
-      PYTEST_ARGS:
-        description: Arguments to pass to pytest.
-        type: string
-        default: "--numprocesses=auto"
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Build project
         run: |
-          docker run -it -e CMAKE_ARGS="<< parameters.CMAKE_ARGS >>" \
-                         -e PYTEST_ARGS="<< parameters.PYTEST_ARGS >>" \
-                         -v `pwd`:/root/project \
+          docker run -it -v `pwd`:/root/project \
                          openquantumsafe/ci-ubuntu-focal-arm64:latest bash \
                          -c 'cd /root/project && \
                              uname -a && \
