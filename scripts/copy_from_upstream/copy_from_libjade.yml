@@ -3,6 +3,7 @@
 # must updated for the relevant algorithm in copy_from_upstream.yml
 # Additionaly, the algorithm name must be appended to env.LIBJADE_ALG_LIST
 # in the unix.yml and weekly.yml GitHub Actions workflows
+jasmin_version: '2023.06.3'
 upstreams:
   -
     name: libjade
