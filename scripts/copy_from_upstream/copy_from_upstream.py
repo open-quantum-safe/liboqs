@@ -151,6 +151,15 @@ def load_instructions(file):
             shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
         if file == 'copy_from_libjade.yml':
+            try:
+                version = subprocess.run(['jasminc', '-version'], capture_output=True).stdout.decode('utf-8').strip().split(' ')[-1]
+                if version != instructions['jasmin_version']:
+                    print('Expected Jasmin compiler version {}; got version {}.'.format(instructions['jasmin_version'], version))
+                    print('Must use Jasmin complier version {} or update copy_from_libjade.yml.'.format(instructions['jasmin_version']))
+                    exit(1)
+            except FileNotFoundError:
+                print('Jasmin compiler not found; must add `jasminc` to PATH.')
+                exit(1)
             shell(['make', '-C', os.path.join(work_dir, 'src')])
         if 'patches' in upstream:
             for patch in upstream['patches']:
