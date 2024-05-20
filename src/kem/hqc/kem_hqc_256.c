@@ -23,19 +23,31 @@ OQS_KEM *OQS_KEM_hqc_256_new(void) {
 	kem->length_ciphertext = OQS_KEM_hqc_256_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_hqc_256_length_shared_secret;
 
+    kem->keypair_derand = OQS_KEM_hqc_256_keypair_derand;
 	kem->keypair = OQS_KEM_hqc_256_keypair;
+    kem->encaps_derand = OQS_KEM_hqc_256_encaps_derand;
 	kem->encaps = OQS_KEM_hqc_256_encaps;
 	kem->decaps = OQS_KEM_hqc_256_decaps;
 
 	return kem;
 }
 
+extern int PQCLEAN_HQC256_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
 extern int PQCLEAN_HQC256_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_HQC256_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int PQCLEAN_HQC256_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCLEAN_HQC256_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
+OQS_API OQS_STATUS OQS_KEM_hqc_256_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
+    return OQS_ERROR;
+}
+
 OQS_API OQS_STATUS OQS_KEM_hqc_256_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return (OQS_STATUS) PQCLEAN_HQC256_CLEAN_crypto_kem_keypair(public_key, secret_key);
+}
+
+OQS_API OQS_STATUS OQS_KEM_hqc_256_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
+    return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_256_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {

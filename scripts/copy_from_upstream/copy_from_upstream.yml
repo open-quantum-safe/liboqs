@@ -149,6 +149,8 @@ kems:
     name: ml_kem
     default_implementation: ref
     upstream_location: pqcrystals-kyber-standard
+    derandomized_keypair: true
+    derandomized_encaps: true
     schemes:
       -
         scheme: "512_ipd"

@@ -156,6 +156,10 @@ def load_instructions():
                 scheme['upstream_location'] = family['upstream_location']
             if (not 'arch_specific_upstream_locations' in scheme) and 'arch_specific_upstream_locations' in family:
                 scheme['arch_specific_upstream_locations'] = family['arch_specific_upstream_locations']
+            if (not 'derandomized_keypair' in scheme) and 'derandomized_keypair' in family:
+                scheme['derandomized_keypair'] = family['derandomized_keypair']
+            if (not 'derandomized_encaps' in scheme) and 'derandomized_encaps' in family:
+                scheme['derandomized_encaps'] = family['derandomized_encaps']
             if not 'git_commit' in scheme:
                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
             if not 'git_branch' in scheme:
@@ -212,7 +216,7 @@ def load_instructions():
                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
                                                          location.format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
-                    # This is to override any implememtations provided by the default upstream that 
+                    # This is to override any implememtations provided by the default upstream that
                     # are also specifically specified
                     for arch in family['arch_specific_upstream_locations']:
                         if arch in scheme['scheme_paths']:
@@ -312,7 +316,7 @@ def load_instructions():
                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
                                                          location.format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
-                    # This is to override any implememtations provided by the default upstream that 
+                    # This is to override any implememtations provided by the default upstream that
                     # are also specifically specified
                     for arch in family['arch_specific_upstream_locations']:
                         if arch in scheme['scheme_paths']:
@@ -459,7 +463,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             ul = family['arch_specific_upstream_locations'][impl]
         elif 'arch_specific_upstream_locations' in scheme and impl in scheme['arch_specific_upstream_locations']:
             ul = scheme['arch_specific_upstream_locations'][impl]
-        
+
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
                                '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
                                'Makefile'))
