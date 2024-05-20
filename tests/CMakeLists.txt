@@ -97,7 +97,10 @@ target_link_libraries(test_kem_mem PRIVATE ${TEST_DEPS})
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${TEST_DEPS})
 
-set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
+add_executable(test_kem_derand test_kem_derand.c)
+target_link_libraries(test_kem_derand PRIVATE ${TEST_DEPS})
+
+set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem test_kem_derand)
 
 # SIG API tests
 add_executable(example_sig example_sig.c)
