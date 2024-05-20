@@ -14,11 +14,11 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
-|     HQC-128     | NA                    | IND-CCA2         |                    1 |                      2249 |                      2305 |                      4433 |                           64 |
-|     HQC-192     | NA                    | IND-CCA2         |                    3 |                      4522 |                      4586 |                      8978 |                           64 |
-|     HQC-256     | NA                    | IND-CCA2         |                    5 |                      7245 |                      7317 |                     14421 |                           64 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair coins (bytes) |   Encapsulation coins (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|------------------------:|------------------------------:|
+|     HQC-128     | NA                    | IND-CCA2         |                    1 |                      2249 |                      2305 |                      4433 |                           64 |                       0 |                             0 |
+|     HQC-192     | NA                    | IND-CCA2         |                    3 |                      4522 |                      4586 |                      8978 |                           64 |                       0 |                             0 |
+|     HQC-256     | NA                    | IND-CCA2         |                    5 |                      7245 |                      7317 |                     14421 |                           64 |                       0 |                             0 |
 
 ## HQC-128 implementation characteristics
 

@@ -4,6 +4,8 @@
 #define CRYPTO_SECRETKEYBYTES OQS_KEM_frodokem_640_aes_length_secret_key
 #define CRYPTO_CIPHERTEXTBYTES OQS_KEM_frodokem_640_aes_length_ciphertext
 #define CRYPTO_BYTES OQS_KEM_frodokem_640_aes_length_shared_secret
+#define CRYPTO_KEYPAIRCOINBYTES OQS_KEM_frodokem_640_aes_length_keypair_coins
+#define CRYPTO_ENCCOINBYTES OQS_KEM_frodokem_640_aes_length_encaps_coins
 
 // Parameters for "FrodoKEM-640"
 #define PARAMS_N 640
@@ -27,7 +29,9 @@
 #define shake     OQS_SHA3_shake128
 #define USE_AES128_FOR_A
 
+#define crypto_kem_keypair_derand     OQS_KEM_frodokem_640_aes_keypair_derand
 #define crypto_kem_keypair            OQS_KEM_frodokem_640_aes_keypair
+#define crypto_kem_enc_derand         OQS_KEM_frodokem_640_aes_encaps_derand
 #define crypto_kem_enc                OQS_KEM_frodokem_640_aes_encaps
 #define crypto_kem_dec                OQS_KEM_frodokem_640_aes_decaps
 

@@ -165,6 +165,12 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
                 oqs_scheme_yaml['length-shared-secret'] = rhs_if_not_equal(oqs_scheme_yaml['length-shared-secret'], upstream_yaml['length-shared-secret'], "length-shared-secret")
 
+                if "length-keypair-coins" in oqs_scheme_yaml:
+                    oqs_scheme_yaml['length-keypair-coins'] = rhs_if_not_equal(oqs_scheme_yaml['length-keypair-coins'], upstream_yaml['length-keypair-coins'], "length-keypair-coins")
+
+                if "length-encaps-coins'" in oqs_scheme_yaml:
+                    oqs_scheme_yaml['length-encaps-coins'] = rhs_if_not_equal(oqs_scheme_yaml['length-encaps-coins'], upstream_yaml['length-encaps-coins'], "length-encaps-coins")
+
                 _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
                     if impl['upstream'] != 'libjade':

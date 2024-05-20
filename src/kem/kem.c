@@ -466,6 +466,14 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	}
 }
 
+OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
+	if (kem == NULL) {
+		return OQS_ERROR;
+	} else {
+		return kem->keypair_derand(public_key, secret_key, coins);
+	}
+}
+
 OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
@@ -473,6 +481,15 @@ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint
 		return kem->keypair(public_key, secret_key);
 	}
 }
+
+OQS_API OQS_STATUS OQS_KEM_encaps_derand(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
+	if (kem == NULL) {
+		return OQS_ERROR;
+	} else {
+		return kem->encaps_derand(ciphertext, shared_secret, public_key, coins);
+	}
+}
+
 
 OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	if (kem == NULL) {

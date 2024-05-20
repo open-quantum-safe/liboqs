@@ -40,6 +40,15 @@ def test_sig_stfl_leak(sig_stfl_name):
             ["valgrind", "-s", "--error-exitcode=1", "--leak-check=full", "--show-leak-kinds=all", helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
         )
 
+@helpers.filtered_test
+@pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
+def test_kem_derand_leak(kem_name):
+    if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
+    if sys.platform != "linux" or os.system("grep ubuntu /etc/os-release") != 0 or os.system("uname -a | grep x86_64") != 0: pytest.skip('Leak testing not supported on this platform')
+    helpers.run_subprocess(
+        ["valgrind", "-s", "--error-exitcode=1", "--leak-check=full", "--show-leak-kinds=all", "--vex-guest-max-insns=25", "--track-origins=yes", helpers.path_to_executable('test_kem_derand'), kem_name],
+    )
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
