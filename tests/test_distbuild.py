@@ -37,6 +37,17 @@ def test_sig(sig_name):
     helpers.run_subprocess(["qemu-"+platform.machine()+"-static", "-cpu", MINCPU,
                              helpers.path_to_executable('test_sig'), sig_name])
 
+@helpers.filtered_test
+@pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
+@helpers.test_requires_build_options("OQS_DIST_BUILD")
+@helpers.test_requires_qemu(platform.machine(), MINCPU)
+def test_kem_derand(kem_name):
+    if not(helpers.is_kem_enabled_by_name(kem_name)):
+        pytest.skip('Not enabled')
+
+    helpers.run_subprocess(["qemu-"+platform.machine()+"-static", "-cpu", MINCPU,
+                            helpers.path_to_executable('test_kem_derand'), kem_name])
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)

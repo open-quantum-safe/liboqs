@@ -200,6 +200,10 @@ def load_instructions(file='copy_from_upstream.yml'):
                 scheme['upstream_location'] = family['upstream_location']
             if (not 'arch_specific_upstream_locations' in scheme) and 'arch_specific_upstream_locations' in family:
                 scheme['arch_specific_upstream_locations'] = family['arch_specific_upstream_locations']
+            if (not 'derandomized_keypair' in scheme) and 'derandomized_keypair' in family:
+                scheme['derandomized_keypair'] = family['derandomized_keypair']
+            if (not 'derandomized_encaps' in scheme) and 'derandomized_encaps' in family:
+                scheme['derandomized_encaps'] = family['derandomized_encaps']
             if not 'git_commit' in scheme:
                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
             if not 'git_branch' in scheme:
