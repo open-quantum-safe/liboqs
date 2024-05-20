@@ -64,9 +64,9 @@ OQS_KEM *OQS_KEM_ml_kem_512_new(void) {
 }
 #endif
 
-extern int PQCLEAN_MLKEM512IPD_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+extern int pqcrystals_ml_kem_512_ipd_ref_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
 extern int pqcrystals_ml_kem_512_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCLEAN_MLKEM512IPD_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+extern int pqcrystals_ml_kem_512_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int pqcrystals_ml_kem_512_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_ml_kem_512_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
@@ -81,14 +81,14 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair_derand(uint8_t *public_key, ui
 #if defined(OQS_DIST_BUILD)
     if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-    	return (OQS_STATUS) PQCLEAN_MLKEM512IPD_AVX2_crypto_kem_keypair_derand(public_key, secret_key, coins);
+    	return (OQS_STATUS) pqcrystals_ml_kem_512_ipd_avx2_keypair_derand(public_key, secret_key, coins);
 #if defined(OQS_DIST_BUILD)
     } else {
-        return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
+        return (OQS_STATUS) pqcrystals_ml_kem_512_ipd_ref_keypair_derand(public_key, secret_key, coins);
     }
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
+    return (OQS_STATUS) pqcrystals_ml_kem_512_ipd_ref_keypair_derand(public_key, secret_key, coins);
 #endif
 }
 
@@ -113,14 +113,14 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_encaps_derand(uint8_t *ciphertext, uin
 #if defined(OQS_DIST_BUILD)
     if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-    	return (OQS_STATUS) PQCLEAN_MLKEM512IPD_AVX2_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
+    	return (OQS_STATUS) pqcrystals_ml_kem_512_ipd_avx2_enc_derand(ciphertext, shared_secret, public_key, coins);
 #if defined(OQS_DIST_BUILD)
     } else {
-        return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
+        return (OQS_STATUS) pqcrystals_ml_kem_512_ipd_ref_enc(ciphertext, shared_secret, public_key, coins);
     }
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
+    return (OQS_STATUS) pqcrystals_ml_kem_512_ipd_ref_enc(ciphertext, shared_secret, public_key, coins);
 #endif
 }
 

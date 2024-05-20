@@ -1,0 +1,1483 @@
+2734ea8ec07a37f0462ce3292e70dd850e16e9f6
+diff --git a/scripts/copy_from_upstream/copy_from_upstream.py b/scripts/copy_from_upstream/copy_from_upstream.py
+index 0db38f54..6b1e4df6 100755
+--- a/scripts/copy_from_upstream/copy_from_upstream.py
++++ b/scripts/copy_from_upstream/copy_from_upstream.py
+@@ -156,6 +156,10 @@ def load_instructions():
+                 scheme['upstream_location'] = family['upstream_location']
+             if (not 'arch_specific_upstream_locations' in scheme) and 'arch_specific_upstream_locations' in family:
+                 scheme['arch_specific_upstream_locations'] = family['arch_specific_upstream_locations']
++            if (not 'derandomized_keypair' in scheme) and 'derandomized_keypair' in family:
++                scheme['derandomized_keypair'] = family['derandomized_keypair']
++            if (not 'derandomized_encaps' in scheme) and 'derandomized_encaps' in family:
++                scheme['derandomized_encaps'] = family['derandomized_encaps']
+             if not 'git_commit' in scheme:
+                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
+             if not 'git_branch' in scheme:
+@@ -212,7 +216,7 @@ def load_instructions():
+                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
+                                                          location.format_map(scheme))
+                 if 'arch_specific_upstream_locations' in family:
+-                    # This is to override any implememtations provided by the default upstream that 
++                    # This is to override any implememtations provided by the default upstream that
+                     # are also specifically specified
+                     for arch in family['arch_specific_upstream_locations']:
+                         if arch in scheme['scheme_paths']:
+@@ -312,7 +316,7 @@ def load_instructions():
+                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
+                                                          location.format_map(scheme))
+                 if 'arch_specific_upstream_locations' in family:
+-                    # This is to override any implememtations provided by the default upstream that 
++                    # This is to override any implememtations provided by the default upstream that
+                     # are also specifically specified
+                     for arch in family['arch_specific_upstream_locations']:
+                         if arch in scheme['scheme_paths']:
+@@ -459,7 +463,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
+             ul = family['arch_specific_upstream_locations'][impl]
+         elif 'arch_specific_upstream_locations' in scheme and impl in scheme['arch_specific_upstream_locations']:
+             ul = scheme['arch_specific_upstream_locations'][impl]
+-        
++
+         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
+                                '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
+                                'Makefile'))
+diff --git a/scripts/copy_from_upstream/copy_from_upstream.yml b/scripts/copy_from_upstream/copy_from_upstream.yml
+index d8a9a4d1..70dc957c 100644
+--- a/scripts/copy_from_upstream/copy_from_upstream.yml
++++ b/scripts/copy_from_upstream/copy_from_upstream.yml
+@@ -141,6 +141,8 @@ kems:
+     name: ml_kem
+     default_implementation: ref
+     upstream_location: pqcrystals-kyber-standard
++    derandomized_keypair: true
++    derandomized_encaps: true
+     schemes:
+       -
+         scheme: "512_ipd"
+diff --git a/scripts/copy_from_upstream/src/kem/family/kem_family.h b/scripts/copy_from_upstream/src/kem/family/kem_family.h
+index caa7cd74..f9830e47 100644
+--- a/scripts/copy_from_upstream/src/kem/family/kem_family.h
++++ b/scripts/copy_from_upstream/src/kem/family/kem_family.h
+@@ -12,7 +12,9 @@
+ #define OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext {{ scheme['metadata']['length-ciphertext'] }}
+ #define OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret {{ scheme['metadata']['length-shared-secret'] }}
+ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void);
++OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ {% if 'alias_scheme' in scheme %}
+@@ -21,7 +23,9 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
+ #define OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_ciphertext OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext
+ #define OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_shared_secret OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret
+ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void);
++#define OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair_derand OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand
+ #define OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair
++#define OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps_derand OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand
+ #define OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps
+ #define OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_decaps OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps
+ {% endif -%}
+diff --git a/scripts/copy_from_upstream/src/kem/family/kem_scheme.c b/scripts/copy_from_upstream/src/kem/family/kem_scheme.c
+index a78b30fb..7f8e6ac4 100644
+--- a/scripts/copy_from_upstream/src/kem/family/kem_scheme.c
++++ b/scripts/copy_from_upstream/src/kem/family/kem_scheme.c
+@@ -26,7 +26,9 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
+ 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair;
++    kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand;
+ 	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps;
+ 	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps;
+ 
+@@ -57,7 +59,9 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair_derand;
+ 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair;
++    kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps_derand;
+ 	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps;
+ 	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_decaps;
+ 
+@@ -68,14 +72,28 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
+ 
+     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == scheme['default_implementation'] %}
+ 
++        {%- if impl['signature_keypair_derand'] %}
++           {%- set cleankeypair = scheme['metadata'].update({'default_keypair_derand_signature': impl['signature_keypair_derand']}) -%}
++        {%- else %}
++           {%- set cleankeypair = scheme['metadata'].update({'default_keypair_derand_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_keypair_derand"}) -%}
++        {%- endif %}
++
++extern int {{ scheme['metadata']['default_keypair_derand_signature'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
++
+         {%- if impl['signature_keypair'] %}
+            {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': impl['signature_keypair']}) -%}
+         {%- else %}
+            {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_keypair"}) -%}
+         {%- endif %}
+-
+ extern int {{ scheme['metadata']['default_keypair_signature'] }}(uint8_t *pk, uint8_t *sk);
+ 
++        {%- if impl['signature_enc_derand'] %}
++           {%- set cleanenc = scheme['metadata'].update({'default_enc_derand_signature': impl['signature_enc']}) -%}
++        {%- else %}
++           {%- set cleanenc = scheme['metadata'].update({'default_enc_derand_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_enc_derand"}) -%}
++        {%- endif %}
++extern int {{ scheme['metadata']['default_enc_derand_signature'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
++
+         {%- if impl['signature_enc'] %}
+            {%- set cleanenc = scheme['metadata'].update({'default_enc_signature': impl['signature_enc']}) -%}
+         {%- else %}
+@@ -115,6 +133,44 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper
+ #endif
+     {%- endfor %}
+ 
++OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++{%- if scheme['derandomized_keypair'] %}
++    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
++    {%- if loop.first %}
++#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
++    {%- else %}
++#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
++    {%- endif %}
++    {%- if 'required_flags' in impl and impl['required_flags'] %}
++#if defined(OQS_DIST_BUILD)
++    if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
++#endif /* OQS_DIST_BUILD */
++    {%- endif -%}
++        {%- if impl['signature_keypair_derand'] %}
++    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_keypair_derand'] }}(public_key, secret_key, coins);
++        {%- else %}
++    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair_derand(public_key, secret_key, coins);
++        {%- endif %}
++    {%- if 'required_flags' in impl and impl['required_flags'] %}
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++    {%- endif -%}
++    {%- endfor %}
++    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
++#else
++    {%- endif %}
++    return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, coins);
++    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
++#endif
++    {%- endif %}
++    {%- else %}
++    return OQS_ERROR;
++    {%- endif %}
++}
++
+ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
+     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+     {%- if loop.first %}
+@@ -149,6 +205,44 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
+     {%- endif %}
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++{%- if scheme['derandomized_keypair'] %}
++    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
++    {%- if loop.first %}
++#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
++    {%- else %}
++#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
++    {%- endif %}
++    {%- if 'required_flags' in impl and impl['required_flags'] %}
++#if defined(OQS_DIST_BUILD)
++    if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
++#endif /* OQS_DIST_BUILD */
++    {%- endif -%}
++        {%- if impl['signature_enc_derand'] %}
++    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_enc_derand'] }}(ciphertext, shared_secret, public_key, coins);
++        {%- else %}
++    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++        {%- endif %}
++    {%- if 'required_flags' in impl and impl['required_flags'] %}
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++    {%- endif -%}
++    {%- endfor %}
++    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
++#else
++    {%- endif %}
++    return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, coins);
++    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
++#endif
++    {%- endif %}
++    {%- else %}
++    return OQS_ERROR;
++    {%- endif %}
++}
++
+ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+     {%- if loop.first %}
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece.h b/src/kem/classic_mceliece/kem_classic_mceliece.h
+index 2bbd9698..dbe4a1d8 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece.h
++++ b/src/kem/classic_mceliece/kem_classic_mceliece.h
+@@ -11,7 +11,9 @@
+ #define OQS_KEM_classic_mceliece_348864_length_ciphertext 96
+ #define OQS_KEM_classic_mceliece_348864_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_348864_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -22,7 +24,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_decaps(uint8_t *shared_secret
+ #define OQS_KEM_classic_mceliece_348864f_length_ciphertext 96
+ #define OQS_KEM_classic_mceliece_348864f_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_348864f_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -33,7 +37,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_decaps(uint8_t *shared_secre
+ #define OQS_KEM_classic_mceliece_460896_length_ciphertext 156
+ #define OQS_KEM_classic_mceliece_460896_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_460896_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -44,7 +50,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_decaps(uint8_t *shared_secret
+ #define OQS_KEM_classic_mceliece_460896f_length_ciphertext 156
+ #define OQS_KEM_classic_mceliece_460896f_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_460896f_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -55,7 +63,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_decaps(uint8_t *shared_secre
+ #define OQS_KEM_classic_mceliece_6688128_length_ciphertext 208
+ #define OQS_KEM_classic_mceliece_6688128_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_6688128_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -66,7 +76,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_decaps(uint8_t *shared_secre
+ #define OQS_KEM_classic_mceliece_6688128f_length_ciphertext 208
+ #define OQS_KEM_classic_mceliece_6688128f_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_6688128f_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -77,7 +89,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_decaps(uint8_t *shared_secr
+ #define OQS_KEM_classic_mceliece_6960119_length_ciphertext 194
+ #define OQS_KEM_classic_mceliece_6960119_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_6960119_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -88,7 +102,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_decaps(uint8_t *shared_secre
+ #define OQS_KEM_classic_mceliece_6960119f_length_ciphertext 194
+ #define OQS_KEM_classic_mceliece_6960119f_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_6960119f_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -99,7 +115,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_decaps(uint8_t *shared_secr
+ #define OQS_KEM_classic_mceliece_8192128_length_ciphertext 208
+ #define OQS_KEM_classic_mceliece_8192128_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_8192128_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -110,7 +128,9 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_decaps(uint8_t *shared_secre
+ #define OQS_KEM_classic_mceliece_8192128f_length_ciphertext 208
+ #define OQS_KEM_classic_mceliece_8192128f_length_shared_secret 32
+ OQS_KEM *OQS_KEM_classic_mceliece_8192128f_new(void);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_348864.c b/src/kem/classic_mceliece/kem_classic_mceliece_348864.c
+index 87b74a1b..05ba616c 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_348864.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_348864.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_348864_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_348864_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_348864_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_348864_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_348864_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_348864_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_348864_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_348864_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE348864_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss,
+ extern int PQCLEAN_MCELIECE348864_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_348864_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_keypair(uint8_t *public_key,
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_348864_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_348864f.c b/src/kem/classic_mceliece/kem_classic_mceliece_348864f.c
+index a3c347af..8c25a038 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_348864f.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_348864f.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_348864f_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_348864f_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_348864f_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_348864f_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_348864f_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_348864f_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_348864f_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_348864f_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss,
+ extern int PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_348864f_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_keypair(uint8_t *public_key,
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_348864f_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_460896.c b/src/kem/classic_mceliece/kem_classic_mceliece_460896.c
+index 839f8d45..850948c6 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_460896.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_460896.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_460896_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_460896_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_460896_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_460896_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_460896_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_460896_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_460896_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_460896_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE460896_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss,
+ extern int PQCLEAN_MCELIECE460896_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_460896_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_keypair(uint8_t *public_key,
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_460896_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_460896f.c b/src/kem/classic_mceliece/kem_classic_mceliece_460896f.c
+index 06291664..751b60b7 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_460896f.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_460896f.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_460896f_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_460896f_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_460896f_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_460896f_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_460896f_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_460896f_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_460896f_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_460896f_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss,
+ extern int PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_460896f_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_keypair(uint8_t *public_key,
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_460896f_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_6688128.c b/src/kem/classic_mceliece/kem_classic_mceliece_6688128.c
+index 91a70105..671926c9 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_6688128.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_6688128.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_6688128_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_6688128_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_6688128_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_6688128_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_6688128_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_6688128_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_6688128_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_6688128_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss,
+ extern int PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6688128_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_keypair(uint8_t *public_key,
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6688128_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_6688128f.c b/src/kem/classic_mceliece/kem_classic_mceliece_6688128f.c
+index d97e5c35..7858591c 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_6688128f.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_6688128f.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_6688128f_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_6688128f_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_6688128f_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_6688128f_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_6688128f_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_6688128f_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_6688128f_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_6688128f_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss
+ extern int PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6688128f_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_keypair(uint8_t *public_key
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6688128f_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_6960119.c b/src/kem/classic_mceliece/kem_classic_mceliece_6960119.c
+index 70d828fc..044e64d7 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_6960119.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_6960119.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_6960119_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_6960119_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_6960119_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_6960119_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_6960119_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_6960119_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_6960119_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_6960119_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss,
+ extern int PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6960119_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_keypair(uint8_t *public_key,
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6960119_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_6960119f.c b/src/kem/classic_mceliece/kem_classic_mceliece_6960119f.c
+index 5c4bfa71..03983d34 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_6960119f.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_6960119f.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_6960119f_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_6960119f_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_6960119f_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_6960119f_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_6960119f_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_6960119f_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_6960119f_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_6960119f_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss
+ extern int PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6960119f_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_keypair(uint8_t *public_key
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_6960119f_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_8192128.c b/src/kem/classic_mceliece/kem_classic_mceliece_8192128.c
+index 4dc8fe26..d7957788 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_8192128.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_8192128.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_8192128_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_8192128_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_8192128_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_8192128_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_8192128_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_8192128_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_8192128_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_8192128_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss,
+ extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_8192128_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_keypair(uint8_t *public_key,
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_8192128_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/classic_mceliece/kem_classic_mceliece_8192128f.c b/src/kem/classic_mceliece/kem_classic_mceliece_8192128f.c
+index 81981c1f..c2762c0a 100644
+--- a/src/kem/classic_mceliece/kem_classic_mceliece_8192128f.c
++++ b/src/kem/classic_mceliece/kem_classic_mceliece_8192128f.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_classic_mceliece_8192128f_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_classic_mceliece_8192128f_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_classic_mceliece_8192128f_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_classic_mceliece_8192128f_keypair_derand;
+ 	kem->keypair = OQS_KEM_classic_mceliece_8192128f_keypair;
++    kem->encaps_derand = OQS_KEM_classic_mceliece_8192128f_encaps_derand;
+ 	kem->encaps = OQS_KEM_classic_mceliece_8192128f_encaps;
+ 	kem->decaps = OQS_KEM_classic_mceliece_8192128f_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -40,6 +44,10 @@ extern int PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss
+ extern int PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_8192128f_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -56,6 +64,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_keypair(uint8_t *public_key
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_classic_mceliece_8192128f_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/hqc/kem_hqc.h b/src/kem/hqc/kem_hqc.h
+index b1f02237..a4e304e8 100644
+--- a/src/kem/hqc/kem_hqc.h
++++ b/src/kem/hqc/kem_hqc.h
+@@ -11,7 +11,9 @@
+ #define OQS_KEM_hqc_128_length_ciphertext 4433
+ #define OQS_KEM_hqc_128_length_shared_secret 64
+ OQS_KEM *OQS_KEM_hqc_128_new(void);
++OQS_API OQS_STATUS OQS_KEM_hqc_128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_hqc_128_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_hqc_128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_hqc_128_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_hqc_128_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -22,7 +24,9 @@ OQS_API OQS_STATUS OQS_KEM_hqc_128_decaps(uint8_t *shared_secret, const uint8_t
+ #define OQS_KEM_hqc_192_length_ciphertext 8978
+ #define OQS_KEM_hqc_192_length_shared_secret 64
+ OQS_KEM *OQS_KEM_hqc_192_new(void);
++OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_hqc_192_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -33,7 +37,9 @@ OQS_API OQS_STATUS OQS_KEM_hqc_192_decaps(uint8_t *shared_secret, const uint8_t
+ #define OQS_KEM_hqc_256_length_ciphertext 14421
+ #define OQS_KEM_hqc_256_length_shared_secret 64
+ OQS_KEM *OQS_KEM_hqc_256_new(void);
++OQS_API OQS_STATUS OQS_KEM_hqc_256_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_hqc_256_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_hqc_256_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_hqc_256_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_hqc_256_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+diff --git a/src/kem/hqc/kem_hqc_128.c b/src/kem/hqc/kem_hqc_128.c
+index edabb8c2..7799bc27 100644
+--- a/src/kem/hqc/kem_hqc_128.c
++++ b/src/kem/hqc/kem_hqc_128.c
+@@ -23,21 +23,33 @@ OQS_KEM *OQS_KEM_hqc_128_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_hqc_128_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_hqc_128_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_hqc_128_keypair_derand;
+ 	kem->keypair = OQS_KEM_hqc_128_keypair;
++    kem->encaps_derand = OQS_KEM_hqc_128_encaps_derand;
+ 	kem->encaps = OQS_KEM_hqc_128_encaps;
+ 	kem->decaps = OQS_KEM_hqc_128_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_HQC128_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_HQC128_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_HQC128_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_HQC128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_HQC128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
++OQS_API OQS_STATUS OQS_KEM_hqc_128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_hqc_128_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ 	return (OQS_STATUS) PQCLEAN_HQC128_CLEAN_crypto_kem_keypair(public_key, secret_key);
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_hqc_128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_hqc_128_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ 	return (OQS_STATUS) PQCLEAN_HQC128_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+ }
+diff --git a/src/kem/hqc/kem_hqc_192.c b/src/kem/hqc/kem_hqc_192.c
+index 3da83c5e..43efea41 100644
+--- a/src/kem/hqc/kem_hqc_192.c
++++ b/src/kem/hqc/kem_hqc_192.c
+@@ -23,21 +23,33 @@ OQS_KEM *OQS_KEM_hqc_192_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_hqc_192_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_hqc_192_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_hqc_192_keypair_derand;
+ 	kem->keypair = OQS_KEM_hqc_192_keypair;
++    kem->encaps_derand = OQS_KEM_hqc_192_encaps_derand;
+ 	kem->encaps = OQS_KEM_hqc_192_encaps;
+ 	kem->decaps = OQS_KEM_hqc_192_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_HQC192_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_HQC192_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_HQC192_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_HQC192_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_HQC192_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
++OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ 	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_keypair(public_key, secret_key);
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ 	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+ }
+diff --git a/src/kem/hqc/kem_hqc_256.c b/src/kem/hqc/kem_hqc_256.c
+index a80197c2..70bef232 100644
+--- a/src/kem/hqc/kem_hqc_256.c
++++ b/src/kem/hqc/kem_hqc_256.c
+@@ -23,21 +23,33 @@ OQS_KEM *OQS_KEM_hqc_256_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_hqc_256_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_hqc_256_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_hqc_256_keypair_derand;
+ 	kem->keypair = OQS_KEM_hqc_256_keypair;
++    kem->encaps_derand = OQS_KEM_hqc_256_encaps_derand;
+ 	kem->encaps = OQS_KEM_hqc_256_encaps;
+ 	kem->decaps = OQS_KEM_hqc_256_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_HQC256_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int PQCLEAN_HQC256_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_HQC256_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int PQCLEAN_HQC256_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int PQCLEAN_HQC256_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
++OQS_API OQS_STATUS OQS_KEM_hqc_256_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_hqc_256_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ 	return (OQS_STATUS) PQCLEAN_HQC256_CLEAN_crypto_kem_keypair(public_key, secret_key);
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_hqc_256_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_hqc_256_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ 	return (OQS_STATUS) PQCLEAN_HQC256_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+ }
+diff --git a/src/kem/kem.c b/src/kem/kem.c
+index 0a340e4f..6dd11e1c 100644
+--- a/src/kem/kem.c
++++ b/src/kem/kem.c
+@@ -511,6 +511,14 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
+ 	}
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++	if (kem == NULL) {
++		return OQS_ERROR;
++	} else {
++		return kem->keypair_derand(public_key, secret_key, coins);
++	}
++}
++
+ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
+ 	if (kem == NULL) {
+ 		return OQS_ERROR;
+@@ -519,6 +527,15 @@ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint
+ 	}
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_encaps_derand(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++	if (kem == NULL) {
++		return OQS_ERROR;
++	} else {
++		return kem->encaps_derand(ciphertext, shared_secret, public_key, coins);
++	}
++}
++
++
+ OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ 	if (kem == NULL) {
+ 		return OQS_ERROR;
+diff --git a/src/kem/kem.h b/src/kem/kem.h
+index 36ae08da..a8dea19e 100644
+--- a/src/kem/kem.h
++++ b/src/kem/kem.h
+@@ -163,6 +163,22 @@ typedef struct OQS_KEM {
+ 	size_t length_ciphertext;
+ 	/** The length, in bytes, of shared secrets for this KEM. */
+ 	size_t length_shared_secret;
++    /** The length, in bytes, of coins for this KEM. */
++    size_t length_coins;
++
++	/**
++	 * Derandomized keypair generation algorithm.
++	 *
++	 * Caller is responsible for allocating sufficient memory for `public_key` and
++	 * `secret_key`, based on the `length_*` members in this object or the per-scheme
++	 * compile-time macros `OQS_KEM_*_length_*`.
++	 *
++	 * @param[out] public_key The public key represented as a byte string.
++	 * @param[out] secret_key The secret key represented as a byte string.
++     * @param[in] coins The input randomness represented as a byte string.
++	 * @return OQS_SUCCESS or OQS_ERROR
++	 */
++	OQS_STATUS (*keypair_derand)(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ 
+ 	/**
+ 	 * Keypair generation algorithm.
+@@ -177,6 +193,21 @@ typedef struct OQS_KEM {
+ 	 */
+ 	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
+ 
++	/**
++	 * Derandomized encapsulation algorithm.
++	 *
++	 * Caller is responsible for allocating sufficient memory for `ciphertext` and
++	 * `shared_secret`, based on the `length_*` members in this object or the per-scheme
++	 * compile-time macros `OQS_KEM_*_length_*`.
++	 *
++	 * @param[out] ciphertext The ciphertext (encapsulation) represented as a byte string.
++	 * @param[out] shared_secret The shared secret represented as a byte string.
++	 * @param[in] public_key The public key represented as a byte string.
++     * @param[in] coins The input randomness represented as a byte string.
++	 * @return OQS_SUCCESS or OQS_ERROR
++	 */
++	OQS_STATUS (*encaps_derand)(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
++
+ 	/**
+ 	 * Encapsulation algorithm.
+ 	 *
+diff --git a/src/kem/kyber/kem_kyber.h b/src/kem/kyber/kem_kyber.h
+index cb475aff..2677b266 100644
+--- a/src/kem/kyber/kem_kyber.h
++++ b/src/kem/kyber/kem_kyber.h
+@@ -11,7 +11,9 @@
+ #define OQS_KEM_kyber_512_length_ciphertext 768
+ #define OQS_KEM_kyber_512_length_shared_secret 32
+ OQS_KEM *OQS_KEM_kyber_512_new(void);
++OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_kyber_512_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_kyber_512_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_kyber_512_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -22,7 +24,9 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_decaps(uint8_t *shared_secret, const uint8_
+ #define OQS_KEM_kyber_768_length_ciphertext 1088
+ #define OQS_KEM_kyber_768_length_shared_secret 32
+ OQS_KEM *OQS_KEM_kyber_768_new(void);
++OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_kyber_768_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+@@ -33,7 +37,9 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_decaps(uint8_t *shared_secret, const uint8_
+ #define OQS_KEM_kyber_1024_length_ciphertext 1568
+ #define OQS_KEM_kyber_1024_length_shared_secret 32
+ OQS_KEM *OQS_KEM_kyber_1024_new(void);
++OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_kyber_1024_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_kyber_1024_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_kyber_1024_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ #endif
+diff --git a/src/kem/kyber/kem_kyber_1024.c b/src/kem/kyber/kem_kyber_1024.c
+index db72b23c..ea04750f 100644
+--- a/src/kem/kyber/kem_kyber_1024.c
++++ b/src/kem/kyber/kem_kyber_1024.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_kyber_1024_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_kyber_1024_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_kyber_1024_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_kyber_1024_keypair_derand;
+ 	kem->keypair = OQS_KEM_kyber_1024_keypair;
++    kem->encaps_derand = OQS_KEM_kyber_1024_encaps_derand;
+ 	kem->encaps = OQS_KEM_kyber_1024_encaps;
+ 	kem->decaps = OQS_KEM_kyber_1024_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_KYBER1024_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int pqcrystals_kyber1024_ref_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_KYBER1024_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int pqcrystals_kyber1024_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int pqcrystals_kyber1024_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -46,6 +50,10 @@ extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_enc(uint8_t *ct, uint8_t *ss, co
+ extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_kyber_1024_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -72,6 +80,10 @@ OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair(uint8_t *public_key, uint8_t *secr
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_kyber_1024_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_kyber_1024_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_kyber_1024_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/kyber/kem_kyber_512.c b/src/kem/kyber/kem_kyber_512.c
+index a226787f..34900a45 100644
+--- a/src/kem/kyber/kem_kyber_512.c
++++ b/src/kem/kyber/kem_kyber_512.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_kyber_512_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_kyber_512_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_kyber_512_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_kyber_512_keypair_derand;
+ 	kem->keypair = OQS_KEM_kyber_512_keypair;
++    kem->encaps_derand = OQS_KEM_kyber_512_encaps_derand;
+ 	kem->encaps = OQS_KEM_kyber_512_encaps;
+ 	kem->decaps = OQS_KEM_kyber_512_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_KYBER512_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int pqcrystals_kyber512_ref_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_KYBER512_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int pqcrystals_kyber512_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int pqcrystals_kyber512_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -46,6 +50,10 @@ extern int PQCLEAN_KYBER512_AARCH64_crypto_kem_enc(uint8_t *ct, uint8_t *ss, con
+ extern int PQCLEAN_KYBER512_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_kyber_512_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -72,6 +80,10 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair(uint8_t *public_key, uint8_t *secre
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_kyber_512_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_kyber_512_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_kyber_512_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/kyber/kem_kyber_768.c b/src/kem/kyber/kem_kyber_768.c
+index bc21b003..882d273b 100644
+--- a/src/kem/kyber/kem_kyber_768.c
++++ b/src/kem/kyber/kem_kyber_768.c
+@@ -23,14 +23,18 @@ OQS_KEM *OQS_KEM_kyber_768_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_kyber_768_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_kyber_768_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_kyber_768_keypair_derand;
+ 	kem->keypair = OQS_KEM_kyber_768_keypair;
++    kem->encaps_derand = OQS_KEM_kyber_768_encaps_derand;
+ 	kem->encaps = OQS_KEM_kyber_768_encaps;
+ 	kem->decaps = OQS_KEM_kyber_768_decaps;
+ 
+ 	return kem;
+ }
+ 
++extern int PQCLEAN_KYBER768_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int pqcrystals_kyber768_ref_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_KYBER768_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int pqcrystals_kyber768_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int pqcrystals_kyber768_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -46,6 +50,10 @@ extern int PQCLEAN_KYBER768_AARCH64_crypto_kem_enc(uint8_t *ct, uint8_t *ss, con
+ extern int PQCLEAN_KYBER768_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -72,6 +80,10 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secre
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++    return OQS_ERROR;
++}
++
+ OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/ml_kem/kem_ml_kem.h b/src/kem/ml_kem/kem_ml_kem.h
+index b3e3d99c..ca9ab2e4 100644
+--- a/src/kem/ml_kem/kem_ml_kem.h
++++ b/src/kem/ml_kem/kem_ml_kem.h
+@@ -11,7 +11,9 @@
+ #define OQS_KEM_ml_kem_512_ipd_length_ciphertext 768
+ #define OQS_KEM_ml_kem_512_ipd_length_shared_secret 32
+ OQS_KEM *OQS_KEM_ml_kem_512_ipd_new(void);
++OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ 
+@@ -20,7 +22,9 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_decaps(uint8_t *shared_secret, const u
+ #define OQS_KEM_ml_kem_512_length_ciphertext OQS_KEM_ml_kem_512_ipd_length_ciphertext
+ #define OQS_KEM_ml_kem_512_length_shared_secret OQS_KEM_ml_kem_512_ipd_length_shared_secret
+ OQS_KEM *OQS_KEM_ml_kem_512_new(void);
++#define OQS_KEM_ml_kem_512_keypair_derand OQS_KEM_ml_kem_512_ipd_keypair_derand
+ #define OQS_KEM_ml_kem_512_keypair OQS_KEM_ml_kem_512_ipd_keypair
++#define OQS_KEM_ml_kem_512_encaps_derand OQS_KEM_ml_kem_512_ipd_encaps_derand
+ #define OQS_KEM_ml_kem_512_encaps OQS_KEM_ml_kem_512_ipd_encaps
+ #define OQS_KEM_ml_kem_512_decaps OQS_KEM_ml_kem_512_ipd_decaps
+ #endif
+@@ -31,7 +35,9 @@ OQS_KEM *OQS_KEM_ml_kem_512_new(void);
+ #define OQS_KEM_ml_kem_768_ipd_length_ciphertext 1088
+ #define OQS_KEM_ml_kem_768_ipd_length_shared_secret 32
+ OQS_KEM *OQS_KEM_ml_kem_768_ipd_new(void);
++OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ 
+@@ -40,7 +46,9 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_decaps(uint8_t *shared_secret, const u
+ #define OQS_KEM_ml_kem_768_length_ciphertext OQS_KEM_ml_kem_768_ipd_length_ciphertext
+ #define OQS_KEM_ml_kem_768_length_shared_secret OQS_KEM_ml_kem_768_ipd_length_shared_secret
+ OQS_KEM *OQS_KEM_ml_kem_768_new(void);
++#define OQS_KEM_ml_kem_768_keypair_derand OQS_KEM_ml_kem_768_ipd_keypair_derand
+ #define OQS_KEM_ml_kem_768_keypair OQS_KEM_ml_kem_768_ipd_keypair
++#define OQS_KEM_ml_kem_768_encaps_derand OQS_KEM_ml_kem_768_ipd_encaps_derand
+ #define OQS_KEM_ml_kem_768_encaps OQS_KEM_ml_kem_768_ipd_encaps
+ #define OQS_KEM_ml_kem_768_decaps OQS_KEM_ml_kem_768_ipd_decaps
+ #endif
+@@ -51,7 +59,9 @@ OQS_KEM *OQS_KEM_ml_kem_768_new(void);
+ #define OQS_KEM_ml_kem_1024_ipd_length_ciphertext 1568
+ #define OQS_KEM_ml_kem_1024_ipd_length_shared_secret 32
+ OQS_KEM *OQS_KEM_ml_kem_1024_ipd_new(void);
++OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
++OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
+ 
+@@ -60,7 +70,9 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_decaps(uint8_t *shared_secret, const
+ #define OQS_KEM_ml_kem_1024_length_ciphertext OQS_KEM_ml_kem_1024_ipd_length_ciphertext
+ #define OQS_KEM_ml_kem_1024_length_shared_secret OQS_KEM_ml_kem_1024_ipd_length_shared_secret
+ OQS_KEM *OQS_KEM_ml_kem_1024_new(void);
++#define OQS_KEM_ml_kem_1024_keypair_derand OQS_KEM_ml_kem_1024_ipd_keypair_derand
+ #define OQS_KEM_ml_kem_1024_keypair OQS_KEM_ml_kem_1024_ipd_keypair
++#define OQS_KEM_ml_kem_1024_encaps_derand OQS_KEM_ml_kem_1024_ipd_encaps_derand
+ #define OQS_KEM_ml_kem_1024_encaps OQS_KEM_ml_kem_1024_ipd_encaps
+ #define OQS_KEM_ml_kem_1024_decaps OQS_KEM_ml_kem_1024_ipd_decaps
+ #endif
+diff --git a/src/kem/ml_kem/kem_ml_kem_1024_ipd.c b/src/kem/ml_kem/kem_ml_kem_1024_ipd.c
+index 7667187f..999ecf18 100644
+--- a/src/kem/ml_kem/kem_ml_kem_1024_ipd.c
++++ b/src/kem/ml_kem/kem_ml_kem_1024_ipd.c
+@@ -25,7 +25,9 @@ OQS_KEM *OQS_KEM_ml_kem_1024_ipd_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_ml_kem_1024_ipd_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_ml_kem_1024_ipd_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_ml_kem_1024_ipd_keypair_derand;
+ 	kem->keypair = OQS_KEM_ml_kem_1024_ipd_keypair;
++    kem->encaps_derand = OQS_KEM_ml_kem_1024_ipd_encaps_derand;
+ 	kem->encaps = OQS_KEM_ml_kem_1024_ipd_encaps;
+ 	kem->decaps = OQS_KEM_ml_kem_1024_ipd_decaps;
+ 
+@@ -52,7 +54,9 @@ OQS_KEM *OQS_KEM_ml_kem_1024_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_ml_kem_1024_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_ml_kem_1024_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_ml_kem_1024_keypair_derand;
+ 	kem->keypair = OQS_KEM_ml_kem_1024_keypair;
++    kem->encaps_derand = OQS_KEM_ml_kem_1024_encaps_derand;
+ 	kem->encaps = OQS_KEM_ml_kem_1024_encaps;
+ 	kem->decaps = OQS_KEM_ml_kem_1024_decaps;
+ 
+@@ -60,7 +64,9 @@ OQS_KEM *OQS_KEM_ml_kem_1024_new(void) {
+ }
+ #endif
+ 
++extern int PQCLEAN_MLKEM1024IPD_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int pqcrystals_ml_kem_1024_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MLKEM1024IPD_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int pqcrystals_ml_kem_1024_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int pqcrystals_ml_kem_1024_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -70,6 +76,22 @@ extern int pqcrystals_ml_kem_1024_ipd_avx2_enc(uint8_t *ct, uint8_t *ss, const u
+ extern int pqcrystals_ml_kem_1024_ipd_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++#if defined(OQS_ENABLE_KEM_ml_kem_1024_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_1024_avx2)
++#if defined(OQS_DIST_BUILD)
++    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
++#endif /* OQS_DIST_BUILD */
++    	return (OQS_STATUS) PQCLEAN_MLKEM1024IPD_AVX2_crypto_kem_keypair_derand(public_key, secret_key, coins);
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) PQCLEAN_MLKEM1024IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++#else
++    return (OQS_STATUS) PQCLEAN_MLKEM1024IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
++#endif
++}
++
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_ml_kem_1024_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_1024_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -86,6 +108,22 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair(uint8_t *public_key, uint8_t
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++#if defined(OQS_ENABLE_KEM_ml_kem_1024_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_1024_avx2)
++#if defined(OQS_DIST_BUILD)
++    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
++#endif /* OQS_DIST_BUILD */
++    	return (OQS_STATUS) PQCLEAN_MLKEM1024IPD_AVX2_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) PQCLEAN_MLKEM1024IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++#else
++    return (OQS_STATUS) PQCLEAN_MLKEM1024IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++#endif
++}
++
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_ml_kem_1024_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_1024_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/ml_kem/kem_ml_kem_512_ipd.c b/src/kem/ml_kem/kem_ml_kem_512_ipd.c
+index c9cf8166..82af5d98 100644
+--- a/src/kem/ml_kem/kem_ml_kem_512_ipd.c
++++ b/src/kem/ml_kem/kem_ml_kem_512_ipd.c
+@@ -25,7 +25,9 @@ OQS_KEM *OQS_KEM_ml_kem_512_ipd_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_ml_kem_512_ipd_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_ml_kem_512_ipd_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_ml_kem_512_ipd_keypair_derand;
+ 	kem->keypair = OQS_KEM_ml_kem_512_ipd_keypair;
++    kem->encaps_derand = OQS_KEM_ml_kem_512_ipd_encaps_derand;
+ 	kem->encaps = OQS_KEM_ml_kem_512_ipd_encaps;
+ 	kem->decaps = OQS_KEM_ml_kem_512_ipd_decaps;
+ 
+@@ -52,7 +54,9 @@ OQS_KEM *OQS_KEM_ml_kem_512_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_ml_kem_512_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_ml_kem_512_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_ml_kem_512_keypair_derand;
+ 	kem->keypair = OQS_KEM_ml_kem_512_keypair;
++    kem->encaps_derand = OQS_KEM_ml_kem_512_encaps_derand;
+ 	kem->encaps = OQS_KEM_ml_kem_512_encaps;
+ 	kem->decaps = OQS_KEM_ml_kem_512_decaps;
+ 
+@@ -60,7 +64,9 @@ OQS_KEM *OQS_KEM_ml_kem_512_new(void) {
+ }
+ #endif
+ 
++extern int PQCLEAN_MLKEM512IPD_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int pqcrystals_ml_kem_512_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MLKEM512IPD_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int pqcrystals_ml_kem_512_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int pqcrystals_ml_kem_512_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -70,6 +76,22 @@ extern int pqcrystals_ml_kem_512_ipd_avx2_enc(uint8_t *ct, uint8_t *ss, const ui
+ extern int pqcrystals_ml_kem_512_ipd_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++#if defined(OQS_ENABLE_KEM_ml_kem_512_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
++#if defined(OQS_DIST_BUILD)
++    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
++#endif /* OQS_DIST_BUILD */
++    	return (OQS_STATUS) PQCLEAN_MLKEM512IPD_AVX2_crypto_kem_keypair_derand(public_key, secret_key, coins);
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++#else
++    return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
++#endif
++}
++
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_ml_kem_512_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -86,6 +108,22 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair(uint8_t *public_key, uint8_t *
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++#if defined(OQS_ENABLE_KEM_ml_kem_512_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
++#if defined(OQS_DIST_BUILD)
++    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
++#endif /* OQS_DIST_BUILD */
++    	return (OQS_STATUS) PQCLEAN_MLKEM512IPD_AVX2_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++#else
++    return (OQS_STATUS) PQCLEAN_MLKEM512IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++#endif
++}
++
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_ml_kem_512_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
+ #if defined(OQS_DIST_BUILD)
+diff --git a/src/kem/ml_kem/kem_ml_kem_768_ipd.c b/src/kem/ml_kem/kem_ml_kem_768_ipd.c
+index da8ef088..89a12686 100644
+--- a/src/kem/ml_kem/kem_ml_kem_768_ipd.c
++++ b/src/kem/ml_kem/kem_ml_kem_768_ipd.c
+@@ -25,7 +25,9 @@ OQS_KEM *OQS_KEM_ml_kem_768_ipd_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_ml_kem_768_ipd_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_ml_kem_768_ipd_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_ml_kem_768_ipd_keypair_derand;
+ 	kem->keypair = OQS_KEM_ml_kem_768_ipd_keypair;
++    kem->encaps_derand = OQS_KEM_ml_kem_768_ipd_encaps_derand;
+ 	kem->encaps = OQS_KEM_ml_kem_768_ipd_encaps;
+ 	kem->decaps = OQS_KEM_ml_kem_768_ipd_decaps;
+ 
+@@ -52,7 +54,9 @@ OQS_KEM *OQS_KEM_ml_kem_768_new(void) {
+ 	kem->length_ciphertext = OQS_KEM_ml_kem_768_length_ciphertext;
+ 	kem->length_shared_secret = OQS_KEM_ml_kem_768_length_shared_secret;
+ 
++    kem->keypair_derand = OQS_KEM_ml_kem_768_keypair_derand;
+ 	kem->keypair = OQS_KEM_ml_kem_768_keypair;
++    kem->encaps_derand = OQS_KEM_ml_kem_768_encaps_derand;
+ 	kem->encaps = OQS_KEM_ml_kem_768_encaps;
+ 	kem->decaps = OQS_KEM_ml_kem_768_decaps;
+ 
+@@ -60,7 +64,9 @@ OQS_KEM *OQS_KEM_ml_kem_768_new(void) {
+ }
+ #endif
+ 
++extern int PQCLEAN_MLKEM768IPD_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+ extern int pqcrystals_ml_kem_768_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
++extern int PQCLEAN_MLKEM768IPD_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+ extern int pqcrystals_ml_kem_768_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+ extern int pqcrystals_ml_kem_768_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ 
+@@ -70,6 +76,22 @@ extern int pqcrystals_ml_kem_768_ipd_avx2_enc(uint8_t *ct, uint8_t *ss, const ui
+ extern int pqcrystals_ml_kem_768_ipd_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+ #endif
+ 
++OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
++#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
++#if defined(OQS_DIST_BUILD)
++    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
++#endif /* OQS_DIST_BUILD */
++    	return (OQS_STATUS) PQCLEAN_MLKEM768IPD_AVX2_crypto_kem_keypair_derand(public_key, secret_key, coins);
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) PQCLEAN_MLKEM768IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++#else
++    return (OQS_STATUS) PQCLEAN_MLKEM768IPD_REF_crypto_kem_keypair_derand(public_key, secret_key, coins);
++#endif
++}
++
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair(uint8_t *public_key, uint8_t *secret_key) {
+ #if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
+ #if defined(OQS_DIST_BUILD)
+@@ -86,6 +108,22 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair(uint8_t *public_key, uint8_t *
+ #endif
+ }
+ 
++OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
++#if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
++#if defined(OQS_DIST_BUILD)
++    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
++#endif /* OQS_DIST_BUILD */
++    	return (OQS_STATUS) PQCLEAN_MLKEM768IPD_AVX2_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++#if defined(OQS_DIST_BUILD)
++    } else {
++        return (OQS_STATUS) PQCLEAN_MLKEM768IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++    }
++#endif /* OQS_DIST_BUILD */
++#else
++    return (OQS_STATUS) PQCLEAN_MLKEM768IPD_REF_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
++#endif
++}
++
+ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+ #if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
+ #if defined(OQS_DIST_BUILD)
