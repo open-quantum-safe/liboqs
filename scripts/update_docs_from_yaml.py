@@ -75,7 +75,9 @@ def do_it(liboqs_root):
                       'Public key size (bytes)',
                       'Secret key size (bytes)',
                       'Ciphertext size (bytes)',
-                      'Shared secret size (bytes)']]
+                      'Shared secret size (bytes)',
+                      'Keypair coins (bytes)',
+                      'Encapsulation coins (bytes)']]
             for parameter_set in kem_yaml['parameter-sets']:
                 table.append([parameter_set['name'],
                               parameter_set['alias'] if 'alias' in parameter_set else "NA",
@@ -84,7 +86,9 @@ def do_it(liboqs_root):
                               parameter_set['length-public-key'],
                               parameter_set['length-secret-key'],
                               parameter_set['length-ciphertext'],
-                              parameter_set['length-shared-secret']])
+                              parameter_set['length-shared-secret'],
+                              parameter_set['length-keypair-coins'] if 'length-keypair-coins' in parameter_set else "0",
+                              parameter_set['length-encaps-coins'] if 'length-encaps-coins' in parameter_set else "0"])
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
 

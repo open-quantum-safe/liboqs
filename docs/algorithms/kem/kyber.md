@@ -21,11 +21,11 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
-|    Kyber512     | NA                    | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |
-|    Kyber768     | NA                    | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |
-|    Kyber1024    | NA                    | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair coins (bytes) |   Encapsulation coins (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|------------------------:|------------------------------:|
+|    Kyber512     | NA                    | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |                       0 |                             0 |
+|    Kyber768     | NA                    | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |                       0 |                             0 |
+|    Kyber1024    | NA                    | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |                       0 |                             0 |
 
 ## Kyber512 implementation characteristics
 
