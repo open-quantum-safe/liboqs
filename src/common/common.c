@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 AND MIT
 
-#if !defined(_WIN32) && !defined(OQS_HAVE_EXPLICIT_BZERO)
+#if !defined(OQS_USE_OPENSSL) && !defined(_WIN32) && !defined(OQS_HAVE_EXPLICIT_BZERO)
 // Request memset_s
 #define __STDC_WANT_LIB_EXT1__ 1
 #endif
@@ -256,7 +256,9 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 }
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
-#if defined(_WIN32)
+#if defined(OQS_USE_OPENSSL)
+	OSSL_FUNC(OPENSSL_cleanse)(ptr, len);
+#elif defined(_WIN32)
 	SecureZeroMemory(ptr, len);
 #elif defined(OQS_HAVE_EXPLICIT_BZERO)
 	explicit_bzero(ptr, len);

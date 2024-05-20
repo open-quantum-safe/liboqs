@@ -46,6 +46,7 @@ FUNC(const EVP_MD *, EVP_sha512, (void), ())
 FUNC(const EVP_MD *, EVP_shake128, (void), ())
 FUNC(const EVP_MD *, EVP_shake256, (void), ())
 #endif
+VOID_FUNC(void, OPENSSL_cleanse, (void *ptr, size_t len), (ptr, len))
 FUNC(int, RAND_bytes, (unsigned char *buf, int num), (buf, num))
 FUNC(int, RAND_poll, (void), ())
 FUNC(int, RAND_status, (void), ())
