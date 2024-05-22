@@ -44,6 +44,7 @@ do
   grep "dk: " "$file_decaps$VARIANT.txt" | sed 's/dk: /decaps_dk: /g' >> "$VARIANT.txt"
   grep "c: " "$file_decaps$VARIANT.txt" | sed 's/c: /decaps_c: /g' >> "$VARIANT.txt"
   grep "KPrime: " "$file_decaps$VARIANT.txt" | sed 's/KPrime: /decaps_KPrime: /g' >> "$VARIANT.txt"
+  grep "KBar: " "$file_decaps$VARIANT.txt" | sed 's/KBar: /decaps_KBar: /g' >> "$VARIANT.txt"
 
   grep "ek: " "$file_keygen$VARIANT.txt" | sed 's/ek: /keygen_ek: /g' >> "$VARIANT.txt"
   grep "dk: " "$file_keygen$VARIANT.txt" | sed 's/dk: /keygen_dk: /g' >> "$VARIANT.txt"

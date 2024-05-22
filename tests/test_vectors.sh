@@ -7,60 +7,20 @@ else
   build_dir="${OQS_BUILD_DIR}"
 fi
 
-if [[ "$1" = "ML-DSA-44-ipd" || "$1" = "ML-DSA-44" ]]; then
+if [[ "$1" =~ ^ML-DSA-(44|65|87)(-ipd)?$ ]]; then
 
-  file=tests/PQC_Intermediate_Values/ML-DSA-44.txt
   scheme_name=$1
-  
+  file="tests/PQC_Intermediate_Values/${1%-ipd}.txt"
+
   sh tests/test_sig_vectors.sh "$scheme_name" "$file" "$build_dir"
   if [ $? != 0 ]; then
       exit 1
   fi
 
-elif [[ "$1" = "ML-DSA-65-ipd" || "$1" = "ML-DSA-65" ]]; then
+elif [[ "$1" =~ ^ML-KEM-(512|768|1024)(-ipd)?$ ]]; then
 
-  file=tests/PQC_Intermediate_Values/ML-DSA-65.txt
   scheme_name=$1
-  
-  sh tests/test_sig_vectors.sh "$scheme_name" "$file" "$build_dir"
-  if [ $? != 0 ]; then
-      exit 1
-  fi
-
-elif [[ "$1" = "ML-DSA-87-ipd" || "$1" = "ML-DSA-87" ]]; then
-
-  file=tests/PQC_Intermediate_Values/ML-DSA-87.txt
-  scheme_name=$1
-  
-  sh tests/test_sig_vectors.sh "$scheme_name" "$file" "$build_dir"
-  if [ $? != 0 ]; then
-      exit 1
-  fi
-
-elif [[ "$1" = "ML-KEM-512-ipd" || "$1" = "ML-KEM-512" ]]; then
-
-  file=tests/PQC_Intermediate_Values/ML-KEM-512.txt
-  scheme_name=$1
-  
-  sh tests/test_kem_vectors.sh "$scheme_name" "$file" "$build_dir"
-  if [ $? != 0 ]; then
-      exit 1
-  fi
-
-elif [[ "$1" = "ML-KEM-768-ipd" || "$1" = "ML-KEM-768" ]]; then
-
-  file=tests/PQC_Intermediate_Values/ML-KEM-768.txt
-  scheme_name=$1
-  
-  sh tests/test_kem_vectors.sh "$scheme_name" "$file" "$build_dir"
-  if [ $? != 0 ]; then
-      exit 1
-  fi
-
-elif [[ "$1" = "ML-KEM-1024-ipd" || "$1" = "ML-KEM-1024" ]]; then
-
-  file=tests/PQC_Intermediate_Values/ML-KEM-1024.txt
-  scheme_name=$1
+  file="tests/PQC_Intermediate_Values/${1%-ipd}.txt"
   
   sh tests/test_kem_vectors.sh "$scheme_name" "$file" "$build_dir"
   if [ $? != 0 ]; then

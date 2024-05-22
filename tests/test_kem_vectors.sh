@@ -15,6 +15,7 @@ encaps_k=$(grep "encaps_K: " "$file" | sed 's/encaps_K: //g')
 decaps_dk=$(grep "decaps_dk: " "$file" | sed 's/decaps_dk: //g')
 decaps_c=$(grep "decaps_c: " "$file" | sed 's/decaps_c: //g')
 decaps_kprime=$(grep "decaps_KPrime: " "$file" | sed 's/decaps_KPrime: //g')
+decaps_kbar=$(grep "decaps_KBar: " "$file" | sed 's/decaps_KBar: //g')
 
 # KAT part
 keygen_pk=$(grep "keygen_ek: " "$file")
@@ -23,17 +24,16 @@ keygen_sk=$(grep "keygen_dk: " "$file")
 encaps_c=$(grep "encaps_c: " "$file")
 encaps_K=$(grep "encaps_K: " "$file")
 
-output=$($build_dir/tests/vectors_kem $1 "$keygen_z$keygen_d$encaps_m" "$encaps_ek" "$encaps_k" "$decaps_dk" "$decaps_c" "$decaps_kprime")
+output=$($build_dir/tests/vectors_kem $1 "$keygen_z$keygen_d$encaps_m" "$encaps_ek" "$encaps_k" "$decaps_dk" "$decaps_c" "$decaps_kprime" "$decaps_kbar")
 if [ $? != 0 ]; then
     echo "$output"
     exit 1
 fi
 
-# Parse output: pk, sk, signature
+# Parse output: pk, sk, ciphertext
 output_pk=$(echo "$output" | grep "ek: " | sed 's/ek: /keygen_ek: /g')
 output_sk=$(echo "$output" | grep "dk: " | sed 's/dk: /keygen_dk: /g')
 output_c=$(echo "$output" | grep "c: " | sed 's/c: /encaps_c: /g')
-output_K=$(echo "$output" | grep "K: " | sed 's/K: /encaps_K: /g')
 
 if [ "$keygen_pk" != "$output_pk" ]; then
     echo "keygen_pk mismatch for $1"
@@ -45,9 +45,6 @@ elif [ "$keygen_sk" != "$output_sk" ]; then
 elif [ "$encaps_c" != "$output_c" ]; then
     echo "$encaps_c\n$output_c"
     echo "encaps_c mismatch for $1"
-    exit 1
-elif [ "$encaps_K" != "$output_K" ]; then
-    echo "encaps_K mismatch for $1"
     exit 1
 else
     echo "Vector tests succeeded for $1"
