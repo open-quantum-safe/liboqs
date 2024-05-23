@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Generate Project
-        run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
+        run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
       - name: Build Project
         run: cmake --build build
 
@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Generate Project
-        run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
+        run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
       - name: Build Project
         run: cmake --build build
       - name: Test dependencies
