@@ -42,7 +42,8 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_sphincs_shake_256s_simple,
 		OQS_SIG_alg_mayo_1,
 		OQS_SIG_alg_mayo_2,
-		OQS_SIG_alg_mayo_3,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
+		OQS_SIG_alg_mayo_3,
+		OQS_SIG_alg_mayo_5,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 	};
 	if (i >= OQS_SIG_algs_length) {
 		return NULL;
@@ -256,6 +257,13 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mayo_5)) {
+#ifdef OQS_ENABLE_SIG_mayo_5
+		return 1;
+#else
+		return 0;
+#endif
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_END
 	} else {
 		return 0;
@@ -460,6 +468,13 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mayo_3)) {
 #ifdef OQS_ENABLE_SIG_mayo_3
 		return OQS_SIG_mayo_3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mayo_5)) {
+#ifdef OQS_ENABLE_SIG_mayo_5
+		return OQS_SIG_mayo_5_new();
 #else
 		return NULL;
 #endif

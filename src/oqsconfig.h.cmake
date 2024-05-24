@@ -197,6 +197,8 @@
 #cmakedefine OQS_ENABLE_SIG_mayo_2_avx2 1
 #cmakedefine OQS_ENABLE_SIG_mayo_3 1
 #cmakedefine OQS_ENABLE_SIG_mayo_3_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_5 1
+#cmakedefine OQS_ENABLE_SIG_mayo_5_avx2 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 
 #cmakedefine OQS_ENABLE_SIG_STFL_XMSS 1

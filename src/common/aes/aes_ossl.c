@@ -68,7 +68,7 @@ static void AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_
 
 static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	EVP_CIPHER_CTX *ctr_ctx = OSSL_FUNC(EVP_CIPHER_CTX_new());
-	assert(ctr_ctx != NULL);
+	OQS_EXIT_IF_NULLPTR(ctr_ctx, "OpenSSL");
 	uint8_t iv_ctr[16];
 	if (iv_len == 12) {
 		memcpy(iv_ctr, iv, 12);
@@ -94,11 +94,12 @@ static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 
 static void AES128_CTR_inc_init(const uint8_t *key, void **schedule) {
 	*schedule = malloc(sizeof(struct key_schedule));
+	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
+
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	EVP_CIPHER_CTX *ctr_ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
-	assert(ctr_ctx != NULL);
+	OQS_EXIT_IF_NULLPTR(ctr_ctx, "OpenSSL");
 
-	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
 	ks->for_ECB = 0;
 	ks->ctx = ctr_ctx;
 	memcpy(ks->key, key, 16);
@@ -139,11 +140,12 @@ static void AES256_ECB_load_schedule(const uint8_t *key, void **schedule) {
 
 static void AES256_CTR_inc_init(const uint8_t *key, void **schedule) {
 	*schedule = malloc(sizeof(struct key_schedule));
+	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
+
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	EVP_CIPHER_CTX *ctr_ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
-	assert(ctr_ctx != NULL);
+	OQS_EXIT_IF_NULLPTR(ctr_ctx, "OpenSSL");
 
-	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
 	ks->for_ECB = 0;
 	ks->ctx = ctr_ctx;
 	memcpy(ks->key, key, 32);
@@ -190,7 +192,7 @@ static void AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_
 
 static void AES256_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	EVP_CIPHER_CTX *ctr_ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
-	assert(ctr_ctx != NULL);
+	OQS_EXIT_IF_NULLPTR(ctr_ctx, "OpenSSL");
 	uint8_t iv_ctr[16];
 	if (iv_len == 12) {
 		memcpy(iv_ctr, iv, 12);
