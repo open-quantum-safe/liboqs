@@ -191,4 +191,4 @@ At the moment, libjade only supports Linux and Darwin based operating systems on
 
 Note: `ALG` in `OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG` should be replaced with the specific algorithm name as demonstrated in [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG).
 
-**Default**: `OFF` if [OQS_LIBJADE_BUILD](#OQS_LIBJADE_BUILD) is `OFF` else unset.
+**Default**: `OFF` if OQS_LIBJADE_BUILD is `OFF` else unset.
