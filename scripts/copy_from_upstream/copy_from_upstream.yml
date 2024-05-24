@@ -329,3 +329,8 @@ sigs:
         pqclean_scheme: mayo_3
         pretty_name_full: MAYO_3
         signed_msg_order: sig_then_msg
+      -
+        scheme: "5"
+        pqclean_scheme: mayo_5
+        pretty_name_full: MAYO_5
+        signed_msg_order: sig_then_msg

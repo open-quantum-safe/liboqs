@@ -38,4 +38,15 @@ OQS_API OQS_STATUS OQS_SIG_mayo_3_sign(uint8_t *signature, size_t *signature_len
 OQS_API OQS_STATUS OQS_SIG_mayo_3_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
+#if defined(OQS_ENABLE_SIG_mayo_5)
+#define OQS_SIG_mayo_5_length_public_key 5008
+#define OQS_SIG_mayo_5_length_secret_key 40
+#define OQS_SIG_mayo_5_length_signature 838
+
+OQS_SIG *OQS_SIG_mayo_5_new(void);
+OQS_API OQS_STATUS OQS_SIG_mayo_5_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_mayo_5_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_mayo_5_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+#endif
+
 #endif

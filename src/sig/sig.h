@@ -88,12 +88,14 @@ extern "C" {
 #define OQS_SIG_alg_mayo_2 "MAYO_2"
 /** Algorithm identifier for MAYO_3 */
 #define OQS_SIG_alg_mayo_3 "MAYO_3"
+/** Algorithm identifier for MAYO_5 */
+#define OQS_SIG_alg_mayo_5 "MAYO_5"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 28
+#define OQS_SIG_algs_length 29
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
