@@ -123,14 +123,9 @@ if(CONFIG_LIBOQS)
 
         if(CONFIG_LIBOQS_ENABLE_SIG_MAYO)
                 set(OQS_ENABLE_SIG_MAYO ON)
+                set(OQS_ENABLE_SIG_mayo_5 OFF)
         else()  
                 set(OQS_ENABLE_SIG_MAYO OFF)
-        endif()
-
-        if(CONFIG_LIBOQS_ENABLE_SIG_MAYO_5)
-                set(OQS_ENABLE_SIG_MAYO_5 ON)
-        else()  
-                set(OQS_ENABLE_SIG_MAYO_5 OFF)
         endif()
 
         # Add the actual liboqs targets
