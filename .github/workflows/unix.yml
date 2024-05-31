@@ -212,8 +212,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Install dependencies
         run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --break-system-packages pytest pytest-xdist pyyaml
-      - name: Patch GCC 
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gcc@13 && wget https://raw.githubusercontent.com/Homebrew/homebrew-core/eb6dd225d093b66054e18e07d56509cf670793b1/Formula/g/gcc%4013.rb && brew install --ignore-dependencies gcc@13.rb
+      #- name: Patch GCC 
+      #run: env HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gcc@13 && wget https://raw.githubusercontent.com/Homebrew/homebrew-core/eb6dd225d093b66054e18e07d56509cf670793b1/Formula/g/gcc%4013.rb && brew install --ignore-dependencies gcc@13.rb
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
