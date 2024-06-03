@@ -17,7 +17,7 @@ website: https://pq-crystals.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 primary-upstream:
-  source: https://github.com/pq-crystals/kyber/commit/b628ba78711bc28327dc7d2d5c074a00f061884e
+  source: https://github.com/pq-crystals/kyber/commit/441c0519a07e8b86c8d079954a6b10bd31d29efc
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
