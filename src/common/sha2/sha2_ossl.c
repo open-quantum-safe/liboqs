@@ -58,6 +58,10 @@ static void SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	state->ctx = mdctx;
 }
 
+static void SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *) state->ctx, in, len));
+}
+
 static void SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *) state->ctx, in, inblocks * SHA2_BLOCK_SIZE));
 }
@@ -153,6 +157,7 @@ struct OQS_SHA2_callbacks sha2_default_callbacks = {
 	SHA2_sha256,
 	SHA2_sha256_inc_init,
 	SHA2_sha256_inc_ctx_clone,
+	SHA2_sha256_inc,
 	SHA2_sha256_inc_blocks,
 	SHA2_sha256_inc_finalize,
 	SHA2_sha256_inc_ctx_release,

@@ -1,0 +1,216 @@
+name: LMS
+type: stateful signature
+principal-submitters:
+- Scott Fluhrer
+auxiliary-submitters:
+- C Martin
+- Maurice Hieronymus
+
+crypto-assumption: hash-based signatures
+website: https://www.rfc-editor.org/info/rfc8554
+nist-round: 
+spec-version: 
+spdx-license-identifier: 
+primary-upstream:
+  source: https://github.com/cisco/hash-sigs
+  spdx-license-identifier: MIT
+  upstream-ancestors:
+parameter-sets:
+- name: LMS_SHA256_H5_W1
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 8688
+- name: LMS_SHA256_H5_W2
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 4464
+- name: LMS_SHA256_H5_W4
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2352
+- name: LMS_SHA256_H5_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 1296
+- name: LMS_SHA256_H10_W1
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 8848
+- name: LMS_SHA256_H10_W2
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 4624
+- name: LMS_SHA256_H10_W4
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2512
+- name: LMS_SHA256_H10_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 1456
+- name: LMS_SHA256_H15_W1
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 9008
+- name: LMS_SHA256_H15_W2
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 4784
+- name: LMS_SHA256_H15_W4
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2672
+- name: LMS_SHA256_H15_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 1616
+- name: LMS_SHA256_H20_W1
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 9168
+- name: LMS_SHA256_H20_W2
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 4944
+- name: LMS_SHA256_H20_W4
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2832
+- name: LMS_SHA256_H20_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 1776
+- name: LMS_SHA256_H25_W1
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 9328
+- name: LMS_SHA256_H25_W2
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 5104
+- name: LMS_SHA256_H25_W4
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2992
+- name: LMS_SHA256_H25_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 1936
+- name: LMS_SHA256_H5_W8_H5_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2644
+- name: LMS_SHA256_H10_W4_H5_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2804
+- name: LMS_SHA256_H10_W8_H5_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 3860
+- name: LMS_SHA256_H10_W2_H10_W2
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 9300
+- name: LMS_SHA256_H10_W4_H10_W4
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 5076
+- name: LMS_SHA256_H10_W8_H10_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2964
+- name: LMS_SHA256_H15_W8_H5_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 2964
+- name: LMS_SHA256_H15_W8_H10_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 3124
+- name: LMS_SHA256_H15_W8_H15_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 3284
+- name: LMS_SHA256_H20_W8_H5_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 3124
+- name: LMS_SHA256_H20_W8_H10_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 3284
+- name: LMS_SHA256_H20_W8_H15_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 3444
+- name: LMS_SHA256_H20_W8_H20_W8
+  claimed-nist-level: 
+  claimed-security: 
+  length-public-key: 60
+  length-secret-key: 64
+  length-signature: 3604

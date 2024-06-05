@@ -273,6 +273,26 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #endif
 }
 
+void *OQS_MEM_checked_malloc(size_t len) {
+	void *ptr = malloc(len);
+	if (ptr == NULL) {
+		fprintf(stderr, "Memory allocation failed\n");
+		abort();
+	}
+
+	return ptr;
+}
+
+void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
+	void *ptr = OQS_MEM_aligned_alloc(alignment, size);
+	if (ptr == NULL) {
+		fprintf(stderr, "Memory allocation failed\n");
+		abort();
+	}
+
+	return ptr;
+}
+
 OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 	if (ptr != NULL) {
 		OQS_MEM_cleanse(ptr, len);
