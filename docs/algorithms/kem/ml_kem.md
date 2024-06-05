@@ -7,7 +7,7 @@
 - **Authors' website**: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203/ipd
 - **Specification version**: ML-KEM-ipd.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/11d00ff1f20cfca1f72d819e5a45165c1e0a2816 with copy_from_upstream patches
+  - **Source**: https://github.com/pq-crystals/kyber/commit/d1321ce5ac0b53f583eb47a040dc3625ee8e7e37 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 
 

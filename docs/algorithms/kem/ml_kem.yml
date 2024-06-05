@@ -17,7 +17,7 @@ website: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203/
 nist-round: ipd
 spec-version: ML-KEM-ipd
 primary-upstream:
-  source: https://github.com/pq-crystals/kyber/commit/11d00ff1f20cfca1f72d819e5a45165c1e0a2816
+  source: https://github.com/pq-crystals/kyber/commit/d1321ce5ac0b53f583eb47a040dc3625ee8e7e37
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 parameter-sets:

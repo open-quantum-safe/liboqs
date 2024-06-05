@@ -39,7 +39,9 @@ __declspec(noreturn)
 __attribute__((noreturn))
 # endif
 static void handleErrors(void) {
+#ifndef OPENSSL_NO_STDIO
 	OSSL_FUNC(ERR_print_errors_fp)(stderr);
+#endif
 	abort();
 }
 #endif

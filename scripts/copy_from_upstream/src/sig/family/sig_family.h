@@ -18,12 +18,11 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
 {% if 'alias_scheme' in scheme %}
 #define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_length_public_key OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_public_key
 #define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_length_secret_key OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_secret_key
-#define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_length_ciphertext OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext
-#define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_length_shared_secret OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret
+#define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_length_signature OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature
 OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_new(void);
 #define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_keypair OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair
-#define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_encaps OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_encaps
-#define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_decaps OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_decaps
+#define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_sign OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign
+#define OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_verify OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify
 {% endif -%}
 #endif
 
