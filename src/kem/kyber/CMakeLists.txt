@@ -89,4 +89,36 @@ if(OQS_ENABLE_KEM_kyber_1024_aarch64)
     set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:kyber_1024_aarch64>)
 endif()
 
+##### OQS_COPY_FROM_LIBJADE_FRAGMENT_CMAKELISTS_START
+
+if(OQS_ENABLE_LIBJADE_KEM_kyber_512)
+    add_library(jasmin_kyber_512_ref OBJECT libjade_kyber512_ref/api.c libjade_kyber512_ref/kem.S)
+    target_include_directories(jasmin_kyber_512_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/libjade_kyber512_ref)
+    target_include_directories(jasmin_kyber_512_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/libjade_shims)
+    set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:jasmin_kyber_512_ref>)
+endif()
+
+if(OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2)
+    add_library(jasmin_kyber_512_avx2 OBJECT libjade_kyber512_avx2/api.c libjade_kyber512_avx2/kem.S)
+    target_include_directories(jasmin_kyber_512_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/libjade_kyber512_avx2)
+    target_include_directories(jasmin_kyber_512_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/libjade_shims)
+    target_compile_options(jasmin_kyber_512_avx2 PRIVATE  -mavx2  -mbmi2  -mpopcnt )
+    set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:jasmin_kyber_512_avx2>)
+endif()
+
+if(OQS_ENABLE_LIBJADE_KEM_kyber_768)
+    add_library(jasmin_kyber_768_ref OBJECT libjade_kyber768_ref/api.c libjade_kyber768_ref/kem.S)
+    target_include_directories(jasmin_kyber_768_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/libjade_kyber768_ref)
+    target_include_directories(jasmin_kyber_768_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/libjade_shims)
+    set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:jasmin_kyber_768_ref>)
+endif()
+
+if(OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2)
+    add_library(jasmin_kyber_768_avx2 OBJECT libjade_kyber768_avx2/api.c libjade_kyber768_avx2/kem.S)
+    target_include_directories(jasmin_kyber_768_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/libjade_kyber768_avx2)
+    target_include_directories(jasmin_kyber_768_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/libjade_shims)
+    target_compile_options(jasmin_kyber_768_avx2 PRIVATE  -mavx2  -mbmi2  -mpopcnt )
+    set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:jasmin_kyber_768_avx2>)
+endif()
+##### OQS_COPY_FROM_LIBJADE_FRAGMENT_CMAKELISTS_END
 set(KYBER_OBJS ${_KYBER_OBJS} PARENT_SCOPE)

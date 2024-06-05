@@ -263,6 +263,9 @@ static void print_oqs_configuration(void) {
 #ifdef OQS_DIST_BUILD
 	printf("OQS_DIST_BUILD ");
 #endif
+#ifdef OQS_LIBJADE_BUILD
+	printf("OQS_LIBJADE_BUILD ");
+#endif
 #ifdef OQS_BUILD_ONLY_LIB
 	printf("OQS_BUILD_ONLY_LIB "); // pretty much impossible to appear but added for completeness
 #endif

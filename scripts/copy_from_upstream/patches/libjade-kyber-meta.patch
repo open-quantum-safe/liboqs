@@ -1,0 +1,120 @@
+diff --git a/src/crypto_kem/kyber/kyber512/META.yml b/src/crypto_kem/kyber/kyber512/META.yml
+index 000ec75..8282075 100644
+--- a/src/crypto_kem/kyber/kyber512/META.yml
++++ b/src/crypto_kem/kyber/kyber512/META.yml
+@@ -1,7 +1,6 @@
+ name: Kyber512
+ type: kem
+-checksumsmall: 9c1a84c0573d21b5fb50ff68f015c19206cebbda4aa3caa6f9ba4b167eea9514
+-checksumbig: 4596232083e3da10d341576afbc59b24a520073e985a9b9df2d587e67e926a7b
++nistkat-sha256: bb0481d3325d828817900b709d23917cefbc10026fc857f098979451f67bb0ca
+ claimed-nist-level: 1
+ claimed-security: IND-CCA2
+ length-public-key: 800
+@@ -9,23 +8,36 @@ length-ciphertext: 768
+ length-secret-key: 1632
+ length-shared-secret: 32
+ principal-submitters:
+-  - TODO
++  - Peter Schwabe
+ auxiliary-submitters:
+-  - TODO
++  - Roberto Avanzi
++  - Joppe Bos
++  - Léo Ducas
++  - Eike Kiltz
++  - Tancrède Lepoint
++  - Vadim Lyubashevsky
++  - John M. Schanck
++  - Gregor Seiler
++  - Damien Stehlé
+ implementations:
+-    - name: amd64/ref
+-      version: TODO
++    - name: ref
++      version: NIST Round 3 submission
++      folder_name: amd64/ref
++      signature_keypair: libjade_kyber512_ref_keypair
++      signature_enc: libjade_kyber512_ref_enc
++      signature_dec: libjade_kyber512_ref_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:
+               - Linux
+               - Darwin
+-          required_flags: # FIXME
+-              - avx2
+-              - bmi2
+-              - popcnt
+-    - name: amd64/avx2
+-      version: TODO
++          required_flags: []
++    - name: avx2
++      version: NIST Round 3 submission
++      folder_name: amd64/avx2
++      signature_keypair: libjade_kyber512_avx2_keypair
++      signature_enc: libjade_kyber512_avx2_enc
++      signature_dec: libjade_kyber512_avx2_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:
+diff --git a/src/crypto_kem/kyber/kyber768/META.yml b/src/crypto_kem/kyber/kyber768/META.yml
+index d744938..57cb0c7 100644
+--- a/src/crypto_kem/kyber/kyber768/META.yml
++++ b/src/crypto_kem/kyber/kyber768/META.yml
+@@ -1,7 +1,6 @@
+ name: Kyber768
+ type: kem
+-checksumsmall: 456bb24a767160dcca466adde267b87f359de6e827d31b5b23512d227d8bbfaa
+-checksumbig: 8004a42f34a4125acb4f88628139576882cdf9502a77937003e34f52d217a730
++nistkat-sha256: 89e82a5bf2d4ddb2c6444e10409e6d9ca65dafbca67d1a0db2c9b54920a29172
+ claimed-nist-level: 3
+ claimed-security: IND-CCA2
+ length-public-key: 1184
+@@ -9,23 +8,36 @@ length-ciphertext: 1088
+ length-secret-key: 2400
+ length-shared-secret: 32
+ principal-submitters:
+-  - TODO
++  - Peter Schwabe
+ auxiliary-submitters:
+-  - TODO
++  - Roberto Avanzi
++  - Joppe Bos
++  - Léo Ducas
++  - Eike Kiltz
++  - Tancrède Lepoint
++  - Vadim Lyubashevsky
++  - John M. Schanck
++  - Gregor Seiler
++  - Damien Stehlé
+ implementations:
+-    - name: amd64/ref
+-      version: TODO
++    - name: ref
++      version: NIST Round 3 submission
++      folder_name: amd64/ref
++      signature_keypair: libjade_kyber768_ref_keypair
++      signature_enc: libjade_kyber768_ref_enc
++      signature_dec: libjade_kyber768_ref_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:
+               - Linux
+               - Darwin
+-          required_flags: # FIXME
+-              - avx2
+-              - bmi2
+-              - popcnt
+-    - name: amd64/avx2
+-      version: TODO
++          required_flags: []
++    - name: avx2
++      version: NIST Round 3 submission
++      folder_name: amd64/avx2
++      signature_keypair: libjade_kyber768_avx2_keypair
++      signature_enc: libjade_kyber768_avx2_enc
++      signature_dec: libjade_kyber768_avx2_dec
+       supported_platforms:
+         - architecture: x86_64
+           operating_systems:

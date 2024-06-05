@@ -1,0 +1,73 @@
+
+if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
+{% for family in instructions['kems'] %}
+    {%- for scheme in family['schemes'] %}
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}
+            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
+{% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
+{% endif -%}
+if(OQS_DIST_X86_64_BUILD OR ({% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}))
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
+{%- endif %}
+endif()
+{% if platform['operating_systems'] %}endif()
+{% endif -%}
+            {%- endfor -%}
+            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %}
+{% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
+{% endif -%}
+if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last or loop.first %} AND {% endif -%}OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%})))
+{% if impl['upstream']['name'].endswith('pqclean') -%}
+if(((CMAKE_C_COMPILER_ID STREQUAL "GNU") AND (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "9.4.0")) OR ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") AND (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "9.4.0")) OR ((NOT (CMAKE_C_COMPILER_ID STREQUAL "GNU")) AND (NOT (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))))
+{%- endif %}
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
+{%- endif %}
+{% if impl['upstream']['name'].endswith('pqclean') -%}
+else()
+    message(WARNING "  ARM optimizations are not fully supported on this compiler version.")
+endif()
+{%- endif %}
+endif()
+{% if platform['operating_systems'] %}endif()
+{% endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+    {%- endfor %}
+{% endfor -%}
+
+{% for family in instructions['sigs'] %}
+    {%- for scheme in family['schemes'] %}
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}
+            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
+{% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
+{% endif -%}
+if(OQS_DIST_X86_64_BUILD OR ({% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}))
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
+{%- endif %}
+endif()
+{% if platform['operating_systems'] %}endif()
+{% endif -%}
+            {%- endfor -%}
+            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %}
+{% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
+{% endif -%}
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last or loop.first %} AND {% endif -%}OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%}))
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
+{%- endif %}
+endif()
+{% if platform['operating_systems'] %}endif()
+{% endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+    {%- endfor %}
+{% endfor -%}
+endif()
+

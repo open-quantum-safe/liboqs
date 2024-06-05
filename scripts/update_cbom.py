@@ -118,7 +118,13 @@ def add_cbom_component(out, kem_yaml, parameter_set):
                 if plat['architecture'] in dic.keys():
                     algorithmProperties['implementationPlatform'] = dic[plat['architecture']]
                     component_cpy = copy.deepcopy(component)
-                    component_cpy['bom-ref'] += ":" + algorithmProperties['implementationPlatform'] 
+                    if 'upstream' in impl and impl['upstream'] == 'libjade':
+                        tag = ":jasmin:"
+                        if any('required_flags' in i for i in impl['supported-platforms']):
+                            tag += impl['upstream-id'] + ':'
+                        component_cpy['bom-ref'] += tag + algorithmProperties['implementationPlatform'] 
+                    else:
+                        component_cpy['bom-ref'] += ":" + algorithmProperties['implementationPlatform'] 
                     cbom_components.append(component_cpy)
                     bom_algs_bomrefs.append(component_cpy['bom-ref'])
                     if dep:
