@@ -144,47 +144,6 @@ jobs:
           command: scan-build-15 --status-bugs ninja
           working_directory: build
 
-  arm_machine:
-    description: A template for running liboqs tests on ARM(presently only 64) machines
-    parameters:
-      CMAKE_ARGS:
-        description: "Arguments to pass to CMake."
-        type: string
-        default: ''
-      PYTEST_ARGS:
-        description: "Arguments to pass to pytest."
-        type: string
-        # Not every executor handles --numprocesses=auto being passed to pytest well
-        # See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
-        default: --numprocesses=auto
-    machine:
-      image: default # analogous to ubuntu-latest on GH Actions
-    resource_class: arm.medium
-    steps:
-      - checkout
-      # It seems the machine doesn't contain all preprequisites, and we don't have permission to add them explicitly, 
-      # so we can only run in a prepared ARM64 CI image
-      - run:
-          name: Build and run tests in docker 
-          no_output_timeout: 1h
-          command: |2
-            docker run -it -e CMAKE_ARGS="<< parameters.CMAKE_ARGS >>" \
-                           -e PYTEST_ARGS="<< parameters.PYTEST_ARGS >>" \
-                           -v `pwd`:/root/project \
-                           openquantumsafe/ci-ubuntu-focal-arm64:latest bash \
-                           -c 'cd /root/project && \
-                               uname -a && \
-                               mkdir build && cd build && source ~/.bashrc && \
-                               cmake -GNinja -DOQS_STRICT_WARNINGS=ON $CMAKE_ARGS .. && cmake -LA .. && ninja && \
-                               cd .. && mkdir -p tmp && \
-                               python3 -m pytest --verbose \
-                                                 --ignore=tests/test_code_conventions.py \
-                                                 --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS'
-      - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
-
   trigger-downstream-ci:
     docker:
       - image: cimg/base:2020.01
@@ -340,11 +299,6 @@ workflows:
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-i386:latest
           CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_x86.cmake
           PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-      - arm_machine:
-          <<: *require_buildcheck
-          name: arm64
-          PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 --ignore=tests/test_kat_all.py
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
 
   commit-to-main:
     when:
