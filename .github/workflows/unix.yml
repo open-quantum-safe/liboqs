@@ -71,6 +71,7 @@ jobs:
       - name: Build documentation
         run: ninja gen_docs
         working-directory: build
+        if: matrix.arch == "x86_64"
 
           #linux_intel:
           #  needs: buildcheck
