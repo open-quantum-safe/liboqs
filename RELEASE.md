@@ -1,5 +1,5 @@
-liboqs version 0.10.1-rc1
-=========================
+liboqs version 0.10.1
+=====================
 
 About
 -----
@@ -28,7 +28,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 of version 0.10.1 of liboqs. It was released on June 5, 2024.
+This is version 0.10.1 of liboqs. It was released on June 7, 2024.
 
 This release is a security release which fixes potential non-constant-time behaviour in ML-KEM and Kyber based on https://github.com/pq-crystals/kyber/commit/0264efacf18dd665d2066f21df3a3290b52ba240 and https://github.com/pq-crystals/kyber/commit/9b8d30698a3e7449aeb34e62339d4176f11e3c6c. It also includes a fix for incorrectly named macros in the ML-DSA implementation.
 
@@ -39,8 +39,8 @@ This release continues from the 0.10.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- Kyber: portable C and AVX2 implementations updated
-- ML-KEM: portable C and AVX2 implementations updated
+- Kyber: portable C implementation updated
+- ML-KEM: portable C implementation updated
 
 ### Digital signature schemes
 
@@ -58,4 +58,4 @@ Detailed changelog
 * Pull Kyber/ML-KEM CT-Fix from upstream by @bhess
 * Force gcc 13.2.0 over 13.3.0 by @planetf1 in https://github.com/open-quantum-safe/liboqs/pull/1805
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.10.0...0.10.1-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.10.0...0.10.1
