@@ -144,11 +144,11 @@ jobs:
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
-        if: ${{ matrix.name }} == 'jammy-std-openssl3'
+        if: matrix.name == 'jammy-std-openssl3'
         run: cpack
         working-directory: build
       - name: Retain .deb file
-        if: ${{ matrix.name }} == 'jammy-std-openssl3'
+        if: matrix.name == 'jammy-std-openssl3'
         uses: actions/upload-artifact@v3
         with:
           name: liboqs-openssl3-shared-x64
