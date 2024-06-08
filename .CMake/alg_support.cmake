@@ -513,6 +513,10 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_shake256_h20 "" ON "OQS_ENABLE_S
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h10_192 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h16_192 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h20_192 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_shake256_h10_192 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_shake256_h16_192 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_shake256_h20_192 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmssmt_sha256_h20_2 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmssmt_sha256_h20_4 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
