@@ -179,6 +179,7 @@ OQS_API int OQS_SIG_STFL_alg_count(void);
 OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
+typedef struct OQS_SIG OQS_SIG;
 #define OQS_SIG_STFL OQS_SIG
 #else
 /**
