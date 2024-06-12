@@ -23,9 +23,9 @@ OQS_KEM *OQS_KEM_kyber_1024_new(void) {
 	kem->length_ciphertext = OQS_KEM_kyber_1024_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_kyber_1024_length_shared_secret;
 
-    kem->keypair_derand = OQS_KEM_kyber_1024_keypair_derand;
+	kem->keypair_derand = OQS_KEM_kyber_1024_keypair_derand;
 	kem->keypair = OQS_KEM_kyber_1024_keypair;
-    kem->encaps_derand = OQS_KEM_kyber_1024_encaps_derand;
+	kem->encaps_derand = OQS_KEM_kyber_1024_encaps_derand;
 	kem->encaps = OQS_KEM_kyber_1024_encaps;
 	kem->decaps = OQS_KEM_kyber_1024_decaps;
 
@@ -51,7 +51,7 @@ extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *
 #endif
 
 OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
-    return OQS_ERROR;
+	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -81,7 +81,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_1024_keypair(uint8_t *public_key, uint8_t *secr
 }
 
 OQS_API OQS_STATUS OQS_KEM_kyber_1024_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
-    return OQS_ERROR;
+	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_KEM_kyber_1024_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
