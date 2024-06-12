@@ -26,9 +26,9 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret;
 
-    kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
+	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair;
-    kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand;
+	kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand;
 	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps;
 	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps;
 
@@ -59,9 +59,9 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_shared_secret;
 
-    kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair_derand;
+	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair_derand;
 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair;
-    kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps_derand;
+	kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps_derand;
 	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps;
 	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_decaps;
 
@@ -143,31 +143,31 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(ui
     {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
-    if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
         {%- if impl['signature_keypair_derand'] %}
-    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_keypair_derand'] }}(public_key, secret_key, coins);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_keypair_derand'] }}(public_key, secret_key, coins);
         {%- else %}
-    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair_derand(public_key, secret_key, coins);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair_derand(public_key, secret_key, coins);
         {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
-    } else {
-        return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, coins);
-    }
+	} else {
+		return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, coins);
+	}
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
     {%- endfor %}
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-    return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, coins);
+	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, coins);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
     {%- else %}
-    return OQS_ERROR;
+	return OQS_ERROR;
     {%- endif %}
 }
 
@@ -215,31 +215,31 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uin
     {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
-    if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
         {%- if impl['signature_enc_derand'] %}
-    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_enc_derand'] }}(ciphertext, shared_secret, public_key, coins);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_enc_derand'] }}(ciphertext, shared_secret, public_key, coins);
         {%- else %}
-    {% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, coins);
         {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
-    } else {
-        return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, coins);
-    }
+	} else {
+		return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, coins);
+	}
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
     {%- endfor %}
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-    return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, coins);
+	return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, coins);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
     {%- else %}
-    return OQS_ERROR;
+	return OQS_ERROR;
     {%- endif %}
 }
 
