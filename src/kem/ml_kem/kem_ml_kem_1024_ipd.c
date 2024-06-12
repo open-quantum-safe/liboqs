@@ -66,7 +66,7 @@ OQS_KEM *OQS_KEM_ml_kem_1024_new(void) {
 
 extern int pqcrystals_ml_kem_1024_ipd_ref_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
 extern int pqcrystals_ml_kem_1024_ipd_ref_keypair(uint8_t *pk, uint8_t *sk);
-extern int pqcrystals_ml_kem_1024_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+extern int pqcrystals_ml_kem_1024_ipd_ref_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int pqcrystals_ml_kem_1024_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_ml_kem_1024_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
@@ -116,11 +116,11 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_encaps_derand(uint8_t *ciphertext, ui
     	return (OQS_STATUS) pqcrystals_ml_kem_1024_ipd_avx2_enc_derand(ciphertext, shared_secret, public_key, coins);
 #if defined(OQS_DIST_BUILD)
     } else {
-        return (OQS_STATUS) pqcrystals_ml_kem_1024_ipd_ref_enc(ciphertext, shared_secret, public_key, coins);
+        return (OQS_STATUS) pqcrystals_ml_kem_1024_ipd_ref_enc_derand(ciphertext, shared_secret, public_key, coins);
     }
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) pqcrystals_ml_kem_1024_ipd_ref_enc(ciphertext, shared_secret, public_key, coins);
+    return (OQS_STATUS) pqcrystals_ml_kem_1024_ipd_ref_enc_derand(ciphertext, shared_secret, public_key, coins);
 #endif
 }
 
