@@ -328,7 +328,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Configure
-        run: mkdir build && cd build && pwd && source ~/.bashrc && scan-build-15 cmake -GNinja ..
+        run: mkdir build && cd build && scan-build-15 cmake -GNinja ..
       - name: Build
         run: scan-build-15 --status-bugs ninja
         working-directory: build
