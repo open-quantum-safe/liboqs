@@ -85,7 +85,7 @@ jobs:
           - name: arm64
             runner: oqs-arm64
             container: openquantumsafe/ci-ubuntu-focal-arm64:latest
-            PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 --ignore=tests/test_kat_all.py
+            PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
             CMAKE_ARGS: -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
           - name: alpine
             runner: ubuntu-latest
@@ -107,6 +107,11 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+          - name: bionic-i386
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-bionic-i386:latest
+            CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_x86.cmake
+            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: focal-nistr4-openssl
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
@@ -117,6 +122,21 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_SIG_ONRAMP
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+          - name: focal-noopenssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF
+            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+          - name: focal-shared-noopenssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=OFF -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
+            PYTEST_ARGS: --ignore=tests/test_namespace.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+          - name: focal-clang15
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang-15 -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=skylake
+            PYTEST_ARGS: --ignore=tests/test_kat_all.py
           - name: jammy-std-openssl3
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
@@ -131,12 +151,12 @@ jobs:
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=auto --maxprocesses=10
+            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
           - name: address-sanitizer-no-stfl-key-sig-gen
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=auto --maxprocesses=10
+            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
     runs-on: ${{ matrix.runner }}
     container:
       image: ${{ matrix.container }}
@@ -150,7 +170,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'
         run: cpack
