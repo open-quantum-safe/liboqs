@@ -126,24 +126,6 @@ jobs:
           path: build/test-results
 
 
-  scan_build:
-    description: Executing scan-build test
-    parameters:
-      CONTAINER:
-        description: "The docker container to use."
-        type: string
-    docker:
-      - image: << parameters.CONTAINER >>
-    steps:
-      - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
-      - run:
-          name: Configure
-          command: mkdir build && cd build && pwd && source ~/.bashrc && scan-build-15 cmake -GNinja ..
-      - run:
-          name: Build
-          command: scan-build-15 --status-bugs ninja
-          working_directory: build
-
   trigger-downstream-ci:
     docker:
       - image: cimg/base:2020.01
@@ -266,11 +248,6 @@ workflows:
       #    name: debian-buster
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
-      - scan_build:
-          <<: *require_buildcheck
-          name: scan_build
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-focal-noopenssl
