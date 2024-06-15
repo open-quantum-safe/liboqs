@@ -74,6 +74,5 @@ def test_alg_info_sig(sig_name):
 
 if __name__ == "__main__":
     import sys
-    print("platform:",platform.system)
     pytest.main(sys.argv)
 
