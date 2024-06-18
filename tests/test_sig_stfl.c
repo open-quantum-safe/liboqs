@@ -619,7 +619,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 		goto err;
 	}
 
-	public_key = malloc(sig_obj->length_public_key *sizeof(uint8_t));
+	public_key = malloc(sig_obj->length_public_key * sizeof(uint8_t));
 
 	printf("================================================================================\n");
 	printf("Create stateful Secret Key  %s\n", method_name);
@@ -925,7 +925,7 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 		goto err;
 	}
 
-	lock_test_public_key = malloc(lock_test_sig_obj->length_public_key *sizeof(uint8_t));
+	lock_test_public_key = malloc(lock_test_sig_obj->length_public_key * sizeof(uint8_t));
 
 	printf("================================================================================\n");
 	printf("Create stateful Secret Key  %s\n", method_name);
