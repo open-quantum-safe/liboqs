@@ -13,41 +13,45 @@
 #define XMSS_OID_LEN 4
 
 /*
- * | Algorithms                    | oid  | sk (b) | pk (b) | sig (b) | n  |
- * |-------------------------------|------|--------|--------|---------|----|
- * | XMSS-SHA2_10_256              | 0x01 |  1373  |   64   |  2500   | 32 |
- * | XMSS-SHA2_16_256              | 0x02 |  2093  |   64   |  2692   | 32 |
- * | XMSS-SHA2_20_256              | 0x03 |  2573  |   64   |  2820   | 32 |
+ * | Algorithms                    | oid  | sk (b) | pk (b) | sig (b) | n  | RFC8391 | NIST SP 800-208 | CNSA 2.0 |
+ * |-------------------------------|------|--------|--------|---------|----| ------- | --------------- | -------- |
+ * | XMSS-SHA2_10_256              | 0x01 |  1373  |   64   |  2500   | 32 |    ✅   |       ✅        |    ✅    |
+ * | XMSS-SHA2_16_256              | 0x02 |  2093  |   64   |  2692   | 32 |    ✅   |       ✅        |    ✅    |
+ * | XMSS-SHA2_20_256              | 0x03 |  2573  |   64   |  2820   | 32 |    ✅   |       ✅        |    ✅    |
  *
- * | XMSS-SHAKE_10_256             | 0x07 |  1373  |   64   |  2500   | 32 |
- * | XMSS-SHAKE_16_256             | 0x08 |  2093  |   64   |  2692   | 32 |
- * | XMSS-SHAKE_20_256             | 0x09 |  2573  |   64   |  2820   | 32 |
+ * | XMSS-SHAKE_10_256             | 0x07 |  1373  |   64   |  2500   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSS-SHAKE_16_256             | 0x08 |  2093  |   64   |  2692   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSS-SHAKE_20_256             | 0x09 |  2573  |   64   |  2820   | 32 |    ✅   |       ❌        |    ❌    |
  *
- * | XMSS-SHA2_10_512              | 0x04 |  2653  |  128   |  9092   | 64 |
- * | XMSS-SHA2_16_512              | 0x05 |  4045  |  128   |  9476   | 64 |
- * | XMSS-SHA2_20_512              | 0x06 |  4973  |  128   |  9732   | 64 |
+ * | XMSS-SHA2_10_512              | 0x04 |  2653  |  128   |  9092   | 64 |    ✅   |       ❌        |    ❌    |
+ * | XMSS-SHA2_16_512              | 0x05 |  4045  |  128   |  9476   | 64 |    ✅   |       ❌        |    ❌    |
+ * | XMSS-SHA2_20_512              | 0x06 |  4973  |  128   |  9732   | 64 |    ✅   |       ❌        |    ❌    |
  *
- * | XMSS-SHAKE_10_512             | 0x0a |  2653  |  128   |  9092   | 64 |
- * | XMSS-SHAKE_16_512             | 0x0b |  4045  |  128   |  9476   | 64 |
- * | XMSS-SHAKE_20_512             | 0x0c |  4973  |  128   |  9732   | 64 |
+ * | XMSS-SHAKE_10_512             | 0x0a |  2653  |  128   |  9092   | 64 |    ✅   |       ❌        |    ❌    |
+ * | XMSS-SHAKE_16_512             | 0x0b |  4045  |  128   |  9476   | 64 |    ✅   |       ❌        |    ❌    |
+ * | XMSS-SHAKE_20_512             | 0x0c |  4973  |  128   |  9732   | 64 |    ✅   |       ❌        |    ❌    |
  *
- * | XMSSMT-SHA2_20/2_256          | 0x01 |  5998  |   64   |  4963   | 32 |
- * | XMSSMT-SHA2_20/4_256          | 0x02 | 10938  |   64   |  9251   | 32 |
- * | XMSSMT-SHA2_40/2_256          | 0x03 |  9600  |   64   |  5605   | 32 |
- * | XMSSMT-SHA2_40/4_256          | 0x04 | 15252  |   64   |  9893   | 32 |
- * | XMSSMT-SHA2_40/8_256          | 0x05 | 24516  |   64   | 18469   | 32 |
- * | XMSSMT-SHA2_60/3_256          | 0x06 | 16629  |   64   |  8392   | 32 |
- * | XMSSMT-SHA2_60/6_256          | 0x07 | 24507  |   64   | 14824   | 32 |
- * | XMSSMT-SHA2_60/12_256         | 0x08 | 38095  |   64   | 27688   | 32 |
+ * | XMSS-SHA2_10_192              | 0x0d |  1053  |   48   |  1492   | 24 |    ❌   |       ✅        |    ✅    |
+ * | XMSS-SHA2_16_192              | 0x0e |  1605  |   48   |  1636   | 24 |    ❌   |       ✅        |    ✅    |
+ * | XMSS-SHA2_20_192              | 0x0f |  1973  |   48   |  1732   | 24 |    ❌   |       ✅        |    ✅    |
  *
- * | XMSSMT-SHAKE_20/2_256         | 0x11 |  5998  |   64   |  4963   | 32 |
- * | XMSSMT-SHAKE_20/4_256         | 0x12 | 10938  |   64   |  9251   | 32 |
- * | XMSSMT-SHAKE_40/2_256         | 0x13 |  9600  |   64   |  5605   | 32 |
- * | XMSSMT-SHAKE_40/4_256         | 0x14 | 15252  |   64   |  9893   | 32 |
- * | XMSSMT-SHAKE_40/8_256         | 0x15 | 24516  |   64   | 18469   | 32 |
- * | XMSSMT-SHAKE_60/3_256         | 0x16 | 16629  |   64   |  8392   | 32 |
- * | XMSSMT-SHAKE_60/6_256         | 0x17 | 24507  |   64   | 14824   | 32 |
- * | XMSSMT-SHAKE_60/12_256        | 0x18 | 38095  |   64   | 27688   | 32 |
+ * | XMSSMT-SHA2_20/2_256          | 0x01 |  5998  |   64   |  4963   | 32 |    ✅   |       ✅        |    ❌    |
+ * | XMSSMT-SHA2_20/4_256          | 0x02 | 10938  |   64   |  9251   | 32 |    ✅   |       ✅        |    ❌    |
+ * | XMSSMT-SHA2_40/2_256          | 0x03 |  9600  |   64   |  5605   | 32 |    ✅   |       ✅        |    ❌    |
+ * | XMSSMT-SHA2_40/4_256          | 0x04 | 15252  |   64   |  9893   | 32 |    ✅   |       ✅        |    ❌    |
+ * | XMSSMT-SHA2_40/8_256          | 0x05 | 24516  |   64   | 18469   | 32 |    ✅   |       ✅        |    ❌    |
+ * | XMSSMT-SHA2_60/3_256          | 0x06 | 16629  |   64   |  8392   | 32 |    ✅   |       ✅        |    ❌    |
+ * | XMSSMT-SHA2_60/6_256          | 0x07 | 24507  |   64   | 14824   | 32 |    ✅   |       ✅        |    ❌    |
+ * | XMSSMT-SHA2_60/12_256         | 0x08 | 38095  |   64   | 27688   | 32 |    ✅   |       ✅        |    ❌    |
+ *
+ * | XMSSMT-SHAKE_20/2_256         | 0x11 |  5998  |   64   |  4963   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSSMT-SHAKE_20/4_256         | 0x12 | 10938  |   64   |  9251   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSSMT-SHAKE_40/2_256         | 0x13 |  9600  |   64   |  5605   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSSMT-SHAKE_40/4_256         | 0x14 | 15252  |   64   |  9893   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSSMT-SHAKE_40/8_256         | 0x15 | 24516  |   64   | 18469   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSSMT-SHAKE_60/3_256         | 0x16 | 16629  |   64   |  8392   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSSMT-SHAKE_60/6_256         | 0x17 | 24507  |   64   | 14824   | 32 |    ✅   |       ❌        |    ❌    |
+ * | XMSSMT-SHAKE_60/12_256        | 0x18 | 38095  |   64   | 27688   | 32 |    ✅   |       ❌        |    ❌    |
  */
 
 #ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h10
@@ -251,6 +255,57 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sign(uint8_t *signature, s
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h10_192
+
+#define OQS_SIG_STFL_alg_xmss_sha256_h10_192_oid 0x0d
+#define OQS_SIG_STFL_alg_xmss_sha256_h10_192_length_sk (1053 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_sha256_h10_192_length_pk (48 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_sha256_h10_192_length_signature 1492
+
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_192_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H10_192_new(void);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_192_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_192_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_192_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_192_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_192_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16_192
+
+#define OQS_SIG_STFL_alg_xmss_sha256_h16_192_oid 0x0e
+#define OQS_SIG_STFL_alg_xmss_sha256_h16_192_length_sk (1605 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_sha256_h16_192_length_pk (48 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_sha256_h16_192_length_signature 1636
+
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h16_192_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H16_192_new(void);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_192_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_192_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_192_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_192_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h16_192_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20_192
+
+#define OQS_SIG_STFL_alg_xmss_sha256_h20_192_oid 0x0f
+#define OQS_SIG_STFL_alg_xmss_sha256_h20_192_length_sk (1973 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_sha256_h20_192_length_pk (48 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_sha256_h20_192_length_signature 1732
+
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h20_192_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H20_192_new(void);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 #endif
 

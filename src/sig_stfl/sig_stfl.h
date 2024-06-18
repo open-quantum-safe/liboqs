@@ -56,6 +56,10 @@ extern "C"
 #define OQS_SIG_STFL_alg_xmss_shake256_h10 "XMSS-SHAKE_10_512"
 #define OQS_SIG_STFL_alg_xmss_shake256_h16 "XMSS-SHAKE_16_512"
 #define OQS_SIG_STFL_alg_xmss_shake256_h20 "XMSS-SHAKE_20_512"
+#define OQS_SIG_STFL_alg_xmss_sha256_h10_192 "XMSS-SHA2_10_192"
+#define OQS_SIG_STFL_alg_xmss_sha256_h16_192 "XMSS-SHA2_16_192"
+#define OQS_SIG_STFL_alg_xmss_sha256_h20_192 "XMSS-SHA2_20_192"
+
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2 "XMSSMT-SHA2_20/2_256"
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4 "XMSSMT-SHA2_20/4_256"
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2 "XMSSMT-SHA2_40/2_256"
@@ -122,7 +126,7 @@ extern "C"
 /*
  * Total number of stateful variants defined above, used to create the tracking array
  */
-#define OQS_SIG_STFL_algs_length 61
+#define OQS_SIG_STFL_algs_length 64
 
 typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
 

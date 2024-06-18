@@ -301,6 +301,15 @@ OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_
 		goto from_kats;
 #endif
 
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h16_192
+	} else if (0 == strcasecmp(sig->method_name, OQS_SIG_STFL_alg_xmss_sha256_h16_192)) {
+		goto from_kats;
+#endif
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h20_192
+	} else if (0 == strcasecmp(sig->method_name, OQS_SIG_STFL_alg_xmss_sha256_h20_192)) {
+		goto from_kats;
+#endif
+
 #ifdef OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2
 	} else if (0 == strcasecmp(sig->method_name, OQS_SIG_STFL_alg_xmssmt_sha256_h40_2)) {
 		goto from_kats;
