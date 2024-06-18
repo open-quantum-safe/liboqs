@@ -35,6 +35,10 @@
  * | XMSS-SHA2_16_192              | 0x0e |  1605  |   48   |  1636   | 24 |    ❌   |       ✅        |    ✅    |
  * | XMSS-SHA2_20_192              | 0x0f |  1973  |   48   |  1732   | 24 |    ❌   |       ✅        |    ✅    |
  *
+ * | XMSS-SHAKE256_10_192          | 0x13 |  1053  |   48   |  1492   | 24 |    ❌   |       ✅        |    ✅    |
+ * | XMSS-SHAKE256_16_192          | 0x14 |  1605  |   48   |  1636   | 24 |    ❌   |       ✅        |    ✅    |
+ * | XMSS-SHAKE256_20_192          | 0x15 |  1973  |   48   |  1732   | 24 |    ❌   |       ✅        |    ✅    |
+ *
  * | XMSSMT-SHA2_20/2_256          | 0x01 |  5998  |   64   |  4963   | 32 |    ✅   |       ✅        |    ❌    |
  * | XMSSMT-SHA2_20/4_256          | 0x02 | 10938  |   64   |  9251   | 32 |    ✅   |       ✅        |    ❌    |
  * | XMSSMT-SHA2_40/2_256          | 0x03 |  9600  |   64   |  5605   | 32 |    ✅   |       ✅        |    ❌    |
@@ -306,6 +310,57 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_sign(uint8_t *signature,
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h20_192_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h10_192
+
+#define OQS_SIG_STFL_alg_xmss_shake256_h10_192_oid 0x13
+#define OQS_SIG_STFL_alg_xmss_shake256_h10_192_length_sk (1053 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_shake256_h10_192_length_pk (48 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_shake256_h10_192_length_signature 1492
+
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h10_192_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H10_192_new(void);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_192_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_192_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_192_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_192_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_192_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h16_192
+
+#define OQS_SIG_STFL_alg_xmss_shake256_h16_192_oid 0x14
+#define OQS_SIG_STFL_alg_xmss_shake256_h16_192_length_sk (1605 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_shake256_h16_192_length_pk (48 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_shake256_h16_192_length_signature 1636
+
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h16_192_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H16_192_new(void);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_192_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_192_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_192_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_192_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h16_192_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_STFL_xmss_shake256_h20_192
+
+#define OQS_SIG_STFL_alg_xmss_shake256_h20_192_oid 0x15
+#define OQS_SIG_STFL_alg_xmss_shake256_h20_192_length_sk (1973 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_shake256_h20_192_length_pk (48 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_shake256_h20_192_length_signature 1732
+
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h20_192_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H20_192_new(void);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_192_keypair(uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_192_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_192_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_192_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key);
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_192_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 #endif
 
