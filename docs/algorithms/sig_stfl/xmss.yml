@@ -125,6 +125,24 @@ parameter-sets:
   length-public-key: 48
   length-secret-key: 1973
   length-signature: 1732
+- name: XMSS-SHAKE256_10_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 1373
+  length-signature: 2500
+- name: XMSS-SHAKE256_16_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2093
+  length-signature: 2692
+- name: XMSS-SHAKE256_20_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2573
+  length-signature: 2820
 - name: XMSSMT-SHA2_20/2_256
   claimed-nist-level:
   claimed-security:
