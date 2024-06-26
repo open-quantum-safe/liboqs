@@ -4,7 +4,11 @@
 #define OQS_OSSL_NO_EXTERN 1
 #include "ossl_helpers.h"
 #include <assert.h>
+
+// ABr: avoid dlfcn on windows
+#if !defined(_MSC_VER)
 #include <dlfcn.h>
+#endif
 
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
 #if defined(OQS_USE_PTHREADS)
@@ -320,6 +324,7 @@ ret _oqs_ossl_##name args           \
 #undef FUNC
 
 static void ensure_symbol(const char *name, void **symp) {
+#if !defined(_MSC_VER)
 	if (!*symp) {
 		void *sym = dlsym(libcrypto_dlhandle, name);
 		if (!sym) {
@@ -327,9 +332,11 @@ static void ensure_symbol(const char *name, void **symp) {
 		}
 		*symp = sym;
 	}
+#endif
 }
 
 static void ensure_library(void) {
+#if !defined(_MSC_VER)
 	if (!libcrypto_dlhandle) {
 		libcrypto_dlhandle = dlopen(OQS_OPENSSL_CRYPTO_SONAME,
 		                            RTLD_LAZY | RTLD_LOCAL);
@@ -347,6 +354,7 @@ static void ensure_library(void) {
 #undef VOID_FUNC
 #undef FUNC
 #undef ENSURE_SYMBOL
+#endif
 }
 
 #endif // OQS_DLOPEN_OPENSSL
