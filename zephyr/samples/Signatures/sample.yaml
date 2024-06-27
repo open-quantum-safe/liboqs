@@ -10,7 +10,7 @@ common:
 
 tests:
   sample.crypto.liboqs_signature_example:
-    timeout: 900
+    timeout: 1500
     integration_platforms:
       - qemu_x86
       - qemu_cortex_a53

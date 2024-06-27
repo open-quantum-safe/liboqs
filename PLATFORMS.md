@@ -62,4 +62,3 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 - x86 for Windows (Visual Studio Toolchain)
 - ppc64le for Ubuntu (Focal)
 - s390x for Ubuntu (Focal)
-

@@ -121,6 +121,13 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_SPHINCS OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_MAYO)
+                set(OQS_ENABLE_SIG_MAYO ON)
+                set(OQS_ENABLE_SIG_mayo_5 OFF)
+        else()  
+                set(OQS_ENABLE_SIG_MAYO OFF)
+        endif()
+
         # Add the actual liboqs targets
         add_subdirectory(.. build)
 

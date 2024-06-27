@@ -1,0 +1,33 @@
+diff --git a/include/mem.h b/include/mem.h
+index 4695847..dc5172c 100644
+--- a/include/mem.h
++++ b/include/mem.h
+@@ -40,13 +40,16 @@ static inline unsigned char ct_compare_8(unsigned char a, unsigned char b) {
+     return (int8_t)((-(int32_t)(a ^ b)) >> (8*sizeof(uint32_t)-1));
+ }
+ 
++#include <oqs/common.h>
+ /**
+  * Clears and frees allocated memory.
+  * 
+  * @param[out] mem Memory to be cleared and freed.
+  * @param size Size of memory to be cleared and freed.
+  */
+-void mayo_secure_free(void *mem, size_t size);
++static inline void mayo_secure_free(void *mem, size_t size) {
++    OQS_MEM_secure_free(mem, size);
++}
+ 
+ /**
+  * Clears memory.
+@@ -54,6 +57,8 @@ void mayo_secure_free(void *mem, size_t size);
+  * @param[out] mem Memory to be cleared.
+  * @param size Size of memory to be cleared.
+  */
+-void mayo_secure_clear(void *mem, size_t size);
++static inline void mayo_secure_clear(void *mem, size_t size) {
++    OQS_MEM_cleanse(mem, size);
++}
+ 
+ #endif
+\ No newline at end of file
