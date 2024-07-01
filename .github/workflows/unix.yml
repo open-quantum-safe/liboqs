@@ -1,6 +1,9 @@
 name: Linux and MacOS tests
 
-on: [push, pull_request]
+permissions:
+  contents: read
+
+on: [ push, pull_request ]
 
 jobs:
 
@@ -10,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Ensure code conventions are upheld
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
@@ -24,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Verify copy_from_upstream state
         run: |
           git config --global user.name "ciuser" && \
@@ -32,13 +35,13 @@ jobs:
           export LIBOQS_DIR=`pwd` && \
           git config --global --add safe.directory $LIBOQS_DIR && \
           cd scripts/copy_from_upstream && \
-          ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
+          ! pip3 install --require-hashes -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py copy && \
           ! git status | grep modified
 
   buildcheck:
     name: Check that code passes a basic build before starting heavier tests
-    needs: [stylecheck, upstreamcheck]
+    needs: [ stylecheck, upstreamcheck ]
     strategy:
       matrix:
         include:
@@ -53,7 +56,7 @@ jobs:
       SIG_NAME: dilithium_3
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: |
           mkdir build && \
@@ -134,7 +137,7 @@ jobs:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
       - name: Build
@@ -149,7 +152,7 @@ jobs:
         working-directory: build
       - name: Retain .deb file
         if: matrix.name == 'jammy-std-openssl3'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # pin@v3
         with:
           name: liboqs-openssl3-shared-x64
           path: build/*.deb
@@ -179,7 +182,7 @@ jobs:
           #   CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Install the emulation handlers
         run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - name: Build in an x86_64 container
@@ -220,7 +223,7 @@ jobs:
             CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DBUILD_SHARED_LIBS=ON
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
       - name: Build
@@ -232,7 +235,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: # macos-14 runs on aarch64; the others run on x64
+        os:
+          # macos-14 runs on aarch64; the others run on x64
           - macos-12
           - macos-13
           - macos-14
@@ -243,11 +247,15 @@ jobs:
           - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Install Python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
+        with:
+          python-version: '3.12'
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Install dependencies
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --break-system-packages pytest pytest-xdist pyyaml
-      - name: Patch GCC 
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
+      - name: Patch GCC
         run: env HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gcc@13 && wget https://raw.githubusercontent.com/Homebrew/homebrew-core/eb6dd225d093b66054e18e07d56509cf670793b1/Formula/g/gcc%4013.rb && env HOMEBREW_NO_AUTO_UPDATE=1 brew install --ignore-dependencies gcc@13.rb
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
@@ -267,16 +275,16 @@ jobs:
       image: openquantumsafe/ci-ubuntu-jammy:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Retrieve OpenSSL330 from cache
         id: cache-openssl330
-        uses: actions/cache@v3
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # pin@v3
         with:
           path: .localopenssl330
           key: ${{ runner.os }}-openssl330
       - name: Checkout the OpenSSL v3.3.0 commit
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
         with:
           repository: 'openssl/openssl'
           ref: 'openssl-3.3.0-beta1'
@@ -293,7 +301,7 @@ jobs:
       - name: Save OpenSSL
         id: cache-openssl-save
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@e12d46a63a90f2fae62d114769bbf2a179198b5c # pin@v3
         with:
           path: |
             .localopenssl330

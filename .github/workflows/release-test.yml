@@ -1,15 +1,19 @@
 name: Release tests
 
+permissions:
+  contents: read
+
 # Trigger oqs-provider release tests.
 # Runs whenever a release is published, or when a commit message ends with "[trigger downstream]"
 # When triggered by a release, the liboqs release tag and the provider "<release tag>-tracker" branch are used.
 # When triggered by a commit message, the triggering liboqs branch and the provider "<liboqs branch>-tracker" branch are used.
 # If the tracker branch does not exist, the downstream pipeline should detect it and run on the main branch instead.
+
 on:
   push:
   workflow_dispatch:
   release:
-    types: [published]
+    types: [ published ]
 
 jobs:
   oqs-provider-release-test:
@@ -17,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout release tests script
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # pin@v4
         with:
           sparse-checkout: |
             scripts/provider-test-trigger.sh

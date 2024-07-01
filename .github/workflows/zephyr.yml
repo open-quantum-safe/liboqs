@@ -1,5 +1,8 @@
 name: Zephyr tests
 
+permissions:
+  contents: read
+
 on: [push, pull_request]
 
 jobs:
