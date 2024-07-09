@@ -150,8 +150,12 @@ if(${OQS_USE_OPENSSL})
 endif()
 
 set(PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
+                   ${PROJECT_SOURCE_DIR}/src/common/aes/aes_ops.h
                    ${PROJECT_SOURCE_DIR}/src/common/common.h
                    ${PROJECT_SOURCE_DIR}/src/common/rand/rand.h
+                   ${PROJECT_SOURCE_DIR}/src/common/sha2/sha2_ops.h
+                   ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3_ops.h
+                   ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3x4_ops.h
                    ${PROJECT_SOURCE_DIR}/src/kem/kem.h
                    ${PROJECT_SOURCE_DIR}/src/sig/sig.h
                    ${PROJECT_SOURCE_DIR}/src/sig_stfl/sig_stfl.h)
