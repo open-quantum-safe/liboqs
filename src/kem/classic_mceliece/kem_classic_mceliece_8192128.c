@@ -39,7 +39,9 @@ extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss
 extern int PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_classic_mceliece_8192128_avx2)
+extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk);
 extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif

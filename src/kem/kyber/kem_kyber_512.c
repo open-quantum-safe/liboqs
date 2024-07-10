@@ -39,13 +39,17 @@ extern int pqcrystals_kyber512_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *
 extern int pqcrystals_kyber512_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_kyber_512_avx2)
+extern int PQCLEAN_KYBER512_AVX2_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber512_avx2_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_KYBER512_AVX2_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int pqcrystals_kyber512_avx2_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_kyber512_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 #if defined(OQS_ENABLE_KEM_kyber_512_aarch64)
+extern int PQCLEAN_KYBER512_AARCH64_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk);
 extern int PQCLEAN_KYBER512_AARCH64_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_KYBER512_AARCH64_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int PQCLEAN_KYBER512_AARCH64_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCLEAN_KYBER512_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif

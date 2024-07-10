@@ -71,7 +71,9 @@ extern int pqcrystals_ml_kem_768_ipd_ref_enc(uint8_t *ct, uint8_t *ss, const uin
 extern int pqcrystals_ml_kem_768_ipd_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2) || defined(OQS_ENABLE_KEM_ml_kem_768_avx2)
+extern int pqcrystals_ml_kem_768_ipd_avx2_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
 extern int pqcrystals_ml_kem_768_ipd_avx2_keypair(uint8_t *pk, uint8_t *sk);
+extern int pqcrystals_ml_kem_768_ipd_avx2_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int pqcrystals_ml_kem_768_ipd_avx2_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_ml_kem_768_ipd_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
