@@ -97,7 +97,7 @@ static void message_to_indices(uint32_t *indices, const unsigned char *m) {
     for (i = 0; i < SPX_FORS_TREES; i++) {
         indices[i] = 0;
         for (j = 0; j < SPX_FORS_HEIGHT; j++) {
-            indices[i] ^= (uint32_t)(((m[offset >> 3] >> (offset & 0x7)) & 0x1) << j);
+            indices[i] ^= (uint32_t)(((m[offset >> 3] >> (~offset & 0x7)) & 0x1) << (SPX_FORS_HEIGHT-1-j));
             offset++;
         }
     }
