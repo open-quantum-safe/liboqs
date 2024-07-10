@@ -113,10 +113,22 @@ extern int {{ scheme['metadata']['default_dec_signature']  }}(uint8_t *ss, const
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
 
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+        {%- if impl['signature_keypair_derand'] %}
+extern int {{ impl['signature_keypair_derand'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+        {%- else %}
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk);
+        {%- endif %}
+
         {%- if impl['signature_keypair'] %}
 extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
         {%- else %}
 extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+        {%- endif %}
+
+        {%- if impl['signature_enc_derand'] %}
+extern int {{ impl['signature_enc_derand'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+        {%- else %}
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
         {%- endif %}
 
         {%- if impl['signature_enc'] %}
