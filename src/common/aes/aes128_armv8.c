@@ -8,7 +8,6 @@
 
 #include <arm_neon.h>
 
-#define PQC_AES128_STATESIZE 88
 typedef struct {
 	uint64_t sk_exp[22];
 	uint8_t iv[16];
