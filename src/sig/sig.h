@@ -82,14 +82,14 @@ extern "C" {
 #define OQS_SIG_alg_sphincs_shake_256f_simple "SPHINCS+-SHAKE-256f-simple"
 /** Algorithm identifier for SPHINCS+-SHAKE-256s-simple */
 #define OQS_SIG_alg_sphincs_shake_256s_simple "SPHINCS+-SHAKE-256s-simple"
-/** Algorithm identifier for MAYO_1 */
-#define OQS_SIG_alg_mayo_1 "MAYO_1"
-/** Algorithm identifier for MAYO_2 */
-#define OQS_SIG_alg_mayo_2 "MAYO_2"
-/** Algorithm identifier for MAYO_3 */
-#define OQS_SIG_alg_mayo_3 "MAYO_3"
-/** Algorithm identifier for MAYO_5 */
-#define OQS_SIG_alg_mayo_5 "MAYO_5"
+/** Algorithm identifier for MAYO-1 */
+#define OQS_SIG_alg_mayo_1 "MAYO-1"
+/** Algorithm identifier for MAYO-2 */
+#define OQS_SIG_alg_mayo_2 "MAYO-2"
+/** Algorithm identifier for MAYO-3 */
+#define OQS_SIG_alg_mayo_3 "MAYO-3"
+/** Algorithm identifier for MAYO-5 */
+#define OQS_SIG_alg_mayo_5 "MAYO-5"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START

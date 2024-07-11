@@ -5,11 +5,11 @@
 
 #include <mayo.h>
 
-#define CRYPTO_SECRETKEYBYTES 40
-#define CRYPTO_PUBLICKEYBYTES 5008
-#define CRYPTO_BYTES 838
+#define CRYPTO_SECRETKEYBYTES 32
+#define CRYPTO_PUBLICKEYBYTES 2656
+#define CRYPTO_BYTES 577
 
-#define CRYPTO_ALGNAME "MAYO_5"
+#define CRYPTO_ALGNAME "MAYO-3"
 
 #define crypto_sign_keypair MAYO_NAMESPACE(crypto_sign_keypair)
 int

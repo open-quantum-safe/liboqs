@@ -225,7 +225,7 @@ int main(int argc, char **argv) {
 #if OQS_USE_PTHREADS
 #define MAX_LEN_SIG_NAME_ 64
 	// don't run MAYO_5 in threads because of large stack usage
-	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO_5"};
+	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5"};
 	int test_in_thread = 1;
 	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
 		if (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) {

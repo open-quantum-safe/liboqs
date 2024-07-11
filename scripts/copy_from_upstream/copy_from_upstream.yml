@@ -57,7 +57,7 @@ upstreams:
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
     git_branch: nibbling-mayo
-    git_commit: fc9079fb5ac5cd4af98e3e0f094a0a3cf2a01499
+    git_commit: cde2675ff404b0ae070e7dbc3d962ea0b026a81e
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
@@ -316,21 +316,21 @@ sigs:
     schemes:
       -
         scheme: "1"
-        pqclean_scheme: mayo_1
-        pretty_name_full: MAYO_1
+        pqclean_scheme: mayo-1
+        pretty_name_full: MAYO-1
         signed_msg_order: sig_then_msg
       -
         scheme: "2"
-        pqclean_scheme: mayo_2
-        pretty_name_full: MAYO_2
+        pqclean_scheme: mayo-2
+        pretty_name_full: MAYO-2
         signed_msg_order: sig_then_msg
       -
         scheme: "3"
-        pqclean_scheme: mayo_3
-        pretty_name_full: MAYO_3
+        pqclean_scheme: mayo-3
+        pretty_name_full: MAYO-3
         signed_msg_order: sig_then_msg
       -
         scheme: "5"
-        pqclean_scheme: mayo_5
-        pretty_name_full: MAYO_5
+        pqclean_scheme: mayo-5
+        pretty_name_full: MAYO-5
         signed_msg_order: sig_then_msg

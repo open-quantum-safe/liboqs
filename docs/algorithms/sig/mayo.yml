@@ -11,11 +11,11 @@ website: https://pqmayo.org
 nist-round: 1
 spec-version: https://eprint.iacr.org/2023/1683
 primary-upstream:
-  source: https://github.com/PQCMayo/MAYO-C/commit/fc9079fb5ac5cd4af98e3e0f094a0a3cf2a01499
+  source: https://github.com/PQCMayo/MAYO-C/commit/cde2675ff404b0ae070e7dbc3d962ea0b026a81e
     with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:
-- name: MAYO_1
+- name: MAYO-1
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 1168
@@ -47,7 +47,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: MAYO_2
+- name: MAYO-2
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 5488
@@ -79,7 +79,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: MAYO_3
+- name: MAYO-3
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 2656
@@ -110,7 +110,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: MAYO_5
+- name: MAYO-5
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 5008
