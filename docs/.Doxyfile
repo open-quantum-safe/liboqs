@@ -949,8 +949,12 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = src/common/common.h \
+INPUT                  = src/common/aes/aes_ops.h \
+                         src/common/common.h \
                          src/common/rand/rand.h \
+                         src/common/sha2/sha2_ops.h \
+                         src/common/sha3/sha3_ops.h \
+                         src/common/sha3/sha3x4_ops.h \
                          src/kem/kem.h \
                          src/sig/sig.h \
                          README.md \
