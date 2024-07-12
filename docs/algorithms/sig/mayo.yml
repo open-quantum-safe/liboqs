@@ -9,7 +9,7 @@ principal-submitters:
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://pqmayo.org
 nist-round: 1
-spec-version: https://eprint.iacr.org/2023/1683
+spec-version: https://doi.org/10.46586/tches.v2024.i2.252-275
 primary-upstream:
   source: https://github.com/PQCMayo/MAYO-C/commit/cde2675ff404b0ae070e7dbc3d962ea0b026a81e
     with copy_from_upstream patches
