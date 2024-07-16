@@ -20,7 +20,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 - [OQS_LIBJADE_BUILD](#OQS_LIBJADE_BUILD)
-- [OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG)
+- [OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG](#OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG)
 
 ## BUILD_SHARED_LIBS
 
@@ -212,6 +212,6 @@ At the moment, libjade only supports Linux and Darwin based operating systems on
 
 ## OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG
 
-Note: `ALG` in `OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG` should be replaced with the specific algorithm name as demonstrated in [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG).
+Note: `ALG` in `OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG` should be replaced with the specific algorithm name as demonstrated in OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG.
 
 **Default**: `OFF` if OQS_LIBJADE_BUILD is `OFF` else unset.
