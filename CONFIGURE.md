@@ -8,10 +8,10 @@ The following options can be passed to CMake before the build file generation pr
 - [CMAKE_INSTALL_PREFIX](#CMAKE_INSTALL_PREFIX)
 - [OQS_ALGS_ENABLED](#OQS_ALGS_ENABLED)
 - [OQS_BUILD_ONLY_LIB](#OQS_BUILD_ONLY_LIB)
-- [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG)
+- [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG)
 - [OQS_MINIMAL_BUILD](#OQS_MINIMAL_BUILD)
 - [OQS_DIST_BUILD](#OQS_DIST_BUILD)
-- [OQS_USE_CPUFEATURE_INSTRUCTIONS](OQS_USE_CPUFEATURE_INSTRUCTIONS)
+- [OQS_USE_CPUFEATURE_INSTRUCTIONS](#OQS_USE_CPUFEATURE_INSTRUCTIONS)
 - [OQS_USE_OPENSSL](#OQS_USE_OPENSSL)
 - [OQS_OPT_TARGET](#OQS_OPT_TARGET)
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
@@ -44,13 +44,15 @@ Can be set to the following values:
 
 See the [CMake documentation](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html).
 
-## OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG
+## OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG
 
-Note: `ALG` in `OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG` should be replaced with the specific algorithm name as demonstrated below.
+Note: `ALG` in `OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG` should be replaced with the specific algorithm name as demonstrated below.
 
 This can be set to `ON` or `OFF`, and is `ON` by default. When `OFF`, `ALG` and its code are excluded from the build process. When `ON`, made available are additional options whereby individual variants of `ALG` can be excluded from the build process. 
 
 For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KEM_bike_l1`, `OQS_ENABLE_KEM_bike_l3`, and `OQS_ENABLE_KEM_bike_l5` are made available (and are set to be `ON` by default).
+
+To enable `XMSS` stateful signature, set `OQS_ENABLE_SIG_STFL_XMSS` to `ON`, the options `OQS_ENABLE_SIG_STFL_xmss_sha256_h10` and its variants are also set to be `ON` by default. Similarly, `LMS` stateful signature family can also be enabled by setting `OQS_ENABLE_SIG_STFL_LMS` to `ON`.
 
 For a full list of such options and their default values, consult [.CMake/alg_support.cmake](https://github.com/open-quantum-safe/liboqs/blob/master/.CMake/alg_support.cmake).
 
@@ -58,9 +60,9 @@ For a full list of such options and their default values, consult [.CMake/alg_su
 
 ## OQS_ALGS_ENABLED
 
-Selects algorithm set enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "All" (or any other value) selecting all algorithms integrated into liboqs. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`; e.g., [oqs-provider](https://github.com/open-quantum-safe/oqs-provider) and [oqs-boringssl](https://github.com/open-quantum-safe/boringssl).
+A selected algorithm set is enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "NIST_SIG_ONRAMP" selecting algorithms evaluated in the NIST PQC "onramp" standardization for additional signature schemes; "All" (or any other value) selecting all algorithms integrated into liboqs. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`; e.g., [oqs-provider](https://github.com/open-quantum-safe/oqs-provider) and [oqs-boringssl](https://github.com/open-quantum-safe/boringssl).
 
-**Attention**: If you use any predefined value (`STD` or `NIST_R4` as of now) for this variable, the values added via [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG) variables will be ignored.
+**Attention**: If you use any predefined value (`STD` or `NIST_R4` or `NIST_SIG_ONRAMP` as of now) for this variable, the values added via [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG) variables will be ignored.
 
 **Default**: `All`.
 
@@ -72,9 +74,9 @@ Can be `ON` or `OFF`. When `ON`, only liboqs is built, and all the targets: `run
 
 ## OQS_MINIMAL_BUILD
 
-If set, this defines a semicolon deliminated list of algorithms to be contained in a minimal build of `liboqs`: Only algorithms explicitly set here are included in a build: For example running `cmake -DOQS_MINIMAL_BUILD="KEM_kyber_768;SIG_dilithium_3" ..` will build a minimum-size `liboqs` library only containing support for Kyber768 and Dilithium3.
+If set, this defines a semicolon-delimited list of algorithms to be contained in a minimal build of `liboqs`: Only algorithms explicitly set here are included in a build: For example running `cmake -DOQS_MINIMAL_BUILD="KEM_kyber_768;SIG_dilithium_3" ..` will build a minimum-size `liboqs` library only containing support for Kyber768 and Dilithium3.
 
-The full list of identifiers that can set are listed [here for KEM algorithms](https://github.com/open-quantum-safe/liboqs/blob/main/src/kem/kem.h#L34) and [here for Signature algorithms](https://github.com/open-quantum-safe/liboqs/blob/f3caccff9e6225e7c50ca27f5ee6e58b7bc74188/src/sig/sig.h#L34). Default setting is empty, thus including all [supported algorithms](https://github.com/open-quantum-safe/liboqs#supported-algorithms) in the build.
+The full list of identifiers that can be set is listed [here for KEM algorithms](https://github.com/open-quantum-safe/liboqs/blob/main/src/kem/kem.h#L34) and [here for Signature algorithms](https://github.com/open-quantum-safe/liboqs/blob/f3caccff9e6225e7c50ca27f5ee6e58b7bc74188/src/sig/sig.h#L34). The default setting is empty, thus including all [supported algorithms](https://github.com/open-quantum-safe/liboqs#supported-algorithms) in the build.
 
 **Default**: Unset.
 
@@ -94,13 +96,13 @@ When built for use on a single machine, the library will only include the best a
 
 Note: `CPUFEATURE` in `OQS_USE_CPUFEATURE_INSTRUCTIONS` should be replaced with the specific CPU feature as noted below.
 
-These can be set to `ON` or `OFF` and take an effect if liboqs is built for use on a single machine. By default, the CPU features are automatically determined and set to `ON` or `OFF` based on the CPU features available on the build system. The default values can be overridden by providing CMake build options. The available options on x86-64 are: `OQS_USE_ADX_INSTRUCTIONS`, `OQS_USE_AES_INSTRUCTIONS`, `OQS_USE_AVX_INSTRUCTIONS`, `OQS_USE_AVX2_INSTRUCTIONS`, `OQS_USE_AVX512_INSTRUCTIONS`, `OQS_USE_BMI1_INSTRUCTIONS`, `OQS_USE_BMI2_INSTRUCTIONS`, `OQS_USE_PCLMULQDQ_INSTRUCTIONS`, `OQS_USE_VPCLMULQDQ_INSTRUCTIONS`, `OQS_USE_POPCNT_INSTRUCTIONS`, `OQS_USE_SSE_INSTRUCTIONS`, `OQS_USE_SSE2_INSTRUCTIONS` and `OQS_USE_SSE3_INSTRUCTIONS`. The available options on ARM64v8 are `OQS_USE_ARM_AES_INSTRUCTIONS`, `OQS_USE_ARM_SHA2_INSTRUCTIONS`, `OQS_USE_ARM_SHA3_INSTRUCTIONS` and `OQS_USE_ARM_NEON_INSTRUCTIONS`.
+These can be set to `ON` or `OFF` and take effect if liboqs is built for use on a single machine. By default, the CPU features are automatically determined and set to `ON` or `OFF` based on the CPU features available on the build system. The default values can be overridden by providing CMake build options. The available options on x86-64 are: `OQS_USE_ADX_INSTRUCTIONS`, `OQS_USE_AES_INSTRUCTIONS`, `OQS_USE_AVX_INSTRUCTIONS`, `OQS_USE_AVX2_INSTRUCTIONS`, `OQS_USE_AVX512_INSTRUCTIONS`, `OQS_USE_BMI1_INSTRUCTIONS`, `OQS_USE_BMI2_INSTRUCTIONS`, `OQS_USE_PCLMULQDQ_INSTRUCTIONS`, `OQS_USE_VPCLMULQDQ_INSTRUCTIONS`, `OQS_USE_POPCNT_INSTRUCTIONS`, `OQS_USE_SSE_INSTRUCTIONS`, `OQS_USE_SSE2_INSTRUCTIONS` and `OQS_USE_SSE3_INSTRUCTIONS`. The available options on ARM64v8 are `OQS_USE_ARM_AES_INSTRUCTIONS`, `OQS_USE_ARM_SHA2_INSTRUCTIONS`, `OQS_USE_ARM_SHA3_INSTRUCTIONS` and `OQS_USE_ARM_NEON_INSTRUCTIONS`.
 
 **Default**: Options valid on the build machine.
 
 ## OQS_USE_OPENSSL
 
-In order to save size and limit the amount of different cryptographic code bases, it is possible to use OpenSSL as a crypto code provider by setting this configuration option.
+To save size and limit the amount of different cryptographic code bases, it is possible to use OpenSSL as a crypto code provider by setting this configuration option.
 
 This can be set to `ON` or `OFF`. When `ON`, the additional options `OQS_USE_AES_OPENSSL`, `OQS_USE_SHA2_OPENSSL`, and `OQS_USE_SHA3_OPENSSL` are made available to control whether liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
 
@@ -109,7 +111,7 @@ By default,
 - `OQS_USE_SHA2_OPENSSL` is `ON`
 - `OQS_USE_SHA3_OPENSSL` is `OFF`.
 
-These default choices have been made in order to optimize the default performance of all algorithms. Changing them implies performance penalties.
+These default choices have been made to optimize the default performance of all algorithms. Changing them implies performance penalties.
 
 When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The [OPENSSL_ROOT_DIR](https://cmake.org/cmake/help/latest/module/FindOpenSSL.html) option can be set to aid CMake in its search.
 
@@ -120,6 +122,27 @@ When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the mini
 Dynamically load OpenSSL through `dlopen`. When using liboqs from other cryptographic libraries, hard dependency on OpenSSL is sometimes undesirable. If this option is `ON`, loading of OpenSSL will be deferred until any of the OpenSSL functions is used.
 
 Only has an effect if the system supports `dlopen` and ELF binary format, such as Linux or BSD family.
+
+## Stateful Hash Based Signatures 
+
+XMSS and LMS are the two supported Hash-Based Signatures schemes.
+`OQS_ENABLE_SIG_STFL_XMSS` and `OQS_ENABLE_SIG_STFL_LMS` control these algorithms, which are disabled by default.
+A third variable, `OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN`, also controls the ability to generate keys and signatures. This is also disabled by default.
+Each of these variables can be set to `ON` or `OFF`.
+When all three are `ON`, stateful signatures are fully functional and can generate key pairs, sign data, and verify signatures.
+If `OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN` is `OFF` signature verification is the only functional operation.
+
+Standards bodies, such as NIST, recommend that key and signature generation only by done in hardware in order to best enforce the one-time use of secret keys.
+Keys stored in a file system are extremely susceptible to simultaneous use.
+When enabled in this library a warning message will be generated by the config process.
+The name of the configuration variable has been chosen to make every user of this feature aware of its security risks.
+The OQS team explicitly discourages enabling this variable and reserves the right to remove this feature in future releases if its use causes actual harm.
+It remains present as long as it is responsibly used as per the stated warnings.
+
+By default,
+- `OQS_ENABLE_SIG_STFL_XMSS` is `OFF` 
+- `OQS_ENABLE_SIG_STFL_LMS` is `OFF`
+- `OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN` is `OFF`.
 
 **Default**: `OFF`.
 
@@ -135,7 +158,7 @@ An optimization target. Only has an effect if the compiler is GCC or Clang and `
 
 Can be `ON` or `OFF`. When `ON`, the benchmarking script will try to use the ARMv8 Performance Monitoring Unit (PMU). This will make cycle counts on ARMv8 platforms significantly more accurate.
 
-In order to use this option, user mode access to the PMU must be enabled via a kernel module. If user mode access is not enabled via kernel module, benchmarking will throw an `Illegal Instruction` error. A kernel module that has been found to work on several platforms can be found [here for linux](https://github.com/mupq/pqax#enable-access-to-performance-counters). Follow the instructions there (i.e., clone the repository, `cd enable_ccr` and `make install`) to load the kernel module, after which benchmarking should work. Superuser permissions are required. Linux header files must also be installed on your platform, which may not be present by default.
+In order to use this option, user mode access to the PMU must be enabled via a kernel module. If user mode access is not enabled via the kernel module, benchmarking will throw an `Illegal Instruction` error. A kernel module that has been found to work on several platforms can be found [here for Linux](https://github.com/mupq/pqax#enable-access-to-performance-counters). Follow the instructions there (i.e., clone the repository, `cd enable_ccr` and `make install`) to load the kernel module, after which benchmarking should work. Superuser permissions are required. Linux header files must also be installed on your platform, which may not be present by default.
 
 Note that this option is not known to work on Apple M1 chips.
 
@@ -143,7 +166,7 @@ Note that this option is not known to work on Apple M1 chips.
 
 ## USE_SANITIZER
 
-This has effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) is `Debug`. Then, it can be set to:
+This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) is `Debug`. Then, it can be set to:
 
 - `Address`: This enables Clang's `AddressSanitizer`
 - `Memory`: This enables Clang's `MemorySanitizer`
@@ -158,13 +181,13 @@ This has effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BU
 
 This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.  
 
-See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more information on usage.
+See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more usage information.
 
 **Default**: `OFF`.
 
 ## OQS_STRICT_WARNINGS
 
-Can be `ON` or `OFF`. When `ON`, all compiler warnings are enabled and treated as errors. This setting is recommended to be enabled prior to submission of a Pull Request as CI runs with this setting active. When `OFF`, significantly fewer compiler warnings are enabled such as to avoid undue build errors triggered by (future) compiler warning features/unknown at development time of this library.
+Can be `ON` or `OFF`. When `ON`, all compiler warnings are enabled and treated as errors. This setting is recommended to be enabled prior to submission of a Pull Request as CI runs with this setting active. When `OFF`, significantly fewer compiler warnings are enabled such as to avoid undue build errors triggered by (future) compiler warning features/unknown at the development time of this library.
 
 **Default**: `OFF`.
 

@@ -1,6 +1,9 @@
 name: apple build
 
-on: [push, pull_request]
+permissions:
+  contents: read
+
+on: [ push, pull_request ]
 
 jobs:
 
@@ -10,10 +13,13 @@ jobs:
       fail-fast: false
       matrix:
         platform: [OS64, TVOS]
+        stfl_opt: [OFF, ON]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
       - name: Generate project
-        run: cmake -B build --toolchain .CMake/apple.cmake -DOQS_USE_OPENSSL=OFF -DPLATFORM=${{ matrix.platform }} .
+        run: |
+          cmake -B build --toolchain .CMake/apple.cmake -DOQS_USE_OPENSSL=OFF -DPLATFORM=${{ matrix.platform }} \
+            -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
       - name: Build project
         run: cmake --build build

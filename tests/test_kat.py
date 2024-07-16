@@ -35,6 +35,22 @@ def test_sig(sig_name):
 
     assert(kats[sig_name]['single'] == h256.hexdigest())
 
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
+def test_sig_stfl(sig_stfl_name):
+    kats = helpers.get_kats("sig_stfl")
+    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
+    katfile = helpers.get_katfile("sig_stfl", sig_stfl_name)
+    if not katfile: pytest.skip("KATs file is missing")
+    output = helpers.run_subprocess(
+        [helpers.path_to_executable('kat_sig_stfl'), sig_stfl_name, katfile],
+    )
+    output = output.replace("\r\n", "\n")
+    h256 = sha256()
+    h256.update(output.encode())
+
+    assert(kats[sig_stfl_name] == h256.hexdigest())
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)

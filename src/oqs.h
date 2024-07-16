@@ -17,5 +17,10 @@
 #include <oqs/rand.h>
 #include <oqs/kem.h>
 #include <oqs/sig.h>
+#include <oqs/sig_stfl.h>
+#include <oqs/aes_ops.h>
+#include <oqs/sha2_ops.h>
+#include <oqs/sha3_ops.h>
+#include <oqs/sha3x4_ops.h>
 
 #endif // OQS_H

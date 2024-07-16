@@ -82,12 +82,20 @@ extern "C" {
 #define OQS_SIG_alg_sphincs_shake_256f_simple "SPHINCS+-SHAKE-256f-simple"
 /** Algorithm identifier for SPHINCS+-SHAKE-256s-simple */
 #define OQS_SIG_alg_sphincs_shake_256s_simple "SPHINCS+-SHAKE-256s-simple"
+/** Algorithm identifier for MAYO-1 */
+#define OQS_SIG_alg_mayo_1 "MAYO-1"
+/** Algorithm identifier for MAYO-2 */
+#define OQS_SIG_alg_mayo_2 "MAYO-2"
+/** Algorithm identifier for MAYO-3 */
+#define OQS_SIG_alg_mayo_3 "MAYO-3"
+/** Algorithm identifier for MAYO-5 */
+#define OQS_SIG_alg_mayo_5 "MAYO-5"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 25
+#define OQS_SIG_algs_length 29
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -266,6 +274,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_SPHINCS
 #include <oqs/sig_sphincs.h>
 #endif /* OQS_ENABLE_SIG_SPHINCS */
+#ifdef OQS_ENABLE_SIG_MAYO
+#include <oqs/sig_mayo.h>
+#endif /* OQS_ENABLE_SIG_MAYO */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 

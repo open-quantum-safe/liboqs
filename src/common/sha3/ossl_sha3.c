@@ -198,11 +198,7 @@ static void SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 	if (s->n_out == 0) {
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, output, outlen);
 	} else {
-		uint8_t *tmp;
-		tmp = malloc(s->n_out + outlen);
-		if (tmp == NULL) {
-			exit(111);
-		}
+		uint8_t *tmp = OQS_MEM_checked_malloc(s->n_out + outlen);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(output, tmp + s->n_out, outlen);
 		free(tmp); // IGNORE free-check
@@ -276,11 +272,7 @@ static void SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 	if (s->n_out == 0) {
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, output, outlen);
 	} else {
-		uint8_t *tmp;
-		tmp = malloc(s->n_out + outlen);
-		if (tmp == NULL) {
-			exit(111);
-		}
+		uint8_t *tmp = OQS_MEM_checked_malloc(s->n_out + outlen);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(output, tmp + s->n_out, outlen);
 		free(tmp); // IGNORE free-check

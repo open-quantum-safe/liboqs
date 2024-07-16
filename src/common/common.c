@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 AND MIT
 
-#if !defined(_WIN32) && !defined(OQS_HAVE_EXPLICIT_BZERO)
+#if !defined(OQS_USE_OPENSSL) && !defined(_WIN32) && !defined(OQS_HAVE_EXPLICIT_BZERO)
 // Request memset_s
 #define __STDC_WANT_LIB_EXT1__ 1
 #endif
@@ -256,7 +256,9 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 }
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
-#if defined(_WIN32)
+#if defined(OQS_USE_OPENSSL)
+	OSSL_FUNC(OPENSSL_cleanse)(ptr, len);
+#elif defined(_WIN32)
 	SecureZeroMemory(ptr, len);
 #elif defined(OQS_HAVE_EXPLICIT_BZERO)
 	explicit_bzero(ptr, len);
@@ -269,6 +271,26 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 	static volatile memset_t memset_func = memset;
 	memset_func(ptr, 0, len);
 #endif
+}
+
+void *OQS_MEM_checked_malloc(size_t len) {
+	void *ptr = malloc(len);
+	if (ptr == NULL) {
+		fprintf(stderr, "Memory allocation failed\n");
+		abort();
+	}
+
+	return ptr;
+}
+
+void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
+	void *ptr = OQS_MEM_aligned_alloc(alignment, size);
+	if (ptr == NULL) {
+		fprintf(stderr, "Memory allocation failed\n");
+		abort();
+	}
+
+	return ptr;
 }
 
 OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {

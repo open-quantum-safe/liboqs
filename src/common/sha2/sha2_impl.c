@@ -31,6 +31,13 @@ static void SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_
 	oqs_sha2_sha256_inc_ctx_clone_c((sha256ctx *) dest, (const sha256ctx *) src);
 }
 
+static void SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
+	C_OR_ARM(
+	    oqs_sha2_sha256_inc_c((sha256ctx *) state, in, len),
+	    oqs_sha2_sha256_inc_armv8((sha256ctx *) state, in, len)
+	);
+}
+
 static void SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
 	C_OR_ARM(
 	    oqs_sha2_sha256_inc_blocks_c((sha256ctx *) state, in, inblocks),
@@ -105,6 +112,7 @@ struct OQS_SHA2_callbacks sha2_default_callbacks = {
 	SHA2_sha256,
 	SHA2_sha256_inc_init,
 	SHA2_sha256_inc_ctx_clone,
+	SHA2_sha256_inc,
 	SHA2_sha256_inc_blocks,
 	SHA2_sha256_inc_finalize,
 	SHA2_sha256_inc_ctx_release,

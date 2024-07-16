@@ -1,6 +1,9 @@
 name: Linux and MacOS tests
 
-on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+
+on: [ push, pull_request , workflow_dispatch]
 
 env: 
   # Semi-colon separated list of algorithims with libjade implementations to
@@ -16,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Ensure code conventions are upheld
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
@@ -42,7 +45,7 @@ jobs:
           nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs && \
           nix-channel --update && nix-env -iA nixpkgs.jasmin-compiler
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Verify copy_from_upstream state after "${{ matrix.copy-mode}}"
         run: |
           git config --global user.name "ciuser" && \
@@ -50,21 +53,28 @@ jobs:
           export LIBOQS_DIR=`pwd` && \
           git config --global --add safe.directory $LIBOQS_DIR && \
           cd scripts/copy_from_upstream && \
-          ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
+          ! pip3 install --require-hashes -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py ${{ matrix.copy-mode }} && \
           ! git status | grep modified
 
   buildcheck:
     name: Check that code passes a basic build before starting heavier tests
-    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    needs: [stylecheck, upstreamcheck]
-    runs-on: ubuntu-latest
+    needs: [ stylecheck, upstreamcheck ]
+    strategy:
+      matrix:
+        include:
+          - arch: arm64
+            runner: oqs-arm64
+          - arch: x86_64
+            runner: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
+    container: openquantumsafe/ci-ubuntu-focal-${{ matrix.arch }}:latest
     env:
       KEM_NAME: kyber_768
       SIG_NAME: dilithium_3
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: |
           mkdir build && \
@@ -82,52 +92,80 @@ jobs:
       - name: Build documentation
         run: ninja gen_docs
         working-directory: build
+        if: matrix.arch == 'x86_64'
 
-  linux_intel:
+  linux:
     needs: buildcheck
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
+          - name: arm64
+            runner: oqs-arm64
+            container: openquantumsafe/ci-ubuntu-focal-arm64:latest
+            PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 --ignore=tests/test_kat_all.py
+            CMAKE_ARGS: -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
           - name: alpine
+            runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+          - name: alpine-no-stfl-key-sig-gen
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-alpine-amd64:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: alpine-openssl-all
+            runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: alpine-noopenssl
+            runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: focal-nistr4-openssl
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_R4
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+          - name: focal-nistonramp-openssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_SIG_ONRAMP
+            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: jammy-std-openssl3
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: jammy-std-openssl3-dlopen
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_DLOPEN_OPENSSL=ON
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: address-sanitizer
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=auto --maxprocesses=10
-        libjade-build:
-          - -DOQS_LIBJADE_BUILD=OFF
-          # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
-          # libjade to minimise repeated tests
-          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+          - name: address-sanitizer-no-stfl-key-sig-gen
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=auto --maxprocesses=10
+    runs-on: ${{ matrix.runner }}
+    libjade-build:
+      - -DOQS_LIBJADE_BUILD=OFF
+      # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
+      # libjade to minimise repeated tests
+      - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     container:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }} .. && cmake -LA ..
       - name: Build
@@ -137,12 +175,12 @@ jobs:
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
-        if: ${{ matrix.name }} == 'jammy-std-openssl3'
+        if: matrix.name == 'jammy-std-openssl3'
         run: cpack
         working-directory: build
       - name: Retain .deb file
-        if: ${{ matrix.name }} == 'jammy-std-openssl3'
-        uses: actions/upload-artifact@v3
+        if: matrix.name == 'jammy-std-openssl3'
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # pin@v3
         with:
           name: liboqs-openssl3-shared-x64
           path: build/*.deb
@@ -160,7 +198,11 @@ jobs:
         include:
           - name: armhf
             ARCH: armhf
-            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+          - name: armhf-no-stfl-key-sig-gen
+            ARCH: armhf
+            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           # no longer supporting armel
           # - name: armel
@@ -168,7 +210,7 @@ jobs:
           #   CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Install the emulation handlers
         run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - name: Build in an x86_64 container
@@ -209,7 +251,7 @@ jobs:
             CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DBUILD_SHARED_LIBS=ON
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
       - name: Build
@@ -221,11 +263,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: # macos-14 runs on aarch64; the others run on x64
+        os:
+          # macos-14 runs on aarch64; the others run on x64
           - macos-12
           - macos-13
           - macos-14
         CMAKE_ARGS:
+          - -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
           - -DCMAKE_C_COMPILER=gcc-13
           - -DOQS_USE_OPENSSL=OFF
           - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
@@ -241,12 +285,16 @@ jobs:
             libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Install Python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
+        with:
+          python-version: '3.12'
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Install dependencies
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --break-system-packages pytest pytest-xdist pyyaml
-      - name: Patch GCC 
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gcc@13 && wget https://raw.githubusercontent.com/Homebrew/homebrew-core/eb6dd225d093b66054e18e07d56509cf670793b1/Formula/g/gcc%4013.rb && env HOMEBREW_NO_AUTO_UPDATE=1 brew install --ignore-dependencies gcc@13.rb
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
+      - name: Patch GCC
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gcc@13 && wget https://raw.githubusercontent.com/Homebrew/homebrew-core/eb6dd225d093b66054e18e07d56509cf670793b1/Formula/g/gcc%4013.rb && env HOMEBREW_NO_AUTO_UPDATE=1 brew install --ignore-dependencies --formula gcc@13.rb
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
@@ -265,16 +313,16 @@ jobs:
       image: openquantumsafe/ci-ubuntu-jammy:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Retrieve OpenSSL330 from cache
         id: cache-openssl330
-        uses: actions/cache@v3
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # pin@v3
         with:
           path: .localopenssl330
           key: ${{ runner.os }}-openssl330
       - name: Checkout the OpenSSL v3.3.0 commit
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
         with:
           repository: 'openssl/openssl'
           ref: 'openssl-3.3.0-beta1'
@@ -291,7 +339,7 @@ jobs:
       - name: Save OpenSSL
         id: cache-openssl-save
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@e12d46a63a90f2fae62d114769bbf2a179198b5c # pin@v3
         with:
           path: |
             .localopenssl330

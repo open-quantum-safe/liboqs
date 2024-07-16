@@ -1,0 +1,241 @@
+name: XMSS
+type: stateful signature
+principal-submitters:
+- Joost Rijneveld
+- A. Huelsing
+- David Cooper
+- Bas Westerbaan
+auxiliary-submitters:
+
+crypto-assumption: hash-based signatures
+website: https://www.rfc-editor.org/info/rfc8391
+nist-round:
+spec-version:
+spdx-license-identifier: (Apache-2.0 OR MIT) AND CC0-1.0
+primary-upstream:
+  source: https://github.com/XMSS/xmss-reference
+  spdx-license-identifier: (Apache-2.0 OR MIT) AND CC0-1.0
+  upstream-ancestors:
+parameter-sets:
+- name: XMSS-SHA2_10_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 1373
+  length-signature: 2500
+- name: XMSS-SHA2_16_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2093
+  length-signature: 2692
+- name: XMSS-SHA2_20_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2573
+  length-signature: 2820
+- name: XMSS-SHAKE_10_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 1373
+  length-signature: 2500
+- name: XMSS-SHAKE_16_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2093
+  length-signature: 2692
+- name: XMSS-SHAKE_20_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2573
+  length-signature: 2820
+- name: XMSS-SHA2_10_512
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 128
+  length-secret-key: 2653
+  length-signature: 9092
+- name: XMSS-SHA2_16_512
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 128
+  length-secret-key: 4045
+  length-signature: 9476
+- name: XMSS-SHA2_20_512
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 128
+  length-secret-key: 2653
+  length-signature: 9732
+- name: XMSS-SHAKE_10_512
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 128
+  length-secret-key: 2653
+  length-signature: 9092
+- name: XMSS-SHAKE_16_512
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 128
+  length-secret-key: 4045
+  length-signature: 9476
+- name: XMSS-SHAKE_20_512
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 128
+  length-secret-key: 4973
+  length-signature: 9732
+- name: XMSS-SHA2_10_192
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 48
+  length-secret-key: 1053
+  length-signature: 1492
+- name: XMSS-SHA2_16_192
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 48
+  length-secret-key: 1605
+  length-signature: 1636
+- name: XMSS-SHA2_20_192
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 48
+  length-secret-key: 1973
+  length-signature: 1732
+- name: XMSS-SHAKE256_10_192
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 48
+  length-secret-key: 1053
+  length-signature: 1492
+- name: XMSS-SHAKE256_16_192
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 48
+  length-secret-key: 1605
+  length-signature: 1636
+- name: XMSS-SHAKE256_20_192
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 48
+  length-secret-key: 1973
+  length-signature: 1732
+- name: XMSS-SHAKE256_10_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 1373
+  length-signature: 2500
+- name: XMSS-SHAKE256_16_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2093
+  length-signature: 2692
+- name: XMSS-SHAKE256_20_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 2573
+  length-signature: 2820
+- name: XMSSMT-SHA2_20/2_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 5998
+  length-signature: 4963
+- name: XMSSMT-SHA2_20/4_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 10938
+  length-signature: 9251
+- name: XMSSMT-SHA2_40/2_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 9600
+  length-signature: 5605
+- name: XMSSMT-SHA2_40/4_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 15252
+  length-signature: 9893
+- name: XMSSMT-SHA2_40/8_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 24516
+  length-signature: 18469
+- name: XMSSMT-SHA2_60/3_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 16629
+  length-signature: 8392
+- name: XMSSMT-SHA2_60/6_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 24507
+  length-signature: 14824
+- name: XMSSMT-SHA2_60/12_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 38095
+  length-signature: 27688
+- name: XMSSMT-SHAKE_20/2_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 5998
+  length-signature: 4963
+- name: XMSSMT-SHAKE_20/4_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 10938
+  length-signature: 9251
+- name: XMSSMT-SHAKE_40/2_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 9600
+  length-signature: 5605
+- name: XMSSMT-SHAKE_40/4_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 15252
+  length-signature: 9893
+- name: XMSSMT-SHAKE_40/8_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 24516
+  length-signature: 18469
+- name: XMSSMT-SHAKE_60/3_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 24516
+  length-signature: 8392
+- name: XMSSMT-SHAKE_60/6_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 24507
+  length-signature: 14824
+- name: XMSSMT-SHAKE_60/12_256
+  claimed-nist-level:
+  claimed-security:
+  length-public-key: 64
+  length-secret-key: 38095
+  length-signature: 27688

@@ -189,6 +189,16 @@
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake_256f_simple_avx2 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake_256s_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake_256s_simple_avx2 1
+
+#cmakedefine OQS_ENABLE_SIG_MAYO 1
+#cmakedefine OQS_ENABLE_SIG_mayo_1 1
+#cmakedefine OQS_ENABLE_SIG_mayo_1_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_2_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_3 1
+#cmakedefine OQS_ENABLE_SIG_mayo_3_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_5 1
+#cmakedefine OQS_ENABLE_SIG_mayo_5_avx2 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 
 ///// OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
@@ -201,3 +211,64 @@
 #cmakedefine OQS_ENABLE_LIBJADE_KEM_kyber_768 1
 #cmakedefine OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2 1
 ///// OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
+
+#cmakedefine OQS_ENABLE_SIG_STFL_XMSS 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha256_h10 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha256_h16 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha256_h20 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake128_h10 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake128_h16 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake128_h20 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha512_h10 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha512_h16 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha512_h20 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h10 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h16 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h20 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha256_h10_192 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha256_h16_192 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha256_h20_192 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h10_192 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h16_192 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h20_192 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h10_256 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h16_256 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmss_shake256_h20_256 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h20_2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h20_4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h40_8 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_3 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_6 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_sha256_h60_12 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h20_2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h20_4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h40_8 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_3 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_6 1
+#cmakedefine OQS_ENABLE_SIG_STFL_xmssmt_shake128_h60_12 1
+
+
+#cmakedefine OQS_ENABLE_SIG_STFL_LMS 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w1 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w8 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w1 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w4_h5_w8 1
+
+#cmakedefine OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN 1
+#cmakedefine OQS_ALLOW_STFL_KEY_AND_SIG_GEN 1
+#cmakedefine OQS_ALLOW_XMSS_KEY_AND_SIG_GEN 1
+#cmakedefine OQS_ALLOW_LMS_KEY_AND_SIG_GEN 1
