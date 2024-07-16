@@ -15,8 +15,8 @@
       - **Implementation license (SPDX-Identifier)**: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
 - **Formally-verified Implementation sources**: 
   - **libjade**:<a name="libjade"></a>
-      - **Source**: https://github.com/formosa-crypto/libjade/tree/release/2023.05-1 with copy_from_upstream patches
-      - **Implementation license (SPDX-Identifier)**: CC0-1.0
+      - **Source**: https://github.com/formosa-crypto/libjade/tree/release/2023.05-2 with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: CC0-1.0 OR Apache-2.0
 
 
 ## Parameter set summary

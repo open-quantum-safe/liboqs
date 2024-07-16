@@ -28,9 +28,9 @@ optimized-upstreams:
       and MIT
 formally-verified-upstreams:
   libjade:
-    source: https://github.com/formosa-crypto/libjade/tree/release/2023.05-1 with
+    source: https://github.com/formosa-crypto/libjade/tree/release/2023.05-2 with
       copy_from_upstream patches
-    spdx-license-identifier: CC0-1.0
+    spdx-license-identifier: CC0-1.0 OR Apache-2.0
 parameter-sets:
 - name: Kyber512
   claimed-nist-level: 1
