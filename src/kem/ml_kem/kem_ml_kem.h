@@ -10,6 +10,8 @@
 #define OQS_KEM_ml_kem_512_ipd_length_secret_key 1632
 #define OQS_KEM_ml_kem_512_ipd_length_ciphertext 768
 #define OQS_KEM_ml_kem_512_ipd_length_shared_secret 32
+#define OQS_KEM_ml_kem_512_ipd_length_keypair_coins 64
+#define OQS_KEM_ml_kem_512_ipd_length_encaps_coins 32
 OQS_KEM *OQS_KEM_ml_kem_512_ipd_new(void);
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -21,6 +23,8 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_ipd_decaps(uint8_t *shared_secret, const u
 #define OQS_KEM_ml_kem_512_length_secret_key OQS_KEM_ml_kem_512_ipd_length_secret_key
 #define OQS_KEM_ml_kem_512_length_ciphertext OQS_KEM_ml_kem_512_ipd_length_ciphertext
 #define OQS_KEM_ml_kem_512_length_shared_secret OQS_KEM_ml_kem_512_ipd_length_shared_secret
+#define OQS_KEM_ml_kem_512_length_keypair_coins OQS_KEM_ml_kem_512_ipd_length_keypair_coins
+#define OQS_KEM_ml_kem_512_length_encaps_coins OQS_KEM_ml_kem_512_ipd_length_encaps_coins
 OQS_KEM *OQS_KEM_ml_kem_512_new(void);
 #define OQS_KEM_ml_kem_512_keypair_derand OQS_KEM_ml_kem_512_ipd_keypair_derand
 #define OQS_KEM_ml_kem_512_keypair OQS_KEM_ml_kem_512_ipd_keypair
@@ -34,6 +38,8 @@ OQS_KEM *OQS_KEM_ml_kem_512_new(void);
 #define OQS_KEM_ml_kem_768_ipd_length_secret_key 2400
 #define OQS_KEM_ml_kem_768_ipd_length_ciphertext 1088
 #define OQS_KEM_ml_kem_768_ipd_length_shared_secret 32
+#define OQS_KEM_ml_kem_768_ipd_length_keypair_coins 64
+#define OQS_KEM_ml_kem_768_ipd_length_encaps_coins 32
 OQS_KEM *OQS_KEM_ml_kem_768_ipd_new(void);
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -45,6 +51,8 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_ipd_decaps(uint8_t *shared_secret, const u
 #define OQS_KEM_ml_kem_768_length_secret_key OQS_KEM_ml_kem_768_ipd_length_secret_key
 #define OQS_KEM_ml_kem_768_length_ciphertext OQS_KEM_ml_kem_768_ipd_length_ciphertext
 #define OQS_KEM_ml_kem_768_length_shared_secret OQS_KEM_ml_kem_768_ipd_length_shared_secret
+#define OQS_KEM_ml_kem_768_length_keypair_coins OQS_KEM_ml_kem_768_ipd_length_keypair_coins
+#define OQS_KEM_ml_kem_768_length_encaps_coins OQS_KEM_ml_kem_768_ipd_length_encaps_coins
 OQS_KEM *OQS_KEM_ml_kem_768_new(void);
 #define OQS_KEM_ml_kem_768_keypair_derand OQS_KEM_ml_kem_768_ipd_keypair_derand
 #define OQS_KEM_ml_kem_768_keypair OQS_KEM_ml_kem_768_ipd_keypair
@@ -58,6 +66,8 @@ OQS_KEM *OQS_KEM_ml_kem_768_new(void);
 #define OQS_KEM_ml_kem_1024_ipd_length_secret_key 3168
 #define OQS_KEM_ml_kem_1024_ipd_length_ciphertext 1568
 #define OQS_KEM_ml_kem_1024_ipd_length_shared_secret 32
+#define OQS_KEM_ml_kem_1024_ipd_length_keypair_coins 64
+#define OQS_KEM_ml_kem_1024_ipd_length_encaps_coins 32
 OQS_KEM *OQS_KEM_ml_kem_1024_ipd_new(void);
 OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -69,6 +79,8 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_ipd_decaps(uint8_t *shared_secret, const 
 #define OQS_KEM_ml_kem_1024_length_secret_key OQS_KEM_ml_kem_1024_ipd_length_secret_key
 #define OQS_KEM_ml_kem_1024_length_ciphertext OQS_KEM_ml_kem_1024_ipd_length_ciphertext
 #define OQS_KEM_ml_kem_1024_length_shared_secret OQS_KEM_ml_kem_1024_ipd_length_shared_secret
+#define OQS_KEM_ml_kem_1024_length_keypair_coins OQS_KEM_ml_kem_1024_ipd_length_keypair_coins
+#define OQS_KEM_ml_kem_1024_length_encaps_coins OQS_KEM_ml_kem_1024_ipd_length_encaps_coins
 OQS_KEM *OQS_KEM_ml_kem_1024_new(void);
 #define OQS_KEM_ml_kem_1024_keypair_derand OQS_KEM_ml_kem_1024_ipd_keypair_derand
 #define OQS_KEM_ml_kem_1024_keypair OQS_KEM_ml_kem_1024_ipd_keypair

@@ -22,6 +22,8 @@ OQS_KEM *OQS_KEM_kyber_1024_new(void) {
 	kem->length_secret_key = OQS_KEM_kyber_1024_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_kyber_1024_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_kyber_1024_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_kyber_1024_length_keypair_coins;
+	kem->length_encaps_coins = OQS_KEM_kyber_1024_length_encaps_coins;
 
 	kem->keypair_derand = OQS_KEM_kyber_1024_keypair_derand;
 	kem->keypair = OQS_KEM_kyber_1024_keypair;
@@ -31,25 +33,18 @@ OQS_KEM *OQS_KEM_kyber_1024_new(void) {
 
 	return kem;
 }
-
-extern int PQCLEAN_KYBER1024_REF_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
 extern int pqcrystals_kyber1024_ref_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCLEAN_KYBER1024_REF_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int pqcrystals_kyber1024_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_kyber1024_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_kyber_1024_avx2)
-extern int PQCLEAN_KYBER1024_AVX2_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber1024_avx2_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCLEAN_KYBER1024_AVX2_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int pqcrystals_kyber1024_avx2_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_kyber1024_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 #if defined(OQS_ENABLE_KEM_kyber_1024_aarch64)
-extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk);
 extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCLEAN_KYBER1024_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
