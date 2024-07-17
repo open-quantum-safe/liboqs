@@ -25,6 +25,8 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	kem->length_secret_key = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_keypair_coins;
+	kem->length_encaps_coins = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_encaps_coins;
 
 	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair;
@@ -73,12 +75,9 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == scheme['default_implementation'] %}
 
         {%- if impl['signature_keypair_derand'] %}
-           {%- set cleankeypair = scheme['metadata'].update({'default_keypair_derand_signature': impl['signature_keypair_derand']}) -%}
-        {%- else %}
-           {%- set cleankeypair = scheme['metadata'].update({'default_keypair_derand_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_keypair_derand"}) -%}
-        {%- endif %}
-
+           {%- set cleankeypairderand = scheme['metadata'].update({'default_keypair_derand_signature': impl['signature_keypair_derand']}) %}
 extern int {{ scheme['metadata']['default_keypair_derand_signature'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
+        {%- endif %}
 
         {%- if impl['signature_keypair'] %}
            {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': impl['signature_keypair']}) -%}
@@ -88,11 +87,9 @@ extern int {{ scheme['metadata']['default_keypair_derand_signature'] }}(uint8_t 
 extern int {{ scheme['metadata']['default_keypair_signature'] }}(uint8_t *pk, uint8_t *sk);
 
         {%- if impl['signature_enc_derand'] %}
-           {%- set cleanenc = scheme['metadata'].update({'default_enc_derand_signature': impl['signature_enc_derand']}) -%}
-        {%- else %}
-           {%- set cleanenc = scheme['metadata'].update({'default_enc_derand_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_enc_derand"}) -%}
-        {%- endif %}
+           {%- set cleanencderand = scheme['metadata'].update({'default_enc_derand_signature': impl['signature_enc_derand']}) %}
 extern int {{ scheme['metadata']['default_enc_derand_signature'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
+        {%- endif %}
 
         {%- if impl['signature_enc'] %}
            {%- set cleanenc = scheme['metadata'].update({'default_enc_signature': impl['signature_enc']}) -%}
@@ -115,8 +112,6 @@ extern int {{ scheme['metadata']['default_dec_signature']  }}(uint8_t *ss, const
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
         {%- if impl['signature_keypair_derand'] %}
 extern int {{ impl['signature_keypair_derand'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *coins);
-        {%- else %}
-extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk);
         {%- endif %}
 
         {%- if impl['signature_keypair'] %}
@@ -127,8 +122,6 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper 
 
         {%- if impl['signature_enc_derand'] %}
 extern int {{ impl['signature_enc_derand'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
-        {%- else %}
-extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
         {%- endif %}
 
         {%- if impl['signature_enc'] %}
