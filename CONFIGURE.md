@@ -202,7 +202,7 @@ At the moment, this is **only** considered for random number generation, as both
 **Default**: `OFF`.
 
 ## OQS_LIBJADE_BUILD
-Can be `ON` or `OFF`. When `ON` liboqs is built to use high assurance implementations of cryptographic algorithms from [Libjade](https://github.com/formosa-crypto/libjade). The cryptographic primitives in Libjade are written using [Jasmin](https://github.com/jasmin-lang/jasmin) and built using the Jasmin compiler. The Jasmin compiler is proven (in Coq) to preserve semantic correctness of a program, maintain secret-independence of control flow, and maintain secret independence of locations of memory access through compilation. Additionaly, the Jasmin compiler guarantees thread safety because Jasmin doesn't support global variables (with the caveat that the caller respects the function's contract). 
+Can be `ON` or `OFF`. When `ON` liboqs is built to use high assurance implementations of cryptographic algorithms from [Libjade](https://github.com/formosa-crypto/libjade). The cryptographic primitives in Libjade are written using [Jasmin](https://github.com/jasmin-lang/jasmin) and built using the Jasmin compiler. The Jasmin compiler is proven (in Coq) to preserve semantic correctness of a program, maintain secret-independence of control flow, and maintain secret independence of locations of memory access through compilation. Additionally, the Jasmin compiler guarantees thread safety because Jasmin doesn't support global variables. 
 
 At the moment, Libjade only provides Kyber512 and Kyber768 KEMs. 
 
