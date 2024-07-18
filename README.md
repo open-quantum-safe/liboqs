@@ -1,4 +1,6 @@
-![CircleCI Build Status](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main.svg?style=shield) ![Build Status](https://img.shields.io/travis/com/open-quantum-safe/liboqs?logo=travis&label=travis%20ci)
+![CircleCI Build Status](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main.svg?style=shield) ![Build Status](https://img.shields.io/travis/com/open-quantum-safe/liboqs?logo=travis&label=travis%20ci) [![PQCA Discord Server](https://img.shields.io/badge/PQCA%20Discord%20Server-7289DA?logo=discord&logoColor=white&style=flat-square)](https://discord.gg/pqca)
+
+
 
 liboqs
 ======================
