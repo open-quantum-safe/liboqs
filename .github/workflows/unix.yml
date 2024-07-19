@@ -107,11 +107,6 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: bionic-i386
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-bionic-i386:latest
-            CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_x86.cmake
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: focal-nistr4-openssl
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
