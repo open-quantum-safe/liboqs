@@ -66,6 +66,7 @@ jobs:
                    -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
                    > config.log 2>&1 && \
           cat config.log && \
+          cmake -LA -N .. && \
           ! (grep "uninitialized variable" config.log)
       - name: Build code
         run: ninja
@@ -143,7 +144,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} ..
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
@@ -199,6 +200,7 @@ jobs:
                          (cd build && \
                           cmake .. -GNinja ${{ matrix.CMAKE_ARGS }} \
                                    -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_${{ matrix.ARCH }}.cmake && \
+                          cmake -LA -N .. && \
                           ninja)"
       - name: Run the tests in an ${{ matrix.ARCH }} container
         timeout-minutes: 60
@@ -228,7 +230,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} ..
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
@@ -263,7 +265,7 @@ jobs:
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
-        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} ..
+        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
@@ -310,7 +312,7 @@ jobs:
             .localopenssl330
           key: ${{ runner.os }}-openssl330
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja -DOQS_STRICT_WARNINGS=ON -DOPENSSL_ROOT_DIR=../.localopenssl330 -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON ..
+        run: mkdir build && cd build && cmake -GNinja -DOQS_STRICT_WARNINGS=ON -DOPENSSL_ROOT_DIR=../.localopenssl330 -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
