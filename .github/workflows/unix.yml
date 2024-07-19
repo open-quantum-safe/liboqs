@@ -135,7 +135,7 @@ jobs:
           - name: focal-clang15
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang-15 -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang-15
             PYTEST_ARGS: --ignore=tests/test_kat_all.py
           - name: jammy-std-openssl3
             runner: ubuntu-latest
