@@ -9,7 +9,7 @@ jobs:
       compiler: gcc
       if: NOT branch =~ /^ghactionsonly-/
       script:
-        - mkdir build && cd build && cmake -GNinja -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_STFL_SIG_KEY_SIG_GEN=ON .. && cmake -LA .. && ninja
+        - mkdir build && cd build && cmake -GNinja -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_STFL_SIG_KEY_SIG_GEN=ON .. && cmake -LA -N .. && ninja
         - cd build & ninja run_tests
     - arch: s390x
       os: linux
@@ -17,5 +17,5 @@ jobs:
       compiler: gcc
       if: NOT branch =~ /^ghactionsonly-/
       script:
-        - mkdir build && cd build && cmake -GNinja -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_STFL_SIG_KEY_SIG_GEN=ON .. && cmake -LA .. && ninja
+        - mkdir build && cd build && cmake -GNinja -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_STFL_SIG_KEY_SIG_GEN=ON .. && cmake -LA -N .. && ninja
         - cd build & ninja run_tests
