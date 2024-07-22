@@ -90,12 +90,48 @@ extern "C" {
 #define OQS_SIG_alg_mayo_3 "MAYO-3"
 /** Algorithm identifier for MAYO-5 */
 #define OQS_SIG_alg_mayo_5 "MAYO-5"
+/** Algorithm identifier for cross-rsdp-128-balanced */
+#define OQS_SIG_alg_cross_rsdp_128_balanced "cross-rsdp-128-balanced"
+/** Algorithm identifier for cross-rsdp-128-fast */
+#define OQS_SIG_alg_cross_rsdp_128_fast "cross-rsdp-128-fast"
+/** Algorithm identifier for cross-rsdp-128-small */
+#define OQS_SIG_alg_cross_rsdp_128_small "cross-rsdp-128-small"
+/** Algorithm identifier for cross-rsdp-192-balanced */
+#define OQS_SIG_alg_cross_rsdp_192_balanced "cross-rsdp-192-balanced"
+/** Algorithm identifier for cross-rsdp-192-fast */
+#define OQS_SIG_alg_cross_rsdp_192_fast "cross-rsdp-192-fast"
+/** Algorithm identifier for cross-rsdp-192-small */
+#define OQS_SIG_alg_cross_rsdp_192_small "cross-rsdp-192-small"
+/** Algorithm identifier for cross-rsdp-256-balanced */
+#define OQS_SIG_alg_cross_rsdp_256_balanced "cross-rsdp-256-balanced"
+/** Algorithm identifier for cross-rsdp-256-fast */
+#define OQS_SIG_alg_cross_rsdp_256_fast "cross-rsdp-256-fast"
+/** Algorithm identifier for cross-rsdp-256-small */
+#define OQS_SIG_alg_cross_rsdp_256_small "cross-rsdp-256-small"
+/** Algorithm identifier for cross-rsdpg-128-balanced */
+#define OQS_SIG_alg_cross_rsdpg_128_balanced "cross-rsdpg-128-balanced"
+/** Algorithm identifier for cross-rsdpg-128-fast */
+#define OQS_SIG_alg_cross_rsdpg_128_fast "cross-rsdpg-128-fast"
+/** Algorithm identifier for cross-rsdpg-128-small */
+#define OQS_SIG_alg_cross_rsdpg_128_small "cross-rsdpg-128-small"
+/** Algorithm identifier for cross-rsdpg-192-balanced */
+#define OQS_SIG_alg_cross_rsdpg_192_balanced "cross-rsdpg-192-balanced"
+/** Algorithm identifier for cross-rsdpg-192-fast */
+#define OQS_SIG_alg_cross_rsdpg_192_fast "cross-rsdpg-192-fast"
+/** Algorithm identifier for cross-rsdpg-192-small */
+#define OQS_SIG_alg_cross_rsdpg_192_small "cross-rsdpg-192-small"
+/** Algorithm identifier for cross-rsdpg-256-balanced */
+#define OQS_SIG_alg_cross_rsdpg_256_balanced "cross-rsdpg-256-balanced"
+/** Algorithm identifier for cross-rsdpg-256-fast */
+#define OQS_SIG_alg_cross_rsdpg_256_fast "cross-rsdpg-256-fast"
+/** Algorithm identifier for cross-rsdpg-256-small */
+#define OQS_SIG_alg_cross_rsdpg_256_small "cross-rsdpg-256-small"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 29
+#define OQS_SIG_algs_length 47
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -277,6 +313,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_MAYO
 #include <oqs/sig_mayo.h>
 #endif /* OQS_ENABLE_SIG_MAYO */
+#ifdef OQS_ENABLE_SIG_CROSS
+#include <oqs/sig_cross.h>
+#endif /* OQS_ENABLE_SIG_CROSS */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 

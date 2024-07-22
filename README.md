@@ -63,6 +63,7 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 #### Signature schemes
 
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_START -->
+- **CROSS**: cross-rsdp-128-balanced, cross-rsdp-128-fast, cross-rsdp-128-small, cross-rsdp-192-balanced, cross-rsdp-192-fast, cross-rsdp-192-small, cross-rsdp-256-balanced, cross-rsdp-256-fast, cross-rsdp-256-small, cross-rsdpg-128-balanced, cross-rsdpg-128-fast, cross-rsdpg-128-small, cross-rsdpg-192-balanced, cross-rsdpg-192-fast, cross-rsdpg-192-small, cross-rsdpg-256-balanced, cross-rsdpg-256-fast, cross-rsdpg-256-small
 - **CRYSTALS-Dilithium**: Dilithium2, Dilithium3, Dilithium5
 - **Falcon**: Falcon-512, Falcon-1024, Falcon-padded-512, Falcon-padded-1024
 - **MAYO**: MAYO-1, MAYO-2, MAYO-3, MAYO-5†
