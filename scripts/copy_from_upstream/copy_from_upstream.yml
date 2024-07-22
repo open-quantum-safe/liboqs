@@ -61,6 +61,13 @@ upstreams:
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
+  -
+    name: upcross
+    git_url: https://github.com/rtjk/CROSS-PQClean.git
+    git_branch: master
+    git_commit: bc4ae80a905118de14341041ae0d12315e4f8bbd
+    sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
+    sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
 kems:
   -
     name: classic_mceliece
@@ -344,3 +351,98 @@ sigs:
         pqclean_scheme: mayo-5
         pretty_name_full: MAYO-5
         signed_msg_order: sig_then_msg
+  -
+    name: cross
+    default_implementation: clean
+    upstream_location: upcross
+    schemes:
+      -
+        scheme: "rsdp_128_balanced"
+        pqclean_scheme: cross-rsdp-128-balanced
+        pretty_name_full: cross-rsdp-128-balanced
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_128_fast"
+        pqclean_scheme: cross-rsdp-128-fast
+        pretty_name_full: cross-rsdp-128-fast
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_128_small"
+        pqclean_scheme: cross-rsdp-128-small
+        pretty_name_full: cross-rsdp-128-small
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_192_balanced"
+        pqclean_scheme: cross-rsdp-192-balanced
+        pretty_name_full: cross-rsdp-192-balanced
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_192_fast"
+        pqclean_scheme: cross-rsdp-192-fast
+        pretty_name_full: cross-rsdp-192-fast
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_192_small"
+        pqclean_scheme: cross-rsdp-192-small
+        pretty_name_full: cross-rsdp-192-small
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_256_balanced"
+        pqclean_scheme: cross-rsdp-256-balanced
+        pretty_name_full: cross-rsdp-256-balanced
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_256_fast"
+        pqclean_scheme: cross-rsdp-256-fast
+        pretty_name_full: cross-rsdp-256-fast
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdp_256_small"
+        pqclean_scheme: cross-rsdp-256-small
+        pretty_name_full: cross-rsdp-256-small
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_128_balanced"
+        pqclean_scheme: cross-rsdpg-128-balanced
+        pretty_name_full: cross-rsdpg-128-balanced
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_128_fast"
+        pqclean_scheme: cross-rsdpg-128-fast
+        pretty_name_full: cross-rsdpg-128-fast
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_128_small"
+        pqclean_scheme: cross-rsdpg-128-small
+        pretty_name_full: cross-rsdpg-128-small
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_192_balanced"
+        pqclean_scheme: cross-rsdpg-192-balanced
+        pretty_name_full: cross-rsdpg-192-balanced
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_192_fast"
+        pqclean_scheme: cross-rsdpg-192-fast
+        pretty_name_full: cross-rsdpg-192-fast
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_192_small"
+        pqclean_scheme: cross-rsdpg-192-small
+        pretty_name_full: cross-rsdpg-192-small
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_256_balanced"
+        pqclean_scheme: cross-rsdpg-256-balanced
+        pretty_name_full: cross-rsdpg-256-balanced
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_256_fast"
+        pqclean_scheme: cross-rsdpg-256-fast
+        pretty_name_full: cross-rsdpg-256-fast
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "rsdpg_256_small"
+        pqclean_scheme: cross-rsdpg-256-small
+        pretty_name_full: cross-rsdpg-256-small
+        signed_msg_order: msg_then_sig
