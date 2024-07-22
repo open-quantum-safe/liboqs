@@ -128,6 +128,12 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_MAYO OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_CROSS)
+                set(OQS_ENABLE_SIG_CROSS ON)
+        else()  
+                set(OQS_ENABLE_SIG_CROSS OFF)
+        endif()
+
         # Add the actual liboqs targets
         add_subdirectory(.. build)
 

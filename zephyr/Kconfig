@@ -71,4 +71,9 @@ config LIBOQS_ENABLE_SIG_MAYO
 	default y
 	depends on LIBOQS
 
+config LIBOQS_ENABLE_SIG_CROSS
+	bool "Enable the CROSS signature algorithm"
+	default y
+	depends on LIBOQS
+
 endmenu
