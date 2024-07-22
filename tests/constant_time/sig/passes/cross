@@ -1,0 +1,110 @@
+# Keygen
+
+{
+   Rejection sampling for matrix "V"
+   Memcheck:Cond
+   fun:CSPRNG_fq_mat
+   fun:expand_public_seed
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+{
+   Rejection sampling for matrix "W" (RSDPG variant)
+   Memcheck:Cond
+   fun:CSPRNG_fz_mat
+   fun:expand_public_seed
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+{
+   Rejection sampling for vector "eta"
+   Memcheck:Cond
+   fun:CSPRNG_zz_vec
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+{
+   Rejection sampling for vector "zeta" (RSDPG variant)
+   Memcheck:Cond
+   fun:CSPRNG_zz_inf_w
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+# Sign
+
+{
+   Rejection sampling for matrix "V"
+   Memcheck:Cond
+   fun:CSPRNG_fq_mat
+   fun:expand_public_seed
+   fun:expand_private_seed
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for matrix "W" (RSDPG variant)
+   Memcheck:Cond
+   fun:CSPRNG_fz_mat
+   fun:expand_public_seed
+   fun:expand_private_seed
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+
+{
+   Rejection sampling for vector "eta"
+   Memcheck:Cond
+   fun:CSPRNG_zz_vec
+   fun:expand_private_seed
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "zeta" (RSDPG variant)
+   Memcheck:Cond
+   fun:CSPRNG_zz_inf_w
+   fun:expand_private_seed
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "eta_tilde"
+   Memcheck:Cond
+   fun:CSPRNG_zz_vec
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "zeta_tilde" (RSDPG variant)
+   Memcheck:Cond
+   fun:CSPRNG_zz_inf_w
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "u_tilde"
+   Memcheck:Cond
+   fun:CSPRNG_fq_vec
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "beta"
+   Memcheck:Cond
+   fun:CSPRNG_fq_vec_beta
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for Fisher-Yates shuffle of challenge vector "b"
+   Memcheck:Cond
+   fun:PQCLEAN_CROSSRSDP*_expand_digest_to_fixed_weight
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for Fisher-Yates shuffle of challenge vector "b"
+   Memcheck:Value8
+   fun:PQCLEAN_CROSSRSDP*_expand_digest_to_fixed_weight
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
