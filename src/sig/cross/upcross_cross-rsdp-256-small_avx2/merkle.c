@@ -250,9 +250,9 @@ void PQCLEAN_CROSSRSDP256SMALL_AVX2_generate_merkle_proof(uint16_t merkle_proof_
 	get_leaf_indices(merkle_leaf_indices, layer_offsets);
 
 	/* Use challenges to mark nodes of path tree */
-	for (size_t i = 0; i < T; i++) {
-		if (challenge[i] == CHALLENGE_PROOF_VALUE) {
-			flag_tree[merkle_leaf_indices[i]] = COMPUTED;
+	for (size_t j = 0; j < T; j++) {
+		if (challenge[j] == CHALLENGE_PROOF_VALUE) {
+			flag_tree[merkle_leaf_indices[j]] = COMPUTED;
 		}
 	}
 

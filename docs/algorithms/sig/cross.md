@@ -7,7 +7,7 @@
 - **Authors' website**: https://www.cross-crypto.com/
 - **Specification version**: 1.2 + Keccak_x4 + PQClean fixes.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/rtjk/CROSS-PQClean/commit/bc4ae80a905118de14341041ae0d12315e4f8bbd
+  - **Source**: https://github.com/rtjk/CROSS-PQClean/commit/bd89242834d7eecb00c1064be421b76dc2d90b41
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
