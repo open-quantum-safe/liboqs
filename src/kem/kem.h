@@ -163,8 +163,10 @@ typedef struct OQS_KEM {
 	size_t length_ciphertext;
 	/** The length, in bytes, of shared secrets for this KEM. */
 	size_t length_shared_secret;
-	/** The length, in bytes, of coins for this KEM. */
-	size_t length_coins;
+	/** The length, in bytes, of coins for derandomized keypair generation for this KEM. */
+	size_t length_keypair_coins;
+	/** The length, in bytes, of coins for derandomized encapsulation for this KEM. */
+	size_t length_encaps_coins;
 
 	/**
 	 * Derandomized keypair generation algorithm.

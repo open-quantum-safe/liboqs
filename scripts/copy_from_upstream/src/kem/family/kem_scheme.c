@@ -60,6 +60,8 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 	kem->length_secret_key = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_keypair_coins;
+	kem->length_encaps_coins = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_encaps_coins;
 
 	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair_derand;
 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair;

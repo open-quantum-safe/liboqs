@@ -43,6 +43,8 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	uint8_t *ciphertext = NULL;
 	uint8_t *shared_secret_e = NULL;
 	uint8_t *shared_secret_d = NULL;
+	uint8_t *coins_k = NULL;
+	uint8_t *coins_e = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
 
@@ -66,8 +68,10 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	ciphertext = malloc(kem->length_ciphertext + 2 * sizeof(magic_t));
 	shared_secret_e = malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
 	shared_secret_d = malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
+	coins_k = malloc(kem->length_keypair_coins + 2 * sizeof(magic_t));
+	coins_e = malloc(kem->length_encaps_coins + 2 * sizeof(magic_t));
 
-	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL) || (coins_k == NULL) || (coins_e == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
@@ -78,12 +82,17 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	memcpy(ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d, magic.val, sizeof(magic_t));
+	memcpy(coins_k, magic.val, sizeof(magic_t));
+	memcpy(coins_e, magic.val, sizeof(magic_t));
 
 	public_key += sizeof(magic_t);
 	secret_key += sizeof(magic_t);
 	ciphertext += sizeof(magic_t);
 	shared_secret_e += sizeof(magic_t);
 	shared_secret_d += sizeof(magic_t);
+	coins_k += sizeof(magic_t);
+	coins_e += sizeof(magic_t);
+
 
 	// and after
 	memcpy(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
@@ -91,21 +100,46 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	memcpy(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
+	// coins_k and coins_e are now simply pointing to the start of the second magic_t value
+	memcpy(coins_k + kem->length_keypair_coins, magic.val, sizeof(magic_t));
+	memcpy(coins_e + kem->length_encaps_coins, magic.val, sizeof(magic_t));
 
-	rc = OQS_KEM_keypair(kem, public_key, secret_key);
+	// Test case to ensure coins_k and coins_e are either both 0 or both nonzero?
+
+	rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, coins_k);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");
-		goto err;
+	if (kem->length_keypair_coins == 0) {
+		// If length_keypair_coins is set to 0 for this KEM scheme, a failure is expected
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_KEM_keypair_derand succeeded but expected a failure\n");
+			goto err;
+		}
+	} else {
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_KEM_keypair_derand failed\n");
+			goto err;
+		}
 	}
 
 	OQS_TEST_CT_DECLASSIFY(public_key, kem->length_public_key);
-	rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
+	rc = OQS_KEM_encaps_derand(kem, ciphertext, shared_secret_e, public_key, coins_e);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_encaps failed\n");
-		goto err;
+	if (kem->length_encaps_coins == 0) {
+		// If length_encaps_coins is set to 0 for this KEM scheme, a failure is expected
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_KEM_encaps_derand succeeded but expected a failure\n");
+			goto err;
+		}
+	} else {
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_KEM_encaps_derand failed\n");
+			goto err;
+		}
 	}
+
+	OQS_STATUS encaps_derand_rc = rc;
+
+	// Do we even bother calling decaps and comparing if length of coins is 0?
 
 	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
@@ -118,13 +152,24 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
 	OQS_TEST_CT_DECLASSIFY(shared_secret_e, kem->length_shared_secret);
 	rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
-	if (rv != 0) {
-		fprintf(stderr, "ERROR: shared secrets are not equal\n");
-		OQS_print_hex_string("shared_secret_e", shared_secret_e, kem->length_shared_secret);
-		OQS_print_hex_string("shared_secret_d", shared_secret_d, kem->length_shared_secret);
-		goto err;
+	if (encaps_derand_rc == OQS_ERROR) {
+		// If encaps_derand() failed, shared secrets should be unequal
+		// Or do we instead check on length of coins?
+		if (rv == 0) {
+			fprintf(stderr, "ERROR: shared secrets are equal but should be unequal\n");
+			goto err;
+		} else {
+			printf("shared secrets are expectedly unequal\n");
+		}
 	} else {
-		printf("shared secrets are equal\n");
+		if (rv != 0) {
+			fprintf(stderr, "ERROR: shared secrets are not equal\n");
+			OQS_print_hex_string("shared_secret_e", shared_secret_e, kem->length_shared_secret);
+			OQS_print_hex_string("shared_secret_d", shared_secret_d, kem->length_shared_secret);
+			goto err;
+		} else {
+			printf("shared secrets are equal\n");
+		}
 	}
 
 	// test invalid encapsulation (call should either fail or result in invalid shared secret)
@@ -144,11 +189,15 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
+	rv |= memcmp(coins_k + kem->length_keypair_coins, magic.val, sizeof(magic_t));
+	rv |= memcmp(coins_e + kem->length_encaps_coins, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(ciphertext - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(coins_k - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(coins_e - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv != 0) {
 		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
@@ -176,6 +225,12 @@ cleanup:
 	}
 	if (ciphertext) {
 		OQS_MEM_insecure_free(ciphertext - sizeof(magic_t));
+	}
+	if (coins_k) {
+		OQS_MEM_secure_free(coins_k - sizeof(magic_t), kem->length_keypair_coins + 2 * sizeof(magic_t));
+	}
+	if (coins_e) {
+		OQS_MEM_secure_free(coins_e - sizeof(magic_t), kem->length_encaps_coins + 2 * sizeof(magic_t));
 	}
 	OQS_KEM_free(kem);
 
@@ -216,7 +271,7 @@ int main(int argc, char **argv) {
 	printf("Testing KEM algorithms using liboqs version %s\n", OQS_version());
 
 	if (argc != 2) {
-		fprintf(stderr, "Usage: test_kem algname\n");
+		fprintf(stderr, "Usage: test_kem_derand algname\n");
 		fprintf(stderr, "  algname: ");
 		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
 			if (i > 0) {

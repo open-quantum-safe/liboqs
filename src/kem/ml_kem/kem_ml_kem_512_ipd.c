@@ -55,6 +55,8 @@ OQS_KEM *OQS_KEM_ml_kem_512_new(void) {
 	kem->length_secret_key = OQS_KEM_ml_kem_512_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ml_kem_512_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ml_kem_512_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_ml_kem_512_length_keypair_coins;
+	kem->length_encaps_coins = OQS_KEM_ml_kem_512_length_encaps_coins;
 
 	kem->keypair_derand = OQS_KEM_ml_kem_512_keypair_derand;
 	kem->keypair = OQS_KEM_ml_kem_512_keypair;
