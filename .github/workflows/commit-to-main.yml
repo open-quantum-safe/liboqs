@@ -12,8 +12,6 @@ jobs:
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
-    env:
-      { secrets.BUILD_TRIGGER_TOKEN }: ${{ secrets.{ secrets.BUILD_TRIGGER_TOKEN } }}
     steps:
       # TODO: missing projects?
       - name: Trigger OQS-OpenSSL CI
