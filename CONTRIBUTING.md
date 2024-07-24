@@ -34,16 +34,6 @@ run the following command in the project main directory prior to finishing a PR:
 
 ### Running CI locally
 
-#### CircleCI
-
-If encountering CI errors in CircleCI, it may be helpful to execute the test jobs
-locally to debug. This can be facilitated by executing the command
-
-   circleci local execute --job some-test-job
-
-assuming "some-test-job" is the name of the test to be executed and the CircleCI
-[command line tools have been installed](https://circleci.com/docs/local-cli).
-
 #### Github CI
 
 [Act](https://github.com/nektos/act) is a tool facilitating local execution of
@@ -57,7 +47,7 @@ When installing `act` as a github extension, prefix the commands with `gh `.
 ### New features
 
 Any PR introducing a new feature is expected to contain a test of this feature
-and this test should be part of the CI pipeline, preferably using Github CI.
+and this test should be part of the CI pipeline.
 
 ## Failsafe
 

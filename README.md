@@ -1,4 +1,4 @@
-![CircleCI Build Status](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main.svg?style=shield) ![Build Status](https://img.shields.io/travis/com/open-quantum-safe/liboqs?logo=travis&label=travis%20ci)
+![Travis Build Status](https://img.shields.io/travis/com/open-quantum-safe/liboqs?logo=travis&label=travis%20ci)
 
 liboqs
 ======================
