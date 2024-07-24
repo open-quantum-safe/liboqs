@@ -13,14 +13,14 @@ jobs:
       fail-fast: false
     runs-on: ubuntu-latest
     env:
-      BUILD_TRIGGER_TOKEN: ${{ secrets.BUILD_TRIGGER_TOKEN }}
+      { secrets.BUILD_TRIGGER_TOKEN }: ${{ secrets.{ secrets.BUILD_TRIGGER_TOKEN } }}
     steps:
       # TODO: missing projects?
       - name: Trigger OQS-OpenSSL CI
         run: |
           curl --silent \
                --write-out "\n%{response_code}\n" \
-               --user ${BUILD_TRIGGER_TOKEN}: \
+               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
                --request POST \
                --header "Content-Type: application/json" \
                --data '{ "branch": "OQS-OpenSSL_1_1_1-stable", "parameters": { "run_downstream_tests": true } }' \
@@ -30,7 +30,7 @@ jobs:
         run: |
           curl --silent \
                --write-out "\n%{response_code}\n" \
-               --user ${BUILD_TRIGGER_TOKEN}: \
+               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
                --request POST \
                --header "Content-Type: application/json" \
                --data '{ "branch": "master", "parameters": { "run_downstream_tests": true } }' \
@@ -40,7 +40,7 @@ jobs:
         run: |
           curl --silent \
                --write-out "\n%{response_code}\n" \
-               --user ${BUILD_TRIGGER_TOKEN}: \
+               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
                --request POST \
                --header "Content-Type: application/json" \
                --data '{ "branch": "OQS-v8", "parameters": { "run_downstream_tests": true } }' \
@@ -50,7 +50,7 @@ jobs:
         run: |
           curl --silent \
                --write-out "\n%{response_code}\n" \
-               --user ${BUILD_TRIGGER_TOKEN}: \
+               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
                --request POST \
                --header "Content-Type: application/json" \
                --data '{ "branch": "main" }' \
@@ -60,7 +60,7 @@ jobs:
         run: |
           curl --silent \
                --write-out "\n%{response_code}\n" \
-               --user ${BUILD_TRIGGER_TOKEN}: \
+               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
                --request POST \
                --header "Content-Type: application/json" \
                --data '{ "branch": "master" }' \
@@ -70,7 +70,7 @@ jobs:
         run: |
           curl --silent \
                --write-out "\n%{response_code}\n" \
-               --user ${BUILD_TRIGGER_TOKEN}: \
+               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
                --request POST \
                --header "Content-Type: application/json" \
                --data '{ "branch": "master" }' \
@@ -82,7 +82,7 @@ jobs:
                --write-out "\n%{response_code}\n" \
                --request POST \
                --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer $OQSBOT_GITHUB_ACTIONS" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
                --header "X-GitHub-Api-Version: 2022-11-28" \
                --data '{"event_type":"liboqs-upstream-trigger"}' \
                https://api.github.com/repos/open-quantum-safe/liboqs-python/dispatches | tee curl_out \
