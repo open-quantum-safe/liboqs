@@ -222,7 +222,7 @@ int main(int argc, char **argv) {
 	}
 
 	char *alg_name = argv[1];
-	char *prng_output_stream = argv[2]; // z || d || m
+	char *prng_output_stream = argv[2]; // d || z || m
 
 	char *encaps_pk = argv[3];
 	char *encaps_K = argv[4];
