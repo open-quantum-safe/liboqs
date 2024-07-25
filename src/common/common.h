@@ -43,6 +43,16 @@ extern "C" {
  * This is a temporary workaround until a better error
  * handling strategy is developed.
  */
+#if defined(OQS_USE_OPENSSL) && !defined(OPENSSL_NO_STDIO)
+#define OQS_OPENSSL_GUARD(x)    \
+    do {                        \
+        if( 1 != (x) ) {        \
+            fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
+            OSSL_FUNC(ERR_print_errors_fp)(stderr);
+            exit(EXIT_FAILURE); \
+        }                       \
+    } while (0)
+#else
 #define OQS_OPENSSL_GUARD(x)    \
     do {                        \
         if( 1 != (x) ) {        \
@@ -50,6 +60,7 @@ extern "C" {
             exit(EXIT_FAILURE); \
         }                       \
     } while (0)
+#endif // defined(OQS_USE_OPENSSL) && !defined(OPENSSL_NO_STDIO)
 
 /**
  * Certain functions (such as OQS_randombytes_openssl in
