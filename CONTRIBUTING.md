@@ -32,6 +32,7 @@ To assist with this inconvenience, we provide a convenience script which runs `a
 ```bash
 LIBOQS_DIR=<liboqs directory> ./scripts/format_code.sh
 ```
+This script has been tested on x86\_64 Ubuntu and arm64 macOS. Contributions for other platforms are welcome and appreciated!
 
 ### Running CI locally
 
