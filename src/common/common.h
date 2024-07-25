@@ -24,12 +24,12 @@ extern "C" {
  * Macro for terminating the program if x is
  * a null pointer.
  */
-#define OQS_EXIT_IF_NULLPTR(x, loc)    \
-    do {                          \
-        if ( (x) == (void*)0 ) {  \
+#define OQS_EXIT_IF_NULLPTR(x, loc)                                                   \
+    do {                                                                              \
+        if ( (x) == (void*)0 ) {                                                      \
             fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n", loc); \
-            exit(EXIT_FAILURE); \
-        }  \
+            exit(EXIT_FAILURE);                                                       \
+        }                                                                             \
     } while (0)
 
 /**
@@ -44,21 +44,21 @@ extern "C" {
  * handling strategy is developed.
  */
 #if defined(OQS_USE_OPENSSL) && !defined(OPENSSL_NO_STDIO)
-#define OQS_OPENSSL_GUARD(x)    \
-    do {                        \
-        if( 1 != (x) ) {        \
+#define OQS_OPENSSL_GUARD(x)                                                           \
+    do {                                                                               \
+        if( 1 != (x) ) {                                                               \
             fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
-            OSSL_FUNC(ERR_print_errors_fp)(stderr);
-            exit(EXIT_FAILURE); \
-        }                       \
+            OSSL_FUNC(ERR_print_errors_fp)(stderr);                                    \
+            exit(EXIT_FAILURE);                                                        \
+        }                                                                              \
     } while (0)
 #else
-#define OQS_OPENSSL_GUARD(x)    \
-    do {                        \
-        if( 1 != (x) ) {        \
+#define OQS_OPENSSL_GUARD(x)                                                           \
+    do {                                                                               \
+        if( 1 != (x) ) {                                                               \
             fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
-            exit(EXIT_FAILURE); \
-        }                       \
+            exit(EXIT_FAILURE);                                                        \
+        }                                                                              \
     } while (0)
 #endif // defined(OQS_USE_OPENSSL) && !defined(OPENSSL_NO_STDIO)
 
