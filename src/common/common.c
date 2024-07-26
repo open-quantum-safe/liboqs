@@ -39,7 +39,7 @@ static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 
 #if defined(OQS_DIST_X86_64_BUILD)
 /* set_available_cpu_extensions_x86_64() has been written using:
- * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
+ * https://github.com/google/cpu_features/blob/339bfd32be1285877ff517cba8b82ce72e946afd/src/cpuinfo_x86.c
  */
 #include "x86_64_helpers.h"
 static void set_available_cpu_extensions(void) {
@@ -105,11 +105,11 @@ static unsigned int macos_feature_detection(const char *feature_name) {
 	}
 }
 static void set_available_cpu_extensions(void) {
-	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
 	cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
 	cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = macos_feature_detection("hw.optional.armv8_2_sha3");
 	cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = macos_feature_detection("hw.optional.neon");
+	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
 }
 #elif defined(__FreeBSD__) || defined(__FreeBSD)
