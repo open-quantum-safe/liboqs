@@ -224,8 +224,8 @@ int main(int argc, char **argv) {
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS
 #define MAX_LEN_SIG_NAME_ 64
-	// don't run MAYO_5 in threads because of large stack usage
-	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5"};
+	// don't run algorithms with large stack usage in threads
+	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5", "cross-rsdp-128-small", "cross-rsdp-192-small", "cross-rsdp-256-balanced", "cross-rsdp-256-small", "cross-rsdpg-192-small", "cross-rsdpg-256-small"};
 	int test_in_thread = 1;
 	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
 		if (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) {

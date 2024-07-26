@@ -96,7 +96,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -107,7 +107,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: cross-rsdp-192-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdp_192_balanced
   claimed-nist-level: 3
@@ -180,7 +180,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -191,7 +191,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: cross-rsdp-256-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdp_256_balanced
   claimed-nist-level: 5
@@ -208,7 +208,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -219,7 +219,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: cross-rsdp-256-fast
   oqs_alg: OQS_SIG_alg_cross_rsdp_256_fast
   claimed-nist-level: 5
@@ -264,7 +264,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -275,7 +275,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: cross-rsdpg-128-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdpg_128_balanced
   claimed-nist-level: 1
@@ -432,7 +432,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -443,7 +443,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: cross-rsdpg-256-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdpg_256_balanced
   claimed-nist-level: 5
@@ -516,7 +516,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -527,4 +527,4 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
