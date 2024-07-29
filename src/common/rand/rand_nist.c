@@ -32,20 +32,6 @@ void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen);
 static OQS_NIST_DRBG_struct DRBG_ctx;
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
-#ifdef OQS_USE_OPENSSL
-# if defined(_MSC_VER)
-__declspec(noreturn)
-# else
-__attribute__((noreturn))
-# endif
-static void handleErrors(void) {
-#ifndef OPENSSL_NO_STDIO
-	OSSL_FUNC(ERR_print_errors_fp)(stderr);
-#endif
-	abort();
-}
-#endif
-
 // Use whatever AES implementation you have. This uses AES from openSSL library
 //    key - 256-bit AES key
 //    ctr - a 128-bit plaintext value
@@ -57,17 +43,11 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	int len;
 
 	/* Create and initialise the context */
-	if (!(ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)())) {
-		handleErrors();
-	}
+	ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
+	OQS_EXIT_IF_NULLPTR(ctx, "OpenSSL");
 
-	if (1 != OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL)) {
-		handleErrors();
-	}
-
-	if (1 != OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16)) {
-		handleErrors();
-	}
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16));
 
 	/* Clean up */
 	OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
