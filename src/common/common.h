@@ -43,7 +43,16 @@ extern "C" {
  * This is a temporary workaround until a better error
  * handling strategy is developed.
  */
-#if defined(OQS_USE_OPENSSL) && !defined(OPENSSL_NO_STDIO)
+#ifdef OQS_USE_OPENSSL
+#ifdef OPENSSL_NO_STDIO
+#define OQS_OPENSSL_GUARD(x)                                                           \
+    do {                                                                               \
+        if( 1 != (x) ) {                                                               \
+            fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
+            exit(EXIT_FAILURE);                                                        \
+        }                                                                              \
+    } while (0)
+#else // OPENSSL_NO_STDIO
 #define OQS_OPENSSL_GUARD(x)                                                           \
     do {                                                                               \
         if( 1 != (x) ) {                                                               \
@@ -52,15 +61,8 @@ extern "C" {
             exit(EXIT_FAILURE);                                                        \
         }                                                                              \
     } while (0)
-#else
-#define OQS_OPENSSL_GUARD(x)                                                           \
-    do {                                                                               \
-        if( 1 != (x) ) {                                                               \
-            fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
-            exit(EXIT_FAILURE);                                                        \
-        }                                                                              \
-    } while (0)
-#endif // defined(OQS_USE_OPENSSL) && !defined(OPENSSL_NO_STDIO)
+#endif // OPENSSL_NO_STDIO
+#endif // OQS_USE_OPENSSL
 
 /**
  * Certain functions (such as OQS_randombytes_openssl in
