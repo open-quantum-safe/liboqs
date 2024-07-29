@@ -311,7 +311,10 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	// Echo back remain
 	if (FindMarker(fp_rsp, "remain = ")) {
-		fscanf(fp_rsp, "%llu", &sigs_remain);
+		if (EOF == fscanf(fp_rsp, "%llu", &sigs_remain)) {
+            fprintf(stderr, "[kat_stfl_sig] %s ERROR: unable to read 'remain' from <%s>\n", method_name, katfile);
+            goto err;
+        };
 		fprintf(fh, "remain = %llu\n", sigs_remain);
 	} else {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_remaining failed!\n", method_name);
@@ -320,7 +323,10 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	// Echo back max
 	if (FindMarker(fp_rsp, "max = ")) {
-		fscanf(fp_rsp, "%llu", &sigs_maximum);
+		if (EOF == fscanf(fp_rsp, "%llu", &sigs_maximum)) {
+            fprintf(stderr, "[kat_stfl_sig] %s ERROR: unable to read 'max' from <%s>\n", method_name, katfile);
+            goto err;
+        };
 		fprintf(fh, "max = %llu\n", sigs_maximum);
 	} else {
 		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
