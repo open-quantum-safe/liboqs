@@ -69,7 +69,7 @@ OQS_STATUS crypto_kem_keypair(unsigned char* pk, unsigned char* sk)
 }
 
 
-OQS_STATUS crypto_kem_enc_derand(unsigned char *ct, unsigned char *ss, unsigned char *pk, unsigned char *coins)
+OQS_STATUS crypto_kem_enc_derand(unsigned char *ct, unsigned char *ss, const unsigned char *pk, const unsigned char *coins)
 {
     return OQS_ERROR;
 }
@@ -218,7 +218,7 @@ OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsi
 
     // If (Bp == BBp & C == CC) then ss = F(ct || k'), else ss = F(ct || s)
     // Needs to avoid branching on secret data as per:
-    //     Qian Guo, Thomas Johansson, Alexander Nilsson. A key-recovery timing attack on post-quantum 
+    //     Qian Guo, Thomas Johansson, Alexander Nilsson. A key-recovery timing attack on post-quantum
     //     primitives using the Fujisaki-Okamoto transformation and its application on FrodoKEM. In CRYPTO 2020.
     int8_t selector = ct_verify(Bp, BBp, PARAMS_N*PARAMS_NBAR) | ct_verify(C, CC, PARAMS_NBAR*PARAMS_NBAR);
     // If (selector == 0) then load k' to do ss = F(ct || k'), else if (selector == -1) load s to do ss = F(ct || s)
