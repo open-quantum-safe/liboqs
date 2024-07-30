@@ -11,6 +11,12 @@
 #include "sampling.h"
 #include "sha.h"
 
+#ifdef __GNUC__
+#define UNUSED __attribute__((unused))
+#else
+#define UNUSED
+#endif
+
 // m_t and seed_t have the same size and thus can be considered
 // to be of the same type. However, for security reasons we distinguish
 // these types, even on the costs of small extra complexity.
@@ -271,26 +277,17 @@ OQS_API int decaps(OUT unsigned char *     ss,
   return SUCCESS;
 }
 
-OQS_API int keypair_derand(OUT unsigned char *     pk,
-                           OUT unsigned char *     sk,
-                           IN const unsigned char *coins)
+OQS_API int keypair_derand(UNUSED OUT unsigned char *     pk,
+                           UNUSED OUT unsigned char *     sk,
+                           UNUSED IN const unsigned char *coins)
 {
-  (void) pk;
-  (void) sk;
-  (void) coins;
-
   return OQS_ERROR;
 }
 
-OQS_API int encaps_derand(OUT unsigned char *     ct,
-                          OUT unsigned char *     ss,
-                          IN const unsigned char *pk,
-                          IN const unsigned char *coins)
+OQS_API int encaps_derand(UNUSED OUT unsigned char *     ct,
+                          UNUSED OUT unsigned char *     ss,
+                          UNUSED IN const unsigned char *pk,
+                          UNUSED IN const unsigned char *coins)
 {
-  (void) ct;
-  (void) ss;
-  (void) pk;
-  (void) coins;
-
   return OQS_ERROR;
 }

@@ -6,12 +6,14 @@
 
 #include <string.h>
 
-OQS_STATUS crypto_kem_keypair_derand(unsigned char *pk, unsigned char *sk, const unsigned char *coins)
-{
-    (void) pk;
-    (void) sk;
-    (void) coins;
+#ifdef __GNUC__
+#define UNUSED __attribute__((unused))
+#else
+#define UNUSED
+#endif
 
+OQS_STATUS crypto_kem_keypair_derand(UNUSED unsigned char *pk, UNUSED unsigned char *sk, UNUSED const unsigned char *coins)
+{
     return OQS_ERROR;
 }
 
@@ -73,13 +75,8 @@ OQS_STATUS crypto_kem_keypair(unsigned char* pk, unsigned char* sk)
 }
 
 
-OQS_STATUS crypto_kem_enc_derand(unsigned char *ct, unsigned char *ss, const unsigned char *pk, const unsigned char *coins)
+OQS_STATUS crypto_kem_enc_derand(UNUSED unsigned char *ct, UNUSED unsigned char *ss, UNUSED const unsigned char *pk, UNUSED const unsigned char *coins)
 {
-    (void) ct;
-    (void) ss;
-    (void) pk;
-    (void) coins;
-
     return OQS_ERROR;
 }
 

@@ -6,6 +6,12 @@
 
 #if defined(OQS_ENABLE_KEM_ntruprime_sntrup761)
 
+#ifdef __GNUC__
+#define UNUSED __attribute__((unused))
+#else
+#define UNUSED
+#endif
+
 OQS_KEM *OQS_KEM_ntruprime_sntrup761_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -44,7 +50,7 @@ extern int PQCLEAN_SNTRUP761_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const
 extern int PQCLEAN_SNTRUP761_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
-OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
+OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_keypair_derand(UNUSED uint8_t *public_key, UNUSED uint8_t *secret_key, UNUSED const uint8_t *coins) {
 	return OQS_ERROR;
 }
 
@@ -64,7 +70,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_keypair(uint8_t *public_key, uint
 #endif
 }
 
-OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
+OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_encaps_derand(UNUSED uint8_t *ciphertext, UNUSED uint8_t *shared_secret, UNUSED const uint8_t *public_key, UNUSED const uint8_t *coins) {
 	return OQS_ERROR;
 }
 
