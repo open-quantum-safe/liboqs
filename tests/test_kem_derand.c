@@ -131,7 +131,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 			goto err;
 		}
 
-		printf("OQS_KEM_encaps_derand correctly failed, skipping OQS_KEM_decaps");
+		printf("OQS_KEM_encaps_derand correctly failed, skipping OQS_KEM_decaps\n");
 	} else {
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_encaps_derand failed\n");
