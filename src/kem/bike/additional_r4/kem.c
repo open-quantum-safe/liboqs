@@ -272,16 +272,25 @@ OQS_API int decaps(OUT unsigned char *     ss,
 }
 
 OQS_API int keypair_derand(OUT unsigned char *	   pk,
-						   OUT unsigned char *	   sk,
-						   IN const unsigned char *coins)
+						               OUT unsigned char *	   sk,
+						               IN const unsigned char *coins)
 {
-    return OQS_ERROR;
+  (void) pk;
+  (void) sk;
+  (void) coins;
+
+  return OQS_ERROR;
 }
 
-OQS_API int encaps_derand(OUT unsigned char *	  ct,
-					   	  OUT unsigned char *	  ss,
-					   	  IN const unsigned char *pk,
-					   	  IN const unsigned char *coins)
+OQS_API int encaps_derand(OUT unsigned char *	    ct,
+					   	            OUT unsigned char *	    ss,
+					   	            IN const unsigned char *pk,
+					   	            IN const unsigned char *coins)
 {
-    return OQS_ERROR;
+  (void) ct;
+  (void) ss;
+  (void) pk;
+  (void) coins;
+
+  return OQS_ERROR;
 }
