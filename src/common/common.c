@@ -147,7 +147,7 @@ static void set_available_cpu_extensions(void) {
 static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
-	unsigned int cpu=0;
+	unsigned int cpu = 0;
 	size_t len;
 	char impl_buf[8];
 	int mib[2], ncpu;
@@ -163,8 +163,8 @@ static void set_available_cpu_extensions(void) {
 	char path[128];
 	struct aarch64_sysctl_cpu_id id;
 
-	len = sizeof id;
-	snprintf(path, sizeof path, "machdep.cpu%d.cpu_id", cpu);
+	len = sizeof(id);
+	snprintf(path, sizeof(path), "machdep.cpu%d.cpu_id", cpu);
 	if (sysctlbyname(path, &id, &len, NULL, 0) != 0) {
 		fprintf(stderr, "Error getting HWCAP for ARM on NetBSD\n");
                 return;
