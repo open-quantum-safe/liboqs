@@ -13,11 +13,11 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
-| ML-KEM-512-ipd  | ML-KEM-512            | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |
-| ML-KEM-768-ipd  | ML-KEM-768            | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |
-| ML-KEM-1024-ipd | ML-KEM-1024           | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair coins (bytes) |   Encapsulation coins (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|------------------------:|------------------------------:|
+| ML-KEM-512-ipd  | ML-KEM-512            | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |                      64 |                            32 |
+| ML-KEM-768-ipd  | ML-KEM-768            | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |                      64 |                            32 |
+| ML-KEM-1024-ipd | ML-KEM-1024           | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |                      64 |                            32 |
 
 ## ML-KEM-512-ipd implementation characteristics
 

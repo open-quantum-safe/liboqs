@@ -12,14 +12,14 @@
 
 ## Parameter set summary
 
-|    Parameter set    | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
-|:-------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
-|  FrodoKEM-640-AES   | NA                    | IND-CCA2         |                    1 |                      9616 |                     19888 |                      9720 |                           16 |
-| FrodoKEM-640-SHAKE  | NA                    | IND-CCA2         |                    1 |                      9616 |                     19888 |                      9720 |                           16 |
-|  FrodoKEM-976-AES   | NA                    | IND-CCA2         |                    3 |                     15632 |                     31296 |                     15744 |                           24 |
-| FrodoKEM-976-SHAKE  | NA                    | IND-CCA2         |                    3 |                     15632 |                     31296 |                     15744 |                           24 |
-|  FrodoKEM-1344-AES  | NA                    | IND-CCA2         |                    5 |                     21520 |                     43088 |                     21632 |                           32 |
-| FrodoKEM-1344-SHAKE | NA                    | IND-CCA2         |                    5 |                     21520 |                     43088 |                     21632 |                           32 |
+|    Parameter set    | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair coins (bytes) |   Encapsulation coins (bytes) |
+|:-------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|------------------------:|------------------------------:|
+|  FrodoKEM-640-AES   | NA                    | IND-CCA2         |                    1 |                      9616 |                     19888 |                      9720 |                           16 |                       0 |                             0 |
+| FrodoKEM-640-SHAKE  | NA                    | IND-CCA2         |                    1 |                      9616 |                     19888 |                      9720 |                           16 |                       0 |                             0 |
+|  FrodoKEM-976-AES   | NA                    | IND-CCA2         |                    3 |                     15632 |                     31296 |                     15744 |                           24 |                       0 |                             0 |
+| FrodoKEM-976-SHAKE  | NA                    | IND-CCA2         |                    3 |                     15632 |                     31296 |                     15744 |                           24 |                       0 |                             0 |
+|  FrodoKEM-1344-AES  | NA                    | IND-CCA2         |                    5 |                     21520 |                     43088 |                     21632 |                           32 |                       0 |                             0 |
+| FrodoKEM-1344-SHAKE | NA                    | IND-CCA2         |                    5 |                     21520 |                     43088 |                     21632 |                           32 |                       0 |                             0 |
 
 ## FrodoKEM-640-AES implementation characteristics
 

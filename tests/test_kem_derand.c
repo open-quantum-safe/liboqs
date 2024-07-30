@@ -130,38 +130,26 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 			fprintf(stderr, "ERROR: OQS_KEM_encaps_derand succeeded but expected a failure\n");
 			goto err;
 		}
+
+		printf("OQS_KEM_encaps_derand correctly failed, skipping OQS_KEM_decaps")
 	} else {
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_encaps_derand failed\n");
 			goto err;
 		}
-	}
 
-	OQS_STATUS encaps_derand_rc = rc;
-
-	// Do we even bother calling decaps and comparing if length of coins is 0?
-
-	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
-	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_decaps failed\n");
-		goto err;
-	}
-
-	OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
-	OQS_TEST_CT_DECLASSIFY(shared_secret_e, kem->length_shared_secret);
-	rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
-	if (encaps_derand_rc == OQS_ERROR) {
-		// If encaps_derand() failed, shared secrets should be unequal
-		// Or do we instead check on length of coins?
-		if (rv == 0) {
-			fprintf(stderr, "ERROR: shared secrets are equal but should be unequal\n");
+		// Test decaps() only if encaps() succeeds
+		OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
+		rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_KEM_decaps failed\n");
 			goto err;
-		} else {
-			printf("shared secrets are expectedly unequal\n");
 		}
-	} else {
+
+		OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
+		OQS_TEST_CT_DECLASSIFY(shared_secret_e, kem->length_shared_secret);
+		rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
 		if (rv != 0) {
 			fprintf(stderr, "ERROR: shared secrets are not equal\n");
 			OQS_print_hex_string("shared_secret_e", shared_secret_e, kem->length_shared_secret);
@@ -170,17 +158,17 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		} else {
 			printf("shared secrets are equal\n");
 		}
-	}
 
-	// test invalid encapsulation (call should either fail or result in invalid shared secret)
-	OQS_randombytes(ciphertext, kem->length_ciphertext);
-	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
-	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
-	OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc == OQS_SUCCESS && memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret) == 0) {
-		fprintf(stderr, "ERROR: OQS_KEM_decaps succeeded on wrong input\n");
-		goto err;
+		// test invalid encapsulation (call should either fail or result in invalid shared secret)
+		OQS_randombytes(ciphertext, kem->length_ciphertext);
+		OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
+		rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
+		OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc == OQS_SUCCESS && memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret) == 0) {
+			fprintf(stderr, "ERROR: OQS_KEM_decaps succeeded on wrong input\n");
+			goto err;
+		}
 	}
 
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
