@@ -44,6 +44,9 @@ extern int PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_
 #endif
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
+    (void)public_key;
+    (void)secret_key;
+    (void)coins;
 	return OQS_ERROR;
 }
 
@@ -64,6 +67,10 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_keypair(uint8_t *public_key,
 }
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_8192128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
+    (void)ciphertext;
+    (void)shared_secret;
+    (void)public_key;
+    (void)coins;
 	return OQS_ERROR;
 }
 

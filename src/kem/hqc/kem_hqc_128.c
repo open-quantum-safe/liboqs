@@ -38,6 +38,9 @@ extern int PQCLEAN_HQC128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const u
 extern int PQCLEAN_HQC128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 OQS_API OQS_STATUS OQS_KEM_hqc_128_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
+    (void)public_key;
+    (void)secret_key;
+    (void)coins;
 	return OQS_ERROR;
 }
 
@@ -46,6 +49,10 @@ OQS_API OQS_STATUS OQS_KEM_hqc_128_keypair(uint8_t *public_key, uint8_t *secret_
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_128_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
+    (void)ciphertext;
+    (void)shared_secret;
+    (void)public_key;
+    (void)coins;
 	return OQS_ERROR;
 }
 

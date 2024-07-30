@@ -174,6 +174,9 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(ui
 #endif
     {%- endif %}
     {%- else %}
+    (void)public_key;
+    (void)secret_key;
+    (void)coins;
 	return OQS_ERROR;
     {%- endif %}
 }
@@ -246,6 +249,10 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uin
 #endif
     {%- endif %}
     {%- else %}
+    (void)ciphertext;
+    (void)shared_secret;
+    (void)public_key;
+    (void)coins;
 	return OQS_ERROR;
     {%- endif %}
 }
