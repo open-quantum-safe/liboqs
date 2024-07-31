@@ -100,11 +100,11 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	memcpy(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
-	// coins_k and coins_e are now simply pointing to the start of the second magic_t value
 	memcpy(coins_k + kem->length_keypair_coins, magic.val, sizeof(magic_t));
 	memcpy(coins_e + kem->length_encaps_coins, magic.val, sizeof(magic_t));
 
-	// Test case to ensure coins_k and coins_e are either both 0 or both nonzero?
+	OQS_randombytes(coins_k, kem->length_keypair_coins);
+	OQS_randombytes(coins_e, kem->length_encaps_coins);
 
 	rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, coins_k);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
