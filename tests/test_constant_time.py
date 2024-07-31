@@ -270,7 +270,7 @@ def test_constant_time_sig(sig_name):
 @helpers.test_requires_build_options(*REQ_LIBOQS_BUILD_OPTS)
 @helpers.test_requires_valgrind_version_at_least(*MIN_VALGRIND_VERSION)
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
-def test_constant_time_kem(kem_name):
+def test_constant_time_kem_derand(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
         for algexp in os.environ['SKIP_ALGS'].split(','):
