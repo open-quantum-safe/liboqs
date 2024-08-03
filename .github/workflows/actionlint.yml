@@ -1,0 +1,17 @@
+name: Lint GitHub workflows
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
+
+      - name: Install Actionlint
+        run: |
+          curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.1/actionlint_1.7.1_linux_amd64.tar.gz | tar -xz -C /usr/local/bin
+          
+      - name: Run Actionlint
+        run: actionlint
