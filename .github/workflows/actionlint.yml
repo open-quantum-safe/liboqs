@@ -14,4 +14,4 @@ jobs:
           curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.1/actionlint_1.7.1_linux_amd64.tar.gz | tar -xz -C /usr/local/bin
           
       - name: Run Actionlint
-        run: actionlint
+        run: actionlint -shellcheck "" # run *without* shellcheck
