@@ -3,11 +3,11 @@
 - **Algorithm type**: Digital signature scheme.
 - **Main cryptographic assumption**: hardness of the restricted syndrome decoding problem for random linear codes on a finite field.
 - **Principal submitters**: Marco Baldi, Alessandro Barenghi, Sebastian Bitzer, Patrick Karl, Felice Manganiello, Alessio Pavoni, Gerardo Pelosi, Paolo Santini, Jonas Schupp, Freeman Slaughter, Antonia Wachter-Zeh, Violetta Weger.
-- **Auxiliary submitters**: TODO.
+- **Auxiliary submitters**: Marco Gianvecchio.
 - **Authors' website**: https://www.cross-crypto.com/
 - **Specification version**: 1.2 + Keccak_x4 + PQClean fixes.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/rtjk/CROSS-PQClean/commit/64529ee21c8cf791774d5ce63a68053634d1d94f
+  - **Source**: https://github.com/rtjk/CROSS-PQClean/commit/577d7c761c684637923c8648644cf2f4d7b41954
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 

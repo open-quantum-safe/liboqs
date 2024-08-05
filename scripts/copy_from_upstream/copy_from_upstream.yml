@@ -65,7 +65,7 @@ upstreams:
     name: upcross
     git_url: https://github.com/rtjk/CROSS-PQClean.git
     git_branch: master
-    git_commit: 64529ee21c8cf791774d5ce63a68053634d1d94f
+    git_commit: 577d7c761c684637923c8648644cf2f4d7b41954
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
 kems:
