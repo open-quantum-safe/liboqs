@@ -67,7 +67,7 @@ static OQS_STATUS stfl_example(char *method_name) {
 	 * Allocate storage for public key, secret key filename, message and signature
 	 */
 	public_key = malloc(sig->length_public_key);
-	sk_fname = malloc(strlen(method_name) + strlen(".sk"));
+	sk_fname = malloc(strlen(method_name) + strlen(".sk") + 1);
 	message = malloc(message_len);
 	signature = malloc(sig->length_signature);
 	if ((public_key == NULL) || (message == NULL) || (signature == NULL) || (sk_fname == NULL)) {
