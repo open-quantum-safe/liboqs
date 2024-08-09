@@ -45,12 +45,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: arm64
-            runner: oqs-arm64
-          - arch: x86_64
-            runner: ubuntu-latest
+          - runner: oqs-arm64
+            container: openquantumsafe/ci-ubuntu-focal-arm64:latest
+          - runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+          - runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
     runs-on: ${{ matrix.runner }}
-    container: openquantumsafe/ci-ubuntu-focal-${{ matrix.arch }}:latest
+    container: ${{ matrix.container }}
     env:
       KEM_NAME: kyber_768
       SIG_NAME: dilithium_3
@@ -74,7 +76,7 @@ jobs:
       - name: Build documentation
         run: ninja gen_docs
         working-directory: build
-        if: matrix.arch == 'x86_64'
+        if: matrix.runner == 'ubuntu-latest'
 
   linux:
     needs: buildcheck
