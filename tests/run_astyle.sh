@@ -3,8 +3,14 @@
 
 rv=0
 
+if [ "$1" = "--no-dry-run" ]; then
+	dryrun=""
+else
+	dryrun="--dry-run"
+fi
+
 # check style of non-external code:
-find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem/.*/.*/.*' | grep -v 'sig/.*/.*/.*' | xargs astyle --dry-run --options=.astylerc | grep Format
+find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem/.*/.*/.*' | grep -v 'sig/.*/.*/.*' | xargs astyle $dryrun --options=.astylerc | grep Format
 if [ $? -ne 1 ]; then
    echo "Error: Some files need reformatting. Check output above."
    rv=-1

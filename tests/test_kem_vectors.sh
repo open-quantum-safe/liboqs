@@ -23,7 +23,7 @@ keygen_sk=$(grep "keygen_dk: " "$file")
 encaps_c=$(grep "encaps_c: " "$file")
 encaps_K=$(grep "encaps_K: " "$file")
 
-output=$($build_dir/tests/vectors_kem $1 "$keygen_z$keygen_d$encaps_m" "$encaps_ek" "$encaps_k" "$decaps_dk" "$decaps_c" "$decaps_kprime")
+output=$($build_dir/tests/vectors_kem $1 "$keygen_d$keygen_z$encaps_m" "$encaps_ek" "$encaps_k" "$decaps_dk" "$decaps_c" "$decaps_kprime")
 if [ $? != 0 ]; then
     echo "$output"
     exit 1

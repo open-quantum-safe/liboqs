@@ -26,23 +26,15 @@ them before the final "Review" stage.
 
 This project has adopted a slightly modified [Google code formatting style](https://astyle.sourceforge.net/astyle.html#_style=google) for the core components
 of the library as documented in the [style template](.astylerc).
-
-To check adherence of any new code to this, it therefore is highly recommended to
-run the following command in the project main directory prior to finishing a PR:
-
-    find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem/.*/.*/.*' | grep -v 'sig/.*/.*/.*' | xargs astyle --dry-run --options=.astylerc | grep Format
+The `astyle` tool is used to check formatting in CI.
+Due to variations in behaviour across version and platforms, it is possible to encounter CI failures even if code has been locally formatted with `astyle`.
+To assist with this inconvenience, we provide a convenience script which runs `astyle` in the same Docker image that we use for the CI checks:
+```bash
+LIBOQS_DIR=<liboqs directory> ./scripts/format_code.sh
+```
+This script has been tested on x86\_64 Ubuntu and arm64 macOS. Contributions for other platforms are welcome and appreciated!
 
 ### Running CI locally
-
-#### CircleCI
-
-If encountering CI errors in CircleCI, it may be helpful to execute the test jobs
-locally to debug. This can be facilitated by executing the command
-
-   circleci local execute --job some-test-job
-
-assuming "some-test-job" is the name of the test to be executed and the CircleCI
-[command line tools have been installed](https://circleci.com/docs/local-cli).
 
 #### Github CI
 
@@ -57,7 +49,7 @@ When installing `act` as a github extension, prefix the commands with `gh `.
 ### New features
 
 Any PR introducing a new feature is expected to contain a test of this feature
-and this test should be part of the CI pipeline, preferably using Github CI.
+and this test should be part of the CI pipeline.
 
 ## Failsafe
 
