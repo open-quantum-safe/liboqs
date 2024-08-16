@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: CC0-1.0
+// SPDX-License-Identifier: Apache-2.0 OR CC0-1.0
 
 #if defined(__unix__) || defined(__APPLE__)
 #ifndef LIBJADE_RANDOMBYTES_H
