@@ -3,7 +3,13 @@ name: Linux and MacOS tests
 permissions:
   contents: read
 
-on: [ push, pull_request ]
+on: [ push, pull_request , workflow_dispatch]
+
+env: 
+  # Semi-colon separated list of algorithims with libjade implementations to
+  # be passed as input to CMake option as: -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+  # See CONFIGURE.md under ## OQS_MINIMAL_BUILD
+  LIBJADE_ALG_LIST: "KEM_kyber_512;KEM_kyber_768" 
 
 jobs:
 
@@ -23,12 +29,24 @@ jobs:
 
   upstreamcheck:
     name: Check upstream code is properly integrated
+    strategy:
+      fail-fast: false
+      matrix:
+        copy-mode:
+          - copy
+          - libjade
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
     steps:
+      - name: Setup nix
+        uses: cachix/install-nix-action@v26
+      - name: Setup jasmin-compiler
+        run: |
+          nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs && \
+          nix-channel --update && nix-env -iA nixpkgs.jasmin-compiler
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Verify copy_from_upstream state
+      - name: Verify copy_from_upstream state after "${{ matrix.copy-mode}}"
         run: |
           git config --global user.name "ciuser" && \
           git config --global user.email "ci@openquantumsafe.org" && \
@@ -36,7 +54,7 @@ jobs:
           git config --global --add safe.directory $LIBOQS_DIR && \
           cd scripts/copy_from_upstream && \
           ! pip3 install --require-hashes -r requirements.txt 2>&1 | grep ERROR && \
-          python3 copy_from_upstream.py copy && \
+          python3 copy_from_upstream.py ${{ matrix.copy-mode }} && \
           ! git status | grep modified
 
   buildcheck:
@@ -155,13 +173,18 @@ jobs:
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
     runs-on: ${{ matrix.runner }}
+    libjade-build:
+      - -DOQS_LIBJADE_BUILD=OFF
+      # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
+      # libjade to minimise repeated tests
+      - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     container:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }} .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
@@ -267,6 +290,16 @@ jobs:
           - -DCMAKE_C_COMPILER=gcc-13
           - -DOQS_USE_OPENSSL=OFF
           - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
+        libjade-build:
+          - -DOQS_LIBJADE_BUILD=OFF
+          # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
+          # libjade to minimise repeated tests
+          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+        exclude: 
+          # macos-14 runs on aarch64, libjade targets x86
+          # Skip testing libjade on macos-14
+          - os: macos-14
+            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install Python
@@ -282,7 +315,7 @@ jobs:
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
-        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }} .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build

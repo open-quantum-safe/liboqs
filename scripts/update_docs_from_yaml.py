@@ -48,6 +48,12 @@ def do_it(liboqs_root):
                     out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
                     out_md.write('      - **Source**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['source']))
                     out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
+            if 'formally-verified-upstreams' in kem_yaml:
+                out_md.write('- **Formally-verified Implementation sources**: \n')
+                for opt_upstream in kem_yaml['formally-verified-upstreams']:
+                    out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
+                    out_md.write('      - **Source**: {}\n'.format(kem_yaml['formally-verified-upstreams'][opt_upstream]['source']))
+                    out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(kem_yaml['formally-verified-upstreams'][opt_upstream]['spdx-license-identifier']))
             if 'upstream-ancestors' in kem_yaml:
                 out_md.write('- **Ancestors of primary source**:\n')
                 for url in kem_yaml['upstream-ancestors'][:-1]:

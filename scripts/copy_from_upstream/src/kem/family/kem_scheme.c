@@ -115,7 +115,57 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper 
 #endif
     {%- endfor %}
 
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
+{% for scheme in schemes -%}
+
+{%- for impl in scheme['metadata']['implementations'] if impl['name'] in scheme['libjade_implementations'] %}
+#if defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }}{%- if impl['name'] != scheme['default_implementation'] %}_{{ impl['name'] }}{%- endif %}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+extern int libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_keypair(uint8_t *pk, uint8_t *sk);
+extern int libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#endif
+{% endfor -%}
+{% endfor -%}
+{% endif %}
+
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
+#if defined(OQS_LIBJADE_BUILD) && (defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}){%- endif %})
+{%- for scheme in schemes %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl['name'] in scheme['libjade_implementations'] %}
+        {%- if loop.first %}
+#if defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+        {%- else %}
+#elif defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+        {%- endif %}
+        {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+#endif /* OQS_DIST_BUILD */
+        {%- endif -%}
+        {%- if impl['name'] in scheme['libjade_implementations'] %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_keypair(public_key, secret_key);
+        {%- else %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
+        {%- endif %}
+        {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_keypair(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+        {%- endif -%}
+    {%- endfor %}
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#else
+    {%- endif %}
+	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_keypair(public_key, secret_key);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#endif
+    {%- endif %}
+{% endfor -%}
+#else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }} {%- if 'alias_scheme' in scheme %} || OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})*/
+{%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
@@ -147,9 +197,49 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
+#endif /* OQS_LIBJADE_BUILD */
+{%- endif %}
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
+#if defined(OQS_LIBJADE_BUILD) && (defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}){%- endif %})
+{%- for scheme in schemes %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl['name'] in scheme['libjade_implementations'] %}
+        {%- if loop.first %}
+#if defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+        {%- else %}
+#elif defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+        {%- endif %}
+        {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+#endif /* OQS_DIST_BUILD */
+        {%- endif -%}
+        {%- if impl['name'] in scheme['libjade_implementations'] %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_enc(ciphertext, shared_secret, public_key);
+        {%- else %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
+        {%- endif %}
+        {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_enc(ciphertext, shared_secret, public_key);
+	}
+#endif /* OQS_DIST_BUILD */
+        {%- endif -%}
+    {%- endfor %}
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#else
+    {%- endif %}
+	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_enc(ciphertext, shared_secret, public_key);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#endif 
+    {%- endif %}
+{% endfor -%}
+#else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }} {%- if 'alias_scheme' in scheme %} || OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})*/
+{%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
@@ -181,9 +271,49 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
+#endif /* OQS_LIBJADE_BUILD */
+{%- endif %}
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
+#if defined(OQS_LIBJADE_BUILD) && (defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}){%- endif %})
+{%- for scheme in schemes %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl['name'] in scheme['libjade_implementations'] %}
+        {%- if loop.first %}
+#if defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+        {%- else %}
+#elif defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_{%- if impl['name'] in scheme['libjade_implementations'] %}LIBJADE_{%- endif %}KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+        {%- endif %}
+        {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+#endif /* OQS_DIST_BUILD */
+        {%- endif -%}
+        {%- if impl['name'] in scheme['libjade_implementations'] %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_dec(shared_secret, ciphertext, secret_key);
+        {%- else %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+        {%- endif %}
+        {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_dec(shared_secret, ciphertext, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+        {%- endif -%}
+    {%- endfor %}
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#else
+    {%- endif %}
+	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_dec(shared_secret, ciphertext, secret_key);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#endif
+    {%- endif %}
+{% endfor -%}
+#else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }} {%- if 'alias_scheme' in scheme %} || OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})*/
+{%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
@@ -215,6 +345,9 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
+{%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
+#endif /* OQS_LIBJADE_BUILD */
+{%- endif %}
 }
 
 #endif

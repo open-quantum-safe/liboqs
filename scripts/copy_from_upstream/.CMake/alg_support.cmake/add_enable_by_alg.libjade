@@ -1,0 +1,23 @@
+
+if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
+{% for family in instructions['kems'] %}
+option(OQS_ENABLE_LIBJADE_KEM_{{ family['name']|upper }} "Enable libjade implementation of {{ family['name'] }} algorithm family" ON)
+    {%- for scheme in family['schemes'] %}
+cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_LIBJADE_KEM_{{ family['name']|upper }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }} "" ON "OQS_ENABLE_LIBJADE_KEM_{{ family['name']|upper }}" OFF)
+{%- endif -%}
+    {%- endfor %}
+{% endfor -%}
+
+{% for family in instructions['sigs'] %}
+option(OQS_ENABLE_LIBJADE_SIG_{{ family['name']|upper }} "Enable libjade implementation of {{ family['name'] }} algorithm family" ON)
+    {%- for scheme in family['schemes'] %}
+cmake_dependent_option(OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_LIBJADE_SIG_{{ family['name']|upper }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+cmake_dependent_option(OQS_ENABLE_LIBJADE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }} "" ON "OQS_ENABLE_LIBJADE_SIG_{{ family['name']|upper }}" OFF)
+{%- endif -%}
+    {%- endfor %}
+{% endfor -%}
+endif()
+
