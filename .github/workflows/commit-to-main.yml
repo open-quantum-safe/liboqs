@@ -42,7 +42,7 @@ jobs:
                --header "Accept: application/vnd.github+json" \
                --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
                --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"branch":"OQS-v9"}' \
+               --data '{"ref":"OQS-v9"}' \
                https://api.github.com/repos/open-quantum-safe/openssh/actions/workflows/ubuntu/dispatches | tee curl_out \
           && grep -q "204" curl_out
           #      - name: Trigger oqs-provider CI
