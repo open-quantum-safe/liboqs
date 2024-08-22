@@ -172,12 +172,12 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
+        libjade-build:
+          - -DOQS_LIBJADE_BUILD=OFF
+          # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
+          # libjade to minimise repeated tests
+          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     runs-on: ${{ matrix.runner }}
-    libjade-build:
-      - -DOQS_LIBJADE_BUILD=OFF
-      # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
-      # libjade to minimise repeated tests
-      - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
     container:
       image: ${{ matrix.container }}
     steps:
