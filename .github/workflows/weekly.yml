@@ -55,22 +55,25 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+          - name: generic-libjade
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-        libjade-build:
-          - -DOQS_LIBJADE_BUILD=OFF
-          # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
-          # libjade to minimise repeated tests
-          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+          - name: extensions-libjade
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
     container:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # pin@v2
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }}.. && cmake -LA -N ..
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
