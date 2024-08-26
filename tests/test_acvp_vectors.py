@@ -112,51 +112,6 @@ def test_vectors_sig(sig_name):
     )
     if sig_name + " not supported" in result: pytest.skip("Not supported")
 
-#@helpers.filtered_test
-#@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
-#@pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
-#def test_vectors_sig(sig_name):
-#    pytest.skip("placeholder for signatures")
-#
-#    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
-#    if not(sig_name in fips_sig): pytest.skip("Not supported")
-#
-#    with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', ml_dsa_kg), 'r') as fp:
-#        ml_dsa_kg_acvp  = json.load(fp)
-#
-#        variantFound = 0
-#        for variant in ml_dsa_kg_acvp["testGroups"]:
-#            if variant["parameterSet"] == sig_name:
-#                variantFound = 1
-#                for testCase in variant["tests"]:
-#                    seed = testCase["seed"]
-#                    pk = testCase["pk"]
-#                    sk = testCase["sk"]
-#                    print("RUN: " + "build/tests/vectors_sig keyGen " + seed )
-#                    #result = helpers.run_subprocess(
-#                    #    ['build/tests/vectors_sig', "keyGen", seed]
-#                    #)
-#        if variantFound == 0: pytest.skip("KeyGen not found")
-#
-#    with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', ml_dsa_sig), 'r') as fp:
-#        variantFound = 0
-#        for variant in ml_dsa_sig["testGroups"]:
-#            if variant["parameterSet"] == sig_name:
-#                variantFound = 1
-#                for testCase in variant["tests"]:
-#                    sk = testCase["sk"]
-#                    message = testCase["message"]
-#                    signature = testCase["signature"]
-#                    print("RUN: " + "build/tests/vectors_sig sigGen " + sk )
-#                    #result = helpers.run_subprocess(
-#                    #    ['build/tests/vectors_sig', "keyGen", seed]
-#                    #)
-#
-#        if variantFound == 0: pytest.skip("SigGen not found")
-#
-#        
-#        assert(False)
-
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
