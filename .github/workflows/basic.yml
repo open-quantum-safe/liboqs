@@ -13,7 +13,7 @@ jobs:
   stylecheck:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
@@ -27,7 +27,7 @@ jobs:
   upstreamcheck:
     name: Check upstream code is properly integrated
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     steps:
       - name: Setup nix
         uses: cachix/install-nix-action@v26
@@ -58,7 +58,7 @@ jobs:
     name: Check that code passes a basic build
     needs: [ stylecheck, upstreamcheck ]
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     env:
       KEM_NAME: ml_kem_768
       SIG_NAME: ml_dsa_65
