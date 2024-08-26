@@ -31,7 +31,6 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], const polyvec *a)
         d0 *= 645084;
         d0 >>= 31;
         t[k] = d0 & 0x7ff;
-
       }
 
       r[ 0] = (t[0] >>  0);
