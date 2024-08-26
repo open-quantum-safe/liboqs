@@ -1,0 +1,84 @@
+name: Basic checks
+
+permissions:
+  contents: read
+
+on:
+  push:
+  workflow_call:
+
+
+jobs:
+
+  stylecheck:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Ensure code conventions are upheld
+        run: python3 -m pytest --verbose tests/test_code_conventions.py
+      - name: Check that doxygen can parse the documentation
+        run: mkdir build && ./scripts/run_doxygen.sh $(which doxygen) ./docs/.Doxyfile ./build
+      - name: Validate CBOM
+        run: scripts/validate_cbom.sh
+
+  upstreamcheck:
+    name: Check upstream code is properly integrated
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Setup nix
+        uses: cachix/install-nix-action@v26
+      - name: Setup jasmin-compiler
+        run: |
+          nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs && \
+          nix-channel --update && nix-env -iA nixpkgs.jasmin-compiler
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: |
+          git config --global user.name "ciuser" && \
+          git config --global user.email "ci@openquantumsafe.org" && \
+          git config --global --add safe.directory . && \
+          cd scripts/copy_from_upstream && \
+          ! pip3 install --require-hashes -r requirements.txt 2>&1 | grep -i ERROR 77 \
+          echo "LIBOQS_DIR=$PWD" >> "$GITHUB_ENV"
+      - name: Verify copy_from_upstream state after copy
+        run: |
+          python3 copy_from_upstream.py copy && \
+          ! git status | grep -i modified
+      - name: Verify copy_from_upstream state after libjade
+        run: |
+          python3 copy_from_upstream.py libjade && \
+          ! git status | grep -i modified
+
+  buildcheck:
+    name: Check that code passes a basic build
+    needs: [ stylecheck, upstreamcheck ]
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    env:
+      KEM_NAME: ml_kem_768
+      SIG_NAME: ml_dsa_65
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: |
+          mkdir build && \
+          cd build && \
+          cmake .. --warn-uninitialized \
+                   -GNinja \
+                   -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
+                   > config.log 2>&1 && \
+          cat config.log && \
+          cmake -LA -N .. && \
+          ! (grep -i "uninitialized variable" config.log)
+      - name: Build code
+        run: ninja
+        working-directory: build
+      - name: Build documentation
+        run: ninja gen_docs
+        working-directory: build
