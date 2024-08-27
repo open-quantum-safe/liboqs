@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:58a975ac-ea6b-4ce9-a5ae-80d35105db30",
+  "serialNumber": "urn:uuid:b953d460-1246-4cbb-aff9-642a0308d18b",
   "version": 1,
   "metadata": {
-    "timestamp": "2024-04-09T21:46:17.101849",
+    "timestamp": "2024-08-26T18:04:44.668645",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@2fd65d9ec99a2608149713e5fcaeb9b6402e5872",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
       "name": "liboqs",
-      "version": "2fd65d9ec99a2608149713e5fcaeb9b6402e5872"
+      "version": "062e793edf54cbc1073b54d0689795063fd41910"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@2fd65d9ec99a2608149713e5fcaeb9b6402e5872",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
       "name": "liboqs",
-      "version": "2fd65d9ec99a2608149713e5fcaeb9b6402e5872"
+      "version": "062e793edf54cbc1073b54d0689795063fd41910"
     },
     {
       "type": "crypto-asset",
@@ -1041,12 +1041,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-KEM-512-ipd:generic",
+      "bom-ref": "alg:ML-KEM-512:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-512-ipd",
+          "variant": "ML-KEM-512",
           "primitive": "kem",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1061,12 +1061,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-KEM-512-ipd:x86_64",
+      "bom-ref": "alg:ML-KEM-512:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-512-ipd",
+          "variant": "ML-KEM-512",
           "primitive": "kem",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1081,12 +1081,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-KEM-768-ipd:generic",
+      "bom-ref": "alg:ML-KEM-768:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-768-ipd",
+          "variant": "ML-KEM-768",
           "primitive": "kem",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1101,12 +1101,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-KEM-768-ipd:x86_64",
+      "bom-ref": "alg:ML-KEM-768:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-768-ipd",
+          "variant": "ML-KEM-768",
           "primitive": "kem",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1121,12 +1121,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-KEM-1024-ipd:generic",
+      "bom-ref": "alg:ML-KEM-1024:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-1024-ipd",
+          "variant": "ML-KEM-1024",
           "primitive": "kem",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -1141,12 +1141,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-KEM-1024-ipd:x86_64",
+      "bom-ref": "alg:ML-KEM-1024:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-1024-ipd",
+          "variant": "ML-KEM-1024",
           "primitive": "kem",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2408,7 +2408,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@2fd65d9ec99a2608149713e5fcaeb9b6402e5872",
+      "ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -2461,12 +2461,12 @@
         "alg:Kyber1024:generic",
         "alg:Kyber1024:x86_64",
         "alg:Kyber1024:armv8-a",
-        "alg:ML-KEM-512-ipd:generic",
-        "alg:ML-KEM-512-ipd:x86_64",
-        "alg:ML-KEM-768-ipd:generic",
-        "alg:ML-KEM-768-ipd:x86_64",
-        "alg:ML-KEM-1024-ipd:generic",
-        "alg:ML-KEM-1024-ipd:x86_64",
+        "alg:ML-KEM-512:generic",
+        "alg:ML-KEM-512:x86_64",
+        "alg:ML-KEM-768:generic",
+        "alg:ML-KEM-768:x86_64",
+        "alg:ML-KEM-1024:generic",
+        "alg:ML-KEM-1024:x86_64",
         "alg:sntrup761:generic",
         "alg:sntrup761:x86_64",
         "alg:Dilithium2:generic",
@@ -2893,42 +2893,42 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-KEM-512-ipd:generic",
+      "ref": "alg:ML-KEM-512:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-KEM-512-ipd:x86_64",
+      "ref": "alg:ML-KEM-512:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-KEM-768-ipd:generic",
+      "ref": "alg:ML-KEM-768:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-KEM-768-ipd:x86_64",
+      "ref": "alg:ML-KEM-768:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-KEM-1024-ipd:generic",
+      "ref": "alg:ML-KEM-1024:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-KEM-1024-ipd:x86_64",
+      "ref": "alg:ML-KEM-1024:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],

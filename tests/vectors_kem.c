@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-// This tests the test vectors published by NIST CAVP
+// This tests the test vectors published by NIST ACVP
 
 #include <assert.h>
 #include <errno.h>
@@ -19,15 +19,6 @@ struct {
 } prng_state = {
 	.pos = 0
 };
-
-/* Displays hexadecimal strings */
-static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", str[i]);
-	}
-	printf("\n");
-}
 
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
@@ -69,10 +60,7 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 
 /* HQC-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
-	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512_ipd))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768_ipd))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024_ipd))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
+	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
 }
@@ -91,21 +79,16 @@ static void MLKEM_randombytes_free(void) {
 	prng_state.pos = 0;
 }
 
-OQS_STATUS kem_vector(const char *method_name,
-                      uint8_t *prng_output_stream,
-                      const uint8_t *encaps_pk, const uint8_t *encaps_K,
-                      const uint8_t *decaps_sk, const uint8_t *decaps_ciphertext, const uint8_t *decaps_kprime) {
+static OQS_STATUS kem_kg_vector(const char *method_name,
+                                uint8_t *prng_output_stream,
+                                const uint8_t *kg_pk, const uint8_t *kg_sk) {
 
 	uint8_t *entropy_input;
 	FILE *fh = NULL;
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
-	uint8_t *ss_encaps = NULL;
-	uint8_t *ct_encaps = NULL;
-	uint8_t *ss_decaps = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
-	int rv;
 
 	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
 	void (*randombytes_free)(void) = NULL;
@@ -122,7 +105,7 @@ OQS_STATUS kem_vector(const char *method_name,
 		randombytes_free = &MLKEM_randombytes_free;
 		entropy_input = (uint8_t *) prng_output_stream;
 	} else {
-		// Only ML-KEM-ipd supported
+		// Only ML-KEM supported
 		goto err;
 	}
 
@@ -132,15 +115,13 @@ OQS_STATUS kem_vector(const char *method_name,
 
 	public_key = malloc(kem->length_public_key);
 	secret_key = malloc(kem->length_secret_key);
-	ss_encaps = malloc(kem->length_shared_secret);
-	ct_encaps = malloc(kem->length_ciphertext);
-	ss_decaps = malloc(kem->length_shared_secret);
-	if ((public_key == NULL) || (secret_key == NULL) || (ss_encaps == NULL) || (ct_encaps == NULL) || (ss_decaps == NULL)) {
+
+	if ((public_key == NULL) || (secret_key == NULL)) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: malloc failed!\n", method_name);
 		goto err;
 	}
 
-	if ((prng_output_stream == NULL) || (encaps_pk == NULL) || (encaps_K == NULL) || (decaps_sk == NULL) || (decaps_ciphertext == NULL) || (decaps_kprime == NULL)) {
+	if ((prng_output_stream == NULL) || (kg_pk == NULL) || (kg_sk == NULL)) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
@@ -153,29 +134,12 @@ OQS_STATUS kem_vector(const char *method_name,
 	fprintBstr(fh, "ek: ", public_key, kem->length_public_key);
 	fprintBstr(fh, "dk: ", secret_key, kem->length_secret_key);
 
-	rc = OQS_KEM_encaps(kem, ct_encaps, ss_encaps, encaps_pk);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
-		goto err;
+	if (!memcmp(public_key, kg_pk, kem->length_public_key) && !memcmp(secret_key, kg_sk, kem->length_secret_key)) {
+		ret = OQS_SUCCESS;
+	} else {
+		ret = OQS_ERROR;
+		fprintf(stderr, "[vectors_kem] %s ERROR: public key or private key doesn't match!\n", method_name);
 	}
-
-	fprintBstr(fh, "c: ", ct_encaps, kem->length_ciphertext);
-	fprintBstr(fh, "K: ", ss_encaps, kem->length_shared_secret);
-
-	rc = OQS_KEM_decaps(kem, ss_decaps, decaps_ciphertext, decaps_sk);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_decaps failed!\n", method_name);
-		goto err;
-	}
-
-	rv = memcmp(ss_decaps, decaps_kprime, kem->length_shared_secret);
-	if (rv != 0) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: shared secrets are not equal\n", method_name);
-		OQS_print_hex_string("ss_decaps", ss_decaps, kem->length_shared_secret);
-		goto err;
-	}
-
-	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
@@ -188,26 +152,166 @@ algo_not_enabled:
 cleanup:
 	if (kem != NULL) {
 		OQS_MEM_secure_free(secret_key, kem->length_secret_key);
-		OQS_MEM_secure_free(ss_encaps, kem->length_shared_secret);
-		OQS_MEM_secure_free(ss_decaps, kem->length_shared_secret);
 	}
 	if (randombytes_free != NULL) {
 		randombytes_free();
 	}
 	OQS_MEM_insecure_free(public_key);
+	OQS_KEM_free(kem);
+	return ret;
+}
+
+static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
+                                        uint8_t *prng_output_stream,
+                                        const uint8_t *encdec_pk,
+                                        const uint8_t *encdec_k, const uint8_t *encdec_c) {
+
+	uint8_t *entropy_input;
+	FILE *fh = NULL;
+	OQS_KEM *kem = NULL;
+	uint8_t *ss_encaps = NULL;
+	uint8_t *ct_encaps = NULL;
+	OQS_STATUS rc, ret = OQS_ERROR;
+
+	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
+	void (*randombytes_free)(void) = NULL;
+
+	kem = OQS_KEM_new(method_name);
+	if (kem == NULL) {
+		printf("[vectors_kem] %s was not enabled at compile-time.\n", method_name);
+		goto algo_not_enabled;
+	}
+
+	if (is_ml_kem(method_name)) {
+		OQS_randombytes_custom_algorithm(&MLKEM_randombytes);
+		randombytes_init = &MLKEM_randombytes_init;
+		randombytes_free = &MLKEM_randombytes_free;
+		entropy_input = (uint8_t *) prng_output_stream;
+	} else {
+		// Only ML-KEM supported
+		goto err;
+	}
+
+	randombytes_init(entropy_input, NULL);
+
+	fh = stdout;
+
+	ss_encaps = malloc(kem->length_shared_secret);
+	ct_encaps = malloc(kem->length_ciphertext);
+	if ((ss_encaps == NULL) || (ct_encaps == NULL)) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: malloc failed!\n", method_name);
+		goto err;
+	}
+
+	if ((prng_output_stream == NULL) || (encdec_pk == NULL) || (encdec_k == NULL) || (encdec_c == NULL)) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
+		goto err;
+	}
+
+	rc = OQS_KEM_encaps(kem, ct_encaps, ss_encaps, encdec_pk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
+		goto err;
+	}
+
+	fprintBstr(fh, "c: ", ct_encaps, kem->length_ciphertext);
+	fprintBstr(fh, "k: ", ss_encaps, kem->length_shared_secret);
+
+	if (!memcmp(ct_encaps, encdec_c, kem->length_ciphertext) && !memcmp(ss_encaps, encdec_k, kem->length_shared_secret)) {
+		ret = OQS_SUCCESS;
+	} else {
+		ret = OQS_ERROR;
+		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): ciphertext or shared secret doesn't match!\n", method_name);
+	}
+
+	goto cleanup;
+
+err:
+	ret = OQS_ERROR;
+	goto cleanup;
+
+algo_not_enabled:
+	ret = OQS_SUCCESS;
+
+cleanup:
+	if (kem != NULL) {
+		OQS_MEM_secure_free(ss_encaps, kem->length_shared_secret);
+	}
+	if (randombytes_free != NULL) {
+		randombytes_free();
+	}
 	OQS_MEM_insecure_free(ct_encaps);
 	OQS_KEM_free(kem);
 	return ret;
 }
 
+static OQS_STATUS kem_vector_encdec_val(const char *method_name,
+                                        const uint8_t *encdec_sk, const uint8_t *encdec_c,
+                                        const uint8_t *encdec_k) {
+	FILE *fh = NULL;
+	OQS_KEM *kem = NULL;
+	uint8_t *ss_decaps = NULL;
+	OQS_STATUS rc, ret = OQS_ERROR;
+
+	kem = OQS_KEM_new(method_name);
+	if (kem == NULL) {
+		printf("[vectors_kem] %s was not enabled at compile-time.\n", method_name);
+		goto algo_not_enabled;
+	}
+
+	fh = stdout;
+
+	ss_decaps = malloc(kem->length_shared_secret);
+
+	if (ss_decaps == NULL) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: malloc failed!\n", method_name);
+		goto err;
+	}
+
+	if ((encdec_sk == NULL) || (encdec_k == NULL) || (encdec_c == NULL)) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
+		goto err;
+	}
+
+	rc = OQS_KEM_decaps(kem, ss_decaps, encdec_c, encdec_sk);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
+		goto err;
+	}
+
+	fprintBstr(fh, "k: ", ss_decaps, kem->length_shared_secret);
+
+	if (!memcmp(ss_decaps, encdec_k, kem->length_shared_secret)) {
+		ret = OQS_SUCCESS;
+	} else {
+		ret = OQS_ERROR;
+		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): ciphertext or shared secret doesn't match!\n", method_name);
+	}
+
+	goto cleanup;
+
+err:
+	ret = OQS_ERROR;
+	goto cleanup;
+
+algo_not_enabled:
+	ret = OQS_SUCCESS;
+
+cleanup:
+	if (kem != NULL) {
+		OQS_MEM_secure_free(ss_decaps, kem->length_shared_secret);
+	}
+	OQS_KEM_free(kem);
+	return ret;
+}
+
 int main(int argc, char **argv) {
-	OQS_STATUS rc;
+	OQS_STATUS rc = OQS_SUCCESS;
 
 	OQS_init();
 
-	if (argc != 8) {
-		fprintf(stderr, "Usage: vectors_kem algname prng_output_stream encaps_pk encaps_K decaps_sk decaps_ciphertext decaps_kprime\n");
-		fprintf(stderr, "  algname: ");
+	if (argc != 6 && argc != 7) {
+		fprintf(stderr, "Usage: vectors_kem algname testname [testargs]\n");
 		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
 			if (i > 0) {
 				fprintf(stderr, ", ");
@@ -222,21 +326,29 @@ int main(int argc, char **argv) {
 	}
 
 	char *alg_name = argv[1];
-	char *prng_output_stream = argv[2]; // d || z || m
+	char *test_name = argv[2];
+	char *prng_output_stream;
+	char *kg_pk;
+	char *kg_sk;
+	char *encdec_aft_pk;
+	char *encdec_aft_k;
+	char *encdec_aft_c;
 
-	char *encaps_pk = argv[3];
-	char *encaps_K = argv[4];
-
-	char *decaps_sk = argv[5];
-	char *decaps_ciphertext = argv[6];
-	char *decaps_kprime = argv[7];
+	char *encdec_val_sk;
+	char *encdec_val_k;
+	char *encdec_val_c;
 
 	uint8_t *prng_output_stream_bytes = NULL;
-	uint8_t *encaps_pk_bytes = NULL;
-	uint8_t *encaps_K_bytes = NULL;
-	uint8_t *decaps_sk_bytes = NULL;
-	uint8_t *decaps_ciphertext_bytes = NULL;
-	uint8_t *decaps_kprime_bytes = NULL;
+	uint8_t *kg_pk_bytes = NULL;
+	uint8_t *kg_sk_bytes = NULL;
+
+	uint8_t *encdec_aft_pk_bytes = NULL;
+	uint8_t *encdec_aft_k_bytes = NULL;
+	uint8_t *encdec_aft_c_bytes = NULL;
+
+	uint8_t *encdec_val_sk_bytes = NULL;
+	uint8_t *encdec_val_k_bytes = NULL;
+	uint8_t *encdec_val_c_bytes = NULL;
 
 	OQS_KEM *kem = OQS_KEM_new(alg_name);
 	if (kem == NULL) {
@@ -245,45 +357,108 @@ int main(int argc, char **argv) {
 		goto err;
 	}
 
-	if (strlen(prng_output_stream) % 2 != 0 ||
-	        strlen(encaps_pk) != 2 * kem->length_public_key ||
-	        strlen(encaps_K) != 2 * kem->length_shared_secret ||
-	        strlen(decaps_sk) != 2 * kem->length_secret_key ||
-	        strlen(decaps_ciphertext) != 2 * kem->length_ciphertext ||
-	        strlen(decaps_kprime) != 2 * kem->length_shared_secret ) {
-		rc = OQS_ERROR;
-		goto err;
+	if (!strcmp(test_name, "keyGen")) {
+		prng_output_stream = argv[3]; // d || z
+		kg_pk = argv[4];
+		kg_sk = argv[5];
+
+		if (strlen(prng_output_stream) % 2 != 0 ||
+		        strlen(kg_pk) != 2 * kem->length_public_key ||
+		        strlen(kg_sk) != 2 * kem->length_secret_key) {
+			rc = OQS_ERROR;
+			goto err;
+		}
+
+		prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
+		kg_pk_bytes = malloc(kem->length_public_key);
+		kg_sk_bytes = malloc(kem->length_secret_key);
+
+		if ((prng_output_stream_bytes == NULL) || (kg_pk_bytes == NULL) || (kg_sk_bytes == NULL)) {
+			fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
+			rc = OQS_ERROR;
+			goto err;
+		}
+
+		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
+		hexStringToByteArray(kg_pk, kg_pk_bytes);
+		hexStringToByteArray(kg_sk, kg_sk_bytes);
+
+
+		rc = kem_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
+	} else if (!strcmp(test_name, "encDecAFT")) {
+		prng_output_stream = argv[3]; // m
+		encdec_aft_pk = argv[4];
+		encdec_aft_k = argv[5];
+		encdec_aft_c = argv[6];
+
+		if (strlen(prng_output_stream) % 2 != 0 ||
+		        strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
+		        strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
+		        strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
+			rc = OQS_ERROR;
+			goto err;
+		}
+
+		prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
+		encdec_aft_pk_bytes = malloc(kem->length_public_key);
+		encdec_aft_k_bytes = malloc(kem->length_shared_secret);
+		encdec_aft_c_bytes = malloc(kem->length_ciphertext);
+
+		if ((prng_output_stream_bytes == NULL) || (encdec_aft_pk_bytes == NULL) || (encdec_aft_k_bytes == NULL) || (encdec_aft_c_bytes == NULL)) {
+			fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
+			rc = OQS_ERROR;
+			goto err;
+		}
+
+		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
+		hexStringToByteArray(encdec_aft_pk, encdec_aft_pk_bytes);
+		hexStringToByteArray(encdec_aft_k, encdec_aft_k_bytes);
+		hexStringToByteArray(encdec_aft_c, encdec_aft_c_bytes);
+
+		rc = kem_vector_encdec_aft(alg_name, prng_output_stream_bytes, encdec_aft_pk_bytes, encdec_aft_k_bytes, encdec_aft_c_bytes);
+	} else if (!strcmp(test_name, "encDecVAL")) {
+		encdec_val_sk = argv[3];
+		encdec_val_k = argv[4];
+		encdec_val_c = argv[5];
+
+		if (strlen(encdec_val_c) != 2 * kem->length_ciphertext ||
+		        strlen(encdec_val_k) != 2 * kem->length_shared_secret ||
+		        strlen(encdec_val_sk) != 2 * kem->length_secret_key) {
+			rc = OQS_ERROR;
+			goto err;
+		}
+
+		encdec_val_sk_bytes = malloc(kem->length_secret_key);
+		encdec_val_k_bytes = malloc(kem->length_shared_secret);
+		encdec_val_c_bytes = malloc(kem->length_ciphertext);
+
+		if ((encdec_val_sk_bytes == NULL) || (encdec_val_k_bytes == NULL) || (encdec_val_c_bytes == NULL)) {
+			fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
+			rc = OQS_ERROR;
+			goto err;
+		}
+
+		hexStringToByteArray(encdec_val_sk, encdec_val_sk_bytes);
+		hexStringToByteArray(encdec_val_k, encdec_val_k_bytes);
+		hexStringToByteArray(encdec_val_c, encdec_val_c_bytes);
+
+		rc = kem_vector_encdec_val(alg_name, encdec_val_sk_bytes, encdec_val_c_bytes, encdec_val_k_bytes);
+	} else {
+		printf("[vectors_kem] %s only keyGen supported!\n", alg_name);
 	}
-
-	prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
-	encaps_pk_bytes = malloc(kem->length_public_key);
-	encaps_K_bytes = malloc(kem->length_shared_secret);
-	decaps_sk_bytes = malloc(kem->length_secret_key);
-	decaps_ciphertext_bytes = malloc(kem->length_ciphertext);
-	decaps_kprime_bytes = malloc(kem->length_shared_secret);
-
-	if ((prng_output_stream_bytes == NULL) || (encaps_pk_bytes == NULL) || (encaps_K_bytes == NULL) || (decaps_sk_bytes == NULL) || (decaps_ciphertext_bytes == NULL) || (decaps_kprime_bytes == NULL)) {
-		fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
-		rc = OQS_ERROR;
-		goto err;
-	}
-
-	hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
-	hexStringToByteArray(encaps_pk, encaps_pk_bytes);
-	hexStringToByteArray(encaps_K, encaps_K_bytes);
-	hexStringToByteArray(decaps_sk, decaps_sk_bytes);
-	hexStringToByteArray(decaps_ciphertext, decaps_ciphertext_bytes);
-	hexStringToByteArray(decaps_kprime, decaps_kprime_bytes);
-
-	rc = kem_vector(alg_name, prng_output_stream_bytes, encaps_pk_bytes, encaps_K_bytes, decaps_sk_bytes, decaps_ciphertext_bytes, decaps_kprime_bytes);
 
 err:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
-	OQS_MEM_insecure_free(encaps_pk_bytes);
-	OQS_MEM_insecure_free(encaps_K_bytes);
-	OQS_MEM_insecure_free(decaps_sk_bytes);
-	OQS_MEM_insecure_free(decaps_ciphertext_bytes);
-	OQS_MEM_insecure_free(decaps_kprime_bytes);
+	OQS_MEM_insecure_free(kg_pk_bytes);
+	OQS_MEM_insecure_free(kg_sk_bytes);
+
+	OQS_MEM_insecure_free(encdec_aft_c_bytes);
+	OQS_MEM_insecure_free(encdec_aft_k_bytes);
+	OQS_MEM_insecure_free(encdec_aft_pk_bytes);
+
+	OQS_MEM_insecure_free(encdec_val_c_bytes);
+	OQS_MEM_insecure_free(encdec_val_k_bytes);
+	OQS_MEM_insecure_free(encdec_val_sk_bytes);
 
 	OQS_KEM_free(kem);
 
