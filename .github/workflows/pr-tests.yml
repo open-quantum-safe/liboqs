@@ -14,6 +14,9 @@ jobs:
   ios-tests:
     needs: basic-checks
     uses: ./.github/workflows/apple.yml
+  macos-tests:
+    needs: basic-checks
+    uses: ./.github/workflows/macos.yml
   windows-tests:
     needs: basic-checks
     uses: ./.github/workflows/windows.yml
