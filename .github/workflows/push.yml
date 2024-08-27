@@ -12,7 +12,7 @@ jobs:
   basic-checks:
     uses: ./.github/workflows/basic.yml
 
-  pr-tests:
+  full-tests:
     needs: basic-checks
     if: contains( github.event.head_commit.message, '[full tests]' )
     uses: ./.github/workflows/platforms.yml
