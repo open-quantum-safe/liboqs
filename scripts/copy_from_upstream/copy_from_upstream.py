@@ -123,7 +123,7 @@ def replacer_contextual(destination_file_path, template_file_path, delimiter, fa
     contents = preamble + identifier_start + jinja2.Template(template).render(f) + postamble
     file_put_contents(destination_file_path, contents)
 
-def load_instructions(file):
+def load_instructions(file='copy_from_upstream.yml'):
     instructions = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', file),
         encoding='utf-8')
