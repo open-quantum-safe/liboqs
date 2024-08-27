@@ -1,7 +1,7 @@
 # https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
 
 * @dstebila
-/.circleci @baentsch
+/.github/workflows @SWilson4
 /scripts/copy_from_upstream @baentsch @bhess @alexrow
 /src/common @dstebila
 /src/kem/bike @crockeea
