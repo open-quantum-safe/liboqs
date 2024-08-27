@@ -8,3 +8,15 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   basic-checks:
     uses: ./.github/workflows/basic.yml
+  android-tests:
+    needs: basic-checks
+    uses: ./.github/workflows/android.yml
+  ios-tests:
+    needs: basic-checks
+    uses: ./.github/workflows/apple.yml
+  windows-tests:
+    needs: basic-checks
+    uses: ./.github/workflows/windows.yml
+  zephyr-tests:
+    needs: basic-checks
+    uses: ./.github/workflows/zephyr.yml

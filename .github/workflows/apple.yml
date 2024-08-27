@@ -3,7 +3,7 @@ name: apple build
 permissions:
   contents: read
 
-on: [ push, pull_request ]
+on: workflow_call
 
 jobs:
 
