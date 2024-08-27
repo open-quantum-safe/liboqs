@@ -1,9 +1,9 @@
-name: Linux and MacOS tests
+name: Linux tests
 
 permissions:
   contents: read
 
-on: [ push, pull_request , workflow_dispatch]
+on: [workflow_call, workflow_dispatch]
 
 env: 
   # Semi-colon separated list of algorithims with libjade implementations to
@@ -13,91 +13,7 @@ env:
 
 jobs:
 
-  stylecheck:
-    name: Check code formatting
-    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Ensure code conventions are upheld
-        run: python3 -m pytest --verbose tests/test_code_conventions.py
-      - name: Check that doxygen can parse the documentation
-        run: mkdir build && ./scripts/run_doxygen.sh $(which doxygen) ./docs/.Doxyfile ./build
-      - name: Validate CBOM
-        run: scripts/validate_cbom.sh
-
-  upstreamcheck:
-    name: Check upstream code is properly integrated
-    strategy:
-      fail-fast: false
-      matrix:
-        copy-mode:
-          - copy
-          - libjade
-    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup nix
-        uses: cachix/install-nix-action@v26
-      - name: Setup jasmin-compiler
-        run: |
-          nix-channel --add https://nixos.org/channels/nixos-23.11 nixpkgs && \
-          nix-channel --update && nix-env -iA nixpkgs.jasmin-compiler
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Verify copy_from_upstream state after "${{ matrix.copy-mode}}"
-        run: |
-          git config --global user.name "ciuser" && \
-          git config --global user.email "ci@openquantumsafe.org" && \
-          export LIBOQS_DIR=`pwd` && \
-          git config --global --add safe.directory $LIBOQS_DIR && \
-          cd scripts/copy_from_upstream && \
-          ! pip3 install --require-hashes -r requirements.txt 2>&1 | grep ERROR && \
-          python3 copy_from_upstream.py ${{ matrix.copy-mode }} && \
-          ! git status | grep modified
-
-  buildcheck:
-    name: Check that code passes a basic build before starting heavier tests
-    needs: [ stylecheck, upstreamcheck ]
-    strategy:
-      matrix:
-        include:
-          - runner: oqs-arm64
-            container: openquantumsafe/ci-ubuntu-focal-arm64:latest
-          - runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          - runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-    runs-on: ${{ matrix.runner }}
-    container: ${{ matrix.container }}
-    env:
-      KEM_NAME: kyber_768
-      SIG_NAME: dilithium_3
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Configure
-        run: |
-          mkdir build && \
-          cd build && \
-          cmake .. --warn-uninitialized \
-                   -GNinja \
-                   -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
-                   > config.log 2>&1 && \
-          cat config.log && \
-          cmake -LA -N .. && \
-          ! (grep "uninitialized variable" config.log)
-      - name: Build code
-        run: ninja
-        working-directory: build
-      - name: Build documentation
-        run: ninja gen_docs
-        working-directory: build
-        if: matrix.runner == 'ubuntu-latest'
-
   linux:
-    needs: buildcheck
     strategy:
       fail-fast: false
       matrix:
@@ -227,7 +143,6 @@ jobs:
         working-directory: build
 
   linux_arm_emulated:
-    needs: buildcheck
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -275,7 +190,6 @@ jobs:
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
 
   linux_cross_compile:
-    needs: buildcheck
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     strategy:
@@ -295,56 +209,7 @@ jobs:
         run: ninja
         working-directory: build
 
-  macos:
-    needs: buildcheck
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          # macos-14 runs on aarch64; the others run on x64
-          - macos-12
-          - macos-13
-          - macos-14
-        CMAKE_ARGS:
-          - -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-          - -DCMAKE_C_COMPILER=gcc-13
-          - -DOQS_USE_OPENSSL=OFF
-          - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
-        libjade-build:
-          - -DOQS_LIBJADE_BUILD=OFF
-          # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
-          # libjade to minimise repeated tests
-          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
-        exclude: 
-          # macos-14 runs on aarch64, libjade targets x86
-          # Skip testing libjade on macos-14
-          - os: macos-14
-            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Install Python
-        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
-        with:
-          python-version: '3.12'
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Install dependencies
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
-      - name: Patch GCC
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gcc@13 && wget https://raw.githubusercontent.com/Homebrew/homebrew-core/eb6dd225d093b66054e18e07d56509cf670793b1/Formula/g/gcc%4013.rb && env HOMEBREW_NO_AUTO_UPDATE=1 brew install --ignore-dependencies --formula gcc@13.rb
-      - name: Get system information
-        run: sysctl -a | grep machdep.cpu
-      - name: Configure
-        run: mkdir -p build && cd build && source ~/.bashrc && cmake -GNinja -DOQS_STRICT_WARNINGS=ON ${{ matrix.CMAKE_ARGS }} ${{ matrix.libjade-build }} .. && cmake -LA -N ..
-      - name: Build
-        run: ninja
-        working-directory: build
-      - name: Run tests
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py
-        timeout-minutes: 60
-
   linux_openssl330-dev:
-    needs: buildcheck
     runs-on: ubuntu-latest
     container:
       image: openquantumsafe/ci-ubuntu-jammy:latest
@@ -391,7 +256,6 @@ jobs:
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
 
   scan_build:
-    needs: buildcheck
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     steps:

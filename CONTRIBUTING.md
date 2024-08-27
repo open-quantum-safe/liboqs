@@ -46,6 +46,8 @@ github CI jobs. When executed in the main `oqsprovider` directory,
 
 When installing `act` as a github extension, prefix the commands with `gh `.
 
+For more details on our CI setup, please see [CI.md](CI.md).
+
 ### New features
 
 Any PR introducing a new feature is expected to contain a test of this feature

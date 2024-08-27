@@ -1,4 +1,4 @@
-name: Weekly extended tests
+name: Weekly tests
 
 permissions:
   contents: read
@@ -6,77 +6,13 @@ permissions:
 on:
   schedule:
     - cron: "5 0 * * 0"
-  workflow_dispatch:
-
-env: 
-  # Semi-colon separated list of algorithims with libjade implementations to
-  # be passed as input to CMake option as: -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
-  # See CONFIGURE.md under ## OQS_MINIMAL_BUILD
-  LIBJADE_ALG_LIST: "KEM_kyber_512;KEM_kyber_768" 
 
 jobs:
-  constant-time-x64:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: generic
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-            SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*,Classic-McEliece-[^3](.)*'
-          - name: extensions
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-            SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*,Classic-McEliece-[^3](.)*'
-    container:
-      image: ${{ matrix.container }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
-      - name: Build
-        run: ninja
-        working-directory: build
-      - name: Run tests
-        timeout-minutes: 360
-        run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
-  nistkat-x64:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: generic
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
-            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-          - name: generic-libjade
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
-            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-          - name: extensions
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
-            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-          - name: extensions-libjade
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
-            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-    container:
-      image: ${{ matrix.container }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
-      - name: Build
-        run: ninja
-        working-directory: build
-      - name: Run tests
-        timeout-minutes: 360
-        run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
+  # To guarantee Maintained check is occasionally updated. See
+  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
+  scorecard:
+    uses: ./.github/workflows/scorecard.yml
+
+  extended-tests:
+    uses: ./.github/workflows/extended.yml

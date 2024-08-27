@@ -1,19 +1,19 @@
-name: Main branch tests
+name: Pull request tests
 
 permissions:
   contents: read
 
-on:
-  push:
-    branches: ['main']
+on: pull_request
 
 jobs:
 
+  basic-checks:
+    uses: ./.github/workflows/basic.yml
+
   platform-tests:
+    needs: basic-checks
     uses: ./.github/workflows/platforms.yml
 
   scorecard:
+    needs: basic-checks
     uses: ./.github/workflows/scorecard.yml
-
-  basic-downstream:
-    uses: ./.github/workflows/downstream-basic.yml
