@@ -34,19 +34,27 @@ LIBOQS_DIR=<liboqs directory> ./scripts/format_code.sh
 ```
 This script has been tested on x86\_64 Ubuntu and arm64 macOS. Contributions for other platforms are welcome and appreciated!
 
-### Running CI locally
+### Continuous Integration (CI)
 
-#### Github CI
+`liboqs` uses GitHub Actions for CI.
+For a comprehensive overview of our CI setup, see [CI.md](CI.md).
+
+#### Running CI on your branch
+
+OQS attempts to be responsible with resource usage and only runs a minimal set of tests automatically on push.
+A more thorough test suite runs automatically on pull requests.
+To trigger these tests before creating a PR, include the string "[full tests]" in a commit message.
+Other trigger strings are documented in [CI.md](CI.md#push.yml).
+
+#### Running CI locally
 
 [Act](https://github.com/nektos/act) is a tool facilitating local execution of
-github CI jobs. When executed in the main `oqsprovider` directory, 
+GitHub CI jobs. When executed in the main `liboqs` directory, 
 
-    act -l Displays all github CI jobs
+    act -l Displays all GitHub CI jobs
     act -j some-job Executes "some-job"
 
-When installing `act` as a github extension, prefix the commands with `gh `.
-
-For more details on our CI setup, please see [CI.md](CI.md).
+When installing `act` as a GitHub extension, prefix the commands with `gh `.
 
 ### New features
 
