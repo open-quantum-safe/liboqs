@@ -5,12 +5,6 @@ permissions:
 
 on: [workflow_call, workflow_dispatch]
 
-env: 
-  # Semi-colon separated list of algorithims with libjade implementations to
-  # be passed as input to CMake option as: -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
-  # See CONFIGURE.md under ## OQS_MINIMAL_BUILD
-  LIBJADE_ALG_LIST: "KEM_kyber_512;KEM_kyber_768" 
-
 jobs:
 
   linux:
@@ -31,7 +25,7 @@ jobs:
           - name: alpine
             runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: alpine-no-stfl-key-sig-gen
             runner: ubuntu-latest
@@ -66,7 +60,7 @@ jobs:
           - name: focal-noopenssl
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: focal-shared-noopenssl
             runner: ubuntu-latest
@@ -86,7 +80,7 @@ jobs:
           - name: jammy-std-openssl3-libjade
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: jammy-std-openssl3-dlopen
             runner: ubuntu-latest
@@ -96,7 +90,7 @@ jobs:
           - name: jammy-std-openssl3-dlopen-libjade
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_DLOPEN_OPENSSL=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_DLOPEN_OPENSSL=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: address-sanitizer
             runner: ubuntu-latest
@@ -111,7 +105,7 @@ jobs:
           - name: address-sanitizer-libjade
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
             PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
     runs-on: ${{ matrix.runner }}
     container:

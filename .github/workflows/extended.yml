@@ -5,12 +5,6 @@ permissions:
 
 on: [workflow_call, workflow_dispatch]
 
-env: 
-  # Semi-colon separated list of algorithims with libjade implementations to
-  # be passed as input to CMake option as: -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
-  # See CONFIGURE.md under ## OQS_MINIMAL_BUILD
-  LIBJADE_ALG_LIST: "KEM_kyber_512;KEM_kyber_768" 
-
 jobs:
 
   constant-time-x64:
@@ -55,7 +49,7 @@ jobs:
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: generic-libjade
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
@@ -63,7 +57,7 @@ jobs:
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions-libjade
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=$LIBJADE_ALG_LIST
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST}}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
     container:
       image: ${{ matrix.container }}
