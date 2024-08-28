@@ -25,14 +25,14 @@ jobs:
           - -DOQS_LIBJADE_BUILD=OFF
           # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
           # libjade to minimise repeated tests
-          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
+          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
         exclude:
           # macos-14 runs on aarch64, libjade targets x86
           # Skip testing libjade on macos-14
           - os: macos-14
-            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
+            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
           # No point in testing stateful sigs with minimal libjade build
-          - libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD=${{ vars.LIBJADE_ALG_LIST }}
+          - libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
             CMAKE_ARGS: -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
     runs-on: ${{ matrix.os }}
     steps:
