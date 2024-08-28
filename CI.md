@@ -12,33 +12,33 @@ All workflow files are located in the `.github/workflows` subdirectory.
 These workflows are triggered by GitHub events (for example, a pull request or a release).
 They implement the logic dictating which tests should run on which events.
 
-#### `push.yml`
+#### <a name="push.yml"></a> Push workflow (`push.yml`)
 
 This workflow is triggered by pushes to non-`main` branches.
 It calls only [basic checks](#basic.yml) unless one of the following strings is included in the commit message:
-- "[full tests]": calls the [platform tests](#platform.yml).
+- "[full tests]": calls [all platform tests](#platforms.yml).
 - "[extended tests]": calls the [extended tests](#extended.yml).
 - "[trigger downstream]": calls the [downstream release tests](#downstream-release.yml).
 
 To trigger multiple test suites, include multiple trigger strings in the commit message.
 For example, "[full tests] [trigger downstream]" will trigger both the platform tests and the downstream release tests.
 
-#### `pr.yml`
+#### <a name="pr.yml"></a> Pull request workflow (`pr.yml`)
 
 This workflow runs on pull requests.
 It calls [basic checks](#basic.yml), [platform tests](#platforms.yml) and [scorecard analysis](#scorecard.yml).
 
-#### `commit-to-main.yml`
+#### <a name="commit-to-main.yml"></a> Commit-to-main workflow (`commit-to-main.yml`)
 
 This workflow runs on pushes to the `main` branch (typically done automatically when a pull request is merged).
 It calls [platform tests](#platforms.yml), [scorecard analysis](#scorecard.yml), and [basic downstream tests](#downstream-basic.yml).
 
-#### `weekly.yml`
+#### <a name="weekly.yml"></a> Weekly workflow (`weekly.yml`)
 
 This workflow is triggered by a weekly schedule.
 It calls [extended tests](#extended.yml) and [scorecard analysis](#scorecard.yml).
 
-#### `release.yml`
+#### <a name="release.yml"></a> Release workflow (`release.yml`)
 
 This workflow is triggered when a release (including a pre-release) is published on GitHub.
 It calls [extended tests](#extended) and [downstream release tests](#downstream-release.yml).
@@ -49,11 +49,11 @@ These workflows are not triggered directly by any GitHub event.
 They are instead called by one of the [caller workflows](#caller-workflows).
 Users with "write" permissions can also trigger them manually via the GitHub web UI or REST API.
 
-#### `basic.yml`
+#### <a name="basic.yml"></a> Basic checks (`basic.yml`)
 
 This workflow runs a minimal set of tests that should pass before heavier tests are triggered.
 
-#### `<platform>.yml`
+#### <a name="<platform>.yml"></a> Individual platform tests (`<platform>.yml`)
 
 These workflows contain tests for the individual [platforms supported by liboqs](PLATFORMS.md).
 Currently, these include
@@ -66,16 +66,16 @@ Currently, these include
 
 All of these these are wrapped by [`platforms.yml`](#platforms.yml).
 
-#### `platforms.yml`
+#### <a name="platforms.yml"></a> All platform tests (`platforms.yml`)
 
 This workflow calls all of the [platform-specific tests](#<platform>.yml).
 
-#### `extended.yml`
+#### <a name="extended.yml"></a> Extended tests (`extended.yml`)
 
 This workflow calls tests which are either resource intensive or rarely need to be triggered.
 Currently, this includes constant-time testing with valgrind and the full suite of NIST Known Answer Tests.
 
-#### `downstream-basic.yml`
+#### <a name="downstream-basic.yml"></a> Basic downstream trigger (`downstream-basic.yml`)
 
 This workflow triggers basic CI for a selection of projects that depend on `liboqs`.
 Currently, these include
@@ -87,11 +87,11 @@ Currently, these include
 - [`liboqs-go`](https://github.com/open-quantum-safe/liboqs-go)
 - [`liboqs-python`](https://github.com/open-quantum-safe/liboqs-python)
 
-#### `downstream-release.yml`
+#### <a name="downstream-release.yml"></a> Downstream release trigger (`downstream-release.yml`)
 
 This workflow triggers release tests for a selection of projects that depend on `liboqs`. Currently, this is only the [`OQS OpenSSL3 provider`](https://github.com/open-quantum-safe/oqs-provider).
 
-#### `scorecard.yml`
+#### <a name="scorecard.yml"></a> OpenSSF scorecard analysis (`scorecard.yml`)
 
 This workflow runs the [OpenSSF scorecard](https://github.com/ossf/scorecard) tool. It is additionally triggered automatically when branch protection rules are changed.
 
