@@ -60,10 +60,10 @@ jobs:
         run: |
           mkdir build && \
           cd build && \
-          cmake .. --warn-uninitialized \
-                   -GNinja \
-                   -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
-                   > config.log 2>&1 && \
+          cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
+            -GNinja \
+            -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
+            --warn-uninitialized .. > config.log 2>&1 && \
           cat config.log && \
           cmake -LA -N .. && \
           ! (grep -i "uninitialized variable" config.log)
