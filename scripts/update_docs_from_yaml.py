@@ -89,7 +89,7 @@ def do_it(liboqs_root):
             out_md.write('\n')
 
             for index, parameter_set in enumerate(kem_yaml['parameter-sets']):
-                out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\_")))
+                out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\\_")))
                 table_header = ['Implementation source',
                                 'Identifier in upstream',
                                 'Supported architecture(s)',
@@ -108,7 +108,7 @@ def do_it(liboqs_root):
                     # if all platforms are supported, assuming not optimized and is primary upstream
                     if impl['supported-platforms'] == 'all':
                         table.append(['[Primary Source](#primary-source)',
-                                      impl['upstream-id'].replace('_', '\_'),
+                                      impl['upstream-id'].replace('_', '\\_'),
                                       'All',
                                       'All',
                                       'None',
@@ -132,8 +132,8 @@ def do_it(liboqs_root):
                                 anchor = impl['upstream']
                             upstream_name = '[{}](#{})'.format(name, anchor)
                             table.append([upstream_name,
-                                          impl['upstream-id'].replace('_', '\_'),
-                                          platform['architecture'].replace('_', '\_'),
+                                          impl['upstream-id'].replace('_', '\\_'),
+                                          platform['architecture'].replace('_', '\\_'),
                                           op_systems,
                                           flags,
                                           impl['no-secret-dependent-branching-claimed'],
@@ -202,7 +202,7 @@ def do_it(liboqs_root):
                       'Secret key size (bytes)',
                       'Signature size (bytes)']]
             for parameter_set in sig_yaml['parameter-sets']:
-                table.append([parameter_set['name'].replace('_', '\_'),
+                table.append([parameter_set['name'].replace('_', '\\_'),
                               parameter_set['alias'] if 'alias' in parameter_set else "NA",
                               parameter_set['claimed-security'],
                               parameter_set['claimed-nist-level'],
@@ -213,7 +213,7 @@ def do_it(liboqs_root):
             out_md.write('\n')
 
             for index, parameter_set in enumerate(sig_yaml['parameter-sets']):
-                out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\_")))
+                out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\\_")))
                 table_header = ['Implementation source',
                                 'Identifier in upstream',
                                 'Supported architecture(s)',
@@ -232,7 +232,7 @@ def do_it(liboqs_root):
                     # if all platforms are supported, assuming not optimized and is primary upstream
                     if impl['supported-platforms'] == 'all':
                         table.append(['[Primary Source](#primary-source)',
-                                      impl['upstream-id'].replace('_', '\_'),
+                                      impl['upstream-id'].replace('_', '\\_'),
                                       'All',
                                       'All',
                                       'None',
@@ -256,8 +256,8 @@ def do_it(liboqs_root):
                                 anchor = impl['upstream']
                             upstream_name = '[{}](#{})'.format(name, anchor)
                             table.append([upstream_name,
-                                          impl['upstream-id'].replace('_', '\_'),
-                                          platform['architecture'].replace('_', '\_'),
+                                          impl['upstream-id'].replace('_', '\\_'),
+                                          platform['architecture'].replace('_', '\\_'),
                                           op_systems,
                                           flags,
                                           impl['no-secret-dependent-branching-claimed'],
@@ -396,36 +396,36 @@ def do_it(liboqs_root):
         for sig_yaml in sig_yamls[:-1]: # SPHINCS is last in this sorted list and requires special handling.
             parameter_sets = sig_yaml['parameter-sets']
             if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
-                readme.write('- **{}**: {}†'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+                readme.write('- **{}**: {}†'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\\_')))
                 if 'alias' in parameter_sets[0]:
-                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\_'))
+                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\\_'))
             else:
-                readme.write('- **{}**: {}'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+                readme.write('- **{}**: {}'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\\_')))
                 if 'alias' in parameter_sets[0]:
-                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\_'))
+                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\\_'))
             for parameter_set in parameter_sets[1:]:
                 if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
-                    readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+                    readme.write(', {}†'.format(parameter_set['name'].replace('_', '\\_')))
                     if 'alias' in parameter_set:
-                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\_'))
+                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\\_'))
                 else:
-                    readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+                    readme.write(', {}'.format(parameter_set['name'].replace('_', '\\_')))
                     if 'alias' in parameter_set:
-                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\_'))
+                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\\_'))
             readme.write('\n')
 
         sphincs_yml = sig_yamls[-1]
         for hash_func in ['SHA2', 'SHAKE']:
             parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hash_func in pset['name']]
             if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
-                readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
+                readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
             else:
-                readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
+                readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
             for parameter_set in parameter_sets[1:]:
                 if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
-                    readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+                    readme.write(', {}†'.format(parameter_set['name'].replace('_', '\\_')))
                 else:
-                    readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+                    readme.write(', {}'.format(parameter_set['name'].replace('_', '\\_')))
             readme.write('\n')
 
         readme.write(postamble)
