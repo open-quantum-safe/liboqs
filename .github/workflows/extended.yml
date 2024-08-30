@@ -14,12 +14,12 @@ jobs:
       matrix:
         include:
           - name: generic
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*,Classic-McEliece-[^3](.)*'
           - name: extensions
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*,Classic-McEliece-[^3](.)*'
@@ -44,19 +44,19 @@ jobs:
       matrix:
         include:
           - name: generic
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: generic-libjade
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions-libjade
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST}}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
     container:
