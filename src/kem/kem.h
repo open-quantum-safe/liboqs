@@ -70,16 +70,10 @@ extern "C" {
 #define OQS_KEM_alg_kyber_768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber_1024 "Kyber1024"
-/** Algorithm identifier for ML-KEM-512-ipd KEM. */
-#define OQS_KEM_alg_ml_kem_512_ipd "ML-KEM-512-ipd"
 /** Algorithm identifier for ML-KEM-512 KEM. */
 #define OQS_KEM_alg_ml_kem_512 "ML-KEM-512"
-/** Algorithm identifier for ML-KEM-768-ipd KEM. */
-#define OQS_KEM_alg_ml_kem_768_ipd "ML-KEM-768-ipd"
 /** Algorithm identifier for ML-KEM-768 KEM. */
 #define OQS_KEM_alg_ml_kem_768 "ML-KEM-768"
-/** Algorithm identifier for ML-KEM-1024-ipd KEM. */
-#define OQS_KEM_alg_ml_kem_1024_ipd "ML-KEM-1024-ipd"
 /** Algorithm identifier for ML-KEM-1024 KEM. */
 #define OQS_KEM_alg_ml_kem_1024 "ML-KEM-1024"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
@@ -101,7 +95,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 32
+#define OQS_KEM_algs_length 29
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

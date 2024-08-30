@@ -1,5 +1,3 @@
-![Travis Build Status](https://img.shields.io/travis/com/open-quantum-safe/liboqs?logo=travis&label=travis%20ci)
-
 liboqs
 ======================
 
@@ -42,7 +40,7 @@ Details on each supported algorithm can be found in the [docs/algorithms](https:
 
 The list below indicates all algorithms currently supported by liboqs, including experimental algorithms and already excluding algorithm variants pruned during the NIST competition, such as Kyber-90s or Dilithium-AES.
 
-The only algorithms in `liboqs` that implement NIST standards drafts are the [`ML-KEM`](https://csrc.nist.gov/pubs/fips/203/ipd) and [`ML-DSA`](https://csrc.nist.gov/pubs/fips/204/ipd) variants with their respective different bit strengths. `liboqs` will retain these algorithm names selected by NIST throughout the finishing stages of the standardization process, so users can rely on their presence going forward. If NIST changes the implementation details of these algorithms, `liboqs` will adjust the implementation so that users are protected from such potential changes. For users interested in explicitly selecting the current "proposed draft standard" code, the variants with the suffix "-ipd" are made available. At this stage, "ml-kem-ipd" and "ml-kem" as well as "ml-dsa-ipd" and "ml-dsa" are functionally equivalent, denoted by the "alias" moniker below.
+The only algorithms in `liboqs` that implement NIST standards are the [`ML-KEM`](https://csrc.nist.gov/pubs/fips/203/final) (final standard) and [`ML-DSA`](https://csrc.nist.gov/pubs/fips/204/ipd) (initial public draft) variants with their respective different bit strengths. `liboqs` will retain these algorithm names selected by NIST throughout the finishing stages of the standardization process, so users can rely on their presence going forward. If NIST changes the implementation details of these algorithms, `liboqs` will adjust the implementation so that users are protected from such potential changes. For users interested in explicitly selecting the current "proposed draft standard" code, the variants with the suffix "-ipd" are made available. At this stage, "ml-dsa-ipd" and "ml-dsa" are functionally equivalent, denoted by the "alias" moniker below.
 
 Falcon and SPHINCS+ have also been [selected for standardization](https://csrc.nist.gov/Projects/post-quantum-cryptography/selected-algorithms-2022), but the `liboqs` implementations of these algorithms are currently tracking Round 3 submissions and not NIST standards drafts.
 
@@ -56,7 +54,7 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 - **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
 - **HQC**: HQC-128, HQC-192, HQC-256
 - **Kyber**: Kyber512, Kyber768, Kyber1024
-- **ML-KEM**: ML-KEM-512-ipd (alias: ML-KEM-512), ML-KEM-768-ipd (alias: ML-KEM-768), ML-KEM-1024-ipd (alias: ML-KEM-1024)
+- **ML-KEM**: ML-KEM-512, ML-KEM-768, ML-KEM-1024
 - **NTRU-Prime**: sntrup761
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->
 
@@ -194,6 +192,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/kem/kyber/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
+- `src/kem/kyber/libjade_*` public domain (CC0) or Apache License v2.
 - `src/kem/ml_kem/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/sig/dilithium/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/sig/dilithium/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT

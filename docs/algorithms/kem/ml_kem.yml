@@ -13,16 +13,15 @@ auxiliary-submitters:
 - Gregor Seiler
 - Damien Stehlé
 crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
-website: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203/ipd
-nist-round: ipd
-spec-version: ML-KEM-ipd
+website: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203
+nist-round: FIPS203
+spec-version: ML-KEM
 primary-upstream:
-  source: https://github.com/pq-crystals/kyber/commit/d1321ce5ac0b53f583eb47a040dc3625ee8e7e37
+  source: https://github.com/pq-crystals/kyber/commit/10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 parameter-sets:
-- name: ML-KEM-512-ipd
-  alias: ML-KEM-512
+- name: ML-KEM-512
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 800
@@ -55,8 +54,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: ML-KEM-768-ipd
-  alias: ML-KEM-768
+- name: ML-KEM-768
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 1184
@@ -89,8 +87,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: ML-KEM-1024-ipd
-  alias: ML-KEM-1024
+- name: ML-KEM-1024
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1568

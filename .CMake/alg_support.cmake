@@ -127,11 +127,8 @@ cmake_dependent_option(OQS_ENABLE_KEM_kyber_768 "" ON "OQS_ENABLE_KEM_KYBER" OFF
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_1024 "" ON "OQS_ENABLE_KEM_KYBER" OFF)
 
 option(OQS_ENABLE_KEM_ML_KEM "Enable ml_kem algorithm family" ON)
-cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_ipd "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512 "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_ipd "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768 "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_ipd "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024 "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
 
 option(OQS_ENABLE_SIG_DILITHIUM "Enable dilithium algorithm family" ON)
@@ -173,6 +170,15 @@ cmake_dependent_option(OQS_ENABLE_SIG_mayo_2 "" ON "OQS_ENABLE_SIG_MAYO" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_mayo_3 "" ON "OQS_ENABLE_SIG_MAYO" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_mayo_5 "" ON "OQS_ENABLE_SIG_MAYO" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
+
+##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_START
+if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
+
+option(OQS_ENABLE_LIBJADE_KEM_KYBER "Enable libjade implementation of kyber algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_512 "" ON "OQS_ENABLE_LIBJADE_KEM_KYBER" OFF)
+cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_768 "" ON "OQS_ENABLE_LIBJADE_KEM_KYBER" OFF)
+endif()
+##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
@@ -311,21 +317,18 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_ipd_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_512_ipd" OFF)
     cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
 endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_ipd_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_768_ipd" OFF)
     cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
 endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_ipd_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_1024_ipd" OFF)
     cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
 endif()
 endif()
@@ -529,6 +532,24 @@ endif()
 endif()
 
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_END
+
+##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_START
+if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2 "" ON "OQS_ENABLE_LIBJADE_KEM_kyber_512" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2 "" ON "OQS_ENABLE_LIBJADE_KEM_kyber_768" OFF)
+endif()
+endif()
+
+endif()
+##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_END
 
 option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
