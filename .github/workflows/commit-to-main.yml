@@ -14,6 +14,8 @@ jobs:
 
   scorecard:
     uses: ./.github/workflows/scorecard.yml
+    secrets: inherit
 
   basic-downstream:
     uses: ./.github/workflows/downstream-basic.yml
+    secrets: inherit

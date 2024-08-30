@@ -21,3 +21,4 @@ jobs:
   scorecard:
     needs: basic-checks
     uses: ./.github/workflows/scorecard.yml
+    secrets: inherit

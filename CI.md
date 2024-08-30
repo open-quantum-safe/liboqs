@@ -87,13 +87,19 @@ Currently, these include
 - [`liboqs-go`](https://github.com/open-quantum-safe/liboqs-go)
 - [`liboqs-python`](https://github.com/open-quantum-safe/liboqs-python)
 
+Callers must include `secrets: inherit` in order for the appropriate access tokens to be passed to this workflow.
+
 #### <a name="downstream-release.yml"></a> Downstream release trigger (`downstream-release.yml`)
 
-This workflow triggers release tests for a selection of projects that depend on `liboqs`. Currently, this is only the [`OQS OpenSSL3 provider`](https://github.com/open-quantum-safe/oqs-provider).
+This workflow triggers release tests for a selection of projects that depend on `liboqs`.
+Currently, this is only the [`OQS OpenSSL3 provider`](https://github.com/open-quantum-safe/oqs-provider).
+Callers must include `secrets: inherit` in order for the appropriate access tokens to be passed to this workflow.
 
 #### <a name="scorecard.yml"></a> OpenSSF scorecard analysis (`scorecard.yml`)
 
-This workflow runs the [OpenSSF scorecard](https://github.com/ossf/scorecard) tool. It is additionally triggered automatically when branch protection rules are changed.
+This workflow runs the [OpenSSF scorecard](https://github.com/ossf/scorecard) tool.
+It is additionally triggered automatically when branch protection rules are changed.
+Callers must include `secrets: inherit` in order for the appropriate access tokens to be passed to this workflow.
 
 ## Travis CI
 

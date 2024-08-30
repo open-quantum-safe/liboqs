@@ -13,6 +13,7 @@ jobs:
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   scorecard:
     uses: ./.github/workflows/scorecard.yml
+    secrets: inherit
 
   extended-tests:
     uses: ./.github/workflows/extended.yml
