@@ -32,11 +32,11 @@ upstreams:
   -
     name: pqcrystals-kyber-standard
     git_url: https://github.com/pq-crystals/kyber.git
-    git_branch: standard
-    git_commit: d1321ce5ac0b53f583eb47a040dc3625ee8e7e37
+    git_branch: main
+    git_commit: 10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-ml_kem_ipd.patch]
+    patches: [pqcrystals-ml_kem.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
@@ -168,22 +168,19 @@ kems:
     upstream_location: pqcrystals-kyber-standard
     schemes:
       -
-        scheme: "512_ipd"
-        pqclean_scheme: ml-kem-512-ipd
-        pretty_name_full: ML-KEM-512-ipd
-        alias_scheme: "512"
+        scheme: "512"
+        pqclean_scheme: ml-kem-512
+        pretty_name_full: ML-KEM-512
         alias_pretty_name_full: ML-KEM-512
       -
-        scheme: "768_ipd"
-        pqclean_scheme: ml-kem-768-ipd
-        pretty_name_full: ML-KEM-768-ipd
-        alias_scheme: "768"
+        scheme: "768"
+        pqclean_scheme: ml-kem-768
+        pretty_name_full: ML-KEM-768
         alias_pretty_name_full: ML-KEM-768
       -
-        scheme: "1024_ipd"
-        pqclean_scheme: ml-kem-1024-ipd
-        pretty_name_full: ML-KEM-1024-ipd
-        alias_scheme: "1024"
+        scheme: "1024"
+        pqclean_scheme: ml-kem-1024
+        pretty_name_full: ML-KEM-1024
         alias_pretty_name_full: ML-KEM-1024
 sigs:
   -

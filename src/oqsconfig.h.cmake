@@ -112,17 +112,11 @@
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_aarch64 1
 
 #cmakedefine OQS_ENABLE_KEM_ML_KEM 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_512_ipd 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_512_ipd_avx2 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_768_ipd 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_768_ipd_avx2 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_1024_ipd 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_1024_ipd_avx2 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
