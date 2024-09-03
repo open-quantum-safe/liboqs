@@ -80,9 +80,33 @@
 
 {
    This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:util.h:16
+   # fun:store_i
+   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:util.h:17
+   # fun:store_i
+   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
    src:util.h:19
    # fun:store_i
+   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Value8
+   src:util.h:78
+   # fun:store8
    fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
 }
 

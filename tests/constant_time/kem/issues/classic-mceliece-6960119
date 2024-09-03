@@ -81,7 +81,7 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
-   src:util.h:81
+   src:util.h:78
    # fun:store8
    fun:PQCLEAN_MCELIECE6960119_AVX2_pk_gen
 }

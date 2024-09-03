@@ -1,7 +1,7 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
-   src:pk_gen.c:201
+   src:pk_gen.c:200
    # fun:to_bitslicing_2x
    fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
 }
@@ -9,7 +9,7 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
-   src:pk_gen.c:199
+   src:pk_gen.c:198
    # fun:to_bitslicing_2x
    fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
 }
@@ -17,7 +17,7 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
-   src:pk_gen.c:196
+   src:pk_gen.c:195
    # fun:to_bitslicing_2x
    fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
 }
@@ -33,15 +33,7 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
-   src:pk_gen.c:432
-   # fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
-   fun:PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair
-}
-
-{
-   This implementation of Classic McEliece may not be constant time.
-   Memcheck:Cond
-   src:pk_gen.c:432
+   src:pk_gen.c:431
    # fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
    fun:PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair
 }
@@ -57,7 +49,7 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Cond
-   src:pk_gen.c:446
+   src:pk_gen.c:445
    # fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
    fun:PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair
 }
@@ -65,7 +57,7 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
-   src:pk_gen.c:450
+   src:pk_gen.c:449
    # fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
    fun:PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair
 }
@@ -201,14 +193,6 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
-   src:pk_gen.c:451
-   # fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
-   fun:PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair
-}
-
-{
-   This implementation of Classic McEliece may not be constant time.
-   Memcheck:Cond
    src:pk_gen.c:450
    # fun:PQCLEAN_MCELIECE6960119F_AVX2_pk_gen
    fun:PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair

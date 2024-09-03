@@ -153,15 +153,15 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
-   src:pk_gen.c:445
+   src:pk_gen.c:444
    # fun:PQCLEAN_MCELIECE348864F_AVX2_pk_gen
    fun:PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_keypair
 }
 
 {
    This implementation of Classic McEliece may not be constant time.
-   Memcheck:Cond
-   src:pk_gen.c:444
+   Memcheck:Value8
+   src:pk_gen.c:445
    # fun:PQCLEAN_MCELIECE348864F_AVX2_pk_gen
    fun:PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_keypair
 }
