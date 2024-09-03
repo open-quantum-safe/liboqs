@@ -128,6 +128,19 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_MAYO OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_CROSS)
+                set(OQS_ENABLE_SIG_CROSS ON)
+                # Disable CROSS variants with large stack usage
+                set(OQS_ENABLE_SIG_cross_rsdp_128_small OFF)
+                set(OQS_ENABLE_SIG_cross_rsdp_192_small OFF)
+                set(OQS_ENABLE_SIG_cross_rsdp_256_balanced OFF)
+                set(OQS_ENABLE_SIG_cross_rsdp_256_small OFF)
+                set(OQS_ENABLE_SIG_cross_rsdpg_192_small OFF)
+                set(OQS_ENABLE_SIG_cross_rsdpg_256_small OFF)
+        else()  
+                set(OQS_ENABLE_SIG_CROSS OFF)
+        endif()
+
         # Add the actual liboqs targets
         add_subdirectory(.. build)
 

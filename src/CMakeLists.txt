@@ -59,6 +59,10 @@ if(OQS_ENABLE_SIG_MAYO)
     add_subdirectory(sig/mayo)
     set(SIG_OBJS ${SIG_OBJS} ${MAYO_OBJS})
 endif()
+if(OQS_ENABLE_SIG_CROSS)
+    add_subdirectory(sig/cross)
+    set(SIG_OBJS ${SIG_OBJS} ${CROSS_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 if(OQS_ENABLE_SIG_STFL_XMSS)
