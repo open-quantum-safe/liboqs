@@ -5,6 +5,7 @@ permissions:
 
 on:
   push:
+    branches: ['main']
 
 jobs:
 
