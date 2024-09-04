@@ -34,6 +34,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <assert.h>
 #include "params.h"
 #include "fips202x2.h"
 #include "symmetric.h"
@@ -56,8 +57,13 @@ void neon_kyber_shake128_absorb(keccakx2_state *state,
                                 uint8_t y1, uint8_t y2)
 {
   unsigned int i;
-  uint8_t extseed1[KYBER_SYMBYTES+2];
-  uint8_t extseed2[KYBER_SYMBYTES+2];
+
+#define ROUNDUP(x,n) ((x+n-1)/n*n)
+#define SEEDSIZE (KYBER_SYMBYTES+2)
+  uint8_t extseed1[ROUNDUP(SEEDSIZE, 8)];
+  uint8_t extseed2[ROUNDUP(SEEDSIZE, 8)];
+  assert(sizeof(extseed1) % 8 == 0);
+  assert(sizeof(extseed2) % 8 == 0);
 
   for(i=0;i<KYBER_SYMBYTES;i++){
     extseed1[i] = seed[i];
@@ -69,7 +75,7 @@ void neon_kyber_shake128_absorb(keccakx2_state *state,
   extseed2[KYBER_SYMBYTES  ] = x2;
   extseed2[KYBER_SYMBYTES+1] = y2;
 
-  shake128x2_absorb(state, extseed1, extseed2, sizeof(extseed1));
+  shake128x2_absorb(state, extseed1, extseed2, SEEDSIZE);
 }
 
 /*************************************************
