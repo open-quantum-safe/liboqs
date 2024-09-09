@@ -243,7 +243,9 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	fclose(fp_rsp);
+	if (fp_rsp) {
+		fclose(fp_rsp);
+	}
 	return ret;
 }
 

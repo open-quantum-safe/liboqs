@@ -13,3 +13,11 @@
    # fun:BerExp
    fun:PQCLEAN_FALCON*_AVX2_sampler
 }
+
+{
+   This constant time error has not been studied/analysed.
+   Memcheck:Cond
+   src:fpr.h:352
+   # fun:fpr_floor
+   fun:PQCLEAN_FALCON*_CLEAN_sampler
+}

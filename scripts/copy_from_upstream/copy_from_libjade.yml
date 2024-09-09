@@ -1,8 +1,8 @@
 # When adding an algorithm to copy_from_libjade.yml, the boolean 
 # 'libjade_implementation' and list of implementation 'libjade_implementations' 
 # must updated for the relevant algorithm in copy_from_upstream.yml
-# Additionaly, the algorithm name must be appended to env.LIBJADE_ALG_LIST
-# in the unix.yml and weekly.yml GitHub Actions workflows
+# Additionaly, the algorithm name must be appended to the GitHub repository
+# environment variable LIBJADE_ALG_LIST.
 jasmin_version: '2023.06.3'
 upstreams:
   -

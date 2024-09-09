@@ -1,18 +1,25 @@
-name: Main branch tests
+name: Pull request tests
 
 permissions:
   contents: read
 
-on:
-  push:
-    branches: ['main']
+on: pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
 
+  basic-checks:
+    uses: ./.github/workflows/basic.yml
+
   platform-tests:
+    needs: basic-checks
     uses: ./.github/workflows/platforms.yml
 
   scorecard:
+    needs: basic-checks
     uses: ./.github/workflows/scorecard.yml
     secrets: inherit
     # complete list of permissions keys as per
@@ -33,7 +40,3 @@ jobs:
       repository-projects: read
       security-events: write
       statuses: read
-
-  basic-downstream:
-    uses: ./.github/workflows/downstream-basic.yml
-    secrets: inherit

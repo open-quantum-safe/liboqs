@@ -19,4 +19,4 @@ then
 	exit 1
 fi
 
-docker run --rm -v"$LIBOQS_DIR":/root/liboqs -w /root/liboqs openquantumsafe/ci-ubuntu-focal-$arch:latest ./tests/run_astyle.sh --no-dry-run
+docker run --rm -v"$LIBOQS_DIR":/root/liboqs -w /root/liboqs openquantumsafe/ci-ubuntu-latest:latest ./tests/run_astyle.sh --no-dry-run

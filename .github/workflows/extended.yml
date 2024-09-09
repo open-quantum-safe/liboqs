@@ -1,0 +1,74 @@
+name: Extended tests
+
+permissions:
+  contents: read
+
+on: [workflow_call, workflow_dispatch]
+
+jobs:
+
+  constant-time-x64:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: generic
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+            SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*'
+          - name: extensions
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+            SKIP_ALGS: 'SPHINCS\+-SHA(.)*s-simple,SPHINCS\+-SHAKE-(.)*'
+    container:
+      image: ${{ matrix.container }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # pin@v2
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 360
+        run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
+
+  nistkat-x64:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: generic
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+          - name: generic-libjade
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+          - name: extensions
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+          - name: extensions-libjade
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST}}"
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+    container:
+      image: ${{ matrix.container }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 360
+        run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}

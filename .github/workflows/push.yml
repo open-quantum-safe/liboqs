@@ -1,0 +1,33 @@
+name: Push tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches-ignore: 'main'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  basic-checks:
+    uses: ./.github/workflows/basic.yml
+
+  full-tests:
+    needs: basic-checks
+    if: contains( github.event.head_commit.message, '[full tests]' )
+    uses: ./.github/workflows/platforms.yml
+
+  extended-tests:
+    needs: basic-checks
+    if: contains( github.event.head_commit.message, '[extended tests]' )
+    uses: ./.github/workflows/extended.yml
+
+  downstream-release-tests:
+    needs: basic-checks
+    if: contains( github.event.head_commit.message, '[trigger downstream]' )
+    uses: ./.github/workflows/downstream-release.yml
+    secrets: inherit
