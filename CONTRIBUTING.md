@@ -56,6 +56,20 @@ GitHub CI jobs. When executed in the main `liboqs` directory,
 
 When installing `act` as a GitHub extension, prefix the commands with `gh `.
 
+## Modifications to CI
+
+Modifications to GitHub Actions workflows are checked with [actionlint](https://github.com/rhysd/actionlint) during the [basic.yml](.github/workflows/basic.yml) job, protecting the CI chain and against wrong approval decisions based on improper CI runs.  Changes to these workflows can be validated locally with `actionlint`:
+
+```bash
+actionlint .github/workflows/*.yml
+```
+
+or running the CI locally (as above):
+
+```bash
+act workflow_call -W '.github/workflows/basic.yml'
+```
+
 ### New features
 
 Any PR introducing a new feature is expected to contain a test of this feature
@@ -70,6 +84,3 @@ add a tag to one or more of our [most active contributors](https://github.com/op
 
 If you feel like contributing but don't know what specific topic to work on,
 please check the [open issues tagged "good first issue" or "help wanted"](https://github.com/open-quantum-safe/liboqs/issues).
-
-
-
