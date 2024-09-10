@@ -7,8 +7,19 @@ on: [workflow_call, workflow_dispatch]
 
 jobs:
 
+  workflowcheck:
+    name: Check validity of GitHub workflows
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Ensure GitHub actions are valid
+        run: actionlint -shellcheck "" # run *without* shellcheck
+
   stylecheck:
     name: Check code formatting
+    needs: [ workflowcheck ]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
@@ -23,6 +34,7 @@ jobs:
 
   upstreamcheck:
     name: Check upstream code is properly integrated
+    needs: [ workflowcheck ]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
@@ -47,7 +59,7 @@ jobs:
 
   buildcheck:
     name: Check that code passes a basic build
-    needs: [ stylecheck, upstreamcheck ]
+    needs: [ workflowcheck, stylecheck, upstreamcheck ]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:

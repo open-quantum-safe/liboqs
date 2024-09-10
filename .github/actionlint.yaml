@@ -1,0 +1,14 @@
+# Labels of self-hosted runner in array of strings.
+
+# NB. oqs-arm64 is not self-hosted but this configuration
+#     is required for liboqs to lint correctly with actionlint v1.7.1
+
+self-hosted-runner:
+  # Labels of self-hosted runner in array of string
+  labels:
+    - oqs-arm64
+# Configuration variables in array of strings defined in your repository or organization
+config-variables:
+  # - DEFAULT_RUNNER
+  # - JOB_NAME
+  # - ENVIRONMENT_STAGE
