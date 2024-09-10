@@ -1,24 +1,23 @@
 {
-  "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
-  "bomFormat": "CycloneDX",
-  "specVersion": "1.6",
-  "serialNumber": "urn:uuid:679a1c2f-1dd4-4692-b098-1d4dacdfc75d",
+  "bomFormat": "CBOM",
+  "specVersion": "1.4-cbom-1.0",
+  "serialNumber": "urn:uuid:b953d460-1246-4cbb-aff9-642a0308d18b",
   "version": 1,
   "metadata": {
-    "timestamp": "2024-10-01T14:21:06.857613+00:00",
+    "timestamp": "2024-08-26T18:04:44.668645",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@bf7cbdca1bf2866da22b4b75e04b68baf6707a7b",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
       "name": "liboqs",
-      "version": "bf7cbdca1bf2866da22b4b75e04b68baf6707a7b"
+      "version": "062e793edf54cbc1073b54d0689795063fd41910"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@bf7cbdca1bf2866da22b4b75e04b68baf6707a7b",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
       "name": "liboqs",
-      "version": "bf7cbdca1bf2866da22b4b75e04b68baf6707a7b"
+      "version": "062e793edf54cbc1073b54d0689795063fd41910"
     },
     {
       "type": "cryptographic-asset",
@@ -2501,13 +2500,13 @@
       }
     },
     {
-      "type": "cryptographic-asset",
+      "type": "crypto-asset",
       "bom-ref": "alg:ML-DSA-44-ipd:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "ML-DSA-44-ipd",
+          "variant": "ML-DSA-44-ipd",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2521,13 +2520,13 @@
       }
     },
     {
-      "type": "cryptographic-asset",
+      "type": "crypto-asset",
       "bom-ref": "alg:ML-DSA-44-ipd:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "ML-DSA-44-ipd",
+          "variant": "ML-DSA-44-ipd",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2541,13 +2540,13 @@
       }
     },
     {
-      "type": "cryptographic-asset",
+      "type": "crypto-asset",
       "bom-ref": "alg:ML-DSA-65-ipd:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "ML-DSA-65-ipd",
+          "variant": "ML-DSA-65-ipd",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2561,13 +2560,13 @@
       }
     },
     {
-      "type": "cryptographic-asset",
+      "type": "crypto-asset",
       "bom-ref": "alg:ML-DSA-65-ipd:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "ML-DSA-65-ipd",
+          "variant": "ML-DSA-65-ipd",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2581,13 +2580,13 @@
       }
     },
     {
-      "type": "cryptographic-asset",
+      "type": "crypto-asset",
       "bom-ref": "alg:ML-DSA-87-ipd:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "ML-DSA-87-ipd",
+          "variant": "ML-DSA-87-ipd",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2601,13 +2600,13 @@
       }
     },
     {
-      "type": "cryptographic-asset",
+      "type": "crypto-asset",
       "bom-ref": "alg:ML-DSA-87-ipd:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "ML-DSA-87-ipd",
+          "variant": "ML-DSA-87-ipd",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3127,8 +3126,8 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@bf7cbdca1bf2866da22b4b75e04b68baf6707a7b",
-      "provides": [
+      "ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
         "alg:BIKE-L5:x86_64",
@@ -3253,12 +3252,12 @@
         "alg:MAYO-3:x86_64",
         "alg:MAYO-5:generic",
         "alg:MAYO-5:x86_64",
-        "alg:ML-DSA-44-ipd:generic",
-        "alg:ML-DSA-44-ipd:x86_64",
-        "alg:ML-DSA-65-ipd:generic",
-        "alg:ML-DSA-65-ipd:x86_64",
-        "alg:ML-DSA-87-ipd:generic",
-        "alg:ML-DSA-87-ipd:x86_64",
+        "alg:ML-DSA-44:generic",
+        "alg:ML-DSA-44:x86_64",
+        "alg:ML-DSA-65:generic",
+        "alg:ML-DSA-65:x86_64",
+        "alg:ML-DSA-87:generic",
+        "alg:ML-DSA-87:x86_64",
         "alg:SPHINCS+-SHA2-128f-simple:generic",
         "alg:SPHINCS+-SHA2-128f-simple:x86_64",
         "alg:SPHINCS+-SHA2-128s-simple:generic",
@@ -4044,37 +4043,37 @@
       ]
     },
     {
-      "ref": "alg:ML-DSA-44-ipd:generic",
+      "ref": "alg:ML-DSA-44:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-44-ipd:x86_64",
+      "ref": "alg:ML-DSA-44:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-65-ipd:generic",
+      "ref": "alg:ML-DSA-65:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-65-ipd:x86_64",
+      "ref": "alg:ML-DSA-65:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-87-ipd:generic",
+      "ref": "alg:ML-DSA-87:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-87-ipd:x86_64",
+      "ref": "alg:ML-DSA-87:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
