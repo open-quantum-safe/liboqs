@@ -41,15 +41,19 @@ if(NOT WIN32)
 
     add_executable(test_aes test_aes.c)
     target_link_libraries(test_aes PRIVATE ${TEST_DEPS})
+    install (TARGETS test_aes RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
     add_executable(test_hash test_hash.c)
     target_link_libraries(test_hash PRIVATE ${TEST_DEPS})
+    install (TARGETS test_hash RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
     add_executable(test_sha3 test_sha3.c)
     target_link_libraries(test_sha3 PRIVATE ${TEST_DEPS})
+    install (TARGETS test_sha3 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
     add_executable(speed_common speed_common.c)
     target_link_libraries(speed_common PRIVATE ${TEST_DEPS})
+    install (TARGETS speed_common RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
     set(UNIX_TESTS test_aes test_hash test_sha3 speed_common)
 
@@ -61,9 +65,11 @@ endif()
 # KEM API tests
 add_executable(example_kem example_kem.c)
 target_link_libraries(example_kem PRIVATE ${TEST_DEPS})
+install (TARGETS example_kem RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_executable(kat_kem kat_kem.c test_helpers.c)
 target_link_libraries(kat_kem PRIVATE ${TEST_DEPS})
+install (TARGETS kat_kem RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     # workaround for Windows .dll
     if(MINGW OR MSYS OR CYGWIN OR CMAKE_CROSSCOMPILING)
@@ -75,25 +81,31 @@ endif()
 
 add_executable(test_kem test_kem.c)
 target_link_libraries(test_kem PRIVATE ${TEST_DEPS})
+install (TARGETS test_kem RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_executable(test_kem_mem test_kem_mem.c)
 target_link_libraries(test_kem_mem PRIVATE ${TEST_DEPS})
+install (TARGETS test_kem_mem RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${TEST_DEPS})
+install (TARGETS speed_kem RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
 
 # SIG API tests
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
+install (TARGETS example_sig RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # Stateful SIG API tests
 add_executable(example_sig_stfl example_sig_stfl.c)
 target_link_libraries(example_sig_stfl PRIVATE ${TEST_DEPS})
+install (TARGETS example_sig_stfl RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_executable(kat_sig kat_sig.c test_helpers.c)
 target_link_libraries(kat_sig PRIVATE ${TEST_DEPS})
+install (TARGETS kat_sig RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     # workaround for Windows .dll
     if(MINGW OR MSYS OR CYGWIN OR CMAKE_CROSSCOMPILING)
@@ -105,6 +117,7 @@ endif()
 
 add_executable(kat_sig_stfl kat_sig_stfl.c test_helpers.c)
 target_link_libraries(kat_sig_stfl PRIVATE ${TEST_DEPS})
+install (TARGETS kat_sig_stfl RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     # workaround for Windows .dll
     if(CMAKE_CROSSCOMPILING)
@@ -116,17 +129,21 @@ endif()
 
 add_executable(test_sig test_sig.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
+install (TARGETS test_sig RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_executable(test_sig_mem test_sig_mem.c)
 target_link_libraries(test_sig_mem PRIVATE ${TEST_DEPS})
+install (TARGETS test_sig_mem RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${TEST_DEPS})
+install (TARGETS speed_sig RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig vectors_sig)
 
 # SIG_STFL API tests
 add_executable(test_sig_stfl test_sig_stfl.c)
+install (TARGETS test_sig_stfl RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
     target_link_libraries(test_sig_stfl PRIVATE ${TEST_DEPS} Threads::Threads)
 else ()
@@ -137,13 +154,16 @@ set(SIG_STFL_TESTS kat_sig_stfl test_sig_stfl)
 
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})
+install (TARGETS dump_alg_info RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # Intermediate values vector tests
 add_executable(vectors_sig vectors_sig.c)
 target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
+install (TARGETS vectors_sig RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 add_executable(vectors_kem vectors_kem.c)
 target_link_libraries(vectors_kem PRIVATE ${TEST_DEPS})
+install (TARGETS vectors_kem RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # Enable Valgrind-based timing side-channel analysis for test_kem and test_sig
 if(OQS_ENABLE_TEST_CONSTANT_TIME AND NOT OQS_DEBUG_BUILD)
