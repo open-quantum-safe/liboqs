@@ -1,4 +1,4 @@
-liboqs version 0.10.0
+liboqs version 0.11.0-rc1
 =====================
 
 About
@@ -28,20 +28,20 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.10.0 of liboqs. It was released on March 20, 2024.
+This is release candidate 1 of version 0.11.0 of liboqs. It was released on September 13, 2024.
 
-This release adds support for ML-KEM (previously known as CRYSTALS-Kyber) and ML-DSA (previously known as CRYSTALS-Dilithium), based on the initial public drafts of [FIPS 203](https://csrc.nist.gov/pubs/fips/203/ipd) and [FIPS 204](https://csrc.nist.gov/pubs/fips/204/ipd), respectively. OQS continues to support the NIST Round 3 versions of Kyber and Dilithium for interoperability purposes. This release additionally updates HQC to the NIST Round 4 version and adds support for fixed-length Falcon signatures.
+This release updates ML-KEM implementations to their [final FIP 203](https://csrc.nist.gov/pubs/fips/203/final) versions (OQS continues to support NIST Round 3 version of Kyber for interoperability purposes). Additionally, this release adds support for MAYO and CROSS digital signature schemes from [NIST Additional Signatures Round 1](https://csrc.nist.gov/Projects/pqc-dig-sig/round-1-additional-signatures) along with stateful hash-based signature schemes [XMSS](https://datatracker.ietf.org/doc/html/rfc8391) and [LMS](https://datatracker.ietf.org/doc/html/rfc8554). Finally, this release provides formally verified implementations of Kyber-512 and Kyber-768 from [libjade](https://github.com/formosa-crypto/libjade/releases/tag/release%2F2023.05-2).
 
 What's New
 ----------
 
-This release continues from the 0.9.2 release of liboqs.
+This release continues from the 0.10.1 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- BIKE: Updated portable C implementation to include constant-time fixes from upstream.
-- HQC: Updated to NIST Round 4 version.
-- ML-KEM: Added portable C and AVX2 implementations of Initial Public Draft (IPD) versions of ML-KEM-512, ML-KEM-768, and ML-KEM-1024.
+- Kyber: Added formally-verified portable C and AVX2 implementations of Kyber-512 and Kyber-768 from [libjade](https://github.com/formosa-crypto/libjade/releases/tag/release%2F2023.05-2).
+- ML-KEM: Updated portable C and AVX2 implementations of ML-KEM-512, ML-KEM-768, and ML-KEM-1024 to FIP 203 version.
+- Kyber: Patched ARM64 implementations of Kyber-512, Kyber-768, and Kyber-1024 to work with AddressSanitizer.
 
 ### Digital signature schemes
 
