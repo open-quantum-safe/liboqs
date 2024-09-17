@@ -28,7 +28,7 @@ static inline void br_enc64be(unsigned char *dst, uint64_t x) {
 }
 
 static void AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
-	*schedule = malloc(sizeof(struct key_schedule));
+	*schedule = OQS_MEM_malloc(sizeof(struct key_schedule));
 	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	ks->for_ECB = 1;
@@ -93,7 +93,7 @@ static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 }
 
 static void AES128_CTR_inc_init(const uint8_t *key, void **schedule) {
-	*schedule = malloc(sizeof(struct key_schedule));
+	*schedule = OQS_MEM_malloc(sizeof(struct key_schedule));
 	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
 
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
@@ -128,7 +128,7 @@ static void AES128_CTR_inc_ivu64(uint64_t iv, void *schedule) {
 }
 
 static void AES256_ECB_load_schedule(const uint8_t *key, void **schedule) {
-	*schedule = malloc(sizeof(struct key_schedule));
+	*schedule = OQS_MEM_malloc(sizeof(struct key_schedule));
 	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	ks->for_ECB = 1;
@@ -139,7 +139,7 @@ static void AES256_ECB_load_schedule(const uint8_t *key, void **schedule) {
 }
 
 static void AES256_CTR_inc_init(const uint8_t *key, void **schedule) {
-	*schedule = malloc(sizeof(struct key_schedule));
+	*schedule = OQS_MEM_malloc(sizeof(struct key_schedule));
 	OQS_EXIT_IF_NULLPTR(*schedule, "OpenSSL");
 
 	struct key_schedule *ks = (struct key_schedule *) *schedule;

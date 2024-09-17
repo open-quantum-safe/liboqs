@@ -35,7 +35,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "Dilithium2")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -45,7 +45,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "Dilithium3")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -55,7 +55,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "Dilithium5")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -65,7 +65,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "ML-DSA-44-ipd") || 0 == strcmp(sig->method_name, "ML-DSA-44")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -75,7 +75,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "ML-DSA-65-ipd") || 0 == strcmp(sig->method_name, "ML-DSA-65")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -85,7 +85,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "ML-DSA-87-ipd") || 0 == strcmp(sig->method_name, "ML-DSA-87")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -96,7 +96,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x29 || sig
 		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
 		*signed_msg_len = 2 + signature_len_uint16 + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -116,7 +116,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x2A || sig
 		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
 		*signed_msg_len = 2 + signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -135,7 +135,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "Falcon-padded-512")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -145,7 +145,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "Falcon-padded-1024")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -155,7 +155,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA2-128f-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -165,7 +165,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA2-128s-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -175,7 +175,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA2-192f-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -185,7 +185,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA2-192s-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -195,7 +195,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA2-256f-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -205,7 +205,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA2-256s-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -215,7 +215,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE-128f-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -225,7 +225,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE-128s-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -235,7 +235,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE-192f-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -245,7 +245,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE-192s-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -255,7 +255,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE-256f-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -265,7 +265,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE-256s-simple")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -275,7 +275,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "MAYO-1")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -285,7 +285,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "MAYO-2")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -295,7 +295,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "MAYO-3")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -305,7 +305,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "MAYO-5")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -315,7 +315,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-128-balanced")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -325,7 +325,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-128-fast")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -335,7 +335,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-128-small")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -345,7 +345,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-192-balanced")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -355,7 +355,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-192-fast")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -365,7 +365,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-192-small")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -375,7 +375,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-256-balanced")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -385,7 +385,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-256-fast")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -395,7 +395,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdp-256-small")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -405,7 +405,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-128-balanced")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -415,7 +415,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-128-fast")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -425,7 +425,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-128-small")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -435,7 +435,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-192-balanced")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -445,7 +445,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-192-fast")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -455,7 +455,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-192-small")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -465,7 +465,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-256-balanced")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -475,7 +475,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-256-fast")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -485,7 +485,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "cross-rsdpg-256-small")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -537,13 +537,13 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 
 	max_count = all ? prng->max_kats : 1;
 
-	public_key = malloc(sig->length_public_key);
-	secret_key = malloc(sig->length_secret_key);
-	signature = malloc(sig->length_signature);
+	public_key = OQS_MEM_malloc(sig->length_public_key);
+	secret_key = OQS_MEM_malloc(sig->length_secret_key);
+	signature = OQS_MEM_malloc(sig->length_signature);
 	// allocate maximum length for msg
-	msg = malloc(33 * max_count);
+	msg = OQS_MEM_malloc(33 * max_count);
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL) || (msg == NULL)) {
-		fprintf(stderr, "[kat_sig] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[kat_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 

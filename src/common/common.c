@@ -276,7 +276,7 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 }
 
 void *OQS_MEM_checked_malloc(size_t len) {
-	void *ptr = malloc(len);
+	void *ptr = OQS_MEM_malloc(len);
 	if (ptr == NULL) {
 		fprintf(stderr, "Memory allocation failed\n");
 		abort();
@@ -298,17 +298,38 @@ void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
 OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 	if (ptr != NULL) {
 		OQS_MEM_cleanse(ptr, len);
-		free(ptr); // IGNORE free-check
+        OQS_MEM_free(ptr); // IGNORE free-check
 	}
 }
 
 OQS_API void OQS_MEM_insecure_free(void *ptr) {
-	free(ptr); // IGNORE free-check
+    OQS_MEM_free(ptr); // IGNORE free-check
 }
 
 void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
-#if defined(OQS_HAVE_ALIGNED_ALLOC) // glibc and other implementations providing aligned_alloc
-	return aligned_alloc(alignment, size);
+#if defined(OQS_USE_OPENSSL)
+    // Use OpenSSL's memory allocation functions
+    if (!size) {
+        return NULL;
+    }
+    const size_t offset = alignment - 1 + sizeof(uint8_t);
+    uint8_t *buffer = OPENSSL_malloc(size + offset);
+    if (!buffer) {
+        return NULL;
+    }
+    uint8_t *ptr = (uint8_t *)(((uintptr_t)(buffer) + offset) & ~(alignment - 1));
+    ptrdiff_t diff = ptr - buffer;
+    if (diff > UINT8_MAX) {
+        // Free and return NULL if alignment is too large
+        OPENSSL_free(buffer);
+        errno = EINVAL;
+        return NULL;
+    }
+    // Store the difference so that the free function can use it
+    ptr[-1] = diff;
+    return ptr;
+#elif defined(OQS_HAVE_ALIGNED_ALLOC) // glibc and other implementations providing aligned_alloc
+    return aligned_alloc(alignment, size);
 #else
 	// Check alignment (power of 2, and >= sizeof(void*)) and size (multiple of alignment)
 	if (alignment & (alignment - 1) || size & (alignment - 1) || alignment < sizeof(void *)) {
@@ -369,8 +390,14 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 }
 
 void OQS_MEM_aligned_free(void *ptr) {
-#if defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
-	free(ptr); // IGNORE free-check
+#if defined(OQS_USE_OPENSSL)
+    // Use OpenSSL's free function
+    if (ptr) {
+        uint8_t *u8ptr = ptr;
+        OPENSSL_free(u8ptr - u8ptr[-1]);
+    }
+#elif defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
+    free(ptr); // IGNORE free-check
 #elif defined(__MINGW32__) || defined(__MINGW64__)
 	__mingw_aligned_free(ptr);
 #elif defined(_MSC_VER)

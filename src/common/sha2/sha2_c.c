@@ -588,22 +588,22 @@ void oqs_sha2_sha512_inc_ctx_clone_c(sha512ctx *stateout, const sha512ctx *state
 
 /* Destroy the hash state. */
 void oqs_sha2_sha224_inc_ctx_release_c(sha224ctx *state) {
-	free(state->ctx); // IGNORE free-check
+    OQS_MEM_free(state->ctx); // IGNORE free-check
 }
 
 /* Destroy the hash state. */
 void oqs_sha2_sha256_inc_ctx_release_c(sha256ctx *state) {
-	free(state->ctx); // IGNORE free-check
+    OQS_MEM_free(state->ctx); // IGNORE free-check
 }
 
 /* Destroy the hash state. */
 void oqs_sha2_sha384_inc_ctx_release_c(sha384ctx *state) {
-	free(state->ctx); // IGNORE free-check
+    OQS_MEM_free(state->ctx); // IGNORE free-check
 }
 
 /* Destroy the hash state. */
 void oqs_sha2_sha512_inc_ctx_release_c(sha512ctx *state) {
-	free(state->ctx); // IGNORE free-check
+    OQS_MEM_free(state->ctx); // IGNORE free-check
 }
 
 void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t inblocks) {

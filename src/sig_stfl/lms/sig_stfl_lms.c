@@ -70,7 +70,7 @@ static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_
 #define LMS_ALG(lms_variant, LMS_VARIANT) \
 OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_##lms_variant##_new(void) { \
 \
-        OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL)); \
+        OQS_SIG_STFL *sig = (OQS_SIG_STFL *)OQS_MEM_malloc(sizeof(OQS_SIG_STFL)); \
         if (sig == NULL) { \
                 return NULL; \
         } \
@@ -103,7 +103,7 @@ OQS_STATUS OQS_SIG_STFL_alg_lms_##lms_variant##_keypair(uint8_t *public_key, OQS
 \
 OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_##LMS_VARIANT##_new(void) {\
 \
-        OQS_SIG_STFL_SECRET_KEY *sk = malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));\
+        OQS_SIG_STFL_SECRET_KEY *sk = OQS_MEM_malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));\
         if (sk == NULL) {\
                 return NULL;\
         }\

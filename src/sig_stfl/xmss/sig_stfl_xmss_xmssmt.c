@@ -30,7 +30,7 @@
 #define XMSS_ALG(mt, xmss_v, XMSS_V) \
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss##xmss_v##_new(void) { \
 \
-        OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL)); \
+        OQS_SIG_STFL *sig = (OQS_SIG_STFL *)OQS_MEM_malloc(sizeof(OQS_SIG_STFL)); \
         if (sig == NULL) { \
                 return NULL; \
         } \

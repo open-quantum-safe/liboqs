@@ -66,12 +66,12 @@ static OQS_STATUS stfl_example(char *method_name) {
 	/*
 	 * Allocate storage for public key, secret key filename, message and signature
 	 */
-	public_key = malloc(sig->length_public_key);
-	sk_fname = malloc(strlen(method_name) + strlen(".sk") + 1);
-	message = malloc(message_len);
-	signature = malloc(sig->length_signature);
+	public_key = OQS_MEM_malloc(sig->length_public_key);
+	sk_fname = OQS_MEM_malloc(strlen(method_name) + strlen(".sk") + 1);
+	message = OQS_MEM_malloc(message_len);
+	signature = OQS_MEM_malloc(sig->length_signature);
 	if ((public_key == NULL) || (message == NULL) || (signature == NULL) || (sk_fname == NULL)) {
-		fprintf(stderr, "ERROR: malloc failed!\n");
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed!\n");
 		goto err;
 	}
 

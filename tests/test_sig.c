@@ -55,13 +55,13 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	printf("Sample computation for signature %s\n", sig->method_name);
 	printf("================================================================================\n");
 
-	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
-	secret_key = malloc(sig->length_secret_key + 2 * sizeof(magic_t));
-	message = malloc(message_len + 2 * sizeof(magic_t));
-	signature = malloc(sig->length_signature + 2 * sizeof(magic_t));
+	public_key = OQS_MEM_malloc(sig->length_public_key + 2 * sizeof(magic_t));
+	secret_key = OQS_MEM_malloc(sig->length_secret_key + 2 * sizeof(magic_t));
+	message = OQS_MEM_malloc(message_len + 2 * sizeof(magic_t));
+	signature = OQS_MEM_malloc(sig->length_signature + 2 * sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
-		fprintf(stderr, "ERROR: malloc failed\n");
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 		goto err;
 	}
 

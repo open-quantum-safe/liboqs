@@ -87,7 +87,7 @@ static void wots_checksum(const xmss_params *params,
 {
     int csum = 0;
     unsigned int csum_bytes_length =  (params->wots_len2 * params->wots_log_w + 7) / 8;
-    unsigned char *csum_bytes = malloc(csum_bytes_length);
+    unsigned char *csum_bytes = OQS_MEM_malloc(csum_bytes_length);
     if (csum_bytes == NULL) {
         return;
     }
@@ -129,7 +129,7 @@ void wots_pkgen(const xmss_params *params,
 {
     unsigned int i;
     const size_t buf_size = 2 * params->padding_len + 4 * params->n + 64;
-    unsigned char *buf = malloc(buf_size);
+    unsigned char *buf = OQS_MEM_malloc(buf_size);
     if (buf == NULL) {
         return;
     }
@@ -156,8 +156,8 @@ void wots_sign(const xmss_params *params,
                uint32_t addr[8])
 {
     const size_t buf_size = 2 * params->padding_len + 4 * params->n + 64;
-    unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int));
-    unsigned char *buf = malloc(buf_size);
+    unsigned int *lengths = OQS_MEM_calloc(params->wots_len, sizeof(unsigned int));
+    unsigned char *buf = OQS_MEM_malloc(buf_size);
     unsigned int i;
     if (lengths == NULL || buf == NULL) {
         return;
@@ -187,9 +187,9 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *sig, const unsigned char *msg,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned int *lengths = calloc(params->wots_len, sizeof(unsigned int ));
+    unsigned int *lengths = OQS_MEM_malloc(params->wots_len, sizeof(unsigned int ));
     const size_t thash_buf_len = 2 * params->padding_len + 4 * params->n + 32;
-    unsigned char *thash_buf = malloc(thash_buf_len);
+    unsigned char *thash_buf = OQS_MEM_malloc(thash_buf_len);
     unsigned int i;
     if (lengths == NULL || thash_buf == NULL) {
         return;
