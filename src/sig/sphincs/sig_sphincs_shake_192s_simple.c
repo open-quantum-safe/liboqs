@@ -8,7 +8,7 @@
 
 OQS_SIG *OQS_SIG_sphincs_shake_192s_simple_new(void) {
 
-	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}
