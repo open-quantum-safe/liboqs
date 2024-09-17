@@ -21,39 +21,39 @@ extern "C" {
 #endif
 
 #if defined(OQS_USE_OPENSSL)
-    #ifndef OPENSSL_malloc
-    # define OPENSSL_malloc(num) \
+#ifndef OPENSSL_malloc
+# define OPENSSL_malloc(num) \
             CRYPTO_malloc(num, __FILE__, __LINE__)
-    #endif
+#endif
 
-    #ifndef OPENSSL_zalloc
-    # define OPENSSL_zalloc(num) \
+#ifndef OPENSSL_zalloc
+# define OPENSSL_zalloc(num) \
             CRYPTO_zalloc(num, __FILE__, __LINE__)
-    #endif
+#endif
 
-    #ifndef OPENSSL_free
-    # define OPENSSL_free(addr) \
+#ifndef OPENSSL_free
+# define OPENSSL_free(addr) \
             CRYPTO_free(addr, __FILE__, __LINE__)
-    #endif
+#endif
 
-    #ifndef OPENSSL_strdup
-    # define OPENSSL_strdup(str) \
+#ifndef OPENSSL_strdup
+# define OPENSSL_strdup(str) \
             CRYPTO_strdup(str, __FILE__, __LINE__)
-    #endif
+#endif
 
-    extern void *CRYPTO_malloc(size_t num, const char *file, int line);
-    extern void *CRYPTO_zalloc(size_t num, const char *file, int line);
-    extern void CRYPTO_free(void *str, const char *file, int line);
-    extern char *CRYPTO_strdup(const char *str, const char* file, int line);
-    #define OQS_MEM_malloc(size) OPENSSL_malloc(size)
-    #define OQS_MEM_free(ptr) OPENSSL_free(ptr)
-    #define OQS_MEM_calloc(num_elements, element_size) OPENSSL_zalloc((num_elements) * (element_size))
-    #define OQS_MEM_strdup(str) OPENSSL_strdup(str)
+extern void *CRYPTO_malloc(size_t num, const char *file, int line);
+extern void *CRYPTO_zalloc(size_t num, const char *file, int line);
+extern void CRYPTO_free(void *str, const char *file, int line);
+extern char *CRYPTO_strdup(const char *str, const char *file, int line);
+#define OQS_MEM_malloc(size) OPENSSL_malloc(size)
+#define OQS_MEM_free(ptr) OPENSSL_free(ptr)
+#define OQS_MEM_calloc(num_elements, element_size) OPENSSL_zalloc((num_elements) * (element_size))
+#define OQS_MEM_strdup(str) OPENSSL_strdup(str)
 #else
-    #define OQS_MEM_malloc(size) malloc(size)
-    #define OQS_MEM_free(ptr) free(ptr)
-    #define OQS_MEM_calloc(num_elements, element_size) calloc(num_elements, element_size)
-    #define OQS_MEM_strdup(str) strdup(str)
+#define OQS_MEM_malloc(size) malloc(size)
+#define OQS_MEM_free(ptr) free(ptr)
+#define OQS_MEM_calloc(num_elements, element_size) calloc(num_elements, element_size)
+#define OQS_MEM_strdup(str) strdup(str)
 #endif
 
 /**
