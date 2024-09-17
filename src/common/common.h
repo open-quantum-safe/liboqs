@@ -20,6 +20,13 @@
 extern "C" {
 #endif
 
+/**
+ * @brief Memory allocation and deallocation functions.
+ *
+ * These macros provide a unified interface for memory operations,
+ * using OpenSSL functions when OQS_USE_OPENSSL is defined, and
+ * standard C library functions otherwise.
+ */
 #if defined(OQS_USE_OPENSSL)
 #ifndef OPENSSL_malloc
 # define OPENSSL_malloc(num) \
@@ -45,14 +52,54 @@ extern void *CRYPTO_malloc(size_t num, const char *file, int line);
 extern void *CRYPTO_zalloc(size_t num, const char *file, int line);
 extern void CRYPTO_free(void *str, const char *file, int line);
 extern char *CRYPTO_strdup(const char *str, const char *file, int line);
+/**
+* Allocates memory of a given size.
+* @param size The size of the memory to be allocated in bytes.
+* @return A pointer to the allocated memory.
+*/
 #define OQS_MEM_malloc(size) OPENSSL_malloc(size)
+/**
+ * Frees the allocated memory.
+ * @param ptr The pointer to the memory to be freed.
+ */
 #define OQS_MEM_free(ptr) OPENSSL_free(ptr)
+/**
+ * Allocates memory for an array of elements of a given size.
+ * @param num_elements The number of elements to allocate.
+ * @param element_size The size of each element in bytes.
+ * @return A pointer to the allocated memory.
+ */
 #define OQS_MEM_calloc(num_elements, element_size) OPENSSL_zalloc((num_elements) * (element_size))
+/**
+ * Duplicates a string.
+ * @param str The string to be duplicated.
+ * @return A pointer to the newly allocated string.
+ */
 #define OQS_MEM_strdup(str) OPENSSL_strdup(str)
 #else
+/**
+* Allocates memory of a given size.
+* @param size The size of the memory to be allocated in bytes.
+* @return A pointer to the allocated memory.
+*/
 #define OQS_MEM_malloc(size) malloc(size)
+/**
+ * Frees the allocated memory.
+ * @param ptr The pointer to the memory to be freed.
+ */
 #define OQS_MEM_free(ptr) free(ptr)
+/**
+ * Allocates memory for an array of elements of a given size.
+ * @param num_elements The number of elements to allocate.
+ * @param element_size The size of each element in bytes.
+ * @return A pointer to the allocated memory.
+ */
 #define OQS_MEM_calloc(num_elements, element_size) calloc(num_elements, element_size)
+/**
+ * Duplicates a string.
+ * @param str The string to be duplicated.
+ * @return A pointer to the newly allocated string.
+ */
 #define OQS_MEM_strdup(str) strdup(str)
 #endif
 
