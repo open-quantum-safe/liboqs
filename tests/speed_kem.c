@@ -48,14 +48,14 @@ static OQS_STATUS kem_speed_wrapper(const char *method_name, uint64_t duration, 
 		return OQS_SUCCESS;
 	}
 
-	public_key = malloc(kem->length_public_key);
-	secret_key = malloc(kem->length_secret_key);
-	ciphertext = malloc(kem->length_ciphertext);
-	shared_secret_e = malloc(kem->length_shared_secret);
-	shared_secret_d = malloc(kem->length_shared_secret);
+	public_key = OQS_MEM_malloc(kem->length_public_key);
+	secret_key = OQS_MEM_malloc(kem->length_secret_key);
+	ciphertext = OQS_MEM_malloc(kem->length_ciphertext);
+	shared_secret_e = OQS_MEM_malloc(kem->length_shared_secret);
+	shared_secret_d = OQS_MEM_malloc(kem->length_shared_secret);
 
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
-		fprintf(stderr, "ERROR: malloc failed\n");
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 		goto err;
 	}
 

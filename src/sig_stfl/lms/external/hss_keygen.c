@@ -188,7 +188,7 @@ bool hss_generate_private_key(
         if (((unsigned)1<<level) < 4*num_cores) {
                 /* We'll write into a temp area; malloc the space */
             size_t temp_buffer_size = (size_t)size_hash << level;
-            temp_buffer = malloc(temp_buffer_size);
+            temp_buffer = OQS_MEM_malloc(temp_buffer_size);
             if (!temp_buffer) {
                 /* Couldn't malloc it; try again with s smaller buffer */
                 continue;
@@ -278,7 +278,7 @@ bool hss_generate_private_key(
         } else {
             hss_zeroize( context, PRIVATE_KEY_LEN );
         }
-        free(temp_buffer); // IGNORE free-check
+        OQS_MEM_free(temp_buffer); // IGNORE free-check
         return false;
     }
 
@@ -355,7 +355,7 @@ bool hss_generate_private_key(
     /* Hey, what do you know -- it all worked! */
     hss_zeroize( private_key, sizeof private_key ); /* Zeroize local copy of */
                                                    /* the private key */
-    free(temp_buffer); // IGNORE free-check
+    OQS_MEM_free(temp_buffer); // IGNORE free-check
     return true;
 }
 #endif
