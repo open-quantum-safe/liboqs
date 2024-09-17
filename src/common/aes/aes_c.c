@@ -651,7 +651,7 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 	} else if (iv_len == 16) {
 		br_range_dec32le(ivw, 4, iv);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
@@ -733,7 +733,7 @@ void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 	} else if (iv_len == 16) {
 		memcpy(ctx->iv, iv, 16);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 }
 
@@ -766,7 +766,7 @@ void oqs_aes128_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 	} else if (iv_len == 16) {
 		memcpy(ctx->iv, iv, 16);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 }
 

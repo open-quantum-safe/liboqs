@@ -79,7 +79,7 @@ static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 	} else if (iv_len == 16) {
 		memcpy(iv_ctr, iv, 16);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 	const struct key_schedule *ks = (const struct key_schedule *) schedule;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctr_ctx, oqs_aes_128_ctr(), NULL, ks->key, iv_ctr));
@@ -114,7 +114,7 @@ static void AES128_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *schedule) 
 	} else if (iv_len == 16) {
 		memcpy(ks->iv, iv, 16);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_128_ctr(), NULL, ks->key, ks->iv));
 }
@@ -160,7 +160,7 @@ static void AES256_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *schedule) 
 	} else if (iv_len == 16) {
 		memcpy(ks->iv, iv, 16);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_256_ctr(), NULL, ks->key, ks->iv));
 }
@@ -203,7 +203,7 @@ static void AES256_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 	} else if (iv_len == 16) {
 		memcpy(iv_ctr, iv, 16);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 	const struct key_schedule *ks = (const struct key_schedule *) schedule;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctr_ctx, oqs_aes_256_ctr(), NULL, ks->key, iv_ctr));

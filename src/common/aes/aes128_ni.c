@@ -65,7 +65,7 @@ void oqs_aes128_load_iv_ni(const uint8_t *iv, size_t iv_len, void *_schedule) {
 	} else if (iv_len == 16) {
 		ctx->iv = _mm_shuffle_epi8(_mm_loadu_si128((const __m128i *)iv), idx);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 }
 
@@ -176,7 +176,7 @@ void oqs_aes128_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const voi
 	} else if (iv_len == 16) {
 		block = _mm_loadu_si128((const __m128i *)iv);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 
 	while (out_len >= 64) {

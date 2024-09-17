@@ -50,7 +50,7 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 
 	if (len % 2 != 0) {
 		fprintf(stderr, "Hex string must have an even number of characters\n");
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 
 	for (size_t i = 0, j = 0; i < len; i += 2, j++) {

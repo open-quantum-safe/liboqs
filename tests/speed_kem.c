@@ -20,15 +20,15 @@
 static void fullcycletest(OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, uint8_t *ciphertext, uint8_t *shared_secret_e, uint8_t *shared_secret_d) {
 	if (OQS_KEM_keypair(kem, public_key, secret_key) != OQS_SUCCESS) {
 		printf("Error creating KEM key. Exiting.\n");
-		exit(-1);
+		return; /* TODO: better error handling */
 	}
 	if (OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key) != OQS_SUCCESS) {
 		printf("Error during KEM encaps. Exiting.\n");
-		exit(-1);
+		return; /* TODO: better error handling */
 	}
 	if (OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key) != OQS_SUCCESS) {
 		printf("Error during KEM decaps. Exiting.\n");
-		exit(-1);
+		return; /* TODO: better error handling */
 	}
 
 }

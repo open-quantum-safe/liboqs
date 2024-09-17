@@ -89,7 +89,7 @@ extern "C" {
     do {                                                                              \
         if ( (x) == (void*)0 ) {                                                      \
             fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n", loc); \
-            exit(EXIT_FAILURE);                                                       \
+            return; /* TODO: better error handling */                                 \
         }                                                                             \
     } while (0)
 
@@ -110,7 +110,7 @@ extern "C" {
     do {                                                                               \
         if( 1 != (x) ) {                                                               \
             fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
-            exit(EXIT_FAILURE);                                                        \
+            return; /* TODO: better error handling */                                  \
         }                                                                              \
     } while (0)
 #else // OPENSSL_NO_STDIO
@@ -119,7 +119,7 @@ extern "C" {
         if( 1 != (x) ) {                                                               \
             fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
             OSSL_FUNC(ERR_print_errors_fp)(stderr);                                    \
-            exit(EXIT_FAILURE);                                                        \
+            return; /* TODO: better error handling */                                  \
         }                                                                              \
     } while (0)
 #endif // OPENSSL_NO_STDIO
@@ -136,7 +136,7 @@ extern "C" {
     if (size_t_var_name <= INT_MAX) {                         \
         int_var_name = (int)size_t_var_name;                  \
     } else {                                                  \
-        exit(EXIT_FAILURE);                                   \
+        return; /* TODO: better error handling */             \
     }
 
 /**

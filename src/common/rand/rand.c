@@ -59,7 +59,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
 	        !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
-		exit(EXIT_FAILURE); // better to fail than to return bad random data
+		return; /* TODO: better error handling */ // better to fail than to return bad random data
 	}
 	CryptReleaseContext(hCryptProv, 0);
 }
@@ -71,19 +71,19 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	fprintf(stderr, "OQS_randombytes_system is not available in an embedded build.\n");
 	fprintf(stderr, "Call OQS_randombytes_custom_algorithm() to set a custom method for your system.\n");
-	exit(EXIT_FAILURE);
+	return; /* TODO: better error handling */
 }
 #elif defined(OQS_HAVE_GETENTROPY)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	while (bytes_to_read > 256) {
 		if (getentropy(random_array, 256)) {
-			exit(EXIT_FAILURE);
+			return; /* TODO: better error handling */
 		}
 		random_array += 256;
 		bytes_to_read -= 256;
 	}
 	if (getentropy(random_array, bytes_to_read)) {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 }
 #else
@@ -94,13 +94,13 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	handle = fopen("/dev/urandom", "rb");
 	if (!handle) {
 		perror("OQS_randombytes");
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 
 	bytes_read = fread(random_array, 1, bytes_to_read, handle);
 	if (bytes_read < bytes_to_read || ferror(handle)) {
 		perror("OQS_randombytes");
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 
 	fclose(handle);
@@ -122,7 +122,7 @@ void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read) {
 		fprintf(stderr, "No OpenSSL randomness retrieved. DRBG available?\n");
 		// because of void signature we have no other way to signal the problem
 		// we cannot possibly return without randomness
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 }
 #endif

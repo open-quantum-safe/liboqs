@@ -21,7 +21,7 @@ void oqs_aes128_load_iv_armv8(const uint8_t *iv, size_t iv_len, void *_schedule)
 	} else if (iv_len == 16) {
 		memcpy(ctx->iv, iv, 16);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 }
 
@@ -118,7 +118,7 @@ void oqs_aes128_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const 
 		memcpy(&ctr_be, &iv[12], 4);
 		ctr = BE_TO_UINT32(ctr_be);
 	} else {
-		exit(EXIT_FAILURE);
+		return; /* TODO: better error handling */
 	}
 	while (out_len >= 16) {
 		ctr_be = UINT32_TO_BE(ctr);
