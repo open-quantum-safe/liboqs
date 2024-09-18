@@ -257,6 +257,9 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 }
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
+	if (ptr == NULL) {
+		return;
+	}
 #if defined(OQS_USE_OPENSSL)
 	OSSL_FUNC(OPENSSL_cleanse)(ptr, len);
 #elif defined(_WIN32)
@@ -267,7 +270,7 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 	explicit_memset(ptr, 0, len);
 #elif defined(__STDC_LIB_EXT1__) || defined(OQS_HAVE_MEMSET_S)
 	if (0U < len && memset_s(ptr, (rsize_t)len, 0, (rsize_t)len) != 0) {
-		abort();
+		return NULL; //abort();
 	}
 #else
 	typedef void *(*memset_t)(void *, int, size_t);
@@ -275,12 +278,11 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 	memset_func(ptr, 0, len);
 #endif
 }
-
 void *OQS_MEM_checked_malloc(size_t len) {
 	void *ptr = OQS_MEM_malloc(len);
 	if (ptr == NULL) {
 		fprintf(stderr, "Memory allocation failed\n");
-		abort();
+		return NULL; //abort();
 	}
 
 	return ptr;
@@ -290,7 +292,7 @@ void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
 	void *ptr = OQS_MEM_aligned_alloc(alignment, size);
 	if (ptr == NULL) {
 		fprintf(stderr, "Memory allocation failed\n");
-		abort();
+		return NULL; //abort();
 	}
 
 	return ptr;
@@ -391,12 +393,13 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 }
 
 void OQS_MEM_aligned_free(void *ptr) {
+	if (ptr == NULL) {
+		return;
+	}
 #if defined(OQS_USE_OPENSSL)
 	// Use OpenSSL's free function
-	if (ptr) {
-		uint8_t *u8ptr = ptr;
-		OPENSSL_free(u8ptr - u8ptr[-1]);
-	}
+	uint8_t *u8ptr = ptr;
+	OPENSSL_free(u8ptr - u8ptr[-1]);
 #elif defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
 	free(ptr); // IGNORE free-check
 #elif defined(__MINGW32__) || defined(__MINGW64__)
@@ -404,11 +407,9 @@ void OQS_MEM_aligned_free(void *ptr) {
 #elif defined(_MSC_VER)
 	_aligned_free(ptr);
 #else
-	if (ptr) {
-		// Reconstruct the pointer returned from malloc using the difference
-		// stored one byte ahead of ptr.
-		uint8_t *u8ptr = ptr;
-		free(u8ptr - u8ptr[-1]); // IGNORE free-check
-	}
+	// Reconstruct the pointer returned from malloc using the difference
+	// stored one byte ahead of ptr.
+	uint8_t *u8ptr = ptr;
+	free(u8ptr - u8ptr[-1]); // IGNORE free-check
 #endif
 }
