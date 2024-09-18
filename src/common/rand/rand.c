@@ -50,16 +50,21 @@ OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, s
 }
 
 OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
-	oqs_randombytes_algorithm(random_array, bytes_to_read);
+	if (random_array != NULL && bytes_to_read > 0) {
+		oqs_randombytes_algorithm(random_array, bytes_to_read);
+	}
 }
 
 // Select the implementation for OQS_randombytes_system
 #if defined(_WIN32)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	HCRYPTPROV hCryptProv;
-	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	        !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
-		return; /* TODO: better error handling */ // better to fail than to return bad random data
+	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+		return; /* TODO: better error handling */
+	}
+	if (!CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
+		CryptReleaseContext(hCryptProv, 0);
+		return; /* TODO: better error handling */
 	}
 	CryptReleaseContext(hCryptProv, 0);
 }
@@ -100,6 +105,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	bytes_read = fread(random_array, 1, bytes_to_read, handle);
 	if (bytes_read < bytes_to_read || ferror(handle)) {
 		perror("OQS_randombytes");
+		fclose(handle);
 		return; /* TODO: better error handling */
 	}
 

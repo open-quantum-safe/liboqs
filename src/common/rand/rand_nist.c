@@ -38,7 +38,7 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 //    buffer - a 128-bit ciphertext value
 static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *buffer) {
 #ifdef OQS_USE_OPENSSL
-	EVP_CIPHER_CTX *ctx;
+	EVP_CIPHER_CTX *ctx = NULL;
 
 	int len;
 
@@ -46,16 +46,23 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(ctx, "OpenSSL");
 
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16));
+	if (OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL) != 1 ||
+	        OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16) != 1) {
+		OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
+		OQS_EXIT("AES256_ECB");
+	}
 
 	/* Clean up */
 	OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
 #else
 	void *schedule = NULL;
 	OQS_AES256_ECB_load_schedule(key, &schedule);
-	OQS_AES256_ECB_enc(ctr, 16, key, buffer);
-	OQS_AES256_free_schedule(schedule);
+	if (schedule != NULL) {
+		OQS_AES256_ECB_enc(ctr, 16, key, buffer);
+		OQS_AES256_free_schedule(schedule);
+	} else {
+		OQS_EXIT("AES256_ECB");
+	}
 #endif
 }
 
