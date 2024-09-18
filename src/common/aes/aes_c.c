@@ -59,6 +59,9 @@ typedef struct {
 } aes256ctx_nobitslice;
 
 static inline uint32_t br_dec32le(const unsigned char *src) {
+	if (src == NULL) {
+		return 0;
+	}
 	return (uint32_t)src[0]
 	       | ((uint32_t)src[1] << 8)
 	       | ((uint32_t)src[2] << 16)
@@ -67,8 +70,11 @@ static inline uint32_t br_dec32le(const unsigned char *src) {
 
 
 static void br_range_dec32le(uint32_t *v, size_t num, const unsigned char *src) {
+	if (v == NULL || src == NULL) {
+		return;
+	}
 	while (num-- > 0) {
-		*v ++ = br_dec32le(src);
+		*v++ = br_dec32le(src);
 		src += 4;
 	}
 }
@@ -82,6 +88,9 @@ static inline uint32_t br_swap32(uint32_t x) {
 
 
 static inline void br_enc32le(unsigned char *dst, uint32_t x) {
+	if (dst == NULL) {
+		return;
+	}
 	dst[0] = (unsigned char)x;
 	dst[1] = (unsigned char)(x >> 8);
 	dst[2] = (unsigned char)(x >> 16);
@@ -89,6 +98,9 @@ static inline void br_enc32le(unsigned char *dst, uint32_t x) {
 }
 
 static inline void br_enc32be(unsigned char *dst, uint32_t x) {
+	if (dst == NULL) {
+		return;
+	}
 	dst[0] = (unsigned char)(x >> 24);
 	dst[1] = (unsigned char)(x >> 16);
 	dst[2] = (unsigned char)(x >>  8);
@@ -96,14 +108,20 @@ static inline void br_enc32be(unsigned char *dst, uint32_t x) {
 }
 
 static void br_range_enc32le(unsigned char *dst, const uint32_t *v, size_t num) {
+	if (dst == NULL || v == NULL) {
+		return;
+	}
 	while (num-- > 0) {
-		br_enc32le(dst, *v ++);
+		br_enc32le(dst, *v++);
 		dst += 4;
 	}
 }
 
 
 static void br_aes_ct64_bitslice_Sbox(uint64_t *q) {
+	if (q == NULL) {
+		return;
+	}
 	/*
 	 * This S-box implementation is a straightforward translation of
 	 * the circuit described by Boyar and Peralta in "A new
@@ -278,6 +296,10 @@ static void br_aes_ct64_bitslice_Sbox(uint64_t *q) {
 }
 
 static void br_aes_ct64_ortho(uint64_t *q) {
+	if (q == NULL) {
+		return;
+	}
+
 #define SWAPN(cl, ch, s, x, y)   do { \
         uint64_t a, b; \
         a = (x); \
@@ -308,6 +330,10 @@ static void br_aes_ct64_ortho(uint64_t *q) {
 
 
 static void br_aes_ct64_interleave_in(uint64_t *q0, uint64_t *q1, const uint32_t *w) {
+	if (q0 == NULL || q1 == NULL || w == NULL) {
+		return;
+	}
+
 	uint64_t x0, x1, x2, x3;
 
 	x0 = w[0];
@@ -336,6 +362,10 @@ static void br_aes_ct64_interleave_in(uint64_t *q0, uint64_t *q1, const uint32_t
 
 
 static void br_aes_ct64_interleave_out(uint32_t *w, uint64_t q0, uint64_t q1) {
+	if (w == NULL) {
+		return;
+	}
+
 	uint64_t x0, x1, x2, x3;
 
 	x0 = q0 & (uint64_t)0x00FF00FF00FF00FF;
@@ -370,8 +400,11 @@ static uint32_t sub_word(uint32_t x) {
 	br_aes_ct64_ortho(q);
 	return (uint32_t)q[0];
 }
-
 static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, unsigned int key_len) {
+	if (comp_skey == NULL || key == NULL) {
+		return;
+	}
+
 	unsigned int i, j, k, nk, nkf;
 	uint32_t tmp;
 	uint32_t skey[60];
@@ -421,6 +454,10 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 }
 
 static void br_aes_ct64_skey_expand(uint64_t *skey, const uint64_t *comp_skey, unsigned int nrounds) {
+	if (skey == NULL || comp_skey == NULL) {
+		return;
+	}
+
 	unsigned u, v, n;
 
 	n = (nrounds + 1) << 1;
@@ -444,6 +481,10 @@ static void br_aes_ct64_skey_expand(uint64_t *skey, const uint64_t *comp_skey, u
 
 
 static inline void add_round_key(uint64_t *q, const uint64_t *sk) {
+	if (q == NULL || sk == NULL) {
+		return;
+	}
+
 	q[0] ^= sk[0];
 	q[1] ^= sk[1];
 	q[2] ^= sk[2];
@@ -455,6 +496,10 @@ static inline void add_round_key(uint64_t *q, const uint64_t *sk) {
 }
 
 static inline void shift_rows(uint64_t *q) {
+	if (q == NULL) {
+		return;
+	}
+
 	int i;
 
 	for (i = 0; i < 8; i ++) {
@@ -476,6 +521,10 @@ static inline uint64_t rotr32(uint64_t x) {
 }
 
 static inline void mix_columns(uint64_t *q) {
+	if (q == NULL) {
+		return;
+	}
+
 	uint64_t q0, q1, q2, q3, q4, q5, q6, q7;
 	uint64_t r0, r1, r2, r3, r4, r5, r6, r7;
 
@@ -508,12 +557,20 @@ static inline void mix_columns(uint64_t *q) {
 
 
 static void inc4_be(uint32_t *x) {
+	if (x == NULL) {
+		return;
+	}
+
 	uint32_t t = br_swap32(*x) + 4;
 	*x = br_swap32(t);
 }
 
 
 static void aes_ecb4x(unsigned char out[64], const uint32_t ivw[16], const uint64_t *sk_exp, unsigned int nrounds) {
+	if (out == NULL || ivw == NULL || sk_exp == NULL) {
+		return;
+	}
+
 	uint32_t w[16];
 	uint64_t q[8];
 	unsigned int i;
@@ -543,8 +600,10 @@ static void aes_ecb4x(unsigned char out[64], const uint32_t ivw[16], const uint6
 	br_range_enc32le(out, w, 16);
 }
 
-
 static void aes_ctr4x(unsigned char out[64], uint32_t ivw[16], const uint64_t *sk_exp, unsigned int nrounds) {
+	if (out == NULL || ivw == NULL || sk_exp == NULL) {
+		return;
+	}
 	aes_ecb4x(out, ivw, sk_exp, nrounds);
 
 	/* Increase counter for next 4 blocks */
@@ -556,6 +615,9 @@ static void aes_ctr4x(unsigned char out[64], uint32_t ivw[16], const uint64_t *s
 
 
 static void aes_ecb(unsigned char *out, const unsigned char *in, size_t nblocks, const uint64_t *rkeys, unsigned int nrounds) {
+	if (out == NULL || in == NULL || rkeys == NULL) {
+		return;
+	}
 	uint32_t blocks[16];
 	unsigned char t[64];
 
@@ -575,6 +637,9 @@ static void aes_ecb(unsigned char *out, const unsigned char *in, size_t nblocks,
 }
 
 static inline void aes128_ctr_upd_blks(unsigned char *out, size_t outblks, aes128ctx *ctx) {
+	if (out == NULL || ctx == NULL) {
+		return;
+	}
 	uint32_t ivw[16];
 	size_t i;
 	uint32_t cc;
@@ -608,6 +673,9 @@ static inline void aes128_ctr_upd_blks(unsigned char *out, size_t outblks, aes12
 }
 
 static inline void aes256_ctr_upd_blks(unsigned char *out, size_t outblks, aes256ctx *ctx) {
+	if (out == NULL || ctx == NULL) {
+		return;
+	}
 	uint32_t ivw[16];
 	size_t i;
 	uint32_t cc;
@@ -641,6 +709,9 @@ static inline void aes256_ctr_upd_blks(unsigned char *out, size_t outblks, aes25
 }
 
 static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, const size_t iv_len, const uint64_t *rkeys, unsigned int nrounds) {
+	if (out == NULL || iv == NULL || rkeys == NULL) {
+		return;
+	}
 	uint32_t ivw[16];
 	size_t i;
 	uint32_t cc;
@@ -676,8 +747,13 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 }
 
 void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
+	if (key == NULL || _schedule == NULL) {
+		return;
+	}
 	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx));
-	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
+	if (*_schedule == NULL) {
+		return;
+	}
 	aes128ctx *ctx = (aes128ctx *) *_schedule;
 	uint64_t skey[22];
 	br_aes_ct64_keysched(skey, key, 16);
@@ -685,8 +761,13 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 }
 
 void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
+	if (key == NULL || _schedule == NULL) {
+		return;
+	}
 	*_schedule = OQS_MEM_malloc(sizeof(aes256ctx));
-	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
+	if (*_schedule == NULL) {
+		return;
+	}
 	aes256ctx *ctx = (aes256ctx *) *_schedule;
 	uint64_t skey[30];
 	br_aes_ct64_keysched(skey, key, 32);
@@ -694,6 +775,9 @@ void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 }
 
 static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, unsigned int key_len) {
+	if (skey == NULL || key == NULL) {
+		return;
+	}
 	unsigned int i, j, k, nk, nkf;
 	uint32_t tmp;
 	unsigned nrounds = 10 + ((key_len - 16) >> 2);
@@ -719,13 +803,21 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 }
 
 void oqs_aes256_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
+	if (key == NULL || _schedule == NULL) {
+		return;
+	}
 	*_schedule = OQS_MEM_malloc(sizeof(aes256ctx_nobitslice));
-	assert(*_schedule != NULL);
+	if (*_schedule == NULL) {
+		return;
+	}
 	uint32_t *schedule = ((aes256ctx_nobitslice *) *_schedule)->sk_exp;
 	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 32);
 }
 
 void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	if (iv == NULL || _schedule == NULL) {
+		return;
+	}
 	aes256ctx *ctx = _schedule;
 	if (iv_len == 12) {
 		memcpy(ctx->iv, iv, 12);
@@ -736,9 +828,10 @@ void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 		return; /* TODO: better error handling */
 	}
 }
-
 void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
-	OQS_EXIT_IF_NULLPTR(schedule, "AES");
+	if (schedule == NULL) {
+		return;
+	}
 	aes256ctx *ctx = (aes256ctx *) schedule;
 	ctx->iv[7] = (unsigned char)(iv >> 56);
 	ctx->iv[6] = (unsigned char)(iv >> 48);
@@ -752,13 +845,21 @@ void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
 }
 
 void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
+	if (key == NULL || _schedule == NULL) {
+		return;
+	}
 	*_schedule = OQS_MEM_malloc(44 * sizeof(int));
-	assert(*_schedule != NULL);
+	if (*_schedule == NULL) {
+		return;
+	}
 	uint32_t *schedule = (uint32_t *) *_schedule;
 	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 16);
 }
 
 void oqs_aes128_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	if (iv == NULL || _schedule == NULL) {
+		return;
+	}
 	aes128ctx *ctx = _schedule;
 	if (iv_len == 12) {
 		memcpy(ctx->iv, iv, 12);
@@ -771,7 +872,9 @@ void oqs_aes128_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 }
 
 void oqs_aes128_load_iv_u64_c(uint64_t iv, void *schedule) {
-	OQS_EXIT_IF_NULLPTR(schedule, "AES");
+	if (schedule == NULL) {
+		return;
+	}
 	aes128ctx *ctx = (aes128ctx *) schedule;
 	ctx->iv[7] = (unsigned char)(iv >> 56);
 	ctx->iv[6] = (unsigned char)(iv >> 48);
@@ -785,33 +888,49 @@ void oqs_aes128_load_iv_u64_c(uint64_t iv, void *schedule) {
 }
 
 void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
-	assert(plaintext_len % 16 == 0);
+	if (plaintext == NULL || schedule == NULL || ciphertext == NULL || plaintext_len % 16 != 0) {
+		return;
+	}
 	const aes128ctx *ctx = (const aes128ctx *) schedule;
 	aes_ecb(ciphertext, plaintext, plaintext_len / 16, ctx->sk_exp, 10);
 }
 
 void oqs_aes128_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	if (iv == NULL || schedule == NULL || out == NULL) {
+		return;
+	}
 	const aes128ctx *ctx = (const aes128ctx *) schedule;
 	aes_ctr(out, out_len, iv, iv_len, ctx->sk_exp, 10);
 }
 
 void oqs_aes128_ctr_enc_sch_upd_blks_c(void *schedule, uint8_t *out, size_t out_blks) {
+	if (schedule == NULL || out == NULL) {
+		return;
+	}
 	aes128ctx *ctx = (aes128ctx *) schedule;
 	aes128_ctr_upd_blks(out, out_blks, ctx);
 }
 
 void oqs_aes256_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
-	assert(plaintext_len % 16 == 0);
+	if (plaintext == NULL || schedule == NULL || ciphertext == NULL || plaintext_len % 16 != 0) {
+		return;
+	}
 	const aes256ctx *ctx = (const aes256ctx *) schedule;
 	aes_ecb(ciphertext, plaintext, plaintext_len / 16, ctx->sk_exp, 14);
 }
 
 void oqs_aes256_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	if (iv == NULL || schedule == NULL || out == NULL) {
+		return;
+	}
 	const aes256ctx *ctx = (const aes256ctx *) schedule;
 	aes_ctr(out, out_len, iv, iv_len, ctx->sk_exp, 14);
 }
 
 void oqs_aes256_ctr_enc_sch_upd_blks_c(void *schedule, uint8_t *out, size_t out_blks) {
+	if (schedule == NULL || out == NULL) {
+		return;
+	}
 	aes256ctx *ctx = (aes256ctx *) schedule;
 	aes256_ctr_upd_blks(out, out_blks, ctx);
 }

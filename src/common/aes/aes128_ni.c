@@ -49,14 +49,21 @@ static inline void aes128ni_setkey_encrypt(const unsigned char *key, __m128i rke
 }
 
 void oqs_aes128_load_schedule_ni(const uint8_t *key, void **_schedule) {
+	if (_schedule == NULL) {
+		return;
+	}
 	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx));
-	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	assert(*_schedule != NULL);
+	if (*_schedule == NULL) {
+		return;
+	}
 	__m128i *schedule = ((aes128ctx *) *_schedule)->sk_exp;
 	aes128ni_setkey_encrypt(key, schedule);
 }
 
 void oqs_aes128_load_iv_ni(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	if (_schedule == NULL) {
+		return;
+	}
 	aes128ctx *ctx = _schedule;
 	__m128i idx = _mm_set_epi8(8, 9, 10, 11, 12, 13, 14, 15, 7, 6, 5, 4, 3, 2, 1, 0);
 	if (iv_len == 12) {
@@ -70,6 +77,9 @@ void oqs_aes128_load_iv_ni(const uint8_t *iv, size_t iv_len, void *_schedule) {
 }
 
 void oqs_aes128_load_iv_u64_ni(uint64_t iv, void *_schedule) {
+	if (_schedule == NULL) {
+		return;
+	}
 	aes128ctx *ctx = _schedule;
 	ctx->iv = _mm_loadl_epi64((__m128i *)&iv);
 }
@@ -133,11 +143,17 @@ static inline void aes128ni_encrypt_x4(const __m128i rkeys[11], __m128i n0,
 }
 
 void oqs_aes128_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
+	if (_schedule == NULL) {
+		return;
+	}
 	const __m128i *schedule = ((const aes128ctx *) _schedule)->sk_exp;
 	aes128ni_encrypt(schedule, _mm_loadu_si128((const __m128i *)plaintext), ciphertext);
 }
 
 void oqs_aes128_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
+	if (schedule == NULL) {
+		return;
+	}
 	assert(plaintext_len % 16 == 0);
 	for (size_t block = 0; block < plaintext_len / 16; block++) {
 		oqs_aes128_enc_sch_block_ni(plaintext + (16 * block), schedule, ciphertext + (16 * block));
@@ -145,6 +161,9 @@ void oqs_aes128_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_
 }
 
 void oqs_aes128_ctr_enc_sch_upd_blks_ni(void *schedule, uint8_t *out, size_t out_blks) {
+	if (schedule == NULL) {
+		return;
+	}
 	aes128ctx *ctx = (aes128ctx *) schedule;
 	const __m128i mask = _mm_set_epi8(8, 9, 10, 11, 12, 13, 14, 15, 7, 6, 5, 4, 3, 2, 1, 0);
 
@@ -168,6 +187,9 @@ void oqs_aes128_ctr_enc_sch_upd_blks_ni(void *schedule, uint8_t *out, size_t out
 }
 
 void oqs_aes128_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	if (schedule == NULL) {
+		return;
+	}
 	__m128i block;
 	__m128i mask = _mm_set_epi8(8, 9, 10, 11, 12, 13, 14, 15, 7, 6, 5, 4, 3, 2, 1, 0);
 	if (iv_len == 12) {

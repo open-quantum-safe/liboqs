@@ -14,6 +14,9 @@ typedef struct {
 } aes128ctx;
 
 void oqs_aes128_load_iv_armv8(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	if (_schedule == NULL) {
+		return;
+	}
 	aes128ctx *ctx = _schedule;
 	if (iv_len == 12) {
 		memcpy(ctx->iv, iv, 12);
@@ -63,12 +66,18 @@ static inline void aes128_armv8_encrypt(const unsigned char *rkeys, const unsign
 }
 
 void oqs_aes128_enc_sch_block_armv8(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
+	if (_schedule == NULL || plaintext == NULL || ciphertext == NULL) {
+		return;
+	}
 	const unsigned char *schedule = (const unsigned char *) _schedule;
 	aes128_armv8_encrypt(schedule, plaintext, ciphertext);
 }
 
 void oqs_aes128_ecb_enc_sch_armv8(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
+	if (schedule == NULL || plaintext == NULL || ciphertext == NULL) {
+		return;
+	}
 	const aes128ctx *ctx = (const aes128ctx *) schedule;
 
 	for (size_t block = 0; block < plaintext_len / 16; block++) {
@@ -91,6 +100,9 @@ static uint32_t UINT32_TO_BE(const uint32_t x) {
 
 
 void oqs_aes128_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t out_blks) {
+	if (schedule == NULL || out == NULL) {
+		return;
+	}
 	aes128ctx *ctx = (aes128ctx *) schedule;
 	uint8_t *block = ctx->iv;
 	uint32_t ctr;
@@ -108,6 +120,9 @@ void oqs_aes128_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t 
 }
 
 void oqs_aes128_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	if (iv == NULL || schedule == NULL || out == NULL) {
+		return;
+	}
 	uint8_t block[16];
 	uint32_t ctr;
 	uint32_t ctr_be;

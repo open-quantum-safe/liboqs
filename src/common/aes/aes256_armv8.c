@@ -14,6 +14,9 @@ typedef struct {
 } aes256ctx_nobitslice;
 
 void oqs_aes256_load_iv_armv8(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	if (_schedule == NULL) {
+		return;
+	}
 	aes256ctx_nobitslice *ctx = _schedule;
 	if (iv_len == 12) {
 		memcpy(ctx->iv, iv, 12);
@@ -70,11 +73,17 @@ static inline void aes256_armv8_encrypt(const unsigned char *rkeys, const unsign
 }
 
 void oqs_aes256_enc_sch_block_armv8(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
+	if (_schedule == NULL) {
+		return;
+	}
 	const unsigned char *schedule = (const unsigned char *) ((const aes256ctx_nobitslice *) _schedule)->sk_exp;
 	aes256_armv8_encrypt(schedule, plaintext, ciphertext);
 }
 
 void oqs_aes256_ecb_enc_sch_armv8(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
+	if (schedule == NULL) {
+		return;
+	}
 	assert(plaintext_len % 16 == 0);
 	for (size_t block = 0; block < plaintext_len / 16; block++) {
 		oqs_aes256_enc_sch_block_armv8(plaintext + (16 * block), schedule, ciphertext + (16 * block));
@@ -95,6 +104,9 @@ static uint32_t UINT32_TO_BE(const uint32_t x) {
 #define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
 
 void oqs_aes256_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t out_blks) {
+	if (schedule == NULL) {
+		return;
+	}
 	aes256ctx_nobitslice *ctx = (aes256ctx_nobitslice *) schedule;
 	uint8_t *block = ctx->iv;
 	uint32_t ctr;
@@ -112,6 +124,9 @@ void oqs_aes256_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t 
 }
 
 void oqs_aes256_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	if (schedule == NULL || iv == NULL || out == NULL) {
+		return;
+	}
 	uint8_t block[16];
 	uint32_t ctr;
 	uint32_t ctr_be;

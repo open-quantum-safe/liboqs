@@ -81,6 +81,16 @@ extern "C" {
 #define OQS_MEM_strdup(str) strdup(str)
 #endif
 
+
+/**
+ * Prints an error message to stderr and return.
+ * @param msg The error message to be printed.
+ */
+#define OQS_EXIT(msg)                \
+    {                                \
+        fprintf(stderr, "%s", msg);  \
+        return;                      \
+    }
 /**
  * Macro for terminating the program if x is
  * a null pointer.
