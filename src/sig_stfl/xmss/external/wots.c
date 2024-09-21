@@ -187,7 +187,7 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *sig, const unsigned char *msg,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned int *lengths = OQS_MEM_malloc(params->wots_len, sizeof(unsigned int ));
+    unsigned int *lengths = OQS_MEM_calloc(params->wots_len, sizeof(unsigned int ));
     const size_t thash_buf_len = 2 * params->padding_len + 4 * params->n + 32;
     unsigned char *thash_buf = OQS_MEM_malloc(thash_buf_len);
     unsigned int i;
