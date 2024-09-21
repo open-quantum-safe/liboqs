@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 
 #if defined(OQS_DIST_BUILD) && defined(OQS_USE_PTHREADS)
 #include <pthread.h>
