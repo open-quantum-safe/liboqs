@@ -32,7 +32,7 @@
 #define ppad 769
 #define endingmask _mm256_set_epi8(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0)
 #define crypto_core_weight PQCLEAN_SNTRUP761_AVX2_crypto_core_weightsntrup761
-#define p 761
+#define p_param 761
 #define q 4591
 #define w 286
 
