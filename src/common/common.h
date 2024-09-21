@@ -28,7 +28,7 @@ extern "C" {
  * standard C library functions otherwise.
  */
 #if defined(OQS_USE_OPENSSL) && defined(OPENSSL_VERSION_NUMBER)
-#include <openssl/crypto.h>	
+#include <openssl/crypto.h>
 
 /**
 * Allocates memory of a given size.
