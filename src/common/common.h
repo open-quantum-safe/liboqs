@@ -28,30 +28,8 @@ extern "C" {
  * standard C library functions otherwise.
  */
 #if defined(OQS_USE_OPENSSL)
-#ifndef OPENSSL_malloc
-# define OPENSSL_malloc(num) \
-            CRYPTO_malloc(num, __FILE__, __LINE__)
-#endif
+#include <openssl/crypto.h>	
 
-#ifndef OPENSSL_zalloc
-# define OPENSSL_zalloc(num) \
-            CRYPTO_zalloc(num, __FILE__, __LINE__)
-#endif
-
-#ifndef OPENSSL_free
-# define OPENSSL_free(addr) \
-            CRYPTO_free(addr, __FILE__, __LINE__)
-#endif
-
-#ifndef OPENSSL_strdup
-# define OPENSSL_strdup(str) \
-            CRYPTO_strdup(str, __FILE__, __LINE__)
-#endif
-
-extern void *CRYPTO_malloc(size_t num, const char *file, int line);
-extern void *CRYPTO_zalloc(size_t num, const char *file, int line);
-extern void CRYPTO_free(void *str, const char *file, int line);
-extern char *CRYPTO_strdup(const char *str, const char *file, int line);
 /**
 * Allocates memory of a given size.
 * @param size The size of the memory to be allocated in bytes.
