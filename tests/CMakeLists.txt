@@ -30,12 +30,11 @@ if(NOT WIN32)
 endif()
 
 # List oqs-internal after oqs so that oqs has linking precedence.
-find_package(OpenSSL REQUIRED)
-
-if(NOT OpenSSL_FOUND)
-    set(TEST_DEPS oqs oqs-internal ${LIBM})
-else()
+if(${OQS_USE_OPENSSL})
+    find_package(OpenSSL 1.1.1 REQUIRED)
     set(TEST_DEPS oqs oqs-internal ${LIBM} OpenSSL::Crypto)
+else()
+    set(TEST_DEPS oqs oqs-internal ${LIBM})
 endif()
 
 if(OQS_USE_PTHREADS)
