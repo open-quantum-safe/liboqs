@@ -27,7 +27,7 @@ extern "C" {
  * using OpenSSL functions when OQS_USE_OPENSSL is defined, and
  * standard C library functions otherwise.
  */
-#if defined(OQS_USE_OPENSSL)
+#if defined(OQS_USE_OPENSSL) && defined(OPENSSL_VERSION_NUMBER)
 #include <openssl/crypto.h>	
 
 /**
