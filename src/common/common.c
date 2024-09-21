@@ -327,7 +327,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 		return NULL;
 	}
 	// Store the difference so that the free function can use it
-	ptr[-1] = diff;
+	ptr[-1] = (uint8_t)diff;
 	return ptr;
 #elif defined(OQS_HAVE_ALIGNED_ALLOC) // glibc and other implementations providing aligned_alloc
 	return aligned_alloc(alignment, size);
