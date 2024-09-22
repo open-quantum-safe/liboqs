@@ -37,21 +37,29 @@ static void do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const 
 static void SHA2_sha256(uint8_t *output, const uint8_t *input, size_t inplen) {
 	const EVP_MD *md;
 	md = oqs_sha256();
-	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+	if (md == NULL) {
+		OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+		return;
+	}
 	do_hash(output, input, inplen, md);
 }
 
 static void SHA2_sha384(uint8_t *output, const uint8_t *input, size_t inplen) {
 	const EVP_MD *md;
 	md = oqs_sha384();
-	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+	if (md == NULL) {
+		OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+		return;
+	}
 	do_hash(output, input, inplen, md);
 }
-
 static void SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen) {
 	const EVP_MD *md;
 	md = oqs_sha512();
-	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+	if (md == NULL) {
+		OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+		return;
+	}
 	do_hash(output, input, inplen, md);
 }
 
@@ -61,13 +69,22 @@ static void SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
 	md = oqs_sha256();
-	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+	if (md == NULL) {
+		OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+		return;
+	}
 	mdctx = OSSL_FUNC(EVP_MD_CTX_new)();
-	OQS_EXIT_IF_NULLPTR(mdctx, "OpenSSL");
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL));
+	if (mdctx == NULL) {
+		OQS_EXIT_IF_NULLPTR(mdctx, "OpenSSL");
+		return;
+	}
+	if (OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL) != 1) {
+		OSSL_FUNC(EVP_MD_CTX_free)(mdctx);
+		OQS_EXIT_IF_NULLPTR(NULL, "OpenSSL digest initialization failed");
+		return;
+	}
 	state->ctx = mdctx;
 }
-
 static void SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *) state->ctx, in, len));
 }
