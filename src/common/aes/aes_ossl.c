@@ -305,7 +305,7 @@ static void AES256_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 		return; /* TODO: better error handling */
 	}
 	const struct key_schedule *ks = (const struct key_schedule *) schedule;
-	if (OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctr_ctx, oqs_aes_256_ctr(), NULL, ks->key, iv_ctr)) != 1) {
+	if (OSSL_FUNC(EVP_EncryptInit_ex)(ctr_ctx, oqs_aes_256_ctr(), NULL, ks->key, iv_ctr) != 1) {
 		OSSL_FUNC(EVP_CIPHER_CTX_free)(ctr_ctx);
 		return;
 	}
@@ -313,11 +313,11 @@ static void AES256_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int)
 	memset(out, 0, (size_t)out_len_input_int);
 	int out_len_output;
-	if (OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctr_ctx, out, &out_len_output, out, out_len_input_int)) != 1) {
+	if (OSSL_FUNC(EVP_EncryptUpdate)(ctr_ctx, out, &out_len_output, out, out_len_input_int) != 1) {
 		OSSL_FUNC(EVP_CIPHER_CTX_free)(ctr_ctx);
 		return;
 	}
-	if (OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptFinal_ex)(ctr_ctx, out + out_len_output, &out_len_output)) != 1) {
+	if (OSSL_FUNC(EVP_EncryptFinal_ex)(ctr_ctx, out + out_len_output, &out_len_output) != 1) {
 		OSSL_FUNC(EVP_CIPHER_CTX_free)(ctr_ctx);
 		return;
 	}
