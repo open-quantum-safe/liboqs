@@ -14,13 +14,23 @@
 #include "../ossl_helpers.h"
 
 static void do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const EVP_MD *md) {
-	EVP_MD_CTX *mdctx;
+	EVP_MD_CTX *mdctx = NULL;
 	unsigned int outlen;
+
 	mdctx = OSSL_FUNC(EVP_MD_CTX_new)();
-	OQS_EXIT_IF_NULLPTR(mdctx, "OpenSSL");
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)(mdctx, input, inplen));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestFinal_ex)(mdctx, output, &outlen));
+	if (mdctx == NULL) {
+		OQS_EXIT_IF_NULLPTR(mdctx, "OpenSSL");
+		return;
+	}
+
+	if (OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL) != 1 ||
+		OSSL_FUNC(EVP_DigestUpdate)(mdctx, input, inplen) != 1 ||
+		OSSL_FUNC(EVP_DigestFinal_ex)(mdctx, output, &outlen) != 1) {
+		OSSL_FUNC(EVP_MD_CTX_free)(mdctx);
+		OQS_EXIT_IF_NULLPTR(NULL, "OpenSSL digest operation failed");
+		return;
+	}
+
 	OSSL_FUNC(EVP_MD_CTX_free)(mdctx);
 }
 
