@@ -270,7 +270,7 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 	explicit_memset(ptr, 0, len);
 #elif defined(__STDC_LIB_EXT1__) || defined(OQS_HAVE_MEMSET_S)
 	if (0U < len && memset_s(ptr, (rsize_t)len, 0, (rsize_t)len) != 0) {
-		return NULL; //abort();
+		return; //abort();
 	}
 #else
 	typedef void *(*memset_t)(void *, int, size_t);
