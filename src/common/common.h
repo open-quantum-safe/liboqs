@@ -86,10 +86,9 @@ extern "C" {
  * Prints an error message to stderr and return.
  * @param msg The error message to be printed.
  */
-#define OQS_EXIT(msg)                \
-    {                                \
-        fprintf(stderr, "%s", msg);  \
-        return;                      \
+#define OQS_EXIT(msg)                                       \
+    {                                                       \
+        return; /* TODO: better error handling */           \
     }
 /**
  * Macro for terminating the program if x is
@@ -98,7 +97,6 @@ extern "C" {
 #define OQS_EXIT_IF_NULLPTR(x, loc)                                                   \
     do {                                                                              \
         if ( (x) == (void*)0 ) {                                                      \
-            fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n", loc); \
             return; /* TODO: better error handling */                                 \
         }                                                                             \
     } while (0)
