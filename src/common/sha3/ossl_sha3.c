@@ -42,181 +42,181 @@ cleanup:
 }
 
 static void do_xof(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen, const EVP_MD *md) {
-    EVP_MD_CTX *mdctx = NULL;
-    mdctx = OSSL_FUNC(EVP_MD_CTX_new)();
-    if (mdctx == NULL) {
-        return;
-    }
-    if (OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL) != 1) {
-        goto cleanup;
-    }
-    if (OSSL_FUNC(EVP_DigestUpdate)(mdctx, input, inplen) != 1) {
-        goto cleanup;
-    }
-    if (OSSL_FUNC(EVP_DigestFinalXOF)(mdctx, output, outlen) != 1) {
-        goto cleanup;
-    }
+	EVP_MD_CTX *mdctx = NULL;
+	mdctx = OSSL_FUNC(EVP_MD_CTX_new)();
+	if (mdctx == NULL) {
+		return;
+	}
+	if (OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL) != 1) {
+		goto cleanup;
+	}
+	if (OSSL_FUNC(EVP_DigestUpdate)(mdctx, input, inplen) != 1) {
+		goto cleanup;
+	}
+	if (OSSL_FUNC(EVP_DigestFinalXOF)(mdctx, output, outlen) != 1) {
+		goto cleanup;
+	}
 cleanup:
-    if (mdctx != NULL) {
-        OSSL_FUNC(EVP_MD_CTX_free)(mdctx);
-    }
+	if (mdctx != NULL) {
+		OSSL_FUNC(EVP_MD_CTX_free)(mdctx);
+	}
 }
 
 /* SHA3-256 */
 
 static void SHA3_sha3_256(uint8_t *output, const uint8_t *input, size_t inplen) {
-    do_hash(output, input, inplen, oqs_sha3_256());
+	do_hash(output, input, inplen, oqs_sha3_256());
 }
 
 /* SHA3-256 incremental */
 
 static void SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
-    if (state == NULL) {
-        return;
-    }
-    state->ctx = OSSL_FUNC(EVP_MD_CTX_new)();
-    if (state->ctx == NULL) {
-        return;
-    }
-    EVP_MD_CTX *s = (EVP_MD_CTX *)state->ctx;
-    if (OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_256(), NULL) != 1) {
-        OSSL_FUNC(EVP_MD_CTX_free)(state->ctx);
-        state->ctx = NULL;
-    }
+	if (state == NULL) {
+		return;
+	}
+	state->ctx = OSSL_FUNC(EVP_MD_CTX_new)();
+	if (state->ctx == NULL) {
+		return;
+	}
+	EVP_MD_CTX *s = (EVP_MD_CTX *)state->ctx;
+	if (OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_256(), NULL) != 1) {
+		OSSL_FUNC(EVP_MD_CTX_free)(state->ctx);
+		state->ctx = NULL;
+	}
 }
 static void SHA3_sha3_256_inc_absorb(OQS_SHA3_sha3_256_inc_ctx *state, const uint8_t *input, size_t inplen) {
-    if (state && state->ctx && input) {
-        OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *)state->ctx, input, inplen);
-    }
+	if (state && state->ctx && input) {
+		OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *)state->ctx, input, inplen);
+	}
 }
 
 static void SHA3_sha3_256_inc_finalize(uint8_t *output, OQS_SHA3_sha3_256_inc_ctx *state) {
-    if (output && state && state->ctx) {
-        OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *)state->ctx, output, NULL);
-    }
+	if (output && state && state->ctx) {
+		OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *)state->ctx, output, NULL);
+	}
 }
 
 static void SHA3_sha3_256_inc_ctx_release(OQS_SHA3_sha3_256_inc_ctx *state) {
-    if (state && state->ctx) {
-        OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *)state->ctx);
-        state->ctx = NULL;
-    }
+	if (state && state->ctx) {
+		OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *)state->ctx);
+		state->ctx = NULL;
+	}
 }
 
 static void SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_SHA3_sha3_256_inc_ctx *src) {
-    if (dest && src && dest->ctx && src->ctx) {
-        OSSL_FUNC(EVP_MD_CTX_copy_ex)((EVP_MD_CTX *)dest->ctx, (EVP_MD_CTX *)src->ctx);
-    }
+	if (dest && src && dest->ctx && src->ctx) {
+		OSSL_FUNC(EVP_MD_CTX_copy_ex)((EVP_MD_CTX *)dest->ctx, (EVP_MD_CTX *)src->ctx);
+	}
 }
 
 static void SHA3_sha3_256_inc_ctx_reset(OQS_SHA3_sha3_256_inc_ctx *state) {
-    if (state && state->ctx) {
-        EVP_MD_CTX *s = state->ctx;
-        OSSL_FUNC(EVP_MD_CTX_reset)(s);
-        OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_256(), NULL);
-    }
+	if (state && state->ctx) {
+		EVP_MD_CTX *s = state->ctx;
+		OSSL_FUNC(EVP_MD_CTX_reset)(s);
+		OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_256(), NULL);
+	}
 }
 
 /* SHA3-384 */
 
 static void SHA3_sha3_384(uint8_t *output, const uint8_t *input, size_t inplen) {
-    if (output && input) {
-        do_hash(output, input, inplen, oqs_sha3_384());
-    }
+	if (output && input) {
+		do_hash(output, input, inplen, oqs_sha3_384());
+	}
 }
 
 /* SHA3-384 incremental */
 static void SHA3_sha3_384_inc_init(OQS_SHA3_sha3_384_inc_ctx *state) {
-    if (state) {
-        state->ctx = OSSL_FUNC(EVP_MD_CTX_new)();
-        if (state->ctx) {
-            OSSL_FUNC(EVP_DigestInit_ex)((EVP_MD_CTX *)state->ctx, oqs_sha3_384(), NULL);
-        }
-    }
+	if (state) {
+		state->ctx = OSSL_FUNC(EVP_MD_CTX_new)();
+		if (state->ctx) {
+			OSSL_FUNC(EVP_DigestInit_ex)((EVP_MD_CTX *)state->ctx, oqs_sha3_384(), NULL);
+		}
+	}
 }
 
 static void SHA3_sha3_384_inc_absorb(OQS_SHA3_sha3_384_inc_ctx *state, const uint8_t *input, size_t inplen) {
-    if (state && state->ctx && input) {
-        OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *)state->ctx, input, inplen);
-    }
+	if (state && state->ctx && input) {
+		OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *)state->ctx, input, inplen);
+	}
 }
 
 static void SHA3_sha3_384_inc_finalize(uint8_t *output, OQS_SHA3_sha3_384_inc_ctx *state) {
-    if (output && state && state->ctx) {
-        OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *)state->ctx, output, NULL);
-    }
+	if (output && state && state->ctx) {
+		OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *)state->ctx, output, NULL);
+	}
 }
 
 static void SHA3_sha3_384_inc_ctx_release(OQS_SHA3_sha3_384_inc_ctx *state) {
-    if (state && state->ctx) {
-        OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *)state->ctx);
-        state->ctx = NULL;
-    }
+	if (state && state->ctx) {
+		OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *)state->ctx);
+		state->ctx = NULL;
+	}
 }
 
 static void SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_SHA3_sha3_384_inc_ctx *src) {
-    if (dest && src && dest->ctx && src->ctx) {
-        OSSL_FUNC(EVP_MD_CTX_copy_ex)((EVP_MD_CTX *)dest->ctx, (EVP_MD_CTX *)src->ctx);
-    }
+	if (dest && src && dest->ctx && src->ctx) {
+		OSSL_FUNC(EVP_MD_CTX_copy_ex)((EVP_MD_CTX *)dest->ctx, (EVP_MD_CTX *)src->ctx);
+	}
 }
 
 static void SHA3_sha3_384_inc_ctx_reset(OQS_SHA3_sha3_384_inc_ctx *state) {
-    if (state && state->ctx) {
-        EVP_MD_CTX *s = state->ctx;
-        OSSL_FUNC(EVP_MD_CTX_reset)(s);
-        OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_384(), NULL);
-    }
+	if (state && state->ctx) {
+		EVP_MD_CTX *s = state->ctx;
+		OSSL_FUNC(EVP_MD_CTX_reset)(s);
+		OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_384(), NULL);
+	}
 }
 
 /* SHA3-512 */
 
 static void SHA3_sha3_512(uint8_t *output, const uint8_t *input, size_t inplen) {
-    if (output && input) {
-        do_hash(output, input, inplen, oqs_sha3_512());
-    }
+	if (output && input) {
+		do_hash(output, input, inplen, oqs_sha3_512());
+	}
 }
 /* SHA3-512 incremental */
 
 static void SHA3_sha3_512_inc_init(OQS_SHA3_sha3_512_inc_ctx *state) {
-    if (state) {
-        state->ctx = OSSL_FUNC(EVP_MD_CTX_new)();
-        if (state->ctx) {
-            OSSL_FUNC(EVP_DigestInit_ex)((EVP_MD_CTX *)state->ctx, oqs_sha3_512(), NULL);
-        }
-    }
+	if (state) {
+		state->ctx = OSSL_FUNC(EVP_MD_CTX_new)();
+		if (state->ctx) {
+			OSSL_FUNC(EVP_DigestInit_ex)((EVP_MD_CTX *)state->ctx, oqs_sha3_512(), NULL);
+		}
+	}
 }
 
 static void SHA3_sha3_512_inc_absorb(OQS_SHA3_sha3_512_inc_ctx *state, const uint8_t *input, size_t inplen) {
-    if (state && state->ctx && input) {
-        OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *)state->ctx, input, inplen);
-    }
+	if (state && state->ctx && input) {
+		OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *)state->ctx, input, inplen);
+	}
 }
 
 static void SHA3_sha3_512_inc_finalize(uint8_t *output, OQS_SHA3_sha3_512_inc_ctx *state) {
-    if (output && state && state->ctx) {
-        OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *)state->ctx, output, NULL);
-    }
+	if (output && state && state->ctx) {
+		OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *)state->ctx, output, NULL);
+	}
 }
 
 static void SHA3_sha3_512_inc_ctx_release(OQS_SHA3_sha3_512_inc_ctx *state) {
-    if (state && state->ctx) {
-        OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *)state->ctx);
-        state->ctx = NULL;
-    }
+	if (state && state->ctx) {
+		OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *)state->ctx);
+		state->ctx = NULL;
+	}
 }
 
 static void SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_SHA3_sha3_512_inc_ctx *src) {
-    if (dest && src && dest->ctx && src->ctx) {
-        OSSL_FUNC(EVP_MD_CTX_copy_ex)((EVP_MD_CTX *)dest->ctx, (EVP_MD_CTX *)src->ctx);
-    }
+	if (dest && src && dest->ctx && src->ctx) {
+		OSSL_FUNC(EVP_MD_CTX_copy_ex)((EVP_MD_CTX *)dest->ctx, (EVP_MD_CTX *)src->ctx);
+	}
 }
 
 static void SHA3_sha3_512_inc_ctx_reset(OQS_SHA3_sha3_512_inc_ctx *state) {
-    if (state && state->ctx) {
-        EVP_MD_CTX *s = state->ctx;
-        OSSL_FUNC(EVP_MD_CTX_reset)(s);
-        OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_512(), NULL);
-    }
+	if (state && state->ctx) {
+		EVP_MD_CTX *s = state->ctx;
+		OSSL_FUNC(EVP_MD_CTX_reset)(s);
+		OSSL_FUNC(EVP_DigestInit_ex)(s, oqs_sha3_512(), NULL);
+	}
 }
 
 /* SHAKE-128 */
@@ -326,38 +326,38 @@ static void SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
 }
 
 static void SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const OQS_SHA3_shake128_inc_ctx *src) {
-    if (dest == NULL || src == NULL || dest->ctx == NULL || src->ctx == NULL) {
-        return;
-    }
-    intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)src->ctx;
-    intrn_shake128_inc_ctx *d = (intrn_shake128_inc_ctx *)dest->ctx;
-    if (OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx, s->mdctx) != 1) {
-        // Handle error, possibly by logging or setting an error flag
-        return;
-    }
-    d->n_out = s->n_out;
+	if (dest == NULL || src == NULL || dest->ctx == NULL || src->ctx == NULL) {
+		return;
+	}
+	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)src->ctx;
+	intrn_shake128_inc_ctx *d = (intrn_shake128_inc_ctx *)dest->ctx;
+	if (OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx, s->mdctx) != 1) {
+		// Handle error, possibly by logging or setting an error flag
+		return;
+	}
+	d->n_out = s->n_out;
 }
 
 static void SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state) {
-    if (state == NULL || state->ctx == NULL) {
-        return;
-    }
-    intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
-    OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx);
-    if (OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx, oqs_shake128(), NULL) != 1) {
-        // Handle error, possibly by logging or setting an error flag
-        return;
-    }
-    s->n_out = 0;
+	if (state == NULL || state->ctx == NULL) {
+		return;
+	}
+	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
+	OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx);
+	if (OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx, oqs_shake128(), NULL) != 1) {
+		// Handle error, possibly by logging or setting an error flag
+		return;
+	}
+	s->n_out = 0;
 }
 
 /* SHAKE-256 */
 
 static void SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen) {
-    if (output == NULL || (input == NULL && inplen > 0)) {
-        return;
-    }
-    do_xof(output, outlen, input, inplen, oqs_shake256());
+	if (output == NULL || (input == NULL && inplen > 0)) {
+		return;
+	}
+	do_xof(output, outlen, input, inplen, oqs_shake256());
 }
 /* SHAKE-256 incremental */
 
