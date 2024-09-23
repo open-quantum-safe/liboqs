@@ -36,11 +36,7 @@ extern "C" {
 * @return A pointer to the allocated memory.
 */
 #define OQS_MEM_malloc(size) OPENSSL_malloc(size)
-/**
- * Frees the allocated memory.
- * @param ptr The pointer to the memory to be freed.
- */
-#define OQS_MEM_free(ptr) OPENSSL_free(ptr)
+
 /**
  * Allocates memory for an array of elements of a given size.
  * @param num_elements The number of elements to allocate.
@@ -61,11 +57,7 @@ extern "C" {
 * @return A pointer to the allocated memory.
 */
 #define OQS_MEM_malloc(size) malloc(size)
-/**
- * Frees the allocated memory.
- * @param ptr The pointer to the memory to be freed.
- */
-#define OQS_MEM_free(ptr) free(ptr)
+
 /**
  * Allocates memory for an array of elements of a given size.
  * @param num_elements The number of elements to allocate.
