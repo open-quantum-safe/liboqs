@@ -56,8 +56,8 @@ void neon_kyber_shake128_absorb(keccakx2_state *state,
                                 uint8_t y1, uint8_t y2)
 {
   unsigned int i;
-  uint8_t extseed1[KYBER_SYMBYTES+2];
-  uint8_t extseed2[KYBER_SYMBYTES+2];
+  uint8_t extseed1[KYBER_SYMBYTES+2+6];
+  uint8_t extseed2[KYBER_SYMBYTES+2+6];
 
   for(i=0;i<KYBER_SYMBYTES;i++){
     extseed1[i] = seed[i];
@@ -69,7 +69,7 @@ void neon_kyber_shake128_absorb(keccakx2_state *state,
   extseed2[KYBER_SYMBYTES  ] = x2;
   extseed2[KYBER_SYMBYTES+1] = y2;
 
-  shake128x2_absorb(state, extseed1, extseed2, sizeof(extseed1));
+  shake128x2_absorb(state, extseed1, extseed2, KYBER_SYMBYTES+2);
 }
 
 /*************************************************
