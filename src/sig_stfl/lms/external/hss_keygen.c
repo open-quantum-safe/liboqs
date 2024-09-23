@@ -278,7 +278,7 @@ bool hss_generate_private_key(
         } else {
             hss_zeroize( context, PRIVATE_KEY_LEN );
         }
-        OQS_MEM_free(temp_buffer); // IGNORE free-check
+        OQS_MEM_insecure_free(temp_buffer); // IGNORE free-check
         return false;
     }
 
@@ -355,7 +355,7 @@ bool hss_generate_private_key(
     /* Hey, what do you know -- it all worked! */
     hss_zeroize( private_key, sizeof private_key ); /* Zeroize local copy of */
                                                    /* the private key */
-    OQS_MEM_free(temp_buffer); // IGNORE free-check
+    OQS_MEM_insecure_free(temp_buffer); // IGNORE free-check
     return true;
 }
 #endif

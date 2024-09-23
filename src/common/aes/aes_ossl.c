@@ -197,12 +197,12 @@ static void AES256_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	ks->for_ECB = 1;
 	ks->ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	if (ks->ctx == NULL) {
-		OQS_MEM_free(*schedule);
+		OQS_MEM_insecure_free(*schedule);
 		OQS_EXIT("OpenSSL: EVP_CIPHER_CTX_new failed");
 	}
 	if (OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_256_ecb(), NULL, key, NULL) != 1) {
 		OSSL_FUNC(EVP_CIPHER_CTX_free)(ks->ctx);
-		OQS_MEM_free(*schedule);
+		OQS_MEM_insecure_free(*schedule);
 		OQS_EXIT("OpenSSL: EVP_EncryptInit_ex failed");
 	}
 	OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0);
@@ -220,7 +220,7 @@ static void AES256_CTR_inc_init(const uint8_t *key, void **schedule) {
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	EVP_CIPHER_CTX *ctr_ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	if (ctr_ctx == NULL) {
-		OQS_MEM_free(*schedule);
+		OQS_MEM_insecure_free(*schedule);
 		OQS_EXIT("OpenSSL: EVP_CIPHER_CTX_new failed");
 	}
 
