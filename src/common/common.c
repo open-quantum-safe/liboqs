@@ -301,15 +301,15 @@ void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
 OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 	if (ptr != NULL) {
 		OQS_MEM_cleanse(ptr, len);
-        OQS_MEM_insecure_free(ptr);
+		OQS_MEM_insecure_free(ptr);
 	}
 }
 
 OQS_API void OQS_MEM_insecure_free(void *ptr) {
 #if (defined(OQS_USE_OPENSSL) || defined(OQS_DLOPEN_OPENSSL)) && defined(OPENSSL_VERSION_NUMBER)
-    OPENSSL_free(ptr);
+	OPENSSL_free(ptr);
 #else
-    free(ptr);
+	free(ptr);
 #endif
 }
 
