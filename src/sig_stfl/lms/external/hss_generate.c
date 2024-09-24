@@ -796,7 +796,7 @@ bool hss_generate_working_key(
 #if DO_FLOATING_POINT
             /* Don't leak suborders on an intermediate error */
         for (i=0; i<(sequence_t)count_order; i++) {
-            OQS_MEM_insecure_free( order[i].sub ); // IGNORE free-check
+            OQS_MEM_insecure_free( order[i].sub );
         }
 #endif
         info->error_code = got_error;
@@ -831,7 +831,7 @@ bool hss_generate_working_key(
                           hash_size, tree->h, I);
         }
 
-        OQS_MEM_insecure_free( sub ); // IGNORE free-check
+        OQS_MEM_insecure_free( sub );
         p_order->sub = 0;
     }
 #endif

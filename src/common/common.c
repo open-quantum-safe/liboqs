@@ -301,7 +301,7 @@ void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
 OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 	if (ptr != NULL) {
 		OQS_MEM_cleanse(ptr, len);
-        OQS_MEM_insecure_free(ptr); // IGNORE free-check
+        OQS_MEM_insecure_free(ptr);
 	}
 }
 
@@ -309,7 +309,7 @@ OQS_API void OQS_MEM_insecure_free(void *ptr) {
 #if (defined(OQS_USE_OPENSSL) || defined(OQS_DLOPEN_OPENSSL)) && defined(OPENSSL_VERSION_NUMBER)
     OPENSSL_free(ptr);
 #else
-    free(ptr);
+    free(ptr); // IGNORE memory-check
 #endif
 }
 
@@ -374,7 +374,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	//            |
 	//       diff = ptr - buffer
 	const size_t offset = alignment - 1 + sizeof(uint8_t);
-	uint8_t *buffer = malloc(size + offset);
+	uint8_t *buffer = malloc(size + offset);// IGNORE memory-check
 	if (!buffer) {
 		return NULL;
 	}
@@ -384,7 +384,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	ptrdiff_t diff = ptr - buffer;
 	if (diff > UINT8_MAX) {
 		// This should never happen in our code, but just to be safe
-		free(buffer); // IGNORE free-check
+		free(buffer); // IGNORE memory-check
 		errno = EINVAL;
 		return NULL;
 	}
@@ -405,7 +405,7 @@ void OQS_MEM_aligned_free(void *ptr) {
 	uint8_t *u8ptr = ptr;
 	OPENSSL_free(u8ptr - u8ptr[-1]);
 #elif defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
-	free(ptr); // IGNORE free-check
+	free(ptr); // IGNORE memory-check
 #elif defined(__MINGW32__) || defined(__MINGW64__)
 	__mingw_aligned_free(ptr);
 #elif defined(_MSC_VER)
@@ -414,6 +414,6 @@ void OQS_MEM_aligned_free(void *ptr) {
 	// Reconstruct the pointer returned from malloc using the difference
 	// stored one byte ahead of ptr.
 	uint8_t *u8ptr = ptr;
-	free(u8ptr - u8ptr[-1]); // IGNORE free-check
+	free(u8ptr - u8ptr[-1]); // IGNORE memory-check
 #endif
 }
