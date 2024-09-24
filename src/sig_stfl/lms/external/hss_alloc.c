@@ -542,15 +542,15 @@ void hss_free_working_key(struct hss_working_key *w) {
             unsigned j, k;
             for (j=0; j<MAX_SUBLEVELS; j++)
                 for (k=0; k<3; k++)
-                    OQS_MEM_insecure_free(tree->subtree[j][k]); // IGNORE free-check
+                    OQS_MEM_insecure_free(tree->subtree[j][k]);
             hss_zeroize( tree, sizeof *tree ); /* We have seeds here */
         }
-        OQS_MEM_insecure_free(tree); // IGNORE free-check
+        OQS_MEM_insecure_free(tree);
     }
     for (i=0; i<MAX_HSS_LEVELS-1; i++) {
-        OQS_MEM_insecure_free(w->signed_pk[i]); // IGNORE free-check
+        OQS_MEM_insecure_free(w->signed_pk[i]);
     }
-    OQS_MEM_insecure_free(w->stack); // IGNORE free-check
+    OQS_MEM_insecure_free(w->stack);
     hss_zeroize( w, sizeof *w ); /* We have secret information here */
-    OQS_MEM_insecure_free(w); // IGNORE free-check
+    OQS_MEM_insecure_free(w);
 }
