@@ -36,9 +36,10 @@ def test_acvp_vec_kem_keygen(kem_name):
                     z = testCase["z"]
                     pk = testCase["ek"]
                     sk = testCase["dk"]
-                    
+
+                    build_dir = helpers.get_current_build_dir_name()
                     helpers.run_subprocess(
-                        ['build/tests/vectors_kem', kem_name, "keyGen", d+z, pk, sk]
+                        [f'{build_dir}/tests/vectors_kem', kem_name, "keyGen", d+z, pk, sk]
                     )
 
         assert(variantFound == True)
@@ -66,9 +67,10 @@ def test_acvp_vec_kem_encdec_aft(kem_name):
                     #expected results
                     k = testCase["k"]
                     c = testCase["c"]
-                                        
+
+                    build_dir = helpers.get_current_build_dir_name()
                     helpers.run_subprocess(
-                        ['build/tests/vectors_kem', kem_name, "encDecAFT", m, pk, k, c]
+                        [f'{build_dir}/tests/vectors_kem', kem_name, "encDecAFT", m, pk, k, c]
                     )
 
         assert(variantFound == True)
@@ -94,9 +96,10 @@ def test_acvp_vec_kem_encdec_val(kem_name):
                     c = testCase["c"]
                     #expected results
                     k = testCase["k"]
-                                        
+
+                    build_dir = helpers.get_current_build_dir_name()
                     helpers.run_subprocess(
-                        ['build/tests/vectors_kem', kem_name, "encDecVAL", sk, k, c]
+                        [f'{build_dir}/tests/vectors_kem', kem_name, "encDecVAL", sk, k, c]
                     )
 
         assert(variantFound == True)
