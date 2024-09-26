@@ -1,4 +1,4 @@
-liboqs version 0.11.0-rc1
+liboqs version 0.11.0
 =====================
 
 About
@@ -26,11 +26,11 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 of version 0.11.0 of liboqs. It was released on September 13, 2024.
+This is version 0.11.0 of liboqs. It was released on September 26, 2024.
 
 This release updates ML-KEM implementations to their [final FIPS 203](https://csrc.nist.gov/pubs/fips/203/final) versions (OQS continues to support NIST Round 3 version of Kyber for interoperability purposes). Additionally, this release adds support for MAYO and CROSS digital signature schemes from [NIST Additional Signatures Round 1](https://csrc.nist.gov/Projects/pqc-dig-sig/round-1-additional-signatures) along with stateful hash-based signature schemes [XMSS](https://datatracker.ietf.org/doc/html/rfc8391) and [LMS](https://datatracker.ietf.org/doc/html/rfc8554). Finally, this release provides formally verified implementations of Kyber-512 and Kyber-768 from [libjade](https://github.com/formosa-crypto/libjade/releases/tag/release%2F2023.05-2).
 
-LMS and XMSS are disabled by default due to the security risks associated with their use in software. See the note on stateful hash-based signatures in [CONFIGURE.md](https://github.com/open-quantum-safe/liboqs/blob/0.11.0-rc1/CONFIGURE.md#stateful-hash-based-signatures).
+LMS and XMSS are disabled by default due to the security risks associated with their use in software. See the note on stateful hash-based signatures in [CONFIGURE.md](https://github.com/open-quantum-safe/liboqs/blob/0.11.0/CONFIGURE.md#stateful-hash-based-signatures).
 
 What's New
 ----------
