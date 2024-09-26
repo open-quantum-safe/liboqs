@@ -73,7 +73,7 @@ Detailed changelog
 * Bump jinja2 from 3.1.3 to 3.1.4 in /scripts/copy_from_upstream by @dependabot in https://github.com/open-quantum-safe/liboqs/pull/1782
 * Algorithm selection clarification by @beldmit in https://github.com/open-quantum-safe/liboqs/pull/1784
 * Use OPENSSL_cleanse if OpenSSL is used by @bencemali in https://github.com/open-quantum-safe/liboqs/pull/1773
-* Errors not printed out when OPENSSL_NO_STDIO is set by @bencemali in https://github.com/open-quantum-safe/liboqs/pull/1774f
+* Errors not printed out when OPENSSL_NO_STDIO is set by @bencemali in https://github.com/open-quantum-safe/liboqs/pull/1774
 * Add Stateful Signature (XMSS and LMS) by @ashman-p in https://github.com/open-quantum-safe/liboqs/pull/1650
 * Forward-declare OQS_SIG in sig_stfl.h by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1820
 * Move Linux ARM64 "build" test from CircleCI to GitHub Actions by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1814
@@ -110,6 +110,7 @@ Detailed changelog
 * Refactor liboqs CI and update Ubuntu images by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1909
 * Check workflows for issues during CI by @jplomas in https://github.com/open-quantum-safe/liboqs/pull/1916
 * Patch Kyber to fix ASAN error on ARM64 by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/1922
+* Change README links to be doxygen-friendly by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1927
 
 ## New Contributors
 * @aaupov made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1739
@@ -129,4 +130,4 @@ Detailed changelog
 * @rtjk made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1881
 * @jplomas made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1916
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.10.1...0.11.0-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.10.1...0.11.0
