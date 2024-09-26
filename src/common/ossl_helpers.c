@@ -4,7 +4,9 @@
 #define OQS_OSSL_NO_EXTERN 1
 #include "ossl_helpers.h"
 #include <assert.h>
+#if !defined(_WIN32)
 #include <dlfcn.h>
+#endif
 
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
 #if defined(OQS_USE_PTHREADS)
