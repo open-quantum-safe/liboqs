@@ -27,7 +27,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.11.0 of liboqs. It was released on September 26, 2024.
+This is version 0.11.0 of liboqs. It was released on September 27, 2024.
 
 This release updates ML-KEM implementations to their [final FIPS 203](https://csrc.nist.gov/pubs/fips/203/final) versions. This release still includes the NIST Round 3 version of Kyber for interoperability purposes, but we plan to remove Kyber Round 3 in a future release. Additionally, this release adds support for MAYO and CROSS digital signature schemes from [NIST Additional Signatures Round 1](https://csrc.nist.gov/Projects/pqc-dig-sig/round-1-additional-signatures) along with stateful hash-based signature schemes [XMSS](https://datatracker.ietf.org/doc/html/rfc8391) and [LMS](https://datatracker.ietf.org/doc/html/rfc8554). Finally, this release provides formally verified implementations of Kyber-512 and Kyber-768 from [libjade](https://github.com/formosa-crypto/libjade/releases/tag/release%2F2023.05-2).
 
