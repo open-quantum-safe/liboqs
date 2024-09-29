@@ -228,6 +228,10 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext) {
 }
 
 OQS_API void OQS_init(void) {
+#if defined(OQS_USE_OPENSSL)
+	OPENSSL_init_crypto(OPENSSL_INIT_ENGINE_ALL_BUILTIN | OPENSSL_INIT_ADD_ALL_CIPHERS,
+	                    NULL);
+#endif
 #if defined(OQS_DIST_BUILD)
 	OQS_CPU_has_extension(OQS_CPU_EXT_INIT);
 #endif
