@@ -38,17 +38,11 @@ extern "C" {
 #define OQS_SIG_alg_dilithium_3 "Dilithium3"
 /** Algorithm identifier for Dilithium5 */
 #define OQS_SIG_alg_dilithium_5 "Dilithium5"
-/** Algorithm identifier for ML-DSA-44-ipd */
-#define OQS_SIG_alg_ml_dsa_44_ipd "ML-DSA-44-ipd"
-/** Algorithm identifier for ML-DSA-44 SIG. */
+/** Algorithm identifier for ML-DSA-44 */
 #define OQS_SIG_alg_ml_dsa_44 "ML-DSA-44"
-/** Algorithm identifier for ML-DSA-65-ipd */
-#define OQS_SIG_alg_ml_dsa_65_ipd "ML-DSA-65-ipd"
-/** Algorithm identifier for ML-DSA-65 SIG. */
+/** Algorithm identifier for ML-DSA-65 */
 #define OQS_SIG_alg_ml_dsa_65 "ML-DSA-65"
-/** Algorithm identifier for ML-DSA-87-ipd */
-#define OQS_SIG_alg_ml_dsa_87_ipd "ML-DSA-87-ipd"
-/** Algorithm identifier for ML-DSA-87 SIG. */
+/** Algorithm identifier for ML-DSA-87 */
 #define OQS_SIG_alg_ml_dsa_87 "ML-DSA-87"
 /** Algorithm identifier for Falcon-512 */
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
@@ -131,7 +125,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 47
+#define OQS_SIG_algs_length 44
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

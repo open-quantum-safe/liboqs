@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:b953d460-1246-4cbb-aff9-642a0308d18b",
+  "serialNumber": "urn:uuid:8ab32dcc-f97b-480a-840f-7aa14563ad9c",
   "version": 1,
   "metadata": {
-    "timestamp": "2024-08-26T18:04:44.668645",
+    "timestamp": "2024-09-10T11:25:43.713773",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b37c937a649ec9cdb82c4964f97aa7d8ec0c9b01",
       "name": "liboqs",
-      "version": "062e793edf54cbc1073b54d0689795063fd41910"
+      "version": "b37c937a649ec9cdb82c4964f97aa7d8ec0c9b01"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b37c937a649ec9cdb82c4964f97aa7d8ec0c9b01",
       "name": "liboqs",
-      "version": "062e793edf54cbc1073b54d0689795063fd41910"
+      "version": "b37c937a649ec9cdb82c4964f97aa7d8ec0c9b01"
     },
     {
       "type": "crypto-asset",
@@ -2501,12 +2501,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-44-ipd:generic",
+      "bom-ref": "alg:ML-DSA-44:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-44-ipd",
+          "variant": "ML-DSA-44",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2521,12 +2521,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-44-ipd:x86_64",
+      "bom-ref": "alg:ML-DSA-44:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-44-ipd",
+          "variant": "ML-DSA-44",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2541,12 +2541,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-65-ipd:generic",
+      "bom-ref": "alg:ML-DSA-65:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-65-ipd",
+          "variant": "ML-DSA-65",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2561,12 +2561,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-65-ipd:x86_64",
+      "bom-ref": "alg:ML-DSA-65:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-65-ipd",
+          "variant": "ML-DSA-65",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2581,12 +2581,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-87-ipd:generic",
+      "bom-ref": "alg:ML-DSA-87:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-87-ipd",
+          "variant": "ML-DSA-87",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2601,12 +2601,12 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-87-ipd:x86_64",
+      "bom-ref": "alg:ML-DSA-87:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-87-ipd",
+          "variant": "ML-DSA-87",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -3128,7 +3128,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "ref": "pkg:github/open-quantum-safe/liboqs@b37c937a649ec9cdb82c4964f97aa7d8ec0c9b01",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -3254,12 +3254,12 @@
         "alg:MAYO-3:x86_64",
         "alg:MAYO-5:generic",
         "alg:MAYO-5:x86_64",
-        "alg:ML-DSA-44-ipd:generic",
-        "alg:ML-DSA-44-ipd:x86_64",
-        "alg:ML-DSA-65-ipd:generic",
-        "alg:ML-DSA-65-ipd:x86_64",
-        "alg:ML-DSA-87-ipd:generic",
-        "alg:ML-DSA-87-ipd:x86_64",
+        "alg:ML-DSA-44:generic",
+        "alg:ML-DSA-44:x86_64",
+        "alg:ML-DSA-65:generic",
+        "alg:ML-DSA-65:x86_64",
+        "alg:ML-DSA-87:generic",
+        "alg:ML-DSA-87:x86_64",
         "alg:SPHINCS+-SHA2-128f-simple:generic",
         "alg:SPHINCS+-SHA2-128f-simple:x86_64",
         "alg:SPHINCS+-SHA2-128s-simple:generic",
@@ -4166,42 +4166,42 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-DSA-44-ipd:generic",
+      "ref": "alg:ML-DSA-44:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-DSA-44-ipd:x86_64",
+      "ref": "alg:ML-DSA-44:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-DSA-65-ipd:generic",
+      "ref": "alg:ML-DSA-65:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-DSA-65-ipd:x86_64",
+      "ref": "alg:ML-DSA-65:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-DSA-87-ipd:generic",
+      "ref": "alg:ML-DSA-87:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:ML-DSA-87-ipd:x86_64",
+      "ref": "alg:ML-DSA-87:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],

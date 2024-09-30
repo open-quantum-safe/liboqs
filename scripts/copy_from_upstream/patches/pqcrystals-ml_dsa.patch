@@ -1,0 +1,1123 @@
+diff --git a/Dilithium2_META.yml b/ML-DSA-44_META.yml
+index 425606f..23fa5af 100644
+--- a/Dilithium2_META.yml
++++ b/ML-DSA-44_META.yml
+@@ -1,9 +1,10 @@
+-name: Dilithium2
++name: ML-DSA-44
+ type: signature
+ claimed-nist-level: 2
+ length-public-key: 1312
+ length-secret-key: 2560
+ length-signature: 2420
++nistkat-sha256: 9a196e7fb32fbc93757dc2d8dc1924460eab66303c0c08aeb8b798fb8d8f8cf3
+ testvectors-sha256: 5f0d135c0f7fd43f3fb9727265fcd6ec3651eb8c67c04ea5f3d8dfa1d99740d2
+ principal-submitters:
+   - Vadim Lyubashevsky
+@@ -19,20 +20,18 @@ implementations:
+   - name: ref
+     version: https://github.com/pq-crystals/dilithium/tree/master
+     folder_name: ref
+-    compile_opts: -DDILITHIUM_MODE=2 -DDILITHIUM_RANDOMIZED_SIGNING
+-    signature_keypair: pqcrystals_dilithium2_ref_keypair
+-    signature_signature: pqcrystals_dilithium2_ref_signature
+-    signature_verify: pqcrystals_dilithium2_ref_verify
+-    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    compile_opts: -DDILITHIUM_MODE=2
++    signature_keypair: pqcrystals_ml_dsa_44_ref_keypair
++    signature_signature: pqcrystals_ml_dsa_44_ref_signature
++    signature_verify: pqcrystals_ml_dsa_44_ref_verify
++    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/dilithium/tree/master
+-    compile_opts: -DDILITHIUM_MODE=2 -DDILITHIUM_RANDOMIZED_SIGNING
+-    signature_keypair: pqcrystals_dilithium2_avx2_keypair
+-    signature_signature: pqcrystals_dilithium2_avx2_signature
+-    signature_verify: pqcrystals_dilithium2_avx2_verify
+-    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2
++    compile_opts: -DDILITHIUM_MODE=2
++    signature_keypair: pqcrystals_ml_dsa_44_avx2_keypair
++    signature_signature: pqcrystals_ml_dsa_44_avx2_signature
++    signature_verify: pqcrystals_ml_dsa_44_avx2_verify
++    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:
+diff --git a/Dilithium3_META.yml b/ML-DSA-65_META.yml
+index 94b60c0..cc3e91c 100644
+--- a/Dilithium3_META.yml
++++ b/ML-DSA-65_META.yml
+@@ -1,9 +1,10 @@
+-name: Dilithium3
++name: ML-DSA-65
+ type: signature
+ claimed-nist-level: 3
+ length-public-key: 1952
+ length-secret-key: 4032
+ length-signature: 3309
++nistkat-sha256: 7cb96242eac9907a55b5c84c202f0ebd552419c50b2e986dc2e28f07ecebf072
+ testvectors-sha256: 14bf84918ee90e7afbd580191d3eb890d4557e0900b1145e39a8399ef7dd3fba
+ principal-submitters:
+   - Vadim Lyubashevsky
+@@ -19,20 +20,18 @@ implementations:
+   - name: ref
+     version: https://github.com/pq-crystals/dilithium/tree/master
+     folder_name: ref
+-    compile_opts: -DDILITHIUM_MODE=3 -DDILITHIUM_RANDOMIZED_SIGNING
+-    signature_keypair: pqcrystals_dilithium3_ref_keypair
+-    signature_signature: pqcrystals_dilithium3_ref_signature
+-    signature_verify: pqcrystals_dilithium3_ref_verify
+-    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    compile_opts: -DDILITHIUM_MODE=3
++    signature_keypair: pqcrystals_ml_dsa_65_ref_keypair
++    signature_signature: pqcrystals_ml_dsa_65_ref_signature
++    signature_verify: pqcrystals_ml_dsa_65_ref_verify
++    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/dilithium/tree/master
+-    compile_opts: -DDILITHIUM_MODE=3 -DDILITHIUM_RANDOMIZED_SIGNING
+-    signature_keypair: pqcrystals_dilithium3_avx2_keypair
+-    signature_signature: pqcrystals_dilithium3_avx2_signature
+-    signature_verify: pqcrystals_dilithium3_avx2_verify
+-    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2
++    compile_opts: -DDILITHIUM_MODE=3
++    signature_keypair: pqcrystals_ml_dsa_65_avx2_keypair
++    signature_signature: pqcrystals_ml_dsa_65_avx2_signature
++    signature_verify: pqcrystals_ml_dsa_65_avx2_verify
++    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:
+diff --git a/Dilithium5_META.yml b/ML-DSA-87_META.yml
+index 69e1c01..0c6b695 100644
+--- a/Dilithium5_META.yml
++++ b/ML-DSA-87_META.yml
+@@ -1,9 +1,10 @@
+-name: Dilithium5
++name: ML-DSA-87
+ type: signature
+ claimed-nist-level: 5
+ length-public-key: 2592
+ length-secret-key: 4896
+ length-signature: 4627
++nistkat-sha256: 4537905d2aabcf302fab2f242baed293459ecda7c230e6a67063b02c7e2840ed
+ testvectors-sha256: 759a3ba35210c7e27ff90a7ce5e399295533b82ef125e6ec98af158e00268e44
+ principal-submitters:
+   - Vadim Lyubashevsky
+@@ -19,20 +20,18 @@ implementations:
+   - name: ref
+     version: https://github.com/pq-crystals/dilithium/tree/master
+     folder_name: ref
+-    compile_opts: -DDILITHIUM_MODE=5 -DDILITHIUM_RANDOMIZED_SIGNING
+-    signature_keypair: pqcrystals_dilithium5_ref_keypair
+-    signature_signature: pqcrystals_dilithium5_ref_signature
+-    signature_verify: pqcrystals_dilithium5_ref_verify
+-    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    compile_opts: -DDILITHIUM_MODE=5
++    signature_keypair: pqcrystals_ml_dsa_87_ref_keypair
++    signature_signature: pqcrystals_ml_dsa_87_ref_signature
++    signature_verify: pqcrystals_ml_dsa_87_ref_verify
++    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/dilithium/tree/master
+-    compile_opts: -DDILITHIUM_MODE=5 -DDILITHIUM_RANDOMIZED_SIGNING
+-    signature_keypair: pqcrystals_dilithium5_avx2_keypair
+-    signature_signature: pqcrystals_dilithium5_avx2_signature
+-    signature_verify: pqcrystals_dilithium5_avx2_verify
+-    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2
++    compile_opts: -DDILITHIUM_MODE=5
++    signature_keypair: pqcrystals_ml_dsa_87_avx2_keypair
++    signature_signature: pqcrystals_ml_dsa_87_avx2_signature
++    signature_verify: pqcrystals_ml_dsa_87_avx2_verify
++    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:
+diff --git a/avx2/config.h b/avx2/config.h
+index a9facc0..3944cb4 100644
+--- a/avx2/config.h
++++ b/avx2/config.h
+@@ -11,17 +11,17 @@
+ #endif
+ 
+ #if DILITHIUM_MODE == 2
+-#define CRYPTO_ALGNAME "Dilithium2"
+-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium2_avx2
+-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium2_avx2_##s
++#define CRYPTO_ALGNAME "ML-DSA-44"
++#define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_44_avx2
++#define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_44_avx2_##s
+ #elif DILITHIUM_MODE == 3
+-#define CRYPTO_ALGNAME "Dilithium3"
+-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium3_avx2
+-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium3_avx2_##s
++#define CRYPTO_ALGNAME "ML-DSA-65"
++#define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_65_avx2
++#define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_65_avx2_##s
+ #elif DILITHIUM_MODE == 5
+-#define CRYPTO_ALGNAME "Dilithium5"
+-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium5_avx2
+-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium5_avx2_##s
++#define CRYPTO_ALGNAME "ML-DSA-87"
++#define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_87_avx2
++#define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_87_avx2_##s
+ #endif
+ 
+ #endif
+diff --git a/avx2/poly.c b/avx2/poly.c
+index 340e91d..7bae495 100644
+--- a/avx2/poly.c
++++ b/avx2/poly.c
+@@ -401,6 +401,7 @@ void poly_uniform(poly *a, const uint8_t seed[SEEDBYTES], uint16_t nonce)
+   stream128_state state;
+   stream128_init(&state, seed, nonce);
+   poly_uniform_preinit(a, &state);
++  stream128_release(&state);
+ }
+ 
+ void poly_uniform_4x(poly *a0,
+@@ -415,7 +416,7 @@ void poly_uniform_4x(poly *a0,
+ {
+   unsigned int ctr0, ctr1, ctr2, ctr3;
+   ALIGNED_UINT8(REJ_UNIFORM_BUFLEN+8) buf[4];
+-  keccakx4_state state;
++  shake128x4incctx state;
+   __m256i f;
+ 
+   f = _mm256_loadu_si256((__m256i *)seed);
+@@ -433,6 +434,7 @@ void poly_uniform_4x(poly *a0,
+   buf[3].coeffs[SEEDBYTES+0] = nonce3;
+   buf[3].coeffs[SEEDBYTES+1] = nonce3 >> 8;
+ 
++  shake128x4_inc_init(&state);
+   shake128x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, SEEDBYTES + 2);
+   shake128x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_NBLOCKS, &state);
+ 
+@@ -449,6 +451,7 @@ void poly_uniform_4x(poly *a0,
+     ctr2 += rej_uniform(a2->coeffs + ctr2, N - ctr2, buf[2].coeffs, SHAKE128_RATE);
+     ctr3 += rej_uniform(a3->coeffs + ctr3, N - ctr3, buf[3].coeffs, SHAKE128_RATE);
+   }
++  shake128x4_inc_ctx_release(&state);
+ }
+ 
+ /*************************************************
+@@ -530,6 +533,7 @@ void poly_uniform_eta(poly *a, const uint8_t seed[CRHBYTES], uint16_t nonce)
+   stream256_state state;
+   stream256_init(&state, seed, nonce);
+   poly_uniform_eta_preinit(a, &state);
++  stream256_release(&state);
+ }
+ 
+ void poly_uniform_eta_4x(poly *a0,
+@@ -546,7 +550,7 @@ void poly_uniform_eta_4x(poly *a0,
+   ALIGNED_UINT8(REJ_UNIFORM_ETA_BUFLEN) buf[4];
+ 
+   __m256i f;
+-  keccakx4_state state;
++  shake256x4incctx state;
+ 
+   f = _mm256_loadu_si256((__m256i *)&seed[0]);
+   _mm256_store_si256(&buf[0].vec[0],f);
+@@ -568,6 +572,7 @@ void poly_uniform_eta_4x(poly *a0,
+   buf[3].coeffs[64] = nonce3;
+   buf[3].coeffs[65] = nonce3 >> 8;
+ 
++  shake256x4_inc_init(&state);
+   shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 66);
+   shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_ETA_NBLOCKS, &state);
+ 
+@@ -584,6 +589,7 @@ void poly_uniform_eta_4x(poly *a0,
+     ctr2 += rej_eta(a2->coeffs + ctr2, N - ctr2, buf[2].coeffs, SHAKE256_RATE);
+     ctr3 += rej_eta(a3->coeffs + ctr3, N - ctr3, buf[3].coeffs, SHAKE256_RATE);
+   }
++  shake256x4_inc_ctx_release(&state);
+ }
+ 
+ /*************************************************
+@@ -611,6 +617,7 @@ void poly_uniform_gamma1(poly *a, const uint8_t seed[CRHBYTES], uint16_t nonce)
+   stream256_state state;
+   stream256_init(&state, seed, nonce);
+   poly_uniform_gamma1_preinit(a, &state);
++  stream256_release(&state);
+ }
+ 
+ void poly_uniform_gamma1_4x(poly *a0,
+@@ -624,7 +631,7 @@ void poly_uniform_gamma1_4x(poly *a0,
+                             uint16_t nonce3)
+ {
+   ALIGNED_UINT8(POLY_UNIFORM_GAMMA1_NBLOCKS*STREAM256_BLOCKBYTES+14) buf[4];
+-  keccakx4_state state;
++  shake256x4incctx state;
+   __m256i f;
+ 
+   f = _mm256_loadu_si256((__m256i *)&seed[0]);
+@@ -647,8 +654,10 @@ void poly_uniform_gamma1_4x(poly *a0,
+   buf[3].coeffs[64] = nonce3;
+   buf[3].coeffs[65] = nonce3 >> 8;
+ 
++  shake256x4_inc_init(&state);
+   shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 66);
+   shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, POLY_UNIFORM_GAMMA1_NBLOCKS, &state);
++  shake256x4_inc_ctx_release(&state);
+ 
+   polyz_unpack(a0, buf[0].coeffs);
+   polyz_unpack(a1, buf[1].coeffs);
+@@ -670,12 +679,12 @@ void poly_challenge(poly * restrict c, const uint8_t seed[CTILDEBYTES]) {
+   unsigned int i, b, pos;
+   uint64_t signs;
+   ALIGNED_UINT8(SHAKE256_RATE) buf;
+-  keccak_state state;
++  shake256incctx state;
+ 
+-  shake256_init(&state);
+-  shake256_absorb(&state, seed, CTILDEBYTES);
+-  shake256_finalize(&state);
+-  shake256_squeezeblocks(buf.coeffs, 1, &state);
++  shake256_inc_init(&state);
++  shake256_inc_absorb(&state, seed, CTILDEBYTES);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(buf.coeffs, SHAKE256_RATE, &state);
+ 
+   memcpy(&signs, buf.coeffs, 8);
+   pos = 8;
+@@ -695,6 +704,7 @@ void poly_challenge(poly * restrict c, const uint8_t seed[CTILDEBYTES]) {
+     c->coeffs[b] = 1 - 2*(signs & 1);
+     signs >>= 1;
+   }
++  shake256_inc_ctx_release(&state);
+ }
+ 
+ /*************************************************
+diff --git a/avx2/sign.c b/avx2/sign.c
+index 7d70257..d1c747a 100644
+--- a/avx2/sign.c
++++ b/avx2/sign.c
+@@ -151,7 +151,7 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+ *
+ * Returns 0 (success) or -1 (context string too long)
+ **************************************************/
+-int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen,
++static int crypto_sign_signature_ctx(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen,
+                           const uint8_t *ctx, size_t ctxlen, const uint8_t *sk)
+ {
+   unsigned int i, n, pos;
+@@ -167,7 +167,7 @@ int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t
+     polyvecl y;
+     polyveck w0;
+   } tmpv;
+-  keccak_state state;
++  shake256incctx state;
+ 
+   if(ctxlen > 255)
+     return -1;
+@@ -181,15 +181,15 @@ int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t
+   unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
+ 
+   /* Compute CRH(tr, 0, ctxlen, ctx, msg) */
+-  shake256_init(&state);
+-  shake256_absorb(&state, tr, TRBYTES);
++  shake256_inc_init(&state);
++  shake256_inc_absorb(&state, tr, TRBYTES);
+   mu[0] = 0;
+   mu[1] = ctxlen;
+-  shake256_absorb(&state, mu, 2);
+-  shake256_absorb(&state, ctx, ctxlen);
+-  shake256_absorb(&state, m, mlen);
+-  shake256_finalize(&state);
+-  shake256_squeeze(mu, CRHBYTES, &state);
++  shake256_inc_absorb(&state, mu, 2);
++  shake256_inc_absorb(&state, ctx, ctxlen);
++  shake256_inc_absorb(&state, m, mlen);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(mu, CRHBYTES, &state);
+ 
+ #ifdef DILITHIUM_RANDOMIZED_SIGNING
+   randombytes(rnd, RNDBYTES);
+@@ -236,11 +236,11 @@ rej:
+   polyveck_decompose(&w1, &tmpv.w0, &w1);
+   polyveck_pack_w1(sig, &w1);
+ 
+-  shake256_init(&state);
+-  shake256_absorb(&state, mu, CRHBYTES);
+-  shake256_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
+-  shake256_finalize(&state);
+-  shake256_squeeze(sig, CTILDEBYTES, &state);
++  shake256_inc_ctx_reset(&state);
++  shake256_inc_absorb(&state, mu, CRHBYTES);
++  shake256_inc_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(sig, CTILDEBYTES, &state);
+   poly_challenge(&c, sig);
+   poly_ntt(&c);
+ 
+@@ -285,6 +285,7 @@ rej:
+     hint[OMEGA + i] = pos = pos + n;
+   }
+ 
++  shake256_inc_ctx_release(&state);
+   /* Pack z into signature */
+   for(i = 0; i < L; i++)
+     polyz_pack(sig + CTILDEBYTES + i*POLYZ_PACKEDBYTES, &z.vec[i]);
+@@ -293,6 +294,30 @@ rej:
+   return 0;
+ }
+ 
++/*************************************************
++* Name:        crypto_sign_signature
++*
++* Description: Computes signature. Default with empty ctx.
++*
++* Arguments:   - uint8_t *sig:   pointer to output signature (of length CRYPTO_BYTES)
++*              - size_t *siglen: pointer to output length of signature
++*              - uint8_t *m:     pointer to message to be signed
++*              - size_t mlen:    length of message
++*              - uint8_t *sk:    pointer to bit-packed secret key
++*
++* Returns 0 (success) or -1 (context string too long)
++**************************************************/
++int crypto_sign_signature(uint8_t *sig,
++                                     size_t *siglen,
++                                     const uint8_t *m,
++                                     size_t mlen,
++                                     const uint8_t *sk)
++{
++  return crypto_sign_signature_ctx(sig, siglen, m, mlen, NULL, 0, sk);
++}
++
++
++
+ /*************************************************
+ * Name:        crypto_sign
+ *
+@@ -311,7 +336,7 @@ rej:
+ *
+ * Returns 0 (success)
+ **************************************************/
+-int crypto_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen,
++static int crypto_sign_ctx(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen,
+                 const uint8_t *sk)
+ {
+   size_t i;
+@@ -319,13 +344,38 @@ int crypto_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen, const
+ 
+   for(i = 0; i < mlen; ++i)
+     sm[CRYPTO_BYTES + mlen - 1 - i] = m[mlen - 1 - i];
+-  ret = crypto_sign_signature(sm, smlen, sm + CRYPTO_BYTES, mlen, ctx, ctxlen, sk);
++  ret = crypto_sign_signature_ctx(sm, smlen, sm + CRYPTO_BYTES, mlen, ctx, ctxlen, sk);
+   *smlen += mlen;
+   return ret;
+ }
+ 
+ /*************************************************
+-* Name:        crypto_sign_verify
++* Name:        crypto_sign
++*
++* Description: Compute signed message. Default with empty ctx.
++*
++* Arguments:   - uint8_t *sm: pointer to output signed message (allocated
++*                             array with CRYPTO_BYTES + mlen bytes),
++*                             can be equal to m
++*              - size_t *smlen: pointer to output length of signed
++*                               message
++*              - const uint8_t *m: pointer to message to be signed
++*              - size_t mlen: length of message
++*              - const uint8_t *sk: pointer to bit-packed secret key
++*
++* Returns 0 (success) or -1 (context string too long)
++**************************************************/
++int crypto_sign(uint8_t *sm,
++                           size_t *smlen,
++                           const uint8_t *m,
++                           size_t mlen,
++                           const uint8_t *sk)
++{
++  return crypto_sign_ctx(sm, smlen, m, mlen, NULL, 0, sk);
++}
++
++/*************************************************
++* Name:        crypto_sign_verify_ctx
+ *
+ * Description: Verifies signature.
+ *
+@@ -339,7 +389,7 @@ int crypto_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen, const
+ *
+ * Returns 0 if signature could be verified correctly and -1 otherwise
+ **************************************************/
+-int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, 
++static int crypto_sign_verify_ctx(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, 
+                        const uint8_t *ctx, size_t ctxlen, const uint8_t *pk) {
+   unsigned int i, j, pos = 0;
+   /* polyw1_pack writes additional 14 bytes */
+@@ -350,22 +400,23 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
+   polyvecl *row = rowbuf;
+   polyvecl z;
+   poly c, w1, h;
+-  keccak_state state;
++  shake256incctx state;
+ 
+   if(ctxlen > 255 || siglen != CRYPTO_BYTES)
+     return -1;
+ 
+   /* Compute CRH(H(rho, t1), msg) */
+   shake256(mu, TRBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+-  shake256_init(&state);
+-  shake256_absorb(&state, mu, CRHBYTES);
++  shake256_inc_init(&state);
++  shake256_inc_absorb(&state, mu, CRHBYTES);
+   mu[0] = 0;
+   mu[1] = ctxlen;
+-  shake256_absorb(&state, mu, 2);
+-  shake256_absorb(&state, ctx, ctxlen);
+-  shake256_absorb(&state, m, mlen);
+-  shake256_finalize(&state);
+-  shake256_squeeze(mu, CRHBYTES, &state);
++  shake256_inc_absorb(&state, mu, 2);
++  shake256_inc_absorb(&state, ctx, ctxlen);
++  shake256_inc_absorb(&state, m, mlen);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(mu, CRHBYTES, &state);
++  shake256_inc_ctx_release(&state);
+ 
+   /* Expand challenge */
+   poly_challenge(&c, sig);
+@@ -415,11 +466,12 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
+     if(hint[j]) return -1;
+ 
+   /* Call random oracle and verify challenge */
+-  shake256_init(&state);
+-  shake256_absorb(&state, mu, CRHBYTES);
+-  shake256_absorb(&state, buf.coeffs, K*POLYW1_PACKEDBYTES);
+-  shake256_finalize(&state);
+-  shake256_squeeze(buf.coeffs, CTILDEBYTES, &state);
++  shake256_inc_init(&state);
++  shake256_inc_absorb(&state, mu, CRHBYTES);
++  shake256_inc_absorb(&state, buf.coeffs, K*POLYW1_PACKEDBYTES);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(buf.coeffs, CTILDEBYTES, &state);
++  shake256_inc_ctx_release(&state);
+   for(i = 0; i < CTILDEBYTES; ++i)
+     if(buf.coeffs[i] != sig[i])
+       return -1;
+@@ -428,7 +480,29 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
+ }
+ 
+ /*************************************************
+-* Name:        crypto_sign_open
++* Name:        crypto_sign_verify
++*
++* Description: Verifies signature. With default context.
++*
++* Arguments:   - uint8_t *m: pointer to input signature
++*              - size_t siglen: length of signature
++*              - const uint8_t *m: pointer to message
++*              - size_t mlen: length of message
++*              - const uint8_t *pk: pointer to bit-packed public key
++*
++* Returns 0 if signature could be verified correctly and -1 otherwise
++**************************************************/
++int crypto_sign_verify(const uint8_t *sig,
++                       size_t siglen,
++                       const uint8_t *m,
++                       size_t mlen,
++                       const uint8_t *pk)
++{
++  return crypto_sign_verify_ctx(sig, siglen, m, mlen, NULL, 0, pk); 
++}
++
++/*************************************************
++* Name:        crypto_sign_open_ctx
+ *
+ * Description: Verify signed message.
+ *
+@@ -443,7 +517,7 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
+ *
+ * Returns 0 if signed message could be verified correctly and -1 otherwise
+ **************************************************/
+-int crypto_sign_open(uint8_t *m, size_t *mlen, const uint8_t *sm, size_t smlen,
++static int crypto_sign_open_ctx(uint8_t *m, size_t *mlen, const uint8_t *sm, size_t smlen,
+                      const uint8_t *ctx, size_t ctxlen, const uint8_t *pk) {
+   size_t i;
+ 
+@@ -451,7 +525,7 @@ int crypto_sign_open(uint8_t *m, size_t *mlen, const uint8_t *sm, size_t smlen,
+     goto badsig;
+ 
+   *mlen = smlen - CRYPTO_BYTES;
+-  if(crypto_sign_verify(sm, CRYPTO_BYTES, sm + CRYPTO_BYTES, *mlen, ctx, ctxlen, pk))
++  if(crypto_sign_verify_ctx(sm, CRYPTO_BYTES, sm + CRYPTO_BYTES, *mlen, ctx, ctxlen, pk))
+     goto badsig;
+   else {
+     /* All good, copy msg, return 0 */
+@@ -468,3 +542,26 @@ badsig:
+ 
+   return -1;
+ }
++
++/*************************************************
++* Name:        crypto_sign_open
++*
++* Description: Verify signed message. Default with empty ctx.
++*
++* Arguments:   - uint8_t *m: pointer to output message (allocated
++*                            array with smlen bytes), can be equal to sm
++*              - size_t *mlen: pointer to output length of message
++*              - const uint8_t *sm: pointer to signed message
++*              - size_t smlen: length of signed message
++*              - const uint8_t *pk: pointer to bit-packed public key
++*
++* Returns 0 if signed message could be verified correctly and -1 otherwise
++**************************************************/
++int crypto_sign_open(uint8_t *m,
++                     size_t *mlen,
++                     const uint8_t *sm,
++                     size_t smlen,
++                     const uint8_t *pk)
++{
++  return crypto_sign_open_ctx(m, mlen, sm, smlen, NULL, 0, pk);
++}
+diff --git a/avx2/symmetric.h b/avx2/symmetric.h
+index 8f3c3c5..fa49963 100644
+--- a/avx2/symmetric.h
++++ b/avx2/symmetric.h
+@@ -6,21 +6,23 @@
+ 
+ #include "fips202.h"
+ 
+-typedef keccak_state stream128_state;
+-typedef keccak_state stream256_state;
++typedef shake128incctx stream128_state;
++typedef shake256incctx stream256_state;
+ 
+ #define dilithium_shake128_stream_init DILITHIUM_NAMESPACE(dilithium_shake128_stream_init)
+-void dilithium_shake128_stream_init(keccak_state *state, const uint8_t seed[SEEDBYTES], uint16_t nonce);
++void dilithium_shake128_stream_init(shake128incctx *state, const uint8_t seed[SEEDBYTES], uint16_t nonce);
+ 
+ #define dilithium_shake256_stream_init DILITHIUM_NAMESPACE(dilithium_shake256_stream_init)
+-void dilithium_shake256_stream_init(keccak_state *state, const uint8_t seed[CRHBYTES], uint16_t nonce);
++void dilithium_shake256_stream_init(shake256incctx *state, const uint8_t seed[CRHBYTES], uint16_t nonce);
+ 
+ #define STREAM128_BLOCKBYTES SHAKE128_RATE
+ #define STREAM256_BLOCKBYTES SHAKE256_RATE
+ 
+ #define stream128_init(STATE, SEED, NONCE) dilithium_shake128_stream_init(STATE, SEED, NONCE)
+ #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
++#define stream128_release(STATE) shake128_inc_ctx_release(STATE)
+ #define stream256_init(STATE, SEED, NONCE) dilithium_shake256_stream_init(STATE, SEED, NONCE)
+ #define stream256_squeezeblocks(OUT, OUTBLOCKS, STATE) shake256_squeezeblocks(OUT, OUTBLOCKS, STATE)
++#define stream256_release(STATE) shake256_inc_ctx_release(STATE)
+ 
+ #endif
+diff --git a/ref/config.h b/ref/config.h
+index 98b8ccb..8008e11 100644
+--- a/ref/config.h
++++ b/ref/config.h
+@@ -11,17 +11,17 @@
+ #endif
+ 
+ #if DILITHIUM_MODE == 2
+-#define CRYPTO_ALGNAME "Dilithium2"
+-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium2_ref
+-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium2_ref_##s
++#define CRYPTO_ALGNAME "ML-DSA-44"
++#define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_44_ref
++#define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_44_ref_##s
+ #elif DILITHIUM_MODE == 3
+-#define CRYPTO_ALGNAME "Dilithium3"
+-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium3_ref
+-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium3_ref_##s
++#define CRYPTO_ALGNAME "ML-DSA-65"
++#define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_65_ref
++#define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_65_ref_##s
+ #elif DILITHIUM_MODE == 5
+-#define CRYPTO_ALGNAME "Dilithium5"
+-#define DILITHIUM_NAMESPACETOP pqcrystals_dilithium5_ref
+-#define DILITHIUM_NAMESPACE(s) pqcrystals_dilithium5_ref_##s
++#define CRYPTO_ALGNAME "ML-DSA-87"
++#define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_87_ref
++#define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_87_ref_##s
+ #endif
+ 
+ #endif
+diff --git a/ref/poly.c b/ref/poly.c
+index 0db4f42..99405fa 100644
+--- a/ref/poly.c
++++ b/ref/poly.c
+@@ -365,6 +365,7 @@ void poly_uniform(poly *a,
+     buflen = STREAM128_BLOCKBYTES + off;
+     ctr += rej_uniform(a->coeffs + ctr, N - ctr, buf, buflen);
+   }
++  stream128_release(&state);
+ }
+ 
+ /*************************************************
+@@ -450,6 +451,7 @@ void poly_uniform_eta(poly *a,
+     stream256_squeezeblocks(buf, 1, &state);
+     ctr += rej_eta(a->coeffs + ctr, N - ctr, buf, STREAM256_BLOCKBYTES);
+   }
++  stream256_release(&state);
+ }
+ 
+ /*************************************************
+@@ -473,6 +475,7 @@ void poly_uniform_gamma1(poly *a,
+ 
+   stream256_init(&state, seed, nonce);
+   stream256_squeezeblocks(buf, POLY_UNIFORM_GAMMA1_NBLOCKS, &state);
++  stream256_release(&state);
+   polyz_unpack(a, buf);
+ }
+ 
+@@ -490,11 +493,11 @@ void poly_challenge(poly *c, const uint8_t seed[CTILDEBYTES]) {
+   unsigned int i, b, pos;
+   uint64_t signs;
+   uint8_t buf[SHAKE256_RATE];
+-  keccak_state state;
++  shake256incctx state;
+ 
+-  shake256_init(&state);
+-  shake256_absorb(&state, seed, CTILDEBYTES);
+-  shake256_finalize(&state);
++  shake256_inc_init(&state);
++  shake256_inc_absorb(&state, seed, CTILDEBYTES);
++  shake256_inc_finalize(&state);
+   shake256_squeezeblocks(buf, 1, &state);
+ 
+   signs = 0;
+@@ -518,6 +521,7 @@ void poly_challenge(poly *c, const uint8_t seed[CTILDEBYTES]) {
+     c->coeffs[b] = 1 - 2*(signs & 1);
+     signs >>= 1;
+   }
++  shake256_inc_ctx_release(&state);
+ }
+ 
+ /*************************************************
+diff --git a/ref/sign.c b/ref/sign.c
+index b130da9..59df461 100644
+--- a/ref/sign.c
++++ b/ref/sign.c
+@@ -67,7 +67,7 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+ }
+ 
+ /*************************************************
+-* Name:        crypto_sign_signature
++* Name:        crypto_sign_signatur_ctx
+ *
+ * Description: Computes signature.
+ *
+@@ -81,13 +81,13 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+ *
+ * Returns 0 (success) or -1 (context string too long)
+ **************************************************/
+-int crypto_sign_signature(uint8_t *sig,
+-                          size_t *siglen,
+-                          const uint8_t *m,
+-                          size_t mlen,
+-                          const uint8_t *ctx,
+-                          size_t ctxlen,
+-                          const uint8_t *sk)
++static int crypto_sign_signature_ctx(uint8_t *sig,
++                              size_t *siglen,
++                              const uint8_t *m,
++                              size_t mlen,
++                              const uint8_t *ctx,
++                              size_t ctxlen,
++                              const uint8_t *sk)
+ {
+   unsigned int n;
+   uint8_t seedbuf[2*SEEDBYTES + TRBYTES + RNDBYTES + 2*CRHBYTES];
+@@ -96,7 +96,7 @@ int crypto_sign_signature(uint8_t *sig,
+   polyvecl mat[K], s1, y, z;
+   polyveck t0, s2, w1, w0, h;
+   poly cp;
+-  keccak_state state;
++  shake256incctx state;
+ 
+   if(ctxlen > 255)
+     return -1;
+@@ -112,13 +112,13 @@ int crypto_sign_signature(uint8_t *sig,
+   /* Compute mu = CRH(tr, 0, ctxlen, ctx, msg) */
+   mu[0] = 0;
+   mu[1] = ctxlen;
+-  shake256_init(&state);
+-  shake256_absorb(&state, tr, TRBYTES);
+-  shake256_absorb(&state, mu, 2);
+-  shake256_absorb(&state, ctx, ctxlen);
+-  shake256_absorb(&state, m, mlen);
+-  shake256_finalize(&state);
+-  shake256_squeeze(mu, CRHBYTES, &state);
++  shake256_inc_init(&state);
++  shake256_inc_absorb(&state, tr, TRBYTES);
++  shake256_inc_absorb(&state, mu, 2);
++  shake256_inc_absorb(&state, ctx, ctxlen);
++  shake256_inc_absorb(&state, m, mlen);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(mu, CRHBYTES, &state);
+ 
+ #ifdef DILITHIUM_RANDOMIZED_SIGNING
+   randombytes(rnd, RNDBYTES);
+@@ -150,11 +150,11 @@ rej:
+   polyveck_decompose(&w1, &w0, &w1);
+   polyveck_pack_w1(sig, &w1);
+ 
+-  shake256_init(&state);
+-  shake256_absorb(&state, mu, CRHBYTES);
+-  shake256_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
+-  shake256_finalize(&state);
+-  shake256_squeeze(sig, CTILDEBYTES, &state);
++  shake256_inc_ctx_reset(&state);
++  shake256_inc_absorb(&state, mu, CRHBYTES);
++  shake256_inc_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(sig, CTILDEBYTES, &state);
+   poly_challenge(&cp, sig);
+   poly_ntt(&cp);
+ 
+@@ -187,6 +187,8 @@ rej:
+   if(n > OMEGA)
+     goto rej;
+ 
++  shake256_inc_ctx_release(&state);
++
+   /* Write signature */
+   pack_sig(sig, sig, &z, &h);
+   *siglen = CRYPTO_BYTES;
+@@ -194,7 +196,29 @@ rej:
+ }
+ 
+ /*************************************************
+-* Name:        crypto_sign
++* Name:        crypto_sign_signature
++*
++* Description: Computes signature. Default with empty ctx.
++*
++* Arguments:   - uint8_t *sig:   pointer to output signature (of length CRYPTO_BYTES)
++*              - size_t *siglen: pointer to output length of signature
++*              - uint8_t *m:     pointer to message to be signed
++*              - size_t mlen:    length of message
++*              - uint8_t *sk:    pointer to bit-packed secret key
++*
++* Returns 0 (success) or -1 (context string too long)
++**************************************************/
++int crypto_sign_signature(uint8_t *sig,
++                                     size_t *siglen,
++                                     const uint8_t *m,
++                                     size_t mlen,
++                                     const uint8_t *sk)
++{
++  return crypto_sign_signature_ctx(sig, siglen, m, mlen, NULL, 0, sk);
++}
++
++/*************************************************
++* Name:        crypto_sign_ctx
+ *
+ * Description: Compute signed message.
+ *
+@@ -211,26 +235,51 @@ rej:
+ *
+ * Returns 0 (success) or -1 (context string too long)
+ **************************************************/
+-int crypto_sign(uint8_t *sm,
+-                size_t *smlen,
+-                const uint8_t *m,
+-                size_t mlen,
+-                const uint8_t *ctx,
+-                size_t ctxlen,
+-                const uint8_t *sk)
++static int crypto_sign_ctx(uint8_t *sm,
++                           size_t *smlen,
++                           const uint8_t *m,
++                           size_t mlen,
++                           const uint8_t *ctx,
++                           size_t ctxlen,
++                           const uint8_t *sk)
+ {
+   int ret;
+   size_t i;
+ 
+   for(i = 0; i < mlen; ++i)
+     sm[CRYPTO_BYTES + mlen - 1 - i] = m[mlen - 1 - i];
+-  ret = crypto_sign_signature(sm, smlen, sm + CRYPTO_BYTES, mlen, ctx, ctxlen, sk);
++  ret = crypto_sign_signature_ctx(sm, smlen, sm + CRYPTO_BYTES, mlen, ctx, ctxlen, sk);
+   *smlen += mlen;
+   return ret;
+ }
+ 
+ /*************************************************
+-* Name:        crypto_sign_verify
++* Name:        crypto_sign
++*
++* Description: Compute signed message. Default with empty ctx.
++*
++* Arguments:   - uint8_t *sm: pointer to output signed message (allocated
++*                             array with CRYPTO_BYTES + mlen bytes),
++*                             can be equal to m
++*              - size_t *smlen: pointer to output length of signed
++*                               message
++*              - const uint8_t *m: pointer to message to be signed
++*              - size_t mlen: length of message
++*              - const uint8_t *sk: pointer to bit-packed secret key
++*
++* Returns 0 (success) or -1 (context string too long)
++**************************************************/
++int crypto_sign(uint8_t *sm,
++                           size_t *smlen,
++                           const uint8_t *m,
++                           size_t mlen,
++                           const uint8_t *sk)
++{
++  return crypto_sign_ctx(sm, smlen, m, mlen, NULL, 0, sk);
++}
++
++/*************************************************
++* Name:        crypto_sign_verify_ctx
+ *
+ * Description: Verifies signature.
+ *
+@@ -244,7 +293,7 @@ int crypto_sign(uint8_t *sm,
+ *
+ * Returns 0 if signature could be verified correctly and -1 otherwise
+ **************************************************/
+-int crypto_sign_verify(const uint8_t *sig,
++static int crypto_sign_verify_ctx(const uint8_t *sig,
+                        size_t siglen,
+                        const uint8_t *m,
+                        size_t mlen,
+@@ -261,7 +310,7 @@ int crypto_sign_verify(const uint8_t *sig,
+   poly cp;
+   polyvecl mat[K], z;
+   polyveck t1, w1, h;
+-  keccak_state state;
++  shake256incctx state;
+ 
+   if(ctxlen > 255 || siglen != CRYPTO_BYTES)
+     return -1;
+@@ -274,15 +323,15 @@ int crypto_sign_verify(const uint8_t *sig,
+ 
+   /* Compute CRH(H(rho, t1), msg) */
+   shake256(mu, TRBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+-  shake256_init(&state);
+-  shake256_absorb(&state, mu, TRBYTES);
++  shake256_inc_init(&state);
++  shake256_inc_absorb(&state, mu, TRBYTES);
+   mu[0] = 0;
+   mu[1] = ctxlen;
+-  shake256_absorb(&state, mu, 2);
+-  shake256_absorb(&state, ctx, ctxlen);
+-  shake256_absorb(&state, m, mlen);
+-  shake256_finalize(&state);
+-  shake256_squeeze(mu, CRHBYTES, &state);
++  shake256_inc_absorb(&state, mu, 2);
++  shake256_inc_absorb(&state, ctx, ctxlen);
++  shake256_inc_absorb(&state, m, mlen);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(mu, CRHBYTES, &state);
+ 
+   /* Matrix-vector multiplication; compute Az - c2^dt1 */
+   poly_challenge(&cp, c);
+@@ -306,11 +355,12 @@ int crypto_sign_verify(const uint8_t *sig,
+   polyveck_pack_w1(buf, &w1);
+ 
+   /* Call random oracle and verify challenge */
+-  shake256_init(&state);
+-  shake256_absorb(&state, mu, CRHBYTES);
+-  shake256_absorb(&state, buf, K*POLYW1_PACKEDBYTES);
+-  shake256_finalize(&state);
+-  shake256_squeeze(c2, CTILDEBYTES, &state);
++  shake256_inc_ctx_reset(&state);
++  shake256_inc_absorb(&state, mu, CRHBYTES);
++  shake256_inc_absorb(&state, buf, K*POLYW1_PACKEDBYTES);
++  shake256_inc_finalize(&state);
++  shake256_inc_squeeze(c2, CTILDEBYTES, &state);
++  shake256_inc_ctx_release(&state);
+   for(i = 0; i < CTILDEBYTES; ++i)
+     if(c[i] != c2[i])
+       return -1;
+@@ -319,7 +369,29 @@ int crypto_sign_verify(const uint8_t *sig,
+ }
+ 
+ /*************************************************
+-* Name:        crypto_sign_open
++* Name:        crypto_sign_verify
++*
++* Description: Verifies signature. With default context.
++*
++* Arguments:   - uint8_t *m: pointer to input signature
++*              - size_t siglen: length of signature
++*              - const uint8_t *m: pointer to message
++*              - size_t mlen: length of message
++*              - const uint8_t *pk: pointer to bit-packed public key
++*
++* Returns 0 if signature could be verified correctly and -1 otherwise
++**************************************************/
++int crypto_sign_verify(const uint8_t *sig,
++                       size_t siglen,
++                       const uint8_t *m,
++                       size_t mlen,
++                       const uint8_t *pk)
++{
++  return crypto_sign_verify_ctx(sig, siglen, m, mlen, NULL, 0, pk); 
++}
++
++/*************************************************
++* Name:        crypto_sign_open_ctx
+ *
+ * Description: Verify signed message.
+ *
+@@ -334,7 +406,7 @@ int crypto_sign_verify(const uint8_t *sig,
+ *
+ * Returns 0 if signed message could be verified correctly and -1 otherwise
+ **************************************************/
+-int crypto_sign_open(uint8_t *m,
++static int crypto_sign_open_ctx(uint8_t *m,
+                      size_t *mlen,
+                      const uint8_t *sm,
+                      size_t smlen,
+@@ -348,7 +420,7 @@ int crypto_sign_open(uint8_t *m,
+     goto badsig;
+ 
+   *mlen = smlen - CRYPTO_BYTES;
+-  if(crypto_sign_verify(sm, CRYPTO_BYTES, sm + CRYPTO_BYTES, *mlen, ctx, ctxlen, pk))
++  if(crypto_sign_verify_ctx(sm, CRYPTO_BYTES, sm + CRYPTO_BYTES, *mlen, ctx, ctxlen, pk))
+     goto badsig;
+   else {
+     /* All good, copy msg, return 0 */
+@@ -365,3 +437,26 @@ badsig:
+ 
+   return -1;
+ }
++
++/*************************************************
++* Name:        crypto_sign_open
++*
++* Description: Verify signed message. Default with empty ctx.
++*
++* Arguments:   - uint8_t *m: pointer to output message (allocated
++*                            array with smlen bytes), can be equal to sm
++*              - size_t *mlen: pointer to output length of message
++*              - const uint8_t *sm: pointer to signed message
++*              - size_t smlen: length of signed message
++*              - const uint8_t *pk: pointer to bit-packed public key
++*
++* Returns 0 if signed message could be verified correctly and -1 otherwise
++**************************************************/
++int crypto_sign_open(uint8_t *m,
++                     size_t *mlen,
++                     const uint8_t *sm,
++                     size_t smlen,
++                     const uint8_t *pk)
++{
++  return crypto_sign_open_ctx(m, mlen, sm, smlen, NULL, 0, pk);
++}
+diff --git a/ref/sign.h b/ref/sign.h
+index 91d2001..7f80213 100644
+--- a/ref/sign.h
++++ b/ref/sign.h
+@@ -13,25 +13,21 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+ #define crypto_sign_signature DILITHIUM_NAMESPACE(signature)
+ int crypto_sign_signature(uint8_t *sig, size_t *siglen,
+                           const uint8_t *m, size_t mlen,
+-                          const uint8_t *ctx, size_t ctxlen,
+                           const uint8_t *sk);
+ 
+ #define crypto_sign DILITHIUM_NAMESPACETOP
+ int crypto_sign(uint8_t *sm, size_t *smlen,
+                 const uint8_t *m, size_t mlen,
+-                const uint8_t *ctx, size_t ctxlen,
+                 const uint8_t *sk);
+ 
+ #define crypto_sign_verify DILITHIUM_NAMESPACE(verify)
+ int crypto_sign_verify(const uint8_t *sig, size_t siglen,
+                        const uint8_t *m, size_t mlen,
+-                       const uint8_t *ctx, size_t ctxlen,
+                        const uint8_t *pk);
+ 
+ #define crypto_sign_open DILITHIUM_NAMESPACE(open)
+ int crypto_sign_open(uint8_t *m, size_t *mlen,
+                      const uint8_t *sm, size_t smlen,
+-                     const uint8_t *ctx, size_t ctxlen,
+                      const uint8_t *pk);
+ 
+ #endif
+diff --git a/ref/symmetric-shake.c b/ref/symmetric-shake.c
+index 11ec09c..963f649 100644
+--- a/ref/symmetric-shake.c
++++ b/ref/symmetric-shake.c
+@@ -3,26 +3,26 @@
+ #include "symmetric.h"
+ #include "fips202.h"
+ 
+-void dilithium_shake128_stream_init(keccak_state *state, const uint8_t seed[SEEDBYTES], uint16_t nonce)
++void dilithium_shake128_stream_init(shake128incctx *state, const uint8_t seed[SEEDBYTES], uint16_t nonce)
+ {
+   uint8_t t[2];
+   t[0] = nonce;
+   t[1] = nonce >> 8;
+ 
+-  shake128_init(state);
+-  shake128_absorb(state, seed, SEEDBYTES);
+-  shake128_absorb(state, t, 2);
+-  shake128_finalize(state);
++  shake128_inc_init(state);
++  shake128_inc_absorb(state, seed, SEEDBYTES);
++  shake128_inc_absorb(state, t, 2);
++  shake128_inc_finalize(state);
+ }
+ 
+-void dilithium_shake256_stream_init(keccak_state *state, const uint8_t seed[CRHBYTES], uint16_t nonce)
++void dilithium_shake256_stream_init(shake256incctx *state, const uint8_t seed[CRHBYTES], uint16_t nonce)
+ {
+   uint8_t t[2];
+   t[0] = nonce;
+   t[1] = nonce >> 8;
+ 
+-  shake256_init(state);
+-  shake256_absorb(state, seed, CRHBYTES);
+-  shake256_absorb(state, t, 2);
+-  shake256_finalize(state);
++  shake256_inc_init(state);
++  shake256_inc_absorb(state, seed, CRHBYTES);
++  shake256_inc_absorb(state, t, 2);
++  shake256_inc_finalize(state);
+ }
+diff --git a/ref/symmetric.h b/ref/symmetric.h
+index cba12d1..b6c74b7 100644
+--- a/ref/symmetric.h
++++ b/ref/symmetric.h
+@@ -6,16 +6,16 @@
+ 
+ #include "fips202.h"
+ 
+-typedef keccak_state stream128_state;
+-typedef keccak_state stream256_state;
++typedef shake128incctx stream128_state;
++typedef shake256incctx stream256_state;
+ 
+ #define dilithium_shake128_stream_init DILITHIUM_NAMESPACE(dilithium_shake128_stream_init)
+-void dilithium_shake128_stream_init(keccak_state *state,
++void dilithium_shake128_stream_init(shake128incctx *state,
+                                     const uint8_t seed[SEEDBYTES],
+                                     uint16_t nonce);
+ 
+ #define dilithium_shake256_stream_init DILITHIUM_NAMESPACE(dilithium_shake256_stream_init)
+-void dilithium_shake256_stream_init(keccak_state *state,
++void dilithium_shake256_stream_init(shake256incctx *state,
+                                     const uint8_t seed[CRHBYTES],
+                                     uint16_t nonce);
+ 
+@@ -26,9 +26,12 @@ void dilithium_shake256_stream_init(keccak_state *state,
+         dilithium_shake128_stream_init(STATE, SEED, NONCE)
+ #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) \
+         shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
++#define stream128_release(STATE) shake128_inc_ctx_release(STATE)
+ #define stream256_init(STATE, SEED, NONCE) \
+         dilithium_shake256_stream_init(STATE, SEED, NONCE)
+ #define stream256_squeezeblocks(OUT, OUTBLOCKS, STATE) \
+         shake256_squeezeblocks(OUT, OUTBLOCKS, STATE)
++#define stream256_release(STATE) shake256_inc_ctx_release(STATE)
++
+ 
+ #endif
