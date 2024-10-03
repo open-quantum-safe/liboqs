@@ -78,37 +78,37 @@ static void Short_random(small *out) {
     uint32 L[ppadsort];
     int i;
 
-    randombytes((unsigned char *) L, 4 * p_param);
+    randombytes((unsigned char *) L, 4 * p);
     crypto_decode_pxint32(L, (unsigned char *) L);
     for (i = 0; i < w; ++i) {
         L[i] = L[i] & (uint32) - 2;
     }
-    for (i = w; i < p_param; ++i) {
+    for (i = w; i < p; ++i) {
         L[i] = (L[i] & (uint32) - 3) | 1;
     }
-    for (i = p_param; i < ppadsort; ++i) {
+    for (i = p; i < ppadsort; ++i) {
         L[i] = 0xffffffff;
     }
     PQCLEAN_SNTRUP761_AVX2_crypto_sort_uint32(L, ppadsort);
-    for (i = 0; i < p_param; ++i) {
+    for (i = 0; i < p; ++i) {
         out[i] = (small) ((L[i] & 3) - 1);
     }
 }
 
 static void Small_random(small *out) {
-    uint32 L[p_param];
+    uint32 L[p];
     int i;
 
     randombytes((unsigned char *) L, sizeof L);
     crypto_decode_pxint32(L, (unsigned char *) L);
-    for (i = 0; i < p_param; ++i) {
+    for (i = 0; i < p; ++i) {
         out[i] = (small) ((((L[i] & 0x3fffffff) * 3) >> 30) - 1);
     }
 }
 
 /* ----- Streamlined NTRU Prime */
 
-typedef small Inputs[p_param]; /* passed by reference */
+typedef small Inputs[p]; /* passed by reference */
 #define Ciphertexts_bytes Rounded_bytes
 #define SecretKeys_bytes (2*Small_bytes)
 #define PublicKeys_bytes Rq_bytes
@@ -119,7 +119,7 @@ typedef small Inputs[p_param]; /* passed by reference */
 /* also set x[0]=2, and x[1:1+Hash_bytes] = Hash3(r_enc) */
 /* also overwrite x[1+Hash_bytes:1+2*Hash_bytes] */
 static void Hide(unsigned char *x, unsigned char *c, unsigned char *r_enc, const Inputs r, const unsigned char *pk, const unsigned char *cache) {
-    Fq h[p_param];
+    Fq h[p];
     int i;
 
     Small_encode(r_enc + 1, r);
@@ -137,14 +137,14 @@ static void Hide(unsigned char *x, unsigned char *c, unsigned char *r_enc, const
 
 
 int PQCLEAN_SNTRUP761_AVX2_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
-    small g[p_param];
+    small g[p];
     for (;;) {
         Small_random(g);
         {
-            small v[p_param + 1];
+            small v[p + 1];
             small vp;
             crypto_core_inv3((unsigned char *) v, (const unsigned char *) g);
-            vp = v[p_param];
+            vp = v[p];
             crypto_declassify(&vp, sizeof vp);
             if (vp == 0) {
                 Small_encode(sk + Small_bytes, v);
@@ -153,11 +153,11 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
         }
     }
     {
-        small f[p_param];
+        small f[p];
         Short_random(f);
         Small_encode(sk, f);
         {
-            Fq h[p_param + 1];
+            Fq h[p + 1];
             Rq_recip3(h, f); /* always works */
             Rq_mult_small(h, g);
             Rq_encode(pk, h);
@@ -212,17 +212,17 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_kem_dec(uint8_t *k, const uint8_t *c, const ui
     int mask, i;
     Inputs r;
     {
-        Fq d[p_param];
+        Fq d[p];
         Rounded_decode(d, c);
         {
-            small f[p_param];
+            small f[p];
             Small_decode(f, sk);
             Rq_mult_small(d, f);
             Rq_mult3(d, d);
         }
         {
-            small e[p_param];
-            small v[p_param];
+            small e[p];
+            small v[p];
             R3_fromRq(e, d);
             Small_decode(v, sk + Small_bytes);
             R3_mult(r, e, v);

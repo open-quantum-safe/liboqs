@@ -129,7 +129,7 @@ static inline void vectormodq_xswapeliminate(Fq *f, Fq *g, int len, const Fq f0,
 int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, const unsigned char *inbytes) {
     small *in = (void *) inbytes;
     int loop;
-    Fq out[p_param], f[ppad], g[ppad], v[ppad], r[ppad];
+    Fq out[p], f[ppad], g[ppad], v[ppad], r[ppad];
     Fq f0, g0;
     Fq scale;
     int i;
@@ -142,14 +142,14 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, con
         f[i] = 0;
     }
     f[0] = 1;
-    f[p_param - 1] = -1;
-    f[p_param] = -1;
+    f[p - 1] = -1;
+    f[p] = -1;
     /* generalization: initialize f to reversal of any deg-p polynomial m */
 
-    for (i = 0; i < p_param; ++i) {
-        g[i] = in[p_param - 1 - i];
+    for (i = 0; i < p; ++i) {
+        g[i] = in[p - 1 - i];
     }
-    for (i = p_param; i < ppad; ++i) {
+    for (i = p; i < ppad; ++i) {
         g[i] = 0;
     }
 
@@ -162,7 +162,7 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, con
         v[i] = 0;
     }
 
-    for (loop = 0; loop < p_param; ++loop) {
+    for (loop = 0; loop < p; ++loop) {
         g0 = Fq_freeze(g[0]);
         f0 = f[0];
         if (q > 5167) {
@@ -180,11 +180,11 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, con
 
         f[0] = f0;
 
-        vectormodq_swapeliminate(f + 1, g + 1, p_param, f0, g0, swap);
+        vectormodq_swapeliminate(f + 1, g + 1, p, f0, g0, swap);
         vectormodq_xswapeliminate(v, r, loop + 1, f0, g0, swap);
     }
 
-    for (loop = p_param - 1; loop > 0; --loop) {
+    for (loop = p - 1; loop > 0; --loop) {
         g0 = Fq_freeze(g[0]);
         f0 = f[0];
         if (q > 5167) {
@@ -203,15 +203,15 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, con
         f[0] = f0;
 
         vectormodq_swapeliminate(f + 1, g + 1, loop, f0, g0, swap);
-        vectormodq_xswapeliminate(v, r, p_param, f0, g0, swap);
+        vectormodq_xswapeliminate(v, r, p, f0, g0, swap);
     }
 
     scale = Fq_recip(Fq_freeze(f[0]));
-    for (i = 0; i < p_param; ++i) {
-        out[i] = Fq_bigfreeze(scale * (int32)Fq_freeze(v[p_param - i]));
+    for (i = 0; i < p; ++i) {
+        out[i] = Fq_bigfreeze(scale * (int32)Fq_freeze(v[p - i]));
     }
 
     crypto_encode_pxint16(outbytes, out);
-    outbytes[2 * p_param] = (unsigned char) int16_nonzero_mask((int16) delta);
+    outbytes[2 * p] = (unsigned char) int16_nonzero_mask((int16) delta);
     return 0;
 }

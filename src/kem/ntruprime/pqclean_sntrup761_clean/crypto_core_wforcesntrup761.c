@@ -24,7 +24,7 @@ static int Weightw_mask(const small *r) {
     int weight = 0;
     int i;
 
-    for (i = 0; i < p_param; ++i) {
+    for (i = 0; i < p; ++i) {
         weight += r[i] & 1;
     }
     return int16_nonzero_mask((int16) (weight - w));
@@ -41,7 +41,7 @@ int PQCLEAN_SNTRUP761_CLEAN_crypto_core_wforcesntrup761(unsigned char *outbytes,
     for (i = 0; i < w; ++i) {
         out[i] = (small) (((in[i] ^ 1) & ~mask) ^ 1);
     }
-    for (i = w; i < p_param; ++i) {
+    for (i = w; i < p; ++i) {
         out[i] = (small) (in[i] & ~mask);
     }
     return 0;

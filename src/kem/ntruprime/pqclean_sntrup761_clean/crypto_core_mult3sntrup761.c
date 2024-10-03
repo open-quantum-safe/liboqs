@@ -13,44 +13,44 @@ static small F3_freeze(int16 x) {
 
 int PQCLEAN_SNTRUP761_CLEAN_crypto_core_mult3sntrup761(unsigned char *outbytes, const unsigned char *inbytes, const unsigned char *kbytes) {
     small *h = (void *) outbytes;
-    small f[p_param];
-    small g[p_param];
-    small fg[p_param + p_param - 1];
+    small f[p];
+    small g[p];
+    small fg[p + p - 1];
     int16 result;
     int i, j;
 
-    for (i = 0; i < p_param; ++i) {
+    for (i = 0; i < p; ++i) {
         small fi = (small) inbytes[i];
         small fi0 = fi & 1;
         f[i] = (small) (fi0 - (fi & (fi0 << 1)));
     }
-    for (i = 0; i < p_param; ++i) {
+    for (i = 0; i < p; ++i) {
         small gi = (small) kbytes[i];
         small gi0 = gi & 1;
         g[i] = (small) (gi0 - (gi & (gi0 << 1)));
     }
 
-    for (i = 0; i < p_param; ++i) {
+    for (i = 0; i < p; ++i) {
         result = 0;
         for (j = 0; j <= i; ++j) {
             result += (small) (f[j] * g[i - j]);
         }
         fg[i] = F3_freeze(result);
     }
-    for (i = p_param; i < p_param + p_param - 1; ++i) {
+    for (i = p; i < p + p - 1; ++i) {
         result = 0;
-        for (j = i - p_param + 1; j < p_param; ++j) {
+        for (j = i - p + 1; j < p; ++j) {
             result += (small) (f[j] * g[i - j]);
         }
         fg[i] = F3_freeze(result);
     }
 
-    for (i = p_param + p_param - 2; i >= p_param; --i) {
-        fg[i - p_param] = F3_freeze(fg[i - p_param] + fg[i]);
-        fg[i - p_param + 1] = F3_freeze(fg[i - p_param + 1] + fg[i]);
+    for (i = p + p - 2; i >= p; --i) {
+        fg[i - p] = F3_freeze(fg[i - p] + fg[i]);
+        fg[i - p + 1] = F3_freeze(fg[i - p + 1] + fg[i]);
     }
 
-    for (i = 0; i < p_param; ++i) {
+    for (i = 0; i < p; ++i) {
         h[i] = fg[i];
     }
     return 0;

@@ -40,7 +40,7 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_wforcesntrup761(unsigned char *out, const
         out += i;
     }
 
-    i = p_param - w - 32;
+    i = p - w - 32;
     for (;;) {
         do {
             __m256i x = _mm256_loadu_si256((__m256i *) in);
