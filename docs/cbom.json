@@ -1,3135 +1,3134 @@
 {
-  "bomFormat": "CBOM",
-  "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:b953d460-1246-4cbb-aff9-642a0308d18b",
+  "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:679a1c2f-1dd4-4692-b098-1d4dacdfc75d",
   "version": 1,
   "metadata": {
-    "timestamp": "2024-08-26T18:04:44.668645",
+    "timestamp": "2024-10-01T14:21:06.857613+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@bf7cbdca1bf2866da22b4b75e04b68baf6707a7b",
       "name": "liboqs",
-      "version": "062e793edf54cbc1073b54d0689795063fd41910"
+      "version": "bf7cbdca1bf2866da22b4b75e04b68baf6707a7b"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@bf7cbdca1bf2866da22b4b75e04b68baf6707a7b",
       "name": "liboqs",
-      "version": "062e793edf54cbc1073b54d0689795063fd41910"
+      "version": "bf7cbdca1bf2866da22b4b75e04b68baf6707a7b"
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:BIKE-L1:x86_64",
       "name": "BIKE",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "BIKE-L1",
+          "parameterSetIdentifier": "BIKE-L1",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:BIKE-L3:x86_64",
       "name": "BIKE",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "BIKE-L3",
+          "parameterSetIdentifier": "BIKE-L3",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:BIKE-L5:x86_64",
       "name": "BIKE",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "BIKE-L5",
+          "parameterSetIdentifier": "BIKE-L5",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-348864:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-348864",
+          "parameterSetIdentifier": "Classic-McEliece-348864",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-348864:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-348864",
+          "parameterSetIdentifier": "Classic-McEliece-348864",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-348864f:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-348864f",
+          "parameterSetIdentifier": "Classic-McEliece-348864f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-348864f:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-348864f",
+          "parameterSetIdentifier": "Classic-McEliece-348864f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-460896:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-460896",
+          "parameterSetIdentifier": "Classic-McEliece-460896",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-460896:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-460896",
+          "parameterSetIdentifier": "Classic-McEliece-460896",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-460896f:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-460896f",
+          "parameterSetIdentifier": "Classic-McEliece-460896f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-460896f:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-460896f",
+          "parameterSetIdentifier": "Classic-McEliece-460896f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6688128:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6688128",
+          "parameterSetIdentifier": "Classic-McEliece-6688128",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6688128:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6688128",
+          "parameterSetIdentifier": "Classic-McEliece-6688128",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6688128f:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6688128f",
+          "parameterSetIdentifier": "Classic-McEliece-6688128f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6688128f:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6688128f",
+          "parameterSetIdentifier": "Classic-McEliece-6688128f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6960119:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6960119",
+          "parameterSetIdentifier": "Classic-McEliece-6960119",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6960119:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6960119",
+          "parameterSetIdentifier": "Classic-McEliece-6960119",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6960119f:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6960119f",
+          "parameterSetIdentifier": "Classic-McEliece-6960119f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-6960119f:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-6960119f",
+          "parameterSetIdentifier": "Classic-McEliece-6960119f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-8192128:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-8192128",
+          "parameterSetIdentifier": "Classic-McEliece-8192128",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-8192128:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-8192128",
+          "parameterSetIdentifier": "Classic-McEliece-8192128",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-8192128f:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-8192128f",
+          "parameterSetIdentifier": "Classic-McEliece-8192128f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Classic-McEliece-8192128f:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Classic-McEliece-8192128f",
+          "parameterSetIdentifier": "Classic-McEliece-8192128f",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-640-AES:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-640-AES",
+          "parameterSetIdentifier": "FrodoKEM-640-AES",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-640-AES:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-640-AES",
+          "parameterSetIdentifier": "FrodoKEM-640-AES",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-640-SHAKE:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-640-SHAKE",
+          "parameterSetIdentifier": "FrodoKEM-640-SHAKE",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-640-SHAKE:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-640-SHAKE",
+          "parameterSetIdentifier": "FrodoKEM-640-SHAKE",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-976-AES:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-976-AES",
+          "parameterSetIdentifier": "FrodoKEM-976-AES",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-976-AES:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-976-AES",
+          "parameterSetIdentifier": "FrodoKEM-976-AES",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-976-SHAKE:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-976-SHAKE",
+          "parameterSetIdentifier": "FrodoKEM-976-SHAKE",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-976-SHAKE:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-976-SHAKE",
+          "parameterSetIdentifier": "FrodoKEM-976-SHAKE",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-1344-AES:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-1344-AES",
+          "parameterSetIdentifier": "FrodoKEM-1344-AES",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-1344-AES:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-1344-AES",
+          "parameterSetIdentifier": "FrodoKEM-1344-AES",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-1344-SHAKE:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-1344-SHAKE",
+          "parameterSetIdentifier": "FrodoKEM-1344-SHAKE",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:FrodoKEM-1344-SHAKE:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "FrodoKEM-1344-SHAKE",
+          "parameterSetIdentifier": "FrodoKEM-1344-SHAKE",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:HQC-128:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "HQC-128",
+          "parameterSetIdentifier": "HQC-128",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:HQC-192:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "HQC-192",
+          "parameterSetIdentifier": "HQC-192",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:HQC-256:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "HQC-256",
+          "parameterSetIdentifier": "HQC-256",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber512:generic",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber512",
+          "parameterSetIdentifier": "Kyber512",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber512:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber512",
+          "parameterSetIdentifier": "Kyber512",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber512:armv8-a",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber512",
+          "parameterSetIdentifier": "Kyber512",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber512:jasmin:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber512",
+          "parameterSetIdentifier": "Kyber512",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber512:jasmin:avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber512",
+          "parameterSetIdentifier": "Kyber512",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber768:generic",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber768",
+          "parameterSetIdentifier": "Kyber768",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber768:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber768",
+          "parameterSetIdentifier": "Kyber768",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber768:armv8-a",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber768",
+          "parameterSetIdentifier": "Kyber768",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber768:jasmin:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber768",
+          "parameterSetIdentifier": "Kyber768",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber768:jasmin:avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber768",
+          "parameterSetIdentifier": "Kyber768",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber1024:generic",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber1024",
+          "parameterSetIdentifier": "Kyber1024",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber1024:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber1024",
+          "parameterSetIdentifier": "Kyber1024",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber1024:armv8-a",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Kyber1024",
+          "parameterSetIdentifier": "Kyber1024",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-512:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-512",
+          "parameterSetIdentifier": "ML-KEM-512",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-512:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-512",
+          "parameterSetIdentifier": "ML-KEM-512",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-768:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-768",
+          "parameterSetIdentifier": "ML-KEM-768",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-768:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-768",
+          "parameterSetIdentifier": "ML-KEM-768",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-1024:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-1024",
+          "parameterSetIdentifier": "ML-KEM-1024",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-1024:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-KEM-1024",
+          "parameterSetIdentifier": "ML-KEM-1024",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:sntrup761:generic",
       "name": "NTRU-Prime",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "sntrup761",
+          "parameterSetIdentifier": "sntrup761",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:sntrup761:x86_64",
       "name": "NTRU-Prime",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "sntrup761",
+          "parameterSetIdentifier": "sntrup761",
           "primitive": "kem",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "encapsulate",
             "decapsulate"
           ],
+          "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-128-balanced:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-128-balanced",
+          "parameterSetIdentifier": "cross-rsdp-128-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-128-balanced:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-128-balanced",
+          "parameterSetIdentifier": "cross-rsdp-128-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-128-fast:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-128-fast",
+          "parameterSetIdentifier": "cross-rsdp-128-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-128-fast:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-128-fast",
+          "parameterSetIdentifier": "cross-rsdp-128-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-128-small:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-128-small",
+          "parameterSetIdentifier": "cross-rsdp-128-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-128-small:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-128-small",
+          "parameterSetIdentifier": "cross-rsdp-128-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-192-balanced:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-192-balanced",
+          "parameterSetIdentifier": "cross-rsdp-192-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-192-balanced:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-192-balanced",
+          "parameterSetIdentifier": "cross-rsdp-192-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-192-fast:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-192-fast",
+          "parameterSetIdentifier": "cross-rsdp-192-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-192-fast:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-192-fast",
+          "parameterSetIdentifier": "cross-rsdp-192-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-192-small:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-192-small",
+          "parameterSetIdentifier": "cross-rsdp-192-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-192-small:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-192-small",
+          "parameterSetIdentifier": "cross-rsdp-192-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-256-balanced:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-256-balanced",
+          "parameterSetIdentifier": "cross-rsdp-256-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-256-balanced:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-256-balanced",
+          "parameterSetIdentifier": "cross-rsdp-256-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-256-fast:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-256-fast",
+          "parameterSetIdentifier": "cross-rsdp-256-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-256-fast:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-256-fast",
+          "parameterSetIdentifier": "cross-rsdp-256-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-256-small:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-256-small",
+          "parameterSetIdentifier": "cross-rsdp-256-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdp-256-small:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdp-256-small",
+          "parameterSetIdentifier": "cross-rsdp-256-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-128-balanced:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-128-balanced",
+          "parameterSetIdentifier": "cross-rsdpg-128-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-128-balanced:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-128-balanced",
+          "parameterSetIdentifier": "cross-rsdpg-128-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-128-fast:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-128-fast",
+          "parameterSetIdentifier": "cross-rsdpg-128-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-128-fast:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-128-fast",
+          "parameterSetIdentifier": "cross-rsdpg-128-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-128-small:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-128-small",
+          "parameterSetIdentifier": "cross-rsdpg-128-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-128-small:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-128-small",
+          "parameterSetIdentifier": "cross-rsdpg-128-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-192-balanced:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-192-balanced",
+          "parameterSetIdentifier": "cross-rsdpg-192-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-192-balanced:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-192-balanced",
+          "parameterSetIdentifier": "cross-rsdpg-192-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-192-fast:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-192-fast",
+          "parameterSetIdentifier": "cross-rsdpg-192-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-192-fast:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-192-fast",
+          "parameterSetIdentifier": "cross-rsdpg-192-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-192-small:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-192-small",
+          "parameterSetIdentifier": "cross-rsdpg-192-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-192-small:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-192-small",
+          "parameterSetIdentifier": "cross-rsdpg-192-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-256-balanced:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-256-balanced",
+          "parameterSetIdentifier": "cross-rsdpg-256-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-256-balanced:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-256-balanced",
+          "parameterSetIdentifier": "cross-rsdpg-256-balanced",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-256-fast:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-256-fast",
+          "parameterSetIdentifier": "cross-rsdpg-256-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-256-fast:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-256-fast",
+          "parameterSetIdentifier": "cross-rsdpg-256-fast",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-256-small:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-256-small",
+          "parameterSetIdentifier": "cross-rsdpg-256-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:cross-rsdpg-256-small:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "cross-rsdpg-256-small",
+          "parameterSetIdentifier": "cross-rsdpg-256-small",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium2:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium2",
+          "parameterSetIdentifier": "Dilithium2",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium2:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium2",
+          "parameterSetIdentifier": "Dilithium2",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium2:armv8-a",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium2",
+          "parameterSetIdentifier": "Dilithium2",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 2
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium3:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium3",
+          "parameterSetIdentifier": "Dilithium3",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium3:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium3",
+          "parameterSetIdentifier": "Dilithium3",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium3:armv8-a",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium3",
+          "parameterSetIdentifier": "Dilithium3",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium5:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium5",
+          "parameterSetIdentifier": "Dilithium5",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium5:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium5",
+          "parameterSetIdentifier": "Dilithium5",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Dilithium5:armv8-a",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Dilithium5",
+          "parameterSetIdentifier": "Dilithium5",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-512:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-512",
+          "parameterSetIdentifier": "Falcon-512",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-512:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-512",
+          "parameterSetIdentifier": "Falcon-512",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-512:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-512",
+          "parameterSetIdentifier": "Falcon-512",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-1024:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-1024",
+          "parameterSetIdentifier": "Falcon-1024",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-1024:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-1024",
+          "parameterSetIdentifier": "Falcon-1024",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-1024:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-1024",
+          "parameterSetIdentifier": "Falcon-1024",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-padded-512:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-padded-512",
+          "parameterSetIdentifier": "Falcon-padded-512",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-padded-512:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-padded-512",
+          "parameterSetIdentifier": "Falcon-padded-512",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-padded-512:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-padded-512",
+          "parameterSetIdentifier": "Falcon-padded-512",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-padded-1024:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-padded-1024",
+          "parameterSetIdentifier": "Falcon-padded-1024",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-padded-1024:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-padded-1024",
+          "parameterSetIdentifier": "Falcon-padded-1024",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:Falcon-padded-1024:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "Falcon-padded-1024",
+          "parameterSetIdentifier": "Falcon-padded-1024",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "armv8-a"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-1:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-1",
+          "parameterSetIdentifier": "MAYO-1",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-1:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-1",
+          "parameterSetIdentifier": "MAYO-1",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-2:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-2",
+          "parameterSetIdentifier": "MAYO-2",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-2:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-2",
+          "parameterSetIdentifier": "MAYO-2",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-3:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-3",
+          "parameterSetIdentifier": "MAYO-3",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-3:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-3",
+          "parameterSetIdentifier": "MAYO-3",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-5:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-5",
+          "parameterSetIdentifier": "MAYO-5",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-5:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "MAYO-5",
+          "parameterSetIdentifier": "MAYO-5",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-44-ipd:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-44-ipd",
+          "parameterSetIdentifier": "ML-DSA-44-ipd",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-44-ipd:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-44-ipd",
+          "parameterSetIdentifier": "ML-DSA-44-ipd",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-65-ipd:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-65-ipd",
+          "parameterSetIdentifier": "ML-DSA-65-ipd",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-65-ipd:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-65-ipd",
+          "parameterSetIdentifier": "ML-DSA-65-ipd",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-87-ipd:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-87-ipd",
+          "parameterSetIdentifier": "ML-DSA-87-ipd",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-87-ipd:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-87-ipd",
+          "parameterSetIdentifier": "ML-DSA-87-ipd",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-128f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-128f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-128f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-128f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-128f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-128s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-128s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-128s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-128s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-128s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-128s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-192f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-192f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-192f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-192f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-192f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-192s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-192s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-192s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-192s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-192s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-192s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-256f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-256f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-256f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-256f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-256f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-256s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-256s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-256s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-256s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHA2-256s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHA2-256s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-128f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-128f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-128f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-128f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-128f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-128s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-128s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-128s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-128s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-128s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-128s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-192f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-192f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-192f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-192f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-192f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-192s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-192s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-192s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-192s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-192s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-192s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-256f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-256f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-256f-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-256f-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-256s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-256s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-256s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE-256s-simple",
+          "parameterSetIdentifier": "SPHINCS+-SHAKE-256s-simple",
           "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
+          "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
             "keygen",
             "sign",
             "verify"
           ],
+          "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
+        }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:aes",
       "name": "aes",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "aes",
-          "primitive": "blockcipher",
-          "implementationLevel": "softwarePlainRam"
+          "primitive": "block-cipher",
+          "executionEnvironment": "software-plain-ram"
         }
       }
     },
     {
-      "type": "crypto-asset",
+      "type": "cryptographic-asset",
       "bom-ref": "alg:sha3",
       "name": "sha3",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "sha3",
           "primitive": "hash",
-          "implementationLevel": "softwarePlainRam"
+          "executionEnvironment": "software-plain-ram"
         }
       }
     }
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
-      "dependsOn": [
+      "ref": "pkg:github/open-quantum-safe/liboqs@bf7cbdca1bf2866da22b4b75e04b68baf6707a7b",
+      "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
         "alg:BIKE-L5:x86_64",
@@ -3284,1012 +3283,873 @@
         "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
         "alg:SPHINCS+-SHAKE-256s-simple:generic",
         "alg:SPHINCS+-SHAKE-256s-simple:x86_64"
-      ],
-      "dependencyType": "implements"
+      ]
     },
     {
       "ref": "alg:BIKE-L1:x86_64",
       "dependsOn": [
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:BIKE-L3:x86_64",
       "dependsOn": [
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:BIKE-L5:x86_64",
       "dependsOn": [
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-348864:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-348864:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-348864f:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-348864f:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-460896:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-460896:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-460896f:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-460896f:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6688128:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6688128:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6688128f:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6688128f:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6960119:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6960119:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6960119f:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-6960119f:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-8192128:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-8192128:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-8192128f:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Classic-McEliece-8192128f:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-640-AES:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-640-AES:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-640-SHAKE:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-640-SHAKE:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-976-AES:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-976-AES:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-976-SHAKE:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-976-SHAKE:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-1344-AES:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-1344-AES:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-1344-SHAKE:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:FrodoKEM-1344-SHAKE:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:HQC-128:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:HQC-192:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:HQC-256:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber512:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber512:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber512:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber768:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber768:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber768:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber1024:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber1024:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Kyber1024:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-KEM-512:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-KEM-512:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-KEM-768:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-KEM-768:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-KEM-1024:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-KEM-1024:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:sntrup761:generic",
       "dependsOn": [
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:sntrup761:x86_64",
       "dependsOn": [
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-128-balanced:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-128-balanced:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-128-fast:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-128-fast:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-128-small:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-128-small:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-192-balanced:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-192-balanced:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-192-fast:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-192-fast:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-192-small:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-192-small:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-256-balanced:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-256-balanced:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-256-fast:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-256-fast:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-256-small:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdp-256-small:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-128-balanced:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-128-balanced:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-128-fast:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-128-fast:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-128-small:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-128-small:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-192-balanced:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-192-balanced:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-192-fast:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-192-fast:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-192-small:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-192-small:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-256-balanced:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-256-balanced:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-256-fast:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-256-fast:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-256-small:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:cross-rsdpg-256-small:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium2:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium2:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium2:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium3:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium3:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium3:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium5:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium5:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Dilithium5:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-512:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-512:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-512:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-1024:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-1024:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-1024:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-padded-512:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-padded-512:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-padded-512:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-padded-1024:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-padded-1024:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:Falcon-padded-1024:armv8-a",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-1:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-1:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-2:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-3:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-3:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-5:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:MAYO-5:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-DSA-44-ipd:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-DSA-44-ipd:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-DSA-65-ipd:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-DSA-65-ipd:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-DSA-87-ipd:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:ML-DSA-87-ipd:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-128f-simple:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-128f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-128s-simple:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-128s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-192f-simple:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-192f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-192s-simple:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-192s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-256f-simple:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-256s-simple:generic",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     },
     {
       "ref": "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
-      ],
-      "dependencyType": "uses"
+      ]
     }
   ]
 }
