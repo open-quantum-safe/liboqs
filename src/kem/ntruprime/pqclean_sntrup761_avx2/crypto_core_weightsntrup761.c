@@ -14,10 +14,10 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_weightsntrup761(unsigned char *outbytes, 
     __m256i sum, sumhi;
     int16 weight;
 
-    sum = _mm256_loadu_si256((__m256i *) (in + p - 32));
+    sum = _mm256_loadu_si256((__m256i *) (in + p_param - 32));
     sum &= endingmask;
 
-    for (i = p - 32; i >= 0; i -= 32) {
+    for (i = p_param - 32; i >= 0; i -= 32) {
         __m256i bits = _mm256_loadu_si256((__m256i *) in);
         bits &= _mm256_set1_epi8(1);
         sum = _mm256_add_epi8(sum, bits);

@@ -10,7 +10,7 @@
 
 OQS_SIG *OQS_SIG_ml_dsa_65_ipd_new(void) {
 
-	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}
@@ -36,7 +36,7 @@ OQS_SIG *OQS_SIG_ml_dsa_65_ipd_new(void) {
 /** Alias */
 OQS_SIG *OQS_SIG_ml_dsa_65_new(void) {
 
-	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}

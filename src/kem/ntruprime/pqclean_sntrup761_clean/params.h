@@ -28,7 +28,7 @@
 #define q27 29235 /* closest integer to 2^27/q */
 #define q18 57 /* closest integer to 2^18/q */
 #define q14 4 /* closest integer to 2^14/q */
-#define p 761
+#define p_param 761
 #define q 4591
 #define w 286
 
