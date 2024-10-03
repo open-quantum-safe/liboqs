@@ -247,59 +247,6 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len);
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len);
 
 /**
- * Allocates memory of a specified size and checks for successful allocation.
- *
- * This function attempts to allocate a block of memory of the specified size.
- * If the allocation is successful, it returns a pointer to the beginning of the
- * memory block. If the allocation fails, it prints an error message to stderr
- * and terminates the program.
- *
- * @param[in] len The size of the memory block to allocate, in bytes.
- *
- * @return A pointer to the allocated memory block if the allocation is successful.
- *
- * @note This function is intended to be used when the allocation must succeed,
- *       and failure to allocate memory is considered a fatal error. As such,
- *       it does not return if the allocation fails, but instead terminates the
- *       program with an exit status indicating failure.
- *
- * @note The memory block returned by this function is not initialized. The caller
- *       is responsible for initializing the memory if required.
- *
- * @note The allocated memory should be freed using the standard `free` function
- *       when it is no longer needed.
- */
-void *OQS_MEM_checked_malloc(size_t len);
-
-/**
- * Allocates memory of a specified size and alignment and checks for successful allocation.
- *
- * This function attempts to allocate a block of memory with the specified size
- * and alignment. If the allocation is successful, it returns a pointer to the
- * memory block. If the allocation fails, it prints an error message to stderr
- * and terminates the program.
- *
- * Alignment must be a power of two and a multiple of sizeof(void *).
- *
- * @param[in] alignment The alignment of the memory block to allocate.
- * @param[in] size The size of the memory block to allocate, in bytes.
- *
- * @return A pointer to the allocated memory block if the allocation is successful.
- *
- * @note This function is intended to be used when the allocation must succeed,
- *       and failure to allocate memory is considered a fatal error. As such,
- *       it does not return if the allocation fails, but instead terminates the
- *       program with an exit status indicating failure.
- *
- * @note The memory block returned by this function is not initialized. The caller
- *       is responsible for initializing the memory if required.
- *
- * @note The allocated memory should be freed with `OQS_MEM_aligned_free` when it
- *       is no longer needed.
- */
-void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size);
-
-/**
  * Zeros out `len` bytes of memory starting at `ptr`, then frees `ptr`.
  *
  * Can be called with `ptr = NULL`, in which case no operation is performed.
