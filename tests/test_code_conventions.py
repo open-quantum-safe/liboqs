@@ -51,7 +51,7 @@ def test_spdx():
 def test_memory_functions():
     c_h_files = []
     for path, _, files in os.walk('src'):
-        c_h_files += [os.path.join(path, f) for f in files if f.endswith(('.c', '.h'))]
+        c_h_files += [os.path.join(path, f) for f in files if f.endswith(('.c', '.h', '.fragment'))]
 
     memory_functions = ['free', 'malloc', 'calloc', 'realloc', 'strdup']
     okay = True
