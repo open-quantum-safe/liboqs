@@ -49,23 +49,31 @@ def test_spdx():
         assert False
 
 def test_memory_functions():
-    c_files = []
+    c_h_files = []
     for path, _, files in os.walk('src'):
-        c_files += [os.path.join(path, f) for f in files if f.endswith('.c')]
+        c_h_files += [os.path.join(path, f) for f in files if f.endswith(('.c', '.h'))]
 
     memory_functions = ['free', 'malloc', 'calloc', 'realloc', 'strdup']
     okay = True
 
-    for fn in c_files:
+    for fn in c_h_files:
         with open(fn) as f:
             content = f.read()
             lines = content.splitlines()
+            in_multiline_comment = False
             for no, line in enumerate(lines, 1):
-                # Skip comments
-                if line.strip().startswith('//') or line.strip().startswith('/*'):
+                # Skip single-line comments
+                if line.strip().startswith('//'):
                     continue
-                # Check if we're inside a multi-line comment
-                if '/*' in content[:content.find(line)] and '*/' not in content[:content.find(line)]:
+                # Check for start of multi-line comment
+                if '/*' in line and not in_multiline_comment:
+                    in_multiline_comment = True
+                # Check for end of multi-line comment
+                if '*/' in line and in_multiline_comment:
+                    in_multiline_comment = False
+                    continue
+                # Skip lines inside multi-line comments
+                if in_multiline_comment:
                     continue
                 for func in memory_functions:
                     if re.search(r'\b{}\('.format(func), line) and not re.search(r'\b_{}\('.format(func), line):

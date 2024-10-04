@@ -56,7 +56,7 @@ extern "C" {
 * @param size The size of the memory to be allocated in bytes.
 * @return A pointer to the allocated memory.
 */
-#define OQS_MEM_malloc(size) malloc(size)
+#define OQS_MEM_malloc(size) malloc(size) // IGNORE memory-check
 
 /**
  * Allocates memory for an array of elements of a given size.
@@ -64,13 +64,13 @@ extern "C" {
  * @param element_size The size of each element in bytes.
  * @return A pointer to the allocated memory.
  */
-#define OQS_MEM_calloc(num_elements, element_size) calloc(num_elements, element_size)
+#define OQS_MEM_calloc(num_elements, element_size) calloc(num_elements, element_size) // IGNORE memory-check
 /**
  * Duplicates a string.
  * @param str The string to be duplicated.
  * @return A pointer to the newly allocated string.
  */
-#define OQS_MEM_strdup(str) strdup(str)
+#define OQS_MEM_strdup(str) strdup(str) // IGNORE memory-check
 #endif
 
 /**
