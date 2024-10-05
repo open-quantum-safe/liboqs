@@ -44,8 +44,8 @@ static void fetch_ossl_objects(void) {
 	if (!sha256_ptr || !sha384_ptr || !sha512_ptr
 #if defined(OQS_USE_SHA3_OPENSSL)
 	        || !sha3_256_ptr || !sha3_384_ptr || !sha3_512_ptr
-#endif
 	        || !shake128_ptr || !shake256_ptr
+#endif
 #if defined(OQS_USE_AES_OPENSSL)
 	        || !aes128_ecb_ptr || !aes128_ctr_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr
 #endif
