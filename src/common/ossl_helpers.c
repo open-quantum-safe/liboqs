@@ -27,20 +27,29 @@ static void fetch_ossl_objects(void) {
 	sha384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA384", NULL);
 	sha512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512", NULL);
 
+#if defined(OQS_USE_SHA3_OPENSSL)
 	sha3_256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-256", NULL);
 	sha3_384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-384", NULL);
 	sha3_512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-512", NULL);
 	shake128_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE128", NULL);
 	shake256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE256", NULL);
-
+#endif
+#if defined(OQS_USE_AES_OPENSSL)
 	aes128_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-ECB", NULL);
 	aes128_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-CTR", NULL);
 	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
 	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
+#endif
 
-	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
-	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
-	        !aes128_ecb_ptr || !aes128_ctr_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
+	if (!sha256_ptr || !sha384_ptr || !sha512_ptr
+#if defined(OQS_USE_SHA3_OPENSSL)
+	        || !sha3_256_ptr || !sha3_384_ptr || !sha3_512_ptr
+#endif
+	        || !shake128_ptr || !shake256_ptr
+#if defined(OQS_USE_AES_OPENSSL)
+	        || !aes128_ecb_ptr || !aes128_ctr_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr
+#endif
+	   ) {
 		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
 	}
 }
