@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include <oqs/oqs.h>
-
+#include <oqs/sha3.h>
 #if OQS_USE_PTHREADS
 #include <pthread.h>
 #endif
@@ -127,6 +127,37 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		printf("shared secrets are equal\n");
 	}
 
+	if ((0 == strcasecmp(method_name, "ML-KEM-512")) || (0 == strcasecmp(method_name, "ML-KEM-768")) || (0 == strcasecmp(method_name, "ML-KEM-1024"))) {
+		// buffer to hold z and c. z is always 32 bytes
+		uint8_t *buff_z_c = NULL;
+		int length_z_c = 32 + kem->length_ciphertext;
+		buff_z_c = malloc(length_z_c) ;
+		if (NULL == buff_z_c) {
+			fprintf(stderr, "ERROR: malloc failed\n");
+			goto err;
+		}
+		// test rejection key by corrupting the private key
+		secret_key[0] += 1;
+		uint8_t shared_secret_r[32]; // expected output
+		memcpy(buff_z_c, &secret_key[kem->length_secret_key - 32], 32);
+		memcpy(&buff_z_c[32], ciphertext, kem->length_ciphertext);
+		// calculate expected secret in case of corrupted cipher : shake256(z || c)
+		OQS_SHA3_shake256(shared_secret_r, 32, buff_z_c, length_z_c);
+		OQS_MEM_secure_free(buff_z_c, length_z_c);
+		rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_KEM_decaps failed for rejection testcase\n");
+			goto err;
+		}
+		rv = memcmp(shared_secret_d, shared_secret_r, kem->length_shared_secret);
+		if (rv != 0) {
+			fprintf(stderr, "ERROR: shared secrets are not equal for rejection key in decapsulation \n");
+			OQS_print_hex_string("shared_secret_d", shared_secret_e, kem->length_shared_secret);
+			OQS_print_hex_string("shared_secret_r", shared_secret_r, kem->length_shared_secret);
+			goto err;
+		}
+		secret_key[0] -= 1; // restore private key
+	}
 	// test invalid encapsulation (call should either fail or result in invalid shared secret)
 	OQS_randombytes(ciphertext, kem->length_ciphertext);
 	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
@@ -178,7 +209,6 @@ cleanup:
 		OQS_MEM_insecure_free(ciphertext - sizeof(magic_t));
 	}
 	OQS_KEM_free(kem);
-
 	return ret;
 }
 

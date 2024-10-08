@@ -18,7 +18,6 @@ ml_dsa_sig    = "ACVP_Vectors/ML-DSA-sigGen-FIPS204/internalProjection.json"
 ml_dsa_ver    = "ACVP_Vectors/ML-DSA-sigVer-FIPS204/internalProjection.json"
 
 @helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_acvp_vec_kem_keygen(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
@@ -45,7 +44,6 @@ def test_acvp_vec_kem_keygen(kem_name):
         assert(variantFound == True)
 
 @helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_acvp_vec_kem_encdec_aft(kem_name):
 
@@ -106,7 +104,6 @@ def test_acvp_vec_kem_encdec_val(kem_name):
 
 
 @helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_vectors_sig(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
