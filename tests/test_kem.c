@@ -130,7 +130,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	if ((0 == strcasecmp(method_name, "ML-KEM-512")) || (0 == strcasecmp(method_name, "ML-KEM-768")) || (0 == strcasecmp(method_name, "ML-KEM-1024"))) {
 		// buffer to hold z and c. z is always 32 bytes
 		uint8_t *buff_z_c = NULL;
-		int length_z_c = 32 + kem->length_ciphertext;
+		size_t length_z_c = (size_t)32 + kem->length_ciphertext;
 		buff_z_c = malloc(length_z_c) ;
 		if (NULL == buff_z_c) {
 			fprintf(stderr, "ERROR: malloc failed\n");
