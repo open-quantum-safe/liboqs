@@ -28,6 +28,12 @@ option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsuppor
 option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
 
+# Libfuzzer isn't supported on gcc
+if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
+    option(OQS_BUILD_FUZZ_TESTS "Build fuzz test suite" OFF)
+endif()
+
+
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
 
 set(CMAKE_C_STANDARD 11)
@@ -38,6 +44,16 @@ set(OQS_VERSION_TEXT "0.11.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 set(OQS_MINIMAL_GCC_VERSION "7.1.0")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Determine the flags for fuzzing. Use OSS-Fuzz's configuration if available, otherwise fall back to defaults.
+if(DEFINED ENV{LIB_FUZZING_ENGINE})
+    set(FUZZING_ENGINE $ENV{LIB_FUZZING_ENGINE})
+    set(FUZZING_COMPILE_FLAGS "")
+    set(FUZZING_LINK_FLAGS "${FUZZING_ENGINE}")
+else()
+    set(FUZZING_COMPILE_FLAGS "-fsanitize=fuzzer,address")
+    set(FUZZING_LINK_FLAGS "-fsanitize=fuzzer,address")
+endif()
 
 # heuristic check to see whether we're running on a RaspberryPi
 if(EXISTS "/opt/vc/include/bcm_host.h")

@@ -21,6 +21,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 - [OQS_LIBJADE_BUILD](#OQS_LIBJADE_BUILD)
 - [OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG](#OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG)
+- [OQS_BUILD_FUZZ_TESTS](#OQS_BUILD_FUZZ_TESTS)
 
 ## BUILD_SHARED_LIBS
 
@@ -215,3 +216,10 @@ At the moment, libjade only supports Linux and Darwin based operating systems on
 Note: `ALG` in `OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG` should be replaced with the specific algorithm name as demonstrated in OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG.
 
 **Default**: `OFF` if OQS_LIBJADE_BUILD is `OFF` else unset.
+
+## OQS_BUILD_FUZZ_TESTS
+Can be `ON` or `OFF`. When `ON` liboqs the fuzz test-suite will be enabled. This option is only available if the c compiler is set to clang i.e. `-DCMAKE_C_COMPILER=clang`.
+
+Note: It is strongly recommended that this configuration be enabled with `CFLAGS=-fsanitize=address,fuzzer-no-link LDFLAGS=-fsanitize=address`. While fuzzing will run without these flags, enabling this instrumentation will make fuzzing performance much faster and catch [potential memory related bugs](https://clang.llvm.org/docs/AddressSanitizer.html). 
+
+**Default** `OFF`.
