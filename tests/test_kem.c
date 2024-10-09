@@ -3,7 +3,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#if defined(_WIN32)
 #include <string.h>
+#define strcasecmp _stricmp
+#else
+#include <strings.h>
+#endif
 
 #include <oqs/oqs.h>
 #include <oqs/sha3.h>
@@ -136,7 +141,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 			fprintf(stderr, "ERROR: malloc failed\n");
 			goto err;
 		}
-		// test rejection key by corrupting the private key
+		// test rejection key by corrupting the secret key
 		secret_key[0] += 1;
 		uint8_t shared_secret_r[32]; // expected output
 		memcpy(buff_z_c, &secret_key[kem->length_secret_key - 32], 32);
