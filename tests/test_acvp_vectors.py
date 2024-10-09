@@ -74,7 +74,6 @@ def test_acvp_vec_kem_encdec_aft(kem_name):
         assert(variantFound == True)
 
 @helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_acvp_vec_kem_encdec_val(kem_name):
 
@@ -104,6 +103,7 @@ def test_acvp_vec_kem_encdec_val(kem_name):
 
 
 @helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_vectors_sig(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
