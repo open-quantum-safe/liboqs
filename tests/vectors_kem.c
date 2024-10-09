@@ -80,7 +80,7 @@ static void MLKEM_randombytes_free(void) {
 }
 
 static OQS_STATUS kem_kg_vector(const char *method_name,
-                                uint8_t *prng_output_stream,
+                                const uint8_t *prng_output_stream,
                                 const uint8_t *kg_pk, const uint8_t *kg_sk) {
 
 	uint8_t *entropy_input;
@@ -162,7 +162,7 @@ cleanup:
 }
 
 static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
-                                        uint8_t *prng_output_stream,
+                                        const uint8_t *prng_output_stream,
                                         const uint8_t *encdec_pk,
                                         const uint8_t *encdec_k, const uint8_t *encdec_c) {
 
@@ -362,7 +362,7 @@ int main(int argc, char **argv) {
 		kg_pk = argv[4];
 		kg_sk = argv[5];
 
-		if (strlen(prng_output_stream) % 2 != 0 ||
+		if (strlen(prng_output_stream) != 128 ||
 		        strlen(kg_pk) != 2 * kem->length_public_key ||
 		        strlen(kg_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
@@ -391,7 +391,7 @@ int main(int argc, char **argv) {
 		encdec_aft_k = argv[5];
 		encdec_aft_c = argv[6];
 
-		if (strlen(prng_output_stream) % 2 != 0 ||
+		if (strlen(prng_output_stream) != 64 ||
 		        strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
 		        strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
 		        strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
