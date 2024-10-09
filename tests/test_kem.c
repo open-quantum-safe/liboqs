@@ -214,6 +214,7 @@ cleanup:
 		OQS_MEM_insecure_free(ciphertext - sizeof(magic_t));
 	}
 	OQS_KEM_free(kem);
+	
 	return ret;
 }
 
