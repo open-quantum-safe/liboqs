@@ -175,7 +175,7 @@ static void deep_state_swap(const xmss_params *params,
          ? (params->tree_height + 1)
          : ((1 << params->bds_k) - params->bds_k - 1))
         * params->n;
-    unsigned char *t = malloc(t_size);
+    unsigned char *t = OQS_MEM_malloc(t_size);
     if (t == NULL) {
         return;
     }
@@ -243,9 +243,9 @@ static void treehash_init(const xmss_params *params,
     uint32_t lastnode = index +(1<<height), i;
     const size_t thash_buf_size = 2 * params->padding_len + 6 * params->n + 32;
     const size_t stack_size = ((height+1)*params->n)* sizeof(unsigned char);
-    unsigned char *stack = calloc((height+1)*params->n, sizeof(unsigned char));
-    unsigned int *stacklevels = malloc((height + 1)*sizeof(unsigned int));
-    unsigned char *thash_buf = malloc(thash_buf_size);
+    unsigned char *stack = OQS_MEM_calloc((height+1)*params->n, sizeof(unsigned char));
+    unsigned int *stacklevels = OQS_MEM_malloc((height + 1)*sizeof(unsigned int));
+    unsigned char *thash_buf = OQS_MEM_malloc(thash_buf_size);
 
     if (stack == NULL || stacklevels == NULL || thash_buf == NULL) {
         return;
@@ -321,7 +321,7 @@ static void treehash_update(const xmss_params *params,
     set_ots_addr(ots_addr, treehash->next_idx);
 
     const size_t buf_size = 2 * params->n + 2 * params->padding_len + 6 * params->n + 32;
-    unsigned char *buf = malloc(buf_size);
+    unsigned char *buf = OQS_MEM_malloc(buf_size);
     if (buf == NULL) {
         return;
     }
@@ -419,7 +419,7 @@ static char bds_state_update(const xmss_params *params,
     uint32_t node_addr[8] = {0};
     uint32_t ots_addr[8] = {0};
     const size_t thash_buf_size = 2 * params->padding_len + 6 * params->n + 32;
-    unsigned char *thash_buf = malloc(thash_buf_size);
+    unsigned char *thash_buf = OQS_MEM_malloc(thash_buf_size);
     if (thash_buf == NULL)
     {
         return -1;
@@ -485,7 +485,7 @@ static void bds_round(const xmss_params *params,
     unsigned int startidx;
     unsigned int offset, rowidx;
     const size_t buf_size = 2 * params->n + 2 * params->padding_len + 6 * params->n + 32;
-    unsigned char *buf = malloc(buf_size);
+    unsigned char *buf = OQS_MEM_malloc(buf_size);
     if (buf == NULL) {
         return;
     }
@@ -589,7 +589,7 @@ int xmss_core_keypair(const xmss_params *params,
     // TODO (from upstream) refactor BDS state not to need separate treehash instances
     bds_state state;
     const size_t treehash_size = (params->tree_height - params->bds_k)*sizeof(treehash_inst);
-    treehash_inst *treehash = calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
+    treehash_inst *treehash = OQS_MEM_calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
     if (treehash == NULL) {
         return -1;
     }
@@ -652,8 +652,8 @@ int xmss_core_sign(const xmss_params *params,
     bds_state state;
     const size_t treehash_size = (params->tree_height - params->bds_k) * sizeof(treehash_inst);
     const size_t tmp_size = 5 * params->n + params->padding_len + params->n + 32;
-    treehash_inst *treehash = calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
-    unsigned char *tmp = malloc(tmp_size);
+    treehash_inst *treehash = OQS_MEM_calloc(params->tree_height - params->bds_k, sizeof(treehash_inst));
+    unsigned char *tmp = OQS_MEM_malloc(tmp_size);
     if (treehash == NULL || tmp == NULL) {
         return -1;
     }
@@ -725,7 +725,7 @@ int xmss_core_sign(const xmss_params *params,
     /* Already put the message in the right place, to make it easier to prepend
      * things when computing the hash over the message. */
     unsigned long long prefix_length = params->padding_len + 3*params->n;
-    unsigned char *m_with_prefix = malloc((size_t)(mlen + prefix_length));
+    unsigned char *m_with_prefix = OQS_MEM_malloc((size_t)(mlen + prefix_length));
     if (m_with_prefix == NULL) {
         ret = -1;
         goto cleanup;
@@ -811,8 +811,8 @@ int xmssmt_core_keypair(const xmss_params *params,
     // TODO (from upstream) refactor BDS state not to need separate treehash instances
     const size_t states_size = (2*params->d - 1)* sizeof(bds_state);
     const size_t treehash_size = ((2*params->d - 1) * (params->tree_height - params->bds_k))* sizeof(treehash_inst);
-    bds_state *states = calloc(2*params->d - 1, sizeof(bds_state));
-    treehash_inst *treehash = calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
+    bds_state *states = OQS_MEM_calloc(2*params->d - 1, sizeof(bds_state));
+    treehash_inst *treehash = OQS_MEM_calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
     if (states == NULL || treehash == NULL) {
         return -1;
     }
@@ -890,9 +890,9 @@ int xmssmt_core_sign(const xmss_params *params,
     const size_t treehash_size = (2*params->d - 1) * (params->tree_height - params->bds_k) * sizeof(treehash_inst);
     const size_t tmp_size = 5 * params->n +
                                 params->padding_len + params->n + 32;
-    bds_state *states = calloc(2*params->d - 1, sizeof(bds_state));
-    treehash_inst *treehash = calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
-    unsigned char *tmp = malloc(5 * params->n +
+    bds_state *states = OQS_MEM_calloc(2*params->d - 1, sizeof(bds_state));
+    treehash_inst *treehash = OQS_MEM_calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
+    unsigned char *tmp = OQS_MEM_malloc(5 * params->n +
                                 params->padding_len + params->n + 32);
     if (states == NULL || treehash == NULL || tmp == NULL) {
         return -1;
@@ -925,7 +925,7 @@ int xmssmt_core_sign(const xmss_params *params,
         states[i].next_leaf = 0;
     }
 
-    if ((m_with_prefix_len == 0) || (m_with_prefix = malloc(m_with_prefix_len)) == NULL) {
+    if ((m_with_prefix_len == 0) || (m_with_prefix = OQS_MEM_malloc(m_with_prefix_len)) == NULL) {
         ret = -1;
         goto cleanup;
     }

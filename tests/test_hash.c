@@ -17,7 +17,7 @@
 static bool sha2_callback_called = false;
 
 static int read_stdin(uint8_t **msg, size_t *msg_len) {
-	*msg = malloc(BUFFER_SIZE);
+	*msg = OQS_MEM_malloc(BUFFER_SIZE);
 	if (*msg == NULL) {
 		return -1;
 	}
@@ -79,7 +79,7 @@ static int do_sha256(void) {
 
 	if (memcmp(output, output_inc, 32) != 0) {
 		fprintf(stderr, "ERROR: Incremental API does not match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -2;
 	}
 	// hash with second state
@@ -91,7 +91,7 @@ static int do_sha256(void) {
 	}
 	if (memcmp(output, output_inc, 32) != 0) {
 		fprintf(stderr, "ERROR: Incremental API with cloned state does not match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -3;
 	}
 
@@ -103,7 +103,7 @@ static int do_sha256(void) {
 	OQS_SHA2_sha256_inc_finalize(output_inc_2, &state3, &msg[i], 0);
 	if (memcmp(output, output_inc_2, 32) != 0) {
 		fprintf(stderr, "ERROR: Non-block Incremental API with cloned state does not match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -4;
 	}
 
@@ -112,7 +112,7 @@ static int do_sha256(void) {
 	OQS_SHA2_sha256_inc_finalize(output_inc, &state6, NULL, 0);
 	if (memcmp(output, output_inc, 32) != 0) {
 		fprintf(stderr, "ERROR: Incremental API with the entire msg.\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -3;
 	}
 
@@ -128,7 +128,7 @@ static int do_sha256(void) {
 	}
 	if (memcmp(output, output_inc_2, 32) != 0) {
 		fprintf(stderr, "ERROR: Combined block increments with non-block size failed to match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -5;
 	}
 
@@ -142,12 +142,12 @@ static int do_sha256(void) {
 	}
 	if (memcmp(output, output_inc_2, 32) != 0) {
 		fprintf(stderr, "ERROR: Combined non-block size and block increments failed to match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -5;
 	}
 	//Test inc API
 	print_hex(output, 32);
-	free(msg);
+	OQS_MEM_insecure_free(msg);
 	return 0;
 }
 
@@ -178,7 +178,7 @@ static int do_sha384(void) {
 	}
 	if (memcmp(output, output_inc, 48) != 0) {
 		fprintf(stderr, "ERROR: Incremental API does not match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -2;
 	}
 	// hash with second state
@@ -190,11 +190,11 @@ static int do_sha384(void) {
 	}
 	if (memcmp(output, output_inc, 48) != 0) {
 		fprintf(stderr, "ERROR: Incremental API with cloned state does not match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -3;
 	}
 	print_hex(output, 48);
-	free(msg);
+	OQS_MEM_insecure_free(msg);
 	return 0;
 }
 
@@ -225,7 +225,7 @@ static int do_sha512(void) {
 	}
 	if (memcmp(output, output_inc, 64) != 0) {
 		fprintf(stderr, "ERROR: Incremental API does not match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -2;
 	}
 	// hash with second state
@@ -237,11 +237,11 @@ static int do_sha512(void) {
 	}
 	if (memcmp(output, output_inc, 64) != 0) {
 		fprintf(stderr, "ERROR: Incremental API with cloned state does not match main API\n");
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 		return -3;
 	}
 	print_hex(output, 64);
-	free(msg);
+	OQS_MEM_insecure_free(msg);
 	return 0;
 }
 
@@ -254,11 +254,11 @@ static int do_arbitrary_hash(void (*hash)(uint8_t *, const uint8_t *, size_t), s
 		return -1;
 	}
 	// run main SHA-256 API
-	uint8_t *output = malloc(hash_len);
+	uint8_t *output = OQS_MEM_malloc(hash_len);
 	hash(output, msg, msg_len);
 	print_hex(output, hash_len);
-	free(output);
-	free(msg);
+	OQS_MEM_insecure_free(output);
+	OQS_MEM_insecure_free(msg);
 	return 0;
 }
 
