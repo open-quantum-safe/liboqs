@@ -21,14 +21,75 @@ extern "C" {
 #endif
 
 /**
+ * @brief Memory allocation and deallocation functions.
+ *
+ * These macros provide a unified interface for memory operations,
+ * using OpenSSL functions when OQS_USE_OPENSSL is defined, and
+ * standard C library functions otherwise.
+ */
+#if (defined(OQS_USE_OPENSSL) || defined(OQS_DLOPEN_OPENSSL)) && defined(OPENSSL_VERSION_NUMBER)
+#include <openssl/crypto.h>
+
+/**
+* Allocates memory of a given size.
+* @param size The size of the memory to be allocated in bytes.
+* @return A pointer to the allocated memory.
+*/
+#define OQS_MEM_malloc(size) OPENSSL_malloc(size)
+
+/**
+ * Allocates memory for an array of elements of a given size.
+ * @param num_elements The number of elements to allocate.
+ * @param element_size The size of each element in bytes.
+ * @return A pointer to the allocated memory.
+ */
+#define OQS_MEM_calloc(num_elements, element_size) OPENSSL_zalloc((num_elements) * (element_size))
+/**
+ * Duplicates a string.
+ * @param str The string to be duplicated.
+ * @return A pointer to the newly allocated string.
+ */
+#define OQS_MEM_strdup(str) OPENSSL_strdup(str)
+#else
+/**
+* Allocates memory of a given size.
+* @param size The size of the memory to be allocated in bytes.
+* @return A pointer to the allocated memory.
+*/
+#define OQS_MEM_malloc(size) malloc(size)
+
+/**
+ * Allocates memory for an array of elements of a given size.
+ * @param num_elements The number of elements to allocate.
+ * @param element_size The size of each element in bytes.
+ * @return A pointer to the allocated memory.
+ */
+#define OQS_MEM_calloc(num_elements, element_size) calloc(num_elements, element_size)
+/**
+ * Duplicates a string.
+ * @param str The string to be duplicated.
+ * @return A pointer to the newly allocated string.
+ */
+#define OQS_MEM_strdup(str) strdup(str)
+#endif
+
+
+/**
+ * Prints an error message to stderr and return.
+ * @param msg The error message to be printed.
+ */
+#define OQS_EXIT(msg)                                       \
+    {                                                       \
+        return; /* TODO: better error handling */           \
+    }
+/**
  * Macro for terminating the program if x is
  * a null pointer.
  */
 #define OQS_EXIT_IF_NULLPTR(x, loc)                                                   \
     do {                                                                              \
         if ( (x) == (void*)0 ) {                                                      \
-            fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n", loc); \
-            exit(EXIT_FAILURE);                                                       \
+            return; /* TODO: better error handling */                                 \
         }                                                                             \
     } while (0)
 
@@ -49,7 +110,7 @@ extern "C" {
     do {                                                                               \
         if( 1 != (x) ) {                                                               \
             fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
-            exit(EXIT_FAILURE);                                                        \
+            return; /* TODO: better error handling */                                  \
         }                                                                              \
     } while (0)
 #else // OPENSSL_NO_STDIO
@@ -58,7 +119,7 @@ extern "C" {
         if( 1 != (x) ) {                                                               \
             fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
             OSSL_FUNC(ERR_print_errors_fp)(stderr);                                    \
-            exit(EXIT_FAILURE);                                                        \
+            return; /* TODO: better error handling */                                  \
         }                                                                              \
     } while (0)
 #endif // OPENSSL_NO_STDIO
@@ -75,7 +136,7 @@ extern "C" {
     if (size_t_var_name <= INT_MAX) {                         \
         int_var_name = (int)size_t_var_name;                  \
     } else {                                                  \
-        exit(EXIT_FAILURE);                                   \
+        return; /* TODO: better error handling */             \
     }
 
 /**

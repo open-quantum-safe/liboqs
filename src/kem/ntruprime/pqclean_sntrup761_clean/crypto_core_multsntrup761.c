@@ -18,41 +18,41 @@ static Fq Fq_freeze(int32 x) {
 }
 
 int PQCLEAN_SNTRUP761_CLEAN_crypto_core_multsntrup761(unsigned char *outbytes, const unsigned char *inbytes, const unsigned char *kbytes) {
-    Fq f[p];
-    small g[p];
-    Fq fg[p + p - 1];
+    Fq f[p_param];
+    small g[p_param];
+    Fq fg[p_param + p_param - 1];
     int32 result;
     int i, j;
 
     crypto_decode_pxint16(f, inbytes);
-    for (i = 0; i < p; ++i) {
+    for (i = 0; i < p_param; ++i) {
         f[i] = Fq_freeze(f[i]);
     }
 
-    for (i = 0; i < p; ++i) {
+    for (i = 0; i < p_param; ++i) {
         small gi = (small) kbytes[i];
         small gi0 = gi & 1;
         g[i] = (small) (gi0 - (gi & (gi0 << 1)));
     }
 
-    for (i = 0; i < p; ++i) {
+    for (i = 0; i < p_param; ++i) {
         result = 0;
         for (j = 0; j <= i; ++j) {
             result += f[j] * (int32)g[i - j];
         }
         fg[i] = Fq_freeze(result);
     }
-    for (i = p; i < p + p - 1; ++i) {
+    for (i = p_param; i < p_param + p_param - 1; ++i) {
         result = 0;
-        for (j = i - p + 1; j < p; ++j) {
+        for (j = i - p_param + 1; j < p_param; ++j) {
             result += f[j] * (int32)g[i - j];
         }
         fg[i] = Fq_freeze(result);
     }
 
-    for (i = p + p - 2; i >= p; --i) {
-        fg[i - p] = Fq_freeze(fg[i - p] + fg[i]);
-        fg[i - p + 1] = Fq_freeze(fg[i - p + 1] + fg[i]);
+    for (i = p_param + p_param - 2; i >= p_param; --i) {
+        fg[i - p_param] = Fq_freeze(fg[i - p_param] + fg[i]);
+        fg[i - p_param + 1] = Fq_freeze(fg[i - p_param + 1] + fg[i]);
     }
 
     crypto_encode_pxint16(outbytes, fg);

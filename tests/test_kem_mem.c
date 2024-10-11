@@ -53,11 +53,11 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 		printf("Executing keygen for KEM %s\n", kem->method_name);
 		printf("================================================================================\n");
 
-		public_key = malloc(kem->length_public_key);
-		secret_key = malloc(kem->length_secret_key);
+		public_key = OQS_MEM_malloc(kem->length_public_key);
+		secret_key = OQS_MEM_malloc(kem->length_secret_key);
 
 		if ((public_key == NULL) || (secret_key == NULL)) {
-			fprintf(stderr, "ERROR: malloc failed\n");
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 			goto err;
 		}
 
@@ -80,13 +80,13 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 		printf("Executing encaps for KEM %s\n", kem->method_name);
 		printf("================================================================================\n");
 
-		public_key = malloc(kem->length_public_key);
-		secret_key = malloc(kem->length_secret_key);
-		ciphertext = malloc(kem->length_ciphertext);
-		shared_secret_e = malloc(kem->length_shared_secret);
+		public_key = OQS_MEM_malloc(kem->length_public_key);
+		secret_key = OQS_MEM_malloc(kem->length_secret_key);
+		ciphertext = OQS_MEM_malloc(kem->length_ciphertext);
+		shared_secret_e = OQS_MEM_malloc(kem->length_shared_secret);
 
 		if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL)) {
-			fprintf(stderr, "ERROR: malloc failed\n");
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 			goto err;
 		}
 
@@ -115,14 +115,14 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 		printf("Executing decaps for KEM %s\n", kem->method_name);
 		printf("================================================================================\n");
 
-		public_key = malloc(kem->length_public_key);
-		secret_key = malloc(kem->length_secret_key);
-		ciphertext = malloc(kem->length_ciphertext);
-		shared_secret_e = malloc(kem->length_shared_secret);
-		shared_secret_d = malloc(kem->length_shared_secret);
+		public_key = OQS_MEM_malloc(kem->length_public_key);
+		secret_key = OQS_MEM_malloc(kem->length_secret_key);
+		ciphertext = OQS_MEM_malloc(kem->length_ciphertext);
+		shared_secret_e = OQS_MEM_malloc(kem->length_shared_secret);
+		shared_secret_d = OQS_MEM_malloc(kem->length_shared_secret);
 
 		if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
-			fprintf(stderr, "ERROR: malloc failed\n");
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 			goto err;
 		}
 		if (oqs_fload("pk", method_name, public_key, kem->length_public_key, &retlen) != OQS_SUCCESS) {
