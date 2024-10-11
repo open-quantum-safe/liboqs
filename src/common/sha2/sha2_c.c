@@ -503,7 +503,7 @@ static const uint8_t iv_512[64] = {
 
 void oqs_sha2_sha224_inc_init_c(sha224ctx *state) {
 	state->ctx = OQS_MEM_malloc(PQC_SHA256CTX_BYTES);
-	if (!stateout->ctx) {
+	if (!state->ctx) {
 		return;
 	}
 	for (size_t i = 0; i < 32; ++i) {
@@ -519,7 +519,7 @@ void oqs_sha2_sha224_inc_init_c(sha224ctx *state) {
 void oqs_sha2_sha256_inc_init_c(sha256ctx *state) {
 	state->data_len = 0;
 	state->ctx = OQS_MEM_malloc(PQC_SHA256CTX_BYTES);
-	if (!stateout->ctx) {
+	if (!stat->ctx) {
 		return;
 	}
 	for (size_t i = 0; i < 32; ++i) {
@@ -549,7 +549,7 @@ void oqs_sha2_sha384_inc_init_c(sha384ctx *state) {
 
 void oqs_sha2_sha512_inc_init_c(sha512ctx *state) {
 	state->ctx = OQS_MEM_malloc(PQC_SHA512CTX_BYTES);
-	if (!stateout->ctx) {
+	if (!state->ctx) {
 		return;
 	}
 	for (size_t i = 0; i < 64; ++i) {
