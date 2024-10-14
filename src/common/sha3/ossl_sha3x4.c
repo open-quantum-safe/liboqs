@@ -83,7 +83,7 @@ static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 	} else {
 		uint8_t *tmp = OQS_MEM_malloc(s->n_out + outlen);
 		if (!tmp) {
-			return;
+			abort();
 		}
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx0);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
@@ -207,7 +207,7 @@ static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 	} else {
 		uint8_t *tmp = OQS_MEM_malloc(s->n_out + outlen);
 		if (!tmp) {
-			return;
+			abort();
 		}
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx0);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
