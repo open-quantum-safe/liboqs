@@ -59,8 +59,6 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 		goto err;
 	}
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, &dummy_secure_storage, NULL);
-	unsigned long long max_sigs;
-	OQS_SIG_STFL_sigs_remaining(sig, &max_sigs, secret_key);
 
 	public_key = malloc(sig->length_public_key);
 	message = malloc(message_len);
