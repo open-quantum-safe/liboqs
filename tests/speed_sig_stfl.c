@@ -17,8 +17,7 @@
 #include "ds_benchmark.h"
 #include "system_info.c"
 
-OQS_STATUS dummy_secure_storage(uint8_t *sk_buf, size_t sk_buf_len, void *context)
-{
+OQS_STATUS dummy_secure_storage(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
 	return OQS_SUCCESS;
 }
 
@@ -77,8 +76,8 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 		TIME_OPERATION_SECONDS(OQS_SIG_STFL_keypair(sig, public_key, secret_key), "keypair", duration)
 		unsigned long long max_sigs;
 		OQS_SIG_STFL_sigs_total(sig, &max_sigs, secret_key);
-		TIME_OPERATION_SECONDS_MAXIT(OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key), "sign", duration, 
-			max_sigs, OQS_SIG_STFL_keypair(sig, public_key, secret_key) )
+		TIME_OPERATION_SECONDS_MAXIT(OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key), "sign", duration,
+		                             max_sigs, OQS_SIG_STFL_keypair(sig, public_key, secret_key) )
 		TIME_OPERATION_SECONDS(OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key), "verify", duration)
 	} else {
 		TIME_OPERATION_SECONDS(fullcycle(sig, public_key, secret_key, signature, signature_len, message, message_len), "fullcycle", duration)
