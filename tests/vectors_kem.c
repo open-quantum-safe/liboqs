@@ -11,14 +11,67 @@
 #include <sys/stat.h>
 
 #include <oqs/oqs.h>
-
+#include <oqs/sha3.h>
 #include "system_info.c"
+
+#define ML_KEM_POLYBYTES        384
+#define ML_KEM_K_MAX            4
+#define ML_KEM_N                256
+#define ML_KEM_1024_PK_SIZE     OQS_KEM_ml_kem_1024_length_public_key
+#define MOD_3329(x)             ((x) - (((x) >= 3329) * 3329))
 
 struct {
 	const uint8_t *pos;
 } prng_state = {
 	.pos = 0
 };
+
+static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
+	uint8_t pkdig[32] = {0};
+	uint8_t k = (0 == strcasecmp(method_name, "ML-KEM-512")) ? 2 : (0 == strcasecmp(method_name, "ML-KEM-768")) ? 3 : 4;
+	OQS_SHA3_sha3_256(pkdig, sk + (ML_KEM_POLYBYTES * k), (ML_KEM_POLYBYTES * k) + 32);
+	if (0 != memcmp(pkdig, sk + (ML_KEM_POLYBYTES * k * 2) + 32, 32)) {
+		return false;
+	}
+	return true;
+}
+
+static inline bool sanityCheckPK(const uint8_t *pk, uint32_t pkLen, const char *method_name) {
+	unsigned int i, j;
+	uint8_t k = (0 == strcasecmp(method_name, "ML-KEM-512")) ? 2 : (0 == strcasecmp(method_name, "ML-KEM-768")) ? 3 : 4;
+	uint16_t buffd[ML_KEM_N * ML_KEM_K_MAX] = {0};
+	uint8_t buffe[ML_KEM_1024_PK_SIZE] = {0};
+	uint16_t *buff_dec;
+	uint8_t *buff_enc = buffe;
+	/* perform byte decoding */
+	for (i = 0; i < k; i++) {
+		buff_dec = &buffd[i * ML_KEM_N];
+		const uint8_t *curr_pk = pk + (i * ML_KEM_POLYBYTES);
+		for (j = 0; j < ML_KEM_N / 2; j++) {
+			buff_dec[2 * j]   = ((curr_pk[3 * j + 0] >> 0) | ((uint16_t)curr_pk[3 * j + 1] << 8)) & 0xFFF;
+			buff_dec[2 * j]   = MOD_3329(buff_dec[2 * j]);
+			buff_dec[2 * j + 1] = ((curr_pk[3 * j + 1] >> 4) | ((uint16_t)curr_pk[3 * j + 2] << 4)) & 0xFFF;
+			buff_dec[2 * j + 1] = MOD_3329(buff_dec[2 * j + 1]);
+		}
+	}
+	/* perform byte encoding */
+	for (i = 0; i < k; i++) {
+		uint16_t t0, t1;
+		buff_dec = &buffd[i * ML_KEM_N];
+		uint8_t *buff_enc = buffe + (i * ML_KEM_POLYBYTES);
+		for (j = 0; j < ML_KEM_N / 2; j++) {
+			t0  = buff_dec[2 * j];
+			t1  = buff_dec[2 * j + 1];
+			buff_enc[3 * j + 0] = (t0 >> 0);
+			buff_enc[3 * j + 1] = (t0 >> 8) | (t1 << 4);
+			buff_enc[3 * j + 2] = (t1 >> 4);
+		}
+	}
+	if (0 != memcmp(buffe, pk, pkLen - 32)) {
+		return false;
+	}
+	return true;
+}
 
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
@@ -208,6 +261,11 @@ static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
 		goto err;
 	}
 
+	if (false == sanityCheckPK(encdec_pk, kem->length_public_key, method_name)) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: passed encapsulation key is corrupted !\n", method_name);
+		goto err;
+	}
+
 	rc = OQS_KEM_encaps(kem, ct_encaps, ss_encaps, encdec_pk);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
@@ -270,6 +328,11 @@ static OQS_STATUS kem_vector_encdec_val(const char *method_name,
 
 	if ((encdec_sk == NULL) || (encdec_k == NULL) || (encdec_c == NULL)) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
+		goto err;
+	}
+
+	if (false == sanityCheckSK(encdec_sk, method_name)) {
+		fprintf(stderr, "[vectors_kem] %s ERROR: passed decapsulation key is corrupted !\n", method_name);
 		goto err;
 	}
 
