@@ -80,7 +80,7 @@ static void MLKEM_randombytes_free(void) {
 }
 
 static OQS_STATUS kem_kg_vector(const char *method_name,
-                                const uint8_t *prng_output_stream,
+                                uint8_t *prng_output_stream,
                                 const uint8_t *kg_pk, const uint8_t *kg_sk) {
 
 	uint8_t *entropy_input;
@@ -162,7 +162,7 @@ cleanup:
 }
 
 static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
-                                        const uint8_t *prng_output_stream,
+                                        uint8_t *prng_output_stream,
                                         const uint8_t *encdec_pk,
                                         const uint8_t *encdec_k, const uint8_t *encdec_c) {
 
