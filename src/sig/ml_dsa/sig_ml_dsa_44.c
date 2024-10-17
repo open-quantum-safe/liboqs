@@ -33,6 +33,7 @@ extern int pqcrystals_ml_dsa_44_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_dsa_44_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_44_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 
+
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_avx2)
 extern int pqcrystals_ml_dsa_44_avx2_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_ml_dsa_44_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);

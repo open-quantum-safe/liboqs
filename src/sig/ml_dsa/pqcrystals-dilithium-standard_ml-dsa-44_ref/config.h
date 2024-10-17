@@ -11,15 +11,15 @@
 #endif
 
 #if DILITHIUM_MODE == 2
-#define CRYPTO_ALGNAME "ML-DSA-44"
+#define CRYPTO_ALGNAME "Dilithium2"
 #define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_44_ref
 #define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_44_ref_##s
 #elif DILITHIUM_MODE == 3
-#define CRYPTO_ALGNAME "ML-DSA-65"
+#define CRYPTO_ALGNAME "Dilithium3"
 #define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_65_ref
 #define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_65_ref_##s
 #elif DILITHIUM_MODE == 5
-#define CRYPTO_ALGNAME "ML-DSA-87"
+#define CRYPTO_ALGNAME "Dilithium5"
 #define DILITHIUM_NAMESPACETOP pqcrystals_ml_dsa_87_ref
 #define DILITHIUM_NAMESPACE(s) pqcrystals_ml_dsa_87_ref_##s
 #endif

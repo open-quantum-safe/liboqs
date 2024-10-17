@@ -48,12 +48,13 @@ upstreams:
     patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
   -
     name: pqcrystals-dilithium-standard
-    git_url: https://github.com/pq-crystals/dilithium.git
-    git_branch: master
-    git_commit: cbcd8753a43402885c90343cd6335fb54712cda1
+    git_url: https://github.com/bhess/dilithium.git
+    git_branch: bhe-internal
+    git_commit: 34cb7f2171a359ced26799eb03ed8436fc372d9f
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-ml_dsa.patch]
+    patches: [pqcrystals-ml_dsa-internal.patch]
+    #patches: [pqcrystals-ml_dsa.patch]
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git

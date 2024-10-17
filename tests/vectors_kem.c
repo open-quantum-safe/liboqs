@@ -58,7 +58,7 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 	}
 }
 
-/* HQC-specific functions */
+/* ML_KEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))

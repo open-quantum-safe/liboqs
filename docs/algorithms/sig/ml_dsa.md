@@ -7,7 +7,7 @@
 - **Authors' website**: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/final
 - **Specification version**: ML-DSA.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/dilithium/commit/cbcd8753a43402885c90343cd6335fb54712cda1 with copy_from_upstream patches
+  - **Source**: https://github.com/bhess/dilithium/commit/34cb7f2171a359ced26799eb03ed8436fc372d9f with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 
 

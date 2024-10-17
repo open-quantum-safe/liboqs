@@ -33,5 +33,4 @@ void dilithium_shake256_stream_init(shake256incctx *state,
         shake256_squeezeblocks(OUT, OUTBLOCKS, STATE)
 #define stream256_release(STATE) shake256_inc_ctx_release(STATE)
 
-
 #endif
