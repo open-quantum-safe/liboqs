@@ -134,6 +134,7 @@ The following instructions assume we are in `build`.
 	- `kat_sig_stfl`: Program for checking results against submitted KAT values using `tests/test_kat.py`
 	- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 	- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
+	- `speed_sig_stfl`: Benchmarking program for stateful signature mechanisms; see `./speed_sig_stfl --help` for usage instructions
 	- `example_kem`: Minimal runnable example showing the usage of the KEM API
 	- `example_sig`: Minimal runnable example showing the usage of the signature API
 	- `example_sig_stfl`: Minimal runnable example showing the usage of the stateful signature API
