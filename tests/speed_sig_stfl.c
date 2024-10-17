@@ -18,7 +18,18 @@
 #include "system_info.c"
 
 OQS_STATUS dummy_secure_storage(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
+	// suppress unused parameter warning
+	(void)(sk_buf);
+	(void)(sk_buf_len);
+	(void)(context);
 	return OQS_SUCCESS;
+}
+
+// reset secret key: some schemes fail to create a new secret key over a previous secret key
+void reset_secret_key(OQS_SIG_STFL *sig, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+	OQS_SIG_STFL_SECRET_KEY_free(secret_key);
+	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, &dummy_secure_storage, secret_key);
 }
 
 static void fullcycle(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, uint8_t *signature, size_t signature_len, uint8_t *message, size_t message_len) {
@@ -73,16 +84,31 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 
 	printf("%-36s | %10s | %14s | %15s | %10s | %25s | %10s\n", sig->method_name, "", "", "", "", "", "");
 	if (!doFullCycle) {
-		TIME_OPERATION_SECONDS(OQS_SIG_STFL_keypair(sig, public_key, secret_key), "keypair", duration)
+		// benchmark keygen: need to reset secret key between calls
+		OQS_STATUS status = 0;
+		TIME_OPERATION_SECONDS_MAXIT({ status = OQS_SIG_STFL_keypair(sig, public_key, secret_key); }, "keypair", duration, 1, {
+			if (status != OQS_SUCCESS) {
+				printf("keygen error. Exiting.\n");
+				exit(-1);
+			}
+			reset_secret_key(sig, secret_key);
+		})
+		// benchmark sign: need to generate new secret key after available signatures have been exhausted
 		unsigned long long max_sigs;
 		OQS_SIG_STFL_sigs_total(sig, &max_sigs, secret_key);
-		TIME_OPERATION_SECONDS_MAXIT(OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key), "sign", duration,
-		                             max_sigs, OQS_SIG_STFL_keypair(sig, public_key, secret_key) )
-		TIME_OPERATION_SECONDS(OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key), "verify", duration)
+		TIME_OPERATION_SECONDS_MAXIT({ status = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key); }, "sign", duration, max_sigs, {
+			if (status != OQS_SUCCESS) {
+				printf("sign error. Exiting.\n");
+				exit(-1);
+			}
+			OQS_SIG_STFL_keypair(sig, public_key, secret_key);
+		})
+		// benchmark verification
+		TIME_OPERATION_SECONDS({ OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key); }, "verify", duration)
 	} else {
-		TIME_OPERATION_SECONDS(fullcycle(sig, public_key, secret_key, signature, signature_len, message, message_len), "fullcycle", duration)
+		// benchmark fullcycle: need to reset secret key between calls
+		TIME_OPERATION_SECONDS_MAXIT({ fullcycle(sig, public_key, secret_key, signature, signature_len, message, message_len); }, "fullcycle", duration, 1, { reset_secret_key(sig, secret_key); })
 	}
-
 
 	if (printInfo) {
 		printf("public key bytes: %zu, secret key bytes: %zu, signature bytes: %zu\n", sig->length_public_key, sig->length_secret_key, sig->length_signature);
