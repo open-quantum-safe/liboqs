@@ -200,7 +200,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (printUsage) {
-		fprintf(stderr, "Usage: speed_sig <options> <alg>\n");
+		fprintf(stderr, "Usage: speed_sig_stfl <options> <alg>\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "<options>\n");
 		fprintf(stderr, "--algs             Print supported algorithms and terminate\n");
