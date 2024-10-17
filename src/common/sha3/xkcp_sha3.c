@@ -201,7 +201,7 @@ static void SHA3_sha3_256(uint8_t *output, const uint8_t *input, size_t inlen) {
 static void SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
 
-	LIBOQS_die(state->ctx, "Memory allocation failed");
+	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3");
 	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
@@ -238,7 +238,7 @@ static void SHA3_sha3_384(uint8_t *output, const uint8_t *input, size_t inlen) {
 
 static void SHA3_sha3_384_inc_init(OQS_SHA3_sha3_384_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
-	LIBOQS_die(state->ctx, "Memory allocation failed");
+	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3");
 	keccak_inc_reset((uint64_t *)state->ctx);
 }
 static void SHA3_sha3_384_inc_absorb(OQS_SHA3_sha3_384_inc_ctx *state, const uint8_t *input, size_t inlen) {
@@ -274,7 +274,7 @@ static void SHA3_sha3_512(uint8_t *output, const uint8_t *input, size_t inlen) {
 
 static void SHA3_sha3_512_inc_init(OQS_SHA3_sha3_512_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
-	LIBOQS_die(state->ctx, "Memory allocation failed");
+	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3");
 	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
@@ -317,7 +317,7 @@ static void SHA3_shake128_inc_init(OQS_SHA3_shake128_inc_ctx *state) {
 		return;
 	}
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
-	LIBOQS_die(state->ctx, "Memory allocation failed");
+	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3");
 	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
@@ -360,7 +360,7 @@ static void SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input, 
 
 static void SHA3_shake256_inc_init(OQS_SHA3_shake256_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
-	LIBOQS_die(state->ctx, "Memory allocation failed");
+	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3");
 	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
