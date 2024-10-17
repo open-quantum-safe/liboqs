@@ -9,8 +9,7 @@ jobs:
 
   zephyr_test:
     runs-on: ubuntu-22.04
-    # Note: Revert to *ci:latest once https://github.com/zephyrproject-rtos/docker-image/issues/205 is resolved 
-    container: ghcr.io/zephyrproject-rtos/ci:v0.26.14
+    container: ghcr.io/zephyrproject-rtos/ci:latest
     env:
         CMAKE_PREFIX_PATH: /opt/toolchains
     strategy:
@@ -18,7 +17,7 @@ jobs:
         matrix:
           config:
             - zephyr-ref: v3.4.0
-            - zephyr-ref: v3.5.0
+            - zephyr-ref: v3.7.0
 
     steps:
         - name: Init Zephyr workspace
