@@ -86,6 +86,18 @@ extern "C" {
     } while (0)
 
 /**
+ * Macro for terminating the program if a given pointer is NULL.
+ * @param ptr The pointer to check.
+ * @param msg The error message to display if the pointer is NULL.
+ */
+#define LIBOQS_die(ptr, msg) do { \
+    if (!(ptr)) { \
+       fprintf(stderr, "%s\n", msg); \
+       abort(); \
+    } \
+} while (0)
+
+/**
  * This macro is intended to replace those assert()s
  * involving side-effecting statements in aes/aes_ossl.c.
  *
