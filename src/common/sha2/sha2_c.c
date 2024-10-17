@@ -556,7 +556,7 @@ void oqs_sha2_sha512_inc_init_c(sha512ctx *state) {
 
 void oqs_sha2_sha224_inc_ctx_clone_c(sha224ctx *stateout, const sha224ctx *statein) {
 	stateout->ctx = OQS_MEM_malloc(PQC_SHA256CTX_BYTES);
-	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA2");
+	OQS_EXIT_IF_NULLPTR(stateout->ctx, "SHA2");
 	stateout->data_len = statein->data_len;
 	memcpy(stateout->data, statein->data, 128);
 	memcpy(stateout->ctx, statein->ctx, PQC_SHA256CTX_BYTES);
@@ -572,7 +572,7 @@ void oqs_sha2_sha256_inc_ctx_clone_c(sha256ctx *stateout, const sha256ctx *state
 
 void oqs_sha2_sha384_inc_ctx_clone_c(sha384ctx *stateout, const sha384ctx *statein) {
 	stateout->ctx = OQS_MEM_malloc(PQC_SHA512CTX_BYTES);
-	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA2");
+	OQS_EXIT_IF_NULLPTR(stateout->ctx, "SHA2");
 	stateout->data_len = statein->data_len;
 	memcpy(stateout->data, statein->data, 128);
 	memcpy(stateout->ctx, statein->ctx, PQC_SHA512CTX_BYTES);
