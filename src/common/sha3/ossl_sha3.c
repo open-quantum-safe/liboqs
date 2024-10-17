@@ -199,7 +199,7 @@ static void SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, output, outlen);
 	} else {
 		uint8_t *tmp = OQS_MEM_malloc(s->n_out + outlen);
-		LIBOQS_die(tmp, "Memory allocation failed");
+		OQS_EXIT_IF_NULLPTR(tmp, "SHA3");
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(output, tmp + s->n_out, outlen);
 		OQS_MEM_insecure_free(tmp); // IGNORE free-check
@@ -274,7 +274,7 @@ static void SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, output, outlen);
 	} else {
 		uint8_t *tmp = OQS_MEM_malloc(s->n_out + outlen);
-		LIBOQS_die(tmp, "Memory allocation failed");
+		OQS_EXIT_IF_NULLPTR(tmp, "SHA3");
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(output, tmp + s->n_out, outlen);
 		OQS_MEM_insecure_free(tmp); // IGNORE free-check
