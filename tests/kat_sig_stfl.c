@@ -184,15 +184,15 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	}
 
 	// Grab the pk and sk from KAT file
-	public_key = malloc(sig->length_public_key);
+	public_key = OQS_MEM_malloc(sig->length_public_key);
 	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, do_nothing_save, NULL);
 
-	signature = calloc(sig->length_signature, sizeof(uint8_t));
-	signature_kat = calloc(sig->length_signature, sizeof(uint8_t));
+	signature = OQS_MEM_calloc(sig->length_signature, sizeof(uint8_t));
+	signature_kat = OQS_MEM_calloc(sig->length_signature, sizeof(uint8_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 
@@ -223,8 +223,8 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	msg_len = 33 * (0 + 1);
 	fprintf(fh, "mlen = %zu\n", msg_len);
-	msg = malloc(msg_len);
-	msg_rand = malloc(msg_len);
+	msg = OQS_MEM_malloc(msg_len);
+	msg_rand = OQS_MEM_malloc(msg_len);
 
 	if (!ReadHex(fp_rsp, msg, msg_len, "msg = ")) {
 		fprintf(stderr, "ERROR: unable to read 'msg' from <%s>\n", katfile);
@@ -403,9 +403,9 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 
-	public_key = malloc(sig->length_public_key);
-	sm = malloc(sig->length_signature);
-	msg = malloc((unsigned long)msg_len);
+	public_key = OQS_MEM_malloc(sig->length_public_key);
+	sm = OQS_MEM_malloc(sig->length_signature);
+	msg = OQS_MEM_malloc((unsigned long)msg_len);
 
 	if ((!msg || !sm || !public_key)) {
 		fprintf(stderr, "ERROR: unable to allocate memory.\n");

@@ -255,7 +255,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		return -1;
 	}
 
-	oqs_key_data = malloc(sizeof(oqs_lms_key_data));
+	oqs_key_data = OQS_MEM_malloc(sizeof(oqs_lms_key_data));
 	if (oqs_key_data == NULL) {
 		return -1;
 	}
@@ -269,7 +269,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	oqs_key_data->levels = 1;
 	oqs_key_data->len_sec_key = sk->length_secret_key;
-	oqs_key_data->sec_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+	oqs_key_data->sec_key = (uint8_t *)OQS_MEM_malloc(sk->length_secret_key * sizeof(uint8_t));
 	if (oqs_key_data->sec_key == NULL) {
 		OQS_MEM_insecure_free(oqs_key_data);
 		oqs_key_data = NULL;
@@ -280,7 +280,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	//Aux Data
 	size_t len_aux_data = DEFAULT_AUX_DATA;
-	uint8_t *aux_data =  calloc(len_aux_data, sizeof(uint8_t));
+	uint8_t *aux_data =  OQS_MEM_calloc(len_aux_data, sizeof(uint8_t));
 	if (aux_data == NULL) {
 		OQS_MEM_insecure_free( oqs_key_data->sec_key);
 		OQS_MEM_insecure_free(oqs_key_data);
@@ -582,7 +582,7 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 		return 0;
 	}
 
-	sig = malloc(sig_len);
+	sig = OQS_MEM_malloc(sig_len);
 	if (!sig) {
 		hss_free_working_key(w);
 		return -1;
@@ -694,7 +694,7 @@ OQS_STATUS oqs_serialize_lms_key(uint8_t **sk_key, size_t *sk_len, const OQS_SIG
 		return OQS_ERROR;
 	}
 
-	uint8_t *sk_key_buf = malloc(key_len * sizeof(uint8_t));
+	uint8_t *sk_key_buf = OQS_MEM_malloc(key_len * sizeof(uint8_t));
 
 	if (sk_key_buf == NULL) {
 		return OQS_ERROR;
@@ -760,8 +760,8 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *s
 		return OQS_ERROR;
 	}
 
-	lms_key_data = malloc(sizeof(oqs_lms_key_data));
-	lms_sk = malloc(lms_sk_len * sizeof(uint8_t));
+	lms_key_data = OQS_MEM_malloc(sizeof(oqs_lms_key_data));
+	lms_sk = OQS_MEM_malloc(lms_sk_len * sizeof(uint8_t));
 
 	if (lms_key_data == NULL || lms_sk == NULL) {
 		goto err;
@@ -773,7 +773,7 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *s
 	lms_key_data->context = context;
 
 	if (aux_buf_len) {
-		lms_aux = malloc(aux_buf_len * sizeof(uint8_t));
+		lms_aux = OQS_MEM_malloc(aux_buf_len * sizeof(uint8_t));
 
 		if (lms_aux == NULL) {
 			goto err;

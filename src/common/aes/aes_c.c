@@ -676,7 +676,7 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 }
 
 void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
-	*_schedule = malloc(sizeof(aes128ctx));
+	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	aes128ctx *ctx = (aes128ctx *) *_schedule;
 	uint64_t skey[22];
@@ -685,7 +685,7 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 }
 
 void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
-	*_schedule = malloc(sizeof(aes256ctx));
+	*_schedule = OQS_MEM_malloc(sizeof(aes256ctx));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	aes256ctx *ctx = (aes256ctx *) *_schedule;
 	uint64_t skey[30];
@@ -719,7 +719,7 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 }
 
 void oqs_aes256_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
-	*_schedule = malloc(sizeof(aes256ctx_nobitslice));
+	*_schedule = OQS_MEM_malloc(sizeof(aes256ctx_nobitslice));
 	assert(*_schedule != NULL);
 	uint32_t *schedule = ((aes256ctx_nobitslice *) *_schedule)->sk_exp;
 	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 32);
@@ -752,7 +752,7 @@ void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
 }
 
 void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
-	*_schedule = malloc(44 * sizeof(int));
+	*_schedule = OQS_MEM_malloc(44 * sizeof(int));
 	assert(*_schedule != NULL);
 	uint32_t *schedule = (uint32_t *) *_schedule;
 	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 16);

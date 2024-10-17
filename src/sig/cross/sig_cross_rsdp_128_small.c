@@ -8,7 +8,7 @@
 
 OQS_SIG *OQS_SIG_cross_rsdp_128_small_new(void) {
 
-	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}
