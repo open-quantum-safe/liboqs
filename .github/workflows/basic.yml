@@ -85,3 +85,37 @@ jobs:
       - name: Build documentation
         run: ninja gen_docs
         working-directory: build
+
+        
+  fuzzbuildcheck:
+    name: Check that code passes a basic fuzzing build
+    needs: [ workflowcheck, stylecheck, upstreamcheck ]
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    env:
+      SIG_NAME: dilithium_2
+      CC: clang
+      CXX: clang++
+      CFLAGS: -fsanitize=fuzzer-no-link,address
+      LDFLAGS: -fsanitize=address
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: |
+          mkdir build && \
+          cd build && \
+          cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
+            -DOQS_BUILD_FUZZ_TESTS=ON \
+            -DOQS_MINIMAL_BUILD="SIG_$SIG_NAME" \
+            --warn-uninitialized .. > config.log 2>&1 && \
+          cat config.log && \
+          cmake -LA -N .. && \
+          ! (grep -i "uninitialized variable" config.log)
+      - name: Build code
+        run: ninja
+        working-directory: build
+
+      - name: Short fuzz check (30s)
+        run: ./tests/fuzz_test_dilithium2 -max_total_time=30
+        working-directory: build
