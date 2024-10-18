@@ -313,9 +313,6 @@ static void SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input, 
 /* SHAKE128 incremental */
 
 static void SHA3_shake128_inc_init(OQS_SHA3_shake128_inc_ctx *state) {
-	if (state == NULL) {
-		return;
-	}
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
 	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3");
 	keccak_inc_reset((uint64_t *)state->ctx);
