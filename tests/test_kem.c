@@ -9,6 +9,9 @@
 
 #if OQS_USE_PTHREADS
 #include <pthread.h>
+#   if OQS_USE_OPENSSL
+#include <openssl/crypto.h>
+#   endif
 #endif
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -206,6 +209,9 @@ struct thread_data {
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = kem_test_correctness(td->alg_name);
+#if defined(OQS_USE_OPENSSL)
+	OPENSSL_thread_stop();
+#endif
 	return NULL;
 }
 #endif
