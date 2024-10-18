@@ -289,4 +289,20 @@ static void _bench_init_perfcounters(void) {
         PRINT_TIMER_AVG(op_name)                                  \
     }
 
+#define TIME_OPERATION_SECONDS_MAXIT(op, op_name, secs, maxit, refresh)                                           \
+    {                                                                                                             \
+        DEFINE_TIMER_VARIABLES                                                                                    \
+        INITIALIZE_TIMER                                                                                          \
+        uint64_t _bench_time_goal_usecs = 1000000 * secs;                                                         \
+        while (_bench_time_cumulative < _bench_time_goal_usecs) {                                                 \
+            for (unsigned long long i = 0; i < (maxit) && _bench_time_cumulative < _bench_time_goal_usecs; i++) { \
+                START_TIMER { op; }                                                                               \
+                STOP_TIMER                                                                                        \
+            }                                                                                                     \
+            if (_bench_time_cumulative < _bench_time_goal_usecs) { refresh; }                                     \
+        }                                                                                                         \
+        FINALIZE_TIMER                                                                                            \
+        PRINT_TIMER_AVG(op_name)                                                                                  \
+    }
+
 #endif
