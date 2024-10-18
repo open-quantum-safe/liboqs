@@ -37,6 +37,7 @@ set(SRCS
 
 
 add_library(lms OBJECT ${SRCS})
+target_include_directories(lms PRIVATE ${LIBOQS_ROOT_DIR}/include)
 set(_LMS_OBJS ${_LMS_OBJS} $<TARGET_OBJECTS:lms>)
 set(LMS_OBJS ${_LMS_OBJS} PARENT_SCOPE)
 
