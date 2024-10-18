@@ -186,7 +186,7 @@ struct thread_data {
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_test_correctness(td->alg_name);
-#if defined(OQS_USE_OPENSSL)
+#if defined(OQS_USE_OPENSSL) && !defined(OQS_DLOPEN_OPENSSL)
 	OPENSSL_thread_stop();
 #endif
 	return NULL;
