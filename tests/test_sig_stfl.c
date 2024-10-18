@@ -1008,7 +1008,7 @@ void *test_create_keys(void *arg) {
 	struct lock_test_data *td = arg;
 	printf("\n%s: Start Generate Keys\n", __func__);
 	td->rc = sig_stfl_test_secret_key_lock(td->alg_name, td->katfile);
-#if defined(OQS_USE_OPENSSL)
+#if defined(OQS_USE_OPENSSL) && !defined(OQS_DLOPEN_OPENSSL)
 	OPENSSL_thread_stop();
 #endif
 	printf("%s: End Generate Stateful Keys\n\n", __func__);
