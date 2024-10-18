@@ -38,9 +38,11 @@ static void fetch_ossl_objects(void) {
 	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
 	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
 
-	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
-	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
-	        !aes128_ecb_ptr || !aes128_ctr_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
+	if (!sha256_ptr || !sha384_ptr || !sha512_ptr
+	        || !sha3_256_ptr || !sha3_384_ptr || !sha3_512_ptr
+	        || !shake128_ptr || !shake256_ptr
+	        || !aes128_ecb_ptr || !aes128_ctr_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr
+	   ) {
 		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
 	}
 }
