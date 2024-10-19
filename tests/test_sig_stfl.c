@@ -463,12 +463,12 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 #if OQS_USE_PTHREADS_IN_TESTS
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(secret_key, sk_lock);
 #endif
-	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
-	message = malloc(message_len + 2 * sizeof(magic_t));
-	signature = malloc(sig->length_signature + 2 * sizeof(magic_t));
+	public_key = OQS_MEM_malloc(sig->length_public_key + 2 * sizeof(magic_t));
+	message = OQS_MEM_malloc(message_len + 2 * sizeof(magic_t));
+	signature = OQS_MEM_malloc(sig->length_signature + 2 * sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
-		fprintf(stderr, "ERROR: malloc failed\n");
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 		goto err;
 	}
 
@@ -530,7 +530,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	}
 
 	/* Read public key and re-test verify.*/
-	read_pk_buf = malloc(sig->length_public_key);
+	read_pk_buf = OQS_MEM_malloc(sig->length_public_key);
 	if (oqs_fload("pk", file_store, read_pk_buf, sig->length_public_key, &read_pk_len) != OQS_SUCCESS) {
 		goto err;
 	}
@@ -621,7 +621,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 		goto err;
 	}
 
-	public_key = malloc(sig_obj->length_public_key * sizeof(uint8_t));
+	public_key = OQS_MEM_malloc(sig_obj->length_public_key * sizeof(uint8_t));
 
 	printf("================================================================================\n");
 	printf("Create stateful Secret Key  %s\n", method_name);
@@ -682,7 +682,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	}
 
 	/* read secret key from disk */
-	from_file_sk_buf = malloc(to_file_sk_len);
+	from_file_sk_buf = OQS_MEM_malloc(to_file_sk_len);
 	if (oqs_fload("sk", file_store_name, from_file_sk_buf, to_file_sk_len, &from_file_sk_len) != OQS_SUCCESS) {
 		goto err;
 	}
@@ -837,7 +837,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	printf("Sig Gen 1  %s\n", method_name);
 	printf("================================================================================\n");
 
-	signature_1 = malloc(lock_test_sig_obj->length_signature);
+	signature_1 = OQS_MEM_malloc(lock_test_sig_obj->length_signature);
 
 	rc = OQS_SIG_STFL_sign(lock_test_sig_obj, signature_1, &signature_len_1, message_1, message_len_1, lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
@@ -866,7 +866,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	printf("Sig Gen 2 %s\n", method_name);
 	printf("================================================================================\n");
 
-	signature_2 = malloc(lock_test_sig_obj->length_signature);
+	signature_2 = OQS_MEM_malloc(lock_test_sig_obj->length_signature);
 
 	rc = OQS_SIG_STFL_sign(lock_test_sig_obj, signature_2, &signature_len_2, message_2, message_len_2, lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
@@ -927,7 +927,7 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 		goto err;
 	}
 
-	lock_test_public_key = malloc(lock_test_sig_obj->length_public_key * sizeof(uint8_t));
+	lock_test_public_key = OQS_MEM_malloc(lock_test_sig_obj->length_public_key * sizeof(uint8_t));
 
 	printf("================================================================================\n");
 	printf("Create stateful Secret Key  %s\n", method_name);
@@ -1132,11 +1132,11 @@ int main(int argc, char **argv) {
 	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_query = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 
-	test_sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	test_sk_lock = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
 	if (test_sk_lock == NULL) {
 		goto err;
 	}
-	sk_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	sk_lock = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
 	if (sk_lock == NULL) {
 		goto err;
 	}

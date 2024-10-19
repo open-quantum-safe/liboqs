@@ -122,11 +122,11 @@ OQS_STATUS sig_vector(const char *method_name,
 
 	fh = stdout;
 
-	public_key = malloc(sig->length_public_key);
-	secret_key = malloc(sig->length_secret_key);
-	signature = malloc(sig->length_signature);
+	public_key = OQS_MEM_malloc(sig->length_public_key);
+	secret_key = OQS_MEM_malloc(sig->length_secret_key);
+	signature = OQS_MEM_malloc(sig->length_signature);
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
-		fprintf(stderr, "[vectors_sig] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 
@@ -232,15 +232,15 @@ int main(int argc, char **argv) {
 		goto err;
 	}
 
-	prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
-	sig_msg_bytes = malloc(strlen(sig_msg) / 2);
-	sig_sk_bytes = malloc(sig->length_secret_key);
-	verif_sig_bytes = malloc(sig->length_signature);
-	verif_pk_bytes = malloc(sig->length_public_key);
-	verif_msg_bytes = malloc(strlen(verif_msg) / 2);
+	prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
+	sig_msg_bytes = OQS_MEM_malloc(strlen(sig_msg) / 2);
+	sig_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
+	verif_sig_bytes = OQS_MEM_malloc(sig->length_signature);
+	verif_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
+	verif_msg_bytes = OQS_MEM_malloc(strlen(verif_msg) / 2);
 
 	if ((prng_output_stream_bytes == NULL) || (sig_msg_bytes == NULL) || (sig_sk_bytes == NULL) || (verif_sig_bytes == NULL) || (verif_pk_bytes == NULL) || (verif_msg_bytes == NULL)) {
-		fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
+		fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 		rc = OQS_ERROR;
 		goto err;
 	}

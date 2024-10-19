@@ -33,7 +33,7 @@ typedef struct {
 } intrn_shake128_x4_inc_ctx;
 
 static void SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
-	state->ctx = malloc(sizeof(intrn_shake128_x4_inc_ctx));
+	state->ctx = OQS_MEM_malloc(sizeof(intrn_shake128_x4_inc_ctx));
 
 	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
 	s->mdctx0 = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -81,7 +81,8 @@ static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx3);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, out3, outlen);
 	} else {
-		uint8_t *tmp = OQS_MEM_checked_malloc(s->n_out + outlen);
+		uint8_t *tmp = OQS_MEM_malloc(s->n_out + outlen);
+		OQS_EXIT_IF_NULLPTR(tmp, "SHA3x4");
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx0);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(out0, tmp + s->n_out, outlen);
@@ -94,7 +95,7 @@ static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx3);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(out3, tmp + s->n_out, outlen);
-		free(tmp); // IGNORE free-check
+		OQS_MEM_insecure_free(tmp);
 	}
 	OSSL_FUNC(EVP_MD_CTX_free)(clone);
 	s->n_out += outlen;
@@ -117,7 +118,7 @@ static void SHA3_shake128_x4_inc_ctx_release(OQS_SHA3_shake128_x4_inc_ctx *state
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx1);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx2);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx3);
-	free(s); // IGNORE free-check
+	OQS_MEM_insecure_free(s);
 }
 
 static void SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
@@ -154,7 +155,7 @@ typedef struct {
 } intrn_shake256_x4_inc_ctx;
 
 static void SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
-	state->ctx = malloc(sizeof(intrn_shake256_x4_inc_ctx));
+	state->ctx = OQS_MEM_malloc(sizeof(intrn_shake256_x4_inc_ctx));
 
 	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
 	s->mdctx0 = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -202,7 +203,8 @@ static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx3);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, out3, outlen);
 	} else {
-		uint8_t *tmp = OQS_MEM_checked_malloc(s->n_out + outlen);
+		uint8_t *tmp = OQS_MEM_malloc(s->n_out + outlen);
+		OQS_EXIT_IF_NULLPTR(tmp, "SHA3x4");
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx0);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(out0, tmp + s->n_out, outlen);
@@ -215,7 +217,7 @@ static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 		OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx3);
 		OSSL_FUNC(EVP_DigestFinalXOF)(clone, tmp, s->n_out + outlen);
 		memcpy(out3, tmp + s->n_out, outlen);
-		free(tmp); // IGNORE free-check
+		OQS_MEM_insecure_free(tmp);
 	}
 	OSSL_FUNC(EVP_MD_CTX_free)(clone);
 	s->n_out += outlen;
@@ -238,7 +240,7 @@ static void SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx1);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx2);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx3);
-	free(s); // IGNORE free-check
+	OQS_MEM_insecure_free(s);
 }
 
 static void SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {

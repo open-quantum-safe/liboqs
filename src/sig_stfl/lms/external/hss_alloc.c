@@ -174,7 +174,7 @@ struct hss_working_key *allocate_working_key(
 signed long initial_mem_target = mem_target; /* DEBUG HACK */
 #endif
 
-    struct hss_working_key *w = malloc( sizeof *w );
+    struct hss_working_key *w = OQS_MEM_malloc( sizeof *w );
     if (!w) {
         info->error_code = hss_error_out_of_memory;
         return NULL;
@@ -215,7 +215,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
 
         w->signed_pk_len[i] = w->siglen[i-1] + pklen;
 
-        w->signed_pk[i] = malloc( w->signed_pk_len[i] );
+        w->signed_pk[i] = OQS_MEM_malloc( w->signed_pk_len[i] );
         if (!w->signed_pk[i]) {
             hss_free_working_key(w);
             info->error_code = hss_error_out_of_memory;
@@ -430,7 +430,7 @@ printf( "Allocation = %ld\n", initial_mem_target - mem_target + best_mem ); /* D
         stack = NULL;   /* Hey!  No stack required */
                         /* Avoid the malloc, as malloc(0) is allowed to fail */
     } else {
-        stack = malloc(stack_usage);
+        stack = OQS_MEM_malloc(stack_usage);
         if (!stack) {
             hss_free_working_key(w);
             info->error_code = hss_error_out_of_memory;
@@ -445,7 +445,7 @@ printf( "Allocation = %ld\n", initial_mem_target - mem_target + best_mem ); /* D
      * allocations
      */
     for (i = 0; i<levels; i++) {
-        struct merkle_level *tree = malloc( sizeof *tree );
+        struct merkle_level *tree = OQS_MEM_malloc( sizeof *tree );
         if (!tree) {
             hss_free_working_key(w);
             info->error_code = hss_error_out_of_memory;
@@ -484,7 +484,7 @@ printf( "Allocation = %ld\n", initial_mem_target - mem_target + best_mem ); /* D
                 /* 'next subtree' */
                 if (k == NEXT_TREE && i == 0) continue;
 
-                struct subtree *s = malloc( sizeof *s + hash_size[i] *
+                struct subtree *s = OQS_MEM_malloc( sizeof *s + hash_size[i] *
                                                (((size_t)2<<height)-1));
                 if (!s) {
                     hss_free_working_key(w);
@@ -542,15 +542,15 @@ void hss_free_working_key(struct hss_working_key *w) {
             unsigned j, k;
             for (j=0; j<MAX_SUBLEVELS; j++)
                 for (k=0; k<3; k++)
-                    free(tree->subtree[j][k]); // IGNORE free-check
+                    OQS_MEM_insecure_free(tree->subtree[j][k]);
             hss_zeroize( tree, sizeof *tree ); /* We have seeds here */
         }
-        free(tree); // IGNORE free-check
+        OQS_MEM_insecure_free(tree);
     }
     for (i=0; i<MAX_HSS_LEVELS-1; i++) {
-        free(w->signed_pk[i]); // IGNORE free-check
+        OQS_MEM_insecure_free(w->signed_pk[i]);
     }
-    free(w->stack); // IGNORE free-check
+    OQS_MEM_insecure_free(w->stack);
     hss_zeroize( w, sizeof *w ); /* We have secret information here */
-    free(w); // IGNORE free-check
+    OQS_MEM_insecure_free(w);
 }

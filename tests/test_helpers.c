@@ -79,7 +79,7 @@ static int is_hqc(const char *method_name) {
 /* OQS_KAT_PRNG interface implementation */
 
 OQS_KAT_PRNG *OQS_KAT_PRNG_new(const char *method_name) {
-	OQS_KAT_PRNG *prng = malloc(sizeof(OQS_KAT_PRNG));
+	OQS_KAT_PRNG *prng = OQS_MEM_malloc(sizeof(OQS_KAT_PRNG));
 	if (prng != NULL) {
 		prng->max_kats = is_mceliece(method_name) ? 10 : 100;
 		if (is_hqc(method_name)) {

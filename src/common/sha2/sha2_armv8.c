@@ -180,8 +180,8 @@ void oqs_sha2_sha256_inc_finalize_armv8(uint8_t *out, sha256ctx *state, const ui
 		new_in = in;
 	} else {
 		// Combine incremental data with final input
-		tmp_in = OQS_MEM_checked_malloc(tmp_len);
-
+		tmp_in = OQS_MEM_malloc(tmp_len);
+		OQS_EXIT_IF_NULLPTR(tmp_in, "SHA2");
 		memcpy(tmp_in, state->data, state->data_len);
 		if (in && inlen) {
 			memcpy(tmp_in + state->data_len, in, inlen);
@@ -254,8 +254,8 @@ void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_
 
 	/* Process any existing incremental data first */
 	if (state->data_len) {
-		tmp_in = OQS_MEM_checked_malloc(buf_len);
-
+		tmp_in = OQS_MEM_malloc(buf_len);
+		OQS_EXIT_IF_NULLPTR(tmp_in, "SHA2");
 		memcpy(tmp_in, state->data, state->data_len);
 		memcpy(tmp_in + state->data_len, in, buf_len - state->data_len);
 

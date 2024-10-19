@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
+#include <stddef.h>
 
 #if defined(OQS_DIST_BUILD) && defined(OQS_USE_PTHREADS)
 #include <pthread.h>
@@ -257,6 +258,9 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 }
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
+	if (ptr == NULL) {
+		return;
+	}
 #if defined(OQS_USE_OPENSSL)
 	OSSL_FUNC(OPENSSL_cleanse)(ptr, len);
 #elif defined(_WIN32)
@@ -276,39 +280,44 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #endif
 }
 
-void *OQS_MEM_checked_malloc(size_t len) {
-	void *ptr = malloc(len);
-	if (ptr == NULL) {
-		fprintf(stderr, "Memory allocation failed\n");
-		abort();
-	}
-
-	return ptr;
-}
-
-void *OQS_MEM_checked_aligned_alloc(size_t alignment, size_t size) {
-	void *ptr = OQS_MEM_aligned_alloc(alignment, size);
-	if (ptr == NULL) {
-		fprintf(stderr, "Memory allocation failed\n");
-		abort();
-	}
-
-	return ptr;
-}
-
 OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 	if (ptr != NULL) {
 		OQS_MEM_cleanse(ptr, len);
-		free(ptr); // IGNORE free-check
+		OQS_MEM_insecure_free(ptr);
 	}
 }
 
 OQS_API void OQS_MEM_insecure_free(void *ptr) {
-	free(ptr); // IGNORE free-check
+#if (defined(OQS_USE_OPENSSL) || defined(OQS_DLOPEN_OPENSSL)) && defined(OPENSSL_VERSION_NUMBER)
+	OPENSSL_free(ptr);
+#else
+	free(ptr); // IGNORE memory-check
+#endif
 }
 
 void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
-#if defined(OQS_HAVE_ALIGNED_ALLOC) // glibc and other implementations providing aligned_alloc
+#if defined(OQS_USE_OPENSSL)
+	// Use OpenSSL's memory allocation functions
+	if (!size) {
+		return NULL;
+	}
+	const size_t offset = alignment - 1 + sizeof(uint8_t);
+	uint8_t *buffer = OPENSSL_malloc(size + offset);
+	if (!buffer) {
+		return NULL;
+	}
+	uint8_t *ptr = (uint8_t *)(((uintptr_t)(buffer) + offset) & ~(alignment - 1));
+	ptrdiff_t diff = ptr - buffer;
+	if (diff > UINT8_MAX) {
+		// Free and return NULL if alignment is too large
+		OPENSSL_free(buffer);
+		errno = EINVAL;
+		return NULL;
+	}
+	// Store the difference so that the free function can use it
+	ptr[-1] = (uint8_t)diff;
+	return ptr;
+#elif defined(OQS_HAVE_ALIGNED_ALLOC) // glibc and other implementations providing aligned_alloc
 	return aligned_alloc(alignment, size);
 #else
 	// Check alignment (power of 2, and >= sizeof(void*)) and size (multiple of alignment)
@@ -347,7 +356,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	//            |
 	//       diff = ptr - buffer
 	const size_t offset = alignment - 1 + sizeof(uint8_t);
-	uint8_t *buffer = malloc(size + offset);
+	uint8_t *buffer = malloc(size + offset); // IGNORE memory-check
 	if (!buffer) {
 		return NULL;
 	}
@@ -357,7 +366,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	ptrdiff_t diff = ptr - buffer;
 	if (diff > UINT8_MAX) {
 		// This should never happen in our code, but just to be safe
-		free(buffer); // IGNORE free-check
+		free(buffer); // IGNORE memory-check
 		errno = EINVAL;
 		return NULL;
 	}
@@ -370,18 +379,23 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 }
 
 void OQS_MEM_aligned_free(void *ptr) {
-#if defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
-	free(ptr); // IGNORE free-check
+	if (ptr == NULL) {
+		return;
+	}
+#if defined(OQS_USE_OPENSSL)
+	// Use OpenSSL's free function
+	uint8_t *u8ptr = ptr;
+	OPENSSL_free(u8ptr - u8ptr[-1]);
+#elif defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
+	free(ptr); // IGNORE memory-check
 #elif defined(__MINGW32__) || defined(__MINGW64__)
 	__mingw_aligned_free(ptr);
 #elif defined(_MSC_VER)
 	_aligned_free(ptr);
 #else
-	if (ptr) {
-		// Reconstruct the pointer returned from malloc using the difference
-		// stored one byte ahead of ptr.
-		uint8_t *u8ptr = ptr;
-		free(u8ptr - u8ptr[-1]); // IGNORE free-check
-	}
+	// Reconstruct the pointer returned from malloc using the difference
+	// stored one byte ahead of ptr.
+	uint8_t *u8ptr = ptr;
+	free(u8ptr - u8ptr[-1]); // IGNORE memory-check
 #endif
 }

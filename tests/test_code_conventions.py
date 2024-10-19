@@ -48,26 +48,46 @@ def test_spdx():
         print(result)
         assert False
 
-# Ensure "free" is not used unprotected in the main OQS code.
-@helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
-def test_free():
-    c_files = []
+def test_memory_functions():
+    c_h_files = []
     for path, _, files in os.walk('src'):
-        c_files += [os.path.join(path,f) for f in files if f[-2:] == '.c']
+        c_h_files += [os.path.join(path, f) for f in files if f.endswith(('.c', '.h', '.fragment'))]
+
+    memory_functions = ['free', 'malloc', 'calloc', 'realloc', 'strdup']
     okay = True
-    for fn in c_files:
+
+    for fn in c_h_files:
         with open(fn) as f:
-            # Find all lines that contain 'free(' but not '_free('
-            for no, line in enumerate(f,1):
-                if not re.match(r'^.*[^_]free\(.*$', line):
+            content = f.read()
+            lines = content.splitlines()
+            in_multiline_comment = False
+            for no, line in enumerate(lines, 1):
+                # Skip single-line comments
+                if line.strip().startswith('//'):
                     continue
-                if 'IGNORE free-check' in line:
+                # Check for start of multi-line comment
+                if '/*' in line and not in_multiline_comment:
+                    in_multiline_comment = True
+                # Check for end of multi-line comment
+                if '*/' in line and in_multiline_comment:
+                    in_multiline_comment = False
                     continue
-                okay = False
-                print("Suspicious `free` in {}:{}:{}".format(fn,no,line))
-    assert okay, "'free' is used in some files.  These should be changed to 'OQS_MEM_secure_free' or 'OQS_MEM_insecure_free' as appropriate. If you are sure you want to use 'free' in a particular spot, add the comment '// IGNORE free-check' on the line where 'free' occurs."
+                # Skip lines inside multi-line comments
+                if in_multiline_comment:
+                    continue
+                for func in memory_functions:
+                    if re.search(r'\b{}\('.format(func), line) and not re.search(r'\b_{}\('.format(func), line):
+                        if 'IGNORE memory-check' in line:
+                            continue
+                        okay = False
+                        print(f"Suspicious `{func}` in {fn}:{no}:{line.strip()}")
+
+    assert okay, ("Standard memory functions are used in some files. "
+                  "These should be changed to OQS_MEM_* equivalents as appropriate. "
+                  "If you are sure you want to use these functions in a particular spot, "
+                  "add the comment '// IGNORE memory-check' on the line where the function occurs.")
 
 if __name__ == "__main__":
+    test_memory_functions()
     import sys
     pytest.main(sys.argv)
