@@ -239,8 +239,9 @@ int main(int argc, char **argv) {
 
 	} else {
 		for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
-			if (onlyMaxSigs10 > 0 && strstr(OQS_SIG_STFL_alg_identifier(i),"_10")==NULL && strstr(OQS_SIG_STFL_alg_identifier(i),"H10")==NULL)
+			if (onlyMaxSigs10 > 0 && strstr(OQS_SIG_STFL_alg_identifier(i), "_10") == NULL && strstr(OQS_SIG_STFL_alg_identifier(i), "H10") == NULL) {
 				continue;
+			}
 			rc = sig_speed_wrapper(OQS_SIG_STFL_alg_identifier(i), duration, printSigInfo, doFullCycle);
 			if (rc != OQS_SUCCESS) {
 				ret = EXIT_FAILURE;
