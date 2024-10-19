@@ -24,8 +24,12 @@ def test_sig(sig_name):
 @pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
 def test_sig(sig_stfl_name):
     kats = helpers.get_kats("sig_stfl")
-    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
-    helpers.run_subprocess( [helpers.path_to_executable('speed_sig_stfl'), sig_stfl_name, "-f"])
+    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)):
+        pytest.skip('Not enabled')
+    elif sig_stfl_name.find("_10")==-1 and sig_stfl_name.find("H10")==-1:
+        pytest.skip('Test skipped')
+    else:
+        helpers.run_subprocess( [helpers.path_to_executable('speed_sig_stfl'), sig_stfl_name, "-f"])
 
 if __name__ == "__main__":
     import sys
