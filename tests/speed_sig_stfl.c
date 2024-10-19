@@ -157,6 +157,7 @@ int main(int argc, char **argv) {
 	uint64_t duration = 3;
 	bool printSigInfo = false;
 	bool doFullCycle = false;
+	bool onlyMaxSigs10 = false;
 
 	OQS_SIG_STFL *single_sig = NULL;
 
@@ -190,6 +191,9 @@ int main(int argc, char **argv) {
 		} else if ((strcmp(argv[i], "--fullcycle") == 0) || (strcmp(argv[i], "-f") == 0)) {
 			doFullCycle = true;
 			continue;
+		} else if ((strcmp(argv[i], "--limit10") == 0) || (strcmp(argv[i], "-l") == 0)) {
+			onlyMaxSigs10 = true;
+			continue;
 		} else {
 			single_sig = OQS_SIG_STFL_new(argv[i]);
 			if (single_sig == NULL) {
@@ -212,6 +216,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, " -i                Print info (sizes, security level) about each SIG\n");
 		fprintf(stderr, "--fullcycle\n");
 		fprintf(stderr, " -f                Test full keygen-sign-verify cycle of each SIG\n");
+		fprintf(stderr, "--limit10          Test only algorithms with 2^10 max signatures\n");
+		fprintf(stderr, " -l\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "<alg>              Only run the specified SIG method; must be one of the algorithms output by --algs\n");
 		OQS_destroy();
@@ -233,6 +239,8 @@ int main(int argc, char **argv) {
 
 	} else {
 		for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
+			if (onlyMaxSigs10 > 0 && strstr(OQS_SIG_STFL_alg_identifier(i),"_10")==NULL && strstr(OQS_SIG_STFL_alg_identifier(i),"H10")==NULL)
+				continue;
 			rc = sig_speed_wrapper(OQS_SIG_STFL_alg_identifier(i), duration, printSigInfo, doFullCycle);
 			if (rc != OQS_SUCCESS) {
 				ret = EXIT_FAILURE;
