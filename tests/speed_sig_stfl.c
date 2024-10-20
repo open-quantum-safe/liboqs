@@ -26,10 +26,11 @@ OQS_STATUS dummy_secure_storage(uint8_t *sk_buf, size_t sk_buf_len, void *contex
 }
 
 // reset secret key: some schemes fail to create a new secret key over a previous secret key
-void reset_secret_key(OQS_SIG_STFL *sig, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+OQS_SIG_STFL_SECRET_KEY *reset_secret_key(OQS_SIG_STFL *sig, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	OQS_SIG_STFL_SECRET_KEY_free(secret_key);
 	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, &dummy_secure_storage, secret_key);
+	return secret_key;
 }
 
 static void fullcycle(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, uint8_t *signature, size_t signature_len, uint8_t *message, size_t message_len) {
@@ -48,7 +49,6 @@ static void fullcycle(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRE
 }
 
 static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo, bool doFullCycle) {
-
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
 	OQS_SIG_STFL_SECRET_KEY *secret_key = NULL;
@@ -57,6 +57,20 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 	size_t message_len = 50;
 	size_t signature_len = 0;
 	OQS_STATUS ret = OQS_ERROR;
+
+	// if keygen and signing is disabled then we can't benchmark and we simply return OQS_SUCCESS
+#ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
+	if (strstr(method_name, "XMSS") != NULL) {
+		printf("XMSS keygen and signing is not enabled.\n");
+		return OQS_SUCCESS;
+	}
+#endif
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+	if (strstr(method_name, "LMS") != NULL) {
+		printf("LMS keygen and signing is not enabled.\n");
+		return OQS_SUCCESS;
+	}
+#endif
 
 	sig = OQS_SIG_STFL_new(method_name);
 	if (sig == NULL) {
@@ -91,7 +105,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 				printf("keygen error. Exiting.\n");
 				exit(-1);
 			}
-			reset_secret_key(sig, secret_key);
+			secret_key = reset_secret_key(sig, secret_key);
 		})
 		// benchmark sign: need to generate new secret key after available signatures have been exhausted
 		unsigned long long max_sigs;
@@ -107,7 +121,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 		TIME_OPERATION_SECONDS({ OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key); }, "verify", duration)
 	} else {
 		// benchmark fullcycle: need to reset secret key between calls
-		TIME_OPERATION_SECONDS_MAXIT({ fullcycle(sig, public_key, secret_key, signature, signature_len, message, message_len); }, "fullcycle", duration, 1, { reset_secret_key(sig, secret_key); })
+		TIME_OPERATION_SECONDS_MAXIT({ fullcycle(sig, public_key, secret_key, signature, signature_len, message, message_len); }, "fullcycle", duration, 1, { secret_key = reset_secret_key(sig, secret_key); })
 	}
 
 	if (printInfo) {
