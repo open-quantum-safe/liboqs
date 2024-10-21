@@ -285,7 +285,7 @@ static OQS_STATUS kem_vector_encdec_val(const char *method_name,
 		ret = OQS_SUCCESS;
 	} else {
 		ret = OQS_ERROR;
-		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): ciphertext or shared secret doesn't match!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): shared secret doesn't match!\n", method_name);
 	}
 
 	goto cleanup;

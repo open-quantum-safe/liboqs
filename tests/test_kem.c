@@ -136,9 +136,9 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		// buffer to hold z and c. z is always 32 bytes
 		uint8_t *buff_z_c = NULL;
 		size_t length_z_c = (size_t)32 + kem->length_ciphertext;
-		buff_z_c = malloc(length_z_c) ;
+		buff_z_c = OQS_MEM_malloc(length_z_c) ;
 		if (NULL == buff_z_c) {
-			fprintf(stderr, "ERROR: malloc failed\n");
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 			goto err;
 		}
 		// test rejection key by corrupting the secret key
