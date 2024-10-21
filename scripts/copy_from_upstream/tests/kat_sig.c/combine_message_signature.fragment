@@ -3,7 +3,7 @@
 {%- if scheme['signed_msg_order'] == 'sig_then_msg' %}
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -13,7 +13,7 @@
 {%- elif scheme['signed_msg_order'] == 'msg_then_sig' %}
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -24,7 +24,7 @@
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x29 || sig
 		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
 		*signed_msg_len = 2 + signature_len_uint16 + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
@@ -44,7 +44,7 @@
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x2A || sig
 		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
 		*signed_msg_len = 2 + signature_len + msg_len;
-		*signed_msg = malloc(*signed_msg_len);
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}

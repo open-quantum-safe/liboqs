@@ -66,14 +66,14 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	printf("Sample computation for KEM %s\n", kem->method_name);
 	printf("================================================================================\n");
 
-	public_key = malloc(kem->length_public_key + 2 * sizeof(magic_t));
-	secret_key = malloc(kem->length_secret_key + 2 * sizeof(magic_t));
-	ciphertext = malloc(kem->length_ciphertext + 2 * sizeof(magic_t));
-	shared_secret_e = malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
-	shared_secret_d = malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
+	public_key = OQS_MEM_malloc(kem->length_public_key + 2 * sizeof(magic_t));
+	secret_key = OQS_MEM_malloc(kem->length_secret_key + 2 * sizeof(magic_t));
+	ciphertext = OQS_MEM_malloc(kem->length_ciphertext + 2 * sizeof(magic_t));
+	shared_secret_e = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
+	shared_secret_d = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
-		fprintf(stderr, "ERROR: malloc failed\n");
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 		goto err;
 	}
 

@@ -42,10 +42,10 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		printf("Executing keygen for SIGALG %s\n", sig->method_name);
 		printf("================================================================================\n");
 
-		public_key = malloc(sig->length_public_key);
-		secret_key = malloc(sig->length_secret_key);
+		public_key = OQS_MEM_malloc(sig->length_public_key);
+		secret_key = OQS_MEM_malloc(sig->length_secret_key);
 		if ((public_key == NULL) || (secret_key == NULL)) {
-			fprintf(stderr, "ERROR: malloc failed\n");
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 			goto err;
 		}
 		rc = OQS_SIG_keypair(sig, public_key, secret_key);
@@ -67,13 +67,13 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		printf("Executing sign for SIGALG %s\n", sig->method_name);
 		printf("================================================================================\n");
 
-		public_key = malloc(sig->length_public_key);
-		secret_key = malloc(sig->length_secret_key);
-		message = malloc(message_len);
-		signature = malloc(sig->length_signature);
+		public_key = OQS_MEM_malloc(sig->length_public_key);
+		secret_key = OQS_MEM_malloc(sig->length_secret_key);
+		message = OQS_MEM_malloc(message_len);
+		signature = OQS_MEM_malloc(sig->length_signature);
 
 		if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
-			fprintf(stderr, "ERROR: malloc failed\n");
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 			goto err;
 		}
 		if (oqs_fload("pk", method_name, public_key, sig->length_public_key, &signature_len) != OQS_SUCCESS) {
@@ -104,13 +104,13 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		printf("Executing verify for SIGALG %s\n", sig->method_name);
 		printf("================================================================================\n");
 
-		public_key = malloc(sig->length_public_key);
-		secret_key = malloc(sig->length_secret_key);
-		message = malloc(message_len);
-		signature = malloc(sig->length_signature);
+		public_key = OQS_MEM_malloc(sig->length_public_key);
+		secret_key = OQS_MEM_malloc(sig->length_secret_key);
+		message = OQS_MEM_malloc(message_len);
+		signature = OQS_MEM_malloc(sig->length_signature);
 
 		if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
-			fprintf(stderr, "ERROR: malloc failed\n");
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 			goto err;
 		}
 		if (oqs_fload("pk", method_name, public_key, sig->length_public_key, &signature_len) != OQS_SUCCESS) {

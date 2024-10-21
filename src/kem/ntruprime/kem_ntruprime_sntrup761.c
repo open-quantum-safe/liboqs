@@ -8,7 +8,7 @@
 
 OQS_KEM *OQS_KEM_ntruprime_sntrup761_new(void) {
 
-	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}

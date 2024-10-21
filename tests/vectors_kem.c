@@ -113,11 +113,11 @@ static OQS_STATUS kem_kg_vector(const char *method_name,
 
 	fh = stdout;
 
-	public_key = malloc(kem->length_public_key);
-	secret_key = malloc(kem->length_secret_key);
+	public_key = OQS_MEM_malloc(kem->length_public_key);
+	secret_key = OQS_MEM_malloc(kem->length_secret_key);
 
 	if ((public_key == NULL) || (secret_key == NULL)) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 
@@ -196,10 +196,10 @@ static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
 
 	fh = stdout;
 
-	ss_encaps = malloc(kem->length_shared_secret);
-	ct_encaps = malloc(kem->length_ciphertext);
+	ss_encaps = OQS_MEM_malloc(kem->length_shared_secret);
+	ct_encaps = OQS_MEM_malloc(kem->length_ciphertext);
 	if ((ss_encaps == NULL) || (ct_encaps == NULL)) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 
@@ -261,10 +261,10 @@ static OQS_STATUS kem_vector_encdec_val(const char *method_name,
 
 	fh = stdout;
 
-	ss_decaps = malloc(kem->length_shared_secret);
+	ss_decaps = OQS_MEM_malloc(kem->length_shared_secret);
 
 	if (ss_decaps == NULL) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 
@@ -369,12 +369,12 @@ int main(int argc, char **argv) {
 			goto err;
 		}
 
-		prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
-		kg_pk_bytes = malloc(kem->length_public_key);
-		kg_sk_bytes = malloc(kem->length_secret_key);
+		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
+		kg_pk_bytes = OQS_MEM_malloc(kem->length_public_key);
+		kg_sk_bytes = OQS_MEM_malloc(kem->length_secret_key);
 
 		if ((prng_output_stream_bytes == NULL) || (kg_pk_bytes == NULL) || (kg_sk_bytes == NULL)) {
-			fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
+			fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -399,13 +399,13 @@ int main(int argc, char **argv) {
 			goto err;
 		}
 
-		prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
-		encdec_aft_pk_bytes = malloc(kem->length_public_key);
-		encdec_aft_k_bytes = malloc(kem->length_shared_secret);
-		encdec_aft_c_bytes = malloc(kem->length_ciphertext);
+		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
+		encdec_aft_pk_bytes = OQS_MEM_malloc(kem->length_public_key);
+		encdec_aft_k_bytes = OQS_MEM_malloc(kem->length_shared_secret);
+		encdec_aft_c_bytes = OQS_MEM_malloc(kem->length_ciphertext);
 
 		if ((prng_output_stream_bytes == NULL) || (encdec_aft_pk_bytes == NULL) || (encdec_aft_k_bytes == NULL) || (encdec_aft_c_bytes == NULL)) {
-			fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
+			fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -428,12 +428,12 @@ int main(int argc, char **argv) {
 			goto err;
 		}
 
-		encdec_val_sk_bytes = malloc(kem->length_secret_key);
-		encdec_val_k_bytes = malloc(kem->length_shared_secret);
-		encdec_val_c_bytes = malloc(kem->length_ciphertext);
+		encdec_val_sk_bytes = OQS_MEM_malloc(kem->length_secret_key);
+		encdec_val_k_bytes = OQS_MEM_malloc(kem->length_shared_secret);
+		encdec_val_c_bytes = OQS_MEM_malloc(kem->length_ciphertext);
 
 		if ((encdec_val_sk_bytes == NULL) || (encdec_val_k_bytes == NULL) || (encdec_val_c_bytes == NULL)) {
-			fprintf(stderr, "[vectors_kem] ERROR: malloc failed!\n");
+			fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
 			rc = OQS_ERROR;
 			goto err;
 		}

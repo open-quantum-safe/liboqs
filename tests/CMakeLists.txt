@@ -30,7 +30,13 @@ if(NOT WIN32)
 endif()
 
 # List oqs-internal after oqs so that oqs has linking precedence.
-set(TEST_DEPS oqs oqs-internal ${LIBM})
+if(${OQS_USE_OPENSSL})
+    find_package(OpenSSL 1.1.1 REQUIRED)
+    set(TEST_DEPS oqs oqs-internal ${LIBM} OpenSSL::Crypto)
+else()
+    set(TEST_DEPS oqs oqs-internal ${LIBM})
+endif()
+
 if(OQS_USE_PTHREADS)
     set(TEST_DEPS ${TEST_DEPS} Threads::Threads)
 endif()
@@ -96,6 +102,15 @@ set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
 # SIG API tests
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
+
+if(OQS_BUILD_FUZZ_TESTS AND '${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
+    add_executable(fuzz_test_dilithium2 fuzz_test_dilithium2.c)
+    target_link_libraries(fuzz_test_dilithium2 PRIVATE ${TEST_DEPS})
+    set_target_properties(fuzz_test_dilithium2 PROPERTIES
+        COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
+        LINK_FLAGS "${FUZZING_LINK_FLAGS}"
+    )
+endif()
 
 # Stateful SIG API tests
 add_executable(example_sig_stfl example_sig_stfl.c)

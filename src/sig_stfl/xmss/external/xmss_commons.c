@@ -109,7 +109,7 @@ void gen_leaf_wots(const xmss_params *params, unsigned char *leaf,
                    const unsigned char *sk_seed, const unsigned char *pub_seed,
                    uint32_t ltree_addr[8], uint32_t ots_addr[8])
 {
-    unsigned char *pk = malloc(params->wots_sig_bytes + 2 * params->padding_len + 6 * params->n + 32);
+    unsigned char *pk = OQS_MEM_malloc(params->wots_sig_bytes + 2 * params->padding_len + 6 * params->n + 32);
     if (pk == NULL) {
         return;
     }
@@ -151,7 +151,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
     const unsigned char *pub_root = pk;
     const unsigned char *pub_seed = pk + params->n;
 
-    unsigned char *tmp = malloc(params->wots_sig_bytes + params->n + params->n +
+    unsigned char *tmp = OQS_MEM_malloc(params->wots_sig_bytes + params->n + params->n +
                                 + 2 *params->n + 2 * params->padding_len + 6 * params->n + 32);
     if (tmp == NULL) {
         return -1;
@@ -181,7 +181,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
     // Unused since smlen is a constant
     (void) smlen;
 
-    if ((m_with_prefix_len == 0) || (m_with_prefix = malloc(m_with_prefix_len)) == NULL){
+    if ((m_with_prefix_len == 0) || (m_with_prefix = OQS_MEM_malloc(m_with_prefix_len)) == NULL){
         ret = -1;
         goto fail;
     }
