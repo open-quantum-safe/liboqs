@@ -143,21 +143,24 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		}
 		// test rejection key by corrupting the secret key
 		secret_key[0] += 1;
-		uint8_t shared_secret_r[32]; // expected output
+		uint8_t shared_secret_r[OQS_KEM_ml_kem_1024_length_shared_secret]; // expected output
 		memcpy(buff_z_c, &secret_key[kem->length_secret_key - 32], 32);
 		memcpy(&buff_z_c[32], ciphertext, kem->length_ciphertext);
 		// calculate expected secret in case of corrupted cipher : shake256(z || c)
 		OQS_SHA3_shake256(shared_secret_r, 32, buff_z_c, length_z_c);
 		OQS_MEM_secure_free(buff_z_c, length_z_c);
 		rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_decaps failed for rejection testcase\n");
 			goto err;
 		}
+		OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
+		OQS_TEST_CT_DECLASSIFY(shared_secret_r, kem->length_shared_secret);
 		rv = memcmp(shared_secret_d, shared_secret_r, kem->length_shared_secret);
 		if (rv != 0) {
 			fprintf(stderr, "ERROR: shared secrets are not equal for rejection key in decapsulation \n");
-			OQS_print_hex_string("shared_secret_d", shared_secret_e, kem->length_shared_secret);
+			OQS_print_hex_string("shared_secret_d", shared_secret_d, kem->length_shared_secret);
 			OQS_print_hex_string("shared_secret_r", shared_secret_r, kem->length_shared_secret);
 			goto err;
 		}
