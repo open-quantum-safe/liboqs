@@ -520,9 +520,9 @@ int crypto_sign_verify_internal(const uint8_t *sig,
   /* Call random oracle and verify challenge */
   shake256_inc_ctx_reset(&state);
   shake256_inc_absorb(&state, mu, CRHBYTES);
-  shake256_inc_absorb(&state, buf, K*POLYW1_PACKEDBYTES);
+  shake256_inc_absorb(&state, buf.coeffs, K*POLYW1_PACKEDBYTES);
   shake256_inc_finalize(&state);
-  shake256_inc_squeeze(c2, CTILDEBYTES, &state);
+  shake256_inc_squeeze(buff.coeffs, CTILDEBYTES, &state);
   shake256_inc_ctx_release(&state);
   for(i = 0; i < CTILDEBYTES; ++i)
     if(buf.coeffs[i] != sig[i])
