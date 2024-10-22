@@ -113,9 +113,9 @@ jobs:
           cmake -LA -N .. && \
           ! (grep -i "uninitialized variable" config.log)
       - name: Build code
-        run: ninja
+        run: ninja fuzz_test_sig
         working-directory: build
 
       - name: Short fuzz check (30s)
-        run: ./tests/fuzz_test_dilithium2 -max_total_time=30
+        run: ./tests/fuzz_test_sig -max_total_time=30
         working-directory: build
