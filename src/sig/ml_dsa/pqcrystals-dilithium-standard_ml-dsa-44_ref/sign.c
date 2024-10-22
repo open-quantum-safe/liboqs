@@ -70,14 +70,14 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 /*************************************************
 * Name:        crypto_sign_signature_internal
 *
-* Description: Computes signature over mpfx || m, internal API.
+* Description: Computes signature, internal function.
 *
 * Arguments:   - uint8_t *sig:    pointer to output signature (of length CRYPTO_BYTES)
 *              - size_t *siglen:  pointer to output length of signature
 *              - uint8_t *m:      pointer to message to be signed
 *              - size_t mlen:     length of message
-*              - uint8_t *mpfx:   pointer to message prefix to be signed
-*              - size_t mpfxlen:  length of message prefix
+*              - uint8_t *mpfx:   pointer to the message prefix
+*              - size_t mpfxlen:  length of the message prefix
 *              - uint8_t *ctx:    pointer to context string
 *              - size_t ctxlen:   length of context string
 *              - uint8_t rnd[32]: pointer to randomness
@@ -115,10 +115,7 @@ int crypto_sign_signature_internal(uint8_t *sig,
   rhoprime = mu + CRHBYTES;
   unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
 
-  /* Compute mu = H(BytesToBits(tr) || M', 64) // was: CRH(tr, 0, ctxlen, ctx, msg) */
-  //mu[0] = 0;
-  //mu[1] = ctxlen;
-
+  /* Compute mu = H(BytesToBits(tr) || M', 64) */
   shake256_inc_init(&state);
   shake256_inc_absorb(&state, tr, TRBYTES);
   shake256_inc_absorb(&state, mpfx, mpfxlen);
@@ -129,14 +126,10 @@ int crypto_sign_signature_internal(uint8_t *sig,
 
   shake256_inc_ctx_reset(&state);
   shake256_inc_absorb(&state, key, SEEDBYTES);
-  printf("sign_internal\n");
   shake256_inc_absorb(&state, rnd, RNDBYTES);
   shake256_inc_absorb(&state, mu, CRHBYTES);
   shake256_inc_finalize(&state);
   shake256_inc_squeeze(rhoprime, CRHBYTES, &state);
-  
-
-  //shake256(rhoprime, CRHBYTES, key, SEEDBYTES + RNDBYTES + CRHBYTES);
 
   /* Expand matrix and transform vectors */
   polyvec_matrix_expand(mat, rho);
@@ -206,9 +199,9 @@ rej:
 }
 
 /*************************************************
-* Name:        crypto_sign_signature
+* Name:        crypto_sign_signature_ctx
 *
-* Description: Computes signature.
+* Description: Computes signature, with context string.
 *
 * Arguments:   - uint8_t *sig:   pointer to output signature (of length CRYPTO_BYTES)
 *              - size_t *siglen: pointer to output length of signature
@@ -244,16 +237,29 @@ int crypto_sign_signature_ctx(uint8_t *sig,
   return crypto_sign_signature_internal(sig, siglen, m, mlen, mpfx, 2, ctx, ctxlen, rnd, sk);
 }
 
+/*************************************************
+* Name:        crypto_sign_signature
+*
+* Description: Computes signature.
+*
+* Arguments:   - uint8_t *sig:   pointer to output signature (of length CRYPTO_BYTES)
+*              - size_t *siglen: pointer to output length of signature
+*              - uint8_t *m:     pointer to message to be signed
+*              - size_t mlen:    length of message
+*              - uint8_t *sk:    pointer to bit-packed secret key
+*
+* Returns 0 (success) or -1 (context string too long)
+**************************************************/
 int crypto_sign_signature(uint8_t *sig, size_t *siglen,
-                                        const uint8_t *m, size_t mlen,
-                                        const uint8_t *sk) {
+                          const uint8_t *m, size_t mlen,
+                          const uint8_t *sk) {
     return crypto_sign_signature_ctx(sig, siglen, m, mlen, NULL, 0, sk);
 }
 
 /*************************************************
-* Name:        crypto_sign
+* Name:        crypto_sign_ctx
 *
-* Description: Compute signed message.
+* Description: Compute signed message, with context string.
 *
 * Arguments:   - uint8_t *sm: pointer to output signed message (allocated
 *                             array with CRYPTO_BYTES + mlen bytes),
@@ -286,14 +292,30 @@ int crypto_sign_ctx(uint8_t *sm,
   return ret;
 }
 
+/*************************************************
+* Name:        crypto_sign
+*
+* Description: Compute signed message.
+*
+* Arguments:   - uint8_t *sm: pointer to output signed message (allocated
+*                             array with CRYPTO_BYTES + mlen bytes),
+*                             can be equal to m
+*              - size_t *smlen: pointer to output length of signed
+*                               message
+*              - const uint8_t *m: pointer to message to be signed
+*              - size_t mlen: length of message
+*              - const uint8_t *sk: pointer to bit-packed secret key
+*
+* Returns 0 (success) or -1 (context string too long)
+**************************************************/
 int crypto_sign(uint8_t *sm, size_t *smlen,
                 const uint8_t *m, size_t mlen,
                 const uint8_t *sk) {
-    return crypto_sign_ctx(sm, smlen, m, mlen, NULL, 0, sk);
+  return crypto_sign_ctx(sm, smlen, m, mlen, NULL, 0, sk);
 }
 
 /*************************************************
-* Name:        crypto_sign_verify
+* Name:        crypto_sign_verify_internal
 *
 * Description: Verifies signature, internal function.
 *
@@ -301,6 +323,8 @@ int crypto_sign(uint8_t *sm, size_t *smlen,
 *              - size_t siglen: length of signature
 *              - const uint8_t *m: pointer to message
 *              - size_t mlen: length of message
+*              - const uint8_t *mpfx: pointer to the message prefix
+*              - size_t mpfxlen: length of the message prefix
 *              - const uint8_t *ctx: pointer to context string
 *              - size_t ctxlen: length of context string
 *              - const uint8_t *pk: pointer to bit-packed public key
@@ -383,9 +407,9 @@ int crypto_sign_verify_internal(const uint8_t *sig,
 }
 
 /*************************************************
-* Name:        crypto_sign_verify
+* Name:        crypto_sign_verify_ctx
 *
-* Description: Verifies signature.
+* Description: Verifies signature, with context string.
 *
 * Arguments:   - uint8_t *m: pointer to input signature
 *              - size_t siglen: length of signature
@@ -413,16 +437,29 @@ int crypto_sign_verify_ctx(const uint8_t *sig,
   return crypto_sign_verify_internal(sig, siglen, m, mlen, mpfx, 2, ctx, ctxlen, pk);
 }
 
+/*************************************************
+* Name:        crypto_sign_verify
+*
+* Description: Verifies signature.
+*
+* Arguments:   - uint8_t *m: pointer to input signature
+*              - size_t siglen: length of signature
+*              - const uint8_t *m: pointer to message
+*              - size_t mlen: length of message
+*              - const uint8_t *pk: pointer to bit-packed public key
+*
+* Returns 0 if signature could be verified correctly and -1 otherwise
+**************************************************/
 int crypto_sign_verify(const uint8_t *sig, size_t siglen,
-                                     const uint8_t *m, size_t mlen,
-                                     const uint8_t *pk) {
+                       const uint8_t *m, size_t mlen,
+                       const uint8_t *pk) {
     return crypto_sign_verify_ctx(sig, siglen, m, mlen, NULL, 0, pk);
 }
 
 /*************************************************
 * Name:        crypto_sign_open_ctx
 *
-* Description: Verify signed message.
+* Description: Verify signed message, with context string.
 *
 * Arguments:   - uint8_t *m: pointer to output message (allocated
 *                            array with smlen bytes), can be equal to sm
@@ -467,6 +504,20 @@ badsig:
   return -1;
 }
 
+/*************************************************
+* Name:        crypto_sign_open
+*
+* Description: Verify signed message.
+*
+* Arguments:   - uint8_t *m: pointer to output message (allocated
+*                            array with smlen bytes), can be equal to sm
+*              - size_t *mlen: pointer to output length of message
+*              - const uint8_t *sm: pointer to signed message
+*              - size_t smlen: length of signed message
+*              - const uint8_t *pk: pointer to bit-packed public key
+*
+* Returns 0 if signed message could be verified correctly and -1 otherwise
+**************************************************/
 int crypto_sign_open(uint8_t *m,
                      size_t *mlen,
                      const uint8_t *sm,

@@ -18,8 +18,8 @@ int crypto_sign_signature_ctx(uint8_t *sig, size_t *siglen,
 
 #define crypto_sign_signature DILITHIUM_NAMESPACE(signature)
 int crypto_sign_signature(uint8_t *sig, size_t *siglen,
-                                        const uint8_t *m, size_t mlen,
-                                        const uint8_t *sk);
+                          const uint8_t *m, size_t mlen,
+                          const uint8_t *sk);
 
 #define crypto_sign_ctx DILITHIUM_NAMESPACE(ctx)
 int crypto_sign_ctx(uint8_t *sm, size_t *smlen,
