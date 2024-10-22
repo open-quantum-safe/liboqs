@@ -138,6 +138,7 @@ target_link_libraries(test_sig_mem PRIVATE ${TEST_DEPS})
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${TEST_DEPS})
 
+
 set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig vectors_sig)
 
 # SIG_STFL API tests
@@ -148,7 +149,10 @@ else ()
     target_link_libraries(test_sig_stfl PRIVATE ${TEST_DEPS})
 endif()
 
-set(SIG_STFL_TESTS kat_sig_stfl test_sig_stfl)
+add_executable(speed_sig_stfl speed_sig_stfl.c)
+target_link_libraries(speed_sig_stfl PRIVATE ${TEST_DEPS})
+
+set(SIG_STFL_TESTS kat_sig_stfl test_sig_stfl speed_sig_stfl)
 
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})
