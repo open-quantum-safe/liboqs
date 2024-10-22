@@ -522,7 +522,7 @@ int crypto_sign_verify_internal(const uint8_t *sig,
   shake256_inc_absorb(&state, mu, CRHBYTES);
   shake256_inc_absorb(&state, buf.coeffs, K*POLYW1_PACKEDBYTES);
   shake256_inc_finalize(&state);
-  shake256_inc_squeeze(buff.coeffs, CTILDEBYTES, &state);
+  shake256_inc_squeeze(buf.coeffs, CTILDEBYTES, &state);
   shake256_inc_ctx_release(&state);
   for(i = 0; i < CTILDEBYTES; ++i)
     if(buf.coeffs[i] != sig[i])
