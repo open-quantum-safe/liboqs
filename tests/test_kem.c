@@ -25,6 +25,8 @@
 #define OQS_TEST_CT_DECLASSIFY(addr, len)
 #endif
 
+#define MLKEM_SECRET_LEN      32
+
 #include "system_info.c"
 
 /* Displays hexadecimal strings */
@@ -34,6 +36,50 @@ static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t l
 		printf("%02X", str[i]);
 	}
 	printf("\n");
+}
+
+
+/* mlkem rejection key testcase */
+static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secret_key) {
+	/* only run tests for ML-KEM */
+	if ((0 == strcasecmp(kem->method_name, "ML-KEM-512")) || (0 == strcasecmp(kem->method_name, "ML-KEM-768")) || (0 == strcasecmp(kem->method_name, "ML-KEM-1024"))) {
+		OQS_STATUS rc;
+		int rv;
+		// buffer to hold z and c. z is always 32 bytes
+		uint8_t *buff_z_c = NULL;
+		size_t length_z_c = (size_t)32 + kem->length_ciphertext;
+		buff_z_c = OQS_MEM_malloc(length_z_c) ;
+		if (NULL == buff_z_c) {
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
+			return false;
+		}
+		// test rejection key by corrupting the secret key
+		secret_key[0] += 1;
+		uint8_t shared_secret_r[MLKEM_SECRET_LEN]; // expected output
+		uint8_t shared_secret_d[MLKEM_SECRET_LEN]; // calculated output
+		memcpy(buff_z_c, &secret_key[kem->length_secret_key - 32], 32);
+		memcpy(&buff_z_c[MLKEM_SECRET_LEN], ciphertext, kem->length_ciphertext);
+		// calculate expected secret in case of corrupted cipher : shake256(z || c)
+		OQS_SHA3_shake256(shared_secret_r, MLKEM_SECRET_LEN, buff_z_c, length_z_c);
+		OQS_MEM_secure_free(buff_z_c, length_z_c);
+		rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_KEM_decaps failed for rejection testcase\n");
+			return false;
+		}
+		OQS_TEST_CT_DECLASSIFY(shared_secret_d, MLKEM_SECRET_LEN);
+		OQS_TEST_CT_DECLASSIFY(shared_secret_r, MLKEM_SECRET_LEN);
+		rv = memcmp(shared_secret_d, shared_secret_r, MLKEM_SECRET_LEN);
+		if (rv != 0) {
+			fprintf(stderr, "ERROR: shared secrets are not equal for rejection key in decapsulation \n");
+			OQS_print_hex_string("shared_secret_d", shared_secret_d, MLKEM_SECRET_LEN);
+			OQS_print_hex_string("shared_secret_r", shared_secret_r, MLKEM_SECRET_LEN);
+			return false;
+		}
+		secret_key[0] -= 1; // restore private key
+	}
+	return true;
 }
 
 typedef struct magic_s {
@@ -132,40 +178,11 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		printf("shared secrets are equal\n");
 	}
 
-	if ((0 == strcasecmp(method_name, "ML-KEM-512")) || (0 == strcasecmp(method_name, "ML-KEM-768")) || (0 == strcasecmp(method_name, "ML-KEM-1024"))) {
-		// buffer to hold z and c. z is always 32 bytes
-		uint8_t *buff_z_c = NULL;
-		size_t length_z_c = (size_t)32 + kem->length_ciphertext;
-		buff_z_c = OQS_MEM_malloc(length_z_c) ;
-		if (NULL == buff_z_c) {
-			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
-			goto err;
-		}
-		// test rejection key by corrupting the secret key
-		secret_key[0] += 1;
-		uint8_t shared_secret_r[OQS_KEM_ml_kem_1024_length_shared_secret]; // expected output
-		memcpy(buff_z_c, &secret_key[kem->length_secret_key - 32], 32);
-		memcpy(&buff_z_c[32], ciphertext, kem->length_ciphertext);
-		// calculate expected secret in case of corrupted cipher : shake256(z || c)
-		OQS_SHA3_shake256(shared_secret_r, 32, buff_z_c, length_z_c);
-		OQS_MEM_secure_free(buff_z_c, length_z_c);
-		rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-		if (rc != OQS_SUCCESS) {
-			fprintf(stderr, "ERROR: OQS_KEM_decaps failed for rejection testcase\n");
-			goto err;
-		}
-		OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
-		OQS_TEST_CT_DECLASSIFY(shared_secret_r, kem->length_shared_secret);
-		rv = memcmp(shared_secret_d, shared_secret_r, kem->length_shared_secret);
-		if (rv != 0) {
-			fprintf(stderr, "ERROR: shared secrets are not equal for rejection key in decapsulation \n");
-			OQS_print_hex_string("shared_secret_d", shared_secret_d, kem->length_shared_secret);
-			OQS_print_hex_string("shared_secret_r", shared_secret_r, kem->length_shared_secret);
-			goto err;
-		}
-		secret_key[0] -= 1; // restore private key
+	/* check mlkem rejection testcases. returns true for all other kem algos */
+	if (false == mlkem_rej_testcase(kem, ciphertext, secret_key)) {
+		goto err;
 	}
+
 	// test invalid encapsulation (call should either fail or result in invalid shared secret)
 	OQS_randombytes(ciphertext, kem->length_ciphertext);
 	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
