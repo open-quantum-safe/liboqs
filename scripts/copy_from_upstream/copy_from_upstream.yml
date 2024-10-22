@@ -50,7 +50,7 @@ upstreams:
     name: pqcrystals-dilithium-standard
     git_url: https://github.com/bhess/dilithium.git
     git_branch: bhe-internal
-    git_commit: ea61759b7b6803daf3b84e803f7c57132c699ba2
+    git_commit: 1a5c47771bcd13e6049dce27ddad10d7e28e6ea9
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqcrystals-ml_dsa-internal2.patch]
