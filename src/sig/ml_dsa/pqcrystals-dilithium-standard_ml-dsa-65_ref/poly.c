@@ -365,7 +365,6 @@ void poly_uniform(poly *a,
     buflen = STREAM128_BLOCKBYTES + off;
     ctr += rej_uniform(a->coeffs + ctr, N - ctr, buf, buflen);
   }
-  stream128_release(&state);
 }
 
 /*************************************************
@@ -451,7 +450,6 @@ void poly_uniform_eta(poly *a,
     stream256_squeezeblocks(buf, 1, &state);
     ctr += rej_eta(a->coeffs + ctr, N - ctr, buf, STREAM256_BLOCKBYTES);
   }
-  stream256_release(&state);
 }
 
 /*************************************************
@@ -475,7 +473,6 @@ void poly_uniform_gamma1(poly *a,
 
   stream256_init(&state, seed, nonce);
   stream256_squeezeblocks(buf, POLY_UNIFORM_GAMMA1_NBLOCKS, &state);
-  stream256_release(&state);
   polyz_unpack(a, buf);
 }
 
@@ -493,11 +490,11 @@ void poly_challenge(poly *c, const uint8_t seed[CTILDEBYTES]) {
   unsigned int i, b, pos;
   uint64_t signs;
   uint8_t buf[SHAKE256_RATE];
-  shake256incctx state;
+  keccak_state state;
 
-  shake256_inc_init(&state);
-  shake256_inc_absorb(&state, seed, CTILDEBYTES);
-  shake256_inc_finalize(&state);
+  shake256_init(&state);
+  shake256_absorb(&state, seed, CTILDEBYTES);
+  shake256_finalize(&state);
   shake256_squeezeblocks(buf, 1, &state);
 
   signs = 0;
@@ -521,7 +518,6 @@ void poly_challenge(poly *c, const uint8_t seed[CTILDEBYTES]) {
     c->coeffs[b] = 1 - 2*(signs & 1);
     signs >>= 1;
   }
-  shake256_inc_ctx_release(&state);
 }
 
 /*************************************************

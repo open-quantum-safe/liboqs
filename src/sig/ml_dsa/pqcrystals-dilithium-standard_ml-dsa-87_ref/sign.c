@@ -103,7 +103,7 @@ int crypto_sign_signature_internal(uint8_t *sig,
   polyvecl mat[K], s1, y, z;
   polyveck t0, s2, w1, w0, h;
   poly cp;
-  shake256incctx state;
+  keccak_state state;
 
   if(ctxlen > 255)
     return -1;
@@ -116,20 +116,20 @@ int crypto_sign_signature_internal(uint8_t *sig,
   unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
 
   /* Compute mu = H(BytesToBits(tr) || M', 64) */
-  shake256_inc_init(&state);
-  shake256_inc_absorb(&state, tr, TRBYTES);
-  shake256_inc_absorb(&state, mpfx, mpfxlen);
-  shake256_inc_absorb(&state, ctx, ctxlen);
-  shake256_inc_absorb(&state, m, mlen);
-  shake256_inc_finalize(&state);
-  shake256_inc_squeeze(mu, CRHBYTES, &state);
+  shake256_init(&state);
+  shake256_absorb(&state, tr, TRBYTES);
+  shake256_absorb(&state, mpfx, mpfxlen);
+  shake256_absorb(&state, ctx, ctxlen);
+  shake256_absorb(&state, m, mlen);
+  shake256_finalize(&state);
+  shake256_squeeze(mu, CRHBYTES, &state);
 
-  shake256_inc_ctx_reset(&state);
-  shake256_inc_absorb(&state, key, SEEDBYTES);
-  shake256_inc_absorb(&state, rnd, RNDBYTES);
-  shake256_inc_absorb(&state, mu, CRHBYTES);
-  shake256_inc_finalize(&state);
-  shake256_inc_squeeze(rhoprime, CRHBYTES, &state);
+  shake256_init(&state);
+  shake256_absorb(&state, key, SEEDBYTES);
+  shake256_absorb(&state, rnd, RNDBYTES);
+  shake256_absorb(&state, mu, CRHBYTES);
+  shake256_finalize(&state);
+  shake256_squeeze(rhoprime, CRHBYTES, &state);
 
   /* Expand matrix and transform vectors */
   polyvec_matrix_expand(mat, rho);
@@ -153,11 +153,11 @@ rej:
   polyveck_decompose(&w1, &w0, &w1);
   polyveck_pack_w1(sig, &w1);
 
-  shake256_inc_ctx_reset(&state);
-  shake256_inc_absorb(&state, mu, CRHBYTES);
-  shake256_inc_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
-  shake256_inc_finalize(&state);
-  shake256_inc_squeeze(sig, CTILDEBYTES, &state);
+  shake256_init(&state);
+  shake256_absorb(&state, mu, CRHBYTES);
+  shake256_absorb(&state, sig, K*POLYW1_PACKEDBYTES);
+  shake256_finalize(&state);
+  shake256_squeeze(sig, CTILDEBYTES, &state);
   poly_challenge(&cp, sig);
   poly_ntt(&cp);
 
@@ -189,8 +189,6 @@ rej:
   n = polyveck_make_hint(&h, &w0, &w1);
   if(n > OMEGA)
     goto rej;
-
-  shake256_inc_ctx_release(&state);
 
   /* Write signature */
   pack_sig(sig, sig, &z, &h);
@@ -350,7 +348,7 @@ int crypto_sign_verify_internal(const uint8_t *sig,
   poly cp;
   polyvecl mat[K], z;
   polyveck t1, w1, h;
-  shake256incctx state;
+  keccak_state state;
 
   if(ctxlen > 255 || siglen != CRYPTO_BYTES)
     return -1;
@@ -363,13 +361,13 @@ int crypto_sign_verify_internal(const uint8_t *sig,
 
   /* Compute CRH(H(rho, t1), msg) */
   shake256(mu, TRBYTES, pk, CRYPTO_PUBLICKEYBYTES);
-  shake256_inc_init(&state);
-  shake256_inc_absorb(&state, mu, TRBYTES);
-  shake256_inc_absorb(&state, mpfx, mpfxlen);
-  shake256_inc_absorb(&state, ctx, ctxlen);
-  shake256_inc_absorb(&state, m, mlen);
-  shake256_inc_finalize(&state);
-  shake256_inc_squeeze(mu, CRHBYTES, &state);
+  shake256_init(&state);
+  shake256_absorb(&state, mu, TRBYTES);
+  shake256_absorb(&state, mpfx, mpfxlen);
+  shake256_absorb(&state, ctx, ctxlen);
+  shake256_absorb(&state, m, mlen);
+  shake256_finalize(&state);
+  shake256_squeeze(mu, CRHBYTES, &state);
 
   /* Matrix-vector multiplication; compute Az - c2^dt1 */
   poly_challenge(&cp, c);
@@ -393,12 +391,11 @@ int crypto_sign_verify_internal(const uint8_t *sig,
   polyveck_pack_w1(buf, &w1);
 
   /* Call random oracle and verify challenge */
-  shake256_inc_ctx_reset(&state);
-  shake256_inc_absorb(&state, mu, CRHBYTES);
-  shake256_inc_absorb(&state, buf, K*POLYW1_PACKEDBYTES);
-  shake256_inc_finalize(&state);
-  shake256_inc_squeeze(c2, CTILDEBYTES, &state);
-  shake256_inc_ctx_release(&state);
+  shake256_init(&state);
+  shake256_absorb(&state, mu, CRHBYTES);
+  shake256_absorb(&state, buf, K*POLYW1_PACKEDBYTES);
+  shake256_finalize(&state);
+  shake256_squeeze(c2, CTILDEBYTES, &state);
   for(i = 0; i < CTILDEBYTES; ++i)
     if(c[i] != c2[i])
       return -1;
