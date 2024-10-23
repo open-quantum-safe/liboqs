@@ -206,6 +206,9 @@ struct thread_data {
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = kem_test_correctness(td->alg_name);
+#if defined(OQS_USE_OPENSSL)
+	OQS_thread_stop();
+#endif
 	return NULL;
 }
 #endif

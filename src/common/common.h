@@ -5,14 +5,13 @@
  * SPDX-License-Identifier: MIT
  */
 
-
 #ifndef OQS_COMMON_H
 #define OQS_COMMON_H
 
 #include <limits.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <oqs/oqsconfig.h>
 
@@ -27,14 +26,15 @@ extern "C" {
  * using OpenSSL functions when OQS_USE_OPENSSL is defined, and
  * standard C library functions otherwise.
  */
-#if (defined(OQS_USE_OPENSSL) || defined(OQS_DLOPEN_OPENSSL)) && defined(OPENSSL_VERSION_NUMBER)
+#if (defined(OQS_USE_OPENSSL) || defined(OQS_DLOPEN_OPENSSL)) &&               \
+    defined(OPENSSL_VERSION_NUMBER)
 #include <openssl/crypto.h>
 
 /**
-* Allocates memory of a given size.
-* @param size The size of the memory to be allocated in bytes.
-* @return A pointer to the allocated memory.
-*/
+ * Allocates memory of a given size.
+ * @param size The size of the memory to be allocated in bytes.
+ * @return A pointer to the allocated memory.
+ */
 #define OQS_MEM_malloc(size) OPENSSL_malloc(size)
 
 /**
@@ -43,7 +43,8 @@ extern "C" {
  * @param element_size The size of each element in bytes.
  * @return A pointer to the allocated memory.
  */
-#define OQS_MEM_calloc(num_elements, element_size) OPENSSL_zalloc((num_elements) * (element_size))
+#define OQS_MEM_calloc(num_elements, element_size)                             \
+  OPENSSL_zalloc((num_elements) * (element_size))
 /**
  * Duplicates a string.
  * @param str The string to be duplicated.
@@ -52,10 +53,10 @@ extern "C" {
 #define OQS_MEM_strdup(str) OPENSSL_strdup(str)
 #else
 /**
-* Allocates memory of a given size.
-* @param size The size of the memory to be allocated in bytes.
-* @return A pointer to the allocated memory.
-*/
+ * Allocates memory of a given size.
+ * @param size The size of the memory to be allocated in bytes.
+ * @return A pointer to the allocated memory.
+ */
 #define OQS_MEM_malloc(size) malloc(size) // IGNORE memory-check
 
 /**
@@ -64,7 +65,8 @@ extern "C" {
  * @param element_size The size of each element in bytes.
  * @return A pointer to the allocated memory.
  */
-#define OQS_MEM_calloc(num_elements, element_size) calloc(num_elements, element_size) // IGNORE memory-check
+#define OQS_MEM_calloc(num_elements, element_size)                             \
+  calloc(num_elements, element_size)    // IGNORE memory-check
 /**
  * Duplicates a string.
  * @param str The string to be duplicated.
@@ -77,13 +79,14 @@ extern "C" {
  * Macro for terminating the program if x is
  * a null pointer.
  */
-#define OQS_EXIT_IF_NULLPTR(x, loc)                                                   \
-    do {                                                                              \
-        if ( (x) == (void*)0 ) {                                                      \
-            fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n", loc); \
-            exit(EXIT_FAILURE);                                                       \
-        }                                                                             \
-    } while (0)
+#define OQS_EXIT_IF_NULLPTR(x, loc)                                            \
+  do {                                                                         \
+    if ((x) == (void *)0) {                                                    \
+      fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n",      \
+              loc);                                                            \
+      exit(EXIT_FAILURE);                                                      \
+    }                                                                          \
+  } while (0)
 
 /**
  * This macro is intended to replace those assert()s
@@ -98,22 +101,24 @@ extern "C" {
  */
 #ifdef OQS_USE_OPENSSL
 #ifdef OPENSSL_NO_STDIO
-#define OQS_OPENSSL_GUARD(x)                                                           \
-    do {                                                                               \
-        if( 1 != (x) ) {                                                               \
-            fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
-            exit(EXIT_FAILURE);                                                        \
-        }                                                                              \
-    } while (0)
+#define OQS_OPENSSL_GUARD(x)                                                   \
+  do {                                                                         \
+    if (1 != (x)) {                                                            \
+      fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n",   \
+              x);                                                              \
+      exit(EXIT_FAILURE);                                                      \
+    }                                                                          \
+  } while (0)
 #else // OPENSSL_NO_STDIO
-#define OQS_OPENSSL_GUARD(x)                                                           \
-    do {                                                                               \
-        if( 1 != (x) ) {                                                               \
-            fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n", x); \
-            OSSL_FUNC(ERR_print_errors_fp)(stderr);                                    \
-            exit(EXIT_FAILURE);                                                        \
-        }                                                                              \
-    } while (0)
+#define OQS_OPENSSL_GUARD(x)                                                   \
+  do {                                                                         \
+    if (1 != (x)) {                                                            \
+      fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n",   \
+              x);                                                              \
+      OSSL_FUNC(ERR_print_errors_fp)(stderr);                                  \
+      exit(EXIT_FAILURE);                                                      \
+    }                                                                          \
+  } while (0)
 #endif // OPENSSL_NO_STDIO
 #endif // OQS_USE_OPENSSL
 
@@ -123,13 +128,13 @@ extern "C" {
  * only handle values up to INT_MAX for those parameters.
  * This macro is a temporary workaround for such functions.
  */
-#define SIZE_T_TO_INT_OR_EXIT(size_t_var_name, int_var_name)  \
-    int int_var_name = 0;                                     \
-    if (size_t_var_name <= INT_MAX) {                         \
-        int_var_name = (int)size_t_var_name;                  \
-    } else {                                                  \
-        exit(EXIT_FAILURE);                                   \
-    }
+#define SIZE_T_TO_INT_OR_EXIT(size_t_var_name, int_var_name)                   \
+  int int_var_name = 0;                                                        \
+  if (size_t_var_name <= INT_MAX) {                                            \
+    int_var_name = (int)size_t_var_name;                                       \
+  } else {                                                                     \
+    exit(EXIT_FAILURE);                                                        \
+  }
 
 /**
  * Defines which functions should be exposed outside the LibOQS library
@@ -214,6 +219,11 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 OQS_API void OQS_init(void);
 
 /**
+ * This function stops and frees OpenSSL threads resources in the correct order
+ */
+OQS_API void OQS_thread_stop(void);
+
+/**
  * This function frees prefetched OpenSSL objects
  */
 OQS_API void OQS_destroy(void);
@@ -277,8 +287,8 @@ OQS_API void OQS_MEM_insecure_free(void *ptr);
  * Allocates size bytes of uninitialized memory with a base pointer that is
  * a multiple of alignment. Alignment must be a power of two and a multiple
  * of sizeof(void *). Size must be a multiple of alignment.
- * @note The allocated memory should be freed with `OQS_MEM_aligned_free` when it
- *       is no longer needed.
+ * @note The allocated memory should be freed with `OQS_MEM_aligned_free` when
+ * it is no longer needed.
  */
 void *OQS_MEM_aligned_alloc(size_t alignment, size_t size);
 
