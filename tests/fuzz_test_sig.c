@@ -14,14 +14,16 @@
 
 #include <oqs/oqs.h>
 
+// Set default target method to dilithium2
+#ifndef FUZZ_METHOD_NAME
+#define FUZZ_METHOD_NAME OQS_SIG_alg_dilithium_2
+#endif
+
 void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
                   uint8_t *signature,
                   OQS_SIG *sig);
 
-static OQS_STATUS fuzz_dilithium_2(const uint8_t *message, size_t message_len) {
-
-#ifdef OQS_ENABLE_SIG_dilithium_2
-
+static OQS_STATUS fuzz_sig(const uint8_t *message, size_t message_len) {
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
@@ -29,9 +31,9 @@ static OQS_STATUS fuzz_dilithium_2(const uint8_t *message, size_t message_len) {
 	size_t signature_len;
 	OQS_STATUS rc;
 
-	sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
+	sig = OQS_SIG_new(FUZZ_METHOD_NAME);
 	if (sig == NULL) {
-		printf("[fuzz_test_dilithium_2]  OQS_SIG_alg_dilithium_2 was not enabled at compile-time.\n");
+		printf("%s was not enabled at compile-time.\n", FUZZ_METHOD_NAME);
 		return OQS_ERROR;
 	}
 
@@ -65,12 +67,6 @@ static OQS_STATUS fuzz_dilithium_2(const uint8_t *message, size_t message_len) {
 
 	cleanup_heap(public_key, secret_key,  signature, sig);
 	return OQS_SUCCESS; // success
-#else
-
-	printf("[fuzz_test_dilithium_2] OQS_SIG_dilithium_2 was not enabled at compile-time.\n");
-	return OQS_SUCCESS;
-
-#endif
 }
 
 void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
@@ -86,7 +82,7 @@ void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
 
 int LLVMFuzzerTestOneInput(const char *data, size_t size) {
 	OQS_init();
-	if (OQS_ERROR == fuzz_dilithium_2((const uint8_t *)data, size)) {
+	if (OQS_ERROR == fuzz_sig((const uint8_t *)data, size)) {
 		// If we get an error prune testcase from corpus.
 		return -1;
 	}

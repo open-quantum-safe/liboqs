@@ -15,14 +15,11 @@ errors, helping developers identify and fix bugs and security loopholes.
   - [ ] ml_kem
   - [ ] ntruprime
 - [ ] sig
-  - [ ] dilithium
-    - [x] dilithium2
-    - [ ] dilithium3
-    - [ ] dilithium5
-  - [ ] falcon
-  - [ ] mayo
-  - [ ] ml_dsa
-  - [ ] sphincs
+  - [x] dilithium
+  - [x] falcon
+  - [x] mayo
+  - [x] ml_dsa
+  - [x] sphincs
 - [ ] sig_stfl
   - [ ] lms
   - [ ] sig_stfl

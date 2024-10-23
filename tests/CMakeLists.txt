@@ -94,13 +94,65 @@ set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
+set(FUZZ_SIG_ALGORITHMS 
+    dilithium_2
+    dilithium_3
+    dilithium_5
+    ml_dsa_44_ipd
+    ml_dsa_44
+    ml_dsa_65_ipd
+    ml_dsa_65
+    ml_dsa_87_ipd
+    ml_dsa_87
+    falcon_512
+    falcon_1024
+    falcon_padded_512
+    falcon_padded_1024
+    sphincs_sha2_128f_simple
+    sphincs_sha2_128s_simple
+    sphincs_sha2_192f_simple
+    sphincs_sha2_192s_simple
+    sphincs_sha2_256f_simple
+    sphincs_sha2_256s_simple
+    sphincs_shake_128f_simple
+    sphincs_shake_128s_simple
+    sphincs_shake_192f_simple
+    sphincs_shake_192s_simple
+    sphincs_shake_256f_simple
+    sphincs_shake_256s_simple
+    mayo_1
+    mayo_2
+    mayo_3
+    mayo_5
+    cross_rsdp_128_balanced
+    cross_rsdp_128_fast
+    cross_rsdp_128_small
+    cross_rsdp_192_balanced
+    cross_rsdp_192_fast
+    cross_rsdp_192_small
+    cross_rsdp_256_balanced
+    cross_rsdp_256_fast
+    cross_rsdp_256_small
+    cross_rsdpg_128_balanced
+    cross_rsdpg_128_fast
+    cross_rsdpg_128_small
+    cross_rsdpg_192_balanced
+    cross_rsdpg_192_fast
+    cross_rsdpg_192_small
+    cross_rsdpg_256_balanced
+    cross_rsdpg_256_fast
+    cross_rsdpg_256_small
+)
+
 if(OQS_BUILD_FUZZ_TESTS AND '${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
-    add_executable(fuzz_test_dilithium2 fuzz_test_dilithium2.c)
-    target_link_libraries(fuzz_test_dilithium2 PRIVATE ${TEST_DEPS})
-    set_target_properties(fuzz_test_dilithium2 PROPERTIES
-        COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
-        LINK_FLAGS "${FUZZING_LINK_FLAGS}"
-    )
+    foreach(FUZZ_SIG_ALGORITHM IN LISTS FUZZ_SIG_ALGORITHMS)
+        add_executable(fuzz_test_${FUZZ_SIG_ALGORITHM} fuzz_test_sig.c)
+        target_link_libraries(fuzz_test_${FUZZ_SIG_ALGORITHM} PRIVATE ${TEST_DEPS})
+        set_target_properties(fuzz_test_${FUZZ_SIG_ALGORITHM} PROPERTIES
+            COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS} -DFUZZ_METHOD_NAME=OQS_SIG_alg_${FUZZ_SIG_ALGORITHM}"
+            LINK_FLAGS "${FUZZING_LINK_FLAGS}"
+        )
+    endforeach()
 endif()
 
 # Stateful SIG API tests
