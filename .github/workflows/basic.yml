@@ -86,7 +86,36 @@ jobs:
         run: ninja gen_docs
         working-directory: build
 
-        
+  cppcheck:
+    name: Check C++ linking with example program
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    env:
+      KEM_NAME: ml_kem_768
+      SIG_NAME: ml_dsa_65
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: |
+          mkdir build && \
+          cd build && \
+          cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
+            -GNinja \
+            -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
+            --warn-uninitialized .. > config.log 2>&1 && \
+          cat config.log && \
+          cmake -LA -N .. && \
+          ! (grep -i "uninitialized variable" config.log)
+      - name: Build liboqs
+        run: ninja
+        working-directory: build
+      - name: Link with C++ program
+        run: /
+          g++ .github/cpp_linking_example.cpp -g -lcrypto \
+          -Iinclude lib/liboqs.a -o example_sig --std=c++11
+        working-directory: build
+
   fuzzbuildcheck:
     name: Check that code passes a basic fuzzing build
     needs: [ workflowcheck, stylecheck, upstreamcheck ]
