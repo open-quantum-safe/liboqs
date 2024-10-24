@@ -82,6 +82,15 @@ endif()
 add_executable(test_kem test_kem.c)
 target_link_libraries(test_kem PRIVATE ${TEST_DEPS})
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
+    # workaround for Windows .dll
+    if(MINGW OR MSYS OR CYGWIN OR CMAKE_CROSSCOMPILING)
+        target_link_options(test_kem PRIVATE -Wl,--allow-multiple-definition)
+    else()
+        target_link_options(test_kem PRIVATE "/FORCE:MULTIPLE")
+    endif()
+endif()
+
 add_executable(test_kem_mem test_kem_mem.c)
 target_link_libraries(test_kem_mem PRIVATE ${TEST_DEPS})
 

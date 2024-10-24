@@ -285,7 +285,7 @@ static OQS_STATUS kem_vector_encdec_val(const char *method_name,
 		ret = OQS_SUCCESS;
 	} else {
 		ret = OQS_ERROR;
-		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): ciphertext or shared secret doesn't match!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): shared secret doesn't match!\n", method_name);
 	}
 
 	goto cleanup;
@@ -362,7 +362,7 @@ int main(int argc, char **argv) {
 		kg_pk = argv[4];
 		kg_sk = argv[5];
 
-		if (strlen(prng_output_stream) % 2 != 0 ||
+		if (strlen(prng_output_stream) != 128 ||
 		        strlen(kg_pk) != 2 * kem->length_public_key ||
 		        strlen(kg_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
@@ -391,7 +391,7 @@ int main(int argc, char **argv) {
 		encdec_aft_k = argv[5];
 		encdec_aft_c = argv[6];
 
-		if (strlen(prng_output_stream) % 2 != 0 ||
+		if (strlen(prng_output_stream) != 64 ||
 		        strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
 		        strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
 		        strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
