@@ -1,3 +1,5 @@
+![Travis Build Status](https://img.shields.io/travis/com/open-quantum-safe/liboqs?logo=travis&label=travis%20ci)
+
 liboqs
 ======================
 
