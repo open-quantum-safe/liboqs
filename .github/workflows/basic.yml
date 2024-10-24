@@ -111,7 +111,7 @@ jobs:
         run: ninja
         working-directory: build
       - name: Link with C++ program
-        run: /
+        run: |
           g++ .github/cpp_linking_example.cpp -g -lcrypto \
           -Iinclude lib/liboqs.a -o example_sig --std=c++11
         working-directory: build
