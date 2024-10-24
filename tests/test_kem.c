@@ -25,7 +25,9 @@
 #define OQS_TEST_CT_DECLASSIFY(addr, len)
 #endif
 
+#ifdef OQS_ENABLE_KEM_ML_KEM
 #define MLKEM_SECRET_LEN      32
+#endif
 
 #include "system_info.c"
 
@@ -38,6 +40,7 @@ static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t l
 	printf("\n");
 }
 
+#ifdef OQS_ENABLE_KEM_ML_KEM
 /* mlkem rejection key testcase */
 static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secret_key) {
 	// sanity checks
@@ -97,12 +100,10 @@ static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secre
 	OQS_SHA3_shake256(shared_secret_r, MLKEM_SECRET_LEN, buff_z_c, length_z_c);
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_decaps failed for rejection testcase scenario 2\n");
 		goto cleanup;
 	}
-
 	OQS_TEST_CT_DECLASSIFY(shared_secret_d, MLKEM_SECRET_LEN);
 	OQS_TEST_CT_DECLASSIFY(shared_secret_r, MLKEM_SECRET_LEN);
 	rv = memcmp(shared_secret_d, shared_secret_r, MLKEM_SECRET_LEN);
@@ -120,6 +121,7 @@ cleanup:
 	}
 	return retval;
 }
+#endif
 
 typedef struct magic_s {
 	uint8_t val[31];
@@ -217,10 +219,12 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		printf("shared secrets are equal\n");
 	}
 
+#ifdef OQS_ENABLE_KEM_ML_KEM
 	/* check mlkem rejection testcases. returns true for all other kem algos */
 	if (false == mlkem_rej_testcase(kem, ciphertext, secret_key)) {
 		goto err;
 	}
+#endif
 
 	// test invalid encapsulation (call should either fail or result in invalid shared secret)
 	OQS_randombytes(ciphertext, kem->length_ciphertext);
