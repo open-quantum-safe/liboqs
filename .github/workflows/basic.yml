@@ -112,8 +112,9 @@ jobs:
         working-directory: build
       - name: Link with C++ program
         run: |
-          g++ ../cpp/cpp_linking_example.cpp -g -lcrypto \
-          -Ibuild/include build/lib/liboqs.a -o example_sig --std=c++11
+          g++ ../cpp/cpp_linking_example.cpp -g \
+          -I./include -L./lib -loqs -lcrypto -std=c++11 -o example_sig && \
+          ./example_sig
         working-directory: build
 
   fuzzbuildcheck:
