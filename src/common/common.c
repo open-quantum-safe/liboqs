@@ -235,6 +235,12 @@ OQS_API void OQS_init(void) {
 #endif
 }
 
+OQS_API void OQS_thread_stop(void) {
+#if defined(OQS_USE_OPENSSL)
+	oqs_thread_stop();
+#endif
+}
+
 OQS_API const char *OQS_version(void) {
 	return OQS_VERSION_TEXT;
 }
