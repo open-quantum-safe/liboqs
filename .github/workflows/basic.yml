@@ -112,8 +112,7 @@ jobs:
         working-directory: build
       - name: Link with C++ program
         run: |
-          ls -lR .* && \
-          g++ ../.github/cpp_linking_example.cpp -g -lcrypto \
+          g++ ../cpp/cpp_linking_example.cpp -g -lcrypto \
           -Ibuild/include build/lib/liboqs.a -o example_sig --std=c++11
         working-directory: build
 
