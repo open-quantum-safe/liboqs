@@ -170,39 +170,39 @@ extern "C" {
  *
  */
 typedef enum {
-	/** Used to indicate that some undefined error occurred. */
-	OQS_ERROR = -1,
-	/** Used to indicate successful return from function. */
-	OQS_SUCCESS = 0,
-	/** Used to indicate failures in external libraries (e.g., OpenSSL). */
-	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
+  /** Used to indicate that some undefined error occurred. */
+  OQS_ERROR = -1,
+  /** Used to indicate successful return from function. */
+  OQS_SUCCESS = 0,
+  /** Used to indicate failures in external libraries (e.g., OpenSSL). */
+  OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
 
 /**
  * CPU runtime detection flags
  */
 typedef enum {
-	OQS_CPU_EXT_INIT, /* Must be first */
-	/* Start extension list */
-	OQS_CPU_EXT_ADX,
-	OQS_CPU_EXT_AES,
-	OQS_CPU_EXT_AVX,
-	OQS_CPU_EXT_AVX2,
-	OQS_CPU_EXT_AVX512,
-	OQS_CPU_EXT_BMI1,
-	OQS_CPU_EXT_BMI2,
-	OQS_CPU_EXT_PCLMULQDQ,
-	OQS_CPU_EXT_VPCLMULQDQ,
-	OQS_CPU_EXT_POPCNT,
-	OQS_CPU_EXT_SSE,
-	OQS_CPU_EXT_SSE2,
-	OQS_CPU_EXT_SSE3,
-	OQS_CPU_EXT_ARM_AES,
-	OQS_CPU_EXT_ARM_SHA2,
-	OQS_CPU_EXT_ARM_SHA3,
-	OQS_CPU_EXT_ARM_NEON,
-	/* End extension list */
-	OQS_CPU_EXT_COUNT, /* Must be last */
+  OQS_CPU_EXT_INIT, /* Must be first */
+  /* Start extension list */
+  OQS_CPU_EXT_ADX,
+  OQS_CPU_EXT_AES,
+  OQS_CPU_EXT_AVX,
+  OQS_CPU_EXT_AVX2,
+  OQS_CPU_EXT_AVX512,
+  OQS_CPU_EXT_BMI1,
+  OQS_CPU_EXT_BMI2,
+  OQS_CPU_EXT_PCLMULQDQ,
+  OQS_CPU_EXT_VPCLMULQDQ,
+  OQS_CPU_EXT_POPCNT,
+  OQS_CPU_EXT_SSE,
+  OQS_CPU_EXT_SSE2,
+  OQS_CPU_EXT_SSE3,
+  OQS_CPU_EXT_ARM_AES,
+  OQS_CPU_EXT_ARM_SHA2,
+  OQS_CPU_EXT_ARM_SHA3,
+  OQS_CPU_EXT_ARM_NEON,
+  /* End extension list */
+  OQS_CPU_EXT_COUNT, /* Must be last */
 } OQS_CPU_EXT;
 
 /**
@@ -219,7 +219,8 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 OQS_API void OQS_init(void);
 
 /**
- * This function stops and frees OpenSSL threads resources in the correct order
+ * This function stops OpenSSL threads which allows resources
+ * to be cleaned up in the correct order.
  */
 OQS_API void OQS_thread_stop(void);
 
