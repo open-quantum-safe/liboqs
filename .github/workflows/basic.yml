@@ -91,7 +91,6 @@ jobs:
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
-      KEM_NAME: ml_kem_768
       SIG_NAME: ml_dsa_65
     steps:
       - name: Checkout code
@@ -102,7 +101,7 @@ jobs:
           cd build && \
           cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
             -GNinja \
-            -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
+            -DOQS_MINIMAL_BUILD="SIG_$SIG_NAME" \
             --warn-uninitialized .. > config.log 2>&1 && \
           cat config.log && \
           cmake -LA -N .. && \
