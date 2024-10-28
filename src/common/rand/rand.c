@@ -25,9 +25,9 @@ void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read);
 #ifdef OQS_USE_OPENSSL
 #include "../ossl_helpers.h"
 // Use OpenSSL's RAND_bytes as the default PRNG
-static OQS_STATUS (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_openssl;
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_openssl;
 #else
-static OQS_STATUS (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 #endif
 OQS_API OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
