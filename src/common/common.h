@@ -219,8 +219,10 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 OQS_API void OQS_init(void);
 
 /**
- * This function stops OpenSSL threads which allows resources
+ * This function stops OpenSSL threads, which allows resources
  * to be cleaned up in the correct order.
+ * @note When liboqs is used in a multithreaded application,
+ * each thread should call this function prior to stopping.
  */
 OQS_API void OQS_thread_stop(void);
 
