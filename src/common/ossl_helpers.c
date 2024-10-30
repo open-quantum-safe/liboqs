@@ -87,6 +87,10 @@ void oqs_ossl_destroy(void) {
 #endif
 }
 
+void oqs_thread_stop(void) {
+	OSSL_FUNC(OPENSSL_thread_stop)();
+}
+
 const EVP_MD *oqs_sha256(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
 #if defined(OQS_USE_PTHREADS)

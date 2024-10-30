@@ -22,7 +22,6 @@
 
 #if OQS_USE_PTHREADS_IN_TESTS
 #include <pthread.h>
-
 static pthread_mutex_t *test_sk_lock = NULL;
 static pthread_mutex_t *sk_lock = NULL;
 #endif
@@ -990,6 +989,7 @@ void *test_query_key(void *arg) {
 	struct lock_test_data *td = arg;
 	printf("\n%s: Start Query Stateful Key info\n", __func__);
 	td->rc = sig_stfl_test_query_key(td->alg_name);
+	OQS_thread_stop();
 	printf("%s: End Query Stateful Key info\n\n", __func__);
 	return NULL;
 }
@@ -998,6 +998,7 @@ void *test_sig_gen(void *arg) {
 	struct lock_test_data *td = arg;
 	printf("\n%s: Start Generate Stateful Signature\n", __func__);
 	td->rc = sig_stfl_test_sig_gen(td->alg_name);
+	OQS_thread_stop();
 	printf("%s: End Generate Stateful Signature\n\n", __func__);
 	return NULL;
 }
@@ -1006,6 +1007,7 @@ void *test_create_keys(void *arg) {
 	struct lock_test_data *td = arg;
 	printf("\n%s: Start Generate Keys\n", __func__);
 	td->rc = sig_stfl_test_secret_key_lock(td->alg_name, td->katfile);
+	OQS_thread_stop();
 	printf("%s: End Generate Stateful Keys\n\n", __func__);
 	return NULL;
 }
@@ -1013,12 +1015,14 @@ void *test_create_keys(void *arg) {
 void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile);
+	OQS_thread_stop();
 	return NULL;
 }
 
 void *test_secret_key_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_secret_key(td->alg_name, td->katfile);
+	OQS_thread_stop();
 	return NULL;
 }
 #endif

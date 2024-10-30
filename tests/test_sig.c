@@ -183,6 +183,7 @@ struct thread_data {
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_test_correctness(td->alg_name);
+	OQS_thread_stop();
 	return NULL;
 }
 #endif
