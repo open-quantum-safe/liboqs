@@ -23,7 +23,8 @@ non_upstream_kems = 0
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbosity", type=int)
-parser.add_argument("-k", "--keep_data", action='store_true')
+parser.add_argument("-k", "--keep_data", action='store_true', help='Keep upstream code in the "repos" folder')
+parser.add_argument("-d", "--delete", action='store_true', help='Delete untracked files from implementation directories')
 parser.add_argument("operation", choices=["copy", "verify", "libjade"])
 args = parser.parse_args()
 
@@ -33,6 +34,8 @@ else:
     DEBUG = 0
 
 keepdata = True if args.keep_data else False
+
+delete = True if args.delete else False
 
 if 'LIBOQS_DIR' not in os.environ:
     print("Must set environment variable LIBOQS_DIR")
@@ -543,6 +546,20 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
         try:
             os.makedirs(os.path.join(basedir, 'src', family['type'], family['name']))
         except:
+            if delete:
+                # clear out all subdirectories
+                with os.scandir(os.path.join(basedir, 'src', family['type'], family['name'])) as ls:
+                    for entry in ls:
+                        if entry.is_dir(follow_symlinks=False):
+                            if with_libjade:
+                                if not entry.name.startswith('libjade'):
+                                    continue
+                            elif entry.name.startswith('libjade'):
+                                continue
+                            to_rm = os.path.join(basedir, 'src', family['type'], family['name'], entry.name)
+                            if DEBUG > 3:
+                                print("removing %s" % to_rm)
+                            shutil.rmtree(to_rm)
             pass
         if 'common_deps' in family:
             for common_dep in family['common_deps']:
