@@ -6,7 +6,6 @@ permissions:
 on: [workflow_call, workflow_dispatch]
 
 jobs:
-
   workflowcheck:
     name: Check validity of GitHub workflows
     runs-on: ubuntu-latest
@@ -19,7 +18,7 @@ jobs:
 
   stylecheck:
     name: Check code formatting
-    needs: [ workflowcheck ]
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
@@ -34,7 +33,7 @@ jobs:
 
   upstreamcheck:
     name: Check upstream code is properly integrated
-    needs: [ workflowcheck ]
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
@@ -47,19 +46,19 @@ jobs:
           git config --global --add safe.directory "$PWD" && \
           echo "LIBOQS_DIR=$PWD" >> "$GITHUB_ENV"
       - name: Verify copy_from_upstream state after copy
-        working-directory: 'scripts/copy_from_upstream'
+        working-directory: "scripts/copy_from_upstream"
         run: |
           python3 copy_from_upstream.py copy && \
           ! git status | grep -i modified
       - name: Verify copy_from_upstream state after libjade
-        working-directory: 'scripts/copy_from_upstream'
+        working-directory: "scripts/copy_from_upstream"
         run: |
           python3 copy_from_upstream.py libjade && \
           ! git status | grep -i modified
 
   buildcheck:
     name: Check that code passes a basic build
-    needs: [ workflowcheck, stylecheck, upstreamcheck ]
+    needs: [workflowcheck, stylecheck, upstreamcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
@@ -86,10 +85,39 @@ jobs:
         run: ninja gen_docs
         working-directory: build
 
-        
+  cppcheck:
+    name: Check C++ linking with example program
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    env:
+      SIG_NAME: dilithium_2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: |
+          mkdir build && \
+          cd build && \
+          cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
+            -GNinja \
+            -DOQS_MINIMAL_BUILD="SIG_$SIG_NAME" \
+            --warn-uninitialized .. > config.log 2>&1 && \
+          cat config.log && \
+          cmake -LA -N .. && \
+          ! (grep -i "uninitialized variable" config.log)
+      - name: Build liboqs
+        run: ninja
+        working-directory: build
+      - name: Link with C++ program
+        run: |
+          g++ ../cpp/sig_linking_test.cpp -g \
+          -I./include -L./lib -loqs -lcrypto -std=c++11 -o example_sig && \
+          ./example_sig
+        working-directory: build
+
   fuzzbuildcheck:
     name: Check that code passes a basic fuzzing build
-    needs: [ workflowcheck, stylecheck, upstreamcheck ]
+    needs: [workflowcheck, stylecheck, upstreamcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
