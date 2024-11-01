@@ -50,12 +50,12 @@ jobs:
         working-directory: 'scripts/copy_from_upstream'
         run: |
           python3 copy_from_upstream.py -d copy && \
-          ! git status | grep -i modified
+          test -z "$(git status --porcelain)"
       - name: Verify copy_from_upstream state after libjade
         working-directory: 'scripts/copy_from_upstream'
         run: |
           python3 copy_from_upstream.py -d libjade && \
-          ! git status | grep -i modified
+          test -z "$(git status --porcelain)"
 
   buildcheck:
     name: Check that code passes a basic build
