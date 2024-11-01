@@ -95,9 +95,9 @@ add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
 if(OQS_BUILD_FUZZ_TESTS AND '${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
-    add_executable(fuzz_test_dilithium2 fuzz_test_dilithium2.c)
-    target_link_libraries(fuzz_test_dilithium2 PRIVATE ${TEST_DEPS})
-    set_target_properties(fuzz_test_dilithium2 PROPERTIES
+    add_executable(fuzz_test_sig fuzz_test_sig.c)
+    target_link_libraries(fuzz_test_sig PRIVATE ${TEST_DEPS})
+    set_target_properties(fuzz_test_sig PROPERTIES
         COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
         LINK_FLAGS "${FUZZING_LINK_FLAGS}"
     )
