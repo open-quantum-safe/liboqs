@@ -11,12 +11,51 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdlib.h>
 
 #include <oqs/oqs.h>
 
-void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
-                  uint8_t *signature,
+
+typedef struct {
+	uint32_t random_seed;
+	uint32_t algorithm_index;
+} fuzz_init_ctx_t;
+
+typedef struct {
+	fuzz_init_ctx_t init;
+	const uint8_t *data;
+	size_t data_len;
+} fuzz_ctx_t;
+
+fuzz_ctx_t init_fuzz_context(const uint8_t *data, size_t data_len);
+void fuzz_rand(uint8_t *random_array, size_t bytes_to_read);
+
+void fuzz_rand(uint8_t *random_array, size_t bytes_to_read) {
+	for (size_t i = 0; i < bytes_to_read; i++) {
+		random_array[i] = (uint8_t)rand();
+	}
+}
+
+fuzz_ctx_t init_fuzz_context(const uint8_t *data, size_t data_len) {
+
+	fuzz_ctx_t ctx = {{0, 0}, NULL, 0};
+	if (data_len > sizeof(fuzz_init_ctx_t)) {
+		memcpy(&ctx.init, data, sizeof(fuzz_init_ctx_t));
+		ctx.data = data + sizeof(fuzz_init_ctx_t);
+		ctx.data_len = data_len - sizeof(fuzz_init_ctx_t);
+
+		ctx.init.algorithm_index %= OQS_SIG_algs_length;
+	} else {
+		ctx.data = data;
+		ctx.data_len = data_len;
+	}
+
+	srand(ctx.init.random_seed);
+	OQS_randombytes_custom_algorithm(&fuzz_rand);
+
+	return ctx;
+}
+
+void cleanup_heap(uint8_t *public_key, uint8_t *secret_key, uint8_t *signature,
                   OQS_SIG *sig);
 
 static OQS_STATUS fuzz_sig(const uint8_t *data, size_t data_len) {
@@ -27,21 +66,9 @@ static OQS_STATUS fuzz_sig(const uint8_t *data, size_t data_len) {
 	size_t signature_len;
 	OQS_STATUS rc;
 
-	// Select algorithm based on fuzzed data.
-	size_t algorithm_index = 0;
-	const uint8_t *message = NULL;
-	size_t message_len = 0;
-	if (data_len > sizeof(size_t)) {
-		memcpy(&algorithm_index, data, sizeof(size_t));
-		message = data + sizeof(size_t);
-		message_len = data_len - sizeof(size_t);
+	fuzz_ctx_t ctx = init_fuzz_context(data, data_len);
 
-		algorithm_index %= OQS_SIG_algs_length;
-	} else {
-		message = data;
-		message_len = data_len;
-	}
-	const char *algorithm = OQS_SIG_alg_identifier(algorithm_index);
+	const char *algorithm = OQS_SIG_alg_identifier(ctx.init.algorithm_index);
 
 	sig = OQS_SIG_new(algorithm);
 	if (sig == NULL) {
@@ -52,37 +79,39 @@ static OQS_STATUS fuzz_sig(const uint8_t *data, size_t data_len) {
 	public_key = malloc(sig->length_public_key);
 	secret_key = malloc(sig->length_secret_key);
 	signature = malloc(sig->length_signature);
-	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
+	if ((public_key == NULL) || (secret_key == NULL) || (ctx.data == NULL) ||
+	        (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed!\n");
-		cleanup_heap(public_key, secret_key,  signature, sig);
+		cleanup_heap(public_key, secret_key, signature, sig);
 		return OQS_ERROR;
 	}
 
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed!\n");
-		cleanup_heap(public_key, secret_key,  signature, sig);
+		cleanup_heap(public_key, secret_key, signature, sig);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
+	rc = OQS_SIG_sign(sig, signature, &signature_len, ctx.data, ctx.data_len,
+	                  secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign failed!\n");
-		cleanup_heap(public_key, secret_key,  signature, sig);
+		cleanup_heap(public_key, secret_key, signature, sig);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	rc = OQS_SIG_verify(sig, ctx.data, ctx.data_len, signature, signature_len,
+	                    public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify failed!\n");
-		cleanup_heap(public_key, secret_key,  signature, sig);
+		cleanup_heap(public_key, secret_key, signature, sig);
 		exit(1);
 	}
 
-	cleanup_heap(public_key, secret_key,  signature, sig);
+	cleanup_heap(public_key, secret_key, signature, sig);
 	return OQS_SUCCESS; // success
 }
 
-void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
-                  uint8_t *signature,
+void cleanup_heap(uint8_t *public_key, uint8_t *secret_key, uint8_t *signature,
                   OQS_SIG *sig) {
 	if (sig != NULL) {
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
@@ -101,5 +130,3 @@ int LLVMFuzzerTestOneInput(const char *data, size_t size) {
 	OQS_destroy();
 	return 0;
 }
-
-
