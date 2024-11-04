@@ -5,7 +5,6 @@
 #include <oqs/sig_cross.h>
 
 #if defined(OQS_ENABLE_SIG_cross_rsdpg_256_small)
-
 OQS_SIG *OQS_SIG_cross_rsdpg_256_small_new(void) {
 
 	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
@@ -25,6 +24,8 @@ OQS_SIG *OQS_SIG_cross_rsdpg_256_small_new(void) {
 	sig->keypair = OQS_SIG_cross_rsdpg_256_small_keypair;
 	sig->sign = OQS_SIG_cross_rsdpg_256_small_sign;
 	sig->verify = OQS_SIG_cross_rsdpg_256_small_verify;
+	sig->sign_with_ctx_str = NULL;
+	sig->verify_with_ctx_str = NULL;
 
 	return sig;
 }
@@ -86,5 +87,4 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_small_verify(const uint8_t *message, 
 	return (OQS_STATUS) PQCLEAN_CROSSRSDPG256SMALL_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
-
 #endif

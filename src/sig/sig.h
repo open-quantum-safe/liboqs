@@ -216,6 +216,24 @@ typedef struct OQS_SIG {
 	OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 
 	/**
+	 * Signature generation algorithm, with custom context string.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `signature`,
+	 * based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_SIG_*_length_*`.
+	 *
+	 * @param[out] signature The signature on the message represented as a byte string.
+	 * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
+	 * @param[in] message The message to sign represented as a byte string.
+	 * @param[in] message_len The length of the message to sign.
+	 * @param[in] ctx_str The context string for the signature.
+	 * @param[in] ctx_str_len The length of the context string.
+	 * @param[in] secret_key The secret key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*sign_with_ctx_str)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key);
+
+	/**
 	 * Signature verification algorithm.
 	 *
 	 * @param[in] message The message represented as a byte string.
@@ -226,6 +244,21 @@ typedef struct OQS_SIG {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*verify)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+	/**
+	 * Signature verification algorithm, with custom context string.
+	 *
+	 * @param[in] message The message represented as a byte string.
+	 * @param[in] message_len The length of the message.
+	 * @param[in] signature The signature on the message represented as a byte string.
+	 * @param[in] signature_len The length of the signature.
+	 * @param[in] ctx_str The context string for the signature.
+	 * @param[in] ctx_str_len The length of the context string.
+	 * @param[in] public_key The public key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*verify_with_ctx_str)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key);
+
 
 } OQS_SIG;
 
@@ -272,6 +305,24 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
 OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 
 /**
+ * Signature generation algorithm, with custom context string.
+ *
+ * Caller is responsible for allocating sufficient memory for `signature`,
+ * based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * @param[out] signature The signature on the message represented as a byte string.
+ * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
+ * @param[in] message The message to sign represented as a byte string.
+ * @param[in] message_len The length of the message to sign.
+ * @param[in] ctx_str The context string for the signature.
+ * @param[in] ctx_str_len The length of the context string.
+ * @param[in] secret_key The secret key represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_SIG_sign_with_ctx_str(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key);
+
+/**
  * Signature verification algorithm.
  *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
@@ -283,6 +334,20 @@ OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *
  * @return OQS_SUCCESS or OQS_ERROR
  */
 OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+/**
+ * Signature verification algorithm, with custom context string.
+ *
+ * @param[in] message The message represented as a byte string.
+ * @param[in] message_len The length of the message.
+ * @param[in] signature The signature on the message represented as a byte string.
+ * @param[in] signature_len The length of the signature.
+ * @param[in] ctx_str The context string for the signature.
+ * @param[in] ctx_str_len The length of the context string.
+ * @param[in] public_key The public key represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_SIG_verify_with_ctx_str(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key);
 
 /**
  * Frees an OQS_SIG object that was constructed by OQS_SIG_new.

@@ -5,7 +5,6 @@
 #include <oqs/sig_sphincs.h>
 
 #if defined(OQS_ENABLE_SIG_sphincs_sha2_256s_simple)
-
 OQS_SIG *OQS_SIG_sphincs_sha2_256s_simple_new(void) {
 
 	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
@@ -25,6 +24,8 @@ OQS_SIG *OQS_SIG_sphincs_sha2_256s_simple_new(void) {
 	sig->keypair = OQS_SIG_sphincs_sha2_256s_simple_keypair;
 	sig->sign = OQS_SIG_sphincs_sha2_256s_simple_sign;
 	sig->verify = OQS_SIG_sphincs_sha2_256s_simple_verify;
+	sig->sign_with_ctx_str = NULL;
+	sig->verify_with_ctx_str = NULL;
 
 	return sig;
 }
@@ -86,5 +87,4 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_verify(const uint8_t *messag
 	return (OQS_STATUS) PQCLEAN_SPHINCSSHA2256SSIMPLE_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
-
 #endif

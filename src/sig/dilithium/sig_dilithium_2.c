@@ -5,7 +5,6 @@
 #include <oqs/sig_dilithium.h>
 
 #if defined(OQS_ENABLE_SIG_dilithium_2)
-
 OQS_SIG *OQS_SIG_dilithium_2_new(void) {
 
 	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
@@ -25,6 +24,8 @@ OQS_SIG *OQS_SIG_dilithium_2_new(void) {
 	sig->keypair = OQS_SIG_dilithium_2_keypair;
 	sig->sign = OQS_SIG_dilithium_2_sign;
 	sig->verify = OQS_SIG_dilithium_2_verify;
+	sig->sign_with_ctx_str = NULL;
+	sig->verify_with_ctx_str = NULL;
 
 	return sig;
 }
@@ -122,5 +123,4 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_2_verify(const uint8_t *message, size_t mes
 	return (OQS_STATUS) pqcrystals_dilithium2_ref_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
-
 #endif
