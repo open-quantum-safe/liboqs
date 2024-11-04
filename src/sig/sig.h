@@ -311,6 +311,7 @@ OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *
  * based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_SIG_*_length_*`.
  *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[out] signature The signature on the message represented as a byte string.
  * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
  * @param[in] message The message to sign represented as a byte string.
@@ -338,6 +339,7 @@ OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, si
 /**
  * Signature verification algorithm, with custom context string.
  *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[in] message The message represented as a byte string.
  * @param[in] message_len The length of the message.
  * @param[in] signature The signature on the message represented as a byte string.
