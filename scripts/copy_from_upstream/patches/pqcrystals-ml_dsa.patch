@@ -283,7 +283,7 @@ index 340e91d..0a4ecb6 100644
  
  /*************************************************
 diff --git a/avx2/sign.c b/avx2/sign.c
-index efb6ea3..56bb897 100644
+index efb6ea3..532e37c 100644
 --- a/avx2/sign.c
 +++ b/avx2/sign.c
 @@ -168,7 +168,7 @@ int crypto_sign_signature_internal(uint8_t *sig, size_t *siglen, const uint8_t *
@@ -380,8 +380,35 @@ index efb6ea3..56bb897 100644
  
    /* Expand challenge */
    poly_challenge(&c, sig);
-@@ -446,11 +447,12 @@ int crypto_sign_verify_internal(const uint8_t *sig, size_t siglen, const uint8_t
-     if(hint[j]) return -1;
+@@ -426,12 +427,17 @@ int crypto_sign_verify_internal(const uint8_t *sig, size_t siglen, const uint8_t
+ 
+     /* Get hint polynomial and reconstruct w1 */
+     memset(h.vec, 0, sizeof(poly));
+-    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA)
++    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA) {
++      shake256_inc_ctx_release(&state);
+       return -1;
++    }
+ 
+     for(j = pos; j < hint[OMEGA + i]; ++j) {
+       /* Coefficients are ordered for strong unforgeability */
+-      if(j > pos && hint[j] <= hint[j-1]) return -1;
++      if(j > pos && hint[j] <= hint[j-1]) {
++        shake256_inc_ctx_release(&state);
++        return -1;
++      }
+       h.coeffs[hint[j]] = 1;
+     }
+     pos = hint[OMEGA + i];
+@@ -443,14 +449,18 @@ int crypto_sign_verify_internal(const uint8_t *sig, size_t siglen, const uint8_t
+ 
+   /* Extra indices are zero for strong unforgeability */
+   for(j = pos; j < OMEGA; ++j)
+-    if(hint[j]) return -1;
++    if(hint[j]) {
++      shake256_inc_ctx_release(&state);
++      return -1;
++    }
  
    /* Call random oracle and verify challenge */
 -  shake256_init(&state);

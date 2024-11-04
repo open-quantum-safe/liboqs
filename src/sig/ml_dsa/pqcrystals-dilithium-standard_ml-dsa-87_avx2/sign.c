@@ -427,12 +427,17 @@ int crypto_sign_verify_internal(const uint8_t *sig, size_t siglen, const uint8_t
 
     /* Get hint polynomial and reconstruct w1 */
     memset(h.vec, 0, sizeof(poly));
-    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA)
+    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA) {
+      shake256_inc_ctx_release(&state);
       return -1;
+    }
 
     for(j = pos; j < hint[OMEGA + i]; ++j) {
       /* Coefficients are ordered for strong unforgeability */
-      if(j > pos && hint[j] <= hint[j-1]) return -1;
+      if(j > pos && hint[j] <= hint[j-1]) {
+        shake256_inc_ctx_release(&state);
+        return -1;
+      }
       h.coeffs[hint[j]] = 1;
     }
     pos = hint[OMEGA + i];
@@ -444,7 +449,10 @@ int crypto_sign_verify_internal(const uint8_t *sig, size_t siglen, const uint8_t
 
   /* Extra indices are zero for strong unforgeability */
   for(j = pos; j < OMEGA; ++j)
-    if(hint[j]) return -1;
+    if(hint[j]) {
+      shake256_inc_ctx_release(&state);
+      return -1;
+    }
 
   /* Call random oracle and verify challenge */
   shake256_inc_ctx_reset(&state);
