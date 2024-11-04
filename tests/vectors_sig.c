@@ -17,6 +17,7 @@
 
 #define RNDBYTES 32
 
+#ifdef OQS_ENABLE_SIG_ml_dsa_44
 extern int pqcrystals_ml_dsa_44_ref_signature_internal(uint8_t *sig,
         size_t *siglen,
         const uint8_t *m,
@@ -33,7 +34,9 @@ extern int pqcrystals_ml_dsa_44_ref_verify_internal(const uint8_t *sig,
         const uint8_t *pre,
         size_t prelen,
         const uint8_t *pk);
+#endif
 
+#ifdef OQS_ENABLE_SIG_ml_dsa_65
 extern int pqcrystals_ml_dsa_65_ref_signature_internal(uint8_t *sig,
         size_t *siglen,
         const uint8_t *m,
@@ -50,7 +53,9 @@ extern int pqcrystals_ml_dsa_65_ref_verify_internal(const uint8_t *sig,
         const uint8_t *pre,
         size_t prelen,
         const uint8_t *pk);
+#endif
 
+#ifdef OQS_ENABLE_SIG_ml_dsa_87
 extern int pqcrystals_ml_dsa_87_ref_signature_internal(uint8_t *sig,
         size_t *siglen,
         const uint8_t *m,
@@ -67,6 +72,7 @@ extern int pqcrystals_ml_dsa_87_ref_verify_internal(const uint8_t *sig,
         const uint8_t *pre,
         size_t prelen,
         const uint8_t *pk);
+#endif
 
 struct {
 	const uint8_t *pos;
@@ -220,22 +226,15 @@ static int sig_ver_vector(const char *method_name,
                           size_t msgLen,
                           const uint8_t *sigVer_sig_bytes, int testPassed) {
 
-	uint8_t *entropy_input;
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
-	size_t sigLen;
-	int rc, ret = -1;
-
-	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-	void (*randombytes_free)(void) = NULL;
+	int rc = -1, ret = -1;
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
 		printf("[vectors_sig] %s was not enabled at compile-time.\n", method_name);
 		goto algo_not_enabled;
 	}
-
-	sigLen = sig->length_signature;
 
 	fh = stdout;
 
@@ -245,11 +244,19 @@ static int sig_ver_vector(const char *method_name,
 	}
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_44
 		rc = pqcrystals_ml_dsa_44_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
+#endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_65
 		rc = pqcrystals_ml_dsa_65_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
+#endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_87
 		rc = pqcrystals_ml_dsa_87_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
+#endif
+	} else {
+		goto err;
 	}
 	if ((!rc) != testPassed) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: mlca_sig_verify_internal failed!\n", method_name);
@@ -279,15 +286,11 @@ static int sig_gen_vector(const char *method_name,
                           uint8_t *prng_output_stream,
                           const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig, int randomized) {
 
-	uint8_t *entropy_input;
 	FILE *fh = NULL;
 	uint8_t *signature = NULL;
 	OQS_SIG *sig = NULL;
-	int rc, ret = -1;
+	int rc = -1, ret = -1;
 	size_t sigLen;
-
-	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-	void (*randombytes_free)(void) = NULL;
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
@@ -312,11 +315,19 @@ static int sig_gen_vector(const char *method_name,
 	}
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_44
 		rc = pqcrystals_ml_dsa_44_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
+#endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_65
 		rc = pqcrystals_ml_dsa_65_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
+#endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_87
 		rc = pqcrystals_ml_dsa_87_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
+#endif
+	} else {
+		goto err;
 	}
 
 	if (rc) {
@@ -341,9 +352,6 @@ algo_not_enabled:
 	ret = EXIT_SUCCESS;
 
 cleanup:
-	if (!randomized) {
-		free(entropy_input);
-	}
 	free(signature);
 	return ret;
 }
