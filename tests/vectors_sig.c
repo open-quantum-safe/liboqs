@@ -18,55 +18,55 @@
 #define RNDBYTES 32
 
 extern int pqcrystals_ml_dsa_44_ref_signature_internal(uint8_t *sig,
-                                   size_t *siglen,
-                                   const uint8_t *m,
-                                   size_t mlen,
-                                   const uint8_t *pre,
-                                   size_t prelen,
-                                   const uint8_t rnd[RNDBYTES],
-                                   const uint8_t *sk);
+        size_t *siglen,
+        const uint8_t *m,
+        size_t mlen,
+        const uint8_t *pre,
+        size_t prelen,
+        const uint8_t rnd[RNDBYTES],
+        const uint8_t *sk);
 
 extern int pqcrystals_ml_dsa_44_ref_verify_internal(const uint8_t *sig,
-                                size_t siglen,
-                                const uint8_t *m,
-                                size_t mlen,
-                                const uint8_t *pre,
-                                size_t prelen,
-                                const uint8_t *pk);
+        size_t siglen,
+        const uint8_t *m,
+        size_t mlen,
+        const uint8_t *pre,
+        size_t prelen,
+        const uint8_t *pk);
 
 extern int pqcrystals_ml_dsa_65_ref_signature_internal(uint8_t *sig,
-                                   size_t *siglen,
-                                   const uint8_t *m,
-                                   size_t mlen,
-                                   const uint8_t *pre,
-                                   size_t prelen,
-                                   const uint8_t rnd[RNDBYTES],
-                                   const uint8_t *sk);
+        size_t *siglen,
+        const uint8_t *m,
+        size_t mlen,
+        const uint8_t *pre,
+        size_t prelen,
+        const uint8_t rnd[RNDBYTES],
+        const uint8_t *sk);
 
 extern int pqcrystals_ml_dsa_65_ref_verify_internal(const uint8_t *sig,
-                                size_t siglen,
-                                const uint8_t *m,
-                                size_t mlen,
-                                const uint8_t *pre,
-                                size_t prelen,
-                                const uint8_t *pk);
+        size_t siglen,
+        const uint8_t *m,
+        size_t mlen,
+        const uint8_t *pre,
+        size_t prelen,
+        const uint8_t *pk);
 
 extern int pqcrystals_ml_dsa_87_ref_signature_internal(uint8_t *sig,
-                                   size_t *siglen,
-                                   const uint8_t *m,
-                                   size_t mlen,
-                                   const uint8_t *pre,
-                                   size_t prelen,
-                                   const uint8_t rnd[RNDBYTES],
-                                   const uint8_t *sk);
+        size_t *siglen,
+        const uint8_t *m,
+        size_t mlen,
+        const uint8_t *pre,
+        size_t prelen,
+        const uint8_t rnd[RNDBYTES],
+        const uint8_t *sk);
 
 extern int pqcrystals_ml_dsa_87_ref_verify_internal(const uint8_t *sig,
-                                size_t siglen,
-                                const uint8_t *m,
-                                size_t mlen,
-                                const uint8_t *pre,
-                                size_t prelen,
-                                const uint8_t *pk);
+        size_t siglen,
+        const uint8_t *m,
+        size_t mlen,
+        const uint8_t *pre,
+        size_t prelen,
+        const uint8_t *pk);
 
 struct {
 	const uint8_t *pos;
@@ -134,8 +134,8 @@ static void MLDSA_randombytes_free(void) {
 }
 
 static OQS_STATUS sig_kg_vector(const char *method_name,
-                         		uint8_t *prng_output_stream,
-                         		const uint8_t *kg_pk, const uint8_t *kg_sk) {
+                                uint8_t *prng_output_stream,
+                                const uint8_t *kg_pk, const uint8_t *kg_sk) {
 	uint8_t *entropy_input;
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -179,7 +179,7 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 		goto err;
 	}
 
-    rc = OQS_SIG_keypair(sig, public_key, secret_key);
+	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: mlca_sig_keygen failed!\n", method_name);
 		goto err;
@@ -215,10 +215,10 @@ cleanup:
 }
 
 static int sig_ver_vector(const char *method_name,
-						  const uint8_t *sigVer_pk_bytes, 
-						  const uint8_t *sigVer_msg_bytes, 
-						  size_t msgLen, 
-						  const uint8_t *sigVer_sig_bytes, int testPassed) {
+                          const uint8_t *sigVer_pk_bytes,
+                          const uint8_t *sigVer_msg_bytes,
+                          size_t msgLen,
+                          const uint8_t *sigVer_sig_bytes, int testPassed) {
 
 	uint8_t *entropy_input;
 	FILE *fh = NULL;
@@ -244,12 +244,13 @@ static int sig_ver_vector(const char *method_name,
 		goto err;
 	}
 
-	if (!strcmp(method_name, "ML-DSA-44"))
+	if (!strcmp(method_name, "ML-DSA-44")) {
 		rc = pqcrystals_ml_dsa_44_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
-	else if (!strcmp(method_name, "ML-DSA-65"))
+	} else if (!strcmp(method_name, "ML-DSA-65")) {
 		rc = pqcrystals_ml_dsa_65_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
-	else if (!strcmp(method_name, "ML-DSA-87"))
+	} else if (!strcmp(method_name, "ML-DSA-87")) {
 		rc = pqcrystals_ml_dsa_87_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
+	}
 	if ((!rc) != testPassed) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: mlca_sig_verify_internal failed!\n", method_name);
 		goto err;
@@ -310,12 +311,13 @@ static int sig_gen_vector(const char *method_name,
 		goto err;
 	}
 
-	if (!strcmp(method_name, "ML-DSA-44"))
+	if (!strcmp(method_name, "ML-DSA-44")) {
 		rc = pqcrystals_ml_dsa_44_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
-	else if (!strcmp(method_name, "ML-DSA-65"))
+	} else if (!strcmp(method_name, "ML-DSA-65")) {
 		rc = pqcrystals_ml_dsa_65_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
-	else if (!strcmp(method_name, "ML-DSA-87"))
+	} else if (!strcmp(method_name, "ML-DSA-87")) {
 		rc = pqcrystals_ml_dsa_87_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
+	}
 
 	if (rc) {
 		fprintf(stderr, "[test_acvp_sig] %s ERROR: mlca_sig_sign_internal failed!\n", method_name);
@@ -339,9 +341,10 @@ algo_not_enabled:
 	ret = EXIT_SUCCESS;
 
 cleanup:
-	if (!randomized)
+	if (!randomized) {
 		free(entropy_input);
-    free(signature);
+	}
+	free(signature);
 	return ret;
 }
 
@@ -398,8 +401,8 @@ int main(int argc, char **argv) {
 	if (!strcmp(test_name, "keyGen")) {
 		printf("in keygen..\n");
 		prng_output_stream = argv[3]; // d || z
-        kg_pk = argv[4];
-        kg_sk = argv[5];
+		kg_pk = argv[4];
+		kg_sk = argv[5];
 
 		if (strlen(prng_output_stream) % 2 != 0 ||
 		        strlen(kg_pk) != 2 * sig->length_public_key ||
@@ -427,7 +430,7 @@ int main(int argc, char **argv) {
 		rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
 
 	} else if (!strcmp(test_name, "sigGen_det") || !strcmp(test_name, "sigGen_rnd")) {
-        sigGen_sk = argv[3];
+		sigGen_sk = argv[3];
 		sigGen_msg = argv[4];
 		sigGen_sig = argv[5];
 
@@ -447,13 +450,13 @@ int main(int argc, char **argv) {
 		}
 
 		if ( strlen(sigGen_msg) % 2 != 0 ||
-		     strlen(sigGen_sig) != 2 * sig->length_signature) {
+		        strlen(sigGen_sig) != 2 * sig->length_signature) {
 			rc = EXIT_FAILURE;
 			goto err;
 		}
 
 		msgLen = strlen(sigGen_msg) / 2;
-		
+
 		sigGen_sk_bytes = malloc(sig->length_secret_key);
 		sigGen_msg_bytes = malloc(msgLen);
 		sigGen_sig_bytes = malloc(sig->length_signature);
@@ -464,14 +467,14 @@ int main(int argc, char **argv) {
 			goto err;
 		}
 
-		if (randomized)
+		if (randomized) {
 			hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
-		else {
+		} else {
 			prng_output_stream_bytes = malloc(32);
 			memset(prng_output_stream_bytes, 0, 32);
 		}
 
-		
+
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
 		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
@@ -486,15 +489,15 @@ int main(int argc, char **argv) {
 		int sigVerPassed = atoi(argv[6]);
 
 		if ( strlen(sigVer_msg) % 2 != 0 ||
-		     strlen(sigVer_sig) != 2 * sig->length_signature ||
-			 strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			 (sigVerPassed != 0 && sigVerPassed != 1)) {
+		        strlen(sigVer_sig) != 2 * sig->length_signature ||
+		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
+		        (sigVerPassed != 0 && sigVerPassed != 1)) {
 			rc = EXIT_FAILURE;
 			goto err;
 		}
 
 		msgLen = strlen(sigVer_msg) / 2;
-		
+
 		sigVer_pk_bytes = malloc(sig->length_public_key);
 		sigVer_msg_bytes = malloc(msgLen);
 		sigVer_sig_bytes = malloc(sig->length_signature);
