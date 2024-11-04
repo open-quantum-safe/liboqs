@@ -61,7 +61,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign(uint8_t *signature, size_t *signature_
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) pqcrystals_ml_dsa_65_avx2_signature(signature, signature_len, message, message_len, NULL, 0 secret_key);
+		return (OQS_STATUS) pqcrystals_ml_dsa_65_avx2_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) pqcrystals_ml_dsa_65_ref_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
