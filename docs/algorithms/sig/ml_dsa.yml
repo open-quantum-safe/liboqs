@@ -15,7 +15,7 @@ website: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/
 nist-round: FIPS204
 spec-version: ML-DSA
 primary-upstream:
-  source: https://github.com/bhess/dilithium/commit/1a5c47771bcd13e6049dce27ddad10d7e28e6ea9
+  source: https://github.com/pq-crystals/dilit/commit/444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 parameter-sets:
@@ -25,6 +25,7 @@ parameter-sets:
   length-public-key: 1312
   length-secret-key: 2560
   length-signature: 2420
+  api-with-context-string: true
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -56,6 +57,7 @@ parameter-sets:
   length-public-key: 1952
   length-secret-key: 4032
   length-signature: 3309
+  api-with-context-string: true
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -87,6 +89,7 @@ parameter-sets:
   length-public-key: 2592
   length-secret-key: 4896
   length-signature: 4627
+  api-with-context-string: true
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream

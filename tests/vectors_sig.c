@@ -15,68 +15,58 @@
 
 #include "system_info.c"
 
+#define RNDBYTES 32
+
 extern int pqcrystals_ml_dsa_44_ref_signature_internal(uint8_t *sig,
                                    size_t *siglen,
                                    const uint8_t *m,
                                    size_t mlen,
-                                   const uint8_t *mpfx,
-                                   size_t mpfxlen,
-                                   const uint8_t *ctx,
-                                   size_t ctxlen,
-                                   const uint8_t rnd[32],
+                                   const uint8_t *pre,
+                                   size_t prelen,
+                                   const uint8_t rnd[RNDBYTES],
                                    const uint8_t *sk);
 
 extern int pqcrystals_ml_dsa_44_ref_verify_internal(const uint8_t *sig,
-                                   size_t siglen,
-                                   const uint8_t *m,
-                                   size_t mlen,
-                                   const uint8_t *mpfx,
-                                   size_t mpfxlen,
-                                   const uint8_t *ctx,
-                                   size_t ctxlen,
-                                   const uint8_t *pk);
+                                size_t siglen,
+                                const uint8_t *m,
+                                size_t mlen,
+                                const uint8_t *pre,
+                                size_t prelen,
+                                const uint8_t *pk);
 
 extern int pqcrystals_ml_dsa_65_ref_signature_internal(uint8_t *sig,
                                    size_t *siglen,
                                    const uint8_t *m,
                                    size_t mlen,
-                                   const uint8_t *mpfx,
-                                   size_t mpfxlen,
-                                   const uint8_t *ctx,
-                                   size_t ctxlen,
-                                   const uint8_t rnd[32],
+                                   const uint8_t *pre,
+                                   size_t prelen,
+                                   const uint8_t rnd[RNDBYTES],
                                    const uint8_t *sk);
 
 extern int pqcrystals_ml_dsa_65_ref_verify_internal(const uint8_t *sig,
-                                   size_t siglen,
-                                   const uint8_t *m,
-                                   size_t mlen,
-                                   const uint8_t *mpfx,
-                                   size_t mpfxlen,
-                                   const uint8_t *ctx,
-                                   size_t ctxlen,
-                                   const uint8_t *pk);
+                                size_t siglen,
+                                const uint8_t *m,
+                                size_t mlen,
+                                const uint8_t *pre,
+                                size_t prelen,
+                                const uint8_t *pk);
 
 extern int pqcrystals_ml_dsa_87_ref_signature_internal(uint8_t *sig,
                                    size_t *siglen,
                                    const uint8_t *m,
                                    size_t mlen,
-                                   const uint8_t *mpfx,
-                                   size_t mpfxlen,
-                                   const uint8_t *ctx,
-                                   size_t ctxlen,
-                                   const uint8_t rnd[32],
+                                   const uint8_t *pre,
+                                   size_t prelen,
+                                   const uint8_t rnd[RNDBYTES],
                                    const uint8_t *sk);
 
 extern int pqcrystals_ml_dsa_87_ref_verify_internal(const uint8_t *sig,
-                                   size_t siglen,
-                                   const uint8_t *m,
-                                   size_t mlen,
-                                   const uint8_t *mpfx,
-                                   size_t mpfxlen,
-                                   const uint8_t *ctx,
-                                   size_t ctxlen,
-                                   const uint8_t *pk);
+                                size_t siglen,
+                                const uint8_t *m,
+                                size_t mlen,
+                                const uint8_t *pre,
+                                size_t prelen,
+                                const uint8_t *pk);
 
 struct {
 	const uint8_t *pos;
@@ -255,11 +245,11 @@ static int sig_ver_vector(const char *method_name,
 	}
 
 	if (!strcmp(method_name, "ML-DSA-44"))
-		rc = pqcrystals_ml_dsa_44_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, NULL, 0, sigVer_pk_bytes);
+		rc = pqcrystals_ml_dsa_44_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
 	else if (!strcmp(method_name, "ML-DSA-65"))
-		rc = pqcrystals_ml_dsa_65_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, NULL, 0, sigVer_pk_bytes);
+		rc = pqcrystals_ml_dsa_65_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
 	else if (!strcmp(method_name, "ML-DSA-87"))
-		rc = pqcrystals_ml_dsa_87_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, NULL, 0, sigVer_pk_bytes);
+		rc = pqcrystals_ml_dsa_87_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
 	if ((!rc) != testPassed) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: mlca_sig_verify_internal failed!\n", method_name);
 		goto err;
@@ -321,11 +311,11 @@ static int sig_gen_vector(const char *method_name,
 	}
 
 	if (!strcmp(method_name, "ML-DSA-44"))
-		rc = pqcrystals_ml_dsa_44_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, NULL, 0, prng_output_stream, sigGen_sk);
+		rc = pqcrystals_ml_dsa_44_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
 	else if (!strcmp(method_name, "ML-DSA-65"))
-		rc = pqcrystals_ml_dsa_65_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, NULL, 0, prng_output_stream, sigGen_sk);
+		rc = pqcrystals_ml_dsa_65_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
 	else if (!strcmp(method_name, "ML-DSA-87"))
-		rc = pqcrystals_ml_dsa_87_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, NULL, 0, prng_output_stream, sigGen_sk);
+		rc = pqcrystals_ml_dsa_87_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
 
 	if (rc) {
 		fprintf(stderr, "[test_acvp_sig] %s ERROR: mlca_sig_sign_internal failed!\n", method_name);

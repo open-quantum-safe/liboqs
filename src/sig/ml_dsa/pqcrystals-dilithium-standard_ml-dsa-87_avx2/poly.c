@@ -682,7 +682,7 @@ void poly_challenge(poly * restrict c, const uint8_t seed[CTILDEBYTES]) {
   shake256incctx state;
 
   shake256_inc_init(&state);
-  shake256_inc_absorb(&state, seed, SEEDBYTES);
+  shake256_inc_absorb(&state, seed, CTILDEBYTES);
   shake256_inc_finalize(&state);
   shake256_inc_squeeze(buf.coeffs, SHAKE256_RATE, &state);
 
