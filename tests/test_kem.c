@@ -49,9 +49,9 @@ static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secre
 		return false;
 	}
 	// Only run tests for ML-KEM
-	if (!(strcasecmp(kem->method_name, "ML-KEM-512") == 0 ||
-	        strcasecmp(kem->method_name, "ML-KEM-768") == 0 ||
-	        strcasecmp(kem->method_name, "ML-KEM-1024") == 0)) {
+	if (!(strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_512) == 0 ||
+	        strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_768) == 0 ||
+	        strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_1024) == 0)) {
 		return true;
 	}
 	// Buffer to hold z and c. z is always 32 bytes
@@ -121,7 +121,7 @@ cleanup:
 	}
 	return retval;
 }
-#endif
+#endif //OQS_ENABLE_KEM_ML_KEM
 
 typedef struct magic_s {
 	uint8_t val[31];
