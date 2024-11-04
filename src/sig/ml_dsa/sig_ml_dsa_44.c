@@ -83,7 +83,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_verify(const uint8_t *message, size_t messa
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) pqcrystals_ml_dsa_44_ref_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+	return (OQS_STATUS) pqcrystals_ml_dsa_44_ref_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
 #endif
 }
 
