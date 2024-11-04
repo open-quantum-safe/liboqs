@@ -35,8 +35,8 @@ extern int pqcrystals_ml_dsa_44_ref_verify(const uint8_t *sig, size_t siglen, co
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_avx2)
 extern int pqcrystals_ml_dsa_44_avx2_keypair(uint8_t *pk, uint8_t *sk);
-extern int pqcrystals_ml_dsa_44_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
-extern int pqcrystals_ml_dsa_44_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+extern int pqcrystals_ml_dsa_44_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *sk);
+extern int pqcrystals_ml_dsa_44_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *pk);
 #endif
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -60,7 +60,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_sign(uint8_t *signature, size_t *signature_
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) pqcrystals_ml_dsa_44_avx2_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+		return (OQS_STATUS) pqcrystals_ml_dsa_44_avx2_signature(signature, signature_len, message, message_len, NULL, 0 secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) pqcrystals_ml_dsa_44_ref_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
@@ -76,14 +76,14 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_verify(const uint8_t *message, size_t messa
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) pqcrystals_ml_dsa_44_avx2_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqcrystals_ml_dsa_44_avx2_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_ml_dsa_44_ref_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqcrystals_ml_dsa_44_ref_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) pqcrystals_ml_dsa_44_ref_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+    return (OQS_STATUS) pqcrystals_ml_dsa_44_ref_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
 #endif
 }
 

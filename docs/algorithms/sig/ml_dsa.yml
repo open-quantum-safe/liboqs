@@ -25,7 +25,6 @@ parameter-sets:
   length-public-key: 1312
   length-secret-key: 2560
   length-signature: 2420
-  api-with-context-string: true
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -57,7 +56,6 @@ parameter-sets:
   length-public-key: 1952
   length-secret-key: 4032
   length-signature: 3309
-  api-with-context-string: true
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -89,7 +87,6 @@ parameter-sets:
   length-public-key: 2592
   length-secret-key: 4896
   length-signature: 4627
-  api-with-context-string: true
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
