@@ -50,5 +50,3 @@ call		nttunpack128_avx
 add		$256,%rdi
 call		nttunpack128_avx
 ret
-
-.section .note.GNU-stack,"",@progbits

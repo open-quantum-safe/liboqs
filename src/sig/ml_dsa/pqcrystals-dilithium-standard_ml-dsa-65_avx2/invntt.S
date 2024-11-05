@@ -236,5 +236,3 @@ levels6t7	2
 levels6t7	3
 
 ret
-
-.section .note.GNU-stack,"",@progbits

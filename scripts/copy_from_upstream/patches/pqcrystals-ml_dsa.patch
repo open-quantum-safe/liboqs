@@ -158,6 +158,46 @@ index a9facc0..3944cb4 100644
  #endif
  
  #endif
+diff --git a/avx2/f1600x4.S b/avx2/f1600x4.S
+index 5455129..497b8ca 100644
+--- a/avx2/f1600x4.S
++++ b/avx2/f1600x4.S
+@@ -905,5 +905,3 @@ addq		$32, %rsi
+ subq		$1, %rax
+ jnz		looptop
+ ret
+-
+-.section .note.GNU-stack,"",@progbits
+diff --git a/avx2/invntt.S b/avx2/invntt.S
+index d40ca13..3e9864c 100644
+--- a/avx2/invntt.S
++++ b/avx2/invntt.S
+@@ -236,5 +236,3 @@ levels6t7	2
+ levels6t7	3
+ 
+ ret
+-
+-.section .note.GNU-stack,"",@progbits
+diff --git a/avx2/ntt.S b/avx2/ntt.S
+index 026f057..ebe17d3 100644
+--- a/avx2/ntt.S
++++ b/avx2/ntt.S
+@@ -194,5 +194,3 @@ levels2t7	2
+ levels2t7	3
+ 
+ ret
+-
+-.section .note.GNU-stack,"",@progbits
+diff --git a/avx2/pointwise.S b/avx2/pointwise.S
+index 6b687c7..ae7ff79 100644
+--- a/avx2/pointwise.S
++++ b/avx2/pointwise.S
+@@ -209,5 +209,3 @@ cmp		$16,%eax
+ jb _looptop2
+ 
+ ret
+-
+-.section .note.GNU-stack,"",@progbits
 diff --git a/avx2/poly.c b/avx2/poly.c
 index 340e91d..0a4ecb6 100644
 --- a/avx2/poly.c
@@ -282,6 +322,16 @@ index 340e91d..0a4ecb6 100644
  }
  
  /*************************************************
+diff --git a/avx2/shuffle.S b/avx2/shuffle.S
+index 08c757c..133e051 100644
+--- a/avx2/shuffle.S
++++ b/avx2/shuffle.S
+@@ -50,5 +50,3 @@ call		nttunpack128_avx
+ add		$256,%rdi
+ call		nttunpack128_avx
+ ret
+-
+-.section .note.GNU-stack,"",@progbits
 diff --git a/avx2/sign.c b/avx2/sign.c
 index efb6ea3..532e37c 100644
 --- a/avx2/sign.c
