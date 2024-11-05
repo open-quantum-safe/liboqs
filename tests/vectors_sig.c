@@ -217,6 +217,7 @@ cleanup:
 		randombytes_free();
 	}
 	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(signature);
 	OQS_SIG_free(sig);
 	return ret;
 }
@@ -411,7 +412,6 @@ int main(int argc, char **argv) {
 	}
 
 	if (!strcmp(test_name, "keyGen")) {
-		printf("in keygen..\n");
 		prng_output_stream = argv[3]; // d || z
 		kg_pk = argv[4];
 		kg_sk = argv[5];
@@ -534,15 +534,15 @@ err:
 	goto cleanup;
 
 cleanup:
-	free(prng_output_stream_bytes);
-	free(kg_pk_bytes);
-	free(kg_sk_bytes);
-	free(sigVer_pk_bytes);
-	free(sigVer_msg_bytes);
-	free(sigVer_sig_bytes);
-	free(sigGen_sk_bytes);
-	free(sigGen_msg_bytes);
-	free(sigGen_sig_bytes);
+	OQS_MEM_insecure_free(prng_output_stream_bytes);
+	OQS_MEM_insecure_free(kg_pk_bytes);
+	OQS_MEM_insecure_free(kg_sk_bytes);
+	OQS_MEM_insecure_free(sigVer_pk_bytes);
+	OQS_MEM_insecure_free(sigVer_msg_bytes);
+	OQS_MEM_insecure_free(sigVer_sig_bytes);
+	OQS_MEM_insecure_free(sigGen_sk_bytes);
+	OQS_MEM_insecure_free(sigGen_msg_bytes);
+	OQS_MEM_insecure_free(sigGen_sig_bytes);
 	OQS_SIG_free(sig);
 
 	if (rc != EXIT_SUCCESS) {
