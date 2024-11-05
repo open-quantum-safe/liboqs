@@ -134,7 +134,8 @@ def test_acvp_vec_sig_keygen(sig_name):
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_acvp_vec_sig_gen_deterministic(sig_name):
-
+    
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if not(sig_name in fips_sig): pytest.skip("Not supported")
 
     with open(os.path.join('tests', ml_dsa_sig), 'r') as fp:
@@ -158,7 +159,8 @@ def test_acvp_vec_sig_gen_deterministic(sig_name):
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_acvp_vec_sig_gen_randomized(sig_name):
-
+    
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if not(sig_name in fips_sig): pytest.skip("Not supported")
 
     with open(os.path.join('tests', ml_dsa_sig), 'r') as fp:
@@ -185,6 +187,7 @@ def test_acvp_vec_sig_gen_randomized(sig_name):
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_acvp_vec_sig_ver(sig_name):
 
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if not(sig_name in fips_sig): pytest.skip("Not supported")
 
     with open(os.path.join('tests', ml_dsa_ver), 'r') as fp:

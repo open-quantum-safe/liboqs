@@ -220,6 +220,7 @@ cleanup:
 	return ret;
 }
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 static int sig_ver_vector(const char *method_name,
                           const uint8_t *sigVer_pk_bytes,
                           const uint8_t *sigVer_msg_bytes,
@@ -262,7 +263,7 @@ static int sig_ver_vector(const char *method_name,
 		fprintf(stderr, "[vectors_sig] %s ERROR: mlca_sig_verify_internal failed!\n", method_name);
 		goto err;
 	} else {
-		ret = 0;
+		ret = EXIT_SUCCESS;
 	}
 
 
@@ -355,6 +356,7 @@ cleanup:
 	free(signature);
 	return ret;
 }
+#endif
 
 int main(int argc, char **argv) {
 	OQS_STATUS rc = OQS_SUCCESS;
@@ -402,8 +404,8 @@ int main(int argc, char **argv) {
 	OQS_SIG *sig = OQS_SIG_new(alg_name);
 	if (sig == NULL) {
 		printf("[vectors_sig] %s was not enabled at compile-time.\n", alg_name);
-		rc = OQS_ERROR;
-		goto err;
+		rc = EXIT_FAILURE;
+		goto cleanup;
 	}
 
 	if (!strcmp(test_name, "keyGen")) {
@@ -487,7 +489,12 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 		rc = sig_gen_vector(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes, randomized);
+#else
+		rc = EXIT_SUCCESS;
+		goto cleanup;
+#endif
 
 	} else if (!strcmp(test_name, "sigVer")) {
 		sigVer_pk = argv[3];
@@ -500,7 +507,6 @@ int main(int argc, char **argv) {
 		        strlen(sigVer_sig) != 2 * sig->length_signature ||
 		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
 		        (sigVerPassed != 0 && sigVerPassed != 1)) {
-			rc = EXIT_FAILURE;
 			goto err;
 		}
 
@@ -514,14 +520,24 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 		rc = sig_ver_vector(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigVerPassed);
+#else
+		rc = EXIT_SUCCESS;
+		goto cleanup;
+#endif
 
 	} else {
-		rc = EXIT_FAILURE;
 		printf("[vectors_sig] %s only keyGen/sigGen/sigVer supported!\n", alg_name);
+		goto err;
 	}
+	goto cleanup;
 
 err:
+	rc = OQS_ERROR;
+	goto cleanup;
+
+cleanup:
 	free(prng_output_stream_bytes);
 	free(kg_pk_bytes);
 	free(kg_sk_bytes);

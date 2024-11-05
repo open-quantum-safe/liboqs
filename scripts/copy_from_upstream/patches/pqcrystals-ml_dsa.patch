@@ -658,6 +658,37 @@ index 7d3f882..abb033c 100644
    for(i = 0; i < CTILDEBYTES; ++i)
      if(c[i] != c2[i])
        return -1;
+diff --git a/ref/sign.h b/ref/sign.h
+index 2741e8f..0b5f74a 100644
+--- a/ref/sign.h
++++ b/ref/sign.h
+@@ -1,6 +1,8 @@
+ #ifndef SIGN_H
+ #define SIGN_H
+ 
++#include <oqs/oqs.h>
++
+ #include <stddef.h>
+ #include <stdint.h>
+ #include "params.h"
+@@ -11,7 +13,7 @@
+ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+ 
+ #define crypto_sign_signature_internal DILITHIUM_NAMESPACE(signature_internal)
+-int crypto_sign_signature_internal(uint8_t *sig,
++OQS_API int crypto_sign_signature_internal(uint8_t *sig,
+                                    size_t *siglen,
+                                    const uint8_t *m,
+                                    size_t mlen,
+@@ -33,7 +35,7 @@ int crypto_sign(uint8_t *sm, size_t *smlen,
+                 const uint8_t *sk);
+ 
+ #define crypto_sign_verify_internal DILITHIUM_NAMESPACE(verify_internal)
+-int crypto_sign_verify_internal(const uint8_t *sig,
++OQS_API int crypto_sign_verify_internal(const uint8_t *sig,
+                                 size_t siglen,
+                                 const uint8_t *m,
+                                 size_t mlen,
 diff --git a/ref/symmetric-shake.c b/ref/symmetric-shake.c
 index 11ec09c..963f649 100644
 --- a/ref/symmetric-shake.c
