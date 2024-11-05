@@ -376,7 +376,7 @@ int main(int argc, char **argv) {
 
 	char *alg_name = argv[1];
 	char *test_name = argv[2];
-	char *prng_output_stream;
+	char *prng_output_stream = NULL;
 	char *kg_pk;
 	char *kg_sk;
 
