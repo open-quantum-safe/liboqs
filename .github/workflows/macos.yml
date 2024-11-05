@@ -13,7 +13,6 @@ jobs:
       matrix:
         os:
           # macos-14 runs on aarch64; the others run on x64
-          - macos-12
           - macos-13
           - macos-14
         CMAKE_ARGS:
