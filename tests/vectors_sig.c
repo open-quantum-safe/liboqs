@@ -428,7 +428,6 @@ int main(int argc, char **argv) {
 
 		if ((prng_output_stream_bytes == NULL) || (kg_pk_bytes == NULL) || (kg_sk_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
-			rc = EXIT_FAILURE;
 			goto err;
 		}
 
@@ -543,6 +542,7 @@ cleanup:
 	free(sigGen_sk_bytes);
 	free(sigGen_msg_bytes);
 	free(sigGen_sig_bytes);
+	OQS_SIG_free(sig);	
 
 	if (rc != EXIT_SUCCESS) {
 		return EXIT_FAILURE;
