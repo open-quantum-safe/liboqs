@@ -147,6 +147,7 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
+	uint8_t *signature = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
 	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
@@ -542,7 +543,7 @@ cleanup:
 	free(sigGen_sk_bytes);
 	free(sigGen_msg_bytes);
 	free(sigGen_sig_bytes);
-	OQS_SIG_free(sig);	
+	OQS_SIG_free(sig);
 
 	if (rc != EXIT_SUCCESS) {
 		return EXIT_FAILURE;
