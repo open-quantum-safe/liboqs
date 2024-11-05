@@ -1,23 +1,24 @@
 {
-  "bomFormat": "CBOM",
-  "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:b953d460-1246-4cbb-aff9-642a0308d18b",
+  "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:de1355bb-9681-4a7e-8aa9-0ccc414ebe3b",
   "version": 1,
   "metadata": {
-    "timestamp": "2024-08-26T18:04:44.668645",
+    "timestamp": "2024-11-05T12:25:53.012740+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@69a80f8a66988521d51e94d716cff8c936c07b8d",
       "name": "liboqs",
-      "version": "062e793edf54cbc1073b54d0689795063fd41910"
+      "version": "69a80f8a66988521d51e94d716cff8c936c07b8d"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@69a80f8a66988521d51e94d716cff8c936c07b8d",
       "name": "liboqs",
-      "version": "062e793edf54cbc1073b54d0689795063fd41910"
+      "version": "69a80f8a66988521d51e94d716cff8c936c07b8d"
     },
     {
       "type": "cryptographic-asset",
@@ -2500,13 +2501,13 @@
       }
     },
     {
-      "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-44-ipd:generic",
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-44:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-44-ipd",
+          "parameterSetIdentifier": "ML-DSA-44",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2520,13 +2521,13 @@
       }
     },
     {
-      "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-44-ipd:x86_64",
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-44:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-44-ipd",
+          "parameterSetIdentifier": "ML-DSA-44",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2540,13 +2541,13 @@
       }
     },
     {
-      "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-65-ipd:generic",
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-65:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-65-ipd",
+          "parameterSetIdentifier": "ML-DSA-65",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2560,13 +2561,13 @@
       }
     },
     {
-      "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-65-ipd:x86_64",
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-65:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-65-ipd",
+          "parameterSetIdentifier": "ML-DSA-65",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2580,13 +2581,13 @@
       }
     },
     {
-      "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-87-ipd:generic",
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-87:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-87-ipd",
+          "parameterSetIdentifier": "ML-DSA-87",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -2600,13 +2601,13 @@
       }
     },
     {
-      "type": "crypto-asset",
-      "bom-ref": "alg:ML-DSA-87-ipd:x86_64",
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-87:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "variant": "ML-DSA-87-ipd",
+          "parameterSetIdentifier": "ML-DSA-87",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3126,8 +3127,8 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@062e793edf54cbc1073b54d0689795063fd41910",
-      "dependsOn": [
+      "ref": "pkg:github/open-quantum-safe/liboqs@69a80f8a66988521d51e94d716cff8c936c07b8d",
+      "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
         "alg:BIKE-L5:x86_64",

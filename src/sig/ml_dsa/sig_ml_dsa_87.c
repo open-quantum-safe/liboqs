@@ -7,7 +7,7 @@
 #if defined(OQS_ENABLE_SIG_ml_dsa_87)
 OQS_SIG *OQS_SIG_ml_dsa_87_new(void) {
 
-	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}
