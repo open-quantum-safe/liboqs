@@ -279,6 +279,7 @@ algo_not_enabled:
 	ret = EXIT_SUCCESS;
 
 cleanup:
+	OQS_SIG_free(sig);
 	return ret;
 
 }
@@ -353,7 +354,8 @@ algo_not_enabled:
 	ret = EXIT_SUCCESS;
 
 cleanup:
-	free(signature);
+	OQS_MEM_insecure_free(signature);
+	OQS_SIG_free(sig);
 	return ret;
 }
 #endif
@@ -404,8 +406,7 @@ int main(int argc, char **argv) {
 	OQS_SIG *sig = OQS_SIG_new(alg_name);
 	if (sig == NULL) {
 		printf("[vectors_sig] %s was not enabled at compile-time.\n", alg_name);
-		rc = EXIT_FAILURE;
-		goto cleanup;
+		goto err;
 	}
 
 	if (!strcmp(test_name, "keyGen")) {
@@ -418,7 +419,6 @@ int main(int argc, char **argv) {
 		        strlen(kg_pk) != 2 * sig->length_public_key ||
 		        strlen(kg_sk) != 2 * sig->length_secret_key) {
 			printf("lengths bad\n");
-			rc = EXIT_FAILURE;
 			goto err;
 		}
 
@@ -448,20 +448,17 @@ int main(int argc, char **argv) {
 		if (randomized) {
 			prng_output_stream = argv[6];
 			if (strlen(prng_output_stream) % 2 != 0) {
-				rc = EXIT_FAILURE;
 				goto err;
 			}
 			prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
 			if (prng_output_stream_bytes == NULL) {
 				fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
-				rc = EXIT_FAILURE;
 				goto err;
 			}
 		}
 
 		if ( strlen(sigGen_msg) % 2 != 0 ||
 		        strlen(sigGen_sig) != 2 * sig->length_signature) {
-			rc = EXIT_FAILURE;
 			goto err;
 		}
 
@@ -473,7 +470,6 @@ int main(int argc, char **argv) {
 
 		if ((sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
-			rc = EXIT_FAILURE;
 			goto err;
 		}
 
@@ -534,13 +530,19 @@ int main(int argc, char **argv) {
 	goto cleanup;
 
 err:
-	rc = OQS_ERROR;
+	rc = EXIT_FAILURE;
 	goto cleanup;
 
 cleanup:
 	free(prng_output_stream_bytes);
 	free(kg_pk_bytes);
 	free(kg_sk_bytes);
+	free(sigVer_pk_bytes);
+	free(sigVer_msg_bytes);
+	free(sigVer_sig_bytes);
+	free(sigGen_sk_bytes);
+	free(sigGen_msg_bytes);
+	free(sigGen_sig_bytes);
 
 	if (rc != EXIT_SUCCESS) {
 		return EXIT_FAILURE;
