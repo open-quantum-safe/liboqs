@@ -179,6 +179,9 @@ typedef struct OQS_SIG {
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
 	bool euf_cma;
 
+	/** Whether the signature supports signing with a context string (TRUE) or not (FALSE). */
+	bool sig_with_ctx_support;
+
 	/** The length, in bytes, of public keys for this signature scheme. */
 	size_t length_public_key;
 	/** The length, in bytes, of secret keys for this signature scheme. */

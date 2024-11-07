@@ -21,6 +21,11 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	sig->claimed_nist_level = {{ scheme['metadata']['claimed-nist-level'] }};
 	sig->euf_cma = {{ scheme['metadata']['euf_cma'] }};
+	{%- if 'api-with-context-string' in default_impl and default_impl['api-with-context-string'] %}
+	sig->sig_with_ctx_support = true;
+	{%- else %}
+	sig->sig_with_ctx_support = false;
+	{%- endif %}
 
 	sig->length_public_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_public_key;
 	sig->length_secret_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_secret_key;

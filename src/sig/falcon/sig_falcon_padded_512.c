@@ -16,6 +16,7 @@ OQS_SIG *OQS_SIG_falcon_padded_512_new(void) {
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
+	sig->sig_with_ctx_support = false;
 
 	sig->length_public_key = OQS_SIG_falcon_padded_512_length_public_key;
 	sig->length_secret_key = OQS_SIG_falcon_padded_512_length_secret_key;

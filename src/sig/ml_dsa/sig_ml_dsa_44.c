@@ -16,6 +16,7 @@ OQS_SIG *OQS_SIG_ml_dsa_44_new(void) {
 
 	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
+	sig->sig_with_ctx_support = true;
 
 	sig->length_public_key = OQS_SIG_ml_dsa_44_length_public_key;
 	sig->length_secret_key = OQS_SIG_ml_dsa_44_length_secret_key;

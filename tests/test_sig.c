@@ -36,6 +36,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	uint8_t *secret_key = NULL;
 	uint8_t *message = NULL;
 	size_t message_len = 100;
+	uint8_t ctx[257] = { 0 };
 	uint8_t *signature = NULL;
 	size_t signature_len;
 	OQS_STATUS rc, ret = OQS_ERROR;
@@ -116,6 +117,51 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	if (rc != OQS_ERROR) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
 		goto err;
+	}
+
+	/* testing signing with context, if supported */
+	OQS_randombytes(ctx, 257);
+	if (sig->sig_with_ctx_support) {
+		for (size_t i = 0; i < 256; ++i) {
+			rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, i, secret_key);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			if (rc != OQS_SUCCESS) {
+				fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str failed\n");
+				goto err;
+			}
+
+			OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
+			OQS_TEST_CT_DECLASSIFY(signature, signature_len);
+			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			if (rc != OQS_SUCCESS) {
+				fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
+				goto err;
+			}
+
+			/* modify the signature to invalidate it */
+			OQS_randombytes(signature, signature_len);
+			OQS_TEST_CT_DECLASSIFY(signature, signature_len);
+			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			if (rc != OQS_ERROR) {
+				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
+				goto err;
+			}
+		}
+
+		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 257, secret_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should only support up to 256 byte contexts\n");
+			goto err;
+		}
+	} else {
+		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 1, secret_key);
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should fail without support for context strings\n");
+			goto err;
+		}
 	}
 
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
