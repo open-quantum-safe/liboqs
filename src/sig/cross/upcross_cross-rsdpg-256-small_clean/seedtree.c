@@ -136,7 +136,7 @@ void PQCLEAN_CROSSRSDPG256SMALL_CLEAN_generate_seed_tree_from_root(unsigned char
 			memcpy(csprng_input,
 			       seed_tree + father_node_storage_idx * SEED_LENGTH_BYTES,
 			       SEED_LENGTH_BYTES);
-			*((uint16_t *)(csprng_input + SALT_LENGTH_BYTES + SEED_LENGTH_BYTES)) = father_node_idx;
+			*((uint16_t *)(csprng_input + SALT_LENGTH_BYTES + SEED_LENGTH_BYTES)) = to_little_endian16(father_node_idx);
 			/* expand the children (stored contiguously) */
 			initialize_csprng(&tree_csprng_state, csprng_input, csprng_input_len);
 			csprng_randombytes(seed_tree + (LEFT_CHILD(father_node_idx) - missing_nodes_before[level + 1] ) *SEED_LENGTH_BYTES,
@@ -253,7 +253,7 @@ int PQCLEAN_CROSSRSDPG256SMALL_CLEAN_regenerate_round_seeds(unsigned char
 				memcpy(csprng_input,
 				       seed_tree + (father_node_storage_idx)*SEED_LENGTH_BYTES,
 				       SEED_LENGTH_BYTES);
-				*((uint16_t *)(csprng_input + SALT_LENGTH_BYTES + SEED_LENGTH_BYTES)) = father_node_idx;
+				*((uint16_t *)(csprng_input + SALT_LENGTH_BYTES + SEED_LENGTH_BYTES)) = to_little_endian16(father_node_idx);
 				/* expand the children (stored contiguously) */
 				initialize_csprng(&tree_csprng_state, csprng_input, csprng_input_len);
 				csprng_randombytes(seed_tree + (LEFT_CHILD(father_node_idx) - missing_nodes_before[level + 1])*SEED_LENGTH_BYTES,

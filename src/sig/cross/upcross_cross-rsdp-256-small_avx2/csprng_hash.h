@@ -245,6 +245,15 @@ static inline uint32_t to_little_endian32(uint32_t x) {
 #endif
 }
 
+static inline uint16_t to_little_endian16(uint16_t x) {
+	/* When compiling on a big-endian system, swap the bytes */
+#if BIG_ENDIAN_SYSTEM
+	return __builtin_bswap16(x);
+#else
+	return x;
+#endif
+}
+
 /***************** Specialized CSPRNGs for non binary domains *****************/
 
 /* CSPRNG sampling fixed weight strings */

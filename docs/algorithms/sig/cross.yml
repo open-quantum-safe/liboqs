@@ -21,7 +21,7 @@ website: https://www.cross-crypto.com/
 nist-round: 1
 spec-version: 1.2 + Keccak_x4 + PQClean fixes + endianness fix
 primary-upstream:
-  source: https://github.com/rtjk/CROSS-PQClean/commit/82938638cb6bcb680d9472e544a61be38db806cc
+  source: https://github.com/rtjk/CROSS-PQClean/commit/d3bf2db85ba4a181418c95171d36afdca0d43464
   spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: cross-rsdp-128-balanced
