@@ -74,8 +74,6 @@ def generator(destination_file_path, template_filename, delimiter, family, schem
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
     f = copy.deepcopy(family)
-    if not os.path.exists(os.path.join(os.environ['LIBOQS_DIR'], destination_file_path)):
-        open(os.path.join(os.environ['LIBOQS_DIR'], destination_file_path), 'a').close()
     contents = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], destination_file_path))
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
