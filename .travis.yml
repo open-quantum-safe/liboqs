@@ -1,0 +1,21 @@
+language: c
+before_script:
+  - sudo apt update && sudo apt -y install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz valgrind
+jobs:
+  include:
+    - arch: ppc64le         # The IBM Power LXD container based build for OSS only
+      os: linux             # required for arch different than amd64
+      dist: focal           # or bionic | xenial with xenial as default
+      compiler: gcc
+      if: NOT branch =~ /^ghactionsonly-/
+      script:
+        - mkdir build && cd build && cmake -GNinja -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_STFL_SIG_KEY_SIG_GEN=ON .. && cmake -LA -N .. && ninja
+        - cd build & ninja run_tests
+    - arch: s390x
+      os: linux
+      dist: focal
+      compiler: gcc
+      if: NOT branch =~ /^ghactionsonly-/
+      script:
+        - mkdir build && cd build && cmake -GNinja -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_STFL_SIG_KEY_SIG_GEN=ON .. && cmake -LA -N .. && ninja
+        - cd build & ninja run_tests
