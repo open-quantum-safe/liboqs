@@ -5,9 +5,9 @@
 - **Principal submitters**: Marco Baldi, Alessandro Barenghi, Sebastian Bitzer, Patrick Karl, Felice Manganiello, Alessio Pavoni, Gerardo Pelosi, Paolo Santini, Jonas Schupp, Freeman Slaughter, Antonia Wachter-Zeh, Violetta Weger.
 - **Auxiliary submitters**: Marco Gianvecchio.
 - **Authors' website**: https://www.cross-crypto.com/
-- **Specification version**: 1.2 + Keccak_x4 + PQClean fixes.
+- **Specification version**: 1.2 + Keccak_x4 + PQClean fixes + endianness fix.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/rtjk/CROSS-PQClean/commit/577d7c761c684637923c8648644cf2f4d7b41954
+  - **Source**: https://github.com/rtjk/CROSS-PQClean/commit/d3bf2db85ba4a181418c95171d36afdca0d43464
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
