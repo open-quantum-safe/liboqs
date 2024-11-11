@@ -1,6 +1,9 @@
 liboqs
 ======================
 
+[![Main Branch Tests](https://github.com/open-quantum-safe/liboqs/actions/workflows/commit-to-main.yml/badge.svg)](https://github.com/open-quantum-safe/liboqs/actions/workflows/commit-to-main.yml)
+[![Weekly Tests](https://github.com/open-quantum-safe/liboqs/actions/workflows/weekly.yml/badge.svg)](https://github.com/open-quantum-safe/liboqs/actions/workflows/weekly.yml)
+
 liboqs is an open source C library for quantum-safe cryptographic algorithms.
 
 - [liboqs](#liboqs)
