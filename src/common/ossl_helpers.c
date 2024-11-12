@@ -45,31 +45,41 @@ static void fetch_ossl_objects(void) {
 	}
 }
 
+static inline void cleanup_evp_md(EVP_MD **mdp) {
+	/* Always check argument is non-NULL before calling EVP_MD_free
+	 * to avoid OpenSSL functions being used when they are
+	 * overridden with OQS_*_set_callbacks.
+	 */
+	if (*mdp) {
+		OSSL_FUNC(EVP_MD_free)(*mdp);
+		*mdp = NULL;
+	}
+}
+
+static inline void cleanup_evp_cipher(EVP_CIPHER **cipherp) {
+	/* Always check argument is non-NULL before calling EVP_CIPHER_free
+	 * to avoid OpenSSL functions being used when they are
+	 * overridden with OQS_*_set_callbacks.
+	 */
+	if (*cipherp) {
+		OSSL_FUNC(EVP_CIPHER_free)(*cipherp);
+		*cipherp = NULL;
+	}
+}
+
 static void free_ossl_objects(void) {
-	OSSL_FUNC(EVP_MD_free)(sha256_ptr);
-	sha256_ptr = NULL;
-	OSSL_FUNC(EVP_MD_free)(sha384_ptr);
-	sha384_ptr = NULL;
-	OSSL_FUNC(EVP_MD_free)(sha512_ptr);
-	sha512_ptr = NULL;
-	OSSL_FUNC(EVP_MD_free)(sha3_256_ptr);
-	sha3_256_ptr = NULL;
-	OSSL_FUNC(EVP_MD_free)(sha3_384_ptr);
-	sha3_384_ptr = NULL;
-	OSSL_FUNC(EVP_MD_free)(sha3_512_ptr);
-	sha3_512_ptr = NULL;
-	OSSL_FUNC(EVP_MD_free)(shake128_ptr);
-	shake128_ptr = NULL;
-	OSSL_FUNC(EVP_MD_free)(shake256_ptr);
-	shake256_ptr = NULL;
-	OSSL_FUNC(EVP_CIPHER_free)(aes128_ecb_ptr);
-	aes128_ecb_ptr = NULL;
-	OSSL_FUNC(EVP_CIPHER_free)(aes128_ctr_ptr);
-	aes128_ctr_ptr = NULL;
-	OSSL_FUNC(EVP_CIPHER_free)(aes256_ecb_ptr);
-	aes256_ecb_ptr = NULL;
-	OSSL_FUNC(EVP_CIPHER_free)(aes256_ctr_ptr);
-	aes256_ctr_ptr = NULL;
+	cleanup_evp_md(&sha256_ptr);
+	cleanup_evp_md(&sha384_ptr);
+	cleanup_evp_md(&sha512_ptr);
+	cleanup_evp_md(&sha3_256_ptr);
+	cleanup_evp_md(&sha3_384_ptr);
+	cleanup_evp_md(&sha3_512_ptr);
+	cleanup_evp_md(&shake128_ptr);
+	cleanup_evp_md(&shake256_ptr);
+	cleanup_evp_cipher(&aes128_ecb_ptr);
+	cleanup_evp_cipher(&aes128_ctr_ptr);
+	cleanup_evp_cipher(&aes256_ecb_ptr);
+	cleanup_evp_cipher(&aes256_ctr_ptr);
 }
 #endif // OPENSSL_VERSION_NUMBER >= 0x30000000L
 
