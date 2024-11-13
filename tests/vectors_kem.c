@@ -285,7 +285,7 @@ static OQS_STATUS kem_vector_encdec_val(const char *method_name,
 		ret = OQS_SUCCESS;
 	} else {
 		ret = OQS_ERROR;
-		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): ciphertext or shared secret doesn't match!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR (AFT): shared secret doesn't match!\n", method_name);
 	}
 
 	goto cleanup;
@@ -358,11 +358,11 @@ int main(int argc, char **argv) {
 	}
 
 	if (!strcmp(test_name, "keyGen")) {
-		prng_output_stream = argv[3]; // d || z
+		prng_output_stream = argv[3]; // d || z : both should be 32 bytes each as per FIPS-203
 		kg_pk = argv[4];
 		kg_sk = argv[5];
 
-		if (strlen(prng_output_stream) % 2 != 0 ||
+		if (strlen(prng_output_stream) != 128 ||
 		        strlen(kg_pk) != 2 * kem->length_public_key ||
 		        strlen(kg_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
@@ -386,12 +386,12 @@ int main(int argc, char **argv) {
 
 		rc = kem_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
 	} else if (!strcmp(test_name, "encDecAFT")) {
-		prng_output_stream = argv[3]; // m
+		prng_output_stream = argv[3]; // m : should be 32 bytes as per FIPS-203
 		encdec_aft_pk = argv[4];
 		encdec_aft_k = argv[5];
 		encdec_aft_c = argv[6];
 
-		if (strlen(prng_output_stream) % 2 != 0 ||
+		if (strlen(prng_output_stream) != 64 ||
 		        strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
 		        strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
 		        strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
