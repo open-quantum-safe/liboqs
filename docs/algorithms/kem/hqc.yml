@@ -77,3 +77,4 @@ parameter-sets:
 primary-upstream:
   spdx-license-identifier: Public domain
   source: https://github.com/PQClean/PQClean/commit/8e221ae797b229858a0b0d784577a8cb149d5789
+    with copy_from_upstream patches

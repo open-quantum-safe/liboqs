@@ -87,7 +87,7 @@ int PQCLEAN_HQC192_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const ui
     uint8_t result;
     uint64_t u[VEC_N_SIZE_64] = {0};
     uint64_t v[VEC_N1N2_SIZE_64] = {0};
-    const uint8_t *pk = sk + SEED_BYTES;
+    const uint8_t *pk = sk + SEED_BYTES + VEC_K_SIZE_BYTES;
     uint8_t sigma[VEC_K_SIZE_BYTES] = {0};
     uint8_t theta[SHAKE256_512_BYTES] = {0};
     uint64_t u2[VEC_N_SIZE_64] = {0};
@@ -115,7 +115,7 @@ int PQCLEAN_HQC192_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const ui
     result |= PQCLEAN_HQC192_CLEAN_vect_compare((uint8_t *)u, (uint8_t *)u2, VEC_N_SIZE_BYTES);
     result |= PQCLEAN_HQC192_CLEAN_vect_compare((uint8_t *)v, (uint8_t *)v2, VEC_N1N2_SIZE_BYTES);
 
-    result = (uint8_t) (-((int16_t) result) >> 15);
+    result -= 1;
 
     for (size_t i = 0; i < VEC_K_SIZE_BYTES; ++i) {
         mc[i] = (m[i] & result) ^ (sigma[i] & ~result);
@@ -126,5 +126,5 @@ int PQCLEAN_HQC192_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const ui
     PQCLEAN_HQC192_CLEAN_store8_arr(mc + VEC_K_SIZE_BYTES + VEC_N_SIZE_BYTES, VEC_N1N2_SIZE_BYTES, v, VEC_N1N2_SIZE_64);
     PQCLEAN_HQC192_CLEAN_shake256_512_ds(&shake256state, ss, mc, VEC_K_SIZE_BYTES + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, K_FCT_DOMAIN);
 
-    return -(~result & 1);
+    return (result & 1) - 1;
 }
