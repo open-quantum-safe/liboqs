@@ -48,7 +48,7 @@ upstreams:
     patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
   -
     name: pqcrystals-dilithium-standard
-    git_url: https://github.com/pq-crystals/dilithium
+    git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
     git_commit: 444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
     sig_meta_path: '{pretty_name_full}_META.yml'

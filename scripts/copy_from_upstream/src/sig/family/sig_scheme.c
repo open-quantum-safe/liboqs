@@ -344,25 +344,21 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_s
     {%- endif %}
 }
 {%- else %}
+
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
-	(void) signature;
-	(void) signature_len;
-	(void) message;
-	(void) message_len;
-	(void) ctx_str;
-	(void) ctx_str_len;
-	(void) secret_key;
-	return OQS_ERROR;
+	if (ctx_str == NULL && ctx_str_len == 0) {
+		return OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(signature, signature_len, message, message_len, secret_key);
+	} else {
+		return OQS_ERROR;
+	}
 }
+
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
-	(void) message;
-	(void) message_len;
-	(void) signature;
-	(void) signature_len;
-	(void) ctx_str;
-	(void) ctx_str_len;
-	(void) public_key;
-	return OQS_ERROR;
+	if (ctx_str == NULL && ctx_str_len == 0) {
+		return OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(message, message_len, signature, signature_len, public_key);
+	} else {
+		return OQS_ERROR;
+	}
 }
 {%- endif %}
 #endif

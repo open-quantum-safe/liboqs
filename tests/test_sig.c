@@ -162,6 +162,12 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should fail without support for context strings\n");
 			goto err;
 		}
+
+		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, NULL, 0, secret_key);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should always succeed when providing a NULL context string\n");
+			goto err;
+		}
 	}
 
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
