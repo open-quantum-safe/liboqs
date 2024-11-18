@@ -162,13 +162,32 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should fail without support for context strings\n");
 			goto err;
 		}
-
-		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, NULL, 0, secret_key);
-		if (rc != OQS_SUCCESS) {
-			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should always succeed when providing a NULL context string\n");
-			goto err;
-		}
 	}
+
+rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, NULL, 0, secret_key);
+OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+if (rc != OQS_SUCCESS) {
+	fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should always succeed when providing a NULL context string\n");
+	goto err;
+}
+OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
+OQS_TEST_CT_DECLASSIFY(signature, signature_len);
+rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
+OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+if (rc != OQS_SUCCESS) {
+	fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str failed\n");
+	goto err;
+}
+
+/* modify the signature to invalidate it */
+OQS_randombytes(signature, signature_len);
+OQS_TEST_CT_DECLASSIFY(signature, signature_len);
+rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
+OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+if (rc != OQS_ERROR) {
+	fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
+	goto err;
+}
 
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	/* check magic values */
