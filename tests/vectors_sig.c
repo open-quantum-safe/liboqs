@@ -370,15 +370,8 @@ int main(int argc, char **argv) {
 
 	OQS_init();
 
-	if (argc < 3) {
-		valid_args = false;
-		goto err;
-	}
-
 	size_t msgLen;
 
-	char *alg_name = argv[1];
-	char *test_name = argv[2];
 	char *prng_output_stream = NULL;
 	char *kg_pk;
 	char *kg_sk;
@@ -404,7 +397,18 @@ int main(int argc, char **argv) {
 	uint8_t *sigVer_msg_bytes = NULL;
 	uint8_t *sigVer_sig_bytes = NULL;
 
-	OQS_SIG *sig = OQS_SIG_new(alg_name);
+	OQS_SIG *sig = NULL;
+
+	if (argc < 3) {
+		valid_args = false;
+		goto err;
+	}
+	
+	char *alg_name = argv[1];
+	char *test_name = argv[2];
+
+	sig = OQS_SIG_new(alg_name);
+	
 	if (sig == NULL) {
 		printf("[vectors_sig] %s was not enabled at compile-time.\n", alg_name);
 		goto err;
