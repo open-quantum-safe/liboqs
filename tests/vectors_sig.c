@@ -262,7 +262,7 @@ static int sig_ver_vector(const char *method_name,
 		goto err;
 	}
 	if ((!rc) != testPassed) {
-		fprintf(stderr, "[vectors_sig] %s ERROR: mlca_sig_verify_internal failed!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: ml_dsa_verify_internal failed!\n", method_name);
 		goto err;
 	} else {
 		ret = EXIT_SUCCESS;
