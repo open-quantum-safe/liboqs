@@ -344,7 +344,7 @@ static int sig_gen_vector(const char *method_name,
 		ret = EXIT_SUCCESS;
 	} else {
 		ret = EXIT_FAILURE;
-		fprintf(stderr, "[test_acvp_sig] %s ERROR: public key or private key doesn't match!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: public key or private key doesn't match!\n", method_name);
 	}
 	goto cleanup;
 
