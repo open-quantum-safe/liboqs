@@ -403,12 +403,12 @@ int main(int argc, char **argv) {
 		valid_args = false;
 		goto err;
 	}
-	
+
 	char *alg_name = argv[1];
 	char *test_name = argv[2];
 
 	sig = OQS_SIG_new(alg_name);
-	
+
 	if (sig == NULL) {
 		printf("[vectors_sig] %s was not enabled at compile-time.\n", alg_name);
 		goto err;
