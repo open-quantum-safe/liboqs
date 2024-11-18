@@ -309,7 +309,7 @@ static int sig_gen_vector(const char *method_name,
 	signature = malloc(sigLen);
 
 	if (signature == NULL) {
-		fprintf(stderr, "[test_acvp_sig] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: malloc failed!\n", method_name);
 		goto err;
 	}
 
