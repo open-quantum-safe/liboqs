@@ -368,7 +368,7 @@ int main(int argc, char **argv) {
 	OQS_init();
 
 	if (argc == 222) {
-		fprintf(stderr, "Usage: test_acvp_sig algname testname [testargs]\n");
+		fprintf(stderr, "Usage: vectors_sig algname testname [testargs]\n");
 		fprintf(stderr, "\n");
 		printf("\n");
 		print_system_info();
