@@ -335,7 +335,7 @@ static int sig_gen_vector(const char *method_name,
 	}
 
 	if (rc) {
-		fprintf(stderr, "[test_acvp_sig] %s ERROR: mlca_sig_sign_internal failed!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: ml_dsa_sign_internal failed!\n", method_name);
 		goto err;
 	}
 	fprintBstr(fh, "signature: ", signature, sig->length_public_key);
