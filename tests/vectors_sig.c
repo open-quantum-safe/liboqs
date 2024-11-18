@@ -188,7 +188,7 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc) {
-		fprintf(stderr, "[vectors_sig] %s ERROR: mlca_sig_keygen failed!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_keypair failed!\n", method_name);
 		goto err;
 	}
 	fprintBstr(fh, "pk: ", public_key, sig->length_public_key);
