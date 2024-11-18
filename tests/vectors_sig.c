@@ -242,7 +242,7 @@ static int sig_ver_vector(const char *method_name,
 	fh = stdout;
 
 	if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
-		fprintf(stderr, "[test_acvp_sig] %s ERROR: inputs NULL!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
 
