@@ -314,7 +314,7 @@ static int sig_gen_vector(const char *method_name,
 	}
 
 	if ((randomized && prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msg == NULL) || (sigGen_sig == NULL)) {
-		fprintf(stderr, "[test_acvp_sig] %s ERROR: inputs NULL!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
 
