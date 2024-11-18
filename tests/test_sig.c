@@ -145,7 +145,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
 			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
+				fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
 				goto err;
 			}
 		}
