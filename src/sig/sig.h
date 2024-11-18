@@ -229,8 +229,8 @@ typedef struct OQS_SIG {
 	 * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
 	 * @param[in] message The message to sign represented as a byte string.
 	 * @param[in] message_len The length of the message to sign.
-	 * @param[in] ctx_str The context string for the signature.
-	 * @param[in] ctx_str_len The length of the context string.
+	 * @param[in] ctx_str The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+	 * @param[in] ctx_str_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
@@ -253,8 +253,8 @@ typedef struct OQS_SIG {
 	 *
 	 * @param[in] message The message represented as a byte string.
 	 * @param[in] message_len The length of the message.
-	 * @param[in] signature The signature on the message represented as a byte string.
-	 * @param[in] signature_len The length of the signature.
+	 * @param[in] signature The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+	 * @param[in] signature_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
 	 * @param[in] ctx_str The context string for the signature.
 	 * @param[in] ctx_str_len The length of the context string.
 	 * @param[in] public_key The public key represented as a byte string.
@@ -319,8 +319,8 @@ OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *
  * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
  * @param[in] message The message to sign represented as a byte string.
  * @param[in] message_len The length of the message to sign.
- * @param[in] ctx_str The context string for the signature.
- * @param[in] ctx_str_len The length of the context string.
+ * @param[in] ctx_str The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+ * @param[in] ctx_str_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
@@ -347,8 +347,8 @@ OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, si
  * @param[in] message_len The length of the message.
  * @param[in] signature The signature on the message represented as a byte string.
  * @param[in] signature_len The length of the signature.
- * @param[in] ctx_str The context string for the signature.
- * @param[in] ctx_str_len The length of the context string.
+ * @param[in] ctx_str The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+ * @param[in] ctx_str_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
  * @param[in] public_key The public key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */

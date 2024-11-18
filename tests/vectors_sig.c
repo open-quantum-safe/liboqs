@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: MIT
 
 // This tests the test vectors published by NIST ACVP
 
@@ -173,11 +173,11 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 
 	fh = stdout;
 
-	public_key = malloc(sig->length_public_key);
-	secret_key = malloc(sig->length_secret_key);
-	signature = malloc(sig->length_signature);
+	public_key = OQS_MEM_malloc(sig->length_public_key);
+	secret_key = OQS_MEM_malloc(sig->length_secret_key);
+	signature = OQS_MEM_malloc(sig->length_signature);
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
-		fprintf(stderr, "[vectors_sig] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 
@@ -306,10 +306,10 @@ static int sig_gen_vector(const char *method_name,
 
 	fh = stdout;
 
-	signature = malloc(sigLen);
+	signature = OQS_MEM_malloc(sigLen);
 
 	if (signature == NULL) {
-		fprintf(stderr, "[vectors_sig] %s ERROR: malloc failed!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
 
@@ -362,18 +362,17 @@ cleanup:
 }
 #endif
 
+
+
 int main(int argc, char **argv) {
 	OQS_STATUS rc = OQS_SUCCESS;
+	bool valid_args = true;
 
 	OQS_init();
 
-	if (argc == 222) {
-		fprintf(stderr, "Usage: vectors_sig algname testname [testargs]\n");
-		fprintf(stderr, "\n");
-		printf("\n");
-		print_system_info();
-		OQS_destroy();
-		return EXIT_FAILURE;
+	if (argc < 3) {
+		valid_args = false;
+		goto err;
 	}
 
 	size_t msgLen;
@@ -412,6 +411,10 @@ int main(int argc, char **argv) {
 	}
 
 	if (!strcmp(test_name, "keyGen")) {
+		if (argc != 6) {
+			valid_args = false;
+			goto err;
+		}
 		prng_output_stream = argv[3]; // d || z
 		kg_pk = argv[4];
 		kg_sk = argv[5];
@@ -423,12 +426,12 @@ int main(int argc, char **argv) {
 			goto err;
 		}
 
-		prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
-		kg_pk_bytes = malloc(sig->length_public_key);
-		kg_sk_bytes = malloc(sig->length_secret_key);
+		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
+		kg_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
+		kg_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
 
 		if ((prng_output_stream_bytes == NULL) || (kg_pk_bytes == NULL) || (kg_sk_bytes == NULL)) {
-			fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
+			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
 
@@ -440,19 +443,23 @@ int main(int argc, char **argv) {
 		rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
 
 	} else if (!strcmp(test_name, "sigGen_det") || !strcmp(test_name, "sigGen_rnd")) {
+		int randomized = !strcmp(test_name, "sigGen_rnd");
+		if (argc != 6 + randomized) {
+			valid_args = false;
+			goto err;
+		}
 		sigGen_sk = argv[3];
 		sigGen_msg = argv[4];
 		sigGen_sig = argv[5];
 
-		int randomized = !strcmp(test_name, "sigGen_rnd");
 		if (randomized) {
 			prng_output_stream = argv[6];
 			if (strlen(prng_output_stream) % 2 != 0) {
 				goto err;
 			}
-			prng_output_stream_bytes = malloc(strlen(prng_output_stream) / 2);
+			prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
 			if (prng_output_stream_bytes == NULL) {
-				fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
+				fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 				goto err;
 			}
 		}
@@ -464,19 +471,19 @@ int main(int argc, char **argv) {
 
 		msgLen = strlen(sigGen_msg) / 2;
 
-		sigGen_sk_bytes = malloc(sig->length_secret_key);
-		sigGen_msg_bytes = malloc(msgLen);
-		sigGen_sig_bytes = malloc(sig->length_signature);
+		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
+		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 
 		if ((sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL)) {
-			fprintf(stderr, "[vectors_sig] ERROR: malloc failed!\n");
+			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
 
 		if (randomized) {
 			hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 		} else {
-			prng_output_stream_bytes = malloc(32);
+			prng_output_stream_bytes = OQS_MEM_malloc(32);
 			memset(prng_output_stream_bytes, 0, 32);
 		}
 
@@ -493,6 +500,10 @@ int main(int argc, char **argv) {
 #endif
 
 	} else if (!strcmp(test_name, "sigVer")) {
+		if (argc != 7) {
+			valid_args = false;
+			goto err;
+		}
 		sigVer_pk = argv[3];
 		sigVer_msg = argv[4];
 		sigVer_sig = argv[5];
@@ -508,9 +519,9 @@ int main(int argc, char **argv) {
 
 		msgLen = strlen(sigVer_msg) / 2;
 
-		sigVer_pk_bytes = malloc(sig->length_public_key);
-		sigVer_msg_bytes = malloc(msgLen);
-		sigVer_sig_bytes = malloc(sig->length_signature);
+		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
+		sigVer_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigVer_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
 		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
@@ -531,7 +542,12 @@ int main(int argc, char **argv) {
 
 err:
 	rc = EXIT_FAILURE;
-	goto cleanup;
+	if (!valid_args) {
+		fprintf(stderr, "Usage: vectors_sig algname testname [testargs]\n");
+		fprintf(stderr, "\n");
+		printf("\n");
+		print_system_info();
+	}
 
 cleanup:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
@@ -544,6 +560,7 @@ cleanup:
 	OQS_MEM_insecure_free(sigGen_msg_bytes);
 	OQS_MEM_insecure_free(sigGen_sig_bytes);
 	OQS_SIG_free(sig);
+	OQS_destroy();
 
 	if (rc != EXIT_SUCCESS) {
 		return EXIT_FAILURE;
