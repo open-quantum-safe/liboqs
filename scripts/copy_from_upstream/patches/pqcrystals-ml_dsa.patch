@@ -1,5 +1,5 @@
 diff --git a/Dilithium2_META.yml b/Dilithium2_META.yml
-index 122b3ca..d9461b7 100644
+index 122b3ca..2d5686a 100644
 --- a/Dilithium2_META.yml
 +++ b/ML-DSA-44_META.yml
 @@ -1,4 +1,4 @@
@@ -8,9 +8,12 @@ index 122b3ca..d9461b7 100644
  type: signature
  claimed-nist-level: 2
  length-public-key: 1312
-@@ -20,20 +20,20 @@ implementations:
+@@ -18,22 +18,22 @@ auxiliary-submitters:
+   - Damien Stehlé
+ implementations:
    - name: ref
-     version: https://github.com/pq-crystals/dilithium/tree/master
+-    version: https://github.com/pq-crystals/dilithium/tree/master
++    version: FIPS204
      folder_name: ref
 -    compile_opts: -DDILITHIUM_MODE=2 -DDILITHIUM_RANDOMIZED_SIGNING
 -    signature_keypair: pqcrystals_dilithium2_ref_keypair
@@ -25,13 +28,14 @@ index 122b3ca..d9461b7 100644
 +    api-with-context-string: true
 +    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/dilithium/tree/master
+-    version: https://github.com/pq-crystals/dilithium/tree/master
 -    compile_opts: -DDILITHIUM_MODE=2 -DDILITHIUM_RANDOMIZED_SIGNING
 -    signature_keypair: pqcrystals_dilithium2_avx2_keypair
 -    signature_signature: pqcrystals_dilithium2_avx2_signature
 -    signature_verify: pqcrystals_dilithium2_avx2_verify
 -    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
 -    common_dep: common_avx2
++    version: FIPS204
 +    compile_opts: -DDILITHIUM_MODE=2
 +    signature_keypair: pqcrystals_ml_dsa_44_avx2_keypair
 +    signature_signature: pqcrystals_ml_dsa_44_avx2_signature
@@ -42,7 +46,7 @@ index 122b3ca..d9461b7 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Dilithium3_META.yml b/Dilithium3_META.yml
-index b108b4f..cda907a 100644
+index b108b4f..47a4ba0 100644
 --- a/Dilithium3_META.yml
 +++ b/ML-DSA-65_META.yml
 @@ -1,4 +1,4 @@
@@ -51,9 +55,12 @@ index b108b4f..cda907a 100644
  type: signature
  claimed-nist-level: 3
  length-public-key: 1952
-@@ -20,20 +20,20 @@ implementations:
+@@ -18,22 +18,22 @@ auxiliary-submitters:
+   - Damien Stehlé
+ implementations:
    - name: ref
-     version: https://github.com/pq-crystals/dilithium/tree/master
+-    version: https://github.com/pq-crystals/dilithium/tree/master
++    version: FIPS204
      folder_name: ref
 -    compile_opts: -DDILITHIUM_MODE=3 -DDILITHIUM_RANDOMIZED_SIGNING
 -    signature_keypair: pqcrystals_dilithium3_ref_keypair
@@ -68,13 +75,14 @@ index b108b4f..cda907a 100644
 +    api-with-context-string: true
 +    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/dilithium/tree/master
+-    version: https://github.com/pq-crystals/dilithium/tree/master
 -    compile_opts: -DDILITHIUM_MODE=3 -DDILITHIUM_RANDOMIZED_SIGNING
 -    signature_keypair: pqcrystals_dilithium3_avx2_keypair
 -    signature_signature: pqcrystals_dilithium3_avx2_signature
 -    signature_verify: pqcrystals_dilithium3_avx2_verify
 -    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
 -    common_dep: common_avx2
++    version: FIPS204
 +    compile_opts: -DDILITHIUM_MODE=3
 +    signature_keypair: pqcrystals_ml_dsa_65_avx2_keypair
 +    signature_signature: pqcrystals_ml_dsa_65_avx2_signature
@@ -85,7 +93,7 @@ index b108b4f..cda907a 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/Dilithium5_META.yml b/Dilithium5_META.yml
-index 5163526..12980de 100644
+index 5163526..e9bff1e 100644
 --- a/Dilithium5_META.yml
 +++ b/ML-DSA-87_META.yml
 @@ -1,4 +1,4 @@
@@ -94,9 +102,12 @@ index 5163526..12980de 100644
  type: signature
  claimed-nist-level: 5
  length-public-key: 2592
-@@ -20,20 +20,20 @@ implementations:
+@@ -18,22 +18,22 @@ auxiliary-submitters:
+   - Damien Stehlé
+ implementations:
    - name: ref
-     version: https://github.com/pq-crystals/dilithium/tree/master
+-    version: https://github.com/pq-crystals/dilithium/tree/master
++    version: FIPS204
      folder_name: ref
 -    compile_opts: -DDILITHIUM_MODE=5 -DDILITHIUM_RANDOMIZED_SIGNING
 -    signature_keypair: pqcrystals_dilithium5_ref_keypair
@@ -111,13 +122,14 @@ index 5163526..12980de 100644
 +    api-with-context-string: true
 +    sources: ../LICENSE api.h config.h params.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.c ntt.h reduce.c reduce.h rounding.c rounding.h symmetric.h symmetric-shake.c
    - name: avx2
-     version: https://github.com/pq-crystals/dilithium/tree/master
+-    version: https://github.com/pq-crystals/dilithium/tree/master
 -    compile_opts: -DDILITHIUM_MODE=5 -DDILITHIUM_RANDOMIZED_SIGNING
 -    signature_keypair: pqcrystals_dilithium5_avx2_keypair
 -    signature_signature: pqcrystals_dilithium5_avx2_signature
 -    signature_verify: pqcrystals_dilithium5_avx2_verify
 -    sources: ../LICENSE api.h config.h params.h align.h sign.c sign.h packing.c packing.h polyvec.c polyvec.h poly.c poly.h ntt.S invntt.S pointwise.S ntt.h shuffle.S shuffle.inc consts.c consts.h rejsample.c rejsample.h rounding.c rounding.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
 -    common_dep: common_avx2
++    version: FIPS204
 +    compile_opts: -DDILITHIUM_MODE=5
 +    signature_keypair: pqcrystals_ml_dsa_87_avx2_keypair
 +    signature_signature: pqcrystals_ml_dsa_87_avx2_signature

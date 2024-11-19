@@ -12,7 +12,7 @@ OQS_SIG *OQS_SIG_ml_dsa_44_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_ml_dsa_44;
-	sig->alg_version = "https://github.com/pq-crystals/dilithium/tree/master";
+	sig->alg_version = "FIPS204";
 
 	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
