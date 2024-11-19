@@ -1,174 +1,328 @@
-diff --git a/Kyber1024_META.yml b/ML-KEM-1024_META.yml
-similarity index 55%
-rename from Kyber1024_META.yml
-rename to ML-KEM-1024_META.yml
-index baa5ca3..fdfc298 100644
+b125813ef8e15b7589a26295039318eb783d6e4f
+diff --git a/Kyber1024_META.yml b/Kyber1024_META.yml
+deleted file mode 100644
+index baa5ca3..0000000
 --- a/Kyber1024_META.yml
-+++ b/ML-KEM-1024_META.yml
-@@ -1,4 +1,4 @@
++++ /dev/null
+@@ -1,49 +0,0 @@
 -name: Kyber1024
-+name: ML-KEM-1024
- type: kem
- claimed-nist-level: 5
- claimed-security: IND-CCA2
-@@ -6,8 +6,8 @@ length-public-key: 1568
- length-ciphertext: 1568
- length-secret-key: 3168
- length-shared-secret: 32
+-type: kem
+-claimed-nist-level: 5
+-claimed-security: IND-CCA2
+-length-public-key: 1568
+-length-ciphertext: 1568
+-length-secret-key: 3168
+-length-shared-secret: 32
 -nistkat-sha256: 5afcf2a568ad32d49b55105b032af1850f03f3888ff9e2a72f4059c58e968f60
 -testvectors-sha256: ff1a854b9b6761a70c65ccae85246fe0596a949e72eae0866a8a2a2d4ea54b10
-+nistkat-sha256: f580d851e5fb27e6876e5e203fa18be4cdbfd49e05d48fec3d3992c8f43a13e6
-+testvectors-sha256: 85ab251d6e749e6b27507a8a6ec473ba2e8419c1aef87d0cd5ec9903c1bb92df
- principal-submitters:
-   - Peter Schwabe
- auxiliary-submitters:
-@@ -22,22 +22,20 @@ auxiliary-submitters:
-   - Damien Stehlé
- implementations:
-   - name: ref
+-principal-submitters:
+-  - Peter Schwabe
+-auxiliary-submitters:
+-  - Roberto Avanzi
+-  - Joppe Bos
+-  - Léo Ducas
+-  - Eike Kiltz
+-  - Tancrède Lepoint
+-  - Vadim Lyubashevsky
+-  - John M. Schanck
+-  - Gregor Seiler
+-  - Damien Stehlé
+-implementations:
+-  - name: ref
 -    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
-+    version: https://github.com/pq-crystals/kyber/tree/standard
-     folder_name: ref
-     compile_opts: -DKYBER_K=4
+-    folder_name: ref
+-    compile_opts: -DKYBER_K=4
 -    signature_keypair: pqcrystals_kyber1024_ref_keypair
 -    signature_enc: pqcrystals_kyber1024_ref_enc
 -    signature_dec: pqcrystals_kyber1024_ref_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h fips202.h symmetric-shake.c
 -    common_dep: common_ref
-+    signature_keypair: pqcrystals_ml_kem_1024_ref_keypair
-+    signature_enc: pqcrystals_ml_kem_1024_ref_enc
-+    signature_dec: pqcrystals_ml_kem_1024_ref_dec
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
-   - name: avx2
+-  - name: avx2
 -    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
-+    version: https://github.com/pq-crystals/kyber/tree/standard
-     compile_opts: -DKYBER_K=4
+-    compile_opts: -DKYBER_K=4
 -    signature_keypair: pqcrystals_kyber1024_avx2_keypair
 -    signature_enc: pqcrystals_kyber1024_avx2_enc
 -    signature_dec: pqcrystals_kyber1024_avx2_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
 -    common_dep: common_avx2 common_keccak4x_avx2
-+    signature_keypair: pqcrystals_ml_kem_1024_avx2_keypair
-+    signature_enc: pqcrystals_ml_kem_1024_avx2_enc
-+    signature_dec: pqcrystals_ml_kem_1024_avx2_dec
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
-     supported_platforms:
-       - architecture: x86_64
-         operating_systems:
-diff --git a/Kyber512_META.yml b/ML-KEM-512_META.yml
-similarity index 55%
-rename from Kyber512_META.yml
-rename to ML-KEM-512_META.yml
-index b251701..40440a8 100644
+-    supported_platforms:
+-      - architecture: x86_64
+-        operating_systems:
+-          - Linux
+-          - Darwin
+-        required_flags:
+-          - avx2
+-          - bmi2
+-          - popcnt
+diff --git a/Kyber512_META.yml b/Kyber512_META.yml
+deleted file mode 100644
+index b251701..0000000
 --- a/Kyber512_META.yml
-+++ b/ML-KEM-512_META.yml
-@@ -1,4 +1,4 @@
++++ /dev/null
+@@ -1,49 +0,0 @@
 -name: Kyber512
-+name: ML-KEM-512
- type: kem
- claimed-nist-level: 1
- claimed-security: IND-CCA2
-@@ -6,8 +6,8 @@ length-public-key: 800
- length-ciphertext: 768
- length-secret-key: 1632
- length-shared-secret: 32
+-type: kem
+-claimed-nist-level: 1
+-claimed-security: IND-CCA2
+-length-public-key: 800
+-length-ciphertext: 768
+-length-secret-key: 1632
+-length-shared-secret: 32
 -nistkat-sha256: bb0481d3325d828817900b709d23917cefbc10026fc857f098979451f67bb0ca
 -testvectors-sha256: 6730bb552c22d9d2176ffb5568e48eb30952cf1f065073ec5f9724f6a3c6ea85
-+nistkat-sha256: c70041a761e01cd6426fa60e9fd6a4412c2be817386c8d0f3334898082512782
-+testvectors-sha256: e1ac6fb45e2511f4170a3527c0c50dcd61336f47113df7a299a61ef8394bd669
- principal-submitters:
-   - Peter Schwabe
- auxiliary-submitters:
-@@ -22,22 +22,20 @@ auxiliary-submitters:
-   - Damien Stehlé
- implementations:
-   - name: ref
+-principal-submitters:
+-  - Peter Schwabe
+-auxiliary-submitters:
+-  - Roberto Avanzi
+-  - Joppe Bos
+-  - Léo Ducas
+-  - Eike Kiltz
+-  - Tancrède Lepoint
+-  - Vadim Lyubashevsky
+-  - John M. Schanck
+-  - Gregor Seiler
+-  - Damien Stehlé
+-implementations:
+-  - name: ref
 -    version: https://github.com/pq-crystals/kyber/commit/74cad307858b61e434490c75f812cb9b9ef7279b
-+    version: https://github.com/pq-crystals/kyber/tree/standard
-     folder_name: ref
-     compile_opts: -DKYBER_K=2 
+-    folder_name: ref
+-    compile_opts: -DKYBER_K=2 
 -    signature_keypair: pqcrystals_kyber512_ref_keypair
 -    signature_enc: pqcrystals_kyber512_ref_enc
 -    signature_dec: pqcrystals_kyber512_ref_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h fips202.h symmetric-shake.c
 -    common_dep: common_ref
-+    signature_keypair: pqcrystals_ml_kem_512_ref_keypair
-+    signature_enc: pqcrystals_ml_kem_512_ref_enc
-+    signature_dec: pqcrystals_ml_kem_512_ref_dec
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
-   - name: avx2
+-  - name: avx2
 -    version: https://github.com/pq-crystals/kyber/commit/36414d64fc1890ed58d1ca8b1e0cab23635d1ac2
-+    version: https://github.com/pq-crystals/kyber/tree/standard
-     compile_opts: -DKYBER_K=2 
+-    compile_opts: -DKYBER_K=2 
 -    signature_keypair: pqcrystals_kyber512_avx2_keypair
 -    signature_enc: pqcrystals_kyber512_avx2_enc
 -    signature_dec: pqcrystals_kyber512_avx2_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
 -    common_dep: common_avx2 common_keccak4x_avx2
-+    signature_keypair: pqcrystals_ml_kem_512_avx2_keypair
-+    signature_enc: pqcrystals_ml_kem_512_avx2_enc
-+    signature_dec: pqcrystals_ml_kem_512_avx2_dec
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
-     supported_platforms:
-       - architecture: x86_64
-         operating_systems:
-diff --git a/Kyber768_META.yml b/ML-KEM-768_META.yml
-similarity index 55%
-rename from Kyber768_META.yml
-rename to ML-KEM-768_META.yml
-index 7a0cc3d..4277df3 100644
+-    supported_platforms:
+-      - architecture: x86_64
+-        operating_systems:
+-          - Linux
+-          - Darwin
+-        required_flags:
+-          - avx2
+-          - bmi2
+-          - popcnt
+diff --git a/Kyber768_META.yml b/Kyber768_META.yml
+deleted file mode 100644
+index 7a0cc3d..0000000
 --- a/Kyber768_META.yml
-+++ b/ML-KEM-768_META.yml
-@@ -1,4 +1,4 @@
++++ /dev/null
+@@ -1,49 +0,0 @@
 -name: Kyber768
-+name: ML-KEM-768
- type: kem
- claimed-nist-level: 3
- claimed-security: IND-CCA2
-@@ -6,8 +6,8 @@ length-public-key: 1184
- length-ciphertext: 1088
- length-secret-key: 2400
- length-shared-secret: 32
+-type: kem
+-claimed-nist-level: 3
+-claimed-security: IND-CCA2
+-length-public-key: 1184
+-length-ciphertext: 1088
+-length-secret-key: 2400
+-length-shared-secret: 32
 -nistkat-sha256: 89e82a5bf2d4ddb2c6444e10409e6d9ca65dafbca67d1a0db2c9b54920a29172
 -testvectors-sha256: 667c8ca2ca93729c0df6ff24588460bad1bbdbfb64ece0fe8563852a7ff348c6
-+nistkat-sha256: 5352539586b6c3df58be6158a6250aeff402bd73060b0a3de68850ac074c17c3
-+testvectors-sha256: 2586721a714c439f6fef26e29ee1c4c67c6207186f810617f278e6ce3e67ea0d
- principal-submitters:
-   - Peter Schwabe
- auxiliary-submitters:
-@@ -22,22 +22,20 @@ auxiliary-submitters:
-   - Damien Stehlé
- implementations:
-   - name: ref
+-principal-submitters:
+-  - Peter Schwabe
+-auxiliary-submitters:
+-  - Roberto Avanzi
+-  - Joppe Bos
+-  - Léo Ducas
+-  - Eike Kiltz
+-  - Tancrède Lepoint
+-  - Vadim Lyubashevsky
+-  - John M. Schanck
+-  - Gregor Seiler
+-  - Damien Stehlé
+-implementations:
+-  - name: ref
 -    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
-+    version: https://github.com/pq-crystals/kyber/tree/standard
-     folder_name: ref
-     compile_opts: -DKYBER_K=3
+-    folder_name: ref
+-    compile_opts: -DKYBER_K=3
 -    signature_keypair: pqcrystals_kyber768_ref_keypair
 -    signature_enc: pqcrystals_kyber768_ref_enc
 -    signature_dec: pqcrystals_kyber768_ref_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h fips202.h symmetric-shake.c
 -    common_dep: common_ref
-+    signature_keypair: pqcrystals_ml_kem_768_ref_keypair
-+    signature_enc: pqcrystals_ml_kem_768_ref_enc
-+    signature_dec: pqcrystals_ml_kem_768_ref_dec
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
-   - name: avx2
+-  - name: avx2
 -    version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
-+    version: https://github.com/pq-crystals/kyber/tree/standard
-     compile_opts: -DKYBER_K=3
+-    compile_opts: -DKYBER_K=3
 -    signature_keypair: pqcrystals_kyber768_avx2_keypair
 -    signature_enc: pqcrystals_kyber768_avx2_enc
 -    signature_dec: pqcrystals_kyber768_avx2_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
 -    common_dep: common_avx2 common_keccak4x_avx2
+-    supported_platforms:
+-      - architecture: x86_64
+-        operating_systems:
+-          - Linux
+-          - Darwin
+-        required_flags:
+-          - avx2
+-          - bmi2
+-          - popcnt
+diff --git a/ML-KEM-1024_META.yml b/ML-KEM-1024_META.yml
+new file mode 100644
+index 0000000..67243b8
+--- /dev/null
++++ b/ML-KEM-1024_META.yml
+@@ -0,0 +1,47 @@
++name: ML-KEM-1024
++type: kem
++claimed-nist-level: 5
++claimed-security: IND-CCA2
++length-public-key: 1568
++length-ciphertext: 1568
++length-secret-key: 3168
++length-shared-secret: 32
++nistkat-sha256: f580d851e5fb27e6876e5e203fa18be4cdbfd49e05d48fec3d3992c8f43a13e6
++testvectors-sha256: 85ab251d6e749e6b27507a8a6ec473ba2e8419c1aef87d0cd5ec9903c1bb92df
++principal-submitters:
++  - Peter Schwabe
++auxiliary-submitters:
++  - Roberto Avanzi
++  - Joppe Bos
++  - Léo Ducas
++  - Eike Kiltz
++  - Tancrède Lepoint
++  - Vadim Lyubashevsky
++  - John M. Schanck
++  - Gregor Seiler
++  - Damien Stehlé
++implementations:
++  - name: ref
++    version: FIPS203
++    folder_name: ref
++    compile_opts: -DKYBER_K=4
++    signature_keypair: pqcrystals_ml_kem_1024_ref_keypair
++    signature_enc: pqcrystals_ml_kem_1024_ref_enc
++    signature_dec: pqcrystals_ml_kem_1024_ref_dec
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
++  - name: avx2
++    version: FIPS203
++    compile_opts: -DKYBER_K=4
++    signature_keypair: pqcrystals_ml_kem_1024_avx2_keypair
++    signature_enc: pqcrystals_ml_kem_1024_avx2_enc
++    signature_dec: pqcrystals_ml_kem_1024_avx2_dec
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
++    supported_platforms:
++      - architecture: x86_64
++        operating_systems:
++          - Linux
++          - Darwin
++        required_flags:
++          - avx2
++          - bmi2
++          - popcnt
+diff --git a/ML-KEM-512_META.yml b/ML-KEM-512_META.yml
+new file mode 100644
+index 0000000..18c28b0
+--- /dev/null
++++ b/ML-KEM-512_META.yml
+@@ -0,0 +1,47 @@
++name: ML-KEM-512
++type: kem
++claimed-nist-level: 1
++claimed-security: IND-CCA2
++length-public-key: 800
++length-ciphertext: 768
++length-secret-key: 1632
++length-shared-secret: 32
++nistkat-sha256: c70041a761e01cd6426fa60e9fd6a4412c2be817386c8d0f3334898082512782
++testvectors-sha256: e1ac6fb45e2511f4170a3527c0c50dcd61336f47113df7a299a61ef8394bd669
++principal-submitters:
++  - Peter Schwabe
++auxiliary-submitters:
++  - Roberto Avanzi
++  - Joppe Bos
++  - Léo Ducas
++  - Eike Kiltz
++  - Tancrède Lepoint
++  - Vadim Lyubashevsky
++  - John M. Schanck
++  - Gregor Seiler
++  - Damien Stehlé
++implementations:
++  - name: ref
++    version: FIPS203
++    folder_name: ref
++    compile_opts: -DKYBER_K=2 
++    signature_keypair: pqcrystals_ml_kem_512_ref_keypair
++    signature_enc: pqcrystals_ml_kem_512_ref_enc
++    signature_dec: pqcrystals_ml_kem_512_ref_dec
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
++  - name: avx2
++    version: FIPS203
++    compile_opts: -DKYBER_K=2 
++    signature_keypair: pqcrystals_ml_kem_512_avx2_keypair
++    signature_enc: pqcrystals_ml_kem_512_avx2_enc
++    signature_dec: pqcrystals_ml_kem_512_avx2_dec
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
++    supported_platforms:
++      - architecture: x86_64
++        operating_systems:
++          - Linux
++          - Darwin
++        required_flags:
++          - avx2
++          - bmi2
++          - popcnt
+diff --git a/ML-KEM-768_META.yml b/ML-KEM-768_META.yml
+new file mode 100644
+index 0000000..ccc03c9
+--- /dev/null
++++ b/ML-KEM-768_META.yml
+@@ -0,0 +1,47 @@
++name: ML-KEM-768
++type: kem
++claimed-nist-level: 3
++claimed-security: IND-CCA2
++length-public-key: 1184
++length-ciphertext: 1088
++length-secret-key: 2400
++length-shared-secret: 32
++nistkat-sha256: 5352539586b6c3df58be6158a6250aeff402bd73060b0a3de68850ac074c17c3
++testvectors-sha256: 2586721a714c439f6fef26e29ee1c4c67c6207186f810617f278e6ce3e67ea0d
++principal-submitters:
++  - Peter Schwabe
++auxiliary-submitters:
++  - Roberto Avanzi
++  - Joppe Bos
++  - Léo Ducas
++  - Eike Kiltz
++  - Tancrède Lepoint
++  - Vadim Lyubashevsky
++  - John M. Schanck
++  - Gregor Seiler
++  - Damien Stehlé
++implementations:
++  - name: ref
++    version: FIPS203
++    folder_name: ref
++    compile_opts: -DKYBER_K=3
++    signature_keypair: pqcrystals_ml_kem_768_ref_keypair
++    signature_enc: pqcrystals_ml_kem_768_ref_enc
++    signature_dec: pqcrystals_ml_kem_768_ref_dec
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
++  - name: avx2
++    version: FIPS203
++    compile_opts: -DKYBER_K=3
 +    signature_keypair: pqcrystals_ml_kem_768_avx2_keypair
 +    signature_enc: pqcrystals_ml_kem_768_avx2_enc
 +    signature_dec: pqcrystals_ml_kem_768_avx2_dec
 +    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
-     supported_platforms:
-       - architecture: x86_64
-         operating_systems:
++    supported_platforms:
++      - architecture: x86_64
++        operating_systems:
++          - Linux
++          - Darwin
++        required_flags:
++          - avx2
++          - bmi2
++          - popcnt
 diff --git a/avx2/indcpa.c b/avx2/indcpa.c
 index 18b9d08..c4b2b3a 100644
 --- a/avx2/indcpa.c
@@ -261,7 +415,7 @@ index 18b9d08..c4b2b3a 100644
  #endif
  
 diff --git a/avx2/params.h b/avx2/params.h
-index bc70ebf..fdc688e 100644
+index bc70ebf..ecfabce 100644
 --- a/avx2/params.h
 +++ b/avx2/params.h
 @@ -12,19 +12,19 @@
@@ -377,7 +531,7 @@ index 9a78c09..726cfa9 100644
  
  /*************************************************
 diff --git a/ref/params.h b/ref/params.h
-index 0802c74..36b2b98 100644
+index 0802c74..fb4190b 100644
 --- a/ref/params.h
 +++ b/ref/params.h
 @@ -8,11 +8,11 @@
