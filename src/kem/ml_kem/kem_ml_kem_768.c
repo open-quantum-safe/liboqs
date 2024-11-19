@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_ml_kem_768_new(void) {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_ml_kem_768;
-	kem->alg_version = "https://github.com/pq-crystals/kyber/tree/standard";
+	kem->alg_version = "FIPS203";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
