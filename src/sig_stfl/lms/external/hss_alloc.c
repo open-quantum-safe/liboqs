@@ -381,7 +381,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
             /* This would use more memory than we'd like; accept it if */
             /* either we have no solution, or it uses less memory than what */
             /* we've seen */
-            if (search_status != nothing_yet && mem > best_mem) continue;
+            if (search_status != nothing_yet && mem > (signed long)best_mem) continue;
 
             /* This solution is the best so far (however, it doesn't fit) */
             search_status = found_overbudget;
@@ -394,7 +394,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
                     /* We've already seen a faster solution */
                     continue;
                 }
-                if (sub_levels == best_levels && mem > best_mem) {
+                if (sub_levels == best_levels && mem > (signed long)best_mem) {
                     /* We've already seen an equally fast solution that */
                     /* uses less memory */
                     continue;
