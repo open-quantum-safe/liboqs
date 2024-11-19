@@ -253,10 +253,10 @@ typedef struct OQS_SIG {
 	 *
 	 * @param[in] message The message represented as a byte string.
 	 * @param[in] message_len The length of the message.
-	 * @param[in] signature The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
-	 * @param[in] signature_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
-	 * @param[in] ctx_str The context string for the signature.
-	 * @param[in] ctx_str_len The length of the context string.
+	 * @param[in] signature The signature on the message represented as a byte string.
+	 * @param[in] signature_len The length of the signature.
+	 * @param[in] ctx_str The context string for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+	 * @param[in] ctx_str_len The length of the context string. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
 	 * @param[in] public_key The public key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
