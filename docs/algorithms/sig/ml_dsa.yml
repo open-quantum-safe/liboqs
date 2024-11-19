@@ -21,7 +21,7 @@ primary-upstream:
 parameter-sets:
 - name: ML-DSA-44
   claimed-nist-level: 2
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 1312
   length-secret-key: 2560
   length-signature: 2420
@@ -52,7 +52,7 @@ parameter-sets:
     large-stack-usage: false
 - name: ML-DSA-65
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 1952
   length-secret-key: 4032
   length-signature: 3309
@@ -83,7 +83,7 @@ parameter-sets:
     large-stack-usage: false
 - name: ML-DSA-87
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 2592
   length-secret-key: 4896
   length-signature: 4627

@@ -15,9 +15,9 @@
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
 |:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|    ML-DSA-44    | NA                    | EUF-CMA          |                    2 |                      1312 |                      2560 |                     2420 |
-|    ML-DSA-65    | NA                    | EUF-CMA          |                    3 |                      1952 |                      4032 |                     3309 |
-|    ML-DSA-87    | NA                    | EUF-CMA          |                    5 |                      2592 |                      4896 |                     4627 |
+|    ML-DSA-44    | NA                    | SUF-CMA          |                    2 |                      1312 |                      2560 |                     2420 |
+|    ML-DSA-65    | NA                    | SUF-CMA          |                    3 |                      1952 |                      4032 |                     3309 |
+|    ML-DSA-87    | NA                    | SUF-CMA          |                    5 |                      2592 |                      4896 |                     4627 |
 
 ## ML-DSA-44 implementation characteristics
 
