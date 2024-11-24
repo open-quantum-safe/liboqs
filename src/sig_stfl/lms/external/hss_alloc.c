@@ -164,11 +164,11 @@ struct hss_working_key *allocate_working_key(
     /* Assign the memory target to a *signed* variable; signed so that it */
     /* can take on negative values meaningfully (to account for cases where */
     /* we are "overbudget") */
-    unsigned long mem_target;
+    signed long mem_target;
     if (memory_target > LONG_MAX) {
         mem_target = LONG_MAX;
     } else {
-        mem_target = (unsigned long)memory_target;
+        mem_target = (signed long)memory_target;
     }
 #if 0
 signed long initial_mem_target = mem_target; /* DEBUG HACK */
@@ -179,7 +179,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
         info->error_code = hss_error_out_of_memory;
         return NULL;
     }
-    mem_target -= (unsigned long)sizeof(*w) + MALLOC_OVERHEAD;
+    mem_target -= (signed long)sizeof(*w) + MALLOC_OVERHEAD;
     unsigned i;
     w->levels = levels;
     w->status = hss_error_key_uninitialized; /* Not usable until we see a */
@@ -221,13 +221,13 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
             info->error_code = hss_error_out_of_memory;
             return 0;
         }
-        mem_target -= (unsigned long)w->signed_pk_len[i] + MALLOC_OVERHEAD;
+        mem_target -= (signed long)w->signed_pk_len[i] + MALLOC_OVERHEAD;
     }
     w->signature_len = signature_len;
 
     /* Also account for the overhead for the stack allocation (the memory */
     /* used by the stack will be accounted as a part of the tree level size */
-     mem_target -= (unsigned long)MALLOC_OVERHEAD;
+     mem_target -= (signed long)MALLOC_OVERHEAD;
 
     /*
      * Plot out how many subtree sizes we have at each level.  We start by
@@ -306,7 +306,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
                        level_height[i], hash_size[i], &subtree_levels[i],
                         &stack_used );
 
-        mem_target -= (unsigned long)mem;
+        mem_target -= (signed long)mem;
         stack_usage += stack_used;
     }
 
@@ -362,7 +362,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
             /* This is a signed type so that the comparison works as */
             /* expected if mem_target is negative */
         size_t stack_used;
-        unsigned long mem = (unsigned long)compute_level_memory_usage(i, j,
+        signed long mem = (unsigned long)compute_level_memory_usage(i, j,
                        level_height[i], hash_size[i], &subtree_levels[i],
                        &stack_used );
             /* # of sublevels this would have */
@@ -381,7 +381,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
             /* This would use more memory than we'd like; accept it if */
             /* either we have no solution, or it uses less memory than what */
             /* we've seen */
-            if (search_status != nothing_yet && mem > best_mem) continue;
+            if (search_status != nothing_yet && mem > (signed long)best_mem) continue;
 
             /* This solution is the best so far (however, it doesn't fit) */
             search_status = found_overbudget;
@@ -394,7 +394,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
                     /* We've already seen a faster solution */
                     continue;
                 }
-                if (sub_levels == best_levels && mem > best_mem) {
+                if (sub_levels == best_levels && mem > (signed long)best_mem) {
                     /* We've already seen an equally fast solution that */
                     /* uses less memory */
                     continue;

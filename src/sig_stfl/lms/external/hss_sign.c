@@ -594,8 +594,8 @@ bool hss_generate_signature(
     unsigned merkle_levels_below = 0;
     int switch_merkle = w->levels;
     struct merkle_level *tree;
-    for (i = w->levels; i>=1; i--, merkle_levels_below += tree->level) {
-        tree = w->tree[i-1];
+    for (i = w->levels-1; i>=1; i--, merkle_levels_below += tree->level) {
+        tree = w->tree[i];
 
         if (0 == (cur_count & (((sequence_t)1 << (merkle_levels_below + tree->level))-1))) {
             /* We exhausted this tree */
@@ -608,7 +608,7 @@ bool hss_generate_signature(
             }
 
             /* Remember we'll need to switch to the NEXT_TREE */
-            switch_merkle = i-1;
+            switch_merkle = i;
             continue;
         }
 
