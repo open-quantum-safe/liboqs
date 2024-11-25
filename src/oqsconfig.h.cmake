@@ -11,7 +11,7 @@
 #define OQS_VERSION_MINOR @OQS_VERSION_MINOR@
 #define OQS_VERSION_PATCH @OQS_VERSION_PATCH@
 /** 
- * OQS_VERSION_PRE_RELEASE is defined if this is a pre-release version of liboqs, otherwise it is empty.
+ * OQS_VERSION_PRE_RELEASE is defined if this is a pre-release version of liboqs, otherwise it is undefined.
  * Examples: "-dev" or "-rc1".
  */
 #cmakedefine OQS_VERSION_PRE_RELEASE "@OQS_VERSION_PRE_RELEASE@"
