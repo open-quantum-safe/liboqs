@@ -219,7 +219,11 @@ static void print_oqs_configuration(void) {
 	 * USE_SANITIZER: -fsanitize= option present in compile options
 	 * OQS_ENABLE_TEST_CONSTANT_TIME: only shown below
 	 */
-	printf("OQS version:      %s\n", OQS_VERSION_TEXT);
+#if defined(OQS_VERSION_PRE_RELEASE)
+	printf("OQS version:      %s (major: %d, minor: %d, patch: %d, pre-release: %s)\n", OQS_VERSION_TEXT, OQS_VERSION_MAJOR, OQS_VERSION_MINOR, OQS_VERSION_PATCH, OQS_VERSION_PRE_RELEASE);
+#else
+	printf("OQS version:      %s (major: %d, minor: %d, patch: %d)\n", OQS_VERSION_TEXT, OQS_VERSION_MAJOR, OQS_VERSION_MINOR, OQS_VERSION_PATCH);
+#endif
 #if defined(OQS_COMPILE_GIT_COMMIT)
 	printf("Git commit:       %s\n", OQS_COMPILE_GIT_COMMIT);
 #endif

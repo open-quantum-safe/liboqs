@@ -1,6 +1,21 @@
 // SPDX-License-Identifier: MIT
 
+/** 
+ * Version of liboqs as a string. Equivalent to {MAJOR}.{MINOR}.{PATCH}{PRE_RELEASE} 
+ */
 #cmakedefine OQS_VERSION_TEXT "@OQS_VERSION_TEXT@"
+/** 
+ * Version levels of liboqs as integers.
+ */
+#define OQS_VERSION_MAJOR @OQS_VERSION_MAJOR@
+#define OQS_VERSION_MINOR @OQS_VERSION_MINOR@
+#define OQS_VERSION_PATCH @OQS_VERSION_PATCH@
+/** 
+ * OQS_VERSION_PRE_RELEASE is defined if this is a pre-release version of liboqs, otherwise it is undefined.
+ * Examples: "-dev" or "-rc1".
+ */
+#cmakedefine OQS_VERSION_PRE_RELEASE "@OQS_VERSION_PRE_RELEASE@"
+
 #cmakedefine OQS_COMPILE_BUILD_TARGET "@OQS_COMPILE_BUILD_TARGET@"
 #cmakedefine OQS_DIST_BUILD 1
 #cmakedefine OQS_DIST_X86_64_BUILD 1
