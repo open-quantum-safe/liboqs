@@ -101,16 +101,110 @@ def test_acvp_vec_kem_encdec_val(kem_name):
 
         assert(variantFound == True)
 
+@helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
+@pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
+def test_acvp_vec_sig_keygen(sig_name):
+
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
+    if not(sig_name in fips_sig): pytest.skip("Not supported")
+
+    with open(os.path.join('tests', ml_dsa_kg), 'r') as fp:
+        ml_sig_kg_acvp  = json.load(fp)
+
+        variantFound = False
+        for variant in ml_sig_kg_acvp["testGroups"]:
+            if variant["parameterSet"] == sig_name:
+                variantFound = True
+                for testCase in variant["tests"]:
+                    seed = testCase["seed"]
+                    pk = testCase["pk"]
+                    sk = testCase["sk"]
+                    
+                    helpers.run_subprocess(
+                        ['build/tests/vectors_sig', sig_name, "keyGen", seed, pk, sk]
+                    )
+
+        assert(variantFound == True)
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
-def test_vectors_sig(sig_name):
+def test_acvp_vec_sig_gen_deterministic(sig_name):
+    
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
-    result = helpers.run_subprocess(
-        ['tests/test_vectors.sh', sig_name],
-    )
-    if sig_name + " not supported" in result: pytest.skip("Not supported")
+    if not(sig_name in fips_sig): pytest.skip("Not supported")
+
+    with open(os.path.join('tests', ml_dsa_sig), 'r') as fp:
+        ml_sig_sig_acvp  = json.load(fp)
+
+        variantFound = False
+        for variant in ml_sig_sig_acvp["testGroups"]:
+            if variant["parameterSet"] == sig_name and variant["deterministic"] == True:
+                variantFound = True
+                for testCase in variant["tests"]:
+                    sk = testCase["sk"]
+                    message = testCase["message"]
+                    signature = testCase["signature"]
+                    helpers.run_subprocess(
+                        ['build/tests/vectors_sig', sig_name, "sigGen_det", sk, message, signature]
+                    )
+
+        assert(variantFound == True)
+
+@helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
+@pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
+def test_acvp_vec_sig_gen_randomized(sig_name):
+    
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
+    if not(sig_name in fips_sig): pytest.skip("Not supported")
+
+    with open(os.path.join('tests', ml_dsa_sig), 'r') as fp:
+        ml_sig_sig_acvp  = json.load(fp)
+
+        variantFound = False
+        for variant in ml_sig_sig_acvp["testGroups"]:
+            if variant["parameterSet"] == sig_name and variant["deterministic"] == False:
+                variantFound = True
+                for testCase in variant["tests"]:
+                    sk = testCase["sk"]
+                    message = testCase["message"]
+                    signature = testCase["signature"]
+                    rnd = testCase["rnd"]
+                    
+                    helpers.run_subprocess(
+                        ['build/tests/vectors_sig', sig_name, "sigGen_rnd", sk, message, signature, rnd]
+                    )
+
+        assert(variantFound == True)
+
+@helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
+@pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
+def test_acvp_vec_sig_ver(sig_name):
+
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
+    if not(sig_name in fips_sig): pytest.skip("Not supported")
+
+    with open(os.path.join('tests', ml_dsa_ver), 'r') as fp:
+        ml_sig_sig_acvp  = json.load(fp)
+
+        variantFound = False
+        for variant in ml_sig_sig_acvp["testGroups"]:
+            if variant["parameterSet"] == sig_name:
+                variantFound = True
+                pk = variant["pk"]
+                for testCase in variant["tests"]:
+                    message = testCase["message"]
+                    signature = testCase["signature"]
+                    testPassed = "1" if testCase["testPassed"] else "0"
+                    
+                    helpers.run_subprocess(
+                        ['build/tests/vectors_sig', sig_name, "sigVer", pk, message, signature, testPassed]
+                    )
+
+        assert(variantFound == True)
 
 if __name__ == "__main__":
     import sys

@@ -42,7 +42,7 @@ config LIBOQS_ENABLE_KEM_KYBER
 	depends on LIBOQS
 
 config LIBOQS_ENABLE_KEM_ML_KEM
-	bool "Enable the ML-KEM algorithm (ML-KEM-ipd)"
+	bool "Enable the ML-KEM algorithm (ML-KEM)"
 	default y
 	depends on LIBOQS
 
@@ -52,7 +52,7 @@ config LIBOQS_ENABLE_SIG_DILITHIUM
 	depends on LIBOQS
 
 config LIBOQS_ENABLE_SIG_ML_DSA
-	bool "Enable the ML-DSA signature algorithm (ML-DSA-ipd)"
+	bool "Enable the ML-DSA signature algorithm (ML-DSA)"
 	default y
 	depends on LIBOQS
 

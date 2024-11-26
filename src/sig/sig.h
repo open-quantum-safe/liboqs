@@ -38,17 +38,11 @@ extern "C" {
 #define OQS_SIG_alg_dilithium_3 "Dilithium3"
 /** Algorithm identifier for Dilithium5 */
 #define OQS_SIG_alg_dilithium_5 "Dilithium5"
-/** Algorithm identifier for ML-DSA-44-ipd */
-#define OQS_SIG_alg_ml_dsa_44_ipd "ML-DSA-44-ipd"
-/** Algorithm identifier for ML-DSA-44 SIG. */
+/** Algorithm identifier for ML-DSA-44 */
 #define OQS_SIG_alg_ml_dsa_44 "ML-DSA-44"
-/** Algorithm identifier for ML-DSA-65-ipd */
-#define OQS_SIG_alg_ml_dsa_65_ipd "ML-DSA-65-ipd"
-/** Algorithm identifier for ML-DSA-65 SIG. */
+/** Algorithm identifier for ML-DSA-65 */
 #define OQS_SIG_alg_ml_dsa_65 "ML-DSA-65"
-/** Algorithm identifier for ML-DSA-87-ipd */
-#define OQS_SIG_alg_ml_dsa_87_ipd "ML-DSA-87-ipd"
-/** Algorithm identifier for ML-DSA-87 SIG. */
+/** Algorithm identifier for ML-DSA-87 */
 #define OQS_SIG_alg_ml_dsa_87 "ML-DSA-87"
 /** Algorithm identifier for Falcon-512 */
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
@@ -131,7 +125,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 47
+#define OQS_SIG_algs_length 44
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -185,6 +179,9 @@ typedef struct OQS_SIG {
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
 	bool euf_cma;
 
+	/** Whether the signature supports signing with a context string (TRUE) or not (FALSE). */
+	bool sig_with_ctx_support;
+
 	/** The length, in bytes, of public keys for this signature scheme. */
 	size_t length_public_key;
 	/** The length, in bytes, of secret keys for this signature scheme. */
@@ -222,6 +219,24 @@ typedef struct OQS_SIG {
 	OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 
 	/**
+	 * Signature generation algorithm, with custom context string.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `signature`,
+	 * based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_SIG_*_length_*`.
+	 *
+	 * @param[out] signature The signature on the message represented as a byte string.
+	 * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
+	 * @param[in] message The message to sign represented as a byte string.
+	 * @param[in] message_len The length of the message to sign.
+	 * @param[in] ctx_str The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+	 * @param[in] ctx_str_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+	 * @param[in] secret_key The secret key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*sign_with_ctx_str)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key);
+
+	/**
 	 * Signature verification algorithm.
 	 *
 	 * @param[in] message The message represented as a byte string.
@@ -232,6 +247,21 @@ typedef struct OQS_SIG {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*verify)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+	/**
+	 * Signature verification algorithm, with custom context string.
+	 *
+	 * @param[in] message The message represented as a byte string.
+	 * @param[in] message_len The length of the message.
+	 * @param[in] signature The signature on the message represented as a byte string.
+	 * @param[in] signature_len The length of the signature.
+	 * @param[in] ctx_str The context string for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+	 * @param[in] ctx_str_len The length of the context string. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+	 * @param[in] public_key The public key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*verify_with_ctx_str)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key);
+
 
 } OQS_SIG;
 
@@ -278,6 +308,25 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
 OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 
 /**
+ * Signature generation algorithm, with custom context string.
+ *
+ * Caller is responsible for allocating sufficient memory for `signature`,
+ * based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
+ * @param[out] signature The signature on the message represented as a byte string.
+ * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
+ * @param[in] message The message to sign represented as a byte string.
+ * @param[in] message_len The length of the message to sign.
+ * @param[in] ctx_str The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+ * @param[in] ctx_str_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+ * @param[in] secret_key The secret key represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_SIG_sign_with_ctx_str(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key);
+
+/**
  * Signature verification algorithm.
  *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
@@ -289,6 +338,21 @@ OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *
  * @return OQS_SUCCESS or OQS_ERROR
  */
 OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+/**
+ * Signature verification algorithm, with custom context string.
+ *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
+ * @param[in] message The message represented as a byte string.
+ * @param[in] message_len The length of the message.
+ * @param[in] signature The signature on the message represented as a byte string.
+ * @param[in] signature_len The length of the signature.
+ * @param[in] ctx_str The context string used for the signature. This value can be set to NULL if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+ * @param[in] ctx_str_len The context string used for the signature. This value can be set to 0 if a context string is not needed (i.e., for algorithms that do not support context strings or if an empty context string is used).
+ * @param[in] public_key The public key represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_SIG_verify_with_ctx_str(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key);
 
 /**
  * Frees an OQS_SIG object that was constructed by OQS_SIG_new.

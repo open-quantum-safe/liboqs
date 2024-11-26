@@ -49,11 +49,11 @@ upstreams:
   -
     name: pqcrystals-dilithium-standard
     git_url: https://github.com/pq-crystals/dilithium.git
-    git_branch: standard
-    git_commit: e7bed6258b9a3703ce78d4ec38021c86382ce31c
+    git_branch: master
+    git_commit: 444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-ml_dsa_ipd.patch]
+    patches: [pqcrystals-ml_dsa.patch]
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
@@ -172,17 +172,14 @@ kems:
         scheme: "512"
         pqclean_scheme: ml-kem-512
         pretty_name_full: ML-KEM-512
-        alias_pretty_name_full: ML-KEM-512
       -
         scheme: "768"
         pqclean_scheme: ml-kem-768
         pretty_name_full: ML-KEM-768
-        alias_pretty_name_full: ML-KEM-768
       -
         scheme: "1024"
         pqclean_scheme: ml-kem-1024
         pretty_name_full: ML-KEM-1024
-        alias_pretty_name_full: ML-KEM-1024
 sigs:
   -
     name: dilithium
@@ -214,26 +211,20 @@ sigs:
     upstream_location: pqcrystals-dilithium-standard
     schemes:
       -
-        scheme: "44_ipd"
-        pqclean_scheme: ml-dsa-44-ipd
-        pretty_name_full: ML-DSA-44-ipd
+        scheme: "44"
+        pqclean_scheme: ml-dsa-44
+        pretty_name_full: ML-DSA-44
         signed_msg_order: sig_then_msg
-        alias_scheme: "44"
-        alias_pretty_name_full: ML-DSA-44
       -
-        scheme: "65_ipd"
-        pqclean_scheme: ml-dsa-65-ipd
-        pretty_name_full: ML-DSA-65-ipd
+        scheme: "65"
+        pqclean_scheme: ml-dsa-65
+        pretty_name_full: ML-DSA-65
         signed_msg_order: sig_then_msg
-        alias_scheme: "65"
-        alias_pretty_name_full: ML-DSA-65
       -
-        scheme: "87_ipd"
-        pqclean_scheme: ml-dsa-87-ipd
-        pretty_name_full: ML-DSA-87-ipd
+        scheme: "87"
+        pqclean_scheme: ml-dsa-87
+        pretty_name_full: ML-DSA-87
         signed_msg_order: sig_then_msg
-        alias_scheme: "87"
-        alias_pretty_name_full: ML-DSA-87
   -
     name: falcon
     default_implementation: clean
