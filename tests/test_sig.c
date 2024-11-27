@@ -153,7 +153,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 257, secret_key);
 		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (rc != OQS_ERROR) {
-			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should only support up to 256 byte contexts\n");
+			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should only support up to 255 byte contexts\n");
 			goto err;
 		}
 	} else {

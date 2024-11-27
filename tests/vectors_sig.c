@@ -147,7 +147,6 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
-	uint8_t *signature = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
 	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
@@ -175,8 +174,7 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 
 	public_key = OQS_MEM_malloc(sig->length_public_key);
 	secret_key = OQS_MEM_malloc(sig->length_secret_key);
-	signature = OQS_MEM_malloc(sig->length_signature);
-	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
+	if ((public_key == NULL) || (secret_key == NULL)) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
@@ -210,14 +208,13 @@ algo_not_enabled:
 	ret = OQS_SUCCESS;
 
 cleanup:
-	if (sig != NULL) {
+	if (secret_key != NULL) {
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
 	}
 	if (randombytes_free != NULL) {
 		randombytes_free();
 	}
 	OQS_MEM_insecure_free(public_key);
-	OQS_MEM_insecure_free(signature);
 	OQS_SIG_free(sig);
 	return ret;
 }
@@ -288,7 +285,7 @@ cleanup:
 
 static int sig_gen_vector(const char *method_name,
                           uint8_t *prng_output_stream,
-                          const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig, int randomized) {
+                          const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig) {
 
 	FILE *fh = NULL;
 	uint8_t *signature = NULL;
@@ -313,7 +310,7 @@ static int sig_gen_vector(const char *method_name,
 		goto err;
 	}
 
-	if ((randomized && prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msg == NULL) || (sigGen_sig == NULL)) {
+	if ((prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msg == NULL) || (sigGen_sig == NULL)) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
@@ -338,13 +335,13 @@ static int sig_gen_vector(const char *method_name,
 		fprintf(stderr, "[vectors_sig] %s ERROR: ml_dsa_sign_internal failed!\n", method_name);
 		goto err;
 	}
-	fprintBstr(fh, "signature: ", signature, sig->length_public_key);
+	fprintBstr(fh, "signature: ", signature, sig->length_signature);
 
 	if (!memcmp(signature, sigGen_sig, sigLen)) {
 		ret = EXIT_SUCCESS;
 	} else {
 		ret = EXIT_FAILURE;
-		fprintf(stderr, "[vectors_sig] %s ERROR: public key or private key doesn't match!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: signature doesn't match!\n", method_name);
 	}
 	goto cleanup;
 
@@ -419,11 +416,11 @@ int main(int argc, char **argv) {
 			valid_args = false;
 			goto err;
 		}
-		prng_output_stream = argv[3]; // d || z
+		prng_output_stream = argv[3];
 		kg_pk = argv[4];
 		kg_sk = argv[5];
 
-		if (strlen(prng_output_stream) % 2 != 0 ||
+		if (strlen(prng_output_stream) != 2 * RNDBYTES ||
 		        strlen(kg_pk) != 2 * sig->length_public_key ||
 		        strlen(kg_sk) != 2 * sig->length_secret_key) {
 			printf("lengths bad\n");
@@ -458,7 +455,8 @@ int main(int argc, char **argv) {
 
 		if (randomized) {
 			prng_output_stream = argv[6];
-			if (strlen(prng_output_stream) % 2 != 0) {
+			if (strlen(prng_output_stream) != 2 * RNDBYTES) {
+				printf("lengths bad\n");
 				goto err;
 			}
 			prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
@@ -470,6 +468,7 @@ int main(int argc, char **argv) {
 
 		if ( strlen(sigGen_msg) % 2 != 0 ||
 		        strlen(sigGen_sig) != 2 * sig->length_signature) {
+			printf("lengths bad\n");
 			goto err;
 		}
 
@@ -479,7 +478,7 @@ int main(int argc, char **argv) {
 		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 
-		if ((sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL)) {
+		if ((sigGen_sk_bytes == NULL) || (sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
@@ -487,8 +486,8 @@ int main(int argc, char **argv) {
 		if (randomized) {
 			hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 		} else {
-			prng_output_stream_bytes = OQS_MEM_malloc(32);
-			memset(prng_output_stream_bytes, 0, 32);
+			prng_output_stream_bytes = OQS_MEM_malloc(RNDBYTES);
+			memset(prng_output_stream_bytes, 0, RNDBYTES);
 		}
 
 
@@ -497,7 +496,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
-		rc = sig_gen_vector(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes, randomized);
+		rc = sig_gen_vector(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
@@ -518,6 +517,7 @@ int main(int argc, char **argv) {
 		        strlen(sigVer_sig) != 2 * sig->length_signature ||
 		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
 		        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			printf("lengths bad or incorrect verification status \n");
 			goto err;
 		}
 
@@ -526,6 +526,11 @@ int main(int argc, char **argv) {
 		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
 		sigVer_msg_bytes = OQS_MEM_malloc(msgLen);
 		sigVer_sig_bytes = OQS_MEM_malloc(sig->length_signature);
+
+		if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
+			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
+			goto err;
+		}
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
 		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
