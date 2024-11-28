@@ -208,7 +208,7 @@ algo_not_enabled:
 	ret = OQS_SUCCESS;
 
 cleanup:
-	if (secret_key != NULL) {
+	if (sig != NULL) {
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
 	}
 	if (randombytes_free != NULL) {
