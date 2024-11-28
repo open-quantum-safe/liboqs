@@ -36,7 +36,7 @@ Deprecation notice
 
 This will be the last release of liboqs to include Kyber (that is, the NIST Round 3 version of Kyber, prior to its standardization by NIST as ML-KEM in FIPS 203). Applications should switch to ML-KEM (FIPS 203).
 
-The addition of ML-DSA FIPS 204 final version to liboqs has introduced a new signature API which includes a context string parameter. We are considering removing the old version of the API without a context string to streamline the API going forward. Users who have an opinion on this are invited to provide input at https://github.com/open-quantum-safe/liboqs/issues/2001.
+The addition of ML-DSA FIPS 204 final version to liboqs has introduced a new signature API which includes a context string parameter. We are planning to remove the old version of the API without a context string in the next release to streamline the API and bring it in line with NIST specifications. Users who have an opinion on this removal are invited to provide input at https://github.com/open-quantum-safe/liboqs/issues/2001.
 
 What's New
 ----------
@@ -53,6 +53,7 @@ This release continues from the 0.11.0 release of liboqs.
 
 - LMS: Fixed crashing bug.
 - ML-DSA: Removed FIPS 204-ipd (initial public draft) and replaced it with FIPS 204 final version.
+- Added new API for digital signatures with context strings; see https://github.com/open-quantum-safe/liboqs/issues/2001 for plan to remove old API without context string.
 - Added fuzzing tests for signature schemes.
 - Added benchmarking for stateful hash-based signature schemes.
 
