@@ -29,7 +29,7 @@ Release notes
 
 This is release candidate 1 for version 0.12.0 of liboqs. It was released on November 27, 2024.
 
-This release updates the ML-DSA implementation to the [final FIPS 204](https://csrc.nist.gov/pubs/fips/204/final) version. This release still includes the NIST Round 3 veresion of Dilithium for interoperability purposes, but we plan to remove Dilithium Round 3 in a future release.
+This release updates the ML-DSA implementation to the [final FIPS 204](https://csrc.nist.gov/pubs/fips/204/final) version. This release still includes the NIST Round 3 version of Dilithium for interoperability purposes, but we plan to remove Dilithium Round 3 in a future release.
 
 Deprecation notice
 ==================
@@ -46,7 +46,7 @@ This release continues from the 0.11.0 release of liboqs.
 ### Key encapsulation mechanisms
 
 - HQC: Fixed correctness bug in decapsulation. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
-- Kyber: Removed Kyber.
+- Kyber: This is the last release of liboqs to include Kyber.
 - ML-KEM: Improved testing of ML-KEM.
 
 ### Digital signature schemes
