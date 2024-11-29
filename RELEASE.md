@@ -27,7 +27,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.12.0 of liboqs. It was released on November 27, 2024.
+This is release candidate 1 for version 0.12.0 of liboqs. It was released on November 29, 2024.
 
 This release updates the ML-DSA implementation to the [final FIPS 204](https://csrc.nist.gov/pubs/fips/204/final) version. This release still includes the NIST Round 3 version of Dilithium for interoperability purposes, but we plan to remove Dilithium Round 3 in a future release.
 
