@@ -98,7 +98,7 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 	return true;
 }
 
-static inline bool sanityCheckPK(const uint8_t *pk, uint32_t pkLen, const char *method_name) {
+static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *method_name) {
 	/* sanity checks */
 	if ((NULL == pk) || (0 == pkLen) ||  (NULL == method_name) || (false == is_ml_kem(method_name))) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL or zero or invalid method !\n", method_name);
@@ -133,9 +133,9 @@ static inline bool sanityCheckPK(const uint8_t *pk, uint32_t pkLen, const char *
 		for (j = 0; j < ML_KEM_N / 2; j++) {
 			t0 = buff_dec[2 * j];
 			t1 = buff_dec[2 * j + 1];
-			buff_enc[3 * j + 0] = (t0 >> 0);
-			buff_enc[3 * j + 1] = (t0 >> 8) | (t1 << 4);
-			buff_enc[3 * j + 2] = (t1 >> 4);
+			buff_enc[3 * j + 0] = (uint8_t)(t0 >> 0);
+			buff_enc[3 * j + 1] = (uint8_t)((t0 >> 8) | (t1 << 4));
+			buff_enc[3 * j + 2] = (uint8_t)(t1 >> 4);
 		}
 	}
 	/* compare the encoded value with original public key. discard value of `rho(32 bytes)` during comparision as its not encoded */
