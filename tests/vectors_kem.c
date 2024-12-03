@@ -217,7 +217,6 @@ static OQS_STATUS kem_kg_vector(const char *method_name,
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 	if ((false == sanityCheckPK(public_key, kem->length_public_key, method_name)) || (false == sanityCheckSK(secret_key, method_name))) {
-		ret = OQS_ERROR;
 		fprintf(stderr, "[vectors_kem] %s ERROR: generated public key or private key are corrupted !\n", method_name);
 		goto err;
 	}
@@ -299,7 +298,6 @@ static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 	if (false == sanityCheckPK(encdec_pk, kem->length_public_key, method_name)) {
-		ret = OQS_ERROR;
 		fprintf(stderr, "[vectors_kem] %s ERROR: passed encapsulation key is corrupted !\n", method_name);
 		goto err;
 	}
@@ -372,7 +370,6 @@ static OQS_STATUS kem_vector_encdec_val(const char *method_name,
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 	if (false == sanityCheckSK(encdec_sk, method_name)) {
-		ret = OQS_ERROR;
 		fprintf(stderr, "[vectors_kem] %s ERROR: passed decapsulation key is corrupted !\n", method_name);
 		goto err;
 	}
