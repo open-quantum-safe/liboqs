@@ -56,8 +56,9 @@ OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, s
  *
  * @param[out] random_array Pointer to the memory to fill with (pseudo)random bytes
  * @param[in] bytes_to_read The number of random bytes to read into memory
+ * @return OQS_SUCCESS on success, OQS_ERROR otherwise.
  */
-OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
+OQS_API OQS_STATUS OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
 
 #if defined(__cplusplus)
 } // extern "C"

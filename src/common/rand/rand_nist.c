@@ -27,16 +27,16 @@ You are solely responsible for determining the appropriateness of using and dist
 #include <oqs/aes.h>
 #endif
 
-void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen);
+OQS_STATUS OQS_randombytes_nist_kat(unsigned char *x, size_t xlen);
 
 static OQS_NIST_DRBG_struct DRBG_ctx;
-static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
+static OQS_STATUS AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
 // Use whatever AES implementation you have. This uses AES from openSSL library
 //    key - 256-bit AES key
 //    ctr - a 128-bit plaintext value
 //    buffer - a 128-bit ciphertext value
-static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *buffer) {
+static OQS_STATUS AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *buffer) {
 #ifdef OQS_USE_OPENSSL
 	EVP_CIPHER_CTX *ctx;
 
@@ -44,10 +44,15 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 
 	/* Create and initialise the context */
 	ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
-	OQS_EXIT_IF_NULLPTR(ctx, "OpenSSL");
+	if (ctx == NULL) {
+		return OQS_ERROR;
+	}
 
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16));
+	if (OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL) != 1 ||
+	        OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16) != 1) {
+		OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
+		return OQS_ERROR;
+	}
 
 	/* Clean up */
 	OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
@@ -57,9 +62,10 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	OQS_AES256_ECB_enc(ctr, 16, key, buffer);
 	OQS_AES256_free_schedule(schedule);
 #endif
+	return OQS_SUCCESS;
 }
 
-void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string) {
+OQS_STATUS OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string) {
 	unsigned char seed_material[48];
 
 	memcpy(seed_material, entropy_input, 48);
@@ -69,11 +75,14 @@ void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const ui
 		}
 	memset(DRBG_ctx.Key, 0x00, 32);
 	memset(DRBG_ctx.V, 0x00, 16);
-	AES256_CTR_DRBG_Update(seed_material, DRBG_ctx.Key, DRBG_ctx.V);
+	if (AES256_CTR_DRBG_Update(seed_material, DRBG_ctx.Key, DRBG_ctx.V) != OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
 	DRBG_ctx.reseed_counter = 1;
+	return OQS_SUCCESS;
 }
 
-void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
+OQS_STATUS OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 	unsigned char block[16];
 	int i = 0;
 
@@ -87,7 +96,9 @@ void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 				break;
 			}
 		}
-		AES256_ECB(DRBG_ctx.Key, DRBG_ctx.V, block);
+		if (AES256_ECB(DRBG_ctx.Key, DRBG_ctx.V, block) != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
 		if (xlen > 15) {
 			memcpy(x + i, block, 16);
 			i += 16;
@@ -97,29 +108,36 @@ void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 			xlen = 0;
 		}
 	}
-	AES256_CTR_DRBG_Update(NULL, DRBG_ctx.Key, DRBG_ctx.V);
+	if (AES256_CTR_DRBG_Update(NULL, DRBG_ctx.Key, DRBG_ctx.V) != OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
 	DRBG_ctx.reseed_counter++;
+	return OQS_SUCCESS;
 }
 
-void OQS_randombytes_nist_kat_get_state(void *out) {
+OQS_STATUS OQS_randombytes_nist_kat_get_state(void *out) {
 	OQS_NIST_DRBG_struct *out_state = (OQS_NIST_DRBG_struct *)out;
 	if (out_state != NULL) {
 		memcpy(out_state->Key, DRBG_ctx.Key, sizeof(DRBG_ctx.Key));
 		memcpy(out_state->V, DRBG_ctx.V, sizeof(DRBG_ctx.V));
 		out_state->reseed_counter = DRBG_ctx.reseed_counter;
+		return OQS_SUCCESS;
 	}
+	return OQS_ERROR;
 }
 
-void OQS_randombytes_nist_kat_set_state(const void *in) {
+OQS_STATUS OQS_randombytes_nist_kat_set_state(const void *in) {
 	const OQS_NIST_DRBG_struct *in_state = (const OQS_NIST_DRBG_struct *)in;
 	if (in_state != NULL) {
 		memcpy(DRBG_ctx.Key, in_state->Key, sizeof(DRBG_ctx.Key));
 		memcpy(DRBG_ctx.V, in_state->V, sizeof(DRBG_ctx.V));
 		DRBG_ctx.reseed_counter = in_state->reseed_counter;
+		return OQS_SUCCESS;
 	}
+	return OQS_ERROR;
 }
 
-static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V) {
+static OQS_STATUS AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V) {
 	unsigned char temp[48];
 
 	for (int i = 0; i < 3; i++) {
@@ -133,7 +151,9 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 			}
 		}
 
-		AES256_ECB(Key, V, temp + 16 * i);
+		if (AES256_ECB(Key, V, temp + 16 * i) != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
 	}
 	if (provided_data != NULL)
 		for (int i = 0; i < 48; i++) {
@@ -141,4 +161,5 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 		}
 	memcpy(Key, temp, 32);
 	memcpy(V, temp + 32, 16);
+	return OQS_SUCCESS;
 }

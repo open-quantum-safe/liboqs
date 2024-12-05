@@ -10,6 +10,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <oqs/common.h>
 
 typedef struct {
 	unsigned char Key[32];
@@ -23,25 +24,33 @@ typedef struct {
  * @param[in] entropy_input The seed; must be exactly 48 bytes
  * @param[in] personalization_string An optional personalization string;
  * may be NULL; if not NULL, must be at least 48 bytes long
+ * @return OQS_SUCCESS on success, OQS_ERROR otherwise
  */
-void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string);
+OQS_STATUS OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const uint8_t *personalization_string);
 
 /**
  * Fills the given memory with the requested number of pseudorandom bytes using the NIST DRBG.
  *
  * @param[out] random_array Pointer to the memory to fill with (pseudo)random bytes
  * @param[in] bytes_to_read The number of random bytes to read into memory
+ * @return OQS_SUCCESS on success, OQS_ERROR otherwise
  */
-void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
+OQS_STATUS OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
 
 /**
  * Writes the current state of the NIST DRBG into the provided memory.
+ *
+ * @param[out] out Pointer to the memory to write the state
+ * @return OQS_SUCCESS on success, OQS_ERROR otherwise
  */
-void OQS_randombytes_nist_kat_get_state(void *out);
+OQS_STATUS OQS_randombytes_nist_kat_get_state(void *out);
 
 /**
  * Overwrites the current state of the NIST DRBG from the provided memory.
+ *
+ * @param[in] in Pointer to the memory containing the state to set
+ * @return OQS_SUCCESS on success, OQS_ERROR otherwise
  */
-void OQS_randombytes_nist_kat_set_state(const void *in);
+OQS_STATUS OQS_randombytes_nist_kat_set_state(const void *in);
 
 #endif // OQS_RAND_NIST_H
