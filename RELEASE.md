@@ -41,7 +41,7 @@ The addition of ML-DSA FIPS 204 final version to liboqs has introduced a new sig
 Security issues
 ===============
 
-- CVE-2024-54137: Fixed bug in decapsulation that leads to incorrect shared secret value during decapsulation when called with an invalid ciphertext. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
+- CVE-2024-54137: Fixed bug in HQC decapsulation that leads to incorrect shared secret value during decapsulation when called with an invalid ciphertext. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
 
 What's New
 ----------
