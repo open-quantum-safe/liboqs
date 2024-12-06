@@ -98,10 +98,13 @@ Detailed changelog
 * Update PLATFORMS.md / re-enable CROSS on s390x by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1988
 * Avoid OpenSSL functions are unconditionally called at OQS_destroy by @ueno in https://github.com/open-quantum-safe/liboqs/pull/1982
 * Test Improvements for ML-KEM by @abhinav-thales in https://github.com/open-quantum-safe/liboqs/pull/1947
+* Add patch to fix HQC decapsulation in https://github.com/open-quantum-safe/liboqs/commit/95f904bcaafe4cb12cfdf029347ac3b7c795308a
+* Run copy_from_upstream.py in https://github.com/open-quantum-safe/liboqs/commit/cce1bfde4e52c524b087b9687020d283fbde0f24
 * Fix LMS crash by @ashman-p in https://github.com/open-quantum-safe/liboqs/pull/1998
 * Set ML-KEM alg_version to "FIPS203" by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1997
 * Add ML-DSA / FIPS 204 final by @bhess in https://github.com/open-quantum-safe/liboqs/pull/1919
 * Add defines for OQS version components by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/2000
+* Create liboqs 0.12.0 release candidate 1 by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/2006
 
 ## New Contributors
 
@@ -113,4 +116,4 @@ Detailed changelog
 * @ChinoUkaegbu made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1987
 * @abhinav-thales made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1947
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.11.0...0.12.0-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.11.0...0.12.0
