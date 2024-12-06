@@ -1,5 +1,5 @@
-liboqs version 0.12.0-rc1
-=========================
+liboqs version 0.12.0
+=====================
 
 About
 -----
@@ -27,7 +27,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.12.0 of liboqs. It was released on November 29, 2024.
+This is version 0.12.0 of liboqs. It was released on December 6, 2024.
 
 This release updates the ML-DSA implementation to the [final FIPS 204](https://csrc.nist.gov/pubs/fips/204/final) version. This release still includes the NIST Round 3 version of Dilithium for interoperability purposes, but we plan to remove Dilithium Round 3 in a future release.
 
@@ -38,6 +38,11 @@ This will be the last release of liboqs to include Kyber (that is, the NIST Roun
 
 The addition of ML-DSA FIPS 204 final version to liboqs has introduced a new signature API which includes a context string parameter. We are planning to remove the old version of the API without a context string in the next release to streamline the API and bring it in line with NIST specifications. Users who have an opinion on this removal are invited to provide input at https://github.com/open-quantum-safe/liboqs/issues/2001.
 
+Security issues
+===============
+
+- CVE-2024-54137: Fixed bug in decapsulation that leads to incorrect shared secret value during decapsulation when called with an invalid ciphertext. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
+
 What's New
 ----------
 
@@ -45,7 +50,7 @@ This release continues from the 0.11.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- HQC: Fixed correctness bug in decapsulation. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
+- HQC: Fixed bug in decapsulation that leads to incorrect shared secret value during decapsulation when called with an invalid ciphertext. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
 - Kyber: This is the last release of liboqs to include Kyber.
 - ML-KEM: Improved testing of ML-KEM.
 
