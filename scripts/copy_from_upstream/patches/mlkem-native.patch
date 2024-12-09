@@ -1,0 +1,58 @@
+diff --git a/mlkem/indcpa.c b/mlkem/indcpa.c
+index fdca7caf..318d0fc7 100644
+--- a/mlkem/indcpa.c
++++ b/mlkem/indcpa.c
+@@ -6,8 +6,8 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ #include <string.h>
+-#include "fips202/fips202.h"
+-#include "fips202/fips202x4.h"
++#include "fips202.h"
++#include "fips202x4.h"
+ #include "indcpa.h"
+ #include "poly.h"
+ #include "poly_k.h"
+diff --git a/mlkem/poly.c b/mlkem/poly.c
+index 2bf10fd0..e8a2e2c6 100644
+--- a/mlkem/poly.c
++++ b/mlkem/poly.c
+@@ -10,7 +10,7 @@
+ #include "arith_backend.h"
+ #include "cbmc.h"
+ #include "debug.h"
+-#include "fips202/fips202x4.h"
++#include "fips202x4.h"
+ #include "poly.h"
+ #include "sampling.h"
+ #include "symmetric.h"
+diff --git a/mlkem/sampling.c b/mlkem/sampling.c
+index b448c24c..00ad7d07 100644
+--- a/mlkem/sampling.c
++++ b/mlkem/sampling.c
+@@ -7,8 +7,8 @@
+ 
+ #include "arith_backend.h"
+ #include "debug.h"
+-#include "fips202/fips202.h"
+-#include "fips202/fips202x4.h"
++#include "fips202.h"
++#include "fips202x4.h"
+ #include "sampling.h"
+ #include "symmetric.h"
+ 
+diff --git a/mlkem/symmetric.h b/mlkem/symmetric.h
+index c7ec1141..3bef6b6c 100644
+--- a/mlkem/symmetric.h
++++ b/mlkem/symmetric.h
+@@ -9,8 +9,8 @@
+ #include <stdint.h>
+ #include "cbmc.h"
+ #include "common.h"
+-#include "fips202/fips202.h"
+-#include "fips202/fips202x4.h"
++#include "fips202.h"
++#include "fips202x4.h"
+ 
+ /* Macros denoting FIPS-203 specific Hash functions */
+ 

@@ -496,14 +496,24 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             # determine list of files to copy:
             if 'sources' in i:
                 if i['sources']:
+                    preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
                     srcs = i['sources'].split(" ")
                     for s in srcs:
                         # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
                         if os.path.isfile(os.path.join(origfolder, s)):
-                            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+                            if preserve_folder_structure:
+                                subprocess.run(['mkdir', '-p', os.path.join(srcfolder, os.path.dirname(s))])
+                                subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, s)])
+                            else:
+                                subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+
                         else:
-                            subprocess.run(
-                                ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+                            if preserve_folder_structure:
+                                subprocess.run(
+                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.dirname(s))])                    
+                            else:
+                                subprocess.run(
+                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
             else:
                 subprocess.run(['cp', '-pr', os.path.join(origfolder, '.'), srcfolder])
                 # raise Exception("Malformed YML file: No sources listed to copy. Check upstream YML file." )

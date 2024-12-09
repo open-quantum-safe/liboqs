@@ -7,7 +7,7 @@
 - **Authors' website**: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203
 - **Specification version**: ML-KEM.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd with copy_from_upstream patches
+  - **Source**: https://github.com/pq-code-package/mlkem-native/commit/84398e7230fa31ba4241f5eb36bdc3c1dbbd5bcd
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 - **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd with copy_from_upstream patches
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
@@ -29,7 +29,6 @@
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
-|     [cupqc-cuda](#cupqc-cuda)     | cuda                     | CUDA                        | Linux,Darwin                    | None                    | False                              | False                                          | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -41,7 +40,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
-|     [cupqc-cuda](#cupqc-cuda)     | cuda                     | CUDA                        | Linux,Darwin                    | None                    | False                              | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -51,7 +49,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
-|     [cupqc-cuda](#cupqc-cuda)     | cuda                     | CUDA                        | Linux,Darwin                    | None                    | False                              | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
