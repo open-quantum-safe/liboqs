@@ -7,7 +7,7 @@
 - **Authors' website**: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203
 - **Specification version**: ML-KEM.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd with copy_from_upstream patches
+  - **Source**: https://github.com/bhess/mlkem-native/commit/86cc8d0cd3af1dff13228296cbadbbfc6928890c
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 
 
@@ -24,7 +24,6 @@
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -35,7 +34,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -44,7 +42,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
