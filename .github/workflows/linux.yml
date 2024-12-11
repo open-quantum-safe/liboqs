@@ -132,7 +132,7 @@ jobs:
         working-directory: build
       - name: Retain .deb file
         if: matrix.name == 'jammy-std-openssl3'
-        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # pin@v3
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
           name: liboqs-openssl3-shared-x64
           path: build/*.deb
