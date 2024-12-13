@@ -67,25 +67,27 @@ jobs:
       KEM_NAME: ml_kem_768
       SIG_NAME: ml_dsa_65
     steps:
+      - name: Create random build folder
+        run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: |
-          mkdir build && \
-          cd build && \
-          cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
+          cmake \
+            -B ${{ env.RANDOM_BUILD_DIR }} \
             -GNinja \
+            -DOQS_STRICT_WARNINGS=ON \
             -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
-            --warn-uninitialized .. > config.log 2>&1 && \
+            --warn-uninitialized . > config.log 2>&1 && \
           cat config.log && \
-          cmake -LA -N .. && \
+          cmake -LA -N . && \
           ! (grep -i "uninitialized variable" config.log)
       - name: Build code
         run: ninja
-        working-directory: build
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
       - name: Build documentation
         run: ninja gen_docs
-        working-directory: build
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
   cppcheck:
     name: Check C++ linking with example program
@@ -94,28 +96,30 @@ jobs:
     env:
       SIG_NAME: dilithium_2
     steps:
+      - name: Create random build folder
+        run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: |
-          mkdir build && \
-          cd build && \
-          cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
+          cmake \
+            -B ${{ env.RANDOM_BUILD_DIR }} \
             -GNinja \
+            -DOQS_STRICT_WARNINGS=ON \
             -DOQS_MINIMAL_BUILD="SIG_$SIG_NAME" \
-            --warn-uninitialized .. > config.log 2>&1 && \
+            --warn-uninitialized . > config.log 2>&1 && \
           cat config.log && \
-          cmake -LA -N .. && \
+          cmake -LA -N . && \
           ! (grep -i "uninitialized variable" config.log)
       - name: Build liboqs
         run: ninja
-        working-directory: build
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
       - name: Link with C++ program
         run: |
-          g++ ../cpp/sig_linking_test.cpp -g \
+          g++ "$GITHUB_WORKSPACE"/cpp/sig_linking_test.cpp -g \
           -I./include -L./lib -loqs -lcrypto -std=c++11 -o example_sig && \
           ./example_sig
-        working-directory: build
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
   fuzzbuildcheck:
     name: Check that code passes a basic fuzzing build
@@ -129,23 +133,26 @@ jobs:
       CFLAGS: -fsanitize=fuzzer-no-link,address
       LDFLAGS: -fsanitize=address
     steps:
+      - name: Create random build folder
+        run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: |
-          mkdir build && \
-          cd build && \
-          cmake -GNinja -DOQS_STRICT_WARNINGS=ON \
+          cmake \
+            -B ${{ env.RANDOM_BUILD_DIR }} \
+            -GNinja \
+            -DOQS_STRICT_WARNINGS=ON \
             -DOQS_BUILD_FUZZ_TESTS=ON \
             -DOQS_MINIMAL_BUILD="SIG_$SIG_NAME" \
-            --warn-uninitialized .. > config.log 2>&1 && \
+            --warn-uninitialized . > config.log 2>&1 && \
           cat config.log && \
-          cmake -LA -N .. && \
+          cmake -LA -N . && \
           ! (grep -i "uninitialized variable" config.log)
       - name: Build code
         run: ninja fuzz_test_sig
-        working-directory: build
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
       - name: Short fuzz check (30s)
         run: ./tests/fuzz_test_sig -max_total_time=30
-        working-directory: build
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
