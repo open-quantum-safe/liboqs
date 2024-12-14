@@ -116,15 +116,13 @@ if(MINGW)
     target_link_options(oqs-internal PRIVATE -Wl,--export-all-symbols)
 endif()
 
-set_target_properties(oqs
+set_target_properties(oqs-internal
     PROPERTIES
+    C_VISIBILITY_PRESET default
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
-    VERSION ${OQS_VERSION_TEXT}
-    SOVERSION 7
-    # For Windows DLLs
-    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
-
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin"
+)
 set_target_properties(oqs-internal
     PROPERTIES
     C_VISIBILITY_PRESET default
