@@ -23,6 +23,7 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 	- [Contributing](#contributing)
 	- [License](#license)
 	- [Acknowledgements](#acknowledgements)
+	- [Contributors](#contributors)
 
 ## Overview
 
@@ -216,3 +217,11 @@ The OQS project was founded by Douglas Stebila and Michele Mosca at the Universi
 Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services, the Canadian Centre for Cyber Security, Cisco, the Unitary Fund, the NGI Assure Fund, and VeriSign Inc.
 
 Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.
+
+## Contributors
+
+<a href="https://github.com/open-quantum-safe/liboqs/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=open-quantum-safe/liboqs" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
