@@ -1,6 +1,7 @@
 #ifndef REED_SOLOMON_H
 #define REED_SOLOMON_H
 
+
 /**
  * @file reed_solomon.h
  * @brief Header file of reed_solomon.c
@@ -13,5 +14,6 @@ static const uint16_t alpha_ij_pow [58][89] = {{2, 4, 8, 16, 32, 64, 128, 29, 58
 void PQCLEAN_HQC256_CLEAN_reed_solomon_encode(uint8_t *cdw, const uint8_t *msg);
 
 void PQCLEAN_HQC256_CLEAN_reed_solomon_decode(uint8_t *msg, uint8_t *cdw);
+
 
 #endif

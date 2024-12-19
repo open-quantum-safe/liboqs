@@ -9,4 +9,5 @@
 
 void PQCLEAN_HQC256_CLEAN_vect_mul(uint64_t *o, const uint64_t *v1, const uint64_t *v2);
 
+
 #endif

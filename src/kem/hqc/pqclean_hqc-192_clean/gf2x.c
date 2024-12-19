@@ -7,6 +7,7 @@
  * @brief Implementation of multiplication of two polynomials
  */
 
+
 /**
  * @brief Caryless multiplication of two words of 64 bits
  *

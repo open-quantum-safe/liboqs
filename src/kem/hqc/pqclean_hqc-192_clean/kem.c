@@ -14,6 +14,8 @@
  * @brief Implementation of api.h
  */
 
+
+
 /**
  * @brief Keygen of the HQC_KEM IND_CAA2 scheme
  *
@@ -31,6 +33,8 @@ int PQCLEAN_HQC192_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
     PQCLEAN_HQC192_CLEAN_hqc_pke_keygen(pk, sk);
     return 0;
 }
+
+
 
 /**
  * @brief Encapsulation of the HQC_KEM IND_CAA2 scheme
@@ -71,8 +75,11 @@ int PQCLEAN_HQC192_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t 
     // Computing ciphertext
     PQCLEAN_HQC192_CLEAN_hqc_ciphertext_to_string(ct, u, v, salt);
 
+
     return 0;
 }
+
+
 
 /**
  * @brief Decapsulation of the HQC_KEM IND_CAA2 scheme
@@ -125,6 +132,7 @@ int PQCLEAN_HQC192_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const ui
     PQCLEAN_HQC192_CLEAN_store8_arr(mc + VEC_K_SIZE_BYTES, VEC_N_SIZE_BYTES, u, VEC_N_SIZE_64);
     PQCLEAN_HQC192_CLEAN_store8_arr(mc + VEC_K_SIZE_BYTES + VEC_N_SIZE_BYTES, VEC_N1N2_SIZE_BYTES, v, VEC_N1N2_SIZE_64);
     PQCLEAN_HQC192_CLEAN_shake256_512_ds(&shake256state, ss, mc, VEC_K_SIZE_BYTES + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, K_FCT_DOMAIN);
+
 
     return (result & 1) - 1;
 }

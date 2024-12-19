@@ -8,6 +8,7 @@
  * @brief Functions to parse secret key, public key and ciphertext of the HQC scheme
  */
 
+
 static uint64_t load8(const uint8_t *in) {
     uint64_t ret = in[7];
 
@@ -71,6 +72,8 @@ void PQCLEAN_HQC256_CLEAN_hqc_secret_key_to_string(uint8_t *sk, const uint8_t *s
     memcpy(sk + SEED_BYTES + VEC_K_SIZE_BYTES, pk, PUBLIC_KEY_BYTES);
 }
 
+
+
 /**
  * @brief Parse a secret key from a string
  *
@@ -95,6 +98,8 @@ void PQCLEAN_HQC256_CLEAN_hqc_secret_key_from_string(uint64_t *x, uint64_t *y, u
     PQCLEAN_HQC256_CLEAN_seedexpander_release(&sk_seedexpander);
 }
 
+
+
 /**
  * @brief Parse a public key into a string
  *
@@ -108,6 +113,8 @@ void PQCLEAN_HQC256_CLEAN_hqc_public_key_to_string(uint8_t *pk, const uint8_t *p
     memcpy(pk, pk_seed, SEED_BYTES);
     PQCLEAN_HQC256_CLEAN_store8_arr(pk + SEED_BYTES, VEC_N_SIZE_BYTES, s, VEC_N_SIZE_64);
 }
+
+
 
 /**
  * @brief Parse a public key from a string
@@ -129,6 +136,8 @@ void PQCLEAN_HQC256_CLEAN_hqc_public_key_from_string(uint64_t *h, uint64_t *s, c
     PQCLEAN_HQC256_CLEAN_seedexpander_release(&pk_seedexpander);
 }
 
+
+
 /**
  * @brief Parse a ciphertext into a string
  *
@@ -144,6 +153,8 @@ void PQCLEAN_HQC256_CLEAN_hqc_ciphertext_to_string(uint8_t *ct, const uint64_t *
     PQCLEAN_HQC256_CLEAN_store8_arr(ct + VEC_N_SIZE_BYTES, VEC_N1N2_SIZE_BYTES, v, VEC_N1N2_SIZE_64);
     memcpy(ct + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, salt, SALT_SIZE_BYTES);
 }
+
+
 
 /**
  * @brief Parse a ciphertext from a string
