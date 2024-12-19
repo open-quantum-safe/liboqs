@@ -7,6 +7,7 @@
  * @brief Galois field implementation
  */
 
+
 /**
  * @brief Computes the number of trailing zero bits.
  *
@@ -22,6 +23,8 @@ static uint16_t trailing_zero_bits_count(uint16_t a) {
     }
     return tmp;
 }
+
+
 
 /**
  * Reduces polynomial x modulo primitive polynomial GF_POLY.
@@ -56,6 +59,8 @@ static uint16_t gf_reduce(uint64_t x, size_t deg_x) {
 
     return (uint16_t)x;
 }
+
+
 
 /**
  * Carryless multiplication of two polynomials a and b.
@@ -105,6 +110,8 @@ static void gf_carryless_mul(uint8_t c[2], uint8_t a, uint8_t b) {
     c[1] = (uint8_t)h;
 }
 
+
+
 /**
  * Multiplies two elements of GF(2^GF_M).
  * @returns the product a*b
@@ -117,6 +124,8 @@ uint16_t PQCLEAN_HQC256_CLEAN_gf_mul(uint16_t a, uint16_t b) {
     uint16_t tmp = c[0] ^ (c[1] << 8);
     return gf_reduce(tmp, 2 * (PARAM_M - 1));
 }
+
+
 
 /**
  * @brief Squares an element of GF(2^PARAM_M).
@@ -133,6 +142,8 @@ uint16_t PQCLEAN_HQC256_CLEAN_gf_square(uint16_t a) {
 
     return gf_reduce(s, 2 * (PARAM_M - 1));
 }
+
+
 
 /**
  * @brief Computes the inverse of an element of GF(2^PARAM_M),

@@ -7,6 +7,7 @@
  * @brief Constant time implementation of Reed-Muller code RM(1,7)
  */
 
+
 // number of repeated code words
 #define MULTIPLICITY                   CEIL_DIVIDE(PARAM_N2, 128)
 
@@ -52,6 +53,8 @@ static void encode(uint64_t *cword, uint8_t message) {
     cword[1] |= first_word;
 }
 
+
+
 /**
  * @brief Hadamard transform
  *
@@ -79,6 +82,8 @@ static void hadamard(uint16_t src[128], uint16_t dst[128]) {
         p2 = p3;
     }
 }
+
+
 
 /**
  * @brief Add multiple codewords into expanded codeword
@@ -110,6 +115,8 @@ static void expand_and_sum(uint16_t dest[128], const uint64_t src[2 * MULTIPLICI
     }
 }
 
+
+
 /**
  * @brief Finding the location of the highest value
  *
@@ -137,6 +144,8 @@ static uint8_t find_peaks(const uint16_t transform[128]) {
     return (uint8_t) pos;
 }
 
+
+
 /**
  * @brief Encodes the received word
  *
@@ -156,6 +165,8 @@ void PQCLEAN_HQC128_CLEAN_reed_muller_encode(uint64_t *cdw, const uint8_t *msg) 
         }
     }
 }
+
+
 
 /**
  * @brief Decodes the received word
