@@ -14,6 +14,7 @@
  * https://binary.cr.yp.to/mcbits-20130616.pdf
  */
 
+
 static void radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f);
 
 /**
@@ -27,6 +28,8 @@ static void compute_fft_betas(uint16_t *betas) {
         betas[i] = 1 << (PARAM_M - 1 - i);
     }
 }
+
+
 
 /**
  * @brief Computes the subset sums of the given set
@@ -48,6 +51,8 @@ static void compute_subset_sums(uint16_t *subset_sums, const uint16_t *set, uint
         }
     }
 }
+
+
 
 /**
  * @brief Computes the radix conversion of a polynomial f in GF(2^m)[x]
@@ -143,6 +148,8 @@ static void radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_
     memcpy(f1 + n, Q1, 2 * n);
 }
 
+
+
 /**
  * @brief Evaluates f at all subset sums of a given set
  *
@@ -236,6 +243,8 @@ static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32
     }
 }
 
+
+
 /**
  * @brief Evaluates f on all fields elements using an additive FFT algorithm
  *
@@ -304,6 +313,8 @@ void PQCLEAN_HQC256_CLEAN_fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
         w[k + i] ^= w[i];
     }
 }
+
+
 
 /**
  * @brief Retrieves the error polynomial error from the evaluations w of the ELP (Error Locator Polynomial) on all field elements.
