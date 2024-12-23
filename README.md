@@ -15,7 +15,6 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 		- [Linux and Mac](#linux-and-mac)
 		- [Windows](#windows)
 		- [Cross compilation](#cross-compilation)
-		- [Nix Flake](#nix-flake)
 	- [Documentation](#documentation)
 	- [Contributing](#contributing)
 	- [License](#license)
@@ -106,6 +105,10 @@ In order to optimize support effort,
 		brew install cmake ninja openssl@3 wget doxygen graphviz astyle valgrind
 		pip3 install pytest pytest-xdist pyyaml
 
+	Using Nix:
+
+	    nix develop
+
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL installed (version 3.x recommended; EOL version 1.1.1 also still possible).
 
 2. Get the source:
@@ -167,42 +170,6 @@ If you want to create Visual Studio build files, e.g., if not using `ninja`, be 
 ### Cross compilation
 
 You can cross compile liboqs for various platforms. Detailed information is available [in the Wiki](https://github.com/open-quantum-safe/liboqs/wiki/Platform-specific-notes-for-building-liboqs#cross-compiling).
-
-### Nix Flake
-
-Nix is a tool that makes builds and developer environments deterministic. With just Nix installed, you can install `liboqs` using one command.
-
-#### Building with Nix
-
-You can build this easily with `nix build github:open-quantum-safe/liboqs/` if you only need the artifact `liboqs.a`.
-
-If you want to build from a local version of the code, clone the repository and then run one of the following commands (depending on which toolchain you want to use and style of library you want to build):
-
-```bash
-# build a shared library using gcc
-nix build .#gcc.shared
-
-# build a static library using gcc
-nix build .#gcc.static
-
-# build a shared library using clang
-nix build .#clang.shared
-
-# build a static library using clang
-nix build .#clang.static
-```
-
-#### Running the developer shell
-
-In order to run a developer shell with the specified version of each dependency, you can run `nix develop`:
-
-```bash
-# using clang toolchain
-nix develop .#clang
-
-# using gcc toolchain
-nix develop .#gcc
-```
 
 ## Documentation
 
