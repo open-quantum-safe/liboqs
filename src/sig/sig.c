@@ -718,6 +718,14 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
 	}
 }
 
+OQS_API OQS_STATUS OQS_SIG_keypair_from_fseed(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+	if (sig == NULL || sig->keypair_from_fseed(public_key, secret_key, seed) != OQS_SUCCESS) {
+		return OQS_ERROR;
+	} else {
+		return OQS_SUCCESS;
+	}
+}
+
 OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	if (sig == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;

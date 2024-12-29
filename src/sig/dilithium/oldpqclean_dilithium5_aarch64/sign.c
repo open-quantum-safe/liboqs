@@ -97,6 +97,61 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 }
 
 /*************************************************
+* Name:        crypto_sign_keypair from fixed seed.
+*
+* Description: Generates public and private key.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output private key (allocated
+*                             array of CRYPTO_SECRETKEYBYTES bytes)
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
+    uint8_t seedbuf[2 * SEEDBYTES + CRHBYTES];
+    uint8_t tr[SEEDBYTES];
+    const uint8_t *rho, *rhoprime, *key;
+    polyvecl mat[K];
+    polyvecl s1, s1hat;
+    polyveck s2, t1, t0;
+
+    /* Use fixed seed for randomness for rho, rhoprime and key */
+    shake256(seedbuf, 2*SEEDBYTES + CRHBYTES, seed, SEEDBYTES);
+    rho = seedbuf;
+    rhoprime = rho + SEEDBYTES;
+    key = rhoprime + CRHBYTES;
+
+    /* Expand matrix */
+    polyvec_matrix_expand(mat, rho);
+
+    /* Sample short vectors s1 and s2 */
+    polyvecl_uniform_eta(&s1, rhoprime, 0);
+    polyveck_uniform_eta(&s2, rhoprime, L);
+
+    /* Matrix-vector multiplication */
+    s1hat = s1;
+    polyvecl_ntt(&s1hat);
+    polyvec_matrix_pointwise_montgomery(&t1, mat, &s1hat);
+    polyveck_reduce(&t1);
+    polyveck_invntt_tomont(&t1);
+
+    /* Add error vector s2 */
+    polyveck_add(&t1, &t1, &s2);
+
+    /* Extract t1 and write public key */
+    polyveck_caddq(&t1);
+    polyveck_power2round(&t1, &t0, &t1);
+    pack_pk(pk, rho, &t1);
+
+    /* Compute H(rho, t1) and write secret key */
+    shake256(tr, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+    pack_sk(sk, rho, tr, key, &t0, &s1, &s2);
+
+    return 0;
+}
+
+/*************************************************
 * Name:        crypto_sign_signature
 *
 * Description: Computes signature.

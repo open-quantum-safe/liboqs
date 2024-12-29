@@ -13,6 +13,9 @@ void challenge(poly *c, const uint8_t seed[SEEDBYTES]);
 #define crypto_sign_keypair DILITHIUM_NAMESPACE(keypair)
 int crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
 
+#define crypto_sign_keypair_from_fseed DILITHIUM_NAMESPACE(keypair_from_fseed)
+int crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+
 #define crypto_sign_signature DILITHIUM_NAMESPACE(signature)
 int crypto_sign_signature(uint8_t *sig, size_t *siglen,
                           const uint8_t *m, size_t mlen,
