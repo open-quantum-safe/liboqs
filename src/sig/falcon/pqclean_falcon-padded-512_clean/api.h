@@ -33,6 +33,17 @@ int PQCLEAN_FALCONPADDED512_CLEAN_crypto_sign_keypair_from_fseed(
     uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 
 /*
+ * Generate Public key from Privat key.
+ * Key sizes are exact (in bytes):
+ *   public (pk): PQCLEAN_FALCON512_AVX2_CRYPTO_PUBLICKEYBYTES
+ *   private (sk): PQCLEAN_FALCON512_AVX2_CRYPTO_SECRETKEYBYTES
+ *
+ * Return value: 0 on success, -1 on error.
+ */
+int PQCLEAN_FALCONPADDED512_CLEAN_crypto_sign_pubkey_from_privkey(
+    uint8_t *pk, const uint8_t *sk);
+
+/*
  * Compute a signature on a provided message (m, mlen), with a given
  * private key (sk). Signature is written in sig[], with length written
  * into *siglen. Signature length is variable; maximum signature length

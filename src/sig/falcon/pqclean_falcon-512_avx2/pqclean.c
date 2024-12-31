@@ -185,6 +185,81 @@ PQCLEAN_FALCON512_AVX2_crypto_sign_keypair_from_fseed(
 }
 
 /*
+ * This function reconstructs the public key from a given private key.
+ * It decodes the private key components (f, g, F) and then uses them 
+ * to regenerate the corresponding public key (h).
+ * The generated public key is then encoded into the provided pk array.
+ * 
+ * @param pk  The output buffer where the public key will be stored (must be at least PQCLEAN_FALCON1024_CLEAN_CRYPTO_PUBLICKEYBYTES in size).
+ * @param sk  The input secret key (private key) in byte array format (must be PQCLEAN_FALCON1024_CLEAN_CRYPTO_SECRETKEYBYTES in size).
+ * @return 0 if the public key was successfully generated, or -1 in case of an error.
+ */
+int
+PQCLEAN_FALCON512_AVX2_crypto_sign_pubkey_from_privkey(
+    uint8_t *pk, const uint8_t *sk) {
+    union {
+        uint8_t b[FALCON_KEYGEN_TEMP_9];
+        uint64_t dummy_u64;
+        fpr dummy_fpr;
+    } tmp;
+    int8_t f[512], g[512], F[512];
+    uint16_t h[512];
+    size_t u, v;
+
+    /*
+     * Decode the private key.
+     */
+    if (sk[0] != 0x50 + 9) {
+        return -1;
+    }
+    u = 1;
+    v = PQCLEAN_FALCON512_AVX2_trim_i8_decode(
+            f, 9, PQCLEAN_FALCON512_AVX2_max_fg_bits[9],
+            sk + u, PQCLEAN_FALCON512_AVX2_CRYPTO_SECRETKEYBYTES - u);
+    if (v == 0) {
+        return -1;
+    }
+    u += v;
+    v = PQCLEAN_FALCON512_AVX2_trim_i8_decode(
+            g, 9, PQCLEAN_FALCON512_AVX2_max_fg_bits[9],
+            sk + u, PQCLEAN_FALCON512_AVX2_CRYPTO_SECRETKEYBYTES - u);
+    if (v == 0) {
+        return -1;
+    }
+    u += v;
+    v = PQCLEAN_FALCON512_AVX2_trim_i8_decode(
+            F, 9, PQCLEAN_FALCON512_AVX2_max_FG_bits[9],
+            sk + u, PQCLEAN_FALCON512_AVX2_CRYPTO_SECRETKEYBYTES - u);
+    if (v == 0) {
+        return -1;
+    }
+    u += v;
+    if (u != PQCLEAN_FALCON512_AVX2_CRYPTO_SECRETKEYBYTES) {
+        return -1;
+    }
+
+    /*
+     * Reconstruct the public key using f and g by calling the compute_public function.
+     */
+    if (!PQCLEAN_FALCON512_AVX2_compute_public(h, f, g, 9, tmp.b)) {
+        return -1;
+    }
+
+    /*
+     * Encode public key.
+     */
+    pk[0] = 0x00 + 9;
+    v = PQCLEAN_FALCON512_AVX2_modq_encode(
+            pk + 1, PQCLEAN_FALCON512_AVX2_CRYPTO_PUBLICKEYBYTES - 1,
+            h, 9);
+    if (v != PQCLEAN_FALCON512_AVX2_CRYPTO_PUBLICKEYBYTES - 1) {
+        return -1;
+    }
+
+    return 0;
+}
+
+/*
  * Compute the signature. nonce[] receives the nonce and must have length
  * NONCELEN bytes. sigbuf[] receives the signature value (without nonce
  * or header byte), with *sigbuflen providing the maximum value length and

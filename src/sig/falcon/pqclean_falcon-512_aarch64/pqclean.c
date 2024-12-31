@@ -185,6 +185,81 @@ PQCLEAN_FALCON512_AARCH64_crypto_sign_keypair_from_fseed(
 }
 
 /*
+ * This function reconstructs the public key from a given private key.
+ * It decodes the private key components (f, g, F) and then uses them 
+ * to regenerate the corresponding public key (h).
+ * The generated public key is then encoded into the provided pk array.
+ * 
+ * @param pk  The output buffer where the public key will be stored (must be at least PQCLEAN_FALCON1024_CLEAN_CRYPTO_PUBLICKEYBYTES in size).
+ * @param sk  The input secret key (private key) in byte array format (must be PQCLEAN_FALCON1024_CLEAN_CRYPTO_SECRETKEYBYTES in size).
+ * @return 0 if the public key was successfully generated, or -1 in case of an error.
+ */
+int
+PQCLEAN_FALCON512_AARCH64_crypto_sign_pubkey_from_privkey(
+    uint8_t *pk, const uint8_t *sk) {
+    union {
+        uint8_t b[28 * FALCON_N];
+        uint64_t dummy_u64;
+        fpr dummy_fpr;
+    } tmp;
+    int8_t f[FALCON_N], g[FALCON_N], F[FALCON_N];
+    uint16_t h[FALCON_N];
+    size_t u, v;
+
+    /*
+     * Decode the private key.
+     */
+    if (sk[0] != 0x50 + FALCON_LOGN) {
+        return -1;
+    }
+    u = 1;
+    v = PQCLEAN_FALCON512_AARCH64_trim_i8_decode(
+            f, PQCLEAN_FALCON512_AARCH64_max_fg_bits[FALCON_LOGN],
+            sk + u, PQCLEAN_FALCON512_AARCH64_CRYPTO_SECRETKEYBYTES - u);
+    if (v == 0) {
+        return -1;
+    }
+    u += v;
+    v = PQCLEAN_FALCON512_AARCH64_trim_i8_decode(
+            g, PQCLEAN_FALCON512_AARCH64_max_fg_bits[FALCON_LOGN],
+            sk + u, PQCLEAN_FALCON512_AARCH64_CRYPTO_SECRETKEYBYTES - u);
+    if (v == 0) {
+        return -1;
+    }
+    u += v;
+    v = PQCLEAN_FALCON512_AARCH64_trim_i8_decode(
+            F, PQCLEAN_FALCON512_AARCH64_max_FG_bits[FALCON_LOGN],
+            sk + u, PQCLEAN_FALCON512_AARCH64_CRYPTO_SECRETKEYBYTES - u);
+    if (v == 0) {
+        return -1;
+    }
+    u += v;
+    if (u != PQCLEAN_FALCON512_AARCH64_CRYPTO_SECRETKEYBYTES) {
+        return -1;
+    }
+
+    /*
+     * Reconstruct the public key using f and g by calling the compute_public function.
+     */
+    if (!PQCLEAN_FALCON512_AARCH64_compute_public(h, f, g, FALCON_LOGN, tmp.b)) {
+        return -1;
+    }
+
+    /*
+     * Encode public key.
+     */
+    pk[0] = 0x00 + FALCON_LOGN;
+    v = PQCLEAN_FALCON512_AARCH64_modq_encode(
+            pk + 1, PQCLEAN_FALCON512_AARCH64_CRYPTO_PUBLICKEYBYTES - 1,
+            h, FALCON_LOGN);
+    if (v != PQCLEAN_FALCON512_AARCH64_CRYPTO_PUBLICKEYBYTES - 1) {
+        return -1;
+    }
+
+    return 0;
+}
+
+/*
  * Compute the signature. nonce[] receives the nonce and must have length
  * NONCELEN bytes. sigbuf[] receives the signature value (without nonce
  * or header byte), with *sigbuflen providing the maximum value length and
