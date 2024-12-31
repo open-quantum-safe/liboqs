@@ -26,8 +26,8 @@ int PQCLEAN_FALCON1024_AARCH64_crypto_sign_keypair(
 /*
  * Generate a new key pair from fixed seed. Public key goes into pk[], private key in sk[].
  * Key sizes are exact (in bytes):
- *   public (pk): PQCLEAN_FALCON512_AVX2_CRYPTO_PUBLICKEYBYTES
- *   private (sk): PQCLEAN_FALCON512_AVX2_CRYPTO_SECRETKEYBYTES
+ *   public (pk): PQCLEAN_FALCON1024_AARCH64_CRYPTO_PUBLICKEYBYTES
+ *   private (sk): PQCLEAN_FALCON1024_AARCH64_CRYPTO_SECRETKEYBYTES
  *
  * Return value: 0 on success, -1 on error.
  */
@@ -37,8 +37,8 @@ int PQCLEAN_FALCON1024_AARCH64_crypto_sign_keypair_from_fseed(
 /*
  * Generate Public key from Privat key.
  * Key sizes are exact (in bytes):
- *   public (pk): PQCLEAN_FALCON512_AVX2_CRYPTO_PUBLICKEYBYTES
- *   private (sk): PQCLEAN_FALCON512_AVX2_CRYPTO_SECRETKEYBYTES
+ *   public (pk): PQCLEAN_FALCON1024_AARCH64_CRYPTO_PUBLICKEYBYTES
+ *   private (sk): PQCLEAN_FALCON1024_AARCH64_CRYPTO_SECRETKEYBYTES
  *
  * Return value: 0 on success, -1 on error.
  */

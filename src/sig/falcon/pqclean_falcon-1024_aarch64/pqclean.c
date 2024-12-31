@@ -190,8 +190,8 @@ PQCLEAN_FALCON1024_AARCH64_crypto_sign_keypair_from_fseed(
  * to regenerate the corresponding public key (h).
  * The generated public key is then encoded into the provided pk array.
  * 
- * @param pk  The output buffer where the public key will be stored (must be at least PQCLEAN_FALCON1024_CLEAN_CRYPTO_PUBLICKEYBYTES in size).
- * @param sk  The input secret key (private key) in byte array format (must be PQCLEAN_FALCON1024_CLEAN_CRYPTO_SECRETKEYBYTES in size).
+ * @param pk  The output buffer where the public key will be stored (must be at least PQCLEAN_FALCON1024_AARCH64_CRYPTO_PUBLICKEYBYTES in size).
+ * @param sk  The input secret key (private key) in byte array format (must be PQCLEAN_FALCON1024_AARCH64_CRYPTO_SECRETKEYBYTES in size).
  * @return 0 if the public key was successfully generated, or -1 in case of an error.
  */
 int PQCLEAN_FALCON1024_AARCH64_crypto_sign_pubkey_from_privkey(
