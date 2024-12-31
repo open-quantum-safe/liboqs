@@ -65,14 +65,20 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 }
 
 /*************************************************
-* Name:        crypto_sign_keypair from fixed seed.
+* Name:        crypto_sign_keypair_from_fseed
 *
-* Description: Generates public and private key.
+* Description: Generates public and private key from fixed seed.
 *
 * Arguments:   - uint8_t *pk: pointer to output public key (allocated
 *                             array of CRYPTO_PUBLICKEYBYTES bytes)
 *              - uint8_t *sk: pointer to output private key (allocated
 *                             array of CRYPTO_SECRETKEYBYTES bytes)
+*              - const uint8_t *seed: Pointer to the input fixed seed. 
+*                                     Must point to an array of SEEDBYTES bytes.
+*                                     The seed provides deterministic randomness 
+*                                     for key generation and must be unique and 
+*                                     securely generated for each keypair to 
+*                                     ensure security.
 *
 * Returns 0 (success)
 **************************************************/
@@ -116,6 +122,52 @@ int crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed
   shake256(tr, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
   pack_sk(sk, rho, tr, key, &t0, &s1, &s2);
 
+  return 0;
+}
+
+/*************************************************
+* Name:        crypto_sign_pubkey_from_privkey
+*
+* Description: Generates public key from exist private key.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - const uint8_t *sk: pointer to the input private key (points
+*                                   to a read-only array of CRYPTO_SECRETKEYBYTES bytes)
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_pubkey_from_privkey(uint8_t *pk, const uint8_t *sk) {
+  uint8_t rho[SEEDBYTES];
+  uint8_t tr[SEEDBYTES];
+  uint8_t key[SEEDBYTES];
+  polyvecl s1, s1hat;
+  polyveck s2, t0, t1;
+  polyvecl mat[K];
+  
+  /* unpack privat key */
+  unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
+  
+  /* Expand matrix */
+  polyvec_matrix_expand(mat, rho);
+  
+  /* Matrix-vector multiplication */
+  s1hat = s1;
+  polyvecl_ntt(&s1hat);
+  polyvec_matrix_pointwise_montgomery(&t1, mat, &s1hat);
+  polyveck_reduce(&t1);
+  polyveck_invntt_tomont(&t1);
+  
+  /* Add error vector s2 */
+  polyveck_add(&t1, &t1, &s2);
+  
+  /* Extract t1 */
+  polyveck_caddq(&t1);
+  polyveck_power2round(&t1, &t0, &t1);
+  
+  /* Pack public key */
+  pack_pk(pk, rho, &t1);
+  
   return 0;
 }
 

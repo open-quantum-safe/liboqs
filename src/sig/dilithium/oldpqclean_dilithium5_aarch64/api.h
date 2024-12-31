@@ -22,6 +22,8 @@ int PQCLEAN_DILITHIUM5_AARCH64_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
 
 int PQCLEAN_DILITHIUM5_AARCH64_crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 
+int PQCLEAN_DILITHIUM5_AARCH64_crypto_sign_pubkey_from_privkey(uint8_t *pk, const uint8_t *sk);
+
 int PQCLEAN_DILITHIUM5_AARCH64_crypto_sign_signature(
     uint8_t *sig, size_t *siglen,
     const uint8_t *m, size_t mlen, const uint8_t *sk);

@@ -176,14 +176,20 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 }
 
 /*************************************************
-* Name:        crypto_sign_keypair from fixed seed.
+* Name:        crypto_sign_keypair_from_fseed
 *
-* Description: Generates public and private key.
+* Description: Generates public and private key from fixed seed.
 *
 * Arguments:   - uint8_t *pk: pointer to output public key (allocated
 *                             array of CRYPTO_PUBLICKEYBYTES bytes)
 *              - uint8_t *sk: pointer to output private key (allocated
 *                             array of CRYPTO_SECRETKEYBYTES bytes)
+*              - const uint8_t *seed: Pointer to the input fixed seed. 
+*                                     Must point to an array of SEEDBYTES bytes.
+*                                     The seed provides deterministic randomness 
+*                                     for key generation and must be unique and 
+*                                     securely generated for each keypair to 
+*                                     ensure security.
 *
 * Returns 0 (success)
 **************************************************/
@@ -289,6 +295,81 @@ int crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed
 
   /* Compute H(rho, t1) and store in secret key */
   shake256(sk + 2*SEEDBYTES, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+
+  return 0;
+}
+
+/*************************************************
+* Name:        crypto_sign_pubkey_from_privkey
+*
+* Description: Generates public key from existing private key.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - const uint8_t *sk: pointer to input private key (points
+*                                   to array of CRYPTO_SECRETKEYBYTES bytes)
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_pubkey_from_privkey(uint8_t *pk, const uint8_t *sk) {
+  unsigned int i;
+  uint8_t rho[SEEDBYTES];
+  uint8_t tr[SEEDBYTES];
+  uint8_t key[SEEDBYTES];
+#ifdef DILITHIUM_USE_AES
+  uint64_t nonce;
+  aes256ctr_ctx aesctx;
+  polyvecl rowbuf[1];
+#else
+  polyvecl rowbuf[2];
+#endif
+  polyvecl s1, *row = rowbuf;
+  polyveck s2;
+  poly t1, t0;
+
+  // Unpack private key
+  unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
+
+  // Store rho in public key
+  memcpy(pk, rho, SEEDBYTES);
+
+  // Transform s1
+  polyvecl_ntt(&s1);
+
+#ifdef DILITHIUM_USE_AES
+  aes256ctr_init_u64(&aesctx, rho, 0);
+#endif
+
+  // Process each row
+  for(i = 0; i < K; i++) {
+    /* Expand matrix row */
+#ifdef DILITHIUM_USE_AES
+    for(unsigned int j = 0; j < L; j++) {
+      nonce = (i << 8) + j;
+      aes256ctr_init_iv_u64(&aesctx, nonce);
+      poly_uniform_preinit(&row->vec[j], &aesctx);
+      poly_nttunpack(&row->vec[j]);
+    }
+#else
+    polyvec_matrix_expand_row(&row, rowbuf, rho, i);
+#endif
+
+    /* Compute inner-product */
+    polyvecl_pointwise_acc_montgomery(&t1, row, &s1);
+    poly_invntt_tomont(&t1);
+
+    /* Add error polynomial */
+    poly_add(&t1, &t1, &s2.vec[i]);
+
+    /* Round t and pack t1 */
+    poly_caddq(&t1);
+    poly_power2round(&t1, &t0, &t1);
+    polyt1_pack(pk + SEEDBYTES + i*POLYT1_PACKEDBYTES, &t1);
+  }
+
+#ifdef DILITHIUM_USE_AES
+  aes256_ctx_release(&aesctx);
+#endif
 
   return 0;
 }
