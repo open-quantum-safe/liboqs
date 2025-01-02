@@ -176,6 +176,205 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 }
 
 /*************************************************
+* Name:        crypto_sign_keypair_from_fseed
+*
+* Description: Generates public and private key from fixed seed.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output private key (allocated
+*                             array of CRYPTO_SECRETKEYBYTES bytes)
+*              - const uint8_t *seed: Pointer to the input fixed seed.
+*                                     Must point to an array of SEEDBYTES bytes.
+*                                     The seed provides deterministic randomness
+*                                     for key generation and must be unique and
+*                                     securely generated for each keypair to
+*                                     ensure security.
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
+  unsigned int i;
+  uint8_t seedbuf[2*SEEDBYTES + CRHBYTES];
+  const uint8_t *rho, *rhoprime, *key;
+#ifdef DILITHIUM_USE_AES
+  uint64_t nonce;
+  aes256ctr_ctx aesctx;
+  polyvecl rowbuf[1];
+#else
+  polyvecl rowbuf[2];
+#endif
+  polyvecl s1, *row = rowbuf;
+  polyveck s2;
+  poly t1, t0;
+
+  /* Use fixed seed for randomness for rho, rhoprime and key */
+  shake256(seedbuf, 2*SEEDBYTES + CRHBYTES, seed, SEEDBYTES);
+  rho = seedbuf;
+  rhoprime = rho + SEEDBYTES;
+  key = rhoprime + CRHBYTES;
+
+  /* Store rho, key */
+  memcpy(pk, rho, SEEDBYTES);
+  memcpy(sk, rho, SEEDBYTES);
+  memcpy(sk + SEEDBYTES, key, SEEDBYTES);
+
+  /* Sample short vectors s1 and s2 */
+#ifdef DILITHIUM_USE_AES
+  aes256ctr_init_u64(&aesctx, rhoprime, 0);
+  for(i = 0; i < L; ++i) {
+    nonce = i;
+    aes256ctr_init_iv_u64(&aesctx, nonce);
+    poly_uniform_eta_preinit(&s1.vec[i], &aesctx);
+  }
+  for(i = 0; i < K; ++i) {
+    nonce = L + i;
+    aes256ctr_init_iv_u64(&aesctx, nonce);
+    poly_uniform_eta_preinit(&s2.vec[i], &aesctx);
+  }
+  aes256_ctx_release(&aesctx);
+#elif K == 4 && L == 4
+  poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime, 0, 1, 2, 3);
+  poly_uniform_eta_4x(&s2.vec[0], &s2.vec[1], &s2.vec[2], &s2.vec[3], rhoprime, 4, 5, 6, 7);
+#elif K == 6 && L == 5
+  poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime, 0, 1, 2, 3);
+  poly_uniform_eta_4x(&s1.vec[4], &s2.vec[0], &s2.vec[1], &s2.vec[2], rhoprime, 4, 5, 6, 7);
+  poly_uniform_eta_4x(&s2.vec[3], &s2.vec[4], &s2.vec[5], &t0, rhoprime, 8, 9, 10, 11);
+#elif K == 8 && L == 7
+  poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime, 0, 1, 2, 3);
+  poly_uniform_eta_4x(&s1.vec[4], &s1.vec[5], &s1.vec[6], &s2.vec[0], rhoprime, 4, 5, 6, 7);
+  poly_uniform_eta_4x(&s2.vec[1], &s2.vec[2], &s2.vec[3], &s2.vec[4], rhoprime, 8, 9, 10, 11);
+  poly_uniform_eta_4x(&s2.vec[5], &s2.vec[6], &s2.vec[7], &t0, rhoprime, 12, 13, 14, 15);
+#else
+#error
+#endif
+
+  /* Pack secret vectors */
+  for(i = 0; i < L; i++)
+    polyeta_pack(sk + 3*SEEDBYTES + i*POLYETA_PACKEDBYTES, &s1.vec[i]);
+  for(i = 0; i < K; i++)
+    polyeta_pack(sk + 3*SEEDBYTES + (L + i)*POLYETA_PACKEDBYTES, &s2.vec[i]);
+
+  /* Transform s1 */
+  polyvecl_ntt(&s1);
+
+#ifdef DILITHIUM_USE_AES
+  aes256ctr_init_u64(&aesctx, rho, 0);
+#endif
+
+  for(i = 0; i < K; i++) {
+    /* Expand matrix row */
+#ifdef DILITHIUM_USE_AES
+    for(unsigned int j = 0; j < L; j++) {
+      nonce = (i << 8) + j;
+      aes256ctr_init_iv_u64(&aesctx, nonce);
+      poly_uniform_preinit(&row->vec[j], &aesctx);
+      poly_nttunpack(&row->vec[j]);
+    }
+#else
+    polyvec_matrix_expand_row(&row, rowbuf, rho, i);
+#endif
+
+    /* Compute inner-product */
+    polyvecl_pointwise_acc_montgomery(&t1, row, &s1);
+    poly_invntt_tomont(&t1);
+
+    /* Add error polynomial */
+    poly_add(&t1, &t1, &s2.vec[i]);
+
+    /* Round t and pack t1, t0 */
+    poly_caddq(&t1);
+    poly_power2round(&t1, &t0, &t1);
+    polyt1_pack(pk + SEEDBYTES + i*POLYT1_PACKEDBYTES, &t1);
+    polyt0_pack(sk + 3*SEEDBYTES + (L+K)*POLYETA_PACKEDBYTES + i*POLYT0_PACKEDBYTES, &t0);
+  }
+
+#ifdef DILITHIUM_USE_AES
+  aes256_ctx_release(&aesctx);
+#endif
+
+  /* Compute H(rho, t1) and store in secret key */
+  shake256(sk + 2*SEEDBYTES, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+
+  return 0;
+}
+
+/*************************************************
+* Name:        crypto_sign_pubkey_from_privkey
+*
+* Description: Generates public key from existing private key.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - const uint8_t *sk: pointer to input private key (points
+*                                   to array of CRYPTO_SECRETKEYBYTES bytes)
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_pubkey_from_privkey(uint8_t *pk, const uint8_t *sk) {
+  unsigned int i;
+  uint8_t rho[SEEDBYTES];
+  uint8_t tr[SEEDBYTES];
+  uint8_t key[SEEDBYTES];
+#ifdef DILITHIUM_USE_AES
+  uint64_t nonce;
+  aes256ctr_ctx aesctx;
+  polyvecl rowbuf[1];
+#else
+  polyvecl rowbuf[2];
+#endif
+  polyvecl s1, *row = rowbuf;
+  polyveck s2;
+  poly t1, t0;
+
+  // Unpack private key
+  unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
+
+  // Store rho in public key
+  memcpy(pk, rho, SEEDBYTES);
+
+  // Transform s1
+  polyvecl_ntt(&s1);
+
+#ifdef DILITHIUM_USE_AES
+  aes256ctr_init_u64(&aesctx, rho, 0);
+#endif
+
+  // Process each row
+  for(i = 0; i < K; i++) {
+    /* Expand matrix row */
+#ifdef DILITHIUM_USE_AES
+    for(unsigned int j = 0; j < L; j++) {
+      nonce = (i << 8) + j;
+      aes256ctr_init_iv_u64(&aesctx, nonce);
+      poly_uniform_preinit(&row->vec[j], &aesctx);
+      poly_nttunpack(&row->vec[j]);
+    }
+#else
+    polyvec_matrix_expand_row(&row, rowbuf, rho, i);
+#endif
+
+    /* Compute inner-product */
+    polyvecl_pointwise_acc_montgomery(&t1, row, &s1);
+    poly_invntt_tomont(&t1);
+
+    /* Add error polynomial */
+    poly_add(&t1, &t1, &s2.vec[i]);
+
+    /* Round t and pack t1 */
+    poly_caddq(&t1);
+    poly_power2round(&t1, &t0, &t1);
+    polyt1_pack(pk + SEEDBYTES + i*POLYT1_PACKEDBYTES, &t1);
+  }
+
+#ifdef DILITHIUM_USE_AES
+  aes256_ctx_release(&aesctx);
+#endif
+
+  return 0;
+}
+
+/*************************************************
 * Name:        crypto_sign_signature
 *
 * Description: Computes signature.

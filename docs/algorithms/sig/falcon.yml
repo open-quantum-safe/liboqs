@@ -19,6 +19,7 @@ nist-round: 3
 spec-version: 20211101
 primary-upstream:
   source: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181
+    with copy_from_upstream patches
   spdx-license-identifier: MIT
   upstream-ancestors:
   - https://www.falcon-sign.info

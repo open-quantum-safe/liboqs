@@ -12,6 +12,8 @@
 
 OQS_SIG *OQS_SIG_dilithium_2_new(void);
 OQS_API OQS_STATUS OQS_SIG_dilithium_2_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_dilithium_2_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_dilithium_2_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_2_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_2_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_2_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -25,6 +27,8 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_2_verify_with_ctx_str(const uint8_t *messag
 
 OQS_SIG *OQS_SIG_dilithium_3_new(void);
 OQS_API OQS_STATUS OQS_SIG_dilithium_3_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_dilithium_3_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_dilithium_3_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_3_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_3_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_3_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -38,6 +42,8 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_3_verify_with_ctx_str(const uint8_t *messag
 
 OQS_SIG *OQS_SIG_dilithium_5_new(void);
 OQS_API OQS_STATUS OQS_SIG_dilithium_5_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_dilithium_5_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_dilithium_5_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_5_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_5_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_dilithium_5_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
