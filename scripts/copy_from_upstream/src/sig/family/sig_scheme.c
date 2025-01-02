@@ -32,6 +32,8 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	sig->length_signature = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature;
 
 	sig->keypair = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair;
+	sig->keypair_from_fseed = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_from_fseed;
+	sig->pubkey_from_privkey = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_pubkey_from_privkey;
 	sig->sign = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign;
 	sig->verify = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify;
 	sig->sign_with_ctx_str = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str;
@@ -64,6 +66,8 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 	sig->length_signature = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature;
 
 	sig->keypair = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair;
+	sig->keypair_from_fseed = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_from_fseed;
+	sig->pubkey_from_privkey = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_pubkey_from_privkey;
 	sig->sign = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign;
 	sig->verify = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify;
     {%- if 'api-with-context-string' in default_impl and default_impl['api-with-context-string'] %}
@@ -88,6 +92,20 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
         {%- endif %}
 
 extern int {{ scheme['metadata']['default_keypair_signature'] }}(uint8_t *pk, uint8_t *sk);
+	
+        {%- if impl['signature_keypair_from_fseed'] %}
+           {%- set cleankeypairfseed = scheme['metadata'].update({'default_keypair_from_fseed_signature': impl['signature_keypair_from_fseed']}) -%}
+        {%- else %}
+           {%- set cleankeypairfseed = scheme['metadata'].update({'default_keypair_from_fseed_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_sign_keypair_from_fseed"}) -%}
+        {%- endif %}
+extern int {{ scheme['metadata']['default_keypair_from_fseed_signature'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+
+        {%- if impl['signature_pubkey_from_privkey'] %}
+           {%- set cleanpubkey = scheme['metadata'].update({'default_pubkey_from_privkey_signature': impl['signature_pubkey_from_privkey']}) -%}
+        {%- else %}
+           {%- set cleanpubkey = scheme['metadata'].update({'default_pubkey_from_privkey_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_sign_pubkey_from_privkey"}) -%}
+        {%- endif %}
+extern int {{ scheme['metadata']['default_pubkey_from_privkey_signature'] }}(uint8_t *pk, const uint8_t *sk);
 
         {%- if impl['signature_signature'] %}
            {%- set cleansignature = scheme['metadata'].update({'default_signature_signature': impl['signature_signature']}) -%}
@@ -120,6 +138,18 @@ extern int {{ scheme['metadata']['default_verify_signature']  }}(const uint8_t *
 extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
         {%- else %}
 extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+        {%- endif %}
+
+        {%- if impl['signature_keypair_from_fseed'] %}
+extern int {{ impl['signature_keypair_from_fseed'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+        {%- else %}
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+        {%- endif %}
+
+        {%- if impl['signature_pubkey_from_privkey'] %}
+extern int {{ impl['signature_pubkey_from_privkey'] }}(uint8_t *pk, const uint8_t *sk);
+        {%- else %}
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_pubkey_from_privkey(uint8_t *pk, const uint8_t *sk);
         {%- endif %}
 
         {%- if impl['signature_signature'] %}
@@ -173,6 +203,74 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 #else
     {%- endif %}
 	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#endif
+    {%- endif %}
+}
+
+OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- if loop.first %}
+#if defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- else %}
+#elif defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- endif %}
+    {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+#endif /* OQS_DIST_BUILD */
+    {%- endif %}
+           {%- if impl['signature_keypair_from_fseed'] %}
+		return (OQS_STATUS) {{ impl['signature_keypair_from_fseed'] }}(public_key, secret_key, seed);
+           {%- else %}
+		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair_from_fseed(public_key, secret_key, seed);
+           {%- endif %}
+    {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) {{ scheme['metadata']['default_keypair_from_fseed_signature'] }}(public_key, secret_key, seed);
+	}
+#endif /* OQS_DIST_BUILD */
+    {%- endif %}
+    {%- endfor %}
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#else
+    {%- endif %}
+	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_from_fseed_signature'] }}(public_key, secret_key, seed);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#endif
+    {%- endif %}
+}
+
+OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key) {
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- if loop.first %}
+#if defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- else %}
+#elif defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- endif %}
+    {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+#endif /* OQS_DIST_BUILD */
+    {%- endif %}
+           {%- if impl['signature_pubkey_from_privkey'] %}
+		return (OQS_STATUS) {{ impl['signature_pubkey_from_privkey'] }}(public_key, secret_key);
+           {%- else %}
+		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_pubkey_from_privkey(public_key, secret_key);
+           {%- endif %}
+    {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) {{ scheme['metadata']['default_pubkey_from_privkey_signature'] }}(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+    {%- endif %}
+    {%- endfor %}
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#else
+    {%- endif %}
+	return (OQS_STATUS) {{ scheme['metadata']['default_pubkey_from_privkey_signature'] }}(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
