@@ -93,7 +93,9 @@ extern int {{ scheme['metadata']['default_dec_signature']  }}(uint8_t *ss, const
     {%- endfor %}
 
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
-
+{% if impl['name'] == 'cupqc'%}
+#if defined(OQS_USE_CUPQC)
+        {%- endif %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
         {%- if impl['signature_keypair'] %}
 extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
@@ -113,6 +115,9 @@ extern int {{ impl['signature_dec'] }}(uint8_t *ss, const uint8_t *ct, const uin
 extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
         {%- endif %}
 #endif
+        {%- if impl['name'] == 'cupqc'%}
+#endif /* OQS_USE_CUPQC */
+        {%- endif %}
     {%- endfor %}
 
 {%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
@@ -166,7 +171,12 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 {% endfor -%}
 #else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }} {%- if 'alias_scheme' in scheme %} || OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})*/
 {%- endif %}
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'cupqc' %}
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_cupqc)
+    return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_cupqc */
+    {%- endfor %}
+    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cupqc') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
@@ -240,7 +250,12 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 {% endfor -%}
 #else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }} {%- if 'alias_scheme' in scheme %} || OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})*/
 {%- endif %}
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'cupqc' %}
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_cupqc)
+    return (OQS_STATUS) {{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_cupqc */
+    {%- endfor %}
+    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cupqc') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
@@ -314,7 +329,12 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 {% endfor -%}
 #else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['scheme'] }} {%- if 'alias_scheme' in scheme %} || OQS_ENABLE_LIBJADE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})*/
 {%- endif %}
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'cupqc' %}
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_cupqc)
+    return (OQS_STATUS) {{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_cupqc */
+    {%- endfor %}
+    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cupqc') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}

@@ -140,6 +140,16 @@ else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR} ". Override by setting OQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON")
 endif()
 
+if(${OQS_USE_CUPQC})
+    # CMAKE's CUDA language requires CMAKE 3.18
+    cmake_minimum_required (VERSION 3.18)
+    enable_language(CUDA)
+    if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+      set(CMAKE_CUDA_ARCHITECTURES 80 90)
+    endif()
+    find_package(cuPQC 0.2.0 REQUIRED)
+endif()
+
 if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))
     message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin on x86_64.")
 endif()

@@ -33,11 +33,19 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in 
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
            {%- endif -%}
 
+        {%- elif impl['name'] == 'cupqc' %}
+
+if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
+    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/cupqc_ml-kem.cu)
+    target_include_libraries({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} cupqc)
+    set_property(TARGET {{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PROPERTY CUDA_ARCHITECTURES OFF)
+    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {{ impl['compile_opts'] }})
         {%- else %}
 
 if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
         {%- endif %}
+        {%- if impl['name'] != 'cupqc' %}
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] -%}
@@ -60,6 +68,7 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
         target_compile_definitions({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE old_gas_syntax)
     endif()
     	{%- endif %}
+        {%- endif %}{# cupqc #}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}>)
 endif()
     {%- endfor -%}
