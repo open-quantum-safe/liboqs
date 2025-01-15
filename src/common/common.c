@@ -300,7 +300,7 @@ OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 
 OQS_API void OQS_MEM_insecure_free(void *ptr) {
 #if defined(OQS_USE_OPENSSL) && defined(OPENSSL_VERSION_NUMBER)
-	OPENSSL_free(ptr);
+	OSSL_FUNC(CRYPTO_free)(ptr, OPENSSL_FILE, OPENSSL_LINE);
 #else
 	free(ptr); // IGNORE memory-check
 #endif
@@ -313,7 +313,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 		return NULL;
 	}
 	const size_t offset = alignment - 1 + sizeof(uint8_t);
-	uint8_t *buffer = OPENSSL_malloc(size + offset);
+	uint8_t *buffer = OSSL_FUNC(CRYPTO_malloc)(size + offset, OPENSSL_FILE, OPENSSL_LINE);
 	if (!buffer) {
 		return NULL;
 	}
@@ -321,7 +321,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	ptrdiff_t diff = ptr - buffer;
 	if (diff > UINT8_MAX) {
 		// Free and return NULL if alignment is too large
-		OPENSSL_free(buffer);
+		OSSL_FUNC(CRYPTO_free)(buffer, OPENSSL_FILE, OPENSSL_LINE);
 		errno = EINVAL;
 		return NULL;
 	}
@@ -396,7 +396,7 @@ void OQS_MEM_aligned_free(void *ptr) {
 #if defined(OQS_USE_OPENSSL)
 	// Use OpenSSL's free function
 	uint8_t *u8ptr = ptr;
-	OPENSSL_free(u8ptr - u8ptr[-1]);
+	OSSL_FUNC(CRYPTO_free)(u8ptr - u8ptr[-1], OPENSSL_FILE, OPENSSL_LINE);
 #elif defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
 	free(ptr); // IGNORE memory-check
 #elif defined(__MINGW32__) || defined(__MINGW64__)
@@ -408,5 +408,30 @@ void OQS_MEM_aligned_free(void *ptr) {
 	// stored one byte ahead of ptr.
 	uint8_t *u8ptr = ptr;
 	free(u8ptr - u8ptr[-1]); // IGNORE memory-check
+#endif
+}
+
+OQS_API void *OQS_MEM_malloc(size_t size) {
+#if defined(OQS_USE_OPENSSL)
+	return OSSL_FUNC(CRYPTO_malloc)(size, OPENSSL_FILE, OPENSSL_LINE);
+#else
+	return malloc(size); // IGNORE memory-check
+#endif
+}
+
+OQS_API void *OQS_MEM_calloc(size_t num_elements, size_t element_size) {
+#if defined(OQS_USE_OPENSSL)
+	return OSSL_FUNC(CRYPTO_zalloc)(num_elements * element_size,
+	                                OPENSSL_FILE, OPENSSL_LINE);
+#else
+	return calloc(num_elements, element_size); // IGNORE memory-check
+#endif
+}
+
+OQS_API char *OQS_MEM_strdup(const char *str) {
+#if defined(OQS_USE_OPENSSL)
+	return OSSL_FUNC(CRYPTO_strdup)(str, OPENSSL_FILE, OPENSSL_LINE);
+#else
+	return strdup(str); // IGNORE memory-check
 #endif
 }
