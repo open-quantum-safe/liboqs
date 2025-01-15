@@ -299,7 +299,7 @@ OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 }
 
 OQS_API void OQS_MEM_insecure_free(void *ptr) {
-#if (defined(OQS_USE_OPENSSL) || defined(OQS_DLOPEN_OPENSSL)) && defined(OPENSSL_VERSION_NUMBER)
+#if defined(OQS_USE_OPENSSL) && defined(OPENSSL_VERSION_NUMBER)
 	OPENSSL_free(ptr);
 #else
 	free(ptr); // IGNORE memory-check
