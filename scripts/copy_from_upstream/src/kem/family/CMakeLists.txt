@@ -36,7 +36,7 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in 
         {%- elif impl['name'] == 'cupqc' %}
 
 if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
-    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/cupqc_ml-kem.cu)
+    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT cupqc_{{ family.replace('_', '-') }}/cupqc_{{ family.replace('_', '-') }}.cu)
     target_include_libraries({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} cupqc)
     set_property(TARGET {{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PROPERTY CUDA_ARCHITECTURES OFF)
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {{ impl['compile_opts'] }})

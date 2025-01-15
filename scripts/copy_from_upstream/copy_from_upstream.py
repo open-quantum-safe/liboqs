@@ -495,14 +495,15 @@ def handle_implementation(impl, family, scheme, dst_basedir):
         else:
             # determine list of files to copy:
             if 'sources' in i:
-                srcs = i['sources'].split(" ")
-                for s in srcs:
-                    # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
-                    if os.path.isfile(os.path.join(origfolder, s)):
-                        subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
-                    else:
-                        subprocess.run(
-                            ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+                if i['sources']:
+                    srcs = i['sources'].split(" ")
+                    for s in srcs:
+                        # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
+                        if os.path.isfile(os.path.join(origfolder, s)):
+                            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+                        else:
+                            subprocess.run(
+                                ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
             else:
                 subprocess.run(['cp', '-pr', os.path.join(origfolder, '.'), srcfolder])
                 # raise Exception("Malformed YML file: No sources listed to copy. Check upstream YML file." )
