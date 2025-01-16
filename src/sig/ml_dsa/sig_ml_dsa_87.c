@@ -23,6 +23,8 @@ OQS_SIG *OQS_SIG_ml_dsa_87_new(void) {
 	sig->length_signature = OQS_SIG_ml_dsa_87_length_signature;
 
 	sig->keypair = OQS_SIG_ml_dsa_87_keypair;
+	sig->keypair_from_fseed = OQS_SIG_ml_dsa_87_keypair_from_fseed;
+	sig->pubkey_from_privkey = OQS_SIG_ml_dsa_87_pubkey_from_privkey;
 	sig->sign = OQS_SIG_ml_dsa_87_sign;
 	sig->verify = OQS_SIG_ml_dsa_87_verify;
 	sig->sign_with_ctx_str = OQS_SIG_ml_dsa_87_sign_with_ctx_str;
@@ -32,11 +34,15 @@ OQS_SIG *OQS_SIG_ml_dsa_87_new(void) {
 }
 
 extern int pqcrystals_ml_dsa_87_ref_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MLDSA87_REF_crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+extern int PQCLEAN_MLDSA87_REF_crypto_sign_pubkey_from_privkey(uint8_t *pk, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *pk);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
 extern int pqcrystals_ml_dsa_87_avx2_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MLDSA87_AVX2_crypto_sign_keypair_from_fseed(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+extern int PQCLEAN_MLDSA87_AVX2_crypto_sign_pubkey_from_privkey(uint8_t *pk, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_87_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *pk);
 #endif
@@ -54,6 +60,38 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair(uint8_t *public_key, uint8_t *secre
 #endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) pqcrystals_ml_dsa_87_ref_keypair(public_key, secret_key);
+#endif
+}
+
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCLEAN_MLDSA87_AVX2_crypto_sign_keypair_from_fseed(public_key, secret_key, seed);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCLEAN_MLDSA87_REF_crypto_sign_keypair_from_fseed(public_key, secret_key, seed);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCLEAN_MLDSA87_REF_crypto_sign_keypair_from_fseed(public_key, secret_key, seed);
+#endif
+}
+
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key) {
+#if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCLEAN_MLDSA87_AVX2_crypto_sign_pubkey_from_privkey(public_key, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCLEAN_MLDSA87_REF_crypto_sign_pubkey_from_privkey(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCLEAN_MLDSA87_REF_crypto_sign_pubkey_from_privkey(public_key, secret_key);
 #endif
 }
 
