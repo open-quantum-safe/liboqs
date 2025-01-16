@@ -31,13 +31,12 @@ upstreams:
     kem_scheme_path: '.'
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
-    name: pqcrystals-kyber-standard
-    git_url: https://github.com/pq-crystals/kyber.git
-    git_branch: main
-    git_commit: 10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd
+    name: mlkem-native
+    git_url: https://github.com/bhess/mlkem-native.git
+    git_branch: updates-5
+    git_commit: 86cc8d0cd3af1dff13228296cbadbbfc6928890c
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-ml_kem.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
@@ -166,7 +165,7 @@ kems:
   -
     name: ml_kem
     default_implementation: ref
-    upstream_location: pqcrystals-kyber-standard
+    upstream_location: mlkem-native
     schemes:
       -
         scheme: "512"

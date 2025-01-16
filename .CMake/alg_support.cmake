@@ -334,19 +334,43 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_x86_64 "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS)))
+
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_aarch64 "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
+
 endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_x86_64 "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS)))
+
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_aarch64 "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
+
 endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_avx2 "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_x86_64 "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS)))
+
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_aarch64 "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
+
 endif()
 endif()
 
