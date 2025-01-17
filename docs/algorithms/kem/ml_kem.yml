@@ -23,7 +23,7 @@ primary-upstream:
 optimized-upstreams:
   cupqc-cuda:
     source: https://github.com/praveksharma/cupqc-mlkem/commit/adb8454e56979628c07b67eb7d90f9337be6dc30
-    spdx-license-identifier: https://docs.nvidia.com/cuda/cupqc/license.html
+    spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: ML-KEM-512
   claimed-nist-level: 1

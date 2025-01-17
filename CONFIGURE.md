@@ -127,7 +127,7 @@ Only has an effect if the system supports `dlopen` and ELF binary format, such a
 
 ### OQS_USE_CUPQC
 
-Can be `ON` or `OFF`.  When `ON`, use NVIDIA's cuPQC library where able (currently just ML-KEM).  When this option is enabled, liboqs may not run correctly on machines that lack supported GPUs. To download cuPQC follow the instructions at (https://developer.nvidia.com/cupqc-download/). Detailed descriptions of the API, requirments, and installation guide are in the cuPQC documentation (https://docs.nvidia.com/cuda/cupqc/index.html). 
+Can be `ON` or `OFF`.  When `ON`, use NVIDIA's cuPQC library where able (currently just ML-KEM).  When this option is enabled, liboqs may not run correctly on machines that lack supported GPUs. To download cuPQC follow the instructions at (https://developer.nvidia.com/cupqc-download/). Detailed descriptions of the API, requirements, and installation guide are in the cuPQC documentation (https://docs.nvidia.com/cuda/cupqc/index.html). While the code shipped by liboqs required to use cuPQC is licensed under Apache 2.0 the cuPQC SDK comes with its own license agreement (https://docs.nvidia.com/cuda/cupqc/license.html). 
 
 **Default**: `OFF`
 

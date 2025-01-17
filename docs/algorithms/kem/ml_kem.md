@@ -12,7 +12,7 @@
 - **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd with copy_from_upstream patches
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
       - **Source**: https://github.com/praveksharma/cupqc-mlkem/commit/adb8454e56979628c07b67eb7d90f9337be6dc30
-      - **Implementation license (SPDX-Identifier)**: https://docs.nvidia.com/cuda/cupqc/license.html
+      - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
 ## Parameter set summary
