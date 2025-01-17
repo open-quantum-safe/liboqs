@@ -38,6 +38,14 @@ upstreams:
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: [pqcrystals-ml_kem.patch]
+  - 
+    name: cupqc
+    git_url: https://github.com/praveksharma/cupqc-mlkem.git
+    git_branch: main
+    git_commit: adb8454e56979628c07b67eb7d90f9337be6dc30
+    kem_meta_path: '{pretty_name_full}_META.yml'
+    kem_scheme_path: '.'
+    patches: []
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
@@ -166,6 +174,10 @@ kems:
   -
     name: ml_kem
     default_implementation: ref
+    arch_specific_implementations:
+                                      cuda: cuda
+    arch_specific_upstream_locations:
+                                      cuda: cupqc
     upstream_location: pqcrystals-kyber-standard
     schemes:
       -

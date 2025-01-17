@@ -340,7 +340,7 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_USE_CUPQC)
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_cupqc "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_cuda "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
 endif()
 endif()
 
@@ -352,7 +352,7 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_USE_CUPQC)
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_cupqc "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_cuda "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
 endif()
 endif()
 
@@ -364,7 +364,7 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_USE_CUPQC)
-    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_cupqc "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_cuda "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
 endif()
 endif()
 

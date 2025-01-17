@@ -131,13 +131,13 @@
 #cmakedefine OQS_ENABLE_KEM_ML_KEM 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_512_cupqc 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_512_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_768_cupqc 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_768_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ml_kem_1024_cupqc 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_1024_cuda 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1

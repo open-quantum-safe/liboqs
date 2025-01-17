@@ -41,17 +41,17 @@ extern int pqcrystals_ml_kem_512_avx2_dec(uint8_t *ss, const uint8_t *ct, const 
 #endif
 
 #if defined(OQS_USE_CUPQC)
-#if defined(OQS_ENABLE_KEM_ml_kem_512_cupqc)
-extern int ml_kem_512_cupqc_keypair(uint8_t *pk, uint8_t *sk);
-extern int ml_kem_512_cupqc_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int ml_kem_512_cupqc_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#if defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
+extern int cupqc_ml_kem_512_keypair(uint8_t *pk, uint8_t *sk);
+extern int cupqc_ml_kem_512_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int cupqc_ml_kem_512_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 #endif /* OQS_USE_CUPQC */
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_keypair(uint8_t *public_key, uint8_t *secret_key) {
-#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cupqc)
-	return (OQS_STATUS) ml_kem_512_cupqc_keypair(public_key, secret_key);
-#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cupqc */
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
+	return (OQS_STATUS) cupqc_ml_kem_512_keypair(public_key, secret_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cuda */
 #if defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -68,9 +68,9 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_keypair(uint8_t *public_key, uint8_t *secr
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cupqc)
-	return (OQS_STATUS) ml_kem_512_cupqc_enc(ciphertext, shared_secret, public_key);
-#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cupqc */
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
+	return (OQS_STATUS) cupqc_ml_kem_512_enc(ciphertext, shared_secret, public_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cuda */
 #if defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -87,9 +87,9 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_encaps(uint8_t *ciphertext, uint8_t *share
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cupqc)
-	return (OQS_STATUS) ml_kem_512_cupqc_dec(shared_secret, ciphertext, secret_key);
-#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cupqc */
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
+	return (OQS_STATUS) cupqc_ml_kem_512_dec(shared_secret, ciphertext, secret_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cuda */
 #if defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {

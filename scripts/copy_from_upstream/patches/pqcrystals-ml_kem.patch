@@ -1,8 +1,8 @@
 diff --git a/Kyber1024_META.yml b/ML-KEM-1024_META.yml
-similarity index 50%
+similarity index 55%
 rename from Kyber1024_META.yml
 rename to ML-KEM-1024_META.yml
-index baa5ca3..98e0e5c 100644
+index baa5ca3..67243b8 100644
 --- a/Kyber1024_META.yml
 +++ b/ML-KEM-1024_META.yml
 @@ -1,4 +1,4 @@
@@ -55,29 +55,11 @@ index baa5ca3..98e0e5c 100644
      supported_platforms:
        - architecture: x86_64
          operating_systems:
-@@ -47,3 +45,17 @@ implementations:
-           - avx2
-           - bmi2
-           - popcnt
-+  - name: cupqc
-+    version: FIPS203
-+    compile_opts: $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>
-+    signature_keypair: ml_kem_1024_cupqc_keypair
-+    signature_enc: ml_kem_1024_cupqc_enc
-+    signature_dec: ml_kem_1024_cupqc_dec
-+    sources:
-+    supported_platforms:
-+      - architecture: CUDA
-+        operating_systems:
-+          - Linux
-+          - Darwin
-+        required_flags:
-+          - dummy
 diff --git a/Kyber512_META.yml b/ML-KEM-512_META.yml
-similarity index 50%
+similarity index 55%
 rename from Kyber512_META.yml
 rename to ML-KEM-512_META.yml
-index b251701..0df6843 100644
+index b251701..18c28b0 100644
 --- a/Kyber512_META.yml
 +++ b/ML-KEM-512_META.yml
 @@ -1,4 +1,4 @@
@@ -130,30 +112,11 @@ index b251701..0df6843 100644
      supported_platforms:
        - architecture: x86_64
          operating_systems:
-@@ -47,3 +45,17 @@ implementations:
-           - avx2
-           - bmi2
-           - popcnt
-+  - name: cupqc
-+    version: FIPS203
-+    compile_opts: $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>
-+    signature_keypair: ml_kem_512_cupqc_keypair
-+    signature_enc: ml_kem_512_cupqc_enc
-+    signature_dec: ml_kem_512_cupqc_dec
-+    sources:
-+    supported_platforms:
-+      - architecture: CUDA
-+        operating_systems:
-+          - Linux
-+          - Darwin
-+        required_flags:
-+          - dummy
-\ No newline at end of file
 diff --git a/Kyber768_META.yml b/ML-KEM-768_META.yml
-similarity index 50%
+similarity index 55%
 rename from Kyber768_META.yml
 rename to ML-KEM-768_META.yml
-index 7a0cc3d..f5f45f7 100644
+index 7a0cc3d..ccc03c9 100644
 --- a/Kyber768_META.yml
 +++ b/ML-KEM-768_META.yml
 @@ -1,4 +1,4 @@
@@ -206,24 +169,6 @@ index 7a0cc3d..f5f45f7 100644
      supported_platforms:
        - architecture: x86_64
          operating_systems:
-@@ -47,3 +45,17 @@ implementations:
-           - avx2
-           - bmi2
-           - popcnt
-+  - name: cupqc
-+    version: FIPS203
-+    compile_opts: $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>
-+    signature_keypair: ml_kem_768_cupqc_keypair
-+    signature_enc: ml_kem_768_cupqc_enc
-+    signature_dec: ml_kem_768_cupqc_dec
-+    sources:
-+    supported_platforms:
-+      - architecture: CUDA
-+        operating_systems:
-+          - Linux
-+          - Darwin
-+        required_flags:
-+          - dummy
 diff --git a/avx2/indcpa.c b/avx2/indcpa.c
 index 18b9d08..c4b2b3a 100644
 --- a/avx2/indcpa.c
