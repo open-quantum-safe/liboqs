@@ -24,6 +24,9 @@
         mkLib = shared:
           stdenv.mkDerivation {
             inherit name src;
+            # for whatever reason, trying to 'fix' the CMake file causes a failure
+            dontFixCmake = true;
+
             nativeBuildInputs = with pkgs;
               [cmake ninja doxygen pkg-config graphviz]
               ++ (
@@ -71,10 +74,14 @@
           '';
         };
     in {
+      formatter = pkgs.alejandra;
+
       packages = {
         default = (mkPackageSet "gcc").shared; # default is gcc shared
-        gcc = mkPackageSet "gcc";
-        clang = mkPackageSet "clang";
+        gcc-shared = (mkPackageSet "gcc").shared;
+        clang-shared = (mkPackageSet "clang").shared;
+        gcc-static = (mkPackageSet "gcc").static;
+        clang-static = (mkPackageSet "clang").static;
       };
 
       # Development shells
