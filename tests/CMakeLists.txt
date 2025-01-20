@@ -173,6 +173,15 @@ target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
 add_executable(vectors_kem vectors_kem.c)
 target_link_libraries(vectors_kem PRIVATE ${TEST_DEPS})
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
+    # workaround for Windows .dll
+    if(MINGW OR MSYS OR CYGWIN OR CMAKE_CROSSCOMPILING)
+        target_link_options(vectors_kem PRIVATE -Wl,--allow-multiple-definition)
+    else()
+        target_link_options(vectors_kem PRIVATE "/FORCE:MULTIPLE")
+    endif()
+endif()
+
 # Enable Valgrind-based timing side-channel analysis for test_kem and test_sig
 if(OQS_ENABLE_TEST_CONSTANT_TIME AND NOT OQS_DEBUG_BUILD)
     message(WARNING "OQS_ENABLE_TEST_CONSTANT_TIME is incompatible with CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}.")
