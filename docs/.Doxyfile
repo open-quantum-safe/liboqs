@@ -957,6 +957,7 @@ INPUT                  = src/common/aes/aes_ops.h \
                          src/common/sha3/sha3x4_ops.h \
                          src/kem/kem.h \
                          src/sig/sig.h \
+                         src/sig_stfl.h \
                          README.md \
                          CONFIGURE.md \
                          CONTRIBUTORS
