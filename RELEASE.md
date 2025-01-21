@@ -1,5 +1,5 @@
-liboqs version 0.12.0-rc1
-=========================
+liboqs version 0.12.0
+=====================
 
 About
 -----
@@ -27,7 +27,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.12.0 of liboqs. It was released on November 29, 2024.
+This is version 0.12.0 of liboqs. It was released on December 9, 2024.
 
 This release updates the ML-DSA implementation to the [final FIPS 204](https://csrc.nist.gov/pubs/fips/204/final) version. This release still includes the NIST Round 3 version of Dilithium for interoperability purposes, but we plan to remove Dilithium Round 3 in a future release.
 
@@ -38,6 +38,11 @@ This will be the last release of liboqs to include Kyber (that is, the NIST Roun
 
 The addition of ML-DSA FIPS 204 final version to liboqs has introduced a new signature API which includes a context string parameter. We are planning to remove the old version of the API without a context string in the next release to streamline the API and bring it in line with NIST specifications. Users who have an opinion on this removal are invited to provide input at https://github.com/open-quantum-safe/liboqs/issues/2001.
 
+Security issues
+===============
+
+- CVE-2024-54137: Fixed bug in HQC decapsulation that leads to incorrect shared secret value during decapsulation when called with an invalid ciphertext. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
+
 What's New
 ----------
 
@@ -45,7 +50,7 @@ This release continues from the 0.11.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- HQC: Fixed correctness bug in decapsulation. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
+- HQC: Fixed bug in decapsulation that leads to incorrect shared secret value during decapsulation when called with an invalid ciphertext. Thank you to Célian Glénaz and Dahmun Goudarzi from Quarkslab for identifying the issue.
 - Kyber: This is the last release of liboqs to include Kyber.
 - ML-KEM: Improved testing of ML-KEM.
 
@@ -93,10 +98,13 @@ Detailed changelog
 * Update PLATFORMS.md / re-enable CROSS on s390x by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1988
 * Avoid OpenSSL functions are unconditionally called at OQS_destroy by @ueno in https://github.com/open-quantum-safe/liboqs/pull/1982
 * Test Improvements for ML-KEM by @abhinav-thales in https://github.com/open-quantum-safe/liboqs/pull/1947
+* Add patch to fix HQC decapsulation in https://github.com/open-quantum-safe/liboqs/commit/95f904bcaafe4cb12cfdf029347ac3b7c795308a
+* Run copy_from_upstream.py in https://github.com/open-quantum-safe/liboqs/commit/cce1bfde4e52c524b087b9687020d283fbde0f24
 * Fix LMS crash by @ashman-p in https://github.com/open-quantum-safe/liboqs/pull/1998
 * Set ML-KEM alg_version to "FIPS203" by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/1997
 * Add ML-DSA / FIPS 204 final by @bhess in https://github.com/open-quantum-safe/liboqs/pull/1919
 * Add defines for OQS version components by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/2000
+* Create liboqs 0.12.0 release candidate 1 by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/2006
 
 ## New Contributors
 
@@ -108,4 +116,4 @@ Detailed changelog
 * @ChinoUkaegbu made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1987
 * @abhinav-thales made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/1947
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.11.0...0.12.0-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.11.0...0.12.0

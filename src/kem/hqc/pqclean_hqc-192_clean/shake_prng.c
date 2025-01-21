@@ -7,6 +7,7 @@
  * @brief Implementation of SHAKE-256 based seed expander
  */
 
+
 /**
  * @brief Initialise a SHAKE-256 based seed expander
  *
@@ -23,6 +24,8 @@ void PQCLEAN_HQC192_CLEAN_seedexpander_init(seedexpander_state *state, const uin
     shake256_inc_absorb(state, &domain, 1);
     shake256_inc_finalize(state);
 }
+
+
 
 /**
  * @brief A SHAKE-256 based seed expander

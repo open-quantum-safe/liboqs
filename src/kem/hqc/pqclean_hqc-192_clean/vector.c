@@ -9,6 +9,7 @@
  * @brief Implementation of vectors sampling and some utilities for the HQC scheme
  */
 
+
 static uint32_t m_val[114] = { 119800, 119803, 119807, 119810, 119813, 119817, 119820, 119823, 119827, 119830, 119833, 119837, 119840, 119843, 119847, 119850, 119853, 119857, 119860, 119864, 119867, 119870, 119874, 119877, 119880, 119884, 119887, 119890, 119894, 119897, 119900, 119904, 119907, 119910, 119914, 119917, 119920, 119924, 119927, 119930, 119934, 119937, 119941, 119944, 119947, 119951, 119954, 119957, 119961, 119964, 119967, 119971, 119974, 119977, 119981, 119984, 119987, 119991, 119994, 119997, 120001, 120004, 120008, 120011, 120014, 120018, 120021, 120024, 120028, 120031, 120034, 120038, 120041, 120044, 120048, 120051, 120054, 120058, 120061, 120065, 120068, 120071, 120075, 120078, 120081, 120085, 120088, 120091, 120095, 120098, 120101, 120105, 120108, 120112, 120115, 120118, 120122, 120125, 120128, 120132, 120135, 120138, 120142, 120145, 120149, 120152, 120155, 120159, 120162, 120165, 120169, 120172, 120175, 120179 };
 
 /**
@@ -110,6 +111,8 @@ void PQCLEAN_HQC192_CLEAN_vect_set_random_fixed_weight(seedexpander_state *ctx, 
     }
 }
 
+
+
 /**
  * @brief Generates a random vector of dimension <b>PARAM_N</b>
  *
@@ -128,6 +131,8 @@ void PQCLEAN_HQC192_CLEAN_vect_set_random(seedexpander_state *ctx, uint64_t *v) 
     v[VEC_N_SIZE_64 - 1] &= RED_MASK;
 }
 
+
+
 /**
  * @brief Adds two vectors
  *
@@ -141,6 +146,8 @@ void PQCLEAN_HQC192_CLEAN_vect_add(uint64_t *o, const uint64_t *v1, const uint64
         o[i] = v1[i] ^ v2[i];
     }
 }
+
+
 
 /**
  * @brief Compares two vectors
@@ -159,6 +166,8 @@ uint8_t PQCLEAN_HQC192_CLEAN_vect_compare(const uint8_t *v1, const uint8_t *v2, 
 
     return (r - 1) >> 8;
 }
+
+
 
 /**
  * @brief Resize a vector so that it contains <b>size_o</b> bits

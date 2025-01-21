@@ -12,6 +12,8 @@
  * @brief Implementation of hqc.h
  */
 
+
+
 /**
  * @brief Keygen of the HQC_PKE IND_CPA scheme
  *
@@ -58,6 +60,8 @@ void PQCLEAN_HQC128_CLEAN_hqc_pke_keygen(uint8_t *pk, uint8_t *sk) {
     PQCLEAN_HQC128_CLEAN_seedexpander_release(&pk_seedexpander);
     PQCLEAN_HQC128_CLEAN_seedexpander_release(&sk_seedexpander);
 }
+
+
 
 /**
  * @brief Encryption of the HQC_PKE IND_CPA scheme
@@ -108,6 +112,8 @@ void PQCLEAN_HQC128_CLEAN_hqc_pke_encrypt(uint64_t *u, uint64_t *v, uint8_t *m, 
     PQCLEAN_HQC128_CLEAN_seedexpander_release(&vec_seedexpander);
 }
 
+
+
 /**
  * @brief Decryption of the HQC_PKE IND_CPA scheme
  *
@@ -131,6 +137,7 @@ uint8_t PQCLEAN_HQC128_CLEAN_hqc_pke_decrypt(uint8_t *m, uint8_t *sigma, const u
     PQCLEAN_HQC128_CLEAN_vect_resize(tmp1, PARAM_N, v, PARAM_N1N2);
     PQCLEAN_HQC128_CLEAN_vect_mul(tmp2, y, u);
     PQCLEAN_HQC128_CLEAN_vect_add(tmp2, tmp1, tmp2, VEC_N_SIZE_64);
+
 
     // Compute m by decoding v - u.y
     PQCLEAN_HQC128_CLEAN_code_decode(m, tmp2);

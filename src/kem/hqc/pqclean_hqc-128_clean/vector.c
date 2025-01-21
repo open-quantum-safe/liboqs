@@ -9,6 +9,7 @@
  * @brief Implementation of vectors sampling and some utilities for the HQC scheme
  */
 
+
 static uint32_t m_val[75] = { 243079, 243093, 243106, 243120, 243134, 243148, 243161, 243175, 243189, 243203, 243216, 243230, 243244, 243258, 243272, 243285, 243299, 243313, 243327, 243340, 243354, 243368, 243382, 243396, 243409, 243423, 243437, 243451, 243465, 243478, 243492, 243506, 243520, 243534, 243547, 243561, 243575, 243589, 243603, 243616, 243630, 243644, 243658, 243672, 243686, 243699, 243713, 243727, 243741, 243755, 243769, 243782, 243796, 243810, 243824, 243838, 243852, 243865, 243879, 243893, 243907, 243921, 243935, 243949, 243962, 243976, 243990, 244004, 244018, 244032, 244046, 244059, 244073, 244087, 244101 };
 
 /**
@@ -110,6 +111,8 @@ void PQCLEAN_HQC128_CLEAN_vect_set_random_fixed_weight(seedexpander_state *ctx, 
     }
 }
 
+
+
 /**
  * @brief Generates a random vector of dimension <b>PARAM_N</b>
  *
@@ -128,6 +131,8 @@ void PQCLEAN_HQC128_CLEAN_vect_set_random(seedexpander_state *ctx, uint64_t *v) 
     v[VEC_N_SIZE_64 - 1] &= RED_MASK;
 }
 
+
+
 /**
  * @brief Adds two vectors
  *
@@ -141,6 +146,8 @@ void PQCLEAN_HQC128_CLEAN_vect_add(uint64_t *o, const uint64_t *v1, const uint64
         o[i] = v1[i] ^ v2[i];
     }
 }
+
+
 
 /**
  * @brief Compares two vectors
@@ -159,6 +166,8 @@ uint8_t PQCLEAN_HQC128_CLEAN_vect_compare(const uint8_t *v1, const uint8_t *v2, 
 
     return (r - 1) >> 8;
 }
+
+
 
 /**
  * @brief Resize a vector so that it contains <b>size_o</b> bits
