@@ -150,9 +150,9 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 		const uint8_t *curr_pk = &pk[i * ML_KEM_BLOCKSIZE];
 		for (j = 0; j < ML_KEM_N / 2; j++) {
 			buff_dec[2 * j + 0] = ((curr_pk[3 * j + 0] >> 0) | ((uint16_t)curr_pk[3 * j + 1] << 8)) & 0xFFF;
-			buff_dec[2 * j + 0] = barrett_reduce((int16_t)buff_dec[2 * j]);
+			buff_dec[2 * j + 0] = (uint16_t)barrett_reduce((int16_t)buff_dec[2 * j]);
 			buff_dec[2 * j + 1] = ((curr_pk[3 * j + 1] >> 4) | ((uint16_t)curr_pk[3 * j + 2] << 4)) & 0xFFF;
-			buff_dec[2 * j + 1] = barrett_reduce((int16_t)buff_dec[2 * j + 1]);
+			buff_dec[2 * j + 1] = (uint16_t)barrett_reduce((int16_t)buff_dec[2 * j + 1]);
 		}
 	}
 	/* perform byte encoding as per Algo 5 of FIPS 203 */
