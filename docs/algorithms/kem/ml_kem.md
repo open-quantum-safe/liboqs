@@ -11,7 +11,7 @@
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 - **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd with copy_from_upstream patches
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
-      - **Source**: https://github.com/praveksharma/cupqc-mlkem/commit/adb8454e56979628c07b67eb7d90f9337be6dc30
+      - **Source**: https://github.com/praveksharma/cupqc-mlkem/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 

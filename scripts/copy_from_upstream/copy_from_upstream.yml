@@ -42,7 +42,7 @@ upstreams:
     name: cupqc
     git_url: https://github.com/praveksharma/cupqc-mlkem.git
     git_branch: main
-    git_commit: adb8454e56979628c07b67eb7d90f9337be6dc30
+    git_commit: b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: []

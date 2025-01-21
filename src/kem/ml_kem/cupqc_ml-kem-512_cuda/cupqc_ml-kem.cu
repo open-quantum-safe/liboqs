@@ -157,10 +157,8 @@ cleanup:
 
 extern "C" {
     using KEM_512  = decltype(ML_KEM_512()  + Block());
-    using KEM_768  = decltype(ML_KEM_768()  + Block());
-    using KEM_1024 = decltype(ML_KEM_1024() + Block());
 
-#if defined(OQS_ENABLE_KEM_ml_kem_512_cupqc)
+#if defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
     int cupqc_ml_kem_512_keypair(uint8_t *pk, uint8_t *sk) {
         return keypair<KEM_512>(pk, sk);
     }
@@ -169,30 +167,6 @@ extern "C" {
     }
     int cupqc_ml_kem_512_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
         return decaps<KEM_512>(ss, ct, sk);
-    }
-#endif
-
-#if defined(OQS_ENABLE_KEM_ml_kem_768_cupqc)
-    int cupqc_ml_kem_768_keypair(uint8_t *pk, uint8_t *sk) {
-        return keypair<KEM_768>(pk, sk);
-    }
-    int cupqc_ml_kem_768_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
-        return encaps<KEM_768>(ct, ss, pk);
-    }
-    int cupqc_ml_kem_768_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
-        return decaps<KEM_768>(ss, ct, sk);
-    }
-#endif
-
-#if defined(OQS_ENABLE_KEM_ml_kem_1024_cupqc)
-    int cupqc_ml_kem_1024_keypair(uint8_t *pk, uint8_t *sk) {
-        return keypair<KEM_1024>(pk, sk);
-    }
-    int cupqc_ml_kem_1024_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
-        return encaps<KEM_1024>(ct, ss, pk);
-    }
-    int cupqc_ml_kem_1024_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
-        return decaps<KEM_1024>(ss, ct, sk);
     }
 #endif
 }
