@@ -22,8 +22,6 @@
 #define ML_KEM_1024_PK_SIZE     1568
 #define ML_KEM_Q                3329
 #define SHA256_OP_LEN           32
-/* since x is 12 bits, max value could be 4095. the below macro uses this to implement a simple time constant mod 3329 */
-#define MOD_Q(x)             ((x) - ((x >= ML_KEM_Q) * ML_KEM_Q))
 #endif //OQS_ENABLE_KEM_ML_KEM
 
 struct {
@@ -78,7 +76,18 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 }
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
-/* fetch value of 'K' from MlL-KEM version */
+/* barret reduction for mod(Q) */
+int16_t barrett_reduce(int16_t a) {
+	const int16_t v = ((1 << 26) + ML_KEM_Q / 2) / ML_KEM_Q;
+	int32_t t = ((int32_t)v * a + (1 << 25)) >> 26;
+	t *= ML_KEM_Q;
+	a -= t;
+
+	int16_t mask = a >> 15;
+	a += (ML_KEM_Q & mask);
+	return a;
+}
+/* fetch value of 'K' from ML-KEM version */
 uint8_t get_ml_kem_k(const char *method) {
 	if (0 == strcmp(method, OQS_KEM_alg_ml_kem_512)) {
 		return 2;
@@ -90,7 +99,6 @@ uint8_t get_ml_kem_k(const char *method) {
 		return 0;  // Default/error case
 	}
 }
-
 /* sanity check for private/decaps key */
 static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 	/* sanity checks */
@@ -115,7 +123,6 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 	}
 	return true;
 }
-
 /* sanity check for public/encaps key */
 static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *method_name) {
 	/* sanity checks */
@@ -143,9 +150,9 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 		const uint8_t *curr_pk = &pk[i * ML_KEM_BLOCKSIZE];
 		for (j = 0; j < ML_KEM_N / 2; j++) {
 			buff_dec[2 * j + 0] = ((curr_pk[3 * j + 0] >> 0) | ((uint16_t)curr_pk[3 * j + 1] << 8)) & 0xFFF;
-			buff_dec[2 * j + 0] = MOD_Q(buff_dec[2 * j]);
+			buff_dec[2 * j + 0] = barrett_reduce(buff_dec[2 * j]);
 			buff_dec[2 * j + 1] = ((curr_pk[3 * j + 1] >> 4) | ((uint16_t)curr_pk[3 * j + 2] << 4)) & 0xFFF;
-			buff_dec[2 * j + 1] = MOD_Q(buff_dec[2 * j + 1]);
+			buff_dec[2 * j + 1] = barrett_reduce(buff_dec[2 * j + 1]);
 		}
 	}
 	/* perform byte encoding as per Algo 5 of FIPS 203 */
