@@ -190,7 +190,6 @@ jobs:
 
   cupqc-buildcheck:
     name: Check that code builds with OQS_USE_CUPQC=ON
-    needs: [buildcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
