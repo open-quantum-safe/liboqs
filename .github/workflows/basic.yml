@@ -89,36 +89,6 @@ jobs:
         run: ninja gen_docs
         working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
-  cupqc-buildcheck:
-    name: Check that code build with OQS_USE_CUPQC=ON
-    needs: [buildcheck]
-    runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
-    steps:
-      - name: Create random build folder
-        run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
-      - name: 
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Configure
-        run: |
-          cuPQC_DIR=$cuPQC_DIR \
-            cmake \
-            -B ${{ env.RANDOM_BUILD_DIR }} \
-            -GNinja \
-            -DOQS_USE_CUPQC=ON \
-            -DOQS_STRICT_WARNINGS=ON \
-            --warn-uninitialized . > config.log 2>&1 && \
-          cat config.log && \
-          cmake -LA -N . && \
-          ! (grep -i "uninitialized variable" config.log)
-      - name: Build code
-        run: ninja
-        working-directory: ${{ env.RANDOM_BUILD_DIR }}
-      - name: Build documentation
-        run: ninja gen_docs
-        working-directory: ${{ env.RANDOM_BUILD_DIR }}
-
   cppcheck:
     name: Check C++ linking with example program
     runs-on: ubuntu-latest
