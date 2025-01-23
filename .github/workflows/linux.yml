@@ -196,7 +196,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
-        run: mkdir build && cd build && cuPQC_DIR=$cuPQC_DIR cmake -GNinja -DOQS_USE_CUPQC=ON .. && cmake -LA -N ..
+        run: mkdir build && cd build && cuPQC_DIR=$cuPQC_DIR cmake -GNinja -DOQS_USE_CUPQC=ON -DCMAKE_CUDA_ARCHITECTURES=80 .. && cmake -LA -N ..
       - name: Build code
         run: ninja
         working-directory: build
