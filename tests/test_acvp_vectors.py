@@ -154,7 +154,7 @@ def test_acvp_vec_sig_gen(sig_name):
                             if variant["deterministic"] == False:
                                 rnd = testCase["rnd"]
                             else:
-                                rnd = "0000000000000000000000000000000000000000000000000000000000000000"
+                                rnd = "0" * 64
                             
                             build_dir = helpers.get_current_build_dir_name()
                             if variant["signatureInterface"] == "internal":

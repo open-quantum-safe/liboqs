@@ -786,11 +786,11 @@ cleanup:
 	OQS_MEM_insecure_free(sigVer_pk_bytes);
 	OQS_MEM_insecure_free(sigVer_msg_bytes);
 	OQS_MEM_insecure_free(sigVer_sig_bytes);
+	OQS_MEM_insecure_free(sigVer_ctx_bytes);
 	OQS_MEM_insecure_free(sigGen_sk_bytes);
 	OQS_MEM_insecure_free(sigGen_msg_bytes);
 	OQS_MEM_insecure_free(sigGen_sig_bytes);
 	OQS_MEM_insecure_free(sigGen_ctx_bytes);
-	OQS_MEM_insecure_free(sigVer_ctx_bytes);
 	OQS_SIG_free(sig);
 	OQS_destroy();
 
