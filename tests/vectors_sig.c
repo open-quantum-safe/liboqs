@@ -150,11 +150,6 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 	uint8_t *secret_key = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
-	if ((prng_output_stream == NULL) || (kg_pk == NULL) || (kg_sk == NULL)) {
-		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
-		goto err;
-	}
-
 	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
 	void (*randombytes_free)(void) = NULL;
 
@@ -182,6 +177,11 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 	secret_key = OQS_MEM_malloc(sig->length_secret_key);
 	if ((public_key == NULL) || (secret_key == NULL)) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
+		goto err;
+	}
+
+	if ((prng_output_stream == NULL) || (kg_pk == NULL) || (kg_sk == NULL)) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
 
@@ -432,6 +432,18 @@ static int sig_gen_vector_ext(const char *method_name,
 		goto algo_not_enabled;
 	}
 
+	if (is_ml_dsa(method_name)) {
+		OQS_randombytes_custom_algorithm(&MLDSA_randombytes);
+		randombytes_init = &MLDSA_randombytes_init;
+		randombytes_free = &MLDSA_randombytes_free;
+		entropy_input = (uint8_t *) prng_output_stream;
+	} else {
+		// Only ML-DSA supported
+		goto err;
+	}
+
+	randombytes_init(entropy_input, NULL);
+
 	sigLen = sig->length_signature;
 
 	fh = stdout;
@@ -447,18 +459,6 @@ static int sig_gen_vector_ext(const char *method_name,
 		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
-
-	if (is_ml_dsa(method_name)) {
-		OQS_randombytes_custom_algorithm(&MLDSA_randombytes);
-		randombytes_init = &MLDSA_randombytes_init;
-		randombytes_free = &MLDSA_randombytes_free;
-		entropy_input = (uint8_t *) prng_output_stream;
-	} else {
-		// Only ML-DSA supported
-		goto err;
-	}
-
-	randombytes_init(entropy_input, NULL);
 
 	rc = OQS_SIG_sign_with_ctx_str(sig, signature, &sigLen, sigGen_msg, sigGen_msgLen, sigGen_ctx, sigGen_ctxLen, sigGen_sk);
 
@@ -665,7 +665,9 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
 		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
-		hexStringToByteArray(sigGen_ctx, sigGen_ctx_bytes);
+		if (ctxlen) {
+			hexStringToByteArray(sigGen_ctx, sigGen_ctx_bytes);
+		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 		rc = sig_gen_vector_ext(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_ctx_bytes, ctxlen, sigGen_sig_bytes);
@@ -755,7 +757,9 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
 		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
-		hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
+		if (ctxlen) {
+			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
+		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 		rc = sig_ver_vector_ext(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigVer_ctx_bytes, ctxlen, sigVerPassed);
