@@ -423,6 +423,9 @@ static int sig_gen_vector_ext(const char *method_name,
 	int rc = -1, ret = -1;
 	size_t sigLen;
 
+	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
+	void (*randombytes_free)(void) = NULL;
+
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
 		printf("[vectors_sig] %s was not enabled at compile-time.\n", method_name);
@@ -444,9 +447,6 @@ static int sig_gen_vector_ext(const char *method_name,
 		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
-
-	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-	void (*randombytes_free)(void) = NULL;
 
 	if (is_ml_dsa(method_name)) {
 		OQS_randombytes_custom_algorithm(&MLDSA_randombytes);
