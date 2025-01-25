@@ -30,20 +30,24 @@ OQS_KEM *OQS_KEM_hqc_128_new(void) {
 	return kem;
 }
 
-extern int PQCLEAN_HQC128_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCLEAN_HQC128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int PQCLEAN_HQC128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+// extern int PQCLEAN_HQC128_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+// extern int PQCLEAN_HQC128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+// extern int PQCLEAN_HQC128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+
+extern int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 OQS_API OQS_STATUS OQS_KEM_hqc_128_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	return (OQS_STATUS) PQCLEAN_HQC128_CLEAN_crypto_kem_keypair(public_key, secret_key);
+	return (OQS_STATUS)crypto_kem_keypair(public_key, secret_key);
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_128_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-	return (OQS_STATUS) PQCLEAN_HQC128_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+    return (OQS_STATUS)crypto_kem_enc(ciphertext, shared_secret, public_key);
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_128_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-	return (OQS_STATUS) PQCLEAN_HQC128_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+    return (OQS_STATUS)crypto_kem_dec(shared_secret, ciphertext, secret_key);
 }
 
 #endif
