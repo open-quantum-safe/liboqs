@@ -15,15 +15,15 @@
 #include <stdio.h>
 #endif
 
-static uint16_t mod(uint16_t i, uint16_t modulus);
-static void compute_syndromes(__m256i *syndromes, uint8_t *cdw);
-static uint16_t compute_elp(uint16_t *sigma, const uint16_t *syndromes);
-static void compute_roots(uint8_t *error, uint16_t *sigma);
-static void compute_z_poly(uint16_t *z, const uint16_t *sigma, uint16_t degree, const uint16_t *syndromes);
-static void compute_error_values(uint16_t *error_values, const uint16_t *z, const uint8_t *error);
-static void correct_errors(uint8_t *cdw, const uint16_t *error_values);
+static uint16_t HQC256_mod(uint16_t i, uint16_t modulus);
+static void HQC256_compute_syndromes(__m256i *syndromes, uint8_t *cdw);
+static uint16_t HQC256_compute_elp(uint16_t *sigma, const uint16_t *syndromes);
+static void HQC256_compute_roots(uint8_t *error, uint16_t *sigma);
+static void HQC256_compute_z_poly(uint16_t *z, const uint16_t *sigma, uint16_t degree, const uint16_t *syndromes);
+static void HQC256_compute_error_values(uint16_t *error_values, const uint16_t *z, const uint8_t *error);
+static void HQC256_correct_errors(uint8_t *cdw, const uint16_t *error_values);
 
-static const __m256i alpha_ij256_1[89] = {
+static const __m256i HQC256_alpha_ij256_1[89] = {
     {0x0010000800040002,0x001d008000400020,0x00cd00e80074003a,0x004c002600130087},
     {0x001d004000100004,0x004c001300cd0074,0x008f00ea00b4002d,0x009d006000180006},
     {0x00cd003a00400008,0x008f0075002d0026,0x002500270060000c,0x004600c100b50035},
@@ -114,7 +114,7 @@ static const __m256i alpha_ij256_1[89] = {
     {0x00af003a00e300fe,0x00320034002d0037,0x002500e0007c000c,0x006d00c100790097},
     {0x002200cd00ab00e1,0x0070001f008f00ae,0x004600f900330025,0x00a400b90048009e}
 };
-static const __m256i alpha_ij256_2[89] = {
+static const __m256i HQC256_alpha_ij256_2[89] = {
     {0x00b4005a002d0098,0x008f00c900ea0075,0x0018000c00060003,0x009d00c000600030},
     {0x006a00940025004e,0x0046009f00ee00b5,0x005d005000140005,0x005f00de00b90069},
     {0x00b900ba0050000a,0x0065002f006100a1,0x006b00e70078000f,0x00d900b600df007f},
@@ -205,7 +205,7 @@ static const __m256i alpha_ij256_2[89] = {
     {0x00f4002a00500045,0x0065001600aa00a1,0x00e500e7001b00e6,0x00e800ab00df0004},
     {0x006c00d10065000b,0x00d9008000f6006b,0x008d00d0005a0037,0x007700a2003b00c0}
 };
-static const __m256i alpha_ij256_3[89] = {
+static const __m256i HQC256_alpha_ij256_3[89] = {
     {0x0025009c004e0027,0x006a00350094004a,0x00ee007700b500d4,0x00460023009f00c1},
     {0x0065005e00990061,0x00fd0078001e0089,0x00fe00b1006b00d3,0x00d90071005b00df},
     {0x00d0001a00440086,0x003b00ed003e00ce,0x00b80017006600c5,0x00a80015002100a9},
@@ -296,7 +296,7 @@ static const __m256i alpha_ij256_3[89] = {
     {0x00d000b400dc0086,0x00a700ed003000c8,0x002300f900660094,0x00a8005d000900a9},
     {0x00a800a0004500b8,0x00e900e400c200f3,0x00a3000400fc00f0,0x0082008800130096}
 };
-static const __m256i alpha_ij256_4[89] = {
+static const __m256i HQC256_alpha_ij256_4[89] = {
     {0x0014000a0005008c,0x005d00a000500028,0x00000000006900ba,0x0000000000000000},
     {0x000d004400110043,0x0081006700d00034,0x0000000000f8003e,0x0000000000000000},
     {0x00e4009200550029,0x00fc009100bf0073,0x0000000000f100b3,0x0000000000000000},
@@ -394,7 +394,7 @@ static const __m256i alpha_ij256_4[89] = {
  * Coefficients of polynomial G
  * stored in 256-bit values
  **/
-static const __m256i param256[4] = {
+static const __m256i HQC256_param256[4] = {
     {0x0027003100a70031, 0x005b007c007900c8, 0x00470094003f00f0, 0x00650057007b0096},
     {0x0047009f00d70020, 0x00d20061007300c9, 0x00d9008d00b700ba, 0x00f3001f000c007b},
     {0x00ef009800db00b4, 0x00f60004008d0063, 0x00e80008009000bf, 0x00b2008d001b002f},
@@ -411,7 +411,7 @@ static const __m256i param256[4] = {
  * @param[in] i The integer whose modulo is taken
  * @param[in] modulus The modulus
  */
-static uint16_t mod(uint16_t i, uint16_t modulus) {
+static uint16_t HQC256_mod(uint16_t i, uint16_t modulus) {
     uint16_t tmp = i - modulus;
 
     // mask = 0xffff if(i < PARAM_GF_MUL_ORDER)
@@ -432,23 +432,23 @@ static uint16_t mod(uint16_t i, uint16_t modulus) {
  *
  * @param[out] poly Array of size (2*PARAM_DELTA + 1) receiving the coefficients of the generator polynomial
  */
-void compute_generator_poly(uint16_t *poly) {
+void HQC256_compute_generator_poly(uint16_t *poly) {
     poly[0] = 1;
     int tmp_degree = 0;
 
-    for (uint16_t i = 1; i < (2 * PARAM_DELTA + 1); ++i) {
+    for (uint16_t i = 1; i < (2 * HQC256_PARAM_DELTA + 1); ++i) {
 
         for (size_t j = tmp_degree; j; --j) {
-            poly[j] = gf_exp[mod(gf_log[poly[j]] + i, PARAM_GF_MUL_ORDER)] ^ poly[j - 1];
+            poly[j] = HQC256_gf_exp[HQC256_mod(HQC256_gf_log[poly[j]] + i, HQC256_PARAM_GF_MUL_ORDER)] ^ poly[j - 1];
         }
 
-        poly[0] = gf_exp[mod(gf_log[poly[0]] + i, PARAM_GF_MUL_ORDER)];
+        poly[0] = HQC256_gf_exp[HQC256_mod(HQC256_gf_log[poly[0]] + i, HQC256_PARAM_GF_MUL_ORDER)];
         poly[++tmp_degree] = 1;
 
     }
 
     printf("\n");
-    for (int i = 0 ; i < (PARAM_G); ++i) {
+    for (int i = 0 ; i < (HQC256_PARAM_G); ++i) {
         printf("%d, ", poly[i]);
     }
     printf("\n");
@@ -466,38 +466,38 @@ void compute_generator_poly(uint16_t *poly) {
  * @param[out] cdw Array of size VEC_N1_SIZE_64 receiving the encoded message
  * @param[in] msg Array of size VEC_K_SIZE_64 storing the message
  */
-void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
+void HQC256_reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
     uint8_t gate_value = 0;
 
     union {
-        uint16_t arr16[16 * CEIL_DIVIDE(PARAM_G, 16)];
+        uint16_t arr16[16 * HQC256_CEIL_DIVIDE(HQC256_PARAM_G, 16)];
         __m256i dummy;
     } tmp = {0};
 
-    uint8_t msg_bytes[PARAM_K] = {0};
-    uint8_t cdw_bytes[PARAM_N1] = {0};
+    uint8_t msg_bytes[HQC256_PARAM_K] = {0};
+    uint8_t cdw_bytes[HQC256_PARAM_N1] = {0};
 
     __m256i *tmp256 = (__m256i *)tmp.arr16;
 
-    memcpy(msg_bytes, msg, PARAM_K);
+    memcpy(msg_bytes, msg, HQC256_PARAM_K);
 
-    for (int32_t i = PARAM_K - 1; i >= 0; --i) {
-        gate_value = msg_bytes[i] ^ cdw_bytes[PARAM_N1 - PARAM_K - 1];
+    for (int32_t i = HQC256_PARAM_K - 1; i >= 0; --i) {
+        gate_value = msg_bytes[i] ^ cdw_bytes[HQC256_PARAM_N1 - HQC256_PARAM_K - 1];
         __m256i gate256 = _mm256_set1_epi16(gate_value);
-        tmp256[0] = gf_mul_vect(gate256, param256[0]);
-        tmp256[1] = gf_mul_vect(gate256, param256[1]);
-        tmp256[2] = gf_mul_vect(gate256, param256[2]);
-        tmp256[3] = gf_mul_vect(gate256, param256[3]);
+        tmp256[0] = HQC256_gf_mul_vect(gate256, HQC256_param256[0]);
+        tmp256[1] = HQC256_gf_mul_vect(gate256, HQC256_param256[1]);
+        tmp256[2] = HQC256_gf_mul_vect(gate256, HQC256_param256[2]);
+        tmp256[3] = HQC256_gf_mul_vect(gate256, HQC256_param256[3]);
 
-        for (size_t k = PARAM_N1 - PARAM_K - 1; k; --k) {
+        for (size_t k = HQC256_PARAM_N1 - HQC256_PARAM_K - 1; k; --k) {
             cdw_bytes[k] = cdw_bytes[k - 1] ^ tmp.arr16[k];
         }
 
         cdw_bytes[0] = tmp.arr16[0];
     }
 
-    memcpy(cdw_bytes + PARAM_N1 - PARAM_K, msg_bytes, PARAM_K);
-    memcpy(cdw, cdw_bytes, PARAM_N1);
+    memcpy(cdw_bytes + HQC256_PARAM_N1 - HQC256_PARAM_K, msg_bytes, HQC256_PARAM_K);
+    memcpy(cdw, cdw_bytes, HQC256_PARAM_N1);
 }
 
 
@@ -508,27 +508,27 @@ void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
  * @param[out] syndromes Array of size 2 * PARAM_DELTA receiving the computed syndromes
  * @param[in] cdw Array of size PARAM_N1 storing the received vector
  */
-void compute_syndromes(__m256i *syndromes256, uint8_t *cdw) {
+void HQC256_compute_syndromes(__m256i *syndromes256, uint8_t *cdw) {
     uint16_t *syndromes = (uint16_t *) syndromes256;
 
     syndromes256[0] = _mm256_set1_epi16(cdw[0]);
-    for (size_t i = 0; i < PARAM_N1 - 1; ++i) {
-        syndromes256[0] ^= gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), alpha_ij256_1[i]);
+    for (size_t i = 0; i < HQC256_PARAM_N1 - 1; ++i) {
+        syndromes256[0] ^= HQC256_gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), HQC256_alpha_ij256_1[i]);
     }
 
     syndromes256[1] = _mm256_set1_epi16(cdw[0]);
-    for (size_t i = 0; i < PARAM_N1 - 1; ++i) { 
-        syndromes256[1] ^= gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), alpha_ij256_2[i]);
+    for (size_t i = 0; i < HQC256_PARAM_N1 - 1; ++i) { 
+        syndromes256[1] ^= HQC256_gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), HQC256_alpha_ij256_2[i]);
     }
 
     syndromes256[2] = _mm256_set1_epi16(cdw[0]);
-    for (size_t i = 0; i < PARAM_N1 - 1; ++i) {
-        syndromes256[2] ^= gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), alpha_ij256_3[i]);
+    for (size_t i = 0; i < HQC256_PARAM_N1 - 1; ++i) {
+        syndromes256[2] ^= HQC256_gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), HQC256_alpha_ij256_3[i]);
     }
 
     __m256i last_syndromes256 = _mm256_set1_epi16(cdw[0]);
-    for (size_t i = 0; i < PARAM_N1 - 1; ++i) {
-        last_syndromes256 ^= gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), alpha_ij256_4[i]);
+    for (size_t i = 0; i < HQC256_PARAM_N1 - 1; ++i) {
+        last_syndromes256 ^= HQC256_gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), HQC256_alpha_ij256_4[i]);
     }
 
     __m128i *s128 = (__m128i *) &last_syndromes256;
@@ -557,12 +557,12 @@ void compute_syndromes(__m256i *syndromes256, uint8_t *cdw) {
  * @param[out] sigma Array of size (at least) PARAM_DELTA receiving the ELP
  * @param[in] syndromes Array of size (at least) 2*PARAM_DELTA storing the syndromes
  */
-static uint16_t compute_elp(uint16_t *sigma, const uint16_t *syndromes) {
+static uint16_t HQC256_compute_elp(uint16_t *sigma, const uint16_t *syndromes) {
     uint16_t deg_sigma = 0;
     uint16_t deg_sigma_p = 0;
     uint16_t deg_sigma_copy = 0;
-    uint16_t sigma_copy[PARAM_DELTA + 1] = {0};
-    uint16_t X_sigma_p[PARAM_DELTA + 1] = {0, 1};
+    uint16_t sigma_copy[HQC256_PARAM_DELTA + 1] = {0};
+    uint16_t X_sigma_p[HQC256_PARAM_DELTA + 1] = {0, 1};
     uint16_t pp = (uint16_t) -1; // 2*rho
     uint16_t d_p = 1;
     uint16_t d = syndromes[0];
@@ -575,15 +575,15 @@ static uint16_t compute_elp(uint16_t *sigma, const uint16_t *syndromes) {
     uint16_t i;
 
     sigma[0] = 1;
-    for (mu = 0; (mu < (2 * PARAM_DELTA)); ++mu) {
+    for (mu = 0; (mu < (2 * HQC256_PARAM_DELTA)); ++mu) {
         // Save sigma in case we need it to update X_sigma_p
-        memcpy(sigma_copy, sigma, 2 * (PARAM_DELTA));
+        memcpy(sigma_copy, sigma, 2 * (HQC256_PARAM_DELTA));
         deg_sigma_copy = deg_sigma;
 
-        dd = gf_mul(d, gf_inverse(d_p));
+        dd = HQC256_gf_mul(d, HQC256_gf_inverse(d_p));
 
-        for (i = 1; (i <= mu + 1) && (i <= PARAM_DELTA); ++i) {
-            sigma[i] ^= gf_mul(dd, X_sigma_p[i]);
+        for (i = 1; (i <= mu + 1) && (i <= HQC256_PARAM_DELTA); ++i) {
+            sigma[i] ^= HQC256_gf_mul(dd, X_sigma_p[i]);
         }
 
         deg_X = mu - pp;
@@ -599,21 +599,21 @@ static uint16_t compute_elp(uint16_t *sigma, const uint16_t *syndromes) {
         mask12 = mask1 & mask2;
         deg_sigma ^= mask12 & (deg_X_sigma_p ^ deg_sigma);
 
-        if (mu == (2 * PARAM_DELTA - 1)) {
+        if (mu == (2 * HQC256_PARAM_DELTA - 1)) {
             break;
         }
 
         pp ^= mask12 & (mu ^ pp);
         d_p ^= mask12 & (d ^ d_p);
-        for (i = PARAM_DELTA; i; --i) {
+        for (i = HQC256_PARAM_DELTA; i; --i) {
             X_sigma_p[i] = (mask12 & sigma_copy[i - 1]) ^ (~mask12 & X_sigma_p[i - 1]);
         }
 
         deg_sigma_p ^= mask12 & (deg_sigma_copy ^ deg_sigma_p);
         d = syndromes[mu + 1];
 
-        for (i = 1; (i <= mu + 1) && (i <= PARAM_DELTA); ++i) {
-            d ^= gf_mul(sigma[i], syndromes[mu + 1 - i]);
+        for (i = 1; (i <= mu + 1) && (i <= HQC256_PARAM_DELTA); ++i) {
+            d ^= HQC256_gf_mul(sigma[i], syndromes[mu + 1 - i]);
         }
     }
 
@@ -631,11 +631,11 @@ static uint16_t compute_elp(uint16_t *sigma, const uint16_t *syndromes) {
  * @param[out] error_compact Array of PARAM_DELTA + PARAM_N1 elements receiving a compact representation of the vector error
  * @param[in] sigma Array of 2^PARAM_FFT elements storing the error locator polynomial
  */
-static void compute_roots(uint8_t *error, uint16_t *sigma) {
-    uint16_t w[1 << PARAM_M] = {0};
+static void HQC256_compute_roots(uint8_t *error, uint16_t *sigma) {
+    uint16_t w[1 << HQC256_PARAM_M] = {0};
 
-    fft(w, sigma, PARAM_DELTA + 1);
-    fft_retrieve_error_poly(error, w);
+    HQC256_fft(w, sigma, HQC256_PARAM_DELTA + 1);
+    HQC256_fft_retrieve_error_poly(error, w);
 }
 
 
@@ -650,25 +650,25 @@ static void compute_roots(uint8_t *error, uint16_t *sigma) {
  * @param[in] degree Integer that is the degree of polynomial sigma
  * @param[in] syndromes Array of 2 * PARAM_DELTA storing the syndromes
  */
-static void compute_z_poly(uint16_t *z, const uint16_t *sigma, uint16_t degree, const uint16_t *syndromes) {
+static void HQC256_compute_z_poly(uint16_t *z, const uint16_t *sigma, uint16_t degree, const uint16_t *syndromes) {
     size_t i, j;
     uint16_t mask;
 
     z[0] = 1;
 
-    for (i = 1; i < PARAM_DELTA + 1; ++i) {
+    for (i = 1; i < HQC256_PARAM_DELTA + 1; ++i) {
         mask = -((uint16_t) (i - degree - 1) >> 15);
         z[i] = mask & sigma[i];
     }
 
     z[1] ^= syndromes[0];
 
-    for (i = 2; i <= PARAM_DELTA; ++i) {
+    for (i = 2; i <= HQC256_PARAM_DELTA; ++i) {
         mask = -((uint16_t) (i - degree - 1) >> 15);
         z[i] ^= mask & syndromes[i - 1];
 
         for (j = 1; j < i; ++j) {
-            z[i] ^= mask & gf_mul(sigma[j], syndromes[i - j - 1]);
+            z[i] ^= mask & HQC256_gf_mul(sigma[j], syndromes[i - j - 1]);
         }
     }
 }
@@ -685,9 +685,9 @@ static void compute_z_poly(uint16_t *z, const uint16_t *sigma, uint16_t degree, 
  * @param[in] z_degree Integer that is the degree of polynomial z(x)
  * @param[in] error_compact Array of PARAM_DELTA + PARAM_N1 storing compact representation of the error
  */
-static void compute_error_values(uint16_t *error_values, const uint16_t *z, const uint8_t *error) {
-    uint16_t beta_j[PARAM_DELTA] = {0};
-    uint16_t e_j[PARAM_DELTA] = {0};
+static void HQC256_compute_error_values(uint16_t *error_values, const uint16_t *z, const uint8_t *error) {
+    uint16_t beta_j[HQC256_PARAM_DELTA] = {0};
+    uint16_t e_j[HQC256_PARAM_DELTA] = {0};
 
     uint16_t delta_counter;
     uint16_t delta_real_value;
@@ -701,12 +701,12 @@ static void compute_error_values(uint16_t *error_values, const uint16_t *z, cons
 
     // Compute the beta_{j_i} page 31 of the documentation
     delta_counter = 0;
-    for (size_t i = 0; i < PARAM_N1; i++) {
+    for (size_t i = 0; i < HQC256_PARAM_N1; i++) {
         found = 0;
         mask1 = (uint16_t) (-((int32_t)error[i]) >> 31); // error[i] != 0
-        for (size_t j = 0; j < PARAM_DELTA; j++) {
+        for (size_t j = 0; j < HQC256_PARAM_DELTA; j++) {
             mask2 = ~((uint16_t) (-((int32_t) j ^ delta_counter) >> 31)); // j == delta_counter
-            beta_j[j] += mask1 & mask2 & gf_exp[i];
+            beta_j[j] += mask1 & mask2 & HQC256_gf_exp[i];
             found += mask1 & mask2 & 1;
         }
         delta_counter += found;
@@ -714,29 +714,29 @@ static void compute_error_values(uint16_t *error_values, const uint16_t *z, cons
     delta_real_value = delta_counter;
 
     // Compute the e_{j_i} page 31 of the documentation
-    for (size_t i = 0; i < PARAM_DELTA; ++i) {
+    for (size_t i = 0; i < HQC256_PARAM_DELTA; ++i) {
         tmp1 = 1;
         tmp2 = 1;
-        inverse = gf_inverse(beta_j[i]);
+        inverse = HQC256_gf_inverse(beta_j[i]);
         inverse_power_j = 1;
 
-        for (size_t j = 1; j <= PARAM_DELTA; ++j) {
-            inverse_power_j = gf_mul(inverse_power_j, inverse);
-            tmp1 ^= gf_mul(inverse_power_j, z[j]);
+        for (size_t j = 1; j <= HQC256_PARAM_DELTA; ++j) {
+            inverse_power_j = HQC256_gf_mul(inverse_power_j, inverse);
+            tmp1 ^= HQC256_gf_mul(inverse_power_j, z[j]);
         }
-        for (size_t k = 1; k < PARAM_DELTA; ++k) {
-            tmp2 = gf_mul(tmp2, (1 ^ gf_mul(inverse, beta_j[(i + k) % PARAM_DELTA])));
+        for (size_t k = 1; k < HQC256_PARAM_DELTA; ++k) {
+            tmp2 = HQC256_gf_mul(tmp2, (1 ^ HQC256_gf_mul(inverse, beta_j[(i + k) % HQC256_PARAM_DELTA])));
         }
         mask1 = (uint16_t) (((int16_t) i - delta_real_value) >> 15); // i < delta_real_value
-        e_j[i] = mask1 & gf_mul(tmp1, gf_inverse(tmp2));
+        e_j[i] = mask1 & HQC256_gf_mul(tmp1, HQC256_gf_inverse(tmp2));
     }
 
     // Place the delta e_{j_i} values at the right coordinates of the output vector
     delta_counter = 0;
-    for (size_t i = 0; i < PARAM_N1; ++i) {
+    for (size_t i = 0; i < HQC256_PARAM_N1; ++i) {
         found = 0;
         mask1 = (uint16_t) (-((int32_t)error[i]) >> 31); // error[i] != 0
-        for (size_t j = 0; j < PARAM_DELTA; j++) {
+        for (size_t j = 0; j < HQC256_PARAM_DELTA; j++) {
             mask2 = ~((uint16_t) (-((int32_t) j ^ delta_counter) >> 31)); // j == delta_counter
             error_values[i] += mask1 & mask2 & e_j[j];
             found += mask1 & mask2 & 1;
@@ -754,8 +754,8 @@ static void compute_error_values(uint16_t *error_values, const uint16_t *z, cons
  * @param[in] error Array of the error vector
  * @param[in] error_values Array of PARAM_DELTA elements storing the error values
  */
-static void correct_errors(uint8_t *cdw, const uint16_t *error_values) {
-    for (size_t i = 0; i < PARAM_N1; ++i) {
+static void HQC256_correct_errors(uint8_t *cdw, const uint16_t *error_values) {
+    for (size_t i = 0; i < HQC256_PARAM_N1; ++i) {
         cdw[i] ^= error_values[i];
     }
 }
@@ -779,44 +779,44 @@ static void correct_errors(uint8_t *cdw, const uint16_t *error_values) {
  * @param[out] msg Array of size VEC_K_SIZE_64 receiving the decoded message
  * @param[in] cdw Array of size VEC_N1_SIZE_64 storing the received word
  */
-void reed_solomon_decode(uint64_t* msg, uint64_t* cdw) {
-    uint8_t cdw_bytes[PARAM_N1] = {0};
-    __m256i syndromes256[SYND_SIZE_256];
+void HQC256_reed_solomon_decode(uint64_t* msg, uint64_t* cdw) {
+    uint8_t cdw_bytes[HQC256_PARAM_N1] = {0};
+    __m256i syndromes256[HQC256_SYND_SIZE_256];
     uint16_t *syndromes = (uint16_t *) syndromes256;
-    uint16_t sigma[1 << PARAM_FFT] = {0};
-    uint8_t error[1 << PARAM_M] = {0};
-    uint16_t z[PARAM_N1] = {0};
-    uint16_t error_values[PARAM_N1] = {0};
+    uint16_t sigma[1 << HQC256_PARAM_FFT] = {0};
+    uint8_t error[1 << HQC256_PARAM_M] = {0};
+    uint16_t z[HQC256_PARAM_N1] = {0};
+    uint16_t error_values[HQC256_PARAM_N1] = {0};
     uint16_t deg;
 
     // Copy the vector in an array of bytes
-    memcpy(cdw_bytes, cdw, PARAM_N1);
+    memcpy(cdw_bytes, cdw, HQC256_PARAM_N1);
 
     // Calculate the 2*PARAM_DELTA syndromes
-    compute_syndromes(syndromes256, cdw_bytes);
+    HQC256_compute_syndromes(syndromes256, cdw_bytes);
 
     // Compute the error locator polynomial sigma
     // Sigma's degree is at most PARAM_DELTA but the FFT requires the extra room
-    deg = compute_elp(sigma, syndromes);
+    deg = HQC256_compute_elp(sigma, syndromes);
 
     // Compute the error polynomial error
-    compute_roots(error, sigma);
+    HQC256_compute_roots(error, sigma);
 
     // Compute the polynomial z(x)
-    compute_z_poly(z, sigma, deg, syndromes);
+    HQC256_compute_z_poly(z, sigma, deg, syndromes);
 
     // Compute the error values
-    compute_error_values(error_values, z, error);
+    HQC256_compute_error_values(error_values, z, error);
 
     // Correct the errors
-    correct_errors(cdw_bytes, error_values);
+    HQC256_correct_errors(cdw_bytes, error_values);
 
     // Retrieve the message from the decoded codeword
-    memcpy(msg, cdw_bytes + (PARAM_G - 1) , PARAM_K);
+    memcpy(msg, cdw_bytes + (HQC256_PARAM_G - 1) , HQC256_PARAM_K);
 
     #ifdef VERBOSE
         printf("\n\nThe syndromes: ");
-        for (size_t i = 0 ; i < 2*PARAM_DELTA ; ++i) {
+        for (size_t i = 0 ; i < 2*HQC256_PARAM_DELTA ; ++i) {
             printf("%u ", syndromes[i]);
         }
         printf("\n\nThe error locator polynomial: sigma(x) = ");
@@ -825,7 +825,7 @@ void reed_solomon_decode(uint64_t* msg, uint64_t* cdw) {
             printf("%u", sigma[0]);
             first_coeff = false;
         }
-        for (size_t i = 1 ; i < (1 << PARAM_FFT) ; ++i) {
+        for (size_t i = 1 ; i < (1 << HQC256_PARAM_FFT) ; ++i) {
             if (sigma[i] == 0)
                 continue;
             if (!first_coeff)
@@ -847,7 +847,7 @@ void reed_solomon_decode(uint64_t* msg, uint64_t* cdw) {
             printf("%u", z[0]);
             first_coeff_1 = false;
         }
-        for (size_t i = 1 ; i < (PARAM_DELTA + 1) ; ++i) {
+        for (size_t i = 1 ; i < (HQC256_PARAM_DELTA + 1) ; ++i) {
             if (z[i] == 0)
                 continue;
             if (!first_coeff_1)
@@ -865,7 +865,7 @@ void reed_solomon_decode(uint64_t* msg, uint64_t* cdw) {
     
         printf("\n\nThe pairs of (error locator numbers, error values): ");
         size_t j = 0;
-        for (size_t i = 0 ; i < PARAM_N1 ; ++i) {
+        for (size_t i = 0 ; i < HQC256_PARAM_N1 ; ++i) {
             if(error[i]){
                 printf("(%zu, %d) ", i, error_values[j]);
                 j++;

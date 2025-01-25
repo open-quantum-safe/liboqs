@@ -10,33 +10,33 @@
 #include <x86intrin.h>
 
 // number of repeated code words
-#define MULTIPLICITY                   CEIL_DIVIDE(PARAM_N2, 128)
+#define HQC256_MULTIPLICITY                   HQC256_CEIL_DIVIDE(HQC256_PARAM_N2, 128)
 
 // codeword is 128 bits, seen multiple ways
 typedef union {
     __mmask16 mask[8];
     uint16_t u16[8];
     uint32_t u32[4];
-} codeword;
+} HQC256_codeword;
 
 typedef union {
     __m256i mm;
     uint16_t u16[16];
-} vector;
+} HQC256_vector;
 
 // Expanded codeword is 16*128 bits, seen multiple ways
 typedef union {
     __m256i mm[8];
     int16_t i16[128];
-} expandedCodeword;
+} HQC256_expandedCodeword;
 
 // copy bit 0 into all bits of a 64 bit value
-#define BIT0MASK(x) (int64_t)(-((x) & 1))
+#define HQC256_BIT0MASK(x) (int64_t)(-((x) & 1))
 
-void encode(codeword *word, int32_t message);
-void expand_and_sum(expandedCodeword *dst, codeword src[]);
-void hadamard(expandedCodeword *src, expandedCodeword *dst);
-int32_t find_peaks(expandedCodeword *transform);
+void HQC256_encode(HQC256_codeword *word, int32_t message);
+void HQC256_expand_and_sum(HQC256_expandedCodeword *dst, HQC256_codeword src[]);
+void HQC256_hadamard(HQC256_expandedCodeword *src, HQC256_expandedCodeword *dst);
+int32_t HQC256_find_peaks(HQC256_expandedCodeword *transform);
 
 
 
@@ -57,20 +57,20 @@ int32_t find_peaks(expandedCodeword *transform);
  * @param[out] word An RM(1,7) codeword
  * @param[in] message A message to encode
  */
-inline void encode(codeword *word, int32_t message) {
+inline void HQC256_encode(HQC256_codeword *word, int32_t message) {
     int32_t first_word;
-    first_word = BIT0MASK(message >> 7);
-    first_word ^= BIT0MASK(message >> 0) & 0xaaaaaaaa;
-    first_word ^= BIT0MASK(message >> 1) & 0xcccccccc;
-    first_word ^= BIT0MASK(message >> 2) & 0xf0f0f0f0;
-    first_word ^= BIT0MASK(message >> 3) & 0xff00ff00;
-    first_word ^= BIT0MASK(message >> 4) & 0xffff0000;
+    first_word = HQC256_BIT0MASK(message >> 7);
+    first_word ^= HQC256_BIT0MASK(message >> 0) & 0xaaaaaaaa;
+    first_word ^= HQC256_BIT0MASK(message >> 1) & 0xcccccccc;
+    first_word ^= HQC256_BIT0MASK(message >> 2) & 0xf0f0f0f0;
+    first_word ^= HQC256_BIT0MASK(message >> 3) & 0xff00ff00;
+    first_word ^= HQC256_BIT0MASK(message >> 4) & 0xffff0000;
     word->u32[0] = first_word;
-    first_word ^= BIT0MASK(message >> 5);
+    first_word ^= HQC256_BIT0MASK(message >> 5);
     word->u32[1] = first_word;
-    first_word ^= BIT0MASK(message >> 6);
+    first_word ^= HQC256_BIT0MASK(message >> 6);
     word->u32[3] = first_word;
-    first_word ^= BIT0MASK(message >> 5);
+    first_word ^= HQC256_BIT0MASK(message >> 5);
     word->u32[2] = first_word;
     return;
 }
@@ -89,7 +89,7 @@ inline void encode(codeword *word, int32_t message) {
  * @param[out] dst Structure that contain the expanded codeword
  * @param[in] src Structure that contain the codeword
  */
-inline void expand_and_sum(expandedCodeword *dst, codeword src[]) {
+inline void HQC256_expand_and_sum(HQC256_expandedCodeword *dst, HQC256_codeword src[]) {
     // start converting the first copy
     for (size_t part = 0; part < 8; part++) {
         for (size_t i = 0; i < 16; ++i) {
@@ -97,7 +97,7 @@ inline void expand_and_sum(expandedCodeword *dst, codeword src[]) {
         }
     }
     // sum the rest of the copies
-    for (size_t copy = 1; copy < MULTIPLICITY; copy++) {
+    for (size_t copy = 1; copy < HQC256_MULTIPLICITY; copy++) {
         for (size_t part = 0 ; part < 8 ; part++) {
             for (size_t i = 0; i < 16; ++i) {
                 dst->i16[(part << 4) + i] += src[copy].u16[part] >> i & 1;
@@ -117,12 +117,12 @@ inline void expand_and_sum(expandedCodeword *dst, codeword src[]) {
  * @param[out] src Structure that contain the expanded codeword
  * @param[out] dst Structure that contain the expanded codeword
  */
-inline void hadamard(expandedCodeword *src, expandedCodeword *dst) {
+inline void HQC256_hadamard(HQC256_expandedCodeword *src, HQC256_expandedCodeword *dst) {
     // the passes move data:
     // src -> dst -> src -> dst -> src -> dst -> src -> dst
     // using p1 and p2 alternately
-    expandedCodeword *p1 = src;
-    expandedCodeword *p2 = dst;
+    HQC256_expandedCodeword *p1 = src;
+    HQC256_expandedCodeword *p2 = dst;
     for (size_t pass = 0; pass < 7; pass++) {
         // warning: hadd works "within lanes" as Intel call it
         // so you have to swap the middle 64 bit blocks of the result
@@ -131,7 +131,7 @@ inline void hadamard(expandedCodeword *src, expandedCodeword *dst) {
             p2->mm[part + 4] = _mm256_permute4x64_epi64(_mm256_hsub_epi16(p1->mm[2 * part], p1->mm[2 * part + 1]), 0xd8);
         }
         // swap p1, p2 for next round
-        expandedCodeword *p3 = p1;
+        HQC256_expandedCodeword *p3 = p1;
         p1 = p2;
         p2 = p3;
     }
@@ -154,17 +154,17 @@ inline void hadamard(expandedCodeword *src, expandedCodeword *dst) {
  *
  * Our decoding differs in two ways:
  * - We take W instead of 2 * W - 1 (so the entries are 0,1 instead of -1,1)
- * - We take the sum of the repititions (so the entries are 0..MULTIPLICITY)
- * This implies that we have to subtract 64M (M=MULTIPLICITY)
+ * - We take the sum of the repititions (so the entries are 0..HQC256_MULTIPLICITY)
+ * This implies that we have to subtract 64M (M=HQC256_MULTIPLICITY)
  * from the first entry to make sure the first codewords is handled properly
  * and that the entries vary from -64M to 64M.
  * -64M or 64M stands for a perfect codeword.
  *
  * @param[in] transform Structure that contain the expanded codeword
  */
-inline int32_t find_peaks(expandedCodeword *transform) {
+inline int32_t HQC256_find_peaks(HQC256_expandedCodeword *transform) {
     __m256i bitmap, abs_rows[8], bound, active_row, max_abs_rows;
-    vector peak_mask;
+    HQC256_vector peak_mask;
     // compute absolute value of transform
     for (size_t i = 0; i < 8; i++) {
         abs_rows[i] = _mm256_abs_epi16(transform->mm[i]);
@@ -177,8 +177,8 @@ inline int32_t find_peaks(expandedCodeword *transform) {
 
     // do binary search for the highest value that is lower than the maximum
     int32_t lower = 1;
-    // this gives 64, 128 or 256 for MULTIPLICITY = 2, 4, 6
-    int32_t width = 1 << (5 + MULTIPLICITY / 2);
+    // this gives 64, 128 or 256 for HQC256_MULTIPLICITY = 2, 4, 6
+    int32_t width = 1 << (5 + HQC256_MULTIPLICITY / 2);
 
     while (width > 1) {
         width >>= 1;
@@ -256,22 +256,22 @@ inline int32_t find_peaks(expandedCodeword *transform) {
  * @brief Encodes the received word
  *
  * The message consists of N1 bytes each byte is encoded into PARAM_N2 bits,
- * or MULTIPLICITY repeats of 128 bits
+ * or HQC256_MULTIPLICITY repeats of 128 bits
  *
  * @param[out] cdw Array of size VEC_N1N2_SIZE_64 receiving the encoded message
  * @param[in] msg Array of size VEC_N1_SIZE_64 storing the message
  */
-void reed_muller_encode(uint64_t *cdw, const uint64_t *msg) {
+void HQC256_reed_muller_encode(uint64_t *cdw, const uint64_t *msg) {
     uint8_t *message_array = (uint8_t *) msg;
-    codeword *codeArray = (codeword *) cdw;
-    for (size_t i = 0; i < VEC_N1_SIZE_BYTES; i++) {
-        // fill entries i * MULTIPLICITY to (i+1) * MULTIPLICITY
-        int32_t pos = i * MULTIPLICITY;
+    HQC256_codeword *codeArray = (HQC256_codeword *) cdw;
+    for (size_t i = 0; i < HQC256_VEC_N1_SIZE_BYTES; i++) {
+        // fill entries i * HQC256_MULTIPLICITY to (i+1) * HQC256_MULTIPLICITY
+        int32_t pos = i * HQC256_MULTIPLICITY;
         // encode first word
-        encode(&codeArray[pos], message_array[i]);
+        HQC256_encode(&codeArray[pos], message_array[i]);
         // copy to other identical codewords
-        for (size_t copy = 1; copy < MULTIPLICITY; copy++) {
-            memcpy(&codeArray[pos + copy], &codeArray[pos], sizeof(codeword));
+        for (size_t copy = 1; copy < HQC256_MULTIPLICITY; copy++) {
+            memcpy(&codeArray[pos + copy], &codeArray[pos], sizeof(HQC256_codeword));
         }
     }
     return;
@@ -288,19 +288,19 @@ void reed_muller_encode(uint64_t *cdw, const uint64_t *msg) {
  * @param[out] msg Array of size VEC_N1_SIZE_64 receiving the decoded message
  * @param[in] cdw Array of size VEC_N1N2_SIZE_64 storing the received word
  */
-void reed_muller_decode(uint64_t *msg, const uint64_t *cdw) {
+void HQC256_reed_muller_decode(uint64_t *msg, const uint64_t *cdw) {
     uint8_t *message_array = (uint8_t *) msg;
-    codeword *codeArray = (codeword *) cdw;
-    expandedCodeword expanded;
-    for (size_t i = 0; i < VEC_N1_SIZE_BYTES; i++) {
+    HQC256_codeword *codeArray = (HQC256_codeword *) cdw;
+    HQC256_expandedCodeword expanded;
+    for (size_t i = 0; i < HQC256_VEC_N1_SIZE_BYTES; i++) {
         // collect the codewords
-        expand_and_sum(&expanded, &codeArray[i * MULTIPLICITY]);
+        HQC256_expand_and_sum(&expanded, &codeArray[i * HQC256_MULTIPLICITY]);
         // apply hadamard transform
-        expandedCodeword transform;
-        hadamard(&expanded, &transform);
+        HQC256_expandedCodeword transform;
+        HQC256_hadamard(&expanded, &transform);
         // fix the first entry to get the half Hadamard transform
-        transform.i16[0] -= 64 * MULTIPLICITY;
+        transform.i16[0] -= 64 * HQC256_MULTIPLICITY;
         // finish the decoding
-        message_array[i] = find_peaks(&transform);
+        message_array[i] = HQC256_find_peaks(&transform);
     }
 }

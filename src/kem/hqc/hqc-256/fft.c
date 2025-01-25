@@ -15,11 +15,11 @@
 #include <stdint.h>
 #include <string.h>
 
-static void compute_fft_betas(uint16_t *betas);
-static void compute_subset_sums(uint16_t *subset_sums, const uint16_t *set, uint16_t set_size);
-static void radix(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f);
-static void radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f);
-static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32_t m_f, const uint16_t *betas);
+static void HQC256_compute_fft_betas(uint16_t *betas);
+static void HQC256_compute_subset_sums(uint16_t *subset_sums, const uint16_t *set, uint16_t set_size);
+static void HQC256_radix(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f);
+static void HQC256_radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f);
+static void HQC256_fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32_t m_f, const uint16_t *betas);
 
 
 /**
@@ -27,10 +27,10 @@ static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32
  *
  * @param[out] betas Array of size PARAM_M-1
  */
-static void compute_fft_betas(uint16_t *betas) {
+static void HQC256_compute_fft_betas(uint16_t *betas) {
     size_t i;
-    for (i = 0; i < PARAM_M - 1; ++i) {
-        betas[i] = 1 << (PARAM_M - 1 - i);
+    for (i = 0; i < HQC256_PARAM_M - 1; ++i) {
+        betas[i] = 1 << (HQC256_PARAM_M - 1 - i);
     }
 }
 
@@ -46,7 +46,7 @@ static void compute_fft_betas(uint16_t *betas) {
  * @param[in] set Array of set_size elements
  * @param[in] set_size Size of the array set
  */
-static void compute_subset_sums(uint16_t *subset_sums, const uint16_t *set, uint16_t set_size) {
+static void HQC256_compute_subset_sums(uint16_t *subset_sums, const uint16_t *set, uint16_t set_size) {
     uint16_t i, j;
     subset_sums[0] = 0;
 
@@ -71,7 +71,7 @@ static void compute_subset_sums(uint16_t *subset_sums, const uint16_t *set, uint
  * @param[in] f Array of size a power of 2
  * @param[in] m_f 2^{m_f} is the smallest power of 2 greater or equal to the number of coefficients of f
  */
-static void radix(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f) {
+static void HQC256_radix(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f) {
     switch (m_f) {
         case 4:
             f0[4] = f[8] ^ f[12];
@@ -117,19 +117,19 @@ static void radix(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f) {
             break;
 
         default:
-            radix_big(f0, f1, f, m_f);
+            HQC256_radix_big(f0, f1, f, m_f);
             break;
     }
 }
 
-static void radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f) {
-    uint16_t Q[2 * (1 << (PARAM_FFT - 2)) + 1] = {0};
-    uint16_t R[2 * (1 << (PARAM_FFT - 2)) + 1] = {0};
+static void HQC256_radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_f) {
+    uint16_t Q[2 * (1 << (HQC256_PARAM_FFT - 2)) + 1] = {0};
+    uint16_t R[2 * (1 << (HQC256_PARAM_FFT - 2)) + 1] = {0};
 
-    uint16_t Q0[1 << (PARAM_FFT - 2)] = {0};
-    uint16_t Q1[1 << (PARAM_FFT - 2)] = {0};
-    uint16_t R0[1 << (PARAM_FFT - 2)] = {0};
-    uint16_t R1[1 << (PARAM_FFT - 2)] = {0};
+    uint16_t Q0[1 << (HQC256_PARAM_FFT - 2)] = {0};
+    uint16_t Q1[1 << (HQC256_PARAM_FFT - 2)] = {0};
+    uint16_t R0[1 << (HQC256_PARAM_FFT - 2)] = {0};
+    uint16_t R1[1 << (HQC256_PARAM_FFT - 2)] = {0};
 
     size_t i, n;
 
@@ -144,8 +144,8 @@ static void radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_
         R[n + i] ^= Q[i];
     }
 
-    radix(Q0, Q1, Q, m_f - 1);
-    radix(R0, R1, R, m_f - 1);
+    HQC256_radix(Q0, Q1, Q, m_f - 1);
+    HQC256_radix(R0, R1, R, m_f - 1);
 
     memcpy(f0, R0, 2 * n);
     memcpy(f0 + n, Q0, 2 * n);
@@ -167,15 +167,15 @@ static void radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_
  * @param[in] m_f Number of coefficients of f (one more than its degree)
  * @param[in] betas FFT constants
  */
-static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32_t m_f, const uint16_t *betas) {
-    uint16_t f0[1 << (PARAM_FFT - 2)] = {0};
-    uint16_t f1[1 << (PARAM_FFT - 2)] = {0};
-    uint16_t gammas[PARAM_M - 2] = {0};
-    uint16_t deltas[PARAM_M - 2] = {0};
-    uint16_t gammas_sums[1 << (PARAM_M - 2)] = {0};
-    uint16_t u[1 << (PARAM_M - 2)] = {0};
-    uint16_t v[1 << (PARAM_M - 2)] = {0};
-    uint16_t tmp[PARAM_M - (PARAM_FFT - 1)] = {0};
+static void HQC256_fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32_t m_f, const uint16_t *betas) {
+    uint16_t f0[1 << (HQC256_PARAM_FFT - 2)] = {0};
+    uint16_t f1[1 << (HQC256_PARAM_FFT - 2)] = {0};
+    uint16_t gammas[HQC256_PARAM_M - 2] = {0};
+    uint16_t deltas[HQC256_PARAM_M - 2] = {0};
+    uint16_t gammas_sums[1 << (HQC256_PARAM_M - 2)] = {0};
+    uint16_t u[1 << (HQC256_PARAM_M - 2)] = {0};
+    uint16_t v[1 << (HQC256_PARAM_M - 2)] = {0};
+    uint16_t tmp[HQC256_PARAM_M - (HQC256_PARAM_FFT - 1)] = {0};
 
     uint16_t beta_m_pow;
     size_t i, j, k;
@@ -184,7 +184,7 @@ static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32
     // Step 1
     if (m_f == 1) {
         for (i = 0; i < m; ++i) {
-            tmp[i] = gf_mul(betas[i], f[1]);
+            tmp[i] = HQC256_gf_mul(betas[i], f[1]);
         }
 
         w[0] = f[0];
@@ -205,25 +205,25 @@ static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32
         x = 1;
         x <<= m_f;
         for (i = 1; i < x; ++i) {
-            beta_m_pow = gf_mul(beta_m_pow, betas[m - 1]);
-            f[i] = gf_mul(beta_m_pow, f[i]);
+            beta_m_pow = HQC256_gf_mul(beta_m_pow, betas[m - 1]);
+            f[i] = HQC256_gf_mul(beta_m_pow, f[i]);
         }
     }
 
     // Step 3
-    radix(f0, f1, f, m_f);
+    HQC256_radix(f0, f1, f, m_f);
 
     // Step 4: compute gammas and deltas
     for (i = 0; i + 1 < m; ++i) {
-        gammas[i] = gf_mul(betas[i], gf_inverse(betas[m - 1]));
-        deltas[i] = gf_square(gammas[i]) ^ gammas[i];
+        gammas[i] = HQC256_gf_mul(betas[i], HQC256_gf_inverse(betas[m - 1]));
+        deltas[i] = HQC256_gf_square(gammas[i]) ^ gammas[i];
     }
 
     // Compute gammas sums
-    compute_subset_sums(gammas_sums, gammas, m - 1);
+    HQC256_compute_subset_sums(gammas_sums, gammas, m - 1);
 
     // Step 5
-    fft_rec(u, f0, (f_coeffs + 1) / 2, m - 1, m_f - 1, deltas);
+    HQC256_fft_rec(u, f0, (f_coeffs + 1) / 2, m - 1, m_f - 1, deltas);
 
     k = 1;
     k <<= ((m - 1) & 0xf); // &0xf is to let the compiler know that m-1 is small.
@@ -231,18 +231,18 @@ static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32
         w[0] = u[0];
         w[k] = u[0] ^ f1[0];
         for (i = 1; i < k; ++i) {
-            w[i] = u[i] ^ gf_mul(gammas_sums[i], f1[0]);
+            w[i] = u[i] ^ HQC256_gf_mul(gammas_sums[i], f1[0]);
             w[k + i] = w[i] ^ f1[0];
         }
     } else {
-        fft_rec(v, f1, f_coeffs / 2, m - 1, m_f - 1, deltas);
+        HQC256_fft_rec(v, f1, f_coeffs / 2, m - 1, m_f - 1, deltas);
 
         // Step 6
         memcpy(w + k, v, 2 * k);
         w[0] = u[0];
         w[k] ^= u[0];
         for (i = 1; i < k; ++i) {
-            w[i] = u[i] ^ gf_mul(gammas_sums[i], v[i]);
+            w[i] = u[i] ^ HQC256_gf_mul(gammas_sums[i], v[i]);
             w[k + i] ^= w[i];
         }
     }
@@ -269,40 +269,41 @@ static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32
  * @param[in] f Array of 2^PARAM_FFT elements
  * @param[in] f_coeffs Number coefficients of f (i.e. deg(f)+1)
  */
-void fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
-    uint16_t betas[PARAM_M - 1] = {0};
-    uint16_t betas_sums[1 << (PARAM_M - 1)] = {0};
-    uint16_t f0[1 << (PARAM_FFT - 1)] = {0};
-    uint16_t f1[1 << (PARAM_FFT - 1)] = {0};
-    uint16_t deltas[PARAM_M - 1] = {0};
-    uint16_t u[1 << (PARAM_M - 1)] = {0};
-    uint16_t v[1 << (PARAM_M - 1)] = {0};
+// ... (previous code remains the same)
+void HQC256_fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
+    uint16_t betas[HQC256_PARAM_M - 1] = {0};
+    uint16_t betas_sums[1 << (HQC256_PARAM_M - 1)] = {0};
+    uint16_t f0[1 << (HQC256_PARAM_FFT - 1)] = {0};
+    uint16_t f1[1 << (HQC256_PARAM_FFT - 1)] = {0};
+    uint16_t deltas[HQC256_PARAM_M - 1] = {0};
+    uint16_t u[1 << (HQC256_PARAM_M - 1)] = {0};
+    uint16_t v[1 << (HQC256_PARAM_M - 1)] = {0};
 
     size_t i, k;
 
     // Follows Gao and Mateer algorithm
-    compute_fft_betas(betas);
+    HQC256_compute_fft_betas(betas);
 
     // Step 1: PARAM_FFT > 1, nothing to do
 
     // Compute gammas sums
-    compute_subset_sums(betas_sums, betas, PARAM_M - 1);
+    HQC256_compute_subset_sums(betas_sums, betas, HQC256_PARAM_M - 1);
 
     // Step 2: beta_m = 1, nothing to do
 
     // Step 3
-    radix(f0, f1, f, PARAM_FFT);
+    HQC256_radix(f0, f1, f, HQC256_PARAM_FFT);
 
     // Step 4: Compute deltas
-    for (i = 0; i < PARAM_M - 1; ++i) {
-        deltas[i] = gf_square(betas[i]) ^ betas[i];
+    for (i = 0; i < HQC256_PARAM_M - 1; ++i) {
+        deltas[i] = HQC256_gf_square(betas[i]) ^ betas[i];
     }
 
     // Step 5
-    fft_rec(u, f0, (f_coeffs + 1) / 2, PARAM_M - 1, PARAM_FFT - 1, deltas);
-    fft_rec(v, f1, f_coeffs / 2, PARAM_M - 1, PARAM_FFT - 1, deltas);
+    HQC256_fft_rec(u, f0, (f_coeffs + 1) / 2, HQC256_PARAM_M - 1, HQC256_PARAM_FFT - 1, deltas);
+    HQC256_fft_rec(v, f1, f_coeffs / 2, HQC256_PARAM_M - 1, HQC256_PARAM_FFT - 1, deltas);
 
-    k = 1 << (PARAM_M - 1);
+    k = 1 << (HQC256_PARAM_M - 1);
     // Step 6, 7 and error polynomial computation
     memcpy(w + k, v, 2 * k);
 
@@ -314,7 +315,7 @@ void fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
 
     // Find other roots
     for (i = 1; i < k; ++i) {
-        w[i] = u[i] ^ gf_mul(betas_sums[i], v[i]);
+        w[i] = u[i] ^ HQC256_gf_mul(betas_sums[i], v[i]);
         w[k + i] ^= w[i];
     }
 }
@@ -328,24 +329,24 @@ void fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
  * @param[out] error_compact Array with the error in a compact form
  * @param[in] w Array of size 2^PARAM_M
  */
-void fft_retrieve_error_poly(uint8_t *error, const uint16_t *w) {
-    uint16_t gammas[PARAM_M - 1] = {0};
-    uint16_t gammas_sums[1 << (PARAM_M - 1)] = {0};
+void HQC256_fft_retrieve_error_poly(uint8_t *error, const uint16_t *w) {
+    uint16_t gammas[HQC256_PARAM_M - 1] = {0};
+    uint16_t gammas_sums[1 << (HQC256_PARAM_M - 1)] = {0};
     uint16_t k;
     size_t i, index;
 
-    compute_fft_betas(gammas);
-    compute_subset_sums(gammas_sums, gammas, PARAM_M - 1);
+    HQC256_compute_fft_betas(gammas);
+    HQC256_compute_subset_sums(gammas_sums, gammas, HQC256_PARAM_M - 1);
 
-    k = 1 << (PARAM_M - 1);
+    k = 1 << (HQC256_PARAM_M - 1);
     error[0] ^= 1 ^ ((uint16_t) - w[0] >> 15);
     error[0] ^= 1 ^ ((uint16_t) - w[k] >> 15);
 
     for (i = 1; i < k; ++i) {
-        index = PARAM_GF_MUL_ORDER - gf_log[gammas_sums[i]];
+        index = HQC256_PARAM_GF_MUL_ORDER - HQC256_gf_log[gammas_sums[i]];
         error[index] ^= 1 ^ ((uint16_t) - w[i] >> 15);
 
-        index = PARAM_GF_MUL_ORDER - gf_log[gammas_sums[i] ^ 1];
+        index = HQC256_PARAM_GF_MUL_ORDER - HQC256_gf_log[gammas_sums[i] ^ 1];
         error[index] ^= 1 ^ ((uint16_t) - w[k + i] >> 15);
     }
 }

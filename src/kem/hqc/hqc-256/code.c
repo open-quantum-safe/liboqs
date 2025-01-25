@@ -25,11 +25,11 @@
  * @param[out] em Pointer to an array that is the tensor code word
  * @param[in] m Pointer to an array that is the message
  */
-void code_encode(uint64_t *em, const uint64_t *m) {
-    uint64_t tmp[VEC_N1_SIZE_64] = {0};
+void HQC256_code_encode(uint64_t *em, const uint64_t *m) {
+    uint64_t tmp[HQC256_VEC_N1_SIZE_64] = {0};
 
-    reed_solomon_encode(tmp, m);
-    reed_muller_encode(em, tmp);
+    HQC256_reed_solomon_encode(tmp, m);
+    HQC256_reed_muller_encode(em, tmp);
 
     #ifdef VERBOSE
         printf("\n\nReed-Solomon code word: "); vect_print(tmp, VEC_N1_SIZE_BYTES);
@@ -45,11 +45,11 @@ void code_encode(uint64_t *em, const uint64_t *m) {
  * @param[out] m Pointer to an array that is the message
  * @param[in] em Pointer to an array that is the code word
  */
-void code_decode(uint64_t *m, const uint64_t *em) {
-    uint64_t tmp[VEC_N1_SIZE_64] = {0};
+void HQC256_code_decode(uint64_t *m, const uint64_t *em) {
+    uint64_t tmp[HQC256_VEC_N1_SIZE_64] = {0};
 
-    reed_muller_decode(tmp, em);
-    reed_solomon_decode(m, tmp);
+    HQC256_reed_muller_decode(tmp, em);
+    HQC256_reed_solomon_decode(m, tmp);
 
 
     #ifdef VERBOSE

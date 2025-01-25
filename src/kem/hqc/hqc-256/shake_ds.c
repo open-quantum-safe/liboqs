@@ -1,4 +1,3 @@
-
 /**
  * @file shake_ds.c
  * @brief Implementation SHAKE-256 with incremental API and domain separation
@@ -18,7 +17,7 @@
  * @param[in] inlen length of input in bytes
  * @param[in] domain byte for domain separation
  */
-void shake256_512_ds(shake256incctx *state, uint8_t *output, const uint8_t *input, size_t inlen, uint8_t domain) {
+void HQC256_shake256_512_ds(shake256incctx *state, uint8_t *output, const uint8_t *input, size_t inlen, uint8_t domain) {
     /* Init state */
     shake256_inc_init(state);
 

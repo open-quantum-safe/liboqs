@@ -1,5 +1,5 @@
-#ifndef REED_SOLOMON_H
-#define REED_SOLOMON_H
+#ifndef HQC256_REED_SOLOMON_H
+#define HQC256_REED_SOLOMON_H
 
 /**
  * @file reed_solomon.h
@@ -11,9 +11,9 @@
 #include <stdint.h>
 
 
-void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg);
-void reed_solomon_decode(uint64_t *msg, uint64_t *cdw);
+void HQC256_reed_solomon_encode(uint64_t *cdw, const uint64_t *msg);
+void HQC256_reed_solomon_decode(uint64_t *msg, uint64_t *cdw);
 
-void compute_generator_poly(uint16_t *poly);
+void HQC256_compute_generator_poly(uint16_t *poly);
 
 #endif
