@@ -18,7 +18,7 @@
  * @param[in] inlen length of input in bytes
  * @param[in] domain byte for domain separation
  */
-void shake256_512_ds(shake256incctx *state, uint8_t *output, const uint8_t *input, size_t inlen, uint8_t domain) {
+void HQC192_shake256_512_ds(shake256incctx *state, uint8_t *output, const uint8_t *input, size_t inlen, uint8_t domain) {
     /* Init state */
     shake256_inc_init(state);
 

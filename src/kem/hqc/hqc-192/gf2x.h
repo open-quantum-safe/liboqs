@@ -1,5 +1,5 @@
-#ifndef GF2X_H
-#define GF2X_H
+#ifndef HQC192_GF2X_H
+#define HQC192_GF2X_H
 
 /**
  * @file gf2x.h
@@ -9,6 +9,6 @@
 #include <stdint.h>
 #include <immintrin.h>
 
-void vect_mul(__m256i *o, const __m256i *v1, const __m256i *v2);
+void HQC192_vect_mul(__m256i *o, const __m256i *v1, const __m256i *v2);
 
 #endif

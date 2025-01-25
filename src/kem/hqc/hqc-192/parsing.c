@@ -22,10 +22,10 @@
  * @param[in] sigma String used in HHK transform
  * @param[in] pk String containing the public key
  */
-void hqc_secret_key_to_string(uint8_t *sk, const uint8_t *sk_seed, const uint8_t *sigma, const uint8_t *pk) {
-    memcpy(sk, sk_seed, SEED_BYTES);
-    memcpy(sk + SEED_BYTES, sigma, VEC_K_SIZE_BYTES);
-    memcpy(sk + SEED_BYTES + VEC_K_SIZE_BYTES, pk, PUBLIC_KEY_BYTES);
+void HQC192_hqc_secret_key_to_string(uint8_t *sk, const uint8_t *sk_seed, const uint8_t *sigma, const uint8_t *pk) {
+    memcpy(sk, sk_seed, HQC192_SEED_BYTES);
+    memcpy(sk + HQC192_SEED_BYTES, sigma, HQC192_VEC_K_SIZE_BYTES);
+    memcpy(sk + HQC192_SEED_BYTES + HQC192_VEC_K_SIZE_BYTES, pk, HQC192_PUBLIC_KEY_BYTES);
 }
 
 
@@ -41,16 +41,16 @@ void hqc_secret_key_to_string(uint8_t *sk, const uint8_t *sk_seed, const uint8_t
  * @param[out] pk String containing the public key
  * @param[in] sk String containing the secret key
  */
-void hqc_secret_key_from_string(__m256i *y256, uint8_t *sigma, uint8_t *pk, const uint8_t *sk) {
+void HQC192_hqc_secret_key_from_string(__m256i *y256, uint8_t *sigma, uint8_t *pk, const uint8_t *sk) {
     seedexpander_state sk_seedexpander;
-    uint8_t sk_seed[SEED_BYTES] = {0};
+    uint8_t sk_seed[HQC192_SEED_BYTES] = {0};
 
-    memcpy(sk_seed, sk, SEED_BYTES);
-    memcpy(sigma, sk + SEED_BYTES, VEC_K_SIZE_BYTES);
-    seedexpander_init(&sk_seedexpander, sk_seed, SEED_BYTES);
+    memcpy(sk_seed, sk, HQC192_SEED_BYTES);
+    memcpy(sigma, sk + HQC192_SEED_BYTES, HQC192_VEC_K_SIZE_BYTES);
+    HQC192_seedexpander_init(&sk_seedexpander, sk_seed, HQC192_SEED_BYTES);
 
-    vect_set_random_fixed_weight(&sk_seedexpander, y256, PARAM_OMEGA);
-    memcpy(pk, sk + SEED_BYTES + VEC_K_SIZE_BYTES, PUBLIC_KEY_BYTES);
+    HQC192_vect_set_random_fixed_weight(&sk_seedexpander, y256, HQC192_PARAM_OMEGA);
+    memcpy(pk, sk + HQC192_SEED_BYTES + HQC192_VEC_K_SIZE_BYTES, HQC192_PUBLIC_KEY_BYTES);
 }
 
 
@@ -64,9 +64,9 @@ void hqc_secret_key_from_string(__m256i *y256, uint8_t *sigma, uint8_t *pk, cons
  * @param[in] pk_seed Seed used to generate the public key
  * @param[in] s uint8_t representation of vector s
  */
-void hqc_public_key_to_string(uint8_t *pk, const uint8_t *pk_seed, const uint64_t *s) {
-    memcpy(pk, pk_seed, SEED_BYTES);
-    memcpy(pk + SEED_BYTES, s, VEC_N_SIZE_BYTES);
+void HQC192_hqc_public_key_to_string(uint8_t *pk, const uint8_t *pk_seed, const uint64_t *s) {
+    memcpy(pk, pk_seed, HQC192_SEED_BYTES);
+    memcpy(pk + HQC192_SEED_BYTES, s, HQC192_VEC_N_SIZE_BYTES);
 }
 
 
@@ -80,15 +80,15 @@ void hqc_public_key_to_string(uint8_t *pk, const uint8_t *pk_seed, const uint64_
  * @param[out] s uint8_t representation of vector s
  * @param[in] pk String containing the public key
  */
-void hqc_public_key_from_string(uint64_t *h, uint64_t *s, const uint8_t *pk) {
+void HQC192_hqc_public_key_from_string(uint64_t *h, uint64_t *s, const uint8_t *pk) {
     seedexpander_state pk_seedexpander;
-    uint8_t pk_seed[SEED_BYTES] = {0};
+    uint8_t pk_seed[HQC192_SEED_BYTES] = {0};
 
-    memcpy(pk_seed, pk, SEED_BYTES);
-    seedexpander_init(&pk_seedexpander, pk_seed, SEED_BYTES);
-    vect_set_random(&pk_seedexpander, h);
+    memcpy(pk_seed, pk, HQC192_SEED_BYTES);
+    HQC192_seedexpander_init(&pk_seedexpander, pk_seed, HQC192_SEED_BYTES);
+    HQC192_vect_set_random(&pk_seedexpander, h);
 
-    memcpy(s, pk + SEED_BYTES, VEC_N_SIZE_BYTES);
+    memcpy(s, pk + HQC192_SEED_BYTES, HQC192_VEC_N_SIZE_BYTES);
 }
 
 
@@ -103,10 +103,10 @@ void hqc_public_key_from_string(uint64_t *h, uint64_t *s, const uint8_t *pk) {
  * @param[in] v uint8_t representation of vector v
  * @param[in] salt String containing a salt
  */
-void hqc_ciphertext_to_string(uint8_t *ct, const uint64_t *u, const uint64_t *v, const uint64_t *salt) {
-    memcpy(ct, u, VEC_N_SIZE_BYTES);
-    memcpy(ct + VEC_N_SIZE_BYTES, v, VEC_N1N2_SIZE_BYTES);
-    memcpy(ct + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, salt, SALT_SIZE_BYTES);
+void HQC192_hqc_ciphertext_to_string(uint8_t *ct, const uint64_t *u, const uint64_t *v, const uint64_t *salt) {
+    memcpy(ct, u, HQC192_VEC_N_SIZE_BYTES);
+    memcpy(ct + HQC192_VEC_N_SIZE_BYTES, v, HQC192_VEC_N1N2_SIZE_BYTES);
+    memcpy(ct + HQC192_VEC_N_SIZE_BYTES + HQC192_VEC_N1N2_SIZE_BYTES, salt, HQC192_SALT_SIZE_BYTES);
 }
 
 
@@ -121,8 +121,8 @@ void hqc_ciphertext_to_string(uint8_t *ct, const uint64_t *u, const uint64_t *v,
  * @param[out] d String containing the hash d
  * @param[in] ct String containing the ciphertext
  */
-void hqc_ciphertext_from_string(uint64_t *u, uint64_t *v, uint64_t *salt, const uint8_t *ct) {
-    memcpy(u, ct, VEC_N_SIZE_BYTES);
-    memcpy(v, ct + VEC_N_SIZE_BYTES, VEC_N1N2_SIZE_BYTES);
-    memcpy(salt, ct + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, SALT_SIZE_BYTES);
+void HQC192_hqc_ciphertext_from_string(uint64_t *u, uint64_t *v, uint64_t *salt, const uint8_t *ct) {
+    memcpy(u, ct, HQC192_VEC_N_SIZE_BYTES);
+    memcpy(v, ct + HQC192_VEC_N_SIZE_BYTES, HQC192_VEC_N1N2_SIZE_BYTES);
+    memcpy(salt, ct + HQC192_VEC_N_SIZE_BYTES + HQC192_VEC_N1N2_SIZE_BYTES, HQC192_SALT_SIZE_BYTES);
 }
