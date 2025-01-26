@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - name: arm64
-            runner: oqs-arm64
+            runner: ubuntu-24.04-arm
             container: openquantumsafe/ci-ubuntu-latest:latest
             PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
             CMAKE_ARGS: -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
