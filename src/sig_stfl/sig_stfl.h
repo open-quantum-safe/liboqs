@@ -43,44 +43,80 @@ extern "C"
 {
 #endif
 
-/* Algorithm identifier for XMSS-SHA2_10_256 */
+/** Algorithm identifier for XMSS-SHA2_10_256  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h10 "XMSS-SHA2_10_256"
+/** Algorithm identifier for XMSS-SHA2_16_256  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h16 "XMSS-SHA2_16_256"
+/** Algorithm identifier for XMSS-SHA2_20_256  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h20 "XMSS-SHA2_20_256"
+/** Algorithm identifier for XMSS-SHAKE_10_256  */
 #define OQS_SIG_STFL_alg_xmss_shake128_h10 "XMSS-SHAKE_10_256"
+/** Algorithm identifier for XMSS-SHAKE_16_256  */
 #define OQS_SIG_STFL_alg_xmss_shake128_h16 "XMSS-SHAKE_16_256"
+/** Algorithm identifier for XMSS-SHAKE_20_256  */
 #define OQS_SIG_STFL_alg_xmss_shake128_h20 "XMSS-SHAKE_20_256"
+/** Algorithm identifier for XMSS-SHA2_10_512  */
 #define OQS_SIG_STFL_alg_xmss_sha512_h10 "XMSS-SHA2_10_512"
+/** Algorithm identifier for XMSS-SHA2_16_512  */
 #define OQS_SIG_STFL_alg_xmss_sha512_h16 "XMSS-SHA2_16_512"
+/** Algorithm identifier for XMSS-SHA2_20_512  */
 #define OQS_SIG_STFL_alg_xmss_sha512_h20 "XMSS-SHA2_20_512"
+/** Algorithm identifier for XMSS-SHAKE_10_512  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h10 "XMSS-SHAKE_10_512"
+/** Algorithm identifier for XMSS-SHAKE_16_512  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h16 "XMSS-SHAKE_16_512"
+/** Algorithm identifier for XMSS-SHAKE_20_512  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h20 "XMSS-SHAKE_20_512"
+/** Algorithm identifier for XMSS-SHA2_10_192  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h10_192 "XMSS-SHA2_10_192"
+/** Algorithm identifier for XMSS-SHA2_16_192  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h16_192 "XMSS-SHA2_16_192"
+/** Algorithm identifier for XMSS-SHA2_20_192  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h20_192 "XMSS-SHA2_20_192"
+/** Algorithm identifier for XMSS-SHAKE256_10_192  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h10_192 "XMSS-SHAKE256_10_192"
+/** Algorithm identifier for XMSS-SHAKE256_16_192  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h16_192 "XMSS-SHAKE256_16_192"
+/** Algorithm identifier for XMSS-SHAKE256_20_192  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h20_192 "XMSS-SHAKE256_20_192"
+/** Algorithm identifier for XMSS-SHAKE256_10_256  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h10_256 "XMSS-SHAKE256_10_256"
+/** Algorithm identifier for XMSS-SHAKE256_16_256  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h16_256 "XMSS-SHAKE256_16_256"
+/** Algorithm identifier for XMSS-SHAKE256_20_256  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h20_256 "XMSS-SHAKE256_20_256"
 
+/** Algorithm identifier for XMSSMT-SHA2_20/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2 "XMSSMT-SHA2_20/2_256"
+/** Algorithm identifier for XMSSMT-SHA2_20/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4 "XMSSMT-SHA2_20/4_256"
+/** Algorithm identifier for XMSSMT-SHA2_40/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2 "XMSSMT-SHA2_40/2_256"
+/** Algorithm identifier for XMSSMT-SHA2_40/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4 "XMSSMT-SHA2_40/4_256"
+/** Algorithm identifier for XMSSMT-SHA2_40/8_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8 "XMSSMT-SHA2_40/8_256"
+/** Algorithm identifier for XMSSMT-SHA2_60/3_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3 "XMSSMT-SHA2_60/3_256"
+/** Algorithm identifier for XMSSMT-SHA2_60/6_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6 "XMSSMT-SHA2_60/6_256"
+/** Algorithm identifier for XMSSMT-SHA2_60/12_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12 "XMSSMT-SHA2_60/12_256"
+/** Algorithm identifier for XMSSMT-SHAKE_20/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2 "XMSSMT-SHAKE_20/2_256"
+/** Algorithm identifier for XMSSMT-SHAKE_20/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4 "XMSSMT-SHAKE_20/4_256"
+/** Algorithm identifier for XMSSMT-SHAKE_40/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2 "XMSSMT-SHAKE_40/2_256"
+/** Algorithm identifier for XMSSMT-SHAKE_40/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4 "XMSSMT-SHAKE_40/4_256"
+/** Algorithm identifier for XMSSMT-SHAKE_40/8_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8 "XMSSMT-SHAKE_40/8_256"
+/** Algorithm identifier for XMSSMT-SHAKE_60/3_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3 "XMSSMT-SHAKE_60/3_256"
+/** Algorithm identifier for XMSSMT-SHAKE_60/6_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6 "XMSSMT-SHAKE_60/6_256"
+/** Algorithm identifier for XMSSMT-SHAKE_60/12_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
 
 /* Defined LMS parameter identifiers */
