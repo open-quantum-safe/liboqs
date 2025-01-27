@@ -144,28 +144,26 @@ def test_acvp_vec_sig_gen(sig_name):
             # perform only below tests ATM:
             # 1. internal API with externalMu as false
             # 2. external API with "pure" implementation
-            if ((variant["signatureInterface"] == "internal" and variant["externalMu"] == False) or (variant["signatureInterface"] == "external" and variant["preHash"] == "pure")):
-                    if variant["parameterSet"] == sig_name:
-                        variantFound = True
-                        for testCase in variant["tests"]:
-                            sk = testCase["sk"]
-                            message = testCase["message"]
-                            signature = testCase["signature"]
-                            if variant["deterministic"] == False:
-                                rnd = testCase["rnd"]
-                            else:
-                                rnd = "0" * 64
-                            
-                            build_dir = helpers.get_current_build_dir_name()
-                            if variant["signatureInterface"] == "internal":
-                                helpers.run_subprocess(
-                                    [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen", sk, message, signature, rnd]
-                                )
-                            else:
-                                context = testCase["context"]
-                                helpers.run_subprocess(
-                                    [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen_ext", sk, message, signature, context, rnd]
-                                )                                
+            if ((variant["signatureInterface"] == "internal" and not variant["externalMu"]) or
+                (variant["signatureInterface"] == "external" and variant["preHash"] == "pure")):    
+                if variant["parameterSet"] == sig_name:
+                    variantFound = True
+                    for testCase in variant["tests"]:
+                        sk = testCase["sk"]
+                        message = testCase["message"]
+                        signature = testCase["signature"]
+                        rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
+                        
+                        build_dir = helpers.get_current_build_dir_name()
+                        if variant["signatureInterface"] == "internal":
+                            helpers.run_subprocess(
+                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen_int", sk, message, signature, rnd]
+                            )
+                        else:
+                            context = testCase["context"]
+                            helpers.run_subprocess(
+                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen_ext", sk, message, signature, context, rnd]
+                            )                                
 
         assert(variantFound == True)
 
@@ -185,7 +183,8 @@ def test_acvp_vec_sig_ver(sig_name):
             # perform only below tests ATM:
             # 1. internal API with externalMu as false
             # 2. external API with "pure" implementation
-            if ((variant["signatureInterface"] == "internal" and variant["externalMu"] == False) or (variant["signatureInterface"] == "external" and variant["preHash"] == "pure")):
+            if ((variant["signatureInterface"] == "internal" and not variant["externalMu"]) or
+                (variant["signatureInterface"] == "external" and variant["preHash"] == "pure")):
                 if variant["parameterSet"] == sig_name:
                     variantFound = True
                     for testCase in variant["tests"]:
@@ -197,7 +196,7 @@ def test_acvp_vec_sig_ver(sig_name):
                         build_dir = helpers.get_current_build_dir_name()
                         if variant["signatureInterface"] == "internal":
                             helpers.run_subprocess(
-                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigVer", pk, message, signature, testPassed]
+                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigVer_int", pk, message, signature, testPassed]
                             )
                         else:
                             context = testCase["context"]
