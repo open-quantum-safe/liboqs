@@ -114,7 +114,7 @@ extern "C"
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8 "XMSSMT-SHAKE_40/8_256"
 /** Algorithm identifier for XMSSMT-SHAKE_60/3_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3 "XMSSMT-SHAKE_60/3_256"
-/** Algorithm identifier for XMSSMT-SHAKE_60/6_256  */
+/** Algorithm identifier for XMSSMT-SHAKE_60/6_256 */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6 "XMSSMT-SHAKE_60/6_256"
 /** Algorithm identifier for XMSSMT-SHAKE_60/12_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
