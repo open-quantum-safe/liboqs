@@ -512,11 +512,11 @@ int main(int argc, char **argv) {
 	char *sigGen_msg;
 	char *sigGen_sig;
 	char *sigGen_ctx;
-	char *sigVer_ctx;
 
 	char *sigVer_pk;
 	char *sigVer_msg;
 	char *sigVer_sig;
+	char *sigVer_ctx;
 
 	uint8_t *prng_output_stream_bytes = NULL;
 	uint8_t *kg_pk_bytes = NULL;
@@ -526,12 +526,11 @@ int main(int argc, char **argv) {
 	uint8_t *sigGen_msg_bytes = NULL;
 	uint8_t *sigGen_sig_bytes = NULL;
 	uint8_t *sigGen_ctx_bytes = NULL;
-	uint8_t *sigVer_ctx_bytes = NULL;
-
 
 	uint8_t *sigVer_pk_bytes = NULL;
 	uint8_t *sigVer_msg_bytes = NULL;
 	uint8_t *sigVer_sig_bytes = NULL;
+	uint8_t *sigVer_ctx_bytes = NULL;
 
 	OQS_SIG *sig = NULL;
 
@@ -582,7 +581,7 @@ int main(int argc, char **argv) {
 
 		rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
 
-	} else if (!strcmp(test_name, "sigGen")) {
+	} else if (!strcmp(test_name, "sigGen_int")) {
 		if (argc != 7) {
 			valid_args = false;
 			goto err;
@@ -676,7 +675,7 @@ int main(int argc, char **argv) {
 		goto cleanup;
 #endif
 
-	} else if (!strcmp(test_name, "sigVer")) {
+	} else if (!strcmp(test_name, "sigVer_int")) {
 		if (argc != 7) {
 			valid_args = false;
 			goto err;
@@ -769,7 +768,7 @@ int main(int argc, char **argv) {
 #endif
 
 	} else {
-		printf("[vectors_sig] %s only keyGen/sigGen/sigVer supported!\n", alg_name);
+		printf("[vectors_sig] %s only keyGen/sigGen_int/sigGen_ext/sigVer_int/sigVer_ext supported!\n", alg_name);
 		goto err;
 	}
 	goto cleanup;
