@@ -99,6 +99,11 @@ if(${OQS_USE_OPENSSL})
     target_link_libraries(oqs-internal PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
   endif()
 endif()
+if(${OQS_USE_CUPQC})
+    set_property(TARGET oqs PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+    target_link_libraries(oqs PRIVATE cupqc)
+    target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
+endif()
 
 target_include_directories(oqs
                            PUBLIC

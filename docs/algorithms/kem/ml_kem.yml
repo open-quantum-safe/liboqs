@@ -20,6 +20,10 @@ primary-upstream:
   source: https://github.com/pq-crystals/kyber/commit/10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
+optimized-upstreams:
+  cupqc-cuda:
+    source: https://github.com/praveksharma/cupqc-mlkem/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
+    spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: ML-KEM-512
   claimed-nist-level: 1
@@ -54,6 +58,16 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+  - upstream: cupqc-cuda
+    upstream-id: cuda
+    supported-platforms:
+    - architecture: CUDA
+      operating_systems:
+      - Linux
+      - Darwin
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
 - name: ML-KEM-768
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -87,6 +101,16 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+  - upstream: cupqc-cuda
+    upstream-id: cuda
+    supported-platforms:
+    - architecture: CUDA
+      operating_systems:
+      - Linux
+      - Darwin
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
 - name: ML-KEM-1024
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -119,4 +143,14 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: cupqc-cuda
+    upstream-id: cuda
+    supported-platforms:
+    - architecture: CUDA
+      operating_systems:
+      - Linux
+      - Darwin
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
