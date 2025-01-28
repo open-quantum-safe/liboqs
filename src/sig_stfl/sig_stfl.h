@@ -198,9 +198,7 @@ extern "C"
 /** Algorithm identifier for LMS-SHA256_H20_W8_H20_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8 "LMS_SHA256_H20_W8_H20_W8" //"20/8, 20/8"
 
-/** 
- * Total number of stateful variants defined above, used to create the tracking array 
- */
+/** Total number of stateful variants defined above, used to create the tracking array */
 #define OQS_SIG_STFL_algs_length 70
 
 typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
