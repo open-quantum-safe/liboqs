@@ -198,8 +198,8 @@ extern "C"
 /** Algorithm identifier for LMS-SHA256_H20_W8_H20_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8 "LMS_SHA256_H20_W8_H20_W8" //"20/8, 20/8"
 
-/*
- * Total number of stateful variants defined above, used to create the tracking array
+/** 
+ * Total number of stateful variants defined above, used to create the tracking array 
  */
 #define OQS_SIG_STFL_algs_length 70
 
@@ -258,12 +258,15 @@ OQS_API int OQS_SIG_STFL_alg_count(void);
 OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
+
+/** Signature schemes object */
 typedef struct OQS_SIG OQS_SIG;
+
+/** Stateful signature scheme object */
 #define OQS_SIG_STFL OQS_SIG
 #else
-/**
- * Stateful signature scheme object
- */
+
+/** Stateful signature scheme object */
 typedef struct OQS_SIG_STFL {
 
 	/**
@@ -372,16 +375,16 @@ typedef struct OQS_SIG_STFL {
 
 typedef struct OQS_SIG_STFL_SECRET_KEY {
 
-	/* The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	size_t length_secret_key;
 
-	/* The variant-specific secret key data must be allocated at the initialization. */
+	/** The variant-specific secret key data must be allocated at the initialization. */
 	void *secret_key_data;
 
-	/* The mutual exclusion struct */
+	/** The mutual exclusion struct */
 	void *mutex;
 
-	/* Application-managed data related to secure storage of secret key data */
+	/** Application-managed data related to secure storage of secret key data */
 	void *context;
 
 	/**
@@ -551,6 +554,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
  * The remaining signatures are the number of signatures available before the private key runs out of its total signature and expires.
  *
  * @param[in] sig The OQS_SIG_STFL object representing the signature scheme.
+ * @param[in] remain The number of remaining signatures.
  * @param[in] secret_key The secret key object.
  * @return OQS_SUCCESS or OQS_ERROR
  */
@@ -588,7 +592,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 /**
  * Free an OQS_SIG_STFL_SECRET_KEY object that was constructed by OQS_SECRET_KEY_new.
  *
- * @param[in] sig The OQS_SIG_STFL_SECRET_KEY object to free.
+ * @param[in] sk The OQS_SIG_STFL_SECRET_KEY object to free.
  * @return OQS_SUCCESS if successful, or OQS_ERROR if the object cannot be freed.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
