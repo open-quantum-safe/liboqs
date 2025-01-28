@@ -591,7 +591,6 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
  * Free an OQS_SIG_STFL_SECRET_KEY object that was constructed by OQS_SECRET_KEY_new.
  *
  * @param[in] sk The OQS_SIG_STFL_SECRET_KEY object to free.
- * @return OQS_SUCCESS if successful, or OQS_ERROR if the object cannot be freed.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
@@ -603,7 +602,6 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
  *
  * @param[in] sk Pointer to the secret key object whose lock function is to be set.
  * @param[in] lock Function pointer to the locking routine provided by the application.
- * @return None.
  *
  * @note It's not required to set the lock and unlock functions in a single-threaded environment.
  *
@@ -621,7 +619,6 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_
  *
  * @param[in] sk Pointer to the secret key object whose unlock function is to be set.
  * @param[in] unlock Function pointer to the unlock routine provided by the application.
- * @return None.
  *
  * @note It's not required to set the lock and unlock functions in a single-threaded environment.
  *
@@ -638,7 +635,6 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unl
  *
  * @param[in] sk A pointer to the secret key that the mutex functionality will protect.
  * @param[in] mutex A function pointer to the desired concurrency control mechanism.
- * @return None.
  *
  * @note It's not required to set the lock and unlock functions in a single-threaded environment.
  *
@@ -700,7 +696,6 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
  * @param[in] context Application-specific context that assists in the storage of secret key data.
  *                    This context is managed by the application, which allocates it, keeps track of it,
  *                    and deallocates it as necessary.
- * @return None.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
