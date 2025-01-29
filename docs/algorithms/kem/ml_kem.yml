@@ -18,6 +18,7 @@ nist-round: FIPS203
 spec-version: ML-KEM
 primary-upstream:
   source: https://github.com/pq-code-package/mlkem-native/commit/84398e7230fa31ba4241f5eb36bdc3c1dbbd5bcd
+    with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
   cupqc-cuda:
