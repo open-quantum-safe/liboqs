@@ -55,7 +55,10 @@ extern int cupqc_ml_kem_512_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *s
 #endif /* OQS_USE_CUPQC */
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_keypair(uint8_t *public_key, uint8_t *secret_key) {
-#if defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
+	return (OQS_STATUS) cupqc_ml_kem_512_keypair(public_key, secret_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cuda */
+#if defined(OQS_ENABLE_KEM_ml_kem_512_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -81,7 +84,10 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_keypair(uint8_t *public_key, uint8_t *secr
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-#if defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
+	return (OQS_STATUS) cupqc_ml_kem_512_enc(ciphertext, shared_secret, public_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cuda */
+#if defined(OQS_ENABLE_KEM_ml_kem_512_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
@@ -107,7 +113,10 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_encaps(uint8_t *ciphertext, uint8_t *share
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_512_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-#if defined(OQS_ENABLE_KEM_ml_kem_512_avx2)
+#if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_512_cuda)
+	return (OQS_STATUS) cupqc_ml_kem_512_dec(shared_secret, ciphertext, secret_key);
+#endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_512_cuda */
+#if defined(OQS_ENABLE_KEM_ml_kem_512_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
