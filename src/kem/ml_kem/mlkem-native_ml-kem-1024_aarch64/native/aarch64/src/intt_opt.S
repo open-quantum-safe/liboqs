@@ -25,6 +25,7 @@
 
 #include "../../../common.h"
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT)
+/* simpasm: header-end */
 
 // Bounds:
 // If C is chosen so that |src| < q * C, then |dst| < q * (0.0508 * C + 1/2)
@@ -139,9 +140,6 @@
 // are NOT canonically reduced. The ordering of the coefficients is canonical,
 // also matching PQClean.
 
-.text
-        .global MLKEM_ASM_NAMESPACE(intt_asm_opt)
-
         in         .req x0
         r01234_ptr .req x1
         r56_ptr    .req x2
@@ -194,7 +192,9 @@
         ninv             .req v29
         ninv_tw          .req v30
 
-.balign 4
+        .text
+        .global MLKEM_ASM_NAMESPACE(intt_asm_opt)
+        .balign 4
 MLKEM_ASM_NAMESPACE(intt_asm_opt):
         push_stack
 
@@ -1042,4 +1042,5 @@ layer012_start:
     .unreq ninv
     .unreq ninv_tw
 
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT */

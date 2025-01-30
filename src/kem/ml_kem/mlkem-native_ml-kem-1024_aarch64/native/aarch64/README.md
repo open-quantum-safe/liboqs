@@ -10,10 +10,9 @@ works:
 - _Fast and Clean: Auditable high-performance assembly via constraint solving_, Amin Abdulrahman, Hanno Becker, Matthias
   J. Kannwischer, Fabien Klein, [https://eprint.iacr.org/2022/1303](https://eprint.iacr.org/2022/1303)
 
-## Profiles
 
-This backend comes with two profiles: "clean" and optimized. The "clean" backend is handwritten and meant to be easy to
-read and modify; for example, is heavily leverages register aliases and assembly macros. The optimized profile is
-automatically generated from the clean profile via [SLOTHY](https://github.com/slothy-optimizer/slothy). Currently, the
+## Variants
+
+This backend comes in two versions: "clean" and optimized. The "clean" backend is handwritten and meant to be easy to read and modify; for example, is heavily leverages register aliases and assembly macros. This directory contains the optimized version, which is automatically generated from the clean one via [SLOTHY](https://github.com/slothy-optimizer/slothy). Currently, the
 target architecture is Cortex-A55, but you can easily re-optimize the code for a different microarchitecture supported
-by SLOTHY, by adjusting the parameters in [optimize.sh](src/optimize.sh).
+by SLOTHY, by adjusting the parameters in [optimize.sh](../../../test/aarch64_clean/src/optimize.sh).

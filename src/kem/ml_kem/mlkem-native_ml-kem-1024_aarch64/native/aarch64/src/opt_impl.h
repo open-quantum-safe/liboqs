@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/* ML-KEM arithmetic native profile for clean assembly */
-
 #ifdef MLKEM_NATIVE_ARITH_PROFILE_IMPL_H
 #error Only one MLKEM_ARITH assembly profile can be defined -- did you include multiple profiles?
 #else
@@ -56,7 +54,15 @@ static INLINE void polyvec_basemul_acc_montgomery_cached_native(
     const int16_t b[MLKEM_K * MLKEM_N],
     const int16_t b_cache[MLKEM_K * (MLKEM_N / 2)])
 {
-  polyvec_basemul_acc_montgomery_cached_asm_opt(r, a, b, b_cache);
+#if MLKEM_K == 2
+  polyvec_basemul_acc_montgomery_cached_asm_k2_opt(r, a, b, b_cache);
+#elif MLKEM_K == 3
+  polyvec_basemul_acc_montgomery_cached_asm_k3_opt(r, a, b, b_cache);
+#elif MLKEM_K == 4
+  polyvec_basemul_acc_montgomery_cached_asm_k4_opt(r, a, b, b_cache);
+#else
+#error Invalid value for MLKEM_K
+#endif
 }
 
 static INLINE void poly_tobytes_native(uint8_t r[MLKEM_POLYBYTES],

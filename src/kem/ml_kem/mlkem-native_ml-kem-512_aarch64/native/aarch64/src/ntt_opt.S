@@ -26,6 +26,7 @@
 
 #include "../../../common.h"
 #if defined(MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT)
+/* simpasm: header-end */
 
 // Bounds:
 // If C is chosen so that |src| < q * C, then |dst| < q * (0.0508 * C + 1/2)
@@ -166,7 +167,6 @@
 
         .text
         .global MLKEM_ASM_NAMESPACE(ntt_asm_opt)
-
         .balign 4
 MLKEM_ASM_NAMESPACE(ntt_asm_opt):
         push_stack
@@ -235,7 +235,7 @@ MLKEM_ASM_NAMESPACE(ntt_asm_opt):
         // mul v15.8H, v11.8H, v0.H[0]      // ...............*...............
 
         sub count, count, #1
-1:
+ntt_opt_loop0:
                                                 // Instructions:    76
                                                 // Expected cycles: 84
                                                 // Expected IPC:    0.90
@@ -407,7 +407,7 @@ MLKEM_ASM_NAMESPACE(ntt_asm_opt):
         // str q15, [x0, #(-16 + 7*(512/8))]          // .....................~.....'.............................................................................*
 
         sub count, count, 1
-        cbnz count, 1b
+        cbnz count, ntt_opt_loop0
                                                 // Instructions:    66
                                                 // Expected cycles: 67
                                                 // Expected IPC:    0.99
@@ -630,7 +630,7 @@ MLKEM_ASM_NAMESPACE(ntt_asm_opt):
         // ldr q13, [x2, #-16]                   // ..............................*
 
         sub count, count, #1
-1:
+ntt_opt_loop1:
                                                 // Instructions:    71
                                                 // Expected cycles: 82
                                                 // Expected IPC:    0.87
@@ -792,7 +792,7 @@ MLKEM_ASM_NAMESPACE(ntt_asm_opt):
         // str q11, [x0, #(-16*1)]                    // .................................................................................~'................................................................................*
 
         sub count, count, 1
-        cbnz count, 1b
+        cbnz count, ntt_opt_loop1
                                                // Instructions:    47
                                                // Expected cycles: 52
                                                // Expected IPC:    0.90
@@ -952,4 +952,5 @@ MLKEM_ASM_NAMESPACE(ntt_asm_opt):
     .unreq t2
     .unreq t3
 
+/* simpasm: footer-start */
 #endif /* MLKEM_NATIVE_ARITH_BACKEND_AARCH64_OPT */

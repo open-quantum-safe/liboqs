@@ -34,7 +34,7 @@ upstreams:
     name: mlkem-native
     git_url: https://github.com/pq-code-package/mlkem-native.git
     git_branch: main
-    git_commit: 84398e7230fa31ba4241f5eb36bdc3c1dbbd5bcd
+    git_commit: d830bc22eb1613bbe38028cfefc33f1a52a40b2f
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: [mlkem-native-ml_kem.patch]

@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/* ML-KEM arithmetic native profile for clean assembly */
-
 #ifdef MLKEM_NATIVE_ARITH_PROFILE_H
 #error Only one MLKEM_ARITH assembly profile can be defined -- did you include multiple profiles?
 #else
