@@ -123,6 +123,12 @@ jobs:
       - name: Build
         run: ninja
         working-directory: build
+      - name: Check the library artifacts
+        if: matrix.name == 'jammy-std-openssl3-dlopen'
+        run: |
+          nm -gu lib/liboqs.so | sed -n 's/^[[:space:]]*[Uw] \([^_].*\)/\1/p' > undefined-syms.txt &&
+          ! (grep '^\(CRYPTO\|ERR\|EVP\|OPENSSL\|RAND\)_' undefined-syms.txt)
+        working-directory: build
       - name: Run tests
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
