@@ -68,12 +68,10 @@
  * namespace wrapper for ASM symbols. */
 #if !defined(__APPLE__)
 #define MLKEM_ASM_NAMESPACE(sym) MLKEM_NAMESPACE(sym)
-#define MLKEM_ASM_NAMESPACE_K(sym) MLKEM_NAMESPACE_K(sym)
 #else
 #define PREFIX_UNDERSCORE_(sym) _##sym
 #define PREFIX_UNDERSCORE(sym) PREFIX_UNDERSCORE_(sym)
 #define MLKEM_ASM_NAMESPACE(sym) PREFIX_UNDERSCORE(MLKEM_NAMESPACE(sym))
-#define MLKEM_ASM_NAMESPACE_K(sym) PREFIX_UNDERSCORE(MLKEM_NAMESPACE_K(sym))
 #endif
 
 /* We aim to simplify the user's life by supporting builds where
