@@ -9,7 +9,7 @@ jobs:
 
   zephyr_test:
     runs-on: ubuntu-22.04
-    container: ghcr.io/zephyrproject-rtos/ci:latest
+    container: ghcr.io/zephyrproject-rtos/ci:v0.27.4
     env:
         CMAKE_PREFIX_PATH: /opt/toolchains
     strategy:
