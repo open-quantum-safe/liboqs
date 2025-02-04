@@ -17,10 +17,7 @@ Please follow [this information to report a vulnerability](https://openquantumsa
 
 ## Threat Model
 
-For certain algorithms and platforms, liboqs aims for "constant-time code" in the sense of no branching or memory accesses based on secret data.
-
-- Algorithms: The [algorithm datasheets](https://github.com/open-quantum-safe/liboqs/blob/main/docs/algorithms/) indicate whether each algorithm and implementation aims for constant-time behaviour. These should be read in conjunction with the [issues/passes files for each algorithm's constant-time tests](https://github.com/open-quantum-safe/liboqs/tree/main/tests/constant_time).
-- Platforms: We aim for constant-time behaviour on our [Tier 1 platforms](https://github.com/open-quantum-safe/liboqs/blob/main/PLATFORMS.md).
+Some timing-based side-channel attacks are within the scope of our threat model. OQS tests for secret-dependent branches and memory accesses on Linux on x86\_64. All test failures are documented as either "passes," which we have assessed to be false positives, or "issues," which may constitute non–constant-time behaviour. The [algorithm datasheets](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) indicate whether or not an implementation passes our constant-time tests. Details about passes and issues are available in the [tests/constant_time directory](https://github.com/open-quantum-safe/liboqs/tree/main/tests/constant_time). These tests do not encompass all classes of non–constant-time behaviour; for example, they do not detect possible variable-time instructions, such as `DIV`. Reports of non–constant-time behaviour that fall outside this scope will be considered on a case-by-case basis, with a priority on [Tier 1 platforms](https://github.com/open-quantum-safe/liboqs/blob/main/PLATFORMS.md#tier-1).
 
 The following types of attacks are outside the scope of our threat model:
 
