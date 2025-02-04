@@ -53,6 +53,7 @@
 #define shake256_inc_ctx_clone OQS_SHA3_shake256_inc_ctx_clone
 #define shake256_inc_ctx_reset OQS_SHA3_shake256_inc_ctx_reset
 
+#define shake128_init shake128_inc_init
 #define shake128_absorb_once OQS_SHA3_shake128_absorb_once
 void OQS_SHA3_shake128_absorb_once(shake128incctx *state, const uint8_t *in, size_t inlen);
 

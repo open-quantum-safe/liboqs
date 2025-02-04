@@ -1,21 +1,27 @@
 {
-   Rejection sampling to produce public "A" matrix
+   The parts of sk being hashed and compared here are public.
    Memcheck:Cond
-   fun:rej_uniform
-   fun:pqcrystals_ml_kem*_ref_gen_matrix
-   fun:pqcrystals_ml_kem*_ref_indcpa_*
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_check_sk
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_dec
+}
+{
+   The parts of sk being hashed and compared here are public.
+   Memcheck:Cond
+   fun:bcmp
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_check_sk
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_dec
 }
 {
    Rejection sampling to produce public "A" matrix
    Memcheck:Cond
    ...
-   fun:pqcrystals_ml_kem*_avx2_gen_matrix
-   fun:pqcrystals_ml_kem*_avx2_indcpa_*
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_gen_matrix
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_indcpa_*
 }
 {
    Rejection sampling to produce public "A" matrix
    Memcheck:Value8
    ...
-   fun:pqcrystals_ml_kem*_avx2_gen_matrix
-   fun:pqcrystals_ml_kem*_avx2_indcpa_*
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_gen_matrix
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_indcpa_*
 }
