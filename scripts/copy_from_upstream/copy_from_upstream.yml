@@ -31,13 +31,22 @@ upstreams:
     kem_scheme_path: '.'
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
-    name: pqcrystals-kyber-standard
-    git_url: https://github.com/pq-crystals/kyber.git
+    name: mlkem-native
+    git_url: https://github.com/pq-code-package/mlkem-native.git
+    git_branch: v1.0.0-alpha.2
+    git_commit: 3f1b9fc214a3c3f18e88b144f68814ea7ae88625
+    kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
+    kem_scheme_path: '.'
+    patches: [mlkem-native-ml_kem.patch]
+    preserve_folder_structure: True
+  - 
+    name: cupqc
+    git_url: https://github.com/praveksharma/cupqc-mlkem.git
     git_branch: main
-    git_commit: 10b478fc3cc4ff6215eb0b6a11bd758bf0929cbd
+    git_commit: b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-ml_kem.patch]
+    patches: []
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
@@ -166,7 +175,11 @@ kems:
   -
     name: ml_kem
     default_implementation: ref
-    upstream_location: pqcrystals-kyber-standard
+    arch_specific_implementations:
+                                      cuda: cuda
+    arch_specific_upstream_locations:
+                                      cuda: cupqc
+    upstream_location: mlkem-native
     schemes:
       -
         scheme: "512"

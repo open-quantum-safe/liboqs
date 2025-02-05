@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - name: arm64
-            runner: oqs-arm64
+            runner: ubuntu-24.04-arm
             container: openquantumsafe/ci-ubuntu-latest:latest
             PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
             CMAKE_ARGS: -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
@@ -123,6 +123,12 @@ jobs:
       - name: Build
         run: ninja
         working-directory: build
+      - name: Check the library artifacts
+        if: matrix.name == 'jammy-std-openssl3-dlopen'
+        run: |
+          nm -gu lib/liboqs.so | sed -n 's/^[[:space:]]*[Uw] \([^_].*\)/\1/p' > undefined-syms.txt &&
+          ! (grep '^\(CRYPTO\|ERR\|EVP\|OPENSSL\|RAND\)_' undefined-syms.txt)
+        working-directory: build
       - name: Run tests
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
@@ -187,6 +193,19 @@ jobs:
                               python3 -m pytest --verbose \
                                                 --numprocesses=auto \
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
+
+  cupqc-buildcheck:
+    name: Check that code builds with OQS_USE_CUPQC=ON
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: mkdir build && cd build && cuPQC_DIR=/cupqc/cupqc/cupqc-pkg-0.2.0/cmake/ CUDACXX=/usr/local/cuda-12.6/bin/nvcc cmake -GNinja -DOQS_USE_CUPQC=ON -DCMAKE_CUDA_ARCHITECTURES=80 .. && cmake -LA -N ..
+      - name: Build code
+        run: ninja
+        working-directory: build
 
   linux_cross_compile:
     runs-on: ubuntu-latest

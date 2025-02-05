@@ -131,7 +131,7 @@ def test_acvp_vec_sig_keygen(sig_name):
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
-def test_acvp_vec_sig_gen_deterministic(sig_name):
+def test_acvp_vec_sig_gen(sig_name):
     
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if not(sig_name in fips_sig): pytest.skip("Not supported")
@@ -141,45 +141,29 @@ def test_acvp_vec_sig_gen_deterministic(sig_name):
 
         variantFound = False
         for variant in ml_sig_sig_acvp["testGroups"]:
-            if variant["parameterSet"] == sig_name and variant["deterministic"] == True:
-                variantFound = True
-                for testCase in variant["tests"]:
-                    sk = testCase["sk"]
-                    message = testCase["message"]
-                    signature = testCase["signature"]
-
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen_det", sk, message, signature]
-                    )
-
-        assert(variantFound == True)
-
-@helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
-@pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
-def test_acvp_vec_sig_gen_randomized(sig_name):
-    
-    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
-    if not(sig_name in fips_sig): pytest.skip("Not supported")
-
-    with open(os.path.join('tests', ml_dsa_sig), 'r') as fp:
-        ml_sig_sig_acvp  = json.load(fp)
-
-        variantFound = False
-        for variant in ml_sig_sig_acvp["testGroups"]:
-            if variant["parameterSet"] == sig_name and variant["deterministic"] == False:
-                variantFound = True
-                for testCase in variant["tests"]:
-                    sk = testCase["sk"]
-                    message = testCase["message"]
-                    signature = testCase["signature"]
-                    rnd = testCase["rnd"]
-                    
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen_rnd", sk, message, signature, rnd]
-                    )
+            # perform only below tests ATM:
+            # 1. internal API with externalMu as false
+            # 2. external API with "pure" implementation
+            if ((variant["signatureInterface"] == "internal" and not variant["externalMu"]) or
+                (variant["signatureInterface"] == "external" and variant["preHash"] == "pure")):    
+                if variant["parameterSet"] == sig_name:
+                    variantFound = True
+                    for testCase in variant["tests"]:
+                        sk = testCase["sk"]
+                        message = testCase["message"]
+                        signature = testCase["signature"]
+                        rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
+                        
+                        build_dir = helpers.get_current_build_dir_name()
+                        if variant["signatureInterface"] == "internal":
+                            helpers.run_subprocess(
+                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen_int", sk, message, signature, rnd]
+                            )
+                        else:
+                            context = testCase["context"]
+                            helpers.run_subprocess(
+                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigGen_ext", sk, message, signature, context, rnd]
+                            )                                
 
         assert(variantFound == True)
 
@@ -196,18 +180,29 @@ def test_acvp_vec_sig_ver(sig_name):
 
         variantFound = False
         for variant in ml_sig_sig_acvp["testGroups"]:
-            if variant["parameterSet"] == sig_name:
-                variantFound = True
-                pk = variant["pk"]
-                for testCase in variant["tests"]:
-                    message = testCase["message"]
-                    signature = testCase["signature"]
-                    testPassed = "1" if testCase["testPassed"] else "0"
-                    
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [f'{build_dir}/tests/vectors_sig', sig_name, "sigVer", pk, message, signature, testPassed]
-                    )
+            # perform only below tests ATM:
+            # 1. internal API with externalMu as false
+            # 2. external API with "pure" implementation
+            if ((variant["signatureInterface"] == "internal" and not variant["externalMu"]) or
+                (variant["signatureInterface"] == "external" and variant["preHash"] == "pure")):
+                if variant["parameterSet"] == sig_name:
+                    variantFound = True
+                    for testCase in variant["tests"]:
+                        message = testCase["message"]
+                        signature = testCase["signature"]
+                        pk = testCase["pk"]
+                        testPassed = "1" if testCase["testPassed"] else "0"
+                        
+                        build_dir = helpers.get_current_build_dir_name()
+                        if variant["signatureInterface"] == "internal":
+                            helpers.run_subprocess(
+                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigVer_int", pk, message, signature, testPassed]
+                            )
+                        else:
+                            context = testCase["context"]
+                            helpers.run_subprocess(
+                                [f'{build_dir}/tests/vectors_sig', sig_name, "sigVer_ext", pk, message, signature, context, testPassed]
+                            )
 
         assert(variantFound == True)
 

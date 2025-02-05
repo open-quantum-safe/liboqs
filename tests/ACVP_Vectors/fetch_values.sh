@@ -3,7 +3,7 @@
 
 # This script fetches the ACVP vectors for ML-DSA and ML-KEM
 
-rel_name="1.1.0.35"
+rel_name="1.1.0.38"
 rel_url="https://github.com/usnistgov/ACVP-Server/archive/refs/tags/v$rel_name.tar.gz"
 fld_vecs="ACVP-Server-$rel_name/gen-val/json-files"
 

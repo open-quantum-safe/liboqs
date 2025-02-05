@@ -48,4 +48,10 @@ void OQS_SHA3_shake256_x4_absorb_once(shake256x4incctx *state, const uint8_t *in
 #define shake256x4_squeezeblocks(OUT0, OUT1, OUT2, OUT3, NBLOCKS, STATE) \
         OQS_SHA3_shake256_x4_inc_squeeze(OUT0, OUT1, OUT2, OUT3, (NBLOCKS)*OQS_SHA3_SHAKE256_RATE, STATE)
 
+#define shake128x4ctx shake128x4incctx
+#define shake128x4_init shake128x4_inc_init
+#define shake128x4_release shake128x4_inc_ctx_release
+#define shake128ctx shake128incctx
+#define shake128_release shake128_inc_ctx_release
+
 #endif

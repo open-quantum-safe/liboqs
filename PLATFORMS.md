@@ -63,3 +63,4 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 - ppc641e for Ubuntu (Focal)
 - s390x for Ubuntu (Focal)
 - loongarch64 for Debian Linux (trixie)
+- NVIDIA GPU architectures 70, 75, 80, 86, 89, and 90 with a x86_64 CPU for Linux

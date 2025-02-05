@@ -13,6 +13,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_DIST_BUILD](#OQS_DIST_BUILD)
 - [OQS_USE_CPUFEATURE_INSTRUCTIONS](#OQS_USE_CPUFEATURE_INSTRUCTIONS)
 - [OQS_USE_OPENSSL](#OQS_USE_OPENSSL)
+- [OQS_USE_CUPQC](#OQS_USE_CUPQC)
 - [OQS_OPT_TARGET](#OQS_OPT_TARGET)
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
 - [USE_SANITIZER](#USE_SANITIZER)
@@ -123,6 +124,13 @@ When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the mini
 Dynamically load OpenSSL through `dlopen`. When using liboqs from other cryptographic libraries, hard dependency on OpenSSL is sometimes undesirable. If this option is `ON`, loading of OpenSSL will be deferred until any of the OpenSSL functions is used.
 
 Only has an effect if the system supports `dlopen` and ELF binary format, such as Linux or BSD family.
+
+### OQS_USE_CUPQC
+
+Can be `ON` or `OFF`.  When `ON`, use NVIDIA's cuPQC library where able (currently just ML-KEM).  When this option is enabled, liboqs may not run correctly on machines that lack supported GPUs. To download cuPQC follow the instructions at (https://developer.nvidia.com/cupqc-download/). Detailed descriptions of the API, requirements, and installation guide are in the cuPQC documentation (https://docs.nvidia.com/cuda/cupqc/index.html). While the code shipped by liboqs required to use cuPQC is licensed under Apache 2.0 the cuPQC SDK comes with its own license agreement (https://docs.nvidia.com/cuda/cupqc/license.html). 
+
+**Default**: `OFF`
+
 
 ## Stateful Hash Based Signatures 
 

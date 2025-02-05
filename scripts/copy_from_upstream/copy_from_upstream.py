@@ -495,14 +495,25 @@ def handle_implementation(impl, family, scheme, dst_basedir):
         else:
             # determine list of files to copy:
             if 'sources' in i:
-                srcs = i['sources'].split(" ")
-                for s in srcs:
-                    # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
-                    if os.path.isfile(os.path.join(origfolder, s)):
-                        subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
-                    else:
-                        subprocess.run(
-                            ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+                if i['sources']:
+                    preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
+                    srcs = i['sources'].split(" ")
+                    for s in srcs:
+                        # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
+                        if os.path.isfile(os.path.join(origfolder, s)):
+                            if preserve_folder_structure:
+                                subprocess.run(['mkdir', '-p', os.path.join(srcfolder, os.path.dirname(s))])
+                                subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, s)])
+                            else:
+                                subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+
+                        else:
+                            if preserve_folder_structure:
+                                subprocess.run(
+                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.dirname(s))])                    
+                            else:
+                                subprocess.run(
+                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
             else:
                 subprocess.run(['cp', '-pr', os.path.join(origfolder, '.'), srcfolder])
                 # raise Exception("Malformed YML file: No sources listed to copy. Check upstream YML file." )
@@ -598,14 +609,15 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                             # when provided to the compiler; OQS uses the term ARM_NEON
                             if req['architecture'] == 'arm_8':
                                 req['architecture'] = 'ARM64_V8'
-                            if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
-                                req['required_flags'].remove('asimd')
-                                req['required_flags'].append('arm_neon')
-                            if req['architecture'] == 'ARM64_V8' and 'sha3' in req['required_flags']:
-                                req['required_flags'].remove('sha3')
-                                req['required_flags'].append('arm_sha3')
-                            impl['required_flags'] = req['required_flags']
-                            family['all_required_flags'].update(req['required_flags'])
+                            if 'required_flags' in req:
+                                if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
+                                    req['required_flags'].remove('asimd')
+                                    req['required_flags'].append('arm_neon')
+                                if req['architecture'] == 'ARM64_V8' and 'sha3' in req['required_flags']:
+                                    req['required_flags'].remove('sha3')
+                                    req['required_flags'].append('arm_sha3')
+                                impl['required_flags'] = req['required_flags']
+                                family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
                         if (impl['name'] != family['default_implementation']):
                             print("No required flags found for %s (KeyError %s on impl %s)" % (

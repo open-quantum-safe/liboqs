@@ -43,95 +43,162 @@ extern "C"
 {
 #endif
 
-/* Algorithm identifier for XMSS-SHA2_10_256 */
+/** Algorithm identifier for XMSS-SHA2_10_256  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h10 "XMSS-SHA2_10_256"
+/** Algorithm identifier for XMSS-SHA2_16_256  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h16 "XMSS-SHA2_16_256"
+/** Algorithm identifier for XMSS-SHA2_20_256  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h20 "XMSS-SHA2_20_256"
+/** Algorithm identifier for XMSS-SHAKE_10_256  */
 #define OQS_SIG_STFL_alg_xmss_shake128_h10 "XMSS-SHAKE_10_256"
+/** Algorithm identifier for XMSS-SHAKE_16_256  */
 #define OQS_SIG_STFL_alg_xmss_shake128_h16 "XMSS-SHAKE_16_256"
+/** Algorithm identifier for XMSS-SHAKE_20_256  */
 #define OQS_SIG_STFL_alg_xmss_shake128_h20 "XMSS-SHAKE_20_256"
+/** Algorithm identifier for XMSS-SHA2_10_512  */
 #define OQS_SIG_STFL_alg_xmss_sha512_h10 "XMSS-SHA2_10_512"
+/** Algorithm identifier for XMSS-SHA2_16_512  */
 #define OQS_SIG_STFL_alg_xmss_sha512_h16 "XMSS-SHA2_16_512"
+/** Algorithm identifier for XMSS-SHA2_20_512  */
 #define OQS_SIG_STFL_alg_xmss_sha512_h20 "XMSS-SHA2_20_512"
+/** Algorithm identifier for XMSS-SHAKE_10_512  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h10 "XMSS-SHAKE_10_512"
+/** Algorithm identifier for XMSS-SHAKE_16_512  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h16 "XMSS-SHAKE_16_512"
+/** Algorithm identifier for XMSS-SHAKE_20_512  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h20 "XMSS-SHAKE_20_512"
+/** Algorithm identifier for XMSS-SHA2_10_192  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h10_192 "XMSS-SHA2_10_192"
+/** Algorithm identifier for XMSS-SHA2_16_192  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h16_192 "XMSS-SHA2_16_192"
+/** Algorithm identifier for XMSS-SHA2_20_192  */
 #define OQS_SIG_STFL_alg_xmss_sha256_h20_192 "XMSS-SHA2_20_192"
+/** Algorithm identifier for XMSS-SHAKE256_10_192  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h10_192 "XMSS-SHAKE256_10_192"
+/** Algorithm identifier for XMSS-SHAKE256_16_192  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h16_192 "XMSS-SHAKE256_16_192"
+/** Algorithm identifier for XMSS-SHAKE256_20_192  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h20_192 "XMSS-SHAKE256_20_192"
+/** Algorithm identifier for XMSS-SHAKE256_10_256  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h10_256 "XMSS-SHAKE256_10_256"
+/** Algorithm identifier for XMSS-SHAKE256_16_256  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h16_256 "XMSS-SHAKE256_16_256"
+/** Algorithm identifier for XMSS-SHAKE256_20_256  */
 #define OQS_SIG_STFL_alg_xmss_shake256_h20_256 "XMSS-SHAKE256_20_256"
 
+/** Algorithm identifier for XMSSMT-SHA2_20/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2 "XMSSMT-SHA2_20/2_256"
+/** Algorithm identifier for XMSSMT-SHA2_20/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4 "XMSSMT-SHA2_20/4_256"
+/** Algorithm identifier for XMSSMT-SHA2_40/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2 "XMSSMT-SHA2_40/2_256"
+/** Algorithm identifier for XMSSMT-SHA2_40/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4 "XMSSMT-SHA2_40/4_256"
+/** Algorithm identifier for XMSSMT-SHA2_40/8_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8 "XMSSMT-SHA2_40/8_256"
+/** Algorithm identifier for XMSSMT-SHA2_60/3_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3 "XMSSMT-SHA2_60/3_256"
+/** Algorithm identifier for XMSSMT-SHA2_60/6_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6 "XMSSMT-SHA2_60/6_256"
+/** Algorithm identifier for XMSSMT-SHA2_60/12_256  */
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12 "XMSSMT-SHA2_60/12_256"
+/** Algorithm identifier for XMSSMT-SHAKE_20/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2 "XMSSMT-SHAKE_20/2_256"
+/** Algorithm identifier for XMSSMT-SHAKE_20/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4 "XMSSMT-SHAKE_20/4_256"
+/** Algorithm identifier for XMSSMT-SHAKE_40/2_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2 "XMSSMT-SHAKE_40/2_256"
+/** Algorithm identifier for XMSSMT-SHAKE_40/4_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4 "XMSSMT-SHAKE_40/4_256"
+/** Algorithm identifier for XMSSMT-SHAKE_40/8_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8 "XMSSMT-SHAKE_40/8_256"
+/** Algorithm identifier for XMSSMT-SHAKE_60/3_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3 "XMSSMT-SHAKE_60/3_256"
+/** Algorithm identifier for XMSSMT-SHAKE_60/6_256 */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6 "XMSSMT-SHAKE_60/6_256"
+/** Algorithm identifier for XMSSMT-SHAKE_60/12_256  */
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12 "XMSSMT-SHAKE_60/12_256"
 
 /* Defined LMS parameter identifiers */
+/** Algorithm identifier for LMS-SHA256_H5_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w1 "LMS_SHA256_H5_W1" //"5/1"
+/** Algorithm identifier for LMS-SHA256_H5_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w2 "LMS_SHA256_H5_W2" //"5/2"
+/** Algorithm identifier for LMS-SHA256_H5_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w4 "LMS_SHA256_H5_W4" //"5/4"
+/** Algorithm identifier for LMS-SHA256_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w8 "LMS_SHA256_H5_W8" //"5/8"
 
+/** Algorithm identifier for LMS-SHA256_H10_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w1 "LMS_SHA256_H10_W1" //"10/1"
+/** Algorithm identifier for LMS-SHA256_H10_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w2 "LMS_SHA256_H10_W2" //"10/2"
+/** Algorithm identifier for LMS-SHA256_H10_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w4 "LMS_SHA256_H10_W4" //"10/4"
+/** Algorithm identifier for LMS-SHA256_H10_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w8 "LMS_SHA256_H10_W8" //"10/8"
 
+/** Algorithm identifier for LMS-SHA256_H15_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w1 "LMS_SHA256_H15_W1" //"15/1"
+/** Algorithm identifier for LMS-SHA256_H15_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w2 "LMS_SHA256_H15_W2" //"15/2"
+/** Algorithm identifier for LMS-SHA256_H15_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w4 "LMS_SHA256_H15_W4" //"15/4"
+/** Algorithm identifier for LMS-SHA256_H15_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w8 "LMS_SHA256_H15_W8" //"15/8"
 
+/** Algorithm identifier for LMS-SHA256_H20_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w1 "LMS_SHA256_H20_W1" //"20/1"
+/** Algorithm identifier for LMS-SHA256_H20_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w2 "LMS_SHA256_H20_W2" //"20/2"
+/** Algorithm identifier for LMS-SHA256_H20_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w4 "LMS_SHA256_H20_W4" //"20/4"
+/** Algorithm identifier for LMS-SHA256_H20_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8 "LMS_SHA256_H20_W8" //"20/8"
 
+/** Algorithm identifier for LMS-SHA256_H25_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w1 "LMS_SHA256_H25_W1" //"25/1"
+/** Algorithm identifier for LMS-SHA256_H25_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w2 "LMS_SHA256_H25_W2" //"25/2"
+/** Algorithm identifier for LMS-SHA256_H25_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w4 "LMS_SHA256_H25_W4" //"25/4"
+/** Algorithm identifier for LMS-SHA256_H25_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w8 "LMS_SHA256_H25_W8" //"25/8"
 
 // 2-Level LMS
+/** Algorithm identifier for LMS-SHA256_H5_W8_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8 "LMS_SHA256_H5_W8_H5_W8" //"5/8, 5/8"
 
 // RFC 6554
+/** Algorithm identifier for LMS-SHA256_H10_W4_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w4_h5_w8 "LMS_SHA256_H10_W4_H5_W8" //"10/4, 5/8"
 
+/** Algorithm identifier for LMS-SHA256_H10_W8_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w8_h5_w8 "LMS_SHA256_H10_W8_H5_W8"   //"10/8, 5/8"
+/** Algorithm identifier for LMS-SHA256_H10_W2_H10_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w2_h10_w2 "LMS_SHA256_H10_W2_H10_W2" //"10/2, 10/2"
+/** Algorithm identifier for LMS-SHA256_H10_W4_H10_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w4_h10_w4 "LMS_SHA256_H10_W4_H10_W4" //"10/4, 10/4"
+/** Algorithm identifier for LMS-SHA256_H10_W8_H10_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w8_h10_w8 "LMS_SHA256_H10_W8_H10_W8" //"10/8, 10/8"
 
+/** Algorithm identifier for LMS-SHA256_H15_W8_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w8_h5_w8 "LMS_SHA256_H15_W8_H5_W8"   //"15/8, 5/8"
+/** Algorithm identifier for LMS-SHA256_H15_W8_H10_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8 "LMS_SHA256_H15_W8_H10_W8" //"15/8, 10/8"
+/** Algorithm identifier for LMS-SHA256_H15_W8_H15_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w8_h15_w8 "LMS_SHA256_H15_W8_H15_W8" //"15/8, 15/8"
 
+/** Algorithm identifier for LMS-SHA256_H20_W8_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h5_w8 "LMS_SHA256_H20_W8_H5_W8"   //"20/8, 5/8"
+/** Algorithm identifier for LMS-SHA256_H20_W8_H10_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8 "LMS_SHA256_H20_W8_H10_W8" //"20/8, 10/8"
+/** Algorithm identifier for LMS-SHA256_H20_W8_H15_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8 "LMS_SHA256_H20_W8_H15_W8" //"20/8, 15/8"
+/** Algorithm identifier for LMS-SHA256_H20_W8_H20_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8 "LMS_SHA256_H20_W8_H20_W8" //"20/8, 20/8"
 
-/*
- * Total number of stateful variants defined above, used to create the tracking array
- */
+/** Total number of stateful variants defined above, used to create the tracking array */
 #define OQS_SIG_STFL_algs_length 70
 
 typedef struct OQS_SIG_STFL_SECRET_KEY OQS_SIG_STFL_SECRET_KEY;
@@ -189,12 +256,15 @@ OQS_API int OQS_SIG_STFL_alg_count(void);
 OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
+
+/** Signature schemes object */
 typedef struct OQS_SIG OQS_SIG;
+
+/** Stateful signature scheme object */
 #define OQS_SIG_STFL OQS_SIG
 #else
-/**
- * Stateful signature scheme object
- */
+
+/** Stateful signature scheme object */
 typedef struct OQS_SIG_STFL {
 
 	/**
@@ -303,16 +373,16 @@ typedef struct OQS_SIG_STFL {
 
 typedef struct OQS_SIG_STFL_SECRET_KEY {
 
-	/* The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	size_t length_secret_key;
 
-	/* The variant-specific secret key data must be allocated at the initialization. */
+	/** The variant-specific secret key data must be allocated at the initialization. */
 	void *secret_key_data;
 
-	/* The mutual exclusion struct */
+	/** The mutual exclusion struct */
 	void *mutex;
 
-	/* Application-managed data related to secure storage of secret key data */
+	/** Application-managed data related to secure storage of secret key data */
 	void *context;
 
 	/**
@@ -482,6 +552,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
  * The remaining signatures are the number of signatures available before the private key runs out of its total signature and expires.
  *
  * @param[in] sig The OQS_SIG_STFL object representing the signature scheme.
+ * @param[in] remain The number of remaining signatures.
  * @param[in] secret_key The secret key object.
  * @return OQS_SUCCESS or OQS_ERROR
  */
@@ -519,8 +590,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 /**
  * Free an OQS_SIG_STFL_SECRET_KEY object that was constructed by OQS_SECRET_KEY_new.
  *
- * @param[in] sig The OQS_SIG_STFL_SECRET_KEY object to free.
- * @return OQS_SUCCESS if successful, or OQS_ERROR if the object cannot be freed.
+ * @param[in] sk The OQS_SIG_STFL_SECRET_KEY object to free.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
@@ -532,7 +602,6 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_free(OQS_SIG_STFL_SECRET_KEY *sk);
  *
  * @param[in] sk Pointer to the secret key object whose lock function is to be set.
  * @param[in] lock Function pointer to the locking routine provided by the application.
- * @return None.
  *
  * @note It's not required to set the lock and unlock functions in a single-threaded environment.
  *
@@ -550,7 +619,6 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_lock(OQS_SIG_STFL_SECRET_KEY *sk, lock_
  *
  * @param[in] sk Pointer to the secret key object whose unlock function is to be set.
  * @param[in] unlock Function pointer to the unlock routine provided by the application.
- * @return None.
  *
  * @note It's not required to set the lock and unlock functions in a single-threaded environment.
  *
@@ -567,7 +635,6 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_unlock(OQS_SIG_STFL_SECRET_KEY *sk, unl
  *
  * @param[in] sk A pointer to the secret key that the mutex functionality will protect.
  * @param[in] mutex A function pointer to the desired concurrency control mechanism.
- * @return None.
  *
  * @note It's not required to set the lock and unlock functions in a single-threaded environment.
  *
@@ -629,7 +696,6 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
  * @param[in] context Application-specific context that assists in the storage of secret key data.
  *                    This context is managed by the application, which allocates it, keeps track of it,
  *                    and deallocates it as necessary.
- * @return None.
  */
 OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
