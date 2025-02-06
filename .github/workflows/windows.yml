@@ -8,10 +8,11 @@ on: [workflow_call, workflow_dispatch]
 jobs:
 
   windows-arm64:
-    runs-on: [windows-2022, windows-2025]
     strategy:
       matrix:
+        runner: [windows-2022, windows-2025]
         stfl_opt: [ON, OFF]
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
       - name: Generate Project
@@ -20,12 +21,13 @@ jobs:
         run: cmake --build build
 
   windows-x86:
-    runs-on: [windows-2022, windows-2025]
     strategy:
       fail-fast: false
       matrix:
+        runner: [windows-2022, windows-2025]
         toolchain: [.CMake/toolchain_windows_x86.cmake, .CMake/toolchain_windows_amd64.cmake]
         stfl_opt: [ON, OFF]
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Install Python
         uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
