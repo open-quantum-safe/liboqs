@@ -8,7 +8,7 @@ on: [workflow_call, workflow_dispatch]
 jobs:
 
   windows-arm64:
-    runs-on: windows-2022
+    runs-on: [windows-2022, windows-2025]
     strategy:
       matrix:
         stfl_opt: [ON, OFF]
@@ -20,7 +20,7 @@ jobs:
         run: cmake --build build
 
   windows-x86:
-    runs-on: windows-2022
+    runs-on: [windows-2022, windows-2025]
     strategy:
       fail-fast: false
       matrix:
