@@ -18,7 +18,7 @@ jobs:
           - macos-15
         CMAKE_ARGS:
           - -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-          - -DCMAKE_C_COMPILER=gcc
+          - -DCMAKE_C_COMPILER=gcc-14
           - -DOQS_USE_OPENSSL=OFF
           - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
         libjade-build:
