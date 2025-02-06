@@ -1,13 +1,6 @@
-# Labels of self-hosted runner in array of strings.
-
-# NB. ubuntu-24.04-arm is not self-hosted but this configuration
-#     is required for liboqs to lint correctly with actionlint v1.7.1
-
-self-hosted-runner:
-  # Labels of self-hosted runner in array of string
-  labels:
-    - ubuntu-24.04-arm
 # Configuration variables in array of strings defined in your repository or organization
+# From https://github.com/rhysd/actionlint/blob/v1.7.7/docs/config.md:
+# "When an array is set, actionlint will check vars properties strictly. An empty array means no variable is allowed."
 config-variables:
   # - DEFAULT_RUNNER
   # - JOB_NAME
