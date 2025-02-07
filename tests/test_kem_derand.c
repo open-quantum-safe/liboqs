@@ -103,13 +103,13 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	memcpy(coins_k + kem->length_keypair_coins, magic.val, sizeof(magic_t));
 	memcpy(coins_e + kem->length_encaps_coins, magic.val, sizeof(magic_t));
 
-    // On some systems, getentropy fails if given a zero-length array
-    if (kem->length_keypair_coins > 0) {
-        OQS_randombytes(coins_k, kem->length_keypair_coins);
-    }
-    if (kem->length_encaps_coins > 0) {
-        OQS_randombytes(coins_e, kem->length_encaps_coins);
-    }
+	// On some systems, getentropy fails if given a zero-length array
+	if (kem->length_keypair_coins > 0) {
+		OQS_randombytes(coins_k, kem->length_keypair_coins);
+	}
+	if (kem->length_encaps_coins > 0) {
+		OQS_randombytes(coins_e, kem->length_encaps_coins);
+	}
 
 	rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, coins_k);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
