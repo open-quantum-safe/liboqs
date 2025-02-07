@@ -27,9 +27,9 @@ void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
  * statically on the stack, calling a specific algorithm's functions
  * directly.
  *
- * The macros OQS_SIG_dilithium_2_length_* and the functions OQS_SIG_dilithium_2_*
- * are only defined if the algorithm dilithium_2 was enabled at compile-time
- * which must be checked using the OQS_ENABLE_SIG_dilithium_2 macro.
+ * The macros OQS_SIG_ml_dsa_65_length_* and the functions OQS_SIG_ml_dsa_65_*
+ * are only defined if the algorithm ml_dsa_65 was enabled at compile-time
+ * which must be checked using the OQS_ENABLE_SIG_ml_dsa_65 macro.
  *
  * <oqs/oqsconfig.h>, which is included in <oqs/oqs.h>, contains macros
  * indicating which algorithms were enabled when this instance of liboqs
@@ -37,46 +37,46 @@ void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
  */
 static OQS_STATUS example_stack(void) {
 
-#ifdef OQS_ENABLE_SIG_dilithium_2
+#ifdef OQS_ENABLE_SIG_ml_dsa_65
 
 	OQS_STATUS rc;
 
-	uint8_t public_key[OQS_SIG_dilithium_2_length_public_key];
-	uint8_t secret_key[OQS_SIG_dilithium_2_length_secret_key];
+	uint8_t public_key[OQS_SIG_ml_dsa_65_length_public_key];
+	uint8_t secret_key[OQS_SIG_ml_dsa_65_length_secret_key];
 	uint8_t message[MESSAGE_LEN];
-	uint8_t signature[OQS_SIG_dilithium_2_length_signature];
+	uint8_t signature[OQS_SIG_ml_dsa_65_length_signature];
 	size_t message_len = MESSAGE_LEN;
 	size_t signature_len;
 
 	// let's create a random test message to sign
 	OQS_randombytes(message, message_len);
 
-	rc = OQS_SIG_dilithium_2_keypair(public_key, secret_key);
+	rc = OQS_SIG_ml_dsa_65_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_keypair failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+		fprintf(stderr, "ERROR: OQS_SIG_ml_dsa_65_keypair failed!\n");
+		cleanup_stack(secret_key, OQS_SIG_ml_dsa_65_length_secret_key);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_dilithium_2_sign(signature, &signature_len, message, message_len, secret_key);
+	rc = OQS_SIG_ml_dsa_65_sign(signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_sign failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+		fprintf(stderr, "ERROR: OQS_SIG_ml_dsa_65_sign failed!\n");
+		cleanup_stack(secret_key, OQS_SIG_ml_dsa_65_length_secret_key);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_dilithium_2_verify(message, message_len, signature, signature_len, public_key);
+	rc = OQS_SIG_ml_dsa_65_verify(message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_verify failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+		fprintf(stderr, "ERROR: OQS_SIG_ml_dsa_65_verify failed!\n");
+		cleanup_stack(secret_key, OQS_SIG_ml_dsa_65_length_secret_key);
 		return OQS_ERROR;
 	}
 
-	printf("[example_stack] OQS_SIG_dilithium_2 operations completed.\n");
-	cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+	printf("[example_stack] OQS_SIG_ml_dsa_65 operations completed.\n");
+	cleanup_stack(secret_key, OQS_SIG_ml_dsa_65_length_secret_key);
 	return OQS_SUCCESS; // success!
 
 #else
 
-	printf("[example_stack] OQS_SIG_dilithium_2 was not enabled at compile-time.\n");
+	printf("[example_stack] OQS_SIG_ml_dsa_65 was not enabled at compile-time.\n");
 	return OQS_SUCCESS;
 
 #endif
@@ -92,7 +92,7 @@ static OQS_STATUS example_stack(void) {
  */
 static OQS_STATUS example_heap(void) {
 
-#ifdef OQS_ENABLE_SIG_dilithium_2
+#ifdef OQS_ENABLE_SIG_ml_dsa_65
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -103,9 +103,9 @@ static OQS_STATUS example_heap(void) {
 	size_t signature_len;
 	OQS_STATUS rc;
 
-	sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
+	sig = OQS_SIG_new(OQS_SIG_alg_ml_dsa_65);
 	if (sig == NULL) {
-		printf("[example_heap]  OQS_SIG_alg_dilithium_2 was not enabled at compile-time.\n");
+		printf("[example_heap]  OQS_SIG_alg_ml_dsa_65 was not enabled at compile-time.\n");
 		return OQS_ERROR;
 	}
 
@@ -141,12 +141,12 @@ static OQS_STATUS example_heap(void) {
 		return OQS_ERROR;
 	}
 
-	printf("[example_heap]  OQS_SIG_dilithium_2 operations completed.\n");
+	printf("[example_heap]  OQS_SIG_ml_dsa_65 operations completed.\n");
 	cleanup_heap(public_key, secret_key, message, signature, sig);
 	return OQS_SUCCESS; // success
 #else
 
-	printf("[example_heap] OQS_SIG_dilithium_2 was not enabled at compile-time.\n");
+	printf("[example_heap] OQS_SIG_ml_dsa_65 was not enabled at compile-time.\n");
 	return OQS_SUCCESS;
 
 #endif
