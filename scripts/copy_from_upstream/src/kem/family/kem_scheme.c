@@ -86,6 +86,7 @@ extern int {{ scheme['metadata']['default_keypair_derand_signature'] }}(uint8_t 
         {%- else %}
            {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_keypair"}) -%}
         {%- endif %}
+
 extern int {{ scheme['metadata']['default_keypair_signature'] }}(uint8_t *pk, uint8_t *sk);
 
         {%- if impl['signature_enc_derand'] %}

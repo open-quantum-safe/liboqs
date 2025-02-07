@@ -87,8 +87,8 @@ def do_it(liboqs_root):
                               parameter_set['length-secret-key'],
                               parameter_set['length-ciphertext'],
                               parameter_set['length-shared-secret'],
-                              parameter_set['length-keypair-coins'] if 'length-keypair-coins' in parameter_set else "0",
-                              parameter_set['length-encaps-coins'] if 'length-encaps-coins' in parameter_set else "0"])
+                              parameter_set['length-keypair-coins'] if 'length-keypair-coins' in parameter_set else "NA",
+                              parameter_set['length-encaps-coins'] if 'length-encaps-coins' in parameter_set else "NA"])
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
 
