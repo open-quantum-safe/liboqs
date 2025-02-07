@@ -33,6 +33,7 @@ OQS_KEM *OQS_KEM_kyber_1024_new(void) {
 
 	return kem;
 }
+
 extern int pqcrystals_kyber1024_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber1024_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_kyber1024_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);

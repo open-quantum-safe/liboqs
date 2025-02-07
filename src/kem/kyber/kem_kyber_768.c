@@ -33,6 +33,7 @@ OQS_KEM *OQS_KEM_kyber_768_new(void) {
 
 	return kem;
 }
+
 extern int pqcrystals_kyber768_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqcrystals_kyber768_ref_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int pqcrystals_kyber768_ref_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
@@ -60,6 +61,7 @@ extern int libjade_kyber768_avx2_keypair(uint8_t *pk, uint8_t *sk);
 extern int libjade_kyber768_avx2_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int libjade_kyber768_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
+
 
 OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
 	(void)public_key;

@@ -33,6 +33,7 @@ OQS_KEM *OQS_KEM_classic_mceliece_6688128_new(void) {
 
 	return kem;
 }
+
 extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
 extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);

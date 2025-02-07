@@ -13,11 +13,11 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair coins (bytes) |   Encapsulation coins (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|------------------------:|------------------------------:|
-|     BIKE-L1     | NA                    | IND-CPA          |                    1 |                      1541 |                      5223 |                      1573 |                           32 |                       0 |                             0 |
-|     BIKE-L3     | NA                    | IND-CPA          |                    3 |                      3083 |                     10105 |                      3115 |                           32 |                       0 |                             0 |
-|     BIKE-L5     | NA                    | IND-CPA          |                    5 |                      5122 |                     16494 |                      5154 |                           32 |                       0 |                             0 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair coins (bytes)   | Encapsulation coins (bytes)   |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:------------------------|:------------------------------|
+|     BIKE-L1     | NA                    | IND-CPA          |                    1 |                      1541 |                      5223 |                      1573 |                           32 | NA                      | NA                            |
+|     BIKE-L3     | NA                    | IND-CPA          |                    3 |                      3083 |                     10105 |                      3115 |                           32 | NA                      | NA                            |
+|     BIKE-L5     | NA                    | IND-CPA          |                    5 |                      5122 |                     16494 |                      5154 |                           32 | NA                      | NA                            |
 
 ## BIKE-L1 implementation characteristics
 
