@@ -16,6 +16,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_USE_CUPQC](#OQS_USE_CUPQC)
 - [OQS_OPT_TARGET](#OQS_OPT_TARGET)
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
+- [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
@@ -36,7 +37,11 @@ This means liboqs is built as a static library by default.
 
 Can be set to the following values:
 
-- `Debug`: This turns off all compiler optimizations and produces debugging information. When the compiler is Clang, the [USE_SANITIZER](#USE_SANITIZER) option can also be specified to enable a Clang sanitizer. **This value only has effect when the compiler is GCC or Clang**
+- `Debug`: This turns off all compiler optimizations and produces debugging information.
+  - The [USE_COVERAGE](#USE_COVERAGE) option can also be specified to enable code coverage testing.
+  - When the compiler is Clang, the [USE_SANITIZER](#USE_SANITIZER) option can also be specified to enable a Clang sanitizer.
+
+**This value only has effect when the compiler is GCC or Clang**
 
 - `Release`: This compiles code at the `O3` optimization level, and sets other compiler flags that reduce the size of the binary.
 
@@ -172,6 +177,10 @@ In order to use this option, user mode access to the PMU must be enabled via a k
 Note that this option is not known to work on Apple M1 chips.
 
 **Default**: `OFF`.
+
+## USE_COVERAGE
+
+This has an effect when the compiler is GCC or Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) is `Debug`. Can be `ON` or `OFF`. When `ON`, code coverage testing will be enabled.
 
 ## USE_SANITIZER
 
