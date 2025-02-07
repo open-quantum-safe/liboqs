@@ -1,11 +1,18 @@
-name: Code coverage
+name: Code coverage tests
 
-on: push
+permissions:
+  contents: read
+
+on: [workflow_call, workflow_dispatch]
 
 jobs:
   coverage:
     name: Run code coverage testing
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runner:
+          - ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Install dependencies
@@ -13,15 +20,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja -DOQS_MINIMAL_BUILD="KEM_ml_kem_512;SIG_ml_dsa_44" -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON .. && cmake _LA -N ..
+        run: mkdir build && cd build && cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
       - name: Run tests
-        run: python3 -m pytest --verbose tests/test_cmdline.py
+        run: ninja run_tests
+        working-directory: build
       - name: Run lcov
-        run: lcov -d . -c -o lcov.info
-      - name: Coveralls
+        run: lcov -d . -c -o lcov.info --exclude usr/lib
+      - name: Upload to coveralls.io
         uses: coverallsapp/github-action@v2.3.6
-        with:
-          file: lcov.info

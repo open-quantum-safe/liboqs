@@ -26,12 +26,12 @@ For example, "[full tests] [trigger downstream]" will trigger both the platform 
 #### <a name="pr.yml"></a> Pull request workflow (`pr.yml`)
 
 This workflow runs on pull requests.
-It calls [basic checks](#basic.yml), [platform tests](#platforms.yml) and [scorecard analysis](#scorecard.yml).
+It calls [basic checks](#basic.yml), [code coverage tests](#code-coverage.yml), [platform tests](#platforms.yml) and [scorecard analysis](#scorecard.yml).
 
 #### <a name="commit-to-main.yml"></a> Commit-to-main workflow (`commit-to-main.yml`)
 
 This workflow runs on pushes to the `main` branch (typically done automatically when a pull request is merged).
-It calls [platform tests](#platforms.yml), [scorecard analysis](#scorecard.yml), and [basic downstream tests](#downstream-basic.yml).
+It calls [platform tests](#platforms.yml), [code coverage tests](#code-coverage.yml), [scorecard analysis](#scorecard.yml), and [basic downstream tests](#downstream-basic.yml).
 
 #### <a name="weekly.yml"></a> Weekly workflow (`weekly.yml`)
 
@@ -52,6 +52,10 @@ Users with "write" permissions can also trigger them manually via the GitHub web
 #### <a name="basic.yml"></a> Basic checks (`basic.yml`)
 
 This workflow runs a minimal set of tests that should pass before heavier tests are triggered.
+
+#### <a name="code-coverage.yml"></a> Code coverage tests (`code-coverage.yml`)
+
+This workflow runs code coverage tests and uploads the results to [Coveralls.io](https://coveralls.io/github/SWilson4/liboqs).
 
 #### <a name="<platform>.yml"></a> Individual platform tests (`<platform>.yml`)
 

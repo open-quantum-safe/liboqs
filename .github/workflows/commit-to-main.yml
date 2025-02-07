@@ -12,6 +12,10 @@ jobs:
   platform-tests:
     uses: ./.github/workflows/platforms.yml
 
+  code-coverage:
+    uses: ./.github/workflows/code-coverage.yml
+    secrets: inherit
+
   scorecard:
     uses: ./.github/workflows/scorecard.yml
     secrets: inherit
