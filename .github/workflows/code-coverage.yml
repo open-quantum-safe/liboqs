@@ -43,7 +43,7 @@ jobs:
           tests/test_cmdline.py \
           tests/test_kat.py
       - name: Run lcov
-        run: lcov -d . -c -o lcov.info --exclude usr/lib
+        run: lcov -d . -c -o lcov.info --exclude usr/lib --ignore-errors unused
       - name: Upload to coveralls.io
         uses: coverallsapp/github-action@v2.3.6
         with:
