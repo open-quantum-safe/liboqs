@@ -10,8 +10,11 @@ jobs:
     name: Run code coverage testing
     strategy:
       matrix:
-        runner:
-          - ubuntu-latest
+        # The 'id' value for each job should be added to the 'carry-forward' string in the 'finish' job.
+        include:
+          - id: x64-generic
+            runner: ubuntu-latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
     runs-on: ${{ matrix.runner }}
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
@@ -20,7 +23,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON .. && cmake -LA -N ..
+        run: |
+          mkdir build && cd build && \
+          cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON ${{ matrix.CMAKE_ARGS }} .. && \
+          cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
@@ -31,3 +37,17 @@ jobs:
         run: lcov -d . -c -o lcov.info --exclude usr/lib
       - name: Upload to coveralls.io
         uses: coverallsapp/github-action@v2.3.6
+        with:
+          flag-name: ${{ matrix.id }}
+          parallel: true
+
+  finish:
+    needs: coverage
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Finish coveralls.io
+        uses: coverallsapp/github-action@v2.3.6
+        with:
+          parallel-finished: true
+          carry-forward: "x64-generic"
