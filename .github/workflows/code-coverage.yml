@@ -15,6 +15,12 @@ jobs:
           - id: x64-generic
             runner: ubuntu-latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
+          - id: x64-distbuild
+            runner: ubuntu-latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+          - id: arm64-distbuild
+            runner: ubuntu-24.04-arm
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
     runs-on: ${{ matrix.runner }}
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
@@ -31,8 +37,11 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
-        run: ninja run_tests
-        working-directory: build
+        run: |
+          python3 -m pytest --verbose --numprocesses=auto \
+          tests/test_acvp_vectors.py \
+          tests/test_cmdline.py \
+          tests/test_kat.py
       - name: Run lcov
         run: lcov -d . -c -o lcov.info --exclude usr/lib
       - name: Upload to coveralls.io
@@ -50,4 +59,4 @@ jobs:
         uses: coverallsapp/github-action@v2.3.6
         with:
           parallel-finished: true
-          carry-forward: "x64-generic"
+          carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
