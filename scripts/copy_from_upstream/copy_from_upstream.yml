@@ -37,7 +37,7 @@ upstreams:
     git_commit: 09bb1790bf9d38e1714f39af789306f28cdd395d
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-ml_kem_derand.patch]
+    patches: [mlkem-native-ml_kem-derand.patch]
     preserve_folder_structure: True
   -
     name: cupqc
