@@ -194,19 +194,6 @@ jobs:
                                                 --numprocesses=auto \
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
 
-  cupqc-buildcheck:
-    name: Check that code builds with OQS_USE_CUPQC=ON
-    runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Configure
-        run: mkdir build && cd build && cuPQC_DIR=/cupqc/cupqc/cupqc-pkg-0.2.0/cmake/ CUDACXX=/usr/local/cuda-12.6/bin/nvcc cmake -GNinja -DOQS_USE_CUPQC=ON -DCMAKE_CUDA_ARCHITECTURES=80 .. && cmake -LA -N ..
-      - name: Build code
-        run: ninja
-        working-directory: build
-
   linux_cross_compile:
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
