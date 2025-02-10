@@ -45,14 +45,14 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 ### Tier 1
 
 - x86_64/amd64/x64 for Ubuntu Linux (Noble)†
-- x86_64/amd64/x64 for MacOS (XCode 14 and 15)
+- x86_64/amd64/x64 for MacOS (XCode 15)
 - aarch64 for Ubuntu (Noble)
-- aarch64 for MacOS (XCode 15)
+- aarch64 for MacOS (XCode 15 and 16)
 - armhf/ARM7 and aarch64 emulation on Ubuntu
 
 ### Tier 2
 
-- x86_64/amd64/x64 for Windows (Visual Studio Toolchain) 2022
+- x86_64/amd64/x64 for Windows (Visual Studio Toolchain) 2022 and 2025
 - armeabi-v7a, arm64-v8a, x86, x86_64 for Android
 - aarch64 for Apple iOS and tvOS (CMake `-DPLATFORM=OS64` and `TVOS`)
 - arm64, arm (32 bit), x86, x86_64, riscv32, riscv64 for Zephyr
