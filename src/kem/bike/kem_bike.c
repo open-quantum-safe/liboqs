@@ -20,8 +20,12 @@ OQS_KEM *OQS_KEM_bike_l1_new(void) {
 	kem->length_secret_key = OQS_KEM_bike_l1_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_bike_l1_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_bike_l1_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_bike_l1_length_keypair_coins;
+	kem->length_encaps_coins = OQS_KEM_bike_l1_length_encaps_coins;
 
+	kem->keypair_derand = OQS_KEM_bike_l1_keypair_derand;
 	kem->keypair = OQS_KEM_bike_l1_keypair;
+	kem->encaps_derand = OQS_KEM_bike_l1_encaps_derand;
 	kem->encaps = OQS_KEM_bike_l1_encaps;
 	kem->decaps = OQS_KEM_bike_l1_decaps;
 
@@ -45,8 +49,12 @@ OQS_KEM *OQS_KEM_bike_l3_new(void) {
 	kem->length_secret_key = OQS_KEM_bike_l3_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_bike_l3_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_bike_l3_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_bike_l3_length_keypair_coins;
+	kem->length_encaps_coins = OQS_KEM_bike_l3_length_encaps_coins;
 
+	kem->keypair_derand = OQS_KEM_bike_l3_keypair_derand;
 	kem->keypair = OQS_KEM_bike_l3_keypair;
+	kem->encaps_derand = OQS_KEM_bike_l3_encaps_derand;
 	kem->encaps = OQS_KEM_bike_l3_encaps;
 	kem->decaps = OQS_KEM_bike_l3_decaps;
 
@@ -70,8 +78,12 @@ OQS_KEM *OQS_KEM_bike_l5_new(void) {
 	kem->length_secret_key = OQS_KEM_bike_l5_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_bike_l5_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_bike_l5_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_bike_l5_length_keypair_coins;
+	kem->length_encaps_coins = OQS_KEM_bike_l5_length_encaps_coins;
 
+	kem->keypair_derand = OQS_KEM_bike_l5_keypair_derand;
 	kem->keypair = OQS_KEM_bike_l5_keypair;
+	kem->encaps_derand = OQS_KEM_bike_l5_encaps_derand;
 	kem->encaps = OQS_KEM_bike_l5_encaps;
 	kem->decaps = OQS_KEM_bike_l5_decaps;
 

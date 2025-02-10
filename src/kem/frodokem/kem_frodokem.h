@@ -10,8 +10,12 @@
 #define OQS_KEM_frodokem_640_aes_length_secret_key 19888
 #define OQS_KEM_frodokem_640_aes_length_ciphertext 9720
 #define OQS_KEM_frodokem_640_aes_length_shared_secret 16
+#define OQS_KEM_frodokem_640_aes_length_keypair_coins 0
+#define OQS_KEM_frodokem_640_aes_length_encaps_coins 0
 OQS_KEM *OQS_KEM_frodokem_640_aes_new(void);
+OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
@@ -21,8 +25,12 @@ OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_decaps(uint8_t *shared_secret, const
 #define OQS_KEM_frodokem_640_shake_length_secret_key 19888
 #define OQS_KEM_frodokem_640_shake_length_ciphertext 9720
 #define OQS_KEM_frodokem_640_shake_length_shared_secret 16
+#define OQS_KEM_frodokem_640_shake_length_keypair_coins 0
+#define OQS_KEM_frodokem_640_shake_length_encaps_coins 0
 OQS_KEM *OQS_KEM_frodokem_640_shake_new(void);
+OQS_API OQS_STATUS OQS_KEM_frodokem_640_shake_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_shake_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_frodokem_640_shake_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_shake_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_shake_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
@@ -32,8 +40,12 @@ OQS_API OQS_STATUS OQS_KEM_frodokem_640_shake_decaps(uint8_t *shared_secret, con
 #define OQS_KEM_frodokem_976_aes_length_secret_key 31296
 #define OQS_KEM_frodokem_976_aes_length_ciphertext 15744
 #define OQS_KEM_frodokem_976_aes_length_shared_secret 24
+#define OQS_KEM_frodokem_976_aes_length_keypair_coins 0
+#define OQS_KEM_frodokem_976_aes_length_encaps_coins 0
 OQS_KEM *OQS_KEM_frodokem_976_aes_new(void);
+OQS_API OQS_STATUS OQS_KEM_frodokem_976_aes_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_976_aes_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_frodokem_976_aes_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_976_aes_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_frodokem_976_aes_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
@@ -43,8 +55,12 @@ OQS_API OQS_STATUS OQS_KEM_frodokem_976_aes_decaps(uint8_t *shared_secret, const
 #define OQS_KEM_frodokem_976_shake_length_secret_key 31296
 #define OQS_KEM_frodokem_976_shake_length_ciphertext 15744
 #define OQS_KEM_frodokem_976_shake_length_shared_secret 24
+#define OQS_KEM_frodokem_976_shake_length_keypair_coins 0
+#define OQS_KEM_frodokem_976_shake_length_encaps_coins 0
 OQS_KEM *OQS_KEM_frodokem_976_shake_new(void);
+OQS_API OQS_STATUS OQS_KEM_frodokem_976_shake_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_976_shake_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_frodokem_976_shake_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_976_shake_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_frodokem_976_shake_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
@@ -54,8 +70,12 @@ OQS_API OQS_STATUS OQS_KEM_frodokem_976_shake_decaps(uint8_t *shared_secret, con
 #define OQS_KEM_frodokem_1344_aes_length_secret_key 43088
 #define OQS_KEM_frodokem_1344_aes_length_ciphertext 21632
 #define OQS_KEM_frodokem_1344_aes_length_shared_secret 32
+#define OQS_KEM_frodokem_1344_aes_length_keypair_coins 0
+#define OQS_KEM_frodokem_1344_aes_length_encaps_coins 0
 OQS_KEM *OQS_KEM_frodokem_1344_aes_new(void);
+OQS_API OQS_STATUS OQS_KEM_frodokem_1344_aes_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_1344_aes_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_frodokem_1344_aes_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_1344_aes_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_frodokem_1344_aes_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
@@ -65,8 +85,12 @@ OQS_API OQS_STATUS OQS_KEM_frodokem_1344_aes_decaps(uint8_t *shared_secret, cons
 #define OQS_KEM_frodokem_1344_shake_length_secret_key 43088
 #define OQS_KEM_frodokem_1344_shake_length_ciphertext 21632
 #define OQS_KEM_frodokem_1344_shake_length_shared_secret 32
+#define OQS_KEM_frodokem_1344_shake_length_keypair_coins 0
+#define OQS_KEM_frodokem_1344_shake_length_encaps_coins 0
 OQS_KEM *OQS_KEM_frodokem_1344_shake_new(void);
+OQS_API OQS_STATUS OQS_KEM_frodokem_1344_shake_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_1344_shake_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_frodokem_1344_shake_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_frodokem_1344_shake_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_frodokem_1344_shake_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif

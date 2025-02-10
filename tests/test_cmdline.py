@@ -44,6 +44,14 @@ def test_sig_stfl(sig_stfl_name):
             [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
         )
 
+@helpers.filtered_test
+@pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
+def test_kem_derand(kem_name):
+    if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_kem_derand'), kem_name],
+    )
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
