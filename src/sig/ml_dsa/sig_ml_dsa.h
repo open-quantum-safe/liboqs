@@ -12,6 +12,8 @@
 
 OQS_SIG *OQS_SIG_ml_dsa_44_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -25,6 +27,8 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_verify_with_ctx_str(const uint8_t *message,
 
 OQS_SIG *OQS_SIG_ml_dsa_65_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -38,6 +42,8 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify_with_ctx_str(const uint8_t *message,
 
 OQS_SIG *OQS_SIG_ml_dsa_87_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);

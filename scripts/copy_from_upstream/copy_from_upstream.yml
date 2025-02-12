@@ -9,7 +9,7 @@ upstreams:
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
     patches: [pqclean-dilithium-arm-randomized-signing.patch, pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch,
-    pqclean-kyber-armneon-asan.patch]
+    pqclean-kyber-armneon-asan.patch, oldpqclean_dilithium2_aarch64_clean_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, oldpqclean_dilithium3_aarch64_clean_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, oldpqclean_dilithium5_aarch64_clean_keypair_from_fixed_seed_and_pubkey_from_privkey.patch]
     ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
   -
     name: pqclean
@@ -20,7 +20,7 @@ upstreams:
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-sphincs.patch]
+    patches: [pqclean-sphincs.patch, pqclean_falcon_512_clean_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_512_avx2_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_512_aarch64_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_1024_clean_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_1024_avx2_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_1024_aarch64_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_padded_512_clean_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_padded_512_avx2_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_padded_512_aarch64_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_padded_1024_clean_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_padded_1024_avx2_keypair_from_fixed_seed_and_pubkey_from_privkey.patch, pqclean_falcon_padded_1024_aarch64_keypair_from_fixed_seed_and_pubkey_from_privkey.patch]
     ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64, pqclean_dilithium2_aarch64, pqclean_dilithium3_aarch64, pqclean_dilithium5_aarch64
   -
     name: pqcrystals-kyber
@@ -54,7 +54,7 @@ upstreams:
     git_commit: 3e9b9f1412f6c7435dbeb4e10692ea58f181ee51
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
+    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch, pqcrystals_dilithium_ref_avx2_2_5_keypair_from_fixed_seed_and_pubkey_from_privkey_function.patch, fix_pqcrystals_dilithium_implementations.patch]
   -
     name: pqcrystals-dilithium-standard
     git_url: https://github.com/pq-crystals/dilithium.git
