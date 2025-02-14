@@ -88,6 +88,8 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 **WE DO NOT CURRENTLY RECOMMEND RELYING ON THIS LIBRARY IN A PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA.** This library is meant to help with research and prototyping.  While we make a best-effort approach to avoid security bugs, this library has not received the level of auditing and analysis that would be necessary to rely on it for high security use.
 
+Please see [SECURITY.md](SECURITY.md) for details on how to report a vulnerability and the OQS vulnerability response process.
+
 #### Platform limitations
 
 In order to optimize support effort,
