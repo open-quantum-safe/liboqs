@@ -3,30 +3,30 @@
 {
    Rejection sampling for matrix "V"
    Memcheck:Cond
-   fun:CSPRNG_fq_mat
-   fun:expand_public_seed
+   fun:csprng_fp_mat
+   fun:expand_pk
    fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
 }
 
 {
    Rejection sampling for matrix "W" (RSDPG variant)
    Memcheck:Cond
-   fun:CSPRNG_fz_mat
-   fun:expand_public_seed
+   fun:csprng_fz_mat
+   fun:expand_pk
    fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
 }
 
 {
-   Rejection sampling for vector "eta"
+   Rejection sampling for vector "e_bar"
    Memcheck:Cond
-   fun:CSPRNG_zz_vec
+   fun:csprng_fz_vec
    fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
 }
 
 {
-   Rejection sampling for vector "zeta" (RSDPG variant)
+   Rejection sampling for vector "e_G_bar" (RSDPG variant)
    Memcheck:Cond
-   fun:CSPRNG_zz_inf_w
+   fun:csprng_fz_inf_w
    fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
 }
 
@@ -35,75 +35,75 @@
 {
    Rejection sampling for matrix "V"
    Memcheck:Cond
-   fun:CSPRNG_fq_mat
-   fun:expand_public_seed
-   fun:expand_private_seed
+   fun:csprng_fp_mat
+   fun:expand_pk
+   fun:expand_sk
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
    Rejection sampling for matrix "W" (RSDPG variant)
    Memcheck:Cond
-   fun:CSPRNG_fz_mat
-   fun:expand_public_seed
-   fun:expand_private_seed
+   fun:csprng_fz_mat
+   fun:expand_pk
+   fun:expand_pk
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 
 {
-   Rejection sampling for vector "eta"
+   Rejection sampling for vector "e_bar"
    Memcheck:Cond
-   fun:CSPRNG_zz_vec
-   fun:expand_private_seed
+   fun:csprng_fz_vec
+   fun:expand_sk
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
-   Rejection sampling for vector "zeta" (RSDPG variant)
+   Rejection sampling for vector "e_G_bar" (RSDPG variant)
    Memcheck:Cond
-   fun:CSPRNG_zz_inf_w
-   fun:expand_private_seed
+   fun:csprng_fz_inf_w
+   fun:expand_sk
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
-   Rejection sampling for vector "eta_tilde"
+   Rejection sampling for vector "e_bar_prime"
    Memcheck:Cond
-   fun:CSPRNG_zz_vec
+   fun:csprng_fz_vec
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
-   Rejection sampling for vector "zeta_tilde" (RSDPG variant)
+   Rejection sampling for vector "e_G_bar_prime" (RSDPG variant)
    Memcheck:Cond
-   fun:CSPRNG_zz_inf_w
+   fun:csprng_fz_inf_w
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
-   Rejection sampling for vector "u_tilde"
+   Rejection sampling for vector "u_prime"
    Memcheck:Cond
-   fun:CSPRNG_fq_vec
+   fun:csprng_fp_vec
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
-   Rejection sampling for vector "beta"
+   Rejection sampling for vector "chall_1"
    Memcheck:Cond
-   fun:CSPRNG_fq_vec_beta
+   fun:csprng_fp_vec_chall_1
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
-   Rejection sampling for Fisher-Yates shuffle of challenge vector "b"
+   Rejection sampling for Fisher-Yates shuffle of vector "chall_2"
    Memcheck:Cond
    fun:PQCLEAN_CROSSRSDP*_expand_digest_to_fixed_weight
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
 {
-   Rejection sampling for Fisher-Yates shuffle of challenge vector "b"
+   Rejection sampling for Fisher-Yates shuffle of vector "chall_2"
    Memcheck:Value8
    fun:PQCLEAN_CROSSRSDP*_expand_digest_to_fixed_weight
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign

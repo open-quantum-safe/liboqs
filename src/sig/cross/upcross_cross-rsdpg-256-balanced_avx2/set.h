@@ -10,8 +10,11 @@
 #define HIGH_COMPATIBILITY_X86_64
 #define HIGH_PERFORMANCE_X86_64
 
-/* PQClean-edit: avoid VLA (don't call sizeof() when creating arrays) */
-#define SIZEOF_UINT16 2
+/* PQClean-edit: avoid VLA */
+#define CSPRNG_INPUT_LENGTH (SALT_LENGTH_BYTES+SEED_LENGTH_BYTES)
+
+/* PQClean-edit: skip asserts so that verify() always returns a value */
+#define SKIP_ASSERT
 
 /* Undefine unused macros to facilitate dead code removal using unifdef */
 #undef SHA_3_LIBKECCAK

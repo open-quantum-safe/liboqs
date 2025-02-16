@@ -2,10 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -23,42 +29,34 @@
  *
  **/
 
-#include "seedtree.h"
 #include <stdint.h>
 #include <string.h> // memcpy(...), memset(...)
 
+#include "seedtree.h"
+
 #define LEFT_CHILD(i) (2*(i)+1)
 #define RIGHT_CHILD(i) (2*(i)+2)
-#define PARENT(i) (((i)-1)/2)
+#define PARENT(i) ( ((i)%2) ? (((i)-1)/2) : (((i)-2)/2) )
+#define SIBLING(i) ( ((i)%2) ? (i)+1 : (i)-1 )
 
 /* Seed tree implementation. The binary seed tree is linearized into an array
- * from root to leaves, and from left to right. The nodes are numbered picking
- * the indexes from the corresponding full tree, having 2**LOG2(T) leaves */
-#define DIV_BY_TWO_CEIL(i)  ((i)/2 + (i) % 2)
+ * from root to leaves, and from left to right.
+ */
 
 #define TO_PUBLISH 1
 #define NOT_TO_PUBLISH 0
 
-/* PQClean-edit: avoid VLA */
-#define CSPRNG_INPUT_LEN (SALT_LENGTH_BYTES + SEED_LENGTH_BYTES + SIZEOF_UINT16)
-//const uint32_t csprng_input_len = SALT_LENGTH_BYTES + SEED_LENGTH_BYTES + sizeof(uint16_t);
-
-int PQCLEAN_CROSSRSDP128FAST_CLEAN_compute_round_seeds(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
-        const unsigned char root_seed[SEED_LENGTH_BYTES],
-        const unsigned char salt[SALT_LENGTH_BYTES]) {
-
-	unsigned char csprng_input[CSPRNG_INPUT_LEN];
+int seed_leaves(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
+                const unsigned char root_seed[SEED_LENGTH_BYTES],
+                const unsigned char salt[SALT_LENGTH_BYTES]) {
+	unsigned char csprng_input[CSPRNG_INPUT_LENGTH];
 	memcpy(csprng_input, root_seed, SEED_LENGTH_BYTES);
 	memcpy(csprng_input + SEED_LENGTH_BYTES, salt, SALT_LENGTH_BYTES);
-	/* set counter for domain separation to 1 */
-	csprng_input[SEED_LENGTH_BYTES + SALT_LENGTH_BYTES] = 0;
-	csprng_input[SEED_LENGTH_BYTES + SALT_LENGTH_BYTES + 1] = 1;
 
 	unsigned char quad_seed[4 * SEED_LENGTH_BYTES];
 	CSPRNG_STATE_T csprng_states[4];
-	initialize_csprng(&csprng_states[0], csprng_input, CSPRNG_INPUT_LEN);
+	csprng_initialize(&csprng_states[0], csprng_input, CSPRNG_INPUT_LENGTH, CSPRNG_DOMAIN_SEP_CONST);
 	csprng_randombytes(quad_seed, 4 * SEED_LENGTH_BYTES, &csprng_states[0]);
-
 	/* PQClean-edit: CSPRNG release context */
 	csprng_release(&csprng_states[0]);
 
@@ -74,26 +72,25 @@ int PQCLEAN_CROSSRSDP128FAST_CLEAN_compute_round_seeds(unsigned char rounds_seed
 	}
 
 	int offset = 0;
+	uint16_t dsc_counter = 0;
 	for (int i = 0; i < 4; i++) {
 		memcpy(csprng_input, &quad_seed[i * SEED_LENGTH_BYTES], SEED_LENGTH_BYTES);
-		csprng_input[SEED_LENGTH_BYTES + SALT_LENGTH_BYTES + 1] += 1;
-		initialize_csprng(&csprng_states[i], csprng_input, CSPRNG_INPUT_LEN);
+		dsc_counter += 1;
+		csprng_initialize(&csprng_states[i], csprng_input, CSPRNG_INPUT_LENGTH, CSPRNG_DOMAIN_SEP_CONST + dsc_counter);
 
 		csprng_randombytes(&rounds_seeds[((T / 4)*i + offset)*SEED_LENGTH_BYTES],
 		                   (T / 4 + remainders[i])*SEED_LENGTH_BYTES,
 		                   &csprng_states[i]);
-
 		/* PQClean-edit: CSPRNG release context */
 		csprng_release(&csprng_states[i]);
-
 		offset += remainders[i];
 	}
 	return T;
 }
 
-int PQCLEAN_CROSSRSDP128FAST_CLEAN_publish_round_seeds(unsigned char *seed_storage,
-        const unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
-        const unsigned char indices_to_publish[T]) {
+int seed_path(unsigned char *seed_storage,
+              const unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
+              const unsigned char indices_to_publish[T]) {
 	int published = 0;
 	for (int i = 0; i < T; i++) {
 		if (indices_to_publish[i] == TO_PUBLISH) {
@@ -107,9 +104,9 @@ int PQCLEAN_CROSSRSDP128FAST_CLEAN_publish_round_seeds(unsigned char *seed_stora
 }
 
 /* simply picks seeds out of the storage and places them in the in-memory array */
-int PQCLEAN_CROSSRSDP128FAST_CLEAN_regenerate_round_seeds(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
-        const unsigned char indices_to_publish[T],
-        const unsigned char *seed_storage) {
+uint8_t rebuild_leaves(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
+                       const unsigned char indices_to_publish[T],
+                       const unsigned char *seed_storage) {
 	int published = 0;
 	for (int i = 0; i < T; i++) {
 		if (indices_to_publish[i] == TO_PUBLISH) {
@@ -119,5 +116,5 @@ int PQCLEAN_CROSSRSDP128FAST_CLEAN_regenerate_round_seeds(unsigned char rounds_s
 			published++;
 		}
 	}
-	return published;
+	return 1;
 }

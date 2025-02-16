@@ -73,9 +73,9 @@ upstreams:
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
   -
     name: upcross
-    git_url: https://github.com/rtjk/CROSS-PQClean.git
+    git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_branch: master
-    git_commit: d3bf2db85ba4a181418c95171d36afdca0d43464
+    git_commit: fb6c661f860d481350a09fb1ef2c1f2a48fe7521
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
 kems:

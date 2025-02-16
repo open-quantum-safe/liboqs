@@ -2,10 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -31,15 +37,16 @@
 
 /* Fisher-Yates shuffle obtaining the entire required randomness in a single
  * call */
-void PQCLEAN_CROSSRSDPG192FAST_CLEAN_expand_digest_to_fixed_weight(uint8_t fixed_weight_string[T],
-        const uint8_t digest[HASH_DIGEST_LENGTH]) {
+void expand_digest_to_fixed_weight(uint8_t fixed_weight_string[T],
+                                   const uint8_t digest[HASH_DIGEST_LENGTH]) {
+
+	/* explicit domain separation with unique integer */
+	const uint16_t dsc_csprng_b = CSPRNG_DOMAIN_SEP_CONST + (3 * T);
+
 	CSPRNG_STATE_T csprng_state;
-	initialize_csprng(&csprng_state,
-	                  (const unsigned char *) digest,
-	                  HASH_DIGEST_LENGTH);
+	csprng_initialize(&csprng_state, digest, HASH_DIGEST_LENGTH, dsc_csprng_b);
 	uint8_t CSPRNG_buffer[ROUND_UP(BITS_CWSTR_RNG, 8) / 8];
 	csprng_randombytes(CSPRNG_buffer, ROUND_UP(BITS_CWSTR_RNG, 8) / 8, &csprng_state);
-
 	/* PQClean-edit: CSPRNG release context */
 	csprng_release(&csprng_state);
 
@@ -47,19 +54,28 @@ void PQCLEAN_CROSSRSDPG192FAST_CLEAN_expand_digest_to_fixed_weight(uint8_t fixed
 	memset(fixed_weight_string, 1, W);
 	memset(fixed_weight_string + W, 0, T - W);
 
-	uint64_t sub_buffer = to_little_endian64(*(uint64_t *)CSPRNG_buffer);
+	uint64_t sub_buffer = 0;
+	for (int i = 0; i < 8; i++) {
+		sub_buffer |= ((uint64_t) CSPRNG_buffer[i]) << 8 * i;
+	}
 	int bits_in_sub_buf = 64;
 	int pos_in_buf = 8;
+	int pos_remaining = sizeof(CSPRNG_buffer) - pos_in_buf;
 
 	int curr = 0;
 	while (curr < T) {
 		/* refill randomness buffer if needed */
-		if (bits_in_sub_buf <= 32) {
-			/* get 32 fresh bits from main buffer with a single load */
-			uint32_t refresh_buf = to_little_endian32(*(uint32_t *) (CSPRNG_buffer + pos_in_buf));
-			pos_in_buf += 4;
+		if (bits_in_sub_buf <= 32 && pos_remaining > 0) {
+			/* get at most 4 bytes from buffer */
+			int refresh_amount = (pos_remaining >= 4) ? 4 : pos_remaining;
+			uint32_t refresh_buf = 0;
+			for (int i = 0; i < refresh_amount; i++) {
+				refresh_buf |= ((uint32_t)CSPRNG_buffer[pos_in_buf + i]) << 8 * i;
+			}
+			pos_in_buf += refresh_amount;
 			sub_buffer |=  ((uint64_t) refresh_buf) << bits_in_sub_buf;
-			bits_in_sub_buf += 32;
+			bits_in_sub_buf += 8 * refresh_amount;
+			pos_remaining -= refresh_amount;
 		}
 		/*we need to draw a number in 0... T-1-curr */
 		int bits_for_pos = BITS_TO_REPRESENT(T - 1 - curr);
@@ -72,11 +88,8 @@ void PQCLEAN_CROSSRSDPG192FAST_CLEAN_expand_digest_to_fixed_weight(uint8_t fixed
 			fixed_weight_string[curr] = fixed_weight_string[dest];
 			fixed_weight_string[dest] = tmp;
 			curr++;
-			sub_buffer = sub_buffer >> bits_for_pos;
-			bits_in_sub_buf -= bits_for_pos;
-		} else {
-			sub_buffer = sub_buffer >> 1;
-			bits_in_sub_buf -= 1;
 		}
+		sub_buffer = sub_buffer >> bits_for_pos;
+		bits_in_sub_buf -= bits_for_pos;
 	}
-} /* PQCLEAN_CROSSRSDPG192FAST_CLEAN_expand_digest_to_fixed_weight */
+} /* expand_digest_to_fixed_weight */

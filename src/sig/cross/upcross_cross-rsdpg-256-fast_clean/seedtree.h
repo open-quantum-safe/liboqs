@@ -2,10 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -26,19 +32,17 @@
 #pragma once
 
 #include "csprng_hash.h"
+#include "namespace.h"
 #include "parameters.h"
 
-void PQCLEAN_CROSSRSDPG256FAST_CLEAN_pseed(unsigned char seed[SEED_LENGTH_BYTES]);
-void PQCLEAN_CROSSRSDPG256FAST_CLEAN_ptree(unsigned char seed_tree[NUM_NODES_SEED_TREE * SEED_LENGTH_BYTES]);
+int seed_leaves(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
+                const unsigned char root_seed[SEED_LENGTH_BYTES],
+                const unsigned char salt[SALT_LENGTH_BYTES]);
 
-int PQCLEAN_CROSSRSDPG256FAST_CLEAN_compute_round_seeds(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
-        const unsigned char root_seed[SEED_LENGTH_BYTES],
-        const unsigned char salt[SALT_LENGTH_BYTES]);
+int seed_path(unsigned char *seed_storage,
+              const unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
+              const unsigned char indices_to_publish[T]);
 
-int PQCLEAN_CROSSRSDPG256FAST_CLEAN_publish_round_seeds(unsigned char *seed_storage,
-        const unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
-        const unsigned char indices_to_publish[T]);
-
-int PQCLEAN_CROSSRSDPG256FAST_CLEAN_regenerate_round_seeds(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
-        const unsigned char indices_to_publish[T],
-        const unsigned char *seed_storage);
+uint8_t rebuild_leaves(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
+                       const unsigned char indices_to_publish[T],
+                       const unsigned char *seed_storage);

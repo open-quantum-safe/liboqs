@@ -2,10 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -23,100 +29,111 @@
  *
  **/
 
-#include "api.h"
-#include "CROSS.h"
-#include "parameters.h"
 #include <stddef.h>  //  size_t
 #include <string.h>  // memcpy
+
+#include "CROSS.h"
+#include "api.h"
+#include "namespace.h"
+#include "parameters.h"
+
 /*----------------------------------------------------------------------------*/
 
-int PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_keypair(unsigned char *pk,
-        unsigned char *sk) {
+int crypto_sign_keypair(unsigned char *pk,
+                        unsigned char *sk) {
 	/* keygen cannot fail */
-	PQCLEAN_CROSSRSDP192SMALL_CLEAN_CROSS_keygen((prikey_t *) sk,
-	        (pubkey_t *) pk);
+	CROSS_keygen((sk_t *) sk,
+	             (pk_t *) pk);
 
 	return 0; // NIST convention: 0 == zero errors
-} // end PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_keypair
+} // end crypto_sign_keypair
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*... generating a signed message sm[0],sm[1],...,sm[*smlen-1]                */
 /*... from original message m[0],m[1],...,m[mlen-1]                           */
 /*... under secret key sk[0],sk[1],...                                        */
-int PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign(unsigned char *sm,
-        size_t *smlen,     // out parameter
-        const unsigned char *m, size_t mlen,  // in parameter
-        const unsigned char *sk) {                        // in parameter
+int crypto_sign(unsigned char *sm,                              // out parameter
+                size_t *smlen,                                  // out parameter
+                const unsigned char *m,                         // in parameter
+                size_t mlen,                                    // in parameter
+                const unsigned char *sk) {                      // in parameter
 	/* sign cannot fail */
 	memcpy(sm, m, mlen);
-	PQCLEAN_CROSSRSDP192SMALL_CLEAN_CROSS_sign((const prikey_t *) sk,                               // in parameter
-	        (const char *const) m, (const size_t) mlen,         // in parameter
-	        (CROSS_sig_t *) (sm + mlen));                               // out parameter
+	CROSS_sign((const sk_t *) sk,                                // in parameter
+	           (const char *const) m,                            // in parameter
+	           (const size_t) mlen,                              // in parameter
+	           (CROSS_sig_t *) (sm + mlen));                     // out parameter
 	*smlen = mlen + (size_t) sizeof(CROSS_sig_t);
 
 	return 0;  // NIST convention: 0 == zero errors
-} // end PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign
+} // end crypto_sign
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*.  ... verifying a signed message sm[0],sm[1],...,sm[smlen-1]               */
 /*.  ... under public key pk[0],pk[1],...                                     */
 /*.  ... and producing original message m[0],m[1],...,m[*mlen-1]              */
-int PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_open(unsigned char *m,
-        size_t *mlen,        // out parameter
-        const unsigned char *sm, size_t smlen, // in parameter
-        const unsigned char *pk) {                         // in parameter
+int crypto_sign_open(unsigned char *m,                          // out parameter
+                     size_t *mlen,                              // out parameter
+                     const unsigned char *sm,                   // in parameter
+                     size_t smlen,                              // in parameter
+                     const unsigned char *pk) {                 // in parameter
 
 	/* verify returns 1 if signature is ok, 0 otherwise */
 	*mlen = smlen - (size_t) sizeof(CROSS_sig_t);
 
 	memcpy((unsigned char *) m, (const unsigned char *) sm, (size_t) *mlen);
-	int ok = PQCLEAN_CROSSRSDP192SMALL_CLEAN_CROSS_verify((const pubkey_t *const)
-	         pk,                     // in parameter
-	         (const char *const) m, (const size_t) * mlen, // in parameter
-	         (const CROSS_sig_t *const) (sm + *mlen));             // in parameter
+	int ok = CROSS_verify((const pk_t * const) pk,               // in parameter
+	                      (const char *const) m,                 // in parameter
+	                      (const size_t) * mlen,                 // in parameter
+	                      (const CROSS_sig_t *const) (sm + *mlen)); // in parameter
 
 	return ok - 1; // NIST convention: 0 == zero errors, -1 == error condition
-} // end PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_open
+} // end crypto_sign_open
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
-/*... generating a signature sig[0],sig[1],...,sig[*siglen-1]                */
+/*... generating a signature sig[0],sig[1],...,sig[*siglen-1]                 */
 /*... from original message m[0],m[1],...,m[mlen-1]                           */
 /*... under secret key sk[0],sk[1],...                                        */
-int PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_signature(unsigned char *sig, size_t *siglen,         // out parameter
-        const unsigned char *m, size_t mlen,                  // in parameter
-        const unsigned char *sk                                 // in parameter
-                                                         ) {
+int crypto_sign_signature(unsigned char *sig,                   // out parameter
+                          size_t *siglen,                       // out parameter
+                          const unsigned char *m,               // in parameter
+                          size_t mlen,                          // in parameter
+                          const unsigned char *sk               // in parameter
+                         ) {
 	/* sign cannot fail */
-	PQCLEAN_CROSSRSDP192SMALL_CLEAN_CROSS_sign((const prikey_t *) sk,                                    // in parameter
-	        (const char *const) m, (const size_t) mlen,              // in parameter
-	        (CROSS_sig_t *) sig);                                            // out parameter
+	CROSS_sign((const sk_t *) sk,                                // in parameter
+	           (const char *const) m, (const size_t) mlen,       // in parameter
+	           (CROSS_sig_t *) sig);                             // out parameter
 	*siglen = (size_t) sizeof(CROSS_sig_t);
 
 	return 0;  // NIST convention: 0 == zero errors
-} // end PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_signature
+} // end crypto_sign_signature
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
-/*.  ... verifying a signature sig[0],sig[1],...,sig[siglen-1]               */
+/*.  ... verifying a signature sig[0],sig[1],...,sig[siglen-1]                */
 /*.  ... under public key pk[0],pk[1],...                                     */
 /*.  ... and producing original message m[0],m[1],...,m[*mlen-1]              */
-int PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_verify(const unsigned char *sig, size_t siglen,      // in parameter
-        const unsigned char *m, size_t mlen,                  // in parameter
-        const unsigned char *pk                                 // in parameter
-                                                      ) {
+int crypto_sign_verify(const unsigned char *sig,                // in parameter
+                       size_t siglen,                           // in parameter
+                       const unsigned char *m,                  // in parameter
+                       size_t mlen,                             // in parameter
+                       const unsigned char *pk                  // in parameter
+                      ) {
 
 	/* PQClean-edit: unused parameter */
 	(void)siglen;
 
 	/* verify returns 1 if signature is ok, 0 otherwise */
-	int ok = PQCLEAN_CROSSRSDP192SMALL_CLEAN_CROSS_verify((const pubkey_t *const) pk,                     // in parameter
-	         (const char *const) m, (const size_t) mlen,    // in parameter
-	         (const CROSS_sig_t *const) sig);                       // in parameter
+	int ok = CROSS_verify((const pk_t * const) pk,               // in parameter
+	                      (const char *const) m,                 // in parameter
+	                      (const size_t) mlen,                   // in parameter
+	                      (const CROSS_sig_t *const) sig);       // in parameter
 
 	return ok - 1; // NIST convention: 0 == zero errors, -1 == error condition
-} // end PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_verify
+} // end crypto_sign_verify
 
 /*----------------------------------------------------------------------------*/
