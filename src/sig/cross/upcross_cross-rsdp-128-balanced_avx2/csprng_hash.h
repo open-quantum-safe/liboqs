@@ -116,7 +116,7 @@ void csprng_initialize_x3(CSPRNG_X3_STATE_T *const csprng_state,
 	dsc_ordered3[1] = (dsc3 >> 8) & 0xff;
 	xof_shake_x4_update(csprng_state, dsc_ordered1, dsc_ordered2, dsc_ordered3, dsc_ordered4, 2);
 	xof_shake_x4_final(csprng_state);
-	free(seed4);
+	OQS_MEM_secure_free(seed4, seed_len_bytes);
 }
 static inline
 void csprng_initialize_x4(CSPRNG_X4_STATE_T *const csprng_state,
@@ -154,7 +154,7 @@ void csprng_randombytes_x3(unsigned char *const x1, unsigned char *const x2, uns
 	// unsigned char x4[xlen]; // discarded
 	unsigned char *x4 = (unsigned char *)OQS_MEM_malloc(xlen); // discarded
 	xof_shake_x4_extract(csprng_state, x1, x2, x3, x4, xlen);
-	free(x4);
+	OQS_MEM_secure_free(x4, xlen);
 }
 static inline
 void csprng_randombytes_x4(unsigned char *const x1, unsigned char *const x2, unsigned char *const x3, unsigned char *const x4, uint64_t xlen, CSPRNG_X4_STATE_T *const csprng_state) {
