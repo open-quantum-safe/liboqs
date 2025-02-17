@@ -61,7 +61,7 @@ parameter-sets:
   length-public-key: 77
   length-secret-key: 32
   length-signature: 18432
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -89,7 +89,7 @@ parameter-sets:
   length-public-key: 77
   length-secret-key: 32
   length-signature: 12432
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -117,7 +117,7 @@ parameter-sets:
   length-public-key: 115
   length-secret-key: 48
   length-signature: 29853
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -145,7 +145,7 @@ parameter-sets:
   length-public-key: 115
   length-secret-key: 48
   length-signature: 41406
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -173,7 +173,7 @@ parameter-sets:
   length-public-key: 115
   length-secret-key: 48
   length-signature: 28391
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -201,7 +201,7 @@ parameter-sets:
   length-public-key: 153
   length-secret-key: 64
   length-signature: 53527
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -229,7 +229,7 @@ parameter-sets:
   length-public-key: 153
   length-secret-key: 64
   length-signature: 74590
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -257,7 +257,7 @@ parameter-sets:
   length-public-key: 153
   length-secret-key: 64
   length-signature: 50818
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -285,7 +285,7 @@ parameter-sets:
   length-public-key: 54
   length-secret-key: 32
   length-signature: 9120
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -313,7 +313,7 @@ parameter-sets:
   length-public-key: 54
   length-secret-key: 32
   length-signature: 11980
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -341,7 +341,7 @@ parameter-sets:
   length-public-key: 54
   length-secret-key: 32
   length-signature: 8960
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -369,7 +369,7 @@ parameter-sets:
   length-public-key: 83
   length-secret-key: 48
   length-signature: 22464
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -397,7 +397,7 @@ parameter-sets:
   length-public-key: 83
   length-secret-key: 48
   length-signature: 26772
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -425,7 +425,7 @@ parameter-sets:
   length-public-key: 83
   length-secret-key: 48
   length-signature: 20452
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -453,7 +453,7 @@ parameter-sets:
   length-public-key: 106
   length-secret-key: 64
   length-signature: 40100
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -481,7 +481,7 @@ parameter-sets:
   length-public-key: 106
   length-secret-key: 64
   length-signature: 48102
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -509,7 +509,7 @@ parameter-sets:
   length-public-key: 106
   length-secret-key: 64
   length-signature: 36454
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
