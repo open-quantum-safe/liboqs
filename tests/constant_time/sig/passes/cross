@@ -46,7 +46,7 @@
    Memcheck:Cond
    fun:csprng_fz_mat
    fun:expand_pk
-   fun:expand_pk
+   fun:expand_sk
    fun:PQCLEAN_CROSSRSDP*_CROSS_sign
 }
 
