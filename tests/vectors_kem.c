@@ -16,12 +16,12 @@
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 /* macros for sanity checks for encaps and decaps key */
-#define ML_KEM_BLOCKSIZE        384
+#define ML_KEM_POLYBYTES        384
 #define ML_KEM_K_MAX            4
 #define ML_KEM_N                256
 #define ML_KEM_1024_PK_SIZE     1568
 #define ML_KEM_Q                3329
-#define SHA256_OP_LEN           32
+#define SHA3_256_OP_LEN         32
 #endif //OQS_ENABLE_KEM_ML_KEM
 
 struct {
@@ -99,7 +99,7 @@ uint8_t get_ml_kem_k(const char *method) {
 		return 0;  // Default/error case
 	}
 }
-/* sanity check for private/decaps key */
+/* sanity check for private/decaps key as specified in section 7.3 of FIPS-203 */
 static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 	/* sanity checks */
 	if ((NULL == sk) || (NULL == method_name) || (false == is_ml_kem(method_name))) {
@@ -107,7 +107,7 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 		return false;
 	}
 	/* buffer to hold public key hash */
-	uint8_t pkdig[SHA256_OP_LEN] = {0};
+	uint8_t pkdig[SHA3_256_OP_LEN] = {0};
 	/* fetch the value of k according to the ML-KEM algorithm as per FIPS-203
 	K = 2 for ML-KEM-512, K = 3 for ML-KEM-768 & K = 4 for ML-KEM-1024 */
 	uint8_t K = get_ml_kem_k(method_name);
@@ -116,14 +116,14 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 		return false;
 	}
 	/* calcualte hash of the public key(len = 384k+32) stored in private key at offset of 384k */
-	OQS_SHA3_sha3_256(pkdig, sk + (ML_KEM_BLOCKSIZE * K), (ML_KEM_BLOCKSIZE * K) + 32);
+	OQS_SHA3_sha3_256(pkdig, sk + (ML_KEM_POLYBYTES * K), (ML_KEM_POLYBYTES * K) + 32);
 	/* compare it with public key hash stored at 768k+32 offset */
-	if (0 != memcmp(pkdig, sk + (ML_KEM_BLOCKSIZE * K * 2) + 32, SHA256_OP_LEN)) {
+	if (0 != memcmp(pkdig, sk + (ML_KEM_POLYBYTES * K * 2) + 32, SHA3_256_OP_LEN)) {
 		return false;
 	}
 	return true;
 }
-/* sanity check for public/encaps key */
+/* sanity check for public/encaps key as specified in section 7.2 of FIPS-203 */
 static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *method_name) {
 	/* sanity checks */
 	if ((NULL == pk) || (0 == pkLen) ||  (NULL == method_name) || (false == is_ml_kem(method_name))) {
@@ -142,12 +142,12 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 	encaps key is of length 384K bytes(384K*8 bits). Grouped into 12-bit values, the buffer requires (384*K*8)/12 = 256*K entries of 12 bits */
 	uint16_t buffd[ML_KEM_N * ML_KEM_K_MAX] = {0};
 	/* buffer to hold encoded value */
-	uint8_t buffe[ML_KEM_1024_PK_SIZE] = {0};
+	uint8_t buffe[ML_KEM_1024_PK_SIZE - 32] = {0};
 	uint16_t *buff_dec;
 	/* perform byte decoding as per Algo 6 of FIPS 203 */
 	for (i = 0; i < K; i++) {
 		buff_dec = &buffd[i * ML_KEM_N];
-		const uint8_t *curr_pk = &pk[i * ML_KEM_BLOCKSIZE];
+		const uint8_t *curr_pk = &pk[i * ML_KEM_POLYBYTES];
 		for (j = 0; j < ML_KEM_N / 2; j++) {
 			buff_dec[2 * j + 0] = ((curr_pk[3 * j + 0] >> 0) | ((uint16_t)curr_pk[3 * j + 1] << 8)) & 0xFFF;
 			buff_dec[2 * j + 0] = (uint16_t)barrett_reduce((int16_t)buff_dec[2 * j]);
@@ -159,7 +159,7 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 	for (i = 0; i < K; i++) {
 		uint16_t t0, t1;
 		buff_dec = &buffd[i * ML_KEM_N];
-		uint8_t *buff_enc = &buffe[i * ML_KEM_BLOCKSIZE];
+		uint8_t *buff_enc = &buffe[i * ML_KEM_POLYBYTES];
 		for (j = 0; j < ML_KEM_N / 2; j++) {
 			t0 = buff_dec[2 * j];
 			t1 = buff_dec[2 * j + 1];
