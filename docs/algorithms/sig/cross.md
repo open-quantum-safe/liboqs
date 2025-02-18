@@ -52,7 +52,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdp-128-small implementation characteristics
 
@@ -61,7 +61,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | True                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdp-192-balanced implementation characteristics
 
@@ -70,7 +70,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdp-192-fast implementation characteristics
 
@@ -79,7 +79,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdp-192-small implementation characteristics
 
@@ -88,7 +88,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | True                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdp-256-balanced implementation characteristics
 
@@ -97,7 +97,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | True                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdp-256-fast implementation characteristics
 
@@ -106,7 +106,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdp-256-small implementation characteristics
 
@@ -115,7 +115,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | True                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-128-balanced implementation characteristics
 
@@ -124,7 +124,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-128-fast implementation characteristics
 
@@ -133,7 +133,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-128-small implementation characteristics
 
@@ -142,7 +142,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-192-balanced implementation characteristics
 
@@ -151,7 +151,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-192-fast implementation characteristics
 
@@ -160,7 +160,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-192-small implementation characteristics
 
@@ -169,7 +169,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | True                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-256-balanced implementation characteristics
 
@@ -178,7 +178,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-256-fast implementation characteristics
 
@@ -187,7 +187,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## cross-rsdpg-256-small implementation characteristics
 
@@ -196,7 +196,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | All                             | AVX2                    | True                               | True                                           | True                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## Explanation of Terms
 
