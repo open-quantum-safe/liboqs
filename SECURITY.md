@@ -12,4 +12,20 @@ Using any code prior to 0.10.1 is strongly discouraged due to a [known security 
 | < 0.12  | :x:                |
 
 ## Reporting a Vulnerability
+
 Please follow [this information to report a vulnerability](https://openquantumsafe.org/liboqs/security.html#reporting-security-bugs).
+
+## Threat Model
+
+Some timing-based side-channel attacks are within the scope of our threat model. OQS tests for secret-dependent branches and memory accesses on Linux on x86\_64. All test failures are documented as either "passes," which we have assessed to be false positives, or "issues," which may constitute non–constant-time behaviour. The [algorithm datasheets](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) indicate whether or not an implementation passes our constant-time tests, as well as whether or not it is expected to pass. Details about passes and issues are available in the [tests/constant_time directory](https://github.com/open-quantum-safe/liboqs/tree/main/tests/constant_time). These tests do not encompass all classes of non–constant-time behaviour; for example, they do not detect possible variable-time instructions, such as `DIV`. Reports of non–constant-time behaviour that fall outside this scope will be considered on a case-by-case basis, with a priority on [Tier 1 platforms](https://github.com/open-quantum-safe/liboqs/blob/main/PLATFORMS.md#tier-1).
+
+The following types of attacks are outside the scope of our threat model:
+
+- same physical system side channel
+- CPU / hardware flaws
+- physical fault injection attacks (including Rowhammer-style attacks)
+- physical observation side channels (such as power consumption, electromagnetic emissions)
+
+Mitigations for security issues outside the stated threat model may still be applied depending on the nature of the issue and the mitigation.
+
+(Based in part on https://openssl-library.org/policies/general/security-policy/index.html)
