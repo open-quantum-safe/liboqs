@@ -188,7 +188,6 @@ kems:
                                       cuda: cupqc
     upstream_location: mlkem-native
     derandomized_keypair: true
-    derandomized_encaps: true
     schemes:
       -
         scheme: "512"

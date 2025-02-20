@@ -32,8 +32,7 @@ parameter-sets:
   length-ciphertext: 768
   length-secret-key: 1632
   length-shared-secret: 32
-  length-keypair-coins: 64
-  length-encaps-coins: 32
+  length-keypair-seed: 64
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -89,8 +88,7 @@ parameter-sets:
   length-ciphertext: 1088
   length-secret-key: 2400
   length-shared-secret: 32
-  length-keypair-coins: 64
-  length-encaps-coins: 32
+  length-keypair-seed: 64
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -146,8 +144,7 @@ parameter-sets:
   length-ciphertext: 1568
   length-secret-key: 3168
   length-shared-secret: 32
-  length-keypair-coins: 64
-  length-encaps-coins: 32
+  length-keypair-seed: 64
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream

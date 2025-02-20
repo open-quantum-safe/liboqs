@@ -12,11 +12,9 @@
 #define OQS_KEM_bike_l1_length_ciphertext 1573
 #define OQS_KEM_bike_l1_length_shared_secret 32
 #define OQS_KEM_bike_l1_length_keypair_coins 0
-#define OQS_KEM_bike_l1_length_encaps_coins 0
 OQS_KEM *OQS_KEM_bike_l1_new(void);
 OQS_API OQS_STATUS OQS_KEM_bike_l1_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_bike_l1_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_KEM_bike_l1_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_bike_l1_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_bike_l1_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
@@ -27,11 +25,9 @@ OQS_API OQS_STATUS OQS_KEM_bike_l1_decaps(uint8_t *shared_secret, const unsigned
 #define OQS_KEM_bike_l3_length_ciphertext 3115
 #define OQS_KEM_bike_l3_length_shared_secret 32
 #define OQS_KEM_bike_l3_length_keypair_coins 0
-#define OQS_KEM_bike_l3_length_encaps_coins 0
 OQS_KEM *OQS_KEM_bike_l3_new(void);
 OQS_API OQS_STATUS OQS_KEM_bike_l3_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_bike_l3_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_KEM_bike_l3_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_bike_l3_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_bike_l3_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
@@ -42,11 +38,9 @@ OQS_API OQS_STATUS OQS_KEM_bike_l3_decaps(uint8_t *shared_secret, const unsigned
 #define OQS_KEM_bike_l5_length_ciphertext 5154
 #define OQS_KEM_bike_l5_length_shared_secret 32
 #define OQS_KEM_bike_l5_length_keypair_coins 0
-#define OQS_KEM_bike_l5_length_encaps_coins 0
 OQS_KEM *OQS_KEM_bike_l5_new(void);
 OQS_API OQS_STATUS OQS_KEM_bike_l5_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_bike_l5_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_KEM_bike_l5_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins);
 OQS_API OQS_STATUS OQS_KEM_bike_l5_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_bike_l5_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
