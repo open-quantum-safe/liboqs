@@ -23,11 +23,9 @@ OQS_KEM *OQS_KEM_kyber_768_new(void) {
 	kem->length_ciphertext = OQS_KEM_kyber_768_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_kyber_768_length_shared_secret;
 	kem->length_keypair_coins = OQS_KEM_kyber_768_length_keypair_coins;
-	kem->length_encaps_coins = OQS_KEM_kyber_768_length_encaps_coins;
 
 	kem->keypair_derand = OQS_KEM_kyber_768_keypair_derand;
 	kem->keypair = OQS_KEM_kyber_768_keypair;
-	kem->encaps_derand = OQS_KEM_kyber_768_encaps_derand;
 	kem->encaps = OQS_KEM_kyber_768_encaps;
 	kem->decaps = OQS_KEM_kyber_768_decaps;
 
@@ -110,14 +108,6 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secre
 	return (OQS_STATUS) pqcrystals_kyber768_ref_keypair(public_key, secret_key);
 #endif
 #endif /* OQS_LIBJADE_BUILD */
-}
-
-OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
-	(void)ciphertext;
-	(void)shared_secret;
-	(void)public_key;
-	(void)coins;
-	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
