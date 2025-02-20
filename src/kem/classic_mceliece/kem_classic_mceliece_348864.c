@@ -23,11 +23,9 @@ OQS_KEM *OQS_KEM_classic_mceliece_348864_new(void) {
 	kem->length_ciphertext = OQS_KEM_classic_mceliece_348864_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_classic_mceliece_348864_length_shared_secret;
 	kem->length_keypair_coins = OQS_KEM_classic_mceliece_348864_length_keypair_coins;
-	kem->length_encaps_coins = OQS_KEM_classic_mceliece_348864_length_encaps_coins;
 
 	kem->keypair_derand = OQS_KEM_classic_mceliece_348864_keypair_derand;
 	kem->keypair = OQS_KEM_classic_mceliece_348864_keypair;
-	kem->encaps_derand = OQS_KEM_classic_mceliece_348864_encaps_derand;
 	kem->encaps = OQS_KEM_classic_mceliece_348864_encaps;
 	kem->decaps = OQS_KEM_classic_mceliece_348864_decaps;
 
@@ -65,14 +63,6 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_keypair(uint8_t *public_key, 
 #else
 	return (OQS_STATUS) PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_keypair(public_key, secret_key);
 #endif
-}
-
-OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *coins) {
-	(void)ciphertext;
-	(void)shared_secret;
-	(void)public_key;
-	(void)coins;
-	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_348864_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
