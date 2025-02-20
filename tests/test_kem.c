@@ -149,8 +149,68 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		goto err;
 	}
 
+	// Check KEM implementation
+	const char *implementation = NULL;
+
+#if defined(OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_512) == 0) {
+		implementation = "src/kem/kyber/libjade_kyber512_avx2";
+	}
+#elif defined(OQS_ENABLE_LIBJADE_KEM_kyber_512)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_512) == 0) {
+		implementation = "src/kem/kyber/libjade_kyber512_ref";
+	}
+#elif defined(OQS_ENABLE_KEM_kyber_512_avx2)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_512) == 0) {
+		implementation = "src/kem/kyber/pqcrystals-kyber_kyber512_avx2";
+	}
+#elif defined(OQS_ENABLE_KEM_kyber_512_aarch64)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_512) == 0) {
+		implementation = "src/kem/kyber/oldpqclean_kyber512_aarch64";
+	}
+#endif
+
+#if defined(OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_768) == 0) {
+		implementation = "src/kem/kyber/libjade_kyber768_avx2";
+	}
+#elif defined(OQS_ENABLE_LIBJADE_KEM_kyber_768)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_768) == 0) {
+		implementation = "src/kem/kyber/libjade_kyber768_ref";
+	}
+#elif defined(OQS_ENABLE_KEM_kyber_768_avx2)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_768) == 0) {
+		implementation = "src/kem/kyber/pqcrystals-kyber_kyber768_avx2";
+	}
+#elif defined(OQS_ENABLE_KEM_kyber_768)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_768) == 0) {
+		implementation = "src/kem/kyber/pqcrystals-kyber_kyber768_ref";
+	}
+#elif defined(OQS_ENABLE_KEM_kyber_768_aarch64)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_768) == 0) {
+		implementation = "src/kem/kyber/oldpqclean_kyber768_aarch64";
+	}
+#endif
+
+#if defined(OQS_ENABLE_KEM_kyber_1024_avx2)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_1024) == 0) {
+		implementation = "src/kem/kyber/pqcrystals-kyber_kyber1024_avx2";
+	}
+#elif defined(OQS_ENABLE_KEM_kyber_1024_aarch64)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_1024) == 0) {
+		implementation = "src/kem/kyber/oldpqclean_kyber1024_aarch64";
+	}
+#elif defined(OQS_ENABLE_KEM_kyber_1024)
+	if (strcasecmp(method_name, OQS_KEM_alg_kyber_1024) == 0) {
+		implementation = "src/kem/kyber/pqcrystals-kyber_kyber1024_ref";
+	}
+#else
+	implementation = "Unknown";
+#endif
+
 	printf("================================================================================\n");
 	printf("Sample computation for KEM %s\n", kem->method_name);
+	printf("Implementation source: %s\n", implementation);
 	printf("================================================================================\n");
 
 	public_key = OQS_MEM_malloc(kem->length_public_key + 2 * sizeof(magic_t));
