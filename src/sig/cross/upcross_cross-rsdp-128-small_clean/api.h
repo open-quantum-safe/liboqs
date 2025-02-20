@@ -2,10 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -40,7 +46,7 @@
 #define PQCLEAN_CROSSRSDP128SMALL_CLEAN_CRYPTO_PUBLICKEYBYTES 77
 
 /* no. of bytes of overhead in a signed message */
-#define PQCLEAN_CROSSRSDP128SMALL_CLEAN_CRYPTO_BYTES 10080
+#define PQCLEAN_CROSSRSDP128SMALL_CLEAN_CRYPTO_BYTES 12432
 
 /* required bytes of input randomness */
 #define PQCLEAN_CROSSRSDP128SMALL_CLEAN_CRYPTO_RANDOMBYTES 16

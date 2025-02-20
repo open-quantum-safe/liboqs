@@ -2,10 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -22,53 +28,55 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  **/
+
 #pragma once
 
 #include <stdint.h>
 
+#include "namespace.h"
 #include "pack_unpack.h"
 #include "parameters.h"
 
 /* Public key: the parity check matrix is shrunk to a seed, syndrome
  * represented in full */
 typedef struct {
-	uint8_t seed_pub[KEYPAIR_SEED_LENGTH_BYTES];
-	uint8_t s[DENSELY_PACKED_FQ_SYN_SIZE];
-} pubkey_t;
+	uint8_t seed_pk[KEYPAIR_SEED_LENGTH_BYTES];
+	uint8_t s[DENSELY_PACKED_FP_SYN_SIZE];
+} pk_t;
 
 /* Private key: just a single seed*/
 typedef struct {
-	uint8_t seed[KEYPAIR_SEED_LENGTH_BYTES];
-} prikey_t;
+	uint8_t seed_sk[KEYPAIR_SEED_LENGTH_BYTES];
+} sk_t;
 
 typedef struct {
-	uint8_t y[DENSELY_PACKED_FQ_VEC_SIZE];
-	uint8_t delta[DENSELY_PACKED_FZ_RSDP_G_VEC_SIZE];
-} rsp_0_t;
+	uint8_t y[DENSELY_PACKED_FP_VEC_SIZE];
+	uint8_t v_G_bar[DENSELY_PACKED_FZ_RSDP_G_VEC_SIZE];
+} resp_0_t;
 
 /* Signature: */
 typedef struct {
 	uint8_t salt[SALT_LENGTH_BYTES];
-	uint8_t digest_01[HASH_DIGEST_LENGTH];
-	uint8_t digest_b[HASH_DIGEST_LENGTH];
-	uint8_t stp[W * SEED_LENGTH_BYTES];
-	uint8_t mtp[W * HASH_DIGEST_LENGTH];
-	rsp_0_t rsp_0[T - W];
-	uint8_t rsp_1[T - W][HASH_DIGEST_LENGTH];
+	uint8_t digest_cmt[HASH_DIGEST_LENGTH];
+	uint8_t digest_chall_2[HASH_DIGEST_LENGTH];
+	uint8_t path[W * SEED_LENGTH_BYTES];
+	uint8_t proof[W * HASH_DIGEST_LENGTH];
+	uint8_t resp_1[T - W][HASH_DIGEST_LENGTH];
+	resp_0_t resp_0[T - W];
 } CROSS_sig_t;
 
 /* keygen cannot fail */
-void PQCLEAN_CROSSRSDPG192FAST_AVX2_CROSS_keygen(prikey_t *SK,
-        pubkey_t *PK);
+void CROSS_keygen(sk_t *SK,
+                  pk_t *PK);
 
 /* sign cannot fail */
-void PQCLEAN_CROSSRSDPG192FAST_AVX2_CROSS_sign(const prikey_t *SK,
-        const char *m,
-        size_t mlen,
-        CROSS_sig_t *sig);
+void CROSS_sign(const sk_t *SK,
+                const char *m,
+                uint64_t mlen,
+                CROSS_sig_t *sig);
 
 /* verify returns 1 if signature is ok, 0 otherwise */
-int PQCLEAN_CROSSRSDPG192FAST_AVX2_CROSS_verify(const pubkey_t *PK,
-        const char *m,
-        size_t mlen,
-        const CROSS_sig_t *sig);
+int CROSS_verify(const pk_t *PK,
+                 const char *m,
+                 uint64_t mlen,
+                 const CROSS_sig_t *sig);

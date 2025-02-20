@@ -2,11 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
- * @author Jonas Schupp <jonas.schupp@tum.de>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -29,42 +34,25 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "namespace.h"
 #include "parameters.h"
 
 /* compact Z_z/F_q vector encoding functions */
 
-void PQCLEAN_CROSSRSDP256FAST_AVX2_pack_fq_vec(uint8_t out[DENSELY_PACKED_FQ_VEC_SIZE],
-        const FQ_ELEM in[N]);
+void pack_fp_vec(uint8_t out[DENSELY_PACKED_FP_VEC_SIZE],
+                 const FP_ELEM in[N]);
 
-void PQCLEAN_CROSSRSDP256FAST_AVX2_pack_fq_syn(uint8_t out[DENSELY_PACKED_FQ_SYN_SIZE],
-        const FQ_ELEM in[N - K]);
+void pack_fp_syn(uint8_t out[DENSELY_PACKED_FP_SYN_SIZE],
+                 const FP_ELEM in[N - K]);
 
-void PQCLEAN_CROSSRSDP256FAST_AVX2_pack_fz_vec(uint8_t out[DENSELY_PACKED_FZ_VEC_SIZE],
-        const FZ_ELEM in[N]);
+void pack_fz_vec(uint8_t out[DENSELY_PACKED_FZ_VEC_SIZE],
+                 const FZ_ELEM in[N]);
 
-void PQCLEAN_CROSSRSDP256FAST_AVX2_generic_pack_fq(uint8_t *out, const FQ_ELEM *in,
-        size_t outlen, size_t inlen);
+uint8_t unpack_fp_vec(FP_ELEM out[N],
+                      const uint8_t in[DENSELY_PACKED_FP_VEC_SIZE]);
 
-void PQCLEAN_CROSSRSDP256FAST_AVX2_generic_pack_fz(uint8_t *out, const FZ_ELEM *in,
-        size_t outlen, size_t inlen);
+uint8_t unpack_fp_syn(FP_ELEM out[N - K],
+                      const uint8_t in[DENSELY_PACKED_FP_SYN_SIZE]);
 
-void PQCLEAN_CROSSRSDP256FAST_AVX2_unpack_fq_vec(FQ_ELEM out[N],
-        const uint8_t in[DENSELY_PACKED_FQ_VEC_SIZE]);
-
-void PQCLEAN_CROSSRSDP256FAST_AVX2_unpack_fq_syn(FQ_ELEM out[N - K],
-        const uint8_t in[DENSELY_PACKED_FQ_SYN_SIZE]);
-
-void PQCLEAN_CROSSRSDP256FAST_AVX2_unpack_fz_vec(FZ_ELEM out[N],
-        const uint8_t in[DENSELY_PACKED_FZ_VEC_SIZE]);
-
-void PQCLEAN_CROSSRSDP256FAST_AVX2_generic_unpack_fq(FQ_ELEM *out, const uint8_t *in,
-        size_t outlen, size_t inlen);
-
-void PQCLEAN_CROSSRSDP256FAST_AVX2_generic_unpack_fz(FZ_ELEM *out, const uint8_t *in,
-        size_t outlen);
-
-void PQCLEAN_CROSSRSDP256FAST_AVX2_generic_uint16_t_unpack(uint16_t *out, const uint8_t *in,
-        size_t outlen, size_t inlen, uint8_t btr);
-
-void PQCLEAN_CROSSRSDP256FAST_AVX2_generic_uint16_t_pack(uint8_t *out, const uint16_t *in,
-        size_t outlen, size_t inlen, uint8_t btr);
+uint8_t unpack_fz_vec(FZ_ELEM out[N],
+                      const uint8_t in[DENSELY_PACKED_FZ_VEC_SIZE]);

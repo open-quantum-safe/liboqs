@@ -2,10 +2,16 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 1.1 (March 2023)
+ * @version 2.0 (February 2025)
  *
- * @author Alessandro Barenghi <alessandro.barenghi@polimi.it>
- * @author Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * Authors listed in alphabetical order:
+ *
+ * @author: Alessandro Barenghi <alessandro.barenghi@polimi.it>
+ * @author: Marco Gianvecchio <marco.gianvecchio@mail.polimi.it>
+ * @author: Patrick Karl <patrick.karl@tum.de>
+ * @author: Gerardo Pelosi <gerardo.pelosi@polimi.it>
+ * @author: Jonas Schupp <jonas.schupp@tum.de>
+ *
  *
  * This code is hereby placed in the public domain.
  *
@@ -33,18 +39,18 @@
 /******************************************************************************/
 
 /* The same base field and restriction are employed for all categories of RSDP */
-#define   Q (509)
+#define   P (509)
 #define   Z (127)
 /* Restricted subgroup generator */
 #define RESTR_G_GEN 16
 #define FZ_ELEM uint8_t
 #define FZ_DOUBLEPREC uint16_t
-#define FQ_ELEM uint16_t
-#define FQ_DOUBLEPREC uint32_t
-#define FQ_TRIPLEPREC uint32_t
+#define FP_ELEM uint16_t
+#define FP_DOUBLEPREC uint32_t
+#define FP_TRIPLEPREC uint32_t
 
 /******************************************************************************/
-/****************************** RSDP Parameters *******************************/
+/****************************** RSDP(G) Parameters ****************************/
 /******************************************************************************/
 /********************************* Category 1 *********************************/
 #define SEC_MARGIN_LAMBDA (128)
@@ -52,23 +58,22 @@
 #define   K ( 36)
 #define   M ( 25)
 
-#define   T (153)
-#define   W (79)
+#define   T (147)
+#define   W (76)
 #define POSITION_IN_FW_STRING_T uint8_t
 
-/********************************* Category 3 *********************************/
-
-#define HASH_CSPRNG_DOMAIN_SEP_CONST ((uint16_t)32768)
+#define CSPRNG_DOMAIN_SEP_CONST ((uint16_t)0)
+#define HASH_DOMAIN_SEP_CONST ((uint16_t)32768)
 
 /************* Helper macros for derived parameter computation ***************/
 
 #define ROUND_UP(amount, round_amt) ( (((amount)+(round_amt)-1)/(round_amt))*(round_amt) )
 
 #define IS_REPRESENTABLE_IN_D_BITS(D, N)                \
-(((uint32_t) (N)>=(1UL << ((D)-1)) && (uint32_t) (N)<(1UL << (D))) ? (D) : -1)
+  (((unsigned long) (N)>=(1UL << ((D)-1)) && (unsigned long) (N)<(1UL << (D))) ? (D) : -1)
 
 #define BITS_TO_REPRESENT(N)                            \
-  ((N) == 0 ? 1 : (15                                     \
+  ((N) == 0 ? 1 : (15                                   \
                  + IS_REPRESENTABLE_IN_D_BITS( 1, N)    \
                  + IS_REPRESENTABLE_IN_D_BITS( 2, N)    \
                  + IS_REPRESENTABLE_IN_D_BITS( 3, N)    \
@@ -99,32 +104,32 @@
 #define NUM_LEAVES_MERKLE_TREE (T)
 #define NUM_NODES_MERKLE_TREE (2*NUM_LEAVES_MERKLE_TREE-1)
 
-/*to be derived via script for each T/W*/
-#define NUM_LEAVES_SEED_TREE ( T )
-// #define NUM_NODES_SEED_TREE ( 2*NUM_LEAVES_SEED_TREE-1 )
-#define NUM_INNER_NODES_SEED_TREE ( NUM_NODES_SEED_TREE-NUM_LEAVES_SEED_TREE )
+#define NUM_LEAVES_SEED_TREE (T)
+#define NUM_NODES_SEED_TREE (2*NUM_LEAVES_SEED_TREE-1)
 
 /* Sizes of bitpacked field element vectors
  * Bitpacking an n-elements vector of num_bits_for_q-1 bits long values
  * will pack 8 values in num_bits_for_q-1 bytes exactly, leaving the remaining
  * N % 8 as a tail */
-#define DENSELY_PACKED_FQ_VEC_SIZE ((N/8)*BITS_TO_REPRESENT(Q-1) + \
-                                   ROUND_UP( ((N%8)*BITS_TO_REPRESENT(Q-1)),8)/8)
-#define DENSELY_PACKED_FQ_SYN_SIZE (((N-K)/8)*BITS_TO_REPRESENT(Q-1) + \
-                                   ROUND_UP( (((N-K)%8)*BITS_TO_REPRESENT(Q-1)),8)/8)
+#define DENSELY_PACKED_FP_VEC_SIZE ((N/8)*BITS_TO_REPRESENT(P-1) + \
+                                   ROUND_UP( ((N%8)*BITS_TO_REPRESENT(P-1)),8)/8)
+#define DENSELY_PACKED_FP_SYN_SIZE (((N-K)/8)*BITS_TO_REPRESENT(P-1) +              ROUND_UP( (((N-K)%8)*BITS_TO_REPRESENT(P-1)),8)/8)
 #define DENSELY_PACKED_FZ_VEC_SIZE ((N/8)*BITS_TO_REPRESENT(Z-1) + \
                                    ROUND_UP( ((N%8)*BITS_TO_REPRESENT(Z-1)),8)/8)
 #define DENSELY_PACKED_FZ_RSDP_G_VEC_SIZE ((M/8)*BITS_TO_REPRESENT(Z-1) + \
                                           ROUND_UP( ((M%8)*BITS_TO_REPRESENT(Z-1)),8)/8)
 
 /* Derived parameters computed via compute_derived_parameters.py */
-#define TREE_NODES_TO_STORE 78
-#define NUM_NODES_SEED_TREE 310
-#define NODES_PER_LEVEL_ARRAY {1, 2, 3, 5, 10, 20, 39, 77, 153}
-#define MISSING_NODES_BEFORE_LEVEL_ARRAY {0, 0, 0, 1, 4, 10, 22, 47, 98}
-#define BITS_N_ZQ_CT_RNG 521
-#define BITS_BETA_ZQSTAR_CT_RNG 1413
-#define BITS_V_CT_RNG 6208
-#define BITS_W_CT_RNG 5311
-#define BITS_M_ZZ_CT_RNG 199
-#define BITS_CWSTR_RNG 1264
+#define TREE_OFFSETS {0, 0, 0, 0, 2, 6, 6, 38, 38}
+#define TREE_NODES_PER_LEVEL {1, 2, 4, 8, 14, 24, 48, 64, 128}
+#define TREE_LEAVES_PER_LEVEL {0, 0, 0, 1, 2, 0, 16, 0, 128}
+#define TREE_SUBROOTS 4
+#define TREE_LEAVES_START_INDICES {165, 85, 27, 14}
+#define TREE_CONSECUTIVE_LEAVES {128, 16, 2, 1}
+#define TREE_NODES_TO_STORE 76
+#define BITS_N_FP_CT_RNG 729
+#define BITS_CHALL_1_FPSTAR_CT_RNG 1647
+#define BITS_V_CT_RNG 6624
+#define BITS_W_CT_RNG 5677
+#define BITS_M_FZ_CT_RNG 343
+#define BITS_CWSTR_RNG 3472

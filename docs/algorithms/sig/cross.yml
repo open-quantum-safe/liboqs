@@ -3,6 +3,7 @@ type: signature
 principal-submitters:
 - Marco Baldi
 - Alessandro Barenghi
+- Michele Battagliola
 - Sebastian Bitzer
 - Patrick Karl
 - Felice Manganiello
@@ -10,6 +11,7 @@ principal-submitters:
 - Gerardo Pelosi
 - Paolo Santini
 - Jonas Schupp
+- Edoardo Signorini
 - Freeman Slaughter
 - Antonia Wachter-Zeh
 - Violetta Weger
@@ -18,10 +20,10 @@ auxiliary-submitters:
 crypto-assumption: hardness of the restricted syndrome decoding problem for random
   linear codes on a finite field
 website: https://www.cross-crypto.com/
-nist-round: 1
-spec-version: 1.2 + Keccak_x4 + PQClean fixes + endianness fix
+nist-round: 2
+spec-version: 2.0 + PQClean and OQS patches
 primary-upstream:
-  source: https://github.com/rtjk/CROSS-PQClean/commit/d3bf2db85ba4a181418c95171d36afdca0d43464
+  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/efd17279e75308b000bda7c7f58866620d652bc1
   spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: cross-rsdp-128-balanced
@@ -30,7 +32,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 77
   length-secret-key: 32
-  length-signature: 12912
+  length-signature: 13152
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -58,8 +60,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 77
   length-secret-key: 32
-  length-signature: 19152
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 18432
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -86,8 +88,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 77
   length-secret-key: 32
-  length-signature: 10080
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 12432
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -114,8 +116,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 115
   length-secret-key: 48
-  length-signature: 28222
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 29853
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -142,8 +144,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 115
   length-secret-key: 48
-  length-signature: 42682
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 41406
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -170,8 +172,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 115
   length-secret-key: 48
-  length-signature: 23642
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 28391
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -198,8 +200,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 153
   length-secret-key: 64
-  length-signature: 51056
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 53527
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -226,8 +228,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 153
   length-secret-key: 64
-  length-signature: 76298
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 74590
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -254,8 +256,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 153
   length-secret-key: 64
-  length-signature: 43592
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 50818
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -282,8 +284,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 54
   length-secret-key: 32
-  length-signature: 9236
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 9120
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -310,8 +312,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 54
   length-secret-key: 32
-  length-signature: 12472
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 11980
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -338,8 +340,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 54
   length-secret-key: 32
-  length-signature: 7956
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 8960
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -366,8 +368,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 83
   length-secret-key: 48
-  length-signature: 23380
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 22464
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -394,8 +396,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 83
   length-secret-key: 48
-  length-signature: 27404
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 26772
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -422,8 +424,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 83
   length-secret-key: 48
-  length-signature: 18188
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 20452
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -450,8 +452,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 106
   length-secret-key: 64
-  length-signature: 40134
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 40100
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -478,8 +480,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 106
   length-secret-key: 64
-  length-signature: 48938
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 48102
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
@@ -506,8 +508,8 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 106
   length-secret-key: 64
-  length-signature: 32742
-  implementations-switch-on-runtime-cpu-features: true
+  length-signature: 36454
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
     upstream-id: clean
