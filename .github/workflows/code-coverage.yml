@@ -45,7 +45,7 @@ jobs:
       - name: Run lcov
         run: lcov -d . -c -o lcov.info --exclude /usr/lib,/usr/include --ignore-errors unused
       - name: Upload to coveralls.io
-        uses: coverallsapp/github-action@v2.3.6
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # pin@v2.3.6
         with:
           flag-name: ${{ matrix.id }}
           parallel: true
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Finish coveralls.io
-        uses: coverallsapp/github-action@v2.3.6
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # pin@v2.3.6
         with:
           parallel-finished: true
           carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
