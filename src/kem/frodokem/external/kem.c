@@ -72,16 +72,6 @@ OQS_STATUS crypto_kem_keypair(unsigned char* pk, unsigned char* sk)
 }
 
 
-OQS_STATUS crypto_kem_enc_derand(unsigned char *ct, unsigned char *ss, const unsigned char *pk, const unsigned char *coins)
-{
-    (void)ct;
-    (void)ss;
-    (void)pk;
-    (void)coins;
-    return OQS_ERROR;
-}
-
-
 OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk)
 { // FrodoKEM's key encapsulation
     const uint8_t *pk_seedA = &pk[0];
