@@ -47,7 +47,6 @@
 #define keypair_derand RENAME_FUNC_NAME(keypair_derand)
 #define decaps RENAME_FUNC_NAME(decaps)
 #define encaps RENAME_FUNC_NAME(encaps)
-#define encaps_derand RENAME_FUNC_NAME(encaps_derand)
 
 #define aes_ctr_prf RENAME_FUNC_NAME(aes_ctr_prf)
 #define sample_uniform_r_bits_with_fixed_prf_context RENAME_FUNC_NAME(sample_uniform_r_bits_with_fixed_prf_context)
