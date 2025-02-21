@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:11c99519-c4e5-4517-8016-4932140dd322",
+  "serialNumber": "urn:uuid:fbf8d633-9766-4a90-9cfc-e13adf39fe4a",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-01-22T14:42:21.903424+00:00",
+    "timestamp": "2025-03-04T12:07:00.189636+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@af4928dddde853579f8a16a488cf3e142f177979",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@7c0dd410ca61a45232272c9a5312aeed3f455801",
       "name": "liboqs",
-      "version": "af4928dddde853579f8a16a488cf3e142f177979"
+      "version": "7c0dd410ca61a45232272c9a5312aeed3f455801"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@af4928dddde853579f8a16a488cf3e142f177979",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@7c0dd410ca61a45232272c9a5312aeed3f455801",
       "name": "liboqs",
-      "version": "af4928dddde853579f8a16a488cf3e142f177979"
+      "version": "7c0dd410ca61a45232272c9a5312aeed3f455801"
     },
     {
       "type": "cryptographic-asset",
@@ -3162,6 +3162,726 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is-pkc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is-pkc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is-pkc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip-pkc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip-pkc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip-pkc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III-pkc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III-pkc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III-pkc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V-pkc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V-pkc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V-pkc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V-pkc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is-pkc-skc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is-pkc-skc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Is-pkc-skc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Is-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip-pkc-skc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip-pkc-skc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-Ip-pkc-skc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-Ip-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III-pkc-skc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III-pkc-skc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-III-pkc-skc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-III-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V-pkc-skc:generic",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V-pkc-skc:armv8-a",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:OV-V-pkc-skc:x86_64",
+      "name": "UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "OV-V-pkc-skc",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:aes",
       "name": "aes",
       "cryptoProperties": {
@@ -3187,7 +3907,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@af4928dddde853579f8a16a488cf3e142f177979",
+      "ref": "pkg:github/open-quantum-safe/liboqs@7c0dd410ca61a45232272c9a5312aeed3f455801",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -3345,7 +4065,43 @@
         "alg:SPHINCS+-SHAKE-256f-simple:generic",
         "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
         "alg:SPHINCS+-SHAKE-256s-simple:generic",
-        "alg:SPHINCS+-SHAKE-256s-simple:x86_64"
+        "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
+        "alg:OV-Is:generic",
+        "alg:OV-Is:armv8-a",
+        "alg:OV-Is:x86_64",
+        "alg:OV-Ip:generic",
+        "alg:OV-Ip:armv8-a",
+        "alg:OV-Ip:x86_64",
+        "alg:OV-III:generic",
+        "alg:OV-III:armv8-a",
+        "alg:OV-III:x86_64",
+        "alg:OV-V:generic",
+        "alg:OV-V:armv8-a",
+        "alg:OV-V:x86_64",
+        "alg:OV-Is-pkc:generic",
+        "alg:OV-Is-pkc:armv8-a",
+        "alg:OV-Is-pkc:x86_64",
+        "alg:OV-Ip-pkc:generic",
+        "alg:OV-Ip-pkc:armv8-a",
+        "alg:OV-Ip-pkc:x86_64",
+        "alg:OV-III-pkc:generic",
+        "alg:OV-III-pkc:armv8-a",
+        "alg:OV-III-pkc:x86_64",
+        "alg:OV-V-pkc:generic",
+        "alg:OV-V-pkc:armv8-a",
+        "alg:OV-V-pkc:x86_64",
+        "alg:OV-Is-pkc-skc:generic",
+        "alg:OV-Is-pkc-skc:armv8-a",
+        "alg:OV-Is-pkc-skc:x86_64",
+        "alg:OV-Ip-pkc-skc:generic",
+        "alg:OV-Ip-pkc-skc:armv8-a",
+        "alg:OV-Ip-pkc-skc:x86_64",
+        "alg:OV-III-pkc-skc:generic",
+        "alg:OV-III-pkc-skc:armv8-a",
+        "alg:OV-III-pkc-skc:x86_64",
+        "alg:OV-V-pkc-skc:generic",
+        "alg:OV-V-pkc-skc:armv8-a",
+        "alg:OV-V-pkc-skc:x86_64"
       ]
     },
     {
@@ -4230,6 +4986,258 @@
       "ref": "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is-pkc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is-pkc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is-pkc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip-pkc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip-pkc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip-pkc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III-pkc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III-pkc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III-pkc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V-pkc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V-pkc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V-pkc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is-pkc-skc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is-pkc-skc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Is-pkc-skc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip-pkc-skc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip-pkc-skc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-Ip-pkc-skc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III-pkc-skc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III-pkc-skc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-III-pkc-skc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V-pkc-skc:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V-pkc-skc:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:OV-V-pkc-skc:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
       ]
     }
   ]
