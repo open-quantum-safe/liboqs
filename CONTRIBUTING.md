@@ -5,6 +5,14 @@ the form of [a discussion](https://github.com/open-quantum-safe/liboqs/discussio
 for input or feedback, possible bug reports or feature requests via [issues](https://github.com/open-quantum-safe/liboqs/issues)
 as well as new code and documentation via a [pull request (PR)](https://github.com/open-quantum-safe/liboqs/pulls).
 
+## Baseline design goal
+
+OQS is a collection of many different PQC algorithms, maintained by a small team of people who are not guaranteed to be versed in the intricate details of each algorithm.
+
+Therefore, all contributions to the general logic of the project should be as independent of any single algorithm such as to ease long-term maintainability. If changes are contributed catering to the properties of a specific algorithm, it is expected that consideration is given at least how the other algorithms of the same type (KEM or SIG) should cater to the proposed changes, e.g., by way of a new, generally satisfiable API.
+
+All contributions to a specific algorithm ideally come with the willingness to provide long-term support, or at least a contact person that can help the OQS team pinpoint potential problems with the algorithm.
+
 ## Review and Feedback
 
 We aim to provide timely feedback to any input. If you are uncertain as to whether
