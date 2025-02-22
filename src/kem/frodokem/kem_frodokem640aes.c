@@ -22,7 +22,9 @@ OQS_KEM *OQS_KEM_frodokem_640_aes_new(void) {
 	kem->length_secret_key = OQS_KEM_frodokem_640_aes_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_frodokem_640_aes_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_frodokem_640_aes_length_shared_secret;
+	kem->length_keypair_coins = OQS_KEM_frodokem_640_aes_length_keypair_coins;
 
+	kem->keypair_derand = OQS_KEM_frodokem_640_aes_keypair_derand;
 	kem->keypair = OQS_KEM_frodokem_640_aes_keypair;
 	kem->encaps = OQS_KEM_frodokem_640_aes_encaps;
 	kem->decaps = OQS_KEM_frodokem_640_aes_decaps;

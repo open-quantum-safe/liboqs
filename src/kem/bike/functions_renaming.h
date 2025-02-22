@@ -44,6 +44,7 @@
 #define RENAME_FUNC_NAME(fname) EVALUATOR(FUNC_PREFIX, fname)
 
 #define keypair RENAME_FUNC_NAME(keypair)
+#define keypair_derand RENAME_FUNC_NAME(keypair_derand)
 #define decaps RENAME_FUNC_NAME(decaps)
 #define encaps RENAME_FUNC_NAME(encaps)
 
