@@ -10,6 +10,8 @@ This classification is roughly based on the [rust platform support tier classifi
 
 Tier 1 targets can be thought of as "guaranteed to work". The CI system builds and tests binary versions for each tier 1 target to make sure any change does not negatively affect those platforms. Platform-specific build documentation must exist. Tier 1 targets marked with a dagger (†) are additionally tested for constant-time behaviour. The CI system contains automated constant-time testing for each of these starred targets, and all failures are documented in the `tests/constant_time` directory. IMPORTANT: This does not mean that constant-time behaviour is guaranteed on these targets, or that non-constant-time behaviour is limited to documented exceptions. It does, however, mean that `liboqs` developers should track constant-time issues on these platforms.
 
+Tier 1 platforms are also prioritized for security support, as per the [OQS security response process](https://github.com/open-quantum-safe/tsc/blob/main/security/response-process.md).
+
 ### Tier 2
 
 Tier 2 targets can be thought of as "guaranteed to build". The `liboqs` CI system contains builds for each tier 2 target; testing may or may not be available (typically depending on CI system platform availability). Therefore, tier 2 targets often work to quite a good degree and patches are always welcome! Tier 2 targets may also have known deficiencies caused by a lack of expertise to fix those on a given platform. Again, help and PRs to move platforms from tier 2 to tier 1 are always welcome.

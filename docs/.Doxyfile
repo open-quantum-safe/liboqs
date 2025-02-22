@@ -960,6 +960,7 @@ INPUT                  = src/common/aes/aes_ops.h \
                          src/sig_stfl/sig_stfl.h \
                          README.md \
                          CONFIGURE.md \
+                         SECURITY.md \
                          CONTRIBUTORS
 
 # This tag can be used to specify the character encoding of the source files
