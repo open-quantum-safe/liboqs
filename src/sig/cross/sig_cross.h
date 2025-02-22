@@ -12,6 +12,8 @@
 
 OQS_SIG *OQS_SIG_cross_rsdp_128_balanced_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_balanced_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_balanced_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_balanced_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_balanced_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_balanced_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_balanced_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -25,6 +27,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_balanced_verify_with_ctx_str(const uin
 
 OQS_SIG *OQS_SIG_cross_rsdp_128_fast_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_fast_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_fast_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_fast_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_fast_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_fast_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_fast_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -38,6 +42,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_fast_verify_with_ctx_str(const uint8_t
 
 OQS_SIG *OQS_SIG_cross_rsdp_128_small_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_small_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_small_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_small_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_small_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_small_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_small_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -51,6 +57,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_128_small_verify_with_ctx_str(const uint8_
 
 OQS_SIG *OQS_SIG_cross_rsdp_192_balanced_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_balanced_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_balanced_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_balanced_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_balanced_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_balanced_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_balanced_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -64,6 +72,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_balanced_verify_with_ctx_str(const uin
 
 OQS_SIG *OQS_SIG_cross_rsdp_192_fast_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_fast_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_fast_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_fast_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_fast_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_fast_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_fast_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -77,6 +87,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_fast_verify_with_ctx_str(const uint8_t
 
 OQS_SIG *OQS_SIG_cross_rsdp_192_small_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -90,6 +102,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_verify_with_ctx_str(const uint8_
 
 OQS_SIG *OQS_SIG_cross_rsdp_256_balanced_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_balanced_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_balanced_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_balanced_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_balanced_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_balanced_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_balanced_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -103,6 +117,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_balanced_verify_with_ctx_str(const uin
 
 OQS_SIG *OQS_SIG_cross_rsdp_256_fast_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -116,6 +132,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_verify_with_ctx_str(const uint8_t
 
 OQS_SIG *OQS_SIG_cross_rsdp_256_small_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_small_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_small_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_small_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_small_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_small_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_small_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -129,6 +147,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_small_verify_with_ctx_str(const uint8_
 
 OQS_SIG *OQS_SIG_cross_rsdpg_128_balanced_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_balanced_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_balanced_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_balanced_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_balanced_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_balanced_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_balanced_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -142,6 +162,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_balanced_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_cross_rsdpg_128_fast_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_fast_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_fast_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_fast_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_fast_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_fast_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_fast_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -155,6 +177,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_fast_verify_with_ctx_str(const uint8_
 
 OQS_SIG *OQS_SIG_cross_rsdpg_128_small_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_small_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_small_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_small_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_small_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_small_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_small_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -168,6 +192,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_128_small_verify_with_ctx_str(const uint8
 
 OQS_SIG *OQS_SIG_cross_rsdpg_192_balanced_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_balanced_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_balanced_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_balanced_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_balanced_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_balanced_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_balanced_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -181,6 +207,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_balanced_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_cross_rsdpg_192_fast_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_fast_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_fast_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_fast_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_fast_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_fast_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_fast_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -194,6 +222,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_fast_verify_with_ctx_str(const uint8_
 
 OQS_SIG *OQS_SIG_cross_rsdpg_192_small_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_small_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_small_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_small_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_small_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_small_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_small_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -207,6 +237,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_192_small_verify_with_ctx_str(const uint8
 
 OQS_SIG *OQS_SIG_cross_rsdpg_256_balanced_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_balanced_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_balanced_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_balanced_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_balanced_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_balanced_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_balanced_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -220,6 +252,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_balanced_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_cross_rsdpg_256_fast_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_fast_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_fast_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_fast_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_fast_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_fast_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_fast_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -233,6 +267,8 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_fast_verify_with_ctx_str(const uint8_
 
 OQS_SIG *OQS_SIG_cross_rsdpg_256_small_new(void);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_small_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_small_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_small_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_small_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_small_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_cross_rsdpg_256_small_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);

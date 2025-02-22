@@ -12,6 +12,8 @@
 
 OQS_SIG *OQS_SIG_sphincs_sha2_128f_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -25,6 +27,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128f_simple_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_sphincs_sha2_128s_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -38,6 +42,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_128s_simple_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_sphincs_sha2_192f_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -51,6 +57,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192f_simple_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_sphincs_sha2_192s_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -64,6 +72,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_192s_simple_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_sphincs_sha2_256f_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -77,6 +87,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256f_simple_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_sphincs_sha2_256s_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -90,6 +102,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_sha2_256s_simple_verify_with_ctx_str(const ui
 
 OQS_SIG *OQS_SIG_sphincs_shake_128f_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -103,6 +117,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128f_simple_verify_with_ctx_str(const u
 
 OQS_SIG *OQS_SIG_sphincs_shake_128s_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -116,6 +132,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_128s_simple_verify_with_ctx_str(const u
 
 OQS_SIG *OQS_SIG_sphincs_shake_192f_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -129,6 +147,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192f_simple_verify_with_ctx_str(const u
 
 OQS_SIG *OQS_SIG_sphincs_shake_192s_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -142,6 +162,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_192s_simple_verify_with_ctx_str(const u
 
 OQS_SIG *OQS_SIG_sphincs_shake_256f_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
@@ -155,6 +177,8 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256f_simple_verify_with_ctx_str(const u
 
 OQS_SIG *OQS_SIG_sphincs_shake_256s_simple_new(void);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256s_simple_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256s_simple_keypair_from_fseed(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256s_simple_pubkey_from_privkey(uint8_t *public_key, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256s_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake_256s_simple_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);

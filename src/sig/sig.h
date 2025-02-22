@@ -203,6 +203,16 @@ typedef struct OQS_SIG {
 	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
 
 	/**
+	 * Keypair generation algorithm but can generate keypair from fixed seed or other random source.
+	 */
+	OQS_STATUS (*keypair_from_fseed)(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+
+	/**
+	* Public key generation from exist private key.
+	*/
+	OQS_STATUS (*pubkey_from_privkey)(uint8_t *public_key, const uint8_t *secret_key);
+
+	/**
 	 * Signature generation algorithm.
 	 *
 	 * Caller is responsible for allocating sufficient memory for `signature`,
@@ -289,6 +299,16 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name);
  * @return OQS_SUCCESS or OQS_ERROR
  */
 OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key);
+
+/**
+ * Keypair generation algorithm but can generate keypair from fixed seed or other random source.
+ */
+OQS_API OQS_STATUS OQS_SIG_keypair_from_fseed(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+
+/**
+ * Public key generation from exist private key.
+ */
+OQS_API OQS_STATUS OQS_SIG_pubkey_from_privkey(const OQS_SIG *sig, uint8_t *public_key, const uint8_t *secret_key);
 
 /**
  * Signature generation algorithm.
