@@ -51,6 +51,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 	case KEM_KEYGEN:
 		printf("================================================================================\n");
 		printf("Executing keygen for KEM %s\n", kem->method_name);
+		printf("Version source: %s\n", kem->alg_version);
 		printf("================================================================================\n");
 
 		public_key = OQS_MEM_malloc(kem->length_public_key);
@@ -78,6 +79,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 	case KEM_ENCAPS:
 		printf("================================================================================\n");
 		printf("Executing encaps for KEM %s\n", kem->method_name);
+		printf("Version source: %s\n", kem->alg_version);
 		printf("================================================================================\n");
 
 		public_key = OQS_MEM_malloc(kem->length_public_key);
@@ -113,6 +115,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 	case KEM_DECAPS:
 		printf("================================================================================\n");
 		printf("Executing decaps for KEM %s\n", kem->method_name);
+		printf("Version source: %s\n", kem->alg_version);
 		printf("================================================================================\n");
 
 		public_key = OQS_MEM_malloc(kem->length_public_key);
