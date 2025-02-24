@@ -190,6 +190,6 @@ install(FILES ${PUBLIC_HEADERS}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/oqs)
 
 export(EXPORT liboqsTargets
-       FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/liboqsTargets.cmake"
+       FILE "${CMAKE_CURRENT_BINARY_DIR}/liboqsTargets.cmake"
        NAMESPACE OQS::
 )
