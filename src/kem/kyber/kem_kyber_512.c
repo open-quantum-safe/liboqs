@@ -22,7 +22,7 @@ OQS_KEM *OQS_KEM_kyber_512_new(void) {
 	kem->length_secret_key = OQS_KEM_kyber_512_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_kyber_512_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_kyber_512_length_shared_secret;
-	kem->length_keypair_coins = OQS_KEM_kyber_512_length_keypair_coins;
+	kem->length_keypair_seed = OQS_KEM_kyber_512_length_keypair_seed;
 
 	kem->keypair_derand = OQS_KEM_kyber_512_keypair_derand;
 	kem->keypair = OQS_KEM_kyber_512_keypair;
@@ -61,10 +61,10 @@ extern int libjade_kyber512_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8
 #endif
 
 
-OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins) {
+OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
 	(void)public_key;
 	(void)secret_key;
-	(void)coins;
+	(void)seed;
 	return OQS_ERROR;
 }
 

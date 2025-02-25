@@ -157,10 +157,10 @@ typedef struct OQS_KEM {
 	size_t length_ciphertext;
 	/** The length, in bytes, of shared secrets for this KEM. */
 	size_t length_shared_secret;
-	/** The length, in bytes, of coins for derandomized keypair generation for this KEM. */
-	size_t length_keypair_coins;
-	/** The length, in bytes, of coins for derandomized encapsulation for this KEM. */
-	size_t length_encaps_coins;
+	/** The length, in bytes, of seeds for derandomized keypair generation for this KEM. */
+	size_t length_keypair_seed;
+	/** The length, in bytes, of seeds for derandomized encapsulation for this KEM. */
+	size_t length_encaps_seed;
 
 	/**
 	 * Derandomized keypair generation algorithm.
@@ -171,10 +171,10 @@ typedef struct OQS_KEM {
 	 *
 	 * @param[out] public_key The public key represented as a byte string.
 	 * @param[out] secret_key The secret key represented as a byte string.
-	 * @param[in] coins The input randomness represented as a byte string.
+	 * @param[in] seed The input randomness represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*keypair_derand)(uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+	OQS_STATUS (*keypair_derand)(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 
 	/**
 	 * Keypair generation algorithm.
@@ -240,10 +240,10 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name);
  * @param[in] kem The OQS_KEM object representing the KEM.
  * @param[out] public_key The public key represented as a byte string.
  * @param[out] secret_key The secret key represented as a byte string.
- * @param[in] coins The input randomness represented as a byte string.
+ * @param[in] seed The input randomness represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *coins);
+OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 
 /**
  * Keypair generation algorithm.

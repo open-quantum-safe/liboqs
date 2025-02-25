@@ -4,7 +4,7 @@
 #define CRYPTO_SECRETKEYBYTES OQS_KEM_frodokem_976_aes_length_secret_key
 #define CRYPTO_CIPHERTEXTBYTES OQS_KEM_frodokem_976_aes_length_ciphertext
 #define CRYPTO_BYTES OQS_KEM_frodokem_976_aes_length_shared_secret
-#define CRYPTO_KEYPAIRCOINBYTES OQS_KEM_frodokem_976_aes_length_keypair_coins
+#define CRYPTO_SEEDBYTES OQS_KEM_frodokem_976_aes_length_keypair_seed
 
 // Parameters for "FrodoKEM-976"
 #define PARAMS_N 976
