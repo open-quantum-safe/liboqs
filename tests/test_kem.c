@@ -110,7 +110,7 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
-static OQS_STATUS kem_test_correctness(const char *method_name) {
+static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
@@ -118,6 +118,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	uint8_t *ciphertext = NULL;
 	uint8_t *shared_secret_e = NULL;
 	uint8_t *shared_secret_d = NULL;
+	uint8_t *seed = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
 
@@ -132,16 +133,19 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		goto err;
 	}
 
-	printf("================================================================================\n");
-	printf("Sample computation for KEM %s\n", kem->method_name);
-	printf("Version source: %s\n", kem->alg_version);
-	printf("================================================================================\n");
+    if (!derand) {
+        printf("================================================================================\n");
+        printf("sample computation for KEM %s\n", kem->method_name);
+        printf("Version source: %s\n", kem->alg_version);
+        printf("================================================================================\n");
+    }
 
 	public_key = OQS_MEM_malloc(kem->length_public_key + 2 * sizeof(magic_t));
 	secret_key = OQS_MEM_malloc(kem->length_secret_key + 2 * sizeof(magic_t));
 	ciphertext = OQS_MEM_malloc(kem->length_ciphertext + 2 * sizeof(magic_t));
 	shared_secret_e = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
 	shared_secret_d = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
+	seed = malloc(kem->length_keypair_coins + 2 * sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
@@ -154,12 +158,14 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	memcpy(ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d, magic.val, sizeof(magic_t));
+	memcpy(seed, magic.val, sizeof(magic_t));
 
 	public_key += sizeof(magic_t);
 	secret_key += sizeof(magic_t);
 	ciphertext += sizeof(magic_t);
 	shared_secret_e += sizeof(magic_t);
 	shared_secret_d += sizeof(magic_t);
+	seed += sizeof(magic_t);
 
 	// and after
 	memcpy(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
@@ -167,12 +173,37 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	memcpy(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
+	memcpy(seed + kem->length_keypair_coins, magic.val, sizeof(magic_t));
 
-	rc = OQS_KEM_keypair(kem, public_key, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");
-		goto err;
+
+	if (derand) {
+		// On some systems, getentropy fails if given a zero-length array
+		if (kem->length_keypair_coins > 0) {
+			OQS_randombytes(seed, kem->length_keypair_coins);
+		}
+		rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, seed);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (kem->length_keypair_coins == 0) {
+			// If length_keypair_coins is set to 0 for this KEM scheme, a failure is expected
+			if (rc != OQS_ERROR) {
+				fprintf(stderr, "ERROR: OQS_KEM_keypair_derand succeeded but expected a failure\n");
+				goto err;
+			}
+			ret = OQS_SUCCESS;
+			goto cleanup;
+		} else {
+			if (rc != OQS_SUCCESS) {
+				fprintf(stderr, "ERROR: OQS_KEM_keypair_derand failed\n");
+				goto err;
+			}
+		}
+	} else {
+		rc = OQS_KEM_keypair(kem, public_key, secret_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");
+			goto err;
+		}
 	}
 
 	OQS_TEST_CT_DECLASSIFY(public_key, kem->length_public_key);
@@ -227,11 +258,13 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
+	rv |= memcmp(seed + kem->length_keypair_coins, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(ciphertext - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(seed - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv != 0) {
 		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
@@ -259,6 +292,9 @@ cleanup:
 	}
 	if (ciphertext) {
 		OQS_MEM_insecure_free(ciphertext - sizeof(magic_t));
+	}
+	if (seed) {
+		OQS_MEM_secure_free(seed - sizeof(magic_t), kem->length_keypair_coins + 2 * sizeof(magic_t));
 	}
 	OQS_KEM_free(kem);
 
@@ -288,7 +324,11 @@ struct thread_data {
 
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
-	td->rc = kem_test_correctness(td->alg_name);
+	td->rc = kem_test_correctness(td->alg_name, false);
+	if (td->rc == OQS_SUCCESS) {
+		// test derandomized operations
+		td->rc = kem_test_correctness(td->alg_name, true);
+	}
 	OQS_thread_stop();
 	return NULL;
 }
@@ -353,10 +393,18 @@ int main(int argc, char **argv) {
 		pthread_join(thread, NULL);
 		rc = td.rc;
 	} else {
-		rc = kem_test_correctness(alg_name);
+		rc = kem_test_correctness(alg_name, false);
+		if (rc == OQS_SUCCESS) {
+			// test with derandomized keygen
+			rc = kem_test_correctness(alg_name, true);
+		}
 	}
 #else
-	rc = kem_test_correctness(alg_name);
+	rc = kem_test_correctness(alg_name, false);
+	if (rc == OQS_SUCCESS) {
+		// test with derandomized keygen
+		rc = kem_test_correctness(alg_name, true);
+	}
 #endif
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();
