@@ -40,6 +40,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 	case SIG_KEYGEN:
 		printf("================================================================================\n");
 		printf("Executing keygen for SIGALG %s\n", sig->method_name);
+		printf("Version source: %s\n", sig->alg_version);
 		printf("================================================================================\n");
 
 		public_key = OQS_MEM_malloc(sig->length_public_key);
@@ -65,6 +66,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 	case SIG_SIGN:
 		printf("================================================================================\n");
 		printf("Executing sign for SIGALG %s\n", sig->method_name);
+		printf("Version source: %s\n", sig->alg_version);
 		printf("================================================================================\n");
 
 		public_key = OQS_MEM_malloc(sig->length_public_key);
@@ -102,6 +104,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 	case SIG_VERIFY:
 		printf("================================================================================\n");
 		printf("Executing verify for SIGALG %s\n", sig->method_name);
+		printf("Version source: %s\n", sig->alg_version);
 		printf("================================================================================\n");
 
 		public_key = OQS_MEM_malloc(sig->length_public_key);

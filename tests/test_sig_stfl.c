@@ -441,6 +441,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	printf("================================================================================\n");
 	printf("Sample computation for stateful signature %s\n", sig->method_name);
+	printf("Version source: %s\n", sig->alg_version);
 	printf("================================================================================\n");
 
 	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
