@@ -133,12 +133,12 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		goto err;
 	}
 
-    if (!derand) {
-        printf("================================================================================\n");
-        printf("sample computation for KEM %s\n", kem->method_name);
-        printf("Version source: %s\n", kem->alg_version);
-        printf("================================================================================\n");
-    }
+	if (!derand) {
+		printf("================================================================================\n");
+		printf("sample computation for KEM %s\n", kem->method_name);
+		printf("Version source: %s\n", kem->alg_version);
+		printf("================================================================================\n");
+	}
 
 	public_key = OQS_MEM_malloc(kem->length_public_key + 2 * sizeof(magic_t));
 	secret_key = OQS_MEM_malloc(kem->length_secret_key + 2 * sizeof(magic_t));
@@ -189,6 +189,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 				fprintf(stderr, "ERROR: OQS_KEM_keypair_derand succeeded but expected a failure\n");
 				goto err;
 			}
+			printf("OQS_KEM_keypair_derand failed, as expected\n");
 			ret = OQS_SUCCESS;
 			goto cleanup;
 		} else {
