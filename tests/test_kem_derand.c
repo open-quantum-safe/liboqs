@@ -110,6 +110,8 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 			fprintf(stderr, "ERROR: OQS_KEM_keypair_derand succeeded but expected a failure\n");
 			goto err;
 		}
+        ret = OQS_SUCCESS;
+        goto cleanup;
 	} else {
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_keypair_derand failed\n");
