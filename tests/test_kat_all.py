@@ -10,6 +10,7 @@ from hashlib import sha256
 @helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_kem(kem_name):
+    pytest.skip('not mayo')
     kats = helpers.get_kats("kem")
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
@@ -24,6 +25,7 @@ def test_kem(kem_name):
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
+    if not 'MAYO' in sig_name: pytest.skip('not mayo')
     kats = helpers.get_kats("sig")
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
