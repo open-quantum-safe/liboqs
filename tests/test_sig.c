@@ -29,6 +29,17 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
+static OQS_STATUS flip_bit(uint8_t *array, uint64_t array_length, uint64_t bit_position) {
+	uint64_t byte_index = bit_position / 8;
+	uint8_t bit_index = bit_position % 8;
+	if (byte_index >= array_length) {
+		fprintf(stderr, "ERROR: bit index is out of bounds!\n");
+		return OQS_ERROR;
+	}
+	array[byte_index] ^= (1 << bit_index);
+	return OQS_SUCCESS;
+}
+
 static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	OQS_SIG *sig = NULL;
@@ -110,14 +121,20 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		goto err;
 	}
 
-	/* modify the signature to invalidate it */
-	OQS_randombytes(signature, signature_len);
-	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_ERROR) {
-		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
-		goto err;
+	/* for every bit of the signature, flip it and check if the verification fails */
+	for(uint64_t bit_index=0; bit_index<(signature_len*8); bit_index++){
+		rc = flip_bit(signature, signature_len, bit_index);
+		if (rc != OQS_SUCCESS) {
+			goto err;
+		}
+		rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
+			goto err;
+		}
+		/* flip back the bit */
+		flip_bit(signature, signature_len, bit_index);
 	}
 
 	/* testing signing with context, if supported */
@@ -140,14 +157,20 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 				goto err;
 			}
 
-			/* modify the signature to invalidate it */
-			OQS_randombytes(signature, signature_len);
-			OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
-				goto err;
+			/* for every bit of the signature, flip it and check if the verification fails */
+			for(uint64_t bit_index=0; bit_index<(signature_len*8); bit_index++){
+				rc = flip_bit(signature, signature_len, bit_index);
+				if (rc != OQS_SUCCESS) {
+					goto err;
+				}
+				rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
+				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+				if (rc != OQS_ERROR) {
+					fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
+					goto err;
+				}
+				/* flip back the bit */
+				flip_bit(signature, signature_len, bit_index);
 			}
 		}
 
@@ -180,14 +203,20 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		goto err;
 	}
 
-	/* modify the signature to invalidate it */
-	OQS_randombytes(signature, signature_len);
-	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-	rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_ERROR) {
-		fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
-		goto err;
+	/* for every bit of the signature, flip it and check if the verification fails */
+	for(uint64_t bit_index=0; bit_index<(signature_len*8); bit_index++){
+		rc = flip_bit(signature, signature_len, bit_index);
+		if (rc != OQS_SUCCESS) {
+			goto err;
+		}
+		rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
+			goto err;
+		}
+		/* flip back the bit */
+		flip_bit(signature, signature_len, bit_index);
 	}
 
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
