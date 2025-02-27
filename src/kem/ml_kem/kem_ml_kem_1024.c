@@ -24,29 +24,29 @@ OQS_KEM *OQS_KEM_ml_kem_1024_new(void) {
 	kem->length_shared_secret = OQS_KEM_ml_kem_1024_length_shared_secret;
 	kem->length_keypair_seed = OQS_KEM_ml_kem_1024_length_keypair_seed;
 
-	kem->keypair_derand = OQS_KEM_ml_kem_1024_keypair_derand;
 	kem->keypair = OQS_KEM_ml_kem_1024_keypair;
+	kem->keypair_derand = OQS_KEM_ml_kem_1024_keypair_derand;
 	kem->encaps = OQS_KEM_ml_kem_1024_encaps;
 	kem->decaps = OQS_KEM_ml_kem_1024_decaps;
 
 	return kem;
 }
-extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_ml_kem_1024_x86_64)
-extern int PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 #if defined(OQS_ENABLE_KEM_ml_kem_1024_aarch64)
-extern int PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
