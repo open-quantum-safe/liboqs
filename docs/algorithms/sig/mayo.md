@@ -6,7 +6,7 @@
 - **Authors' website**: https://pqmayo.org
 - **Specification version**: https://doi.org/10.46586/tches.v2024.i2.252-275.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/cde2675ff404b0ae070e7dbc3d962ea0b026a81e with copy_from_upstream patches
+  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
@@ -14,10 +14,10 @@
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
 |:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1168 |                        24 |                      321 |
-|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      5488 |                        24 |                      180 |
-|     MAYO-3      | NA                    | EUF-CMA          |                    3 |                      2656 |                        32 |                      577 |
-|     MAYO-5      | NA                    | EUF-CMA          |                    5 |                      5008 |                        40 |                      838 |
+|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1420 |                        24 |                      454 |
+|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      4912 |                        24 |                      186 |
+|     MAYO-3      | NA                    | EUF-CMA          |                    3 |                      2986 |                        32 |                      681 |
+|     MAYO-5      | NA                    | EUF-CMA          |                    5 |                      5554 |                        40 |                      964 |
 
 ## MAYO-1 implementation characteristics
 

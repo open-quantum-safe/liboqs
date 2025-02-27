@@ -11,16 +11,16 @@ website: https://pqmayo.org
 nist-round: 1
 spec-version: https://doi.org/10.46586/tches.v2024.i2.252-275
 primary-upstream:
-  source: https://github.com/PQCMayo/MAYO-C/commit/cde2675ff404b0ae070e7dbc3d962ea0b026a81e
+  source: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807
     with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: MAYO-1
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 1168
+  length-public-key: 1420
   length-secret-key: 24
-  length-signature: 321
+  length-signature: 454
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -50,9 +50,9 @@ parameter-sets:
 - name: MAYO-2
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 5488
+  length-public-key: 4912
   length-secret-key: 24
-  length-signature: 180
+  length-signature: 186
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -82,9 +82,9 @@ parameter-sets:
 - name: MAYO-3
   claimed-nist-level: 3
   claimed-security: EUF-CMA
-  length-public-key: 2656
+  length-public-key: 2986
   length-secret-key: 32
-  length-signature: 577
+  length-signature: 681
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -113,9 +113,9 @@ parameter-sets:
 - name: MAYO-5
   claimed-nist-level: 5
   claimed-security: EUF-CMA
-  length-public-key: 5008
+  length-public-key: 5554
   length-secret-key: 40
-  length-signature: 838
+  length-signature: 964
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
