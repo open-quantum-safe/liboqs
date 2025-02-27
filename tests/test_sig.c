@@ -122,7 +122,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	/* for every bit of the signature, flip it and check if the verification fails */
-	for(uint64_t bit_index=0; bit_index<(signature_len*8); bit_index++){
+	for (uint64_t bit_index = 0; bit_index < (signature_len * 8); bit_index++) {
 		rc = flip_bit(signature, signature_len, bit_index);
 		if (rc != OQS_SUCCESS) {
 			goto err;
@@ -158,7 +158,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 			}
 
 			/* for every bit of the signature, flip it and check if the verification fails */
-			for(uint64_t bit_index=0; bit_index<(signature_len*8); bit_index++){
+			for (uint64_t bit_index = 0; bit_index < (signature_len * 8); bit_index++) {
 				rc = flip_bit(signature, signature_len, bit_index);
 				if (rc != OQS_SUCCESS) {
 					goto err;
@@ -204,7 +204,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	/* for every bit of the signature, flip it and check if the verification fails */
-	for(uint64_t bit_index=0; bit_index<(signature_len*8); bit_index++){
+	for (uint64_t bit_index = 0; bit_index < (signature_len * 8); bit_index++) {
 		rc = flip_bit(signature, signature_len, bit_index);
 		if (rc != OQS_SUCCESS) {
 			goto err;
