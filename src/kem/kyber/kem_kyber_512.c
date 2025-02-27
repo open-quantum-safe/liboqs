@@ -24,8 +24,8 @@ OQS_KEM *OQS_KEM_kyber_512_new(void) {
 	kem->length_shared_secret = OQS_KEM_kyber_512_length_shared_secret;
 	kem->length_keypair_seed = OQS_KEM_kyber_512_length_keypair_seed;
 
-	kem->keypair_derand = OQS_KEM_kyber_512_keypair_derand;
 	kem->keypair = OQS_KEM_kyber_512_keypair;
+	kem->keypair_derand = OQS_KEM_kyber_512_keypair_derand;
 	kem->encaps = OQS_KEM_kyber_512_encaps;
 	kem->decaps = OQS_KEM_kyber_512_decaps;
 

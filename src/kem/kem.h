@@ -159,8 +159,6 @@ typedef struct OQS_KEM {
 	size_t length_shared_secret;
 	/** The length, in bytes, of seeds for derandomized keypair generation for this KEM. */
 	size_t length_keypair_seed;
-	/** The length, in bytes, of seeds for derandomized encapsulation for this KEM. */
-	size_t length_encaps_seed;
 
 	/**
 	 * Derandomized keypair generation algorithm.

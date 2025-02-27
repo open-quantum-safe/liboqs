@@ -28,8 +28,8 @@
 #define shake     OQS_SHA3_shake256
 #define USE_AES128_FOR_A
 
-#define crypto_kem_keypair_derand     OQS_KEM_frodokem_976_aes_keypair_derand
 #define crypto_kem_keypair            OQS_KEM_frodokem_976_aes_keypair
+#define crypto_kem_keypair_derand     OQS_KEM_frodokem_976_aes_keypair_derand
 #define crypto_kem_enc                OQS_KEM_frodokem_976_aes_encaps
 #define crypto_kem_dec                OQS_KEM_frodokem_976_aes_decaps
 
