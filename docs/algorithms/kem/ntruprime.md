@@ -14,9 +14,9 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
-|    sntrup761    | NA                    | IND-CCA2         |                    2 |                      1158 |                      1763 |                      1039 |                           32 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:----------------------------|
+|    sntrup761    | NA                    | IND-CCA2         |                    2 |                      1158 |                      1763 |                      1039 |                           32 | NA                          |
 
 ## sntrup761 implementation characteristics
 

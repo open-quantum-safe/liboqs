@@ -6,6 +6,15 @@
 
 #include <string.h>
 
+OQS_STATUS crypto_kem_keypair_derand(unsigned char *pk, unsigned char *sk, const unsigned char *seed)
+{
+    (void)pk;
+    (void)sk;
+    (void)seed;
+    return OQS_ERROR;
+}
+
+
 OQS_STATUS crypto_kem_keypair(unsigned char* pk, unsigned char* sk)
 { // FrodoKEM's key generation
   // Outputs: public key pk (               BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 bytes)

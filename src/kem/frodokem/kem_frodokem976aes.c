@@ -22,8 +22,10 @@ OQS_KEM *OQS_KEM_frodokem_976_aes_new(void) {
 	kem->length_secret_key = OQS_KEM_frodokem_976_aes_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_frodokem_976_aes_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_frodokem_976_aes_length_shared_secret;
+	kem->length_keypair_seed = OQS_KEM_frodokem_976_aes_length_keypair_seed;
 
 	kem->keypair = OQS_KEM_frodokem_976_aes_keypair;
+	kem->keypair_derand = OQS_KEM_frodokem_976_aes_keypair_derand;
 	kem->encaps = OQS_KEM_frodokem_976_aes_encaps;
 	kem->decaps = OQS_KEM_frodokem_976_aes_decaps;
 
