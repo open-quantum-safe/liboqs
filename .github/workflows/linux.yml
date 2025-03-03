@@ -223,7 +223,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Retrieve OpenSSL330 from cache
         id: cache-openssl330
-        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # pin@v3
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # pin@v4
         with:
           path: .localopenssl330
           key: ${{ runner.os }}-openssl330
@@ -246,7 +246,7 @@ jobs:
       - name: Save OpenSSL
         id: cache-openssl-save
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/cache/save@e12d46a63a90f2fae62d114769bbf2a179198b5c # pin@v3
+        uses: actions/cache/save@d4323d4df104b026a6aa633fdb11d772146be0bf # pin@v4
         with:
           path: |
             .localopenssl330
