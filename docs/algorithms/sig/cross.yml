@@ -23,13 +23,13 @@ website: https://www.cross-crypto.com/
 nist-round: 2
 spec-version: 2.0 + PQClean and OQS patches
 primary-upstream:
-  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/efd17279e75308b000bda7c7f58866620d652bc1
+  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/01f2486523f352a7eb1809a246c8fe466772642c
   spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: cross-rsdp-128-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdp_128_balanced
   claimed-nist-level: 1
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 77
   length-secret-key: 32
   length-signature: 13152
@@ -57,7 +57,7 @@ parameter-sets:
 - name: cross-rsdp-128-fast
   oqs_alg: OQS_SIG_alg_cross_rsdp_128_fast
   claimed-nist-level: 1
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 77
   length-secret-key: 32
   length-signature: 18432
@@ -85,7 +85,7 @@ parameter-sets:
 - name: cross-rsdp-128-small
   oqs_alg: OQS_SIG_alg_cross_rsdp_128_small
   claimed-nist-level: 1
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 77
   length-secret-key: 32
   length-signature: 12432
@@ -113,7 +113,7 @@ parameter-sets:
 - name: cross-rsdp-192-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdp_192_balanced
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 115
   length-secret-key: 48
   length-signature: 29853
@@ -141,7 +141,7 @@ parameter-sets:
 - name: cross-rsdp-192-fast
   oqs_alg: OQS_SIG_alg_cross_rsdp_192_fast
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 115
   length-secret-key: 48
   length-signature: 41406
@@ -169,7 +169,7 @@ parameter-sets:
 - name: cross-rsdp-192-small
   oqs_alg: OQS_SIG_alg_cross_rsdp_192_small
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 115
   length-secret-key: 48
   length-signature: 28391
@@ -197,7 +197,7 @@ parameter-sets:
 - name: cross-rsdp-256-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdp_256_balanced
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 153
   length-secret-key: 64
   length-signature: 53527
@@ -225,7 +225,7 @@ parameter-sets:
 - name: cross-rsdp-256-fast
   oqs_alg: OQS_SIG_alg_cross_rsdp_256_fast
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 153
   length-secret-key: 64
   length-signature: 74590
@@ -253,7 +253,7 @@ parameter-sets:
 - name: cross-rsdp-256-small
   oqs_alg: OQS_SIG_alg_cross_rsdp_256_small
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 153
   length-secret-key: 64
   length-signature: 50818
@@ -281,7 +281,7 @@ parameter-sets:
 - name: cross-rsdpg-128-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdpg_128_balanced
   claimed-nist-level: 1
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 54
   length-secret-key: 32
   length-signature: 9120
@@ -309,7 +309,7 @@ parameter-sets:
 - name: cross-rsdpg-128-fast
   oqs_alg: OQS_SIG_alg_cross_rsdpg_128_fast
   claimed-nist-level: 1
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 54
   length-secret-key: 32
   length-signature: 11980
@@ -337,7 +337,7 @@ parameter-sets:
 - name: cross-rsdpg-128-small
   oqs_alg: OQS_SIG_alg_cross_rsdpg_128_small
   claimed-nist-level: 1
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 54
   length-secret-key: 32
   length-signature: 8960
@@ -365,7 +365,7 @@ parameter-sets:
 - name: cross-rsdpg-192-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdpg_192_balanced
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 83
   length-secret-key: 48
   length-signature: 22464
@@ -393,7 +393,7 @@ parameter-sets:
 - name: cross-rsdpg-192-fast
   oqs_alg: OQS_SIG_alg_cross_rsdpg_192_fast
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 83
   length-secret-key: 48
   length-signature: 26772
@@ -421,7 +421,7 @@ parameter-sets:
 - name: cross-rsdpg-192-small
   oqs_alg: OQS_SIG_alg_cross_rsdpg_192_small
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 83
   length-secret-key: 48
   length-signature: 20452
@@ -449,7 +449,7 @@ parameter-sets:
 - name: cross-rsdpg-256-balanced
   oqs_alg: OQS_SIG_alg_cross_rsdpg_256_balanced
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 106
   length-secret-key: 64
   length-signature: 40100
@@ -477,7 +477,7 @@ parameter-sets:
 - name: cross-rsdpg-256-fast
   oqs_alg: OQS_SIG_alg_cross_rsdpg_256_fast
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 106
   length-secret-key: 64
   length-signature: 48102
@@ -505,7 +505,7 @@ parameter-sets:
 - name: cross-rsdpg-256-small
   oqs_alg: OQS_SIG_alg_cross_rsdpg_256_small
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 106
   length-secret-key: 64
   length-signature: 36454
