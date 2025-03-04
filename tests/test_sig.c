@@ -144,7 +144,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 			rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
 			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %lu of the signature!\n", bit_index);
+				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the signature!\n", bit_index);
 				goto err;
 			}
 			/* flip back the bit */
@@ -187,7 +187,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 					rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
 					OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 					if (rc != OQS_ERROR) {
-						fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed after flipping bit %lu of the signature!\n", bit_index);
+						fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed after flipping bit %llu of the signature!\n", bit_index);
 						goto err;
 					}
 					/* flip back the bit */
@@ -240,7 +240,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
 			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed after flipping bit %lu of the signature!\n", bit_index);
+				fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed after flipping bit %llu of the signature!\n", bit_index);
 				goto err;
 			}
 			/* flip back the bit */
@@ -356,7 +356,7 @@ int main(int argc, char **argv) {
 		if (strcmp(argv[2], "all") == 0) {
 			bitflips_all = true;
 		} else {
-			bitflips = atoi(argv[2]);
+			bitflips = (size_t)atoi(argv[2]);
 		}
 	}
 
