@@ -356,7 +356,7 @@ int main(int argc, char **argv) {
 		if (strcmp(argv[2], "all") == 0) {
 			bitflips_all = true;
 		} else {
-			bitflips = (size_t)atoi(argv[2]);
+			bitflips = (size_t)strtol(argv[2], NULL, 10);
 		}
 	}
 
