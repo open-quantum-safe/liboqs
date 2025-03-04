@@ -70,7 +70,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		if (bitflips_all) {
 			printf("(N = all)\n");
 		} else {
-			printf("(N = %d)\n", bitflips);
+			printf("(N = %ld)\n", bitflips);
 		}
 	}
 	printf("Version source: %s\n", sig->alg_version);
