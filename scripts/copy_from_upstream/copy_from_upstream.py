@@ -368,7 +368,12 @@ def load_instructions(file='copy_from_upstream.yml'):
                             raise RuntimeError("Found duplicate arch {} in scheme {}".format(arch, scheme))
                         scheme['scheme_paths'][arch] = (os.path.join('repos', location,
                                                                     upstreams[location]['sig_scheme_path'].format_map(scheme)))
+            # assume EUF-CMA for schemes that don't specify a security classification
             scheme['metadata']['euf_cma'] = 'true'
+            scheme['metadata']['suf_cma'] = 'false'
+            if 'claimed-security' in metadata:
+                if metadata['claimed-security'] == "SUF-CMA":
+                    scheme['metadata']['suf_cma'] = 'true'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
             scheme['scheme_c'] = scheme['scheme'].replace('-', '')
             scheme['default_implementation'] = family['default_implementation']

@@ -7,7 +7,7 @@
 - **Authors' website**: https://www.cross-crypto.com/
 - **Specification version**: 2.0 + PQClean and OQS patches.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/efd17279e75308b000bda7c7f58866620d652bc1
+  - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/01f2486523f352a7eb1809a246c8fe466772642c
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
@@ -15,24 +15,24 @@
 
 |      Parameter set       | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
 |:------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-| cross-rsdp-128-balanced  | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    13152 |
-|   cross-rsdp-128-fast    | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    18432 |
-|   cross-rsdp-128-small   | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    12432 |
-| cross-rsdp-192-balanced  | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    29853 |
-|   cross-rsdp-192-fast    | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    41406 |
-|   cross-rsdp-192-small   | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    28391 |
-| cross-rsdp-256-balanced  | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    53527 |
-|   cross-rsdp-256-fast    | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    74590 |
-|   cross-rsdp-256-small   | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    50818 |
-| cross-rsdpg-128-balanced | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                     9120 |
-|   cross-rsdpg-128-fast   | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                    11980 |
-|  cross-rsdpg-128-small   | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                     8960 |
-| cross-rsdpg-192-balanced | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    22464 |
-|   cross-rsdpg-192-fast   | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    26772 |
-|  cross-rsdpg-192-small   | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    20452 |
-| cross-rsdpg-256-balanced | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    40100 |
-|   cross-rsdpg-256-fast   | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    48102 |
-|  cross-rsdpg-256-small   | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    36454 |
+| cross-rsdp-128-balanced  | NA                    | SUF-CMA          |                    1 |                        77 |                        32 |                    13152 |
+|   cross-rsdp-128-fast    | NA                    | SUF-CMA          |                    1 |                        77 |                        32 |                    18432 |
+|   cross-rsdp-128-small   | NA                    | SUF-CMA          |                    1 |                        77 |                        32 |                    12432 |
+| cross-rsdp-192-balanced  | NA                    | SUF-CMA          |                    3 |                       115 |                        48 |                    29853 |
+|   cross-rsdp-192-fast    | NA                    | SUF-CMA          |                    3 |                       115 |                        48 |                    41406 |
+|   cross-rsdp-192-small   | NA                    | SUF-CMA          |                    3 |                       115 |                        48 |                    28391 |
+| cross-rsdp-256-balanced  | NA                    | SUF-CMA          |                    5 |                       153 |                        64 |                    53527 |
+|   cross-rsdp-256-fast    | NA                    | SUF-CMA          |                    5 |                       153 |                        64 |                    74590 |
+|   cross-rsdp-256-small   | NA                    | SUF-CMA          |                    5 |                       153 |                        64 |                    50818 |
+| cross-rsdpg-128-balanced | NA                    | SUF-CMA          |                    1 |                        54 |                        32 |                     9120 |
+|   cross-rsdpg-128-fast   | NA                    | SUF-CMA          |                    1 |                        54 |                        32 |                    11980 |
+|  cross-rsdpg-128-small   | NA                    | SUF-CMA          |                    1 |                        54 |                        32 |                     8960 |
+| cross-rsdpg-192-balanced | NA                    | SUF-CMA          |                    3 |                        83 |                        48 |                    22464 |
+|   cross-rsdpg-192-fast   | NA                    | SUF-CMA          |                    3 |                        83 |                        48 |                    26772 |
+|  cross-rsdpg-192-small   | NA                    | SUF-CMA          |                    3 |                        83 |                        48 |                    20452 |
+| cross-rsdpg-256-balanced | NA                    | SUF-CMA          |                    5 |                       106 |                        64 |                    40100 |
+|   cross-rsdpg-256-fast   | NA                    | SUF-CMA          |                    5 |                       106 |                        64 |                    48102 |
+|  cross-rsdpg-256-small   | NA                    | SUF-CMA          |                    5 |                       106 |                        64 |                    36454 |
 
 ## cross-rsdp-128-balanced implementation characteristics
 
