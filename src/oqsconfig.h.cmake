@@ -204,12 +204,16 @@
 #cmakedefine OQS_ENABLE_SIG_MAYO 1
 #cmakedefine OQS_ENABLE_SIG_mayo_1 1
 #cmakedefine OQS_ENABLE_SIG_mayo_1_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_1_neon 1
 #cmakedefine OQS_ENABLE_SIG_mayo_2 1
 #cmakedefine OQS_ENABLE_SIG_mayo_2_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_2_neon 1
 #cmakedefine OQS_ENABLE_SIG_mayo_3 1
 #cmakedefine OQS_ENABLE_SIG_mayo_3_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_3_neon 1
 #cmakedefine OQS_ENABLE_SIG_mayo_5 1
 #cmakedefine OQS_ENABLE_SIG_mayo_5_avx2 1
+#cmakedefine OQS_ENABLE_SIG_mayo_5_neon 1
 
 #cmakedefine OQS_ENABLE_SIG_CROSS 1
 #cmakedefine OQS_ENABLE_SIG_cross_rsdp_128_balanced 1

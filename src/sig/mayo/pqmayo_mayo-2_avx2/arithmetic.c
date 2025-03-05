@@ -2,233 +2,31 @@
 
 #include <arithmetic.h>
 #include <simple_arithmetic.h>
-#include <arithmetic_common.h>
 #include <mem.h>
 #include <echelon_form.h>
 #include <stdalign.h>
+#include <stdlib.h>
+#include <string.h>
 #ifdef ENABLE_CT_TESTING
 #include <valgrind/memcheck.h>
 #endif
 
-void m_upper(int m_legs, const uint64_t *in, uint64_t *out, int size) {
-#if defined(MAYO_VARIANT) && MAYO_AVX && (M_MAX == 64)
-    mayo12_m_upper(m_legs, in, out, size);
-#else
+void m_upper(const mayo_params_t* p, const uint64_t *in, uint64_t *out, int size) {
+    #ifndef ENABLE_PARAMS_DYNAMIC
+    (void) p;
+    #endif
+    // Look into AVX2'ing this 
+    const int m_vec_limbs = PARAM_m_vec_limbs(p);
     int m_vecs_stored = 0;
     for (int r = 0; r < size; r++) {
         for (int c = r; c < size; c++) {
-            m_vec_copy(m_legs, in + m_legs * 2 * (r * size + c), out + m_legs * 2 * m_vecs_stored );
+            m_vec_copy(m_vec_limbs, in + m_vec_limbs * (r * size + c), out + m_vec_limbs * m_vecs_stored );
             if (r != c) {
-                m_vec_add(m_legs, in + m_legs * 2 * (c * size + r), out + m_legs * 2 * m_vecs_stored );
+                m_vec_add(m_vec_limbs, in + m_vec_limbs * (c * size + r), out + m_vec_limbs * m_vecs_stored );
             }
             m_vecs_stored ++;
         }
     }
-#endif
-}
-
-void P1P1t_times_O(const mayo_params_t* p, const uint64_t* P1, const unsigned char* O, uint64_t* acc){
-#if MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 64
-    (void) p;
-    mayo_12_P1P1t_times_O(P1, O, acc);
-#elif MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 96
-    (void) p;   
-    mayo_3_P1P1t_times_O(P1, O, acc);
-#elif MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 128
-    (void) p;   
-    mayo_5_P1P1t_times_O(P1, O, acc);
-#else
-    #ifndef MAYO_VARIANT
-    const int m_legs = PARAM_m(p) / 32;
-    #else
-    (void) p;
-    #endif
-    const int param_o = PARAM_o(p);
-    const int param_v = PARAM_n(p) - PARAM_o(p);;
-
-    int 
-    bs_mat_entries_used = 0;
-    for (int r = 0; r < param_v; r++) {
-        for (int c = r; c < param_v; c++) {
-            if(c==r) {
-                bs_mat_entries_used += 1;
-                continue;
-            }
-            for (int k = 0; k < param_o; k += 1) {
-                
-#if defined(MAYO_VARIANT) && (M_MAX == 64)
-                vec_mul_add_64(P1 + 4 * bs_mat_entries_used, O[c * param_o + k], acc + 4 * (r * param_o + k));
-                vec_mul_add_64( P1 + 4 * bs_mat_entries_used, O[r * param_o + k],  acc + 4 * (c * param_o + k));
-#elif defined(MAYO_VARIANT) && (M_MAX == 96)
-                vec_mul_add_96( P1 + 6 * bs_mat_entries_used, O[c * param_o + k],  acc + 6 * (r * param_o + k));
-                vec_mul_add_96( P1 + 6 * bs_mat_entries_used, O[r * param_o + k],  acc + 6 * (c * param_o + k));
-#elif defined(MAYO_VARIANT) && (M_MAX == 128)
-                vec_mul_add_128( P1 + 8 * bs_mat_entries_used, O[c * param_o + k],  acc + 8 * (r * param_o + k));
-                vec_mul_add_128( P1 + 8 * bs_mat_entries_used, O[r * param_o + k],  acc + 8 * (c * param_o + k));
-#else
-                m_vec_mul_add(m_legs, P1 + m_legs * 2 * bs_mat_entries_used, O[c * param_o + k], acc + m_legs * 2 * (r * param_o + k));
-                m_vec_mul_add(m_legs, P1 + m_legs * 2 * bs_mat_entries_used, O[r * param_o + k], acc + m_legs * 2 * (c * param_o + k));
-#endif
-
-            }
-            bs_mat_entries_used += 1;
-        }
-    }
-#endif
-}
-
-void V_times_L__V_times_P1_times_Vt(const mayo_params_t* p, const uint64_t* L, const unsigned char* V, uint64_t* M, const uint64_t* P1, uint64_t* Y) {
-    (void) p;
-#if MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 64
-    __m256i V_multabs[(K_MAX+1)/2*V_MAX];
-    alignas (32) uint64_t Pv[N_MINUS_O_MAX * K_MAX * M_MAX / 16] = {0};
-    mayo_V_multabs_avx2(V, V_multabs);
-    mayo_12_Vt_times_L_avx2(L, V_multabs, M);
-    mayo_12_P1_times_Vt_avx2(P1, V_multabs, Pv);
-    mayo_12_Vt_times_Pv_avx2(Pv, V_multabs, Y);
-#elif MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 96
-    __m256i V_multabs[(K_MAX+1)/2*V_MAX];
-    alignas (32) uint64_t Pv[N_MINUS_O_MAX * K_MAX * M_MAX / 16] = {0};
-    mayo_V_multabs_avx2(V, V_multabs);
-    mayo_3_Vt_times_L_avx2(L, V_multabs, M);
-    mayo_3_P1_times_Vt_avx2(P1, V_multabs, Pv);
-    mayo_3_Vt_times_Pv_avx2(Pv, V_multabs, Y);
-#elif MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 128
-    __m256i V_multabs[(K_MAX+1)/2*V_MAX];
-    alignas (32) uint64_t Pv[N_MINUS_O_MAX * K_MAX * M_MAX / 16] = {0};
-    mayo_V_multabs_avx2(V, V_multabs);
-    mayo_5_Vt_times_L_avx2(L, V_multabs, M);
-    mayo_5_P1_times_Vt_avx2(P1, V_multabs, Pv);
-    mayo_5_Vt_times_Pv_avx2(Pv, V_multabs, Y);
-#else
-    #ifdef MAYO_VARIANT
-    (void) p;
-    #endif
-    const int param_m = PARAM_m(p);
-    const int param_n = PARAM_n(p);
-    const int param_o = PARAM_o(p);
-    const int param_k = PARAM_k(p);
-
-    alignas (32) uint64_t Pv[N_MINUS_O_MAX * K_MAX * M_MAX / 16] = {0};
-    mul_add_mat_x_m_mat(param_m / 32, V, L, M,
-        param_k, param_n - param_o, param_o);
-
-    mul_add_m_upper_triangular_mat_x_mat_trans(param_m / 32, P1, V, Pv, param_n - param_o, param_n - param_o, param_k, 1);
-
-    mul_add_mat_x_m_mat(param_m / 32, V, Pv,
-        Y, param_k, param_n - param_o,
-        param_k);
-#endif
-}
-
-void Ot_times_P1O_P2(const mayo_params_t* p, const uint64_t* P1, const unsigned char* O, uint64_t* P1O_P2, uint64_t* P3) {
-    (void) p;
-#if MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 64
-    __m256i O_multabs[O_MAX/2*V_MAX];
-    mayo_O_multabs_avx2(O, O_multabs);
-    mayo_12_P1_times_O_avx2(P1, O_multabs, P1O_P2);
-    mayo_12_Ot_times_P1O_P2_avx2(P1O_P2, O_multabs, P3);
-#elif MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 96
-    __m256i O_multabs[O_MAX/2*V_MAX];
-    mayo_O_multabs_avx2(O, O_multabs);
-    mayo_3_P1_times_O_avx2(P1, O_multabs, P1O_P2);
-    mayo_3_Ot_times_P1O_P2_avx2(P1O_P2, O_multabs, P3);
-#elif MAYO_AVX && defined(MAYO_VARIANT) && M_MAX == 128
-    __m256i O_multabs[O_MAX/2*V_MAX];
-    mayo_O_multabs_avx2(O, O_multabs);
-    mayo_5_P1_times_O_avx2(P1, O_multabs, P1O_P2);
-    mayo_5_Ot_times_P1O_P2_avx2(P1O_P2, O_multabs, P3);
-#else
-    #ifdef MAYO_VARIANT
-    (void) p;
-    #endif
-    const int param_v = PARAM_v(p);
-    const int param_o = PARAM_o(p);
-    const int param_m = PARAM_m(p);
-    const int param_n = PARAM_n(p);
-    const int m_legs = PARAM_m(p) / 32;
-    mul_add_m_upper_triangular_mat_x_mat(param_m/32, P1, O, P1O_P2, param_n - param_o, param_n - param_o, param_o, 1);
-    mul_add_mat_trans_x_m_mat(m_legs, O, P1O_P2, P3, param_v, param_o, param_o);
-#endif
-}
-
-
-// compute P * S^t = [ P1  P2 ] * [S1] = [P1*S1 + P2*S2]
-//                   [  0  P3 ]   [S2]   [        P3*S2]
-// compute S * PS  = [ S1 S2 ] * [ P1*S1 + P2*S2 = P1 ] = [ S1*P1 + S2*P2 ]
-//                               [         P3*S2 = P2 ]
-void m_calculate_PS_SPS(const uint64_t *P1, const uint64_t *P2, const uint64_t *P3, const unsigned char *S,
-                              const int m, const int v, const int o, const int k, uint64_t *SPS) {
-    (void) m;
-#if MAYO_AVX
-    const int n = o + v;
-
-    /* Old approach which is constant time but doesn't have to be */
-    unsigned char S1[V_MAX*K_MAX] = { 0 }; // == N-O, K
-    unsigned char S2[O_MAX*K_MAX] = { 0 }; // == O, K
-    unsigned char *s1_write = S1;
-    unsigned char *s2_write = S2;
-
-    for (int r=0; r < k; r++)
-    {
-        for (int c = 0; c < n; c++)
-        {
-            if(c < v){
-                *(s1_write++) = S[r*n + c];
-            } else {
-                *(s2_write++) = S[r*n + c];
-            }
-        }
-    }
-
-    alignas (32) uint64_t PS[N_MAX * K_MAX * M_MAX / 16] = { 0 };
-
-#if M_MAX == 64
-    __m256i S1_multabs[(K_MAX+1)/2*V_MAX];    
-    __m256i S2_multabs[(K_MAX+1)/2*O_MAX];
-    mayo_S1_multabs_avx2(S1, S1_multabs);
-    mayo_S2_multabs_avx2(S2, S2_multabs);
-
-    mayo_12_P1_times_S1_plus_P2_times_S2_avx2(P1, P2, S1_multabs, S2_multabs, PS);
-    mayo_12_P3_times_S2_avx2(P3, S2_multabs, PS + V_MAX*K_MAX*M_MAX/16); // upper triangular
-
-    // S^T * PS = S1^t*PS1 + S2^t*PS2
-    mayo_12_S1t_times_PS1_avx2(PS, S1_multabs, SPS);
-    mayo_12_S2t_times_PS2_avx2(PS + V_MAX*K_MAX*M_MAX/16, S2_multabs, SPS);
-#elif M_MAX == 96
-    __m256i S1_multabs[(K_MAX+1)/2*V_MAX];    
-    __m256i S2_multabs[(K_MAX+1)/2*O_MAX];
-
-    mayo_S1_multabs_avx2(S1, S1_multabs);
-    mayo_S2_multabs_avx2(S2, S2_multabs);
-
-    mayo_3_P1_times_S1_plus_P2_times_S2_avx2(P1, P2, S1_multabs, S2_multabs, PS);
-    mayo_3_P3_times_S2_avx2(P3, S2_multabs, PS + V_MAX*K_MAX*M_MAX/16); // upper triangular
-
-    // S^T * PS = S1^t*PS1 + S2^t*PS2
-    mayo_3_S1t_times_PS1_avx2(PS, S1_multabs, SPS);
-    mayo_3_S2t_times_PS2_avx2(PS + V_MAX*K_MAX*M_MAX/16, S2_multabs, SPS);
-#elif M_MAX == 128
-    __m256i S1_multabs[(K_MAX+1)/2*V_MAX];    
-    __m256i S2_multabs[(K_MAX+1)/2*O_MAX];
-    mayo_S1_multabs_avx2(S1, S1_multabs);
-    mayo_S2_multabs_avx2(S2, S2_multabs);
-    mayo_5_P1_times_S1_plus_P2_times_S2_avx2(P1, P2, S1_multabs, S2_multabs, PS);
-    mayo_5_P3_times_S2_avx2(P3, S2_multabs, PS + V_MAX*K_MAX*M_MAX/16); // upper triangular
-
-    // S^T * PS = S1^t*PS1 + S2^t*PS2
-    //m_calculate_SPS(PS, S, M_MAX, K_MAX, N_MAX, SPS);
-    mayo_5_S1t_times_PS1_avx2(PS, S1_multabs, SPS);
-    mayo_5_S2t_times_PS2_avx2(PS + V_MAX*K_MAX*M_MAX/16, S2_multabs, SPS);
-#else 
-    NOT IMPLEMENTED
-#endif
-#else
-    const int n = o + v;
-    alignas (32) uint64_t PS[N_MAX * K_MAX * M_MAX / 16] = { 0 };
-    mayo_generic_m_calculate_PS(P1, P2, P3, S, m, v, o, k, PS);
-    mayo_generic_m_calculate_SPS(PS, S, m, k, n, SPS);
-#endif
 }
 
 
@@ -325,3 +123,6 @@ int sample_solution(const mayo_params_t *p, unsigned char *A,
     return 1;
 }
 
+volatile uint32_t uint32_t_blocker = 0;
+volatile uint64_t uint64_t_blocker = 0;
+volatile unsigned char unsigned_char_blocker = 0;
