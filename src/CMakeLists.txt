@@ -63,6 +63,10 @@ if(OQS_ENABLE_SIG_CROSS)
     add_subdirectory(sig/cross)
     set(SIG_OBJS ${SIG_OBJS} ${CROSS_OBJS})
 endif()
+if(OQS_ENABLE_SIG_UOV)
+    add_subdirectory(sig/uov)
+    set(SIG_OBJS ${SIG_OBJS} ${UOV_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 if(OQS_ENABLE_SIG_STFL_XMSS)

@@ -120,12 +120,36 @@ extern "C" {
 #define OQS_SIG_alg_cross_rsdpg_256_fast "cross-rsdpg-256-fast"
 /** Algorithm identifier for cross-rsdpg-256-small */
 #define OQS_SIG_alg_cross_rsdpg_256_small "cross-rsdpg-256-small"
+/** Algorithm identifier for OV-Is */
+#define OQS_SIG_alg_uov_ov_Is "OV-Is"
+/** Algorithm identifier for OV-Ip */
+#define OQS_SIG_alg_uov_ov_Ip "OV-Ip"
+/** Algorithm identifier for OV-III */
+#define OQS_SIG_alg_uov_ov_III "OV-III"
+/** Algorithm identifier for OV-V */
+#define OQS_SIG_alg_uov_ov_V "OV-V"
+/** Algorithm identifier for OV-Is-pkc */
+#define OQS_SIG_alg_uov_ov_Is_pkc "OV-Is-pkc"
+/** Algorithm identifier for OV-Ip-pkc */
+#define OQS_SIG_alg_uov_ov_Ip_pkc "OV-Ip-pkc"
+/** Algorithm identifier for OV-III-pkc */
+#define OQS_SIG_alg_uov_ov_III_pkc "OV-III-pkc"
+/** Algorithm identifier for OV-V-pkc */
+#define OQS_SIG_alg_uov_ov_V_pkc "OV-V-pkc"
+/** Algorithm identifier for OV-Is-pkc-skc */
+#define OQS_SIG_alg_uov_ov_Is_pkc_skc "OV-Is-pkc-skc"
+/** Algorithm identifier for OV-Ip-pkc-skc */
+#define OQS_SIG_alg_uov_ov_Ip_pkc_skc "OV-Ip-pkc-skc"
+/** Algorithm identifier for OV-III-pkc-skc */
+#define OQS_SIG_alg_uov_ov_III_pkc_skc "OV-III-pkc-skc"
+/** Algorithm identifier for OV-V-pkc-skc */
+#define OQS_SIG_alg_uov_ov_V_pkc_skc "OV-V-pkc-skc"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 44
+#define OQS_SIG_algs_length 56
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -380,6 +404,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_CROSS
 #include <oqs/sig_cross.h>
 #endif /* OQS_ENABLE_SIG_CROSS */
+#ifdef OQS_ENABLE_SIG_UOV
+#include <oqs/sig_uov.h>
+#endif /* OQS_ENABLE_SIG_UOV */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 

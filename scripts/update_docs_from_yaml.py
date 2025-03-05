@@ -393,7 +393,23 @@ def do_it(liboqs_root):
     with open(readme_path, mode='w', encoding='utf-8') as readme:
         readme.write(preamble + identifier_start + '\n')
 
-        for sig_yaml in sig_yamls[:-1]: # SPHINCS is last in this sorted list and requires special handling.
+        for sig_yaml in sig_yamls:
+            # SPHINCS requires special handling.
+            if "SPHINCS" in sig_yaml["name"]:
+                for hash_func in ['SHA2', 'SHAKE']:
+                    parameter_sets = [pset for pset in sig_yaml['parameter-sets'] if hash_func in pset['name']]
+                    if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+                        readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
+                    else:
+                        readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
+                    for parameter_set in parameter_sets[1:]:
+                        if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                            readme.write(', {}†'.format(parameter_set['name'].replace('_', '\\_')))
+                        else:
+                            readme.write(', {}'.format(parameter_set['name'].replace('_', '\\_')))
+                    readme.write('\n')
+                continue
+            
             parameter_sets = sig_yaml['parameter-sets']
             if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
                 readme.write('- **{}**: {}†'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\\_')))
@@ -414,19 +430,6 @@ def do_it(liboqs_root):
                         readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\\_'))
             readme.write('\n')
 
-        sphincs_yml = sig_yamls[-1]
-        for hash_func in ['SHA2', 'SHAKE']:
-            parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hash_func in pset['name']]
-            if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
-                readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
-            else:
-                readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
-            for parameter_set in parameter_sets[1:]:
-                if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
-                    readme.write(', {}†'.format(parameter_set['name'].replace('_', '\\_')))
-                else:
-                    readme.write(', {}'.format(parameter_set['name'].replace('_', '\\_')))
-            readme.write('\n')
 
         readme.write(postamble)
 
