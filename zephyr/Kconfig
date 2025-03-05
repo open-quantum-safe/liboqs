@@ -77,7 +77,7 @@ config LIBOQS_ENABLE_SIG_CROSS
 	depends on LIBOQS
 
 config LIBOQS_ENABLE_SIG_UOV
-	bool "Enable the MAYO signature algorithm"
+	bool "Enable the UOV signature algorithm"
 	default n
 	depends on LIBOQS
 
