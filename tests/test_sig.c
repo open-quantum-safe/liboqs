@@ -135,7 +135,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	printf("================================================================================\n");
 	printf("Sample computation for signature %s\n", sig->method_name);
 	if (sig->euf_cma) {
-		printf("Testing EUF-CMA by flipping all bits of the message\n", bitflips_as_str);
+		printf("Testing EUF-CMA by flipping all bits of the message\n");
 	}
 	if (sig->suf_cma) {
 		printf("Testing SUF-CMA by flipping %s bits of the signature\n", bitflips_as_str);
