@@ -33,10 +33,72 @@ static OQS_STATUS flip_bit(uint8_t *array, uint64_t array_length, uint64_t bit_p
 	uint64_t byte_index = bit_position / 8;
 	uint8_t bit_index = bit_position % 8;
 	if (byte_index >= array_length) {
-		fprintf(stderr, "ERROR: bit index is out of bounds!\n");
+		fprintf(stderr, "ERROR: flip_bit index is out of bounds!\n");
 		return OQS_ERROR;
 	}
 	array[byte_index] ^= (1 << bit_index);
+	return OQS_SUCCESS;
+}
+
+/* flip all bits of the message and check that the verification fails */
+static OQS_STATUS test_bitflip_message(OQS_SIG *sig, uint8_t *message, size_t message_len, uint8_t *signature, size_t signature_len, uint8_t *public_key, bool use_ctx, uint8_t *ctx, size_t ctx_i) {
+	OQS_STATUS rc;
+	uint64_t bitflips = message_len * 8;
+	for (uint64_t i = 0; i < bitflips; i ++) {
+		/* flip the bit */
+		rc = flip_bit(message, message_len, i);
+		if (rc != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
+		/* check that the verification fails */
+		if (use_ctx) {
+			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, ctx_i, public_key);
+		} else {
+			rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+		}
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the message!\n", (unsigned long long)i);
+			return OQS_ERROR;
+		}
+		/* flip back the bit */
+		rc = flip_bit(message, message_len, i);
+		if (rc != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
+	}
+	return OQS_SUCCESS;
+}
+
+/* flip random bits of the signature and check that the verification fails */
+static OQS_STATUS test_bitflip_signature(OQS_SIG *sig, uint8_t *message, size_t message_len, uint8_t *signature, size_t signature_len, uint8_t *public_key, bool bitflips_all, size_t bitflips, bool use_ctx, uint8_t *ctx, size_t ctx_i) {
+	OQS_STATUS rc;
+	bitflips = bitflips_all ? signature_len * 8 : bitflips;
+	for (uint64_t i = 0; i < bitflips; i ++) {
+		uint64_t random_bit_index;
+		OQS_randombytes((uint8_t *)&random_bit_index, sizeof(i));
+		random_bit_index = random_bit_index % (signature_len * 8);
+		uint64_t bit_index = bitflips_all ? i : random_bit_index;
+		/* flip the bit */
+		rc = flip_bit(signature, signature_len, bit_index);
+		if (rc != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
+		/* check that the verification fails */
+		if (use_ctx) {
+			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, ctx_i, public_key);
+		} else {
+			rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+		}
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the signature!\n", (unsigned long long)bit_index);
+			return OQS_ERROR;
+		}
+		/* flip back the bit */
+		rc = flip_bit(signature, signature_len, bit_index);
+		if (rc != OQS_SUCCESS) {
+			return OQS_ERROR;
+		}
+	}
 	return OQS_SUCCESS;
 }
 
@@ -63,15 +125,20 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
+	char bitflips_as_str[50];
+	if (bitflips_all) {
+		snprintf(bitflips_as_str, sizeof(bitflips_as_str), "all");
+	} else {
+		snprintf(bitflips_as_str, sizeof(bitflips_as_str), "%ld random", bitflips);
+	}
+
 	printf("================================================================================\n");
 	printf("Sample computation for signature %s\n", sig->method_name);
+	if (sig->euf_cma) {
+		printf("Testing EUF-CMA by flipping all bits of the message\n", bitflips_as_str);
+	}
 	if (sig->suf_cma) {
-		printf("Testing SUF-CMA by flipping N random bits of the signature ");
-		if (bitflips_all) {
-			printf("(N = all)\n");
-		} else {
-			printf("(N = %ld)\n", bitflips);
-		}
+		printf("Testing SUF-CMA by flipping %s bits of the signature\n", bitflips_as_str);
 	}
 	printf("Version source: %s\n", sig->alg_version);
 	printf("================================================================================\n");
@@ -129,28 +196,19 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
-	/* flip random bits of the signature and check if the verification fails */
-	if (sig->suf_cma) {
-		bitflips = bitflips_all ? signature_len * 8 : bitflips;
-		for (uint64_t bitflip = 0; bitflip < bitflips; bitflip ++) {
-			uint64_t random_bit_index;
-			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(bitflip));
-			random_bit_index = random_bit_index % (signature_len * 8);
-			uint64_t bit_index = bitflips_all ? bitflip : random_bit_index;
-			rc = flip_bit(signature, signature_len, bit_index);
-			if (rc != OQS_SUCCESS) {
-				goto err;
-			}
-			rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the signature!\n", (unsigned long long)bit_index);
-				goto err;
-			}
-			/* flip back the bit */
-			flip_bit(signature, signature_len, bit_index);
+	if (sig->euf_cma) {
+		rc = test_bitflip_message(sig, message, message_len, signature, signature_len, public_key, false, NULL, 0);
+		if (rc != OQS_SUCCESS) {
+			goto err;
 		}
 	}
+	if (sig->suf_cma) {
+		rc = test_bitflip_signature(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, false, NULL, 0);
+		if (rc != OQS_SUCCESS) {
+			goto err;
+		}
+	}
+
 
 	/* testing signing with context, if supported */
 	OQS_randombytes(ctx, 257);
@@ -172,28 +230,19 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 				goto err;
 			}
 
-			/* flip random bits of the signature and check if the verification fails */
-			if (sig->suf_cma) {
-				bitflips = bitflips_all ? signature_len * 8 : bitflips;
-				for (uint64_t bitflip = 0; bitflip < bitflips; bitflip ++) {
-					uint64_t random_bit_index;
-					OQS_randombytes((uint8_t *)&random_bit_index, sizeof(bitflip));
-					random_bit_index = random_bit_index % (signature_len * 8);
-					uint64_t bit_index = bitflips_all ? bitflip : random_bit_index;
-					rc = flip_bit(signature, signature_len, bit_index);
-					if (rc != OQS_SUCCESS) {
-						goto err;
-					}
-					rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
-					OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-					if (rc != OQS_ERROR) {
-						fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed after flipping bit %llu of the signature!\n", (unsigned long long)bit_index);
-						goto err;
-					}
-					/* flip back the bit */
-					flip_bit(signature, signature_len, bit_index);
+			if (sig->euf_cma) {
+				rc = test_bitflip_message(sig, message, message_len, signature, signature_len, public_key, true, ctx, i);
+				if (rc != OQS_SUCCESS) {
+					goto err;
 				}
 			}
+			if (sig->suf_cma) {
+				rc = test_bitflip_signature(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, ctx, i);
+				if (rc != OQS_SUCCESS) {
+					goto err;
+				}
+			}
+
 		}
 
 		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 256, secret_key);
@@ -225,26 +274,16 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
-	/* flip random bits of the signature and check if the verification fails */
+	if (sig->euf_cma) {
+		rc = test_bitflip_message(sig, message, message_len, signature, signature_len, public_key, true, NULL, 0);
+		if (rc != OQS_SUCCESS) {
+			goto err;
+		}
+	}
 	if (sig->suf_cma) {
-		bitflips = bitflips_all ? signature_len * 8 : bitflips;
-		for (uint64_t bitflip = 0; bitflip < bitflips; bitflip ++) {
-			uint64_t random_bit_index;
-			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(bitflip));
-			random_bit_index = random_bit_index % (signature_len * 8);
-			uint64_t bit_index = bitflips_all ? bitflip : random_bit_index;
-			rc = flip_bit(signature, signature_len, bit_index);
-			if (rc != OQS_SUCCESS) {
-				goto err;
-			}
-			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed after flipping bit %llu of the signature!\n", (unsigned long long)bit_index);
-				goto err;
-			}
-			/* flip back the bit */
-			flip_bit(signature, signature_len, bit_index);
+		rc = test_bitflip_signature(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, NULL, 0);
+		if (rc != OQS_SUCCESS) {
+			goto err;
 		}
 	}
 

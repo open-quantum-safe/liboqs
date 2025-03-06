@@ -287,9 +287,6 @@ typedef struct OQS_SIG_STFL {
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
 	bool euf_cma;
 
-	/** Whether the signature offers SUF-CMA security (TRUE) or not (FALSE). */
-	bool suf_cma;
-
 	/** The (maximum) length, in bytes, of public keys for this signature scheme. */
 	size_t length_public_key;
 	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
