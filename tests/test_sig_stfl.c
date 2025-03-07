@@ -607,6 +607,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	}
 
 	rc = test_bitflip_stfl(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
