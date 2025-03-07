@@ -4,7 +4,7 @@
 
 We only support the most recent release.
 
-Using any code prior to 0.10.1 is strongly discouraged due to a [known security vulnerability in Kyber](https://github.com/open-quantum-safe/liboqs/releases/tag/0.10.1).
+Using any code prior to 0.12.0 is strongly discouraged due to a [known security vulnerability in HQC](https://github.com/open-quantum-safe/liboqs/security/advisories/GHSA-gpf4-vrrw-r8v7).
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -29,3 +29,7 @@ The following types of attacks are outside the scope of our threat model:
 Mitigations for security issues outside the stated threat model may still be applied depending on the nature of the issue and the mitigation.
 
 (Based in part on https://openssl-library.org/policies/general/security-policy/index.html)
+
+## Security Response Process
+
+Security reports for liboqs will be handled in accordance with the [OQS security response process](https://github.com/open-quantum-safe/tsc/blob/main/security/response-process.md).
