@@ -33,11 +33,10 @@ upstreams:
   -
     name: mlkem-native
     git_url: https://github.com/pq-code-package/mlkem-native.git
-    git_branch: v1.0.0-alpha.2
-    git_commit: 3f1b9fc214a3c3f18e88b144f68814ea7ae88625
+    git_branch: v1.0.0-beta
+    git_commit: 09bb1790bf9d38e1714f39af789306f28cdd395d
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [mlkem-native-ml_kem.patch]
     preserve_folder_structure: True
   -
     name: cupqc
@@ -66,8 +65,8 @@ upstreams:
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
-    git_branch: nibbling-mayo
-    git_commit: cde2675ff404b0ae070e7dbc3d962ea0b026a81e
+    git_branch: main
+    git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]

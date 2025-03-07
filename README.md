@@ -110,6 +110,10 @@ In order to optimize support effort,
 		brew install cmake ninja openssl@3 wget doxygen graphviz astyle valgrind
 		pip3 install pytest pytest-xdist pyyaml
 
+	Using Nix:
+
+	    nix develop
+
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL installed (version 3.x recommended; EOL version 1.1.1 also still possible).
 
 2. Get the source:

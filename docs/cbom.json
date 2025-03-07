@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:fbf8d633-9766-4a90-9cfc-e13adf39fe4a",
+  "serialNumber": "urn:uuid:d166c8d9-b90f-4be8-84c7-61ee76074bc4",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-03-04T12:07:00.189636+00:00",
+    "timestamp": "2025-03-06T08:39:42.451423+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@7c0dd410ca61a45232272c9a5312aeed3f455801",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b44ab8540137947888c95b7f523f0e0cc249b1d8",
       "name": "liboqs",
-      "version": "7c0dd410ca61a45232272c9a5312aeed3f455801"
+      "version": "b44ab8540137947888c95b7f523f0e0cc249b1d8"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@7c0dd410ca61a45232272c9a5312aeed3f455801",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b44ab8540137947888c95b7f523f0e0cc249b1d8",
       "name": "liboqs",
-      "version": "7c0dd410ca61a45232272c9a5312aeed3f455801"
+      "version": "b44ab8540137947888c95b7f523f0e0cc249b1d8"
     },
     {
       "type": "cryptographic-asset",
@@ -2442,6 +2442,26 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:MAYO-1:armv8-a",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "MAYO-1",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-2:generic",
       "name": "MAYO",
       "cryptoProperties": {
@@ -2477,6 +2497,26 @@
           ],
           "nistQuantumSecurityLevel": 1,
           "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:MAYO-2:armv8-a",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "MAYO-2",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
         }
       }
     },
@@ -2522,6 +2562,26 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:MAYO-3:armv8-a",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "MAYO-3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:MAYO-5:generic",
       "name": "MAYO",
       "cryptoProperties": {
@@ -2557,6 +2617,26 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:MAYO-5:armv8-a",
+      "name": "MAYO",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "MAYO-5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
         }
       }
     },
@@ -3907,7 +3987,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@7c0dd410ca61a45232272c9a5312aeed3f455801",
+      "ref": "pkg:github/open-quantum-safe/liboqs@b44ab8540137947888c95b7f523f0e0cc249b1d8",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -4030,12 +4110,16 @@
         "alg:Falcon-padded-1024:armv8-a",
         "alg:MAYO-1:generic",
         "alg:MAYO-1:x86_64",
+        "alg:MAYO-1:armv8-a",
         "alg:MAYO-2:generic",
         "alg:MAYO-2:x86_64",
+        "alg:MAYO-2:armv8-a",
         "alg:MAYO-3:generic",
         "alg:MAYO-3:x86_64",
+        "alg:MAYO-3:armv8-a",
         "alg:MAYO-5:generic",
         "alg:MAYO-5:x86_64",
+        "alg:MAYO-5:armv8-a",
         "alg:ML-DSA-44:generic",
         "alg:ML-DSA-44:x86_64",
         "alg:ML-DSA-65:generic",
@@ -4841,6 +4925,13 @@
       ]
     },
     {
+      "ref": "alg:MAYO-1:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
       "ref": "alg:MAYO-2:generic",
       "dependsOn": [
         "alg:sha3",
@@ -4849,6 +4940,13 @@
     },
     {
       "ref": "alg:MAYO-2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:MAYO-2:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
@@ -4868,6 +4966,13 @@
       ]
     },
     {
+      "ref": "alg:MAYO-3:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
       "ref": "alg:MAYO-5:generic",
       "dependsOn": [
         "alg:sha3"
@@ -4875,6 +4980,13 @@
     },
     {
       "ref": "alg:MAYO-5:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:MAYO-5:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"

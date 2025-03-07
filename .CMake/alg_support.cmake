@@ -585,8 +585,20 @@ endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_mayo_1_neon "" ON "OQS_ENABLE_SIG_mayo_1" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mayo_2_avx2 "" ON "OQS_ENABLE_SIG_mayo_2" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_mayo_2_neon "" ON "OQS_ENABLE_SIG_mayo_2" OFF)
 endif()
 endif()
 
@@ -597,8 +609,20 @@ endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_mayo_3_neon "" ON "OQS_ENABLE_SIG_mayo_3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mayo_5_avx2 "" ON "OQS_ENABLE_SIG_mayo_5" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_mayo_5_neon "" ON "OQS_ENABLE_SIG_mayo_5" OFF)
 endif()
 endif()
 
