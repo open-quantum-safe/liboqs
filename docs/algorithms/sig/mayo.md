@@ -6,7 +6,7 @@
 - **Authors' website**: https://pqmayo.org
 - **Specification version**: https://doi.org/10.46586/tches.v2024.i2.252-275.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/cde2675ff404b0ae070e7dbc3d962ea0b026a81e with copy_from_upstream patches
+  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
@@ -14,10 +14,10 @@
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
 |:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1168 |                        24 |                      321 |
-|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      5488 |                        24 |                      180 |
-|     MAYO-3      | NA                    | EUF-CMA          |                    3 |                      2656 |                        32 |                      577 |
-|     MAYO-5      | NA                    | EUF-CMA          |                    5 |                      5008 |                        40 |                      838 |
+|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1420 |                        24 |                      454 |
+|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      4912 |                        24 |                      186 |
+|     MAYO-3      | NA                    | EUF-CMA          |                    3 |                      2986 |                        32 |                      681 |
+|     MAYO-5      | NA                    | EUF-CMA          |                    5 |                      5554 |                        40 |                      964 |
 
 ## MAYO-1 implementation characteristics
 
@@ -25,6 +25,7 @@
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 | [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | False                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -36,6 +37,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -45,6 +47,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -52,8 +55,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

@@ -66,8 +66,8 @@ upstreams:
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
-    git_branch: nibbling-mayo
-    git_commit: cde2675ff404b0ae070e7dbc3d962ea0b026a81e
+    git_branch: main
+    git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]

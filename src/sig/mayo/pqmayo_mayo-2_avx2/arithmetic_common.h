@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 #include <immintrin.h>
+#include <mem.h>
 
 #define K_OVER_2 ((K_MAX+1)/2)
 
@@ -42,28 +43,36 @@ static inline __m256i linear_transform_8x8_256b( __m256i tab_l, __m256i tab_h, _
     return _mm256_shuffle_epi8(tab_l, v & mask_f)^_mm256_shuffle_epi8(tab_h, _mm256_srli_epi16(v, 4)&mask_f);
 }
 
-static inline __m256i gf16v_mul_avx2( __m256i a, uint8_t b ) {
+static inline __m256i gf16v_mul( __m256i a, uint8_t b ) {
     __m256i multab_l = tbl32_gf16_multab2( b );
     __m256i multab_h = _mm256_slli_epi16( multab_l, 4 );
 
     return linear_transform_8x8_256b( multab_l, multab_h, a, _mm256_set1_epi8(0xf) );
 }
 
+#define O_AVX_ROUND_UP_ ((O_MAX + 1)/2*2)
+
 static 
-inline void mayo_O_multabs_avx2(const unsigned char *O, __m256i *O_multabs){
+inline void mayo_O_multabs(const unsigned char *O, __m256i *O_multabs){
     // build multiplication tables 
     for (size_t r = 0; r < V_MAX; r++)
     {
-        for (size_t c = 0; c < O_MAX; c+=2)
+        size_t c = 0;
+        for (; c + 1  < O_MAX; c+=2)
         {
-            O_multabs[O_MAX/2*r + c/2] = tbl32_gf16_multab2(O[O_MAX*r + c]) ^ _mm256_slli_epi16(tbl32_gf16_multab2(O[O_MAX*r + c + 1]), 4);
+            O_multabs[O_AVX_ROUND_UP_/2*r + c/2] = tbl32_gf16_multab2(O[O_MAX*r + c]) ^ _mm256_slli_epi16(tbl32_gf16_multab2(O[O_MAX*r + c + 1]), 4);
         }
+#if O_MAX % 2 == 1
+        {
+            O_multabs[O_AVX_ROUND_UP_/2*r + c/2] = tbl32_gf16_multab2(O[O_MAX*r + c]);
+        }
+#endif
     }
 }
 
 
 static 
-inline void mayo_V_multabs_avx2(const unsigned char *V, __m256i *V_multabs){
+inline void mayo_V_multabs(const unsigned char *V, __m256i *V_multabs){
     // build multiplication tables 
     size_t r;
     for (size_t c = 0; c < V_MAX; c++)
@@ -114,7 +123,7 @@ static const unsigned char mayo_gf16_mul[512] __attribute__((aligned(32))) = {
 
 
 static 
-inline void mayo_S1_multabs_avx2(const unsigned char *S1, __m256i *S1_multabs) {
+inline void mayo_S1_multabs(const unsigned char *S1, __m256i *S1_multabs) {
     size_t r;
     for (size_t c = 0; c < V_MAX; c++)
     {
@@ -130,7 +139,7 @@ inline void mayo_S1_multabs_avx2(const unsigned char *S1, __m256i *S1_multabs) {
 }
 
 static 
-inline void mayo_S2_multabs_avx2(const unsigned char *S2, __m256i *S2_multabs) {
+inline void mayo_S2_multabs(const unsigned char *S2, __m256i *S2_multabs) {
     // build multiplication tables 
     size_t r;
     for (size_t c = 0; c < O_MAX; c++)
@@ -144,31 +153,6 @@ inline void mayo_S2_multabs_avx2(const unsigned char *S2, __m256i *S2_multabs) {
         S2_multabs[K_OVER_2*c +  r/2] = _mm256_load_si256((__m256i *)(mayo_gf16_mul + 32*S2[O_MAX*r + c])) ;
 #endif
     }
-}
-
-static inline uint64_t gf16v_mul_u64( uint64_t a, uint8_t b ) {
-    uint64_t mask_msb = 0x8888888888888888ULL;
-    uint64_t a_msb;
-    uint64_t a64 = a;
-    uint64_t b32 = b;
-    uint64_t r64 = a64 * (b32 & 1);
-
-    a_msb = a64 & mask_msb; // MSB, 3rd bits
-    a64 ^= a_msb;   // clear MSB
-    a64 = (a64 << 1) ^ ((a_msb >> 3) * 3);
-    r64 ^= (a64) * ((b32 >> 1) & 1);
-
-    a_msb = a64 & mask_msb; // MSB, 3rd bits
-    a64 ^= a_msb;   // clear MSB
-    a64 = (a64 << 1) ^ ((a_msb >> 3) * 3);
-    r64 ^= (a64) * ((b32 >> 2) & 1);
-
-    a_msb = a64 & mask_msb; // MSB, 3rd bits
-    a64 ^= a_msb;   // clear MSB
-    a64 = (a64 << 1) ^ ((a_msb >> 3) * 3);
-    r64 ^= (a64) * ((b32 >> 3) & 1);
-
-    return r64;
 }
 
 #endif

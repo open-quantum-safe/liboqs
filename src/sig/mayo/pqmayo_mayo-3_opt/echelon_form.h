@@ -61,7 +61,7 @@ static inline void EF(unsigned char *A, int nrows, int ncols) {
 
     alignas (32) uint64_t _pivot_row[(K_MAX * O_MAX + 1 + 15) / 16];
     alignas (32) uint64_t _pivot_row2[(K_MAX * O_MAX + 1 + 15) / 16];
-    alignas (32) uint64_t packed_A[((K_MAX * O_MAX + 1 + 15) / 16) * M_MAX] = { 0 };
+    alignas (32) uint64_t packed_A[((K_MAX * O_MAX + 1 + 15) / 16) * M_MAX] = {0};
 
     int row_len = (ncols + 15) / 16;
 
