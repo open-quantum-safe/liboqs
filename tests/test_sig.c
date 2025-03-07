@@ -47,7 +47,7 @@ static OQS_STATUS test_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_le
 	   the second test (SUF-CMA) flips bits of the signature */
 	int num_tests = sig->suf_cma ? 2 : 1;
 	for (int test = 0; test < num_tests; test++) {
-		/* select the array to tamper  with (message or signature) */
+		/* select the array to tamper with (message or signature) */
 		uint8_t *tampered_array = (test == 1) ? signature : message;
 		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
 		/* select the number of bitflips */
