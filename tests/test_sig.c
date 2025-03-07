@@ -29,7 +29,63 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
-static OQS_STATUS sig_test_correctness(const char *method_name) {
+static OQS_STATUS flip_bit(uint8_t *array, uint64_t array_length, uint64_t bit_position) {
+	uint64_t byte_index = bit_position / 8;
+	uint8_t bit_index = bit_position % 8;
+	if (byte_index >= array_length) {
+		fprintf(stderr, "ERROR: flip_bit index is out of bounds!\n");
+		return OQS_ERROR;
+	}
+	array[byte_index] ^= (1 << bit_index);
+	return OQS_SUCCESS;
+}
+
+/* flip bits of the message (or signature) one at a time, and check that the verification fails */
+static OQS_STATUS test_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_len, uint8_t *signature, size_t signature_len, uint8_t *public_key, bool bitflips_all[2], size_t bitflips[2], bool use_ctx, uint8_t *ctx, size_t ctx_i) {
+	OQS_STATUS rc;
+	/* the first test (EUF-CMA) flips bits of the message
+	   the second test (SUF-CMA) flips bits of the signature */
+	int num_tests = sig->suf_cma ? 2 : 1;
+	for (int test = 0; test < num_tests; test++) {
+		/* select the array to tamper with (message or signature) */
+		uint8_t *tampered_array = (test == 1) ? signature : message;
+		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
+		/* select the number of bitflips */
+		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
+		for (uint64_t i = 0; i < bitflips_selected; i ++) {
+			uint64_t random_bit_index;
+			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(i));
+			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));
+			random_bit_index = random_bit_index % (tampered_array_len * 8);
+			uint64_t bit_index = bitflips_all[test] ? i : random_bit_index;
+			/* flip the bit */
+			rc = flip_bit(tampered_array, tampered_array_len, bit_index);
+			if (rc != OQS_SUCCESS) {
+				return OQS_ERROR;
+			}
+			/* check that the verification fails */
+			if (use_ctx) {
+				rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, ctx_i, public_key);
+			} else {
+				rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+			}
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			if (rc != OQS_ERROR) {
+				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
+				return OQS_ERROR;
+			}
+			/* flip back the bit */
+			rc = flip_bit(tampered_array, tampered_array_len, bit_index);
+			if (rc != OQS_SUCCESS) {
+				return OQS_ERROR;
+			}
+		}
+	}
+	return OQS_SUCCESS;
+}
+
+
+static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2]) {
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -52,8 +108,23 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		goto err;
 	}
 
+	char bitflips_as_str[2][50];
+	for (int i = 0; i < 2; i++) {
+		if (bitflips_all[i]) {
+			snprintf(bitflips_as_str[i], sizeof(bitflips_as_str[i]), "all");
+		} else {
+			snprintf(bitflips_as_str[i], sizeof(bitflips_as_str[i]), "%ld random", bitflips[i]);
+		}
+	}
+
 	printf("================================================================================\n");
 	printf("Sample computation for signature %s\n", sig->method_name);
+	if (sig->euf_cma) {
+		printf("Testing EUF-CMA by flipping %s bits of the message\n", bitflips_as_str[0]);
+	}
+	if (sig->suf_cma) {
+		printf("Testing SUF-CMA by flipping %s bits of the signature\n", bitflips_as_str[1]);
+	}
 	printf("Version source: %s\n", sig->alg_version);
 	printf("================================================================================\n");
 
@@ -110,15 +181,12 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		goto err;
 	}
 
-	/* modify the signature to invalidate it */
-	OQS_randombytes(signature, signature_len);
-	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	rc = test_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, false, NULL, 0);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_ERROR) {
-		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
+	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
+
 
 	/* testing signing with context, if supported */
 	OQS_randombytes(ctx, 257);
@@ -140,15 +208,12 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 				goto err;
 			}
 
-			/* modify the signature to invalidate it */
-			OQS_randombytes(signature, signature_len);
-			OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
+			rc = test_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, ctx, i);
 			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
+			if (rc != OQS_SUCCESS) {
 				goto err;
 			}
+
 		}
 
 		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 256, secret_key);
@@ -180,13 +245,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		goto err;
 	}
 
-	/* modify the signature to invalidate it */
-	OQS_randombytes(signature, signature_len);
-	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-	rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
+	rc = test_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, NULL, 0);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_ERROR) {
-		fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str should have failed!\n");
+	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
 
@@ -249,12 +310,14 @@ static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 #if OQS_USE_PTHREADS
 struct thread_data {
 	char *alg_name;
+	bool *bitflips_all;
+	size_t *bitflips;
 	OQS_STATUS rc;
 };
 
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
-	td->rc = sig_test_correctness(td->alg_name);
+	td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips);
 	OQS_thread_stop();
 	return NULL;
 }
@@ -265,8 +328,8 @@ int main(int argc, char **argv) {
 
 	printf("Testing signature algorithms using liboqs version %s\n", OQS_version());
 
-	if (argc != 2) {
-		fprintf(stderr, "Usage: test_sig algname\n");
+	if (argc < 2 || argc > 4) {
+		fprintf(stderr, "Usage: test_sig algname [bitflips_msg] [bitflips_sig]\n");
 		fprintf(stderr, "  algname: ");
 		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
 			if (i > 0) {
@@ -275,6 +338,8 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "%s", OQS_SIG_alg_identifier(i));
 		}
 		fprintf(stderr, "\n");
+		fprintf(stderr, "  bitflips_msg: the number of random bitflips to perform for each EUF-CMA signature (\"all\" to flip every bit)\n");
+		fprintf(stderr, "  bitflips_sig: the number of random bitflips to perform for each SUF-CMA signature (\"all\" to flip every bit)\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
@@ -286,6 +351,24 @@ int main(int argc, char **argv) {
 		printf("Signature algorithm %s not enabled!\n", alg_name);
 		OQS_destroy();
 		return EXIT_FAILURE;
+	}
+
+	/* by default, flip 50 random bits of the message and signature (to test EUF-CMA and SUF-CMA, respectively) */
+	bool bitflips_all[2] = {false, false};
+	size_t bitflips[2] = {50, 50};
+	if (argc >= 3) {
+		if (strcmp(argv[2], "all") == 0) {
+			bitflips_all[0] = true;
+		} else {
+			bitflips[0] = (size_t)strtol(argv[2], NULL, 10);
+		}
+	}
+	if (argc == 4) {
+		if (strcmp(argv[3], "all") == 0) {
+			bitflips_all[1] = true;
+		} else {
+			bitflips[1] = (size_t)strtol(argv[3], NULL, 10);
+		}
 	}
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -308,8 +391,7 @@ int main(int argc, char **argv) {
 	}
 	if (test_in_thread) {
 		pthread_t thread;
-		struct thread_data td;
-		td.alg_name = alg_name;
+		struct thread_data td = {.alg_name = alg_name, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR};
 		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 		if (trc) {
 			fprintf(stderr, "ERROR: Creating pthread\n");
@@ -319,10 +401,10 @@ int main(int argc, char **argv) {
 		pthread_join(thread, NULL);
 		rc = td.rc;
 	} else {
-		rc = sig_test_correctness(alg_name);
+		rc = sig_test_correctness(alg_name, bitflips_all, bitflips);
 	}
 #else
-	rc = sig_test_correctness(alg_name);
+	rc = sig_test_correctness(alg_name, bitflips_all, bitflips);
 #endif
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();

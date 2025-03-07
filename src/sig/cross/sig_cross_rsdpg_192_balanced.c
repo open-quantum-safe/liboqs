@@ -16,6 +16,7 @@ OQS_SIG *OQS_SIG_cross_rsdpg_192_balanced_new(void) {
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
+	sig->suf_cma = false;
 	sig->sig_with_ctx_support = false;
 
 	sig->length_public_key = OQS_SIG_cross_rsdpg_192_balanced_length_public_key;
