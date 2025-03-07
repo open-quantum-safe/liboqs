@@ -128,6 +128,12 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_MAYO OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_UOV)
+                set(OQS_ENABLE_SIG_UOV ON)
+        else()  
+                set(OQS_ENABLE_SIG_UOV OFF)
+        endif()
+
         if(CONFIG_LIBOQS_ENABLE_SIG_CROSS)
                 set(OQS_ENABLE_SIG_CROSS ON)
                 # Disable CROSS variants with large stack usage

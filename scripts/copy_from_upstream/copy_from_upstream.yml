@@ -38,7 +38,7 @@ upstreams:
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     preserve_folder_structure: True
-  - 
+  -
     name: cupqc
     git_url: https://github.com/praveksharma/cupqc-mlkem.git
     git_branch: main
@@ -77,6 +77,13 @@ upstreams:
     git_commit: efd17279e75308b000bda7c7f58866620d652bc1
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
+  -
+    name: pqov
+    git_url: https://github.com/pqov/pqov.git
+    git_branch: main
+    git_commit: 7e0832b6732a476119742c4acabd11b7c767aefb
+    sig_scheme_path: '.'
+    sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
 kems:
   -
     name: classic_mceliece
@@ -446,4 +453,69 @@ sigs:
         scheme: "rsdpg_256_small"
         pqclean_scheme: cross-rsdpg-256-small
         pretty_name_full: cross-rsdpg-256-small
+        signed_msg_order: msg_then_sig
+  -
+    name: uov
+    default_implementation: ref
+    upstream_location: pqov
+    schemes:
+      -
+        scheme: "ov_Is"
+        pqclean_scheme: ov_Is
+        pretty_name_full: OV-Is
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_Ip"
+        pqclean_scheme: ov_Ip
+        pretty_name_full: OV-Ip
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_III"
+        pqclean_scheme: ov_III
+        pretty_name_full: OV-III
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_V"
+        pqclean_scheme: ov_V
+        pretty_name_full: OV-V
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_Is_pkc"
+        pqclean_scheme: ov_Is_pkc
+        pretty_name_full: OV-Is-pkc
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_Ip_pkc"
+        pqclean_scheme: ov_Ip_pkc
+        pretty_name_full: OV-Ip-pkc
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_III_pkc"
+        pqclean_scheme: ov_III_pkc
+        pretty_name_full: OV-III-pkc
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_V_pkc"
+        pqclean_scheme: ov_V_pkc
+        pretty_name_full: OV-V-pkc
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_Is_pkc_skc"
+        pqclean_scheme: ov_Is_pkc_skc
+        pretty_name_full: OV-Is-pkc-skc
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_Ip_pkc_skc"
+        pqclean_scheme: ov_Ip_pkc_skc
+        pretty_name_full: OV-Ip-pkc-skc
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_III_pkc_skc"
+        pqclean_scheme: ov_III_pkc_skc
+        pretty_name_full: OV-III-pkc-skc
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "ov_V_pkc_skc"
+        pqclean_scheme: ov_V_pkc_skc
+        pretty_name_full: OV-V-pkc-skc
         signed_msg_order: msg_then_sig

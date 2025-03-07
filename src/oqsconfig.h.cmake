@@ -252,6 +252,44 @@
 #cmakedefine OQS_ENABLE_SIG_cross_rsdpg_256_fast_avx2 1
 #cmakedefine OQS_ENABLE_SIG_cross_rsdpg_256_small 1
 #cmakedefine OQS_ENABLE_SIG_cross_rsdpg_256_small_avx2 1
+
+#cmakedefine OQS_ENABLE_SIG_UOV 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_pkc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_pkc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_pkc_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_pkc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_pkc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_pkc_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_pkc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_pkc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_pkc_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_pkc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_pkc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_pkc_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_pkc_skc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_pkc_skc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_pkc_skc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_III_pkc_skc_avx2 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_pkc_skc 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_pkc_skc_neon 1
+#cmakedefine OQS_ENABLE_SIG_uov_ov_V_pkc_skc_avx2 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 
 ///// OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
