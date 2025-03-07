@@ -80,6 +80,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_##lms_variant##_new(void) { \
         sig->method_name = OQS_SIG_STFL_alg_lms_##lms_variant; \
         sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8554"; \
         sig->euf_cma = true; \
+        sig->suf_cma = false; \
 \
         sig->length_public_key = OQS_SIG_STFL_alg_lms_length_public_key; \
         sig->length_secret_key = OQS_SIG_STFL_alg_lms_length_private_key; \

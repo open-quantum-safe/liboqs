@@ -66,7 +66,7 @@ int main(void) {
 			continue;
 		}
 		printf("    isnull: false\n");
-		printf("    claimed-security: %s\n", sig->euf_cma ? "EUF-CMA" : "none");
+		printf("    claimed-security: %s\n", sig->suf_cma ? "SUF-CMA" : (sig->euf_cma ? "EUF-CMA" : "none"));
 		printf("    length-public-key: %zu\n", sig->length_public_key);
 		printf("    length-secret-key: %zu\n", sig->length_secret_key);
 		printf("    length-signature: %zu\n", sig->length_signature);

@@ -40,6 +40,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss##xmss_v##_new(void) { \
         sig->method_name = OQS_SIG_STFL_alg_xmss##xmss_v; \
         sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391"; \
         sig->euf_cma = true; \
+        sig->suf_cma = false; \
 \
         sig->length_public_key = OQS_SIG_STFL_alg_xmss##xmss_v##_length_pk; \
         sig->length_secret_key = OQS_SIG_STFL_alg_xmss##xmss_v##_length_sk; \

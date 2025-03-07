@@ -407,7 +407,57 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 	return strdup(file_store);
 }
 
-static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile) {
+static OQS_STATUS flip_bit(uint8_t *array, uint64_t array_length, uint64_t bit_position) {
+	uint64_t byte_index = bit_position / 8;
+	uint8_t bit_index = bit_position % 8;
+	if (byte_index >= array_length) {
+		fprintf(stderr, "ERROR: flip_bit index is out of bounds!\n");
+		return OQS_ERROR;
+	}
+	array[byte_index] ^= (1 << bit_index);
+	return OQS_SUCCESS;
+}
+
+/* flip bits of the message (or signature) one at a time, and check that the verification fails */
+static OQS_STATUS test_bitflip_stfl(OQS_SIG_STFL *sig, uint8_t *message, size_t message_len, uint8_t *signature, size_t signature_len, uint8_t *public_key, bool bitflips_all[2], size_t bitflips[2]) {
+	OQS_STATUS rc;
+	/* the first test (EUF-CMA) flips bits of the message
+	   the second test (SUF-CMA) flips bits of the signature */
+	int num_tests = sig->suf_cma ? 2 : 1;
+	for (int test = 0; test < num_tests; test++) {
+		/* select the array to tamper with (message or signature) */
+		uint8_t *tampered_array = (test == 1) ? signature : message;
+		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
+		/* select the number of bitflips */
+		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
+		for (uint64_t i = 0; i < bitflips_selected; i ++) {
+			uint64_t random_bit_index;
+			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(i));
+			random_bit_index = random_bit_index % (tampered_array_len * 8);
+			uint64_t bit_index = bitflips_all[test] ? i : random_bit_index;
+			/* flip the bit */
+			rc = flip_bit(tampered_array, tampered_array_len, bit_index);
+			if (rc != OQS_SUCCESS) {
+				return OQS_ERROR;
+			}
+			/* check that the verification fails */
+			rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
+			if (rc != OQS_ERROR) {
+				fprintf(stderr, "ERROR: OQS_SIG_STFL_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
+				return OQS_ERROR;
+			}
+			/* flip back the bit */
+			rc = flip_bit(tampered_array, tampered_array_len, bit_index);
+			if (rc != OQS_SUCCESS) {
+				return OQS_ERROR;
+			}
+		}
+	}
+	return OQS_SUCCESS;
+}
+
+
+static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile, bool bitflips_all[2], size_t bitflips[2]) {
 
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -439,8 +489,24 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		goto err;
 	}
 
+	char bitflips_as_str[2][50];
+	for (int i = 0; i < 2; i++) {
+		if (bitflips_all[i]) {
+			snprintf(bitflips_as_str[i], sizeof(bitflips_as_str[i]), "all");
+		} else {
+			snprintf(bitflips_as_str[i], sizeof(bitflips_as_str[i]), "%ld random", bitflips[i]);
+		}
+	}
+
 	printf("================================================================================\n");
 	printf("Sample computation for stateful signature %s\n", sig->method_name);
+	printf("Sample computation for signature %s\n", sig->method_name);
+	if (sig->euf_cma) {
+		printf("Testing EUF-CMA by flipping %s bits of the message\n", bitflips_as_str[0]);
+	}
+	if (sig->suf_cma) {
+		printf("Testing SUF-CMA by flipping %s bits of the signature\n", bitflips_as_str[1]);
+	}
 	printf("Version source: %s\n", sig->alg_version);
 	printf("================================================================================\n");
 
@@ -540,13 +606,8 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		fprintf(stderr, "ERROR: 2nd Verify with restored public key OQS_SIG_STFL_verify failed\n");
 	}
 
-	/* modify the signature to invalidate it */
-	OQS_randombytes(signature, signature_len);
-	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-	rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_ERROR) {
-		fprintf(stderr, "ERROR: OQS_SIG_STFL_verify should have failed!\n");
+	rc = test_bitflip_stfl(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips);
+	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
 
@@ -976,6 +1037,8 @@ err:
 typedef struct thread_data {
 	const char *alg_name;
 	const char *katfile;
+	bool *bitflips_all;
+	size_t *bitflips;
 	OQS_STATUS rc;
 	// OQS_STATUS rc1;
 } thread_data_t;
@@ -1015,7 +1078,7 @@ void *test_create_keys(void *arg) {
 
 void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
-	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile);
+	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile, td->bitflips_all, td->bitflips);
 	OQS_thread_stop();
 	return NULL;
 }
@@ -1062,8 +1125,8 @@ int main(int argc, char **argv) {
 
 	printf("Testing stateful signature algorithms using liboqs version %s\n", OQS_version());
 
-	if (argc < 2) {
-		fprintf(stderr, "Usage: test_sig_stfl algname [katfile]\n");
+	if (argc < 2 || argc > 5) {
+		fprintf(stderr, "Usage: test_sig_stfl algname [katfile] [bitflips_msg] [bitflips_sig]\n");
 		fprintf(stderr, "  algname: ");
 		for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
 			if (i > 0) {
@@ -1072,6 +1135,8 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "%s", OQS_SIG_STFL_alg_identifier(i));
 		}
 		fprintf(stderr, "\n");
+		fprintf(stderr, " bitflips_msg: the number of random bitflips to perform for each EUF-CMA signature (\"all\" to flip every bit)\n");
+		fprintf(stderr, " bitflips_sig: the number of random bitflips to perform for each SUF-CMA signature (\"all\" to flip every bit)\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
@@ -1090,8 +1155,26 @@ int main(int argc, char **argv) {
 		}
 	}
 
+	/* by default, flip 50 random bits of the message and signature (to test EUF-CMA and SUF-CMA, respectively) */
+	bool bitflips_all[2] = {false, false};
+	size_t bitflips[2] = {50, 50};
+	if (argc >= 4) {
+		if (strcmp(argv[2], "all") == 0) {
+			bitflips_all[0] = true;
+		} else {
+			bitflips[0] = (size_t)strtol(argv[3], NULL, 10);
+		}
+	}
+	if (argc == 5) {
+		if (strcmp(argv[3], "all") == 0) {
+			bitflips_all[1] = true;
+		} else {
+			bitflips[1] = (size_t)strtol(argv[4], NULL, 10);
+		}
+	}
+
 	/*
-	 * Tests executed by CI/DI only run algoritms that have been emabled.
+	 * Tests executed by CI/DI only run algoritms that have been enabled.
 	 *
 	 */
 	if (!OQS_SIG_STFL_alg_is_enabled(alg_name)) {
@@ -1130,8 +1213,8 @@ int main(int argc, char **argv) {
 	pthread_t sign_key_thread;
 	pthread_t query_key_thread;
 
-	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
-	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
+	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR};
+	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR};
 
 	lock_test_data_t td_create = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
@@ -1224,7 +1307,7 @@ err:
 #endif
 	return exit_status;
 #else
-	rc = sig_stfl_test_correctness(alg_name, katfile);
+	rc = sig_stfl_test_correctness(alg_name, katfile, bitflips_all, bitflips);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
 
 	OQS_destroy();
