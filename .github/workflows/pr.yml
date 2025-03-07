@@ -18,6 +18,11 @@ jobs:
     needs: basic-checks
     uses: ./.github/workflows/platforms.yml
 
+  code-coverage:
+    needs: basic-checks
+    uses: ./.github/workflows/code-coverage.yml
+    secrets: inherit
+
   scorecard:
     needs: basic-checks
     uses: ./.github/workflows/scorecard.yml
