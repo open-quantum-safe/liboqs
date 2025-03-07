@@ -55,6 +55,7 @@ static OQS_STATUS test_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_le
 		for (uint64_t i = 0; i < bitflips_selected; i ++) {
 			uint64_t random_bit_index;
 			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(i));
+			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));
 			random_bit_index = random_bit_index % (tampered_array_len * 8);
 			uint64_t bit_index = bitflips_all[test] ? i : random_bit_index;
 			/* flip the bit */
@@ -68,6 +69,7 @@ static OQS_STATUS test_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_le
 			} else {
 				rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
 			}
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 			if (rc != OQS_ERROR) {
 				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
 				return OQS_ERROR;
