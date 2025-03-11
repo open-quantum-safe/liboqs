@@ -4,8 +4,9 @@
 
 #ifdef ENABLE_PARAMS_DYNAMIC
 static const unsigned char f_tail_64[] = F_TAIL_64;
-static const unsigned char f_tail_96[] = F_TAIL_96;
-static const unsigned char f_tail_128[] = F_TAIL_128;
+static const unsigned char f_tail_78[] = F_TAIL_78;
+static const unsigned char f_tail_108[] = F_TAIL_108;
+static const unsigned char f_tail_142[] = F_TAIL_142;
 
 #define MAYO_GEN_PARAMS(nm) \
   const mayo_params_t nm = { \
@@ -23,14 +24,13 @@ static const unsigned char f_tail_128[] = F_TAIL_128;
     .P2_bytes = PARAM_JOIN2(nm, P2_bytes), \
     .P3_bytes = PARAM_JOIN2(nm, P3_bytes), \
     .csk_bytes = PARAM_JOIN2(nm, csk_bytes), \
-    .esk_bytes = PARAM_JOIN2(nm, esk_bytes), \
     .cpk_bytes = PARAM_JOIN2(nm, cpk_bytes), \
-    .epk_bytes = PARAM_JOIN2(nm, epk_bytes), \
     .sig_bytes = PARAM_JOIN2(nm, sig_bytes), \
     .salt_bytes = PARAM_JOIN2(nm, salt_bytes), \
     .sk_seed_bytes = PARAM_JOIN2(nm, sk_seed_bytes), \
     .digest_bytes = PARAM_JOIN2(nm, digest_bytes), \
     .pk_seed_bytes = PARAM_JOIN2(nm, pk_seed_bytes), \
+    .m_vec_limbs = PARAM_JOIN2(nm, m_vec_limbs), \
     .name = #nm \
   };
 

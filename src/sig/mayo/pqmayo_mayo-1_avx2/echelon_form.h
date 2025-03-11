@@ -60,6 +60,9 @@ static inline void EF(unsigned char *A, int _nrows, int _ncols) {
     unsigned char inverse;
     int pivot_row = 0;
     int pivot_col = MAYO_MAX(MAX_COLS - ncols,0);
+    for (; pivot_col < MAX_COLS-160; pivot_col++) {
+        #include "echelon_form_loop.h"
+    }
     for (; pivot_col < MAX_COLS-128; pivot_col++) {
         #include "echelon_form_loop.h"
     }
