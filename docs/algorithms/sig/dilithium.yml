@@ -28,7 +28,7 @@ parameter-sets:
 - name: Dilithium2
   oqs_alg: OQS_SIG_alg_dilithium_2
   claimed-nist-level: 2
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 1312
   length-secret-key: 2528
   length-signature: 2420
@@ -72,7 +72,7 @@ parameter-sets:
 - name: Dilithium3
   oqs_alg: OQS_SIG_alg_dilithium_3
   claimed-nist-level: 3
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 1952
   length-secret-key: 4000
   length-signature: 3293
@@ -116,7 +116,7 @@ parameter-sets:
 - name: Dilithium5
   oqs_alg: OQS_SIG_alg_dilithium_5
   claimed-nist-level: 5
-  claimed-security: EUF-CMA
+  claimed-security: SUF-CMA
   length-public-key: 2592
   length-secret-key: 4864
   length-signature: 4595
