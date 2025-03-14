@@ -79,7 +79,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
-add_executable(test_kem test_kem.c)
+add_executable(test_kem test_kem.c test_helpers.c)
 target_link_libraries(test_kem PRIVATE ${TEST_DEPS})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
@@ -91,7 +91,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
-add_executable(test_kem_mem test_kem_mem.c)
+add_executable(test_kem_mem test_kem_mem.c test_helpers.c)
 target_link_libraries(test_kem_mem PRIVATE ${TEST_DEPS})
 
 add_executable(speed_kem speed_kem.c)
@@ -138,7 +138,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
-add_executable(test_sig test_sig.c)
+add_executable(test_sig test_sig.c test_helpers.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
 
 add_executable(test_sig_mem test_sig_mem.c)
@@ -151,7 +151,7 @@ target_link_libraries(speed_sig PRIVATE ${TEST_DEPS})
 set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig vectors_sig)
 
 # SIG_STFL API tests
-add_executable(test_sig_stfl test_sig_stfl.c)
+add_executable(test_sig_stfl test_sig_stfl.c test_helpers.c)
 if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
     target_link_libraries(test_sig_stfl PRIVATE ${TEST_DEPS} Threads::Threads)
 else ()

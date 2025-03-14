@@ -16,29 +16,12 @@
 #include <pthread.h>
 #endif
 
-#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
-#include <valgrind/memcheck.h>
-#define OQS_TEST_CT_CLASSIFY(addr, len)  VALGRIND_MAKE_MEM_UNDEFINED(addr, len)
-#define OQS_TEST_CT_DECLASSIFY(addr, len)  VALGRIND_MAKE_MEM_DEFINED(addr, len)
-#else
-#define OQS_TEST_CT_CLASSIFY(addr, len)
-#define OQS_TEST_CT_DECLASSIFY(addr, len)
-#endif
-
 #ifdef OQS_ENABLE_KEM_ML_KEM
 #define MLKEM_SECRET_LEN      32
 #endif
 
 #include "system_info.c"
-
-/* Displays hexadecimal strings */
-static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", str[i]);
-	}
-	printf("\n");
-}
+#include "test_helpers.h"
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 /* mlkem rejection key testcase */

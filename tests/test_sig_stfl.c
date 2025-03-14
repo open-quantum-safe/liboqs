@@ -19,20 +19,12 @@
 #include <oqs/oqs.h>
 #include "tmp_store.c"
 #include "system_info.c"
+#include "test_helpers.h"
 
 #if OQS_USE_PTHREADS_IN_TESTS
 #include <pthread.h>
 static pthread_mutex_t *test_sk_lock = NULL;
 static pthread_mutex_t *sk_lock = NULL;
-#endif
-
-#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
-#include <valgrind/memcheck.h>
-#define OQS_TEST_CT_CLASSIFY(addr, len)  VALGRIND_MAKE_MEM_UNDEFINED(addr, len)
-#define OQS_TEST_CT_DECLASSIFY(addr, len)  VALGRIND_MAKE_MEM_DEFINED(addr, len)
-#else
-#define OQS_TEST_CT_CLASSIFY(addr, len)
-#define OQS_TEST_CT_DECLASSIFY(addr, len)
 #endif
 
 #ifdef __GNUC__
@@ -407,58 +399,6 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 	return strdup(file_store);
 }
 
-static OQS_STATUS flip_bit(uint8_t *array, uint64_t array_length, uint64_t bit_position) {
-	uint64_t byte_index = bit_position / 8;
-	uint8_t bit_index = bit_position % 8;
-	if (byte_index >= array_length) {
-		fprintf(stderr, "ERROR: flip_bit index is out of bounds!\n");
-		return OQS_ERROR;
-	}
-	array[byte_index] ^= (1 << bit_index);
-	return OQS_SUCCESS;
-}
-
-/* flip bits of the message (or signature) one at a time, and check that the verification fails */
-static OQS_STATUS test_bitflip_stfl(OQS_SIG_STFL *sig, uint8_t *message, size_t message_len, uint8_t *signature, size_t signature_len, uint8_t *public_key, bool bitflips_all[2], size_t bitflips[2]) {
-	OQS_STATUS rc;
-	/* the first test (EUF-CMA) flips bits of the message
-	   the second test (SUF-CMA) flips bits of the signature */
-	int num_tests = sig->suf_cma ? 2 : 1;
-	for (int test = 0; test < num_tests; test++) {
-		/* select the array to tamper with (message or signature) */
-		uint8_t *tampered_array = (test == 1) ? signature : message;
-		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
-		/* select the number of bitflips */
-		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
-		for (uint64_t i = 0; i < bitflips_selected; i ++) {
-			uint64_t random_bit_index;
-			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(random_bit_index));
-			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));
-			random_bit_index = random_bit_index % (tampered_array_len * 8);
-			uint64_t bit_index = bitflips_all[test] ? i : random_bit_index;
-			/* flip the bit */
-			rc = flip_bit(tampered_array, tampered_array_len, bit_index);
-			if (rc != OQS_SUCCESS) {
-				return OQS_ERROR;
-			}
-			/* check that the verification fails */
-			rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_STFL_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
-				return OQS_ERROR;
-			}
-			/* flip back the bit */
-			rc = flip_bit(tampered_array, tampered_array_len, bit_index);
-			if (rc != OQS_SUCCESS) {
-				return OQS_ERROR;
-			}
-		}
-	}
-	return OQS_SUCCESS;
-}
-
-
 static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile, bool bitflips_all[2], size_t bitflips[2]) {
 
 	OQS_SIG_STFL *sig = NULL;
@@ -608,7 +548,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		fprintf(stderr, "ERROR: 2nd Verify with restored public key OQS_SIG_STFL_verify failed\n");
 	}
 
-	rc = test_bitflip_stfl(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips);
+	rc = test_sig_stfl_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		goto err;
