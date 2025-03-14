@@ -1,0 +1,37 @@
+7bea92142e58c38ec863069a3de2044de4022ac5
+diff --git a/ML-DSA-44_META.yml b/ML-DSA-44_META.yml
+index 2d5686a..98a8376 100644
+--- a/ML-DSA-44_META.yml
++++ b/ML-DSA-44_META.yml
+@@ -1,6 +1,7 @@
+ name: ML-DSA-44
+ type: signature
+ claimed-nist-level: 2
++claimed-security: SUF-CMA
+ length-public-key: 1312
+ length-secret-key: 2560
+ length-signature: 2420
+diff --git a/ML-DSA-65_META.yml b/ML-DSA-65_META.yml
+index 47a4ba0..747a4ff 100644
+--- a/ML-DSA-65_META.yml
++++ b/ML-DSA-65_META.yml
+@@ -1,6 +1,7 @@
+ name: ML-DSA-65
+ type: signature
+ claimed-nist-level: 3
++claimed-security: SUF-CMA
+ length-public-key: 1952
+ length-secret-key: 4032
+ length-signature: 3309
+diff --git a/ML-DSA-87_META.yml b/ML-DSA-87_META.yml
+index e9bff1e..632703a 100644
+--- a/ML-DSA-87_META.yml
++++ b/ML-DSA-87_META.yml
+@@ -1,6 +1,7 @@
+ name: ML-DSA-87
+ type: signature
+ claimed-nist-level: 5
++claimed-security: SUF-CMA
+ length-public-key: 2592
+ length-secret-key: 4896
+ length-signature: 4627

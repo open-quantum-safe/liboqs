@@ -203,6 +203,9 @@ typedef struct OQS_SIG {
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
 	bool euf_cma;
 
+	/** Whether the signature offers SUF-CMA security (TRUE) or not (FALSE). */
+	bool suf_cma;
+
 	/** Whether the signature supports signing with a context string (TRUE) or not (FALSE). */
 	bool sig_with_ctx_support;
 

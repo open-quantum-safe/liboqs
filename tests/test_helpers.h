@@ -9,6 +9,15 @@
 #include <oqs/sha3.h>
 #include <oqs/rand_nist.h>
 
+#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
+#include <valgrind/memcheck.h>
+#define OQS_TEST_CT_CLASSIFY(addr, len)  VALGRIND_MAKE_MEM_UNDEFINED(addr, len)
+#define OQS_TEST_CT_DECLASSIFY(addr, len)  VALGRIND_MAKE_MEM_DEFINED(addr, len)
+#else
+#define OQS_TEST_CT_CLASSIFY(addr, len)
+#define OQS_TEST_CT_DECLASSIFY(addr, len)
+#endif
+
 typedef union {
 	OQS_SHA3_shake256_inc_ctx hqc_state;
 	OQS_NIST_DRBG_struct nist_state;
@@ -37,5 +46,11 @@ void OQS_KAT_PRNG_free(OQS_KAT_PRNG *prng);
 void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len);
 
 void OQS_fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L);
+
+OQS_STATUS flip_bit(uint8_t *array, uint64_t array_length, uint64_t bit_position);
+
+OQS_STATUS test_sig_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_len, uint8_t *signature, size_t signature_len, uint8_t *public_key, bool bitflips_all[2], size_t bitflips[2], bool use_ctx, uint8_t *ctx, size_t ctx_i);
+
+OQS_STATUS test_sig_stfl_bitflip(OQS_SIG_STFL *sig, uint8_t *message, size_t message_len, uint8_t *signature, size_t signature_len, uint8_t *public_key, bool bitflips_all[2], size_t bitflips[2]);
 
 #endif

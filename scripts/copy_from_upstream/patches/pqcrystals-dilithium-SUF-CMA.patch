@@ -1,0 +1,73 @@
+ef30acde710cc1fcb0ed9735af3631761ed0358a
+diff --git a/Dilithium2-AES_META.yml b/Dilithium2-AES_META.yml
+index bad46d3..ce6e854 100644
+--- a/Dilithium2-AES_META.yml
++++ b/Dilithium2-AES_META.yml
+@@ -1,6 +1,7 @@
+ name: Dilithium2-AES
+ type: signature
+ claimed-nist-level: 2
++claimed-security: SUF-CMA
+ length-public-key: 1312
+ length-secret-key: 2528
+ length-signature: 2420
+diff --git a/Dilithium2_META.yml b/Dilithium2_META.yml
+index f4b7e8f..1b23d3e 100644
+--- a/Dilithium2_META.yml
++++ b/Dilithium2_META.yml
+@@ -1,6 +1,7 @@
+ name: Dilithium2
+ type: signature
+ claimed-nist-level: 2
++claimed-security: SUF-CMA
+ length-public-key: 1312
+ length-secret-key: 2528
+ length-signature: 2420
+diff --git a/Dilithium3-AES_META.yml b/Dilithium3-AES_META.yml
+index 0269442..5153309 100644
+--- a/Dilithium3-AES_META.yml
++++ b/Dilithium3-AES_META.yml
+@@ -1,6 +1,7 @@
+ name: Dilithium3-AES
+ type: signature
+ claimed-nist-level: 3
++claimed-security: SUF-CMA
+ length-public-key: 1952
+ length-secret-key: 4000
+ length-signature: 3293
+diff --git a/Dilithium3_META.yml b/Dilithium3_META.yml
+index f45c859..e4fbed2 100644
+--- a/Dilithium3_META.yml
++++ b/Dilithium3_META.yml
+@@ -1,6 +1,7 @@
+ name: Dilithium3
+ type: signature
+ claimed-nist-level: 3
++claimed-security: SUF-CMA
+ length-public-key: 1952
+ length-secret-key: 4000
+ length-signature: 3293
+diff --git a/Dilithium5-AES_META.yml b/Dilithium5-AES_META.yml
+index 0128a32..e53bd7d 100644
+--- a/Dilithium5-AES_META.yml
++++ b/Dilithium5-AES_META.yml
+@@ -1,6 +1,7 @@
+ name: Dilithium5-AES
+ type: signature
+ claimed-nist-level: 5
++claimed-security: SUF-CMA
+ length-public-key: 2592
+ length-secret-key: 4864
+ length-signature: 4595
+diff --git a/Dilithium5_META.yml b/Dilithium5_META.yml
+index 618b617..8c1aa5f 100644
+--- a/Dilithium5_META.yml
++++ b/Dilithium5_META.yml
+@@ -1,6 +1,7 @@
+ name: Dilithium5
+ type: signature
+ claimed-nist-level: 5
++claimed-security: SUF-CMA
+ length-public-key: 2592
+ length-secret-key: 4864
+ length-signature: 4595
