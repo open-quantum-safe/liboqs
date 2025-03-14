@@ -30,6 +30,7 @@
 #cmakedefine BUILD_SHARED_LIBS 1
 #cmakedefine OQS_BUILD_ONLY_LIB 1
 #cmakedefine OQS_OPT_TARGET "@OQS_OPT_TARGET@"
+#cmakedefine USE_COVERAGE 1
 #cmakedefine USE_SANITIZER "@USE_SANITIZER@"
 #cmakedefine CMAKE_BUILD_TYPE "@CMAKE_BUILD_TYPE@"
 
