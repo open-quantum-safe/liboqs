@@ -54,7 +54,7 @@ static OQS_STATUS test_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_le
 		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
 		for (uint64_t i = 0; i < bitflips_selected; i ++) {
 			uint64_t random_bit_index;
-			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(i));
+			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(random_bit_index));
 			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));
 			random_bit_index = random_bit_index % (tampered_array_len * 8);
 			uint64_t bit_index = bitflips_all[test] ? i : random_bit_index;
