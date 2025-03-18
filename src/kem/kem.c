@@ -466,6 +466,14 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	}
 }
 
+OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+	if (kem == NULL) {
+		return OQS_ERROR;
+	} else {
+		return kem->keypair_derand(public_key, secret_key, seed);
+	}
+}
+
 OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;

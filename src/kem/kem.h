@@ -157,6 +157,22 @@ typedef struct OQS_KEM {
 	size_t length_ciphertext;
 	/** The length, in bytes, of shared secrets for this KEM. */
 	size_t length_shared_secret;
+	/** The length, in bytes, of seeds for derandomized keypair generation for this KEM. */
+	size_t length_keypair_seed;
+
+	/**
+	 * Derandomized keypair generation algorithm.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `public_key` and
+	 * `secret_key`, based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_KEM_*_length_*`.
+	 *
+	 * @param[out] public_key The public key represented as a byte string.
+	 * @param[out] secret_key The secret key represented as a byte string.
+	 * @param[in] seed The input randomness represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*keypair_derand)(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 
 	/**
 	 * Keypair generation algorithm.
@@ -211,6 +227,21 @@ typedef struct OQS_KEM {
  * @return An OQS_KEM for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
 OQS_API OQS_KEM *OQS_KEM_new(const char *method_name);
+
+/**
+ * Derandomized keypair generation algorithm.
+ *
+ * Caller is responsible for allocating sufficient memory for `public_key` and
+ * `secret_key`, based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_KEM_*_length_*`.
+ *
+ * @param[in] kem The OQS_KEM object representing the KEM.
+ * @param[out] public_key The public key represented as a byte string.
+ * @param[out] secret_key The secret key represented as a byte string.
+ * @param[in] seed The input randomness represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 
 /**
  * Keypair generation algorithm.

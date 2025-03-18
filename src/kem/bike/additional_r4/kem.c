@@ -270,3 +270,13 @@ OQS_API int decaps(OUT unsigned char *     ss,
 
   return SUCCESS;
 }
+
+OQS_API int keypair_derand(OUT unsigned char *     pk,
+                           OUT unsigned char *     sk,
+                           IN const unsigned char *seed)
+{
+  (void)pk;
+  (void)sk;
+  (void)seed;
+  return OQS_ERROR;
+}
