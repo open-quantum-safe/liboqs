@@ -251,6 +251,8 @@ static void print_oqs_configuration(void) {
 #endif
 #if defined(OQS_USE_SHA3_OPENSSL)
 	printf("SHA-3:            OpenSSL\n");
+#elif defined(OQS_USE_SHA3_AVX512VL)
+	printf("SHA-3:            AVX512VL\n");
 #else
 	printf("SHA-3:            C\n");
 #endif
