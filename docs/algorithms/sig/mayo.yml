@@ -8,7 +8,7 @@ principal-submitters:
 - Matthias J. Kannwischer
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://pqmayo.org
-nist-round: 1
+nist-round: 2
 spec-version: NIST Round 2 (February 2025)
 primary-upstream:
   source: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807
