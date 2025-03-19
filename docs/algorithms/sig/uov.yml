@@ -14,7 +14,7 @@ principal-submitters:
 - Bo-Yin Yang
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://www.uovsig.org/
-nist-round: 1
+nist-round: 2
 spec-version: NIST Round 2 (February 2025)
 primary-upstream:
   source: https://github.com/pqov/pqov/commit/7e0832b6732a476119742c4acabd11b7c767aefb
