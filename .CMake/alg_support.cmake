@@ -201,6 +201,22 @@ cmake_dependent_option(OQS_ENABLE_SIG_uov_ov_Is_pkc_skc "" ON "OQS_ENABLE_SIG_UO
 cmake_dependent_option(OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc "" ON "OQS_ENABLE_SIG_UOV" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_uov_ov_III_pkc_skc "" ON "OQS_ENABLE_SIG_UOV" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_uov_ov_V_pkc_skc "" ON "OQS_ENABLE_SIG_UOV" OFF)
+
+option(OQS_ENABLE_SIG_SNOVA "Enable snova algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_37_17_2 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_25_8_3 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_56_25_2 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_49_11_3 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_37_8_4 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_5 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_75_33_2 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_66_15_3 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_60_10_4 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_29_6_5 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_START
@@ -844,6 +860,91 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
 endif()
 endif()
 
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_24_5_4" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_37_17_2_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_37_17_2" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_25_8_3_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_25_8_3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_56_25_2_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_56_25_2" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_49_11_3_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_49_11_3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_37_8_4_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_37_8_4" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_5_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_24_5_5" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_75_33_2_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_75_33_2" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_66_15_3_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_66_15_3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_60_10_4_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_60_10_4" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_29_6_5_avx2 "" ON "OQS_ENABLE_SIG_snova_SNOVA_29_6_5" OFF)
+endif()
+endif()
+
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_END
 
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_START
@@ -959,8 +1060,8 @@ if(OQS_ALLOW_STFL_KEY_AND_SIG_GEN  STREQUAL "ON")
     message(STATUS "Experimental stateful key and signature generation is enabled. Ensure secret keys are securely stored to prevent multiple simultaneous sign operations.")
 endif()
 
-# Set XKCP (Keccak) required for Sphincs AVX2 code even if OpenSSL3 SHA3 is used:
-if (${OQS_ENABLE_SIG_SPHINCS} OR NOT ${OQS_USE_SHA3_OPENSSL})
+# Set XKCP (Keccak) required for Sphincs and SNOVA AVX2 code even if OpenSSL3 SHA3 is used:
+if (${OQS_ENABLE_SIG_SPHINCS} OR ${OQS_ENABLE_SIG_SNOVA} OR NOT ${OQS_USE_SHA3_OPENSSL})
     set(OQS_ENABLE_SHA3_xkcp_low ON)
 else()
     set(OQS_ENABLE_SHA3_xkcp_low OFF)
