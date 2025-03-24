@@ -32,4 +32,4 @@ Mitigations for security issues outside the stated threat model may still be app
 
 ## Security Response Process
 
-Security reports for liboqs will be handled in accordance with the [OQS security response process](https://github.com/open-quantum-safe/tsc/blob/main/security/response-process.md).
+Security reports for liboqs will be handled in accordance with the [OQS security response process](https://github.com/open-quantum-safe/tsc/blob/main/security/response-process.md). Please also see the general [support disclaimer](README.md#support-limitations) for liboqs.
