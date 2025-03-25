@@ -97,6 +97,11 @@ In order to optimize support effort,
 - not all algorithms are equally well supported on all platforms. In case of questions, it is first advised to review the [documentation files for each algorithm](docs/algorithms).
 - not all compilers are equally well supported. For example, at least v7.1.0 of the GNU compiler is required.
 
+#### Support limitations
+
+This project is not commercially supported. All guidelines and goals for liboqs are reflections of current practices, executed by a community of academic, part-time, and/or voluntary contributors on a best-effort basis and may change at any time. Any entity seeking more reliable commitments is strongly encouraged to join the OQS community and thus enhance the code and support that the community can provide.
+
+
 ## Quickstart
 
 ### Linux and Mac
