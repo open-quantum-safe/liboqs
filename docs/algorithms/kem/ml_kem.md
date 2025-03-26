@@ -11,7 +11,7 @@
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 - **Optimized Implementation sources**: https://github.com/pq-code-package/mlkem-native/commit/09bb1790bf9d38e1714f39af789306f28cdd395d with copy_from_upstream patches
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
-      - **Source**: https://github.com/praveksharma/cupqc-mlkem/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
+      - **Source**: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
