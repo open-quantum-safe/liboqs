@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:95c97e5b-37de-4923-ae1a-b0b09b53e858",
+  "serialNumber": "urn:uuid:1bf59cf4-d125-49e7-ba57-200dd79d7106",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-03-28T14:05:09.173372+00:00",
+    "timestamp": "2025-03-28T20:15:45.486308+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@11b387dafa095c581c2c1d9805f821f8cbbae34a",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f39b60e3e9f2e7437b08bb8ecb4855498adf90b1",
       "name": "liboqs",
-      "version": "11b387dafa095c581c2c1d9805f821f8cbbae34a"
+      "version": "f39b60e3e9f2e7437b08bb8ecb4855498adf90b1"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@11b387dafa095c581c2c1d9805f821f8cbbae34a",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f39b60e3e9f2e7437b08bb8ecb4855498adf90b1",
       "name": "liboqs",
-      "version": "11b387dafa095c581c2c1d9805f821f8cbbae34a"
+      "version": "f39b60e3e9f2e7437b08bb8ecb4855498adf90b1"
     },
     {
       "type": "cryptographic-asset",
@@ -2962,26 +2962,6 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_66_15_3:x86_64",
-      "name": "SNOVA",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "SNOVA_66_15_3",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 5,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
       "bom-ref": "alg:SNOVA_60_10_4:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
@@ -4247,7 +4227,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@11b387dafa095c581c2c1d9805f821f8cbbae34a",
+      "ref": "pkg:github/open-quantum-safe/liboqs@f39b60e3e9f2e7437b08bb8ecb4855498adf90b1",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -4396,7 +4376,6 @@
         "alg:SNOVA_49_11_3:x86_64",
         "alg:SNOVA_37_8_4:x86_64",
         "alg:SNOVA_24_5_5:x86_64",
-        "alg:SNOVA_66_15_3:x86_64",
         "alg:SNOVA_60_10_4:x86_64",
         "alg:SNOVA_29_6_5:x86_64",
         "alg:SPHINCS+-SHA2-128f-simple:generic",
@@ -5364,13 +5343,6 @@
     },
     {
       "ref": "alg:SNOVA_24_5_5:x86_64",
-      "dependsOn": [
-        "alg:sha3",
-        "alg:aes"
-      ]
-    },
-    {
-      "ref": "alg:SNOVA_66_15_3:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"

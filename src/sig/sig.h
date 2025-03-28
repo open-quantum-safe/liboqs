@@ -164,8 +164,6 @@ extern "C" {
 #define OQS_SIG_alg_snova_SNOVA_37_8_4 "SNOVA_37_8_4"
 /** Algorithm identifier for SNOVA_24_5_5 */
 #define OQS_SIG_alg_snova_SNOVA_24_5_5 "SNOVA_24_5_5"
-/** Algorithm identifier for SNOVA_66_15_3 */
-#define OQS_SIG_alg_snova_SNOVA_66_15_3 "SNOVA_66_15_3"
 /** Algorithm identifier for SNOVA_60_10_4 */
 #define OQS_SIG_alg_snova_SNOVA_60_10_4 "SNOVA_60_10_4"
 /** Algorithm identifier for SNOVA_29_6_5 */
@@ -175,7 +173,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 69
+#define OQS_SIG_algs_length 68
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

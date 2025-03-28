@@ -139,9 +139,6 @@
   "SNOVA_60_10_4": {
     "single": "af9205c33972a94081067f3c84f83c1779d57860158e49418cfbec733a111798"
   },
-  "SNOVA_66_15_3": {
-    "single": "2c5bc1c0b7e92c09c9b15cd8e84b4028dd458183f6b7ef269b688d0b6c5f42d8"
-  },
   "SPHINCS+-SHA2-128f-simple": {
     "all": "4437eb44516630184c3cb5d3a4392e8bb955c2bf59ad17ab3c607fb7b7285780",
     "single": "cd1e13db3a56c0a6b3486a7b12bcddfda50cf5d1e4d14d3113e6456e969b8114"

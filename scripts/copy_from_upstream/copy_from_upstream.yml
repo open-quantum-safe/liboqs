@@ -584,11 +584,6 @@ sigs:
         pretty_name_full: SNOVA_24_5_5
         signed_msg_order: sig_then_msg
       -
-        scheme: "SNOVA_66_15_3"
-        pqclean_scheme: SNOVA_66_15_3
-        pretty_name_full: SNOVA_66_15_3
-        signed_msg_order: sig_then_msg
-      -
         scheme: "SNOVA_60_10_4"
         pqclean_scheme: SNOVA_60_10_4
         pretty_name_full: SNOVA_60_10_4

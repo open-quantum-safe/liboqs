@@ -312,8 +312,6 @@
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_37_8_4_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_24_5_5 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_24_5_5_avx2 1
-#cmakedefine OQS_ENABLE_SIG_snova_SNOVA_66_15_3 1
-#cmakedefine OQS_ENABLE_SIG_snova_SNOVA_66_15_3_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_60_10_4 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_60_10_4_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_29_6_5 1

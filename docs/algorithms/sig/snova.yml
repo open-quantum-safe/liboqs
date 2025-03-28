@@ -238,29 +238,6 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
-- name: SNOVA_66_15_3
-  oqs_alg: OQS_SIG_alg_snova_66_15_3
-  claimed-nist-level: 5
-  claimed-security: EUF-CMA
-  length-public-key: 15204
-  length-secret-key: 48
-  length-signature: 381
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      required_flags:
-      - avx2
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
-    large-stack-usage: true
 - name: SNOVA_60_10_4
   oqs_alg: OQS_SIG_alg_snova_60_10_4
   claimed-nist-level: 5
