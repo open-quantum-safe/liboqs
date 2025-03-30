@@ -21,4 +21,13 @@
 #define l_SNOVA 4
 #endif
 
+// Optimisation level.  0: Reference, 1:Optimised, 2:Vectorized
+#ifndef OPTIMISATION
+#if __AVX2__ || __ARM_NEON
+#define OPTIMISATION 2
+#else
+#define OPTIMISATION 1
+#endif
+#endif
+
 #endif

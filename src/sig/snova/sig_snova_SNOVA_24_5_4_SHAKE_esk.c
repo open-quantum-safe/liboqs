@@ -42,12 +42,28 @@ extern int _snova_24_5_4_shake_esk_avx2_sign(uint8_t *sig, size_t *siglen, const
 extern int _snova_24_5_4_shake_esk_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 #endif
 
+#if defined(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_neon)
+extern int _snova_24_5_4_shake_esk_neon_keypair(uint8_t *pk, uint8_t *sk);
+extern int _snova_24_5_4_shake_esk_neon_sign(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
+extern int _snova_24_5_4_shake_esk_neon_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+#endif
+
 OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_24_5_4_SHAKE_esk_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) _snova_24_5_4_shake_esk_avx2_keypair(public_key, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) _snova_24_5_4_shake_esk_opt_keypair(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_neon)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) _snova_24_5_4_shake_esk_neon_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) _snova_24_5_4_shake_esk_opt_keypair(public_key, secret_key);
@@ -69,6 +85,16 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_24_5_4_SHAKE_esk_sign(uint8_t *signature,
 		return (OQS_STATUS) _snova_24_5_4_shake_esk_opt_sign(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_neon)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) _snova_24_5_4_shake_esk_neon_sign(signature, signature_len, message, message_len, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) _snova_24_5_4_shake_esk_opt_sign(signature, signature_len, message, message_len, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) _snova_24_5_4_shake_esk_opt_sign(signature, signature_len, message, message_len, secret_key);
 #endif
@@ -80,6 +106,16 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_24_5_4_SHAKE_esk_verify(const uint8_t *me
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) _snova_24_5_4_shake_esk_avx2_verify(signature, signature_len, message, message_len, public_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) _snova_24_5_4_shake_esk_opt_verify(signature, signature_len, message, message_len, public_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_neon)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) _snova_24_5_4_shake_esk_neon_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) _snova_24_5_4_shake_esk_opt_verify(signature, signature_len, message, message_len, public_key);

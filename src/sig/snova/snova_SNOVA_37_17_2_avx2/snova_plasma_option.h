@@ -1,15 +1,6 @@
 #ifndef PLASMA_OPTION_H
 #define PLASMA_OPTION_H
 
-// Optimisation level. 0: Ref, 1: Opt, 2: VTL
-#ifndef OPTIMISATION
-#if __AVX2__ || __ARM_NEON
-#define OPTIMISATION 2
-#else
-#define OPTIMISATION 1
-#endif
-#endif
-
 #if OPTIMISATION == 2
 #include "snova_plasma_vec.h"
 #include "snova_plasma_vec_gnl_sign.h"
@@ -44,6 +35,5 @@ static void snova_plasma_init(void) {
 #endif
 	}
 }
-
 
 #endif

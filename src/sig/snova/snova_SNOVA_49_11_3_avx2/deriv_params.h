@@ -3,12 +3,7 @@
 
 #include "params.h"
 
-#if FIXED_ABQ == 2
-#undef FIXED_ABQ
 #define FIXED_ABQ (l_SNOVA < 4)
-#elif !defined(FIXED_ABQ)
-#define FIXED_ABQ (l_SNOVA < 4)
-#endif
 
 #define seed_length_public 16
 #define seed_length_private 32
