@@ -29,7 +29,7 @@ Release notes
 
 This is version 0.13.0-rc1 of liboqs. It was released on March 19, 2025.
 
-This release improves support for NIST Additional Signatures Round 2 candidates: CROSS and MAYO implementations are updated and support is added for UOV. This release also adds a new KEM API for deterministic key generation and encapsulation (only supported by ML-KEM at the moment).
+This release improves support for NIST Additional Signatures Round 2 candidates: CROSS and MAYO implementations are updated and support is added for UOV. This release also adds a new KEM API for deterministic key generation (only supported by ML-KEM at the moment). Finally, this release adds support for ML-KEM implementations from 2 new sources: formally verified portable C, AVX2, and AArch64 implementations from [PQCP's mlkem-native](https://github.com/pq-code-package/mlkem-native) and a GPU accelerated CUDA implementation from [Nvidia cuPQC](https://developer.nvidia.com/cupqc). 
 
 What's New
 ----------
@@ -38,7 +38,8 @@ This release continues from the 0.12.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- New API: Added a deterministic key generation and encapsulation API for KEMs (only ML-KEM supported at the moment).
+- New API: Added a deterministic key generation and API for KEMs (only ML-KEM supported at the moment).
+- ML-KEM: Added support the portable C, AVX2, and AArch64 ML-KEM implementations from [PQCP's mlkem-native](https://github.com/pq-code-package/mlkem-native). Large parts of these implementations are formally verified: all of the C code is verified using [CBMC](https://github.com/diffblue/cbmc) and the functional correctness of the core AArch64 assembly routines is verified using [HOL-Light](https://github.com/jrh13/hol-light). 
 - ML-KEM: Added support for the ML-KEM implementation from [Nvidia cuPQC](https://developer.nvidia.com/cupqc), a GPU accelerated cryptography library.
 - ML-KEM: Implementation from mlkem-native upstream updated to add Pair-wise Consistency Test (PCT) and Intel CET support.
 - ML-KEM: Improved testing of ML-KEM keys.
@@ -97,6 +98,7 @@ Detailed changelog
 * Update MAYO version in algorithm datasheet by @bhess in https://github.com/open-quantum-safe/liboqs/pull/2103
 * Add DeriveKeyPair API by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/2070
 * Update nist-round in UOV and MAYO data sheet by @bhess in https://github.com/open-quantum-safe/liboqs/pull/2105
+* build: search unistd.h separately from sys/random.h for getentropy by @mkroening in https://github.com/open-quantum-safe/liboqs/pull/2104
 
 ## New Contributors
 * @zhaixiaojuan made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2010
@@ -104,5 +106,6 @@ Detailed changelog
 * @pablo-gf made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2059
 * @levitte made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2086
 * @mkannwischer made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2093
+* @mkroening made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2104
 
 **Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.12.0...0.13.0-rc1
