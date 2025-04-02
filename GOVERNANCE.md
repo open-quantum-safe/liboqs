@@ -98,6 +98,7 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 
 @baentsch
 @dstebila
+@SWilson4
 
 ### Committers
 
@@ -108,7 +109,6 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 @jschanck
 @Martyrshot
 @praveksharma
-@swilson4
 @vsoftco
 
 ## Afterword
