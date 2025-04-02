@@ -39,7 +39,7 @@ This release continues from the 0.12.0 release of liboqs.
 ### Key encapsulation mechanisms
 
 - New API: Added a deterministic key generation and API for KEMs (only ML-KEM supported at the moment).
-- ML-KEM: Added support the portable C, AVX2, and AArch64 ML-KEM implementations from [PQCP's mlkem-native](https://github.com/pq-code-package/mlkem-native). Large parts of these implementations are formally verified: all of the C code is verified using [CBMC](https://github.com/diffblue/cbmc) and the functional correctness of the core AArch64 assembly routines is verified using [HOL-Light](https://github.com/jrh13/hol-light). 
+- ML-KEM: Changed the default ML-KEM implementation to [PQCP's mlkem-native](https://github.com/pq-code-package/mlkem-native). There are three variants: Portable C, AVX2, and AArch64. Large parts of these implementations are formally verified: all of the C code is verified for memory and type safety using [CBMC](https://github.com/diffblue/cbmc) and the functional correctness of the core AArch64 assembly routines is verified using [HOL-Light](https://github.com/jrh13/hol-light). 
 - ML-KEM: Added support for the ML-KEM implementation from [Nvidia cuPQC](https://developer.nvidia.com/cupqc), a GPU accelerated cryptography library.
 - ML-KEM: Implementation from mlkem-native upstream updated to add Pair-wise Consistency Test (PCT) and Intel CET support.
 - ML-KEM: Improved testing of ML-KEM keys.
