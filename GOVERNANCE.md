@@ -96,13 +96,13 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 
 ### Maintainers
 
-@baentsch
+@baentsch (on leave of absence as of March 11, 2025)
 @dstebila
 @SWilson4
 
 ### Committers
 
-@baentsch
+@baentsch (on leave of absence as of March 11, 2025)
 @bhess
 @christianpaquin
 @dstebila
