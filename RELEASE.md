@@ -1,5 +1,5 @@
-liboqs version 0.13.0-rc1
-=========================
+liboqs version 0.13.0
+=====================
 
 About
 -----
@@ -27,7 +27,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.13.0-rc1 of liboqs. It was released on March 19, 2025.
+This is version 0.13.0 of liboqs. It was released on April 02, 2025.
 
 This release improves support for NIST Additional Signatures Round 2 candidates: CROSS and MAYO implementations are updated and support is added for UOV. This release also adds a new KEM API for deterministic key generation (only supported by ML-KEM at the moment). Finally, this release adds support for ML-KEM implementations from 2 new sources: formally verified portable C, AVX2, and AArch64 implementations from [PQCP's mlkem-native](https://github.com/pq-code-package/mlkem-native) and a GPU accelerated CUDA implementation from [Nvidia cuPQC](https://developer.nvidia.com/cupqc). 
 
@@ -111,4 +111,4 @@ Detailed changelog
 * @mkannwischer made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2093
 * @mkroening made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2104
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.12.0...0.13.0-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.12.0...0.13.0
