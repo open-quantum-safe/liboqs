@@ -106,10 +106,17 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 @bhess
 @christianpaquin
 @dstebila
-@jschanck
 @Martyrshot
 @praveksharma
 @vsoftco
+
+## Former Maintainers and Committers
+
+OQS is grateful to the following individuals who have previously served as Maintainers or Committers for liboqs.
+
+### Former Committers
+
+@jschanck
 
 ## Afterword
 
