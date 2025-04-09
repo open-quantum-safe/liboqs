@@ -7,7 +7,7 @@ website: https://snova.pqclab.org/
 nist-round: 2
 spec-version: Round 2
 primary-upstream:
-  source: https://github.com/vacuas/SNOVA/commit/89c0f40d93600ab3d6d431f9f56f1d907f95da93
+  source: https://github.com/vacuas/SNOVA/commit/f507b23b94ff0b10591524a9557ff4c1f6173901
   spdx-license-identifier: MIT
 parameter-sets:
 - name: SNOVA_24_5_4
