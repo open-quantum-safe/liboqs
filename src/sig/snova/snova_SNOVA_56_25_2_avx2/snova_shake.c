@@ -17,7 +17,7 @@
 
 #elif defined(SNOVA_LIBOQS)
 
-#if OPTIMISATION == 2
+#if OPTIMISATION == 2 && defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
 
 /**
  * liboqs x4 version

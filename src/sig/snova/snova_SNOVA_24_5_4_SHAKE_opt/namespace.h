@@ -25,14 +25,14 @@
 #endif
 
 #if sk_is_seed
-#define SSK_NAME ssk
+#define ESK_NAME ssk
 #else
-#define SSK_NAME esk
+#define ESK_NAME esk
 #endif
 
 #define PARAM_JOIN_(o, p, s, a, b, c, f) _snova_##a##_##b##_##c##_##p##_##s##_##o##_##f
 #define PARAM_JOIN(o, p, s, a, b, c, f) PARAM_JOIN_(o, p, s, a, b, c, f)
-#define SNOVA_NAMESPACE(f) PARAM_JOIN(OPT_NAME, PKX_NAME, SSK_NAME, v_SNOVA, o_SNOVA, l_SNOVA, f)
+#define SNOVA_NAMESPACE(f) PARAM_JOIN(OPT_NAME, PKX_NAME, ESK_NAME, v_SNOVA, o_SNOVA, l_SNOVA, f)
 
 // snova.c
 

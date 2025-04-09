@@ -10,35 +10,7 @@
 {
    Processing during public key expansion
    Memcheck:Value8
-   fun:gf16m_scale
-   fun:gen_a_FqS
-   fun:gen_A_B_Q_P
-}
-
-{
-   Processing during public key expansion
-   Memcheck:Value8
-   fun:gf16m_det
-   fun:be_invertible_by_add_aS
-   fun:gen_A_B_Q_P
-}
-
-{
-   Processing during public key expansion
-   Memcheck:Value8
-   fun:gf16m_det5
-   fun:gf16m_det
-   fun:be_invertible_by_add_aS
-   fun:gen_A_B_Q_P
-}
-
-{
-   Processing during public key expansion
-   Memcheck:Value8
-   fun:gf16m_det3
-   fun:gf16m_det5
-   fun:gf16m_det
-   fun:be_invertible_by_add_aS
+   ...
    fun:gen_A_B_Q_P
 }
 
@@ -48,7 +20,7 @@
     Restart when a signature could not be generated
     Memcheck:Cond
     fun:_snova_*_sign_digest_core_opt
-    fun:_snova_*_sign_digest_*
+    fun:_snova_*_sign_digest*
     fun:_snova_*_sign
 }
 
@@ -58,7 +30,7 @@
    Restart when a signature could not be generated
    Memcheck:Cond
    fun:_snova_*_sign_digest_core_gnl_vtl
-   fun:_snova_*_sign_digest_*
+   fun:_snova_*_sign_digest*
    fun:_snova_*_sign
 }
 
@@ -67,6 +39,30 @@
    Memcheck:Value8
    fun:_snova_*_calc_LR_J_vtl
    fun:_snova_*_sign_digest_core_gnl_vtl
-   fun:_snova_*_sign_digest_*
+   fun:_snova_*_sign_digest*
    fun:_snova_*_sign
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:325
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:334
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:380
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:389
 }

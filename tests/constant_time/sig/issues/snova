@@ -1,7 +1,18 @@
 {
-   Lookup depending either on public data or, on lines 215, 295, and 353 of snova_plasma_vec_gnl_sign.h, on a random intermediate which is not a secret but which is not made public either
+   Lookup depending on a random intermediate which is not a secret but which is not made public either
    Memcheck:Value8
-   fun:_snova_*_sign_digest_core_gnl_vtl
-   fun:_snova_*_sign_digest_*
-   fun:_snova_*_sign
+   src:snova_plasma_vec_gnl_sign.h:215
 }
+
+{
+   Lookup depending on a random intermediate which is not a secret but which is not made public either
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:295
+}
+
+{
+   Lookup depending on a random intermediate which is not a secret but which is not made public either
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:353
+}
+

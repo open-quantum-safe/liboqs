@@ -523,12 +523,6 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 				xT12[dj][dk][idx] = gf16_from_nibble(T12[dj][dk][idx]);
 			}
 
-	for (int index = 0; index < o_SNOVA; ++index)
-		for (int i1 = 0; i1 < l_SNOVA; ++i1)
-			for (int j1 = 0; j1 < l_SNOVA; ++j1) {
-				X_in_GF16Matrix[index + v_SNOVA][i1 * l_SNOVA + j1] = solution[index * lsq_SNOVA + i1 * l_SNOVA + j1];
-			}
-
 	// Establish Signature
 	uint32_t xSig[lsq_SNOVA] = {0};
 	for (int dj = 0; dj < v_SNOVA; ++dj) {
@@ -548,7 +542,7 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 
 	for (int index = 0; index < o_SNOVA; ++index)
 		for (int idx = 0; idx < lsq_SNOVA; ++idx) {
-			signature_in_GF16Matrix[v_SNOVA + index][idx] = X_in_GF16Matrix[v_SNOVA + index][idx];
+			signature_in_GF16Matrix[v_SNOVA + index][idx] = solution[index * lsq_SNOVA + idx];
 		}
 
 	// output signature

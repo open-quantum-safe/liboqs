@@ -6,7 +6,7 @@
 - **Authors' website**: https://snova.pqclab.org/
 - **Specification version**: Round 2.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/vacuas/SNOVA/commit/ce243c2570727f837fbd5aeb091e96ba3880893b
+  - **Source**: https://github.com/vacuas/SNOVA/commit/89c0f40d93600ab3d6d431f9f56f1d907f95da93
   - **Implementation license (SPDX-Identifier)**: MIT
 
 
