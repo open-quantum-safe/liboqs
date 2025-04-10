@@ -135,6 +135,7 @@ kems:
     name: hqc
     default_implementation: clean
     upstream_location: pqclean
+    disable_by_default: True
     schemes:
       -
         scheme: "128"
