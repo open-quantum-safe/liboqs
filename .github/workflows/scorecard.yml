@@ -1,6 +1,6 @@
 name: Scorecard supply-chain security
 
-permissions: read-all
+permissions: {}
 
 on:
   # For Branch-Protection check. Only the default branch is supported. See

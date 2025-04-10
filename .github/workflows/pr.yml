@@ -26,19 +26,19 @@ jobs:
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token#defining-access-for-the-github_token-permissions
     # accessed September 4, 2024
     # 'models' is an undocumented option that was added April 10, 2025 to address CI failure
-    permissions:
-      actions: read
-      attestations: read
-      checks: read
-      contents: read
-      deployments: read
-      id-token: write
-      issues: read
-      discussions: read
-      packages: read
-      pages: read
-      pull-requests: read
-      repository-projects: read
-      security-events: write
-      statuses: read
-      models: read
+    #    permissions:
+    #      actions: read
+    #      attestations: read
+    #      checks: read
+    #      contents: read
+    #      deployments: read
+    #      id-token: write
+    #      issues: read
+    #      discussions: read
+    #      packages: read
+    #      pages: read
+    #      pull-requests: read
+    #      repository-projects: read
+    #      security-events: write
+    #      statuses: read
+    #      models: read
