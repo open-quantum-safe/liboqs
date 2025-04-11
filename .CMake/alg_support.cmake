@@ -117,7 +117,7 @@ cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_6960119f "" ON "OQS_ENABL
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_8192128 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_8192128f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
 
-option(OQS_ENABLE_KEM_HQC "Enable hqc algorithm family" ON)
+option(OQS_ENABLE_KEM_HQC "Enable hqc algorithm family" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_hqc_128 "" ON "OQS_ENABLE_KEM_HQC" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_hqc_192 "" ON "OQS_ENABLE_KEM_HQC" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_hqc_256 "" ON "OQS_ENABLE_KEM_HQC" OFF)
