@@ -31,6 +31,8 @@ This is version 0.13.0 of liboqs. It was released on April 02, 2025.
 
 This release improves support for NIST Additional Signatures Round 2 candidates: CROSS and MAYO implementations are updated and support is added for UOV. This release also adds a new KEM API for deterministic key generation (only supported by ML-KEM at the moment). Finally, this release adds support for ML-KEM implementations from 2 new sources: formally verified portable C, AVX2, and AArch64 implementations from [PQCP's mlkem-native](https://github.com/pq-code-package/mlkem-native) and a GPU accelerated CUDA implementation from [Nvidia cuPQC](https://developer.nvidia.com/cupqc). 
 
+OQS is running a survey to better understand our community. We would like to hear from organizations and individuals about their interest in and use of the Open Quantum Safe project. Please take a few minutes to fill out the survey: https://linuxfoundation.surveymonkey.com/r/oqssurvey
+
 What's New
 ----------
 
