@@ -45,6 +45,7 @@ This release continues from the 0.12.0 release of liboqs.
 - ML-KEM: Added support for the ML-KEM implementation from [Nvidia cuPQC](https://developer.nvidia.com/cupqc), a GPU accelerated cryptography library.
 - ML-KEM: Implementation from mlkem-native upstream updated to add Pair-wise Consistency Test (PCT) and Intel CET support.
 - ML-KEM: Improved testing of ML-KEM keys.
+- HQC: Disabled HQC by default until [a new security flaw](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/Wiu4ZQo3fP8) is fixed.
 
 ### Digital signature schemes
 
