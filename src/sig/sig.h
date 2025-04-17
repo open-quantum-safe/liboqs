@@ -144,12 +144,36 @@ extern "C" {
 #define OQS_SIG_alg_uov_ov_III_pkc_skc "OV-III-pkc-skc"
 /** Algorithm identifier for OV-V-pkc-skc */
 #define OQS_SIG_alg_uov_ov_V_pkc_skc "OV-V-pkc-skc"
+/** Algorithm identifier for SNOVA_24_5_4 */
+#define OQS_SIG_alg_snova_SNOVA_24_5_4 "SNOVA_24_5_4"
+/** Algorithm identifier for SNOVA_24_5_4_SHAKE */
+#define OQS_SIG_alg_snova_SNOVA_24_5_4_SHAKE "SNOVA_24_5_4_SHAKE"
+/** Algorithm identifier for SNOVA_24_5_4_esk */
+#define OQS_SIG_alg_snova_SNOVA_24_5_4_esk "SNOVA_24_5_4_esk"
+/** Algorithm identifier for SNOVA_24_5_4_SHAKE_esk */
+#define OQS_SIG_alg_snova_SNOVA_24_5_4_SHAKE_esk "SNOVA_24_5_4_SHAKE_esk"
+/** Algorithm identifier for SNOVA_37_17_2 */
+#define OQS_SIG_alg_snova_SNOVA_37_17_2 "SNOVA_37_17_2"
+/** Algorithm identifier for SNOVA_25_8_3 */
+#define OQS_SIG_alg_snova_SNOVA_25_8_3 "SNOVA_25_8_3"
+/** Algorithm identifier for SNOVA_56_25_2 */
+#define OQS_SIG_alg_snova_SNOVA_56_25_2 "SNOVA_56_25_2"
+/** Algorithm identifier for SNOVA_49_11_3 */
+#define OQS_SIG_alg_snova_SNOVA_49_11_3 "SNOVA_49_11_3"
+/** Algorithm identifier for SNOVA_37_8_4 */
+#define OQS_SIG_alg_snova_SNOVA_37_8_4 "SNOVA_37_8_4"
+/** Algorithm identifier for SNOVA_24_5_5 */
+#define OQS_SIG_alg_snova_SNOVA_24_5_5 "SNOVA_24_5_5"
+/** Algorithm identifier for SNOVA_60_10_4 */
+#define OQS_SIG_alg_snova_SNOVA_60_10_4 "SNOVA_60_10_4"
+/** Algorithm identifier for SNOVA_29_6_5 */
+#define OQS_SIG_alg_snova_SNOVA_29_6_5 "SNOVA_29_6_5"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 56
+#define OQS_SIG_algs_length 68
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -410,6 +434,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_UOV
 #include <oqs/sig_uov.h>
 #endif /* OQS_ENABLE_SIG_UOV */
+#ifdef OQS_ENABLE_SIG_SNOVA
+#include <oqs/sig_snova.h>
+#endif /* OQS_ENABLE_SIG_SNOVA */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 

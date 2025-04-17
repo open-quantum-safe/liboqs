@@ -72,6 +72,7 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 - **Falcon**: Falcon-512, Falcon-1024, Falcon-padded-512, Falcon-padded-1024
 - **MAYO**: MAYO-1, MAYO-2, MAYO-3, MAYO-5†
 - **ML-DSA**: ML-DSA-44, ML-DSA-65, ML-DSA-87
+- **SNOVA**: SNOVA\_24\_5\_4, SNOVA\_24\_5\_4\_SHAKE, SNOVA\_24\_5\_4\_esk, SNOVA\_24\_5\_4\_SHAKE\_esk, SNOVA\_37\_17\_2†, SNOVA\_25\_8\_3, SNOVA\_56\_25\_2†, SNOVA\_49\_11\_3†, SNOVA\_37\_8\_4†, SNOVA\_24\_5\_5†, SNOVA\_60\_10\_4†, SNOVA\_29\_6\_5†
 - **SPHINCS+-SHA2**: SPHINCS+-SHA2-128f-simple, SPHINCS+-SHA2-128s-simple, SPHINCS+-SHA2-192f-simple, SPHINCS+-SHA2-192s-simple, SPHINCS+-SHA2-256f-simple, SPHINCS+-SHA2-256s-simple
 - **SPHINCS+-SHAKE**: SPHINCS+-SHAKE-128f-simple, SPHINCS+-SHAKE-128s-simple, SPHINCS+-SHAKE-192f-simple, SPHINCS+-SHAKE-192s-simple, SPHINCS+-SHAKE-256f-simple, SPHINCS+-SHAKE-256s-simple
 - **UOV**: OV-Is, OV-Ip, OV-III, OV-V, OV-Is-pkc, OV-Ip-pkc, OV-III-pkc, OV-V-pkc, OV-Is-pkc-skc, OV-Ip-pkc-skc, OV-III-pkc-skc, OV-V-pkc-skc
