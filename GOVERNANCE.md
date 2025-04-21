@@ -108,6 +108,7 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 @dstebila
 @Martyrshot
 @praveksharma
+@SWilson4
 @vsoftco
 
 ## Former Maintainers and Committers
