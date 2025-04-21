@@ -96,20 +96,28 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 
 ### Maintainers
 
-@baentsch
+@baentsch (on leave of absence as of March 11, 2025)
 @dstebila
+@SWilson4
 
 ### Committers
 
-@baentsch
+@baentsch (on leave of absence as of March 11, 2025)
 @bhess
 @christianpaquin
 @dstebila
-@jschanck
 @Martyrshot
 @praveksharma
-@swilson4
+@SWilson4
 @vsoftco
+
+## Former Maintainers and Committers
+
+OQS is grateful to the following individuals who have previously served as Maintainers or Committers for liboqs.
+
+### Former Committers
+
+@jschanck
 
 ## Afterword
 
