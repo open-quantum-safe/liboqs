@@ -1,17 +1,17 @@
 {
-   Lookup depending on a random intermediate which is not a secret but which is not made public either
+   Lookup depending on the product of two secret values, one of which is random.
    Memcheck:Value8
    src:snova_plasma_vec_gnl_sign.h:215
 }
 
 {
-   Lookup depending on a random intermediate which is not a secret but which is not made public either
+   Lookup depending on the product of two secret values, one of which is random.
    Memcheck:Value8
    src:snova_plasma_vec_gnl_sign.h:295
 }
 
 {
-   Lookup depending on a random intermediate which is not a secret but which is not made public either
+   Lookup depending on the product of two secret values, one of which is random.
    Memcheck:Value8
    src:snova_plasma_vec_gnl_sign.h:353
 }

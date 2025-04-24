@@ -89,7 +89,7 @@ upstreams:
     name: snova
     git_url: https://github.com/vacuas/SNOVA-OQS
     git_branch: main
-    git_commit: f507b23b94ff0b10591524a9557ff4c1f6173901
+    git_commit: 4469e166f675126c0378e15462eaad6b02b1f1bf
     sig_scheme_path: '.'
     sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
 kems:

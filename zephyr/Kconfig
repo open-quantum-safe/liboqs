@@ -81,4 +81,9 @@ config LIBOQS_ENABLE_SIG_UOV
 	default n
 	depends on LIBOQS
 
+config LIBOQS_ENABLE_SIG_SNOVA
+	bool "Enable the SNOVA signature algorithm"
+	default y
+	depends on LIBOQS
+
 endmenu

@@ -1,13 +1,21 @@
 name: SNOVA
 type: signature
 principal-submitters:
-- SNOVA team
+- Lih-Chung Wang
+- Chun-Yen Chou
+- Jintai Ding
+- Yen-Liang Kuan
+- Jan Adriaan Leegwater
+- Ming-Siou Li
+- Bo-Shu Tseng
+- Po-En Tseng
+- Chia-Chun Wang
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://snova.pqclab.org/
 nist-round: 2
 spec-version: Round 2
 primary-upstream:
-  source: https://github.com/vacuas/SNOVA/commit/f507b23b94ff0b10591524a9557ff4c1f6173901
+  source: https://github.com/vacuas/SNOVA/commit/4469e166f675126c0378e15462eaad6b02b1f1bf
   spdx-license-identifier: MIT
 parameter-sets:
 - name: SNOVA_24_5_4
@@ -26,7 +34,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -40,7 +48,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: neon
@@ -53,7 +61,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SNOVA_24_5_4_SHAKE
   oqs_alg: OQS_SIG_alg_SNOVA_24_5_4_SHAKE
@@ -71,7 +79,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -85,7 +93,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: neon
@@ -98,7 +106,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SNOVA_24_5_4_esk
   oqs_alg: OQS_SIG_alg_snova_24_5_4_esk
@@ -116,7 +124,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -130,7 +138,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: neon
@@ -143,7 +151,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SNOVA_24_5_4_SHAKE_esk
   oqs_alg: OQS_SIG_alg_SNOVA_24_5_4_SHAKE_esk
@@ -161,7 +169,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -175,7 +183,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: neon
@@ -188,7 +196,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SNOVA_37_17_2
   oqs_alg: OQS_SIG_alg_SNOVA_37_17_2
@@ -251,7 +259,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: avx2
@@ -265,7 +273,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
     upstream-id: neon
@@ -278,7 +286,7 @@ parameter-sets:
     - SHA3: liboqs
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: false
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SNOVA_56_25_2
   oqs_alg: OQS_SIG_alg_snova_56_25_2
