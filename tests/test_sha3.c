@@ -1054,12 +1054,30 @@ static void override_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *sta
 	sha3_x4_default_callbacks.SHA3_shake128_x4_inc_init(state);
 }
 
+#ifdef OQS_USE_SHA3_AVX512VL
+/**
+ * \brief Trigger SHA3 internal callback dispatcher.
+ *
+ * This is required to trigger runtime AVX512/AVX2 detection and set
+ * SHA3 default callbacks before test application callbacks are configured.
+ */
+static void sha3_trigger_dispatcher(void) {
+	OQS_SHA3_sha3_256_inc_ctx state;
+
+	OQS_SHA3_sha3_256_inc_init(&state);
+}
+#endif
+
 /**
 * \brief Run the SHA3 and SHAKE KAT tests
 */
 int main(UNUSED int argc, UNUSED char **argv) {
 	int ret = EXIT_SUCCESS;
 
+#ifdef OQS_USE_SHA3_AVX512VL
+	/* set SHA3 default callbacks */
+	sha3_trigger_dispatcher();
+#endif
 	struct OQS_SHA3_callbacks sha3_callbacks = sha3_default_callbacks;
 
 	sha3_callbacks.SHA3_sha3_256_inc_init = override_SHA3_sha3_256_inc_init;

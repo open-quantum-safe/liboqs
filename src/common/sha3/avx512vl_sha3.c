@@ -201,9 +201,7 @@ SHA3_shake256_inc_ctx_clone_avx512vl(OQS_SHA3_shake256_inc_ctx *dest,
 	memcpy(dest->ctx, src->ctx, KECCAK_CTX_BYTES);
 }
 
-extern struct OQS_SHA3_callbacks sha3_default_callbacks;
-
-struct OQS_SHA3_callbacks sha3_default_callbacks = {
+const struct OQS_SHA3_callbacks sha3_avx512vl_callbacks = {
 	SHA3_sha3_256_avx512vl,
 	SHA3_sha3_256_inc_init_avx512vl,
 	SHA3_sha3_256_inc_absorb_avx512vl,

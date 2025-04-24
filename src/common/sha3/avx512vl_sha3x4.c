@@ -113,9 +113,7 @@ SHA3_shake256_x4_inc_ctx_release_avx512vl(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	OQS_MEM_aligned_free(state->ctx);
 }
 
-extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
-
-struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks = {
+const struct OQS_SHA3_x4_callbacks sha3_x4_avx512vl_callbacks = {
 	SHA3_shake128_x4_avx512vl,
 	SHA3_shake128_x4_inc_init_avx512vl,
 	SHA3_shake128_x4_inc_absorb_avx512vl,
