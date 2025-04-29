@@ -200,6 +200,7 @@ static void set_available_cpu_extensions(void) {
 static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+	cpu_ext_data[OQS_CPU_EXT_PPC64LE] = 1;
 }
 #elif defined(OQS_DIST_S390X_BUILD)
 static void set_available_cpu_extensions(void) {

@@ -24,6 +24,7 @@
 #cmakedefine OQS_DIST_ARM32_V7_BUILD 1
 #cmakedefine OQS_DIST_PPC64LE_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1
+#cmakedefine ARCH_PPC64LE 1
 #cmakedefine ARCH_X86_64 1
 #cmakedefine ARCH_ARM64v8 1
 #cmakedefine ARCH_ARM32v7 1
@@ -130,14 +131,17 @@
 
 #cmakedefine OQS_ENABLE_KEM_ML_KEM 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_512_ppc64le 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_768_ppc64le 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_1024_ppc64le 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_cuda 1

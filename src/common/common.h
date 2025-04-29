@@ -145,6 +145,7 @@ typedef enum {
 	OQS_CPU_EXT_ARM_SHA2,
 	OQS_CPU_EXT_ARM_SHA3,
 	OQS_CPU_EXT_ARM_NEON,
+	OQS_CPU_EXT_PPC64LE,
 	/* End extension list */
 	OQS_CPU_EXT_COUNT, /* Must be last */
 } OQS_CPU_EXT;

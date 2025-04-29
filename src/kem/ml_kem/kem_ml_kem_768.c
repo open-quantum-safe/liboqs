@@ -51,6 +51,13 @@ extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc(uint8_t *ct, uint8_t *ss, cons
 extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
+#if defined(OQS_ENABLE_KEM_ml_kem_768_ppc64le)
+extern int PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#endif
+
 #if defined(OQS_USE_CUPQC)
 #if defined(OQS_ENABLE_KEM_ml_kem_768_cuda)
 extern int cupqc_ml_kem_768_keypair(uint8_t *pk, uint8_t *sk);
@@ -75,6 +82,16 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair_derand(uint8_t *public_key, uint8_
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand(public_key, secret_key, seed);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
+	}
+#endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_KEM_ml_kem_768_ppc64le)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_PPC64LE)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_keypair_derand(public_key, secret_key, seed);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
@@ -111,6 +128,16 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair(uint8_t *public_key, uint8_t *secr
 		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_KEM_ml_kem_768_ppc64le)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_PPC64LE)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_keypair(public_key, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair(public_key, secret_key);
 #endif
@@ -140,6 +167,16 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_encaps(uint8_t *ciphertext, uint8_t *share
 		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_KEM_ml_kem_768_ppc64le)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_PPC64LE)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_enc(ciphertext, shared_secret, public_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc(ciphertext, shared_secret, public_key);
+	}
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc(ciphertext, shared_secret, public_key);
 #endif
@@ -164,6 +201,16 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_decaps(uint8_t *shared_secret, const uint8
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec(shared_secret, ciphertext, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec(shared_secret, ciphertext, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_KEM_ml_kem_768_ppc64le)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_PPC64LE)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec(shared_secret, ciphertext, secret_key);
