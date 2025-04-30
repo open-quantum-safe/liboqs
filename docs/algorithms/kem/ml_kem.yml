@@ -22,7 +22,7 @@ primary-upstream:
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
   cupqc-cuda:
-    source: https://github.com/praveksharma/cupqc-mlkem/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
+    source: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: ML-KEM-512

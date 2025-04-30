@@ -41,7 +41,7 @@ upstreams:
     preserve_folder_structure: True
   -
     name: cupqc
-    git_url: https://github.com/praveksharma/cupqc-mlkem.git
+    git_url: https://github.com/open-quantum-safe/liboqs-cupqc-meta.git
     git_branch: main
     git_commit: b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     kem_meta_path: '{pretty_name_full}_META.yml'
@@ -142,6 +142,7 @@ kems:
     name: hqc
     default_implementation: clean
     upstream_location: pqclean
+    disable_by_default: True
     schemes:
       -
         scheme: "128"

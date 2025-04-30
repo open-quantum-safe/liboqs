@@ -207,11 +207,14 @@ endif()
 
 if(MINGW OR MSYS OR CYGWIN)
     set(OQS_USE_PTHREADS OFF)
-    add_compile_options(-Wno-maybe-uninitialized)
+    # Apply -Wno-maybe-uninitialized only for GCC
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+        add_compile_options(-Wno-maybe-uninitialized)
+    endif()
     if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.13.0")
         add_link_options(-Wl,--stack,16777216)
     else()
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,1677216")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,16777216")
     endif()
 endif()
 
