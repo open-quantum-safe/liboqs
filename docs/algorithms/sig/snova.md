@@ -6,7 +6,7 @@
 - **Authors' website**: https://snova.pqclab.org/
 - **Specification version**: Round 2.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/vacuas/SNOVA/commit/4469e166f675126c0378e15462eaad6b02b1f1bf
+  - **Source**: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
   - **Implementation license (SPDX-Identifier)**: MIT
 
 
@@ -73,9 +73,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -93,9 +93,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -103,9 +103,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -113,9 +113,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -123,9 +123,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -133,9 +133,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -143,9 +143,9 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | False                                          | True                 |
-| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | False                                          | True                 |
+| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

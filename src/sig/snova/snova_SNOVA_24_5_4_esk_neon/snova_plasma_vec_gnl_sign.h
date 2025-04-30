@@ -1,5 +1,5 @@
 /**
- * VTL version for any l_SNOVA.
+ * CT version for any l_SNOVA.
  */
 
 #ifndef PLASMA_GNL_VECTOR_SIGN_H
@@ -11,130 +11,58 @@
 
 
 void calc_LR_J_vtl(
-    uint8_t L_J_nibble[m_SNOVA][alpha_SNOVA][rank_next2 / 2][vtl_v_len * VEC_LENGTH],
-    uint8_t R_tr_J[m_SNOVA][alpha_SNOVA][rank_next2][vtl_v_len * VEC_LENGTH],
-    uint8_t R_tr_J_nibble[m_SNOVA][alpha_SNOVA][rank_next2 / 2][vtl_v_len * VEC_LENGTH],
+    uint8_t L_J[m_SNOVA][alpha_SNOVA][rank][vtl_v_len * VEC_LENGTH],
+    uint8_t R_tr_J[m_SNOVA][alpha_SNOVA][rank][vtl_v_len * VEC_LENGTH],
     Aalpha_t Aalpha,
     Balpha_t Balpha,
     Qalpha1_t Qalpha1,
     Qalpha2_t Qalpha2,
     gf16m_t *X_in_GF16Matrix) {
 
-	VECTOR X_J[rank][vtl_v_len] = {0};
-	VECTOR X_tr_J[rank][vtl_v_len] = {0};
+	alignas(VEC_LENGTH) VECTOR X_J[rank][vtl_v_len];
+	alignas(VEC_LENGTH) VECTOR X_tr_J[rank][vtl_v_len];
 
 	jogressMatrix_vector((VECTOR *)X_J, (uint8_t *)X_in_GF16Matrix, 1, v_SNOVA);
 	jogressTrMatrix_vector((VECTOR *)X_tr_J, (uint8_t *)X_in_GF16Matrix, 1, v_SNOVA);
 
 	// calc LR
 	for (int mi = 0; mi < m_SNOVA; ++mi) {
-		VECTOR AxS_tr_256[alpha_SNOVA_next2][rank][vtl_v_len] = {0};
-		VECTOR Q2xS_tr_256[alpha_SNOVA_next2][rank][vtl_v_len] = {0};
-
-		// A and Q2, vtl 2 alpha set end 0
-		gf16m_t Aalpha_vtl[alpha_SNOVA_next2] = {0};
-		gf16m_t Qalpha2_vtl[alpha_SNOVA_next2] = {0};
-		memcpy((uint8_t *)Aalpha_vtl, (uint8_t *)(Aalpha[mi]), sizeof(Aalpha[mi]));
-		memcpy((uint8_t *)Qalpha2_vtl, (uint8_t *)(Qalpha2[mi]), sizeof(Qalpha2[mi]));
-
-		for (int alpha = 0; alpha < alpha_SNOVA; alpha += 2) {
-			VECTOR AxS_256[rank][vtl_v_len] = {0};
-			VECTOR Q2xS_256[rank][vtl_v_len] = {0};
-
-			for (int ni = 0; ni < rank; ++ni) {
-				for (int nj = 0; nj < rank; ++nj) {
-					VECTOR k1_lh = mtk2_16[get_gf16m(Aalpha_vtl[alpha], ni, nj) | (get_gf16m(Aalpha_vtl[alpha + 1], ni, nj) << 4)];
-					VECTOR k2_lh = mtk2_16[get_gf16m(Qalpha2_vtl[alpha], ni, nj) | (get_gf16m(Qalpha2_vtl[alpha + 1], ni, nj) << 4)];
-					for (int nk = 0; nk < vtl_v_len; ++nk) {
-						AxS_256[ni][nk] ^= VEC_SHUFFLE(k1_lh, X_tr_J[nj][nk]);
-						Q2xS_256[ni][nk] ^= VEC_SHUFFLE(k2_lh, X_J[nj][nk]);
-					}
-				}
-			}
-			jogressMatrixTr_vector((VECTOR *)AxS_tr_256[alpha], (VECTOR *)AxS_256, 1, v_SNOVA);
-			jogressMatrixTr_vector((VECTOR *)Q2xS_tr_256[alpha], (VECTOR *)Q2xS_256, 1, v_SNOVA);
-
-			// nibble splite
-			for (int ni = 0; ni < rank; ++ni) {
-				for (int nk = 0; nk < vtl_v_len; ++nk) {
-					AxS_tr_256[alpha + 1][ni][nk] = (AxS_tr_256[alpha][ni][nk] >> 4) & l_mask;
-					AxS_tr_256[alpha][ni][nk] &= l_mask;
-
-					Q2xS_tr_256[alpha + 1][ni][nk] = (Q2xS_tr_256[alpha][ni][nk] >> 4) & l_mask;
-					Q2xS_tr_256[alpha][ni][nk] &= l_mask;
-				}
-			}
-			SNOVA_CLEAR(AxS_256);
-			SNOVA_CLEAR(Q2xS_256);
-		}
-
 		for (int alpha = 0; alpha < alpha_SNOVA; ++alpha) {
-			int mj = i_prime(mi, alpha);
-			VECTOR L_tr_J_256[rank][vtl_v_len] = {0};
-			for (int ni = 0; ni < rank_floor2; ni += 2) {
-				VECTOR *R_tr_J_256 = (VECTOR *)R_tr_J[mj][alpha][ni];
+			int mi_prime = i_prime_inv(mi, alpha);
+
+			alignas(VEC_LENGTH) VECTOR AxS_256[rank][vtl_v_len] = {0};
+			alignas(VEC_LENGTH) VECTOR AxS_tr_256[rank][vtl_v_len] = {0};
+			alignas(VEC_LENGTH) VECTOR Q2xS_256[rank][vtl_v_len] = {0};
+			alignas(VEC_LENGTH) VECTOR Q2xS_tr_256[rank][vtl_v_len] = {0};
+			alignas(VEC_LENGTH) VECTOR L_tr_J_256[rank][vtl_v_len] = {0};
+
+			for (int ni = 0; ni < rank; ++ni) {
 				for (int nj = 0; nj < rank; ++nj) {
-					VECTOR k1_lh = mtk2_16[get_gf16m(Qalpha1[mi][alpha], ni, nj) ^ (get_gf16m(Qalpha1[mi][alpha], ni + 1, nj) << 4)];
-					VECTOR k2_lh = mtk2_16[get_gf16m(Balpha[mi][alpha], nj, ni) ^ (get_gf16m(Balpha[mi][alpha], nj, ni + 1) << 4)];
+					VECTOR k1 = mtk2_16[get_gf16m(Aalpha[mi_prime][alpha], ni, nj)];
+					VECTOR k2 = mtk2_16[get_gf16m(Qalpha2[mi_prime][alpha], ni, nj)];
 					for (int nk = 0; nk < vtl_v_len; ++nk) {
-						L_tr_J_256[ni][nk] ^= VEC_SHUFFLE(k1_lh, AxS_tr_256[alpha][nj][nk]);
-						R_tr_J_256[nk] ^= VEC_SHUFFLE(k2_lh, Q2xS_tr_256[alpha][nj][nk]);
+						AxS_256[ni][nk] ^= VEC_SHUFFLE(k1, X_tr_J[nj][nk]);
+						Q2xS_256[ni][nk] ^= VEC_SHUFFLE(k2, X_J[nj][nk]);
 					}
 				}
 			}
+			jogressMatrixTr_vector((VECTOR *)AxS_tr_256, (VECTOR *)AxS_256, 1, v_SNOVA);
+			jogressMatrixTr_vector((VECTOR *)Q2xS_tr_256, (VECTOR *)Q2xS_256, 1, v_SNOVA);
 
-#if rank % 2 //  rank is odd, use vl no vtl(vectorized look-up), 
-			VECTOR *R_tr_J_256_last = (VECTOR *)R_tr_J[mj][alpha][rank_floor2];
-			for (int nj = 0; nj < rank; ++nj) {
-				VECTOR k1_lh = mtk2_16[get_gf16m(Qalpha1[mi][alpha], rank_floor2, nj)];
-				VECTOR k2_lh = mtk2_16[get_gf16m(Balpha[mi][alpha], nj, rank_floor2)];
-				for (int nk = 0; nk < vtl_v_len; ++nk) {
-					L_tr_J_256[rank_floor2][nk] ^= VEC_SHUFFLE(k1_lh, AxS_tr_256[alpha][nj][nk]);
-					R_tr_J_256_last[nk] ^= VEC_SHUFFLE(k2_lh, Q2xS_tr_256[alpha][nj][nk]);
+			for (int ni = 0; ni < rank; ++ni) {
+				for (int nj = 0; nj < rank; ++nj) {
+					VECTOR k1 = mtk2_16[get_gf16m(Qalpha1[mi_prime][alpha], ni, nj)];
+					VECTOR k2 = mtk2_16[get_gf16m(Balpha[mi_prime][alpha], nj, ni)];
+					for (int nk = 0; nk < vtl_v_len; ++nk) {
+						VECTOR *R_tr_J_256 = (VECTOR *)R_tr_J[mi][alpha][ni];
+						L_tr_J_256[ni][nk] ^= VEC_SHUFFLE(k1, AxS_tr_256[nj][nk]);
+						R_tr_J_256[nk] ^= VEC_SHUFFLE(k2, Q2xS_tr_256[nj][nk]);
+					}
 				}
 			}
-#endif
-
-			// nibble splite
-			for (int ni = 0; ni < rank_floor2; ni += 2) {
-				for (int nk = 0; nk < vtl_v_len; ++nk) {
-					VECTOR *R_tr_J_256_l = (VECTOR *)R_tr_J[mj][alpha][ni];
-					VECTOR *R_tr_J_256_h = (VECTOR *)R_tr_J[mj][alpha][ni + 1];
-					L_tr_J_256[ni + 1][nk] = (L_tr_J_256[ni][nk] >> 4) & l_mask;
-					L_tr_J_256[ni][nk] &= l_mask;
-
-					R_tr_J_256_h[nk] = (R_tr_J_256_l[nk] >> 4) & l_mask;
-					R_tr_J_256_l[nk] &= l_mask;
-				}
-			}
-
-			alignas(VEC_LENGTH) uint8_t L_J[rank_next2][vtl_v_len * VEC_LENGTH] = {0};
-			jogressMatrixTr_vector((VECTOR *)L_J, (VECTOR *)L_tr_J_256, 1, v_SNOVA);
-
-			// nibble L_J.
-			for (int ni = 0; ni < rank; ni += 2) {
-				VECTOR *L_J_l_256 = (VECTOR *)L_J[ni];
-				VECTOR *L_J_h_256 = (VECTOR *)L_J[ni + 1];
-				VECTOR *L_J_256 = (VECTOR *)L_J_nibble[mj][alpha][ni / 2];
-				for (int nk = 0; nk < vtl_v_len; ++nk) {
-					L_J_256[nk] = L_J_l_256[nk] ^ (L_J_h_256[nk] << 4);
-				}
-
-				VECTOR *R_tr_J_l_256 = (VECTOR *)R_tr_J[mj][alpha][ni];
-				VECTOR *R_tr_J_h_256 = (VECTOR *)R_tr_J[mj][alpha][ni + 1];
-				VECTOR *R_tr_J_256 = (VECTOR *)R_tr_J_nibble[mj][alpha][ni / 2];
-				for (int nk = 0; nk < vtl_v_len; ++nk) {
-					R_tr_J_256[nk] = R_tr_J_l_256[nk] ^ (R_tr_J_h_256[nk] << 4);
-				}
-			}
-			SNOVA_CLEAR(L_tr_J_256);
-			SNOVA_CLEAR(L_J);
+			jogressMatrixTr_vector((VECTOR *)L_J[mi][alpha], (VECTOR *)L_tr_J_256, 1, v_SNOVA);
 		}
-		SNOVA_CLEAR(AxS_tr_256);
-		SNOVA_CLEAR(Q2xS_tr_256);
 	}
-	SNOVA_CLEAR(X_J);
-	SNOVA_CLEAR(X_tr_J);
 }
 
 /**
@@ -149,11 +77,12 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 	alignas(VEC_LENGTH) uint8_t Gauss[m_SNOVA * lsq_SNOVA][GAUSS_ROW_mult32];
 
 	gf16m_t X_in_GF16Matrix[n_SNOVA] = {0};
+	gf16m_t Fvv_in_GF16Matrix[m_SNOVA];
 	gf16_t hash_in_GF16[m_SNOVA * lsq_SNOVA];
 	gf16m_t signature_in_GF16Matrix[n_SNOVA];
+
 	uint8_t signed_hash[bytes_hash];
 	uint8_t vinegar_in_byte[(v_SNOVA * lsq_SNOVA + 1) >> 1];
-
 	int flag_redo = 1;
 	uint8_t num_sign = 0;
 
@@ -163,16 +92,7 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 	convert_bytes_to_GF16s(signed_hash, hash_in_GF16, GF16s_hash);
 
 	do {
-		gf16m_t Fvv_in_GF16Matrix[m_SNOVA];
-		alignas(VEC_LENGTH) uint8_t L_J_nibble[m_SNOVA][alpha_SNOVA][rank_next2 / 2][vtl_v_len * VEC_LENGTH] = {0};
-		alignas(VEC_LENGTH) uint8_t R_tr_J[m_SNOVA][alpha_SNOVA][rank_next2][vtl_v_len * VEC_LENGTH] = {0};
-		alignas(VEC_LENGTH) uint8_t R_tr_J_nibble[m_SNOVA][alpha_SNOVA][rank_next2 / 2][vtl_v_len * VEC_LENGTH] = {0};
-		gf16m_t F21_vo[v_SNOVA][o_SNOVA];
-		alignas(VEC_LENGTH) uint8_t Temp1[o_SNOVA * l_SNOVA * lsq_SNOVA * vtl_mainRow_x_rank(o_SNOVA)] = {0};
-		alignas(VEC_LENGTH) uint8_t Temp2[o_SNOVA * l_SNOVA * lsq_SNOVA * vtl_mainRow_x_rank(o_SNOVA)] = {0};
-		VECTOR Fvv_256[m_SNOVA][rank][rank] = {0};
-
-		memset(Gauss, 0, m_SNOVA * lsq_SNOVA * GAUSS_ROW_mult32);
+		memset(Gauss, 0, sizeof(Gauss));
 		num_sign++;
 		if (num_sign == 255) {
 			// Probability of getting here is about 2^{-1020}
@@ -195,82 +115,72 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 		Keccak_HashSqueeze(&hashInstance, vinegar_in_byte, 8 * ((v_SNOVA * lsq_SNOVA + 1) >> 1));
 
 		convert_bytes_to_GF16s(vinegar_in_byte, (uint8_t *)X_in_GF16Matrix, v_SNOVA * lsq_SNOVA);
-		calc_LR_J_vtl(L_J_nibble, R_tr_J, R_tr_J_nibble, Aalpha, Balpha, Qalpha1, Qalpha2, X_in_GF16Matrix);
 
-		// ------ test END
+		alignas(VEC_LENGTH) uint8_t L_J[m_SNOVA][alpha_SNOVA][rank][vtl_v_len * VEC_LENGTH] = {0};
+		alignas(VEC_LENGTH) uint8_t R_tr_J[m_SNOVA][alpha_SNOVA][rank][vtl_v_len * VEC_LENGTH] = {0};
+
+		calc_LR_J_vtl(L_J, R_tr_J, Aalpha, Balpha, Qalpha1, Qalpha2, X_in_GF16Matrix);
+
 		for (int mi = 0; mi < m_SNOVA; ++mi) {
 			gf16m_set_zero(Fvv_in_GF16Matrix[mi]);
 		}
-
 		for (int mi = 0; mi < m_SNOVA; ++mi) {
 			VECTOR F11_J_256[v_SNOVA * rank][vtl_v_len] = {0};
 			jogressMatrix_vector((VECTOR *)F11_J_256, (uint8_t *)F11[mi], v_SNOVA, v_SNOVA);
+
 			for (int alpha = 0; alpha < alpha_SNOVA; ++alpha) {
 				int mi_prime = i_prime_inv(mi, alpha);
 				VECTOR LJxF11J_256[rank][vtl_v_len] = {0};
-				VECTOR LJxF11J_256_nibble[rank_next2 / 2][vtl_v_len] = {0};
-
-				for (int vi = 0; vi < rank_next2 / 2; ++vi) {
+				for (int vi = 0; vi < rank; ++vi) {
 					for (int vj = 0; vj < v_SNOVA * rank; ++vj) {
-						VECTOR k_lh = mtk2_16[L_J_nibble[mi][alpha][vi][vj]];
+						VECTOR k = vtl_ct_multtab(L_J[mi][alpha][vi][vj]);
 						for (int vk = 0; vk < vtl_v_len; ++vk) {
-							LJxF11J_256_nibble[vi][vk] ^= VEC_SHUFFLE(k_lh, F11_J_256[vj][vk]);
+							LJxF11J_256[vi][vk] ^= VEC_SHUFFLE(k, F11_J_256[vj][vk]);
 						}
 					}
 				}
 
-				for (int ni = 0; ni < rank_floor2; ni += 2) {
-					VECTOR *LJxF11J_256_nibble_l = LJxF11J_256[ni];
-					VECTOR *LJxF11J_256_nibble_h = LJxF11J_256[ni + 1];
-					for (int nj = 0; nj < vtl_v_len; ++nj) {
-						LJxF11J_256_nibble_l[nj] = LJxF11J_256_nibble[ni / 2][nj] & l_mask;
-						LJxF11J_256_nibble_h[nj] = ((LJxF11J_256_nibble[ni / 2][nj] >> 4) & l_mask);
-					}
-				}
-
-#if rank % 2 // rank is odd
-				for (int nj = 0; nj < vtl_v_len; ++nj) {
-					LJxF11J_256[rank_floor2][nj] = LJxF11J_256_nibble[rank_floor2 / 2][nj];
-				}
-#endif
-
+				uint8_t LJxF11JxRJ[rank][rank] = {0};
 				for (int vi = 0; vi < rank; ++vi) {
 					for (int vj = 0; vj < rank; ++vj) {
 						VECTOR *R_tr_J_256 = (VECTOR *)R_tr_J[mi][alpha][vj];
 						VECTOR tmp_256 = {0};
 						for (int vk = 0; vk < vtl_v_len; ++vk) {
-							gf16_32_mul_32_add(&(LJxF11J_256[vi][vk]), &(R_tr_J_256[vk]), (&tmp_256));
+							gf16_32_mul_32_add((LJxF11J_256[vi] + vk), (R_tr_J_256 + vk), (&tmp_256));
 						}
 
-						Fvv_256[mi_prime][vi][vj] ^= tmp_256;
+						LJxF11JxRJ[vi][vj] ^= horizontal_xor_256(tmp_256);
 					}
 				}
-				SNOVA_CLEAR(LJxF11J_256);
-				SNOVA_CLEAR(LJxF11J_256_nibble);
-			}
-			SNOVA_CLEAR(F11_J_256);
-		}
 
-		for (int mi = 0; mi < m_SNOVA; ++mi) {
-			for (int ni = 0; ni < rank; ++ni) {
-				for (int nj = 0; nj < rank; ++nj) {
-					set_gf16m(Fvv_in_GF16Matrix[mi], ni, nj, horizontal_xor_256(Fvv_256[mi][ni][nj]));
+				// hash_in_GF16Matrix[mi] += LJxPJxRJ
+				for (int ni = 0; ni < rank; ++ni) {
+					for (int nj = 0; nj < rank; ++nj) {
+						gf16_t t = get_gf16m(Fvv_in_GF16Matrix[mi_prime], ni, nj);
+						set_gf16m(Fvv_in_GF16Matrix[mi_prime], ni, nj, t ^ LJxF11JxRJ[ni][nj]);
+					}
 				}
 			}
 		}
 
 		// add to the last column of Gauss matrix
-		for (int mi = 0; mi < m_SNOVA; ++mi) {
+		for (int i = 0; i < m_SNOVA; ++i) {
 			for (int j = 0; j < rank; ++j) {
 				for (int k = 0; k < rank; ++k) {
-					Gauss[mi * lsq_SNOVA + j * rank + k][m_SNOVA * lsq_SNOVA] ^= Fvv_in_GF16Matrix[mi][j * l_SNOVA + k];
+					int index1 = i * lsq_SNOVA + j * rank + k;
+					int index2 = m_SNOVA * lsq_SNOVA;
+					Gauss[index1][index2] = gf16_get_add(Gauss[index1][index2], get_gf16m(Fvv_in_GF16Matrix[i], j, k));
 				}
 			}
 		}
 
 		// compute the coefficients of Xo and put into Gauss matrix and compute
 		// the coefficients of Xo^t and add into Gauss matrix
+		alignas(VEC_LENGTH) uint8_t Temp1[o_SNOVA * l_SNOVA * lsq_SNOVA * vtl_mainRow_x_rank(o_SNOVA)] = {0};
+		alignas(VEC_LENGTH) uint8_t Temp2[o_SNOVA * l_SNOVA * lsq_SNOVA * vtl_mainRow_x_rank(o_SNOVA)] = {0};
+
 		for (int mi = 0; mi < m_SNOVA; ++mi) {
+			gf16m_t F21_vo[v_SNOVA][o_SNOVA];
 			VECTOR F12_J_256[v_SNOVA * rank][vtl_o_len] = {0};
 			VECTOR F21_vo_tr_J_256[v_SNOVA * rank][vtl_o_len] = {0};
 
@@ -288,32 +198,15 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 				int mi_prime_inv = i_prime_inv(mi, alpha);
 
 				VECTOR LJxF12J_256[rank][vtl_o_len] = {0};
-				VECTOR LJxF12J_256_nibble[rank_next2 / 2][vtl_o_len] = {0};
 
-				for (int vj = 0; vj < v_SNOVA * rank; ++vj) {
-					for (int vi = 0; vi < rank_next2 / 2; ++vi) {
-						VECTOR k_lh = mtk2_16[L_J_nibble[mi][alpha][vi][vj]];
+				for (int vi = 0; vi < rank; ++vi) {
+					for (int vj = 0; vj < v_SNOVA * rank; ++vj) {
+						VECTOR k = vtl_ct_multtab(L_J[mi][alpha][vi][vj]);
 						for (int oi = 0; oi < vtl_o_len; ++oi) {
-							LJxF12J_256_nibble[vi][oi] ^= VEC_SHUFFLE(k_lh, F12_J_256[vj][oi]);
+							LJxF12J_256[vi][oi] ^= VEC_SHUFFLE(k, F12_J_256[vj][oi]);
 						}
 					}
 				}
-
-				// nibble splite, **PS. If rank is odd, the last value is handled separately.**
-				for (int vi = 0; vi < rank_floor2; vi += 2) {
-					VECTOR *LJxF12J_256_nibble_l = LJxF12J_256[vi];
-					VECTOR *LJxF12J_256_nibble_h = LJxF12J_256[vi + 1];
-					for (int vj = 0; vj < vtl_o_len; ++vj) {
-						LJxF12J_256_nibble_l[vj] = LJxF12J_256_nibble[vi / 2][vj] & l_mask;
-						LJxF12J_256_nibble_h[vj] = ((LJxF12J_256_nibble[vi / 2][vj] >> 4) & l_mask);
-					}
-				}
-
-#if rank % 2  // rank is odd
-				for (int nj = 0; nj < vtl_o_len; ++nj) {
-					LJxF12J_256[rank_floor2][nj] = LJxF12J_256_nibble[rank_floor2 / 2][nj];
-				}
-#endif
 
 				VECTOR LJxF12J_tr_256[rank][vtl_o_len] = {0};
 				VECTOR LJxF12JxQJ_tr_256[rank][vtl_o_len] = {0};
@@ -344,34 +237,16 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 
 				// ------- ^^^ F12    F22 vvv -------
 				VECTOR F21JxRJ_256[rank][vtl_o_len] = {0};
-
 				VECTOR RTRJ_x_F21TRJ_256[rank][vtl_o_len] = {0};
-				VECTOR RTRJ_x_F21TRJ_256_nibble[rank_next2 / 2][vtl_o_len] = {0};
 
-				for (int vj = 0; vj < v_SNOVA * rank; ++vj) {
-					for (int vi = 0; vi < rank_next2 / 2; ++vi) {
-						VECTOR k_lh = mtk2_16[R_tr_J_nibble[mi][alpha][vi][vj]];
+				for (int vi = 0; vi < rank; ++vi) {
+					for (int vj = 0; vj < v_SNOVA * rank; ++vj) {
+						VECTOR k = vtl_ct_multtab(R_tr_J[mi][alpha][vi][vj]);
 						for (int oi = 0; oi < vtl_o_len; ++oi) {
-							RTRJ_x_F21TRJ_256_nibble[vi][oi] ^= VEC_SHUFFLE(k_lh, F21_vo_tr_J_256[vj][oi]);
+							RTRJ_x_F21TRJ_256[vi][oi] ^= VEC_SHUFFLE(k, F21_vo_tr_J_256[vj][oi]);
 						}
 					}
 				}
-
-				for (int vi = 0; vi < rank_floor2; vi += 2) {
-					VECTOR *RTRJ_x_F21TRJ_256_nibble_l = RTRJ_x_F21TRJ_256[vi];
-					VECTOR *RTRJ_x_F21TRJ_256_nibble_h = RTRJ_x_F21TRJ_256[vi + 1];
-					for (int vj = 0; vj < vtl_o_len; ++vj) {
-						RTRJ_x_F21TRJ_256_nibble_l[vj] = RTRJ_x_F21TRJ_256_nibble[vi / 2][vj] & l_mask;
-						RTRJ_x_F21TRJ_256_nibble_h[vj] = ((RTRJ_x_F21TRJ_256_nibble[vi / 2][vj] >> 4) & l_mask);
-					}
-				}
-
-#if rank % 2 // rank is odd
-				for (int nj = 0; nj < vtl_o_len; ++nj) {
-					RTRJ_x_F21TRJ_256[rank_floor2][nj] = RTRJ_x_F21TRJ_256_nibble[rank_floor2 / 2][nj];
-				}
-#endif
-
 				jogressMatrixTr_vector((VECTOR *)F21JxRJ_256, (VECTOR *)RTRJ_x_F21TRJ_256, 1, o_SNOVA);
 
 				VECTOR Q1xF21JxRJ_256[rank][vtl_o_len] = {0};
@@ -396,20 +271,7 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 								    VEC_SHUFFLE(k, AJ_256[(tj1 * vtl_mainRow_x_rank32(o_SNOVA)) + toi]);
 							}
 					}
-
-				SNOVA_CLEAR(LJxF12J_256);
-				SNOVA_CLEAR(LJxF12J_256_nibble);
-				SNOVA_CLEAR(LJxF12J_tr_256);
-				SNOVA_CLEAR(LJxF12JxQJ_tr_256);
-
-				SNOVA_CLEAR(F21JxRJ_256);
-				SNOVA_CLEAR(RTRJ_x_F21TRJ_256);
-				SNOVA_CLEAR(RTRJ_x_F21TRJ_256_nibble);
-				SNOVA_CLEAR(Q1xF21JxRJ_256);
 			}
-
-			SNOVA_CLEAR(F12_J_256);
-			SNOVA_CLEAR(F21_vo_tr_J_256);
 		}
 
 		for (int mi_prime_inv = 0; mi_prime_inv < o_SNOVA; ++mi_prime_inv)
@@ -435,14 +297,14 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 			int swap = ct_gf16_is_not_zero(Gauss[mi2][mi2]) - 1;
 			for (int j2 = mi2 + 1; j2 < m_SNOVA * lsq_SNOVA; ++j2) {
 #if __ARM_NEON
-				int32x4_t swap256 = vld1q_dup_s32(&swap);
+				int8x16_t swap256 = vld1q_dup_s8((int8_t *)&swap);
 #else
 				VECTOR swap256 = _mm256_set1_epi32(swap);
 #endif
 				VECTOR *gdest = (VECTOR *)&Gauss[mi2][0];
 				VECTOR *gsource = (VECTOR *)&Gauss[j2][0];
 				for (int k2 = 0; k2 < GAUSS_ROW32; ++k2) {
-					gdest[k2] ^= gsource[k2] & (VECTOR)swap256;
+					gdest[k2] ^= gsource[k2] & swap256;
 				}
 
 				swap = ct_gf16_is_not_zero(Gauss[mi2][mi2]) - 1;
@@ -475,13 +337,9 @@ int sign_digest_core_gnl_vtl(uint8_t *pt_signature, const uint8_t *digest,
 
 		if (!flag_redo) {
 			SNOVA_CLEAR(Fvv_in_GF16Matrix);
-			SNOVA_CLEAR(L_J_nibble);
 			SNOVA_CLEAR(R_tr_J);
-			SNOVA_CLEAR(R_tr_J_nibble);
 			SNOVA_CLEAR(Temp1);
 			SNOVA_CLEAR(Temp2);
-			SNOVA_CLEAR(F21_vo);
-			SNOVA_CLEAR(Fvv_256);
 		}
 	} while (flag_redo);
 
