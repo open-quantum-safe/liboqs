@@ -334,9 +334,9 @@ mlk_intt_ppc:
 	lxv	0, 0(8)
 
 	# 16
-	#xxspltiw 1, 16		# for power9 and above
 	vspltisw 1, 8
-	vadduwm  1, 1, 1
+	vadduwm 1, 1, 1
+	xxlor 1, 32+1, 32+1
 
 	vspltish V_QI1, 1		# *QINV
 	vspltish V_QI2, 2		# *QINV
@@ -357,9 +357,9 @@ mlk_intt_ppc:
 	lxv	32+0, 0(9)	# V20159
 	lxv	7, 0(10)	# V_25
 
-	#xxspltiw 8, 26		# for power9 and above
 	vspltisw 8, 13
-	vadduwm  8, 8, 8
+	vadduwm 8, 8, 8
+	xxlor 8, 32+8, 32+8
 
 	# zetas array
 	#addis	14,2,.izeta63@toc@ha
