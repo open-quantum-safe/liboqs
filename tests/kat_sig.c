@@ -612,6 +612,126 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_24_5_4")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_24_5_4_SHAKE")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_24_5_4_esk")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_24_5_4_SHAKE_esk")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_37_17_2")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_25_8_3")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_56_25_2")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_49_11_3")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_37_8_4")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_24_5_5")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_60_10_4")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "SNOVA_29_6_5")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
 	} else {
 		return OQS_ERROR;

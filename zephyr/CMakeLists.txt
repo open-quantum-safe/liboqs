@@ -147,6 +147,18 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_CROSS OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_SNOVA)
+                set(OQS_ENABLE_SIG_SNOVA ON)
+                set(OQS_ENABLE_SIG_snova_SNOVA_56_25_2 OFF)
+                set(OQS_ENABLE_SIG_snova_SNOVA_49_11_3 OFF)
+                set(OQS_ENABLE_SIG_snova_SNOVA_37_8_4 OFF)
+                set(OQS_ENABLE_SIG_snova_SNOVA_60_10_4 OFF)
+                set(OQS_ENABLE_SIG_snova_SNOVA_24_5_5 OFF)
+                set(OQS_ENABLE_SIG_snova_SNOVA_29_6_5 OFF)
+        else()
+                set(OQS_ENABLE_SIG_SNOVA OFF)
+        endif()
+
         # Add the actual liboqs targets
         add_subdirectory(.. build)
 

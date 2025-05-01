@@ -85,6 +85,13 @@ upstreams:
     git_commit: 7e0832b6732a476119742c4acabd11b7c767aefb
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
+  -
+    name: snova
+    git_url: https://github.com/vacuas/SNOVA-OQS
+    git_branch: main
+    git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+    sig_scheme_path: '.'
+    sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
 kems:
   -
     name: classic_mceliece
@@ -522,3 +529,68 @@ sigs:
         pqclean_scheme: ov_V_pkc_skc
         pretty_name_full: OV-V-pkc-skc
         signed_msg_order: msg_then_sig
+  -
+    name: snova
+    default_implementation: opt
+    upstream_location: snova
+    schemes:
+      -
+        scheme: "SNOVA_24_5_4"
+        pqclean_scheme: SNOVA_24_5_4
+        pretty_name_full: SNOVA_24_5_4
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_24_5_4_SHAKE"
+        pqclean_scheme: SNOVA_24_5_4_SHAKE
+        pretty_name_full: SNOVA_24_5_4_SHAKE
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_24_5_4_esk"
+        pqclean_scheme: SNOVA_24_5_4_esk
+        pretty_name_full: SNOVA_24_5_4_esk
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_24_5_4_SHAKE_esk"
+        pqclean_scheme: SNOVA_24_5_4_SHAKE_esk
+        pretty_name_full: SNOVA_24_5_4_SHAKE_esk
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_37_17_2"
+        pqclean_scheme: SNOVA_37_17_2
+        pretty_name_full: SNOVA_37_17_2
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_25_8_3"
+        pqclean_scheme: SNOVA_25_8_3
+        pretty_name_full: SNOVA_25_8_3
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_56_25_2"
+        pqclean_scheme: SNOVA_56_25_2
+        pretty_name_full: SNOVA_56_25_2
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_49_11_3"
+        pqclean_scheme: SNOVA_49_11_3
+        pretty_name_full: SNOVA_49_11_3
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_37_8_4"
+        pqclean_scheme: SNOVA_37_8_4
+        pretty_name_full: SNOVA_37_8_4
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_24_5_5"
+        pqclean_scheme: SNOVA_24_5_5
+        pretty_name_full: SNOVA_24_5_5
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_60_10_4"
+        pqclean_scheme: SNOVA_60_10_4
+        pretty_name_full: SNOVA_60_10_4
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "SNOVA_29_6_5"
+        pqclean_scheme: SNOVA_29_6_5
+        pretty_name_full: SNOVA_29_6_5
+        signed_msg_order: sig_then_msg

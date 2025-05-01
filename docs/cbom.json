@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:d166c8d9-b90f-4be8-84c7-61ee76074bc4",
+  "serialNumber": "urn:uuid:c419036f-6fb1-4cf6-a6b4-a473e3c40e78",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-03-06T08:39:42.451423+00:00",
+    "timestamp": "2025-03-30T14:09:19.533630+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b44ab8540137947888c95b7f523f0e0cc249b1d8",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@630b96f49ccba9557add3e8826fb072c00d18407",
       "name": "liboqs",
-      "version": "b44ab8540137947888c95b7f523f0e0cc249b1d8"
+      "version": "630b96f49ccba9557add3e8826fb072c00d18407"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@b44ab8540137947888c95b7f523f0e0cc249b1d8",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@630b96f49ccba9557add3e8826fb072c00d18407",
       "name": "liboqs",
-      "version": "b44ab8540137947888c95b7f523f0e0cc249b1d8"
+      "version": "630b96f49ccba9557add3e8826fb072c00d18407"
     },
     {
       "type": "cryptographic-asset",
@@ -2762,6 +2762,726 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_SHAKE",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_SHAKE",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_SHAKE",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_esk:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_esk",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_esk:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_esk",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_esk:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_esk",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_SHAKE_esk",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_SHAKE_esk",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_4_SHAKE_esk",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_37_17_2:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_37_17_2",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_37_17_2:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_37_17_2",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_37_17_2:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_37_17_2",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_25_8_3:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_25_8_3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_25_8_3:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_25_8_3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_25_8_3:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_25_8_3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_56_25_2:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_56_25_2",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_56_25_2:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_56_25_2",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_56_25_2:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_56_25_2",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_49_11_3:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_49_11_3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_49_11_3:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_49_11_3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_49_11_3:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_49_11_3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_37_8_4:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_37_8_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_37_8_4:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_37_8_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_37_8_4:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_37_8_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_5:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_5:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_24_5_5:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_24_5_5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_60_10_4:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_60_10_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_60_10_4:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_60_10_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_60_10_4:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_60_10_4",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_29_6_5:generic",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_29_6_5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_29_6_5:x86_64",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_29_6_5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SNOVA_29_6_5:armv8-a",
+      "name": "SNOVA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SNOVA_29_6_5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SPHINCS+-SHA2-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
@@ -3987,7 +4707,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@b44ab8540137947888c95b7f523f0e0cc249b1d8",
+      "ref": "pkg:github/open-quantum-safe/liboqs@630b96f49ccba9557add3e8826fb072c00d18407",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -4126,6 +4846,42 @@
         "alg:ML-DSA-65:x86_64",
         "alg:ML-DSA-87:generic",
         "alg:ML-DSA-87:x86_64",
+        "alg:SNOVA_24_5_4:generic",
+        "alg:SNOVA_24_5_4:x86_64",
+        "alg:SNOVA_24_5_4:armv8-a",
+        "alg:SNOVA_24_5_4_SHAKE:generic",
+        "alg:SNOVA_24_5_4_SHAKE:x86_64",
+        "alg:SNOVA_24_5_4_SHAKE:armv8-a",
+        "alg:SNOVA_24_5_4_esk:generic",
+        "alg:SNOVA_24_5_4_esk:x86_64",
+        "alg:SNOVA_24_5_4_esk:armv8-a",
+        "alg:SNOVA_24_5_4_SHAKE_esk:generic",
+        "alg:SNOVA_24_5_4_SHAKE_esk:x86_64",
+        "alg:SNOVA_24_5_4_SHAKE_esk:armv8-a",
+        "alg:SNOVA_37_17_2:generic",
+        "alg:SNOVA_37_17_2:x86_64",
+        "alg:SNOVA_37_17_2:armv8-a",
+        "alg:SNOVA_25_8_3:generic",
+        "alg:SNOVA_25_8_3:x86_64",
+        "alg:SNOVA_25_8_3:armv8-a",
+        "alg:SNOVA_56_25_2:generic",
+        "alg:SNOVA_56_25_2:x86_64",
+        "alg:SNOVA_56_25_2:armv8-a",
+        "alg:SNOVA_49_11_3:generic",
+        "alg:SNOVA_49_11_3:x86_64",
+        "alg:SNOVA_49_11_3:armv8-a",
+        "alg:SNOVA_37_8_4:generic",
+        "alg:SNOVA_37_8_4:x86_64",
+        "alg:SNOVA_37_8_4:armv8-a",
+        "alg:SNOVA_24_5_5:generic",
+        "alg:SNOVA_24_5_5:x86_64",
+        "alg:SNOVA_24_5_5:armv8-a",
+        "alg:SNOVA_60_10_4:generic",
+        "alg:SNOVA_60_10_4:x86_64",
+        "alg:SNOVA_60_10_4:armv8-a",
+        "alg:SNOVA_29_6_5:generic",
+        "alg:SNOVA_29_6_5:x86_64",
+        "alg:SNOVA_29_6_5:armv8-a",
         "alg:SPHINCS+-SHA2-128f-simple:generic",
         "alg:SPHINCS+-SHA2-128f-simple:x86_64",
         "alg:SPHINCS+-SHA2-128s-simple:generic",
@@ -5026,6 +5782,258 @@
       "ref": "alg:ML-DSA-87:x86_64",
       "dependsOn": [
         "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_SHAKE:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_SHAKE:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_SHAKE:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_esk:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_esk:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_esk:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_37_17_2:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_37_17_2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_37_17_2:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_25_8_3:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_25_8_3:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_25_8_3:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_56_25_2:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_56_25_2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_56_25_2:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_49_11_3:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_49_11_3:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_49_11_3:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_37_8_4:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_37_8_4:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_37_8_4:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_5:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_5:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_24_5_5:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_60_10_4:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_60_10_4:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_60_10_4:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_29_6_5:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_29_6_5:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SNOVA_29_6_5:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {

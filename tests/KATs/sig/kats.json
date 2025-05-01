@@ -103,6 +103,54 @@
     "all": "dc3811ccf37ba7d13360943169ef363ff53fb612c2e1a08aef488327fd2f4bae",
     "single": "88ed517012434037b5dc0b5120020a0cb3cfff9991e3391cd3067a6251b4e724"
   },
+  "SNOVA_24_5_4": {
+    "all": "0958f4433311079eb8192fc65fddc3ca0b5f79dc22f7a2b34690741d182ccdd1",
+    "single": "2759723cf44a3122df1d243132474255302edd2c7eb492986a4150c0099fa6fa"
+  },
+  "SNOVA_24_5_4_SHAKE": {
+    "all": "e7342f429eeee11a6c692b0631f9341f50257ebbdf1615a306c94fed756f2845",
+    "single": "40f943cbf34a57ebb3b5113f94c15c93a4e2d9b7deca02aef88a6ab2554da303"
+  },
+  "SNOVA_24_5_4_SHAKE_esk": {
+    "all": "b6c92573a1bc0bb96cf46feb222fe8bb0d4f5004a6a1c3786bcbe48381fdc310",
+    "single": "5b7cb908641e564f41f27fd69d53fb8eff263d038afd2964fad57af82b291eba"
+  },
+  "SNOVA_24_5_4_esk": {
+    "all": "aa30341fa91f6db83ba9f782c603f1cd4c925e47ac0bc6d6f488e4a9393213e2",
+    "single": "a971a22090bcf3f1146f334980bec96b95046eea30c43bc5a8e3e656e339348a"
+  },
+  "SNOVA_24_5_5": {
+    "all": "5d4402e52819165f701d25f58fc2d40ec98cd2dc6ffeef80059adf21c66231a8",
+    "single": "162aa14ebb328cdfb2cc82a4803826045fffae5d4f9e3fb60059982be9920786"
+  },
+  "SNOVA_25_8_3": {
+    "all": "2a0f055d4903d5b8392ffe3c6cdd2700ce3bfbad84db9fe80946974c04840530",
+    "single": "6642f897a52e9e64942320023a857362cb4d7f8fcb590161f6997d05901012c4"
+  },
+  "SNOVA_29_6_5": {
+    "all": "f739594b4b945a6796adc21c6163fc57929e1886c40ac955c4d3d2979291df37",
+    "single": "cc2503dd8fdec3b0e78c669167f3a54322faf161a5cf9fd13a6eb95966def462"
+  },
+  "SNOVA_37_17_2": {
+    "all": "65c38c90423b5876c6124ba3a7d430bd5b7a84dfd8e522c57574cccde4ed6faa",
+    "single": "c4e94ffb5675d9d29671f935862b4823244f9a1287564bda53c9af3e443eb40b"
+  },
+  "SNOVA_37_8_4": {
+    "all": "dce9fb246004297a2f8906a6a2478b050138c4cfc9f8381a7cfe78d58e5ba108",
+    "single": "dc719f691b8e814850714ec23fcdd7103c30236bb22f7667f3ad1746871b5eaa"
+  },
+  "SNOVA_49_11_3": {
+    "all": "44b0909821acec6b41beea86c04b1679da2af034d03fcb1325b8964175a3f9ff",
+    "single": "b4c07075d58221d431bfcdae390353af21edbbc64f2250b0e5ec9e7fc6c5609d"
+  },
+  "SNOVA_56_25_2": {
+    "all": "9b73c4e03752e92aca391e69bda9673b590ca6dfee2ff151c7e48d630ddbbe2e",
+    "single": "4bf1e2dc8a80d60e21f5586ba20f977d48c5f6ae223d778548b5d4064679c3bf"
+  },
+  "SNOVA_60_10_4": {
+    "all": "b7c22da35287015006831c94ae96266de893a7ce9a221c69737ec4b4fba86aa3",
+    "single": "af9205c33972a94081067f3c84f83c1779d57860158e49418cfbec733a111798"
+  },
   "SPHINCS+-SHA2-128f-simple": {
     "all": "4437eb44516630184c3cb5d3a4392e8bb955c2bf59ad17ab3c607fb7b7285780",
     "single": "cd1e13db3a56c0a6b3486a7b12bcddfda50cf5d1e4d14d3113e6456e969b8114"

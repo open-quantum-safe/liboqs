@@ -54,5 +54,17 @@
   "SPHINCS+-SHAKE-256f-robust": ["sphincs"],
   "SPHINCS+-SHAKE-256f-simple": ["sphincs"],
   "SPHINCS+-SHAKE-256s-robust": ["sphincs"],
-  "SPHINCS+-SHAKE-256s-simple": ["sphincs"]
+  "SPHINCS+-SHAKE-256s-simple": ["sphincs"],
+  "SNOVA_24_5_4": [],
+  "SNOVA_24_5_4_SHAKE": [],
+  "SNOVA_24_5_4_SHAKE_esk": [],
+  "SNOVA_24_5_4_esk": [],
+  "SNOVA_24_5_5": [],
+  "SNOVA_25_8_3": [],
+  "SNOVA_29_6_5": [],
+  "SNOVA_37_17_2": [],
+  "SNOVA_37_8_4": [],
+  "SNOVA_49_11_3": [],
+  "SNOVA_56_25_2": [],
+  "SNOVA_60_10_4": []
 }

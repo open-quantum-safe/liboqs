@@ -1,0 +1,68 @@
+# All
+
+{
+   Processing during public key expansion
+   Memcheck:Cond
+   fun:gen_a_FqS
+   fun:gen_A_B_Q_P
+}
+
+{
+   Processing during public key expansion
+   Memcheck:Value8
+   ...
+   fun:gen_A_B_Q_P
+}
+
+# opt
+
+{
+    Restart when a signature could not be generated
+    Memcheck:Cond
+    fun:_snova_*_sign_digest_core_opt
+    fun:_snova_*_sign_digest*
+    fun:_snova_*_sign
+}
+
+# avx2
+
+{
+   Restart when a signature could not be generated
+   Memcheck:Cond
+   fun:_snova_*_sign_digest_core_gnl_vtl
+   fun:_snova_*_sign_digest*
+   fun:_snova_*_sign
+}
+
+{
+   Table lookup depending only on public data
+   Memcheck:Value8
+   fun:_snova_*_calc_LR_J_vtl
+   fun:_snova_*_sign_digest_core_gnl_vtl
+   fun:_snova_*_sign_digest*
+   fun:_snova_*_sign
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:218
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:227
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:255
+}
+
+{
+   Lookup depending on public data
+   Memcheck:Value8
+   src:snova_plasma_vec_gnl_sign.h:264
+}
