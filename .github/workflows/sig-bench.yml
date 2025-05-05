@@ -3,7 +3,7 @@ name: sig benchmark
 on:
   workflow_dispatch:
   push:
-    branches: [bench]
+    branches: [main]
 
 permissions:
   deployments: write
