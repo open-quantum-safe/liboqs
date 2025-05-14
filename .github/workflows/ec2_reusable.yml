@@ -1,0 +1,130 @@
+# SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
+
+name: ci-ec2-reusable
+permissions:
+  contents: read
+on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        description: Alternative name of instance
+        default: Graviton2
+      ec2_instance_type:
+        type: string
+        description: Type if EC2 instance to benchmark on
+        default: t4g.small
+      ec2_ami:
+        type: string
+        description: Textual description of AMI
+        default: ubuntu-latest (aarch64)
+      ec2_ami_id:
+        type: string
+        description: AMI ID
+        default: ami-096ea6a12ea24a797
+env:
+  AWS_ROLE: arn:aws:iam::382467719953:role/liboqs-ec2-github
+  AWS_REGION: us-east-2
+  AMI_UBUNTU_LATEST_X86_64: ami-0e86e20dae9224db8
+  AMI_UBUNTU_LATEST_AARCH64: ami-096ea6a12ea24a797
+jobs:
+  start-ec2-runner:
+    name: Start instance (${{ inputs.ec2_instance_type }})
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    runs-on: ubuntu-latest
+    if: ${{ always() }} # The point is to make this step non-cancellable,
+                        # avoiding race conditions where an instance is started,
+                        # but isn't yet done registering as a runner and reporting back.
+    outputs:
+      label: ${{ steps.remember-runner.outputs.label }}
+      ec2-instance-id: ${{ steps.remember-runner.outputs.ec2-instance-id }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Determine AMI ID
+        id: det_ami_id
+        run: |
+          if [[ "${{ inputs.ec2_ami }}" == "ubuntu-latest (x86_64)" ]]; then
+            AMI_ID=${{ env.AMI_UBUNTU_LATEST_X86_64 }}
+          elif [[ "${{ inputs.ec2_ami }}" == "ubuntu-latest (aarch64)" ]]; then
+            AMI_ID=${{ env.AMI_UBUNTU_LATEST_AARCH64 }}
+          elif [[ "${{ inputs.ec2_ami }}" == "ubuntu-latest (custom AMI)" ]]; then
+            AMI_ID=${{ inputs.ec2_ami_id }}
+          fi
+          echo "Using AMI ID: $AMI_ID"
+          echo "AMI_ID=$AMI_ID" >> $GITHUB_OUTPUT
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
+        with:
+          role-to-assume: ${{ env.AWS_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Start EC2 runner
+        id: start-ec2-runner-first
+        continue-on-error: true
+        uses: machulav/ec2-github-runner@a8c20fc0876503410b2b966c124abc2311984ce2 # v2.3.9
+        with:
+          mode: start
+          github-token: ${{ secrets.AWS_GITHUB_TOKEN }}
+          ec2-image-id: ${{ steps.det_ami_id.outputs.AMI_ID }}
+          ec2-instance-type: ${{ inputs.ec2_instance_type }}
+          subnet-id: subnet-0a137a20102d88813
+          security-group-id: sg-007ac1d051cca247c
+      - name: Start EC2c runner (wait before retry)
+        if: steps.start-ec2-runner-first.outcome == 'failure'
+        shell: bash
+        run: |
+          sleep 30 # Wait 30s before retrying
+          sleep $((1 + RANDOM % 30))
+      - name: Start EC2 runner (retry)
+        id: start-ec2-runner-second
+        if: steps.start-ec2-runner-first.outcome == 'failure'
+        uses: machulav/ec2-github-runner@a8c20fc0876503410b2b966c124abc2311984ce2 # v2.3.9
+        with:
+          mode: start
+          github-token: ${{ secrets.AWS_GITHUB_TOKEN }}
+          ec2-image-id: ${{ steps.det_ami_id.outputs.AMI_ID }}
+          ec2-instance-type: ${{ inputs.ec2_instance_type }}
+          subnet-id: subnet-0a137a20102d88813
+          security-group-id: sg-007ac1d051cca247c
+      - name: Remember runner
+        id: remember-runner
+        shell: bash
+        run: |
+          if [[ "${{ steps.start-ec2-runner-first.outcome }}" == "failure" ]]; then
+            echo "label=${{ steps.start-ec2-runner-second.outputs.label }}" >> "$GITHUB_OUTPUT"
+            echo "ec2-instance-id=${{ steps.start-ec2-runner-second.outputs.ec2-instance-id }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "label=${{ steps.start-ec2-runner-first.outputs.label }}" >> "$GITHUB_OUTPUT"
+            echo "ec2-instance-id=${{ steps.start-ec2-runner-first.outputs.ec2-instance-id }}" >> "$GITHUB_OUTPUT"
+          fi
+
+  tests:
+    name: Run tests
+    needs: start-ec2-runner
+    runs-on: ${{ needs.start-ec2-runner.outputs.label }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+  stop-ec2-runner:
+    name: Stop instance (${{ inputs.ec2_instance_type }})
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    needs:
+      - start-ec2-runner
+      - tests
+    runs-on: ubuntu-latest
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
+        with:
+          role-to-assume: ${{ env.AWS_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Stop EC2 runner
+        uses: machulav/ec2-github-runner@a8c20fc0876503410b2b966c124abc2311984ce2 # v2.3.9
+        with:
+          mode: stop
+          github-token: ${{ secrets.AWS_GITHUB_TOKEN }}
+          label: ${{ needs.start-ec2-runner.outputs.label }}
+          ec2-instance-id: ${{ needs.start-ec2-runner.outputs.ec2-instance-id }}
