@@ -36,3 +36,5 @@ jobs:
     needs: basic-checks
     uses: ./.github/workflows/ec2_reusable.yml
     secrets: inherit
+    permissions:
+      id-token: write
