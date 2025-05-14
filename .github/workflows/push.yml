@@ -37,4 +37,5 @@ jobs:
     uses: ./.github/workflows/ec2_reusable.yml
     secrets: inherit
     permissions:
+      contents: read
       id-token: write
