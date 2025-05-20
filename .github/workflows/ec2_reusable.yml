@@ -25,8 +25,8 @@ on:
 env:
   AWS_ROLE: arn:aws:iam::382467719953:role/liboqs-ec2-github
   AWS_REGION: us-east-2
-  AMI_UBUNTU_LATEST_X86_64: ami-0e86e20dae9224db8
-  AMI_UBUNTU_LATEST_AARCH64: ami-096ea6a12ea24a797
+  AMI_UBUNTU_LATEST_X86_64: ami-0cbf25dcbfefddd8b
+  AMI_UBUNTU_LATEST_AARCH64: ami-0684db19b312ab1dc
 jobs:
   start-ec2-runner:
     name: Start instance (${{ inputs.ec2_instance_type }})
