@@ -2,8 +2,7 @@ name: sig benchmark
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
+  workflow_call:
 
 permissions:
   deployments: write
@@ -16,7 +15,7 @@ jobs:
     steps:
       # Checkout repository
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
         with:
           fetch-depth: 0
 
@@ -25,7 +24,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake ninja-build gcc g++ python3 python3-pip
-          pip3 install py-cpuinfo
+          sudo apt-get install -y python3-cpuinfo
 
       # Build the speed_sig binary only
       - name: Build speed_sig binary
@@ -42,7 +41,7 @@ jobs:
 
       # Upload the built binary and script as an artifact
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
           name: built-sig-binary
           path: build/tests/
@@ -115,13 +114,13 @@ jobs:
     steps:
       # Ensure the repository is checked out
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
         with:
           fetch-depth: 0
 
       # Download the built binary and script
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
           name: built-sig-binary
           path: build/tests/

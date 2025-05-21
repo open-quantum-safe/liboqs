@@ -22,3 +22,9 @@ jobs:
   basic-downstream:
     uses: ./.github/workflows/downstream-basic.yml
     secrets: inherit
+
+  call-kem-benchmarking:
+    uses: ./.github/workflows/kem-bench.yml
+    
+  call-sig-benchmarking:
+    uses: ./.github/workflows/sig-bench.yml
