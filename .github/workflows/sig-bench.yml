@@ -5,9 +5,7 @@ on:
   workflow_call:
 
 permissions:
-  deployments: write
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   build:
@@ -49,6 +47,8 @@ jobs:
   benchmark:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       matrix:
         algorithm: [ # List of available signatures to perform the benchmarking on

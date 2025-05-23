@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,9 +48,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      deployments: write
       contents: write
-      pull-requests: write
     strategy:
       matrix: 
         algorithm: [ # List of available KEMs to perform the benchmarking on
