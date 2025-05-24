@@ -1110,6 +1110,16 @@ OQS_API OQS_STATUS OQS_SIG_verify_with_ctx_str(const OQS_SIG *sig, const uint8_t
 	}
 }
 
+OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name) {
+	OQS_SIG *sig = OQS_SIG_new(alg_name);
+	if (sig == NULL) {
+		return false;
+	}
+	bool result = sig->sig_with_ctx_support;
+	OQS_SIG_free(sig);
+	return result;
+}
+
 OQS_API void OQS_SIG_free(OQS_SIG *sig) {
 	OQS_MEM_insecure_free(sig);
 }
