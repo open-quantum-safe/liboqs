@@ -17,6 +17,12 @@ jobs:
     permissions:
       id-token: write
       security-events: write
+    
+  poutine:
+    uses: ./.github/workflows/poutine.yml
+    permissions:
+      contents: read
+      security-events: write
 
   extended-tests:
     uses: ./.github/workflows/extended.yml
