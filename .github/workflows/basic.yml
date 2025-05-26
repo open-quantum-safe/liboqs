@@ -10,24 +10,11 @@ jobs:
     name: Check validity of GitHub workflows
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
-    permissions:
-      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Ensure GitHub actions are valid
         run: actionlint -shellcheck "" # run *without* shellcheck
-      - name: Configure as safe directory
-        run: git config --global --add safe.directory /__w/liboqs/liboqs
-      - name: poutine - Static Application Security Testing
-        uses: boostsecurityio/poutine-action@main 
-        with:
-          format: sarif
-          output: poutine_results.sarif
-      - name: Upload poutine SARIF file
-        uses: github/codeql-action/upload-sarif@4355270be187e1b672a7a1c7c7bae5afdc1ab94a # v3.24.10
-        with:
-          sarif_file: poutine_results.sarif
 
   stylecheck:
     name: Check code formatting
