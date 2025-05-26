@@ -16,6 +16,13 @@ jobs:
   basic-checks:
     uses: ./.github/workflows/basic.yml
 
+  # added for testing
+  poutine:
+    uses: ./.github/workflows/poutine.yml
+    permissions:
+      contents: read
+      security-events: write
+
   full-tests:
     needs: basic-checks
     if: contains( github.event.head_commit.message, '[full tests]' )
