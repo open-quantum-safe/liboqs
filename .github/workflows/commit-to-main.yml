@@ -25,6 +25,10 @@ jobs:
 
   call-kem-benchmarking:
     uses: ./.github/workflows/kem-bench.yml
+    permissions:
+      contents: write
     
   call-sig-benchmarking:
     uses: ./.github/workflows/sig-bench.yml
+    permissions:
+      contents: write
