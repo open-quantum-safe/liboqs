@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: MIT
+
 # This script fetches the Wycheproof vectors for ML-KEM
 
 # Then fetches Wycheproof vectors for ML-KEM

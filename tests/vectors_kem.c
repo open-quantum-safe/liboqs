@@ -609,7 +609,6 @@ int main(int argc, char **argv) {
 	char *strcmp_ek;
 	char *strcmp_c;
 	char *strcmp_k;
-	char *strcmp_res;
 
 	char *modOverflow_ek;
 
@@ -730,7 +729,6 @@ int main(int argc, char **argv) {
 		strcmp_ek = argv[4];
 		strcmp_c = argv[5];
 		strcmp_k = argv[6];
-		strcmp_res = argv[7];
 
 		if (strlen(strcmp_seed) != 128 ||
 		        strlen(strcmp_ek) != 2 * kem->length_public_key ||
