@@ -469,6 +469,8 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 		goto err;
 	}
 
+	assert(is_ml_kem(method_name));
+
 	if (is_ml_kem(method_name)) {
 		OQS_randombytes_custom_algorithm(&MLKEM_randombytes);
 		randombytes_init = &MLKEM_randombytes_init;
