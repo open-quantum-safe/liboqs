@@ -412,6 +412,14 @@ OQS_API OQS_STATUS OQS_SIG_verify_with_ctx_str(const OQS_SIG *sig, const uint8_t
  */
 OQS_API void OQS_SIG_free(OQS_SIG *sig);
 
+/**
+ * Indicates whether the specified signature algorithm supports signing with a context string.
+ *
+ * @param[in] alg_name Name of the desired algorithm; one of the names in `OQS_SIG_algs`.
+ * @return true if the algorithm supports context string signing, false otherwise.
+ */
+OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
+
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_DILITHIUM
 #include <oqs/sig_dilithium.h>
