@@ -530,7 +530,7 @@ cleanup:
 
 static OQS_STATUS kem_modOverflow_vector(const char *method_name, const uint8_t *ek) {
 	OQS_KEM *kem = NULL;
-	OQS_STATUS rc, ret = OQS_ERROR;
+	OQS_STATUS ret = OQS_ERROR;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
