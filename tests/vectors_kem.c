@@ -445,7 +445,9 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 
 	uint8_t *entropy_input;
 	OQS_KEM *kem = NULL;
-	OQS_STATUS rc, ret = OQS_ERROR;
+	OQS_STATUS rc = OQS_ERROR, ret = OQS_ERROR;
+	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
+	void (*randombytes_free)(void) = NULL;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -456,8 +458,6 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 	uint8_t *ek = OQS_MEM_malloc(kem->length_public_key);
 	uint8_t *dk = OQS_MEM_malloc(kem->length_secret_key);
 	uint8_t *k = OQS_MEM_malloc(kem->length_shared_secret);
-	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-	void (*randombytes_free)(void) = NULL;
 
 	if ((ek == NULL) || (k == NULL)) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
@@ -468,8 +468,6 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
-
-	assert(is_ml_kem(method_name));
 
 	if (is_ml_kem(method_name)) {
 		OQS_randombytes_custom_algorithm(&MLKEM_randombytes);
