@@ -444,7 +444,6 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
                                     const uint8_t *c, const uint8_t *kExpected) {
 
 	uint8_t *entropy_input;
-	FILE *fh = NULL;
 	OQS_KEM *kem = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
@@ -453,8 +452,6 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 		printf("[vectors_kem] %s was not enabled at compile-time.\n", method_name);
 		goto algo_not_enabled;
 	}
-
-	fh = stdout;
 
 	uint8_t *ek = OQS_MEM_malloc(kem->length_public_key);
 	uint8_t *dk = OQS_MEM_malloc(kem->length_secret_key);
@@ -523,14 +520,15 @@ cleanup:
 		OQS_MEM_secure_free(ek, kem->length_public_key);
 		OQS_MEM_secure_free(k, kem->length_shared_secret);
 	}
+	if (randombytes_free != NULL) {
+		randombytes_free();
+	}
 	OQS_KEM_free(kem);
 	ret = rc;
 	return ret;
 }
 
 static OQS_STATUS kem_modOverflow_vector(const char *method_name, const uint8_t *ek) {
-
-	FILE *fh = NULL;
 	OQS_KEM *kem = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
@@ -539,8 +537,6 @@ static OQS_STATUS kem_modOverflow_vector(const char *method_name, const uint8_t 
 		printf("[vectors_kem] %s was not enabled at compile-time.\n", method_name);
 		goto algo_not_enabled;
 	}
-
-	fh = stdout;
 
 	if (ek == NULL) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
