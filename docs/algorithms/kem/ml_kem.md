@@ -7,9 +7,9 @@
 - **Authors' website**: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203
 - **Specification version**: ML-KEM.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-code-package/mlkem-native/commit/09bb1790bf9d38e1714f39af789306f28cdd395d with copy_from_upstream patches
+  - **Source**: https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
-- **Optimized Implementation sources**: https://github.com/pq-code-package/mlkem-native/commit/09bb1790bf9d38e1714f39af789306f28cdd395d with copy_from_upstream patches
+- **Optimized Implementation sources**: https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
       - **Source**: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
