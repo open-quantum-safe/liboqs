@@ -506,6 +506,8 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 		goto err;
 	}
 
+	ret = rc;
+
 	goto cleanup;
 
 err:
@@ -524,7 +526,6 @@ cleanup:
 		randombytes_free();
 	}
 	OQS_KEM_free(kem);
-	ret = rc;
 	return ret;
 }
 
