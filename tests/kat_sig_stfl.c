@@ -159,9 +159,7 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	uint8_t *public_key = NULL;
 	OQS_SIG_STFL_SECRET_KEY *secret_key = NULL;
 	uint8_t *signature = NULL, *signature_kat = NULL;
-	uint8_t *signed_msg = NULL;
 	size_t signature_len = 0;
-	size_t signed_msg_len = 0;
 	unsigned long long sigs_remain = 0;
 	unsigned long long sigs_maximum = 0;
 	OQS_STATUS rc, ret = OQS_ERROR;
@@ -344,9 +342,6 @@ algo_not_enabled:
 	ret = OQS_SUCCESS;
 
 cleanup:
-	if (sig != NULL) {
-		OQS_MEM_secure_free(signed_msg, signed_msg_len);
-	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_SIG_STFL_SECRET_KEY_free(secret_key);
 	OQS_MEM_insecure_free(signature);
