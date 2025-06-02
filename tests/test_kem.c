@@ -306,7 +306,7 @@ cleanup:
 static void TEST_KEM_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
 	// so we have to swap out the OQS_randombytes provider.
-	OQS_randombytes_switch_algorithm("system");
+	(void)OQS_randombytes_switch_algorithm("system");
 	OQS_randombytes(random_array, bytes_to_read);
 	OQS_randombytes_custom_algorithm(&TEST_KEM_randombytes);
 
@@ -336,6 +336,7 @@ void *test_wrapper(void *arg) {
 #endif
 
 int main(int argc, char **argv) {
+	OQS_STATUS rc;
 	OQS_init();
 
 	printf("Testing KEM algorithms using liboqs version %s\n", OQS_version());
@@ -366,10 +367,14 @@ int main(int argc, char **argv) {
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 	OQS_randombytes_custom_algorithm(&TEST_KEM_randombytes);
 #else
-	OQS_randombytes_switch_algorithm("system");
+	rc = OQS_randombytes_switch_algorithm("system");
+	if (rc != OQS_SUCCESS) {
+		printf("Could not generate random data with system RNG\n");
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
 #endif
 
-	OQS_STATUS rc;
 #if OQS_USE_PTHREADS
 #define MAX_LEN_KEM_NAME_ 64
 	// don't run Classic McEliece in threads because of large stack usage

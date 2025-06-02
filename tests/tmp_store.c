@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/stat.h>
 #include <sys/stat.h>
 
@@ -16,12 +17,23 @@
 
 static OQS_STATUS oqs_fstore_init(void) {
 #ifndef _WIN32
-	return mkdir(OQS_STORE_DIR, 0755);
-#else
-	if (CreateDirectory(OQS_STORE_DIR, NULL)) {
+	int ret;
+	ret = mkdir(OQS_STORE_DIR, 0755);
+	if ((!ret) || (errno == EEXIST)) {
 		return OQS_SUCCESS;
 	} else {
 		return OQS_ERROR;
+	}
+#else
+	if (!CreateDirectory(OQS_STORE_DIR, NULL)) {
+		DWORD err = GetLastError();
+		if (err == ERROR_ALREADY_EXISTS) {
+			return OQS_SUCCESS;
+		} else {
+			return OQS_ERROR;
+		}
+	} else {
+		return OQS_SUCCESS;
 	}
 #endif
 }
