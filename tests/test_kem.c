@@ -279,13 +279,13 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	if (secret_key) {
+	if ((secret_key) && (kem != NULL)) {
 		OQS_MEM_secure_free(secret_key - sizeof(magic_t), kem->length_secret_key + 2 * sizeof(magic_t));
 	}
-	if (shared_secret_e) {
+	if ((shared_secret_e) && (kem != NULL)) {
 		OQS_MEM_secure_free(shared_secret_e - sizeof(magic_t), kem->length_shared_secret + 2 * sizeof(magic_t));
 	}
-	if (shared_secret_d) {
+	if ((shared_secret_d) && (kem != NULL)) {
 		OQS_MEM_secure_free(shared_secret_d - sizeof(magic_t), kem->length_shared_secret + 2 * sizeof(magic_t));
 	}
 	if (public_key) {
@@ -294,7 +294,7 @@ cleanup:
 	if (ciphertext) {
 		OQS_MEM_insecure_free(ciphertext - sizeof(magic_t));
 	}
-	if (seed) {
+	if ((seed) && (kem != NULL)) {
 		OQS_MEM_secure_free(seed - sizeof(magic_t), kem->length_keypair_seed + 2 * sizeof(magic_t));
 	}
 	OQS_KEM_free(kem);

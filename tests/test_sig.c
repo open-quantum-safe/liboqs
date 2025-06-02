@@ -211,7 +211,7 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	if (secret_key) {
+	if ((secret_key) && (sig != NULL)) {
 		OQS_MEM_secure_free(secret_key - sizeof(magic_t), sig->length_secret_key + 2 * sizeof(magic_t));
 	}
 	if (public_key) {
