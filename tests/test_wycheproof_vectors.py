@@ -20,7 +20,7 @@ def test_wpf_strcmp_vec(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     if not(kem_name in fips_kem): pytest.skip("Not supported")
 
-    with open(os.path.join('tests', ml_kem_strcmp), 'r') as fp:
+    with open(os.path.join('tests', ml_kem_strcmp), 'r', encoding='utf-8') as fp:
         ml_kem_kg_wpf  = json.load(fp)
 
         variantFound = False
@@ -32,10 +32,11 @@ def test_wpf_strcmp_vec(kem_name):
                     ek = testCase["ek"]
                     c = testCase["c"]
                     k = testCase["K"]
-
+                    
                     build_dir = helpers.get_current_build_dir_name()
-                    command = "./" + f'{build_dir}/tests/vectors_kem ' + kem_name + " strcmp " + seed + " " + ek + " " + c + " " + k
-                    subprocess.run(command, shell=True)
+                    helpers.run_subprocess(
+                        [f'{build_dir}/tests/vectors_kem', kem_name, "strcmp", seed, ek, c, k]
+                    )
 
         assert(variantFound == True)
 
@@ -45,7 +46,7 @@ def test_wpf_modOverflow_vec(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     if not(kem_name in fips_kem): pytest.skip("Not supported")
 
-    with open(os.path.join('tests', ml_kem_modOverflow), 'r') as fp:
+    with open(os.path.join('tests', ml_kem_modOverflow), 'r', encoding='utf-8') as fp:
         ml_kem_kg_wpf  = json.load(fp)
 
         variantFound = False
@@ -56,8 +57,9 @@ def test_wpf_modOverflow_vec(kem_name):
                     ek = testCase["ek"]
 
                     build_dir = helpers.get_current_build_dir_name()
-                    command = "./" + f'{build_dir}/tests/vectors_kem ' + kem_name + " modOverflow " + ek
-                    subprocess.run(command, shell=True)
+                    helpers.run_subprocess(
+                        [f'{build_dir}/tests/vectors_kem', kem_name, "modOverflow", ek]
+                    )
 
         assert(variantFound == True)
 
