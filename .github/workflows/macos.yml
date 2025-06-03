@@ -39,7 +39,7 @@ jobs:
           # Failing configuration on Github actions; see https://github.com/open-quantum-safe/liboqs/pull/2148
           - os: macos-15
             CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-14
-            libjade-build: -DOQS_LIBJADE_BUILD=ON
+            libjade-build: -DOQS_LIBJADE_BUILD=OFF
 
     runs-on: ${{ matrix.os }}
     steps:
