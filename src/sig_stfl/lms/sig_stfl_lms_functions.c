@@ -660,7 +660,7 @@ void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 
 	if (sk->secret_key_data) {
 		oqs_lms_key_data *key_data = (oqs_lms_key_data *)sk->secret_key_data;
-		if (key_data) {
+		if (key_data != NULL) {
 			OQS_MEM_secure_free(key_data->sec_key, key_data->len_sec_key);
 			key_data->sec_key = NULL;
 
