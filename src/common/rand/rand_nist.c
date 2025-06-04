@@ -67,7 +67,7 @@ void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const ui
 		for (int i = 0; i < 48; i++) {
 			seed_material[i] ^= personalization_string[i];
 		}
-	memset(DRBG_ctx.Key, 0x00, 32);
+	OQS_MEM_cleanse(DRBG_ctx.Key, 32);
 	memset(DRBG_ctx.V, 0x00, 16);
 	AES256_CTR_DRBG_Update(seed_material, DRBG_ctx.Key, DRBG_ctx.V);
 	DRBG_ctx.reseed_counter = 1;

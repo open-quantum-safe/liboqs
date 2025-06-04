@@ -184,7 +184,7 @@ static int generate_merkle_signature(
     if (message == NULL) {
         /* Internal interface: if message = NULL, we're supposed to */
         /* generate everything *except* the OTS signature */
-        memset( signature, 0, ots_sig_size );
+        OQS_MEM_cleanse( signature, ots_sig_size );
     } else {
         struct seed_derive derive;
         if (!hss_seed_derive_init( &derive,
@@ -701,7 +701,7 @@ done_advancing:
     /* And we've set things up for the next signature... */
 
     if (trash_private_key) {
-        memset( w->private_key, PARM_SET_END, PRIVATE_KEY_LEN );
+        OQS_MEM_cleanse( w->private_key, PRIVATE_KEY_LEN );
     }
 
     return true;
@@ -709,12 +709,12 @@ done_advancing:
 failed:
 
     if (trash_private_key) {
-        memset( w->private_key, PARM_SET_END, PRIVATE_KEY_LEN );
+        OQS_MEM_cleanse( w->private_key, PRIVATE_KEY_LEN );
     }
 
     /* On failure, make sure that we don't return anything that might be */
     /* misconstrued as a real signature */
-    memset( signature, 0, signature_buf_len );
+    OQS_MEM_cleanse( signature, signature_buf_len );
     return false;
 }
 
