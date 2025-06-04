@@ -55,7 +55,7 @@ bool hss_advance_count(struct hss_working_key *w, sequence_t cur_count,
                 /* We can trash the copy in secure storage, though */
         if (update_private_key) {
             unsigned char private_key[PRIVATE_KEY_LEN];
-            memset( private_key, PARM_SET_END, PRIVATE_KEY_LEN );
+            OQS_MEM_cleanse(private_key, PRIVATE_KEY_LEN);
             if (!update_private_key(private_key, PRIVATE_KEY_LEN, context)) {
                 info->error_code = hss_error_private_key_write_failed;
                 return false;

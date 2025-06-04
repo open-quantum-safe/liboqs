@@ -108,7 +108,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_##LMS_VARIANT##_new(void) {\
         if (sk == NULL) {\
                 return NULL;\
         }\
-        memset(sk, 0, sizeof(OQS_SIG_STFL_SECRET_KEY));\
+        OQS_MEM_cleanse(sk, sizeof(OQS_SIG_STFL_SECRET_KEY));\
 \
         sk->length_secret_key = OQS_SIG_STFL_alg_lms_length_private_key;\
 \

@@ -679,8 +679,8 @@ int xmss_core_sign(const xmss_params *params,
     if (idx >= ((1ULL << params->full_height) - 1)) {
         // Delete secret key here. We only do this in memory, production code
         // has to make sure that this happens on disk.
-        memset(sk, 0xFF, params->index_bytes);
-        memset(sk + params->index_bytes, 0, (size_t)(params->sk_bytes - params->index_bytes));
+        OQS_MEM_cleanse(sk, params->index_bytes);
+        OQS_MEM_cleanse(sk + params->index_bytes, (size_t)(params->sk_bytes - params->index_bytes));
         if (idx > ((1ULL << params->full_height) - 1)) {
             ret = -2; // We already used all one-time keys
             goto cleanup;
@@ -952,8 +952,8 @@ int xmssmt_core_sign(const xmss_params *params,
     if (idx >= ((1ULL << params->full_height) - 1)) {
         // Delete secret key here. We only do this in memory, production code
         // has to make sure that this happens on disk.
-        memset(sk, 0xFF, params->index_bytes);
-        memset(sk + params->index_bytes, 0, (size_t)(params->sk_bytes - params->index_bytes));
+        OQS_MEM_cleanse(sk, params->index_bytes);
+        OQS_MEM_cleanse(sk + params->index_bytes, (size_t)(params->sk_bytes - params->index_bytes));
         if (idx > ((1ULL << params->full_height) - 1)) {
             // We already used all one-time keys
             ret = -2;

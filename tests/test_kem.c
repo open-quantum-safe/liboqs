@@ -72,7 +72,7 @@ static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secre
 		goto cleanup;
 	}
 	secret_key[0] -= 1; // Restore private key
-	memset(buff_z_c, 0, length_z_c); // Reset buffer
+	OQS_MEM_cleanse(buff_z_c, length_z_c); // Reset buffer
 
 	// Scenario 2: Test rejection key by corrupting the ciphertext
 	ciphertext[0] += 1;

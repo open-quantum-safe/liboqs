@@ -18,7 +18,7 @@ extern inline OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_sec
 	if (sk == NULL) {
 		return NULL;
 	}
-	memset(sk, 0, sizeof(OQS_SIG_STFL_SECRET_KEY));
+	OQS_MEM_cleanse(sk, sizeof(OQS_SIG_STFL_SECRET_KEY));
 
 	sk->length_secret_key = length_secret_key;
 
@@ -34,7 +34,7 @@ extern inline OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_sec
 		return NULL;
 	}
 
-	memset(sk->secret_key_data, 0, sk->length_secret_key);
+	OQS_MEM_cleanse(sk->secret_key_data, sk->length_secret_key);
 
 	// Set application specific context
 	sk->context = NULL;

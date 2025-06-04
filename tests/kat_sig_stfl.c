@@ -98,7 +98,7 @@ size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length, const char 
 		a[0] = 0x00;
 		return 1;
 	}
-	memset(a, 0x00, Length);
+	OQS_MEM_cleanse(a, Length);
 	started = 0;
 	if (FindMarker(infile, str))
 		while ((ch = fgetc(infile)) != EOF) {

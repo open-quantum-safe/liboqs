@@ -260,7 +260,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		return -1;
 	}
 
-	memset(oqs_key_data, 0, sizeof(oqs_lms_key_data));
+	OQS_MEM_cleanse(oqs_key_data, sizeof(oqs_lms_key_data));
 	if (sk->length_secret_key == 0) {
 		OQS_MEM_insecure_free(oqs_key_data);
 		oqs_key_data = NULL;
@@ -276,7 +276,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		return -1;
 	}
 
-	memset(oqs_key_data->sec_key, 0, sk->length_secret_key);
+	OQS_MEM_cleanse(oqs_key_data->sec_key, sk->length_secret_key);
 
 	//Aux Data
 	size_t len_aux_data = DEFAULT_AUX_DATA;
