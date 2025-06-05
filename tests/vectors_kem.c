@@ -582,7 +582,9 @@ int main(int argc, char **argv) {
 err:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
 	OQS_MEM_insecure_free(kg_pk_bytes);
-	OQS_MEM_insecure_free(kg_sk_bytes);
+	if (kem != NULL) {
+		OQS_MEM_secure_free(kg_sk_bytes, kem->length_secret_key);
+	}
 
 	OQS_MEM_insecure_free(encdec_aft_c_bytes);
 	OQS_MEM_insecure_free(encdec_aft_k_bytes);
@@ -590,7 +592,9 @@ err:
 
 	OQS_MEM_insecure_free(encdec_val_c_bytes);
 	OQS_MEM_insecure_free(encdec_val_k_bytes);
-	OQS_MEM_insecure_free(encdec_val_sk_bytes);
+	if (kem != NULL) {
+		OQS_MEM_secure_free(encdec_val_sk_bytes, kem->length_secret_key);
+	}
 
 	OQS_KEM_free(kem);
 

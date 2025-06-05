@@ -785,12 +785,16 @@ err:
 cleanup:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
 	OQS_MEM_insecure_free(kg_pk_bytes);
-	OQS_MEM_insecure_free(kg_sk_bytes);
+	if (sig != NULL) {
+		OQS_MEM_secure_free(kg_sk_bytes, sig->length_secret_key);
+	}
 	OQS_MEM_insecure_free(sigVer_pk_bytes);
 	OQS_MEM_insecure_free(sigVer_msg_bytes);
 	OQS_MEM_insecure_free(sigVer_sig_bytes);
 	OQS_MEM_insecure_free(sigVer_ctx_bytes);
-	OQS_MEM_insecure_free(sigGen_sk_bytes);
+	if (sig != NULL) {
+		OQS_MEM_secure_free(sigGen_sk_bytes, sig->length_secret_key);
+	}
 	OQS_MEM_insecure_free(sigGen_msg_bytes);
 	OQS_MEM_insecure_free(sigGen_sig_bytes);
 	OQS_MEM_insecure_free(sigGen_ctx_bytes);
