@@ -116,9 +116,16 @@ int main(int argc, char **argv) {
 
 	OQS_KEM *single_kem = NULL;
 
-	OQS_randombytes_switch_algorithm(OQS_RAND_alg_openssl);
-
 	OQS_init();
+#ifdef OQS_USE_OPENSSL
+	rc = OQS_randombytes_switch_algorithm(OQS_RAND_alg_openssl);
+	if (rc != OQS_SUCCESS) {
+		printf("Could not generate random data with OpenSSL RNG\n");
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+#endif
+
 	for (int i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "--algs") == 0) {
 			rc = printAlgs();
