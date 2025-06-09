@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 #include <string.h>
 #include "hash.h"
+#include "common_defs.h"
 #include "hss_zeroize.h"
+#include "lms_namespace.h"
 
 #define ALLOW_VERBOSE 0  /* 1 -> we allow the dumping of intermediate */
                          /*      states.  Useful for debugging; horrid */
@@ -42,15 +44,41 @@ void hss_hash_ctx(void *result, int hash_type, union hash_context *ctx,
         OQS_SHA2_sha256_inc_init(&ctx->sha256);
         OQS_SHA2_sha256_inc(&ctx->sha256, message, message_len);
         SHA256_Final(result, &ctx->sha256);
-#if ALLOW_VERBOSE
+        break;
+    }
+    case HASH_SHA256_24: {
+        unsigned char temp[MAX_HASH];
+        OQS_SHA2_sha256_inc_init(&ctx->sha256);
+        OQS_SHA2_sha256_inc(&ctx->sha256, message, message_len);
+        SHA256_Final(temp, &ctx->sha256);
+        memcpy(result,temp,24);
+        hss_zeroize(temp, sizeof(temp));
+        break;
+    }
+    case HASH_SHAKE: {
+        OQS_SHA3_shake256_inc_init(&ctx->shake);
+        OQS_SHA3_shake256_inc_absorb(&ctx->shake, message, message_len);
+        SHAKE_Final(result, &ctx->shake);
+        break;
+    }
+    case HASH_SHAKE_24: {
+        unsigned char temp[MAX_HASH];
+        OQS_SHA3_shake256_inc_init(&ctx->shake);
+        OQS_SHA3_shake256_inc_absorb(&ctx->shake, message, message_len);
+        SHAKE_Final(temp, &ctx->shake);
+        memcpy(result,temp,24);
+        hss_zeroize(temp, sizeof(temp));
+        break;
+    }
+    }
+
+    #if ALLOW_VERBOSE
         if (hss_verbose) {
             printf( " ->" );
             int i; for (i=0; i<32; i++) printf( " %02x", ((unsigned char *)result)[i] ); printf( "\n" );
         }
 #endif
-        break;
-    }
-    }
+
 }
 
 void hss_hash(void *result, int hash_type,
@@ -68,8 +96,11 @@ void hss_hash(void *result, int hash_type,
  */
 void hss_init_hash_context(int h, union hash_context *ctx) {
     switch (h) {
-    case HASH_SHA256:
+    case HASH_SHA256: HASH_SHA256_24:
         OQS_SHA2_sha256_inc_init( &ctx->sha256 );
+        break;
+    case HASH_SHAKE: HASH_SHAKE_24:
+        OQS_SHA3_shake256_inc_init( &ctx->shake );
         break;
     }
 }
@@ -82,42 +113,72 @@ void hss_update_hash_context(int h, union hash_context *ctx,
     }
 #endif
     switch (h) {
-    case HASH_SHA256:
+    case HASH_SHA256: HASH_SHA256_24:
         OQS_SHA2_sha256_inc(&ctx->sha256, msg, len_msg);
+        break;
+    case HASH_SHAKE: HASH_SHAKE_24:
+        OQS_SHA3_shake256_inc_absorb(&ctx->shake, msg, len_msg);
         break;
     }
 }
 
 void hss_finalize_hash_context(int h, union hash_context *ctx, void *buffer) {
     switch (h) {
-    case HASH_SHA256:
+    case HASH_SHA256: {
         SHA256_Final(buffer, &ctx->sha256);
-#if ALLOW_VERBOSE
+        break;
+    }
+    case HASH_SHA256_24: {
+        unsigned char temp[MAX_HASH];
+        SHA256_Final(temp, &ctx->sha256);
+        memcpy(buffer,temp,24);
+        hss_zeroize(temp,sizeof(temp));
+        break;
+    }
+    case HASH_SHAKE: {
+        SHAKE_Final(buffer, &ctx->shake);
+        break;
+    }
+    case HASH_SHAKE_24: {
+        unsigned char temp[MAX_HASH];
+        SHA256_Final(temp, &ctx->sha256);
+        memcpy(buffer,temp,24);
+        hss_zeroize(temp,sizeof(temp));
+        break;
+    }
+    }
+
+    #if ALLOW_VERBOSE
     if (hss_verbose) {
         printf( " -->" );
         int i; for (i=0; i<32; i++) printf( " %02x", ((unsigned char*)buffer)[i] );
         printf( "\n" );
     }
 #endif
-        break;
-    }
+
 }
 
 
 unsigned hss_hash_length(int hash_type) {
     switch (hash_type) {
-    case HASH_SHA256: return 32;
+    case HASH_SHA256: HASH_SHAKE: return 32;
+    case HASH_SHA256_24: HASH_SHAKE_24: return 24;
     }
     return 0;
 }
 
 unsigned hss_hash_blocksize(int hash_type) {
     switch (hash_type) {
-    case HASH_SHA256: return 64;
+    case HASH_SHA256: HASH_SHA256: HASH_SHAKE: HASH_SHAKE_24: return 64;
     }
     return 0;
 }
 
 void SHA256_Final(unsigned char *output, OQS_SHA2_sha256_ctx *ctx) {
     OQS_SHA2_sha256_inc_finalize(output, ctx,  NULL, 0);
+}
+
+void SHAKE_Final(unsigned char *output, OQS_SHA3_shake256_inc_ctx *ctx) {
+    OQS_SHA3_shake256_inc_finalize(ctx);
+    OQS_SHA3_shake256_inc_squeeze(output, 256, ctx);
 }

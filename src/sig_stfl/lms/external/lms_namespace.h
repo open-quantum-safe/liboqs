@@ -90,6 +90,7 @@
 #define lm_validate_signature LMS_NAMESPACE(lm_validate_signature)
 
 #define SHA256_Final LMS_NAMESPACE(SHA256_Final)
+#define SHAKE_Final LMS_NAMESPACE(SHAKE_Final)
 #define LMS_randombytes LMS_NAMESPACE(LMS_randombytes)
 
 #endif //_LMS_NAMESPACE_H

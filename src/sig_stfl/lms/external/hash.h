@@ -2,6 +2,7 @@
 #if !defined( HASH_H__ )
 #define HASH_H__
 #include <oqs/sha2.h>
+#include <oqs/sha3.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include "lms_namespace.h"
@@ -16,11 +17,15 @@
  * Hash types
  */
 enum {
-    HASH_SHA256 = 1,    /* SHA256 */
+    HASH_SHA256    = 1,    /* SHA256    */
+    HASH_SHA256_24 = 2,    /* SHA256_24 */
+    HASH_SHAKE     = 3,    /* SHA256    */
+    HASH_SHAKE_24  = 4,    /* SHA256_24 */
 };
 
 union hash_context {
-    OQS_SHA2_sha256_ctx sha256;
+    OQS_SHA2_sha256_ctx       sha256;
+    OQS_SHA3_shake256_inc_ctx shake;
     /* Any other hash contexts would go here */
 };
 
@@ -56,5 +61,6 @@ void hss_update_hash_context( int h, union hash_context *ctx,
 void hss_finalize_hash_context( int h, union hash_context *ctx,
                           void *buffer);
 void SHA256_Final(unsigned char *output, OQS_SHA2_sha256_ctx *ctx);
+void SHAKE_Final(unsigned char *output, OQS_SHA3_shake256_inc_ctx *ctx) ;
 
 #endif /* HASH_H__  */

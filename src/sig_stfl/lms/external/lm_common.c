@@ -26,6 +26,36 @@ bool lm_look_up_parameter_set(param_set_t parameter_set,
         v_h = HASH_SHA256; v_n = 32; v_height = 20; break;
     case LMS_SHA256_N32_H25:
         v_h = HASH_SHA256; v_n = 32; v_height = 25; break;
+    case LMS_SHA256_N24_H5:
+        v_h = HASH_SHA256_24; v_n = 24; v_height = 5; break;
+    case LMS_SHA256_N24_H10:
+        v_h = HASH_SHA256_24; v_n = 24; v_height = 10; break;
+    case LMS_SHA256_N24_H15:
+        v_h = HASH_SHA256_24; v_n = 24; v_height = 15; break;
+    case LMS_SHA256_N24_H20:
+        v_h = HASH_SHA256_24; v_n = 24; v_height = 20; break;
+    case LMS_SHA256_N24_H25:
+        v_h = HASH_SHA256_24; v_n = 24; v_height = 25; break;
+    case LMS_SHAKE_N32_H5:
+        v_h = HASH_SHAKE; v_n = 32; v_height = 5; break;
+    case LMS_SHAKE_N32_H10:
+        v_h = HASH_SHAKE; v_n = 32; v_height = 10; break;
+    case LMS_SHAKE_N32_H15:
+        v_h = HASH_SHAKE; v_n = 32; v_height = 15; break;
+    case LMS_SHAKE_N32_H20:
+        v_h = HASH_SHAKE; v_n = 32; v_height = 20; break;
+    case LMS_SHAKE_N32_H25:
+        v_h = HASH_SHAKE; v_n = 32; v_height = 25; break;
+    case LMS_SHAKE_N24_H5:
+        v_h = HASH_SHAKE_24; v_n = 24; v_height = 5; break;
+    case LMS_SHAKE_N24_H10:
+        v_h = HASH_SHAKE_24; v_n = 24; v_height = 10; break;
+    case LMS_SHAKE_N24_H15:
+        v_h = HASH_SHAKE_24; v_n = 24; v_height = 15; break;
+    case LMS_SHAKE_N24_H20:
+        v_h = HASH_SHAKE_24; v_n = 24; v_height = 20; break;
+    case LMS_SHAKE_N24_H25:
+        v_h = HASH_SHAKE_24; v_n = 24; v_height = 25; break;
     default: return false;
     }
 
