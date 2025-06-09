@@ -748,7 +748,7 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *s
 
 	unsigned levels = 0;
 
-	 lm_type[ MAX_HSS_LEVELS ];
+	param_set_t lm_type[ MAX_HSS_LEVELS ];
 	param_set_t lm_ots_type[ MAX_HSS_LEVELS ];
 
 	// validate sk_buf for lms params
