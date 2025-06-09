@@ -24,8 +24,6 @@ jobs:
     runs-on: ${{ matrix.runner }}
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
-      - name: Install dependencies
-        run: apt-get update && apt-get install curl
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
