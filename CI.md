@@ -55,7 +55,7 @@ This workflow runs a minimal set of tests that should pass before heavier tests 
 
 #### <a name="code-coverage.yml"></a> Code coverage tests (`code-coverage.yml`)
 
-This workflow runs code coverage tests and uploads the results to [Coveralls.io](https://coveralls.io/github/SWilson4/liboqs).
+This workflow runs code coverage tests and uploads the results to [Coveralls.io](https://coveralls.io/github/open-quantum-safe/liboqs).
 
 #### <a name="<platform>.yml"></a> Individual platform tests (`<platform>.yml`)
 
