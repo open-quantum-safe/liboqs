@@ -192,6 +192,8 @@ This is used in conjunction with `tests/test_constant_time.py` to use Valgrind t
 
 See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more usage information.
 
+When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is made available to control whether liboqs is built using `-O3` optimization, as in a release build, or using the default "Debug" profile. By default, `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is `OFF`.
+
 **Default**: `OFF`.
 
 ## OQS_STRICT_WARNINGS
