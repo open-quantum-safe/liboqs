@@ -288,29 +288,77 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W4_new(void);
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w8_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W8_new(void);
 
-#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w1_length_signature 8688
+#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w1_length_signature 6516
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w1_length_pk 60
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w1_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_24_h5_w1_new(void);
-OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_24_H5_W1_new(void);
 
-#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w2_length_signature 4464
+#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w2_length_signature 3348
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w2_length_pk 60
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w2_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_24_h5_w2_new(void);
-OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W2_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_24_H5_W2_new(void);
 
-#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w4_length_signature 2352
+#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w4_length_signature 1764
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w4_length_pk 60
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w4_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_24_h5_w4_new(void);
-OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W4_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_24_H5_W4_new(void);
 
-#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w8_length_signature 1296
+#define OQS_SIG_STFL_alg_lms_sha256_24_h5_w8_length_signature 972
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w8_length_pk 60
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w8_length_sk 64
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_24_h5_w8_new(void);
-OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W8_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_24_H5_W8_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_h5_w1_length_signature 8688
+#define OQS_SIG_STFL_alg_lms_shake_h5_w1_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_h5_w1_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_h5_w1_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_H5_W1_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_h5_w2_length_signature 4464
+#define OQS_SIG_STFL_alg_lms_shake_h5_w2_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_h5_w2_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_h5_w2_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_H5_W2_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_h5_w4_length_signature 2352
+#define OQS_SIG_STFL_alg_lms_shake_h5_w4_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_h5_w4_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_h5_w4_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_H5_W4_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_h5_w8_length_signature 1296
+#define OQS_SIG_STFL_alg_lms_shake_h5_w8_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_h5_w8_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_h5_w8_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_H5_W8_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w1_length_signature 5792
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w1_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w1_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_24_h5_w1_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_24_H5_W1_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w2_length_signature 2976
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w2_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w2_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_24_h5_w2_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_24_H5_W2_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w4_length_signature 1568
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w4_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w4_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_24_h5_w4_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_24_H5_W4_new(void);
+
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w8_length_signature 864
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w8_length_pk 60
+#define OQS_SIG_STFL_alg_lms_shake_24_h5_w8_length_sk 64
+OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_shake_24_h5_w8_new(void);
+OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_SHAKE_24_H5_W8_new(void);
 
 //H10
 //  H10           W1            60           8848            64
