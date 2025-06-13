@@ -1062,7 +1062,7 @@ static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
 	return rc_update;
 }
 
-int main(int argc, char **argv) {
+int func(int argc, char **argv) {
 	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR;
 	OQS_init();
 	rc = oqs_fstore_init();
@@ -1272,4 +1272,12 @@ err:
 	}
 	return exit_status;
 #endif
+}
+
+
+int main()
+{
+	char* algName = "LMS_SHA256_24_H5_W1";
+	char *argV[2] = {"",algName};
+	return func(2,argV);
 }
