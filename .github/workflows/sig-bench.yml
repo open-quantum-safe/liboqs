@@ -148,4 +148,4 @@ jobs:
           comment-on-alert: true
           summary-always: true
           alert-threshold: 105%
-          comment-always: true
+          comment-always: false
