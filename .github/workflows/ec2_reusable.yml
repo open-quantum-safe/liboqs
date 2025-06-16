@@ -65,7 +65,7 @@ jobs:
         uses: machulav/ec2-github-runner@a8c20fc0876503410b2b966c124abc2311984ce2 # v2.3.9
         with:
           mode: start
-          github-token: ${{ secrets.AWS_GITHUB_TOKEN }}
+          github-token: ${{ secrets.SWILSON4_PAT }}
           ec2-image-id: ${{ steps.det_ami_id.outputs.AMI_ID }}
           ec2-instance-type: ${{ inputs.ec2_instance_type }}
           subnet-id: subnet-0a137a20102d88813
@@ -82,7 +82,7 @@ jobs:
         uses: machulav/ec2-github-runner@a8c20fc0876503410b2b966c124abc2311984ce2 # v2.3.9
         with:
           mode: start
-          github-token: ${{ secrets.AWS_GITHUB_TOKEN }}
+          github-token: ${{ secrets.SWILSON4_PAT }}
           ec2-image-id: ${{ steps.det_ami_id.outputs.AMI_ID }}
           ec2-instance-type: ${{ inputs.ec2_instance_type }}
           subnet-id: subnet-0a137a20102d88813
@@ -125,6 +125,6 @@ jobs:
         uses: machulav/ec2-github-runner@a8c20fc0876503410b2b966c124abc2311984ce2 # v2.3.9
         with:
           mode: stop
-          github-token: ${{ secrets.AWS_GITHUB_TOKEN }}
+          github-token: ${{ secrets.SWILSON4_PAT }}
           label: ${{ needs.start-ec2-runner.outputs.label }}
           ec2-instance-id: ${{ needs.start-ec2-runner.outputs.ec2-instance-id }}
