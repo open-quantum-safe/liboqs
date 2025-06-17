@@ -1194,6 +1194,7 @@ static void sha3_trigger_dispatcher(void) {
 	OQS_SHA3_sha3_256_inc_ctx state;
 
 	OQS_SHA3_sha3_256_inc_init(&state);
+	OQS_SHA3_sha3_256_inc_ctx_release(&state);
 }
 #endif
 
