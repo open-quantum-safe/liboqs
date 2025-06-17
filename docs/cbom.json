@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:c4108e0a-f518-4468-b04e-b237c2b763a7",
+  "serialNumber": "urn:uuid:149b75cd-1e55-4608-a41d-bf9ac463e183",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-07-23T15:02:25.240714+00:00",
+    "timestamp": "2025-08-22T10:37:38.713452+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
       "name": "liboqs",
-      "version": "1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3"
+      "version": "1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
       "name": "liboqs",
-      "version": "1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3"
+      "version": "1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be"
     },
     {
       "type": "cryptographic-asset",
@@ -1217,6 +1217,206 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HPS-2048-509:generic",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HPS-2048-509",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HPS-2048-509:x86_64",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HPS-2048-509",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HPS-2048-677:generic",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HPS-2048-677",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HPS-2048-677:x86_64",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HPS-2048-677",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HPS-4096-821:generic",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HPS-4096-821",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HPS-4096-821:x86_64",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HPS-4096-821",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HPS-4096-1229:generic",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HPS-4096-1229",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HRSS-701:generic",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HRSS-701",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HRSS-701:x86_64",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HRSS-701",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:NTRU-HRSS-1373:generic",
+      "name": "NTRU",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "NTRU-HRSS-1373",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
         }
       }
     },
@@ -7827,7 +8027,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
+      "ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -7889,6 +8089,16 @@
         "alg:ML-KEM-1024:generic",
         "alg:ML-KEM-1024:x86_64",
         "alg:ML-KEM-1024:armv8-a",
+        "alg:NTRU-HPS-2048-509:generic",
+        "alg:NTRU-HPS-2048-509:x86_64",
+        "alg:NTRU-HPS-2048-677:generic",
+        "alg:NTRU-HPS-2048-677:x86_64",
+        "alg:NTRU-HPS-4096-821:generic",
+        "alg:NTRU-HPS-4096-821:x86_64",
+        "alg:NTRU-HPS-4096-1229:generic",
+        "alg:NTRU-HRSS-701:generic",
+        "alg:NTRU-HRSS-701:x86_64",
+        "alg:NTRU-HRSS-1373:generic",
         "alg:sntrup761:generic",
         "alg:sntrup761:x86_64",
         "alg:cross-rsdp-128-balanced:generic",
@@ -8584,6 +8794,66 @@
     },
     {
       "ref": "alg:ML-KEM-1024:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HPS-2048-509:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HPS-2048-509:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HPS-2048-677:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HPS-2048-677:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HPS-4096-821:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HPS-4096-821:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HPS-4096-1229:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HRSS-701:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HRSS-701:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:NTRU-HRSS-1373:generic",
       "dependsOn": [
         "alg:sha3"
       ]
