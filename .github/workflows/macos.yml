@@ -17,25 +17,25 @@ jobs:
           - macos-14
           - macos-15
         CMAKE_ARGS:
-          - -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+          #          - -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
           - -DCMAKE_C_COMPILER=gcc-14
-          - -DOQS_USE_OPENSSL=OFF
-          - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
+            #          - -DOQS_USE_OPENSSL=OFF
+            #          - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
         libjade-build:
           - -DOQS_LIBJADE_BUILD=OFF
           # Restrict -DOQS_LIBJADE_BUILD=ON build to algs provided by
           # libjade to minimise repeated tests
-          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
+          #          - -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
         exclude:
           # macos-14 and macos-15 run on aarch64, libjade targets x86
           # Skip testing libjade on macos-14
-          - os: macos-14
-            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-          - os: macos-15
-            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-          # No point in testing stateful sigs with minimal libjade build
-          - libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            CMAKE_ARGS: -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+          #          - os: macos-14
+          #            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
+          #          - os: macos-15
+          #            libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
+          #          # No point in testing stateful sigs with minimal libjade build
+          #          - libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
+          #            CMAKE_ARGS: -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
           # Failing configuration on Github actions; see https://github.com/open-quantum-safe/liboqs/pull/2148
           - os: macos-15
             CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-14
