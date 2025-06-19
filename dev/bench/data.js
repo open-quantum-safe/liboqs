@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1750359146145,
+  "lastUpdate": 1750359170675,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -2294,6 +2294,48 @@ window.BENCHMARK_DATA = {
             "value": 227810,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: a56b796271ad41c3152ea19f8149281431d86098 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: C | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "aiden@aidenfoxivey.com",
+            "name": "Aiden Fox Ivey",
+            "username": "aidenfoxivey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "47b8fdd4047cccc0a161b1d07e83036d6bf40cad",
+          "message": "Adding code coverage (#2148)\n\n* First stab at adding coverage tests\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Install dependencies for coveralls action\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Integrate code coverage into CI\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Properly parallelize\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Refine test coverage\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Ignore unused exclude path error\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Update exclude path\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Fix Markdown formatting\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Pin dependencies\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\n\n* Update workflow badge path\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\n\n* Fix path in CI.md\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\n\n* Remove unnecessary call to install curl\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\n\n---------\n\nSigned-off-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\nCo-authored-by: Spencer Wilson <spencer.wilson@uwaterloo.ca>",
+          "timestamp": "2025-06-19T14:45:44-04:00",
+          "tree_id": "4db357c23db22bc8164a5233f1f534ef4e48d4fc",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/47b8fdd4047cccc0a161b1d07e83036d6bf40cad"
+        },
+        "date": 1750359169486,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "Classic-McEliece-460896 keygen",
+            "value": 288518262,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 47b8fdd4047cccc0a161b1d07e83036d6bf40cad | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: C | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Classic-McEliece-460896 encaps",
+            "value": 79133,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 47b8fdd4047cccc0a161b1d07e83036d6bf40cad | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: C | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Classic-McEliece-460896 decaps",
+            "value": 227423,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 47b8fdd4047cccc0a161b1d07e83036d6bf40cad | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: C | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
