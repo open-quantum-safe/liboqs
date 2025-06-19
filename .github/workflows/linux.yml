@@ -276,3 +276,36 @@ jobs:
       - name: Build
         run: scan-build --status-bugs ninja
         working-directory: build
+
+  linux_x86_emulated:
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: avx512-ml-kem_ml-dsa
+            SDE_ARCH: -skx
+            CMAKE_ARGS: -DOQS_MINIMAL_BUILD="KEM_ml_kem_512;KEM_ml_kem_768;KEM_ml_kem_1024;SIG_ml_dsa_44;SIG_ml_dsa_65;SIG_ml_dsa_87"
+            PYTEST_ARGS: tests/test_hash.py::test_sha3 tests/test_kat.py tests/test_acvp_vectors.py
+    env:
+      SDE_URL: https://downloadmirror.intel.com/850782/sde-external-9.53.0-2025-03-16-lin.tar.xz
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Setup Intel SDE
+        run: |
+          wget -O sde.tar.xz "$SDE_URL" && \
+            mkdir sde && tar -xf sde.tar.xz -C sde --strip-components=1 && \
+            echo "$(pwd)/sde" >> $GITHUB_PATH
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 60
+        run: |
+          mkdir -p tmp && sde64 ${{ matrix.SDE_ARCH }} -- \
+            python3 -m pytest --verbose --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
