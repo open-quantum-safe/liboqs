@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1750441623422,
+  "lastUpdate": 1750441629936,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -5468,6 +5468,48 @@ window.BENCHMARK_DATA = {
             "value": 1070084,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 47b8fdd4047cccc0a161b1d07e83036d6bf40cad | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: C | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "marcel.d.cornu@intel.com",
+            "name": "Marcel Cornu",
+            "username": "mdcornu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8f926065ebd90591106e121a847f586488e6071f",
+          "message": "Add AVX512VL-Optimized SHA3/SHAKE Implementations (#2167)\n\n* Add SHA3-256/384/512 and SHAKE128/256 AVX512VL implementations\n\nCo-authored-by: Tomasz Kantecki <tomasz.kantecki@intel.com>\nCo-authored-by: Erdinc Ozturk <erdinc.ozturk@intel.com>\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\nSigned-off-by: Tomasz Kantecki <tomasz.kantecki@intel.com>\n\n* AVX512VL SHA3 is added as an extension of XKCP implementation\n\nCo-authored-by: Marcel Cornu <marcel.d.cornu@intel.com>\nSigned-off-by: Tomasz Kantecki <tomasz.kantecki@intel.com>\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\n\n* Add SHA3-384 tests\n\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\n\n* Update namespace test to include SHA3\n\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\n\n* Release SHA3 context after triggering dispatcher\n\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\n\n* Add linux CI for OQS_USE_SHA3_AVX512VL=OFF config\n\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\n\n* Add AVX512 emulation to linux CI\n\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\n\n---------\n\nSigned-off-by: Marcel Cornu <marcel.d.cornu@intel.com>\nSigned-off-by: Tomasz Kantecki <tomasz.kantecki@intel.com>\nCo-authored-by: Tomasz Kantecki <tomasz.kantecki@intel.com>\nCo-authored-by: Erdinc Ozturk <erdinc.ozturk@intel.com>",
+          "timestamp": "2025-06-20T13:37:32-04:00",
+          "tree_id": "8fbcfc2234a5441a096e2badb7f2ffb1b8b89d46",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/8f926065ebd90591106e121a847f586488e6071f"
+        },
+        "date": 1750441629002,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "SPHINCS+-SHA2-192s-simple keypair",
+            "value": 85809834,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 8f926065ebd90591106e121a847f586488e6071f | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "SPHINCS+-SHA2-192s-simple sign",
+            "value": 810157540,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 8f926065ebd90591106e121a847f586488e6071f | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "SPHINCS+-SHA2-192s-simple verify",
+            "value": 1001390,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 8f926065ebd90591106e121a847f586488e6071f | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
