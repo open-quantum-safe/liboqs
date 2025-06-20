@@ -1,0 +1,108 @@
+diff --git a/src/gf/ref/lvl1/fp_p5248_32.c b/src/gf/ref/lvl1/fp_p5248_32.c
+index a52add3..62e5491 100644
+--- a/src/gf/ref/lvl1/fp_p5248_32.c
++++ b/src/gf/ref/lvl1/fp_p5248_32.c
+@@ -1,6 +1,7 @@
+ // clang-format off
+ // Command line : python monty.py 32
+ // 0x4ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
++#ifdef RADIX_32
+ 
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -940,3 +941,5 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
+         fp_add(d, d, &a);
+     }
+ }
++
++#endif /* RADIX_32 */
+diff --git a/src/gf/ref/lvl1/fp_p5248_64.c b/src/gf/ref/lvl1/fp_p5248_64.c
+index cde28dd..57c2131 100644
+--- a/src/gf/ref/lvl1/fp_p5248_64.c
++++ b/src/gf/ref/lvl1/fp_p5248_64.c
+@@ -1,6 +1,7 @@
+ // clang-format off
+ // Command line : python monty.py 64
+ // 0x4ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
++#ifdef RADIX_64
+ 
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -789,3 +790,5 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
+         fp_add(d, d, &a);
+     }
+ }
++
++#endif /* RADIX_64 */
+diff --git a/src/gf/ref/lvl3/fp_p65376_32.c b/src/gf/ref/lvl3/fp_p65376_32.c
+index 1483461..2aaad84 100644
+--- a/src/gf/ref/lvl3/fp_p65376_32.c
++++ b/src/gf/ref/lvl3/fp_p65376_32.c
+@@ -1,6 +1,7 @@
+ // clang-format off
+ // Command line : python monty.py 32
+ // 0x40ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
++#ifdef RADIX_32
+ 
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -1229,3 +1230,5 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
+         fp_add(d, d, &a);
+     }
+ }
++
++#endif
+diff --git a/src/gf/ref/lvl3/fp_p65376_64.c b/src/gf/ref/lvl3/fp_p65376_64.c
+index 539cde5..9ac5fc5 100644
+--- a/src/gf/ref/lvl3/fp_p65376_64.c
++++ b/src/gf/ref/lvl3/fp_p65376_64.c
+@@ -1,6 +1,7 @@
+ // clang-format off
+ // Command line : python monty.py 64
+ // 0x40ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
++#ifdef RADIX_64
+ 
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -870,3 +871,5 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
+         fp_add(d, d, &a);
+     }
+ }
++
++#endif
+diff --git a/src/gf/ref/lvl5/fp_p27500_32.c b/src/gf/ref/lvl5/fp_p27500_32.c
+index ecf5ea7..f002495 100644
+--- a/src/gf/ref/lvl5/fp_p27500_32.c
++++ b/src/gf/ref/lvl5/fp_p27500_32.c
+@@ -1,6 +1,7 @@
+ // clang-format off
+ // Command line : python monty.py 32
+ // 0x1afffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
++#ifdef RADIX_32
+ 
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -1512,3 +1513,5 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
+         fp_add(d, d, &a);
+     }
+ }
++
++#endif
+diff --git a/src/gf/ref/lvl5/fp_p27500_64.c b/src/gf/ref/lvl5/fp_p27500_64.c
+index 33bb75e..c187e87 100644
+--- a/src/gf/ref/lvl5/fp_p27500_64.c
++++ b/src/gf/ref/lvl5/fp_p27500_64.c
+@@ -1,6 +1,7 @@
+ // clang-format off
+ // Command line : python monty.py 64
+ // 0x1afffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
++#ifdef RADIX_64
+ 
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -968,3 +969,5 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
+         fp_add(d, d, &a);
+     }
+ }
++
++#endif
