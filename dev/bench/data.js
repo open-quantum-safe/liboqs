@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1750442730336,
+  "lastUpdate": 1750443372655,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -210,6 +210,48 @@ window.BENCHMARK_DATA = {
             "value": 73968,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 8f926065ebd90591106e121a847f586488e6071f | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "aiden@aidenfoxivey.com",
+            "name": "Aiden Fox Ivey",
+            "username": "aidenfoxivey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "50185c6e72036a20202b5184b5d78fb627101f19",
+          "message": "Zeroize memory in SHA3 implementation (#2171)\n\n* Add OQS_MEM_aligned_secure_free convenience fn\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\n\n* Rewrite SHA3 aligned frees to zeroize\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\n\n---------\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>",
+          "timestamp": "2025-06-20T14:12:12-04:00",
+          "tree_id": "3d7b01360cc162960950574d08ecb91c190935f0",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/50185c6e72036a20202b5184b5d78fb627101f19"
+        },
+        "date": 1750443371782,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "Dilithium2 keypair",
+            "value": 77721,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 50185c6e72036a20202b5184b5d78fb627101f19 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Dilithium2 sign",
+            "value": 195638,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 50185c6e72036a20202b5184b5d78fb627101f19 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Dilithium2 verify",
+            "value": 74892,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1015-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.13.1-dev (major: 0, minor: 13, patch: 1, pre-release: -dev) | Git commit: 50185c6e72036a20202b5184b5d78fb627101f19 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
