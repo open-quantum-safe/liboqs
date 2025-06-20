@@ -274,6 +274,11 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size);
  */
 void OQS_MEM_aligned_free(void *ptr);
 
+/**
+ * Free and zeroize memory allocated with OQS_MEM_aligned_alloc.
+ */
+void OQS_MEM_aligned_secure_free(void *ptr, size_t len);
+
 #if defined(__cplusplus)
 } // extern "C"
 #endif

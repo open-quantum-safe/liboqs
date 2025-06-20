@@ -411,6 +411,11 @@ void OQS_MEM_aligned_free(void *ptr) {
 #endif
 }
 
+void OQS_MEM_aligned_secure_free(void *ptr, size_t len) {
+	OQS_MEM_cleanse(ptr, len);
+	OQS_MEM_aligned_free(ptr);
+}
+
 OQS_API void *OQS_MEM_malloc(size_t size) {
 #if defined(OQS_USE_OPENSSL)
 	return OSSL_FUNC(CRYPTO_malloc)(size, OPENSSL_FILE, OPENSSL_LINE);
