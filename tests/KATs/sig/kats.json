@@ -199,6 +199,15 @@
     "all": "dadcf175289c25aaa530a389cc84154dc4331fabda06ffaf2a292944e4d03841",
     "single": "37d37c9b43d71341b7dd5da7f8ebbe8bbae3d7bfc53f5378446023cbcf6e04f2"
   },
+  "SQIsign-lvl1": {
+    "single": "cce2e6a0e6aff1179eba6b8b5cb1b096e751f9aafdf8934a2df857164a902202"
+  },
+  "SQIsign-lvl3": {
+    "single": "cce2e6a0e6aff1179eba6b8b5cb1b096e751f9aafdf8934a2df857164a902202"
+  },
+  "SQIsign-lvl5": {
+    "single": "cce2e6a0e6aff1179eba6b8b5cb1b096e751f9aafdf8934a2df857164a902202"
+  },
   "cross-rsdp-128-balanced": {
     "all": "7b12a6f71166cde8289c732b3107eaa21edf59c2f336b0921a62faa93980de77",
     "single": "1261083807232119c1f0a5b0d9f958fb8cf8e5a7b897cc4b7c30336cf12da989"

@@ -91,6 +91,16 @@ upstreams:
     git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
     sig_scheme_path: '.'
     sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
+
+  -
+    name: the-sqisign
+    git_url: https://github.com/shane-digi/the-sqisign.git
+    git_branch: develop_oqs
+    git_commit: 6ae72148fd136c19e1d3f4ba493a96012071bb89
+    sig_scheme_path: '.'
+    sig_meta_path: 'META/{pqclean_scheme}.yml'
+    patches: [sqisign_fp.patch]
+
 kems:
   -
     name: classic_mceliece
@@ -592,4 +602,24 @@ sigs:
         scheme: "SNOVA_29_6_5"
         pqclean_scheme: SNOVA_29_6_5
         pretty_name_full: SNOVA_29_6_5
+        signed_msg_order: sig_then_msg
+  -
+    name: sqisign
+    default_implementation: ref
+    upstream_location: the-sqisign
+    schemes:
+      -
+        scheme: "lvl1"
+        pqclean_scheme: sqisign_lvl1
+        pretty_name_full: SQIsign-lvl1
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "lvl3"
+        pqclean_scheme: sqisign_lvl3
+        pretty_name_full: SQIsign-lvl3
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "lvl5"
+        pqclean_scheme: sqisign_lvl5
+        pretty_name_full: SQIsign-lvl5
         signed_msg_order: sig_then_msg
