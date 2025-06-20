@@ -69,6 +69,7 @@
 #cmakedefine OQS_ENABLE_TEST_CONSTANT_TIME 1
 
 #cmakedefine OQS_ENABLE_SHA3_xkcp_low_avx2 1
+#cmakedefine OQS_USE_SHA3_AVX512VL 1
 
 #cmakedefine01 OQS_USE_CUPQC
 
