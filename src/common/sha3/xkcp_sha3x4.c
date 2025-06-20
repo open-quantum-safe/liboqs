@@ -197,7 +197,7 @@ static void SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, c
 }
 
 static void SHA3_shake128_x4_inc_ctx_release(OQS_SHA3_shake128_x4_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_X4_CTX_BYTES);
 }
 
 static void SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
@@ -240,7 +240,7 @@ static void SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, c
 }
 
 static void SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_X4_CTX_BYTES);
 }
 
 static void SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
