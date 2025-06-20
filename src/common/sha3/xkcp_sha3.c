@@ -215,7 +215,7 @@ static void SHA3_sha3_256_inc_finalize(uint8_t *output, OQS_SHA3_sha3_256_inc_ct
 }
 
 static void SHA3_sha3_256_inc_ctx_release(OQS_SHA3_sha3_256_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_SHA3_sha3_256_inc_ctx *src) {
@@ -251,7 +251,7 @@ static void SHA3_sha3_384_inc_finalize(uint8_t *output, OQS_SHA3_sha3_384_inc_ct
 }
 
 static void SHA3_sha3_384_inc_ctx_release(OQS_SHA3_sha3_384_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_SHA3_sha3_384_inc_ctx *src) {
@@ -288,7 +288,7 @@ static void SHA3_sha3_512_inc_finalize(uint8_t *output, OQS_SHA3_sha3_512_inc_ct
 }
 
 static void SHA3_sha3_512_inc_ctx_release(OQS_SHA3_sha3_512_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_SHA3_sha3_512_inc_ctx *src) {
@@ -335,7 +335,7 @@ static void SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const O
 }
 
 static void SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state) {
@@ -374,7 +374,7 @@ static void SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 }
 
 static void SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_SHA3_shake256_inc_ctx *src) {
