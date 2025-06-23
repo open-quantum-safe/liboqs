@@ -111,6 +111,9 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     endif()
 
     if(${OQS_DEBUG_BUILD})
+        if(OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED)
+	    add_compile_options(-O3) # run constant-time tests on release code
+	endif()
         add_compile_options(-g3)
         add_compile_options(-fno-omit-frame-pointer)
 	if(${USE_COVERAGE})
