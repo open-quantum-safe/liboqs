@@ -16,7 +16,7 @@ OQS_SIG *OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_slh_dsa_pure_{{hashAlg}}_{{paramSet}};
-	sig->alg_version = {{algVersion}};
+	sig->alg_version = "{{algVersion}}";
 
 	sig->claimed_nist_level = {{claimedNISTLevel}};
 	sig->euf_cma = {{eufCMA}};
@@ -126,11 +126,11 @@ OQS_SIG *OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_new
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}};
-	sig->alg_version = "FIPS205";
+	sig->alg_version = "{{algVersion}}";
 
-	sig->claimed_nist_level = 1;
-	sig->euf_cma = true;
-	sig->suf_cma = true;
+	sig->claimed_nist_level = {{claimedNISTLevel}};
+	sig->euf_cma = {{eufCMA}};
+	sig->suf_cma = {{sufCMA}};
 	sig->sig_with_ctx_support = true;
 
 	sig->length_public_key = OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_length_public_key;

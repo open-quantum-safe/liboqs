@@ -173,74 +173,81 @@ def list_variants():
         variants.append(prehashHashAlg['name'] + '_prehash_' + hashAlg['name'] + '_' + paramSet['name'])
     return variants
 
-#initialize globals
-os.environ['LIBOQS_DIR'] = '/Users/h2parson/Documents/liboqs'
-commit_hash = "7ba7b174c4f8e5d41ea3b12f6997e9a89eaf6623"
+def main():
+    #initialize globals
+    global commit_hash, slh_dir, slh_dsa_c_dir, slh_wrappers_dir, template_dir, meta_file, \
+        jinja_header_file, jinja_src_file, jinja_cmake_file, meta, impl, variants, jinja_sig_c_file, \
+        jinja_sig_h_file, jinja_alg_support_file, jinja_oqsconfig_file, sig_c_path, sig_h_path, \
+        alg_support_path, oqsconfig_path
 
-# internal paths
-slh_dir = os.path.join(os.environ['LIBOQS_DIR'], 'src/sig/slh_dsa')
-slh_dsa_c_dir = os.path.join(slh_dir, 'slh_dsa_c')
-slh_wrappers_dir = os.path.join(slh_dir, 'wrappers')
-template_dir = os.path.join(slh_dir, 'templates')
-
-#ensure these paths exist
-os.makedirs(slh_dir,exist_ok=True)
-os.makedirs(slh_dsa_c_dir,exist_ok=True)
-os.makedirs(slh_wrappers_dir,exist_ok=True)
-os.makedirs(template_dir,exist_ok=True)
-
-# internal files
-meta_file = os.path.join(slh_dsa_c_dir, 'integration/META.yml')
-jinja_header_file = os.path.join(template_dir, 'slh_dsa_header_template.jinja')
-jinja_src_file = os.path.join(template_dir, 'slh_dsa_src_template.jinja')
-jinja_cmake_file = os.path.join(template_dir, 'slh_dsa_cmake_template.jinja')
-
-#copy source code from upstream
-copy_from_commit()
-
-#load meta file
-meta = file_get_contents(meta_file, encoding='utf-8')
-meta = yaml.safe_load(meta)
-
-#Create implementation dictionary
-impl = {
-  "pure": True,
-  "paramSet": "",
-  "hashAlg": "",
-  "prehashHashAlg": "",
-  "pkSize": "",
-  "skSize": "",
-  "sigSize": "",
-  "algVersion": "",
-  "claimedNISTLevel": "",
-  "eufCMA": "",
-  "sufCMA": ""
-}
-
-#generate internal c and h files
-internal_code_gen()
-
-#generate internal cmake file
-internal_cmake_gen()
-
-#Replace contents of other files using fragments
-#generate variant list
-variants = list_variants()
-
-#enumerate template file paths
-jinja_sig_c_file = os.path.join(template_dir,'slh_dsa_sig_c_template.jinja')
-jinja_sig_h_file = os.path.join(template_dir,'slh_dsa_sig_h_template.jinja')
-jinja_alg_support_file = os.path.join(template_dir,'slh_dsa_alg_support_template.jinja')
-jinja_oqsconfig_file = os.path.join(template_dir,'slh_dsa_oqsconfig_template.jinja')
-
-#enumerate destination file paths
-sig_c_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.c')
-sig_h_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.h')
-alg_support_path = os.path.join(os.environ['LIBOQS_DIR'],'.CMake','alg_support.cmake')
-oqsconfig_path = os.path.join(os.environ['LIBOQS_DIR'],'src','oqsconfig.h.cmake')
-
-#replace file contents
-file_replacer(jinja_sig_c_file, sig_c_path, {'variants': variants},'/////')
-file_replacer(jinja_sig_h_file, sig_h_path, {'variants': variants},'/////')
-file_replacer(jinja_alg_support_file, alg_support_path, {'variants': variants},'#####')
-file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')
+    # This commit hash will need to be updated
+    commit_hash = "297e494f6093e762bd5c5f0d3253a9bebf49cf46"
+    
+    # internal paths
+    slh_dir = os.path.join(os.environ['LIBOQS_DIR'], 'src/sig/slh_dsa')
+    slh_dsa_c_dir = os.path.join(slh_dir, 'slh_dsa_c')
+    slh_wrappers_dir = os.path.join(slh_dir, 'wrappers')
+    template_dir = os.path.join(slh_dir, 'templates')
+    
+    #ensure these paths exist
+    os.makedirs(slh_dir,exist_ok=True)
+    os.makedirs(slh_dsa_c_dir,exist_ok=True)
+    os.makedirs(slh_wrappers_dir,exist_ok=True)
+    os.makedirs(template_dir,exist_ok=True)
+    
+    # internal files
+    meta_file = os.path.join(slh_dsa_c_dir, 'integration/META.yml')
+    jinja_header_file = os.path.join(template_dir, 'slh_dsa_header_template.jinja')
+    jinja_src_file = os.path.join(template_dir, 'slh_dsa_src_template.jinja')
+    jinja_cmake_file = os.path.join(template_dir, 'slh_dsa_cmake_template.jinja')
+    
+    #load meta file
+    meta = file_get_contents(meta_file, encoding='utf-8')
+    meta = yaml.safe_load(meta)
+    
+    #Create implementation dictionary
+    impl = {
+      "pure": True,
+      "paramSet": "",
+      "hashAlg": "",
+      "prehashHashAlg": "",
+      "pkSize": "",
+      "skSize": "",
+      "sigSize": "",
+      "algVersion": "",
+      "claimedNISTLevel": "",
+      "eufCMA": "",
+      "sufCMA": ""
+    }
+    
+    #Replace contents of other files using fragments
+    #generate variant list
+    variants = list_variants()
+    
+    #enumerate template file paths
+    jinja_sig_c_file = os.path.join(template_dir,'slh_dsa_sig_c_template.jinja')
+    jinja_sig_h_file = os.path.join(template_dir,'slh_dsa_sig_h_template.jinja')
+    jinja_alg_support_file = os.path.join(template_dir,'slh_dsa_alg_support_template.jinja')
+    jinja_oqsconfig_file = os.path.join(template_dir,'slh_dsa_oqsconfig_template.jinja')
+    
+    #enumerate destination file paths
+    sig_c_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.c')
+    sig_h_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.h')
+    alg_support_path = os.path.join(os.environ['LIBOQS_DIR'],'.CMake','alg_support.cmake')
+    oqsconfig_path = os.path.join(os.environ['LIBOQS_DIR'],'src','oqsconfig.h.cmake')
+    
+    #copy source code from upstream
+    copy_from_commit()
+    
+    #generate internal c and h files
+    internal_code_gen()
+    
+    #generate internal cmake file
+    internal_cmake_gen()
+    
+    #replace file contents
+    file_replacer(jinja_sig_c_file, sig_c_path, {'variants': variants},'/////')
+    file_replacer(jinja_sig_h_file, sig_h_path, {'variants': variants},'/////')
+    file_replacer(jinja_alg_support_file, alg_support_path, {'variants': variants},'#####')
+    file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')
+    
