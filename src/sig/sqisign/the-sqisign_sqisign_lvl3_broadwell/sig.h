@@ -17,7 +17,7 @@
  * @param[out] sk SQIsign secret key
  * @return int status code
  */
-SQISIGN_API 
+SQISIGN_API
 int sqisign_keypair(unsigned char *pk, unsigned char *sk);
 
 /**
@@ -34,12 +34,34 @@ int sqisign_keypair(unsigned char *pk, unsigned char *sk);
  * @param[in] sk Compacted secret key
  * @return int status code
  */
-SQISIGN_API 
+SQISIGN_API
 int sqisign_sign(unsigned char *sm,
                  unsigned long long *smlen,
                  const unsigned char *m,
                  unsigned long long mlen,
                  const unsigned char *sk);
+
+/**
+ * Alternate SQIsign signature generation. Used for liboqs compatibility.
+ *
+ * The implementation performs SQIsign.expandSK() + SQIsign.sign() in the SQIsign spec.
+ * Keys provided is a compacted secret keys.
+ * The caller is responsible to allocate sufficient memory to hold sm.
+ *
+ * @param[out] s Signature
+ * @param[out] slen Pointer to the length of s
+ * @param[in] m Message to be signed
+ * @param[in] mlen Message length
+ * @param[in] sk Compacted secret key
+ * @return int status code
+ */
+SQISIGN_API
+int
+sqisign_sign_signature(unsigned char *s,
+             unsigned long long *slen,
+             const unsigned char *m,
+             unsigned long long mlen,
+             const unsigned char *sk);
 #endif
 
 /**
@@ -75,11 +97,30 @@ int sqisign_open(unsigned char *m,
  * @param[in] pk Compacted public key
  * @return int 0 if verification succeeded, 1 otherwise.
  */
-SQISIGN_API 
+SQISIGN_API
 int sqisign_verify(const unsigned char *m,
                    unsigned long long mlen,
                    const unsigned char *sig,
                    unsigned long long siglen,
                    const unsigned char *pk);
 
+/**
+ * Alternate SQIsign verify signature. Used for liboqs compatibility.
+ *
+ * If the signature verification succeeded, returns 0, otherwise 1.
+ *
+ * @param[in] sig Signature
+ * @param[in] siglen Length of sig
+ * @param[out] m Message stored if verification succeeds
+ * @param[out] mlen Pointer to the length of m
+ * @param[in] pk Compacted public key
+ * @return int 0 if verification succeeded, 1 otherwise.
+ */
+SQISIGN_API
+int
+sqisign_verify_signature(const unsigned char *sig,
+               unsigned long long siglen,
+               const unsigned char *m,
+               unsigned long long mlen,
+               const unsigned char *pk);
 #endif
