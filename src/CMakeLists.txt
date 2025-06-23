@@ -73,6 +73,11 @@ if(OQS_ENABLE_SIG_SNOVA)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
+if(OQS_ENABLE_SIG_SLH_DSA)
+    add_subdirectory(sig/slh_dsa)
+    set(SIG_OBJS ${SIG_OBJS} ${SLH_DSA_OBJS})
+endif()
+
 if(OQS_ENABLE_SIG_STFL_XMSS)
     add_subdirectory(sig_stfl/xmss)
     set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${XMSS_OBJS})
