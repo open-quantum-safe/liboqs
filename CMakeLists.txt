@@ -28,6 +28,7 @@ option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsuppor
 option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
+option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
 
 # Libfuzzer isn't supported on gcc
 if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
@@ -149,6 +150,16 @@ if(${OQS_USE_CUPQC})
       set(CMAKE_CUDA_ARCHITECTURES 80 90)
     endif()
     find_package(cuPQC 0.2.0 REQUIRED)
+endif()
+
+if(${OQS_USE_ICICLE})
+    if(NOT DEFINED ICICLE_INCLUDE_DIR)
+        message(FATAL_ERROR "ICICLE_INCLUDE_DIR must be defined and point to the icicle headers")
+    endif()
+    if (DEFINED ICICLE_LIB_DIR)
+        list(APPEND CMAKE_LIBRARY_PATH "${ICICLE_LIB_DIR}")
+    endif()
+    enable_language(CXX)
 endif()
 
 if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))

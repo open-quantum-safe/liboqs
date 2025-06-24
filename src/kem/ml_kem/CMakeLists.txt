@@ -5,6 +5,7 @@
 
 set(_ML_KEM_OBJS "")
 
+message(STATUS "OQS_ENABLE_KEM_ml_kem_512: ${OQS_ENABLE_KEM_ml_kem_512} in ${CMAKE_CURRENT_LIST_DIR}")
 if(OQS_ENABLE_KEM_ml_kem_512)
     add_library(ml_kem_512_ref OBJECT kem_ml_kem_512.c mlkem-native_ml-kem-512_ref/mlkem/src/compress.c mlkem-native_ml-kem-512_ref/mlkem/src/debug.c mlkem-native_ml-kem-512_ref/mlkem/src/indcpa.c mlkem-native_ml-kem-512_ref/mlkem/src/kem.c mlkem-native_ml-kem-512_ref/mlkem/src/poly.c mlkem-native_ml-kem-512_ref/mlkem/src/poly_k.c mlkem-native_ml-kem-512_ref/mlkem/src/sampling.c mlkem-native_ml-kem-512_ref/mlkem/src/verify.c)
     target_compile_options(ml_kem_512_ref PUBLIC -DMLK_CONFIG_PARAMETER_SET=512 -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h")
@@ -37,6 +38,12 @@ if(OQS_ENABLE_KEM_ml_kem_512_cuda)
     set_property(TARGET ml_kem_512_cuda PROPERTY CUDA_ARCHITECTURES OFF)
     target_compile_options(ml_kem_512_cuda PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>)
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_512_cuda>)
+endif()
+
+if(OQS_ENABLE_KEM_ml_kem_512_icicle_cuda)
+    add_library(ml_kem_512_icicle_cuda OBJECT icicle_ml-kem-512/icicle_ml-kem.cpp)
+    target_include_directories(ml_kem_512_icicle_cuda PRIVATE ${ICICLE_INCLUDE_DIR})
+    set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_512_icicle_cuda>)
 endif()
 
 if(OQS_ENABLE_KEM_ml_kem_768)
@@ -73,6 +80,12 @@ if(OQS_ENABLE_KEM_ml_kem_768_cuda)
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_768_cuda>)
 endif()
 
+if(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
+    add_library(ml_kem_768_icicle_cuda OBJECT icicle_ml-kem-768/icicle_ml-kem.cpp)
+    target_include_directories(ml_kem_768_icicle_cuda PRIVATE ${ICICLE_INCLUDE_DIR})
+    set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_768_icicle_cuda>)
+endif()
+
 if(OQS_ENABLE_KEM_ml_kem_1024)
     add_library(ml_kem_1024_ref OBJECT kem_ml_kem_1024.c mlkem-native_ml-kem-1024_ref/mlkem/src/compress.c mlkem-native_ml-kem-1024_ref/mlkem/src/debug.c mlkem-native_ml-kem-1024_ref/mlkem/src/indcpa.c mlkem-native_ml-kem-1024_ref/mlkem/src/kem.c mlkem-native_ml-kem-1024_ref/mlkem/src/poly.c mlkem-native_ml-kem-1024_ref/mlkem/src/poly_k.c mlkem-native_ml-kem-1024_ref/mlkem/src/sampling.c mlkem-native_ml-kem-1024_ref/mlkem/src/verify.c)
     target_compile_options(ml_kem_1024_ref PUBLIC -DMLK_CONFIG_PARAMETER_SET=1024 -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h")
@@ -105,6 +118,12 @@ if(OQS_ENABLE_KEM_ml_kem_1024_cuda)
     set_property(TARGET ml_kem_1024_cuda PROPERTY CUDA_ARCHITECTURES OFF)
     target_compile_options(ml_kem_1024_cuda PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>)
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_1024_cuda>)
+endif()
+
+if(OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda)
+    add_library(ml_kem_1024_icicle_cuda OBJECT icicle_ml-kem-1024/icicle_ml-kem.cpp)
+    target_include_directories(ml_kem_1024_icicle_cuda PRIVATE ${ICICLE_INCLUDE_DIR})
+    set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_1024_icicle_cuda>)
 endif()
 
 set(ML_KEM_OBJS ${_ML_KEM_OBJS} PARENT_SCOPE)
