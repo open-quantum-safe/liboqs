@@ -7,7 +7,6 @@ extern "C" {
 int icicle_ml_kem_768_keypair(uint8_t *pk, uint8_t *sk) {
     uint8_t coins[icicle::pqc::ml_kem::ENTROPY_BYTES];
     OQS_randombytes(coins, icicle::pqc::ml_kem::ENTROPY_BYTES);
-    icicle_load_backend_from_env_or_default();
 #if defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
     icicle::Device dev = {"CUDA-PQC", 0};
 #endif
@@ -21,7 +20,6 @@ int icicle_ml_kem_768_keypair(uint8_t *pk, uint8_t *sk) {
 int icicle_ml_kem_768_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
     uint8_t coins[icicle::pqc::ml_kem::MESSAGE_BYTES];
     OQS_randombytes(coins, icicle::pqc::ml_kem::MESSAGE_BYTES);
-    icicle_load_backend_from_env_or_default();
 #if defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
     icicle::Device dev = {"CUDA-PQC", 0};
 #endif
@@ -32,7 +30,6 @@ int icicle_ml_kem_768_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
 }
 
 int icicle_ml_kem_768_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
-    icicle_load_backend_from_env_or_default();
 #if defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
     icicle::Device dev = {"CUDA-PQC", 0};
 #endif
