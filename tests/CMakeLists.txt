@@ -41,12 +41,6 @@ if(OQS_USE_PTHREADS)
     set(TEST_DEPS ${TEST_DEPS} Threads::Threads)
 endif()
 
-if(OQS_USE_ICICLE)
-    find_library(ICICLE_DEVICE_LIB NAMES icicle_device REQUIRED)
-    find_library(ICICLE_PQC_LIB NAMES icicle_pqc REQUIRED)
-    set(TEST_DEPS ${TEST_DEPS} ${ICICLE_DEVICE_LIB} ${ICICLE_PQC_LIB})
-endif()
-
 if(NOT WIN32)
     execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
     add_definitions(-DOQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
