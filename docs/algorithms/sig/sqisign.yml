@@ -1,0 +1,132 @@
+name: SQIsign
+type: signature
+principal-submitters:
+- Marius A. Aardal
+- Gora Adj
+- Diego F.Aranha
+- Andrea Basso
+- Isaac Andrés Canales Martínez
+- Jorge Chávez-Saab
+- Maria Corte-Real Santos
+- Pierrick Dartois
+- Luca De Feo
+- Max Duparc
+- Jonathan Komada Eriksen
+- Tako Boris Fouotsa
+- Décio Luiz Gazzoni Filho
+- Basil Hess
+- David Kohel
+- Antonin Leroux
+- Patrick Longa
+- Luciano Maino
+- Michael Meyer
+- Kohei Nakagawa
+- Hiroshi Onuki
+- Lorenz Panny
+- Sikhar Patranabis
+- Christophe Petit
+- Giacomo Pope
+- Krijn Reijnders
+- Damien Robert
+- Francisco Rodríguez Henríquez
+- Sina Schaeffler
+- Benjamin Wesolowski
+crypto-assumption: Computing the endomorphism ring of a supersingular elliptic curve.
+website: https://sqisign.org/
+nist-round: 2
+spec-version: Round 2
+primary-upstream:
+  source: https://github.com/shane-digi/the-sqisign/commit/a8c8a3d5acbeaecec179d9088c8eab7216db4db5
+    with copy_from_upstream patches
+  spdx-license-identifier: Apache-2.0
+parameter-sets:
+- name: SQIsign-lvl1
+  oqs_alg: OQS_SIG_alg_sqisign_lvl1
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 65
+  length-secret-key: 353
+  length-signature: 148
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: broadwell
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: SQIsign-lvl3
+  oqs_alg: OQS_SIG_alg_sqisign_lvl3
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 97
+  length-secret-key: 529
+  length-signature: 224
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: broadwell
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: SQIsign-lvl5
+  oqs_alg: OQS_SIG_alg_sqisign_lvl5
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 129
+  length-secret-key: 701
+  length-signature: 292
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: broadwell
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
