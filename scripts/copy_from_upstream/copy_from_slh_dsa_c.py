@@ -7,10 +7,12 @@ import jinja2
 import glob
 import itertools
 
+#get contents of a file
 def file_get_contents(filename, encoding=None):
     with open(filename, mode='r', encoding=encoding) as fh:
         return fh.read()
 
+#copy tarball of the specified commit
 def copy_from_commit():
     tar_name = 'slh_dsa_c.tar.gz'
     tar_path = os.path.join(slh_dir, tar_name)
@@ -19,7 +21,7 @@ def copy_from_commit():
     shutil.rmtree(os.path.join(slh_dsa_c_dir))
 
     url = os.path.join('https://github.com/pq-code-package/slhdsa-c/archive/', commit_hash, ".tar.gz")
-
+    
     response = requests.get(url) 
 
     if response.status_code == 200:
@@ -37,12 +39,31 @@ def copy_from_commit():
             if entry[:6] == 'slhdsa':
                 full_path = os.path.join(slh_dir, entry)
                 if os.path.isdir(full_path):
-                    os.rename(full_path, slh_dsa_c_dir)
+                    os.rename(full_path, slh_dsa_temp_dir)
+
+        #load meta file
+        meta = file_get_contents(meta_file, encoding='utf-8')
+        meta = yaml.safe_load(meta)
+
+        #copy sources from temp
+        os.makedirs(slh_dsa_c_dir, exist_ok=True)
+        sources = meta['sources']
+
+        for root, dirs, files in os.walk(slh_dsa_temp_dir):
+            for file in files:
+                full_path = os.path.join(root, file)
+                rel_path = os.path.relpath(full_path, slh_dsa_temp_dir)
+                if rel_path in sources:
+                    os.makedirs(os.path.dirname(os.path.join(slh_dsa_c_dir,rel_path)), exist_ok=True)
+                    shutil.copy(os.path.join(slh_dsa_temp_dir,rel_path), os.path.join(slh_dsa_c_dir,rel_path))
+        
+        shutil.rmtree(slh_dsa_temp_dir)
 
         print('Copied from slh dsa commit succesfully')
     else:
         print('Failed to copy from slh dsa commit')
 
+# Will retrieve start or end indices for sections
 def section_bound(identifier, delimiter, text, side):
     searchString = delimiter + ' OQS_COPY_FROM_SLH_DSA_FRAGMENT_' + identifier + '_' + side
     res = text.find(searchString)
@@ -50,6 +71,7 @@ def section_bound(identifier, delimiter, text, side):
         res += len(searchString)
     return res
 
+#replace a single fragment
 def fragment_replacer(template_file, destination_file, identifier, variants, destination_delimiter):
     #get section at identifier in template
     template = file_get_contents(template_file)
@@ -65,6 +87,7 @@ def fragment_replacer(template_file, destination_file, identifier, variants, des
     with open(destination_file, "w") as f:
                 f.write(contents)
 
+#replace all fragment in destination file
 def file_replacer(template_file, destination_file, variants, destination_delimiter):
     #get fragment list in template file
     template = file_get_contents(template_file)
@@ -73,6 +96,7 @@ def file_replacer(template_file, destination_file, variants, destination_delimit
     for id in id_list:
         fragment_replacer(template_file,destination_file,id,variants, destination_delimiter)
 
+#generate slh_dsa specific files
 def internal_code_gen():
     #clean up code
     shutil.rmtree(slh_wrappers_dir)
@@ -163,6 +187,7 @@ def internal_cmake_gen():
     with open(cmake_path, "w") as f:
                 f.write(cmake_contents)
 
+#create list of all slh_dsa variants
 def list_variants():
     variants = []
     #add pure variants
@@ -175,17 +200,18 @@ def list_variants():
 
 def main():
     #initialize globals
-    global commit_hash, slh_dir, slh_dsa_c_dir, slh_wrappers_dir, template_dir, meta_file, \
+    global commit_hash, slh_dir, slh_dsa_c_dir, slh_dsa_temp_dir, slh_wrappers_dir, template_dir, meta_file, \
         jinja_header_file, jinja_src_file, jinja_cmake_file, meta, impl, variants, jinja_sig_c_file, \
         jinja_sig_h_file, jinja_alg_support_file, jinja_oqsconfig_file, sig_c_path, sig_h_path, \
         alg_support_path, oqsconfig_path
 
     # This commit hash will need to be updated
-    commit_hash = "297e494f6093e762bd5c5f0d3253a9bebf49cf46"
+    commit_hash = "16cdd85ee74095592d975ff30afa682075a5a00b"
     
     # internal paths
     slh_dir = os.path.join(os.environ['LIBOQS_DIR'], 'src/sig/slh_dsa')
     slh_dsa_c_dir = os.path.join(slh_dir, 'slh_dsa_c')
+    slh_dsa_temp_dir = os.path.join(slh_dir, 'slh_dsa_temp')
     slh_wrappers_dir = os.path.join(slh_dir, 'wrappers')
     template_dir = os.path.join(slh_dir, 'templates')
     
@@ -196,12 +222,16 @@ def main():
     os.makedirs(template_dir,exist_ok=True)
     
     # internal files
-    meta_file = os.path.join(slh_dsa_c_dir, 'integration/META.yml')
+    meta_file = os.path.join(slh_dsa_temp_dir, 'integration/liboqs/META.yml')
     jinja_header_file = os.path.join(template_dir, 'slh_dsa_header_template.jinja')
     jinja_src_file = os.path.join(template_dir, 'slh_dsa_src_template.jinja')
     jinja_cmake_file = os.path.join(template_dir, 'slh_dsa_cmake_template.jinja')
     
-    #load meta file
+    #copy source code from upstream
+    copy_from_commit()
+
+    #load meta file globally
+    meta_file = os.path.join(slh_dsa_c_dir, 'integration/liboqs/META.yml')
     meta = file_get_contents(meta_file, encoding='utf-8')
     meta = yaml.safe_load(meta)
     
@@ -236,9 +266,6 @@ def main():
     alg_support_path = os.path.join(os.environ['LIBOQS_DIR'],'.CMake','alg_support.cmake')
     oqsconfig_path = os.path.join(os.environ['LIBOQS_DIR'],'src','oqsconfig.h.cmake')
     
-    #copy source code from upstream
-    copy_from_commit()
-    
     #generate internal c and h files
     internal_code_gen()
     
@@ -251,3 +278,5 @@ def main():
     file_replacer(jinja_alg_support_file, alg_support_path, {'variants': variants},'#####')
     file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')
     
+
+main()
