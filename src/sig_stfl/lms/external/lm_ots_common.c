@@ -16,13 +16,37 @@ bool lm_ots_look_up_parameter_set(param_set_t parameter_set,
     unsigned v_h, v_n, v_w, v_p, v_ls;
     switch (parameter_set) {
     case LMOTS_SHA256_N32_W1:
-        v_h = HASH_SHA256; v_n = 32; v_w = 1; v_p = 265; v_ls = 7; break;
+        v_h = HASH_SHA256;    v_n = 32; v_w = 1; v_p = 265; v_ls = 7; break;
     case LMOTS_SHA256_N32_W2:
-        v_h = HASH_SHA256; v_n = 32; v_w = 2; v_p = 133; v_ls = 6; break;
+        v_h = HASH_SHA256;    v_n = 32; v_w = 2; v_p = 133; v_ls = 6; break;
     case LMOTS_SHA256_N32_W4:
-        v_h = HASH_SHA256; v_n = 32; v_w = 4; v_p = 67; v_ls = 4; break;
+        v_h = HASH_SHA256;    v_n = 32; v_w = 4; v_p = 67;  v_ls = 4; break;
     case LMOTS_SHA256_N32_W8:
-        v_h = HASH_SHA256; v_n = 32; v_w = 8; v_p = 34; v_ls = 0; break;
+        v_h = HASH_SHA256;    v_n = 32; v_w = 8; v_p = 34;  v_ls = 0; break;
+    case LMOTS_SHA256_N24_W1:
+        v_h = HASH_SHA256_24; v_n = 24; v_w = 1; v_p = 200; v_ls = 8; break;
+    case LMOTS_SHA256_N24_W2:
+        v_h = HASH_SHA256_24; v_n = 24; v_w = 2; v_p = 101; v_ls = 6; break;
+    case LMOTS_SHA256_N24_W4:
+        v_h = HASH_SHA256_24; v_n = 24; v_w = 4; v_p = 51;  v_ls = 4; break;
+    case LMOTS_SHA256_N24_W8:
+        v_h = HASH_SHA256_24; v_n = 24; v_w = 8; v_p = 26;  v_ls = 0; break;
+    case LMOTS_SHAKE_N32_W1:
+        v_h = HASH_SHAKE;     v_n = 32; v_w = 1; v_p = 265; v_ls = 7; break;
+    case LMOTS_SHAKE_N32_W2:
+        v_h = HASH_SHAKE;     v_n = 32; v_w = 2; v_p = 133; v_ls = 6; break;
+    case LMOTS_SHAKE_N32_W4:
+        v_h = HASH_SHAKE;     v_n = 32; v_w = 4; v_p = 67;  v_ls = 4; break;
+    case LMOTS_SHAKE_N32_W8:
+        v_h = HASH_SHAKE;     v_n = 32; v_w = 8; v_p = 34;  v_ls = 0; break;
+    case LMOTS_SHAKE_N24_W1:
+        v_h = HASH_SHAKE_24;  v_n = 24; v_w = 1; v_p = 200; v_ls = 8; break;
+    case LMOTS_SHAKE_N24_W2:
+        v_h = HASH_SHAKE_24;  v_n = 24; v_w = 2; v_p = 101; v_ls = 6; break;
+    case LMOTS_SHAKE_N24_W4:
+        v_h = HASH_SHAKE_24;  v_n = 24; v_w = 4; v_p = 51;  v_ls = 4; break;
+    case LMOTS_SHAKE_N24_W8:
+        v_h = HASH_SHAKE_24;  v_n = 24; v_w = 8; v_p = 26;  v_ls = 0; break;
     default: return false;
     }
 

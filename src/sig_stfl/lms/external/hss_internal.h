@@ -30,12 +30,13 @@
 #define PRIVATE_KEY_PARAM_SET (PRIVATE_KEY_INDEX + PRIVATE_KEY_INDEX_LEN)
 #define PRIVATE_KEY_PARAM_SET_LEN (PARAM_SET_COMPRESS_LEN * MAX_HSS_LEVELS)
 #define PRIVATE_KEY_SEED (PRIVATE_KEY_PARAM_SET + PRIVATE_KEY_PARAM_SET_LEN)
-#if SECRET_METHOD == 2
-#define PRIVATE_KEY_SEED_LEN (SEED_LEN + I_LEN)
-#else
-#define PRIVATE_KEY_SEED_LEN SEED_LEN
-#endif
-#define PRIVATE_KEY_LEN (PRIVATE_KEY_SEED + PRIVATE_KEY_SEED_LEN) /* That's */
+#define PRIVATE_KEY_SEED_LEN(seed_len) (seed_len + I_LEN)
+// #if SECRET_METHOD == 2
+// #define PRIVATE_KEY_SEED_LEN(seed_len) (seed_len + I_LEN)
+// #else
+// #define PRIVATE_KEY_SEED_LEN SEED_LEN
+// #endif
+#define PRIVATE_KEY_LEN (PRIVATE_KEY_SEED + PRIVATE_KEY_SEED_LEN(SEED_LEN_32)) /* That's */
                                                                 /* 48 bytes */
 
 struct merkle_level;
@@ -133,7 +134,7 @@ struct merkle_level {
     unsigned char I[I_LEN], I_next[I_LEN];
 
         /* The seed values for the current Merkle tree, and the next one */
-    unsigned char seed[SEED_LEN], seed_next[SEED_LEN];
+    unsigned char seed[SEED_LEN_32], seed_next[SEED_LEN_32];
 };
 
 /*

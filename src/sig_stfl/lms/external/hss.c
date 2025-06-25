@@ -70,43 +70,43 @@ bool hss_generate_root_seed_I_value(unsigned char *seed, unsigned char *I,
 #if SECRET_METHOD == 2
     /* In ACVP mode, we use the master seed as the source for both the */
     /* root seed, and the root I value */
-    memcpy( seed, master_seed, SEED_LEN );
-    memcpy( I, master_seed + SEED_LEN, I_LEN );
+    memcpy( seed, master_seed, seedLen_g );
+    memcpy( I, master_seed + seedLen_g, I_LEN );
 #else
     /*
      * We use a two-level hashing scheme so that we end up using the master
      * seed only twice throughout the system (once here, once to generate the
      * aux hmac key)
      */
-    unsigned char hash_preimage[ TOPSEED_LEN ];
+    unsigned char hash_preimage[ TOP_SEED_LEN ];
     unsigned char hash_postimage[ MAX_HASH ];
 
     memset( hash_preimage + TOPSEED_I, 0, I_LEN );
     memset( hash_preimage + TOPSEED_Q, 0, 4 );
     SET_D( hash_preimage + TOPSEED_D, D_TOPSEED );
     hash_preimage[TOPSEED_WHICH] = 0x00;
-    memcpy( hash_preimage + TOPSEED_SEED, master_seed, SEED_LEN );
+    memcpy( hash_preimage + TOPSEED_SEED, master_seed, seedLen_g );
 
         /* We use a fixed SHA256 hash; we don't care about interoperability */
         /* so we don't need to worry about what parameter set the */
         /* user specified */
-#if I_LEN > 32 || SEED_LEN != 32
-#error This logic needs to be reworked
-#endif
+// #if I_LEN > 32 || SEED_LEN != 32
+// #error This logic needs to be reworked
+// #endif
     union hash_context ctx;
 
     hss_hash_ctx(hash_postimage, HASH_SHA256, &ctx, hash_preimage,
-                                                            TOPSEED_LEN );
-    memcpy( hash_preimage + TOPSEED_SEED, hash_postimage, SEED_LEN );
+                                                            TOP_SEED_LEN );
+    memcpy( hash_preimage + TOPSEED_SEED, hash_postimage, seedLen_g );
 
     /* Now compute the top level seed */
     hash_preimage[TOPSEED_WHICH] = 0x01;
-    hss_hash_ctx(seed, HASH_SHA256, &ctx, hash_preimage, TOPSEED_LEN );
+    hss_hash_ctx(seed, HASH_SHA256, &ctx, hash_preimage, TOP_SEED_LEN );
 
     /* Now compute the top level I value */
     hash_preimage[TOPSEED_WHICH] = 0x02;
     hss_hash_ctx(hash_postimage, HASH_SHA256, &ctx, hash_preimage,
-                                                            TOPSEED_LEN );
+                                                            TOP_SEED_LEN );
     memcpy( I, hash_postimage, I_LEN );
 
     hss_zeroize( hash_preimage, sizeof hash_preimage );  /* There's keying */
@@ -142,7 +142,7 @@ bool hss_generate_child_seed_I_value( unsigned char *seed, unsigned char *I,
 
     /* Compute the child I value; with increment_j set to true in the */
     /* above call, derive has been set to the SEED_CHILD_I position */
-    unsigned char postimage[ SEED_LEN ];
+    unsigned char postimage[ SEED_LEN_32 ];
     hss_seed_derive( postimage, &derive, false );
     memcpy( I, postimage, I_LEN );
 

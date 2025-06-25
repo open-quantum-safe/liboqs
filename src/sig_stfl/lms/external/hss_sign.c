@@ -670,7 +670,7 @@ done_advancing:
         }
 
         /* Copy in the value of seed, I we'll use for the new tree */
-        memcpy( tree_l->seed, tree->seed_next, SEED_LEN );
+        memcpy( tree_l->seed, tree->seed_next, seedLen_g );
         memcpy( tree_l->I, tree->I_next, I_LEN );
 
         /* Compute the new next I, which is derived from either the parent's */

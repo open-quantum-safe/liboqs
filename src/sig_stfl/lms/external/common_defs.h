@@ -27,7 +27,12 @@
 #define MAX_HSS_LEVELS 8    /* Maximum levels we allow */
 
 /* This is the length of our internal seed values */
-#define SEED_LEN 32         /* Enough to make Grover's infeasible */
+enum seedLen_e {
+    SEED_LEN_32 = 32,           /* Enough to make Grover's infeasible */
+    SEED_LEN_24 = 24
+};
+
+enum seedLen_e seedLen_g;
 
 /* Here are some internal types used within the code.  They are listed more */
 /* for documentation ("this is what this variable is expected to be") rather */
@@ -190,7 +195,7 @@ typedef uint_fast64_t sequence_t;
                          /* 1 -> Create top level seed */
                          /* 2 -> Create top level I */
 #define TOPSEED_SEED 23  /* 32 bytes long */
-#define TOPSEED_LEN (TOPSEED_SEED + 32)
+#define TOP_SEED_LEN (TOPSEED_SEED + 32)
 #define D_TOPSEED 0xfefe
 
 /* Hash used to generate the key used for the authenticating the aux values */
