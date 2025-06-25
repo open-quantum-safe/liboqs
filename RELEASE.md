@@ -33,6 +33,16 @@ This release contains a security fix for secret-dependent branching in HQC. It i
 
 This release also introduces a number of improvements to testing and infrastructure. The OQS project is now publishing benchmarking data on https://openquantumsafe.org/benchmarking and code coverage data on https://coveralls.io/github/open-quantum-safe/liboqs.
 
+Deprecation notice
+==================
+
+This will be the last release of liboqs to include Dilithium (that is, the NIST Round 3 version of Dilithium, prior to its standardization by NIST as ML-DSA in FIPS 204). Applications should switch to ML-DSA (FIPS 204). Please contact us if you have any concerns.
+
+Security issues
+===============
+
+- CVE-2025-52473: Disabled compiler optimizations for HQC to avoid secret-dependent branches. Thank you to Zhenzhi Lai and Zhiyuan Zhang from from the University of Melbourne and the Max Planck Institute for Security and Privacy for identifying the issue.
+
 What's New
 ----------
 
@@ -54,6 +64,9 @@ This release continues from the 0.13.0 release of liboqs.
 - Improved memory management throughout the codebase.
 
 ---
+
+Detailed changelog
+------------------
 
 ## What's Changed
 * Switch to dev mode after 0.13.0 release by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/2125
