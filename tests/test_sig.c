@@ -49,7 +49,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		if (bitflips_all[i]) {
 			snprintf(bitflips_as_str[i], sizeof(bitflips_as_str[i]), "all");
 		} else {
-			snprintf(bitflips_as_str[i], sizeof(bitflips_as_str[i]), "%ld random", bitflips[i]);
+			snprintf(bitflips_as_str[i], sizeof(bitflips_as_str[i]), "%zu random", bitflips[i]);
 		}
 	}
 
