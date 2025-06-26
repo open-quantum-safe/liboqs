@@ -330,6 +330,14 @@
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_29_6_5 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_29_6_5_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_29_6_5_neon 1
+
+#cmakedefine OQS_ENABLE_SIG_SQISIGN 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_lvl1 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_lvl1_broadwell 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_lvl3 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_lvl3_broadwell 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_lvl5 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_lvl5_broadwell 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 
 ///// OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
