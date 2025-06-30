@@ -40,12 +40,18 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
     target_link_libraries({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} cupqc)
     set_property(TARGET {{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PROPERTY CUDA_ARCHITECTURES OFF)
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {{ impl['compile_opts'] }})
+
+        {%- elif impl['name'] == 'icicle_cuda' %}
+
+if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
+    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT icicle_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/icicle_ml-kem.cpp)
+    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${ICICLE_INCLUDE_DIR})
         {%- else %}
 
 if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
         {%- endif %}
-        {%- if impl['name'] != 'cuda' %}
+        {%- if impl['name'] != 'cuda' and impl['name'] != 'icicle_cuda' %}
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] -%}

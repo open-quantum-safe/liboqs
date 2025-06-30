@@ -65,7 +65,7 @@ extern int icicle_ml_kem_768_keypair(uint8_t *pk, uint8_t *sk);
 extern int icicle_ml_kem_768_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int icicle_ml_kem_768_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
-#endif
+#endif /* OQS_USE_ICICLE */
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
 #if defined(OQS_ENABLE_KEM_ml_kem_768_x86_64)
@@ -88,20 +88,22 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair_derand(uint8_t *public_key, uint8_
 		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
 	}
 #endif /* OQS_DIST_BUILD */
-#elif defined(OQS_ENABLE_KEM_ml_kem_768_cuda) || defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
+#elif defined(OQS_ENABLE_KEM_ml_kem_768_cuda)
 	return (OQS_STATUS) PQCLEAN_MLKEM768_CUDA_crypto_kem_keypair_derand(public_key, secret_key, seed);
+#elif defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
+	return (OQS_STATUS) PQCLEAN_MLKEM768_ICICLE_CUDA_crypto_kem_keypair_derand(public_key, secret_key, seed);
 #else
 	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
 #endif
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair(uint8_t *public_key, uint8_t *secret_key) {
-#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
-	return (OQS_STATUS) icicle_ml_kem_768_keypair(public_key, secret_key);
-#endif
 #if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_768_cuda)
 	return (OQS_STATUS) cupqc_ml_kem_768_keypair(public_key, secret_key);
 #endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_768_cuda */
+#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
+	return (OQS_STATUS) icicle_ml_kem_768_keypair(public_key, secret_key);
+#endif /* OQS_USE_ICICLE && OQS_ENABLE_KEM_ml_kem_768_icicle_cuda */
 #if defined(OQS_ENABLE_KEM_ml_kem_768_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -128,12 +130,12 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair(uint8_t *public_key, uint8_t *secr
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
-	return (OQS_STATUS) icicle_ml_kem_768_enc(ciphertext, shared_secret, public_key);
-#endif
 #if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_768_cuda)
 	return (OQS_STATUS) cupqc_ml_kem_768_enc(ciphertext, shared_secret, public_key);
 #endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_768_cuda */
+#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
+	return (OQS_STATUS) icicle_ml_kem_768_enc(ciphertext, shared_secret, public_key);
+#endif /* OQS_USE_ICICLE && OQS_ENABLE_KEM_ml_kem_768_icicle_cuda */
 #if defined(OQS_ENABLE_KEM_ml_kem_768_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -160,12 +162,12 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_encaps(uint8_t *ciphertext, uint8_t *share
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_768_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
-	return (OQS_STATUS) icicle_ml_kem_768_dec(shared_secret, ciphertext, secret_key);
-#endif
 #if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_ml_kem_768_cuda)
 	return (OQS_STATUS) cupqc_ml_kem_768_dec(shared_secret, ciphertext, secret_key);
 #endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_ml_kem_768_cuda */
+#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
+	return (OQS_STATUS) icicle_ml_kem_768_dec(shared_secret, ciphertext, secret_key);
+#endif /* OQS_USE_ICICLE && OQS_ENABLE_KEM_ml_kem_768_icicle_cuda */
 #if defined(OQS_ENABLE_KEM_ml_kem_768_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
