@@ -281,3 +281,6 @@ def main():
     file_replacer(jinja_sig_h_file, sig_h_path, {'variants': variants},'/////')
     file_replacer(jinja_alg_support_file, alg_support_path, {'variants': variants},'#####')
     file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')
+
+if __name__ == "__main__":
+    main()
