@@ -201,6 +201,8 @@ def list_variants():
     return variants
 
 def main():
+    os.chdir(os.path.join(os.environ['LIBOQS_DIR']))
+
     #initialize globals
     global commit_hash, slh_dir, slh_dsa_c_dir, slh_dsa_temp_dir, slh_wrappers_dir, template_dir, meta_file, \
         jinja_header_file, jinja_src_file, jinja_cmake_file, meta, impl, variants, jinja_sig_c_file, \
@@ -279,6 +281,3 @@ def main():
     file_replacer(jinja_sig_h_file, sig_h_path, {'variants': variants},'/////')
     file_replacer(jinja_alg_support_file, alg_support_path, {'variants': variants},'#####')
     file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')
-    
-
-main()
