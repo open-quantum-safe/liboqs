@@ -9,7 +9,7 @@ upstreams:
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
     patches: [pqclean-dilithium-arm-randomized-signing.patch, pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch,
-    pqclean-kyber-armneon-asan.patch]
+    pqclean-kyber-armneon-asan.patch, pqclean-classic-mceliese.patch]
     ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
   -
     name: pqclean
