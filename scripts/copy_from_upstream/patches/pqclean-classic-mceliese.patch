@@ -1,0 +1,180 @@
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece348864_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece348864_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece348864_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece348864_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece348864_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece348864_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece348864_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece348864_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece348864f_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece348864f_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece348864f_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece348864f_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece348864f_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece348864f_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece348864f_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece348864f_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece460896_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece460896_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece460896_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece460896_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece460896_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece460896_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece460896_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece460896_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece460896f_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece460896f_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece460896f_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece460896f_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece460896f_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece460896f_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece460896f_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece460896f_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6688128_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6688128_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6688128_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6688128_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6688128_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6688128_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6688128_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6688128_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6688128f_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6688128f_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6688128f_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6688128f_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6688128f_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6688128f_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6688128f_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6688128f_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6960119_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6960119_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6960119_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6960119_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6960119_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6960119_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6960119_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6960119_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6960119f_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6960119f_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6960119f_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6960119f_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece6960119f_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece6960119f_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece6960119f_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece6960119f_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece8192128_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece8192128_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece8192128_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece8192128_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece8192128_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece8192128_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece8192128_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece8192128_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece8192128f_avx2/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece8192128f_avx2/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece8192128f_avx2/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece8192128f_avx2/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+diff --git a/src/kem/classic_mceliece/pqclean_mceliece8192128f_clean/controlbits.c b/src/kem/classic_mceliece/pqclean_mceliece8192128f_clean/controlbits.c
+index ab32b1df..a86eea4f 100644
+--- a/src/kem/classic_mceliece/pqclean_mceliece8192128f_clean/controlbits.c
++++ b/src/kem/classic_mceliece/pqclean_mceliece8192128f_clean/controlbits.c
+@@ -1,3 +1,4 @@
++#define memset OQS_MEM_cleanse
+ /* This file is for implementing the Nassimi-Sahni algorithm */
+ /* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
