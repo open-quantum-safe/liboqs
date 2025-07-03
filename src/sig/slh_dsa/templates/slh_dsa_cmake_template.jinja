@@ -2,12 +2,12 @@
 
 set(_SLH_DSA_OBJS "")
 
-if(OQS_ENABLE_SIG_SLH_DSA)
-    add_library(slh_dsa_c OBJECT
-        {% for file in sources -%}
-        {{ file }}
-        {% endfor %}
-    )
+if (OQS_ENABLE_SIG_SLH_DSA)
+	add_library(slh_dsa_c OBJECT
+	            {% for file in sources -%}
+	            {{ file }}
+	            {% endfor -%}
+	           )
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/slh_dsa_c)
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/pure)
     {% for prehashHashAlg in prehashHashAlgs -%}
