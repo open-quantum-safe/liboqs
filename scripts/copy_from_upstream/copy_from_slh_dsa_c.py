@@ -179,6 +179,7 @@ def internal_cmake_gen():
         for file in glob.glob(os.path.join(slh_dir, '**', '*.c'), recursive=True)
         if 'slh_dsa_c/test/' not in os.path.relpath(file, start=slh_dir)
     ]
+    sources.sort()
     prehashHashAlgs = [prehashHashAlg['name'] for prehashHashAlg in meta['prehashHashAlgs']]
 
     cmake_template = file_get_contents(jinja_cmake_file)
