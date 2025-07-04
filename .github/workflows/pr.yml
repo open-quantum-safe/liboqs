@@ -17,7 +17,6 @@ jobs:
   platform-tests:
     needs: basic-checks
     uses: ./.github/workflows/platforms.yml
-    timeout-minutes: 85 # max + 3*std over the last 20,000 successful runs
 
   code-coverage:
     needs: basic-checks

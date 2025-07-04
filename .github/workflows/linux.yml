@@ -118,6 +118,8 @@ jobs:
             CMAKE_ARGS: -DOQS_USE_SHA3_AVX512VL=OFF
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
     runs-on: ${{ matrix.runner }}
+    timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
+
     container:
       image: ${{ matrix.container }}
     steps:
@@ -154,6 +156,7 @@ jobs:
 
   linux_arm_emulated:
     runs-on: ubuntu-latest
+    timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
     strategy:
       fail-fast: false
       matrix:
