@@ -2,7 +2,7 @@ algDetails:
   algVersion: FIPS205
   claimedNISTLevel: 1
   eufCMA: 'true'
-  sufCMA: 'true'
+  sufCMA: 'false'
 
 sources:
   integration/liboqs/META.yml

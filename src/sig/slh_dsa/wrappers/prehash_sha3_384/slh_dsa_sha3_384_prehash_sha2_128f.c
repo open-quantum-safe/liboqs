@@ -20,7 +20,7 @@ OQS_SIG *OQS_SIG_slh_dsa_sha3_384_prehash_sha2_128f_new(void) {
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
-	sig->suf_cma = true;
+	sig->suf_cma = false;
 	sig->sig_with_ctx_support = true;
 
 	sig->length_public_key = OQS_SIG_slh_dsa_sha3_384_prehash_sha2_128f_length_public_key;
