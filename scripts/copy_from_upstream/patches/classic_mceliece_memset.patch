@@ -1,0 +1,620 @@
+diff --git c/crypto_kem/mceliece348864/avx2/controlbits.c i/crypto_kem/mceliece348864/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece348864/avx2/controlbits.c
++++ i/crypto_kem/mceliece348864/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece348864/avx2/controlbits.h i/crypto_kem/mceliece348864/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece348864/avx2/controlbits.h
++++ i/crypto_kem/mceliece348864/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece348864/clean/controlbits.c i/crypto_kem/mceliece348864/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece348864/clean/controlbits.c
++++ i/crypto_kem/mceliece348864/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece348864/clean/controlbits.h i/crypto_kem/mceliece348864/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece348864/clean/controlbits.h
++++ i/crypto_kem/mceliece348864/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece348864f/avx2/controlbits.c i/crypto_kem/mceliece348864f/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece348864f/avx2/controlbits.c
++++ i/crypto_kem/mceliece348864f/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece348864f/avx2/controlbits.h i/crypto_kem/mceliece348864f/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece348864f/avx2/controlbits.h
++++ i/crypto_kem/mceliece348864f/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece348864f/clean/controlbits.c i/crypto_kem/mceliece348864f/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece348864f/clean/controlbits.c
++++ i/crypto_kem/mceliece348864f/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece348864f/clean/controlbits.h i/crypto_kem/mceliece348864f/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece348864f/clean/controlbits.h
++++ i/crypto_kem/mceliece348864f/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece460896/avx2/controlbits.c i/crypto_kem/mceliece460896/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece460896/avx2/controlbits.c
++++ i/crypto_kem/mceliece460896/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece460896/avx2/controlbits.h i/crypto_kem/mceliece460896/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece460896/avx2/controlbits.h
++++ i/crypto_kem/mceliece460896/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece460896/clean/controlbits.c i/crypto_kem/mceliece460896/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece460896/clean/controlbits.c
++++ i/crypto_kem/mceliece460896/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece460896/clean/controlbits.h i/crypto_kem/mceliece460896/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece460896/clean/controlbits.h
++++ i/crypto_kem/mceliece460896/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece460896f/avx2/controlbits.c i/crypto_kem/mceliece460896f/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece460896f/avx2/controlbits.c
++++ i/crypto_kem/mceliece460896f/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece460896f/avx2/controlbits.h i/crypto_kem/mceliece460896f/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece460896f/avx2/controlbits.h
++++ i/crypto_kem/mceliece460896f/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece460896f/clean/controlbits.c i/crypto_kem/mceliece460896f/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece460896f/clean/controlbits.c
++++ i/crypto_kem/mceliece460896f/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece460896f/clean/controlbits.h i/crypto_kem/mceliece460896f/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece460896f/clean/controlbits.h
++++ i/crypto_kem/mceliece460896f/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6688128/avx2/controlbits.c i/crypto_kem/mceliece6688128/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6688128/avx2/controlbits.c
++++ i/crypto_kem/mceliece6688128/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6688128/avx2/controlbits.h i/crypto_kem/mceliece6688128/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6688128/avx2/controlbits.h
++++ i/crypto_kem/mceliece6688128/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6688128/clean/controlbits.c i/crypto_kem/mceliece6688128/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6688128/clean/controlbits.c
++++ i/crypto_kem/mceliece6688128/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6688128/clean/controlbits.h i/crypto_kem/mceliece6688128/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6688128/clean/controlbits.h
++++ i/crypto_kem/mceliece6688128/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6688128f/avx2/controlbits.c i/crypto_kem/mceliece6688128f/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6688128f/avx2/controlbits.c
++++ i/crypto_kem/mceliece6688128f/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6688128f/avx2/controlbits.h i/crypto_kem/mceliece6688128f/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6688128f/avx2/controlbits.h
++++ i/crypto_kem/mceliece6688128f/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6688128f/clean/controlbits.c i/crypto_kem/mceliece6688128f/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6688128f/clean/controlbits.c
++++ i/crypto_kem/mceliece6688128f/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6688128f/clean/controlbits.h i/crypto_kem/mceliece6688128f/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6688128f/clean/controlbits.h
++++ i/crypto_kem/mceliece6688128f/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6960119/avx2/controlbits.c i/crypto_kem/mceliece6960119/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6960119/avx2/controlbits.c
++++ i/crypto_kem/mceliece6960119/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6960119/avx2/controlbits.h i/crypto_kem/mceliece6960119/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6960119/avx2/controlbits.h
++++ i/crypto_kem/mceliece6960119/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6960119/clean/controlbits.c i/crypto_kem/mceliece6960119/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6960119/clean/controlbits.c
++++ i/crypto_kem/mceliece6960119/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6960119/clean/controlbits.h i/crypto_kem/mceliece6960119/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6960119/clean/controlbits.h
++++ i/crypto_kem/mceliece6960119/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6960119f/avx2/controlbits.c i/crypto_kem/mceliece6960119f/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6960119f/avx2/controlbits.c
++++ i/crypto_kem/mceliece6960119f/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6960119f/avx2/controlbits.h i/crypto_kem/mceliece6960119f/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6960119f/avx2/controlbits.h
++++ i/crypto_kem/mceliece6960119f/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece6960119f/clean/controlbits.c i/crypto_kem/mceliece6960119f/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece6960119f/clean/controlbits.c
++++ i/crypto_kem/mceliece6960119f/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece6960119f/clean/controlbits.h i/crypto_kem/mceliece6960119f/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece6960119f/clean/controlbits.h
++++ i/crypto_kem/mceliece6960119f/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece8192128/avx2/controlbits.c i/crypto_kem/mceliece8192128/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece8192128/avx2/controlbits.c
++++ i/crypto_kem/mceliece8192128/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece8192128/avx2/controlbits.h i/crypto_kem/mceliece8192128/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece8192128/avx2/controlbits.h
++++ i/crypto_kem/mceliece8192128/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece8192128/clean/controlbits.c i/crypto_kem/mceliece8192128/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece8192128/clean/controlbits.c
++++ i/crypto_kem/mceliece8192128/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece8192128/clean/controlbits.h i/crypto_kem/mceliece8192128/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece8192128/clean/controlbits.h
++++ i/crypto_kem/mceliece8192128/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece8192128f/avx2/controlbits.c i/crypto_kem/mceliece8192128f/avx2/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece8192128f/avx2/controlbits.c
++++ i/crypto_kem/mceliece8192128f/avx2/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece8192128f/avx2/controlbits.h i/crypto_kem/mceliece8192128f/avx2/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece8192128f/avx2/controlbits.h
++++ i/crypto_kem/mceliece8192128f/avx2/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
+diff --git c/crypto_kem/mceliece8192128f/clean/controlbits.c i/crypto_kem/mceliece8192128f/clean/controlbits.c
+index ab32b1df..e14b5a8d 100644
+--- c/crypto_kem/mceliece8192128f/clean/controlbits.c
++++ i/crypto_kem/mceliece8192128f/clean/controlbits.c
+@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
+     int i;
+     unsigned char *ptr;
+ 
+-    memset(temp, 0, (size_t)n * 2);
+-    memset(pi_test, 0, (size_t)n);
++    OQS_MEM_cleanse(temp, (size_t)n * 2);
++    OQS_MEM_cleanse(pi_test, (size_t)n);
+ 
+     while (1) {
+-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
++        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+         cbrecursion(out, 0, 1, pi, w, n, temp);
+ 
+         // check for correctness
+diff --git c/crypto_kem/mceliece8192128f/clean/controlbits.h i/crypto_kem/mceliece8192128f/clean/controlbits.h
+index d3d8227c..6996b5be 100644
+--- c/crypto_kem/mceliece8192128f/clean/controlbits.h
++++ i/crypto_kem/mceliece8192128f/clean/controlbits.h
+@@ -5,6 +5,7 @@
+ /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+ 
+ #include "namespace.h"
++#include <oqs/common.h>
+ 
+ #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
+ 
