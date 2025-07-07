@@ -53,7 +53,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_128s_sign(uint8_t *signature, size
 	const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	
 	const slh_param_t *prm = &slh_dsa_shake_128s;
-	const uint8_t *ctx;
+	const uint8_t *ctx = NULL;
     const size_t ctxlen = 0;
     uint8_t addrnd[16];
     OQS_randombytes(addrnd, 16);
@@ -72,7 +72,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_128s_verify(const uint8_t *message
 	const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	
 	const slh_param_t *prm = &slh_dsa_shake_128s;
-	const uint8_t *ctx;
+	const uint8_t *ctx = NULL;
     const size_t ctxlen = 0;
 
     int res = slh_verify(message,message_len,signature,signature_len, ctx,

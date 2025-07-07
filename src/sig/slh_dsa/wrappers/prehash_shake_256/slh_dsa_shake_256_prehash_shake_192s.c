@@ -54,7 +54,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_shake_256_prehash_shake_192s_sign(uint8_t *si
 	const slh_param_t *prm = &slh_dsa_shake_192s;
 	
 	const char *ph = "SHAKE-256";
-	const uint8_t *ctx_str;
+	const uint8_t *ctx_str = NULL;
     const size_t ctx_str_len = 0;
     uint8_t addrnd[16];
     OQS_randombytes(addrnd, 16);
@@ -74,7 +74,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_shake_256_prehash_shake_192s_verify(const uin
 	
 	const slh_param_t *prm = &slh_dsa_shake_192s;
 	const char *ph = "SHAKE-256";
-	const uint8_t *ctx_str;
+	const uint8_t *ctx_str = NULL;
     const size_t ctx_str_len = 0;
 
     int res = hash_slh_verify(message,message_len,signature,signature_len,
