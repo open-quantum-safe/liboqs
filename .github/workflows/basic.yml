@@ -171,3 +171,21 @@ jobs:
         run: nix flake check --no-build # check for accurate syntax
       - name: Check that the flake builds
         run: nix build # check that the build runs
+
+  markdownlint:
+    name: Check Markdown formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # pin@v4
+        with:
+          node-version: '18'
+
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli@0.32.2
+
+      - name: Run markdownlint
+        run: markdownlint '**/*.md' --ignore node_modules
