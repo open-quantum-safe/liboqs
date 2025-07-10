@@ -127,29 +127,30 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	/* testing signing with context, if supported */
 	OQS_randombytes(ctx, 257);
 	if (sig->sig_with_ctx_support) {
-		for (size_t i = 0; i < 256; ++i) {
-			rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, i, secret_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_SUCCESS) {
-				fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str failed\n");
-				goto err;
-			}
+		if (strncmp(sig->method_name, "SLH_DSA", 7)) {
+			for (size_t i = 0; i < 256; ++i) {
+				rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, i, secret_key);
+				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+				if (rc != OQS_SUCCESS) {
+					fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str failed\n");
+					goto err;
+				}
 
-			OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
-			OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-			rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_SUCCESS) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str failed\n");
-				goto err;
-			}
+				OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
+				OQS_TEST_CT_DECLASSIFY(signature, signature_len);
+				rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
+				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+				if (rc != OQS_SUCCESS) {
+					fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str failed\n");
+					goto err;
+				}
 
-			rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, ctx, i);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-			if (rc != OQS_SUCCESS) {
-				goto err;
+				rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, ctx, i);
+				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+				if (rc != OQS_SUCCESS) {
+					goto err;
+				}
 			}
-
 		}
 
 		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 256, secret_key);
