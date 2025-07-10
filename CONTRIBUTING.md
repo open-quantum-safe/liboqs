@@ -42,6 +42,15 @@ LIBOQS_DIR=<liboqs directory> ./scripts/format_code.sh
 ```
 This script has been tested on x86\_64 Ubuntu and arm64 macOS. Contributions for other platforms are welcome and appreciated!
 
+### Public and internal APIs
+
+Public API functions are marked with the `OQS_API` keyword. These functions are made available to users of the library.
+OQS also has an internal API for common code such as hashing and memory management.
+The OQS test programs use this internal API.
+These programs link against the `oqs-internal` library, which is built alongside the main library.
+The main library also contains the common code, but it does not expose it to external callers.
+The internal library is not installed via `ninja install`, and source code should not link against it.
+
 ### Continuous Integration (CI)
 
 `liboqs` uses GitHub Actions for CI.
