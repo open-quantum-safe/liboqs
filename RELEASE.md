@@ -1,5 +1,5 @@
-liboqs version 0.14.0-rc1
-=========================
+liboqs version 0.14.0
+=====================
 
 About
 -----
@@ -27,7 +27,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.14.0 of liboqs. It was released on June 25, 2025.
+This is version 0.14.0 of liboqs. It was released on July 10, 2025.
 
 This release contains a security fix for secret-dependent branching in HQC. It introduces support for SNOVA, a NIST Additional Signatures Round 2 candidate, and a new optimized implementation of SHA3 using AVX-512VL instructions. Additionally, this is the first liboqs release to include the [stable 1.0.0 version of PQ Code Package's mlkem-native](https://github.com/pq-code-package/mlkem-native/releases/tag/v1.0.0).
 
@@ -94,6 +94,8 @@ Detailed changelog
 * Add AVX512VL-Optimized SHA3/SHAKE Implementations by @mdcornu in https://github.com/open-quantum-safe/liboqs/pull/2167
 * Zeroize memory in SHA3 implementation by @aidenfoxivey in https://github.com/open-quantum-safe/liboqs/pull/2171
 * Disable compiler optimizations for HQC by @SWilson4 in https://github.com/open-quantum-safe/liboqs/commit/4215362acbf69b88fe1777c4c052f154e29f9897
+* liboqs 0.14.0 release candidate 1 by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/2180
+* Document public / internal API split [skip ci] by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/2182
 
 ## New Contributors
 * @alraddady made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2111
@@ -103,4 +105,4 @@ Detailed changelog
 * @h2parson made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2145
 * @mdcornu made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2167
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.13.0...0.14.0-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.13.0...0.14.0
