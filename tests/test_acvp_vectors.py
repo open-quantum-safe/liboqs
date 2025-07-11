@@ -55,7 +55,7 @@ def test_acvp_vec_kem_encdec_aft(kem_name):
 
         variantFound = False
         for variant in ml_kem_encdec_acvp["testGroups"]:
-            if variant["parameterSet"] == kem_name and variant["testType"] == "AFT":
+            if variant["parameterSet"] == kem_name and variant["function"] == "encapsulation":
                 variantFound = True
                 for testCase in variant["tests"]:
                     #prompt
@@ -85,10 +85,10 @@ def test_acvp_vec_kem_encdec_val(kem_name):
 
         variantFound = False
         for variant in ml_kem_encdec_acvp["testGroups"]:
-            if variant["parameterSet"] == kem_name and variant["testType"] == "VAL":
+            if variant["parameterSet"] == kem_name and variant["function"] == "decapsulation":
                 variantFound = True
-                sk = variant["dk"]
                 for testCase in variant["tests"]:
+                    sk = testCase["dk"]
                     #prompt
                     c = testCase["c"]
                     #expected results
