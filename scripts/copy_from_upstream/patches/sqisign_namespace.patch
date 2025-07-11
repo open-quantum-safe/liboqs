@@ -1,0 +1,622 @@
+diff --git a/include/sqisign_namespace.h b/include/sqisign_namespace.h
+index 007d257..bbfe72c 100644
+--- a/include/sqisign_namespace.h
++++ b/include/sqisign_namespace.h
+@@ -18,12 +18,6 @@
+ #define PARAM_JOIN2(a, b) PARAM_JOIN2_(a, b)
+ #define PARAM_NAME2(end, s) PARAM_JOIN2(end, s)
+ 
+-#ifndef DISABLE_NAMESPACING
+-#define SQISIGN_NAMESPACE_GENERIC(s) PARAM_NAME2(gen, s)
+-#else
+-#define SQISIGN_NAMESPACE_GENERIC(s) s
+-#endif
+-
+ #if defined(SQISIGN_VARIANT) && !defined(DISABLE_NAMESPACING)
+ #if defined(SQISIGN_BUILD_TYPE_REF)
+ #define SQISIGN_NAMESPACE(s) PARAM_NAME3(ref, s)
+@@ -60,23 +54,23 @@
+ #undef quat_alg_scalar
+ #undef quat_alg_sub
+ 
+-#define quat_alg_add                                    SQISIGN_NAMESPACE_GENERIC(quat_alg_add)
+-#define quat_alg_conj                                   SQISIGN_NAMESPACE_GENERIC(quat_alg_conj)
+-#define quat_alg_coord_mul                              SQISIGN_NAMESPACE_GENERIC(quat_alg_coord_mul)
+-#define quat_alg_elem_copy                              SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_copy)
+-#define quat_alg_elem_copy_ibz                          SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_copy_ibz)
+-#define quat_alg_elem_equal                             SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_equal)
+-#define quat_alg_elem_is_zero                           SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_is_zero)
+-#define quat_alg_elem_mul_by_scalar                     SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_mul_by_scalar)
+-#define quat_alg_elem_set                               SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_set)
+-#define quat_alg_equal_denom                            SQISIGN_NAMESPACE_GENERIC(quat_alg_equal_denom)
+-#define quat_alg_init_set_ui                            SQISIGN_NAMESPACE_GENERIC(quat_alg_init_set_ui)
+-#define quat_alg_make_primitive                         SQISIGN_NAMESPACE_GENERIC(quat_alg_make_primitive)
+-#define quat_alg_mul                                    SQISIGN_NAMESPACE_GENERIC(quat_alg_mul)
+-#define quat_alg_norm                                   SQISIGN_NAMESPACE_GENERIC(quat_alg_norm)
+-#define quat_alg_normalize                              SQISIGN_NAMESPACE_GENERIC(quat_alg_normalize)
+-#define quat_alg_scalar                                 SQISIGN_NAMESPACE_GENERIC(quat_alg_scalar)
+-#define quat_alg_sub                                    SQISIGN_NAMESPACE_GENERIC(quat_alg_sub)
++#define quat_alg_add                                    SQISIGN_NAMESPACE(quat_alg_add)
++#define quat_alg_conj                                   SQISIGN_NAMESPACE(quat_alg_conj)
++#define quat_alg_coord_mul                              SQISIGN_NAMESPACE(quat_alg_coord_mul)
++#define quat_alg_elem_copy                              SQISIGN_NAMESPACE(quat_alg_elem_copy)
++#define quat_alg_elem_copy_ibz                          SQISIGN_NAMESPACE(quat_alg_elem_copy_ibz)
++#define quat_alg_elem_equal                             SQISIGN_NAMESPACE(quat_alg_elem_equal)
++#define quat_alg_elem_is_zero                           SQISIGN_NAMESPACE(quat_alg_elem_is_zero)
++#define quat_alg_elem_mul_by_scalar                     SQISIGN_NAMESPACE(quat_alg_elem_mul_by_scalar)
++#define quat_alg_elem_set                               SQISIGN_NAMESPACE(quat_alg_elem_set)
++#define quat_alg_equal_denom                            SQISIGN_NAMESPACE(quat_alg_equal_denom)
++#define quat_alg_init_set_ui                            SQISIGN_NAMESPACE(quat_alg_init_set_ui)
++#define quat_alg_make_primitive                         SQISIGN_NAMESPACE(quat_alg_make_primitive)
++#define quat_alg_mul                                    SQISIGN_NAMESPACE(quat_alg_mul)
++#define quat_alg_norm                                   SQISIGN_NAMESPACE(quat_alg_norm)
++#define quat_alg_normalize                              SQISIGN_NAMESPACE(quat_alg_normalize)
++#define quat_alg_scalar                                 SQISIGN_NAMESPACE(quat_alg_scalar)
++#define quat_alg_sub                                    SQISIGN_NAMESPACE(quat_alg_sub)
+ 
+ // Namespacing symbols exported from api.c:
+ #undef crypto_sign
+@@ -134,14 +128,14 @@
+ #undef ibz_mat_2x2_set
+ #undef ibz_vec_2_set
+ 
+-#define ibz_2x2_mul_mod                                 SQISIGN_NAMESPACE_GENERIC(ibz_2x2_mul_mod)
+-#define ibz_mat_2x2_add                                 SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_add)
+-#define ibz_mat_2x2_copy                                SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_copy)
+-#define ibz_mat_2x2_det_from_ibz                        SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_det_from_ibz)
+-#define ibz_mat_2x2_eval                                SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_eval)
+-#define ibz_mat_2x2_inv_mod                             SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_inv_mod)
+-#define ibz_mat_2x2_set                                 SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_set)
+-#define ibz_vec_2_set                                   SQISIGN_NAMESPACE_GENERIC(ibz_vec_2_set)
++#define ibz_2x2_mul_mod                                 SQISIGN_NAMESPACE(ibz_2x2_mul_mod)
++#define ibz_mat_2x2_add                                 SQISIGN_NAMESPACE(ibz_mat_2x2_add)
++#define ibz_mat_2x2_copy                                SQISIGN_NAMESPACE(ibz_mat_2x2_copy)
++#define ibz_mat_2x2_det_from_ibz                        SQISIGN_NAMESPACE(ibz_mat_2x2_det_from_ibz)
++#define ibz_mat_2x2_eval                                SQISIGN_NAMESPACE(ibz_mat_2x2_eval)
++#define ibz_mat_2x2_inv_mod                             SQISIGN_NAMESPACE(ibz_mat_2x2_inv_mod)
++#define ibz_mat_2x2_set                                 SQISIGN_NAMESPACE(ibz_mat_2x2_set)
++#define ibz_vec_2_set                                   SQISIGN_NAMESPACE(ibz_vec_2_set)
+ 
+ // Namespacing symbols exported from dim2id2iso.c:
+ #undef dim2id2iso_arbitrary_isogeny_evaluation
+@@ -184,34 +178,34 @@
+ #undef ibz_vec_4_sub
+ #undef quat_qf_eval
+ 
+-#define ibz_inv_dim4_make_coeff_mpm                     SQISIGN_NAMESPACE_GENERIC(ibz_inv_dim4_make_coeff_mpm)
+-#define ibz_inv_dim4_make_coeff_pmp                     SQISIGN_NAMESPACE_GENERIC(ibz_inv_dim4_make_coeff_pmp)
+-#define ibz_mat_4x4_copy                                SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_copy)
+-#define ibz_mat_4x4_equal                               SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_equal)
+-#define ibz_mat_4x4_eval                                SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_eval)
+-#define ibz_mat_4x4_eval_t                              SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_eval_t)
+-#define ibz_mat_4x4_gcd                                 SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_gcd)
+-#define ibz_mat_4x4_identity                            SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_identity)
+-#define ibz_mat_4x4_inv_with_det_as_denom               SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_inv_with_det_as_denom)
+-#define ibz_mat_4x4_is_identity                         SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_is_identity)
+-#define ibz_mat_4x4_mul                                 SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_mul)
+-#define ibz_mat_4x4_negate                              SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_negate)
+-#define ibz_mat_4x4_scalar_div                          SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_scalar_div)
+-#define ibz_mat_4x4_scalar_mul                          SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_scalar_mul)
+-#define ibz_mat_4x4_transpose                           SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_transpose)
+-#define ibz_mat_4x4_zero                                SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_zero)
+-#define ibz_vec_4_add                                   SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_add)
+-#define ibz_vec_4_content                               SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_content)
+-#define ibz_vec_4_copy                                  SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_copy)
+-#define ibz_vec_4_copy_ibz                              SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_copy_ibz)
+-#define ibz_vec_4_is_zero                               SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_is_zero)
+-#define ibz_vec_4_linear_combination                    SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_linear_combination)
+-#define ibz_vec_4_negate                                SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_negate)
+-#define ibz_vec_4_scalar_div                            SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_scalar_div)
+-#define ibz_vec_4_scalar_mul                            SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_scalar_mul)
+-#define ibz_vec_4_set                                   SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_set)
+-#define ibz_vec_4_sub                                   SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_sub)
+-#define quat_qf_eval                                    SQISIGN_NAMESPACE_GENERIC(quat_qf_eval)
++#define ibz_inv_dim4_make_coeff_mpm                     SQISIGN_NAMESPACE(ibz_inv_dim4_make_coeff_mpm)
++#define ibz_inv_dim4_make_coeff_pmp                     SQISIGN_NAMESPACE(ibz_inv_dim4_make_coeff_pmp)
++#define ibz_mat_4x4_copy                                SQISIGN_NAMESPACE(ibz_mat_4x4_copy)
++#define ibz_mat_4x4_equal                               SQISIGN_NAMESPACE(ibz_mat_4x4_equal)
++#define ibz_mat_4x4_eval                                SQISIGN_NAMESPACE(ibz_mat_4x4_eval)
++#define ibz_mat_4x4_eval_t                              SQISIGN_NAMESPACE(ibz_mat_4x4_eval_t)
++#define ibz_mat_4x4_gcd                                 SQISIGN_NAMESPACE(ibz_mat_4x4_gcd)
++#define ibz_mat_4x4_identity                            SQISIGN_NAMESPACE(ibz_mat_4x4_identity)
++#define ibz_mat_4x4_inv_with_det_as_denom               SQISIGN_NAMESPACE(ibz_mat_4x4_inv_with_det_as_denom)
++#define ibz_mat_4x4_is_identity                         SQISIGN_NAMESPACE(ibz_mat_4x4_is_identity)
++#define ibz_mat_4x4_mul                                 SQISIGN_NAMESPACE(ibz_mat_4x4_mul)
++#define ibz_mat_4x4_negate                              SQISIGN_NAMESPACE(ibz_mat_4x4_negate)
++#define ibz_mat_4x4_scalar_div                          SQISIGN_NAMESPACE(ibz_mat_4x4_scalar_div)
++#define ibz_mat_4x4_scalar_mul                          SQISIGN_NAMESPACE(ibz_mat_4x4_scalar_mul)
++#define ibz_mat_4x4_transpose                           SQISIGN_NAMESPACE(ibz_mat_4x4_transpose)
++#define ibz_mat_4x4_zero                                SQISIGN_NAMESPACE(ibz_mat_4x4_zero)
++#define ibz_vec_4_add                                   SQISIGN_NAMESPACE(ibz_vec_4_add)
++#define ibz_vec_4_content                               SQISIGN_NAMESPACE(ibz_vec_4_content)
++#define ibz_vec_4_copy                                  SQISIGN_NAMESPACE(ibz_vec_4_copy)
++#define ibz_vec_4_copy_ibz                              SQISIGN_NAMESPACE(ibz_vec_4_copy_ibz)
++#define ibz_vec_4_is_zero                               SQISIGN_NAMESPACE(ibz_vec_4_is_zero)
++#define ibz_vec_4_linear_combination                    SQISIGN_NAMESPACE(ibz_vec_4_linear_combination)
++#define ibz_vec_4_negate                                SQISIGN_NAMESPACE(ibz_vec_4_negate)
++#define ibz_vec_4_scalar_div                            SQISIGN_NAMESPACE(ibz_vec_4_scalar_div)
++#define ibz_vec_4_scalar_mul                            SQISIGN_NAMESPACE(ibz_vec_4_scalar_mul)
++#define ibz_vec_4_set                                   SQISIGN_NAMESPACE(ibz_vec_4_set)
++#define ibz_vec_4_sub                                   SQISIGN_NAMESPACE(ibz_vec_4_sub)
++#define quat_qf_eval                                    SQISIGN_NAMESPACE(quat_qf_eval)
+ 
+ // Namespacing symbols exported from ec.c:
+ #undef cswap_points
+@@ -339,22 +333,22 @@
+ #undef quat_left_ideal_finalize
+ #undef quat_left_ideal_init
+ 
+-#define ibz_mat_2x2_finalize                            SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_finalize)
+-#define ibz_mat_2x2_init                                SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_init)
+-#define ibz_mat_4x4_finalize                            SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_finalize)
+-#define ibz_mat_4x4_init                                SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_init)
+-#define ibz_vec_2_finalize                              SQISIGN_NAMESPACE_GENERIC(ibz_vec_2_finalize)
+-#define ibz_vec_2_init                                  SQISIGN_NAMESPACE_GENERIC(ibz_vec_2_init)
+-#define ibz_vec_4_finalize                              SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_finalize)
+-#define ibz_vec_4_init                                  SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_init)
+-#define quat_alg_elem_finalize                          SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_finalize)
+-#define quat_alg_elem_init                              SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_init)
+-#define quat_alg_finalize                               SQISIGN_NAMESPACE_GENERIC(quat_alg_finalize)
+-#define quat_alg_init_set                               SQISIGN_NAMESPACE_GENERIC(quat_alg_init_set)
+-#define quat_lattice_finalize                           SQISIGN_NAMESPACE_GENERIC(quat_lattice_finalize)
+-#define quat_lattice_init                               SQISIGN_NAMESPACE_GENERIC(quat_lattice_init)
+-#define quat_left_ideal_finalize                        SQISIGN_NAMESPACE_GENERIC(quat_left_ideal_finalize)
+-#define quat_left_ideal_init                            SQISIGN_NAMESPACE_GENERIC(quat_left_ideal_init)
++#define ibz_mat_2x2_finalize                            SQISIGN_NAMESPACE(ibz_mat_2x2_finalize)
++#define ibz_mat_2x2_init                                SQISIGN_NAMESPACE(ibz_mat_2x2_init)
++#define ibz_mat_4x4_finalize                            SQISIGN_NAMESPACE(ibz_mat_4x4_finalize)
++#define ibz_mat_4x4_init                                SQISIGN_NAMESPACE(ibz_mat_4x4_init)
++#define ibz_vec_2_finalize                              SQISIGN_NAMESPACE(ibz_vec_2_finalize)
++#define ibz_vec_2_init                                  SQISIGN_NAMESPACE(ibz_vec_2_init)
++#define ibz_vec_4_finalize                              SQISIGN_NAMESPACE(ibz_vec_4_finalize)
++#define ibz_vec_4_init                                  SQISIGN_NAMESPACE(ibz_vec_4_init)
++#define quat_alg_elem_finalize                          SQISIGN_NAMESPACE(quat_alg_elem_finalize)
++#define quat_alg_elem_init                              SQISIGN_NAMESPACE(quat_alg_elem_init)
++#define quat_alg_finalize                               SQISIGN_NAMESPACE(quat_alg_finalize)
++#define quat_alg_init_set                               SQISIGN_NAMESPACE(quat_alg_init_set)
++#define quat_lattice_finalize                           SQISIGN_NAMESPACE(quat_lattice_finalize)
++#define quat_lattice_init                               SQISIGN_NAMESPACE(quat_lattice_init)
++#define quat_left_ideal_finalize                        SQISIGN_NAMESPACE(quat_left_ideal_finalize)
++#define quat_left_ideal_init                            SQISIGN_NAMESPACE(quat_left_ideal_init)
+ 
+ // Namespacing symbols exported from fp.c:
+ #undef fp_select
+@@ -567,11 +561,11 @@
+ #undef ibz_vec_4_linear_combination_mod
+ #undef ibz_vec_4_scalar_mul_mod
+ 
+-#define ibz_mat_4x4_is_hnf                              SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_is_hnf)
+-#define ibz_mat_4xn_hnf_mod_core                        SQISIGN_NAMESPACE_GENERIC(ibz_mat_4xn_hnf_mod_core)
+-#define ibz_vec_4_copy_mod                              SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_copy_mod)
+-#define ibz_vec_4_linear_combination_mod                SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_linear_combination_mod)
+-#define ibz_vec_4_scalar_mul_mod                        SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_scalar_mul_mod)
++#define ibz_mat_4x4_is_hnf                              SQISIGN_NAMESPACE(ibz_mat_4x4_is_hnf)
++#define ibz_mat_4xn_hnf_mod_core                        SQISIGN_NAMESPACE(ibz_mat_4xn_hnf_mod_core)
++#define ibz_vec_4_copy_mod                              SQISIGN_NAMESPACE(ibz_vec_4_copy_mod)
++#define ibz_vec_4_linear_combination_mod                SQISIGN_NAMESPACE(ibz_vec_4_linear_combination_mod)
++#define ibz_vec_4_scalar_mul_mod                        SQISIGN_NAMESPACE(ibz_vec_4_scalar_mul_mod)
+ 
+ // Namespacing symbols exported from hnf_internal.c:
+ #undef ibz_centered_mod
+@@ -579,15 +573,15 @@
+ #undef ibz_mod_not_zero
+ #undef ibz_xgcd_with_u_not_0
+ 
+-#define ibz_centered_mod                                SQISIGN_NAMESPACE_GENERIC(ibz_centered_mod)
+-#define ibz_conditional_assign                          SQISIGN_NAMESPACE_GENERIC(ibz_conditional_assign)
+-#define ibz_mod_not_zero                                SQISIGN_NAMESPACE_GENERIC(ibz_mod_not_zero)
+-#define ibz_xgcd_with_u_not_0                           SQISIGN_NAMESPACE_GENERIC(ibz_xgcd_with_u_not_0)
++#define ibz_centered_mod                                SQISIGN_NAMESPACE(ibz_centered_mod)
++#define ibz_conditional_assign                          SQISIGN_NAMESPACE(ibz_conditional_assign)
++#define ibz_mod_not_zero                                SQISIGN_NAMESPACE(ibz_mod_not_zero)
++#define ibz_xgcd_with_u_not_0                           SQISIGN_NAMESPACE(ibz_xgcd_with_u_not_0)
+ 
+ // Namespacing symbols exported from ibz_division.c:
+ #undef ibz_xgcd
+ 
+-#define ibz_xgcd                                        SQISIGN_NAMESPACE_GENERIC(ibz_xgcd)
++#define ibz_xgcd                                        SQISIGN_NAMESPACE(ibz_xgcd)
+ 
+ // Namespacing symbols exported from id2iso.c:
+ #undef change_of_basis_matrix_tate
+@@ -624,22 +618,22 @@
+ #undef quat_order_discriminant
+ #undef quat_order_is_maximal
+ 
+-#define quat_lideal_add                                 SQISIGN_NAMESPACE_GENERIC(quat_lideal_add)
+-#define quat_lideal_class_gram                          SQISIGN_NAMESPACE_GENERIC(quat_lideal_class_gram)
+-#define quat_lideal_conjugate_without_hnf               SQISIGN_NAMESPACE_GENERIC(quat_lideal_conjugate_without_hnf)
+-#define quat_lideal_copy                                SQISIGN_NAMESPACE_GENERIC(quat_lideal_copy)
+-#define quat_lideal_create                              SQISIGN_NAMESPACE_GENERIC(quat_lideal_create)
+-#define quat_lideal_create_principal                    SQISIGN_NAMESPACE_GENERIC(quat_lideal_create_principal)
+-#define quat_lideal_equals                              SQISIGN_NAMESPACE_GENERIC(quat_lideal_equals)
+-#define quat_lideal_generator                           SQISIGN_NAMESPACE_GENERIC(quat_lideal_generator)
+-#define quat_lideal_inter                               SQISIGN_NAMESPACE_GENERIC(quat_lideal_inter)
+-#define quat_lideal_inverse_lattice_without_hnf         SQISIGN_NAMESPACE_GENERIC(quat_lideal_inverse_lattice_without_hnf)
+-#define quat_lideal_mul                                 SQISIGN_NAMESPACE_GENERIC(quat_lideal_mul)
+-#define quat_lideal_norm                                SQISIGN_NAMESPACE_GENERIC(quat_lideal_norm)
+-#define quat_lideal_right_order                         SQISIGN_NAMESPACE_GENERIC(quat_lideal_right_order)
+-#define quat_lideal_right_transporter                   SQISIGN_NAMESPACE_GENERIC(quat_lideal_right_transporter)
+-#define quat_order_discriminant                         SQISIGN_NAMESPACE_GENERIC(quat_order_discriminant)
+-#define quat_order_is_maximal                           SQISIGN_NAMESPACE_GENERIC(quat_order_is_maximal)
++#define quat_lideal_add                                 SQISIGN_NAMESPACE(quat_lideal_add)
++#define quat_lideal_class_gram                          SQISIGN_NAMESPACE(quat_lideal_class_gram)
++#define quat_lideal_conjugate_without_hnf               SQISIGN_NAMESPACE(quat_lideal_conjugate_without_hnf)
++#define quat_lideal_copy                                SQISIGN_NAMESPACE(quat_lideal_copy)
++#define quat_lideal_create                              SQISIGN_NAMESPACE(quat_lideal_create)
++#define quat_lideal_create_principal                    SQISIGN_NAMESPACE(quat_lideal_create_principal)
++#define quat_lideal_equals                              SQISIGN_NAMESPACE(quat_lideal_equals)
++#define quat_lideal_generator                           SQISIGN_NAMESPACE(quat_lideal_generator)
++#define quat_lideal_inter                               SQISIGN_NAMESPACE(quat_lideal_inter)
++#define quat_lideal_inverse_lattice_without_hnf         SQISIGN_NAMESPACE(quat_lideal_inverse_lattice_without_hnf)
++#define quat_lideal_mul                                 SQISIGN_NAMESPACE(quat_lideal_mul)
++#define quat_lideal_norm                                SQISIGN_NAMESPACE(quat_lideal_norm)
++#define quat_lideal_right_order                         SQISIGN_NAMESPACE(quat_lideal_right_order)
++#define quat_lideal_right_transporter                   SQISIGN_NAMESPACE(quat_lideal_right_transporter)
++#define quat_order_discriminant                         SQISIGN_NAMESPACE(quat_order_discriminant)
++#define quat_order_is_maximal                           SQISIGN_NAMESPACE(quat_order_is_maximal)
+ 
+ // Namespacing symbols exported from intbig.c:
+ #undef ibz_abs
+@@ -647,6 +641,10 @@
+ #undef ibz_bitsize
+ #undef ibz_cmp
+ #undef ibz_cmp_int32
++#undef ibz_const_one
++#undef ibz_const_three
++#undef ibz_const_two
++#undef ibz_const_zero
+ #undef ibz_convert_to_str
+ #undef ibz_copy
+ #undef ibz_copy_digits
+@@ -687,57 +685,61 @@
+ #undef ibz_to_digits
+ #undef ibz_two_adic
+ 
+-#define ibz_abs                                         SQISIGN_NAMESPACE_GENERIC(ibz_abs)
+-#define ibz_add                                         SQISIGN_NAMESPACE_GENERIC(ibz_add)
+-#define ibz_bitsize                                     SQISIGN_NAMESPACE_GENERIC(ibz_bitsize)
+-#define ibz_cmp                                         SQISIGN_NAMESPACE_GENERIC(ibz_cmp)
+-#define ibz_cmp_int32                                   SQISIGN_NAMESPACE_GENERIC(ibz_cmp_int32)
+-#define ibz_convert_to_str                              SQISIGN_NAMESPACE_GENERIC(ibz_convert_to_str)
+-#define ibz_copy                                        SQISIGN_NAMESPACE_GENERIC(ibz_copy)
+-#define ibz_copy_digits                                 SQISIGN_NAMESPACE_GENERIC(ibz_copy_digits)
+-#define ibz_div                                         SQISIGN_NAMESPACE_GENERIC(ibz_div)
+-#define ibz_div_2exp                                    SQISIGN_NAMESPACE_GENERIC(ibz_div_2exp)
+-#define ibz_div_floor                                   SQISIGN_NAMESPACE_GENERIC(ibz_div_floor)
+-#define ibz_divides                                     SQISIGN_NAMESPACE_GENERIC(ibz_divides)
+-#define ibz_finalize                                    SQISIGN_NAMESPACE_GENERIC(ibz_finalize)
+-#define ibz_gcd                                         SQISIGN_NAMESPACE_GENERIC(ibz_gcd)
+-#define ibz_get                                         SQISIGN_NAMESPACE_GENERIC(ibz_get)
+-#define ibz_init                                        SQISIGN_NAMESPACE_GENERIC(ibz_init)
+-#define ibz_invmod                                      SQISIGN_NAMESPACE_GENERIC(ibz_invmod)
+-#define ibz_is_even                                     SQISIGN_NAMESPACE_GENERIC(ibz_is_even)
+-#define ibz_is_odd                                      SQISIGN_NAMESPACE_GENERIC(ibz_is_odd)
+-#define ibz_is_one                                      SQISIGN_NAMESPACE_GENERIC(ibz_is_one)
+-#define ibz_is_zero                                     SQISIGN_NAMESPACE_GENERIC(ibz_is_zero)
+-#define ibz_legendre                                    SQISIGN_NAMESPACE_GENERIC(ibz_legendre)
+-#define ibz_mod                                         SQISIGN_NAMESPACE_GENERIC(ibz_mod)
+-#define ibz_mod_ui                                      SQISIGN_NAMESPACE_GENERIC(ibz_mod_ui)
+-#define ibz_mul                                         SQISIGN_NAMESPACE_GENERIC(ibz_mul)
+-#define ibz_neg                                         SQISIGN_NAMESPACE_GENERIC(ibz_neg)
+-#define ibz_pow                                         SQISIGN_NAMESPACE_GENERIC(ibz_pow)
+-#define ibz_pow_mod                                     SQISIGN_NAMESPACE_GENERIC(ibz_pow_mod)
+-#define ibz_print                                       SQISIGN_NAMESPACE_GENERIC(ibz_print)
+-#define ibz_probab_prime                                SQISIGN_NAMESPACE_GENERIC(ibz_probab_prime)
+-#define ibz_rand_interval                               SQISIGN_NAMESPACE_GENERIC(ibz_rand_interval)
+-#define ibz_rand_interval_bits                          SQISIGN_NAMESPACE_GENERIC(ibz_rand_interval_bits)
+-#define ibz_rand_interval_i                             SQISIGN_NAMESPACE_GENERIC(ibz_rand_interval_i)
+-#define ibz_rand_interval_minm_m                        SQISIGN_NAMESPACE_GENERIC(ibz_rand_interval_minm_m)
+-#define ibz_set                                         SQISIGN_NAMESPACE_GENERIC(ibz_set)
+-#define ibz_set_from_str                                SQISIGN_NAMESPACE_GENERIC(ibz_set_from_str)
+-#define ibz_size_in_base                                SQISIGN_NAMESPACE_GENERIC(ibz_size_in_base)
+-#define ibz_sqrt                                        SQISIGN_NAMESPACE_GENERIC(ibz_sqrt)
+-#define ibz_sqrt_floor                                  SQISIGN_NAMESPACE_GENERIC(ibz_sqrt_floor)
+-#define ibz_sqrt_mod_p                                  SQISIGN_NAMESPACE_GENERIC(ibz_sqrt_mod_p)
+-#define ibz_sub                                         SQISIGN_NAMESPACE_GENERIC(ibz_sub)
+-#define ibz_swap                                        SQISIGN_NAMESPACE_GENERIC(ibz_swap)
+-#define ibz_to_digits                                   SQISIGN_NAMESPACE_GENERIC(ibz_to_digits)
+-#define ibz_two_adic                                    SQISIGN_NAMESPACE_GENERIC(ibz_two_adic)
++#define ibz_abs                                         SQISIGN_NAMESPACE(ibz_abs)
++#define ibz_add                                         SQISIGN_NAMESPACE(ibz_add)
++#define ibz_bitsize                                     SQISIGN_NAMESPACE(ibz_bitsize)
++#define ibz_cmp                                         SQISIGN_NAMESPACE(ibz_cmp)
++#define ibz_cmp_int32                                   SQISIGN_NAMESPACE(ibz_cmp_int32)
++#define ibz_const_one                                   SQISIGN_NAMESPACE(ibz_const_one)
++#define ibz_const_three                                 SQISIGN_NAMESPACE(ibz_const_three)
++#define ibz_const_two                                   SQISIGN_NAMESPACE(ibz_const_two)
++#define ibz_const_zero                                  SQISIGN_NAMESPACE(ibz_const_zero)
++#define ibz_convert_to_str                              SQISIGN_NAMESPACE(ibz_convert_to_str)
++#define ibz_copy                                        SQISIGN_NAMESPACE(ibz_copy)
++#define ibz_copy_digits                                 SQISIGN_NAMESPACE(ibz_copy_digits)
++#define ibz_div                                         SQISIGN_NAMESPACE(ibz_div)
++#define ibz_div_2exp                                    SQISIGN_NAMESPACE(ibz_div_2exp)
++#define ibz_div_floor                                   SQISIGN_NAMESPACE(ibz_div_floor)
++#define ibz_divides                                     SQISIGN_NAMESPACE(ibz_divides)
++#define ibz_finalize                                    SQISIGN_NAMESPACE(ibz_finalize)
++#define ibz_gcd                                         SQISIGN_NAMESPACE(ibz_gcd)
++#define ibz_get                                         SQISIGN_NAMESPACE(ibz_get)
++#define ibz_init                                        SQISIGN_NAMESPACE(ibz_init)
++#define ibz_invmod                                      SQISIGN_NAMESPACE(ibz_invmod)
++#define ibz_is_even                                     SQISIGN_NAMESPACE(ibz_is_even)
++#define ibz_is_odd                                      SQISIGN_NAMESPACE(ibz_is_odd)
++#define ibz_is_one                                      SQISIGN_NAMESPACE(ibz_is_one)
++#define ibz_is_zero                                     SQISIGN_NAMESPACE(ibz_is_zero)
++#define ibz_legendre                                    SQISIGN_NAMESPACE(ibz_legendre)
++#define ibz_mod                                         SQISIGN_NAMESPACE(ibz_mod)
++#define ibz_mod_ui                                      SQISIGN_NAMESPACE(ibz_mod_ui)
++#define ibz_mul                                         SQISIGN_NAMESPACE(ibz_mul)
++#define ibz_neg                                         SQISIGN_NAMESPACE(ibz_neg)
++#define ibz_pow                                         SQISIGN_NAMESPACE(ibz_pow)
++#define ibz_pow_mod                                     SQISIGN_NAMESPACE(ibz_pow_mod)
++#define ibz_print                                       SQISIGN_NAMESPACE(ibz_print)
++#define ibz_probab_prime                                SQISIGN_NAMESPACE(ibz_probab_prime)
++#define ibz_rand_interval                               SQISIGN_NAMESPACE(ibz_rand_interval)
++#define ibz_rand_interval_bits                          SQISIGN_NAMESPACE(ibz_rand_interval_bits)
++#define ibz_rand_interval_i                             SQISIGN_NAMESPACE(ibz_rand_interval_i)
++#define ibz_rand_interval_minm_m                        SQISIGN_NAMESPACE(ibz_rand_interval_minm_m)
++#define ibz_set                                         SQISIGN_NAMESPACE(ibz_set)
++#define ibz_set_from_str                                SQISIGN_NAMESPACE(ibz_set_from_str)
++#define ibz_size_in_base                                SQISIGN_NAMESPACE(ibz_size_in_base)
++#define ibz_sqrt                                        SQISIGN_NAMESPACE(ibz_sqrt)
++#define ibz_sqrt_floor                                  SQISIGN_NAMESPACE(ibz_sqrt_floor)
++#define ibz_sqrt_mod_p                                  SQISIGN_NAMESPACE(ibz_sqrt_mod_p)
++#define ibz_sub                                         SQISIGN_NAMESPACE(ibz_sub)
++#define ibz_swap                                        SQISIGN_NAMESPACE(ibz_swap)
++#define ibz_to_digits                                   SQISIGN_NAMESPACE(ibz_to_digits)
++#define ibz_two_adic                                    SQISIGN_NAMESPACE(ibz_two_adic)
+ 
+ // Namespacing symbols exported from integers.c:
+ #undef ibz_cornacchia_prime
+ #undef ibz_generate_random_prime
+ 
+-#define ibz_cornacchia_prime                            SQISIGN_NAMESPACE_GENERIC(ibz_cornacchia_prime)
+-#define ibz_generate_random_prime                       SQISIGN_NAMESPACE_GENERIC(ibz_generate_random_prime)
++#define ibz_cornacchia_prime                            SQISIGN_NAMESPACE(ibz_cornacchia_prime)
++#define ibz_generate_random_prime                       SQISIGN_NAMESPACE(ibz_generate_random_prime)
+ 
+ // Namespacing symbols exported from isog_chains.c:
+ #undef ec_eval_even
+@@ -763,15 +765,15 @@
+ #undef quat_lattice_lll
+ #undef quat_lll_core
+ 
+-#define quat_lattice_lll                                SQISIGN_NAMESPACE_GENERIC(quat_lattice_lll)
+-#define quat_lll_core                                   SQISIGN_NAMESPACE_GENERIC(quat_lll_core)
++#define quat_lattice_lll                                SQISIGN_NAMESPACE(quat_lattice_lll)
++#define quat_lll_core                                   SQISIGN_NAMESPACE(quat_lll_core)
+ 
+ // Namespacing symbols exported from lat_ball.c:
+ #undef quat_lattice_bound_parallelogram
+ #undef quat_lattice_sample_from_ball
+ 
+-#define quat_lattice_bound_parallelogram                SQISIGN_NAMESPACE_GENERIC(quat_lattice_bound_parallelogram)
+-#define quat_lattice_sample_from_ball                   SQISIGN_NAMESPACE_GENERIC(quat_lattice_sample_from_ball)
++#define quat_lattice_bound_parallelogram                SQISIGN_NAMESPACE(quat_lattice_bound_parallelogram)
++#define quat_lattice_sample_from_ball                   SQISIGN_NAMESPACE(quat_lattice_sample_from_ball)
+ 
+ // Namespacing symbols exported from lattice.c:
+ #undef quat_lattice_add
+@@ -789,29 +791,29 @@
+ #undef quat_lattice_mul
+ #undef quat_lattice_reduce_denom
+ 
+-#define quat_lattice_add                                SQISIGN_NAMESPACE_GENERIC(quat_lattice_add)
+-#define quat_lattice_alg_elem_mul                       SQISIGN_NAMESPACE_GENERIC(quat_lattice_alg_elem_mul)
+-#define quat_lattice_conjugate_without_hnf              SQISIGN_NAMESPACE_GENERIC(quat_lattice_conjugate_without_hnf)
+-#define quat_lattice_contains                           SQISIGN_NAMESPACE_GENERIC(quat_lattice_contains)
+-#define quat_lattice_dual_without_hnf                   SQISIGN_NAMESPACE_GENERIC(quat_lattice_dual_without_hnf)
+-#define quat_lattice_equal                              SQISIGN_NAMESPACE_GENERIC(quat_lattice_equal)
+-#define quat_lattice_gram                               SQISIGN_NAMESPACE_GENERIC(quat_lattice_gram)
+-#define quat_lattice_hnf                                SQISIGN_NAMESPACE_GENERIC(quat_lattice_hnf)
+-#define quat_lattice_inclusion                          SQISIGN_NAMESPACE_GENERIC(quat_lattice_inclusion)
+-#define quat_lattice_index                              SQISIGN_NAMESPACE_GENERIC(quat_lattice_index)
+-#define quat_lattice_intersect                          SQISIGN_NAMESPACE_GENERIC(quat_lattice_intersect)
+-#define quat_lattice_mat_alg_coord_mul_without_hnf      SQISIGN_NAMESPACE_GENERIC(quat_lattice_mat_alg_coord_mul_without_hnf)
+-#define quat_lattice_mul                                SQISIGN_NAMESPACE_GENERIC(quat_lattice_mul)
+-#define quat_lattice_reduce_denom                       SQISIGN_NAMESPACE_GENERIC(quat_lattice_reduce_denom)
++#define quat_lattice_add                                SQISIGN_NAMESPACE(quat_lattice_add)
++#define quat_lattice_alg_elem_mul                       SQISIGN_NAMESPACE(quat_lattice_alg_elem_mul)
++#define quat_lattice_conjugate_without_hnf              SQISIGN_NAMESPACE(quat_lattice_conjugate_without_hnf)
++#define quat_lattice_contains                           SQISIGN_NAMESPACE(quat_lattice_contains)
++#define quat_lattice_dual_without_hnf                   SQISIGN_NAMESPACE(quat_lattice_dual_without_hnf)
++#define quat_lattice_equal                              SQISIGN_NAMESPACE(quat_lattice_equal)
++#define quat_lattice_gram                               SQISIGN_NAMESPACE(quat_lattice_gram)
++#define quat_lattice_hnf                                SQISIGN_NAMESPACE(quat_lattice_hnf)
++#define quat_lattice_inclusion                          SQISIGN_NAMESPACE(quat_lattice_inclusion)
++#define quat_lattice_index                              SQISIGN_NAMESPACE(quat_lattice_index)
++#define quat_lattice_intersect                          SQISIGN_NAMESPACE(quat_lattice_intersect)
++#define quat_lattice_mat_alg_coord_mul_without_hnf      SQISIGN_NAMESPACE(quat_lattice_mat_alg_coord_mul_without_hnf)
++#define quat_lattice_mul                                SQISIGN_NAMESPACE(quat_lattice_mul)
++#define quat_lattice_reduce_denom                       SQISIGN_NAMESPACE(quat_lattice_reduce_denom)
+ 
+ // Namespacing symbols exported from lll_applications.c:
+ #undef quat_lideal_lideal_mul_reduced
+ #undef quat_lideal_prime_norm_reduced_equivalent
+ #undef quat_lideal_reduce_basis
+ 
+-#define quat_lideal_lideal_mul_reduced                  SQISIGN_NAMESPACE_GENERIC(quat_lideal_lideal_mul_reduced)
+-#define quat_lideal_prime_norm_reduced_equivalent       SQISIGN_NAMESPACE_GENERIC(quat_lideal_prime_norm_reduced_equivalent)
+-#define quat_lideal_reduce_basis                        SQISIGN_NAMESPACE_GENERIC(quat_lideal_reduce_basis)
++#define quat_lideal_lideal_mul_reduced                  SQISIGN_NAMESPACE(quat_lideal_lideal_mul_reduced)
++#define quat_lideal_prime_norm_reduced_equivalent       SQISIGN_NAMESPACE(quat_lideal_prime_norm_reduced_equivalent)
++#define quat_lideal_reduce_basis                        SQISIGN_NAMESPACE(quat_lideal_reduce_basis)
+ 
+ // Namespacing symbols exported from lll_verification.c:
+ #undef ibq_vec_4_copy_ibz
+@@ -820,18 +822,18 @@
+ #undef quat_lll_set_ibq_parameters
+ #undef quat_lll_verify
+ 
+-#define ibq_vec_4_copy_ibz                              SQISIGN_NAMESPACE_GENERIC(ibq_vec_4_copy_ibz)
+-#define quat_lll_bilinear                               SQISIGN_NAMESPACE_GENERIC(quat_lll_bilinear)
+-#define quat_lll_gram_schmidt_transposed_with_ibq       SQISIGN_NAMESPACE_GENERIC(quat_lll_gram_schmidt_transposed_with_ibq)
+-#define quat_lll_set_ibq_parameters                     SQISIGN_NAMESPACE_GENERIC(quat_lll_set_ibq_parameters)
+-#define quat_lll_verify                                 SQISIGN_NAMESPACE_GENERIC(quat_lll_verify)
++#define ibq_vec_4_copy_ibz                              SQISIGN_NAMESPACE(ibq_vec_4_copy_ibz)
++#define quat_lll_bilinear                               SQISIGN_NAMESPACE(quat_lll_bilinear)
++#define quat_lll_gram_schmidt_transposed_with_ibq       SQISIGN_NAMESPACE(quat_lll_gram_schmidt_transposed_with_ibq)
++#define quat_lll_set_ibq_parameters                     SQISIGN_NAMESPACE(quat_lll_set_ibq_parameters)
++#define quat_lll_verify                                 SQISIGN_NAMESPACE(quat_lll_verify)
+ 
+ // Namespacing symbols exported from mem.c:
+ #undef sqisign_secure_clear
+ #undef sqisign_secure_free
+ 
+-#define sqisign_secure_clear                            SQISIGN_NAMESPACE_GENERIC(sqisign_secure_clear)
+-#define sqisign_secure_free                             SQISIGN_NAMESPACE_GENERIC(sqisign_secure_free)
++#define sqisign_secure_clear                            SQISIGN_NAMESPACE(sqisign_secure_clear)
++#define sqisign_secure_free                             SQISIGN_NAMESPACE(sqisign_secure_free)
+ 
+ // Namespacing symbols exported from mp.c:
+ #undef MUL
+@@ -854,25 +856,25 @@
+ #undef select_ct
+ #undef swap_ct
+ 
+-#define MUL                                             SQISIGN_NAMESPACE_GENERIC(MUL)
+-#define mp_add                                          SQISIGN_NAMESPACE_GENERIC(mp_add)
+-#define mp_compare                                      SQISIGN_NAMESPACE_GENERIC(mp_compare)
+-#define mp_copy                                         SQISIGN_NAMESPACE_GENERIC(mp_copy)
+-#define mp_inv_2e                                       SQISIGN_NAMESPACE_GENERIC(mp_inv_2e)
+-#define mp_invert_matrix                                SQISIGN_NAMESPACE_GENERIC(mp_invert_matrix)
+-#define mp_is_one                                       SQISIGN_NAMESPACE_GENERIC(mp_is_one)
+-#define mp_is_zero                                      SQISIGN_NAMESPACE_GENERIC(mp_is_zero)
+-#define mp_mod_2exp                                     SQISIGN_NAMESPACE_GENERIC(mp_mod_2exp)
+-#define mp_mul                                          SQISIGN_NAMESPACE_GENERIC(mp_mul)
+-#define mp_mul2                                         SQISIGN_NAMESPACE_GENERIC(mp_mul2)
+-#define mp_neg                                          SQISIGN_NAMESPACE_GENERIC(mp_neg)
+-#define mp_print                                        SQISIGN_NAMESPACE_GENERIC(mp_print)
+-#define mp_shiftl                                       SQISIGN_NAMESPACE_GENERIC(mp_shiftl)
+-#define mp_shiftr                                       SQISIGN_NAMESPACE_GENERIC(mp_shiftr)
+-#define mp_sub                                          SQISIGN_NAMESPACE_GENERIC(mp_sub)
+-#define multiple_mp_shiftl                              SQISIGN_NAMESPACE_GENERIC(multiple_mp_shiftl)
+-#define select_ct                                       SQISIGN_NAMESPACE_GENERIC(select_ct)
+-#define swap_ct                                         SQISIGN_NAMESPACE_GENERIC(swap_ct)
++#define MUL                                             SQISIGN_NAMESPACE(MUL)
++#define mp_add                                          SQISIGN_NAMESPACE(mp_add)
++#define mp_compare                                      SQISIGN_NAMESPACE(mp_compare)
++#define mp_copy                                         SQISIGN_NAMESPACE(mp_copy)
++#define mp_inv_2e                                       SQISIGN_NAMESPACE(mp_inv_2e)
++#define mp_invert_matrix                                SQISIGN_NAMESPACE(mp_invert_matrix)
++#define mp_is_one                                       SQISIGN_NAMESPACE(mp_is_one)
++#define mp_is_zero                                      SQISIGN_NAMESPACE(mp_is_zero)
++#define mp_mod_2exp                                     SQISIGN_NAMESPACE(mp_mod_2exp)
++#define mp_mul                                          SQISIGN_NAMESPACE(mp_mul)
++#define mp_mul2                                         SQISIGN_NAMESPACE(mp_mul2)
++#define mp_neg                                          SQISIGN_NAMESPACE(mp_neg)
++#define mp_print                                        SQISIGN_NAMESPACE(mp_print)
++#define mp_shiftl                                       SQISIGN_NAMESPACE(mp_shiftl)
++#define mp_shiftr                                       SQISIGN_NAMESPACE(mp_shiftr)
++#define mp_sub                                          SQISIGN_NAMESPACE(mp_sub)
++#define multiple_mp_shiftl                              SQISIGN_NAMESPACE(multiple_mp_shiftl)
++#define select_ct                                       SQISIGN_NAMESPACE(select_ct)
++#define swap_ct                                         SQISIGN_NAMESPACE(swap_ct)
+ 
+ // Namespacing symbols exported from normeq.c:
+ #undef quat_change_to_O0_basis
+@@ -882,12 +884,12 @@
+ #undef quat_represent_integer
+ #undef quat_sampling_random_ideal_O0_given_norm
+ 
+-#define quat_change_to_O0_basis                         SQISIGN_NAMESPACE_GENERIC(quat_change_to_O0_basis)
+-#define quat_lattice_O0_set                             SQISIGN_NAMESPACE_GENERIC(quat_lattice_O0_set)
+-#define quat_lattice_O0_set_extremal                    SQISIGN_NAMESPACE_GENERIC(quat_lattice_O0_set_extremal)
+-#define quat_order_elem_create                          SQISIGN_NAMESPACE_GENERIC(quat_order_elem_create)
+-#define quat_represent_integer                          SQISIGN_NAMESPACE_GENERIC(quat_represent_integer)
+-#define quat_sampling_random_ideal_O0_given_norm        SQISIGN_NAMESPACE_GENERIC(quat_sampling_random_ideal_O0_given_norm)
++#define quat_change_to_O0_basis                         SQISIGN_NAMESPACE(quat_change_to_O0_basis)
++#define quat_lattice_O0_set                             SQISIGN_NAMESPACE(quat_lattice_O0_set)
++#define quat_lattice_O0_set_extremal                    SQISIGN_NAMESPACE(quat_lattice_O0_set_extremal)
++#define quat_order_elem_create                          SQISIGN_NAMESPACE(quat_order_elem_create)
++#define quat_represent_integer                          SQISIGN_NAMESPACE(quat_represent_integer)
++#define quat_sampling_random_ideal_O0_given_norm        SQISIGN_NAMESPACE(quat_sampling_random_ideal_O0_given_norm)
+ 
+ // Namespacing symbols exported from printer.c:
+ #undef ibz_mat_2x2_print
+@@ -899,23 +901,23 @@
+ #undef quat_lattice_print
+ #undef quat_left_ideal_print
+ 
+-#define ibz_mat_2x2_print                               SQISIGN_NAMESPACE_GENERIC(ibz_mat_2x2_print)
+-#define ibz_mat_4x4_print                               SQISIGN_NAMESPACE_GENERIC(ibz_mat_4x4_print)
+-#define ibz_vec_2_print                                 SQISIGN_NAMESPACE_GENERIC(ibz_vec_2_print)
+-#define ibz_vec_4_print                                 SQISIGN_NAMESPACE_GENERIC(ibz_vec_4_print)
+-#define quat_alg_elem_print                             SQISIGN_NAMESPACE_GENERIC(quat_alg_elem_print)
+-#define quat_alg_print                                  SQISIGN_NAMESPACE_GENERIC(quat_alg_print)
+-#define quat_lattice_print                              SQISIGN_NAMESPACE_GENERIC(quat_lattice_print)
+-#define quat_left_ideal_print                           SQISIGN_NAMESPACE_GENERIC(quat_left_ideal_print)
++#define ibz_mat_2x2_print                               SQISIGN_NAMESPACE(ibz_mat_2x2_print)
++#define ibz_mat_4x4_print                               SQISIGN_NAMESPACE(ibz_mat_4x4_print)
++#define ibz_vec_2_print                                 SQISIGN_NAMESPACE(ibz_vec_2_print)
++#define ibz_vec_4_print                                 SQISIGN_NAMESPACE(ibz_vec_4_print)
++#define quat_alg_elem_print                             SQISIGN_NAMESPACE(quat_alg_elem_print)
++#define quat_alg_print                                  SQISIGN_NAMESPACE(quat_alg_print)
++#define quat_lattice_print                              SQISIGN_NAMESPACE(quat_lattice_print)
++#define quat_left_ideal_print                           SQISIGN_NAMESPACE(quat_left_ideal_print)
+ 
+ // Namespacing symbols exported from random_input_generation.c:
+ #undef quat_test_input_random_ideal_generation
+ #undef quat_test_input_random_ideal_lattice_generation
+ #undef quat_test_input_random_lattice_generation
+ 
+-#define quat_test_input_random_ideal_generation         SQISIGN_NAMESPACE_GENERIC(quat_test_input_random_ideal_generation)
+-#define quat_test_input_random_ideal_lattice_generation SQISIGN_NAMESPACE_GENERIC(quat_test_input_random_ideal_lattice_generation)
+-#define quat_test_input_random_lattice_generation       SQISIGN_NAMESPACE_GENERIC(quat_test_input_random_lattice_generation)
++#define quat_test_input_random_ideal_generation         SQISIGN_NAMESPACE(quat_test_input_random_ideal_generation)
++#define quat_test_input_random_ideal_lattice_generation SQISIGN_NAMESPACE(quat_test_input_random_ideal_lattice_generation)
++#define quat_test_input_random_lattice_generation       SQISIGN_NAMESPACE(quat_test_input_random_lattice_generation)
+ 
+ // Namespacing symbols exported from rationals.c:
+ #undef ibq_abs
+@@ -941,28 +943,28 @@
+ #undef ibq_vec_4_init
+ #undef ibq_vec_4_print
+ 
+-#define ibq_abs                                         SQISIGN_NAMESPACE_GENERIC(ibq_abs)
+-#define ibq_add                                         SQISIGN_NAMESPACE_GENERIC(ibq_add)
+-#define ibq_cmp                                         SQISIGN_NAMESPACE_GENERIC(ibq_cmp)
+-#define ibq_copy                                        SQISIGN_NAMESPACE_GENERIC(ibq_copy)
+-#define ibq_finalize                                    SQISIGN_NAMESPACE_GENERIC(ibq_finalize)
+-#define ibq_init                                        SQISIGN_NAMESPACE_GENERIC(ibq_init)
+-#define ibq_inv                                         SQISIGN_NAMESPACE_GENERIC(ibq_inv)
+-#define ibq_is_ibz                                      SQISIGN_NAMESPACE_GENERIC(ibq_is_ibz)
+-#define ibq_is_one                                      SQISIGN_NAMESPACE_GENERIC(ibq_is_one)
+-#define ibq_is_zero                                     SQISIGN_NAMESPACE_GENERIC(ibq_is_zero)
+-#define ibq_mat_4x4_finalize                            SQISIGN_NAMESPACE_GENERIC(ibq_mat_4x4_finalize)
+-#define ibq_mat_4x4_init                                SQISIGN_NAMESPACE_GENERIC(ibq_mat_4x4_init)
+-#define ibq_mat_4x4_print                               SQISIGN_NAMESPACE_GENERIC(ibq_mat_4x4_print)
+-#define ibq_mul                                         SQISIGN_NAMESPACE_GENERIC(ibq_mul)
+-#define ibq_neg                                         SQISIGN_NAMESPACE_GENERIC(ibq_neg)
+-#define ibq_reduce                                      SQISIGN_NAMESPACE_GENERIC(ibq_reduce)
+-#define ibq_set                                         SQISIGN_NAMESPACE_GENERIC(ibq_set)
+-#define ibq_sub                                         SQISIGN_NAMESPACE_GENERIC(ibq_sub)
+-#define ibq_to_ibz                                      SQISIGN_NAMESPACE_GENERIC(ibq_to_ibz)
+-#define ibq_vec_4_finalize                              SQISIGN_NAMESPACE_GENERIC(ibq_vec_4_finalize)
+-#define ibq_vec_4_init                                  SQISIGN_NAMESPACE_GENERIC(ibq_vec_4_init)
+-#define ibq_vec_4_print                                 SQISIGN_NAMESPACE_GENERIC(ibq_vec_4_print)
++#define ibq_abs                                         SQISIGN_NAMESPACE(ibq_abs)
++#define ibq_add                                         SQISIGN_NAMESPACE(ibq_add)
++#define ibq_cmp                                         SQISIGN_NAMESPACE(ibq_cmp)
++#define ibq_copy                                        SQISIGN_NAMESPACE(ibq_copy)
++#define ibq_finalize                                    SQISIGN_NAMESPACE(ibq_finalize)
++#define ibq_init                                        SQISIGN_NAMESPACE(ibq_init)
++#define ibq_inv                                         SQISIGN_NAMESPACE(ibq_inv)
++#define ibq_is_ibz                                      SQISIGN_NAMESPACE(ibq_is_ibz)
++#define ibq_is_one                                      SQISIGN_NAMESPACE(ibq_is_one)
++#define ibq_is_zero                                     SQISIGN_NAMESPACE(ibq_is_zero)
++#define ibq_mat_4x4_finalize                            SQISIGN_NAMESPACE(ibq_mat_4x4_finalize)
++#define ibq_mat_4x4_init                                SQISIGN_NAMESPACE(ibq_mat_4x4_init)
++#define ibq_mat_4x4_print                               SQISIGN_NAMESPACE(ibq_mat_4x4_print)
++#define ibq_mul                                         SQISIGN_NAMESPACE(ibq_mul)
++#define ibq_neg                                         SQISIGN_NAMESPACE(ibq_neg)
++#define ibq_reduce                                      SQISIGN_NAMESPACE(ibq_reduce)
++#define ibq_set                                         SQISIGN_NAMESPACE(ibq_set)
++#define ibq_sub                                         SQISIGN_NAMESPACE(ibq_sub)
++#define ibq_to_ibz                                      SQISIGN_NAMESPACE(ibq_to_ibz)
++#define ibq_vec_4_finalize                              SQISIGN_NAMESPACE(ibq_vec_4_finalize)
++#define ibq_vec_4_init                                  SQISIGN_NAMESPACE(ibq_vec_4_init)
++#define ibq_vec_4_print                                 SQISIGN_NAMESPACE(ibq_vec_4_print)
+ 
+ // Namespacing symbols exported from sign.c:
+ #undef protocols_sign
