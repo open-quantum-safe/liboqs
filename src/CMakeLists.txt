@@ -8,7 +8,7 @@ add_subdirectory(common)
 # initialize KEM|SIG_OBJS for --warn-uninitialized
 set(KEM_OBJS "")
 set(SIG_OBJS "")
-set(SIG_STFL_OBJS "")
+set(SIG_STFL_OBJS "")   
 
 if(${OQS_ENABLE_KEM_BIKE})
     add_subdirectory(kem/bike)
@@ -115,6 +115,10 @@ if(${OQS_USE_CUPQC})
     set_property(TARGET oqs PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
     target_link_libraries(oqs PRIVATE cupqc)
     target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
+endif()
+if(${OQS_USE_GMP})
+  target_link_libraries(oqs PRIVATE GMP)
+  target_link_libraries(oqs-internal PRIVATE GMP)
 endif()
 
 target_include_directories(oqs

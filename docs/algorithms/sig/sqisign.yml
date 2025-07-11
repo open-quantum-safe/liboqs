@@ -3,7 +3,7 @@ type: signature
 principal-submitters:
 - Marius A. Aardal
 - Gora Adj
-- Diego F.Aranha
+- Diego F. Aranha
 - Andrea Basso
 - Isaac Andrés Canales Martínez
 - Jorge Chávez-Saab
@@ -36,8 +36,7 @@ website: https://sqisign.org/
 nist-round: 2
 spec-version: Round 2
 primary-upstream:
-  source: https://github.com/shane-digi/the-sqisign/commit/09bce2f0244bd11caa90c4eaef2150a759bd945d
-    with copy_from_upstream patches
+  source: https://github.com/bhess/the-sqisign/commit/39b09acd532c69e3fb1206b4502572479288df92
   spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: SQIsign-lvl1

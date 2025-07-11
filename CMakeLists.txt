@@ -28,6 +28,7 @@ option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsuppor
 option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
+option(OQS_USE_GMP "Utilize GMP for supported PQC algorithms." ON)
 
 # Libfuzzer isn't supported on gcc
 if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
@@ -149,6 +150,38 @@ if(${OQS_USE_CUPQC})
       set(CMAKE_CUDA_ARCHITECTURES 80 90)
     endif()
     find_package(cuPQC 0.2.0 REQUIRED)
+endif()
+if(${OQS_USE_GMP})
+  message(STATUS "Using system GMP")
+
+  find_library(GMP gmp REQUIRED)
+  find_path(GMP_INCLUDE gmp.h)
+
+  add_library(GMP SHARED IMPORTED)
+  set_target_properties(GMP PROPERTIES
+    IMPORTED_LOCATION ${GMP}
+    INTERFACE_INCLUDE_DIRECTORIES ${GMP_INCLUDE}
+  )
+
+  if(CMAKE_SIZEOF_VOID_P MATCHES "4")
+      add_compile_definitions(RADIX_32)
+      add_compile_definitions(GMP_LIMB_BITS=32)
+  else()
+      add_compile_definitions(RADIX_64)
+      include(CheckCSourceCompiles)
+      check_c_source_compiles("
+        int main() {
+         __uint128_t x = 0;
+        (void)x;
+        return 0;
+        }
+        " HAVE_UINT128_T)
+      if (HAVE_UINT128_T)
+        add_compile_definitions(HAVE_UINT128)
+      endif()
+      add_compile_definitions(GMP_LIMB_BITS=64)
+  endif()
+
 endif()
 
 if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))

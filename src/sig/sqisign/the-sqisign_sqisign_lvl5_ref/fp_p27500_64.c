@@ -970,4 +970,4 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
     }
 }
 
-#endif
+#endif /* RADIX_64 */

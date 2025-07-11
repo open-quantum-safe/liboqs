@@ -18,6 +18,12 @@
 #define PARAM_JOIN2(a, b) PARAM_JOIN2_(a, b)
 #define PARAM_NAME2(end, s) PARAM_JOIN2(end, s)
 
+#ifndef DISABLE_NAMESPACING
+#define SQISIGN_NAMESPACE_GENERIC(s) PARAM_NAME2(gen, s)
+#else
+#define SQISIGN_NAMESPACE_GENERIC(s) s
+#endif
+
 #if defined(SQISIGN_VARIANT) && !defined(DISABLE_NAMESPACING)
 #if defined(SQISIGN_BUILD_TYPE_REF)
 #define SQISIGN_NAMESPACE(s) PARAM_NAME3(ref, s)
@@ -94,6 +100,16 @@
 #define lift_basis                                      SQISIGN_NAMESPACE(lift_basis)
 #define lift_basis_normalized                           SQISIGN_NAMESPACE(lift_basis_normalized)
 
+// Namespacing symbols exported from basis.c, ec.c:
+#undef xDBL_E0
+
+#define xDBL_E0                                         SQISIGN_NAMESPACE(xDBL_E0)
+
+// Namespacing symbols exported from basis.c, ec.c, isog_chains.c:
+#undef xDBL_A24
+
+#define xDBL_A24                                        SQISIGN_NAMESPACE(xDBL_A24)
+
 // Namespacing symbols exported from biextension.c:
 #undef clear_cofac
 #undef ec_dlog_2_tate
@@ -108,6 +124,11 @@
 #define fp2_frob                                        SQISIGN_NAMESPACE(fp2_frob)
 #define reduced_tate                                    SQISIGN_NAMESPACE(reduced_tate)
 #define weil                                            SQISIGN_NAMESPACE(weil)
+
+// Namespacing symbols exported from biextension.c, ec_jac.c, hd.c:
+#undef ADD
+
+#define ADD                                             SQISIGN_NAMESPACE(ADD)
 
 // Namespacing symbols exported from common.c:
 #undef hash_to_challenge
@@ -147,6 +168,28 @@
 #define dim2id2iso_ideal_to_isogeny_clapotis            SQISIGN_NAMESPACE(dim2id2iso_ideal_to_isogeny_clapotis)
 #define find_uv                                         SQISIGN_NAMESPACE(find_uv)
 #define fixed_degree_isogeny_and_eval                   SQISIGN_NAMESPACE(fixed_degree_isogeny_and_eval)
+
+// Namespacing symbols exported from dim2id2iso.c, encode_signature.c, id2iso.c, keygen.c, quaternion_data.c, sign.c:
+#undef EXTREMAL_ORDERS
+#undef QUATALG_PINFTY
+
+#define EXTREMAL_ORDERS                                 SQISIGN_NAMESPACE(EXTREMAL_ORDERS)
+#define QUATALG_PINFTY                                  SQISIGN_NAMESPACE(QUATALG_PINFTY)
+
+// Namespacing symbols exported from dim2id2iso.c, endomorphism_action.c, id2iso.c:
+#undef CURVES_WITH_ENDOMORPHISMS
+
+#define CURVES_WITH_ENDOMORPHISMS                       SQISIGN_NAMESPACE(CURVES_WITH_ENDOMORPHISMS)
+
+// Namespacing symbols exported from dim2id2iso.c, id2iso.c, sign.c, torsion_constants.c:
+#undef TORSION_PLUS_2POWER
+
+#define TORSION_PLUS_2POWER                             SQISIGN_NAMESPACE(TORSION_PLUS_2POWER)
+
+// Namespacing symbols exported from dim2id2iso.c, quaternion_data.c:
+#undef CONNECTING_IDEALS
+
+#define CONNECTING_IDEALS                               SQISIGN_NAMESPACE(CONNECTING_IDEALS)
 
 // Namespacing symbols exported from dim4.c:
 #undef ibz_inv_dim4_make_coeff_mpm
@@ -207,6 +250,13 @@
 #define ibz_vec_4_sub                                   SQISIGN_NAMESPACE(ibz_vec_4_sub)
 #define quat_qf_eval                                    SQISIGN_NAMESPACE(quat_qf_eval)
 
+// Namespacing symbols exported from e0_basis.c:
+#undef BASIS_E0_PX
+#undef BASIS_E0_QX
+
+#define BASIS_E0_PX                                     SQISIGN_NAMESPACE(BASIS_E0_PX)
+#define BASIS_E0_QX                                     SQISIGN_NAMESPACE(BASIS_E0_QX)
+
 // Namespacing symbols exported from ec.c:
 #undef cswap_points
 #undef ec_biscalar_mul
@@ -235,8 +285,6 @@
 #undef xDBL
 #undef xDBLADD
 #undef xDBLMUL
-#undef xDBL_A24
-#undef xDBL_E0
 #undef xMUL
 
 #define cswap_points                                    SQISIGN_NAMESPACE(cswap_points)
@@ -266,14 +314,9 @@
 #define xDBL                                            SQISIGN_NAMESPACE(xDBL)
 #define xDBLADD                                         SQISIGN_NAMESPACE(xDBLADD)
 #define xDBLMUL                                         SQISIGN_NAMESPACE(xDBLMUL)
-#define xDBL_A24                                        SQISIGN_NAMESPACE(xDBL_A24)
-#define xDBL_E0                                         SQISIGN_NAMESPACE(xDBL_E0)
 #define xMUL                                            SQISIGN_NAMESPACE(xMUL)
 
 // Namespacing symbols exported from ec_jac.c:
-#undef ADD
-#undef DBL
-#undef DBLW
 #undef copy_jac_point
 #undef jac_from_ws
 #undef jac_init
@@ -284,9 +327,6 @@
 #undef jac_to_xz_add_components
 #undef select_jac_point
 
-#define ADD                                             SQISIGN_NAMESPACE(ADD)
-#define DBL                                             SQISIGN_NAMESPACE(DBL)
-#define DBLW                                            SQISIGN_NAMESPACE(DBLW)
 #define copy_jac_point                                  SQISIGN_NAMESPACE(copy_jac_point)
 #define jac_from_ws                                     SQISIGN_NAMESPACE(jac_from_ws)
 #define jac_init                                        SQISIGN_NAMESPACE(jac_init)
@@ -296,6 +336,21 @@
 #define jac_to_xz                                       SQISIGN_NAMESPACE(jac_to_xz)
 #define jac_to_xz_add_components                        SQISIGN_NAMESPACE(jac_to_xz_add_components)
 #define select_jac_point                                SQISIGN_NAMESPACE(select_jac_point)
+
+// Namespacing symbols exported from ec_jac.c, hd.c:
+#undef DBLW
+
+#define DBLW                                            SQISIGN_NAMESPACE(DBLW)
+
+// Namespacing symbols exported from ec_jac.c, hd.c, theta_isogenies.c:
+#undef DBL
+
+#define DBL                                             SQISIGN_NAMESPACE(DBL)
+
+// Namespacing symbols exported from ec_params.c:
+#undef p_cofactor_for_2f
+
+#define p_cofactor_for_2f                               SQISIGN_NAMESPACE(p_cofactor_for_2f)
 
 // Namespacing symbols exported from encode_signature.c:
 #undef secret_key_from_bytes
@@ -455,21 +510,24 @@
 #define fp_set_one                                      SQISIGN_NAMESPACE(fp_set_one)
 #define fp_set_small                                    SQISIGN_NAMESPACE(fp_set_small)
 #define fp_set_zero                                     SQISIGN_NAMESPACE(fp_set_zero)
-#define ONE                                             SQISIGN_NAMESPACE(ONE)
-#define ZERO                                            SQISIGN_NAMESPACE(ZERO)
 
 // Namespacing symbols exported from fp_p27500_64.c, fp_p5248_64.c, fp_p65376_64.c, gf27500.c, gf5248.c, gf65376.c:
+#undef ONE
+#undef ZERO
 #undef fp_add
 #undef fp_mul
 #undef fp_sqr
 #undef fp_sub
 
+#define ONE                                             SQISIGN_NAMESPACE(ONE)
+#define ZERO                                            SQISIGN_NAMESPACE(ZERO)
 #define fp_add                                          SQISIGN_NAMESPACE(fp_add)
 #define fp_mul                                          SQISIGN_NAMESPACE(fp_mul)
 #define fp_sqr                                          SQISIGN_NAMESPACE(fp_sqr)
 #define fp_sub                                          SQISIGN_NAMESPACE(fp_sub)
 
 // Namespacing symbols exported from gf27500.c:
+#undef gf27500_MINUS_ONE
 #undef gf27500_decode
 #undef gf27500_decode_reduce
 #undef gf27500_div
@@ -479,6 +537,7 @@
 #undef gf27500_legendre
 #undef gf27500_sqrt
 
+#define gf27500_MINUS_ONE                               SQISIGN_NAMESPACE(gf27500_MINUS_ONE)
 #define gf27500_decode                                  SQISIGN_NAMESPACE(gf27500_decode)
 #define gf27500_decode_reduce                           SQISIGN_NAMESPACE(gf27500_decode_reduce)
 #define gf27500_div                                     SQISIGN_NAMESPACE(gf27500_div)
@@ -500,6 +559,7 @@
 #define fp2_sq_c1                                       SQISIGN_NAMESPACE(fp2_sq_c1)
 
 // Namespacing symbols exported from gf5248.c:
+#undef gf5248_MINUS_ONE
 #undef gf5248_decode
 #undef gf5248_decode_reduce
 #undef gf5248_div
@@ -509,6 +569,7 @@
 #undef gf5248_legendre
 #undef gf5248_sqrt
 
+#define gf5248_MINUS_ONE                                SQISIGN_NAMESPACE(gf5248_MINUS_ONE)
 #define gf5248_decode                                   SQISIGN_NAMESPACE(gf5248_decode)
 #define gf5248_decode_reduce                            SQISIGN_NAMESPACE(gf5248_decode_reduce)
 #define gf5248_div                                      SQISIGN_NAMESPACE(gf5248_div)
@@ -519,6 +580,7 @@
 #define gf5248_sqrt                                     SQISIGN_NAMESPACE(gf5248_sqrt)
 
 // Namespacing symbols exported from gf65376.c:
+#undef gf65376_MINUS_ONE
 #undef gf65376_decode
 #undef gf65376_decode_reduce
 #undef gf65376_div
@@ -528,6 +590,7 @@
 #undef gf65376_legendre
 #undef gf65376_sqrt
 
+#define gf65376_MINUS_ONE                               SQISIGN_NAMESPACE(gf65376_MINUS_ONE)
 #define gf65376_decode                                  SQISIGN_NAMESPACE(gf65376_decode)
 #define gf65376_decode_reduce                           SQISIGN_NAMESPACE(gf65376_decode_reduce)
 #define gf65376_div                                     SQISIGN_NAMESPACE(gf65376_div)
@@ -553,6 +616,22 @@
 #define double_couple_jac_point_iter                    SQISIGN_NAMESPACE(double_couple_jac_point_iter)
 #define double_couple_point                             SQISIGN_NAMESPACE(double_couple_point)
 #define double_couple_point_iter                        SQISIGN_NAMESPACE(double_couple_point_iter)
+
+// Namespacing symbols exported from hd_splitting_transforms.c:
+#undef CHI_EVAL
+
+#define CHI_EVAL                                        SQISIGN_NAMESPACE(CHI_EVAL)
+
+// Namespacing symbols exported from hd_splitting_transforms.c, theta_isogenies.c:
+#undef EVEN_INDEX
+#undef FP2_CONSTANTS
+#undef NORMALIZATION_TRANSFORMS
+#undef SPLITTING_TRANSFORMS
+
+#define EVEN_INDEX                                      SQISIGN_NAMESPACE(EVEN_INDEX)
+#define FP2_CONSTANTS                                   SQISIGN_NAMESPACE(FP2_CONSTANTS)
+#define NORMALIZATION_TRANSFORMS                        SQISIGN_NAMESPACE(NORMALIZATION_TRANSFORMS)
+#define SPLITTING_TRANSFORMS                            SQISIGN_NAMESPACE(SPLITTING_TRANSFORMS)
 
 // Namespacing symbols exported from hnf.c:
 #undef ibz_mat_4x4_is_hnf
@@ -761,6 +840,11 @@
 #define secret_key_finalize                             SQISIGN_NAMESPACE(secret_key_finalize)
 #define secret_key_init                                 SQISIGN_NAMESPACE(secret_key_init)
 
+// Namespacing symbols exported from keygen.c, torsion_constants.c:
+#undef SEC_DEGREE
+
+#define SEC_DEGREE                                      SQISIGN_NAMESPACE(SEC_DEGREE)
+
 // Namespacing symbols exported from l2.c:
 #undef quat_lattice_lll
 #undef quat_lll_core
@@ -910,6 +994,16 @@
 #define quat_lattice_print                              SQISIGN_NAMESPACE(quat_lattice_print)
 #define quat_left_ideal_print                           SQISIGN_NAMESPACE(quat_left_ideal_print)
 
+// Namespacing symbols exported from quaternion_data.c:
+#undef CONJUGATING_ELEMENTS
+
+#define CONJUGATING_ELEMENTS                            SQISIGN_NAMESPACE(CONJUGATING_ELEMENTS)
+
+// Namespacing symbols exported from quaternion_data.c, sign.c:
+#undef QUAT_prime_cofactor
+
+#define QUAT_prime_cofactor                             SQISIGN_NAMESPACE(QUAT_prime_cofactor)
+
 // Namespacing symbols exported from random_input_generation.c:
 #undef quat_test_input_random_ideal_generation
 #undef quat_test_input_random_ideal_lattice_generation
@@ -971,6 +1065,11 @@
 
 #define protocols_sign                                  SQISIGN_NAMESPACE(protocols_sign)
 
+// Namespacing symbols exported from sign.c, torsion_constants.c:
+#undef COM_DEGREE
+
+#define COM_DEGREE                                      SQISIGN_NAMESPACE(COM_DEGREE)
+
 // Namespacing symbols exported from sqisign.c:
 #undef sqisign_keypair
 #undef sqisign_open
@@ -1006,6 +1105,11 @@
 #define is_product_theta_point                          SQISIGN_NAMESPACE(is_product_theta_point)
 #define theta_precomputation                            SQISIGN_NAMESPACE(theta_precomputation)
 
+// Namespacing symbols exported from torsion_constants.c:
+#undef TWO_TO_SECURITY_BITS
+
+#define TWO_TO_SECURITY_BITS                            SQISIGN_NAMESPACE(TWO_TO_SECURITY_BITS)
+
 // Namespacing symbols exported from verify.c:
 #undef protocols_verify
 
@@ -1029,45 +1133,7 @@
 #define xisog_2_singular                                SQISIGN_NAMESPACE(xisog_2_singular)
 #define xisog_4                                         SQISIGN_NAMESPACE(xisog_4)
 
-// Namespacing symbols from precomp:
-#undef BASIS_E0_PX
-#undef BASIS_E0_QX
-#undef p_cofactor_for_2f
-#undef CURVES_WITH_ENDOMORPHISMS
-#undef EVEN_INDEX
-#undef CHI_EVAL
-#undef FP2_CONSTANTS
-#undef SPLITTING_TRANSFORMS
-#undef NORMALIZATION_TRANSFORMS
-#undef QUAT_prime_cofactor
-#undef QUATALG_PINFTY
-#undef EXTREMAL_ORDERS
-#undef CONNECTING_IDEALS
-#undef CONJUGATING_ELEMENTS
-#undef TWO_TO_SECURITY_BITS
-#undef TORSION_PLUS_2POWER
-#undef SEC_DEGREE
-#undef COM_DEGREE
-
-#define BASIS_E0_PX                                     SQISIGN_NAMESPACE(BASIS_E0_PX)
-#define BASIS_E0_QX                                     SQISIGN_NAMESPACE(BASIS_E0_QX)
-#define p_cofactor_for_2f                               SQISIGN_NAMESPACE(p_cofactor_for_2f)
-#define CURVES_WITH_ENDOMORPHISMS                       SQISIGN_NAMESPACE(CURVES_WITH_ENDOMORPHISMS)
-#define EVEN_INDEX                                      SQISIGN_NAMESPACE(EVEN_INDEX)
-#define CHI_EVAL                                        SQISIGN_NAMESPACE(CHI_EVAL)
-#define FP2_CONSTANTS                                   SQISIGN_NAMESPACE(FP2_CONSTANTS)
-#define SPLITTING_TRANSFORMS                            SQISIGN_NAMESPACE(SPLITTING_TRANSFORMS)
-#define NORMALIZATION_TRANSFORMS                        SQISIGN_NAMESPACE(NORMALIZATION_TRANSFORMS)
-#define QUAT_prime_cofactor                             SQISIGN_NAMESPACE(QUAT_prime_cofactor)
-#define QUATALG_PINFTY                                  SQISIGN_NAMESPACE(QUATALG_PINFTY)
-#define EXTREMAL_ORDERS                                 SQISIGN_NAMESPACE(EXTREMAL_ORDERS)
-#define CONNECTING_IDEALS                               SQISIGN_NAMESPACE(CONNECTING_IDEALS)
-#define CONJUGATING_ELEMENTS                            SQISIGN_NAMESPACE(CONJUGATING_ELEMENTS)
-#define TWO_TO_SECURITY_BITS                            SQISIGN_NAMESPACE(TWO_TO_SECURITY_BITS)
-#define TORSION_PLUS_2POWER                             SQISIGN_NAMESPACE(TORSION_PLUS_2POWER)
-#define SEC_DEGREE                                      SQISIGN_NAMESPACE(SEC_DEGREE)
-#define COM_DEGREE                                      SQISIGN_NAMESPACE(COM_DEGREE)
-
 
 #endif
 
+// This file is generated by scripts/Namespace.scala, do not edit it manually!

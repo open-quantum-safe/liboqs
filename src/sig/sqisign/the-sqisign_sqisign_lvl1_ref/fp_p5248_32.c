@@ -942,4 +942,4 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
     }
 }
 
-#endif /* RADIX_32 */
+#endif  /* RADIX_32 */

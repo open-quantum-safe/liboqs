@@ -2,11 +2,11 @@
 
 - **Algorithm type**: Digital signature scheme.
 - **Main cryptographic assumption**: Computing the endomorphism ring of a supersingular elliptic curve..
-- **Principal submitters**: Marius A. Aardal, Gora Adj, Diego F.Aranha, Andrea Basso, Isaac Andrés Canales Martínez, Jorge Chávez-Saab, Maria Corte-Real Santos, Pierrick Dartois, Luca De Feo, Max Duparc, Jonathan Komada Eriksen, Tako Boris Fouotsa, Décio Luiz Gazzoni Filho, Basil Hess, David Kohel, Antonin Leroux, Patrick Longa, Luciano Maino, Michael Meyer, Kohei Nakagawa, Hiroshi Onuki, Lorenz Panny, Sikhar Patranabis, Christophe Petit, Giacomo Pope, Krijn Reijnders, Damien Robert, Francisco Rodríguez Henríquez, Sina Schaeffler, Benjamin Wesolowski.
+- **Principal submitters**: Marius A. Aardal, Gora Adj, Diego F. Aranha, Andrea Basso, Isaac Andrés Canales Martínez, Jorge Chávez-Saab, Maria Corte-Real Santos, Pierrick Dartois, Luca De Feo, Max Duparc, Jonathan Komada Eriksen, Tako Boris Fouotsa, Décio Luiz Gazzoni Filho, Basil Hess, David Kohel, Antonin Leroux, Patrick Longa, Luciano Maino, Michael Meyer, Kohei Nakagawa, Hiroshi Onuki, Lorenz Panny, Sikhar Patranabis, Christophe Petit, Giacomo Pope, Krijn Reijnders, Damien Robert, Francisco Rodríguez Henríquez, Sina Schaeffler, Benjamin Wesolowski.
 - **Authors' website**: https://sqisign.org/
 - **Specification version**: Round 2.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/shane-digi/the-sqisign/commit/09bce2f0244bd11caa90c4eaef2150a759bd945d with copy_from_upstream patches
+  - **Source**: https://github.com/bhess/the-sqisign/commit/39b09acd532c69e3fb1206b4502572479288df92
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
