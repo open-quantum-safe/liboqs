@@ -832,7 +832,7 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
-non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime'])
+non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime', 'ntru'])
 
 if args.operation == "copy":
     copy_from_upstream()
