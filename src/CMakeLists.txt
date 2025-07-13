@@ -113,9 +113,7 @@ if(${OQS_USE_CUPQC})
     target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
 endif()
 if(${OQS_USE_ICICLE})
-    find_library(ICICLE_DEVICE_LIB NAMES icicle_device REQUIRED)
-    find_library(ICICLE_PQC_LIB NAMES icicle_pqc REQUIRED)
-    target_link_libraries(oqs INTERFACE ${ICICLE_DEVICE_LIB} ${ICICLE_PQC_LIB})
+    target_link_libraries(oqs INTERFACE icicle::icicle_pqc_package)
 endif()
 
 target_include_directories(oqs

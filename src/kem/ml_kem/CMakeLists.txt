@@ -41,7 +41,7 @@ endif()
 
 if(OQS_ENABLE_KEM_ml_kem_512_icicle_cuda)
     add_library(ml_kem_512_icicle_cuda OBJECT icicle_ml-kem-512_icicle_cuda/icicle_ml-kem.cpp)
-    target_include_directories(ml_kem_512_icicle_cuda PRIVATE ${ICICLE_INCLUDE_DIR})
+    target_link_libraries(ml_kem_512_icicle_cuda PRIVATE icicle::icicle_pqc_package)
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_512_icicle_cuda>)
 endif()
 
@@ -81,7 +81,7 @@ endif()
 
 if(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
     add_library(ml_kem_768_icicle_cuda OBJECT icicle_ml-kem-768_icicle_cuda/icicle_ml-kem.cpp)
-    target_include_directories(ml_kem_768_icicle_cuda PRIVATE ${ICICLE_INCLUDE_DIR})
+    target_link_libraries(ml_kem_768_icicle_cuda PRIVATE icicle::icicle_pqc_package)
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_768_icicle_cuda>)
 endif()
 
@@ -121,7 +121,7 @@ endif()
 
 if(OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda)
     add_library(ml_kem_1024_icicle_cuda OBJECT icicle_ml-kem-1024_icicle_cuda/icicle_ml-kem.cpp)
-    target_include_directories(ml_kem_1024_icicle_cuda PRIVATE ${ICICLE_INCLUDE_DIR})
+    target_link_libraries(ml_kem_1024_icicle_cuda PRIVATE icicle::icicle_pqc_package)
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_1024_icicle_cuda>)
 endif()
 

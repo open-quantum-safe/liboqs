@@ -152,15 +152,14 @@ if(${OQS_USE_CUPQC})
     find_package(cuPQC 0.2.0 REQUIRED)
 endif()
 
-if(${OQS_USE_ICICLE})
-    if(NOT DEFINED ICICLE_INCLUDE_DIR)
-        message(FATAL_ERROR "ICICLE_INCLUDE_DIR must be defined and point to the icicle headers")
-    endif()
-    if (DEFINED ICICLE_LIB_DIR)
-        list(APPEND CMAKE_LIBRARY_PATH "${ICICLE_LIB_DIR}")
-    endif()
+if(OQS_USE_ICICLE)
     enable_language(CXX)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+    find_package(icicle_pqc_package REQUIRED)
 endif()
+
 
 if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))
     message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin on x86_64.")
