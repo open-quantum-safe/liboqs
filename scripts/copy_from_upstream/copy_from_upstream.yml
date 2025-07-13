@@ -50,7 +50,7 @@ upstreams:
     name: icicle
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
     git_branch: main
-    git_commit: b39249d7228ff9e3d2133a91d4ef027bc3797e59
+    git_commit: 85e41d7ee1bcff81f2961d469147e5bf1198c6cc
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: []

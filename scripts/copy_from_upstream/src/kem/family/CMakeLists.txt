@@ -45,7 +45,7 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
 
 if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT icicle_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/icicle_ml-kem.cpp)
-    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${ICICLE_INCLUDE_DIR})
+    target_link_libraries({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE icicle::icicle_pqc_package)
         {%- else %}
 
 if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
