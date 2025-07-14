@@ -15,6 +15,7 @@ extern "C"
 
 #include <stddef.h>
 #include <stdint.h>
+#include "cbmc.h"
 
   /* === Single-call hash wrappers === */
 
@@ -57,7 +58,11 @@ extern "C"
   typedef sha2_512_t sha2_384_t;
 
   /* shaNNN_init(var): Initialize context for hashing. */
-  void sha2_256_init(sha2_256_t *sha);
+  void sha2_256_init(sha2_256_t *sha)
+  __contract__(
+    requires(memory_no_alias(sha, sizeof(sha2_256_t)))
+    assigns(object_whole(sha))
+  );
   void sha2_224_init(sha2_256_t *sha);
   void sha2_512_init(sha2_512_t *sha);
   void sha2_384_init(sha2_512_t *sha);

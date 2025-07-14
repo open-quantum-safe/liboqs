@@ -211,7 +211,7 @@ def main():
         alg_support_path, oqsconfig_path
 
     # This commit hash will need to be updated
-    commit_hash = "9aca5ba8444f1b6c259a28be78a13fa3ff750f9f"
+    commit_hash = "c0de64997c13b01710f56595332deb07cccab8da"
     
     # internal paths
     slh_dir = os.path.join(os.environ['LIBOQS_DIR'], 'src/sig/slh_dsa')
