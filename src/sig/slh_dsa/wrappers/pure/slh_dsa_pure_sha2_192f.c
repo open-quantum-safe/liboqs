@@ -55,8 +55,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_192f_sign(uint8_t *signature, size_
 	const slh_param_t *prm = &slh_dsa_sha2_192f;
 	const uint8_t *ctx = NULL;
     const size_t ctxlen = 0;
-    uint8_t addrnd[16];
-    OQS_randombytes(addrnd, 16);
+    uint8_t addrnd[32];
+    OQS_randombytes(addrnd, 32);
 
     *signature_len = slh_sign(signature,message,message_len,ctx,ctxlen,
 		secret_key,addrnd,prm);
@@ -90,8 +90,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_192f_sign_with_ctx_str(uint8_t *sig
 	size_t ctx_str_len, const uint8_t *secret_key) {
 	
 	const slh_param_t *prm = &slh_dsa_sha2_192f;
-	uint8_t addrnd[16];
-    OQS_randombytes(addrnd, 16);
+	uint8_t addrnd[32];
+    OQS_randombytes(addrnd, 32);
 
     *signature_len = slh_sign(signature,message,message_len,ctx_str,ctx_str_len,
 		secret_key,addrnd,prm);
