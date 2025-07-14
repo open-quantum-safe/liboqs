@@ -55,8 +55,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_sign(uint8_t *s
 	const slh_param_t *prm = &slh_dsa_{{hashAlg}}_{{paramSet}};
 	const uint8_t *ctx = NULL;
     const size_t ctxlen = 0;
-    uint8_t addrnd[16];
-    OQS_randombytes(addrnd, 16);
+    uint8_t addrnd[32];
+    OQS_randombytes(addrnd, 32);
 
     *signature_len = slh_sign(signature,message,message_len,ctx,ctxlen,
 		secret_key,addrnd,prm);
@@ -90,8 +90,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_sign_with_ctx_s
 	size_t ctx_str_len, const uint8_t *secret_key) {
 	
 	const slh_param_t *prm = &slh_dsa_{{hashAlg}}_{{paramSet}};
-	uint8_t addrnd[16];
-    OQS_randombytes(addrnd, 16);
+	uint8_t addrnd[32];
+    OQS_randombytes(addrnd, 32);
 
     *signature_len = slh_sign(signature,message,message_len,ctx_str,ctx_str_len,
 		secret_key,addrnd,prm);
@@ -166,8 +166,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{para
 	const char *ph = "{{ prehashHashAlg|replace('_', '-')|upper }}";
 	const uint8_t *ctx_str = NULL;
     const size_t ctx_str_len = 0;
-    uint8_t addrnd[16];
-    OQS_randombytes(addrnd, 16);
+    uint8_t addrnd[32];
+    OQS_randombytes(addrnd, 32);
 
     *signature_len = hash_slh_sign(signature,message,message_len,ctx_str,
 		ctx_str_len,ph,secret_key,addrnd,prm);
@@ -203,8 +203,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{para
 	
 	const slh_param_t *prm = &slh_dsa_{{hashAlg}}_{{paramSet}};
 	const char *ph = "{{ prehashHashAlg|replace('_', '-')|upper }}";
-	uint8_t addrnd[16];
-    OQS_randombytes(addrnd, 16);
+	uint8_t addrnd[32];
+    OQS_randombytes(addrnd, 32);
 
     *signature_len = hash_slh_sign(signature,message,message_len,ctx_str,
 		ctx_str_len,ph,secret_key,addrnd,prm);
