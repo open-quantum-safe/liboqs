@@ -264,12 +264,14 @@ def main():
     jinja_sig_h_file = os.path.join(template_dir,'slh_dsa_sig_h_template.jinja')
     jinja_alg_support_file = os.path.join(template_dir,'slh_dsa_alg_support_template.jinja')
     jinja_oqsconfig_file = os.path.join(template_dir,'slh_dsa_oqsconfig_template.jinja')
+    jinja_kat_sig_file = os.path.join(template_dir,'slh_dsa_kat_sig_template.jinja')
     
     #enumerate destination file paths
     sig_c_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.c')
     sig_h_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.h')
     alg_support_path = os.path.join(os.environ['LIBOQS_DIR'],'.CMake','alg_support.cmake')
     oqsconfig_path = os.path.join(os.environ['LIBOQS_DIR'],'src','oqsconfig.h.cmake')
+    kat_sig_path = os.path.join(os.environ['LIBOQS_DIR'],'tests','kat_sig.c')
     
     #generate internal c and h files
     internal_code_gen()
@@ -282,6 +284,7 @@ def main():
     file_replacer(jinja_sig_h_file, sig_h_path, {'variants': variants},'/////')
     file_replacer(jinja_alg_support_file, alg_support_path, {'variants': variants},'#####')
     file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')
+    file_replacer(jinja_kat_sig_file, kat_sig_path, {'variants': variants},'/////')
 
 if __name__ == "__main__":
     main()
