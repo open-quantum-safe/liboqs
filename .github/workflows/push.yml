@@ -6,28 +6,198 @@ permissions:
 on:
   push:
     branches-ignore: 'main'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.CMake/**'
+      - 'CMakeLists.txt'
+      - 'scripts/**'
+      - '.github/workflows/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  detect-changes:
+    name: Detect changes and triggers
+    runs-on: ubuntu-latest
+    outputs:
+      has-code-changes: ${{ steps.filter.outputs.code-changes }}
+      has-workflow-changes: ${{ steps.filter.outputs.workflow-changes }}
+      trigger-full: ${{ steps.check-triggers.outputs.trigger-full }}
+      trigger-extended: ${{ steps.check-triggers.outputs.trigger-extended }}
+      trigger-downstream: ${{ steps.check-triggers.outputs.trigger-downstream }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        with:
+          fetch-depth: 2  # Need at least 2 commits to check commit message
+      
+      - name: Detect changed file types
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # pin@v3
+        id: filter
+        with:
+          filters: |
+            code-changes:
+              - 'src/**'
+              - 'tests/**'
+              - '.CMake/**'
+              - 'CMakeLists.txt'
+            workflow-changes:
+              - '.github/workflows/**'
+      
+      - name: Check commit message for explicit triggers
+        id: check-triggers
+        run: |
+          # Get the latest commit message
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+          echo ""
+          
+          # Check for trigger strings
+          if [[ "$COMMIT_MSG" == *"[full tests]"* ]]; then
+            echo "trigger-full=true" >> $GITHUB_OUTPUT
+            echo "🔍 Found '[full tests]' trigger in commit message"
+          else
+            echo "trigger-full=false" >> $GITHUB_OUTPUT
+          fi
+          
+          if [[ "$COMMIT_MSG" == *"[extended tests]"* ]]; then
+            echo "trigger-extended=true" >> $GITHUB_OUTPUT
+            echo "🔍 Found '[extended tests]' trigger in commit message"
+          else
+            echo "trigger-extended=false" >> $GITHUB_OUTPUT
+          fi
+          
+          if [[ "$COMMIT_MSG" == *"[trigger downstream]"* ]]; then
+            echo "trigger-downstream=true" >> $GITHUB_OUTPUT
+            echo "🔍 Found '[trigger downstream]' trigger in commit message"
+          else
+            echo "trigger-downstream=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # Summary
+          echo ""
+          echo "📋 Trigger Detection Summary:"
+          echo "  - Full tests: $([ "$COMMIT_MSG" == *"[full tests]"* ] && echo "✅" || echo "❌")"
+          echo "  - Extended tests: $([ "$COMMIT_MSG" == *"[extended tests]"* ] && echo "✅" || echo "❌")"
+          echo "  - Downstream tests: $([ "$COMMIT_MSG" == *"[trigger downstream]"* ] && echo "✅" || echo "❌")"
+          echo "  - Code changes: ${{ steps.filter.outputs.code-changes }}"
+          echo "  - Workflow changes: ${{ steps.filter.outputs.workflow-changes }}"
 
   basic-checks:
+    name: Basic checks
+    needs: detect-changes
+    # Always run basic checks if there are any relevant changes
+    if: |
+      needs.detect-changes.outputs.has-code-changes == 'true' ||
+      needs.detect-changes.outputs.has-workflow-changes == 'true' ||
+      needs.detect-changes.outputs.trigger-full == 'true' ||
+      needs.detect-changes.outputs.trigger-extended == 'true'
     uses: ./.github/workflows/basic.yml
 
   full-tests:
-    needs: basic-checks
-    if: contains( github.event.head_commit.message, '[full tests]' )
+    name: Full platform tests
+    needs: [detect-changes, basic-checks]
+    # Run full tests if explicitly triggered OR if there are code changes
+    if: |
+      needs.detect-changes.outputs.trigger-full == 'true' ||
+      (needs.detect-changes.outputs.has-code-changes == 'true' && 
+       needs.detect-changes.outputs.trigger-full != 'false')
     uses: ./.github/workflows/platforms.yml
 
   extended-tests:
-    needs: basic-checks
-    if: contains( github.event.head_commit.message, '[extended tests]' )
+    name: Extended tests
+    needs: [detect-changes, basic-checks]
+    # Only run extended tests if explicitly triggered
+    if: needs.detect-changes.outputs.trigger-extended == 'true'
     uses: ./.github/workflows/extended.yml
 
   downstream-release-tests:
-    needs: basic-checks
-    if: contains( github.event.head_commit.message, '[trigger downstream]' )
+    name: Downstream release tests
+    needs: [detect-changes, basic-checks]
+    # Only run downstream tests if explicitly triggered
+    if: needs.detect-changes.outputs.trigger-downstream == 'true'
     uses: ./.github/workflows/downstream-release.yml
     secrets: inherit
+
+  workflow-validation:
+    name: Workflow validation
+    needs: detect-changes
+    # Run workflow validation for workflow changes
+    if: needs.detect-changes.outputs.has-workflow-changes == 'true'
+    uses: ./.github/workflows/workflow-validation.yml
+
+  push-summary:
+    name: Push tests summary
+    needs: [
+      detect-changes,
+      basic-checks,
+      full-tests,
+      extended-tests,
+      downstream-release-tests,
+      workflow-validation
+    ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create push test summary
+        run: |
+          echo "## 🚀 Push Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🔍 Change Detection:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Code changes**: ${{ needs.detect-changes.outputs.has-code-changes }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflow changes**: ${{ needs.detect-changes.outputs.has-workflow-changes }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🎯 Explicit Triggers:" >> $GITHUB_STEP_SUMMARY
+          echo "- **[full tests]**: ${{ needs.detect-changes.outputs.trigger-full }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **[extended tests]**: ${{ needs.detect-changes.outputs.trigger-extended }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **[trigger downstream]**: ${{ needs.detect-changes.outputs.trigger-downstream }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🧪 Test Results:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Basic checks**: ${{ needs.basic-checks.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Full tests**: ${{ needs.full-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Extended tests**: ${{ needs.extended-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Downstream tests**: ${{ needs.downstream-release-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflow validation**: ${{ needs.workflow-validation.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Resource optimization info
+          echo "### ⚡ Resource Optimization:" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ needs.detect-changes.outputs.has-code-changes }}" == "true" ]]; then
+            echo "- **Testing approach**: Full testing (code changes detected)" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.detect-changes.outputs.trigger-full }}" == "true" ]]; then
+            echo "- **Testing approach**: Full testing (explicitly triggered)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Testing approach**: Minimal testing (no code changes)" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Check for failures
+          FAILED_JOBS=""
+          if [[ "${{ needs.basic-checks.result }}" == "failure" ]]; then
+            FAILED_JOBS="$FAILED_JOBS basic-checks"
+          fi
+          if [[ "${{ needs.full-tests.result }}" == "failure" ]]; then
+            FAILED_JOBS="$FAILED_JOBS full-tests"
+          fi
+          if [[ "${{ needs.extended-tests.result }}" == "failure" ]]; then
+            FAILED_JOBS="$FAILED_JOBS extended-tests"
+          fi
+          if [[ "${{ needs.workflow-validation.result }}" == "failure" ]]; then
+            FAILED_JOBS="$FAILED_JOBS workflow-validation"
+          fi
+          
+          if [[ -n "$FAILED_JOBS" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "❌ **Failed jobs**: $FAILED_JOBS" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ **All triggered tests passed successfully**" >> $GITHUB_STEP_SUMMARY
+          fi

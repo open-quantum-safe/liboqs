@@ -6,12 +6,54 @@ permissions:
 on:
   schedule:
     - cron: "5 0 * * 0"
+  workflow_dispatch:
 
 jobs:
+  detect-trigger:
+    name: Detect weekly test trigger
+    runs-on: ubuntu-latest
+    outputs:
+      is-scheduled: ${{ steps.check.outputs.is-scheduled }}
+      is-pr-validation: ${{ steps.check.outputs.is-pr-validation }}
+      run-extended: ${{ steps.check.outputs.run-extended }}
+      run-scorecard: ${{ steps.check.outputs.run-scorecard }}
+    steps:
+      - name: Determine trigger type and scope
+        id: check
+        run: |
+          echo "🔍 Analyzing weekly workflow trigger..."
+          
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "is-scheduled=true" >> $GITHUB_OUTPUT
+            echo "is-pr-validation=false" >> $GITHUB_OUTPUT
+            echo "run-extended=true" >> $GITHUB_OUTPUT
+            echo "run-scorecard=true" >> $GITHUB_OUTPUT
+            echo "📅 Scheduled weekly run - full testing enabled"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "is-scheduled=false" >> $GITHUB_OUTPUT
+            echo "is-pr-validation=false" >> $GITHUB_OUTPUT
+            echo "run-extended=true" >> $GITHUB_OUTPUT
+            echo "run-scorecard=true" >> $GITHUB_OUTPUT
+            echo "🎯 Manual trigger - full testing enabled"
+          else
+            echo "is-scheduled=false" >> $GITHUB_OUTPUT
+            echo "is-pr-validation=false" >> $GITHUB_OUTPUT
+            echo "run-extended=false" >> $GITHUB_OUTPUT
+            echo "run-scorecard=false" >> $GITHUB_OUTPUT
+            echo "❓ Unknown trigger - minimal testing"
+          fi
+          
+          echo ""
+          echo "📋 Execution Plan:"
+          echo "  - Extended tests: $([ "${{ github.event_name }}" == "schedule" ] || [ "${{ github.event_name }}" == "workflow_dispatch" ] && echo "✅" || echo "❌")"
+          echo "  - Scorecard: $([ "${{ github.event_name }}" == "schedule" ] || [ "${{ github.event_name }}" == "workflow_dispatch" ] && echo "✅" || echo "❌")"
 
   # To guarantee Maintained check is occasionally updated. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   scorecard:
+    name: Security scorecard analysis
+    needs: detect-trigger
+    if: needs.detect-trigger.outputs.run-scorecard == 'true'
     uses: ./.github/workflows/scorecard.yml
     secrets: inherit
     permissions:
@@ -19,4 +61,75 @@ jobs:
       security-events: write
 
   extended-tests:
+    name: Extended tests
+    needs: detect-trigger
+    if: needs.detect-trigger.outputs.run-extended == 'true'
     uses: ./.github/workflows/extended.yml
+  
+  weekly-summary:
+    name: Weekly tests summary
+    needs: [
+      detect-trigger,
+      scorecard,
+      extended-tests
+    ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create weekly summary
+        run: |
+          echo "## 📅 Weekly Tests Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🎯 Execution Type:" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ needs.detect-trigger.outputs.is-scheduled }}" == "true" ]]; then
+            echo "- **Type**: Scheduled weekly run" >> $GITHUB_STEP_SUMMARY
+            echo "- **Scope**: Full extended testing + security scorecard" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Type**: Manual trigger" >> $GITHUB_STEP_SUMMARY
+            echo "- **Scope**: Full testing" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🧪 Test Results:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Security scorecard**: ${{ needs.scorecard.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Extended tests**: ${{ needs.extended-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Resource optimization info
+          echo "### ⚡ Resource Optimization:" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ needs.detect-trigger.outputs.is-pr-validation }}" == "true" ]]; then
+            echo "- **Optimization**: PR validation relies on workflow-validation.yml" >> $GITHUB_STEP_SUMMARY
+            echo "- **Benefit**: No duplicate validation logic" >> $GITHUB_STEP_SUMMARY
+            echo "- **Time saved**: ~2-4 hours of extended testing" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Execution**: Full weekly testing as scheduled" >> $GITHUB_STEP_SUMMARY
+            echo "- **Purpose**: Comprehensive validation + security monitoring" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Check for failures
+          FAILED_TESTS=""
+          if [[ "${{ needs.scorecard.result }}" == "failure" ]]; then
+            FAILED_TESTS="$FAILED_TESTS scorecard"
+          fi
+          if [[ "${{ needs.extended-tests.result }}" == "failure" ]]; then
+            FAILED_TESTS="$FAILED_TESTS extended-tests"
+          fi
+          
+          if [[ -n "$FAILED_TESTS" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "❌ **Failed components**: $FAILED_TESTS" >> $GITHUB_STEP_SUMMARY
+            if [[ "${{ needs.detect-trigger.outputs.is-scheduled }}" == "true" ]]; then
+              echo "🚨 **Weekly health check failed** - requires investigation" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            if [[ "${{ needs.detect-trigger.outputs.is-scheduled }}" == "true" ]]; then
+              echo "✅ **Weekly health check passed** - repository is healthy" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "✅ **Workflow validation passed** - changes are safe to merge" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi

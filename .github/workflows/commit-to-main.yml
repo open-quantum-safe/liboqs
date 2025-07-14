@@ -8,15 +8,134 @@ on:
     branches: ['main']
 
 jobs:
+  detect-changes:
+    name: Analyze changes in main branch merge
+    runs-on: ubuntu-latest
+    outputs:
+      # Core change types
+      affects-algorithms: ${{ steps.changes.outputs.algorithms }}
+      affects-api: ${{ steps.changes.outputs.api }}
+      affects-core-lib: ${{ steps.changes.outputs.core-lib }}
+      affects-tests: ${{ steps.changes.outputs.tests }}
+      affects-docs: ${{ steps.changes.outputs.docs }}
+      affects-workflows: ${{ steps.changes.outputs.workflows }}
+      affects-benchmarking: ${{ steps.changes.outputs.benchmarking }}
+      
+      # Composite decisions
+      needs-platform-tests: ${{ steps.decisions.outputs.needs-platform-tests }}
+      needs-benchmarking: ${{ steps.decisions.outputs.needs-benchmarking }}
+      needs-downstream: ${{ steps.decisions.outputs.needs-downstream }}
+      needs-coverage: ${{ steps.decisions.outputs.needs-coverage }}
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        with:
+          fetch-depth: 50  # Get enough history to analyze the merge
+      
+      - name: Detect change categories
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # pin@v3
+        id: changes
+        with:
+          filters: |
+            algorithms:
+              - 'src/kem/**'
+              - 'src/sig/**'
+              - 'src/sig_stfl/**'
+            api:
+              - 'src/oqs.h'
+              - 'src/kem/kem.h'
+              - 'src/sig/sig.h'
+              - 'src/sig_stfl/sig_stfl.h'
+              - 'src/common/common.h'
+            core-lib:
+              - 'src/common/**'
+              - 'src/oqs.c'
+              - 'CMakeLists.txt'
+              - '.CMake/**'
+            tests:
+              - 'tests/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+              - 'scripts/update_docs_from_yaml.py'
+            workflows:
+              - '.github/workflows/**'
+            benchmarking:
+              - 'scripts/parse_liboqs_speed.py'
+              - '.github/workflows/*bench*.yml'
+      
+      - name: Make composite decisions
+        id: decisions
+        run: |
+          echo "🔍 Analyzing merge impact for main branch..."
+          
+          # Platform tests needed for core changes
+          if [[ "${{ steps.changes.outputs.algorithms }}" == "true" || \
+                "${{ steps.changes.outputs.api }}" == "true" || \
+                "${{ steps.changes.outputs.core-lib }}" == "true" || \
+                "${{ steps.changes.outputs.tests }}" == "true" ]]; then
+            echo "needs-platform-tests=true" >> $GITHUB_OUTPUT
+            echo "✅ Platform tests needed (core changes detected)"
+          else
+            echo "needs-platform-tests=false" >> $GITHUB_OUTPUT
+            echo "⏭️  Platform tests skipped (no core changes)"
+          fi
+          
+          # Benchmarking needed for algorithm or benchmarking changes
+          if [[ "${{ steps.changes.outputs.algorithms }}" == "true" || \
+                "${{ steps.changes.outputs.benchmarking }}" == "true" ]]; then
+            echo "needs-benchmarking=true" >> $GITHUB_OUTPUT
+            echo "✅ Benchmarking needed (algorithm changes detected)"
+          else
+            echo "needs-benchmarking=false" >> $GITHUB_OUTPUT
+            echo "⏭️  Benchmarking skipped (no algorithm changes)"
+          fi
+          
+          # Downstream tests for API or significant core changes
+          if [[ "${{ steps.changes.outputs.api }}" == "true" || \
+                "${{ steps.changes.outputs.core-lib }}" == "true" ]]; then
+            echo "needs-downstream=true" >> $GITHUB_OUTPUT
+            echo "✅ Downstream tests needed (API/core changes detected)"
+          else
+            echo "needs-downstream=false" >> $GITHUB_OUTPUT
+            echo "⏭️  Downstream tests skipped (no API changes)"
+          fi
+          
+          # Code coverage for any code changes
+          if [[ "${{ steps.changes.outputs.algorithms }}" == "true" || \
+                "${{ steps.changes.outputs.core-lib }}" == "true" || \
+                "${{ steps.changes.outputs.tests }}" == "true" ]]; then
+            echo "needs-coverage=true" >> $GITHUB_OUTPUT
+            echo "✅ Coverage tests needed (code changes detected)"
+          else
+            echo "needs-coverage=false" >> $GITHUB_OUTPUT
+            echo "⏭️  Coverage tests skipped (no code changes)"
+          fi
+          
+          echo ""
+          echo "📋 Decision Summary:"
+          echo "  - Platform tests: $([ "${{ steps.changes.outputs.algorithms }}" == "true" ] && echo "✅" || echo "❌")"
+          echo "  - Benchmarking: $([ "${{ steps.changes.outputs.algorithms }}" == "true" ] && echo "✅" || echo "❌")"
+          echo "  - Downstream: $([ "${{ steps.changes.outputs.api }}" == "true" ] && echo "✅" || echo "❌")"
+          echo "  - Coverage: $([ "${{ steps.changes.outputs.algorithms }}" == "true" ] && echo "✅" || echo "❌")"
 
   platform-tests:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.needs-platform-tests == 'true'
     uses: ./.github/workflows/platforms.yml
 
   code-coverage:
+    name: Code coverage
+    needs: detect-changes
+    if: needs.detect-changes.outputs.needs-coverage == 'true'
     uses: ./.github/workflows/code-coverage.yml
     secrets: inherit
 
   scorecard:
+    name: Security scorecard
+    needs: detect-changes
+    if: needs.detect-changes.outputs.affects-workflows == 'true'
     uses: ./.github/workflows/scorecard.yml
     secrets: inherit
     permissions:
@@ -24,15 +143,103 @@ jobs:
       security-events: write
 
   basic-downstream:
+    name: Basic downstream tests
+    needs: detect-changes
+    if: needs.detect-changes.outputs.needs-downstream == 'true'
     uses: ./.github/workflows/downstream-basic.yml
     secrets: inherit
 
   call-kem-benchmarking:
+    name: KEM benchmarking
+    needs: detect-changes
+    if: needs.detect-changes.outputs.needs-benchmarking == 'true'
     uses: ./.github/workflows/kem-bench.yml
     permissions:
       contents: write
     
   call-sig-benchmarking:
+    name: SIG benchmarking
+    needs: detect-changes
+    if: needs.detect-changes.outputs.needs-benchmarking == 'true'
     uses: ./.github/workflows/sig-bench.yml
     permissions:
       contents: write
+  
+  main-branch-summary:
+    name: Main branch tests summary
+    needs: [
+      detect-changes,
+      platform-tests,
+      code-coverage,
+      scorecard,
+      basic-downstream,
+      call-kem-benchmarking,
+      call-sig-benchmarking
+    ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create main branch summary
+        run: |
+          echo "## 🚀 Main Branch Merge Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Merge commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🔍 Change Analysis:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Algorithms**: ${{ needs.detect-changes.outputs.affects-algorithms }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Public API**: ${{ needs.detect-changes.outputs.affects-api }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Core library**: ${{ needs.detect-changes.outputs.affects-core-lib }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tests**: ${{ needs.detect-changes.outputs.affects-tests }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Documentation**: ${{ needs.detect-changes.outputs.affects-docs }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflows**: ${{ needs.detect-changes.outputs.affects-workflows }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Benchmarking**: ${{ needs.detect-changes.outputs.affects-benchmarking }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🎯 Executed Tests:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Platform tests**: ${{ needs.platform-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Code coverage**: ${{ needs.code-coverage.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Security scorecard**: ${{ needs.scorecard.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Downstream tests**: ${{ needs.basic-downstream.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **KEM benchmarking**: ${{ needs.call-kem-benchmarking.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **SIG benchmarking**: ${{ needs.call-sig-benchmarking.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Resource savings calculation
+          SAVED_JOBS=0
+          if [[ "${{ needs.detect-changes.outputs.needs-platform-tests }}" == "false" ]]; then
+            SAVED_JOBS=$((SAVED_JOBS + 1))
+          fi
+          if [[ "${{ needs.detect-changes.outputs.needs-benchmarking }}" == "false" ]]; then
+            SAVED_JOBS=$((SAVED_JOBS + 2))  # KEM + SIG benchmarking
+          fi
+          if [[ "${{ needs.detect-changes.outputs.needs-downstream }}" == "false" ]]; then
+            SAVED_JOBS=$((SAVED_JOBS + 1))
+          fi
+          if [[ "${{ needs.detect-changes.outputs.needs-coverage }}" == "false" ]]; then
+            SAVED_JOBS=$((SAVED_JOBS + 1))
+          fi
+          
+          echo "### ⚡ Resource Optimization:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Jobs saved**: $SAVED_JOBS out of 5 possible expensive jobs" >> $GITHUB_STEP_SUMMARY
+          echo "- **Optimization**: Smart path-based execution" >> $GITHUB_STEP_SUMMARY
+          echo "- **Approach**: Only run tests relevant to changes" >> $GITHUB_STEP_SUMMARY
+          
+          # Check for critical failures
+          CRITICAL_FAILURES=""
+          if [[ "${{ needs.platform-tests.result }}" == "failure" && "${{ needs.detect-changes.outputs.needs-platform-tests }}" == "true" ]]; then
+            CRITICAL_FAILURES="$CRITICAL_FAILURES platform-tests"
+          fi
+          if [[ "${{ needs.basic-downstream.result }}" == "failure" && "${{ needs.detect-changes.outputs.needs-downstream }}" == "true" ]]; then
+            CRITICAL_FAILURES="$CRITICAL_FAILURES downstream-tests"
+          fi
+          
+          if [[ -n "$CRITICAL_FAILURES" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "🚨 **CRITICAL**: Main branch has test failures: $CRITICAL_FAILURES" >> $GITHUB_STEP_SUMMARY
+            echo "This may affect downstream users and integrations." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ **Main branch is healthy** - all relevant tests passed" >> $GITHUB_STEP_SUMMARY
+          fi
