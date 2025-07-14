@@ -734,7 +734,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		return OQS_SUCCESS;
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
 		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_START
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -744,7 +744,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -754,7 +754,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -764,7 +764,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -774,7 +774,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -784,7 +784,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -794,7 +794,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -804,7 +804,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -814,7 +814,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -824,7 +824,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -834,7 +834,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -844,7 +844,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_PURE_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -854,7 +854,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -864,7 +864,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -874,7 +874,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -884,7 +884,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -894,7 +894,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -904,7 +904,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -914,7 +914,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -924,7 +924,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -934,7 +934,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -944,7 +944,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -954,7 +954,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -964,7 +964,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_224_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -974,7 +974,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -984,7 +984,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -994,7 +994,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1004,7 +1004,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1014,7 +1014,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1024,7 +1024,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1034,7 +1034,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1044,7 +1044,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1054,7 +1054,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1064,7 +1064,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1074,7 +1074,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1084,7 +1084,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_256_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1094,7 +1094,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1104,7 +1104,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1114,7 +1114,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1124,7 +1124,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1134,7 +1134,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1144,7 +1144,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1154,7 +1154,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1164,7 +1164,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1174,7 +1174,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1184,7 +1184,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1194,7 +1194,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1204,7 +1204,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_384_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1214,7 +1214,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1224,7 +1224,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1234,7 +1234,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1244,7 +1244,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1254,7 +1254,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1264,7 +1264,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1274,7 +1274,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1284,7 +1284,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1294,7 +1294,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1304,7 +1304,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1314,7 +1314,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1324,7 +1324,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1334,7 +1334,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1344,7 +1344,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1354,7 +1354,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1364,7 +1364,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1374,7 +1374,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1384,7 +1384,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1394,7 +1394,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1404,7 +1404,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1414,7 +1414,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1424,7 +1424,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1434,7 +1434,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1444,7 +1444,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1454,7 +1454,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1464,7 +1464,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1474,7 +1474,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1484,7 +1484,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1494,7 +1494,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1504,7 +1504,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1514,7 +1514,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1524,7 +1524,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1534,7 +1534,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1544,7 +1544,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1554,7 +1554,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1564,7 +1564,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1574,7 +1574,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1584,7 +1584,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1594,7 +1594,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1604,7 +1604,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1614,7 +1614,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1624,7 +1624,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1634,7 +1634,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1644,7 +1644,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1654,7 +1654,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1664,7 +1664,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1674,7 +1674,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1684,7 +1684,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_224_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1694,7 +1694,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1704,7 +1704,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1714,7 +1714,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1724,7 +1724,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1734,7 +1734,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1744,7 +1744,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1754,7 +1754,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1764,7 +1764,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1774,7 +1774,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1784,7 +1784,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1794,7 +1794,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1804,7 +1804,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_256_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1814,7 +1814,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1824,7 +1824,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1834,7 +1834,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1844,7 +1844,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1854,7 +1854,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1864,7 +1864,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1874,7 +1874,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1884,7 +1884,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1894,7 +1894,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1904,7 +1904,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1914,7 +1914,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1924,7 +1924,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_384_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1934,7 +1934,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1944,7 +1944,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1954,7 +1954,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1964,7 +1964,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1974,7 +1974,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1984,7 +1984,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -1994,7 +1994,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2004,7 +2004,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2014,7 +2014,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2024,7 +2024,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2034,7 +2034,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2044,7 +2044,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHA3_512_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2054,7 +2054,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2064,7 +2064,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2074,7 +2074,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2084,7 +2084,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2094,7 +2094,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2104,7 +2104,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2114,7 +2114,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2124,7 +2124,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2134,7 +2134,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2144,7 +2144,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2154,7 +2154,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2164,7 +2164,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2174,7 +2174,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2184,7 +2184,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2194,7 +2194,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2204,7 +2204,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2214,7 +2214,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2224,7 +2224,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHA2_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2234,7 +2234,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2244,7 +2244,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2254,7 +2254,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2264,7 +2264,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2274,7 +2274,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2284,7 +2284,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F")) {
+	} else if (0 == strcmp(sig->method_name, "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -2350,7 +2350,9 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 	}
 
 	// temporarily disabled slh dsa testing to reduce time taken on actions
-	if(!(strncmp(method_name,"SLH_DSA",7))){max_count = 1;}
+	if (!(strncmp(method_name, "SLH_DSA", 7))) {
+		max_count = 1;
+	}
 
 	for (size_t count = 0; count < max_count; ++count) {
 		fprintf(fh, "count = %zu\n", count);
