@@ -2294,7 +2294,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
+		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
 	} else {
 		return OQS_ERROR;
 	}
