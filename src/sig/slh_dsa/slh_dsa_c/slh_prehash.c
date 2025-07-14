@@ -85,14 +85,14 @@ static size_t hash_slh_dsa_pad(uint8_t *mp, const uint8_t *m, size_t m_sz,
     sha2_224(mp + mp_sz, m, m_sz);
     mp_sz += 28;
   }
-  else if (strcmp(ph, "SHA2-512/224") == 0)
+  else if (strcmp(ph, "SHA2-512-224") == 0)
   {
     memcpy(mp + mp_sz, sha2_512_224_oid, 11);
     mp_sz += 11;
     sha2_512_224(mp + mp_sz, m, m_sz);
     mp_sz += 28;
   }
-  else if (strcmp(ph, "SHA2-512/256") == 0)
+  else if (strcmp(ph, "SHA2-512-256") == 0)
   {
     memcpy(mp + mp_sz, sha2_512_256_oid, 11);
     mp_sz += 11;
