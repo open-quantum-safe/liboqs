@@ -139,11 +139,7 @@ Can be `ON` or `OFF`.  When `ON`, use NVIDIA's cuPQC library where able (current
 
 This CMake option can be set to `ON` or `OFF`. When enabled (`ON`), it configures liboqs to use ICICLE as the backend for supported post-quantum cryptographic (PQC) algorithms — currently ML-KEM.
 ICICLE is a GPU-accelerated cryptographic library developed by Ingonyama. It provides CUDA-based implementations of PQC algorithms to boost the performance on systems with compatible NVIDIA GPUs.
-To use ICICLE, you must:
-
-1. Set ICICLE_INCLUDE_DIR to the path of ICICLE's header files.
-2. Optionally set ICICLE_LIB_DIR if the ICICLE libraries are not in standard library search paths.
-3. Ensure both icicle_device and icicle_pqc libraries are available for linking.
+To use ICICLE, the user needs to build and install the `icicle_pqc_package`, which contains the necessary CUDA kernels and runtime support. This package must be compiled separately before configuring liboqs with `OQS_USE_ICICLE` enabled, and its installation path should be made available to CMake.
 
 Enabling this option also automatically enables C++ support in CMake, as required by ICICLE’s implementations.
 
