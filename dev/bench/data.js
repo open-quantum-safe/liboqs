@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1752541357298,
+  "lastUpdate": 1752541360182,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -7420,6 +7420,48 @@ window.BENCHMARK_DATA = {
             "value": 108756,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 6cc048ae6f935f30dfb92eb4a930c695dc8fde5d | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "abhinav.saxena@thalesgroup.com",
+            "name": "Abhinav Saxena",
+            "username": "abhinav-thales"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d39268b20428638dc06f0a0ba085f88988b02661",
+          "message": "update ACVP to 1.1.0.40 (#2172)\n\nSigned-off-by: Abhinav Saxena <abhinav.saxena@thalesgroup.com>",
+          "timestamp": "2025-07-14T20:54:05-04:00",
+          "tree_id": "f9914d8584e0a6c5e484febb221f6ac056e7a8ab",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/d39268b20428638dc06f0a0ba085f88988b02661"
+        },
+        "date": 1752541359120,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "Falcon-padded-512 keypair",
+            "value": 17278384,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: d39268b20428638dc06f0a0ba085f88988b02661 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Falcon-padded-512 sign",
+            "value": 586417,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: d39268b20428638dc06f0a0ba085f88988b02661 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Falcon-padded-512 verify",
+            "value": 105413,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: d39268b20428638dc06f0a0ba085f88988b02661 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
