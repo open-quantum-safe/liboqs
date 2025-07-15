@@ -113,7 +113,36 @@ if(${OQS_USE_CUPQC})
     target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
 endif()
 if(${OQS_USE_ICICLE})
-    target_link_libraries(oqs INTERFACE icicle::icicle_pqc_package)
+    # Use package-based discovery with manual linking approach for proper symbol resolution
+    # Get library file paths from the package targets
+    get_target_property(ICICLE_PQC_LOCATION icicle::icicle_pqc IMPORTED_LOCATION_RELEASE)
+    get_target_property(ICICLE_DEVICE_LOCATION icicle::icicle_device IMPORTED_LOCATION_RELEASE)
+    get_target_property(ICICLE_BACKEND_CUDA_PQC_LOCATION icicle::icicle_backend_cuda_pqc IMPORTED_LOCATION_RELEASE)
+    
+    # Fallback to non-configuration-specific property if release-specific not found
+    if(NOT ICICLE_PQC_LOCATION)
+        get_target_property(ICICLE_PQC_LOCATION icicle::icicle_pqc IMPORTED_LOCATION)
+    endif()
+    if(NOT ICICLE_DEVICE_LOCATION)
+        get_target_property(ICICLE_DEVICE_LOCATION icicle::icicle_device IMPORTED_LOCATION)
+    endif()
+    if(NOT ICICLE_BACKEND_CUDA_PQC_LOCATION)
+        get_target_property(ICICLE_BACKEND_CUDA_PQC_LOCATION icicle::icicle_backend_cuda_pqc IMPORTED_LOCATION)
+    endif()
+    
+    # Use --whole-archive for all three libraries to ensure all symbols are included
+    target_link_libraries(oqs PRIVATE 
+        "-Wl,--whole-archive"
+        ${ICICLE_PQC_LOCATION}
+        ${ICICLE_DEVICE_LOCATION}
+        ${ICICLE_BACKEND_CUDA_PQC_LOCATION}
+        "-Wl,--no-whole-archive"
+        ${CMAKE_DL_LIBS}
+    )
+    
+    # Link CUDA runtime library (dynamic to prevent segfaults)
+    find_package(CUDAToolkit REQUIRED)
+    target_link_libraries(oqs PRIVATE CUDA::cudart)
 endif()
 
 target_include_directories(oqs
