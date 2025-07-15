@@ -6,7 +6,7 @@
 - **Authors' website**: https://classic.mceliece.org
 - **Specification version**: SUPERCOP-20221025.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181
+  - **Source**: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - SUPERCOP-20221025 "clean" and "avx2" implementations
