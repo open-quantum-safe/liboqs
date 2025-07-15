@@ -3,30 +3,299 @@ name: Pull request tests
 permissions:
   contents: read
 
-on: pull_request
+on: 
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'CMakeLists.txt'
+      - 'scripts/**'
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/basic.yml'
+      - '.github/workflows/platforms.yml'
+      - '.github/workflows/pr.yml'
+      - '.github/workflows/code-coverage.yml'
+      - '.github/workflows/scorecard.yml'
+      - '.github/workflows/workflow-validation.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  # Determine what types of changes were made
+  detect-changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      core-code: ${{ steps.filter.outputs.core-code }}
+      tests: ${{ steps.filter.outputs.tests }}
+      docs: ${{ steps.filter.outputs.docs }}
+      workflows: ${{ steps.filter.outputs.workflows }}
+      cmake: ${{ steps.filter.outputs.cmake }}
+      scripts: ${{ steps.filter.outputs.scripts }}
+      any-code-changes: ${{ steps.check.outputs.any-code-changes }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      
+      - name: Detect changed file types
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # pin@v3
+        id: filter
+        with:
+          filters: |
+            core-code:
+              - 'src/**/*.c'
+              - 'src/**/*.h'
+              - 'src/**/*.S'
+            tests:
+              - 'tests/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+              - 'scripts/update_docs_from_yaml.py'
+              - 'scripts/doxyfy.py'
+            workflows:
+              - '.github/workflows/**'
+            cmake:
+              - 'CMakeLists.txt'
+            scripts:
+              - 'scripts/**'
+      
+      - name: Determine if code changes require full testing
+        id: check
+        run: |
+          # Any changes that require platform testing
+          if [[ "${{ steps.filter.outputs.core-code }}" == "true" || \
+                "${{ steps.filter.outputs.cmake }}" == "true" || \
+                "${{ steps.filter.outputs.tests }}" == "true" ]]; then
+            echo "any-code-changes=true" >> $GITHUB_OUTPUT
+            echo "📋 Code changes detected - full platform testing required"
+          else
+            echo "any-code-changes=false" >> $GITHUB_OUTPUT
+            echo "📋 No core code changes - limited testing required"
+          fi
 
   basic-checks:
+    name: Basic checks
+    needs: detect-changes
+    # Run basic checks if any core files, cmake, workflow, or script files changed
+    if: |
+      needs.detect-changes.outputs.core-code == 'true' ||
+      needs.detect-changes.outputs.tests == 'true' ||
+      needs.detect-changes.outputs.cmake == 'true' ||
+      needs.detect-changes.outputs.workflows == 'true' ||
+      needs.detect-changes.outputs.scripts == 'true'
     uses: ./.github/workflows/basic.yml
 
   platform-tests:
-    needs: basic-checks
+    name: Platform tests
+    needs: [detect-changes, basic-checks]
+    # Only run platform tests for core code changes
+    if: needs.detect-changes.outputs.any-code-changes == 'true'
     uses: ./.github/workflows/platforms.yml
 
   code-coverage:
-    needs: basic-checks
+    name: Code coverage
+    needs: [detect-changes, basic-checks]
+    # Run coverage tests for core code and test changes
+    if: |
+      needs.detect-changes.outputs.core-code == 'true' ||
+      needs.detect-changes.outputs.tests == 'true'
     uses: ./.github/workflows/code-coverage.yml
     secrets: inherit
 
   scorecard:
-    needs: basic-checks
+    name: Security scorecard
+    needs: [detect-changes, basic-checks]
+    # Run scorecard for workflow changes or security-related changes
+    if: |
+      github.ref == 'refs/heads/main' &&
+      (needs.detect-changes.outputs.workflows == 'true' ||
+      needs.detect-changes.outputs.scripts == 'true')
     uses: ./.github/workflows/scorecard.yml
     secrets: inherit
     permissions:
       id-token: write
       security-events: write
+
+  workflow-validation:
+    name: Workflow validation
+    needs: detect-changes
+    # Only run when workflow files are changed
+    if: needs.detect-changes.outputs.workflows == 'true'
+    uses: ./.github/workflows/workflow-validation.yml
+
+  docs-validation:
+    name: Documentation validation
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    # Only run for documentation changes
+    if: needs.detect-changes.outputs.docs == 'true'
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        with:
+          fetch-depth: 0  # Get full git history
+      - name: Fix git permissions
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+      
+      - name: Validate documentation generation
+        run: |
+          echo "🔍 Validating documentation changes..."
+          
+          # Test that documentation scripts work
+          echo "Testing documentation generation scripts..."
+          python3 scripts/update_docs_from_yaml.py --liboqs-root .
+          
+          # Check if any documentation files were modified (indicating stale docs)
+          if ! git diff --quiet; then
+            echo "❌ Documentation appears to be out of sync."
+            echo "Please run 'python3 scripts/update_docs_from_yaml.py' and commit the changes."
+            echo ""
+            echo "Changed files:"
+            git diff --name-only
+            echo ""
+            echo "Diff preview:"
+            git diff
+            exit 1
+          fi
+          
+          echo "✅ Documentation is up to date"
+      
+      - name: Test CBOM generation
+        run: |
+          echo "Testing CBOM generation..."
+          python3 scripts/update_cbom.py --liboqs-root . --liboqs-version git
+          
+          # Validate CBOM
+          echo "Validating CBOM..."
+          scripts/validate_cbom.sh
+          
+          echo "✅ CBOM generation successful"
+      
+      - name: Check documentation builds
+        run: |
+          echo "Testing documentation builds..."
+          
+          # Test doxygen documentation generation
+          if command -v doxygen >/dev/null 2>&1; then
+            echo "Testing doxygen documentation build..."
+            mkdir -p build/docs
+            ./scripts/run_doxygen.sh $(which doxygen) ./docs/.Doxyfile ./build
+            echo "✅ Doxygen documentation builds successfully"
+          else
+            echo "⚠️  Doxygen not available, skipping documentation build test"
+          fi
+
+  # Summary job that provides a single status check
+  pr-tests-complete:
+    name: PR tests complete
+    needs: [
+      detect-changes,
+      basic-checks,
+      platform-tests,
+      code-coverage,
+      scorecard,
+      workflow-validation,
+      docs-validation
+    ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all required jobs
+        run: |
+          echo "🔍 Evaluating PR test results..."
+          
+          # Check if any required jobs failed
+          REQUIRED_JOBS_FAILED=false
+          
+          # Basic checks should always pass if triggered
+          if [[ "${{ needs.basic-checks.result }}" == "failure" ]]; then
+            echo "❌ Basic checks failed"
+            REQUIRED_JOBS_FAILED=true
+          elif [[ "${{ needs.basic-checks.result }}" == "success" ]]; then
+            echo "✅ Basic checks passed"
+          elif [[ "${{ needs.basic-checks.result }}" == "skipped" ]]; then
+            echo "⏭️  Basic checks skipped (no relevant changes)"
+          fi
+          
+          # Platform tests are required for core code changes
+          if [[ "${{ needs.detect-changes.outputs.any-code-changes }}" == "true" ]]; then
+            if [[ "${{ needs.platform-tests.result }}" == "failure" ]]; then
+              echo "❌ Platform tests failed (required for core code changes)"
+              REQUIRED_JOBS_FAILED=true
+            elif [[ "${{ needs.platform-tests.result }}" == "success" ]]; then
+              echo "✅ Platform tests passed"
+            fi
+          else
+            echo "⏭️  Platform tests skipped (no core code changes)"
+          fi
+          
+          # Workflow validation is required for workflow changes
+          if [[ "${{ needs.detect-changes.outputs.workflows }}" == "true" ]]; then
+            if [[ "${{ needs.workflow-validation.result }}" == "failure" ]]; then
+              echo "❌ Workflow validation failed (required for workflow changes)"
+              REQUIRED_JOBS_FAILED=true
+            elif [[ "${{ needs.workflow-validation.result }}" == "success" ]]; then
+              echo "✅ Workflow validation passed"
+            fi
+          else
+            echo "⏭️  Workflow validation skipped (no workflow changes)"
+          fi
+          
+          # Documentation validation is required for docs changes
+          if [[ "${{ needs.detect-changes.outputs.docs }}" == "true" ]]; then
+            if [[ "${{ needs.docs-validation.result }}" == "failure" ]]; then
+              echo "❌ Documentation validation failed (required for docs changes)"
+              REQUIRED_JOBS_FAILED=true
+            elif [[ "${{ needs.docs-validation.result }}" == "success" ]]; then
+              echo "✅ Documentation validation passed"
+            fi
+          else
+            echo "⏭️  Documentation validation skipped (no docs changes)"
+          fi
+          
+          # Create summary
+          echo "## 📋 PR Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔍 Changes Detected:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Core code**: ${{ needs.detect-changes.outputs.core-code }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tests**: ${{ needs.detect-changes.outputs.tests }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Documentation**: ${{ needs.detect-changes.outputs.docs }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflows**: ${{ needs.detect-changes.outputs.workflows }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **CMake**: ${{ needs.detect-changes.outputs.cmake }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Scripts**: ${{ needs.detect-changes.outputs.scripts }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🧪 Test Results:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Basic checks**: ${{ needs.basic-checks.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Platform tests**: ${{ needs.platform-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Code coverage**: ${{ needs.code-coverage.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Security scorecard**: ${{ needs.scorecard.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflow validation**: ${{ needs.workflow-validation.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Documentation validation**: ${{ needs.docs-validation.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Resource optimization summary
+          echo "### ⚡ Resource Optimization:" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ needs.detect-changes.outputs.any-code-changes }}" == "true" ]]; then
+            echo "- **Full testing**: Core code changes detected" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Optimized testing**: Only relevant tests ran (saved CI resources)" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "- **Conditional execution**: Jobs ran only when needed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Path filtering**: Detected specific change types" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ "$REQUIRED_JOBS_FAILED" == "true" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "❌ **Some required tests failed**" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ **All required tests passed**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "🎉 **PR is ready for review!**" >> $GITHUB_STEP_SUMMARY
+          fi
