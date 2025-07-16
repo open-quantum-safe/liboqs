@@ -13,7 +13,7 @@
 
 
 int hash_init( hash_ctx *ctx ) {
-    ctx->x = EVP_MD_CTX_create();
+    ctx->x = EVP_MD_CTX_new();
     if (!ctx->x) {
         return -1;
     }
@@ -32,7 +32,7 @@ int hash_update( hash_ctx *ctx, const unsigned char *mesg, size_t mlen ) {
 }
 
 int hash_ctx_copy( hash_ctx *nctx, const hash_ctx *octx ) {
-    nctx->x = EVP_MD_CTX_create();
+    nctx->x = EVP_MD_CTX_new();
     if (!nctx->x) {
         return -1;
     }
@@ -43,7 +43,7 @@ int hash_ctx_copy( hash_ctx *nctx, const hash_ctx *octx ) {
 
 int hash_final_digest( unsigned char *out, size_t outlen, hash_ctx *ctx ) {
     int ok = EVP_DigestFinalXOF(ctx->x, out, outlen);
-    EVP_MD_CTX_destroy(ctx->x);
+    EVP_MD_CTX_free(ctx->x);
     return (ok) ? 0 : -1;
 }
 
