@@ -24,7 +24,7 @@ optimized-upstreams:
     source: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     spdx-license-identifier: Apache-2.0
   icicle-icicle_cuda:
-    source: https://github.com/ingonyama-zk/icicle-liboqs/commit/bece92839931ecffc4fed4bdea9a9f3bc51f6329
+    source: https://github.com/ingonyama-zk/icicle-liboqs/commit/ef6ac1b8294d44098dbcf5c82cfc1f2cc155366b
     spdx-license-identifier: MIT
 parameter-sets:
 - name: ML-KEM-512
