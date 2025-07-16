@@ -39,12 +39,6 @@ const EVP_CIPHER *oqs_aes_256_ecb(void);
 const EVP_CIPHER *oqs_aes_256_ctr(void);
 #endif
 
-// some function pointers for algorithm-switching, see discussion in
-// https://github.com/open-quantum-safe/liboqs/pull/735
-// and https://wiki.openssl.org/index.php/Library_Initialization
-// OQS_OPENSSL_GUARD does not work on these function pointers, so we check return codes manually
-extern void (*OQS_OSSL_FUNC(ERR_print_errors_fp))(FILE *fp);
-
 #endif
 
 #if defined(__cplusplus)
@@ -64,6 +58,14 @@ extern void (*OQS_OSSL_FUNC(ERR_print_errors_fp))(FILE *fp);
 
 #define OQS_OSSL_FUNC(name) name
 
+#endif
+
+// some function pointers for algorithm-switching, see discussion in
+// https://github.com/open-quantum-safe/liboqs/pull/735
+// and https://wiki.openssl.org/index.php/Library_Initialization
+// OQS_OPENSSL_GUARD does not work on these function pointers, so we check return codes manually
+#if defined(OQS_USE_OPENSSL) || defined(OQS_USE_AES_OPENSSL) || defined(OQS_USE_SHA2_OPENSSL) || defined(OQS_USE_SHA3_OPENSSL)
+extern void (*OQS_OSSL_FUNC(ERR_print_errors_fp))(FILE *fp);
 #endif
 
 #endif // OQS_OSSL_HELPERS_H
