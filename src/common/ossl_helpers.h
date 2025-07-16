@@ -10,6 +10,7 @@ extern "C" {
 
 #if defined(OQS_USE_OPENSSL) || defined(OQS_USE_AES_OPENSSL) || defined(OQS_USE_SHA2_OPENSSL) || defined(OQS_USE_SHA3_OPENSSL)
 
+#include <stdio.h>
 #include <openssl/crypto.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
