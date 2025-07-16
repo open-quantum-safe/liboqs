@@ -37,7 +37,7 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 //    ctr - a 128-bit plaintext value
 //    buffer - a 128-bit ciphertext value
 static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *buffer) {
-#ifdef OQS_USE_OPENSSL
+#ifdef OQS_USE_AES_OPENSSL
 	EVP_CIPHER_CTX *ctx;
 
 	int len;
