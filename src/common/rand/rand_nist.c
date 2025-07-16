@@ -21,7 +21,7 @@ You are solely responsible for determining the appropriateness of using and dist
 #include <oqs/rand.h>
 #include <oqs/rand_nist.h>
 
-#ifdef OQS_USE_OPENSSL
+#ifdef OQS_USE_AES_OPENSSL
 #include "../ossl_helpers.h"
 #else
 #include <oqs/aes.h>
