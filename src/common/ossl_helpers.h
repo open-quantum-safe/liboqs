@@ -70,12 +70,8 @@ const EVP_CIPHER *oqs_aes_256_ctr(void);
 
 #endif
 
-// some function pointers for algorithm-switching, see discussion in
-// https://github.com/open-quantum-safe/liboqs/pull/735
-// and https://wiki.openssl.org/index.php/Library_Initialization
-// OQS_OPENSSL_GUARD does not work on these function pointers, so we check return codes manually
-#if defined(OQS_DLOPEN_OPENSSL)
-extern void (*OQS_OSSL_FUNC(ERR_print_errors_fp))(FILE *fp);
-#endif
+// Function declarations are now handled by the FUNC macro expansion above
+// when OQS_DLOPEN_OPENSSL is defined, eliminating the need for separate
+// function pointer declarations
 
 #endif // OQS_OSSL_HELPERS_H
