@@ -6,60 +6,42 @@
 extern "C" {
 #endif
 
+#include <oqs/oqs.h>
+
+#if defined(OQS_USE_OPENSSL)
+
 #include <openssl/crypto.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
-#if defined(OQS_USE_OPENSSL)
 void oqs_ossl_destroy(void);
 
-void oqs_thread_stop(void);
+// some function pointers for algorithm-switching, see discussion in
+// https://github.com/open-quantum-safe/liboqs/pull/735
+// and https://wiki.openssl.org/index.php/Library_Initialization
+// OQS_OPENSSL_GUARD does not work on these function pointers, so we check return codes manually
+extern int (*OQS_OSSL_FUNC(ERR_print_errors_fp))(FILE *);
 
-const EVP_MD *oqs_sha256(void);
+#endif
 
-const EVP_MD *oqs_sha384(void);
+#if defined(__cplusplus)
+}
+#endif
 
-const EVP_MD *oqs_sha512(void);
-
-const EVP_MD *oqs_shake128(void);
-
-const EVP_MD *oqs_shake256(void);
-
-const EVP_MD *oqs_sha3_256(void);
-
-const EVP_MD *oqs_sha3_384(void);
-
-const EVP_MD *oqs_sha3_512(void);
-
-const EVP_CIPHER *oqs_aes_128_ecb(void);
-
-const EVP_CIPHER *oqs_aes_128_ctr(void);
-
-const EVP_CIPHER *oqs_aes_256_ecb(void);
-
-const EVP_CIPHER *oqs_aes_256_ctr(void);
-
-#ifdef OQS_DLOPEN_OPENSSL
-
+#if defined(__cplusplus)
 #define FUNC(ret, name, args, cargs) ret _oqs_ossl_##name args;
 #define VOID_FUNC FUNC
 #include "ossl_functions.h"
 #undef VOID_FUNC
 #undef FUNC
 
-#define OSSL_FUNC(name) _oqs_ossl_##name
+#define OQS_OSSL_FUNC(name) _oqs_ossl_##name
 
 #else
 
-#define OSSL_FUNC(name) name
+#define OQS_OSSL_FUNC(name) name
 
-#endif
-
-#endif
-
-#if defined(__cplusplus)
-} // extern "C"
 #endif
 
 #endif // OQS_OSSL_HELPERS_H

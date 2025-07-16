@@ -43,14 +43,14 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	int len;
 
 	/* Create and initialise the context */
-	ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
+	ctx = OQS_OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(ctx, "OpenSSL");
 
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16));
+	OQS_OPENSSL_GUARD(OQS_OQS_OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL));
+	OQS_OPENSSL_GUARD(OQS_OQS_OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16));
 
 	/* Clean up */
-	OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
+	OQS_OSSL_FUNC(EVP_CIPHER_CTX_free)(ctx);
 #else
 	void *schedule = NULL;
 	OQS_AES256_ECB_load_schedule(key, &schedule);
