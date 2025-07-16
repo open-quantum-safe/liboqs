@@ -16,12 +16,29 @@ extern "C" {
 #include <openssl/rand.h>
 
 void oqs_ossl_destroy(void);
+void oqs_thread_stop(void);
+
+// SHA functions
+const EVP_MD *oqs_sha256(void);
+const EVP_MD *oqs_sha384(void);
+const EVP_MD *oqs_sha512(void);
+const EVP_MD *oqs_shake128(void);
+const EVP_MD *oqs_shake256(void);
+const EVP_MD *oqs_sha3_256(void);
+const EVP_MD *oqs_sha3_384(void);
+const EVP_MD *oqs_sha3_512(void);
+
+// AES functions
+const EVP_CIPHER *oqs_aes_128_ecb(void);
+const EVP_CIPHER *oqs_aes_128_ctr(void);
+const EVP_CIPHER *oqs_aes_256_ecb(void);
+const EVP_CIPHER *oqs_aes_256_ctr(void);
 
 // some function pointers for algorithm-switching, see discussion in
 // https://github.com/open-quantum-safe/liboqs/pull/735
 // and https://wiki.openssl.org/index.php/Library_Initialization
 // OQS_OPENSSL_GUARD does not work on these function pointers, so we check return codes manually
-extern int (*OQS_OSSL_FUNC(ERR_print_errors_fp))(FILE *);
+extern int (*OQS_OSSL_FUNC(ERR_print_errors_fp))(FILE *fp);
 
 #endif
 
