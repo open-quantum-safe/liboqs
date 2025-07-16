@@ -56,7 +56,11 @@ const EVP_CIPHER *oqs_aes_256_ctr(void);
 
 #else
 
+#if defined(OQS_DLOPEN_OPENSSL)
 #define OQS_OSSL_FUNC(name) _oqs_ossl_##name
+#else
+#define OQS_OSSL_FUNC(name) name
+#endif
 
 #endif
 
