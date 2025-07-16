@@ -169,11 +169,330 @@ extern "C" {
 /** Algorithm identifier for SNOVA_29_6_5 */
 #define OQS_SIG_alg_snova_SNOVA_29_6_5 "SNOVA_29_6_5"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
+///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
+/** Algorithm identifier for slh_dsa_pure_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_pure_sha2_128s "SLH_DSA_PURE_SHA2_128S"
+/** Algorithm identifier for slh_dsa_pure_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_pure_sha2_128f "SLH_DSA_PURE_SHA2_128F"
+/** Algorithm identifier for slh_dsa_pure_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_pure_sha2_192s "SLH_DSA_PURE_SHA2_192S"
+/** Algorithm identifier for slh_dsa_pure_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_pure_sha2_192f "SLH_DSA_PURE_SHA2_192F"
+/** Algorithm identifier for slh_dsa_pure_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_pure_sha2_256s "SLH_DSA_PURE_SHA2_256S"
+/** Algorithm identifier for slh_dsa_pure_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_pure_sha2_256f "SLH_DSA_PURE_SHA2_256F"
+/** Algorithm identifier for slh_dsa_pure_shake_128s */
+#define OQS_SIG_alg_slh_dsa_pure_shake_128s "SLH_DSA_PURE_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_pure_shake_128f */
+#define OQS_SIG_alg_slh_dsa_pure_shake_128f "SLH_DSA_PURE_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_pure_shake_192s */
+#define OQS_SIG_alg_slh_dsa_pure_shake_192s "SLH_DSA_PURE_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_pure_shake_192f */
+#define OQS_SIG_alg_slh_dsa_pure_shake_192f "SLH_DSA_PURE_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_pure_shake_256s */
+#define OQS_SIG_alg_slh_dsa_pure_shake_256s "SLH_DSA_PURE_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_pure_shake_256f */
+#define OQS_SIG_alg_slh_dsa_pure_shake_256f "SLH_DSA_PURE_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_sha2_128s "SLH_DSA_SHA2_224_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_sha2_128f "SLH_DSA_SHA2_224_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_sha2_192s "SLH_DSA_SHA2_224_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_sha2_192f "SLH_DSA_SHA2_224_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_sha2_256s "SLH_DSA_SHA2_224_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_sha2_256f "SLH_DSA_SHA2_224_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_shake_128s "SLH_DSA_SHA2_224_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_shake_128f "SLH_DSA_SHA2_224_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_shake_192s "SLH_DSA_SHA2_224_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_shake_192f "SLH_DSA_SHA2_224_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_shake_256s "SLH_DSA_SHA2_224_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha2_224_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_224_prehash_shake_256f "SLH_DSA_SHA2_224_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_sha2_128s "SLH_DSA_SHA2_256_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_sha2_128f "SLH_DSA_SHA2_256_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_sha2_192s "SLH_DSA_SHA2_256_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_sha2_192f "SLH_DSA_SHA2_256_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_sha2_256s "SLH_DSA_SHA2_256_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_sha2_256f "SLH_DSA_SHA2_256_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_shake_128s "SLH_DSA_SHA2_256_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_shake_128f "SLH_DSA_SHA2_256_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_shake_192s "SLH_DSA_SHA2_256_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_shake_192f "SLH_DSA_SHA2_256_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_shake_256s "SLH_DSA_SHA2_256_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha2_256_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_256_prehash_shake_256f "SLH_DSA_SHA2_256_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_sha2_128s "SLH_DSA_SHA2_384_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_sha2_128f "SLH_DSA_SHA2_384_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_sha2_192s "SLH_DSA_SHA2_384_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_sha2_192f "SLH_DSA_SHA2_384_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_sha2_256s "SLH_DSA_SHA2_384_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_sha2_256f "SLH_DSA_SHA2_384_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_shake_128s "SLH_DSA_SHA2_384_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_shake_128f "SLH_DSA_SHA2_384_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_shake_192s "SLH_DSA_SHA2_384_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_shake_192f "SLH_DSA_SHA2_384_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_shake_256s "SLH_DSA_SHA2_384_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha2_384_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_384_prehash_shake_256f "SLH_DSA_SHA2_384_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_sha2_128s "SLH_DSA_SHA2_512_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_sha2_128f "SLH_DSA_SHA2_512_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_sha2_192s "SLH_DSA_SHA2_512_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_sha2_192f "SLH_DSA_SHA2_512_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_sha2_256s "SLH_DSA_SHA2_512_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_sha2_256f "SLH_DSA_SHA2_512_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_shake_128s "SLH_DSA_SHA2_512_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_shake_128f "SLH_DSA_SHA2_512_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_shake_192s "SLH_DSA_SHA2_512_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_shake_192f "SLH_DSA_SHA2_512_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_shake_256s "SLH_DSA_SHA2_512_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha2_512_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_prehash_shake_256f "SLH_DSA_SHA2_512_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_sha2_128s "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_sha2_128f "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_sha2_192s "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_sha2_192f "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_sha2_256s "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_sha2_256f "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_shake_128s "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_shake_128f "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_shake_192s "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_shake_192f "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_shake_256s "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha2_512_224_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_224_prehash_shake_256f "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_sha2_128s "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_sha2_128f "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_sha2_192s "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_sha2_192f "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_sha2_256s "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_sha2_256f "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_shake_128s "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_shake_128f "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_shake_192s "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_shake_192f "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_shake_256s "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha2_512_256_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha2_512_256_prehash_shake_256f "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_sha2_128s "SLH_DSA_SHA3_224_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_sha2_128f "SLH_DSA_SHA3_224_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_sha2_192s "SLH_DSA_SHA3_224_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_sha2_192f "SLH_DSA_SHA3_224_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_sha2_256s "SLH_DSA_SHA3_224_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_sha2_256f "SLH_DSA_SHA3_224_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_shake_128s "SLH_DSA_SHA3_224_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_shake_128f "SLH_DSA_SHA3_224_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_shake_192s "SLH_DSA_SHA3_224_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_shake_192f "SLH_DSA_SHA3_224_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_shake_256s "SLH_DSA_SHA3_224_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha3_224_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_224_prehash_shake_256f "SLH_DSA_SHA3_224_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_sha2_128s "SLH_DSA_SHA3_256_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_sha2_128f "SLH_DSA_SHA3_256_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_sha2_192s "SLH_DSA_SHA3_256_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_sha2_192f "SLH_DSA_SHA3_256_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_sha2_256s "SLH_DSA_SHA3_256_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_sha2_256f "SLH_DSA_SHA3_256_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_shake_128s "SLH_DSA_SHA3_256_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_shake_128f "SLH_DSA_SHA3_256_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_shake_192s "SLH_DSA_SHA3_256_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_shake_192f "SLH_DSA_SHA3_256_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_shake_256s "SLH_DSA_SHA3_256_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha3_256_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_256_prehash_shake_256f "SLH_DSA_SHA3_256_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_sha2_128s "SLH_DSA_SHA3_384_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_sha2_128f "SLH_DSA_SHA3_384_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_sha2_192s "SLH_DSA_SHA3_384_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_sha2_192f "SLH_DSA_SHA3_384_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_sha2_256s "SLH_DSA_SHA3_384_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_sha2_256f "SLH_DSA_SHA3_384_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_shake_128s "SLH_DSA_SHA3_384_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_shake_128f "SLH_DSA_SHA3_384_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_shake_192s "SLH_DSA_SHA3_384_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_shake_192f "SLH_DSA_SHA3_384_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_shake_256s "SLH_DSA_SHA3_384_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha3_384_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_384_prehash_shake_256f "SLH_DSA_SHA3_384_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_sha2_128s "SLH_DSA_SHA3_512_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_sha2_128f "SLH_DSA_SHA3_512_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_sha2_192s "SLH_DSA_SHA3_512_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_sha2_192f "SLH_DSA_SHA3_512_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_sha2_256s "SLH_DSA_SHA3_512_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_sha2_256f "SLH_DSA_SHA3_512_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_shake_128s "SLH_DSA_SHA3_512_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_shake_128f "SLH_DSA_SHA3_512_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_shake_192s "SLH_DSA_SHA3_512_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_shake_192f "SLH_DSA_SHA3_512_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_shake_256s "SLH_DSA_SHA3_512_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_sha3_512_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_sha3_512_prehash_shake_256f "SLH_DSA_SHA3_512_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_sha2_128s "SLH_DSA_SHAKE_128_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_sha2_128f "SLH_DSA_SHAKE_128_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_sha2_192s "SLH_DSA_SHAKE_128_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_sha2_192f "SLH_DSA_SHAKE_128_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_sha2_256s "SLH_DSA_SHAKE_128_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_sha2_256f "SLH_DSA_SHAKE_128_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_shake_128s "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_shake_128f "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_shake_192s "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_shake_192f "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_shake_256s "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_shake_128_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_shake_128_prehash_shake_256f "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_sha2_128s */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_sha2_128s "SLH_DSA_SHAKE_256_PREHASH_SHA2_128S"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_sha2_128f */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_sha2_128f "SLH_DSA_SHAKE_256_PREHASH_SHA2_128F"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_sha2_192s */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_sha2_192s "SLH_DSA_SHAKE_256_PREHASH_SHA2_192S"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_sha2_192f */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_sha2_192f "SLH_DSA_SHAKE_256_PREHASH_SHA2_192F"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_sha2_256s */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_sha2_256s "SLH_DSA_SHAKE_256_PREHASH_SHA2_256S"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_sha2_256f */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_sha2_256f "SLH_DSA_SHAKE_256_PREHASH_SHA2_256F"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_shake_128s */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_shake_128s "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_shake_128f */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_shake_128f "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_shake_192s */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_shake_192s "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_shake_192f */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_shake_192f "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_shake_256s */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_shake_256s "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S"
+/** Algorithm identifier for slh_dsa_shake_256_prehash_shake_256f */
+#define OQS_SIG_alg_slh_dsa_shake_256_prehash_shake_256f "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F"
+///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_END
 // EDIT-WHEN-ADDING-SIG
+///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGS_LENGTH_START
+
+/** Number of algorithm identifiers above. */
+#define OQS_SIG_SLH_DSA_algs_length 156
+///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGS_LENGTH_END
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 68
+#define OQS_SIG_algs_length 68 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -446,6 +765,11 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #include <oqs/sig_snova.h>
 #endif /* OQS_ENABLE_SIG_SNOVA */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
+///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_START
+#ifdef OQS_ENABLE_SIG_SLH_DSA
+#include <oqs/sig_slh_dsa.h>
+#endif /* OQS_ENABLE_SIG_SLH_DSA */
+///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 
 #if defined(__cplusplus)

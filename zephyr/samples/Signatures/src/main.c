@@ -169,7 +169,7 @@ int main(void)
 
 	for (int i = 0; i < OQS_SIG_alg_count(); i++) {
 		const char *alg_name = OQS_SIG_alg_identifier(i);
-		if (!OQS_SIG_alg_is_enabled(alg_name)) {
+		if ((!OQS_SIG_alg_is_enabled(alg_name)) || !(strncmp("SLH_DSA", alg_name, 7))) {
 			printf("Signature algorithm %s not enabled!\n", alg_name);
 		}
 		else {
