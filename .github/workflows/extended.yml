@@ -72,3 +72,27 @@ jobs:
       - name: Run tests
         timeout-minutes: 360
         run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
+
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: GHSA-qq3m-rq9v-jfgm
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON -DOQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED=ON -DOQS_ENABLE_KEM_HQC=ON -DCMAKE_C_COMPILER=clang-18
+            PYTEST_ARGS: --numprocesses=auto -k 'hqc and constant_time'
+    container:
+      image: ${{ matrix.container }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 360
+        run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}

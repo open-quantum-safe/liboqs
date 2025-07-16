@@ -1,0 +1,151 @@
+name: sig benchmark
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        with:
+          fetch-depth: 0
+
+      # Set up dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build gcc g++ python3 python3-pip
+          sudo apt-get install -y python3-cpuinfo
+
+      # Build the speed_sig binary only
+      - name: Build speed_sig binary
+        run: |
+          mkdir -p build
+          cd build
+          cmake -GNinja .. -DBUILD_SHARED_LIBS=OFF
+          ninja speed_sig
+
+      # Copy the parse_liboqs_speed.py script
+      - name: Copy parse_liboqs_speed.py
+        run: |
+          cp scripts/parse_liboqs_speed.py build/tests/
+
+      # Upload the built binary and script as an artifact
+      - name: Upload artifacts
+        uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47
+        with:
+          name: built-sig-binary
+          path: build/tests/
+
+  benchmark:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        algorithm: [ # List of available signatures to perform the benchmarking on
+          "Dilithium2",
+          "Dilithium3",
+          "Dilithium5",
+          "ML-DSA-44",
+          "ML-DSA-65",
+          "ML-DSA-87",
+          "Falcon-512",
+          "Falcon-1024",
+          "Falcon-padded-512",
+          "Falcon-padded-1024",
+          "SPHINCS+-SHA2-128f-simple",
+          "SPHINCS+-SHA2-128s-simple",
+          "SPHINCS+-SHA2-192f-simple",
+          "SPHINCS+-SHA2-192s-simple",
+          "SPHINCS+-SHA2-256f-simple",
+          "SPHINCS+-SHA2-256s-simple",
+          "SPHINCS+-SHAKE-128f-simple",
+          "SPHINCS+-SHAKE-128s-simple",
+          "SPHINCS+-SHAKE-192f-simple",
+          "SPHINCS+-SHAKE-192s-simple",
+          "SPHINCS+-SHAKE-256f-simple",
+          "SPHINCS+-SHAKE-256s-simple",
+          "MAYO-1",
+          "MAYO-2",
+          "MAYO-3",
+          "MAYO-5",
+          "cross-rsdp-128-balanced",
+          "cross-rsdp-128-fast",
+          "cross-rsdp-128-small",
+          "cross-rsdp-192-balanced",
+          "cross-rsdp-192-fast",
+          "cross-rsdp-192-small",
+          "cross-rsdp-256-balanced",
+          "cross-rsdp-256-fast",
+          "cross-rsdp-256-small",
+          "cross-rsdpg-128-balanced",
+          "cross-rsdpg-128-fast",
+          "cross-rsdpg-128-small",
+          "cross-rsdpg-192-balanced",
+          "cross-rsdpg-192-fast",
+          "cross-rsdpg-192-small",
+          "cross-rsdpg-256-balanced",
+          "cross-rsdpg-256-fast",
+          "cross-rsdpg-256-small",
+          "OV-Is",
+          "OV-Ip",
+          "OV-III",
+          "OV-V",
+          "OV-Is-pkc",
+          "OV-Ip-pkc",
+          "OV-III-pkc",
+          "OV-V-pkc",
+          "OV-Is-pkc-skc",
+          "OV-Ip-pkc-skc",
+          "OV-III-pkc-skc",
+          "OV-V-pkc-skc"
+        ]
+      max-parallel: 1 # No parallel jobs to not compromise the pull-push operations of the benchmarking actions below
+
+    steps:
+      # Ensure the repository is checked out
+      - name: Checkout repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        with:
+          fetch-depth: 0
+
+      # Download the built binary and script
+      - name: Download artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # pin@v4
+        with:
+          name: built-sig-binary
+          path: build/tests/
+
+      # Set execute permissions for the binary
+      - name: Set execute permissions
+        run: chmod +x build/tests/speed_sig
+
+      # Run speed_sig tests for each algorithm
+      - name: Run speed_sig tests
+        run: |
+          cd build/tests
+          ./speed_sig "${{matrix.algorithm}}" > ${{matrix.algorithm}}_output.txt
+          python3 parse_liboqs_speed.py ${{matrix.algorithm}}_output.txt --algorithm ${{matrix.algorithm}}
+
+      # Push to GitHub pages using continuous-benchmark
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@d48d326b4ca9ba73ca0cd0d59f108f9e02a381c7
+        with:
+          name: ${{matrix.algorithm}}
+          tool: "customSmallerIsBetter"
+          output-file-path: build/tests/${{matrix.algorithm}}_formatted.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          comment-on-alert: true
+          summary-always: true
+          alert-threshold: 105%
+          comment-always: false

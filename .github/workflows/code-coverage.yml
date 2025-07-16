@@ -1,0 +1,60 @@
+name: Code coverage tests
+
+permissions:
+  contents: read
+
+on: [workflow_call, workflow_dispatch]
+
+jobs:
+  coverage:
+    name: Run code coverage testing
+    strategy:
+      matrix:
+        # The 'id' value for each job should be added to the 'carry-forward' string in the 'finish' job.
+        include:
+          - id: x64-generic
+            runner: ubuntu-latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
+          - id: x64-distbuild
+            runner: ubuntu-latest
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+          - id: arm64-distbuild
+            runner: ubuntu-24.04-arm
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+    runs-on: ${{ matrix.runner }}
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: |
+          mkdir build && cd build && \
+          cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON ${{ matrix.CMAKE_ARGS }} .. && \
+          cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        run: |
+          python3 -m pytest --verbose --numprocesses=auto \
+          tests/test_acvp_vectors.py \
+          tests/test_cmdline.py \
+          tests/test_kat.py
+      - name: Run lcov
+        run: lcov -d . -c -o lcov.info --exclude /usr/lib,/usr/include --ignore-errors unused
+      - name: Upload to coveralls.io
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # pin@v2.3.6
+        with:
+          flag-name: ${{ matrix.id }}
+          parallel: true
+
+  finish:
+    needs: coverage
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Finish coveralls.io
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # pin@v2.3.6
+        with:
+          parallel-finished: true
+          carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"

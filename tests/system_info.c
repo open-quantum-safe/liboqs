@@ -216,6 +216,7 @@ static void print_oqs_configuration(void) {
 	 * OQS_OPT_TARGET: Visible by looking at compile options (-march or -mcpu):
 	 *                 'auto' -> "-march|cpu=native"
 	 * OQS_SPEED_USE_ARM_PMU: Output with Target platform
+	 * USE_COVERAGE: --coverage option present in compile options
 	 * USE_SANITIZER: -fsanitize= option present in compile options
 	 * OQS_ENABLE_TEST_CONSTANT_TIME: only shown below
 	 */
@@ -251,6 +252,14 @@ static void print_oqs_configuration(void) {
 #endif
 #if defined(OQS_USE_SHA3_OPENSSL)
 	printf("SHA-3:            OpenSSL\n");
+#elif defined(OQS_USE_SHA3_AVX512VL)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX512)) {
+		printf("SHA-3:            AVX512VL\n");
+	} else if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
+		printf("SHA-3:            AVX2\n");
+	} else {
+		printf("SHA-3:            C\n");
+	}
 #else
 	printf("SHA-3:            C\n");
 #endif
@@ -272,6 +281,9 @@ static void print_oqs_configuration(void) {
 #endif
 #ifdef OQS_BUILD_ONLY_LIB
 	printf("OQS_BUILD_ONLY_LIB "); // pretty much impossible to appear but added for completeness
+#endif
+#ifdef USE_COVERAGE
+	printf("USE_COVERAGE " );
 #endif
 #ifdef USE_SANITIZER
 	printf("USE_SANITIZER=%s ", USE_SANITIZER);

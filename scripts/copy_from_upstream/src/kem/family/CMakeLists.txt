@@ -60,8 +60,8 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
         {%- if family == 'classic_mceliece' and impl['name'] == 'avx2' %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE -Wno-language-extension-token -O1)
         {%- endif %}
-        {%- if family == 'hqc' and impl['name'] == 'avx2' %}
-    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE -Wno-missing-braces)
+        {%- if family == 'hqc' and impl['name'] == 'clean' %}
+    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE -O0)
         {%- endif %}
         {%- if impl['upstream']['name'].endswith('pqclean') %}
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")

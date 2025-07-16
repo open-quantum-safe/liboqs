@@ -16,6 +16,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_USE_CUPQC](#OQS_USE_CUPQC)
 - [OQS_OPT_TARGET](#OQS_OPT_TARGET)
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
+- [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
@@ -36,7 +37,9 @@ This means liboqs is built as a static library by default.
 
 Can be set to the following values:
 
-- `Debug`: This turns off all compiler optimizations and produces debugging information. When the compiler is Clang, the [USE_SANITIZER](#USE_SANITIZER) option can also be specified to enable a Clang sanitizer. **This value only has effect when the compiler is GCC or Clang**
+- `Debug`: This turns off all compiler optimizations and produces debugging information. **This value only has effect when the compiler is GCC or Clang**
+  - The [USE_COVERAGE](#USE_COVERAGE) option can also be specified to enable code coverage testing.
+  - When the compiler is Clang, the [USE_SANITIZER](#USE_SANITIZER) option can also be specified to enable a Clang sanitizer.
 
 - `Release`: This compiles code at the `O3` optimization level, and sets other compiler flags that reduce the size of the binary.
 
@@ -173,6 +176,12 @@ Note that this option is not known to work on Apple M1 chips.
 
 **Default**: `OFF`.
 
+## USE_COVERAGE
+
+This has an effect when the compiler is GCC or Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) is `Debug`. Can be `ON` or `OFF`. When `ON`, code coverage testing will be enabled.
+
+**Default**: Unset.
+
 ## USE_SANITIZER
 
 This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) is `Debug`. Then, it can be set to:
@@ -191,6 +200,8 @@ This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE
 This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.  
 
 See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more usage information.
+
+When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is made available to control whether liboqs is built using `-O3` optimization, as in a release build, or using the default "Debug" profile. By default, `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is `OFF`.
 
 **Default**: `OFF`.
 

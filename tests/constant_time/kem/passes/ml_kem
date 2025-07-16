@@ -1,14 +1,14 @@
 {
    The parts of sk being hashed and compared here are public.
    Memcheck:Cond
-   fun:PQCP_MLKEM_NATIVE_MLKEM*_check_sk
+   fun:mlk_check_sk
    fun:PQCP_MLKEM_NATIVE_MLKEM*_dec
 }
 {
    The parts of sk being hashed and compared here are public.
    Memcheck:Cond
    fun:bcmp
-   fun:PQCP_MLKEM_NATIVE_MLKEM*_check_sk
+   fun:mlk_check_sk
    fun:PQCP_MLKEM_NATIVE_MLKEM*_dec
 }
 {
