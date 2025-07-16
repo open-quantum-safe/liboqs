@@ -222,7 +222,13 @@ cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_37_8_4 "" ON "OQS_ENABLE_SIG_S
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_5 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_60_10_4 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_29_6_5 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+
+option(OQS_ENABLE_SIG_SQISIGN "Enable sqisign algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl1 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl3 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl5 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
+
 
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_START
 if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
@@ -1007,6 +1013,25 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
 if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_29_6_5_neon "" ON "OQS_ENABLE_SIG_snova_SNOVA_29_6_5" OFF)
+endif()
+endif()
+
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl1_broadwell "" ON "OQS_ENABLE_SIG_sqisign_lvl1" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl3_broadwell "" ON "OQS_ENABLE_SIG_sqisign_lvl3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl5_broadwell "" ON "OQS_ENABLE_SIG_sqisign_lvl5" OFF)
 endif()
 endif()
 
