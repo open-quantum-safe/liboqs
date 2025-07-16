@@ -8,7 +8,7 @@ extern "C" {
 
 #include <oqs/oqs.h>
 
-#if defined(OQS_USE_OPENSSL)
+#if defined(OQS_USE_OPENSSL) || defined(OQS_USE_AES_OPENSSL) || defined(OQS_USE_SHA2_OPENSSL) || defined(OQS_USE_SHA3_OPENSSL)
 
 #include <openssl/crypto.h>
 #include <openssl/err.h>
@@ -18,7 +18,8 @@ extern "C" {
 void oqs_ossl_destroy(void);
 void oqs_thread_stop(void);
 
-// SHA functions
+// SHA functions (available when SHA2 or SHA3 OpenSSL is enabled)
+#if defined(OQS_USE_SHA2_OPENSSL) || defined(OQS_USE_SHA3_OPENSSL)
 const EVP_MD *oqs_sha256(void);
 const EVP_MD *oqs_sha384(void);
 const EVP_MD *oqs_sha512(void);
@@ -27,12 +28,15 @@ const EVP_MD *oqs_shake256(void);
 const EVP_MD *oqs_sha3_256(void);
 const EVP_MD *oqs_sha3_384(void);
 const EVP_MD *oqs_sha3_512(void);
+#endif
 
-// AES functions
+// AES functions (available when AES OpenSSL is enabled)
+#if defined(OQS_USE_AES_OPENSSL)
 const EVP_CIPHER *oqs_aes_128_ecb(void);
 const EVP_CIPHER *oqs_aes_128_ctr(void);
 const EVP_CIPHER *oqs_aes_256_ecb(void);
 const EVP_CIPHER *oqs_aes_256_ctr(void);
+#endif
 
 // some function pointers for algorithm-switching, see discussion in
 // https://github.com/open-quantum-safe/liboqs/pull/735
