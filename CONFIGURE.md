@@ -143,6 +143,21 @@ To use ICICLE, the user needs to build and install the `icicle_pqc_package`, whi
 
 Enabling this option also automatically enables C++ support in CMake, as required by ICICLE’s implementations.
 
+To build ICICLE with the required PQC package:
+
+```bash
+cmake -S icicle -B "$BUILD_DIR" \
+  -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
+  -DCPU_BACKEND=OFF \
+  -DDISABLE_ALL_FEATURES=ON \
+  -DPQC=ON \
+  -DCUDA_PQC_BACKEND=ON \
+  -DICICLE_STATIC_LINK=ON \
+  -DPQC_PACKAGE=ON
+cmake --build "$BUILD_DIR"
+cmake --install "$BUILD_DIR"
+```
+
 For full documentation, setup instructions, and backend support details, see the [Ingonyama documentation](https://dev.ingonyama.com/)
 
 **Default**: `OFF`.
