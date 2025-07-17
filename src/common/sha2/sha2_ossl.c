@@ -54,7 +54,7 @@ static void SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	const EVP_MD *md = NULL;
 	md = oqs_sha256();
 	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
-	mdctx = EVP_MD_CTX_new();
+	mdctx = OQS_OSSL_FUNC(EVP_MD_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(mdctx, "OpenSSL");
 	OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL));
 	state->ctx = mdctx;
@@ -79,7 +79,7 @@ static void SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, c
 }
 
 static void SHA2_sha256_inc_ctx_release(OQS_SHA2_sha256_ctx *state) {
-	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
+	OQS_OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
@@ -93,7 +93,7 @@ static void SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 	const EVP_MD *md = NULL;
 	md = oqs_sha384();
 	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
-	mdctx = EVP_MD_CTX_new();
+	mdctx = OQS_OSSL_FUNC(EVP_MD_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(mdctx, "OpenSSL");
 	OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL));
 	state->ctx = mdctx;
@@ -109,12 +109,12 @@ static void SHA2_sha384_inc_finalize(uint8_t *out, OQS_SHA2_sha384_ctx *state, c
 		OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *) state->ctx, in, inlen));
 	}
 	OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *) state->ctx, out, &md_len));
-	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
+	OQS_OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
 static void SHA2_sha384_inc_ctx_release(OQS_SHA2_sha384_ctx *state) {
-	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
+	OQS_OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
@@ -128,7 +128,7 @@ static void SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
 	const EVP_MD *md = NULL;
 	md = oqs_sha512();
 	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
-	mdctx = EVP_MD_CTX_new();
+	mdctx = OQS_OSSL_FUNC(EVP_MD_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(mdctx, "OpenSSL");
 	OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestInit_ex)(mdctx, md, NULL));
 	state->ctx = mdctx;
@@ -144,12 +144,12 @@ static void SHA2_sha512_inc_finalize(uint8_t *out, OQS_SHA2_sha512_ctx *state, c
 		OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *) state->ctx, in, inlen));
 	}
 	OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *) state->ctx, out, &md_len));
-	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
+	OQS_OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
 static void SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {
-	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
+	OQS_OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
