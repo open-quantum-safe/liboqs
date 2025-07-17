@@ -96,10 +96,10 @@ void hss_hash(void *result, int hash_type,
  */
 void hss_init_hash_context(int h, union hash_context *ctx) {
     switch (h) {
-    case HASH_SHA256: HASH_SHA256_24:
+    case HASH_SHA256: case HASH_SHA256_24:
         OQS_SHA2_sha256_inc_init( &ctx->sha256 );
         break;
-    case HASH_SHAKE: HASH_SHAKE_24:
+    case HASH_SHAKE: case HASH_SHAKE_24:
         OQS_SHA3_shake256_inc_init( &ctx->shake );
         break;
     }
@@ -113,10 +113,10 @@ void hss_update_hash_context(int h, union hash_context *ctx,
     }
 #endif
     switch (h) {
-    case HASH_SHA256: HASH_SHA256_24:
+    case HASH_SHA256: case HASH_SHA256_24:
         OQS_SHA2_sha256_inc(&ctx->sha256, msg, len_msg);
         break;
-    case HASH_SHAKE: HASH_SHAKE_24:
+    case HASH_SHAKE: case HASH_SHAKE_24:
         OQS_SHA3_shake256_inc_absorb(&ctx->shake, msg, len_msg);
         break;
     }

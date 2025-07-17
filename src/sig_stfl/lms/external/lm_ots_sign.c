@@ -53,7 +53,6 @@ bool lm_ots_generate_public_key(
     hss_seed_derive_set_j( seed, 0 );
 
     for (i=0; i<p; i++) {
-        if(i == 199){printf("here \r\n");}
         hss_seed_derive( buf + ITER_PREV, seed, i < p-1 );
         put_bigendian( buf + ITER_K, i, 2 );
         /* We'll place j in the buffer below */

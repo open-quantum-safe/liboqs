@@ -28,11 +28,10 @@ def test_sig(sig_name):
         [helpers.path_to_executable('test_sig'), sig_name],
     )
 
-# @helpers.filtered_test
-# @pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
 def test_sig_stfl(sig_stfl_name):
-    # if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
-    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): return
+    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
     # Test with KATs apply for XMSS
     if sig_stfl_name.startswith("XMSS"):
         katfile = helpers.get_katfile("sig_stfl", sig_stfl_name)
@@ -45,11 +44,6 @@ def test_sig_stfl(sig_stfl_name):
             [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
         )
 
-# if __name__ == "__main__":
-#     import sys
-#     pytest.main(sys.argv)
-
-for sig in helpers.available_sig_stfls_by_name():
-    if sig == "LMS_SHA256_24_H5_W1":
-        pass
-    test_sig_stfl(sig)
+if __name__ == "__main__":
+    import sys
+    pytest.main(sys.argv)
