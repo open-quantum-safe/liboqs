@@ -74,7 +74,7 @@ static void SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, c
 		OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestUpdate)((EVP_MD_CTX *) state->ctx, in, inlen));
 	}
 	OQS_OPENSSL_GUARD(OQS_OSSL_FUNC(EVP_DigestFinal_ex)((EVP_MD_CTX *) state->ctx, out, &md_len));
-	EVP_MD_CTX_free((EVP_MD_CTX *) state->ctx);
+	OQS_OSSL_FUNC(EVP_MD_CTX_free)((EVP_MD_CTX *) state->ctx);
 	state->ctx = NULL;
 }
 
