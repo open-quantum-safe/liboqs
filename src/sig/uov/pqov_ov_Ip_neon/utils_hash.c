@@ -7,7 +7,7 @@
 #include "utils_hash.h"
 
 
-#if defined(_UTILS_OPENSSL_)||defined(_UTILS_SUPERCOP_)
+#if (defined(_UTILS_OPENSSL_)||defined(_UTILS_SUPERCOP_)) && !defined(_UTILS_OQS_)
 
 #include <openssl/evp.h>
 
