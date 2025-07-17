@@ -293,6 +293,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	/* Set lms param set */
 	switch (oid) {
+	// H5
 	case OQS_LMS_ID_sha256_h5_w1:
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
@@ -309,7 +310,56 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
 		break;
+	case OQS_LMS_ID_sha256_24_h5_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W1;
+		break;
+	case OQS_LMS_ID_sha256_24_h5_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W2;
+		break;
+	case OQS_LMS_ID_sha256_24_h5_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W4;
+		break;
+	case OQS_LMS_ID_sha256_24_h5_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W8;
+		break;
+	case OQS_LMS_ID_shake_h5_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W1;
+		break;
+	case OQS_LMS_ID_shake_h5_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W2;
+		break;
+	case OQS_LMS_ID_shake_h5_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W4;
+		break;
+	case OQS_LMS_ID_shake_h5_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W8;
+		break;
+	case OQS_LMS_ID_shake_24_h5_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W1;
+		break;
+	case OQS_LMS_ID_shake_24_h5_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W2;
+		break;
+	case OQS_LMS_ID_shake_24_h5_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W4;
+		break;
+	case OQS_LMS_ID_shake_24_h5_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H5;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W8;
+		break;
 
+	// H10
 	case OQS_LMS_ID_sha256_h10_w1:
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
@@ -326,7 +376,56 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
 		break;
+	case OQS_LMS_ID_sha256_24_h10_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W1;
+		break;
+	case OQS_LMS_ID_sha256_24_h10_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W2;
+		break;
+	case OQS_LMS_ID_sha256_24_h10_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W4;
+		break;
+	case OQS_LMS_ID_sha256_24_h10_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W8;
+		break;
+	case OQS_LMS_ID_shake_h10_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W1;
+		break;
+	case OQS_LMS_ID_shake_h10_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W2;
+		break;
+	case OQS_LMS_ID_shake_h10_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W4;
+		break;
+	case OQS_LMS_ID_shake_h10_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W8;
+		break;
+	case OQS_LMS_ID_shake_24_h10_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W1;
+		break;
+	case OQS_LMS_ID_shake_24_h10_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W2;
+		break;
+	case OQS_LMS_ID_shake_24_h10_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W4;
+		break;
+	case OQS_LMS_ID_shake_24_h10_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H10;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W8;
+		break;
 
+	// H15
 	case OQS_LMS_ID_sha256_h15_w1:
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
@@ -343,7 +442,56 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
 		break;
+	case OQS_LMS_ID_sha256_24_h15_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W1;
+		break;
+	case OQS_LMS_ID_sha256_24_h15_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W2;
+		break;
+	case OQS_LMS_ID_sha256_24_h15_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W4;
+		break;
+	case OQS_LMS_ID_sha256_24_h15_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W8;
+		break;
+	case OQS_LMS_ID_shake_h15_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W1;
+		break;
+	case OQS_LMS_ID_shake_h15_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W2;
+		break;
+	case OQS_LMS_ID_shake_h15_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W4;
+		break;
+	case OQS_LMS_ID_shake_h15_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W8;
+		break;
+	case OQS_LMS_ID_shake_24_h15_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W1;
+		break;
+	case OQS_LMS_ID_shake_24_h15_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W2;
+		break;
+	case OQS_LMS_ID_shake_24_h15_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W4;
+		break;
+	case OQS_LMS_ID_shake_24_h15_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H15;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W8;
+		break;
 
+	// H20
 	case OQS_LMS_ID_sha256_h20_w1:
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
@@ -360,7 +508,57 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
 		break;
+	case OQS_LMS_ID_sha256_24_h20_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W1;
+		break;
+	case OQS_LMS_ID_sha256_24_h20_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W2;
+		break;
+	case OQS_LMS_ID_sha256_24_h20_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W4;
+		break;
+	case OQS_LMS_ID_sha256_24_h20_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W8;
+		break;
+	case OQS_LMS_ID_shake_h20_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W1;
+		break;
+	case OQS_LMS_ID_shake_h20_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W2;
+		break;
+	case OQS_LMS_ID_shake_h20_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W4;
+		break;
+	case OQS_LMS_ID_shake_h20_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W8;
+		break;
+	case OQS_LMS_ID_shake_24_h20_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W1;
+		break;
+	case OQS_LMS_ID_shake_24_h20_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W2;
+		break;
+	case OQS_LMS_ID_shake_24_h20_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W4;
+		break;
+	case OQS_LMS_ID_shake_24_h20_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H20;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W8;
+		break;
 
+	
+	// H25
 	case OQS_LMS_ID_sha256_h25_w1:
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W1;
@@ -377,6 +575,55 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
 		break;
+	case OQS_LMS_ID_sha256_24_h25_w1:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W1;
+		break;
+	case OQS_LMS_ID_sha256_24_h25_w2:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W2;
+		break;
+	case OQS_LMS_ID_sha256_24_h25_w4:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W4;
+		break;
+	case OQS_LMS_ID_sha256_24_h25_w8:
+		oqs_key_data->lm_type[0] = LMS_SHA256_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N24_W8;
+		break;
+	case OQS_LMS_ID_shake_h25_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W1;
+		break;
+	case OQS_LMS_ID_shake_h25_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W2;
+		break;
+	case OQS_LMS_ID_shake_h25_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W4;
+		break;
+	case OQS_LMS_ID_shake_h25_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N32_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N32_W8;
+		break;
+	case OQS_LMS_ID_shake_24_h25_w1:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W1;
+		break;
+	case OQS_LMS_ID_shake_24_h25_w2:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W2;
+		break;
+	case OQS_LMS_ID_shake_24_h25_w4:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W4;
+		break;
+	case OQS_LMS_ID_shake_24_h25_w8:
+		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H25;
+		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W8;
+		break;
+	
 	case OQS_LMS_ID_sha256_h5_w8_h5_w8:
 		oqs_key_data->levels = 2;
 		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H5;
