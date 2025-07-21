@@ -557,7 +557,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W8;
 		break;
 
-	
+
 	// H25
 	case OQS_LMS_ID_sha256_h25_w1:
 		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H25;
@@ -623,7 +623,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		oqs_key_data->lm_type[0] = LMS_SHAKE_N24_H25;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHAKE_N24_W8;
 		break;
-	
+
 	case OQS_LMS_ID_sha256_h5_w8_h5_w8:
 		oqs_key_data->levels = 2;
 		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H5;

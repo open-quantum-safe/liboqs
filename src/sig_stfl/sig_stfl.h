@@ -122,11 +122,11 @@ extern "C"
 /* Defined LMS parameter identifiers */
 /** Algorithm identifier for LMS-SHA256_H5_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w1 "LMS_SHA256_H5_W1"       //"5/1"
-/** Algorithm identifier for LMS-SHA256_H5_W2  */      
+/** Algorithm identifier for LMS-SHA256_H5_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w2 "LMS_SHA256_H5_W2"       //"5/2"
-/** Algorithm identifier for LMS-SHA256_H5_W4  */      
+/** Algorithm identifier for LMS-SHA256_H5_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w4 "LMS_SHA256_H5_W4"       //"5/4"
-/** Algorithm identifier for LMS-SHA256_H5_W8  */      
+/** Algorithm identifier for LMS-SHA256_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h5_w8 "LMS_SHA256_H5_W8"       //"5/8"
 /** Algorithm identifier for LMS-SHA256_24_H5_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w1 "LMS_SHA256_24_H5_W1" //"5/1"
@@ -138,28 +138,28 @@ extern "C"
 #define OQS_SIG_STFL_alg_lms_sha256_24_h5_w8 "LMS_SHA256_24_H5_W8" //"5/8"
 /** Algorithm identifier for LMS-SHAKE_H5_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_h5_w1 "LMS_SHAKE_H5_W1"         //"5/1"
-/** Algorithm identifier for LMS-SHAKE_H5_W2  */        
+/** Algorithm identifier for LMS-SHAKE_H5_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_h5_w2 "LMS_SHAKE_H5_W2"         //"5/2"
-/** Algorithm identifier for LMS-SHAKE_H5_W4  */        
+/** Algorithm identifier for LMS-SHAKE_H5_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_h5_w4 "LMS_SHAKE_H5_W4"         //"5/4"
-/** Algorithm identifier for LMS-SHAKE_H5_W8  */        
+/** Algorithm identifier for LMS-SHAKE_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_h5_w8 "LMS_SHAKE_H5_W8"         //"5/8"
 /** Algorithm identifier for LMS-SHAKE_24_H5_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h5_w1 "LMS_SHAKE_24_H5_W1"   //"5/1"
-/** Algorithm identifier for LMS-SHAKE_24_H5_W2  */  
+/** Algorithm identifier for LMS-SHAKE_24_H5_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h5_w2 "LMS_SHAKE_24_H5_W2"   //"5/2"
-/** Algorithm identifier for LMS-SHAKE_24_H5_W4  */  
+/** Algorithm identifier for LMS-SHAKE_24_H5_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h5_w4 "LMS_SHAKE_24_H5_W4"   //"5/4"
-/** Algorithm identifier for LMS-SHAKE_24_H5_W8  */  
+/** Algorithm identifier for LMS-SHAKE_24_H5_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h5_w8 "LMS_SHAKE_24_H5_W8"   //"5/8"
 
 /** Algorithm identifier for LMS-SHA256_H10_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w1 "LMS_SHA256_H10_W1"       //"10/1"
-/** Algorithm identifier for LMS-SHA256_H10_W2  */      
+/** Algorithm identifier for LMS-SHA256_H10_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w2 "LMS_SHA256_H10_W2"       //"10/2"
-/** Algorithm identifier for LMS-SHA256_H10_W4  */      
+/** Algorithm identifier for LMS-SHA256_H10_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w4 "LMS_SHA256_H10_W4"       //"10/4"
-/** Algorithm identifier for LMS-SHA256_H10_W8  */      
+/** Algorithm identifier for LMS-SHA256_H10_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h10_w8 "LMS_SHA256_H10_W8"       //"10/8"
 /** Algorithm identifier for LMS-SHA256_24_H10_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_24_h10_w1 "LMS_SHA256_24_H10_W1" //"10/1"
@@ -171,28 +171,28 @@ extern "C"
 #define OQS_SIG_STFL_alg_lms_sha256_24_h10_w8 "LMS_SHA256_24_H10_W8" //"10/8"
 /** Algorithm identifier for LMS-SHAKE_H10_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_h10_w1 "LMS_SHAKE_H10_W1"         //"10/1"
-/** Algorithm identifier for LMS-SHAKE_H10_W2  */        
+/** Algorithm identifier for LMS-SHAKE_H10_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_h10_w2 "LMS_SHAKE_H10_W2"         //"10/2"
-/** Algorithm identifier for LMS-SHAKE_H10_W4  */        
+/** Algorithm identifier for LMS-SHAKE_H10_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_h10_w4 "LMS_SHAKE_H10_W4"         //"10/4"
-/** Algorithm identifier for LMS-SHAKE_H10_W8  */        
+/** Algorithm identifier for LMS-SHAKE_H10_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_h10_w8 "LMS_SHAKE_H10_W8"         //"10/8"
 /** Algorithm identifier for LMS-SHAKE_24_H10_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h10_w1 "LMS_SHAKE_24_H10_W1"   //"10/1"
-/** Algorithm identifier for LMS-SHAKE_24_H10_W2  */  
+/** Algorithm identifier for LMS-SHAKE_24_H10_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h10_w2 "LMS_SHAKE_24_H10_W2"   //"10/2"
-/** Algorithm identifier for LMS-SHAKE_24_H10_W4  */  
+/** Algorithm identifier for LMS-SHAKE_24_H10_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h10_w4 "LMS_SHAKE_24_H10_W4"   //"10/4"
-/** Algorithm identifier for LMS-SHAKE_24_H10_W8  */  
+/** Algorithm identifier for LMS-SHAKE_24_H10_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h10_w8 "LMS_SHAKE_24_H10_W8"   //"10/8"
 
 /** Algorithm identifier for LMS-SHA256_H15_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w1 "LMS_SHA256_H15_W1"       //"15/1"
-/** Algorithm identifier for LMS-SHA256_H15_W2  */      
+/** Algorithm identifier for LMS-SHA256_H15_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w2 "LMS_SHA256_H15_W2"       //"15/2"
-/** Algorithm identifier for LMS-SHA256_H15_W4  */      
+/** Algorithm identifier for LMS-SHA256_H15_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w4 "LMS_SHA256_H15_W4"       //"15/4"
-/** Algorithm identifier for LMS-SHA256_H15_W8  */      
+/** Algorithm identifier for LMS-SHA256_H15_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h15_w8 "LMS_SHA256_H15_W8"       //"15/8"
 /** Algorithm identifier for LMS-SHA256_24_H15_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_24_h15_w1 "LMS_SHA256_24_H15_W1" //"15/1"
@@ -204,28 +204,28 @@ extern "C"
 #define OQS_SIG_STFL_alg_lms_sha256_24_h15_w8 "LMS_SHA256_24_H15_W8" //"15/8"
 /** Algorithm identifier for LMS-SHAKE_H15_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_h15_w1 "LMS_SHAKE_H15_W1"         //"15/1"
-/** Algorithm identifier for LMS-SHAKE_H15_W2  */        
+/** Algorithm identifier for LMS-SHAKE_H15_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_h15_w2 "LMS_SHAKE_H15_W2"         //"15/2"
-/** Algorithm identifier for LMS-SHAKE_H15_W4  */        
+/** Algorithm identifier for LMS-SHAKE_H15_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_h15_w4 "LMS_SHAKE_H15_W4"         //"15/4"
-/** Algorithm identifier for LMS-SHAKE_H15_W8  */        
+/** Algorithm identifier for LMS-SHAKE_H15_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_h15_w8 "LMS_SHAKE_H15_W8"         //"15/8"
 /** Algorithm identifier for LMS-SHAKE_24_H15_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h15_w1 "LMS_SHAKE_24_H15_W1"   //"15/1"
-/** Algorithm identifier for LMS-SHAKE_24_H15_W2  */  
+/** Algorithm identifier for LMS-SHAKE_24_H15_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h15_w2 "LMS_SHAKE_24_H15_W2"   //"15/2"
-/** Algorithm identifier for LMS-SHAKE_24_H15_W4  */  
+/** Algorithm identifier for LMS-SHAKE_24_H15_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h15_w4 "LMS_SHAKE_24_H15_W4"   //"15/4"
-/** Algorithm identifier for LMS-SHAKE_24_H15_W8  */  
+/** Algorithm identifier for LMS-SHAKE_24_H15_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h15_w8 "LMS_SHAKE_24_H15_W8"   //"15/8"
 
 /** Algorithm identifier for LMS-SHA256_H20_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w1 "LMS_SHA256_H20_W1"       //"20/1"
-/** Algorithm identifier for LMS-SHA256_H20_W2  */      
+/** Algorithm identifier for LMS-SHA256_H20_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w2 "LMS_SHA256_H20_W2"       //"20/2"
-/** Algorithm identifier for LMS-SHA256_H20_W4  */      
+/** Algorithm identifier for LMS-SHA256_H20_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w4 "LMS_SHA256_H20_W4"       //"20/4"
-/** Algorithm identifier for LMS-SHA256_H20_W8  */      
+/** Algorithm identifier for LMS-SHA256_H20_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h20_w8 "LMS_SHA256_H20_W8"       //"20/8"
 /** Algorithm identifier for LMS-SHA256_24_H20_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_24_h20_w1 "LMS_SHA256_24_H20_W1" //"20/1"
@@ -237,28 +237,28 @@ extern "C"
 #define OQS_SIG_STFL_alg_lms_sha256_24_h20_w8 "LMS_SHA256_24_H20_W8" //"20/8"
 /** Algorithm identifier for LMS-SHAKE_H20_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_h20_w1 "LMS_SHAKE_H20_W1"         //"20/1"
-/** Algorithm identifier for LMS-SHAKE_H20_W2  */        
+/** Algorithm identifier for LMS-SHAKE_H20_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_h20_w2 "LMS_SHAKE_H20_W2"         //"20/2"
-/** Algorithm identifier for LMS-SHAKE_H20_W4  */        
+/** Algorithm identifier for LMS-SHAKE_H20_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_h20_w4 "LMS_SHAKE_H20_W4"         //"20/4"
-/** Algorithm identifier for LMS-SHAKE_H20_W8  */        
+/** Algorithm identifier for LMS-SHAKE_H20_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_h20_w8 "LMS_SHAKE_H20_W8"         //"20/8"
 /** Algorithm identifier for LMS-SHAKE_24_H20_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h20_w1 "LMS_SHAKE_24_H20_W1"   //"20/1"
-/** Algorithm identifier for LMS-SHAKE_24_H20_W2  */  
+/** Algorithm identifier for LMS-SHAKE_24_H20_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h20_w2 "LMS_SHAKE_24_H20_W2"   //"20/2"
-/** Algorithm identifier for LMS-SHAKE_24_H20_W4  */  
+/** Algorithm identifier for LMS-SHAKE_24_H20_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h20_w4 "LMS_SHAKE_24_H20_W4"   //"20/4"
-/** Algorithm identifier for LMS-SHAKE_24_H20_W8  */  
+/** Algorithm identifier for LMS-SHAKE_24_H20_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h20_w8 "LMS_SHAKE_24_H20_W8"   //"20/8"
 
 /** Algorithm identifier for LMS-SHA256_H25_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w1 "LMS_SHA256_H25_W1"       //"25/1"
-/** Algorithm identifier for LMS-SHA256_H25_W2  */      
+/** Algorithm identifier for LMS-SHA256_H25_W2  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w2 "LMS_SHA256_H25_W2"       //"25/2"
-/** Algorithm identifier for LMS-SHA256_H25_W4  */      
+/** Algorithm identifier for LMS-SHA256_H25_W4  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w4 "LMS_SHA256_H25_W4"       //"25/4"
-/** Algorithm identifier for LMS-SHA256_H25_W8  */      
+/** Algorithm identifier for LMS-SHA256_H25_W8  */
 #define OQS_SIG_STFL_alg_lms_sha256_h25_w8 "LMS_SHA256_H25_W8"       //"25/8"
 /** Algorithm identifier for LMS-SHA256_24_H25_W1  */
 #define OQS_SIG_STFL_alg_lms_sha256_24_h25_w1 "LMS_SHA256_24_H25_W1" //"25/1"
@@ -270,19 +270,19 @@ extern "C"
 #define OQS_SIG_STFL_alg_lms_sha256_24_h25_w8 "LMS_SHA256_24_H25_W8" //"25/8"
 /** Algorithm identifier for LMS-SHAKE_H25_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_h25_w1 "LMS_SHAKE_H25_W1"         //"25/1"
-/** Algorithm identifier for LMS-SHAKE_H25_W2  */        
+/** Algorithm identifier for LMS-SHAKE_H25_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_h25_w2 "LMS_SHAKE_H25_W2"         //"25/2"
-/** Algorithm identifier for LMS-SHAKE_H25_W4  */        
+/** Algorithm identifier for LMS-SHAKE_H25_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_h25_w4 "LMS_SHAKE_H25_W4"         //"25/4"
-/** Algorithm identifier for LMS-SHAKE_H25_W8  */        
+/** Algorithm identifier for LMS-SHAKE_H25_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_h25_w8 "LMS_SHAKE_H25_W8"         //"25/8"
 /** Algorithm identifier for LMS-SHAKE_24_H25_W1  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h25_w1 "LMS_SHAKE_24_H25_W1"   //"25/1"
-/** Algorithm identifier for LMS-SHAKE_24_H25_W2  */  
+/** Algorithm identifier for LMS-SHAKE_24_H25_W2  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h25_w2 "LMS_SHAKE_24_H25_W2"   //"25/2"
-/** Algorithm identifier for LMS-SHAKE_24_H25_W4  */  
+/** Algorithm identifier for LMS-SHAKE_24_H25_W4  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h25_w4 "LMS_SHAKE_24_H25_W4"   //"25/4"
-/** Algorithm identifier for LMS-SHAKE_24_H25_W8  */  
+/** Algorithm identifier for LMS-SHAKE_24_H25_W8  */
 #define OQS_SIG_STFL_alg_lms_shake_24_h25_w8 "LMS_SHAKE_24_H25_W8"   //"25/8"
 
 // 2-Level LMS
