@@ -98,6 +98,32 @@ def file_replacer(template_file, destination_file, variants, destination_delimit
     for id in id_list:
         fragment_replacer(template_file,destination_file,id,variants, destination_delimiter)
 
+def doc_replacer(template_file, destination_file):
+    implementations = []
+
+    #add pure variants
+    for i,j in itertools.product(range(len(meta['hashAlgs'])),range(len(meta['paramSets']))):
+        hashAlg = meta['hashAlgs'][i]
+        paramSet = meta['paramSets'][j]
+        variant = "SLH_DSA_PURE_" + hashAlg['name'].upper() + "_" + paramSet['name'].upper()
+        implementations.append({"variant": variant, "paramSet": paramSet})
+    
+    #add prehash variants
+    for i,j,k in itertools.product(range(len(meta['hashAlgs'])),range(len(meta['paramSets'])),range(len(meta['prehashHashAlgs']))):
+        hashAlg = meta['hashAlgs'][i]
+        paramSet = meta['paramSets'][j]
+        prehashHashAlg = meta['prehashHashAlgs'][k]
+        variant = "SLH_DSA_" + prehashHashAlg['name'].upper() + "_PREHASH_" + hashAlg['name'].upper() + "_" + paramSet['name'].upper()
+        implementations.append({"variant": variant, "paramSet": paramSet})
+    
+    #render template
+    template = file_get_contents(template_file)
+
+    #write to destination
+    contents = jinja2.Template(template).render({'implementations': implementations})
+    with open(destination_file, "w") as f:
+                f.write(contents)
+
 #generate slh_dsa specific files
 def internal_code_gen():
     #clean up code
@@ -274,6 +300,7 @@ def main():
     jinja_alg_support_file = os.path.join(template_dir,'slh_dsa_alg_support_template.jinja')
     jinja_oqsconfig_file = os.path.join(template_dir,'slh_dsa_oqsconfig_template.jinja')
     jinja_kat_sig_file = os.path.join(template_dir,'slh_dsa_kat_sig_template.jinja')
+    jinja_docs_yml_file = os.path.join(template_dir,'slh_dsa_docs_yml_template.jinja')
     
     #enumerate destination file paths
     sig_c_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.c')
@@ -281,6 +308,7 @@ def main():
     alg_support_path = os.path.join(os.environ['LIBOQS_DIR'],'.CMake','alg_support.cmake')
     oqsconfig_path = os.path.join(os.environ['LIBOQS_DIR'],'src','oqsconfig.h.cmake')
     kat_sig_path = os.path.join(os.environ['LIBOQS_DIR'],'tests','kat_sig.c')
+    docs_yml_path = os.path.join(os.environ['LIBOQS_DIR'],'docs','algorithms','sig','slh_dsa.yml')
     
     #generate internal c and h files
     internal_code_gen()
@@ -295,6 +323,10 @@ def main():
     file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')
     file_replacer(jinja_kat_sig_file, kat_sig_path, {'variants': variants},'/////')
 
+    #replace document contents
+    doc_replacer(jinja_docs_yml_file, docs_yml_path)
+
 if __name__ == "__main__":
+    # TODO: remove this!!!
     os.environ['LIBOQS_DIR'] = "/Users/h2parson/Documents/liboqs"
     main()
