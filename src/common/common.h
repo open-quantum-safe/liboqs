@@ -44,6 +44,11 @@ extern "C" {
  * handling strategy is developed.
  */
 #ifdef OQS_USE_OPENSSL
+#if defined(__has_include)
+#if __has_include(<openssl/opensslconf.h>)
+#include <openssl/opensslconf.h>
+#endif
+#endif
 #ifdef OPENSSL_NO_STDIO
 #define OQS_OPENSSL_GUARD(x)                                                   \
   do {                                                                         \
@@ -59,7 +64,7 @@ extern "C" {
     if (1 != (x)) {                                                            \
       fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n",   \
               x);                                                              \
-      OSSL_FUNC(ERR_print_errors_fp)(stderr);                                  \
+      OQS_OSSL_FUNC(ERR_print_errors_fp)(stderr);                                  \
       exit(EXIT_FAILURE);                                                      \
     }                                                                          \
   } while (0)
@@ -273,6 +278,11 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size);
  * Free memory allocated with OQS_MEM_aligned_alloc.
  */
 void OQS_MEM_aligned_free(void *ptr);
+
+/**
+ * Free and zeroize memory allocated with OQS_MEM_aligned_alloc.
+ */
+void OQS_MEM_aligned_secure_free(void *ptr, size_t len);
 
 #if defined(__cplusplus)
 } // extern "C"

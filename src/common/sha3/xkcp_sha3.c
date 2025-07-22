@@ -37,10 +37,19 @@ static KeccakPermuteFn *Keccak_Permute_ptr = NULL;
 static KeccakExtractBytesFn *Keccak_ExtractBytes_ptr = NULL;
 static KeccakFastLoopAbsorbFn *Keccak_FastLoopAbsorb_ptr = NULL;
 
+extern struct OQS_SHA3_callbacks sha3_default_callbacks;
+
 static void Keccak_Dispatch(void) {
 // TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
 #if defined(OQS_DIST_X86_64_BUILD)
 #if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
+#if defined(OQS_USE_SHA3_AVX512VL)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX512)) {
+		extern const struct OQS_SHA3_callbacks sha3_avx512vl_callbacks;
+
+		sha3_default_callbacks = sha3_avx512vl_callbacks;
+	}
+#endif
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 		Keccak_Initialize_ptr = &KeccakP1600_Initialize_avx2;
 		Keccak_AddByte_ptr = &KeccakP1600_AddByte_avx2;
@@ -215,7 +224,7 @@ static void SHA3_sha3_256_inc_finalize(uint8_t *output, OQS_SHA3_sha3_256_inc_ct
 }
 
 static void SHA3_sha3_256_inc_ctx_release(OQS_SHA3_sha3_256_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_SHA3_sha3_256_inc_ctx *src) {
@@ -251,7 +260,7 @@ static void SHA3_sha3_384_inc_finalize(uint8_t *output, OQS_SHA3_sha3_384_inc_ct
 }
 
 static void SHA3_sha3_384_inc_ctx_release(OQS_SHA3_sha3_384_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_SHA3_sha3_384_inc_ctx *src) {
@@ -288,7 +297,7 @@ static void SHA3_sha3_512_inc_finalize(uint8_t *output, OQS_SHA3_sha3_512_inc_ct
 }
 
 static void SHA3_sha3_512_inc_ctx_release(OQS_SHA3_sha3_512_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_SHA3_sha3_512_inc_ctx *src) {
@@ -335,7 +344,7 @@ static void SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const O
 }
 
 static void SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state) {
@@ -374,7 +383,7 @@ static void SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 }
 
 static void SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {
-	OQS_MEM_aligned_free(state->ctx);
+	OQS_MEM_aligned_secure_free(state->ctx, KECCAK_CTX_BYTES);
 }
 
 static void SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_SHA3_shake256_inc_ctx *src) {
@@ -384,8 +393,6 @@ static void SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const O
 static void SHA3_shake256_inc_ctx_reset(OQS_SHA3_shake256_inc_ctx *state) {
 	keccak_inc_reset((uint64_t *)state->ctx);
 }
-
-extern struct OQS_SHA3_callbacks sha3_default_callbacks;
 
 struct OQS_SHA3_callbacks sha3_default_callbacks = {
 	SHA3_sha3_256,

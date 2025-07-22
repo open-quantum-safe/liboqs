@@ -78,6 +78,13 @@ if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
 endif()
 endif()
 
+# SHA3 AVX512VL only supported on Linux x86_64
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND (OQS_DIST_X86_64_BUILD OR OQS_USE_AVX512_INSTRUCTIONS))
+    cmake_dependent_option(OQS_USE_SHA3_AVX512VL "Enable SHA3 AVX512VL usage" ON "NOT OQS_USE_SHA3_OPENSSL" OFF)
+else()
+    option(OQS_USE_SHA3_AVX512VL "Enable SHA3 AVX512VL usage" OFF)
+endif()
+
 # BIKE is not supported on Windows, 32-bit ARM, X86, S390X (big endian) and PPC64 (big endian)
 cmake_dependent_option(OQS_ENABLE_KEM_BIKE "Enable BIKE algorithm family" ON "NOT WIN32; NOT ARCH_ARM32v7; NOT ARCH_X86; NOT ARCH_S390X; NOT ARCH_PPC64" OFF)
 # BIKE doesn't work on any 32-bit platform
