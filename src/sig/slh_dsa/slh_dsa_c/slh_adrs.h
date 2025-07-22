@@ -11,6 +11,7 @@
 #include <string.h>
 #include "slh_param.h"
 #include "slh_var.h"
+#include "slh_sys.h"
 
 /* ADRS type constants */
 
@@ -24,7 +25,7 @@
 
 /* Algorithm 1: toInt(x, n) */
 
-static inline uint64_t slh_toint(const uint8_t *x, unsigned n)
+static SLH_INLINE uint64_t slh_toint(const uint8_t *x, unsigned n)
 {
   unsigned i;
   uint64_t t;
@@ -44,7 +45,7 @@ static inline uint64_t slh_toint(const uint8_t *x, unsigned n)
 
 /* Algorithm 2: toByte(x, n) */
 
-static inline void slh_tobyte(uint8_t *x, uint64_t t, unsigned n)
+static SLH_INLINE void slh_tobyte(uint8_t *x, uint64_t t, unsigned n)
 {
   unsigned i;
 
@@ -61,7 +62,7 @@ static inline void slh_tobyte(uint8_t *x, uint64_t t, unsigned n)
 }
 
 /* === Clear / initialize */
-static inline void adrs_zero(slh_var_t *var)
+static SLH_INLINE void adrs_zero(slh_var_t *var)
 {
   var->adrs->u32[0] = 0;
   var->adrs->u32[1] = 0;
@@ -74,13 +75,13 @@ static inline void adrs_zero(slh_var_t *var)
 }
 
 /* === Set layer address. */
-static inline void adrs_set_layer_address(slh_var_t *var, uint32_t x)
+static SLH_INLINE void adrs_set_layer_address(slh_var_t *var, uint32_t x)
 {
   var->adrs->u32[0] = rev8_be32(x);
 }
 
 /* === Set tree addresss. */
-static inline void adrs_set_tree_address(slh_var_t *var, uint64_t x)
+static SLH_INLINE void adrs_set_tree_address(slh_var_t *var, uint64_t x)
 {
   /* bytes a[4:8] of tree address are always zero */
   var->adrs->u32[2] = rev8_be32(x >> 32);
@@ -88,60 +89,60 @@ static inline void adrs_set_tree_address(slh_var_t *var, uint64_t x)
 }
 
 /* === Set key pair Address. */
-static inline void adrs_set_key_pair_address(slh_var_t *var, uint32_t x)
+static SLH_INLINE void adrs_set_key_pair_address(slh_var_t *var, uint32_t x)
 {
   var->adrs->u32[5] = rev8_be32(x);
 }
 
 /* === Get key pair Address. */
-static inline uint32_t adrs_get_key_pair_address(const slh_var_t *var)
+static SLH_INLINE uint32_t adrs_get_key_pair_address(const slh_var_t *var)
 {
   return rev8_be32(var->adrs->u32[5]);
 }
 
 /* === Set FORS tree height. */
-static inline void adrs_set_tree_height(slh_var_t *var, uint32_t x)
+static SLH_INLINE void adrs_set_tree_height(slh_var_t *var, uint32_t x)
 {
   var->adrs->u32[6] = rev8_be32(x);
 }
 
 /* === Set WOTS+ chain address. */
-static inline void adrs_set_chain_address(slh_var_t *var, uint32_t x)
+static SLH_INLINE void adrs_set_chain_address(slh_var_t *var, uint32_t x)
 {
   var->adrs->u32[6] = rev8_be32(x);
 }
 
 /* === Set FORS tree index. */
-static inline void adrs_set_tree_index(slh_var_t *var, uint32_t x)
+static SLH_INLINE void adrs_set_tree_index(slh_var_t *var, uint32_t x)
 {
   var->adrs->u32[7] = rev8_be32(x);
 }
 
 /* === Get FORS tree index. */
-static inline uint32_t adrs_get_tree_index(const slh_var_t *var)
+static SLH_INLINE uint32_t adrs_get_tree_index(const slh_var_t *var)
 {
   return rev8_be32(var->adrs->u32[7]);
 }
 
 /* === Set WOTS+ hash address. */
-static inline void adrs_set_hash_address(slh_var_t *var, uint32_t x)
+static SLH_INLINE void adrs_set_hash_address(slh_var_t *var, uint32_t x)
 {
   var->adrs->u32[7] = rev8_be32(x);
 }
 
-static inline void adrs_set_type(slh_var_t *var, uint32_t y)
+static SLH_INLINE void adrs_set_type(slh_var_t *var, uint32_t y)
 {
   var->adrs->u32[4] = rev8_be32(y);
 }
 
-static inline uint32_t adrs_get_type(slh_var_t *var)
+static SLH_INLINE uint32_t adrs_get_type(slh_var_t *var)
 {
   return rev8_be32(var->adrs->u32[4]);
 }
 
 /* === "Function ADRS.setTypeAndClear(Y) for addresses sets the type */
 /* of the ADRS to Y and sets the final 12 bytes of the ADRS to zero." */
-static inline void adrs_set_type_and_clear(slh_var_t *var, uint32_t y)
+static SLH_INLINE void adrs_set_type_and_clear(slh_var_t *var, uint32_t y)
 {
   var->adrs->u32[4] = rev8_be32(y);
   var->adrs->u32[5] = 0;
@@ -149,7 +150,7 @@ static inline void adrs_set_type_and_clear(slh_var_t *var, uint32_t y)
   var->adrs->u32[7] = 0;
 }
 
-static inline void adrs_set_type_and_clear_not_kp(slh_var_t *var, uint32_t y)
+static SLH_INLINE void adrs_set_type_and_clear_not_kp(slh_var_t *var, uint32_t y)
 {
   var->adrs->u32[4] = rev8_be32(y);
   var->adrs->u32[6] = 0;
@@ -157,7 +158,7 @@ static inline void adrs_set_type_and_clear_not_kp(slh_var_t *var, uint32_t y)
 }
 
 /* === Compressed 22-byte address ADRSc used with SHA-2. */
-static inline void adrsc_22(const slh_var_t *var, uint8_t *ac)
+static SLH_INLINE void adrsc_22(const slh_var_t *var, uint8_t *ac)
 {
   int i;
   ac[0] = var->adrs->u8[3];

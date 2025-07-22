@@ -1,4 +1,4 @@
-# SPHINCS+
+# SLH_DSA
 
 - **Algorithm type**: Digital signature scheme.
 - **Main cryptographic assumption**: hash-based signatures.

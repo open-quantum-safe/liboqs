@@ -114,7 +114,6 @@ def internal_code_gen():
     
     algDetails = meta['algDetails']
     impl['algVersion'] = algDetails['algVersion']
-    impl['claimedNISTLevel'] = algDetails['claimedNISTLevel']
     impl['eufCMA'] = algDetails['eufCMA']
     impl['sufCMA'] = algDetails['sufCMA']
 
@@ -124,6 +123,7 @@ def internal_code_gen():
         impl['pkSize'] = paramSet['pkSize']
         impl['skSize'] = paramSet['skSize']
         impl['sigSize'] = paramSet['sigSize']
+        impl['claimedNISTLevel'] = paramSet['claimedNISTLevel']
     
         for hashAlg in meta['hashAlgs']:
             impl['hashAlg'] = hashAlg['name']
@@ -147,12 +147,17 @@ def internal_code_gen():
         impl['pkSize'] = paramSet['pkSize']
         impl['skSize'] = paramSet['skSize']
         impl['sigSize'] = paramSet['sigSize']
+        impl['claimedNISTLevel'] = paramSet['claimedNISTLevel']
     
         for hashAlg in meta['hashAlgs']:
             impl['hashAlg'] = hashAlg['name']
-    
-            for prehashHashAlg in meta['prehashHashAlgs']:
+
+            for i in range(len(meta['prehashHashAlgs'])):
+                prehashHashAlg = meta['prehashHashAlgs'][i]
+                prehashString = prehashStrings[i]
+
                 impl['prehashHashAlg'] = prehashHashAlg['name']
+                impl['prehashString'] = prehashString['name']
     
                 src_contents = jinja2.Template(src_template).render(impl)
     
@@ -206,12 +211,12 @@ def main():
 
     #initialize globals
     global commit_hash, slh_dir, slh_dsa_c_dir, slh_dsa_temp_dir, slh_wrappers_dir, template_dir, meta_file, \
-        jinja_header_file, jinja_src_file, jinja_cmake_file, meta, impl, variants, jinja_sig_c_file, \
+        jinja_header_file, jinja_src_file, jinja_cmake_file, meta, prehashStrings, impl, variants, jinja_sig_c_file, \
         jinja_sig_h_file, jinja_alg_support_file, jinja_oqsconfig_file, sig_c_path, sig_h_path, \
         alg_support_path, oqsconfig_path
 
     # This commit hash will need to be updated
-    commit_hash = "c0de64997c13b01710f56595332deb07cccab8da"
+    commit_hash = "a0fc1ff253930060d0246aebca06c2538eb92b88"
     
     # internal paths
     slh_dir = os.path.join(os.environ['LIBOQS_DIR'], 'src/sig/slh_dsa')
@@ -239,13 +244,17 @@ def main():
     meta_file = os.path.join(slh_dsa_c_dir, 'integration/liboqs/META.yml')
     meta = file_get_contents(meta_file, encoding='utf-8')
     meta = yaml.safe_load(meta)
-    
+    prehashStrings = meta['prehashHashAlgs']
+    for i in range(len(meta['prehashHashAlgs'])):
+        meta['prehashHashAlgs'][i]['name'] = (meta['prehashHashAlgs'][i]['name']).replace("/","_")
+
     #Create implementation dictionary
     impl = {
       "pure": True,
       "paramSet": "",
       "hashAlg": "",
       "prehashHashAlg": "",
+      "prehashString": "",
       "pkSize": "",
       "skSize": "",
       "sigSize": "",
@@ -287,4 +296,5 @@ def main():
     file_replacer(jinja_kat_sig_file, kat_sig_path, {'variants': variants},'/////')
 
 if __name__ == "__main__":
+    os.environ['LIBOQS_DIR'] = "/Users/h2parson/Documents/liboqs"
     main()

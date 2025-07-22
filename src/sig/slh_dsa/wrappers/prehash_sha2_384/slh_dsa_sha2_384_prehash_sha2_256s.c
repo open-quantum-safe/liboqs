@@ -18,7 +18,7 @@ OQS_SIG *OQS_SIG_slh_dsa_sha2_384_prehash_sha2_256s_new(void) {
 	sig->method_name = OQS_SIG_alg_slh_dsa_sha2_384_prehash_sha2_256s;
 	sig->alg_version = "FIPS205";
 
-	sig->claimed_nist_level = 1;
+	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
 	sig->suf_cma = false;
 	sig->sig_with_ctx_support = true;

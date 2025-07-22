@@ -8,12 +8,13 @@
 #include "slh_dsa.h"
 #include "slh_adrs.h"
 #include "slh_var.h"
+#include "slh_sys.h"
 
 /* === Internal */
 
 /* helper functions to compute "len = len1 + len2" */
 
-static inline uint32_t get_len1(const slh_param_t *prm)
+static SLH_INLINE uint32_t get_len1(const slh_param_t *prm)
 {
   return ((8 * prm->n + (prm->lg_w - 1)) / prm->lg_w);
 }
@@ -21,7 +22,7 @@ static inline uint32_t get_len1(const slh_param_t *prm)
 /* === Computes len2 (Equation 5.3). */
 /* Algorithm 1: gen_len2(n, lg_w) */
 
-static inline uint32_t gen_len2(const slh_param_t *prm)
+static SLH_INLINE uint32_t gen_len2(const slh_param_t *prm)
 {
   uint32_t len2, cap, maxs;
 
@@ -42,7 +43,7 @@ static inline uint32_t gen_len2(const slh_param_t *prm)
   return len2;
 }
 
-static inline uint32_t get_len(const slh_param_t *prm)
+static SLH_INLINE uint32_t get_len(const slh_param_t *prm)
 {
   return get_len1(prm) + gen_len2(prm);
 }
@@ -56,7 +57,7 @@ size_t slh_sig_sz(const slh_param_t *prm)
 /* === Compute the base 2**b representation of X. */
 /* Algorithm 4: base_2b(X, b, out_len) */
 
-static inline size_t base_2b(uint32_t *v, const uint8_t *x, uint32_t b,
+static SLH_INLINE size_t base_2b(uint32_t *v, const uint8_t *x, uint32_t b,
                              size_t v_len)
 {
   size_t i, j;
@@ -650,7 +651,7 @@ static int slh_verify_digest(slh_var_t *var, const uint8_t *digest,
                              const uint8_t *sig, size_t sig_sz,
                              const slh_param_t *prm)
 {
-  uint8_t pk_fors[SLH_MAX_N] = { 0 };;
+  uint8_t pk_fors[SLH_MAX_N] = { 0 };
   const uint8_t *sig_fors;
   const uint8_t *sig_ht;
   const uint8_t *md = digest;
