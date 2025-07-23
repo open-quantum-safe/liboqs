@@ -26,27 +26,27 @@ nist-round: FIPS205
 spec-version: SLH-DSA
 spdx-license-identifier: MIT or ISC or Apache 2.0
 primary-upstream:
-  source: https://github.com/pq-code-package/slhdsa-c/commit/a0fc1ff253930060d0246aebca06c2538eb92b88
+  source: https://github.com/pq-code-package/slhdsa-c/commit/{{commitHash}}
   spdx-license-identifier: MIT or ISC or Apache 2.0
   upstream-ancestors:
   - https://github.com/pq-code-package/slhdsa-c
-advisories:
 parameter-sets:
 
-{% for imp in implementations -%}
-- name: {{imp.variant}}
-  claimed-nist-level: {{imp.paramSet.claimedNISTLevel}}
-  claimed-security: EUF-CMA
-  length-public-key: {{imp.paramSet.pkSize}}
-  length-secret-key: {{imp.paramSet.skSize}}
-  length-signature: {{imp.paramSet.sigSize}}
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: slhdsa-c
-    supported-platforms: all
-    no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: false
-    large-stack-usage: true
-    
-{% endfor %}
+  {% for imp in implementations -%}
+  - name: {{imp.variant}}
+    claimed-nist-level: {{imp.paramSet.claimedNISTLevel}}
+    claimed-security: EUF-CMA
+    length-public-key: {{imp.paramSet.pkSize}}
+    length-secret-key: {{imp.paramSet.skSize}}
+    length-signature: {{imp.paramSet.sigSize}}
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  {% endfor %}
+  

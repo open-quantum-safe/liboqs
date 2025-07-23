@@ -120,7 +120,7 @@ def doc_replacer(template_file, destination_file):
     template = file_get_contents(template_file)
 
     #write to destination
-    contents = jinja2.Template(template).render({'implementations': implementations})
+    contents = jinja2.Template(template).render({'implementations': implementations, 'commitHash': commit_hash})
     with open(destination_file, "w") as f:
                 f.write(contents)
 
@@ -301,6 +301,7 @@ def main():
     jinja_oqsconfig_file = os.path.join(template_dir,'slh_dsa_oqsconfig_template.jinja')
     jinja_kat_sig_file = os.path.join(template_dir,'slh_dsa_kat_sig_template.jinja')
     jinja_docs_yml_file = os.path.join(template_dir,'slh_dsa_docs_yml_template.jinja')
+    jinja_docs_md_file = os.path.join(template_dir,'slh_dsa_docs_md_template.jinja')
     
     #enumerate destination file paths
     sig_c_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.c')
@@ -309,6 +310,7 @@ def main():
     oqsconfig_path = os.path.join(os.environ['LIBOQS_DIR'],'src','oqsconfig.h.cmake')
     kat_sig_path = os.path.join(os.environ['LIBOQS_DIR'],'tests','kat_sig.c')
     docs_yml_path = os.path.join(os.environ['LIBOQS_DIR'],'docs','algorithms','sig','slh_dsa.yml')
+    docs_md_path = os.path.join(os.environ['LIBOQS_DIR'],'docs','algorithms','sig','slh_dsa.md')
     
     #generate internal c and h files
     internal_code_gen()
