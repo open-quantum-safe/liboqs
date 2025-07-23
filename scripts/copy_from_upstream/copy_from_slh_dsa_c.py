@@ -8,6 +8,7 @@ import shutil
 import jinja2
 import glob
 import itertools
+import copy
 
 #get contents of a file
 def file_get_contents(filename, encoding=None):
@@ -270,7 +271,7 @@ def main():
     meta_file = os.path.join(slh_dsa_c_dir, 'integration/liboqs/META.yml')
     meta = file_get_contents(meta_file, encoding='utf-8')
     meta = yaml.safe_load(meta)
-    prehashStrings = meta['prehashHashAlgs']
+    prehashStrings = copy.deepcopy(meta['prehashHashAlgs'])
     for i in range(len(meta['prehashHashAlgs'])):
         meta['prehashHashAlgs'][i]['name'] = (meta['prehashHashAlgs'][i]['name']).replace("/","_")
 
@@ -329,6 +330,4 @@ def main():
     doc_replacer(jinja_docs_yml_file, docs_yml_path)
 
 if __name__ == "__main__":
-    # TODO: remove this!!!
-    os.environ['LIBOQS_DIR'] = "/Users/h2parson/Documents/liboqs"
     main()

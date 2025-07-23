@@ -53,7 +53,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_shake_192f_sign(uint8_t 
 	size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	const slh_param_t *prm = &slh_dsa_shake_192f;
 	
-	const char *ph = "SHA2-512-256";
+	const char *ph = "SHA2-512/256";
 	const uint8_t *ctx_str = NULL;
     const size_t ctx_str_len = 0;
     uint8_t addrnd[32];
@@ -73,7 +73,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_shake_192f_verify(const 
 	size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	
 	const slh_param_t *prm = &slh_dsa_shake_192f;
-	const char *ph = "SHA2-512-256";
+	const char *ph = "SHA2-512/256";
 	const uint8_t *ctx_str = NULL;
     const size_t ctx_str_len = 0;
 
@@ -92,7 +92,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_shake_192f_sign_with_ctx
 	size_t ctx_str_len, const uint8_t *secret_key) {
 	
 	const slh_param_t *prm = &slh_dsa_shake_192f;
-	const char *ph = "SHA2-512-256";
+	const char *ph = "SHA2-512/256";
 	uint8_t addrnd[32];
     OQS_randombytes(addrnd, 32);
 
@@ -111,7 +111,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_shake_192f_verify_with_c
 	size_t ctx_str_len, const uint8_t *public_key) {
 	
 	const slh_param_t *prm = &slh_dsa_shake_192f;
-	const char *ph = "SHA2-512-256";
+	const char *ph = "SHA2-512/256";
 	int res = hash_slh_verify(message,message_len,signature,signature_len,
 		ctx_str,ctx_str_len,ph,public_key,prm);
 
