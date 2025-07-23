@@ -47,4 +47,3 @@ def test_sig_stfl(sig_stfl_name):
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
-

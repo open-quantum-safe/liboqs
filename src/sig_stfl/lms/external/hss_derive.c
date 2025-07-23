@@ -20,22 +20,25 @@
  */
 #include <string.h>
 #include "hss_derive.h"
+#include "common_defs.h"
 #include "hss_internal.h"
 #include "hash.h"
 #include "endian.h"
 #include "config.h"
 
-#if SECRET_METHOD == 2
-       /* We use a hash function based on the parameter set */
-#include "lm_common.h"  /* To get the prototype for the parameter set -> */
-                        /* hash function mapping */
-#else
-#if SEED_LEN == 32
-#define HASH HASH_SHA256  /* We always use SHA-256 to derive seeds */
-#else
-#error We need to define a hash function for this seed length
-#endif
-#endif
+#include "lm_common.h"
+
+// #if SECRET_METHOD == 2
+//        /* We use a hash function based on the parameter set */
+// #include "lm_common.h"  /* To get the prototype for the parameter set -> */
+//                         /* hash function mapping */
+// #else
+// #if SEED_LEN == 32
+// #define HASH HASH_SHA256  /* We always use SHA-256 to derive seeds */
+// #else
+// #error We need to define a hash function for this seed length
+// #endif
+// #endif
 
 #if SECRET_METHOD == 0 || SECRET_METHOD == 2
 /*
@@ -60,7 +63,7 @@ bool hss_seed_derive_init( struct seed_derive *derive,
 
     /* Note: currently, this assumes that the hash length is always 256 */
     /* bits; error out if that isn't the case */
-    if (derive->m != SEED_LEN) {
+    if (derive->m != seedLen_g) {
         return false;
     }
 #endif
@@ -88,17 +91,19 @@ void hss_seed_derive( unsigned char *seed, struct seed_derive *derive,
     put_bigendian( buffer + PRG_Q, derive->q, 4 );
     put_bigendian( buffer + PRG_J, derive->j, 2 );
     buffer[PRG_FF] = 0xff;
-    memcpy( buffer + PRG_SEED, derive->master_seed, SEED_LEN );
+    memcpy( buffer + PRG_SEED, derive->master_seed, seedLen_g );
 
-#if SECRET_METHOD == 2
-    int hash = derive->hash;    /* Our the parameter set's hash function */
-#else
-    int hash = HASH;            /* Use our standard one */
-#endif
 
-    hss_hash( seed, hash, buffer, PRG_LEN(SEED_LEN) );
+    int hash = derive->hash;
+// #if SECRET_METHOD == 2
+//     int hash = derive->hash;    /* Our the parameter set's hash function */
+// #else
+//     int hash = HASH;            /* Use our standard one */
+// #endif
 
-    hss_zeroize( buffer, PRG_LEN(SEED_LEN) );
+    hss_hash( seed, hash, buffer, PRG_LEN(seedLen_g) );
+
+    hss_zeroize( buffer, PRG_LEN(seedLen_g) );
 
     if (increment_j) derive->j += 1;
 }
@@ -195,15 +200,15 @@ void hss_seed_derive_set_q( struct seed_derive *derive, merkle_index_t q ) {
         put_bigendian( buffer + QTREE_Q, r >> shift, 4 );
         SET_D( buffer + QTREE_D, D_QTREE );
         if (j == 0) {
-            memcpy( buffer + QTREE_SEED, derive->master_seed, SEED_LEN );
+            memcpy( buffer + QTREE_SEED, derive->master_seed, seedLen_g );
         } else {
-            memcpy( buffer + QTREE_SEED, derive->q_seed[j-1], SEED_LEN );
+            memcpy( buffer + QTREE_SEED, derive->q_seed[j-1], seedLen_g );
         }
 
         hss_hash_ctx( derive->q_seed[j], HASH, &ctx, buffer, QTREE_LEN );
     }
 
-    hss_zeroize( buffer, PRG_LEN(SEED_LEN) );
+    hss_zeroize( buffer, PRG_LEN(seedLen_g)) );
     hss_zeroize( &ctx, sizeof ctx );
 }
 
@@ -222,13 +227,13 @@ static void set_j_seed( struct seed_derive *derive, int i,
         /* The root of this tree; it gets its seed from the bottom level */
         /* of the q-tree */
         memcpy( buffer + PRG_SEED, derive->q_seed[ derive->q_levels-1],
-                                                         SEED_LEN );
+                                                         seedLen_g );
     } else {
         /* Non-root node; it gets its seed from its parent */
-        memcpy( buffer + PRG_SEED, derive->j_seed[i-1], SEED_LEN );
+        memcpy( buffer + PRG_SEED, derive->j_seed[i-1], seedLen_g );
     }
 
-    hss_hash_ctx( derive->j_seed[i], HASH, ctx, buffer, PRG_LEN(SEED_LEN) );
+    hss_hash_ctx( derive->j_seed[i], HASH, ctx, buffer, PRG_LEN(seedLen_g) );
 }
 
 /* This sets the internal 'j' value for seed derivation object */
@@ -260,7 +265,7 @@ void hss_seed_derive_set_j( struct seed_derive *derive, unsigned j ) {
     }
 
     hss_zeroize( &ctx, sizeof ctx );
-    hss_zeroize( buffer, PRG_LEN(SEED_LEN) );
+    hss_zeroize( buffer, PRG_LEN(seedLen_g) );
 }
 
 /* This derives the current seed value (actually, we've already computed */
@@ -269,7 +274,7 @@ void hss_seed_derive_set_j( struct seed_derive *derive, unsigned j ) {
 /* (which means incrementally computing that path) */
 void hss_seed_derive( unsigned char *seed, struct seed_derive *derive,
                       bool increment_j ) {
-    memcpy( seed, derive->j_seed[ derive->j_levels - 1], SEED_LEN );
+    memcpy( seed, derive->j_seed[ derive->j_levels - 1], seedLen_g );
 
     if (increment_j) {
         int i;
@@ -301,7 +306,7 @@ void hss_seed_derive( unsigned char *seed, struct seed_derive *derive,
             set_j_seed( derive, i, &ctx, buffer );
         }
         hss_zeroize( &ctx, sizeof ctx );
-        hss_zeroize( buffer, PRG_LEN(SEED_LEN) );
+        hss_zeroize( buffer, PRG_LEN(seedLen_g) );
     }
 }
 
