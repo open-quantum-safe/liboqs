@@ -10,3 +10,4 @@ tabulate==0.8.10
 typing-extensions==3.7.4.3
 wget==3.2
 zipp==3.19.1
+requests==2.32.4
