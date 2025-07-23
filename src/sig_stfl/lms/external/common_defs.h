@@ -32,7 +32,7 @@ enum seedLen_e {
     SEED_LEN_24 = 24
 };
 
-enum seedLen_e seedLen_g;
+extern enum seedLen_e seedLen_g;
 
 /* Here are some internal types used within the code.  They are listed more */
 /* for documentation ("this is what this variable is expected to be") rather */

@@ -17,6 +17,9 @@
 #include "config.h"
 #include "lm_ots_common.h"
 
+/* global seed length variable */
+enum seedLen_e seedLen_g;
+
 /*
  * Allocate and load an ephemeral key
  */
