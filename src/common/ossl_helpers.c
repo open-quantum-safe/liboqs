@@ -23,20 +23,20 @@ static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr,
 static EVP_CIPHER *aes128_ecb_ptr, *aes128_ctr_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 
 static void fetch_ossl_objects(void) {
-	sha256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA256", NULL);
-	sha384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA384", NULL);
-	sha512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512", NULL);
+	sha256_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA256", NULL);
+	sha384_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA384", NULL);
+	sha512_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512", NULL);
 
-	sha3_256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-256", NULL);
-	sha3_384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-384", NULL);
-	sha3_512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-512", NULL);
-	shake128_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE128", NULL);
-	shake256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE256", NULL);
+	sha3_256_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-256", NULL);
+	sha3_384_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-384", NULL);
+	sha3_512_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-512", NULL);
+	shake128_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE128", NULL);
+	shake256_ptr = OQS_OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE256", NULL);
 
-	aes128_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-ECB", NULL);
-	aes128_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-CTR", NULL);
-	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
-	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
+	aes128_ecb_ptr = OQS_OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-ECB", NULL);
+	aes128_ctr_ptr = OQS_OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-CTR", NULL);
+	aes256_ecb_ptr = OQS_OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
+	aes256_ctr_ptr = OQS_OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
 
 	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
 	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
@@ -51,7 +51,7 @@ static inline void cleanup_evp_md(EVP_MD **mdp) {
 	 * overridden with OQS_*_set_callbacks.
 	 */
 	if (*mdp) {
-		OSSL_FUNC(EVP_MD_free)(*mdp);
+		OQS_OSSL_FUNC(EVP_MD_free)(*mdp);
 		*mdp = NULL;
 	}
 }
@@ -62,7 +62,7 @@ static inline void cleanup_evp_cipher(EVP_CIPHER **cipherp) {
 	 * overridden with OQS_*_set_callbacks.
 	 */
 	if (*cipherp) {
-		OSSL_FUNC(EVP_CIPHER_free)(*cipherp);
+		OQS_OSSL_FUNC(EVP_CIPHER_free)(*cipherp);
 		*cipherp = NULL;
 	}
 }
@@ -98,7 +98,11 @@ void oqs_ossl_destroy(void) {
 }
 
 void oqs_thread_stop(void) {
-	OSSL_FUNC(OPENSSL_thread_stop)();
+#ifdef OQS_DLOPEN_OPENSSL
+	OQS_OSSL_FUNC(OPENSSL_thread_stop)();
+#else
+	OPENSSL_thread_stop();
+#endif
 }
 
 const EVP_MD *oqs_sha256(void) {
@@ -114,7 +118,7 @@ const EVP_MD *oqs_sha256(void) {
 #endif
 	return sha256_ptr;
 #else
-	return OSSL_FUNC(EVP_sha256)();
+	return EVP_sha256();
 #endif
 }
 
@@ -131,7 +135,7 @@ const EVP_MD *oqs_sha384(void) {
 #endif
 	return sha384_ptr;
 #else
-	return OSSL_FUNC(EVP_sha384)();
+	return EVP_sha384();
 #endif
 }
 
@@ -148,7 +152,7 @@ const EVP_MD *oqs_sha512(void) {
 #endif
 	return sha512_ptr;
 #else
-	return OSSL_FUNC(EVP_sha512)();
+	return EVP_sha512();
 #endif
 }
 
@@ -165,7 +169,7 @@ const EVP_MD *oqs_shake128(void) {
 #endif
 	return shake128_ptr;
 #else
-	return OSSL_FUNC(EVP_shake128)();
+	return EVP_shake128();
 #endif
 }
 
@@ -182,7 +186,7 @@ const EVP_MD *oqs_shake256(void) {
 #endif
 	return shake256_ptr;
 #else
-	return OSSL_FUNC(EVP_shake256)();
+	return EVP_shake256();
 #endif
 }
 
@@ -199,7 +203,7 @@ const EVP_MD *oqs_sha3_256(void) {
 #endif
 	return sha3_256_ptr;
 #else
-	return OSSL_FUNC(EVP_sha3_256)();
+	return EVP_sha3_256();
 #endif
 }
 
@@ -216,7 +220,7 @@ const EVP_MD *oqs_sha3_384(void) {
 #endif
 	return sha3_384_ptr;
 #else
-	return OSSL_FUNC(EVP_sha3_384)();
+	return EVP_sha3_384();
 #endif
 }
 
@@ -233,7 +237,7 @@ const EVP_MD *oqs_sha3_512(void) {
 #endif
 	return sha3_512_ptr;
 #else
-	return OSSL_FUNC(EVP_sha3_512)();
+	return EVP_sha3_512();
 #endif
 }
 
@@ -250,7 +254,7 @@ const EVP_CIPHER *oqs_aes_128_ecb(void) {
 #endif
 	return aes128_ecb_ptr;
 #else
-	return OSSL_FUNC(EVP_aes_128_ecb)();
+	return EVP_aes_128_ecb();
 #endif
 }
 
@@ -267,7 +271,7 @@ const EVP_CIPHER *oqs_aes_128_ctr(void) {
 #endif
 	return aes128_ctr_ptr;
 #else
-	return OSSL_FUNC(EVP_aes_128_ctr)();
+	return EVP_aes_128_ctr();
 #endif
 }
 
@@ -284,7 +288,7 @@ const EVP_CIPHER *oqs_aes_256_ecb(void) {
 #endif
 	return aes256_ecb_ptr;
 #else
-	return OSSL_FUNC(EVP_aes_256_ecb)();
+	return EVP_aes_256_ecb();
 #endif
 }
 
@@ -301,7 +305,7 @@ const EVP_CIPHER *oqs_aes_256_ctr(void) {
 #endif
 	return aes256_ctr_ptr;
 #else
-	return OSSL_FUNC(EVP_aes_256_ctr)();
+	return EVP_aes_256_ctr();
 #endif
 }
 
