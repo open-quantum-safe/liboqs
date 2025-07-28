@@ -12,4 +12,4 @@ set(CMAKE_GENERATOR_PLATFORM
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=1234")
-message(STATUS "Setting little endianness explicity for windows x86")
+message(STATUS "Setting little endianness explicity for windows amd 64")

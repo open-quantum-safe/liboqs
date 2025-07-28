@@ -33,13 +33,13 @@ def copy_from_commit():
         with open(tar_path, 'wb') as file:
             file.write(response.content)
 
-        tar_file = tarfile.open(tar_path) 
-        tar_file.extractall(slh_dir) 
-        tar_file.close()
+        with tarfile.open(tar_path) as tar_file:
+            tar_file.extractall(slh_dir)
+        
         os.remove(tar_path)
 
         for entry in os.listdir(slh_dir):
-            if entry[:6] == 'slhdsa':
+            if entry.startswith('slhdsa'):
                 full_path = os.path.join(slh_dir, entry)
                 if os.path.isdir(full_path):
                     os.rename(full_path, slh_dsa_temp_dir)
@@ -64,7 +64,7 @@ def copy_from_commit():
 
         print('Copied from slh dsa commit succesfully')
     else:
-        print('Failed to copy from slh dsa commit')
+        print('Failed to copy from slh dsa commit with HTTP status code: ' + str(response.status_code))
 
 # Will retrieve start or end indices for sections
 def section_bound(identifier, delimiter, text, side):
