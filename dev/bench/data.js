@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1753802142259,
+  "lastUpdate": 1753802159799,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -18462,6 +18462,48 @@ window.BENCHMARK_DATA = {
             "value": 52185,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 78e23891802a8bc058ad435491f1b5aefcef092a | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "aiden@aidenfoxivey.com",
+            "name": "Aiden Fox Ivey",
+            "username": "aidenfoxivey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "01de36c1ec5e8ca1aee324fd2af79a408727833e",
+          "message": "Add Poutine SASL (#2213)\n\n* Change Nix install action to verified\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\n\n* Integrate poutine\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>\n\n---------\n\nSigned-off-by: Aiden Fox Ivey <aiden@aidenfoxivey.com>",
+          "timestamp": "2025-07-29T11:03:31-04:00",
+          "tree_id": "db7fa197daba47cdf75b0360c92c392ae7687425",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/01de36c1ec5e8ca1aee324fd2af79a408727833e"
+        },
+        "date": 1753802158323,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "Kyber1024 keygen",
+            "value": 55371,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 01de36c1ec5e8ca1aee324fd2af79a408727833e | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Kyber1024 encaps",
+            "value": 66342,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 01de36c1ec5e8ca1aee324fd2af79a408727833e | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Kyber1024 decaps",
+            "value": 52167,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 01de36c1ec5e8ca1aee324fd2af79a408727833e | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
