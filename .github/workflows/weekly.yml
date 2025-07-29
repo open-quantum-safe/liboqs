@@ -12,7 +12,7 @@ jobs:
   # To guarantee Maintained check is occasionally updated. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   scorecard:
-    uses: ./.github/workflows/scorecard.yml
+    uses: ./.github/workflows/supplychain.yml
     secrets: inherit
     permissions:
       id-token: write
