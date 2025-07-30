@@ -8,7 +8,7 @@ add_subdirectory(common)
 # initialize KEM|SIG_OBJS for --warn-uninitialized
 set(KEM_OBJS "")
 set(SIG_OBJS "")
-set(SIG_STFL_OBJS "")
+set(SIG_STFL_OBJS "")   
 
 if(${OQS_ENABLE_KEM_BIKE})
     add_subdirectory(kem/bike)
@@ -71,6 +71,10 @@ if(OQS_ENABLE_SIG_SNOVA)
     add_subdirectory(sig/snova)
     set(SIG_OBJS ${SIG_OBJS} ${SNOVA_OBJS})
 endif()
+if(OQS_ENABLE_SIG_SQISIGN)
+    add_subdirectory(sig/sqisign)
+    set(SIG_OBJS ${SIG_OBJS} ${SQISIGN_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 if(OQS_ENABLE_SIG_STFL_XMSS)
@@ -111,6 +115,10 @@ if(${OQS_USE_CUPQC})
     set_property(TARGET oqs PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
     target_link_libraries(oqs PRIVATE cupqc)
     target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
+endif()
+if(${OQS_USE_GMP})
+  target_link_libraries(oqs PRIVATE GMP)
+  target_link_libraries(oqs-internal PRIVATE GMP)
 endif()
 
 target_include_directories(oqs
