@@ -16,8 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
       - name: Generate Project
-        run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
+        run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
       - name: Build Project
+        run: cmake --build build
+
+  windows-arm64-slhdsa:
+    strategy:
+      matrix:
+        runner: [windows-2022, windows-2025]
+        stfl_opt: [ON, OFF]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
+      - name: Generate Project
+        run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_MINIMAL_BUILD=SIG_SLH_DSA .
+      - name: Build Project  
         run: cmake --build build
 
   windows-x86:
@@ -35,7 +48,31 @@ jobs:
           python-version: '3.12'
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
       - name: Generate Project
-        run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
+        run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
+      - name: Build Project
+        run: cmake --build build
+      - name: Test dependencies
+        run: pip.exe install --require-hashes -r .github\workflows\requirements.txt
+      - name: Run tests
+        run: |
+          python -m pytest --numprocesses=auto -vv --maxfail=10 --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --junitxml=build\test-results\pytest\test-results.xml
+
+  windows-x86-slhdsa:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2022, windows-2025]
+        toolchain: [.CMake/toolchain_windows_x86.cmake, .CMake/toolchain_windows_amd64.cmake]
+        stfl_opt: [ON, OFF]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
+      - name: Generate Project
+        run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_MINIMAL_BUILD=SIG_SLH_DSA .
       - name: Build Project
         run: cmake --build build
       - name: Test dependencies
