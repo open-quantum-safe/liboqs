@@ -27,7 +27,12 @@
 #define MAX_HSS_LEVELS 8    /* Maximum levels we allow */
 
 /* This is the length of our internal seed values */
-#define SEED_LEN 32         /* Enough to make Grover's infeasible */
+enum seedLen_e {
+    SEED_LEN_32 = 32,           /* Enough to make Grover's infeasible */
+    SEED_LEN_24 = 24
+};
+
+extern enum seedLen_e seedLen_g;
 
 /* Here are some internal types used within the code.  They are listed more */
 /* for documentation ("this is what this variable is expected to be") rather */
@@ -61,12 +66,40 @@ typedef uint_fast64_t sequence_t;
 #define LMS_SHA256_N32_H15 0x00000007
 #define LMS_SHA256_N32_H20 0x00000008
 #define LMS_SHA256_N32_H25 0x00000009
+#define LMS_SHA256_N24_H5  0x0000000a
+#define LMS_SHA256_N24_H10 0x0000000b
+#define LMS_SHA256_N24_H15 0x0000000c
+#define LMS_SHA256_N24_H20 0x0000000d
+#define LMS_SHA256_N24_H25 0x0000000e
+#define LMS_SHAKE_N32_H5   0x0000000f
+#define LMS_SHAKE_N32_H10  0x00000010
+#define LMS_SHAKE_N32_H15  0x00000011
+#define LMS_SHAKE_N32_H20  0x00000012
+#define LMS_SHAKE_N32_H25  0x00000013
+#define LMS_SHAKE_N24_H5   0x00000014
+#define LMS_SHAKE_N24_H10  0x00000015
+#define LMS_SHAKE_N24_H15  0x00000016
+#define LMS_SHAKE_N24_H20  0x00000017
+#define LMS_SHAKE_N24_H25  0x00000018
 
 /* LM-OTS registry */
 #define LMOTS_SHA256_N32_W1 0x00000001
 #define LMOTS_SHA256_N32_W2 0x00000002
 #define LMOTS_SHA256_N32_W4 0x00000003
 #define LMOTS_SHA256_N32_W8 0x00000004
+#define LMOTS_SHA256_N32_W8 0x00000004
+#define LMOTS_SHA256_N24_W1 0x00000005
+#define LMOTS_SHA256_N24_W2 0x00000006
+#define LMOTS_SHA256_N24_W4 0x00000007
+#define LMOTS_SHA256_N24_W8 0x00000008
+#define LMOTS_SHAKE_N32_W1  0x00000009
+#define LMOTS_SHAKE_N32_W2  0x0000000a
+#define LMOTS_SHAKE_N32_W4  0x0000000b
+#define LMOTS_SHAKE_N32_W8  0x0000000c
+#define LMOTS_SHAKE_N24_W1  0x0000000d
+#define LMOTS_SHAKE_N24_W2  0x0000000e
+#define LMOTS_SHAKE_N24_W4  0x0000000f
+#define LMOTS_SHAKE_N24_W8  0x00000010
 
 /*
  * Internal formats of various hashes
@@ -162,7 +195,7 @@ typedef uint_fast64_t sequence_t;
                          /* 1 -> Create top level seed */
                          /* 2 -> Create top level I */
 #define TOPSEED_SEED 23  /* 32 bytes long */
-#define TOPSEED_LEN (TOPSEED_SEED + 32)
+#define TOP_SEED_LEN (TOPSEED_SEED + 32)
 #define D_TOPSEED 0xfefe
 
 /* Hash used to generate the key used for the authenticating the aux values */
