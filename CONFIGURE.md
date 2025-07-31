@@ -14,6 +14,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_USE_CPUFEATURE_INSTRUCTIONS](#OQS_USE_CPUFEATURE_INSTRUCTIONS)
 - [OQS_USE_OPENSSL](#OQS_USE_OPENSSL)
 - [OQS_USE_CUPQC](#OQS_USE_CUPQC)
+- [OQS_USE_ICICLE](#OQS_USE_ICICLE)
 - [OQS_OPT_TARGET](#OQS_OPT_TARGET)
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
 - [USE_COVERAGE](#USE_COVERAGE)
@@ -134,6 +135,32 @@ Can be `ON` or `OFF`.  When `ON`, use NVIDIA's cuPQC library where able (current
 
 **Default**: `OFF`
 
+### OQS_USE_ICICLE
+
+This CMake option can be set to `ON` or `OFF`. When enabled (`ON`), it configures liboqs to use ICICLE as the backend for supported post-quantum cryptographic (PQC) algorithms — currently ML-KEM.
+ICICLE is a GPU-accelerated cryptographic library developed by Ingonyama. It provides CUDA-based implementations of PQC algorithms to boost the performance on systems with compatible NVIDIA GPUs.
+To use ICICLE, the user needs to build and install the `icicle_pqc_package`, which contains the necessary CUDA kernels and runtime support. This package must be compiled separately before configuring liboqs with `OQS_USE_ICICLE` enabled, and its installation path should be made available to CMake.
+
+Enabling this option also automatically enables C++ support in CMake, as required by ICICLE’s implementations.
+
+To build ICICLE with the required PQC package:
+
+```bash
+cmake -S icicle -B "$BUILD_DIR" \
+  -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
+  -DCPU_BACKEND=OFF \
+  -DDISABLE_ALL_FEATURES=ON \
+  -DPQC=ON \
+  -DCUDA_PQC_BACKEND=ON \
+  -DICICLE_STATIC_LINK=ON \
+  -DPQC_PACKAGE=ON
+cmake --build "$BUILD_DIR"
+cmake --install "$BUILD_DIR"
+```
+
+For full documentation, setup instructions, and backend support details, see the [Ingonyama documentation](https://dev.ingonyama.com/)
+
+**Default**: `OFF`.
 
 ## Stateful Hash Based Signatures 
 

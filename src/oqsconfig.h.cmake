@@ -72,6 +72,7 @@
 #cmakedefine OQS_USE_SHA3_AVX512VL 1
 
 #cmakedefine01 OQS_USE_CUPQC
+#cmakedefine01 OQS_USE_ICICLE
 
 #cmakedefine OQS_ENABLE_KEM_BIKE 1
 #cmakedefine OQS_ENABLE_KEM_bike_l1 1
@@ -135,14 +136,17 @@
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_cuda 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_512_icicle_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_cuda 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_768_icicle_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_cuda 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
