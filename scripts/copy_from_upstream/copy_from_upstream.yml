@@ -39,6 +39,14 @@ upstreams:
     kem_scheme_path: '.'
     preserve_folder_structure: True
   -
+    name: mldsa-native
+    git_url: https://github.com/praveksharma/mldsa-native.git
+    git_branch: ps-liboqs2
+    git_commit: a010db89510895b1a72d439350787b2d905258db
+    sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
+    sig_scheme_path: '.'
+    preserve_folder_structure: True
+  -
     name: cupqc
     git_url: https://github.com/open-quantum-safe/liboqs-cupqc-meta.git
     git_branch: main
@@ -236,7 +244,7 @@ sigs:
   -
     name: ml_dsa
     default_implementation: ref
-    upstream_location: pqcrystals-dilithium-standard
+    upstream_location: mldsa-native
     schemes:
       -
         scheme: "44"
