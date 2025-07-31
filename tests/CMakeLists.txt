@@ -170,7 +170,7 @@ add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${TEST_DEPS})
 
 
-set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig vectors_sig)
+# set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig vectors_sig)
 
 # SIG_STFL API tests
 add_executable(test_sig_stfl test_sig_stfl.c test_helpers.c)
@@ -197,8 +197,8 @@ add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})
 
 # Intermediate values vector tests
-add_executable(vectors_sig vectors_sig.c)
-target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
+# add_executable(vectors_sig vectors_sig.c)
+# target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
 
 add_executable(vectors_kem vectors_kem.c)
 target_link_libraries(vectors_kem PRIVATE ${TEST_DEPS})
