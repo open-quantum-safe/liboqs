@@ -168,6 +168,9 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 if "length-keypair-seed" in oqs_scheme_yaml:
                     oqs_scheme_yaml['length-keypair-seed'] = rhs_if_not_equal(oqs_scheme_yaml['length-keypair-seed'], upstream_yaml['length-keypair-seed'], "length-keypair-seed")
 
+                if "length-encaps-seed" in oqs_scheme_yaml:
+                    oqs_scheme_yaml['length-encaps-seed'] = rhs_if_not_equal(oqs_scheme_yaml['length-encaps-seed'], upstream_yaml['length-encaps-seed'], "length-encaps-seed")
+
                 _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
                     if impl['upstream'] != 'libjade':
