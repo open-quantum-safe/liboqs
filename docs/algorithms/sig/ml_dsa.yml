@@ -15,8 +15,7 @@ website: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/
 nist-round: FIPS204
 spec-version: ML-DSA
 primary-upstream:
-  source: https://github.com/pq-crystals/dilithium/commit/444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
-    with copy_from_upstream patches
+  source: https://github.com/praveksharma/mldsa-native/commit/a010db89510895b1a72d439350787b2d905258db
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 parameter-sets:
 - name: ML-DSA-44
@@ -44,6 +43,7 @@ parameter-sets:
       - Linux
       required_flags:
       - avx2
+      - bmi2
       - popcnt
     common-crypto:
     - SHA3: liboqs
