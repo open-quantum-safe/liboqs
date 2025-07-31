@@ -171,6 +171,7 @@ target_link_libraries(speed_sig PRIVATE ${TEST_DEPS})
 
 
 # set(SIG_TESTS example_sig kat_sig test_sig test_sig_mem speed_sig vectors_sig)
+set (SIG_TESTS "")
 
 # SIG_STFL API tests
 add_executable(test_sig_stfl test_sig_stfl.c test_helpers.c)
