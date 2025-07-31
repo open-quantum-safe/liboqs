@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <stdint.h>
 #include <oqs/rand.h>
 #include "icicle/pqc/ml_kem.h"
