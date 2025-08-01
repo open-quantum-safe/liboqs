@@ -15,6 +15,7 @@ OQS_SIG *OQS_SIG_slh_dsa_pure_shake_256s_new(void) {
 	if (sig == NULL) {
 		return NULL;
 	}
+
 	sig->method_name = OQS_SIG_alg_slh_dsa_pure_shake_256s;
 	sig->alg_version = "FIPS205";
 
@@ -36,86 +37,83 @@ OQS_SIG *OQS_SIG_slh_dsa_pure_shake_256s_new(void) {
 	return sig;
 }
 
-static int slh_randombytes(uint8_t *x, size_t xlen)
-{
-    OQS_randombytes(x,xlen);
-    return OQS_SUCCESS;
+static int slh_randombytes(uint8_t *x, size_t xlen) {
+
+	OQS_randombytes(x, xlen);
+	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	
+
 	const slh_param_t *prm = &slh_dsa_shake_256s;
-	int (*rbg)(uint8_t *x, size_t xlen) = slh_randombytes;
-	return slh_keygen(secret_key,public_key, rbg, prm);
+	int(*rbg)(uint8_t *x, size_t xlen) = slh_randombytes;
+	return slh_keygen(secret_key, public_key, rbg, prm);
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_sign(uint8_t *signature, size_t *signature_len,
-	const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	
+        const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+
 	const slh_param_t *prm = &slh_dsa_shake_256s;
 	const uint8_t *ctx = NULL;
-    const size_t ctxlen = 0;
-    uint8_t addrnd[32];
-    OQS_randombytes(addrnd, 32);
+	const size_t ctxlen = 0;
+	uint8_t addrnd[32];
+	OQS_randombytes(addrnd, 32);
 
-    *signature_len = slh_sign(signature,message,message_len,ctx,ctxlen,
-		secret_key,addrnd,prm);
+	*signature_len = slh_sign(signature, message, message_len, ctx, ctxlen,
+	                          secret_key, addrnd, prm);
 
-    if(*signature_len == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+	if (*signature_len == 0) {
+		return OQS_ERROR;
+	}
+
+	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_verify(const uint8_t *message, size_t message_len,
-	const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-	
+        const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+
 	const slh_param_t *prm = &slh_dsa_shake_256s;
 	const uint8_t *ctx = NULL;
-    const size_t ctxlen = 0;
+	const size_t ctxlen = 0;
 
-    int res = slh_verify(message,message_len,signature,signature_len, ctx,
-		ctxlen,public_key, prm);
+	int res = slh_verify(message, message_len, signature, signature_len, ctx,
+	                     ctxlen, public_key, prm);
 
-    if(res == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+	if (res == 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_sign_with_ctx_str(uint8_t *signature, 
-	size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str,
-	size_t ctx_str_len, const uint8_t *secret_key) {
-	
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_sign_with_ctx_str(uint8_t *signature,
+        size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str,
+        size_t ctx_str_len, const uint8_t *secret_key) {
+
 	const slh_param_t *prm = &slh_dsa_shake_256s;
 	uint8_t addrnd[32];
-    OQS_randombytes(addrnd, 32);
+	OQS_randombytes(addrnd, 32);
 
-    *signature_len = slh_sign(signature,message,message_len,ctx_str,ctx_str_len,
-		secret_key,addrnd,prm);
+	*signature_len = slh_sign(signature, message, message_len, ctx_str, ctx_str_len,
+	                          secret_key, addrnd, prm);
 
-    if(*signature_len == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+	if (*signature_len == 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_verify_with_ctx_str(const uint8_t *message, 
-	size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
-	
-	const slh_param_t *prm = &slh_dsa_shake_256s;
-	
-	int res = slh_verify(message,message_len,signature,signature_len,ctx_str,
-		ctx_str_len,public_key, prm);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_verify_with_ctx_str(const uint8_t *message,
+        size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
 
-    if(res == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+	const slh_param_t *prm = &slh_dsa_shake_256s;
+
+	int res = slh_verify(message, message_len, signature, signature_len, ctx_str,
+	                     ctx_str_len, public_key, prm);
+
+	if (res == 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 #endif

@@ -12,7 +12,7 @@
 OQS_SIG *OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_new(void) {
 
 	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
-	if (sig == NULL) {
+	if(sig == NULL) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_slh_dsa_sha2_224_prehash_shake_192s;
@@ -36,37 +36,37 @@ OQS_SIG *OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_new(void) {
 	return sig;
 }
 
-static int slh_randombytes(uint8_t *x, size_t xlen)
-{
-    OQS_randombytes(x,xlen);
-    return OQS_SUCCESS;
+static int slh_randombytes(uint8_t *x, size_t xlen) {
+	
+	OQS_randombytes(x, xlen);
+	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	
 	const slh_param_t *prm = &slh_dsa_shake_192s;
-	int (*rbg)(uint8_t *x, size_t xlen) = slh_randombytes;
-	return slh_keygen(secret_key,public_key, rbg, prm);
+	int(*rbg)(uint8_t *x, size_t xlen) = slh_randombytes;
+	return slh_keygen(secret_key, public_key, rbg, prm);
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_sign(uint8_t *signature, 
 	size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+	
 	const slh_param_t *prm = &slh_dsa_shake_192s;
 	
 	const char *ph = "SHA2-224";
 	const uint8_t *ctx_str = NULL;
-    const size_t ctx_str_len = 0;
-    uint8_t addrnd[32];
-    OQS_randombytes(addrnd, 32);
+	const size_t ctx_str_len = 0;
+	uint8_t addrnd[32];
+	OQS_randombytes(addrnd, 32);
 
-    *signature_len = hash_slh_sign(signature,message,message_len,ctx_str,
-		ctx_str_len,ph,secret_key,addrnd,prm);
+	*signature_len = hash_slh_sign(signature, message, message_len, ctx_str,
+		ctx_str_len, ph, secret_key, addrnd, prm);
 
-    if(*signature_len == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+	if(*signature_len == 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_verify(const uint8_t *message, 
@@ -75,16 +75,15 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_verify(const uint
 	const slh_param_t *prm = &slh_dsa_shake_192s;
 	const char *ph = "SHA2-224";
 	const uint8_t *ctx_str = NULL;
-    const size_t ctx_str_len = 0;
+	const size_t ctx_str_len = 0;
 
-    int res = hash_slh_verify(message,message_len,signature,signature_len,
-		ctx_str,ctx_str_len,ph,public_key,prm);
+	int res = hash_slh_verify(message, message_len, signature, signature_len,
+		ctx_str, ctx_str_len, ph, public_key, prm);
 
-    if(res == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+	if(res == 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_sign_with_ctx_str(uint8_t *signature, 
@@ -94,16 +93,15 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_sign_with_ctx_str
 	const slh_param_t *prm = &slh_dsa_shake_192s;
 	const char *ph = "SHA2-224";
 	uint8_t addrnd[32];
-    OQS_randombytes(addrnd, 32);
+	OQS_randombytes(addrnd, 32);
 
-    *signature_len = hash_slh_sign(signature,message,message_len,ctx_str,
-		ctx_str_len,ph,secret_key,addrnd,prm);
+	*signature_len = hash_slh_sign(signature, message, message_len, ctx_str,
+		ctx_str_len, ph, secret_key, addrnd, prm);
 
-    if(*signature_len == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+	if(*signature_len == 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_verify_with_ctx_str(const uint8_t *message, 
@@ -112,14 +110,13 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_224_prehash_shake_192s_verify_with_ctx_s
 	
 	const slh_param_t *prm = &slh_dsa_shake_192s;
 	const char *ph = "SHA2-224";
-	int res = hash_slh_verify(message,message_len,signature,signature_len,
-		ctx_str,ctx_str_len,ph,public_key,prm);
+	int res = hash_slh_verify(message, message_len, signature, signature_len,
+		ctx_str, ctx_str_len, ph, public_key, prm);
 
-   if(res == 0)
-    {
-        return OQS_ERROR;
-    }
-    return OQS_SUCCESS;
+   if(res == 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 
