@@ -159,6 +159,8 @@ typedef struct OQS_KEM {
 	size_t length_shared_secret;
 	/** The length, in bytes, of seeds for derandomized keypair generation for this KEM. */
 	size_t length_keypair_seed;
+	/** The length, in bytes, of seeds for derandomized encaps generation for this KEM. */
+	size_t length_encaps_seed;
 
 	/**
 	 * Derandomized keypair generation algorithm.
@@ -186,6 +188,21 @@ typedef struct OQS_KEM {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
+
+	/**
+	 * Derandomized encapsulation algorithm.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `ciphertext` and
+	 * `shared_secret`, based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_KEM_*_length_*`.
+	 *
+	 * @param[out] ciphertext The ciphertext (encapsulation) represented as a byte string.
+	 * @param[out] shared_secret The shared secret represented as a byte string.
+	 * @param[in] public_key The public key represented as a byte string.
+	 * @param[in] seed The input randomness represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*encaps_derand)(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed);
 
 	/**
 	 * Encapsulation algorithm.
@@ -256,6 +273,22 @@ OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_ke
  * @return OQS_SUCCESS or OQS_ERROR
  */
 OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
+
+/**
+ * Derandomized encapsulation algorithm.
+ *
+ * Caller is responsible for allocating sufficient memory for `ciphertext` and
+ * `shared_secret`, based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_KEM_*_length_*`.
+ *
+ * @param[in] kem The OQS_KEM object representing the KEM.
+ * @param[out] ciphertext The ciphertext (encapsulation) represented as a byte string.
+ * @param[out] shared_secret The shared secret represented as a byte string.
+ * @param[in] public_key The public key represented as a byte string.
+ * @param[in] seed The input randomness represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_KEM_encaps_derand(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed);
 
 /**
  * Encapsulation algorithm.
