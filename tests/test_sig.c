@@ -127,8 +127,12 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	/* testing signing with context, if supported */
 	OQS_randombytes(ctx, 257);
 	if (sig->sig_with_ctx_support) {
-		if (strncmp(sig->method_name, "SLH_DSA", 7)) {
-			for (size_t i = 0; i < 256; ++i) {
+		size_t ctx_step = 1;
+		if (!strncmp(sig->method_name, "SLH_DSA", 7)) {
+			ctx_step = 64;
+		}
+		for (size_t i = 0; i < 256; ++i) {
+			if(i % ctx_step == 0 || i == 255){
 				rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, i, secret_key);
 				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 				if (rc != OQS_SUCCESS) {

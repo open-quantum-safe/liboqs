@@ -2349,11 +2349,6 @@ OQS_STATUS sig_kat(const char *method_name, bool all) {
 		goto err;
 	}
 
-	// temporarily disabled slh dsa testing to reduce time taken on actions
-	if (!(strncmp(method_name, "SLH_DSA", 7))) {
-		max_count = 1;
-	}
-
 	for (size_t count = 0; count < max_count; ++count) {
 		fprintf(fh, "count = %zu\n", count);
 		OQS_randombytes(seed, 48);

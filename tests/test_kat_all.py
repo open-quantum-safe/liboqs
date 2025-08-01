@@ -25,8 +25,8 @@ def test_kem(kem_name):
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
     kats = helpers.get_kats("sig")
-    # slh dsa disabled for now until kat hashes added
-    if ("SLH_DSA" in sig_name): pytest.skip('Not enabled')
+    # slh dsa will run ACVP vectors instead
+    if ("SLH_DSA" in sig_name): pytest.skip('slhdsa not enabled for KATs')
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_sig'), sig_name, '--all'],
