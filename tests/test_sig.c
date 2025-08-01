@@ -21,9 +21,10 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
-static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2]) {
+static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2], bool derand) {
 
 	OQS_SIG *sig = NULL;
+	uint8_t *seed = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
 	uint8_t *message = NULL;
@@ -54,7 +55,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	}
 
 	printf("================================================================================\n");
-	printf("Sample computation for signature %s\n", sig->method_name);
+	printf("Sample computation for signature %s%s\n", sig->method_name, derand ? " (derandomized)" : "");
 	if (sig->euf_cma) {
 		printf("Testing EUF-CMA by flipping %s bits of the message\n", bitflips_as_str[0]);
 	}
@@ -94,13 +95,45 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	OQS_randombytes(message, message_len);
 	OQS_TEST_CT_DECLASSIFY(message, message_len);
 
-	rc = OQS_SIG_keypair(sig, public_key, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
-		goto err;
+	if (derand) {
+		// Only Dilithium3 supports derand for now
+		if (strcmp(method_name, OQS_SIG_alg_dilithium_3) == 0) {
+			seed = OQS_MEM_malloc(32);
+			if (seed == NULL) {
+				fprintf(stderr, "ERROR: OQS_MEM_malloc failed for seed\n");
+				goto err;
+			}
+			OQS_randombytes(seed, 32);
+			
+#ifdef OQS_ENABLE_SIG_dilithium_3
+// TODO: remove this when implemented for the other algos
+			extern OQS_STATUS OQS_SIG_dilithium_3_seed_keypair(uint8_t *public_key, 
+			                                                      uint8_t *secret_key, 
+			                                                      const uint8_t *seed);
+			rc = OQS_SIG_dilithium_3_seed_keypair(public_key, secret_key, seed);
+#else
+			rc = OQS_ERROR;
+#endif
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			if (rc != OQS_SUCCESS) {
+				fprintf(stderr, "ERROR: Dilithium3 derand keypair failed\n");
+				goto err;
+			}
+			OQS_MEM_secure_free(seed, 32);
+		} else {
+			// For other algorithms, skip derand test
+			printf("Skipping derand test for %s (not implemented)\n", method_name);
+			ret = OQS_SUCCESS;
+			goto cleanup;
+		}
+	} else {
+		rc = OQS_SIG_keypair(sig, public_key, secret_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
+			goto err;
+		}
 	}
-
 	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
@@ -252,10 +285,13 @@ struct thread_data {
 };
 
 void *test_wrapper(void *arg) {
-	struct thread_data *td = arg;
-	td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips);
-	OQS_thread_stop();
-	return NULL;
+    struct thread_data *td = arg;
+    td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips, false);
+    if (td->rc == OQS_SUCCESS) {
+        td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips, true);
+    }
+    OQS_thread_stop();
+    return NULL;
 }
 #endif
 
@@ -342,10 +378,16 @@ int main(int argc, char **argv) {
 		pthread_join(thread, NULL);
 		rc = td.rc;
 	} else {
-		rc = sig_test_correctness(alg_name, bitflips_all, bitflips);
+		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, false);
+		if (rc == OQS_SUCCESS) {
+		    rc = sig_test_correctness(alg_name, bitflips_all, bitflips, true);
+		}
 	}
 #else
-	rc = sig_test_correctness(alg_name, bitflips_all, bitflips);
+	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, false);
+	if (rc == OQS_SUCCESS) {
+	    rc = sig_test_correctness(alg_name, bitflips_all, bitflips, true);
+	}
 #endif
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();
