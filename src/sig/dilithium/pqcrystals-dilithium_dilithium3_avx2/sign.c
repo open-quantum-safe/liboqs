@@ -56,6 +56,7 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
 }
 #endif
 
+
 /*************************************************
 * Name:        crypto_sign_keypair
 *
@@ -69,8 +70,26 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
 * Returns 0 (success)
 **************************************************/
 int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+  uint8_t seed[SEEDBYTES];
+  randombytes(seed, SEEDBYTES);
+  return crypto_sign_seed_keypair(pk, sk, seed);
+}
+
+
+/*************************************************
+* Name:        crypto_sign_seed_keypair
+*
+* Description: Generates public and private key from a seed.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key
+*              - uint8_t *sk: pointer to output private key
+*              - const uint8_t *seed: pointer to input seed
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_seed_keypair(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
   unsigned int i;
-  uint8_t seedbuf[2*SEEDBYTES + CRHBYTES];
+  uint8_t expanded_seedbuf[2*SEEDBYTES + CRHBYTES];
   const uint8_t *rho, *rhoprime, *key;
 #ifdef DILITHIUM_USE_AES
   uint64_t nonce;
@@ -83,10 +102,9 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   polyveck s2;
   poly t1, t0;
 
-  /* Get randomness for rho, rhoprime and key */
-  randombytes(seedbuf, SEEDBYTES);
-  shake256(seedbuf, 2*SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES);
-  rho = seedbuf;
+  /* Expand seed, which is randomness for rho, rhoprime and key */
+  shake256(expanded_seedbuf, 2*SEEDBYTES + CRHBYTES, seed, SEEDBYTES);
+  rho = expanded_seedbuf;
   rhoprime = rho + SEEDBYTES;
   key = rhoprime + CRHBYTES;
 
