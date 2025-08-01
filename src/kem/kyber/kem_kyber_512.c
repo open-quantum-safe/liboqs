@@ -28,7 +28,7 @@ OQS_KEM *OQS_KEM_kyber_512_new(void) {
 	kem->keypair = OQS_KEM_kyber_512_keypair;
 	kem->keypair_derand = OQS_KEM_kyber_512_keypair_derand;
 	kem->encaps = OQS_KEM_kyber_512_encaps;
-	kem->encaps_derand = OQS_KEM_kyber_512_encaps_derand;
+    kem->encaps_derand = OQS_KEM_kyber_512_encaps_derand;
 	kem->decaps = OQS_KEM_kyber_512_decaps;
 
 	return kem;

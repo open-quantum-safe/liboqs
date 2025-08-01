@@ -28,7 +28,7 @@ OQS_KEM *OQS_KEM_classic_mceliece_8192128_new(void) {
 	kem->keypair = OQS_KEM_classic_mceliece_8192128_keypair;
 	kem->keypair_derand = OQS_KEM_classic_mceliece_8192128_keypair_derand;
 	kem->encaps = OQS_KEM_classic_mceliece_8192128_encaps;
-	kem->encaps_derand = OQS_KEM_classic_mceliece_8192128_encaps_derand;
+    kem->encaps_derand = OQS_KEM_classic_mceliece_8192128_encaps_derand;
 	kem->decaps = OQS_KEM_classic_mceliece_8192128_decaps;
 
 	return kem;
