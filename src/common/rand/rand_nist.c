@@ -27,6 +27,27 @@ You are solely responsible for determining the appropriateness of using and dist
 #include <oqs/aes.h>
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+#define BSWAP32(i) __builtin_bswap32((i))
+#elif defined(_MSC_VER)
+#define BSWAP32(i) _byteswap_ulong((i))
+#else
+#define BSWAP32(i) ((((i) >> 24) & 0xff) | (((i) >> 8) & 0xff00) | (((i) & 0xff00) << 8) | ((i) << 24))
+#endif
+
+/* Add to the last 4 bytes of DRBG_ctx.V, represented in Big-Endian format */
+#ifdef LITTLE_ENDIAN
+#define NIST_DRBG_ADD32(V, n)                                                  \
+  do {                                                                         \
+    ((uint32_t *)V)[3] = BSWAP32(BSWAP32(((uint32_t *)V)[3]) + (n));           \
+  } while (0)
+#else
+#define NIST_DRBG_ADD32(V, n)                                                  \
+  do {                                                                         \
+    ((uint32_t *)V)[3] = ((uint32_t *)V)[3] + (n);                             \
+  } while (0)
+#endif
+
 void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen);
 
 static OQS_NIST_DRBG_struct DRBG_ctx;
@@ -77,16 +98,14 @@ void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 	unsigned char block[16];
 	int i = 0;
 
+  if (DRBG_ctx.reseed_counter > OQS_RAND_NIST_RESEED_INTERVAL ||
+      xlen > OQS_RAND_NIST_MAX_REQUEST_SIZE) {
+      exit(EXIT_FAILURE);
+  }
+
 	while (xlen > 0) {
 		//increment V
-		for (int j = 15; j >= 0; j--) {
-			if (DRBG_ctx.V[j] == 0xff) {
-				DRBG_ctx.V[j] = 0x00;
-			} else {
-				DRBG_ctx.V[j]++;
-				break;
-			}
-		}
+		NIST_DRBG_ADD32(DRBG_ctx.V, 1);
 		AES256_ECB(DRBG_ctx.Key, DRBG_ctx.V, block);
 		if (xlen > 15) {
 			memcpy(x + i, block, 16);
@@ -124,14 +143,7 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 
 	for (int i = 0; i < 3; i++) {
 		//increment V
-		for (int j = 15; j >= 0; j--) {
-			if (V[j] == 0xff) {
-				V[j] = 0x00;
-			} else {
-				V[j]++;
-				break;
-			}
-		}
+		NIST_DRBG_ADD32(V, 1);
 
 		AES256_ECB(Key, V, temp + 16 * i);
 	}
