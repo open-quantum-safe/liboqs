@@ -106,11 +106,11 @@ jobs:
             runner: ubuntu-24.04-arm
             container: openquantumsafe/ci-ubuntu-latest:latest
             PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
-            CMAKE_ARGS: -DOQS_MINIMAL_BUILD=SIG_SLH_DSA
+            CMAKE_ARGS: -DOQS_MINIMAL_BUILD=SIG_slh_dsa
           - name: alpine-slhdsa
             runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_MINIMAL_BUILD=SIG_SLH_DSA
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_MINIMAL_BUILD=SIG_slh_dsa
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
     runs-on: ${{ matrix.runner }}
     container:

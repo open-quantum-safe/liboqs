@@ -17,7 +17,7 @@ function(filter_algs alglist)
           # Case 1, family name
 	  foreach (_alg ${ARGV0})
              string(TOUPPER ${_alg} upalg)
-	     if("OQS_ENABLE_${upalg}" MATCHES "^${_var}")
+	     if("OQS_ENABLE_${upalg}" MATCHES "^${_var}" OR  "^${_var}" MATCHES "OQS_ENABLE_${_alg}")
                  set(${_var} ON PARENT_SCOPE)
              endif()
           endforeach()

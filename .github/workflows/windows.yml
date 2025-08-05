@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
       - name: Generate Project
-        run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_MINIMAL_BUILD=SIG_SLH_DSA .
+        run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_MINIMAL_BUILD=SIG_slh_dsa .
       - name: Build Project  
         run: cmake --build build
 
@@ -72,7 +72,7 @@ jobs:
           python-version: '3.12'
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # pin@v3
       - name: Generate Project
-        run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_MINIMAL_BUILD=SIG_SLH_DSA .
+        run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_MINIMAL_BUILD=SIG_slh_dsa .
       - name: Build Project
         run: cmake --build build
       - name: Test dependencies
