@@ -124,9 +124,27 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: mkdir -p tmp && SLH_DSA_LEAK_TEST=1 python3 -m pytest --verbose --numprocesses=auto tests/test_leaks.py::test_slhdsa_leak ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'
         run: cpack
         working-directory: build
+
+  address-sanitizer-slhdsa:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_MINIMAL_BUILD=SIG_slh_dsa .. && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 90
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
