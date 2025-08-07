@@ -15,6 +15,7 @@ import sys
 import json
 import platform
 import update_upstream_alg_docs
+import copy_from_slh_dsa_c
 
 # kats of all algs
 kats = {}
@@ -835,6 +836,9 @@ def verify_from_upstream():
 non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime'])
 
 if args.operation == "copy":
+    # copy_from_slh_dsa_c will modify slh_dsa.yml before copy_from_upstream modifies md files
+    copy_from_slh_dsa_c.main()
+    os.chdir(os.path.join(os.environ['LIBOQS_DIR'],"scripts","copy_from_upstream"))
     copy_from_upstream()
 elif args.operation == "libjade":
     copy_from_libjade()
