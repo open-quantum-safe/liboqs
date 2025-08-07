@@ -126,10 +126,6 @@ jobs:
       - name: Run tests
         timeout-minutes: 90
         run: mkdir -p tmp && SLH_DSA_LEAK_TEST=1 python3 -m pytest --verbose --numprocesses=auto tests/test_leaks.py::test_slhdsa_leak ${{ matrix.PYTEST_ARGS }}
-      - name: Package .deb
-        if: matrix.name == 'jammy-std-openssl3'
-        run: cpack
-        working-directory: build
 
   address-sanitizer-slhdsa:
     strategy:

@@ -128,8 +128,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	OQS_randombytes(ctx, 257);
 	if (sig->sig_with_ctx_support) {
 		size_t ctx_step = 1;
+		// Only do a small fraction of the context sizes for SLH_DSA for efficiency purposes
 		if (!strncmp(sig->method_name, "SLH_DSA", 7)) {
-			ctx_step = 64;
+			ctx_step = 61; // using a prime slightly smaller than a power of 2 to avoid only testing word/block aligned values
 		}
 		for (size_t i = 0; i < 256; ++i) {
 			if (i % ctx_step == 0 || i == 255) {
