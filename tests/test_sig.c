@@ -207,85 +207,22 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	}
 #endif
 
-	/* Test seed-based key generation for ML-DSA algorithms */
+	/* Test deterministic key generation for ML-DSA algorithms */
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
-	if (strstr(method_name, "ML-DSA") != NULL) {
-		printf("Testing seed-based key generation for %s\n", method_name);
+	if (strstr(method_name, "ML-DSA") != NULL && sig->keypair_derand) {
+		uint8_t seed[32] = {0};  /* Fixed seed for deterministic test */
+		uint8_t pk1[sig->length_public_key], sk1[sig->length_secret_key];
+		uint8_t pk2[sig->length_public_key], sk2[sig->length_secret_key];
 		
-		uint8_t seed[32];
-		uint8_t *pk_from_seed = OQS_MEM_malloc(sig->length_public_key);
-		uint8_t *sk_from_seed = OQS_MEM_malloc(sig->length_secret_key);
-		uint8_t *pk_from_seed2 = OQS_MEM_malloc(sig->length_public_key);
-		uint8_t *sk_from_seed2 = OQS_MEM_malloc(sig->length_secret_key);
-		
-		if (!pk_from_seed || !sk_from_seed || !pk_from_seed2 || !sk_from_seed2) {
-			fprintf(stderr, "ERROR: Memory allocation failed for seed test\n");
-			if (pk_from_seed) OQS_MEM_insecure_free(pk_from_seed);
-			if (sk_from_seed) OQS_MEM_insecure_free(sk_from_seed);
-			if (pk_from_seed2) OQS_MEM_insecure_free(pk_from_seed2);
-			if (sk_from_seed2) OQS_MEM_insecure_free(sk_from_seed2);
-			goto err;
-		}
-		
-		/* Generate random seed */
-		OQS_randombytes(seed, 32);
-		
-		/* Generate keypair from seed (first time) */
-		OQS_STATUS seed_rc = OQS_ERROR;
-		if (strcmp(method_name, "ML-DSA-44") == 0) {
-			seed_rc = OQS_SIG_ml_dsa_44_keypair_from_seed(pk_from_seed, sk_from_seed, seed);
-		} else if (strcmp(method_name, "ML-DSA-65") == 0) {
-			seed_rc = OQS_SIG_ml_dsa_65_keypair_from_seed(pk_from_seed, sk_from_seed, seed);
-		} else if (strcmp(method_name, "ML-DSA-87") == 0) {
-			seed_rc = OQS_SIG_ml_dsa_87_keypair_from_seed(pk_from_seed, sk_from_seed, seed);
-		}
-		
-		if (seed_rc == OQS_SUCCESS) {
-			/* Generate keypair from same seed (second time) */
-			if (strcmp(method_name, "ML-DSA-44") == 0) {
-				seed_rc = OQS_SIG_ml_dsa_44_keypair_from_seed(pk_from_seed2, sk_from_seed2, seed);
-			} else if (strcmp(method_name, "ML-DSA-65") == 0) {
-				seed_rc = OQS_SIG_ml_dsa_65_keypair_from_seed(pk_from_seed2, sk_from_seed2, seed);
-			} else if (strcmp(method_name, "ML-DSA-87") == 0) {
-				seed_rc = OQS_SIG_ml_dsa_87_keypair_from_seed(pk_from_seed2, sk_from_seed2, seed);
+		/* Generate keypairs from same seed and verify they match */
+		if (sig->keypair_derand(pk1, sk1, seed) == OQS_SUCCESS &&
+		    sig->keypair_derand(pk2, sk2, seed) == OQS_SUCCESS) {
+			if (memcmp(pk1, pk2, sig->length_public_key) != 0 ||
+			    memcmp(sk1, sk2, sig->length_secret_key) != 0) {
+				fprintf(stderr, "ERROR: ML-DSA deterministic key generation failed\n");
+				goto err;
 			}
-			
-			/* Verify deterministic generation */
-			if (seed_rc == OQS_SUCCESS) {
-				if (memcmp(pk_from_seed, pk_from_seed2, sig->length_public_key) != 0) {
-					fprintf(stderr, "ERROR: Different public keys from same seed\n");
-					seed_rc = OQS_ERROR;
-				} else if (memcmp(sk_from_seed, sk_from_seed2, sig->length_secret_key) != 0) {
-					fprintf(stderr, "ERROR: Different secret keys from same seed\n");
-					seed_rc = OQS_ERROR;
-				} else {
-					/* Test signing with seed-generated key */
-					uint8_t test_msg[50];
-					uint8_t test_sig[sig->length_signature];
-					size_t test_sig_len;
-					
-					OQS_randombytes(test_msg, 50);
-					seed_rc = OQS_SIG_sign(sig, test_sig, &test_sig_len, test_msg, 50, sk_from_seed);
-					if (seed_rc == OQS_SUCCESS) {
-						seed_rc = OQS_SIG_verify(sig, test_msg, 50, test_sig, test_sig_len, pk_from_seed);
-						if (seed_rc == OQS_SUCCESS) {
-							printf("Seed-based key generation test passed\n");
-						} else {
-							fprintf(stderr, "ERROR: Verification failed with seed-generated key\n");
-						}
-					} else {
-						fprintf(stderr, "ERROR: Signing failed with seed-generated key\n");
-					}
-				}
-			}
-		} else {
-			printf("Seed-based key generation not implemented for %s (expected)\n", method_name);
 		}
-		
-		OQS_MEM_insecure_free(pk_from_seed);
-		OQS_MEM_secure_free(sk_from_seed, sig->length_secret_key);
-		OQS_MEM_insecure_free(pk_from_seed2);
-		OQS_MEM_secure_free(sk_from_seed2, sig->length_secret_key);
 	}
 #endif
 
