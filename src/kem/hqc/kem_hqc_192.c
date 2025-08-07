@@ -23,10 +23,12 @@ OQS_KEM *OQS_KEM_hqc_192_new(void) {
 	kem->length_ciphertext = OQS_KEM_hqc_192_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_hqc_192_length_shared_secret;
 	kem->length_keypair_seed = OQS_KEM_hqc_192_length_keypair_seed;
+	kem->length_encaps_seed = OQS_KEM_hqc_192_length_encaps_seed;
 
 	kem->keypair = OQS_KEM_hqc_192_keypair;
 	kem->keypair_derand = OQS_KEM_hqc_192_keypair_derand;
 	kem->encaps = OQS_KEM_hqc_192_encaps;
+	kem->encaps_derand = OQS_KEM_hqc_192_encaps_derand;
 	kem->decaps = OQS_KEM_hqc_192_decaps;
 
 	return kem;
@@ -45,6 +47,14 @@ OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair_derand(uint8_t *public_key, uint8_t *
 
 OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_keypair(public_key, secret_key);
+}
+
+OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
+	(void)ciphertext;
+	(void)shared_secret;
+	(void)public_key;
+	(void)seed;
+	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {

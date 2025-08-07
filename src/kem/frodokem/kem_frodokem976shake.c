@@ -23,10 +23,12 @@ OQS_KEM *OQS_KEM_frodokem_976_shake_new(void) {
 	kem->length_ciphertext = OQS_KEM_frodokem_976_shake_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_frodokem_976_shake_length_shared_secret;
 	kem->length_keypair_seed = OQS_KEM_frodokem_976_shake_length_keypair_seed;
+	kem->length_encaps_seed = OQS_KEM_frodokem_976_shake_length_encaps_seed;
 
 	kem->keypair = OQS_KEM_frodokem_976_shake_keypair;
 	kem->keypair_derand = OQS_KEM_frodokem_976_shake_keypair_derand;
 	kem->encaps = OQS_KEM_frodokem_976_shake_encaps;
+	kem->encaps_derand = OQS_KEM_frodokem_976_shake_encaps_derand;
 	kem->decaps = OQS_KEM_frodokem_976_shake_decaps;
 
 	return kem;

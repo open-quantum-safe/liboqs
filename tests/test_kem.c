@@ -118,7 +118,8 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	uint8_t *ciphertext = NULL;
 	uint8_t *shared_secret_e = NULL;
 	uint8_t *shared_secret_d = NULL;
-	uint8_t *seed = NULL;
+	uint8_t *keypair_seed = NULL;
+	uint8_t *encaps_seed = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
 
@@ -145,7 +146,8 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	ciphertext = OQS_MEM_malloc(kem->length_ciphertext + 2 * sizeof(magic_t));
 	shared_secret_e = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
 	shared_secret_d = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
-	seed = malloc(kem->length_keypair_seed + 2 * sizeof(magic_t));
+	keypair_seed = malloc(kem->length_keypair_seed + 2 * sizeof(magic_t));
+	encaps_seed = malloc(kem->length_encaps_seed + 2 * sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
@@ -158,14 +160,16 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	memcpy(ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d, magic.val, sizeof(magic_t));
-	memcpy(seed, magic.val, sizeof(magic_t));
+	memcpy(keypair_seed, magic.val, sizeof(magic_t));
+	memcpy(encaps_seed, magic.val, sizeof(magic_t));
 
 	public_key += sizeof(magic_t);
 	secret_key += sizeof(magic_t);
 	ciphertext += sizeof(magic_t);
 	shared_secret_e += sizeof(magic_t);
 	shared_secret_d += sizeof(magic_t);
-	seed += sizeof(magic_t);
+	keypair_seed += sizeof(magic_t);
+	encaps_seed += sizeof(magic_t);
 
 	// and after
 	memcpy(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
@@ -173,15 +177,16 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	memcpy(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
-	memcpy(seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
+	memcpy(keypair_seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
+	memcpy(encaps_seed + kem->length_encaps_seed, magic.val, sizeof(magic_t));
 
 
 	if (derand) {
 		// On some systems, getentropy fails if given a zero-length array
 		if (kem->length_keypair_seed > 0) {
-			OQS_randombytes(seed, kem->length_keypair_seed);
+			OQS_randombytes(keypair_seed, kem->length_keypair_seed);
 		}
-		rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, seed);
+		rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, keypair_seed);
 		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (kem->length_keypair_seed == 0) {
 			// If length_keypair_seed is set to 0 for this KEM scheme, a failure is expected
@@ -208,11 +213,35 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	}
 
 	OQS_TEST_CT_DECLASSIFY(public_key, kem->length_public_key);
-	rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_encaps failed\n");
-		goto err;
+	if (derand) {
+		// On some systems, getentropy fails if given a zero-length array
+		if (kem->length_encaps_seed > 0) {
+			OQS_randombytes(encaps_seed, kem->length_encaps_seed);
+		}
+		rc = OQS_KEM_encaps_derand(kem, ciphertext, shared_secret_e, public_key, encaps_seed)
+		     OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (kem->length_encaps_seed == 0) {
+			// If length_encaps_seed is set to 0 for this KEM scheme, a failure is expected
+			if (rc != OQS_ERROR) {
+				fprintf(stderr, "ERROR: OQS_KEM_encaps_derand succeeded but expected a failure\n");
+				goto err;
+			}
+			printf("OQS_KEM_encaps_derand failed, as expected\n");
+			ret = OQS_SUCCESS;
+			goto cleanup;
+		} else {
+			if (rc != OQS_SUCCESS) {
+				fprintf(stderr, "ERROR: OQS_KEM_encaps_derand failed\n");
+				goto err;
+			}
+		}
+	} else {
+		rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_KEM_encaps failed\n");
+			goto err;
+		}
 	}
 
 	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
@@ -259,13 +288,15 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
-	rv |= memcmp(seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
+	rv |= memcmp(keypair_seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
+	rv |= memcmp(encaps_seed + kem->length_encaps_seed, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(ciphertext - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(keypair_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(encaps_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv != 0) {
 		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
@@ -294,8 +325,11 @@ cleanup:
 	if (ciphertext) {
 		OQS_MEM_insecure_free(ciphertext - sizeof(magic_t));
 	}
-	if ((seed) && (kem != NULL)) {
-		OQS_MEM_secure_free(seed - sizeof(magic_t), kem->length_keypair_seed + 2 * sizeof(magic_t));
+	if ((keypair_seed) && (kem != NULL)) {
+		OQS_MEM_secure_free(keypair_seed - sizeof(magic_t), kem->length_keypair_seed + 2 * sizeof(magic_t));
+	}
+	if ((encaps_seed) && (kem != NULL)) {
+		OQS_MEM_secure_free(encaps_seed - sizeof(magic_t), kem->length_encaps_seed + 2 * sizeof(magic_t));
 	}
 	OQS_KEM_free(kem);
 
