@@ -51,6 +51,9 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
   }
 }
 
+// Forward declaration
+static int crypto_sign_keypair_internal(uint8_t *pk, uint8_t *sk, const uint8_t seed[SEEDBYTES]);
+
 /*************************************************
 * Name:        crypto_sign_keypair
 *
@@ -63,7 +66,8 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+// Internal function for keypair generation
+static int crypto_sign_keypair_internal(uint8_t *pk, uint8_t *sk, const uint8_t seed[SEEDBYTES]) {
   unsigned int i;
   uint8_t seedbuf[2*SEEDBYTES + CRHBYTES];
   const uint8_t *rho, *rhoprime, *key;
@@ -72,11 +76,11 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   polyveck s2;
   poly t1, t0;
 
-  /* Get randomness for rho, rhoprime and key */
-  randombytes(seedbuf, SEEDBYTES);
-  seedbuf[SEEDBYTES+0] = K;
-  seedbuf[SEEDBYTES+1] = L;
-  shake256(seedbuf, 2*SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES+2);
+  /* Expand seed to rho, rhoprime and key */
+  memcpy(seedbuf, seed, SEEDBYTES);
+  seedbuf[SEEDBYTES] = K;
+  seedbuf[SEEDBYTES + 1] = L;
+  shake256(seedbuf, 2*SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
   rho = seedbuf;
   rhoprime = rho + SEEDBYTES;
   key = rhoprime + CRHBYTES;
@@ -102,6 +106,9 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 #else
 #error
 #endif
+
+  /* Clear rhoprime immediately after use */
+  OQS_MEM_cleanse((uint8_t*)(seedbuf + SEEDBYTES), CRHBYTES);
 
   /* Pack secret vectors */
   for(i = 0; i < L; i++)
@@ -133,7 +140,73 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   /* Compute H(rho, t1) and store in secret key */
   shake256(sk + 2*SEEDBYTES, TRBYTES, pk, CRYPTO_PUBLICKEYBYTES);
 
+  /* Clean up sensitive data */
+  OQS_MEM_cleanse(seedbuf, sizeof(seedbuf));
+  OQS_MEM_cleanse(&s1, sizeof(s1));
+  OQS_MEM_cleanse(&s2, sizeof(s2));
+  OQS_MEM_cleanse(rowbuf, sizeof(rowbuf));
+  OQS_MEM_cleanse(&t0, sizeof(t0));
+  OQS_MEM_cleanse(&t1, sizeof(t1));
+
   return 0;
+}
+
+/*************************************************
+* Name:        crypto_sign_keypair
+*
+* Description: Generates public and secret key for the ML-DSA-65 signature scheme.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output secret key (allocated
+*                             array of CRYPTO_SECRETKEYBYTES bytes)
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+  uint8_t seed[SEEDBYTES];
+  int ret;
+
+  /* Get randomness for seed */
+  randombytes(seed, SEEDBYTES);
+  
+  /* Generate keypair using internal function */
+  ret = crypto_sign_keypair_internal(pk, sk, seed);
+  
+  /* Clean up sensitive data */
+  OQS_MEM_cleanse(seed, sizeof(seed));
+  
+  return ret;
+}
+/*************************************************
+* Name:        crypto_sign_keypair_derand
+*
+* Description: Generates public and private key from seed.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output private key (allocated
+*                             array of CRYPTO_SECRETKEYBYTES bytes)
+*              - const uint8_t seed[32]: pointer to input seed
+*
+* Returns 0 (success)
+**************************************************/
+/*************************************************
+* Name:        crypto_sign_keypair_derand
+*
+* Description: Generates public and secret key for the ML-DSA-65 signature scheme.
+*              Deterministic version using a seed.
+*
+* Arguments:   - uint8_t *pk: pointer to output public key (allocated
+*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output secret key (allocated
+*                             array of CRYPTO_SECRETKEYBYTES bytes)
+*              - const uint8_t seed[SEEDBYTES]: pointer to seed (32 bytes)
+*
+* Returns 0 (success)
+**************************************************/
+int crypto_sign_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t seed[SEEDBYTES]) {
+  return crypto_sign_keypair_internal(pk, sk, seed);
 }
 
 /*************************************************
