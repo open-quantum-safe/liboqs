@@ -181,19 +181,6 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 /*************************************************
 * Name:        crypto_sign_keypair_derand
 *
-* Description: Generates public and private key from seed.
-*
-* Arguments:   - uint8_t *pk: pointer to output public key (allocated
-*                             array of CRYPTO_PUBLICKEYBYTES bytes)
-*              - uint8_t *sk: pointer to output private key (allocated
-*                             array of CRYPTO_SECRETKEYBYTES bytes)
-*              - const uint8_t seed[32]: pointer to input seed
-*
-* Returns 0 (success)
-**************************************************/
-/*************************************************
-* Name:        crypto_sign_keypair_derand
-*
 * Description: Generates public and secret key for the ML-DSA-87 signature scheme.
 *              Deterministic version using a seed.
 *
