@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <string.h>
+#include <oqs/common.h>
 #include "params.h"
 #include "sign.h"
 #include "packing.h"
@@ -9,18 +11,19 @@
 #include "fips202.h"
 
 /*************************************************
-* Name:        crypto_sign_keypair
+* Name:        crypto_sign_keypair_derand
 *
-* Description: Generates public and private key.
+* Description: Generates public and private key from a given seed.
 *
 * Arguments:   - uint8_t *pk: pointer to output public key (allocated
 *                             array of CRYPTO_PUBLICKEYBYTES bytes)
 *              - uint8_t *sk: pointer to output private key (allocated
 *                             array of CRYPTO_SECRETKEYBYTES bytes)
+*              - const uint8_t *seed: pointer to seed (of length SEEDBYTES)
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+int crypto_sign_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t seed[SEEDBYTES]) {
   uint8_t seedbuf[2*SEEDBYTES + CRHBYTES];
   uint8_t tr[TRBYTES];
   const uint8_t *rho, *rhoprime, *key;
@@ -28,8 +31,8 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   polyvecl s1, s1hat;
   polyveck s2, t1, t0;
 
-  /* Get randomness for rho, rhoprime and key */
-  randombytes(seedbuf, SEEDBYTES);
+  /* Copy provided seed instead of generating random bytes */
+  memcpy(seedbuf, seed, SEEDBYTES);
   seedbuf[SEEDBYTES+0] = K;
   seedbuf[SEEDBYTES+1] = L;
   shake256(seedbuf, 2*SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES+2);
@@ -63,7 +66,30 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   shake256(tr, TRBYTES, pk, CRYPTO_PUBLICKEYBYTES);
   pack_sk(sk, rho, tr, key, &t0, &s1, &s2);
 
+  /* Clean sensitive data from stack */
+  OQS_MEM_cleanse(seedbuf, sizeof(seedbuf));
+  OQS_MEM_cleanse(&s1, sizeof(s1));
+  OQS_MEM_cleanse(&s2, sizeof(s2));
+  OQS_MEM_cleanse(&s1hat, sizeof(s1hat));
+  OQS_MEM_cleanse(&t0, sizeof(t0));
+
   return 0;
+}
+
+int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+  uint8_t seed[SEEDBYTES];
+  int result;
+  
+  /* Get randomness for seed */
+  randombytes(seed, SEEDBYTES);
+  
+  /* Use deterministic key generation */
+  result = crypto_sign_keypair_derand(pk, sk, seed);
+  
+  /* Clean sensitive seed data from stack */
+  OQS_MEM_cleanse(seed, SEEDBYTES);
+  
+  return result;
 }
 
 /*************************************************

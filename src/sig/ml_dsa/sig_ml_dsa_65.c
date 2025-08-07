@@ -75,6 +75,12 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign(uint8_t *signature, size_t *signature_
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+	// FIPS 204 Section 3.6.2: Check signature length
+	if (signature_len != OQS_SIG_ml_dsa_65_length_signature) {
+		return OQS_ERROR;
+	}
+	// Note: Public key length check is implicitly done by unpack_pk function
+	
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -106,6 +112,12 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign_with_ctx_str(uint8_t *signature, size_
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
+	// FIPS 204 Section 3.6.2: Check signature length
+	if (signature_len != OQS_SIG_ml_dsa_65_length_signature) {
+		return OQS_ERROR;
+	}
+	// Note: Public key length check is implicitly done by unpack_pk function
+	
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
