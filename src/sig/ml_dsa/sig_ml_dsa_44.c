@@ -24,6 +24,7 @@ OQS_SIG *OQS_SIG_ml_dsa_44_new(void) {
 	sig->length_signature = OQS_SIG_ml_dsa_44_length_signature;
 
 	sig->keypair = OQS_SIG_ml_dsa_44_keypair;
+	sig->keypair_derand = OQS_SIG_ml_dsa_44_keypair_derand;
 	sig->sign = OQS_SIG_ml_dsa_44_sign;
 	sig->verify = OQS_SIG_ml_dsa_44_verify;
 	sig->sign_with_ctx_str = OQS_SIG_ml_dsa_44_sign_with_ctx_str;

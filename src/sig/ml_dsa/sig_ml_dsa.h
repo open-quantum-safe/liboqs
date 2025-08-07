@@ -17,8 +17,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_verify(const uint8_t *message, size_t messa
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
 
-// Seed-based key generation
-OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair_from_seed(uint8_t *public_key, uint8_t *secret_key, const uint8_t seed[32]);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 #endif
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_65)
@@ -33,8 +32,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify(const uint8_t *message, size_t messa
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
 
-// Seed-based key generation
-OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair_from_seed(uint8_t *public_key, uint8_t *secret_key, const uint8_t seed[32]);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 #endif
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_87)
@@ -49,8 +47,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_verify(const uint8_t *message, size_t messa
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
 
-// Seed-based key generation
-OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair_from_seed(uint8_t *public_key, uint8_t *secret_key, const uint8_t seed[32]);
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 #endif
 
 #endif
