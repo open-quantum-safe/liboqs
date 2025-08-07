@@ -31,7 +31,7 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair;
 	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
 	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps;
-    kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand;
+	kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand;
 	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps;
 
 	return kem;

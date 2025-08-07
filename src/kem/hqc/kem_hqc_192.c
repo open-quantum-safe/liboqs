@@ -28,7 +28,7 @@ OQS_KEM *OQS_KEM_hqc_192_new(void) {
 	kem->keypair = OQS_KEM_hqc_192_keypair;
 	kem->keypair_derand = OQS_KEM_hqc_192_keypair_derand;
 	kem->encaps = OQS_KEM_hqc_192_encaps;
-    kem->encaps_derand = OQS_KEM_hqc_192_encaps_derand;
+	kem->encaps_derand = OQS_KEM_hqc_192_encaps_derand;
 	kem->decaps = OQS_KEM_hqc_192_decaps;
 
 	return kem;
