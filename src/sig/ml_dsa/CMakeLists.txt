@@ -5,13 +5,6 @@
 
 set(_ML_DSA_OBJS "")
 
-if(OQS_ENABLE_SIG_ml_dsa_44 OR OQS_ENABLE_SIG_ml_dsa_65 OR OQS_ENABLE_SIG_ml_dsa_87)
-    add_library(ml_dsa_derand OBJECT ml_dsa_derand.c)
-    target_include_directories(ml_dsa_derand PRIVATE ${PROJECT_SOURCE_DIR}/src)
-    target_include_directories(ml_dsa_derand PRIVATE ${CMAKE_CURRENT_LIST_DIR})
-    set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_derand>)
-endif()
-
 if(OQS_ENABLE_SIG_ml_dsa_44)
     add_library(ml_dsa_44_ref OBJECT sig_ml_dsa_44.c pqcrystals-dilithium-standard_ml-dsa-44_ref/ntt.c pqcrystals-dilithium-standard_ml-dsa-44_ref/packing.c pqcrystals-dilithium-standard_ml-dsa-44_ref/poly.c pqcrystals-dilithium-standard_ml-dsa-44_ref/polyvec.c pqcrystals-dilithium-standard_ml-dsa-44_ref/reduce.c pqcrystals-dilithium-standard_ml-dsa-44_ref/rounding.c pqcrystals-dilithium-standard_ml-dsa-44_ref/sign.c pqcrystals-dilithium-standard_ml-dsa-44_ref/symmetric-shake.c)
     target_compile_options(ml_dsa_44_ref PUBLIC -DDILITHIUM_MODE=2)
