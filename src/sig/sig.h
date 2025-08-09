@@ -358,6 +358,21 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name);
 OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key);
 
 /**
+ * Deterministic keypair generation algorithm.
+ *
+ * Caller is responsible for allocating sufficient memory for `public_key` and
+ * `secret_key`, based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
+ * @param[out] public_key The public key represented as a byte string.
+ * @param[out] secret_key The secret key represented as a byte string.
+ * @param[in] seed The seed for deterministic generation.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_SIG_keypair_derand(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+
+/**
  * Signature generation algorithm.
  *
  * Caller is responsible for allocating sufficient memory for `signnature`,
