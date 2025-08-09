@@ -9,10 +9,13 @@ jobs:
   workflowcheck:
     name: Check validity of GitHub workflows
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - name: Install actionlint
+        run: |
+          bash <(curl -sSL https://raw.githubusercontent.com/rhysd/actionlint/2ab3a12c7848f6c15faca9a92612ef4261d0e370/scripts/download-actionlint.bash)
+          sudo mv ./actionlint /usr/local/bin/
       - name: Ensure GitHub actions are valid
         run: actionlint -shellcheck "" # run *without* shellcheck
 
@@ -91,6 +94,7 @@ jobs:
 
   cppcheck:
     name: Check C++ linking with example program
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
@@ -159,13 +163,14 @@ jobs:
 
   nixflakecheck:
     name: Check that Nix flake has correct syntax and can build
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     steps:
       - uses: DeterminateSystems/nix-installer-action@90bb610b90bf290cad97484ba341453bd1cbefea # v19
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Check devShell
-        run: nix develop --command echo 
+        run: nix develop --command echo
       - name: Check flake syntax
         run: nix flake check --no-build # check for accurate syntax
       - name: Check that the flake builds
