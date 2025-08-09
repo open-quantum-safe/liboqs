@@ -47,8 +47,6 @@ int crypto_sign_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t seed[SEED
   polyvecl_uniform_eta(&s1, rhoprime, 0);
   polyveck_uniform_eta(&s2, rhoprime, L);
 
-  /* Clear rhoprime immediately after use */
-  OQS_MEM_cleanse((uint8_t*)(seedbuf + SEEDBYTES), CRHBYTES);
 
   /* Matrix-vector multiplication */
   s1hat = s1;

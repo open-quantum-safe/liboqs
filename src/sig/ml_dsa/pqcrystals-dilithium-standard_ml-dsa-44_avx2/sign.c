@@ -123,8 +123,6 @@ static int crypto_sign_keypair_internal(uint8_t *pk, uint8_t *sk, const uint8_t 
 #error
 #endif
 
-  /* Clear rhoprime immediately after use */
-  OQS_MEM_cleanse((uint8_t*)(seedbuf + SEEDBYTES), CRHBYTES);
 
   /* Pack secret vectors */
   for(i = 0; i < L; i++)

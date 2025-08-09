@@ -29,6 +29,9 @@ extern int pqcrystals_ml_dsa_87_avx2_keypair_derand(uint8_t *pk, uint8_t *sk, co
 #if defined(OQS_ENABLE_SIG_ml_dsa_44)
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+    if (public_key == NULL || secret_key == NULL || seed == NULL) {
+        return OQS_ERROR;
+    }
     int ret;
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_avx2)
     if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
@@ -46,6 +49,9 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair_derand(uint8_t *public_key, uint8_t
 #if defined(OQS_ENABLE_SIG_ml_dsa_65)
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+    if (public_key == NULL || secret_key == NULL || seed == NULL) {
+        return OQS_ERROR;
+    }
     int ret;
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
     if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
@@ -63,6 +69,9 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair_derand(uint8_t *public_key, uint8_t
 #if defined(OQS_ENABLE_SIG_ml_dsa_87)
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+    if (public_key == NULL || secret_key == NULL || seed == NULL) {
+        return OQS_ERROR;
+    }
     int ret;
 #if defined(OQS_ENABLE_SIG_ml_dsa_87_avx2)
     if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
