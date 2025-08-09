@@ -104,26 +104,29 @@ def test_acvp_vec_kem_encdec_val(kem_name):
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
-def test_acvp_vec_sig_keygen(sig_name):
+@pytest.mark.parametrize('test_mode', ["keyGen", "keyGen_derand"], ids=["PRNG", "deterministic"])
+def test_acvp_vec_sig_keygen(sig_name, test_mode):
 
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if not(sig_name in fips_sig): pytest.skip("Not supported")
 
     with open(os.path.join('tests', ml_dsa_kg), 'r') as fp:
-        ml_sig_kg_acvp  = json.load(fp)
+        ml_sig_kg_acvp = json.load(fp)
 
         variantFound = False
         for variant in ml_sig_kg_acvp["testGroups"]:
             if variant["parameterSet"] == sig_name:
                 variantFound = True
-                for testCase in variant["tests"]:
+                test_cases = variant["tests"]
+                
+                for testCase in test_cases:
                     seed = testCase["seed"]
                     pk = testCase["pk"]
                     sk = testCase["sk"]
 
                     build_dir = helpers.get_current_build_dir_name()
                     helpers.run_subprocess(
-                        [f'{build_dir}/tests/vectors_sig', sig_name, "keyGen", seed, pk, sk]
+                        [f'{build_dir}/tests/vectors_sig', sig_name, test_mode, seed, pk, sk]
                     )
 
         assert(variantFound == True)

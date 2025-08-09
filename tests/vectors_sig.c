@@ -220,6 +220,78 @@ cleanup:
 	return ret;
 }
 
+static OQS_STATUS sig_kg_derand_vector(const char *method_name,
+                                       const uint8_t *seed,
+                                       const uint8_t *kg_pk, const uint8_t *kg_sk) {
+	FILE *fh = NULL;
+	OQS_SIG *sig = NULL;
+	uint8_t *public_key = NULL;
+	uint8_t *secret_key = NULL;
+	OQS_STATUS rc, ret = OQS_ERROR;
+
+	sig = OQS_SIG_new(method_name);
+	if (sig == NULL) {
+		printf("[vectors_sig] %s was not enabled at compile-time.\n", method_name);
+		goto algo_not_enabled;
+	}
+
+	if (!is_ml_dsa(method_name)) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: Only ML-DSA supported for keyGen_derand!\n", method_name);
+		goto err;
+	}
+
+	if (sig->keypair_derand == NULL) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: keypair_derand not available!\n", method_name);
+		goto err;
+	}
+
+	fh = stdout;
+
+	public_key = OQS_MEM_malloc(sig->length_public_key);
+	secret_key = OQS_MEM_malloc(sig->length_secret_key);
+	if ((public_key == NULL) || (secret_key == NULL)) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
+		goto err;
+	}
+
+	if ((seed == NULL) || (kg_pk == NULL) || (kg_sk == NULL)) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
+		goto err;
+	}
+
+	// Use keypair_derand for deterministic key generation
+	rc = sig->keypair_derand(public_key, secret_key, seed);
+	if (rc) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: keypair_derand failed!\n", method_name);
+		goto err;
+	}
+	fprintBstr(fh, "pk: ", public_key, sig->length_public_key);
+	fprintBstr(fh, "sk: ", secret_key, sig->length_secret_key);
+
+	if (!memcmp(public_key, kg_pk, sig->length_public_key) && !memcmp(secret_key, kg_sk, sig->length_secret_key)) {
+		ret = OQS_SUCCESS;
+	} else {
+		ret = OQS_ERROR;
+		fprintf(stderr, "[vectors_sig] %s ERROR: public key or private key doesn't match!\n", method_name);
+	}
+	goto cleanup;
+
+err:
+	ret = OQS_ERROR;
+	goto cleanup;
+
+algo_not_enabled:
+	ret = OQS_SUCCESS;
+
+cleanup:
+	if (sig != NULL) {
+		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
+	}
+	OQS_MEM_insecure_free(public_key);
+	OQS_SIG_free(sig);
+	return ret;
+}
+
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 static int sig_ver_vector(const char *method_name,
                           const uint8_t *sigVer_pk_bytes,
@@ -549,7 +621,7 @@ int main(int argc, char **argv) {
 		goto err;
 	}
 
-	if (!strcmp(test_name, "keyGen")) {
+	if (!strcmp(test_name, "keyGen") || !strcmp(test_name, "keyGen_derand")) {
 		if (argc != 6) {
 			valid_args = false;
 			goto err;
@@ -578,8 +650,11 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(kg_pk, kg_pk_bytes);
 		hexStringToByteArray(kg_sk, kg_sk_bytes);
 
-
-		rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
+		if (!strcmp(test_name, "keyGen_derand")) {
+			rc = sig_kg_derand_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
+		} else {
+			rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
+		}
 
 	} else if (!strcmp(test_name, "sigGen_int")) {
 		if (argc != 7) {
@@ -768,7 +843,7 @@ int main(int argc, char **argv) {
 #endif
 
 	} else {
-		printf("[vectors_sig] %s only keyGen/sigGen_int/sigGen_ext/sigVer_int/sigVer_ext supported!\n", alg_name);
+		printf("[vectors_sig] %s only keyGen/keyGen_derand/sigGen_int/sigGen_ext/sigVer_int/sigVer_ext supported!\n", alg_name);
 		goto err;
 	}
 	goto cleanup;

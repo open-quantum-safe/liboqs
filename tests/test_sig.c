@@ -10,6 +10,10 @@
 
 #include <oqs/oqs.h>
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
+#include <oqs/sig_ml_dsa.h>
+#endif
+
 #if OQS_USE_PTHREADS
 #include <pthread.h>
 #endif
@@ -200,6 +204,25 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	if (rv) {
 		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
+	}
+#endif
+
+	/* Test deterministic key generation for ML-DSA algorithms */
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
+	if (strstr(method_name, "ML-DSA") != NULL && sig->keypair_derand) {
+		uint8_t seed[32] = {0};  /* Fixed seed for deterministic test */
+		uint8_t pk1[sig->length_public_key], sk1[sig->length_secret_key];
+		uint8_t pk2[sig->length_public_key], sk2[sig->length_secret_key];
+		
+		/* Generate keypairs from same seed and verify they match */
+		if (sig->keypair_derand(pk1, sk1, seed) == OQS_SUCCESS &&
+		    sig->keypair_derand(pk2, sk2, seed) == OQS_SUCCESS) {
+			if (memcmp(pk1, pk2, sig->length_public_key) != 0 ||
+			    memcmp(sk1, sk2, sig->length_secret_key) != 0) {
+				fprintf(stderr, "ERROR: ML-DSA deterministic key generation failed\n");
+				goto err;
+			}
+		}
 	}
 #endif
 

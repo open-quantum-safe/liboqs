@@ -24,6 +24,7 @@ OQS_SIG *OQS_SIG_ml_dsa_65_new(void) {
 	sig->length_signature = OQS_SIG_ml_dsa_65_length_signature;
 
 	sig->keypair = OQS_SIG_ml_dsa_65_keypair;
+	sig->keypair_derand = OQS_SIG_ml_dsa_65_keypair_derand;
 	sig->sign = OQS_SIG_ml_dsa_65_sign;
 	sig->verify = OQS_SIG_ml_dsa_65_verify;
 	sig->sign_with_ctx_str = OQS_SIG_ml_dsa_65_sign_with_ctx_str;
@@ -33,11 +34,13 @@ OQS_SIG *OQS_SIG_ml_dsa_65_new(void) {
 }
 
 extern int pqcrystals_ml_dsa_65_ref_keypair(uint8_t *pk, uint8_t *sk);
+extern int pqcrystals_ml_dsa_65_ref_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int pqcrystals_ml_dsa_65_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_65_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *pk);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
 extern int pqcrystals_ml_dsa_65_avx2_keypair(uint8_t *pk, uint8_t *sk);
+extern int pqcrystals_ml_dsa_65_avx2_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int pqcrystals_ml_dsa_65_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *sk);
 extern int pqcrystals_ml_dsa_65_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *pk);
 #endif
@@ -58,6 +61,25 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair(uint8_t *public_key, uint8_t *secre
 #endif
 }
 
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+	if (public_key == NULL || secret_key == NULL || seed == NULL) {
+		return OQS_ERROR;
+	}
+#if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) pqcrystals_ml_dsa_65_avx2_keypair_derand(public_key, secret_key, seed);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) pqcrystals_ml_dsa_65_ref_keypair_derand(public_key, secret_key, seed);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) pqcrystals_ml_dsa_65_ref_keypair_derand(public_key, secret_key, seed);
+#endif
+}
+
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
 #if defined(OQS_DIST_BUILD)
@@ -75,6 +97,12 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign(uint8_t *signature, size_t *signature_
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+	// FIPS 204 Section 3.6.2: Check signature length
+	if (signature_len != OQS_SIG_ml_dsa_65_length_signature) {
+		return OQS_ERROR;
+	}
+	// Note: Public key length check is implicitly done by unpack_pk function
+	
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -106,6 +134,12 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_sign_with_ctx_str(uint8_t *signature, size_
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
+	// FIPS 204 Section 3.6.2: Check signature length
+	if (signature_len != OQS_SIG_ml_dsa_65_length_signature) {
+		return OQS_ERROR;
+	}
+	// Note: Public key length check is implicitly done by unpack_pk function
+	
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
