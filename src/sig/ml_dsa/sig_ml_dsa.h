@@ -9,6 +9,7 @@
 #define OQS_SIG_ml_dsa_44_length_public_key 1312
 #define OQS_SIG_ml_dsa_44_length_secret_key 2560
 #define OQS_SIG_ml_dsa_44_length_signature 2420
+#define OQS_SIG_ml_dsa_44_length_keypair_seed 32
 
 OQS_SIG *OQS_SIG_ml_dsa_44_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -24,6 +25,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair_derand(uint8_t *public_key, uint8_t
 #define OQS_SIG_ml_dsa_65_length_public_key 1952
 #define OQS_SIG_ml_dsa_65_length_secret_key 4032
 #define OQS_SIG_ml_dsa_65_length_signature 3309
+#define OQS_SIG_ml_dsa_65_length_keypair_seed 32
 
 OQS_SIG *OQS_SIG_ml_dsa_65_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -39,6 +41,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair_derand(uint8_t *public_key, uint8_t
 #define OQS_SIG_ml_dsa_87_length_public_key 2592
 #define OQS_SIG_ml_dsa_87_length_secret_key 4896
 #define OQS_SIG_ml_dsa_87_length_signature 4627
+#define OQS_SIG_ml_dsa_87_length_keypair_seed 32
 
 OQS_SIG *OQS_SIG_ml_dsa_87_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair(uint8_t *public_key, uint8_t *secret_key);

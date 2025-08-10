@@ -22,6 +22,7 @@ OQS_SIG *OQS_SIG_ml_dsa_87_new(void) {
 	sig->length_public_key = OQS_SIG_ml_dsa_87_length_public_key;
 	sig->length_secret_key = OQS_SIG_ml_dsa_87_length_secret_key;
 	sig->length_signature = OQS_SIG_ml_dsa_87_length_signature;
+	sig->length_keypair_seed = OQS_SIG_ml_dsa_87_length_keypair_seed;
 
 	sig->keypair = OQS_SIG_ml_dsa_87_keypair;
 	sig->keypair_derand = OQS_SIG_ml_dsa_87_keypair_derand;

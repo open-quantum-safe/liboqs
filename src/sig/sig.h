@@ -239,6 +239,8 @@ typedef struct OQS_SIG {
 	size_t length_secret_key;
 	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
 	size_t length_signature;
+	/** The length, in bytes, of seeds for deterministic keypair generation. 0 if not supported. */
+	size_t length_keypair_seed;
 
 	/**
 	 * Keypair generation algorithm.
