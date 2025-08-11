@@ -67,17 +67,27 @@ unsigned mlk_rej_uniform_avx2(int16_t *MLK_RESTRICT r, const uint8_t *buf)
     g0 = _mm256_packs_epi16(g0, g1);
     good = _mm256_movemask_epi8(g0);
 
+    uint8_t idx0 = (good >> 0) & 0xFF;
+    uint8_t idx1 = (good >> 8) & 0xFF;
+    uint8_t idx2 = (good >> 16) & 0xFF;
+    uint8_t idx3 = (good >> 24) & 0xFF;
+
+    if (idx0 >= 256 || idx1 >= 256 || idx2 >= 256 || idx3 >= 256) {
+      fprintf(stderr, "Index out of bounds in mlk_rej_uniform_table: %u %u %u %u\n", idx0, idx1, idx2, idx3);
+      exit(1); 
+    }
+
     g0 = _mm256_castsi128_si256(
-        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[(good >> 0) & 0xFF]));
+        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[idx0]));
     g1 = _mm256_castsi128_si256(
-        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[(good >> 8) & 0xFF]));
+        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[idx1]));
     g0 = _mm256_inserti128_si256(
         g0,
-        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[(good >> 16) & 0xFF]),
+        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[idx2]),
         1);
     g1 = _mm256_inserti128_si256(
         g1,
-        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[(good >> 24) & 0xFF]),
+        _mm_loadl_epi64((__m128i *)&mlk_rej_uniform_table[idx3]),
         1);
 
     g2 = _mm256_add_epi8(g0, ones);
