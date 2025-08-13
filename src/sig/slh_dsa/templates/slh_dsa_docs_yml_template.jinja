@@ -1,0 +1,52 @@
+name: SLH-DSA
+type: signature
+principal-submitters:
+- Andreas Hülsing
+auxiliary-submitters:
+- Daniel J. Bernstein
+- Christoph Dobraunig
+- Maria Eichlseder
+- Scott Fluhrer
+- Stefan-Lukas Gazdag
+- Panos Kampanakis
+- Stefan Kolbl
+- Tanja Lange
+- Martin M Lauridsen
+- Florian Mendel
+- Ruben Niederhagen
+- Christian Rechberger
+- Joost Rijneveld
+- Peter Schwabe
+- Jean-Philippe Aumasson
+- Bas Westerbaan
+- Ward Beullens
+crypto-assumption: hash-based signatures
+website: https://csrc.nist.gov/pubs/fips/205/final
+nist-round: FIPS205
+spec-version: SLH-DSA
+spdx-license-identifier: MIT or ISC or Apache 2.0
+primary-upstream:
+  source: https://github.com/pq-code-package/slhdsa-c/commit/{{commitHash}}
+  spdx-license-identifier: MIT or ISC or Apache 2.0
+  upstream-ancestors:
+  - https://github.com/pq-code-package/slhdsa-c
+parameter-sets:
+
+  {% for imp in implementations -%}
+  - name: {{imp.variant}}
+    claimed-nist-level: {{imp.paramSet.claimedNISTLevel}}
+    claimed-security: EUF-CMA
+    length-public-key: {{imp.paramSet.pkSize}}
+    length-secret-key: {{imp.paramSet.skSize}}
+    length-signature: {{imp.paramSet.sigSize}}
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  {% endfor %}
+  

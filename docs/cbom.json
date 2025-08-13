@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:c419036f-6fb1-4cf6-a6b4-a473e3c40e78",
+  "serialNumber": "urn:uuid:c4108e0a-f518-4468-b04e-b237c2b763a7",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-03-30T14:09:19.533630+00:00",
+    "timestamp": "2025-07-23T15:02:25.240714+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@630b96f49ccba9557add3e8826fb072c00d18407",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
       "name": "liboqs",
-      "version": "630b96f49ccba9557add3e8826fb072c00d18407"
+      "version": "1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@630b96f49ccba9557add3e8826fb072c00d18407",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
       "name": "liboqs",
-      "version": "630b96f49ccba9557add3e8826fb072c00d18407"
+      "version": "1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3"
     },
     {
       "type": "cryptographic-asset",
@@ -2762,6 +2762,3126 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_PURE_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHA2_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHA2_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHA2_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHA2_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHA2_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHA2_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_224_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_256_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_384_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_224_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_256_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_384_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHA3_512_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F:generic",
+      "name": "SLH-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:SNOVA_24_5_4:generic",
       "name": "SNOVA",
       "cryptoProperties": {
@@ -4707,7 +7827,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@630b96f49ccba9557add3e8826fb072c00d18407",
+      "ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -4846,6 +7966,162 @@
         "alg:ML-DSA-65:x86_64",
         "alg:ML-DSA-87:generic",
         "alg:ML-DSA-87:x86_64",
+        "alg:SLH_DSA_PURE_SHA2_128S:generic",
+        "alg:SLH_DSA_PURE_SHA2_128F:generic",
+        "alg:SLH_DSA_PURE_SHA2_192S:generic",
+        "alg:SLH_DSA_PURE_SHA2_192F:generic",
+        "alg:SLH_DSA_PURE_SHA2_256S:generic",
+        "alg:SLH_DSA_PURE_SHA2_256F:generic",
+        "alg:SLH_DSA_PURE_SHAKE_128S:generic",
+        "alg:SLH_DSA_PURE_SHAKE_128F:generic",
+        "alg:SLH_DSA_PURE_SHAKE_192S:generic",
+        "alg:SLH_DSA_PURE_SHAKE_192F:generic",
+        "alg:SLH_DSA_PURE_SHAKE_256S:generic",
+        "alg:SLH_DSA_PURE_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128S:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128F:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192S:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192F:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256S:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256F:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F:generic",
         "alg:SNOVA_24_5_4:generic",
         "alg:SNOVA_24_5_4:x86_64",
         "alg:SNOVA_24_5_4:armv8-a",

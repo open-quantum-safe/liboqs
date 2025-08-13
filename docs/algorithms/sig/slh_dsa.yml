@@ -1,0 +1,2376 @@
+name: SLH-DSA
+type: signature
+principal-submitters:
+- Andreas Hülsing
+auxiliary-submitters:
+- Daniel J. Bernstein
+- Christoph Dobraunig
+- Maria Eichlseder
+- Scott Fluhrer
+- Stefan-Lukas Gazdag
+- Panos Kampanakis
+- Stefan Kolbl
+- Tanja Lange
+- Martin M Lauridsen
+- Florian Mendel
+- Ruben Niederhagen
+- Christian Rechberger
+- Joost Rijneveld
+- Peter Schwabe
+- Jean-Philippe Aumasson
+- Bas Westerbaan
+- Ward Beullens
+crypto-assumption: hash-based signatures
+website: https://csrc.nist.gov/pubs/fips/205/final
+nist-round: FIPS205
+spec-version: SLH-DSA
+spdx-license-identifier: MIT or ISC or Apache 2.0
+primary-upstream:
+  source: https://github.com/pq-code-package/slhdsa-c/commit/a0fc1ff253930060d0246aebca06c2538eb92b88
+  spdx-license-identifier: MIT or ISC or Apache 2.0
+  upstream-ancestors:
+  - https://github.com/pq-code-package/slhdsa-c
+parameter-sets:
+
+  - name: SLH_DSA_PURE_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_PURE_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHA2_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHA2_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHA2_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHA2_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHA2_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHA2_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 7856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 32
+    length-secret-key: 64
+    length-signature: 17088
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 16224
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F
+    claimed-nist-level: 3
+    claimed-security: EUF-CMA
+    length-public-key: 48
+    length-secret-key: 96
+    length-signature: 35664
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 29792
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_224_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_256_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_384_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_224_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_256_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_384_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHA3_512_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  - name: SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F
+    claimed-nist-level: 5
+    claimed-security: EUF-CMA
+    length-public-key: 64
+    length-secret-key: 128
+    length-signature: 49856
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+    - upstream: primary-upstream
+      upstream-id: slhdsa-c
+      supported-platforms: all
+      no-secret-dependent-branching-claimed: false
+      no-secret-dependent-branching-checked-by-valgrind: false
+      large-stack-usage: true
+      
+  
+  
