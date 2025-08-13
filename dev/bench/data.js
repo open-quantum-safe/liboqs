@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1755114386389,
+  "lastUpdate": 1755114392500,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -546,6 +546,48 @@ window.BENCHMARK_DATA = {
             "value": 74483,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 01de36c1ec5e8ca1aee324fd2af79a408727833e | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "91481147+h2parson@users.noreply.github.com",
+            "name": "h2parson",
+            "username": "h2parson"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9e964cad5b0d42225b608be75749834eb8b9e227",
+          "message": "Integrate SLH-DSA-C Library (#2175)\n\n* copy from slhdsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* integrate with copy from upstream\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* explicitly list slhdsa files to include and push generated code\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* format code script\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add to requirements.in\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix code conventions\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* copy from upstream changes\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add chdir to copy from slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* modify template\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* generate requirements.txt\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* modify requirments in workflows\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* format\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* a\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* sort filenames in cmake file generation for slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add newline at end of header file\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add whitespace and fix alg info tests\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* update docs with copy from upstream\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add whitespace to src files\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* initialize ctx in slh\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* explicitly set little endian for windows x86\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* temporarily disable ctx signing for slh tests\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* disable kats until hashes available for slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix issues in test sig mem\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* temporarily add namespaces so that slh dsa will not break test namespace\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* updates\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* formatted file\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* align jinja template to astyle\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* change addrnd size\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* copy from slhdsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* integrate with copy from upstream\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* explicitly list slhdsa files to include and push generated code\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* format code script\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add to requirements.in\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix code conventions\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* copy from upstream changes\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add chdir to copy from slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* modify template\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* generate requirements.txt\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* modify requirments in workflows\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* format\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* a\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* sort filenames in cmake file generation for slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add newline at end of header file\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add whitespace and fix alg info tests\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* update docs with copy from upstream\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* add whitespace to src files\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* initialize ctx in slh\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* explicitly set little endian for windows x86\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* temporarily disable ctx signing for slh tests\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* disable kats until hashes available for slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix issues in test sig mem\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* temporarily add namespaces so that slh dsa will not break test namespace\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* updates\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* formatted file\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* align jinja template to astyle\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* change addrnd size\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix std algs filtering issue\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* modifying windows amd toolchain file to fix endianness issue\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* disable leak testing on slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* disable slh dsa for arm emulated linux and zephyr tests\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix zephyr test skip logic\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix upstream issue with prehash naming and add variant specific nist levels\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* automatically update slh dsa yml file\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* get slh dsa md file generation working\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix naming in slh wrapper files\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* minor changes from review\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* separate slh dsa jobs from stfl sigs\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* separate slhdsa from sig stfl tests on mac and windows\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* fix macos yml format\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* modify zephyr timeout\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* re-enable some tests for slh dsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* separate leak tests\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* allow algorithm family level enablement and reconfigure slhdsa CI jobs\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* move slh dsa address sanitizer to extended tests and extend time limit to 90 minutes\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n* remove package deb from CI job, remove auto gen kat sig for slhdsa, add prime ctx step for sig testing slhdsa\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>\n\n---------\n\nSigned-off-by: h2parson <h2parson@uwaterloo.ca>",
+          "timestamp": "2025-08-13T15:41:47-04:00",
+          "tree_id": "5df5adcde9b08976a03b3f5e967a031e95910d16",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/9e964cad5b0d42225b608be75749834eb8b9e227"
+        },
+        "date": 1755114391554,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "Dilithium2 keypair",
+            "value": 78877,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 9e964cad5b0d42225b608be75749834eb8b9e227 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Dilithium2 sign",
+            "value": 192772,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 9e964cad5b0d42225b608be75749834eb8b9e227 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "Dilithium2 verify",
+            "value": 74884,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.11.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-O3;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.14.1-dev (major: 0, minor: 14, patch: 1, pre-release: -dev) | Git commit: 9e964cad5b0d42225b608be75749834eb8b9e227 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
