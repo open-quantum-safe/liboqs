@@ -49,8 +49,8 @@ OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, s
  * Fills the given memory with the requested number of (pseudo)random bytes.
  *
  * This implementation uses whichever algorithm has been selected by
- * OQS_randombytes_switch_algorithm. The default is OQS_randombytes_openssl, which
- * uses OpenSSL's RAND_bytes function.
+ * OQS_randombytes_switch_algorithm. The default is OQS_randombytes_system, which
+ * reads bytes from a system specific default source.
  *
  * The caller is responsible for providing a buffer allocated with sufficient room.
  *
