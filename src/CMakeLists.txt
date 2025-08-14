@@ -117,6 +117,9 @@ if(${OQS_USE_CUPQC})
     target_link_libraries(oqs PRIVATE cupqc)
     target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
 endif()
+if(${OQS_USE_ICICLE})
+    target_link_libraries(oqs PRIVATE icicle::icicle_pqc_package)
+endif()
 
 target_include_directories(oqs
                            PUBLIC
