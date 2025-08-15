@@ -117,7 +117,7 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 		fprintf(stderr, "K value can be fetched only for ML-KEM !\n");
 		return false;
 	}
-	/* calcualte hash of the public key(len = 384k+32) stored in private key at offset of 384k */
+	/* calculate hash of the public key(len = 384k+32) stored in private key at offset of 384k */
 	OQS_SHA3_sha3_256(pkdig, sk + (ML_KEM_POLYBYTES * K), (ML_KEM_POLYBYTES * K) + 32);
 	/* compare it with public key hash stored at 768k+32 offset */
 	if (0 != memcmp(pkdig, sk + (ML_KEM_POLYBYTES * K * 2) + 32, SHA3_256_OP_LEN)) {
@@ -170,7 +170,7 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 			buff_enc[3 * j + 2] = (uint8_t)(t1 >> 4);
 		}
 	}
-	/* compare the encoded value with original public key. discard value of `rho(32 bytes)` during comparision as its not encoded */
+	/* compare the encoded value with original public key. discard value of `rho(32 bytes)` during comparison as its not encoded */
 	if (0 != memcmp(buffe, pk, pkLen - 32)) {
 		return false;
 	}
