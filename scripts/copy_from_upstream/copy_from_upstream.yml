@@ -606,6 +606,7 @@ sigs:
     name: sqisign
     default_implementation: ref
     upstream_location: the-sqisign
+    external: gmp
     schemes:
       -
         scheme: "lvl1"

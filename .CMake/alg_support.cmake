@@ -223,7 +223,11 @@ cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_5 "" ON "OQS_ENABLE_SIG_S
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_60_10_4 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_29_6_5 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
 
+if (OQS_USE_GMP)
 option(OQS_ENABLE_SIG_SQISIGN "Enable sqisign algorithm family" ON)
+else()
+option(OQS_ENABLE_SIG_SQISIGN "Enable sqisign algorithm family" OFF)
+endif()
 cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl1 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl3 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl5 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
