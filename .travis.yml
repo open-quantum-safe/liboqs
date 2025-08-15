@@ -1,6 +1,6 @@
 language: c
 before_script:
-  - sudo apt update && sudo apt -y install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz valgrind
+  - sudo apt update && sudo apt -y install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz valgrind libgmp-dev
 jobs:
   include:
     - arch: ppc64le         # The IBM Power LXD container based build for OSS only
