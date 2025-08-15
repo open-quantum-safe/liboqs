@@ -152,21 +152,22 @@ if(${OQS_USE_CUPQC})
     find_package(cuPQC 0.2.0 REQUIRED)
 endif()
 if(${OQS_USE_GMP})
-  message(STATUS "Using system GMP")
-
-  find_library(GMP gmp REQUIRED)
+  message(STATUS "Looking for GMP")
+  find_library(GMP gmp)
   find_path(GMP_INCLUDE gmp.h)
 
-  add_library(GMP SHARED IMPORTED)
-  set_target_properties(GMP PROPERTIES
-    IMPORTED_LOCATION ${GMP}
-    INTERFACE_INCLUDE_DIRECTORIES ${GMP_INCLUDE}
-  )
+  if(GMP AND GMP_INCLUDE)
+    message(STATUS "GMP found, enabling GMP support")
+    add_library(GMP SHARED IMPORTED)
+    set_target_properties(GMP PROPERTIES
+      IMPORTED_LOCATION ${GMP}
+      INTERFACE_INCLUDE_DIRECTORIES ${GMP_INCLUDE}
+    )
 
-  if(CMAKE_SIZEOF_VOID_P MATCHES "4")
+    if(CMAKE_SIZEOF_VOID_P MATCHES "4")
       add_compile_definitions(RADIX_32)
       add_compile_definitions(GMP_LIMB_BITS=32)
-  else()
+    else()
       add_compile_definitions(RADIX_64)
       include(CheckCSourceCompiles)
       check_c_source_compiles("
@@ -180,8 +181,11 @@ if(${OQS_USE_GMP})
         add_compile_definitions(HAVE_UINT128)
       endif()
       add_compile_definitions(GMP_LIMB_BITS=64)
+    endif()
+  else()
+    message(STATUS "GMP not found, disabling GMP support")
+    set(OQS_USE_GMP OFF)
   endif()
-
 endif()
 
 if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))
