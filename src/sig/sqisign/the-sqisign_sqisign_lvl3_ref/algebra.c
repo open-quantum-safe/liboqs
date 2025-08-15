@@ -9,7 +9,7 @@ quat_alg_init_set_ui(quat_alg_t *alg, unsigned int p)
     ibz_t bp;
     ibz_init(&bp);
     ibz_set(&bp, p);
-    quat_alg_init_set(alg, &bp);
+    quat_alg_init_set(alg, (const ibz_t *)&bp);
     ibz_finalize(&bp);
 }
 

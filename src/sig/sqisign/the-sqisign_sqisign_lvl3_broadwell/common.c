@@ -56,13 +56,13 @@ hash_to_challenge(scalar_t *scalar,
         shake256_inc_squeeze((void *)(*scalar), hash_bytes, &ctx);
         (*scalar)[limbs - 1] &= mask;
         for (int i = 2; i < HASH_ITERATIONS; i++) {
-            shake256_inc_init(&ctx);
+            shake256_inc_ctx_reset(&ctx);
             shake256_inc_absorb(&ctx, (void *)(*scalar), hash_bytes);
             shake256_inc_finalize(&ctx);
             shake256_inc_squeeze((void *)(*scalar), hash_bytes, &ctx);
             (*scalar)[limbs - 1] &= mask;
         }
-        shake256_inc_init(&ctx);
+        shake256_inc_ctx_reset(&ctx);
         shake256_inc_absorb(&ctx, (void *)(*scalar), hash_bytes);
         shake256_inc_finalize(&ctx);
 
@@ -76,6 +76,7 @@ hash_to_challenge(scalar_t *scalar,
 
         memset(*scalar, 0, NWORDS_ORDER * sizeof(digit_t));
         shake256_inc_squeeze((void *)(*scalar), hash_bytes, &ctx);
+        shake256_inc_ctx_release(&ctx);
         (*scalar)[limbs - 1] &= mask;
 
 #ifdef TARGET_BIG_ENDIAN

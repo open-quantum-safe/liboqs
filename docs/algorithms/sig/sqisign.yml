@@ -36,7 +36,7 @@ website: https://sqisign.org/
 nist-round: 2
 spec-version: Round 2
 primary-upstream:
-  source: https://github.com/bhess/the-sqisign/commit/323648fa9c28c69b3f24d3cc22986530ffe8e8d7
+  source: https://github.com/bhess/the-sqisign/commit/74e2fbff9159377b99a09da91dac3afd9179d426
   spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: SQIsign-lvl1

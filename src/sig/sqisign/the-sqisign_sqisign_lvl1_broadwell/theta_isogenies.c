@@ -381,6 +381,33 @@ gluing_change_of_basis(basis_change_matrix_t *M,
     return 1;
 }
 
+#ifndef NDEBUG
+/**
+ * @brief Check if a Jacobian point (X : Y : Z) has order exactly 2^f
+ *
+ * @param P: a point
+ * @param E: an elliptic curve
+ * @param t: an integer
+ *
+ * @return 0xFFFFFFFF if the order is correct, 0 otherwise
+ */
+static int
+test_jac_order_twof(const jac_point_t *P, const ec_curve_t *E, int t)
+{
+    jac_point_t test;
+    test = *P;
+    if (fp2_is_zero(&test.z))
+        return 0;
+    for (int i = 0; i < t - 1; i++) {
+        DBL(&test, &test, E);
+    }
+    if (fp2_is_zero(&test.z))
+        return 0;
+    DBL(&test, &test, E);
+    return (fp2_is_zero(&test.z));
+}
+#endif
+
 /**
  * @brief Compute the gluing isogeny from an elliptic product
  *
