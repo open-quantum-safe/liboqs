@@ -33,7 +33,7 @@ quat_lideal_copy(quat_left_ideal_t *copy, const quat_left_ideal_t *copied)
     ibz_copy(&copy->lattice.denom, &copied->lattice.denom);
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_copy(&copy->lattice.basis[i][j], &copied->lattice.basis[i][j]);
+            ibz_copy(&copy->lattice.basis.m[i][j], &copied->lattice.basis.m[i][j]);
         }
     }
 }
@@ -248,13 +248,13 @@ quat_lideal_class_gram(ibz_mat_4x4_t *G, const quat_left_ideal_t *lideal, const 
 
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j <= i; j++) {
-            ibz_div(&(*G)[i][j], &rmd, &(*G)[i][j], &divisor);
+            ibz_div(&G->m[i][j], &rmd, &G->m[i][j], &divisor);
             assert(ibz_is_zero(&rmd));
         }
     }
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j <= i - 1; j++) {
-            ibz_copy(&(*G)[j][i], &(*G)[i][j]);
+            ibz_copy(&G->m[j][i], &G->m[i][j]);
         }
     }
 
@@ -289,8 +289,8 @@ quat_order_discriminant(ibz_t *disc, const quat_lattice_t *order, const quat_alg
     ibz_mat_4x4_transpose(&transposed, &(order->basis));
     // multiply gram matrix by 2 because of reduced trace
     ibz_mat_4x4_identity(&norm);
-    ibz_copy(&(norm[2][2]), &(alg->p));
-    ibz_copy(&(norm[3][3]), &(alg->p));
+    ibz_copy(&(norm.m[2][2]), &(alg->p));
+    ibz_copy(&(norm.m[3][3]), &(alg->p));
     ibz_mat_4x4_scalar_mul(&norm, &ibz_const_two, &norm);
     ibz_mat_4x4_mul(&prod, &transposed, &norm);
     ibz_mat_4x4_mul(&prod, &prod, &(order->basis));

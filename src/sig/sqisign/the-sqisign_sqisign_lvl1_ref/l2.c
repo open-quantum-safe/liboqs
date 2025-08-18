@@ -57,25 +57,25 @@ to_etabar(fp_num *x)
 }
 
 static void
-from_mpz(const mpz_t x, fp_num *r)
+from_mpz(const ibz_t *x, fp_num *r)
 {
     long exp = 0;
-    r->s = mpz_get_d_2exp(&exp, x);
+    r->s = mpz_get_d_2exp(&exp, x->i);
     r->e = exp;
 }
 
 static void
-to_mpz(const fp_num *x, mpz_t r)
+to_mpz(const fp_num *x, ibz_t *r)
 {
     if (x->e >= DBL_MANT_DIG) {
         double s = x->s * 0x1P53;
-        mpz_set_d(r, s);
-        mpz_mul_2exp(r, r, x->e - DBL_MANT_DIG);
+        mpz_set_d(r->i, s);
+        mpz_mul_2exp(r->i, r->i, x->e - DBL_MANT_DIG);
     } else if (x->e < 0) {
-            mpz_set_ui(r, 0);
+            mpz_set_ui(r->i, 0);
     } else {
             double s = ldexp(x->s, x->e);
-            mpz_set_d(r, round(s));
+            mpz_set_d(r->i, round(s));
     }
 }
 
@@ -203,7 +203,7 @@ quat_lll_core(ibz_mat_4x4_t *G, ibz_mat_4x4_t *basis)
     ibz_init(&tmpI);
 
     // Main L² loop
-    from_mpz((*G)[0][0], &r[0][0]);
+    from_mpz(&G->m[0][0], &r[0][0]);
     int kappa = 1;
     while (kappa < 4) {
         // size reduce b_κ
@@ -213,7 +213,7 @@ quat_lll_core(ibz_mat_4x4_t *G, ibz_mat_4x4_t *basis)
             // Loop invariant:
             //     r[κ][j] ≈ u[κ][j] ‖b_j*‖² ≈ 〈b_κ, b_j*〉
             for (int j = 0; j <= kappa; j++) {
-                from_mpz((*G)[kappa][j], &r[kappa][j]);
+                from_mpz(&G->m[kappa][j], &r[kappa][j]);
                 for (int k = 0; k < j; k++) {
                     fp_mul(&r[kappa][k], &u[j][k], &tmpF);
                     fp_sub(&r[kappa][j], &tmpF, &r[kappa][j]);
@@ -229,22 +229,22 @@ quat_lll_core(ibz_mat_4x4_t *G, ibz_mat_4x4_t *basis)
                     done = 0;
                     copy(&u[kappa][i], &Xf);
                     fp_round(&Xf);
-                    to_mpz(&Xf, X);
+                    to_mpz(&Xf, &X);
                     // Update basis: b_κ ← b_κ - X·b_i
                     for (int j = 0; j < 4; j++) {
-                        ibz_mul(&tmpI, &X, &(*basis)[j][i]);
-                        ibz_sub(&(*basis)[j][kappa], &(*basis)[j][kappa], &tmpI);
+                        ibz_mul(&tmpI, &X, &basis->m[j][i]);
+                        ibz_sub(&basis->m[j][kappa], &basis->m[j][kappa], &tmpI);
                     }
                     // Update lower half of the Gram matrix
                     // <b_κ - X·b_i, b_κ - X·b_i> = <b_κ, b_κ> - 2X<b_κ, b_i> + X²<b_i, b_i> =
                     // <b_κ,b_κ> - X<b_κ,b_i> - X(<b_κ,b_i> - X·<b_i, b_i>)
                     //// 〈b_κ, b_κ〉 ← 〈b_κ, b_κ〉 - X·〈b_κ, b_i〉
-                    ibz_mul(&tmpI, &X, &(*G)[kappa][i]);
-                    ibz_sub(&(*G)[kappa][kappa], &(*G)[kappa][kappa], &tmpI);
+                    ibz_mul(&tmpI, &X, &G->m[kappa][i]);
+                    ibz_sub(&G->m[kappa][kappa], &G->m[kappa][kappa], &tmpI);
                     for (int j = 0; j < 4; j++) { // works because i < κ
                         // 〈b_κ, b_j〉 ← 〈b_κ, b_j〉 - X·〈b_i, b_j〉
-                        ibz_mul(&tmpI, &X, SYM((*G), i, j));
-                        ibz_sub(SYM((*G), kappa, j), SYM((*G), kappa, j), &tmpI);
+                        ibz_mul(&tmpI, &X, SYM(G->m, i, j));
+                        ibz_sub(SYM(G->m, kappa, j), SYM(G->m, kappa, j), &tmpI);
                     }
                     // After the loop:
                     //// 〈b_κ,b_κ〉 ← 〈b_κ,b_κ〉 - X·〈b_κ,b_i〉 - X·(〈b_κ,b_i〉 - X·〈b_i,
@@ -261,7 +261,7 @@ quat_lll_core(ibz_mat_4x4_t *G, ibz_mat_4x4_t *basis)
 
         // Check Lovasz' conditions
         // lovasz[0] = ‖b_κ‖²
-        from_mpz((*G)[kappa][kappa], &lovasz[0]);
+        from_mpz(&G->m[kappa][kappa], &lovasz[0]);
         // lovasz[i] = lovasz[i-1] - u[κ][i-1]·r[κ][i-1]
         for (int i = 1; i < kappa; i++) {
             fp_mul(&u[kappa][i - 1], &r[kappa][i - 1], &tmpF);
@@ -279,11 +279,11 @@ quat_lll_core(ibz_mat_4x4_t *G, ibz_mat_4x4_t *basis)
             // Insert b_κ before b_swap in the basis and in the lower half Gram matrix
             for (int j = kappa; j > swap; j--) {
                 for (int i = 0; i < 4; i++) {
-                    ibz_swap(&(*basis)[i][j], &(*basis)[i][j - 1]);
+                    ibz_swap(&basis->m[i][j], &basis->m[i][j - 1]);
                     if (i == j - 1)
-                        ibz_swap(&(*G)[i][i], &(*G)[j][j]);
+                        ibz_swap(&G->m[i][i], &G->m[j][j]);
                     else if (i != j)
-                        ibz_swap(SYM((*G), i, j), SYM((*G), i, j - 1));
+                        ibz_swap(SYM(G->m, i, j), SYM(G->m, i, j - 1));
                 }
             }
             // Copy row u[κ] and r[κ] in swap position, ignore what follows
@@ -318,7 +318,7 @@ quat_lll_core(ibz_mat_4x4_t *G, ibz_mat_4x4_t *basis)
     // Fill in the upper half of the Gram matrix
     for (int i = 0; i < 4; i++) {
         for (int j = i + 1; j < 4; j++)
-            ibz_copy(&(*G)[i][j], &(*G)[j][i]);
+            ibz_copy(&G->m[i][j], &G->m[j][i]);
     }
 
     // Clearinghouse

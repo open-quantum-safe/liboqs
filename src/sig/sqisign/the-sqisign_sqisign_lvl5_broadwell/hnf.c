@@ -14,21 +14,21 @@ ibz_mat_4x4_is_hnf(const ibz_mat_4x4_t *mat)
     for (int i = 0; i < 4; i++) {
         // upper triangular
         for (int j = 0; j < i; j++) {
-            res = res && ibz_is_zero(&((*mat)[i][j]));
+            res = res && ibz_is_zero(&(mat->m[i][j]));
         }
         // find first non 0 element of line
         found = 0;
         for (int j = i; j < 4; j++) {
             if (found) {
                 // all values are positive, and first non-0 is the largest of that line
-                res = res && (ibz_cmp(&((*mat)[i][j]), &zero) >= 0);
-                res = res && (ibz_cmp(&((*mat)[i][ind]), &((*mat)[i][j])) > 0);
+                res = res && (ibz_cmp(&(mat->m[i][j]), &zero) >= 0);
+                res = res && (ibz_cmp(&(mat->m[i][ind]), &(mat->m[i][j])) > 0);
             } else {
-                if (!ibz_is_zero(&((*mat)[i][j]))) {
+                if (!ibz_is_zero(&(mat->m[i][j]))) {
                     found = 1;
                     ind = j;
                     // mustbe non-negative
-                    res = res && (ibz_cmp(&((*mat)[i][j]), &zero) > 0);
+                    res = res && (ibz_cmp(&(mat->m[i][j]), &zero) > 0);
                 }
             }
         }
@@ -37,7 +37,7 @@ ibz_mat_4x4_is_hnf(const ibz_mat_4x4_t *mat)
     int linestart = -1;
     int i = 0;
     for (int j = 0; j < 4; j++) {
-        while ((i < 4) && (ibz_is_zero(&((*mat)[i][j])))) {
+        while ((i < 4) && (ibz_is_zero(&(mat->m[i][j])))) {
             i = i + 1;
         }
         if (i != 4) {
@@ -66,13 +66,13 @@ ibz_vec_4_linear_combination_mod(ibz_vec_4_t *lc,
     ibz_init(&m);
     ibz_copy(&m, mod);
     for (int i = 0; i < 4; i++) {
-        ibz_mul(&(sums[i]), coeff_a, &((*vec_a)[i]));
-        ibz_mul(&prod, coeff_b, &((*vec_b)[i]));
-        ibz_add(&(sums[i]), &(sums[i]), &prod);
-        ibz_centered_mod(&(sums[i]), &(sums[i]), &m);
+        ibz_mul(&(sums.v[i]), coeff_a, &(vec_a->v[i]));
+        ibz_mul(&prod, coeff_b, &(vec_b->v[i]));
+        ibz_add(&(sums.v[i]), &(sums.v[i]), &prod);
+        ibz_centered_mod(&(sums.v[i]), &(sums.v[i]), &m);
     }
     for (int i = 0; i < 4; i++) {
-        ibz_copy(&((*lc)[i]), &(sums[i]));
+        ibz_copy(&(lc->v[i]), &(sums.v[i]));
     }
     ibz_finalize(&prod);
     ibz_finalize(&m);
@@ -86,7 +86,7 @@ ibz_vec_4_copy_mod(ibz_vec_4_t *res, const ibz_vec_4_t *vec, const ibz_t *mod)
     ibz_init(&m);
     ibz_copy(&m, mod);
     for (int i = 0; i < 4; i++) {
-        ibz_centered_mod(&((*res)[i]), &((*vec)[i]), &m);
+        ibz_centered_mod(&(res->v[i]), &(vec->v[i]), &m);
     }
     ibz_finalize(&m);
 }
@@ -101,8 +101,8 @@ ibz_vec_4_scalar_mul_mod(ibz_vec_4_t *prod, const ibz_t *scalar, const ibz_vec_4
     ibz_copy(&s, scalar);
     ibz_copy(&m, mod);
     for (int i = 0; i < 4; i++) {
-        ibz_mul(&((*prod)[i]), &((*vec)[i]), &s);
-        ibz_mod(&((*prod)[i]), &((*prod)[i]), &m);
+        ibz_mul(&(prod->v[i]), &(vec->v[i]), &s);
+        ibz_mod(&(prod->v[i]), &(prod->v[i]), &m);
     }
     ibz_finalize(&m);
     ibz_finalize(&s);
@@ -138,36 +138,36 @@ ibz_mat_4xn_hnf_mod_core(ibz_mat_4x4_t *hnf, int generator_number, const ibz_vec
         if (h < 4)
             ibz_vec_4_init(&(w[h]));
         ibz_vec_4_init(&(a[h]));
-        ibz_copy(&(a[h][0]), &(generators[h][0]));
-        ibz_copy(&(a[h][1]), &(generators[h][1]));
-        ibz_copy(&(a[h][2]), &(generators[h][2]));
-        ibz_copy(&(a[h][3]), &(generators[h][3]));
+        ibz_copy(&(a[h].v[0]), &(generators[h].v[0]));
+        ibz_copy(&(a[h].v[1]), &(generators[h].v[1]));
+        ibz_copy(&(a[h].v[2]), &(generators[h].v[2]));
+        ibz_copy(&(a[h].v[3]), &(generators[h].v[3]));
     }
     assert(ibz_cmp(mod, &ibz_const_zero) > 0);
     ibz_copy(&m, mod);
     while (i != -1) {
         while (j != 0) {
             j = j - 1;
-            if (!ibz_is_zero(&(a[j][i]))) {
+            if (!ibz_is_zero(&(a[j].v[i]))) {
                 // assumtion that ibz_xgcd outputs u,v which are small in absolute
                 // value is needed here also, needs u non 0, but v can be 0 if needed
-                ibz_xgcd_with_u_not_0(&d, &u, &v, &(a[k][i]), &(a[j][i]));
+                ibz_xgcd_with_u_not_0(&d, &u, &v, &(a[k].v[i]), &(a[j].v[i]));
                 ibz_vec_4_linear_combination(&c, &u, &(a[k]), &v, &(a[j]));
-                ibz_div(&coeff_1, &r, &(a[k][i]), &d);
-                ibz_div(&coeff_2, &r, &(a[j][i]), &d);
+                ibz_div(&coeff_1, &r, &(a[k].v[i]), &d);
+                ibz_div(&coeff_2, &r, &(a[j].v[i]), &d);
                 ibz_neg(&coeff_2, &coeff_2);
                 ibz_vec_4_linear_combination_mod(
                     &(a[j]), &coeff_1, &(a[j]), &coeff_2, &(a[k]), &m); // do lin comb mod m
                 ibz_vec_4_copy_mod(&(a[k]), &c, &m);                    // mod m in copy
             }
         }
-        ibz_xgcd_with_u_not_0(&d, &u, &v, &(a[k][i]), &m);
+        ibz_xgcd_with_u_not_0(&d, &u, &v, &(a[k].v[i]), &m);
         ibz_vec_4_scalar_mul_mod(&(w[i]), &u, &(a[k]), &m); // mod m in scalar mult
-        if (ibz_is_zero(&(w[i][i]))) {
-            ibz_copy(&(w[i][i]), &m);
+        if (ibz_is_zero(&(w[i].v[i]))) {
+            ibz_copy(&(w[i].v[i]), &m);
         }
         for (int h = i + 1; h < 4; h++) {
-            ibz_div_floor(&q, &r, &(w[h][i]), &(w[i][i]));
+            ibz_div_floor(&q, &r, &(w[h].v[i]), &(w[i].v[i]));
             ibz_neg(&q, &q);
             ibz_vec_4_linear_combination(&(w[h]), &ibz_const_one, &(w[h]), &q, &(w[i]));
         }
@@ -177,8 +177,8 @@ ibz_mat_4xn_hnf_mod_core(ibz_mat_4x4_t *hnf, int generator_number, const ibz_vec
             k = k - 1;
             i = i - 1;
             j = k;
-            if (ibz_is_zero(&(a[k][i])))
-                ibz_copy(&(a[k][i]), &m);
+            if (ibz_is_zero(&(a[k].v[i])))
+                ibz_copy(&(a[k].v[i]), &m);
 
         } else {
             k = k - 1;
@@ -188,7 +188,7 @@ ibz_mat_4xn_hnf_mod_core(ibz_mat_4x4_t *hnf, int generator_number, const ibz_vec
     }
     for (j = 0; j < 4; j++) {
         for (i = 0; i < 4; i++) {
-            ibz_copy(&((*hnf)[i][j]), &(w[j][i]));
+            ibz_copy(&((hnf->m)[i][j]), &(w[j].v[i]));
         }
     }
 

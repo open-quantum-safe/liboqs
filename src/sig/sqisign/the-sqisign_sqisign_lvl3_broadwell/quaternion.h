@@ -25,7 +25,9 @@
  *
  * @typedef ibz_vec_2_t
  */
-typedef ibz_t ibz_vec_2_t[2];
+typedef struct {
+    ibz_t v[2];
+} ibz_vec_2_t;
 
 /** @brief Type for vectors of 4 integers
  *
@@ -33,7 +35,9 @@ typedef ibz_t ibz_vec_2_t[2];
  *
  * Represented as a vector of 4 ibz_t (big integer) elements
  */
-typedef ibz_t ibz_vec_4_t[4];
+typedef struct {
+    ibz_t v[4];
+} ibz_vec_4_t;
 
 /** @brief Type for 2 by 2 matrices of integers
  *
@@ -41,7 +45,9 @@ typedef ibz_t ibz_vec_4_t[4];
  *
  * Represented as a matrix of 2 vectors of 2 ibz_t (big integer) elements
  */
-typedef ibz_t ibz_mat_2x2_t[2][2];
+typedef struct {
+    ibz_t m[2][2];
+} ibz_mat_2x2_t;
 
 /** @brief Type for 4 by 4 matrices of integers
  *
@@ -49,7 +55,9 @@ typedef ibz_t ibz_mat_2x2_t[2][2];
  *
  * Represented as a matrix of 4 vectors of 4 ibz_t (big integer) elements
  */
-typedef ibz_t ibz_mat_4x4_t[4][4];
+typedef struct {
+    ibz_t m[4][4];
+} ibz_mat_4x4_t;
 /**
  * @}
  */

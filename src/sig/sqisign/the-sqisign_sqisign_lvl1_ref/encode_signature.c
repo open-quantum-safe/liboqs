@@ -157,17 +157,17 @@ secret_key_to_bytes(byte_t *enc, const secret_key_t *sk, const public_key_t *pk)
             ibz_finalize(&gcd);
         }
 #endif
-        enc = ibz_to_bytes(enc, &gen.coord[0], FP_ENCODED_BYTES, true);
-        enc = ibz_to_bytes(enc, &gen.coord[1], FP_ENCODED_BYTES, true);
-        enc = ibz_to_bytes(enc, &gen.coord[2], FP_ENCODED_BYTES, true);
-        enc = ibz_to_bytes(enc, &gen.coord[3], FP_ENCODED_BYTES, true);
+        enc = ibz_to_bytes(enc, &gen.coord.v[0], FP_ENCODED_BYTES, true);
+        enc = ibz_to_bytes(enc, &gen.coord.v[1], FP_ENCODED_BYTES, true);
+        enc = ibz_to_bytes(enc, &gen.coord.v[2], FP_ENCODED_BYTES, true);
+        enc = ibz_to_bytes(enc, &gen.coord.v[3], FP_ENCODED_BYTES, true);
         quat_alg_elem_finalize(&gen);
     }
 
-    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two[0][0], TORSION_2POWER_BYTES, false);
-    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two[0][1], TORSION_2POWER_BYTES, false);
-    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two[1][0], TORSION_2POWER_BYTES, false);
-    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two[1][1], TORSION_2POWER_BYTES, false);
+    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two.m[0][0], TORSION_2POWER_BYTES, false);
+    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two.m[0][1], TORSION_2POWER_BYTES, false);
+    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two.m[1][0], TORSION_2POWER_BYTES, false);
+    enc = ibz_to_bytes(enc, &sk->mat_BAcan_to_BA0_two.m[1][1], TORSION_2POWER_BYTES, false);
 
     assert(enc - start == SECRETKEY_BYTES);
 }
@@ -187,19 +187,19 @@ secret_key_from_bytes(secret_key_t *sk, public_key_t *pk, const byte_t *enc)
         quat_alg_elem_t gen;
         quat_alg_elem_init(&gen);
         enc = ibz_from_bytes(&norm, enc, FP_ENCODED_BYTES, false);
-        enc = ibz_from_bytes(&gen.coord[0], enc, FP_ENCODED_BYTES, true);
-        enc = ibz_from_bytes(&gen.coord[1], enc, FP_ENCODED_BYTES, true);
-        enc = ibz_from_bytes(&gen.coord[2], enc, FP_ENCODED_BYTES, true);
-        enc = ibz_from_bytes(&gen.coord[3], enc, FP_ENCODED_BYTES, true);
+        enc = ibz_from_bytes(&gen.coord.v[0], enc, FP_ENCODED_BYTES, true);
+        enc = ibz_from_bytes(&gen.coord.v[1], enc, FP_ENCODED_BYTES, true);
+        enc = ibz_from_bytes(&gen.coord.v[2], enc, FP_ENCODED_BYTES, true);
+        enc = ibz_from_bytes(&gen.coord.v[3], enc, FP_ENCODED_BYTES, true);
         quat_lideal_create(&sk->secret_ideal, &gen, &norm, &MAXORD_O0, &QUATALG_PINFTY);
         ibz_finalize(&norm);
         quat_alg_elem_finalize(&gen);
     }
 
-    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two[0][0], enc, TORSION_2POWER_BYTES, false);
-    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two[0][1], enc, TORSION_2POWER_BYTES, false);
-    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two[1][0], enc, TORSION_2POWER_BYTES, false);
-    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two[1][1], enc, TORSION_2POWER_BYTES, false);
+    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two.m[0][0], enc, TORSION_2POWER_BYTES, false);
+    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two.m[0][1], enc, TORSION_2POWER_BYTES, false);
+    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two.m[1][0], enc, TORSION_2POWER_BYTES, false);
+    enc = ibz_from_bytes(&sk->mat_BAcan_to_BA0_two.m[1][1], enc, TORSION_2POWER_BYTES, false);
 
     assert(enc - start == SECRETKEY_BYTES);
 

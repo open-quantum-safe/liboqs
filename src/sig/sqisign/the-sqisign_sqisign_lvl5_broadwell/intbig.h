@@ -33,7 +33,9 @@
  *
  * For integers of arbitrary size, used by intbig module, using gmp
  */
-typedef mpz_t ibz_t;
+typedef struct {
+    mpz_t i;
+} ibz_t;
 
 /** @}
  */
@@ -129,7 +131,7 @@ int ibz_two_adic(ibz_t *pow);
  */
 void ibz_mod(ibz_t *r, const ibz_t *a, const ibz_t *b);
 
-unsigned long int ibz_mod_ui(const mpz_t *n, unsigned long int d);
+unsigned long int ibz_mod_ui(const ibz_t *n, unsigned long int d);
 
 /** @brief Test if a = 0 mod b
  */

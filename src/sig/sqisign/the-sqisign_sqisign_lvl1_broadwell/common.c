@@ -14,6 +14,7 @@ public_key_init(public_key_t *pk)
 void
 public_key_finalize(public_key_t *pk)
 {
+    (void) pk;
 }
 
 // compute the challenge as the hash of the message and the commitment curve and public key

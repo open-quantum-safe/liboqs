@@ -57,7 +57,7 @@ quat_lattice_conjugate_without_hnf(quat_lattice_t *conj, const quat_lattice_t *l
 
     for (int row = 1; row < 4; ++row) {
         for (int col = 0; col < 4; ++col) {
-            ibz_neg(&(conj->basis[row][col]), &(conj->basis[row][col]));
+            ibz_neg(&(conj->basis.m[row][col]), &(conj->basis.m[row][col]));
         }
     }
 }
@@ -96,14 +96,14 @@ quat_lattice_add(quat_lattice_t *res, const quat_lattice_t *lat1, const quat_lat
     ibz_mat_4x4_scalar_mul(&tmp, &(lat1->denom), &(lat2->basis));
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_copy(&(generators[j][i]), &(tmp[i][j]));
+            ibz_copy(&(generators[j].v[i]), &(tmp.m[i][j]));
         }
     }
     ibz_mat_4x4_inv_with_det_as_denom(NULL, &det1, &tmp);
     ibz_mat_4x4_scalar_mul(&tmp, &(lat2->denom), &(lat1->basis));
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_copy(&(generators[4 + j][i]), &(tmp[i][j]));
+            ibz_copy(&(generators[4 + j].v[i]), &(tmp.m[i][j]));
         }
     }
     ibz_mat_4x4_inv_with_det_as_denom(NULL, &det2, &tmp);
@@ -151,12 +151,12 @@ quat_lattice_mat_alg_coord_mul_without_hnf(ibz_mat_4x4_t *prod,
     ibz_vec_4_init(&p);
     ibz_vec_4_init(&a);
     for (int i = 0; i < 4; i++) {
-        ibz_vec_4_copy_ibz(&a, &((*lat)[0][i]), &((*lat)[1][i]), &((*lat)[2][i]), &((*lat)[3][i]));
+        ibz_vec_4_copy_ibz(&a, &(lat->m[0][i]), &(lat->m[1][i]), &(lat->m[2][i]), &(lat->m[3][i]));
         quat_alg_coord_mul(&p, &a, coord, alg);
-        ibz_copy(&((*prod)[0][i]), &(p[0]));
-        ibz_copy(&((*prod)[1][i]), &(p[1]));
-        ibz_copy(&((*prod)[2][i]), &(p[2]));
-        ibz_copy(&((*prod)[3][i]), &(p[3]));
+        ibz_copy(&(prod->m[0][i]), &(p.v[0]));
+        ibz_copy(&(prod->m[1][i]), &(p.v[1]));
+        ibz_copy(&(prod->m[2][i]), &(p.v[2]));
+        ibz_copy(&(prod->m[3][i]), &(p.v[3]));
     }
     ibz_vec_4_finalize(&p);
     ibz_vec_4_finalize(&a);
@@ -191,15 +191,15 @@ quat_lattice_mul(quat_lattice_t *res, const quat_lattice_t *lat1, const quat_lat
         ibz_vec_4_init(&(generators[i]));
     for (int k = 0; k < 4; k++) {
         ibz_vec_4_copy_ibz(
-            &elem1, &(lat1->basis[0][k]), &(lat1->basis[1][k]), &(lat1->basis[2][k]), &(lat1->basis[3][k]));
+            &elem1, &(lat1->basis.m[0][k]), &(lat1->basis.m[1][k]), &(lat1->basis.m[2][k]), &(lat1->basis.m[3][k]));
         for (int i = 0; i < 4; i++) {
             ibz_vec_4_copy_ibz(
-                &elem2, &(lat2->basis[0][i]), &(lat2->basis[1][i]), &(lat2->basis[2][i]), &(lat2->basis[3][i]));
+                &elem2, &(lat2->basis.m[0][i]), &(lat2->basis.m[1][i]), &(lat2->basis.m[2][i]), &(lat2->basis.m[3][i]));
             quat_alg_coord_mul(&elem_res, &elem1, &elem2, alg);
             for (int j = 0; j < 4; j++) {
                 if (k == 0)
-                    ibz_copy(&(detmat[i][j]), &(elem_res[j]));
-                ibz_copy(&(generators[4 * k + i][j]), &(elem_res[j]));
+                    ibz_copy(&(detmat.m[i][j]), &(elem_res.v[j]));
+                ibz_copy(&(generators[4 * k + i].v[j]), &(elem_res.v[j]));
             }
         }
     }
@@ -239,7 +239,7 @@ quat_lattice_contains(ibz_vec_4_t *coord, const quat_lattice_t *lat, const quat_
     // copy result
     if (divisible && (coord != NULL)) {
         for (int i = 0; i < 4; i++) {
-            ibz_copy(&((*coord)[i]), &(work_coord[i]));
+            ibz_copy(&(coord->v[i]), &(work_coord.v[i]));
         }
     }
     ibz_finalize(&prod);
@@ -292,7 +292,7 @@ quat_lattice_hnf(quat_lattice_t *lat)
         ibz_vec_4_init(&(generators[i]));
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_copy(&(generators[j][i]), &(lat->basis[i][j]));
+            ibz_copy(&(generators[j].v[i]), &(lat->basis.m[i][j]));
         }
     }
     ibz_mat_4xn_hnf_mod_core(&(lat->basis), 4, generators, &mod);
@@ -309,19 +309,19 @@ quat_lattice_gram(ibz_mat_4x4_t *G, const quat_lattice_t *lattice, const quat_al
     ibz_init(&tmp);
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j <= i; j++) {
-            ibz_set(&(*G)[i][j], 0);
+            ibz_set(&G->m[i][j], 0);
             for (int k = 0; k < 4; k++) {
-                ibz_mul(&tmp, &(lattice->basis)[k][i], &(lattice->basis)[k][j]);
+                ibz_mul(&tmp, &(lattice->basis.m)[k][i], &(lattice->basis.m)[k][j]);
                 if (k >= 2)
                     ibz_mul(&tmp, &tmp, &alg->p);
-                ibz_add(&(*G)[i][j], &(*G)[i][j], &tmp);
+                ibz_add(&G->m[i][j], &G->m[i][j], &tmp);
             }
-            ibz_mul(&(*G)[i][j], &(*G)[i][j], &ibz_const_two);
+            ibz_mul(&G->m[i][j], &G->m[i][j], &ibz_const_two);
         }
     }
     for (int i = 0; i < 4; i++) {
         for (int j = i + 1; j < 4; j++) {
-            ibz_copy(&(*G)[i][j], &(*G)[j][i]);
+            ibz_copy(&G->m[i][j], &G->m[j][i]);
         }
     }
     ibz_finalize(&tmp);

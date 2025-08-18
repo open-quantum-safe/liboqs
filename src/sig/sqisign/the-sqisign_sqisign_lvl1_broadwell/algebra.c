@@ -21,54 +21,54 @@ quat_alg_coord_mul(ibz_vec_4_t *res, const ibz_vec_4_t *a, const ibz_vec_4_t *b,
     ibz_init(&prod);
     ibz_vec_4_init(&sum);
 
-    ibz_set(&(sum[0]), 0);
-    ibz_set(&(sum[1]), 0);
-    ibz_set(&(sum[2]), 0);
-    ibz_set(&(sum[3]), 0);
+    ibz_set(&(sum.v[0]), 0);
+    ibz_set(&(sum.v[1]), 0);
+    ibz_set(&(sum.v[2]), 0);
+    ibz_set(&(sum.v[3]), 0);
 
     // compute 1 coordinate
-    ibz_mul(&prod, &((*a)[2]), &((*b)[2]));
-    ibz_sub(&(sum[0]), &(sum[0]), &prod);
-    ibz_mul(&prod, &((*a)[3]), &((*b)[3]));
-    ibz_sub(&(sum[0]), &(sum[0]), &prod);
-    ibz_mul(&(sum[0]), &(sum[0]), &(alg->p));
-    ibz_mul(&prod, &((*a)[0]), &((*b)[0]));
-    ibz_add(&(sum[0]), &(sum[0]), &prod);
-    ibz_mul(&prod, &((*a)[1]), &((*b)[1]));
-    ibz_sub(&(sum[0]), &(sum[0]), &prod);
+    ibz_mul(&prod, &(a->v[2]), &(b->v[2]));
+    ibz_sub(&(sum.v[0]), &(sum.v[0]), &prod);
+    ibz_mul(&prod, &(a->v[3]), &(b->v[3]));
+    ibz_sub(&(sum.v[0]), &(sum.v[0]), &prod);
+    ibz_mul(&(sum.v[0]), &(sum.v[0]), &(alg->p));
+    ibz_mul(&prod, &(a->v[0]), &(b->v[0]));
+    ibz_add(&(sum.v[0]), &(sum.v[0]), &prod);
+    ibz_mul(&prod, &(a->v[1]), &(b->v[1]));
+    ibz_sub(&(sum.v[0]), &(sum.v[0]), &prod);
     // compute i coordiante
-    ibz_mul(&prod, &((*a)[2]), &((*b)[3]));
-    ibz_add(&(sum[1]), &(sum[1]), &prod);
-    ibz_mul(&prod, &((*a)[3]), &((*b)[2]));
-    ibz_sub(&(sum[1]), &(sum[1]), &prod);
-    ibz_mul(&(sum[1]), &(sum[1]), &(alg->p));
-    ibz_mul(&prod, &((*a)[0]), &((*b)[1]));
-    ibz_add(&(sum[1]), &(sum[1]), &prod);
-    ibz_mul(&prod, &((*a)[1]), &((*b)[0]));
-    ibz_add(&(sum[1]), &(sum[1]), &prod);
+    ibz_mul(&prod, &(a->v[2]), &(b->v[3]));
+    ibz_add(&(sum.v[1]), &(sum.v[1]), &prod);
+    ibz_mul(&prod, &(a->v[3]), &(b->v[2]));
+    ibz_sub(&(sum.v[1]), &(sum.v[1]), &prod);
+    ibz_mul(&(sum.v[1]), &(sum.v[1]), &(alg->p));
+    ibz_mul(&prod, &(a->v[0]), &(b->v[1]));
+    ibz_add(&(sum.v[1]), &(sum.v[1]), &prod);
+    ibz_mul(&prod, &(a->v[1]), &(b->v[0]));
+    ibz_add(&(sum.v[1]), &(sum.v[1]), &prod);
     // compute j coordiante
-    ibz_mul(&prod, &((*a)[0]), &((*b)[2]));
-    ibz_add(&(sum[2]), &(sum[2]), &prod);
-    ibz_mul(&prod, &((*a)[2]), &((*b)[0]));
-    ibz_add(&(sum[2]), &(sum[2]), &prod);
-    ibz_mul(&prod, &((*a)[1]), &((*b)[3]));
-    ibz_sub(&(sum[2]), &(sum[2]), &prod);
-    ibz_mul(&prod, &((*a)[3]), &((*b)[1]));
-    ibz_add(&(sum[2]), &(sum[2]), &prod);
+    ibz_mul(&prod, &(a->v[0]), &(b->v[2]));
+    ibz_add(&(sum.v[2]), &(sum.v[2]), &prod);
+    ibz_mul(&prod, &(a->v[2]), &(b->v[0]));
+    ibz_add(&(sum.v[2]), &(sum.v[2]), &prod);
+    ibz_mul(&prod, &(a->v[1]), &(b->v[3]));
+    ibz_sub(&(sum.v[2]), &(sum.v[2]), &prod);
+    ibz_mul(&prod, &(a->v[3]), &(b->v[1]));
+    ibz_add(&(sum.v[2]), &(sum.v[2]), &prod);
     // compute ij coordiante
-    ibz_mul(&prod, &((*a)[0]), &((*b)[3]));
-    ibz_add(&(sum[3]), &(sum[3]), &prod);
-    ibz_mul(&prod, &((*a)[3]), &((*b)[0]));
-    ibz_add(&(sum[3]), &(sum[3]), &prod);
-    ibz_mul(&prod, &((*a)[2]), &((*b)[1]));
-    ibz_sub(&(sum[3]), &(sum[3]), &prod);
-    ibz_mul(&prod, &((*a)[1]), &((*b)[2]));
-    ibz_add(&(sum[3]), &(sum[3]), &prod);
+    ibz_mul(&prod, &(a->v[0]), &(b->v[3]));
+    ibz_add(&(sum.v[3]), &(sum.v[3]), &prod);
+    ibz_mul(&prod, &(a->v[3]), &(b->v[0]));
+    ibz_add(&(sum.v[3]), &(sum.v[3]), &prod);
+    ibz_mul(&prod, &(a->v[2]), &(b->v[1]));
+    ibz_sub(&(sum.v[3]), &(sum.v[3]), &prod);
+    ibz_mul(&prod, &(a->v[1]), &(b->v[2]));
+    ibz_add(&(sum.v[3]), &(sum.v[3]), &prod);
 
-    ibz_copy(&((*res)[0]), &(sum[0]));
-    ibz_copy(&((*res)[1]), &(sum[1]));
-    ibz_copy(&((*res)[2]), &(sum[2]));
-    ibz_copy(&((*res)[3]), &(sum[3]));
+    ibz_copy(&(res->v[0]), &(sum.v[0]));
+    ibz_copy(&(res->v[1]), &(sum.v[1]));
+    ibz_copy(&(res->v[2]), &(sum.v[2]));
+    ibz_copy(&(res->v[3]), &(sum.v[3]));
 
     ibz_finalize(&prod);
     ibz_vec_4_finalize(&sum);
@@ -86,8 +86,8 @@ quat_alg_equal_denom(quat_alg_elem_t *res_a, quat_alg_elem_t *res_b, const quat_
     ibz_div(&(res_b->denom), &r, &(b->denom), &gcd);
     for (int i = 0; i < 4; i++) {
         // multiply coordiates by reduced denominators from the other element
-        ibz_mul(&(res_a->coord[i]), &(a->coord[i]), &(res_b->denom));
-        ibz_mul(&(res_b->coord[i]), &(b->coord[i]), &(res_a->denom));
+        ibz_mul(&(res_a->coord.v[i]), &(a->coord.v[i]), &(res_b->denom));
+        ibz_mul(&(res_b->coord.v[i]), &(b->coord.v[i]), &(res_a->denom));
     }
     // multiply both reduced denominators
     ibz_mul(&(res_a->denom), &(res_a->denom), &(res_b->denom));
@@ -149,8 +149,8 @@ quat_alg_norm(ibz_t *res_num, ibz_t *res_denom, const quat_alg_elem_t *a, const 
 
     quat_alg_conj(&norm, a);
     quat_alg_mul(&norm, a, &norm, alg);
-    ibz_gcd(&g, &(norm.coord[0]), &(norm.denom));
-    ibz_div(res_num, &r, &(norm.coord[0]), &g);
+    ibz_gcd(&g, &(norm.coord.v[0]), &(norm.denom));
+    ibz_div(res_num, &r, &(norm.coord.v[0]), &g);
     ibz_div(res_denom, &r, &(norm.denom), &g);
     ibz_abs(res_denom, res_denom);
     ibz_abs(res_num, res_num);
@@ -165,20 +165,20 @@ void
 quat_alg_scalar(quat_alg_elem_t *elem, const ibz_t *numerator, const ibz_t *denominator)
 {
     ibz_copy(&(elem->denom), denominator);
-    ibz_copy(&(elem->coord[0]), numerator);
-    ibz_set(&(elem->coord[1]), 0);
-    ibz_set(&(elem->coord[2]), 0);
-    ibz_set(&(elem->coord[3]), 0);
+    ibz_copy(&(elem->coord.v[0]), numerator);
+    ibz_set(&(elem->coord.v[1]), 0);
+    ibz_set(&(elem->coord.v[2]), 0);
+    ibz_set(&(elem->coord.v[3]), 0);
 }
 
 void
 quat_alg_conj(quat_alg_elem_t *conj, const quat_alg_elem_t *x)
 {
     ibz_copy(&(conj->denom), &(x->denom));
-    ibz_copy(&(conj->coord[0]), &(x->coord[0]));
-    ibz_neg(&(conj->coord[1]), &(x->coord[1]));
-    ibz_neg(&(conj->coord[2]), &(x->coord[2]));
-    ibz_neg(&(conj->coord[3]), &(x->coord[3]));
+    ibz_copy(&(conj->coord.v[0]), &(x->coord.v[0]));
+    ibz_neg(&(conj->coord.v[1]), &(x->coord.v[1]));
+    ibz_neg(&(conj->coord.v[2]), &(x->coord.v[2]));
+    ibz_neg(&(conj->coord.v[3]), &(x->coord.v[3]));
 }
 
 void
@@ -190,7 +190,8 @@ quat_alg_make_primitive(ibz_vec_4_t *primitive_x, ibz_t *content, const quat_alg
     ibz_t r;
     ibz_init(&r);
     for (int i = 0; i < 4; i++) {
-        ibz_div(*primitive_x + i, &r, *primitive_x + i, content);
+        // TODO: check if this is correct
+        ibz_div(primitive_x->v + i, &r, primitive_x->v + i, content);
     }
     ibz_finalize(&r);
 }
@@ -235,10 +236,10 @@ quat_alg_elem_is_zero(const quat_alg_elem_t *x)
 void
 quat_alg_elem_set(quat_alg_elem_t *elem, int32_t denom, int32_t coord0, int32_t coord1, int32_t coord2, int32_t coord3)
 {
-    ibz_set(&(elem->coord[0]), coord0);
-    ibz_set(&(elem->coord[1]), coord1);
-    ibz_set(&(elem->coord[2]), coord2);
-    ibz_set(&(elem->coord[3]), coord3);
+    ibz_set(&(elem->coord.v[0]), coord0);
+    ibz_set(&(elem->coord.v[1]), coord1);
+    ibz_set(&(elem->coord.v[2]), coord2);
+    ibz_set(&(elem->coord.v[3]), coord3);
 
     ibz_set(&(elem->denom), denom);
 }
@@ -247,10 +248,10 @@ void
 quat_alg_elem_copy(quat_alg_elem_t *copy, const quat_alg_elem_t *copied)
 {
     ibz_copy(&copy->denom, &copied->denom);
-    ibz_copy(&copy->coord[0], &copied->coord[0]);
-    ibz_copy(&copy->coord[1], &copied->coord[1]);
-    ibz_copy(&copy->coord[2], &copied->coord[2]);
-    ibz_copy(&copy->coord[3], &copied->coord[3]);
+    ibz_copy(&copy->coord.v[0], &copied->coord.v[0]);
+    ibz_copy(&copy->coord.v[1], &copied->coord.v[1]);
+    ibz_copy(&copy->coord.v[2], &copied->coord.v[2]);
+    ibz_copy(&copy->coord.v[3], &copied->coord.v[3]);
 }
 
 // helper functions for lattices
@@ -262,10 +263,10 @@ quat_alg_elem_copy_ibz(quat_alg_elem_t *elem,
                        const ibz_t *coord2,
                        const ibz_t *coord3)
 {
-    ibz_copy(&(elem->coord[0]), coord0);
-    ibz_copy(&(elem->coord[1]), coord1);
-    ibz_copy(&(elem->coord[2]), coord2);
-    ibz_copy(&(elem->coord[3]), coord3);
+    ibz_copy(&(elem->coord.v[0]), coord0);
+    ibz_copy(&(elem->coord.v[1]), coord1);
+    ibz_copy(&(elem->coord.v[2]), coord2);
+    ibz_copy(&(elem->coord.v[3]), coord3);
 
     ibz_copy(&(elem->denom), denom);
 }
@@ -274,7 +275,7 @@ void
 quat_alg_elem_mul_by_scalar(quat_alg_elem_t *res, const ibz_t *scalar, const quat_alg_elem_t *elem)
 {
     for (int i = 0; i < 4; i++) {
-        ibz_mul(&(res->coord[i]), &(elem->coord[i]), scalar);
+        ibz_mul(&(res->coord.v[i]), &(elem->coord.v[i]), scalar);
     }
     ibz_copy(&(res->denom), &(elem->denom));
 }

@@ -8,5 +8,5 @@
 void
 ibz_xgcd(ibz_t *gcd, ibz_t *u, ibz_t *v, const ibz_t *a, const ibz_t *b)
 {
-    mpz_gcdext(*gcd, *u, *v, *a, *b);
+    mpz_gcdext(gcd->i, u->i, v->i, a->i, b->i);
 }

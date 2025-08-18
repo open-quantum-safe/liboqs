@@ -137,10 +137,10 @@ _fixed_degree_isogeny_impl(quat_left_ideal_t *lideal,
     ibz_invmod(&tmp, &tmp, &two_pow);
     assert(!ibz_is_even(&tmp));
 
-    ibz_mul(&theta.coord[0], &theta.coord[0], &tmp);
-    ibz_mul(&theta.coord[1], &theta.coord[1], &tmp);
-    ibz_mul(&theta.coord[2], &theta.coord[2], &tmp);
-    ibz_mul(&theta.coord[3], &theta.coord[3], &tmp);
+    ibz_mul(&theta.coord.v[0], &theta.coord.v[0], &tmp);
+    ibz_mul(&theta.coord.v[1], &theta.coord.v[1], &tmp);
+    ibz_mul(&theta.coord.v[2], &theta.coord.v[2], &tmp);
+    ibz_mul(&theta.coord.v[3], &theta.coord.v[3], &tmp);
 
     // applying theta to the basis
     ec_basis_t B0_two_theta;
@@ -197,53 +197,53 @@ post_LLL_basis_treatment(ibz_mat_4x4_t *gram, ibz_mat_4x4_t *reduced, const ibz_
     // treatment
     if (is_special_order) {
         // reordering the basis if needed
-        if (ibz_cmp(&(*gram)[0][0], &(*gram)[2][2]) == 0) {
+        if (ibz_cmp(&gram->m[0][0], &gram->m[2][2]) == 0) {
             for (int i = 0; i < 4; i++) {
-                ibz_swap(&(*reduced)[i][1], &(*reduced)[i][2]);
+                ibz_swap(&reduced->m[i][1], &reduced->m[i][2]);
             }
-            ibz_swap(&(*gram)[0][2], &(*gram)[0][1]);
-            ibz_swap(&(*gram)[2][0], &(*gram)[1][0]);
-            ibz_swap(&(*gram)[3][2], &(*gram)[3][1]);
-            ibz_swap(&(*gram)[2][3], &(*gram)[1][3]);
-            ibz_swap(&(*gram)[2][2], &(*gram)[1][1]);
-        } else if (ibz_cmp(&(*gram)[0][0], &(*gram)[3][3]) == 0) {
+            ibz_swap(&gram->m[0][2], &gram->m[0][1]);
+            ibz_swap(&gram->m[2][0], &gram->m[1][0]);
+            ibz_swap(&gram->m[3][2], &gram->m[3][1]);
+            ibz_swap(&gram->m[2][3], &gram->m[1][3]);
+            ibz_swap(&gram->m[2][2], &gram->m[1][1]);
+        } else if (ibz_cmp(&gram->m[0][0], &gram->m[3][3]) == 0) {
             for (int i = 0; i < 4; i++) {
-                ibz_swap(&(*reduced)[i][1], &(*reduced)[i][3]);
+                ibz_swap(&reduced->m[i][1], &reduced->m[i][3]);
             }
-            ibz_swap(&(*gram)[0][3], &(*gram)[0][1]);
-            ibz_swap(&(*gram)[3][0], &(*gram)[1][0]);
-            ibz_swap(&(*gram)[2][3], &(*gram)[2][1]);
-            ibz_swap(&(*gram)[3][2], &(*gram)[1][2]);
-            ibz_swap(&(*gram)[3][3], &(*gram)[1][1]);
-        } else if (ibz_cmp(&(*gram)[1][1], &(*gram)[3][3]) == 0) {
+            ibz_swap(&gram->m[0][3], &gram->m[0][1]);
+            ibz_swap(&gram->m[3][0], &gram->m[1][0]);
+            ibz_swap(&gram->m[2][3], &gram->m[2][1]);
+            ibz_swap(&gram->m[3][2], &gram->m[1][2]);
+            ibz_swap(&gram->m[3][3], &gram->m[1][1]);
+        } else if (ibz_cmp(&gram->m[1][1], &gram->m[3][3]) == 0) {
             // in this case it seems that we need to swap the second and third
             // element, and then recompute entirely the second element from the first
             // first we swap the second and third element
             for (int i = 0; i < 4; i++) {
-                ibz_swap(&(*reduced)[i][1], &(*reduced)[i][2]);
+                ibz_swap(&reduced->m[i][1], &reduced->m[i][2]);
             }
-            ibz_swap(&(*gram)[0][2], &(*gram)[0][1]);
-            ibz_swap(&(*gram)[2][0], &(*gram)[1][0]);
-            ibz_swap(&(*gram)[3][2], &(*gram)[3][1]);
-            ibz_swap(&(*gram)[2][3], &(*gram)[1][3]);
-            ibz_swap(&(*gram)[2][2], &(*gram)[1][1]);
+            ibz_swap(&gram->m[0][2], &gram->m[0][1]);
+            ibz_swap(&gram->m[2][0], &gram->m[1][0]);
+            ibz_swap(&gram->m[3][2], &gram->m[3][1]);
+            ibz_swap(&gram->m[2][3], &gram->m[1][3]);
+            ibz_swap(&gram->m[2][2], &gram->m[1][1]);
         }
 
         // adjusting the sign if needed
-        if (ibz_cmp(&(*reduced)[0][0], &(*reduced)[1][1]) != 0) {
+        if (ibz_cmp(&reduced->m[0][0], &reduced->m[1][1]) != 0) {
             for (int i = 0; i < 4; i++) {
-                ibz_neg(&(*reduced)[i][1], &(*reduced)[i][1]);
-                ibz_neg(&(*gram)[i][1], &(*gram)[i][1]);
-                ibz_neg(&(*gram)[1][i], &(*gram)[1][i]);
+                ibz_neg(&reduced->m[i][1], &reduced->m[i][1]);
+                ibz_neg(&gram->m[i][1], &gram->m[i][1]);
+                ibz_neg(&gram->m[1][i], &gram->m[1][i]);
             }
         }
-        if (ibz_cmp(&(*reduced)[0][2], &(*reduced)[1][3]) != 0) {
+        if (ibz_cmp(&reduced->m[0][2], &reduced->m[1][3]) != 0) {
             for (int i = 0; i < 4; i++) {
-                ibz_neg(&(*reduced)[i][3], &(*reduced)[i][3]);
-                ibz_neg(&(*gram)[i][3], &(*gram)[i][3]);
-                ibz_neg(&(*gram)[3][i], &(*gram)[3][i]);
+                ibz_neg(&reduced->m[i][3], &reduced->m[i][3]);
+                ibz_neg(&gram->m[i][3], &gram->m[i][3]);
+                ibz_neg(&gram->m[3][i], &gram->m[3][i]);
             }
-            // assert(ibz_cmp(&(*reduced)[0][2],&(*reduced)[1][3])==0);
+            // assert(ibz_cmp(&reduced->m[0][2],&reduced->m[1][3])==0);
         }
     }
 }
@@ -273,7 +273,7 @@ enumerate_hypercube(ibz_vec_4_t *vecs, ibz_t *norms, int m, const ibz_mat_4x4_t 
     // if the basis is of the form alpha, i*alpha, beta, i*beta
     // we can remove some values due to symmetry of the basis that
     bool need_remove_symmetry =
-        (ibz_cmp(&(*gram)[0][0], &(*gram)[1][1]) == 0 && ibz_cmp(&(*gram)[3][3], &(*gram)[2][2]) == 0);
+        (ibz_cmp(&gram->m[0][0], &gram->m[1][1]) == 0 && ibz_cmp(&gram->m[3][3], &gram->m[2][2]) == 0);
 
     int check1, check2, check3;
 
@@ -324,10 +324,10 @@ enumerate_hypercube(ibz_vec_4_t *vecs, ibz_t *norms, int m, const ibz_mat_4x4_t 
                     // and we ensure that we don't record the same norm in the list
                     if (!need_remove_symmetry || (check1 <= check2 && check1 <= check3)) {
                         // Set the point as a vector (x, y, z, w)
-                        ibz_set(&point[0], x);
-                        ibz_set(&point[1], y);
-                        ibz_set(&point[2], z);
-                        ibz_set(&point[3], w);
+                        ibz_set(&point.v[0], x);
+                        ibz_set(&point.v[1], y);
+                        ibz_set(&point.v[2], z);
+                        ibz_set(&point.v[3], w);
 
                         // Evaluate this through the gram matrix and divide out by the
                         // adjusted_norm
@@ -336,10 +336,10 @@ enumerate_hypercube(ibz_vec_4_t *vecs, ibz_t *norms, int m, const ibz_mat_4x4_t 
                         assert(ibz_is_zero(&remain));
 
                         if (ibz_mod_ui(&norm, 2) == 1) {
-                            ibz_set(&vecs[count][0], x);
-                            ibz_set(&vecs[count][1], y);
-                            ibz_set(&vecs[count][2], z);
-                            ibz_set(&vecs[count][3], w);
+                            ibz_set(&vecs[count].v[0], x);
+                            ibz_set(&vecs[count].v[1], y);
+                            ibz_set(&vecs[count].v[2], z);
+                            ibz_set(&vecs[count].v[3], w);
                             ibz_copy(&norms[count], &norm);
                             count++;
                         }
@@ -530,10 +530,10 @@ find_uv(ibz_t *u,
     quat_alg_elem_t delta;
     // delta will be the element of smallest norm
     quat_alg_elem_init(&delta);
-    ibz_set(&delta.coord[0], 1);
-    ibz_set(&delta.coord[1], 0);
-    ibz_set(&delta.coord[2], 0);
-    ibz_set(&delta.coord[3], 0);
+    ibz_set(&delta.coord.v[0], 1);
+    ibz_set(&delta.coord.v[1], 0);
+    ibz_set(&delta.coord.v[2], 0);
+    ibz_set(&delta.coord.v[3], 0);
     ibz_copy(&delta.denom, &reduced_id.lattice.denom);
     ibz_mat_4x4_eval(&delta.coord, &reduced[0], &delta.coord);
     assert(quat_lattice_contains(NULL, &reduced_id.lattice, &delta));
@@ -542,7 +542,7 @@ find_uv(ibz_t *u,
     quat_alg_conj(&delta, &delta);
     ibz_mul(&delta.denom, &delta.denom, &ideal[0].norm);
     quat_lattice_alg_elem_mul(&reduced_id.lattice, &reduced_id.lattice, &delta, Bpoo);
-    ibz_copy(&reduced_id.norm, &gram[0][0][0]);
+    ibz_copy(&reduced_id.norm, &gram[0].m[0][0]);
     ibz_div(&reduced_id.norm, &remain, &reduced_id.norm, &adjusted_norm[0]);
     assert(ibz_cmp(&remain, &ibz_const_zero) == 0);
 
@@ -989,10 +989,10 @@ dim2id2iso_ideal_to_isogeny_clapotis(quat_alg_elem_t *beta1,
     }
     ibz_invmod(&tmp, &tmp, &two_pow);
 
-    ibz_mul(&theta.coord[0], &theta.coord[0], &tmp);
-    ibz_mul(&theta.coord[1], &theta.coord[1], &tmp);
-    ibz_mul(&theta.coord[2], &theta.coord[2], &tmp);
-    ibz_mul(&theta.coord[3], &theta.coord[3], &tmp);
+    ibz_mul(&theta.coord.v[0], &theta.coord.v[0], &tmp);
+    ibz_mul(&theta.coord.v[1], &theta.coord.v[1], &tmp);
+    ibz_mul(&theta.coord.v[2], &theta.coord.v[2], &tmp);
+    ibz_mul(&theta.coord.v[3], &theta.coord.v[3], &tmp);
 
     // applying theta
     endomorphism_application_even_basis(&bas2, 0, &Fv_codomain.E1, &theta, TORSION_EVEN_POWER);
@@ -1092,10 +1092,10 @@ dim2id2iso_ideal_to_isogeny_clapotis(quat_alg_elem_t *beta1,
         ibz_mul(&tmp, &tmp, &CONNECTING_IDEALS[index_order1].norm);
     }
     ibz_invmod(&tmp, &tmp, &TORSION_PLUS_2POWER);
-    ibz_mul(&beta1->coord[0], &beta1->coord[0], &tmp);
-    ibz_mul(&beta1->coord[1], &beta1->coord[1], &tmp);
-    ibz_mul(&beta1->coord[2], &beta1->coord[2], &tmp);
-    ibz_mul(&beta1->coord[3], &beta1->coord[3], &tmp);
+    ibz_mul(&beta1->coord.v[0], &beta1->coord.v[0], &tmp);
+    ibz_mul(&beta1->coord.v[1], &beta1->coord.v[1], &tmp);
+    ibz_mul(&beta1->coord.v[2], &beta1->coord.v[2], &tmp);
+    ibz_mul(&beta1->coord.v[3], &beta1->coord.v[3], &tmp);
 
     endomorphism_application_even_basis(basis, 0, codomain, beta1, TORSION_EVEN_POWER);
 

@@ -18,8 +18,8 @@ ec_biscalar_mul_ibz_vec(ec_point_t *res,
                         const ec_curve_t *curve)
 {
     digit_t scalars[2][NWORDS_ORDER];
-    ibz_to_digit_array(scalars[0], &(*scalar_vec)[0]);
-    ibz_to_digit_array(scalars[1], &(*scalar_vec)[1]);
+    ibz_to_digit_array(scalars[0], &scalar_vec->v[0]);
+    ibz_to_digit_array(scalars[1], &scalar_vec->v[1]);
     ec_biscalar_mul(res, scalars[0], scalars[1], f, PQ, curve);
 }
 
@@ -48,14 +48,14 @@ id2iso_ideal_to_kernel_dlogs_even(ibz_vec_2_t *vec, const quat_left_ideal_t *lid
         quat_change_to_O0_basis(&coeffs, &alpha);
 
         for (unsigned i = 0; i < 2; ++i) {
-            ibz_add(&mat[i][i], &mat[i][i], &coeffs[0]);
+            ibz_add(&mat.m[i][i], &mat.m[i][i], &coeffs.v[0]);
             for (unsigned j = 0; j < 2; ++j) {
-                ibz_mul(&tmp, &ACTION_GEN2[i][j], &coeffs[1]);
-                ibz_add(&mat[i][j], &mat[i][j], &tmp);
-                ibz_mul(&tmp, &ACTION_GEN3[i][j], &coeffs[2]);
-                ibz_add(&mat[i][j], &mat[i][j], &tmp);
-                ibz_mul(&tmp, &ACTION_GEN4[i][j], &coeffs[3]);
-                ibz_add(&mat[i][j], &mat[i][j], &tmp);
+                ibz_mul(&tmp, &ACTION_GEN2.m[i][j], &coeffs.v[1]);
+                ibz_add(&mat.m[i][j], &mat.m[i][j], &tmp);
+                ibz_mul(&tmp, &ACTION_GEN3.m[i][j], &coeffs.v[2]);
+                ibz_add(&mat.m[i][j], &mat.m[i][j], &tmp);
+                ibz_mul(&tmp, &ACTION_GEN4.m[i][j], &coeffs.v[3]);
+                ibz_add(&mat.m[i][j], &mat.m[i][j], &tmp);
             }
         }
 
@@ -67,16 +67,16 @@ id2iso_ideal_to_kernel_dlogs_even(ibz_vec_2_t *vec, const quat_left_ideal_t *lid
     {
         const ibz_t *const norm = &lideal->norm;
 
-        ibz_mod(&(*vec)[0], &mat[0][0], norm);
-        ibz_mod(&(*vec)[1], &mat[1][0], norm);
-        ibz_gcd(&tmp, &(*vec)[0], &(*vec)[1]);
+        ibz_mod(&vec->v[0], &mat.m[0][0], norm);
+        ibz_mod(&vec->v[1], &mat.m[1][0], norm);
+        ibz_gcd(&tmp, &vec->v[0], &vec->v[1]);
         if (ibz_is_even(&tmp)) {
-            ibz_mod(&(*vec)[0], &mat[0][1], norm);
-            ibz_mod(&(*vec)[1], &mat[1][1], norm);
+            ibz_mod(&vec->v[0], &mat.m[0][1], norm);
+            ibz_mod(&vec->v[1], &mat.m[1][1], norm);
         }
 #ifndef NDEBUG
-        ibz_gcd(&tmp, &(*vec)[0], norm);
-        ibz_gcd(&tmp, &(*vec)[1], &tmp);
+        ibz_gcd(&tmp, &vec->v[0], norm);
+        ibz_gcd(&tmp, &vec->v[1], &tmp);
         assert(!ibz_cmp(&tmp, &ibz_const_one));
 #endif
     }
@@ -102,28 +102,28 @@ matrix_application_even_basis(ec_basis_t *bas, const ec_curve_t *E, ibz_mat_2x2_
     copy_basis(&tmp_bas, bas);
 
     // reduction mod 2f
-    ibz_mod(&(*mat)[0][0], &(*mat)[0][0], &pow_two);
-    ibz_mod(&(*mat)[0][1], &(*mat)[0][1], &pow_two);
-    ibz_mod(&(*mat)[1][0], &(*mat)[1][0], &pow_two);
-    ibz_mod(&(*mat)[1][1], &(*mat)[1][1], &pow_two);
+    ibz_mod(&mat->m[0][0], &mat->m[0][0], &pow_two);
+    ibz_mod(&mat->m[0][1], &mat->m[0][1], &pow_two);
+    ibz_mod(&mat->m[1][0], &mat->m[1][0], &pow_two);
+    ibz_mod(&mat->m[1][1], &mat->m[1][1], &pow_two);
 
     // For a matrix [[a, c], [b, d]] we compute:
     //
     // first basis element R = [a]P + [b]Q
-    ibz_to_digit_array(scalars[0], &(*mat)[0][0]);
-    ibz_to_digit_array(scalars[1], &(*mat)[1][0]);
+    ibz_to_digit_array(scalars[0], &mat->m[0][0]);
+    ibz_to_digit_array(scalars[1], &mat->m[1][0]);
     ec_biscalar_mul(&bas->P, scalars[0], scalars[1], f, &tmp_bas, E);
 
     // second basis element S = [c]P + [d]Q
-    ibz_to_digit_array(scalars[0], &(*mat)[0][1]);
-    ibz_to_digit_array(scalars[1], &(*mat)[1][1]);
+    ibz_to_digit_array(scalars[0], &mat->m[0][1]);
+    ibz_to_digit_array(scalars[1], &mat->m[1][1]);
     ec_biscalar_mul(&bas->Q, scalars[0], scalars[1], f, &tmp_bas, E);
 
     // Their difference R - S = [a - c]P + [b - d]Q
-    ibz_sub(&tmp, &(*mat)[0][0], &(*mat)[0][1]);
+    ibz_sub(&tmp, &mat->m[0][0], &mat->m[0][1]);
     ibz_mod(&tmp, &tmp, &pow_two);
     ibz_to_digit_array(scalars[0], &tmp);
-    ibz_sub(&tmp, &(*mat)[1][0], &(*mat)[1][1]);
+    ibz_sub(&tmp, &mat->m[1][0], &mat->m[1][1]);
     ibz_mod(&tmp, &tmp, &pow_two);
     ibz_to_digit_array(scalars[1], &tmp);
     ret = ec_biscalar_mul(&bas->PmQ, scalars[0], scalars[1], f, &tmp_bas, E);
@@ -157,23 +157,23 @@ endomorphism_application_even_basis(ec_basis_t *bas,
     quat_alg_make_primitive(&coeffs, &content, theta, &EXTREMAL_ORDERS[index_alternate_curve].order);
     assert(ibz_is_odd(&content));
 
-    ibz_set(&mat[0][0], 0);
-    ibz_set(&mat[0][1], 0);
-    ibz_set(&mat[1][0], 0);
-    ibz_set(&mat[1][1], 0);
+    ibz_set(&mat.m[0][0], 0);
+    ibz_set(&mat.m[0][1], 0);
+    ibz_set(&mat.m[1][0], 0);
+    ibz_set(&mat.m[1][1], 0);
 
     // computing the matrix
 
     for (unsigned i = 0; i < 2; ++i) {
-        ibz_add(&mat[i][i], &mat[i][i], &coeffs[0]);
+        ibz_add(&mat.m[i][i], &mat.m[i][i], &coeffs.v[0]);
         for (unsigned j = 0; j < 2; ++j) {
-            ibz_mul(&tmp, &CURVES_WITH_ENDOMORPHISMS[index_alternate_curve].action_gen2[i][j], &coeffs[1]);
-            ibz_add(&mat[i][j], &mat[i][j], &tmp);
-            ibz_mul(&tmp, &CURVES_WITH_ENDOMORPHISMS[index_alternate_curve].action_gen3[i][j], &coeffs[2]);
-            ibz_add(&mat[i][j], &mat[i][j], &tmp);
-            ibz_mul(&tmp, &CURVES_WITH_ENDOMORPHISMS[index_alternate_curve].action_gen4[i][j], &coeffs[3]);
-            ibz_add(&mat[i][j], &mat[i][j], &tmp);
-            ibz_mul(&mat[i][j], &mat[i][j], &content);
+            ibz_mul(&tmp, &CURVES_WITH_ENDOMORPHISMS[index_alternate_curve].action_gen2.m[i][j], &coeffs.v[1]);
+            ibz_add(&mat.m[i][j], &mat.m[i][j], &tmp);
+            ibz_mul(&tmp, &CURVES_WITH_ENDOMORPHISMS[index_alternate_curve].action_gen3.m[i][j], &coeffs.v[2]);
+            ibz_add(&mat.m[i][j], &mat.m[i][j], &tmp);
+            ibz_mul(&tmp, &CURVES_WITH_ENDOMORPHISMS[index_alternate_curve].action_gen4.m[i][j], &coeffs.v[3]);
+            ibz_add(&mat.m[i][j], &mat.m[i][j], &tmp);
+            ibz_mul(&mat.m[i][j], &mat.m[i][j], &content);
         }
     }
 
@@ -215,19 +215,19 @@ id2iso_kernel_dlogs_to_ideal_even(quat_left_ideal_t *lideal, const ibz_vec_2_t *
         ibz_mat_2x2_t mat;
         ibz_mat_2x2_init(&mat);
 
-        ibz_copy(&mat[0][0], &(*vec2)[0]);
-        ibz_copy(&mat[1][0], &(*vec2)[1]);
+        ibz_copy(&mat.m[0][0], &vec2->v[0]);
+        ibz_copy(&mat.m[1][0], &vec2->v[1]);
 
         ibz_mat_2x2_eval(&vec, &ACTION_J, vec2);
-        ibz_copy(&mat[0][1], &vec[0]);
-        ibz_copy(&mat[1][1], &vec[1]);
+        ibz_copy(&mat.m[0][1], &vec.v[0]);
+        ibz_copy(&mat.m[1][1], &vec.v[1]);
 
         ibz_mat_2x2_eval(&vec, &ACTION_GEN4, vec2);
-        ibz_add(&mat[0][1], &mat[0][1], &vec[0]);
-        ibz_add(&mat[1][1], &mat[1][1], &vec[1]);
+        ibz_add(&mat.m[0][1], &mat.m[0][1], &vec.v[0]);
+        ibz_add(&mat.m[1][1], &mat.m[1][1], &vec.v[1]);
 
-        ibz_mod(&mat[0][1], &mat[0][1], &two_pow);
-        ibz_mod(&mat[1][1], &mat[1][1], &two_pow);
+        ibz_mod(&mat.m[0][1], &mat.m[0][1], &two_pow);
+        ibz_mod(&mat.m[1][1], &mat.m[1][1], &two_pow);
 
         ibz_mat_2x2_t inv;
         ibz_mat_2x2_init(&inv);
@@ -247,11 +247,11 @@ id2iso_kernel_dlogs_to_ideal_even(quat_left_ideal_t *lideal, const ibz_vec_2_t *
     quat_alg_elem_t gen;
     quat_alg_elem_init(&gen);
     ibz_set(&gen.denom, 2);
-    ibz_add(&gen.coord[0], &vec[0], &vec[0]);
-    ibz_set(&gen.coord[1], -2);
-    ibz_add(&gen.coord[2], &vec[1], &vec[1]);
-    ibz_copy(&gen.coord[3], &vec[1]);
-    ibz_add(&gen.coord[0], &gen.coord[0], &vec[1]);
+    ibz_add(&gen.coord.v[0], &vec.v[0], &vec.v[0]);
+    ibz_set(&gen.coord.v[1], -2);
+    ibz_add(&gen.coord.v[2], &vec.v[1], &vec.v[1]);
+    ibz_copy(&gen.coord.v[3], &vec.v[1]);
+    ibz_add(&gen.coord.v[0], &gen.coord.v[0], &vec.v[1]);
     ibz_vec_2_finalize(&vec);
 
     quat_lideal_create(lideal, &gen, &two_pow, &MAXORD_O0, &QUATALG_PINFTY);
@@ -319,10 +319,10 @@ _change_of_basis_matrix_tate(ibz_mat_2x2_t *mat,
 #endif
 
     // Copy the results into the matrix
-    ibz_copy_digit_array(&((*mat)[0][0]), x1);
-    ibz_copy_digit_array(&((*mat)[1][0]), x2);
-    ibz_copy_digit_array(&((*mat)[0][1]), x3);
-    ibz_copy_digit_array(&((*mat)[1][1]), x4);
+    ibz_copy_digit_array(&(mat->m[0][0]), x1);
+    ibz_copy_digit_array(&(mat->m[1][0]), x2);
+    ibz_copy_digit_array(&(mat->m[0][1]), x3);
+    ibz_copy_digit_array(&(mat->m[1][1]), x4);
 }
 
 void

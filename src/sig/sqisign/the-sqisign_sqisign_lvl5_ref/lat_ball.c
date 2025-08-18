@@ -28,10 +28,10 @@ quat_lattice_bound_parallelogram(ibz_vec_4_t *box, ibz_mat_4x4_t *U, const ibz_m
     // Compute the parallelogram's bounds
     int trivial = 1;
     for (int i = 0; i < 4; i++) {
-        ibz_mul(&(*box)[i], &dualG[i][i], radius);
-        ibz_div(&(*box)[i], &rem, &(*box)[i], &denom);
-        ibz_sqrt_floor(&(*box)[i], &(*box)[i]);
-        trivial &= ibz_is_zero(&(*box)[i]);
+        ibz_mul(&box->v[i], &dualG.m[i][i], radius);
+        ibz_div(&box->v[i], &rem, &box->v[i], &denom);
+        ibz_sqrt_floor(&box->v[i], &box->v[i]);
+        trivial &= ibz_is_zero(&box->v[i]);
     }
 
     // Compute the transpose transformation matrix
@@ -95,12 +95,12 @@ quat_lattice_sample_from_ball(quat_alg_elem_t *res,
     do {
         // Sample vector
         for (int i = 0; i < 4; i++) {
-            if (ibz_is_zero(&box[i])) {
-                ibz_copy(&x[i], &ibz_const_zero);
+            if (ibz_is_zero(&box.v[i])) {
+                ibz_copy(&x.v[i], &ibz_const_zero);
             } else {
-                ibz_add(&tmp, &box[i], &box[i]);
-                ok &= ibz_rand_interval(&x[i], &ibz_const_zero, &tmp);
-                ibz_sub(&x[i], &x[i], &box[i]);
+                ibz_add(&tmp, &box.v[i], &box.v[i]);
+                ok &= ibz_rand_interval(&x.v[i], &ibz_const_zero, &tmp);
+                ibz_sub(&x.v[i], &x.v[i], &box.v[i]);
                 if (!ok)
                     goto err;
             }

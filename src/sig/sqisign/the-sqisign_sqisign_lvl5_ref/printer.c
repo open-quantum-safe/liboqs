@@ -7,7 +7,7 @@ ibz_mat_2x2_print(const ibz_mat_2x2_t *mat)
     printf("matrix: ");
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
-            ibz_print(&((*mat)[i][j]), 10);
+            ibz_print(&(mat->m[i][j]), 10);
             printf(" ");
         }
         printf("\n        ");
@@ -21,7 +21,7 @@ ibz_mat_4x4_print(const ibz_mat_4x4_t *mat)
     printf("matrix: ");
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_print(&((*mat)[i][j]), 10);
+            ibz_print(&(mat->m[i][j]), 10);
             printf(" ");
         }
         printf("\n        ");
@@ -34,7 +34,7 @@ ibz_vec_2_print(const ibz_vec_2_t *vec)
 {
     printf("vector: ");
     for (int i = 0; i < 2; i++) {
-        ibz_print(&((*vec)[i]), 10);
+        ibz_print(&(vec->v[i]), 10);
         printf(" ");
     }
     printf("\n\n");
@@ -45,7 +45,7 @@ ibz_vec_4_print(const ibz_vec_4_t *vec)
 {
     printf("vector: ");
     for (int i = 0; i < 4; i++) {
-        ibz_print(&((*vec)[i]), 10);
+        ibz_print(&(vec->v[i]), 10);
         printf(" ");
     }
     printf("\n\n");
@@ -61,7 +61,7 @@ quat_lattice_print(const quat_lattice_t *lat)
     printf("basis: ");
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_print(&((lat->basis)[i][j]), 10);
+            ibz_print(&((lat->basis.m)[i][j]), 10);
             printf(" ");
         }
         printf("\n       ");
@@ -85,7 +85,7 @@ quat_alg_elem_print(const quat_alg_elem_t *elem)
     printf("\n");
     printf("coordinates: ");
     for (int i = 0; i < 4; i++) {
-        ibz_print(&((elem->coord)[i]), 10);
+        ibz_print(&((elem->coord.v)[i]), 10);
         printf(" ");
     }
     printf("\n\n");
@@ -104,7 +104,7 @@ quat_left_ideal_print(const quat_left_ideal_t *lideal)
     printf("basis: ");
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_print(&((lideal->lattice.basis)[i][j]), 10);
+            ibz_print(&((lideal->lattice.basis.m)[i][j]), 10);
             printf(" ");
         }
         if (i != 3) {
@@ -120,7 +120,7 @@ quat_left_ideal_print(const quat_left_ideal_t *lideal)
         printf("parent order basis: ");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                ibz_print(&((lideal->parent_order->basis)[i][j]), 10);
+                ibz_print(&((lideal->parent_order->basis.m)[i][j]), 10);
                 printf(" ");
             }
             printf("\n                    ");

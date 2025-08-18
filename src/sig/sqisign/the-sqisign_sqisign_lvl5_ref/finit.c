@@ -29,29 +29,29 @@ quat_alg_elem_finalize(quat_alg_elem_t *elem)
 void
 ibz_vec_2_init(ibz_vec_2_t *vec)
 {
-    ibz_init(&((*vec)[0]));
-    ibz_init(&((*vec)[1]));
+    ibz_init(&(vec->v[0]));
+    ibz_init(&(vec->v[1]));
 }
 
 void
 ibz_vec_2_finalize(ibz_vec_2_t *vec)
 {
-    ibz_finalize(&((*vec)[0]));
-    ibz_finalize(&((*vec)[1]));
+    ibz_finalize(&(vec->v[0]));
+    ibz_finalize(&(vec->v[1]));
 }
 
 void
 ibz_vec_4_init(ibz_vec_4_t *vec)
 {
     for (int i = 0; i < 4; i++) {
-        ibz_init(&(*vec)[i]);
+        ibz_init(&vec->v[i]);
     }
 }
 void
 ibz_vec_4_finalize(ibz_vec_4_t *vec)
 {
     for (int i = 0; i < 4; i++) {
-        ibz_finalize(&(*vec)[i]);
+        ibz_finalize(&vec->v[i]);
     }
 }
 
@@ -60,7 +60,7 @@ ibz_mat_2x2_init(ibz_mat_2x2_t *mat)
 {
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
-            ibz_init(&(*mat)[i][j]);
+            ibz_init(&(mat->m)[i][j]);
         }
     }
 }
@@ -69,7 +69,7 @@ ibz_mat_2x2_finalize(ibz_mat_2x2_t *mat)
 {
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
-            ibz_finalize(&(*mat)[i][j]);
+            ibz_finalize(&(mat->m)[i][j]);
         }
     }
 }
@@ -79,7 +79,7 @@ ibz_mat_4x4_init(ibz_mat_4x4_t *mat)
 {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_init(&(*mat)[i][j]);
+            ibz_init(&(mat->m)[i][j]);
         }
     }
 }
@@ -88,7 +88,7 @@ ibz_mat_4x4_finalize(ibz_mat_4x4_t *mat)
 {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_finalize(&(*mat)[i][j]);
+            ibz_finalize(&(mat->m)[i][j]);
         }
     }
 }

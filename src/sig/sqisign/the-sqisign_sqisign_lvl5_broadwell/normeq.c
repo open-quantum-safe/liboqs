@@ -13,23 +13,23 @@ quat_lattice_O0_set(quat_lattice_t *O0)
 {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            ibz_set(&(O0->basis[i][j]), 0);
+            ibz_set(&(O0->basis.m[i][j]), 0);
         }
     }
     ibz_set(&(O0->denom), 2);
-    ibz_set(&(O0->basis[0][0]), 2);
-    ibz_set(&(O0->basis[1][1]), 2);
-    ibz_set(&(O0->basis[2][2]), 1);
-    ibz_set(&(O0->basis[1][2]), 1);
-    ibz_set(&(O0->basis[3][3]), 1);
-    ibz_set(&(O0->basis[0][3]), 1);
+    ibz_set(&(O0->basis.m[0][0]), 2);
+    ibz_set(&(O0->basis.m[1][1]), 2);
+    ibz_set(&(O0->basis.m[2][2]), 1);
+    ibz_set(&(O0->basis.m[1][2]), 1);
+    ibz_set(&(O0->basis.m[3][3]), 1);
+    ibz_set(&(O0->basis.m[0][3]), 1);
 }
 
 void
 quat_lattice_O0_set_extremal(quat_p_extremal_maximal_order_t *O0)
 {
-    ibz_set(&O0->z.coord[1], 1);
-    ibz_set(&O0->t.coord[2], 1);
+    ibz_set(&O0->z.coord.v[1], 1);
+    ibz_set(&O0->t.coord.v[2], 1);
     ibz_set(&O0->z.denom, 1);
     ibz_set(&O0->t.denom, 1);
     O0->q = 1;
@@ -50,24 +50,24 @@ quat_order_elem_create(quat_alg_elem_t *elem,
     quat_alg_elem_init(&quat_temp);
 
     // elem = x
-    quat_alg_scalar(elem, &(*coeffs)[0], &ibz_const_one);
+    quat_alg_scalar(elem, &coeffs->v[0], &ibz_const_one);
 
     // quat_temp = i*y
-    quat_alg_scalar(&quat_temp, &((*coeffs)[1]), &ibz_const_one);
+    quat_alg_scalar(&quat_temp, &(coeffs->v[1]), &ibz_const_one);
     quat_alg_mul(&quat_temp, &order->z, &quat_temp, Bpoo);
 
     // elem = x + i*y
     quat_alg_add(elem, elem, &quat_temp);
 
     // quat_temp = z * j
-    quat_alg_scalar(&quat_temp, &(*coeffs)[2], &ibz_const_one);
+    quat_alg_scalar(&quat_temp, &coeffs->v[2], &ibz_const_one);
     quat_alg_mul(&quat_temp, &order->t, &quat_temp, Bpoo);
 
     // elem = x + i* + z*j
     quat_alg_add(elem, elem, &quat_temp);
 
     // quat_temp = t * j * i
-    quat_alg_scalar(&quat_temp, &(*coeffs)[3], &ibz_const_one);
+    quat_alg_scalar(&quat_temp, &coeffs->v[3], &ibz_const_one);
     quat_alg_mul(&quat_temp, &order->t, &quat_temp, Bpoo);
     quat_alg_mul(&quat_temp, &quat_temp, &order->z, Bpoo);
 
@@ -143,11 +143,11 @@ quat_represent_integer(quat_alg_elem_t *gamma,
         ibz_sub(&counter, &counter, &ibz_const_one);
 
         // we start by sampling the first coordinate
-        ibz_rand_interval(&coeffs[2], &ibz_const_one, &bound);
+        ibz_rand_interval(&coeffs.v[2], &ibz_const_one, &bound);
 
         // then, we sample the second coordinate
         // computing the second bound in temp as sqrt( (adjust_n_gamma - p*coeffs[2]²)/qp )
-        ibz_mul(&cornacchia_target, &coeffs[2], &coeffs[2]);
+        ibz_mul(&cornacchia_target, &coeffs.v[2], &coeffs.v[2]);
         ibz_mul(&temp, &cornacchia_target, &(params->algebra->p));
         ibz_sub(&temp, &adjusted_n_gamma, &temp);
         ibz_mul(&sq_bound, &q, &(params->algebra->p));
@@ -158,10 +158,10 @@ quat_represent_integer(quat_alg_elem_t *gamma,
             continue;
         }
         // sampling the second value
-        ibz_rand_interval(&coeffs[3], &ibz_const_one, &temp);
+        ibz_rand_interval(&coeffs.v[3], &ibz_const_one, &temp);
 
         // compute cornacchia_target = n_gamma - p * (z² + q*t²)
-        ibz_mul(&temp, &coeffs[3], &coeffs[3]);
+        ibz_mul(&temp, &coeffs.v[3], &coeffs.v[3]);
         ibz_mul(&temp, &q, &temp);
         ibz_add(&cornacchia_target, &cornacchia_target, &temp);
         ibz_mul(&cornacchia_target, &cornacchia_target, &((params->algebra)->p));
@@ -170,7 +170,7 @@ quat_represent_integer(quat_alg_elem_t *gamma,
 
         // applying cornacchia
         if (ibz_probab_prime(&cornacchia_target, params->primality_test_iterations))
-            found = ibz_cornacchia_prime(&(coeffs[0]), &(coeffs[1]), &q, &cornacchia_target);
+            found = ibz_cornacchia_prime(&(coeffs.v[0]), &(coeffs.v[1]), &q, &cornacchia_target);
         else
             found = 0;
 
@@ -179,33 +179,33 @@ quat_represent_integer(quat_alg_elem_t *gamma,
             // the treatmeat depends if the basis contains (1+j)/2 or (1+k)/2
             // we must have x = t mod 2 and y = z mod 2
             // if q=1 we can simply swap x and y
-            if (ibz_is_odd(&coeffs[0]) != ibz_is_odd(&coeffs[3])) {
-                ibz_swap(&coeffs[1], &coeffs[0]);
+            if (ibz_is_odd(&coeffs.v[0]) != ibz_is_odd(&coeffs.v[3])) {
+                ibz_swap(&coeffs.v[1], &coeffs.v[0]);
             }
             // we further check that (x-t)/2 = 1 mod 2 and (y-z)/2 = 1 mod 2 to ensure that the
             // resulting endomorphism will behave well for dim 2 computations
-            found = found && ((ibz_get(&coeffs[0]) - ibz_get(&coeffs[3])) % 4 == 2) &&
-                    ((ibz_get(&coeffs[1]) - ibz_get(&coeffs[2])) % 4 == 2);
+            found = found && ((ibz_get(&coeffs.v[0]) - ibz_get(&coeffs.v[3])) % 4 == 2) &&
+                    ((ibz_get(&coeffs.v[1]) - ibz_get(&coeffs.v[2])) % 4 == 2);
         }
         if (found) {
 
 #ifndef NDEBUG
             ibz_set(&temp, (params->order->q));
-            ibz_mul(&temp, &temp, &(coeffs[1]));
-            ibz_mul(&temp, &temp, &(coeffs[1]));
-            ibz_mul(&test, &(coeffs[0]), &(coeffs[0]));
+            ibz_mul(&temp, &temp, &(coeffs.v[1]));
+            ibz_mul(&temp, &temp, &(coeffs.v[1]));
+            ibz_mul(&test, &(coeffs.v[0]), &(coeffs.v[0]));
             ibz_add(&temp, &temp, &test);
             assert(0 == ibz_cmp(&temp, &cornacchia_target));
 
-            ibz_mul(&cornacchia_target, &(coeffs[3]), &(coeffs[3]));
+            ibz_mul(&cornacchia_target, &(coeffs.v[3]), &(coeffs.v[3]));
             ibz_mul(&cornacchia_target, &cornacchia_target, &(params->algebra->p));
-            ibz_mul(&temp, &(coeffs[1]), &(coeffs[1]));
+            ibz_mul(&temp, &(coeffs.v[1]), &(coeffs.v[1]));
             ibz_add(&cornacchia_target, &cornacchia_target, &temp);
             ibz_set(&temp, (params->order->q));
             ibz_mul(&cornacchia_target, &cornacchia_target, &temp);
-            ibz_mul(&temp, &(coeffs[0]), &coeffs[0]);
+            ibz_mul(&temp, &(coeffs.v[0]), &coeffs.v[0]);
             ibz_add(&cornacchia_target, &cornacchia_target, &temp);
-            ibz_mul(&temp, &(coeffs[2]), &coeffs[2]);
+            ibz_mul(&temp, &(coeffs.v[2]), &coeffs.v[2]);
             ibz_mul(&temp, &temp, &(params->algebra->p));
             ibz_add(&cornacchia_target, &cornacchia_target, &temp);
             assert(0 == ibz_cmp(&cornacchia_target, &adjusted_n_gamma));
@@ -213,8 +213,8 @@ quat_represent_integer(quat_alg_elem_t *gamma,
             // translate x,y,z,t into the quaternion element gamma
             quat_order_elem_create(gamma, (params->order), &coeffs, (params->algebra));
 #ifndef NDEBUG
-            quat_alg_norm(&temp, &(coeffs[0]), gamma, (params->algebra));
-            assert(ibz_is_one(&(coeffs[0])));
+            quat_alg_norm(&temp, &(coeffs.v[0]), gamma, (params->algebra));
+            assert(ibz_is_one(&(coeffs.v[0])));
             assert(0 == ibz_cmp(&temp, &adjusted_n_gamma));
             assert(quat_lattice_contains(NULL, &((params->order)->order), gamma));
 #endif
@@ -232,10 +232,10 @@ quat_represent_integer(quat_alg_elem_t *gamma,
     if (found) {
         // new gamma
         ibz_mat_4x4_eval(&coeffs, &(((params->order)->order).basis), &coeffs);
-        ibz_copy(&gamma->coord[0], &coeffs[0]);
-        ibz_copy(&gamma->coord[1], &coeffs[1]);
-        ibz_copy(&gamma->coord[2], &coeffs[2]);
-        ibz_copy(&gamma->coord[3], &coeffs[3]);
+        ibz_copy(&gamma->coord.v[0], &coeffs.v[0]);
+        ibz_copy(&gamma->coord.v[1], &coeffs.v[1]);
+        ibz_copy(&gamma->coord.v[2], &coeffs.v[2]);
+        ibz_copy(&gamma->coord.v[3], &coeffs.v[3]);
         ibz_copy(&gamma->denom, &(((params->order)->order).denom));
     }
     // var finalize
@@ -279,10 +279,10 @@ quat_sampling_random_ideal_O0_given_norm(quat_left_ideal_t *lideal,
         // we find a quaternion element of norm divisible by norm
         while (!found) {
             // generating a trace-zero element at random
-            ibz_set(&gen.coord[0], 0);
+            ibz_set(&gen.coord.v[0], 0);
             ibz_sub(&n_temp, norm, &ibz_const_one);
             for (int i = 1; i < 4; i++)
-                ibz_rand_interval(&gen.coord[i], &ibz_const_zero, &n_temp);
+                ibz_rand_interval(&gen.coord.v[i], &ibz_const_zero, &n_temp);
 
             // first, we compute the norm of the gen
             quat_alg_norm(&n_temp, &norm_d, &gen, (params->algebra));
@@ -293,7 +293,7 @@ quat_sampling_random_ideal_O0_given_norm(quat_left_ideal_t *lideal,
             ibz_mod(&disc, &disc, norm);
             // now we check that -n is a square mod norm
             // and if the square root exists we compute it
-            found = ibz_sqrt_mod_p(&gen.coord[0], &disc, norm);
+            found = ibz_sqrt_mod_p(&gen.coord.v[0], &disc, norm);
             found = found && !quat_alg_elem_is_zero(&gen);
         }
     } else {
@@ -319,7 +319,7 @@ quat_sampling_random_ideal_O0_given_norm(quat_left_ideal_t *lideal,
     found = 0;
     while (!found) {
         for (int i = 0; i < 4; i++) {
-            ibz_rand_interval(&gen_rerand.coord[i], &ibz_const_one, norm);
+            ibz_rand_interval(&gen_rerand.coord.v[i], &ibz_const_one, norm);
         }
         quat_alg_norm(&n_temp, &norm_d, &gen_rerand, (params->algebra));
         assert(ibz_is_one(&norm_d));
@@ -348,22 +348,22 @@ quat_change_to_O0_basis(ibz_vec_4_t *vec, const quat_alg_elem_t *el)
 {
     ibz_t tmp;
     ibz_init(&tmp);
-    ibz_copy(&(*vec)[2], &el->coord[2]);
-    ibz_add(&(*vec)[2], &(*vec)[2], &(*vec)[2]); // double (not optimal if el->denom is even...)
-    ibz_copy(&(*vec)[3], &el->coord[3]);         // double (not optimal if el->denom is even...)
-    ibz_add(&(*vec)[3], &(*vec)[3], &(*vec)[3]);
-    ibz_sub(&(*vec)[0], &el->coord[0], &el->coord[3]);
-    ibz_sub(&(*vec)[1], &el->coord[1], &el->coord[2]);
+    ibz_copy(&vec->v[2], &el->coord.v[2]);
+    ibz_add(&vec->v[2], &vec->v[2], &vec->v[2]); // double (not optimal if el->denom is even...)
+    ibz_copy(&vec->v[3], &el->coord.v[3]);         // double (not optimal if el->denom is even...)
+    ibz_add(&vec->v[3], &vec->v[3], &vec->v[3]);
+    ibz_sub(&vec->v[0], &el->coord.v[0], &el->coord.v[3]);
+    ibz_sub(&vec->v[1], &el->coord.v[1], &el->coord.v[2]);
 
-    assert(ibz_divides(&(*vec)[0], &el->denom));
-    assert(ibz_divides(&(*vec)[1], &el->denom));
-    assert(ibz_divides(&(*vec)[2], &el->denom));
-    assert(ibz_divides(&(*vec)[3], &el->denom));
+    assert(ibz_divides(&vec->v[0], &el->denom));
+    assert(ibz_divides(&vec->v[1], &el->denom));
+    assert(ibz_divides(&vec->v[2], &el->denom));
+    assert(ibz_divides(&vec->v[3], &el->denom));
 
-    ibz_div(&(*vec)[0], &tmp, &(*vec)[0], &el->denom);
-    ibz_div(&(*vec)[1], &tmp, &(*vec)[1], &el->denom);
-    ibz_div(&(*vec)[2], &tmp, &(*vec)[2], &el->denom);
-    ibz_div(&(*vec)[3], &tmp, &(*vec)[3], &el->denom);
+    ibz_div(&vec->v[0], &tmp, &vec->v[0], &el->denom);
+    ibz_div(&vec->v[1], &tmp, &vec->v[1], &el->denom);
+    ibz_div(&vec->v[2], &tmp, &vec->v[2], &el->denom);
+    ibz_div(&vec->v[3], &tmp, &vec->v[3], &el->denom);
 
     ibz_finalize(&tmp);
 }

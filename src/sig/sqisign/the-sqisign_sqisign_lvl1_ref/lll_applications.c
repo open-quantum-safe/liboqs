@@ -17,9 +17,9 @@ quat_lideal_reduce_basis(ibz_mat_4x4_t *reduced,
     quat_lll_core(gram, reduced);
     ibz_mat_4x4_scalar_mul(gram, &gram_corrector, gram);
     for (int i = 0; i < 4; i++) {
-        ibz_div_2exp(&((*gram)[i][i]), &((*gram)[i][i]), 1);
+        ibz_div_2exp(&(gram->m[i][i]), &(gram->m[i][i]), 1);
         for (int j = i + 1; j < 4; j++) {
-            ibz_set(&((*gram)[i][j]), 0);
+            ibz_set(&(gram->m[i][j]), 0);
         }
     }
     ibz_finalize(&gram_corrector);
@@ -79,10 +79,10 @@ quat_lideal_prime_norm_reduced_equivalent(quat_left_ideal_t *lideal,
     while (!found && ctr < equiv_num_iter) {
         ctr++;
         // we select our linear combination at random
-        ibz_rand_interval_minm_m(&new_alpha.coord[0], equiv_bound_coeff);
-        ibz_rand_interval_minm_m(&new_alpha.coord[1], equiv_bound_coeff);
-        ibz_rand_interval_minm_m(&new_alpha.coord[2], equiv_bound_coeff);
-        ibz_rand_interval_minm_m(&new_alpha.coord[3], equiv_bound_coeff);
+        ibz_rand_interval_minm_m(&new_alpha.coord.v[0], equiv_bound_coeff);
+        ibz_rand_interval_minm_m(&new_alpha.coord.v[1], equiv_bound_coeff);
+        ibz_rand_interval_minm_m(&new_alpha.coord.v[2], equiv_bound_coeff);
+        ibz_rand_interval_minm_m(&new_alpha.coord.v[3], equiv_bound_coeff);
 
         // computation of the norm of the vector sampled
         quat_qf_eval(&tmp, &gram, &new_alpha.coord);

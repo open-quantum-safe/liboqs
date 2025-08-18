@@ -114,48 +114,48 @@ DEBUG_STR_FUN_4(const char *op, const ibz_t *arg1, const ibz_t *arg2, const ibz_
  * @{
  */
 
-const __mpz_struct ibz_const_zero[1] = {
+const ibz_t ibz_const_zero = {{
     {
      ._mp_alloc = 0,
      ._mp_size = 0,
      ._mp_d = (mp_limb_t[]){ 0 },
      }
-};
+}};
 
-const __mpz_struct ibz_const_one[1] = {
+const ibz_t ibz_const_one = {{
     {
      ._mp_alloc = 0,
      ._mp_size = 1,
      ._mp_d = (mp_limb_t[]){ 1 },
      }
-};
+}};
 
-const __mpz_struct ibz_const_two[1] = {
+const ibz_t ibz_const_two = {{
     {
      ._mp_alloc = 0,
      ._mp_size = 1,
      ._mp_d = (mp_limb_t[]){ 2 },
      }
-};
+}};
 
-const __mpz_struct ibz_const_three[1] = {
+const ibz_t ibz_const_three = {{
     {
      ._mp_alloc = 0,
      ._mp_size = 1,
      ._mp_d = (mp_limb_t[]){ 3 },
      }
-};
+}};
 
 void
 ibz_init(ibz_t *x)
 {
-    mpz_init(*x);
+    mpz_init(x->i);
 }
 
 void
 ibz_finalize(ibz_t *x)
 {
-    mpz_clear(*x);
+    mpz_clear(x->i);
 }
 
 void
@@ -168,7 +168,7 @@ ibz_add(ibz_t *sum, const ibz_t *a, const ibz_t *b)
     ibz_copy(&a_cp, a);
     ibz_copy(&b_cp, b);
 #endif
-    mpz_add(*sum, *a, *b);
+    mpz_add(sum->i, a->i, b->i);
 #ifdef DEBUG_VERBOSE
     DEBUG_STR_FUN_3("ibz_add", sum, &a_cp, &b_cp);
     ibz_finalize(&a_cp);
@@ -186,7 +186,7 @@ ibz_sub(ibz_t *diff, const ibz_t *a, const ibz_t *b)
     ibz_copy(&a_cp, a);
     ibz_copy(&b_cp, b);
 #endif
-    mpz_sub(*diff, *a, *b);
+    mpz_sub(diff->i, a->i, b->i);
 
 #ifdef DEBUG_VERBOSE
     DEBUG_STR_FUN_3("ibz_sub", diff, &a_cp, &b_cp);
@@ -205,7 +205,7 @@ ibz_mul(ibz_t *prod, const ibz_t *a, const ibz_t *b)
     ibz_copy(&a_cp, a);
     ibz_copy(&b_cp, b);
 #endif
-    mpz_mul(*prod, *a, *b);
+    mpz_mul(prod->i, a->i, b->i);
 #ifdef DEBUG_VERBOSE
     DEBUG_STR_FUN_3("ibz_mul", prod, &a_cp, &b_cp);
     ibz_finalize(&a_cp);
@@ -216,13 +216,13 @@ ibz_mul(ibz_t *prod, const ibz_t *a, const ibz_t *b)
 void
 ibz_neg(ibz_t *neg, const ibz_t *a)
 {
-    mpz_neg(*neg, *a);
+    mpz_neg(neg->i, a->i);
 }
 
 void
 ibz_abs(ibz_t *abs, const ibz_t *a)
 {
-    mpz_abs(*abs, *a);
+    mpz_abs(abs->i, a->i);
 }
 
 void
@@ -235,7 +235,7 @@ ibz_div(ibz_t *quotient, ibz_t *remainder, const ibz_t *a, const ibz_t *b)
     ibz_copy(&a_cp, a);
     ibz_copy(&b_cp, b);
 #endif
-    mpz_tdiv_qr(*quotient, *remainder, *a, *b);
+    mpz_tdiv_qr(quotient->i, remainder->i, a->i, b->i);
 #ifdef DEBUG_VERBOSE
     DEBUG_STR_FUN_4("ibz_div", quotient, remainder, &a_cp, &b_cp);
     ibz_finalize(&a_cp);
@@ -251,7 +251,7 @@ ibz_div_2exp(ibz_t *quotient, const ibz_t *a, uint32_t exp)
     ibz_init(&a_cp);
     ibz_copy(&a_cp, a);
 #endif
-    mpz_tdiv_q_2exp(*quotient, *a, exp);
+    mpz_tdiv_q_2exp(quotient->i, a->i, exp);
 #ifdef DEBUG_VERBOSE
     DEBUG_STR_FUN_MP2_INT("ibz_div_2exp,%Zx,%Zx,%x\n", quotient, &a_cp, exp);
     ibz_finalize(&a_cp);
@@ -261,50 +261,50 @@ ibz_div_2exp(ibz_t *quotient, const ibz_t *a, uint32_t exp)
 void
 ibz_div_floor(ibz_t *q, ibz_t *r, const ibz_t *n, const ibz_t *d)
 {
-    mpz_fdiv_qr(*q, *r, *n, *d);
+    mpz_fdiv_qr(q->i, r->i, n->i, d->i);
 }
 
 void
 ibz_mod(ibz_t *r, const ibz_t *a, const ibz_t *b)
 {
-    mpz_mod(*r, *a, *b);
+    mpz_mod(r->i, a->i, b->i);
 }
 
 unsigned long int
-ibz_mod_ui(const mpz_t *n, unsigned long int d)
+ibz_mod_ui(const ibz_t *n, unsigned long int d)
 {
-    return mpz_fdiv_ui(*n, d);
+    return mpz_fdiv_ui(n->i, d);
 }
 
 int
 ibz_divides(const ibz_t *a, const ibz_t *b)
 {
-    return mpz_divisible_p(*a, *b);
+    return mpz_divisible_p(a->i, b->i);
 }
 
 void
 ibz_pow(ibz_t *pow, const ibz_t *x, uint32_t e)
 {
-    mpz_pow_ui(*pow, *x, e);
+    mpz_pow_ui(pow->i, x->i, e);
 }
 
 void
 ibz_pow_mod(ibz_t *pow, const ibz_t *x, const ibz_t *e, const ibz_t *m)
 {
-    mpz_powm(*pow, *x, *e, *m);
+    mpz_powm(pow->i, x->i, e->i, m->i);
     DEBUG_STR_FUN_4("ibz_pow_mod", pow, x, e, m);
 }
 
 int
 ibz_two_adic(ibz_t *pow)
 {
-    return mpz_scan1(*pow, 0);
+    return mpz_scan1(pow->i, 0);
 }
 
 int
 ibz_cmp(const ibz_t *a, const ibz_t *b)
 {
-    int ret = mpz_cmp(*a, *b);
+    int ret = mpz_cmp(a->i, b->i);
     DEBUG_STR_FUN_INT_MP2("ibz_cmp", ret, a, b);
     return ret;
 }
@@ -312,7 +312,7 @@ ibz_cmp(const ibz_t *a, const ibz_t *b)
 int
 ibz_is_zero(const ibz_t *x)
 {
-    int ret = !mpz_cmp_ui(*x, 0);
+    int ret = !mpz_cmp_ui(x->i, 0);
     DEBUG_STR_FUN_INT_MP("ibz_is_zero", ret, x);
     return ret;
 }
@@ -320,7 +320,7 @@ ibz_is_zero(const ibz_t *x)
 int
 ibz_is_one(const ibz_t *x)
 {
-    int ret = !mpz_cmp_ui(*x, 1);
+    int ret = !mpz_cmp_ui(x->i, 1);
     DEBUG_STR_FUN_INT_MP("ibz_is_one", ret, x);
     return ret;
 }
@@ -328,7 +328,7 @@ ibz_is_one(const ibz_t *x)
 int
 ibz_cmp_int32(const ibz_t *x, int32_t y)
 {
-    int ret = mpz_cmp_si(*x, (signed long int)y);
+    int ret = mpz_cmp_si(x->i, (signed long int)y);
     DEBUG_STR_FUN_INT_MP_INT("ibz_cmp_int32", ret, x, y);
     return ret;
 }
@@ -336,7 +336,7 @@ ibz_cmp_int32(const ibz_t *x, int32_t y)
 int
 ibz_is_even(const ibz_t *x)
 {
-    int ret = !mpz_tstbit(*x, 0);
+    int ret = !mpz_tstbit(x->i, 0);
     DEBUG_STR_FUN_INT_MP("ibz_is_even", ret, x);
     return ret;
 }
@@ -344,7 +344,7 @@ ibz_is_even(const ibz_t *x)
 int
 ibz_is_odd(const ibz_t *x)
 {
-    int ret = mpz_tstbit(*x, 0);
+    int ret = mpz_tstbit(x->i, 0);
     DEBUG_STR_FUN_INT_MP("ibz_is_odd", ret, x);
     return ret;
 }
@@ -352,7 +352,7 @@ ibz_is_odd(const ibz_t *x)
 void
 ibz_set(ibz_t *i, int32_t x)
 {
-    mpz_set_si(*i, x);
+    mpz_set_si(i->i, x);
 }
 
 int
@@ -361,7 +361,7 @@ ibz_convert_to_str(const ibz_t *i, char *str, int base)
     if (!str || (base != 10 && base != 16))
         return 0;
 
-    mpz_get_str(str, base, *i);
+    mpz_get_str(str, base, i->i);
 
     return 1;
 }
@@ -380,29 +380,29 @@ ibz_print(const ibz_t *num, int base)
 int
 ibz_set_from_str(ibz_t *i, const char *str, int base)
 {
-    return (1 + mpz_set_str(*i, str, base));
+    return (1 + mpz_set_str(i->i, str, base));
 }
 
 void
 ibz_copy(ibz_t *target, const ibz_t *value)
 {
-    mpz_set(*target, *value);
+    mpz_set(target->i, value->i);
 }
 
 void
 ibz_swap(ibz_t *a, ibz_t *b)
 {
-    mpz_swap(*a, *b);
+    mpz_swap(a->i, b->i);
 }
 
 int32_t
 ibz_get(const ibz_t *i)
 {
 #if LONG_MAX == INT32_MAX
-    return (int32_t)mpz_get_si(*i);
+    return (int32_t)mpz_get_si(i->i);
 #elif LONG_MAX > INT32_MAX
     // Extracts the sign bit and the 31 least significant bits
-    signed long int t = mpz_get_si(*i);
+    signed long int t = mpz_get_si(i->i);
     return (int32_t)((t >> (sizeof(signed long int) * 8 - 32)) & INT32_C(0x80000000)) | (t & INT32_C(0x7FFFFFFF));
 #else
 #error Unsupported configuration: LONG_MAX must be >= INT32_MAX
@@ -417,10 +417,10 @@ ibz_rand_interval(ibz_t *rand, const ibz_t *a, const ibz_t *b)
     mpz_t tmp;
     mpz_t bmina;
     mpz_init(bmina);
-    mpz_sub(bmina, *b, *a);
+    mpz_sub(bmina, b->i, a->i);
 
     if (mpz_sgn(bmina) == 0) {
-        mpz_set(*rand, *a);
+        mpz_set(rand->i, a->i);
         mpz_clear(bmina);
         return 1;
     }
@@ -466,7 +466,7 @@ ibz_rand_interval(ibz_t *rand, const ibz_t *a, const ibz_t *b)
             break;
     } while (1);
 
-    mpz_add(*rand, tmp, *a);
+    mpz_add(rand->i, tmp, a->i);
 err:
     mpz_clear(bmina);
     return ret;
@@ -534,19 +534,19 @@ int
 ibz_rand_interval_minm_m(ibz_t *rand, int32_t m)
 {
     int ret = 1;
-    mpz_t m_big;
+    ibz_t m_big;
 
     // m_big = 2 * m
-    mpz_init_set_si(m_big, m);
-    mpz_add(m_big, m_big, m_big);
+    mpz_init_set_si(m_big.i, m);
+    mpz_add(m_big.i, m_big.i, m_big.i);
 
     // Sample in [0, 2*m]
     ret = ibz_rand_interval(rand, &ibz_const_zero, &m_big);
 
     // Adjust to range [-m, m]
-    mpz_sub_ui(*rand, *rand, m);
+    mpz_sub_ui(rand->i, rand->i, m);
 
-    mpz_clear(m_big);
+    mpz_clear(m_big.i);
 
     return ret;
 }
@@ -555,41 +555,41 @@ int
 ibz_rand_interval_bits(ibz_t *rand, uint32_t m)
 {
     int ret = 1;
-    mpz_t tmp;
-    mpz_t low;
-    mpz_init_set_ui(tmp, 1);
-    mpz_mul_2exp(tmp, tmp, m);
-    mpz_init(low);
-    mpz_neg(low, tmp);
+    ibz_t tmp;
+    ibz_t low;
+    mpz_init_set_ui(tmp.i, 1);
+    mpz_mul_2exp(tmp.i, tmp.i, m);
+    mpz_init(low.i);
+    mpz_neg(low.i, tmp.i);
     ret = ibz_rand_interval(rand, &low, &tmp);
-    mpz_clear(tmp);
-    mpz_clear(low);
+    mpz_clear(tmp.i);
+    mpz_clear(low.i);
     if (ret != 1)
         goto err;
-    mpz_sub_ui(*rand, *rand, (unsigned long int)m);
+    mpz_sub_ui(rand->i, rand->i, (unsigned long int)m);
     return ret;
 err:
-    mpz_clear(tmp);
-    mpz_clear(low);
+    mpz_clear(tmp.i);
+    mpz_clear(low.i);
     return ret;
 }
 
 int
 ibz_bitsize(const ibz_t *a)
 {
-    return (int)mpz_sizeinbase(*a, 2);
+    return (int)mpz_sizeinbase(a->i, 2);
 }
 
 int
 ibz_size_in_base(const ibz_t *a, int base)
 {
-    return (int)mpz_sizeinbase(*a, base);
+    return (int)mpz_sizeinbase(a->i, base);
 }
 
 void
 ibz_copy_digits(ibz_t *target, const digit_t *dig, int dig_len)
 {
-    mpz_import(*target, dig_len, -1, sizeof(digit_t), 0, 0, dig);
+    mpz_import(target->i, dig_len, -1, sizeof(digit_t), 0, 0, dig);
 }
 
 void
@@ -600,13 +600,13 @@ ibz_to_digits(digit_t *target, const ibz_t *ibz)
     // The next line ensures zero is written to the first limb of target if ibz is zero;
     // target is then overwritten by the actual value if it is not.
     target[0] = 0;
-    mpz_export(target, NULL, -1, sizeof(digit_t), 0, 0, *ibz);
+    mpz_export(target, NULL, -1, sizeof(digit_t), 0, 0, ibz->i);
 }
 
 int
 ibz_probab_prime(const ibz_t *n, int reps)
 {
-    int ret = mpz_probab_prime_p(*n, reps);
+    int ret = mpz_probab_prime_p(n->i, reps);
     DEBUG_STR_FUN_INT_MP_INT("ibz_probab_prime", ret, n, reps);
     return ret;
 }
@@ -614,26 +614,26 @@ ibz_probab_prime(const ibz_t *n, int reps)
 void
 ibz_gcd(ibz_t *gcd, const ibz_t *a, const ibz_t *b)
 {
-    mpz_gcd(*gcd, *a, *b);
+    mpz_gcd(gcd->i, a->i, b->i);
 }
 
 int
 ibz_invmod(ibz_t *inv, const ibz_t *a, const ibz_t *mod)
 {
-    return (mpz_invert(*inv, *a, *mod) ? 1 : 0);
+    return (mpz_invert(inv->i, a->i, mod->i) ? 1 : 0);
 }
 
 int
 ibz_legendre(const ibz_t *a, const ibz_t *p)
 {
-    return mpz_legendre(*a, *p);
+    return mpz_legendre(a->i, p->i);
 }
 
 int
 ibz_sqrt(ibz_t *sqrt, const ibz_t *a)
 {
-    if (mpz_perfect_square_p(*a)) {
-        mpz_sqrt(*sqrt, *a);
+    if (mpz_perfect_square_p(a->i)) {
+        mpz_sqrt(sqrt->i, a->i);
         return 1;
     } else {
         return 0;
@@ -643,7 +643,7 @@ ibz_sqrt(ibz_t *sqrt, const ibz_t *a)
 void
 ibz_sqrt_floor(ibz_t *sqrt, const ibz_t *a)
 {
-    mpz_sqrt(*sqrt, *a);
+    mpz_sqrt(sqrt->i, a->i);
 }
 
 int
@@ -686,85 +686,85 @@ ibz_sqrt_mod_p(ibz_t *sqrt, const ibz_t *a, const ibz_t *p)
 
     int ret = 1;
 
-    mpz_mod(amod, *a, *p);
+    mpz_mod(amod, a->i, p->i);
     if (mpz_cmp_ui(amod, 0) < 0) {
-        mpz_add(amod, *p, amod);
+        mpz_add(amod, p->i, amod);
     }
 
-    if (mpz_legendre(amod, *p) != 1) {
+    if (mpz_legendre(amod, p->i) != 1) {
         ret = 0;
         goto end;
     }
 
-    mpz_sub_ui(pm1, *p, 1);
+    mpz_sub_ui(pm1, p->i, 1);
 
-    if (mpz_mod_ui(tmp, *p, 4) == 3) {
+    if (mpz_mod_ui(tmp, p->i, 4) == 3) {
         // p % 4 == 3
-        mpz_add_ui(tmp, *p, 1);
+        mpz_add_ui(tmp, p->i, 1);
         mpz_fdiv_q_2exp(tmp, tmp, 2);
-        mpz_powm(*sqrt, amod, tmp, *p);
-    } else if (mpz_mod_ui(tmp, *p, 8) == 5) {
+        mpz_powm(sqrt->i, amod, tmp, p->i);
+    } else if (mpz_mod_ui(tmp, p->i, 8) == 5) {
         // p % 8 == 5
-        mpz_sub_ui(tmp, *p, 1);
+        mpz_sub_ui(tmp, p->i, 1);
         mpz_fdiv_q_2exp(tmp, tmp, 2);
-        mpz_powm(tmp, amod, tmp, *p); // a^{(p-1)/4} mod p
+        mpz_powm(tmp, amod, tmp, p->i); // a^{(p-1)/4} mod p
         if (!mpz_cmp_ui(tmp, 1)) {
-            mpz_add_ui(tmp, *p, 3);
+            mpz_add_ui(tmp, p->i, 3);
             mpz_fdiv_q_2exp(tmp, tmp, 3);
-            mpz_powm(*sqrt, amod, tmp, *p); // a^{(p+3)/8} mod p
+            mpz_powm(sqrt->i, amod, tmp, p->i); // a^{(p+3)/8} mod p
         } else {
-            mpz_sub_ui(tmp, *p, 5);
+            mpz_sub_ui(tmp, p->i, 5);
             mpz_fdiv_q_2exp(tmp, tmp, 3); // (p - 5) / 8
             mpz_mul_2exp(a4, amod, 2);    // 4*a
-            mpz_powm(tmp, a4, tmp, *p);
+            mpz_powm(tmp, a4, tmp, p->i);
 
             mpz_mul_2exp(a2, amod, 1);
             mpz_mul(tmp, a2, tmp);
-            mpz_mod(*sqrt, tmp, *p);
+            mpz_mod(sqrt->i, tmp, p->i);
         }
     } else {
         // p % 8 == 1 -> Shanks-Tonelli
         int e = 0;
-        mpz_sub_ui(q, *p, 1);
+        mpz_sub_ui(q, p->i, 1);
         while (mpz_tstbit(q, e) == 0)
             e++;
         mpz_fdiv_q_2exp(q, q, e);
 
         // 1. find generator - non-quadratic residue
         mpz_set_ui(qnr, 2);
-        while (mpz_legendre(qnr, *p) != -1)
+        while (mpz_legendre(qnr, p->i) != -1)
             mpz_add_ui(qnr, qnr, 1);
-        mpz_powm(z, qnr, q, *p);
+        mpz_powm(z, qnr, q, p->i);
 
         // 2. Initialize
         mpz_set(y, z);
-        mpz_powm(y, amod, q, *p); // y = a^q mod p
+        mpz_powm(y, amod, q, p->i); // y = a^q mod p
 
         mpz_add_ui(tmp, q, 1); // tmp = (q + 1) / 2
         mpz_fdiv_q_2exp(tmp, tmp, 1);
 
-        mpz_powm(x, amod, tmp, *p); // x = a^(q + 1)/2 mod p
+        mpz_powm(x, amod, tmp, p->i); // x = a^(q + 1)/2 mod p
 
         mpz_set_ui(exp, 1);
         mpz_mul_2exp(exp, exp, e - 2);
 
         for (int i = 0; i < e; ++i) {
-            mpz_powm(b, y, exp, *p);
+            mpz_powm(b, y, exp, p->i);
 
             if (!mpz_cmp(b, pm1)) {
                 mpz_mul(x, x, z);
-                mpz_mod(x, x, *p);
+                mpz_mod(x, x, p->i);
 
                 mpz_mul(y, y, z);
                 mpz_mul(y, y, z);
-                mpz_mod(y, y, *p);
+                mpz_mod(y, y, p->i);
             }
 
-            mpz_powm_ui(z, z, 2, *p);
+            mpz_powm_ui(z, z, 2, p->i);
             mpz_fdiv_q_2exp(exp, exp, 1);
         }
 
-        mpz_set(*sqrt, x);
+        mpz_set(sqrt->i, x);
     }
 
 #ifdef DEBUG_VERBOSE
