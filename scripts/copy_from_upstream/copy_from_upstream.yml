@@ -104,7 +104,7 @@ upstreams:
     name: the-sqisign
     git_url: https://github.com/bhess/the-sqisign.git
     git_branch: oqs
-    git_commit: 70faebf85d1536f16db4386af9a65d43f1015767
+    git_commit: a8884349ee78b0c4da296c9f8ce6f208910d5ee6
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pqclean_scheme}.yml'
 

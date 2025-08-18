@@ -1,10 +1,10 @@
 // clang-format off
 // Command line : python monty.py 32
 // 0x4ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-#ifdef RADIX_32
-
 #include <stdint.h>
 #include <stdio.h>
+
+#ifdef RADIX_32
 
 #define sspint int32_t
 #define spint uint32_t
@@ -544,22 +544,6 @@ static int modqr(const spint *h, const spint *x) {
   return modis1(r) | modis0(x);
 }
 
-// conditional move g to f if d=1
-// strongly recommend inlining be disabled using compiler specific syntax
-static void modcmv(int b, const spint *g, volatile spint *f) {
-  int i;
-  spint c0, c1, s, t;
-  spint r = 0x5aa5a55au;
-  c0 = (1 - b) + r;
-  c1 = b + r;
-  for (i = 0; i < 9; i++) {
-    s = g[i];
-    t = f[i];
-    f[i] = c0 * t + c1 * s;
-    f[i] -= r * (t + s);
-  }
-}
-
 // conditional swap g and f if d=1
 // strongly recommend inlining be disabled using compiler specific syntax
 static void modcsw(int b, volatile spint *g, volatile spint *f) {
@@ -611,52 +595,6 @@ static int modshr(unsigned int n, spint *a) {
   }
   a[8] = a[8] >> n;
   return r;
-}
-
-// set a= 2^r
-static void mod2r(unsigned int r, spint *a) {
-  unsigned int n = r / 29u;
-  unsigned int m = r % 29u;
-  modzer(a);
-  if (r >= 32 * 8)
-    return;
-  a[n] = 1;
-  a[n] <<= m;
-  nres(a, a);
-}
-
-// export to byte array
-static void modexp(const spint *a, char *b) {
-  int i;
-  spint c[9];
-  redc(a, c);
-  for (i = 31; i >= 0; i--) {
-    b[i] = c[0] & (spint)0xff;
-    (void)modshr(8, c);
-  }
-}
-
-// import from byte array
-// returns 1 if in range, else 0
-static int modimp(const char *b, spint *a) {
-  int i, res;
-  for (i = 0; i < 9; i++) {
-    a[i] = 0;
-  }
-  for (i = 0; i < 32; i++) {
-    modshl(8, a);
-    a[0] += (spint)(unsigned char)b[i];
-  }
-  res = modfsb(a);
-  nres(a, a);
-  return res;
-}
-
-// determine sign
-static int modsign(const spint *a) {
-  spint c[9];
-  redc(a, c);
-  return c[0] % 2;
 }
 
 // return true if equal

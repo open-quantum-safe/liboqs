@@ -121,7 +121,7 @@ sqisign_verify(const unsigned char *m,
                unsigned long long siglen,
                const unsigned char *pk)
 {
-
+    (void) siglen;
     int ret = 0;
     public_key_t pkt = { 0 };
     signature_t sigt;

@@ -171,16 +171,6 @@ if(${OQS_USE_GMP})
     else()
       add_compile_definitions(RADIX_64)
       include(CheckCSourceCompiles)
-      check_c_source_compiles("
-        int main() {
-         __uint128_t x = 0;
-        (void)x;
-        return 0;
-        }
-        " HAVE_UINT128_T)
-      if (HAVE_UINT128_T)
-        add_compile_definitions(HAVE_UINT128)
-      endif()
       add_compile_definitions(GMP_LIMB_BITS=64)
     endif()
   else()

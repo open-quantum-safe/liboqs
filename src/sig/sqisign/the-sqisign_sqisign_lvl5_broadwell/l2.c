@@ -24,8 +24,8 @@ copy(fp_num *x, fp_num *r)
 static void
 normalize(fp_num *x)
 {
-  if (x->s == 0.0 || isfinite(x->s) == 0) {
-      if (x->s == 0.0) {
+  if (fpclassify(x->s) == FP_ZERO || isfinite(x->s) == 0) {
+      if (fpclassify(x->s) == FP_ZERO) {
         x->e = INT_MIN;
       }
   } else {
@@ -46,13 +46,6 @@ static void
 to_deltabar(fp_num *x)
 {
     x->s = DELTABAR;
-    x->e = 0;
-}
-
-static void
-to_etabar(fp_num *x)
-{
-    x->s = ETABAR;
     x->e = 0;
 }
 

@@ -566,7 +566,7 @@ uint32_t ec_is_basis_four_torsion(const ec_basis_t *B, const ec_curve_t *E);
  *
  * @return 0xFFFFFFFF if the order is correct, 0 otherwise
  */
-static int
+static inline int
 test_point_order_twof(const ec_point_t *P, const ec_curve_t *E, int t)
 {
     ec_point_t test;
@@ -595,7 +595,7 @@ test_point_order_twof(const ec_point_t *P, const ec_curve_t *E, int t)
  *
  * @return 0xFFFFFFFF if the order is correct, 0 otherwise
  */
-static int
+static inline int
 test_basis_order_twof(const ec_basis_t *B, const ec_curve_t *E, int t)
 {
     int check_P = test_point_order_twof(&B->P, E, t);

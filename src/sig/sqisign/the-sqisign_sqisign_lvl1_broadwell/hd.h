@@ -415,7 +415,7 @@ void copy_bases_to_kernel(theta_kernel_couple_points_t *ker, const ec_basis_t *B
  * @param t: an integer
  * @returns 0xFFFFFFFF on success, 0 on failure
  */
-static int
+static inline int
 test_couple_point_order_twof(const theta_couple_point_t *T, const theta_couple_curve_t *E, int t)
 {
     int check_P1 = test_point_order_twof(&T->P1, &E->E1, t);

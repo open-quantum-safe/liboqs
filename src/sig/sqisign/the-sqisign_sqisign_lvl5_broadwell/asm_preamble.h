@@ -9,8 +9,10 @@
 #undef fp2_mul_c1
 #undef fp2_sq_c0
 #undef fp2_sq_c1
-#define p2 CAT(_, p2)
-#define p CAT(_, p)
+#undef p2
+#undef p
+#define p2 CAT(_, SQISIGN_NAMESPACE(p2))
+#define p CAT(_, SQISIGN_NAMESPACE(p))
 #define fp_add CAT(_, SQISIGN_NAMESPACE(fp_add))
 #define fp_sub CAT(_, SQISIGN_NAMESPACE(fp_sub))
 #define fp_mul CAT(_, SQISIGN_NAMESPACE(fp_mul))

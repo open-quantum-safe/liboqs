@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <inttypes.h>
 #include <stdio.h>
+#include <string.h>
 
 // double-wide multiplication
 void
@@ -17,7 +18,7 @@ MUL(digit_t *out, const digit_t a, const digit_t b)
     out[0] = _umul128(a, b, &umul_hi);
     out[1] = umul_hi;
 
-#elif defined(RADIX_64) && defined(HAVE_UINT128)
+#elif defined(RADIX_64) && (defined(HAVE_UINT128) || defined(__SIZEOF_INT128__) || defined(__int128)) && !defined(C_PEDANTIC_MODE)
     unsigned __int128 umul_tmp;
     umul_tmp = (unsigned __int128)(a) * (unsigned __int128)(b);
     out[0] = (uint64_t)umul_tmp;
@@ -277,6 +278,7 @@ mp_inv_2e(digit_t *b, const digit_t *a, int e, unsigned int nwords)
     assert((a[0] & 1) == 1);
 
     digit_t x[nwords], y[nwords], aa[nwords], mp_one[nwords], tmp[nwords];
+    memset(x, 0, sizeof(x));
     mp_copy(aa, a, nwords);
 
     mp_one[0] = 1;

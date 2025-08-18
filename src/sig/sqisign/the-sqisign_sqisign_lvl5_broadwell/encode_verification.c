@@ -99,36 +99,6 @@ ec_curve_from_bytes(ec_curve_t *curve, const byte_t *enc)
     return proj_from_bytes(&curve->A, &curve->C, enc);
 }
 
-static byte_t *
-ec_point_to_bytes(byte_t *enc, const ec_point_t *point)
-{
-    return proj_to_bytes(enc, &point->x, &point->z);
-}
-
-static const byte_t *
-ec_point_from_bytes(ec_point_t *point, const byte_t *enc)
-{
-    return proj_from_bytes(&point->x, &point->z, enc);
-}
-
-static byte_t *
-ec_basis_to_bytes(byte_t *enc, const ec_basis_t *basis)
-{
-    enc = ec_point_to_bytes(enc, &basis->P);
-    enc = ec_point_to_bytes(enc, &basis->Q);
-    enc = ec_point_to_bytes(enc, &basis->PmQ);
-    return enc;
-}
-
-static const byte_t *
-ec_basis_from_bytes(ec_basis_t *basis, const byte_t *enc)
-{
-    enc = ec_point_from_bytes(&basis->P, enc);
-    enc = ec_point_from_bytes(&basis->Q, enc);
-    enc = ec_point_from_bytes(&basis->PmQ, enc);
-    return enc;
-}
-
 // public API
 
 byte_t *

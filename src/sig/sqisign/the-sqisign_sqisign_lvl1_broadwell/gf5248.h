@@ -98,7 +98,7 @@ extern "C"
      * support the API inline functions; they MUST NOT be used directly.
      */
 
-#if (defined _MSC_VER && defined _M_X64) || (defined __x86_64__ && (defined __GNUC__ || defined __clang__))
+#if (defined _MSC_VER && defined _M_X64) || (defined __x86_64__ && (defined __GNUC__ || defined __clang__)) || defined(C_PEDANTIC_MODE)
 #include <immintrin.h>
 #define inner_gf5248_adc(cc, a, b, d) _addcarry_u64(cc, a, b, (unsigned long long *)(void *)d)
 #define inner_gf5248_sbb(cc, a, b, d) _subborrow_u64(cc, a, b, (unsigned long long *)(void *)d)
@@ -119,17 +119,48 @@ inner_gf5248_sbb(unsigned char cc, uint64_t a, uint64_t b, uint64_t *d)
 }
 #endif
 
-#if defined _MSC_VER
+#if defined _MSC_VER || defined(C_PEDANTIC_MODE)
+#if defined _MSC_VER 
 #define inner_gf5248_umul(lo, hi, x, y)                                                                                \
     do {                                                                                                               \
         uint64_t umul_hi;                                                                                              \
         (lo) = _umul128((x), (y), &umul_hi);                                                                           \
         (hi) = umul_hi;                                                                                                \
     } while (0)
+#else
+#define inner_gf5248_umul(lo, hi, a, b)                                                                                \
+    do {                                                                                                               \
+        register uint64_t al, ah, bl, bh, temp; \
+        uint64_t albl, albh, ahbl, ahbh, res1, res2, res3, carry; \
+        uint64_t mask_low = (uint64_t)(-1) >> (sizeof(uint64_t) * 4), mask_high = (uint64_t)(-1) << (sizeof(uint64_t) * 4); \
+        al = a & mask_low; \
+        ah = a >> (sizeof(uint64_t) * 4); \
+        bl = b & mask_low; \
+        bh = b >> (sizeof(uint64_t) * 4); \
+        albl = al * bl; \
+        albh = al * bh; \
+        ahbl = ah * bl; \
+        ahbh = ah * bh; \
+        (lo) = albl & mask_low; \
+        res1 = albl >> (sizeof(uint64_t) * 4); \
+        res2 = ahbl & mask_low; \
+        res3 = albh & mask_low; \
+        temp = res1 + res2 + res3 ; \
+        carry = temp >> (sizeof(uint64_t) * 4); \
+        (lo) ^= temp << (sizeof(uint64_t) * 4); \
+        res1 = ahbl >> (sizeof(uint64_t) * 4); \
+        res2 = albh >> (sizeof(uint64_t) * 4); \
+        res3 = ahbh & mask_low; \
+        temp = res1 + res2 + res3 + carry; \
+        (hi) = temp & mask_low; \
+        carry = temp & mask_high; \
+        (hi) ^= (ahbh & mask_high) + carry; \
+    } while (0)
+#endif
 #define inner_gf5248_umul_add(lo, hi, x, y, z)                                                                         \
     do {                                                                                                               \
         uint64_t umul_lo, umul_hi;                                                                                     \
-        umul_lo = _umul128((x), (y), &umul_hi);                                                                        \
+        inner_gf5248_umul(umul_lo, umul_hi, (x), (y));                                                                 \
         unsigned char umul_cc;                                                                                         \
         umul_cc = inner_gf5248_adc(0, umul_lo, (z), &umul_lo);                                                         \
         (void)inner_gf5248_adc(umul_cc, umul_hi, 0, &umul_hi);                                                         \
@@ -139,9 +170,9 @@ inner_gf5248_sbb(unsigned char cc, uint64_t a, uint64_t b, uint64_t *d)
 #define inner_gf5248_umul_x2(lo, hi, x1, y1, x2, y2)                                                                   \
     do {                                                                                                               \
         uint64_t umul_lo, umul_hi;                                                                                     \
-        umul_lo = _umul128((x1), (y1), &umul_hi);                                                                      \
+        inner_gf5248_umul(umul_lo, umul_hi, (x1), (y1));                                                               \
         uint64_t umul_lo2, umul_hi2;                                                                                   \
-        umul_lo2 = _umul128((x2), (y2), &umul_hi2);                                                                    \
+        inner_gf5248_umul(umul_lo2, umul_hi2, (x2), (y2));                                                             \
         unsigned char umul_cc;                                                                                         \
         umul_cc = inner_gf5248_adc(0, umul_lo, umul_lo2, &umul_lo);                                                    \
         (void)inner_gf5248_adc(umul_cc, umul_hi, umul_hi2, &umul_hi);                                                  \
@@ -151,9 +182,9 @@ inner_gf5248_sbb(unsigned char cc, uint64_t a, uint64_t b, uint64_t *d)
 #define inner_gf5248_umul_x2_add(lo, hi, x1, y1, x2, y2, z)                                                            \
     do {                                                                                                               \
         uint64_t umul_lo, umul_hi;                                                                                     \
-        umul_lo = _umul128((x1), (y1), &umul_hi);                                                                      \
+        inner_gf5248_umul(umul_lo, umul_hi, (x1), (y1));                                                               \
         uint64_t umul_lo2, umul_hi2;                                                                                   \
-        umul_lo2 = _umul128((x2), (y2), &umul_hi2);                                                                    \
+        inner_gf5248_umul(umul_lo2, umul_hi2, (x2), (y2));                                                             \
         unsigned char umul_cc;                                                                                         \
         umul_cc = inner_gf5248_adc(0, umul_lo, umul_lo2, &umul_lo);                                                    \
         (void)inner_gf5248_adc(umul_cc, umul_hi, umul_hi2, &umul_hi);                                                  \

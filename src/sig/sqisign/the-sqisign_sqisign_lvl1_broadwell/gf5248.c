@@ -5,24 +5,24 @@
 #include "gf5248.h"
 
 // see gf5248.h
-const gf5248 ZERO = { 0, 0, 0, 0 };
+const gf5248 ZERO = {{ 0, 0, 0, 0 }};
 
 // see gf5248.h
-const gf5248 ONE = { 0x0000000000000033, 0x0000000000000000, 0x0000000000000000, 0x0100000000000000 };
+const gf5248 ONE = {{ 0x0000000000000033, 0x0000000000000000, 0x0000000000000000, 0x0100000000000000 }};
 
 // see gf5248.h
-const gf5248 gf5248_MINUS_ONE = { 0xFFFFFFFFFFFFFFCC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x03FFFFFFFFFFFFFF };
+const gf5248 gf5248_MINUS_ONE = {{ 0xFFFFFFFFFFFFFFCC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x03FFFFFFFFFFFFFF }};
 
 // Montgomery representation of 2^256.
-static const gf5248 R2 = { 0x3333333333333d70, 0x3333333333333333, 0x3333333333333333, 0x0333333333333333 };
+static const gf5248 R2 = {{ 0x3333333333333d70, 0x3333333333333333, 0x3333333333333333, 0x0333333333333333 }};
 
 // The modulus itself (this is also a valid representation of zero).
-static const gf5248 MODULUS = { 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x04FFFFFFFFFFFFFF };
+static const gf5248 MODULUS = {{ 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x04FFFFFFFFFFFFFF }};
 
 // 1/2^244 (in Montgomery representation).
-static const gf5248 INVT244 = { 0x0000000000001000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000 };
+static const gf5248 INVT244 = {{ 0x0000000000001000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000 }};
 
-static const gf5248 PM1O3 = { 0xaaaaaaaaaaaaaaaa, 0xaaaaaaaaaaaaaaaa, 0xaaaaaaaaaaaaaaaa, 0x01aaaaaaaaaaaaaa };
+static const gf5248 PM1O3 = {{ 0xaaaaaaaaaaaaaaaa, 0xaaaaaaaaaaaaaaaa, 0xaaaaaaaaaaaaaaaa, 0x01aaaaaaaaaaaaaa }};
 
 // Normalize value *a into *d.
 static inline void

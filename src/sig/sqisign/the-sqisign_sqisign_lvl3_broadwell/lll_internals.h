@@ -43,13 +43,19 @@
 
 /** @brief Type for fractions of integers
  *
- * @typedef ibq_t
+* @typedef ibq_t
  *
  * For fractions of integers of arbitrary size, used by intbig module, using gmp
  */
-typedef ibz_t ibq_t[2];
-typedef ibq_t ibq_vec_4_t[4];
-typedef ibq_t ibq_mat_4x4_t[4][4];
+typedef struct {
+    ibz_t q[2];
+} ibq_t;
+typedef struct {
+    ibq_t v[4];
+} ibq_vec_4_t;
+typedef struct {
+    ibq_vec_4_t m[4];
+} ibq_mat_4x4_t;
 
 /**@}
  */

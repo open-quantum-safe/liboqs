@@ -5,7 +5,7 @@
 
 #include <oqs/oqs.h>
 
-static int randombytes(unsigned char *x, unsigned long long xlen){
+static inline int randombytes(unsigned char *x, unsigned long long xlen){
     OQS_randombytes(x, xlen);
     return 0;
 }

@@ -111,7 +111,7 @@ fp_decode_reduce(fp_t *d, const void *src, size_t len)
 static inline void
 fp_copy(fp_t *out, const fp_t *a)
 {
-    memcpy(out, a, sizeof(fp_t));
+    memmove(out, a, sizeof(fp_t));
 }
 
 static inline void

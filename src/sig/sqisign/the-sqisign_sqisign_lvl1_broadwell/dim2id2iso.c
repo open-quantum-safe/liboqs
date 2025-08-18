@@ -191,7 +191,7 @@ fixed_degree_isogeny_and_eval(quat_left_ideal_t *lideal,
 // reordering vectors and switching some signs if needed to make it in a nicer
 // shape
 static void
-post_LLL_basis_treatment(ibz_mat_4x4_t *gram, ibz_mat_4x4_t *reduced, const ibz_t *norm, bool is_special_order)
+post_LLL_basis_treatment(ibz_mat_4x4_t *gram, ibz_mat_4x4_t *reduced, bool is_special_order)
 {
     // if the left order is the special one, then we apply some additional post
     // treatment
@@ -520,7 +520,7 @@ find_uv(ibz_t *u,
     ibz_set(&adjusted_norm[0], 1);
     ibz_mul(&adjusted_norm[0], &adjusted_norm[0], &ideal[0].lattice.denom);
     ibz_mul(&adjusted_norm[0], &adjusted_norm[0], &ideal[0].lattice.denom);
-    post_LLL_basis_treatment(&gram[0], &reduced[0], &ideal[0].norm, true);
+    post_LLL_basis_treatment(&gram[0], &reduced[0], true);
 
     // for efficient lattice reduction, we replace ideal[0] by the equivalent
     // ideal of smallest norm
@@ -562,7 +562,7 @@ find_uv(ibz_t *u,
         ibz_set(&adjusted_norm[i], 1);
         ibz_mul(&adjusted_norm[i], &adjusted_norm[i], &ideal[i].lattice.denom);
         ibz_mul(&adjusted_norm[i], &adjusted_norm[i], &ideal[i].lattice.denom);
-        post_LLL_basis_treatment(&gram[i], &reduced[i], &ideal[i].norm, false);
+        post_LLL_basis_treatment(&gram[i], &reduced[i], false);
     }
 
     // enumerating small vectors
