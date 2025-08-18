@@ -3,7 +3,7 @@
 // This file lists all OpenSSL functions used throughout the liboqs source code.
 //
 // Note that this file is included multiple times to generate custom
-// code by definining the FUNC macro, so no header guard should be
+// code by defining the FUNC macro, so no header guard should be
 // added here.
 
 VOID_FUNC(void, ERR_print_errors_fp, (FILE *fp), (fp))

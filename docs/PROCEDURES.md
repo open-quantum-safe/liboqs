@@ -32,7 +32,7 @@ To add a new, or changed dependency:
 
 ### Github Actions
 
-All actions used in `.github/worfklows` should pin the exact version of the action they are using, for
+All actions used in `.github/workflows` should pin the exact version of the action they are using, for
 example a step such as:
 
 ```yaml
