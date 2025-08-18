@@ -83,11 +83,9 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_snova_SNOVA_24_5_5,
 		OQS_SIG_alg_snova_SNOVA_60_10_4,
 		OQS_SIG_alg_snova_SNOVA_29_6_5,
-		OQS_SIG_alg_snova_SNOVA_29_6_5,
 		OQS_SIG_alg_sqisign_lvl1,
 		OQS_SIG_alg_sqisign_lvl3,
 		OQS_SIG_alg_sqisign_lvl5,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
-		OQS_SIG_alg_snova_SNOVA_29_6_5,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 		OQS_SIG_alg_slh_dsa_pure_sha2_128s,
 		OQS_SIG_alg_slh_dsa_pure_sha2_128f,
