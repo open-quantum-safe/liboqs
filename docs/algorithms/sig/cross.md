@@ -2,12 +2,12 @@
 
 - **Algorithm type**: Digital signature scheme.
 - **Main cryptographic assumption**: hardness of the restricted syndrome decoding problem for random linear codes on a finite field.
-- **Principal submitters**: Marco Baldi, Alessandro Barenghi, Michele Battagliola, Sebastian Bitzer, Patrick Karl, Felice Manganiello, Alessio Pavoni, Gerardo Pelosi, Paolo Santini, Jonas Schupp, Edoardo Signorini, Freeman Slaughter, Antonia Wachter-Zeh, Violetta Weger.
+- **Principal submitters**: Marco Baldi, Alessandro Barenghi, Michele Battagliola, Sebastian Bitzer, Patrick Karl, Felice Manganiello, Alessio Pavoni, Gerardo Pelosi, Federico Pintore, Paolo Santini, Jonas Schupp, Edoardo Signorini, Freeman Slaughter, Antonia Wachter-Zeh, Violetta Weger.
 - **Auxiliary submitters**: Marco Gianvecchio.
 - **Authors' website**: https://www.cross-crypto.com/
-- **Specification version**: 2.0 + PQClean and OQS patches.
+- **Specification version**: 2.2 + PQClean and OQS patches.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/efd17279e75308b000bda7c7f58866620d652bc1
+  - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/ca50b43df8d676a5814007bbe94e6df379c4005a
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 

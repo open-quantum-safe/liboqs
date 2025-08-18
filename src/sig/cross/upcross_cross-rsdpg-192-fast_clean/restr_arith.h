@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -37,6 +37,7 @@
 #define FZRED_DOUBLE(x) FZRED_SINGLE(FZRED_SINGLE(x))
 #define FZRED_OPPOSITE(x) ((x) ^ 0x7f)
 #define FZ_DOUBLE_ZERO_NORM(x) (((x) + (((x) + 1) >> 7)) & 0x7f)
+
 
 static inline
 void fz_dz_norm_n(FZ_ELEM v[N]) {

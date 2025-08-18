@@ -9,6 +9,7 @@ principal-submitters:
 - Felice Manganiello
 - Alessio Pavoni
 - Gerardo Pelosi
+- Federico Pintore
 - Paolo Santini
 - Jonas Schupp
 - Edoardo Signorini
@@ -21,9 +22,9 @@ crypto-assumption: hardness of the restricted syndrome decoding problem for rand
   linear codes on a finite field
 website: https://www.cross-crypto.com/
 nist-round: 2
-spec-version: 2.0 + PQClean and OQS patches
+spec-version: 2.2 + PQClean and OQS patches
 primary-upstream:
-  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/efd17279e75308b000bda7c7f58866620d652bc1
+  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/ca50b43df8d676a5814007bbe94e6df379c4005a
   spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: cross-rsdp-128-balanced
