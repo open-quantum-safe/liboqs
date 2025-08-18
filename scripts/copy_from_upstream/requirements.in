@@ -10,3 +10,4 @@ tabulate
 typing-extensions
 wget
 zipp
+requests
