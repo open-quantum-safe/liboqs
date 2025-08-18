@@ -43,7 +43,7 @@ You'll now be able to run a fuzz test e.g.
 #9764	NEW    cov: 4 ft: 708 corp: 100/318b lim: 43 exec/s: 9764 rss: 362Mb L: 41/41 MS: 4 EraseBytes-InsertRepeatedBytes-CMP-ChangeBit- DE: "\0004m\372"-
 ...
 ```
-The fuzzer will run indefinetely or;
+The fuzzer will run indefinitely or;
 - until it finds a bug and crashes,
 - you manually stop the fuzzer i.e. CTRL-C
 - you set a timeout using the command line.

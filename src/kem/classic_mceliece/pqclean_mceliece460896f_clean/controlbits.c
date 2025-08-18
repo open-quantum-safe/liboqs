@@ -209,11 +209,11 @@ void controlbitsfrompermutation(unsigned char *out, const int16 *pi, long long w
     int i;
     unsigned char *ptr;
 
-    memset(temp, 0, (size_t)n * 2);
-    memset(pi_test, 0, (size_t)n);
+    OQS_MEM_cleanse(temp, (size_t)n * 2);
+    OQS_MEM_cleanse(pi_test, (size_t)n);
 
     while (1) {
-        memset(out, 0, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
+        OQS_MEM_cleanse(out, (size_t)((((2 * w - 1)*n / 2) + 7) / 8));
         cbrecursion(out, 0, 1, pi, w, n, temp);
 
         // check for correctness

@@ -1,0 +1,44 @@
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_0_START
+// SPDX-License-Identifier: MIT
+
+#ifndef OQS_SIG_SLH_DSA_H
+#define OQS_SIG_SLH_DSA_H
+
+#include <oqs/oqs.h>
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_0_END
+
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_BODY_START
+{% if pure == true %}
+#if defined(OQS_ENABLE_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}})
+#define OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_length_public_key {{pkSize}}
+#define OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_length_secret_key {{skSize}}
+#define OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_length_signature {{sigSize}}
+
+OQS_SIG *OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_new(void);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
+#endif
+{% else %}
+#if defined(OQS_ENABLE_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}})
+#define OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_length_public_key {{pkSize}}
+#define OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_length_secret_key {{skSize}}
+#define OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_length_signature {{sigSize}}
+
+OQS_SIG *OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_new(void);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
+#endif
+{% endif %}
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_BODY_END
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_2_START
+#endif
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_2_END
