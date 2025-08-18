@@ -10,6 +10,6 @@ fp_select(fp_t *d, const fp_t *a0, const fp_t *a1, uint32_t ctl)
 {
     digit_t cw = (int32_t)ctl;
     for (unsigned int i = 0; i < NWORDS_FIELD; i++) {
-        (*d)[i] = (*a0)[i] ^ (cw & ((*a0)[i] ^ (*a1)[i]));
+        d->fp[i] = a0->fp[i] ^ (cw & (a0->fp[i] ^ a1->fp[i]));
     }
 }
