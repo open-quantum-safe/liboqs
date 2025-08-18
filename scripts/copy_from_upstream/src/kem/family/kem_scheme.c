@@ -105,6 +105,9 @@ extern int {{ scheme['metadata']['default_dec_signature']  }}(uint8_t *ss, const
 {% if impl['name'] == 'cuda'%}
 #if defined(OQS_USE_CUPQC)
         {%- endif %}
+{%- if impl['name'] == 'icicle_cuda'%}
+#if defined(OQS_USE_ICICLE)
+        {%- endif %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
         {%- if impl['signature_keypair'] %}
 extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
@@ -130,6 +133,9 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper 
 #endif
         {%- if impl['name'] == 'cuda'%}
 #endif /* OQS_USE_CUPQC */
+        {%- endif %}
+        {%- if impl['name'] == 'icicle_cuda'%}
+#endif /* OQS_USE_ICICLE */
         {%- endif %}
     {%- endfor %}
 
@@ -230,7 +236,12 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 	return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
 #endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} */
     {%- endfor %}
-    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda') %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'icicle_cuda' %}
+#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+	return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
+#endif /* OQS_USE_ICICLE && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} */
+    {%- endfor %}
+    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda' and impl['name'] != 'icicle_cuda') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
@@ -309,7 +320,12 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 	return (OQS_STATUS) {{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
 #endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} */
     {%- endfor %}
-    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda') %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'icicle_cuda' %}
+#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+	return (OQS_STATUS) {{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
+#endif /* OQS_USE_ICICLE && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} */
+    {%- endfor %}
+    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda' and impl['name'] != 'icicle_cuda') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
@@ -388,7 +404,12 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 	return (OQS_STATUS) {{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
 #endif /* OQS_USE_CUPQC && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} */
     {%- endfor %}
-    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda') %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'icicle_cuda' %}
+#if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+	return (OQS_STATUS) {{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
+#endif /* OQS_USE_ICICLE && OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} */
+    {%- endfor %}
+    {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda' and impl['name'] != 'icicle_cuda') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}

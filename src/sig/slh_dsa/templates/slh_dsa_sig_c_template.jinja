@@ -1,0 +1,31 @@
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_IDENTIFIER_LIST_START
+ALGID ENABLED SIGNEW
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_IDENTIFIER_LIST_END
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
+		{% for variant in variants -%}
+			OQS_SIG_alg_slh_dsa_{{variant}},
+		{% endfor %}
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_END
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ENABLED_START
+	{% for variant in variants -%}
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_slh_dsa_{{variant}})) {
+#ifdef OQS_ENABLE_SIG_slh_dsa_{{variant}}
+		return 1;
+#else
+		return 0;
+#endif
+	{% endfor %}	
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ENABLED_END
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_SIGNEW_START
+	{% for variant in variants -%}
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_slh_dsa_{{variant}})) {
+#ifdef OQS_ENABLE_SIG_slh_dsa_{{variant}}
+		return OQS_SIG_slh_dsa_{{variant}}_new();
+#else
+		return NULL;
+#endif
+	{% endfor %}	
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_SIGNEW_END

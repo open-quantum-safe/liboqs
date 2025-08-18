@@ -16,12 +16,22 @@ endif()
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'CUDA' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
+{% if impl['name'] == 'cuda' -%}
 if(OQS_USE_CUPQC)
-    cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 {%- if 'alias_scheme' in scheme %}
-    cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
+    cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
 {%- endif %}
 endif()
+{% endif %}
+{%- if impl['name'] == 'icicle_cuda' -%}
+if(OQS_USE_ICICLE)
+    cmake_dependent_option(OQS_ENABLE_KEM_{{ family.name }}_{{ scheme.scheme }}_{{ impl.name }} "" ON "OQS_ENABLE_KEM_{{ family.name }}_{{ scheme.scheme }}" OFF)
+{%- if scheme.alias_scheme is defined -%}
+    cmake_dependent_option(OQS_ENABLE_KEM_{{ family.name }}_{{ scheme.alias_scheme }}_{{ impl.name }} "" ON "OQS_ENABLE_KEM_{{ family.name }}_{{ scheme.alias_scheme }}" OFF)
+{%- endif %}
+endif()
+{% endif -%}
 {% if platform['operating_systems'] %}endif()
 {% endif -%}
             {%- endfor -%}
