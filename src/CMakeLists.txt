@@ -77,6 +77,11 @@ if(OQS_ENABLE_SIG_SQISIGN)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
+if(OQS_ENABLE_SIG_SLH_DSA)
+    add_subdirectory(sig/slh_dsa)
+    set(SIG_OBJS ${SIG_OBJS} ${SLH_DSA_OBJS})
+endif()
+
 if(OQS_ENABLE_SIG_STFL_XMSS)
     add_subdirectory(sig_stfl/xmss)
     set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${XMSS_OBJS})
@@ -116,6 +121,9 @@ if(${OQS_USE_CUPQC})
     target_link_libraries(oqs PRIVATE cupqc)
     target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
 endif()
+if(${OQS_USE_ICICLE})
+    target_link_libraries(oqs PRIVATE icicle::icicle_pqc_package)
+endif()
 if(${OQS_USE_GMP})
   target_link_libraries(oqs PRIVATE GMP)
   target_link_libraries(oqs-internal PRIVATE GMP)
@@ -142,7 +150,7 @@ set_target_properties(oqs
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     VERSION ${OQS_VERSION_TEXT}
-    SOVERSION 7
+    SOVERSION 8
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 

@@ -28,6 +28,7 @@ option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsuppor
 option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
+option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
 option(OQS_USE_GMP "Utilize GMP for supported PQC algorithms." ON)
 
 # Libfuzzer isn't supported on gcc
@@ -43,7 +44,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(OQS_VERSION_MAJOR 0)
-set(OQS_VERSION_MINOR 13)
+set(OQS_VERSION_MINOR 14)
 set(OQS_VERSION_PATCH 1)
 set(OQS_VERSION_PRE_RELEASE "-dev")
 set(OQS_VERSION_TEXT "${OQS_VERSION_MAJOR}.${OQS_VERSION_MINOR}.${OQS_VERSION_PATCH}${OQS_VERSION_PRE_RELEASE}")
@@ -188,6 +189,15 @@ if(${OQS_USE_GMP})
   endif()
 endif()
 
+if(OQS_USE_ICICLE)
+    enable_language(CXX)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+    find_package(icicle_pqc_package REQUIRED)
+endif()
+
+
 if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))
     message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin on x86_64.")
 endif()
@@ -311,6 +321,9 @@ if(OQS_ENABLE_SIG_SQISIGN)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/sqisign/sig_sqisign.h)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_END
+if(OQS_ENABLE_SIG_SLH_DSA)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/slh_dsa/sig_slh_dsa.h)
+endif()
 if(OQS_ENABLE_SIG_STFL_XMSS)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig_stfl/xmss/sig_stfl_xmss.h)
 endif()

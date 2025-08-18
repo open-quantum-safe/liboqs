@@ -1,0 +1,24 @@
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_IDENTIFIER_LIST_START
+ALGID ALGS_LENGTH INCLUDE
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_IDENTIFIER_LIST_END
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
+{% for variant in variants -%}
+/** Algorithm identifier for slh_dsa_{{variant}} */
+#define OQS_SIG_alg_slh_dsa_{{ variant }} "SLH_DSA_{{ variant|upper }}"
+{% endfor %}
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_END
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGS_LENGTH_START
+{% set unary %}{% for variant in variants %}1{% endfor %}{% endset %}
+/** Number of algorithm identifiers above. */
+#define OQS_SIG_SLH_DSA_algs_length {{ unary|length }}
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGS_LENGTH_END
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_START
+#ifdef OQS_ENABLE_SIG_SLH_DSA
+#include <oqs/sig_slh_dsa.h>
+#endif /* OQS_ENABLE_SIG_SLH_DSA */
+
+##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_END
