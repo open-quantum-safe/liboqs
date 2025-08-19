@@ -302,7 +302,7 @@ static int sig_ver_vector(const char *method_name,
                           const uint8_t *sigVer_msg_bytes,
                           size_t msgLen,
                           const uint8_t *sigVer_sig_bytes, int testPassed,
-                          __attribute__((unused)) size_t sigLen) {
+                          size_t sigLen) {
 
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -364,6 +364,8 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 
+	/* __attribute__ doesn't work on windows, so "use" sigLen to make compiler happy */
+	(void)sigLen;
 }
 
 static int sig_ver_vector_ext(const char *method_name,
@@ -373,7 +375,7 @@ static int sig_ver_vector_ext(const char *method_name,
                               const uint8_t *sigVer_sig_bytes,
                               const uint8_t *sigVer_ctx, size_t sigVer_ctxLen,
                               int testPassed,
-                              __attribute__((unused)) size_t sigLen) {
+                              size_t sigLen) {
 
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -416,6 +418,8 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 
+	/* __attribute__ doesn't work on windows, so "use" sigLen to make compiler happy */
+	(void)sigLen;
 }
 
 static int sig_gen_vector(const char *method_name,
