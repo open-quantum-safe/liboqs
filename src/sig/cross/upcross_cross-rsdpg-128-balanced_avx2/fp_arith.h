@@ -340,7 +340,7 @@ void convert_restr_vec_to_fp(FP_ELEM res[N], const FZ_ELEM in[N]) {
 	/* res: expand, align */
 	alignas(32) FP_ELEM res_x[ROUND_UP(N, EPI16_PER_REG)];
 	/* in: convert from uint8 to uint16, expand, align */
-	alignas(32) FP_ELEM in_x[ROUND_UP(N, EPI16_PER_REG)];
+	alignas(32) FP_ELEM in_x[ROUND_UP(N, EPI16_PER_REG)] = {0};
 	for (int i = 0; i < N; i++) {
 		in_x[i] = in[i];
 	}
