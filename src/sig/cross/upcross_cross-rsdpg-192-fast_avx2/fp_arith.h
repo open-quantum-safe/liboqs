@@ -298,7 +298,7 @@ void fp_vec_by_restr_vec_scaled(FP_ELEM res[N], const FZ_ELEM e[N], const FP_ELE
 	/* res: expand, align */
 	alignas(32) FP_ELEM res_x[ROUND_UP(N, EPI16_PER_REG)];
 	/* e: convert from uint8 to uint16, expand, align */
-	alignas(32) FP_ELEM e_x[ROUND_UP(N, EPI16_PER_REG)];
+	alignas(32) FP_ELEM e_x[ROUND_UP(N, EPI16_PER_REG)] = {0};
 	for (int i = 0; i < N; i++) {
 		e_x[i] = e[i];
 	}
