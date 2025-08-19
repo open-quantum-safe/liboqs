@@ -18,7 +18,7 @@ nist-round: FIPS203
 spec-version: ML-KEM
 primary-upstream:
   source: https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
-  spdx-license-identifier: CC0-1.0 or Apache-2.0
+  spdx-license-identifier: MIT or Apache-2.0 or ISC
 optimized-upstreams:
   cupqc-cuda:
     source: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
