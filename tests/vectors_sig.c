@@ -5,7 +5,6 @@
 
 #include <assert.h>
 #include <errno.h>
-#include <openssl/bio.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
