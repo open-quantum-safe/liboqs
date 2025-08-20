@@ -315,22 +315,3 @@ void sha2_512_final_len(sha2_512_t *sha, uint8_t *h, size_t h_sz)
   sha2_512_compress(sha->s);
   memcpy(h, sha->s, h_sz);
 }
-
-/* public single-call interfaces */
-void sha2_512_224(uint8_t *h, const void *m, size_t m_sz)
-{
-  sha2_512_t sha;
-
-  sha2_512_224_init(&sha);
-  sha2_512_update(&sha, m, m_sz);
-  sha2_512_final_len(&sha, h, 28);
-}
-
-void sha2_512_256(uint8_t *h, const void *m, size_t m_sz)
-{
-  sha2_512_t sha;
-
-  sha2_512_256_init(&sha);
-  sha2_512_update(&sha, m, m_sz);
-  sha2_512_final_len(&sha, h, 32);
-}

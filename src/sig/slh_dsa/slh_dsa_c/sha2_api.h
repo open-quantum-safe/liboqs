@@ -18,16 +18,6 @@ extern "C"
 #include "cbmc.h"
 #include "sha2.h"
 
-  /* === Single-call hash wrappers === */
-
-  /* SHA2-512/224: Compute 64-byte hash to "md" from "m" which has "m_sz" */
-  /* bytes. */
-  void sha2_512_224(uint8_t *md, const void *m, size_t m_sz);
-
-  /* SHA2-512/256: Compute 64-byte hash to "md" from "m" which has "m_sz" */
-  /* bytes. */
-  void sha2_512_256(uint8_t *md, const void *m, size_t m_sz);
-
   /* === incremental interface === */
 
   typedef struct
