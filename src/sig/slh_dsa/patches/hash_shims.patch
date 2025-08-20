@@ -75,3 +75,36 @@ index 1128e591..367b5e4f 100644
    /* SHA2-512/224: Compute 64-byte hash to "md" from "m" which has "m_sz" */
    /* bytes. */
    void sha2_512_224(uint8_t *md, const void *m, size_t m_sz);
+diff --git a/src/sig/slh_dsa/slh_dsa_c/sha2_256.c b/src/sig/slh_dsa/slh_dsa_c/sha2_256.c
+index ef83b8d4..5ed137d8 100644
+--- a/src/sig/slh_dsa/slh_dsa_c/sha2_256.c
++++ b/src/sig/slh_dsa/slh_dsa_c/sha2_256.c
+@@ -249,14 +249,3 @@ void sha2_256_final_len(sha2_256_t *sha, uint8_t *h, size_t h_sz)
+ 
+   memcpy(h, sha->s, h_sz);
+ }
+-
+-/* SHA-224/256 public single-call interfaces */
+-
+-void sha2_224(uint8_t *h, const void *m, size_t m_sz)
+-{
+-  sha2_256_t sha;
+-
+-  sha2_224_init(&sha);
+-  sha2_224_update(&sha, m, m_sz);
+-  sha2_224_final(&sha, h);
+-}
+diff --git a/src/sig/slh_dsa/slh_dsa_c/sha2_api.h b/src/sig/slh_dsa/slh_dsa_c/sha2_api.h
+index 367b5e4f..1e948cf8 100644
+--- a/src/sig/slh_dsa/slh_dsa_c/sha2_api.h
++++ b/src/sig/slh_dsa/slh_dsa_c/sha2_api.h
+@@ -20,9 +20,6 @@ extern "C"
+ 
+   /* === Single-call hash wrappers === */
+ 
+-  /* SHA2-224: Compute 28-byte hash to "md" from "m" which has "m_sz" bytes. */
+-  void sha2_224(uint8_t *md, const void *m, size_t m_sz);
+-
+   /* SHA2-512/224: Compute 64-byte hash to "md" from "m" which has "m_sz" */
+   /* bytes. */
+   void sha2_512_224(uint8_t *md, const void *m, size_t m_sz);

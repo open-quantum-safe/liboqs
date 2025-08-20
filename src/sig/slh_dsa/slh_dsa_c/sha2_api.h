@@ -20,9 +20,6 @@ extern "C"
 
   /* === Single-call hash wrappers === */
 
-  /* SHA2-224: Compute 28-byte hash to "md" from "m" which has "m_sz" bytes. */
-  void sha2_224(uint8_t *md, const void *m, size_t m_sz);
-
   /* SHA2-512/224: Compute 64-byte hash to "md" from "m" which has "m_sz" */
   /* bytes. */
   void sha2_512_224(uint8_t *md, const void *m, size_t m_sz);
