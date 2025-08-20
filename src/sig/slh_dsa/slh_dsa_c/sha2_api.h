@@ -16,20 +16,12 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 #include "cbmc.h"
+#include "sha2.h"
 
   /* === Single-call hash wrappers === */
 
   /* SHA2-224: Compute 28-byte hash to "md" from "m" which has "m_sz" bytes. */
   void sha2_224(uint8_t *md, const void *m, size_t m_sz);
-
-  /* SHA2-256: Compute 32-byte hash to "md" from "m" which has "m_sz" bytes. */
-  void sha2_256(uint8_t *md, const void *m, size_t m_sz);
-
-  /* SHA2-384: Compute 48-byte hash to "md" from "m" which has "m_sz" bytes. */
-  void sha2_384(uint8_t *md, const void *m, size_t m_sz);
-
-  /* SHA2-512: Compute 64-byte hash to "md" from "m" which has "m_sz" bytes. */
-  void sha2_512(uint8_t *md, const void *m, size_t m_sz);
 
   /* SHA2-512/224: Compute 64-byte hash to "md" from "m" which has "m_sz" */
   /* bytes. */

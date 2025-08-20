@@ -252,15 +252,6 @@ void sha2_256_final_len(sha2_256_t *sha, uint8_t *h, size_t h_sz)
 
 /* SHA-224/256 public single-call interfaces */
 
-void sha2_256(uint8_t *h, const void *m, size_t m_sz)
-{
-  sha2_256_t sha;
-
-  sha2_256_init(&sha);
-  sha2_256_update(&sha, m, m_sz);
-  sha2_256_final(&sha, h);
-}
-
 void sha2_224(uint8_t *h, const void *m, size_t m_sz)
 {
   sha2_256_t sha;

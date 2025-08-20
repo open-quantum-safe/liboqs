@@ -9,6 +9,7 @@ if (OQS_ENABLE_SIG_SLH_DSA)
 	            {% endfor -%}
 	           )
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/slh_dsa_c)
+    target_include_directories(slh_dsa_c PRIVATE ${PROJECT_SOURCE_DIR}/src/common/slhdsa_shims)
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/pure)
     {% for prehashHashAlg in prehashHashAlgs -%}
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/prehash_{{prehashHashAlg}})

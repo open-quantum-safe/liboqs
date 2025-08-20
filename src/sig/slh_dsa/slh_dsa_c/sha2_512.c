@@ -317,25 +317,6 @@ void sha2_512_final_len(sha2_512_t *sha, uint8_t *h, size_t h_sz)
 }
 
 /* public single-call interfaces */
-
-void sha2_512(uint8_t *h, const void *m, size_t m_sz)
-{
-  sha2_512_t sha;
-
-  sha2_512_init(&sha);
-  sha2_512_update(&sha, m, m_sz);
-  sha2_512_final(&sha, h);
-}
-
-void sha2_384(uint8_t *h, const void *m, size_t m_sz)
-{
-  sha2_384_t sha;
-
-  sha2_384_init(&sha);
-  sha2_512_update(&sha, m, m_sz);
-  sha2_512_final_len(&sha, h, 48);
-}
-
 void sha2_512_224(uint8_t *h, const void *m, size_t m_sz)
 {
   sha2_512_t sha;
