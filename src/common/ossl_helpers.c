@@ -104,21 +104,21 @@ void oqs_thread_stop(void) {
 }
 
 const EVP_MD *oqs_sha224(void) {
-	#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	#if defined(OQS_USE_PTHREADS)
-		if (pthread_once(&init_once_control, fetch_ossl_objects)) {
-			return NULL;
-		}
-	#else
-		if (!sha224_ptr) {
-			fetch_ossl_objects();
-		}
-	#endif
-		return sha224_ptr;
-	#else
-		return OSSL_FUNC(EVP_sha224)();
-	#endif
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#if defined(OQS_USE_PTHREADS)
+	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
+		return NULL;
 	}
+#else
+	if (!sha224_ptr) {
+		fetch_ossl_objects();
+	}
+#endif
+	return sha224_ptr;
+#else
+	return OSSL_FUNC(EVP_sha224)();
+#endif
+}
 
 const EVP_MD *oqs_sha256(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L

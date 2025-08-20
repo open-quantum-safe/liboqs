@@ -57,7 +57,6 @@ static int do_sha224(void) {
 
 	// run incremental SHA-224 API
 	uint8_t output_inc[28];
-	uint8_t output_inc_2[28];
 	OQS_SHA2_sha224_ctx state;
 	OQS_SHA2_sha224_inc_init(&state);
 
