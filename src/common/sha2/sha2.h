@@ -307,6 +307,28 @@ void OQS_SHA2_sha512_inc_finalize(uint8_t *out, OQS_SHA2_sha512_ctx *state, cons
  */
 void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state);
 
+/**
+ * \brief Process a message with SHA-512/224 and return the hash code in the output byte array.
+ *
+ * \warning The output array must be at least 28 bytes in length.
+ *
+ * \param output The output byte array
+ * \param input The message input byte array
+ * \param inplen The number of message bytes to process
+ */
+ void OQS_SHA2_sha512_224(uint8_t *output, const uint8_t *input, size_t inplen);
+
+/**
+ * \brief Process a message with SHA-512/256 and return the hash code in the output byte array.
+ *
+ * \warning The output array must be at least 32 bytes in length.
+ *
+ * \param output The output byte array
+ * \param input The message input byte array
+ * \param inplen The number of message bytes to process
+ */
+ void OQS_SHA2_sha512_256(uint8_t *output, const uint8_t *input, size_t inplen);
+
 #if defined(__cplusplus)
 } // extern "C"
 #endif

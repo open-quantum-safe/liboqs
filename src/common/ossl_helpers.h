@@ -24,6 +24,10 @@ const EVP_MD *oqs_sha384(void);
 
 const EVP_MD *oqs_sha512(void);
 
+const EVP_MD *oqs_sha512_224(void);
+
+const EVP_MD *oqs_sha512_256(void);
+
 const EVP_MD *oqs_shake128(void);
 
 const EVP_MD *oqs_shake256(void);

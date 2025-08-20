@@ -110,3 +110,11 @@ void OQS_SHA2_sha512(uint8_t *out, const uint8_t *in, size_t inlen) {
 	callbacks->SHA2_sha512(out, in, inlen);
 }
 
+void OQS_SHA2_sha512_224(uint8_t *out, const uint8_t *in, size_t inlen) {
+	callbacks->SHA2_sha512_224(out, in, inlen);
+}
+
+void OQS_SHA2_sha512_256(uint8_t *out, const uint8_t *in, size_t inlen) {
+	callbacks->SHA2_sha512_256(out, in, inlen);
+}
+

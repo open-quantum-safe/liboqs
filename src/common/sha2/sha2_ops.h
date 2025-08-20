@@ -186,6 +186,16 @@ struct OQS_SHA2_callbacks {
 	 * Implementation of function OQS_SHA2_sha512_inc_ctx_release.
 	 */
 	void (*SHA2_sha512_inc_ctx_release)(OQS_SHA2_sha512_ctx *state);
+
+	/**
+	 * Implementation of function OQS_SHA2_sha512_224.
+	 */
+	 void (*SHA2_sha512_224)(uint8_t *output, const uint8_t *input, size_t inplen);
+
+	/**
+	 * Implementation of function OQS_SHA2_sha512_256.
+	 */
+	 void (*SHA2_sha512_256)(uint8_t *output, const uint8_t *input, size_t inplen);
 };
 
 /**

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
+#include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <oqs/common.h>
 
@@ -138,6 +140,18 @@ static void SHA2_sha512(uint8_t *out, const uint8_t *in, size_t inlen) {
 	oqs_sha2_sha512_c(out, in, inlen);
 }
 
+static void SHA2_sha512_224(uint8_t *out, const uint8_t *in, size_t inlen) {
+	uint8_t *temp = OQS_MEM_malloc(28);
+	oqs_sha2_sha512_c(temp, in, inlen);
+	memcpy(out, temp, 28);
+}
+
+static void SHA2_sha512_256(uint8_t *out, const uint8_t *in, size_t inlen) {
+	uint8_t *temp = OQS_MEM_malloc(32);
+	oqs_sha2_sha512_c(temp, in, inlen);
+	memcpy(out, temp, 32);
+}
+
 struct OQS_SHA2_callbacks sha2_default_callbacks = {
 	SHA2_sha224,
 	SHA2_sha224_inc_init,
@@ -164,4 +178,6 @@ struct OQS_SHA2_callbacks sha2_default_callbacks = {
 	SHA2_sha512_inc_blocks,
 	SHA2_sha512_inc_finalize,
 	SHA2_sha512_inc_ctx_release,
+	SHA2_sha512_224,
+	SHA2_sha512_256,
 };

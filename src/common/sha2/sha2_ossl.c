@@ -52,6 +52,20 @@ static void SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen) {
 	do_hash(output, input, inplen, md);
 }
 
+static void SHA2_sha512_224(uint8_t *output, const uint8_t *input, size_t inplen) {
+	const EVP_MD *md;
+	md = oqs_sha512_224();
+	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+	do_hash(output, input, inplen, md);
+}
+
+static void SHA2_sha512_256(uint8_t *output, const uint8_t *input, size_t inplen) {
+	const EVP_MD *md;
+	md = oqs_sha512_256();
+	OQS_EXIT_IF_NULLPTR(md, "OpenSSL");
+	do_hash(output, input, inplen, md);
+}
+
 #define SHA2_BLOCK_SIZE 64
 
 static void SHA2_sha224_inc_init(OQS_SHA2_sha224_ctx *state) {
@@ -220,6 +234,8 @@ struct OQS_SHA2_callbacks sha2_default_callbacks = {
 	SHA2_sha512_inc_blocks,
 	SHA2_sha512_inc_finalize,
 	SHA2_sha512_inc_ctx_release,
+	SHA2_sha512_224,
+	SHA2_sha512_256,
 };
 
 #endif
