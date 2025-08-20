@@ -63,6 +63,36 @@ typedef struct {
  */
 struct OQS_SHA2_callbacks {
 	/**
+	 * Implementation of function OQS_SHA2_sha224.
+	 */
+	 void (*SHA2_sha224)(uint8_t *output, const uint8_t *input, size_t inplen);
+
+	 /**
+	  * Implementation of function OQS_SHA2_sha224_inc_init.
+	  */
+	 void (*SHA2_sha224_inc_init)(OQS_SHA2_sha224_ctx *state);
+ 
+	 /**
+	  * Implementation of function OQS_SHA2_sha224_inc_ctx_clone.
+	  */
+	 void (*SHA2_sha224_inc_ctx_clone)(OQS_SHA2_sha224_ctx *dest, const OQS_SHA2_sha224_ctx *src);
+ 
+	 /**
+	  * Implementation of function OQS_SHA2_sha224_inc_blocks.
+	  */
+	 void (*SHA2_sha224_inc_blocks)(OQS_SHA2_sha224_ctx *state, const uint8_t *in, size_t inblocks);
+ 
+	 /**
+	  * Implementation of function OQS_SHA2_sha224_inc_finalize.
+	  */
+	 void (*SHA2_sha224_inc_finalize)(uint8_t *out, OQS_SHA2_sha224_ctx *state, const uint8_t *in, size_t inlen);
+ 
+	 /**
+	  * Implementation of function OQS_SHA2_sha224_inc_ctx_release.
+	  */
+	 void (*SHA2_sha224_inc_ctx_release)(OQS_SHA2_sha224_ctx *state);
+
+	/**
 	 * Implementation of function OQS_SHA2_sha256.
 	 */
 	void (*SHA2_sha256)(uint8_t *output, const uint8_t *input, size_t inplen);

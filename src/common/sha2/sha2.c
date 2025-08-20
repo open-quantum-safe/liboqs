@@ -10,6 +10,26 @@ OQS_API void OQS_SHA2_set_callbacks(struct OQS_SHA2_callbacks *new_callbacks) {
 	callbacks = new_callbacks;
 }
 
+void OQS_SHA2_sha224_inc_init(OQS_SHA2_sha224_ctx *state) {
+	callbacks->SHA2_sha224_inc_init(state);
+}
+
+void OQS_SHA2_sha224_inc_ctx_clone(OQS_SHA2_sha224_ctx *dest, const OQS_SHA2_sha224_ctx *src) {
+	callbacks->SHA2_sha224_inc_ctx_clone(dest, src);
+}
+
+void OQS_SHA2_sha224_inc_blocks(OQS_SHA2_sha224_ctx *state, const uint8_t *in, size_t inblocks) {
+	callbacks->SHA2_sha224_inc_blocks(state, in, inblocks);
+}
+
+void OQS_SHA2_sha224_inc_finalize(uint8_t *out, OQS_SHA2_sha224_ctx *state, const uint8_t *in, size_t inlen) {
+	callbacks->SHA2_sha224_inc_finalize(out, state, in, inlen);
+}
+
+void OQS_SHA2_sha224_inc_ctx_release(OQS_SHA2_sha224_ctx *state) {
+	callbacks->SHA2_sha224_inc_ctx_release(state);
+}
+
 void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	callbacks->SHA2_sha256_inc_init(state);
 }
@@ -72,6 +92,10 @@ void OQS_SHA2_sha512_inc_finalize(uint8_t *out, OQS_SHA2_sha512_ctx *state, cons
 
 void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {
 	callbacks->SHA2_sha512_inc_ctx_release(state);
+}
+
+void OQS_SHA2_sha224(uint8_t *out, const uint8_t *in, size_t inlen) {
+	callbacks->SHA2_sha224(out, in, inlen);
 }
 
 void OQS_SHA2_sha256(uint8_t *out, const uint8_t *in, size_t inlen) {

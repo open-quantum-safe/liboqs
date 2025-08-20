@@ -16,13 +16,14 @@ static pthread_once_t init_once_control = PTHREAD_ONCE_INIT;
 static pthread_once_t free_once_control = PTHREAD_ONCE_INIT;
 #endif
 
-static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr,
+static EVP_MD *sha224_ptr, *sha256_ptr, *sha384_ptr, *sha512_ptr,
        *sha3_256_ptr, *sha3_384_ptr, *sha3_512_ptr,
        *shake128_ptr, *shake256_ptr;
 
 static EVP_CIPHER *aes128_ecb_ptr, *aes128_ctr_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 
 static void fetch_ossl_objects(void) {
+	sha224_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA224", NULL);
 	sha256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA256", NULL);
 	sha384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA384", NULL);
 	sha512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512", NULL);
@@ -38,7 +39,7 @@ static void fetch_ossl_objects(void) {
 	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
 	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
 
-	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
+	if (!sha224_ptr || !sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
 	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
 	        !aes128_ecb_ptr || !aes128_ctr_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
 		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
@@ -68,6 +69,7 @@ static inline void cleanup_evp_cipher(EVP_CIPHER **cipherp) {
 }
 
 static void free_ossl_objects(void) {
+	cleanup_evp_md(&sha224_ptr);
 	cleanup_evp_md(&sha256_ptr);
 	cleanup_evp_md(&sha384_ptr);
 	cleanup_evp_md(&sha512_ptr);
@@ -88,7 +90,7 @@ void oqs_ossl_destroy(void) {
 #if defined(OQS_USE_PTHREADS)
 	pthread_once(&free_once_control, free_ossl_objects);
 #else
-	if (sha256_ptr || sha384_ptr || sha512_ptr || sha3_256_ptr ||
+	if (sha224_ptr || sha256_ptr || sha384_ptr || sha512_ptr || sha3_256_ptr ||
 	        sha3_384_ptr || sha3_512_ptr || shake128_ptr || shake256_ptr ||
 	        aes128_ecb_ptr || aes128_ctr_ptr || aes256_ecb_ptr || aes256_ctr_ptr) {
 		free_ossl_objects();
@@ -100,6 +102,23 @@ void oqs_ossl_destroy(void) {
 void oqs_thread_stop(void) {
 	OSSL_FUNC(OPENSSL_thread_stop)();
 }
+
+const EVP_MD *oqs_sha224(void) {
+	#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+	#if defined(OQS_USE_PTHREADS)
+		if (pthread_once(&init_once_control, fetch_ossl_objects)) {
+			return NULL;
+		}
+	#else
+		if (!sha224_ptr) {
+			fetch_ossl_objects();
+		}
+	#endif
+		return sha224_ptr;
+	#else
+		return OSSL_FUNC(EVP_sha224)();
+	#endif
+	}
 
 const EVP_MD *oqs_sha256(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L

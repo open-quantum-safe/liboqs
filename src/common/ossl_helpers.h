@@ -16,6 +16,8 @@ void oqs_ossl_destroy(void);
 
 void oqs_thread_stop(void);
 
+const EVP_MD *oqs_sha224(void);
+
 const EVP_MD *oqs_sha256(void);
 
 const EVP_MD *oqs_sha384(void);
