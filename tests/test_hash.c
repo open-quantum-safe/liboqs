@@ -303,6 +303,40 @@ static int do_sha512(void) {
 	return 0;
 }
 
+static int do_sha512_224(void) {
+	// read message from stdin
+	uint8_t *msg;
+	size_t msg_len;
+	if (read_stdin(&msg, &msg_len) != 0) {
+		fprintf(stderr, "ERROR reading from stdin\n");
+		return -1;
+	}
+	// run main SHA-512_224 API
+	uint8_t output[28];
+	OQS_SHA2_sha512_224(output, msg, msg_len);
+	
+	print_hex(output, 28);
+	OQS_MEM_insecure_free(msg);
+	return 0;
+}
+
+static int do_sha512_256(void) {
+	// read message from stdin
+	uint8_t *msg;
+	size_t msg_len;
+	if (read_stdin(&msg, &msg_len) != 0) {
+		fprintf(stderr, "ERROR reading from stdin\n");
+		return -1;
+	}
+	// run main SHA-512_256 API
+	uint8_t output[32];
+	OQS_SHA2_sha512_256(output, msg, msg_len);
+	
+	print_hex(output, 32);
+	OQS_MEM_insecure_free(msg);
+	return 0;
+}
+
 static int do_arbitrary_hash(void (*hash)(uint8_t *, const uint8_t *, size_t), size_t hash_len) {
 	// read message from stdin
 	uint8_t *msg;
@@ -354,6 +388,10 @@ int main(int argc, char **argv) {
 		ret = do_sha384();
 	} else if (strcmp(hash_alg, "sha512inc") == 0) {
 		ret = do_sha512();
+	} else if (strcmp(hash_alg, "sha512_224inc") == 0) {
+		ret = do_sha512_224();
+	} else if (strcmp(hash_alg, "sha512_256inc") == 0) {
+		ret = do_sha512_256();
 	} else if (strcmp(hash_alg, "sha224") == 0) {
 		ret = do_arbitrary_hash(&OQS_SHA2_sha224, 28);
 	} else if (strcmp(hash_alg, "sha256") == 0) {
@@ -362,6 +400,10 @@ int main(int argc, char **argv) {
 		ret = do_arbitrary_hash(&OQS_SHA2_sha384, 48);
 	} else if (strcmp(hash_alg, "sha512") == 0) {
 		ret = do_arbitrary_hash(&OQS_SHA2_sha512, 64);
+	} else if (strcmp(hash_alg, "sha512_224") == 0) {
+		ret = do_arbitrary_hash(&OQS_SHA2_sha512_224, 28);
+	} else if (strcmp(hash_alg, "sha512_256") == 0) {
+		ret = do_arbitrary_hash(&OQS_SHA2_sha512_256, 32);
 	} else if (strcmp(hash_alg, "sha3_256") == 0) {
 		ret = do_arbitrary_hash(&OQS_SHA3_sha3_256, 32);
 	} else if (strcmp(hash_alg, "sha3_384") == 0) {

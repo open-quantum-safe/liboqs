@@ -21,7 +21,7 @@ def test_sha3():
     )
 
 @helpers.filtered_test
-@pytest.mark.parametrize('algname', ['sha224', 'sha256', 'sha384', 'sha512', 'sha3_256', 'sha3_384', 'sha3_512'])
+@pytest.mark.parametrize('algname', ['sha224', 'sha256', 'sha384', 'sha512', 'sha512_224', 'sha512_256', 'sha3_256', 'sha3_384', 'sha3_512'])
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_hash_sha2_random(algname):
     # hash every size from 0 to 1024, then every 11th size after that 
@@ -50,4 +50,5 @@ def test_hash_sha2_random(algname):
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
+    # test_hash_sha2_random("sha512_224")
 
