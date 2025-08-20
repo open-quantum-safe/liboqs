@@ -42,6 +42,65 @@ static void print_hex(uint8_t *s, size_t l) {
 	printf("\n");
 }
 
+static int do_sha224(void) {
+	// read message from stdin
+	uint8_t *msg;
+	size_t msg_len;
+	if (read_stdin(&msg, &msg_len) != 0) {
+		fprintf(stderr, "ERROR reading from stdin\n");
+		return -1;
+	}
+
+	// run main SHA-224 API
+	uint8_t output[28];
+	OQS_SHA2_sha224(output, msg, msg_len);
+
+	// run incremental SHA-224 API
+	uint8_t output_inc[28];
+	uint8_t output_inc_2[28];
+	OQS_SHA2_sha224_ctx state;
+	OQS_SHA2_sha224_inc_init(&state);
+
+	// clone state
+	OQS_SHA2_sha224_ctx state2, state3, state4, state5, state6;
+	OQS_SHA2_sha224_inc_ctx_clone(&state2, &state);
+	OQS_SHA2_sha224_inc_ctx_clone(&state3, &state);
+	OQS_SHA2_sha224_inc_ctx_clone(&state4, &state);
+	OQS_SHA2_sha224_inc_ctx_clone(&state5, &state);
+	OQS_SHA2_sha224_inc_ctx_clone(&state6, &state);
+
+	// hash with first state
+	if (msg_len > 64) {
+		OQS_SHA2_sha224_inc_blocks(&state, msg, 1);
+		OQS_SHA2_sha224_inc_finalize(output_inc, &state, &msg[64], msg_len - 64);
+	} else {
+		OQS_SHA2_sha224_inc_finalize(output_inc, &state, msg, msg_len);
+	}
+
+	if (memcmp(output, output_inc, 28) != 0) {
+		fprintf(stderr, "ERROR: Incremental API does not match main API\n");
+		OQS_MEM_insecure_free(msg);
+		return -2;
+	}
+	// hash with second state
+	if (msg_len > 64) {
+		OQS_SHA2_sha224_inc_blocks(&state2, msg, 1);
+		OQS_SHA2_sha224_inc_finalize(output_inc, &state2, &msg[64], msg_len - 64);
+	} else {
+		OQS_SHA2_sha224_inc_finalize(output_inc, &state2, msg, msg_len);
+	}
+	if (memcmp(output, output_inc, 28) != 0) {
+		fprintf(stderr, "ERROR: Incremental API with cloned state does not match main API\n");
+		OQS_MEM_insecure_free(msg);
+		return -3;
+	}
+
+	//Test inc API
+	print_hex(output, 28);
+	OQS_MEM_insecure_free(msg);
+	return 0;
+}
+
 static int do_sha256(void) {
 	// read message from stdin
 	uint8_t *msg;
@@ -288,13 +347,16 @@ int main(int argc, char **argv) {
 	}
 
 	char *hash_alg = argv[1];
-
-	if (strcmp(hash_alg, "sha256inc") == 0) {
+	if (strcmp(hash_alg, "sha224inc") == 0) {
+		ret = do_sha224();
+	} else if (strcmp(hash_alg, "sha256inc") == 0) {
 		ret = do_sha256();
 	} else if (strcmp(hash_alg, "sha384inc") == 0) {
 		ret = do_sha384();
 	} else if (strcmp(hash_alg, "sha512inc") == 0) {
 		ret = do_sha512();
+	} else if (strcmp(hash_alg, "sha224") == 0) {
+		ret = do_arbitrary_hash(&OQS_SHA2_sha224, 28);
 	} else if (strcmp(hash_alg, "sha256") == 0) {
 		ret = do_arbitrary_hash(&OQS_SHA2_sha256, 32);
 	} else if (strcmp(hash_alg, "sha384") == 0) {
