@@ -316,7 +316,7 @@ void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state);
  * \param input The message input byte array
  * \param inplen The number of message bytes to process
  */
- void OQS_SHA2_sha512_224(uint8_t *output, const uint8_t *input, size_t inplen);
+void OQS_SHA2_sha512_224(uint8_t *output, const uint8_t *input, size_t inplen);
 
 /**
  * \brief Process a message with SHA-512/256 and return the hash code in the output byte array.
@@ -327,7 +327,7 @@ void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state);
  * \param input The message input byte array
  * \param inplen The number of message bytes to process
  */
- void OQS_SHA2_sha512_256(uint8_t *output, const uint8_t *input, size_t inplen);
+void OQS_SHA2_sha512_256(uint8_t *output, const uint8_t *input, size_t inplen);
 
 #if defined(__cplusplus)
 } // extern "C"

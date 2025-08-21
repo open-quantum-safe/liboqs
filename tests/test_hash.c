@@ -314,7 +314,7 @@ static int do_sha512_224(void) {
 	// run main SHA-512_224 API
 	uint8_t output[28];
 	OQS_SHA2_sha512_224(output, msg, msg_len);
-	
+
 	print_hex(output, 28);
 	OQS_MEM_insecure_free(msg);
 	return 0;
@@ -331,7 +331,7 @@ static int do_sha512_256(void) {
 	// run main SHA-512_256 API
 	uint8_t output[32];
 	OQS_SHA2_sha512_256(output, msg, msg_len);
-	
+
 	print_hex(output, 32);
 	OQS_MEM_insecure_free(msg);
 	return 0;
