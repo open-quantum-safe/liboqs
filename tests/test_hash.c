@@ -61,12 +61,8 @@ static int do_sha224(void) {
 	OQS_SHA2_sha224_inc_init(&state);
 
 	// clone state
-	OQS_SHA2_sha224_ctx state2, state3, state4, state5, state6;
+	OQS_SHA2_sha224_ctx state2;
 	OQS_SHA2_sha224_inc_ctx_clone(&state2, &state);
-	OQS_SHA2_sha224_inc_ctx_clone(&state3, &state);
-	OQS_SHA2_sha224_inc_ctx_clone(&state4, &state);
-	OQS_SHA2_sha224_inc_ctx_clone(&state5, &state);
-	OQS_SHA2_sha224_inc_ctx_clone(&state6, &state);
 
 	// hash with first state
 	if (msg_len > 64) {
@@ -337,7 +333,7 @@ int main(int argc, char **argv) {
 	OQS_init();
 	if (argc != 2) {
 		fprintf(stderr, "Usage: test_hash algname\n");
-		fprintf(stderr, "  algname: sha256, sha384, sha512, sha256inc, sha384inc, sha512inc\n");
+		fprintf(stderr, "  algname: sha224, sha256, sha384, sha512, sha256inc, sha384inc, sha512inc\n");
 		fprintf(stderr, "           sha3_256, sha3_384, sha3_512\n");
 		fprintf(stderr, "  test_hash reads input from stdin and outputs hash value as hex string to stdout");
 		printf("\n");
