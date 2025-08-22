@@ -50,5 +50,4 @@ def test_hash_sha2_random(algname):
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
-    # test_hash_sha2_random("sha512_224")
 
