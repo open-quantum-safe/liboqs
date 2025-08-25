@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include <oqs/kem_hqc.h>
+
 #include "oqs_adapter.h"
 
 #if defined(OQS_ENABLE_KEM_hqc_192)
