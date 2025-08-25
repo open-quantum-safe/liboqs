@@ -572,7 +572,7 @@ static size_t slh_sign_digest(slh_var_t *var, uint8_t *sig,
 
 /* Algorithm 19: slh_sign_internal(M, SK, addrnd) */
 
-size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
+OQS_API size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
                          const uint8_t *sk, const uint8_t *addrnd,
                          const slh_param_t *prm)
 {
@@ -681,7 +681,7 @@ static int slh_verify_digest(slh_var_t *var, const uint8_t *digest,
 
 /* Algorithm 20: slh_verify_internal(M, SIG, PK) */
 
-int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
+OQS_API int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
                         size_t sig_sz, const uint8_t *pk,
                         const slh_param_t *prm)
 {

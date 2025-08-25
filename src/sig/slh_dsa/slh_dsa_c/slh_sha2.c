@@ -6,6 +6,7 @@
 /* === Portable C code: Functions for instantiation of SLH-DSA with SHA2 */
 
 #include <string.h>
+#include <oqs/oqs.h>
 #include "plat_local.h"
 #include "sha2_api.h"
 #include "slh_adrs.h"
@@ -458,7 +459,7 @@ static void sha2_256_fors_hash(slh_var_t *var, uint8_t *tmp, uint32_t s)
 
 /* 10.2.   SLH-DSA Using SHA2 for Security Category 1 */
 
-const slh_param_t slh_dsa_sha2_128s = {/* .alg_id = */ "SLH-DSA-SHA2-128s",
+OQS_API const slh_param_t slh_dsa_sha2_128s = {/* .alg_id = */ "SLH-DSA-SHA2-128s",
                                        /* .n = */ 16,
                                        /* .h = */ 63,
                                        /* .d = */ 7,
@@ -478,7 +479,7 @@ const slh_param_t slh_dsa_sha2_128s = {/* .alg_id = */ "SLH-DSA-SHA2-128s",
                                        /* .h_h = */ sha2_256_h,
                                        /* .h_t = */ sha2_256_tl};
 
-const slh_param_t slh_dsa_sha2_128f = {/* .alg_id = */ "SLH-DSA-SHA2-128f",
+OQS_API const slh_param_t slh_dsa_sha2_128f = {/* .alg_id = */ "SLH-DSA-SHA2-128f",
                                        /* .n = */ 16,
                                        /* .h = */ 66,
                                        /* .d = */ 22,
@@ -500,7 +501,7 @@ const slh_param_t slh_dsa_sha2_128f = {/* .alg_id = */ "SLH-DSA-SHA2-128f",
 
 /* 10.3.   SLH-DSA Using SHA2 for Security Categories 3 and 5 */
 
-const slh_param_t slh_dsa_sha2_192s = {/* .alg_id = */ "SLH-DSA-SHA2-192s",
+OQS_API const slh_param_t slh_dsa_sha2_192s = {/* .alg_id = */ "SLH-DSA-SHA2-192s",
                                        /* .n = */ 24,
                                        /* .h = */ 63,
                                        /* .d = */ 7,
@@ -520,7 +521,7 @@ const slh_param_t slh_dsa_sha2_192s = {/* .alg_id = */ "SLH-DSA-SHA2-192s",
                                        /* .h_h = */ sha2_512_h,
                                        /* .h_t = */ sha2_512_tl};
 
-const slh_param_t slh_dsa_sha2_192f = {/* .alg_id = */ "SLH-DSA-SHA2-192f",
+OQS_API const slh_param_t slh_dsa_sha2_192f = {/* .alg_id = */ "SLH-DSA-SHA2-192f",
                                        /* .n = */ 24,
                                        /* .h = */ 66,
                                        /* .d = */ 22,
@@ -540,7 +541,7 @@ const slh_param_t slh_dsa_sha2_192f = {/* .alg_id = */ "SLH-DSA-SHA2-192f",
                                        /* .h_h = */ sha2_512_h,
                                        /* .h_t = */ sha2_512_tl};
 
-const slh_param_t slh_dsa_sha2_256s = {/* .alg_id = */ "SLH-DSA-SHA2-256s",
+OQS_API const slh_param_t slh_dsa_sha2_256s = {/* .alg_id = */ "SLH-DSA-SHA2-256s",
                                        /* .n = */ 32,
                                        /* .h = */ 64,
                                        /* .d = */ 8,
@@ -560,7 +561,7 @@ const slh_param_t slh_dsa_sha2_256s = {/* .alg_id = */ "SLH-DSA-SHA2-256s",
                                        /* .h_h = */ sha2_512_h,
                                        /* .h_t = */ sha2_512_tl};
 
-const slh_param_t slh_dsa_sha2_256f = {/* .alg_id = */ "SLH-DSA-SHA2-256f",
+OQS_API const slh_param_t slh_dsa_sha2_256f = {/* .alg_id = */ "SLH-DSA-SHA2-256f",
                                        /* .n = */ 32,
                                        /* .h = */ 68,
                                        /* .d = */ 17,
