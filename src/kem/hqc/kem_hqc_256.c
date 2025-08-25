@@ -9,7 +9,6 @@
 #if defined(OQS_ENABLE_KEM_hqc_256)
 
 OQS_KEM* OQS_KEM_hqc_256_new(void) {
-
     OQS_KEM* kem = OQS_MEM_malloc(sizeof(OQS_KEM));
     if (kem == NULL) {
         return NULL;
