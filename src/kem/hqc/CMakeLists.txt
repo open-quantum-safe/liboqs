@@ -65,14 +65,20 @@ target_link_libraries(ref_obj PRIVATE common_obj fips202_obj)
 list(APPEND _HQC_OBJS $<TARGET_OBJECTS:common_obj> $<TARGET_OBJECTS:ref_obj>
      $<TARGET_OBJECTS:fips202_obj>)
 
-add_kem_level("1")
-list(APPEND _HQC_OBJS $<TARGET_OBJECTS:kem_hqc_1>)
+if(OQS_ENABLE_KEM_hqc_128)
+  add_kem_level("1")
+  list(APPEND _HQC_OBJS $<TARGET_OBJECTS:kem_hqc_1>)
+endif()
 
-add_kem_level("3")
-list(APPEND _HQC_OBJS $<TARGET_OBJECTS:kem_hqc_3>)
+if(OQS_ENABLE_KEM_hqc_192)
+  add_kem_level("3")
+  list(APPEND _HQC_OBJS $<TARGET_OBJECTS:kem_hqc_3>)
+endif()
 
-add_kem_level("5")
-list(APPEND _HQC_OBJS $<TARGET_OBJECTS:kem_hqc_5>)
+if(OQS_ENABLE_KEM_hqc_256)
+  add_kem_level("5")
+  list(APPEND _HQC_OBJS $<TARGET_OBJECTS:kem_hqc_5>)
+endif()
 
 set(HQC_OBJS
     ${_HQC_OBJS}
