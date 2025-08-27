@@ -108,4 +108,4 @@ Callers must include `secrets: inherit` in order for the appropriate access toke
 ## Travis CI
 
 In the past, we used Travis CI to test on [some IBM platforms](PLATFORMS.md#tier-3-1) that are not supported by GitHub Actions.
-Our Travis builds are currently disabled pending resolution of [issue #1888](https://github.com/open-quantum-safe/liboqs/issues/1888).
+Our Travis builds are currently disabled pending resolution of [issue #2068](https://github.com/open-quantum-safe/liboqs/issues/2068).

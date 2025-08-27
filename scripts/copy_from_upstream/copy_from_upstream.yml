@@ -37,6 +37,7 @@ upstreams:
     git_commit: 048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
+    patches: [mlkem-native-encaps-derand.patch]
     preserve_folder_structure: True
   -
     name: cupqc
@@ -205,6 +206,7 @@ kems:
                                       icicle_cuda: icicle
     upstream_location: mlkem-native
     derandomized_keypair: true
+    derandomized_encaps: true
     schemes:
       -
         scheme: "512"

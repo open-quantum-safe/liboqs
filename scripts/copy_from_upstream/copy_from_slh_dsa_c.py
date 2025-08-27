@@ -9,6 +9,7 @@ import jinja2
 import glob
 import itertools
 import copy
+import subprocess
 
 #get contents of a file
 def file_get_contents(filename, encoding=None):
@@ -233,11 +234,17 @@ def list_variants():
         variants.append(prehashHashAlg['name'] + '_prehash_' + hashAlg['name'] + '_' + paramSet['name'])
     return variants
 
+def apply_patches(slh_patch_dir):
+    for root, dirs, files in os.walk(slh_patch_dir):
+        for file in files:
+            full_path = os.path.join(root, file)
+            subprocess.run(["git","apply",full_path], check=True)
+            
 def main():
     os.chdir(os.path.join(os.environ['LIBOQS_DIR']))
 
     #initialize globals
-    global commit_hash, slh_dir, slh_dsa_c_dir, slh_dsa_temp_dir, slh_wrappers_dir, template_dir, meta_file, \
+    global commit_hash, slh_dir, slh_dsa_c_dir, slh_dsa_temp_dir, slh_wrappers_dir, template_dir, slh_patch_dir, meta_file, \
         jinja_header_file, jinja_src_file, jinja_cmake_file, meta, prehashStrings, impl, variants, jinja_sig_c_file, \
         jinja_sig_h_file, jinja_alg_support_file, jinja_oqsconfig_file, sig_c_path, sig_h_path, \
         alg_support_path, oqsconfig_path
@@ -250,6 +257,7 @@ def main():
     slh_dsa_c_dir = os.path.join(slh_dir, 'slh_dsa_c')
     slh_dsa_temp_dir = os.path.join(slh_dir, 'slh_dsa_temp')
     slh_wrappers_dir = os.path.join(slh_dir, 'wrappers')
+    slh_patch_dir = os.path.join(slh_dir, 'patches')
     template_dir = os.path.join(slh_dir, 'templates')
     
     #ensure these paths exist
@@ -325,6 +333,9 @@ def main():
     
     #replace document contents
     doc_replacer(jinja_docs_yml_file, docs_yml_path)
+
+    # apply patches
+    apply_patches(slh_patch_dir)
 
 if __name__ == "__main__":
     main()

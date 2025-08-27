@@ -3,7 +3,6 @@ liboqs
 
 [![Main Branch Tests](https://github.com/open-quantum-safe/liboqs/actions/workflows/commit-to-main.yml/badge.svg)](https://github.com/open-quantum-safe/liboqs/actions/workflows/commit-to-main.yml)
 [![Weekly Tests](https://github.com/open-quantum-safe/liboqs/actions/workflows/weekly.yml/badge.svg)](https://github.com/open-quantum-safe/liboqs/actions/workflows/weekly.yml)
-![Travis Build Status](https://img.shields.io/travis/com/open-quantum-safe/liboqs?logo=travis&label=Travis%20CI&labelColor=%23343B42&color=%232EBB4E)
 [![Coverage Status](https://coveralls.io/repos/github/open-quantum-safe/liboqs/badge.svg?branch=main)](https://coveralls.io/github/open-quantum-safe/liboqs?branch=main)
 
 liboqs is an open source C library for quantum-safe cryptographic algorithms.
@@ -16,6 +15,7 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 			- [Signature schemes](#signature-schemes)
 		- [Limitations and Security](#limitations-and-security)
 			- [Platform limitations](#platform-limitations)
+			- [Support limitations](#support-limitations)
 	- [Quickstart](#quickstart)
 		- [Linux and Mac](#linux-and-mac)
 		- [Windows](#windows)
@@ -216,7 +216,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/kem/kyber/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/kem/kyber/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 - `src/kem/kyber/libjade_*` public domain (CC0) or Apache License v2.
-- `src/kem/ml_kem/mlkem-native_*`: Apache License v2.0
+- `src/kem/ml_kem/mlkem-native_*`: MIT or Apache License v2.0 or ISC License
 - `src/sig/dilithium/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/sig/dilithium/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 -  src/sig/falcon/pqclean_\*\_aarch64 : Apache License v2.0

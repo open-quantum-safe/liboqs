@@ -16,6 +16,7 @@ extern "C"
 
 #include <stddef.h>
 #include <stdint.h>
+#include <oqs/oqs.h>
 
 #ifndef _SLH_PARAM_H_
   typedef struct slh_param_s slh_param_t;
@@ -59,7 +60,7 @@ extern "C"
                           const slh_param_t *prm);
 
   /* Generate an SLH-DSA signature. */
-  size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
+  OQS_API size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
                            const uint8_t *sk, const uint8_t *addrnd,
                            const slh_param_t *prm);
 
@@ -69,7 +70,7 @@ extern "C"
 
   /* Verify an SLH-DSA signature. */
   /* return 0 on verification failure, 1 on success */
-  int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
+  OQS_API int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
                           size_t sig_sz, const uint8_t *pk,
                           const slh_param_t *prm);
 
