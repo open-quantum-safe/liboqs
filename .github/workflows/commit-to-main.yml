@@ -22,6 +22,7 @@ jobs:
     permissions:
       id-token: write
       security-events: write
+      contents: read
 
   basic-downstream:
     uses: ./.github/workflows/downstream-basic.yml
