@@ -29,7 +29,7 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 
 liboqs provides:
 
-- a collection of open source implementations of quantum-safe key encapsulation mechanism (KEM) and digital signature algorithms; the full list can be found [below](#supported-algorithms)
+- a collection of open source implementations of quantum-safe key encapsulation mechanisms (KEMs) and digital signature algorithms; the full list can be found [below](#supported-algorithms)
 - a common API for these algorithms
 - a test harness and benchmarking routines
 
