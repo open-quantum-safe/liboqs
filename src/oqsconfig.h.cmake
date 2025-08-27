@@ -91,6 +91,18 @@
 #cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
 #cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
 
+#cmakedefine OQS_ENABLE_KEM_NTRU 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048509 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048509_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048677 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048677_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps4096821 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps4096821_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps40961229 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hrss701 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hrss701_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hrss1373 1
+
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
 
 #cmakedefine OQS_ENABLE_KEM_CLASSIC_MCELIECE 1

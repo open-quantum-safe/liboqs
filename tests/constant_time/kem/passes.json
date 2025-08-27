@@ -27,5 +27,9 @@
   "ML-KEM-512": ["ml_kem"],
   "ML-KEM-768": ["ml_kem"],
   "ML-KEM-1024": ["ml_kem"],
+  "NTRU-HPS-2048-509": [],
+  "NTRU-HPS-2048-677": [],
+  "NTRU-HPS-4096-821": [],
+  "NTRU-HRSS-701": [],
   "sntrup761": ["sntrup"]
 }

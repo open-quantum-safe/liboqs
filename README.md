@@ -62,6 +62,7 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 - **HQC**: HQC-128, HQC-192, HQC-256
 - **Kyber**: Kyber512, Kyber768, Kyber1024
 - **ML-KEM**: ML-KEM-512, ML-KEM-768, ML-KEM-1024
+- **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-821, NTRU-HPS-4096-1229, NTRU-HRSS-701, NTRU-HRSS-1373
 - **NTRU-Prime**: sntrup761
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->
 
@@ -217,6 +218,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/kem/kyber/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 - `src/kem/kyber/libjade_*` public domain (CC0) or Apache License v2.
 - `src/kem/ml_kem/mlkem-native_*`: MIT or Apache License v2.0 or ISC License
+- `src/kem/ntru/pqclean_*`: public domain (CC0)
 - `src/sig/dilithium/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/sig/dilithium/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 -  src/sig/falcon/pqclean_\*\_aarch64 : Apache License v2.0
