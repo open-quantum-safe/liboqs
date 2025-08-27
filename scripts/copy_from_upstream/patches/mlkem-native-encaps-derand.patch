@@ -1,0 +1,109 @@
+c3b0ad741b73539055fba2d8e637a84cfcec60de
+diff --git a/integration/liboqs/ML-KEM-1024_META.yml b/integration/liboqs/ML-KEM-1024_META.yml
+index 4bf38aa..91d9b29 100644
+--- a/integration/liboqs/ML-KEM-1024_META.yml
++++ b/integration/liboqs/ML-KEM-1024_META.yml
+@@ -9,6 +9,7 @@ length-ciphertext: 1568
+ length-secret-key: 3168
+ length-shared-secret: 32
+ length-keypair-seed: 64
++length-encaps-seed: 32
+ nistkat-sha256: f580d851e5fb27e6876e5e203fa18be4cdbfd49e05d48fec3d3992c8f43a13e6
+ testvectors-sha256: ff1a854b9b6761a70c65ccae85246fe0596a949e72eae0866a8a2a2d4ea54b10
+ principal-submitters:
+@@ -31,6 +32,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM1024_C_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_C_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM1024_C_dec
+     sources: integration/liboqs/config_c.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+   - name: x86_64
+@@ -40,6 +42,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_dec
+     sources: integration/liboqs/config_x86_64.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/native/x86_64 mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+     supported_platforms:
+@@ -58,6 +61,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_dec
+     sources: integration/liboqs/config_aarch64.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/native/aarch64 mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+     supported_platforms:
+diff --git a/integration/liboqs/ML-KEM-512_META.yml b/integration/liboqs/ML-KEM-512_META.yml
+index 7cf5f9f..1193a4f 100644
+--- a/integration/liboqs/ML-KEM-512_META.yml
++++ b/integration/liboqs/ML-KEM-512_META.yml
+@@ -9,6 +9,7 @@ length-ciphertext: 768
+ length-secret-key: 1632
+ length-shared-secret: 32
+ length-keypair-seed: 64
++length-encaps-seed: 32
+ nistkat-sha256: c70041a761e01cd6426fa60e9fd6a4412c2be817386c8d0f3334898082512782
+ testvectors-sha256: 6730bb552c22d9d2176ffb5568e48eb30952cf1f065073ec5f9724f6a3c6ea85
+ principal-submitters:
+@@ -31,6 +32,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM512_C_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM512_C_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM512_C_dec
+     sources: integration/liboqs/config_c.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+   - name: x86_64
+@@ -40,6 +42,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM512_X86_64_dec
+     sources: integration/liboqs/config_x86_64.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/native/x86_64 mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+     supported_platforms:
+@@ -58,6 +61,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_dec
+     sources: integration/liboqs/config_aarch64.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/native/aarch64 mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+     supported_platforms:
+diff --git a/integration/liboqs/ML-KEM-768_META.yml b/integration/liboqs/ML-KEM-768_META.yml
+index 8582f46..48439f2 100644
+--- a/integration/liboqs/ML-KEM-768_META.yml
++++ b/integration/liboqs/ML-KEM-768_META.yml
+@@ -9,6 +9,7 @@ length-ciphertext: 1088
+ length-secret-key: 2400
+ length-shared-secret: 32
+ length-keypair-seed: 64
++length-encaps-seed: 32
+ nistkat-sha256: 5352539586b6c3df58be6158a6250aeff402bd73060b0a3de68850ac074c17c3
+ testvectors-sha256: 667c8ca2ca93729c0df6ff24588460bad1bbdbfb64ece0fe8563852a7ff348c6
+ principal-submitters:
+@@ -31,6 +32,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM768_C_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM768_C_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM768_C_dec
+     sources: integration/liboqs/config_c.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+   - name: x86_64
+@@ -40,6 +42,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec
+     sources: integration/liboqs/config_x86_64.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/native/x86_64 mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+     supported_platforms:
+@@ -58,6 +61,7 @@ implementations:
+     signature_keypair: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair
+     signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand
+     signature_enc: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc
++    signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand
+     signature_dec: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec
+     sources: integration/liboqs/config_aarch64.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/native/aarch64 mlkem/src/params.h mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc
+     supported_platforms:
