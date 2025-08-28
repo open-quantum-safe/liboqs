@@ -12,7 +12,7 @@ OQS_SIG *OQS_SIG_cross_rsdp_256_fast_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_cross_rsdp_256_fast;
-	sig->alg_version = "2.0 + PQClean and OQS patches";
+	sig->alg_version = "2.2 + PQClean and OQS patches";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;

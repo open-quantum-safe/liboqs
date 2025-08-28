@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -49,6 +49,7 @@
 #define FP_DOUBLEPREC uint32_t
 #define FP_TRIPLEPREC uint32_t
 
+
 /******************************************************************************/
 /****************************** RSDP(G) Parameters ****************************/
 /******************************************************************************/
@@ -61,6 +62,9 @@
 #define   T (147)
 #define   W (76)
 #define POSITION_IN_FW_STRING_T uint8_t
+
+
+
 
 #define CSPRNG_DOMAIN_SEP_CONST ((uint16_t)0)
 #define HASH_DOMAIN_SEP_CONST ((uint16_t)32768)
@@ -119,6 +123,7 @@
 #define DENSELY_PACKED_FZ_RSDP_G_VEC_SIZE ((M/8)*BITS_TO_REPRESENT(Z-1) + \
                                           ROUND_UP( ((M%8)*BITS_TO_REPRESENT(Z-1)),8)/8)
 
+
 /* Derived parameters computed via compute_derived_parameters.py */
 #define TREE_OFFSETS {0, 0, 0, 0, 2, 6, 6, 38, 38}
 #define TREE_NODES_PER_LEVEL {1, 2, 4, 8, 14, 24, 48, 64, 128}
@@ -133,3 +138,4 @@
 #define BITS_W_CT_RNG 5677
 #define BITS_M_FZ_CT_RNG 343
 #define BITS_CWSTR_RNG 3472
+

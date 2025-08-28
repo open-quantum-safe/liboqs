@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -35,6 +35,7 @@
 #include "csprng_hash.h"
 #include "merkle_tree.h"
 #include "parameters.h"
+
 
 #define TO_PUBLISH 1
 #define NOT_TO_PUBLISH 0
@@ -95,3 +96,4 @@ uint8_t recompute_root(uint8_t root[HASH_DIGEST_LENGTH],
 	tree_root(root, recomputed_leaves);
 	return 1;
 }
+
