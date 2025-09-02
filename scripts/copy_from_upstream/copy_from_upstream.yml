@@ -54,7 +54,7 @@ upstreams:
     git_commit: 8f215fd845928abfc2bb7d5ca15db76b839bee5c
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: []
+    patches: [icicle-mlkem-enc-derand.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
