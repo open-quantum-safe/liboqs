@@ -25,6 +25,11 @@ OQS_STATUS icicle_ml_kem_512_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
     return icicle::pqc::ml_kem::encapsulate<icicle::pqc::ml_kem::Kyber512Params>((std::byte*)coins, (std::byte*)pk, config, (std::byte*)ct, (std::byte*)ss) == icicle::eIcicleError::SUCCESS ? OQS_SUCCESS : OQS_ERROR;
 }
 
+OQS_STATUS icicle_ml_kem_512_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins) {
+    icicle::pqc::ml_kem::MlKemConfig config;
+    return icicle::pqc::ml_kem::encapsulate<icicle::pqc::ml_kem::Kyber512Params>((std::byte*)coins, (std::byte*)pk, config, (std::byte*)ct, (std::byte*)ss) == icicle::eIcicleError::SUCCESS ? OQS_SUCCESS : OQS_ERROR;
+}
+
 OQS_STATUS icicle_ml_kem_512_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
     icicle::pqc::ml_kem::MlKemConfig config;
     return icicle::pqc::ml_kem::decapsulate<icicle::pqc::ml_kem::Kyber512Params>((std::byte*)sk, (std::byte*)ct, config, (std::byte*)ss) == icicle::eIcicleError::SUCCESS ? OQS_SUCCESS : OQS_ERROR;

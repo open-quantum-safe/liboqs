@@ -68,6 +68,7 @@ extern int cupqc_ml_kem_1024_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *
 #if defined(OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda)
 extern int icicle_ml_kem_1024_keypair(uint8_t *pk, uint8_t *sk);
 extern int icicle_ml_kem_1024_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int icicle_ml_kem_1024_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 extern int icicle_ml_kem_1024_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 #endif /* OQS_USE_ICICLE */
@@ -157,6 +158,8 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_encaps_derand(uint8_t *ciphertext, uint8_
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_1024_cuda)
 	return (OQS_STATUS) PQCLEAN_MLKEM1024_CUDA_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, seed);
+#elif defined(OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda)
+	return (OQS_STATUS) icicle_ml_kem_1024_enc_derand(ciphertext, shared_secret, public_key, seed);
 #else
 	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_C_enc_derand(ciphertext, shared_secret, public_key, seed);
 #endif
