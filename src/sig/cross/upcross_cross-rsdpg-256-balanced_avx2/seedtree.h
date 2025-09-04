@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -35,6 +35,7 @@
 #include "namespace.h"
 #include "parameters.h"
 
+
 /******************************************************************************/
 void seed_leaves(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
                  unsigned char seed_tree[NUM_NODES_SEED_TREE * SEED_LENGTH_BYTES]);
@@ -59,3 +60,4 @@ uint8_t rebuild_tree(unsigned char
                      const unsigned char indices_to_publish[T],
                      const unsigned char *stored_seeds,
                      const unsigned char salt[SALT_LENGTH_BYTES]);   // input
+

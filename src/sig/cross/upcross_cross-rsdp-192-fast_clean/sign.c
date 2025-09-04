@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -89,6 +89,7 @@ int crypto_sign_open(unsigned char *m,                          // out parameter
 	                      (const size_t) * mlen,                 // in parameter
 	                      (const CROSS_sig_t *const) (sm + *mlen)); // in parameter
 
+
 	return ok - 1; // NIST convention: 0 == zero errors, -1 == error condition
 } // end crypto_sign_open
 
@@ -132,6 +133,7 @@ int crypto_sign_verify(const unsigned char *sig,                // in parameter
 	                      (const char *const) m,                 // in parameter
 	                      (const size_t) mlen,                   // in parameter
 	                      (const CROSS_sig_t *const) sig);       // in parameter
+
 
 	return ok - 1; // NIST convention: 0 == zero errors, -1 == error condition
 } // end crypto_sign_verify

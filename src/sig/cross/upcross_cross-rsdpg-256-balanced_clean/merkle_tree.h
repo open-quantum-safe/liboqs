@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -32,6 +32,7 @@
 #pragma once
 
 #include "namespace.h"
+
 
 /* Stub of the interface to Merkle tree root computer from all leaves */
 void tree_root(uint8_t root[HASH_DIGEST_LENGTH],

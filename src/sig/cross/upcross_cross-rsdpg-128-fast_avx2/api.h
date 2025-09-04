@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -50,6 +50,7 @@
 
 /* required bytes of input randomness */
 #define PQCLEAN_CROSSRSDPG128FAST_AVX2_CRYPTO_RANDOMBYTES 16
+
 
 int PQCLEAN_CROSSRSDPG128FAST_AVX2_crypto_sign_keypair(unsigned char *pk,
         unsigned char *sk
