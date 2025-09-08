@@ -720,6 +720,7 @@ def copy_from_upstream():
     # Finally store KATS away again
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
+            # TODO: JSON files are text files, but this does not end the file with a new line
             json.dump(kats[t], f, indent=2, sort_keys=True)
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
@@ -749,6 +750,7 @@ def copy_from_libjade():
     replacer('src/oqsconfig.h.cmake', instructions, '/////', libjade=True)
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
+            # TODO: JSON files are text files, but this does not end the file with a new line
             json.dump(kats[t], f, indent=2, sort_keys=True)
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
