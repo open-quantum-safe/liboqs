@@ -173,11 +173,6 @@ cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512 "" ON "OQS_ENABLE_KEM_ML_KEM" O
 cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768 "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024 "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
 
-option(OQS_ENABLE_SIG_DILITHIUM "Enable dilithium algorithm family" ON)
-cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2 "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
-cmake_dependent_option(OQS_ENABLE_SIG_dilithium_3 "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
-cmake_dependent_option(OQS_ENABLE_SIG_dilithium_5 "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
-
 option(OQS_ENABLE_SIG_ML_DSA "Enable ml_dsa algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
@@ -636,43 +631,6 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_USE_ICICLE)
     cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
-endif()
-endif()
-
-
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2_avx2 "" ON "OQS_ENABLE_SIG_dilithium_2" OFF)
-endif()
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2_aarch64 "" ON "OQS_ENABLE_SIG_dilithium_2" OFF)
-endif()
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_3_avx2 "" ON "OQS_ENABLE_SIG_dilithium_3" OFF)
-endif()
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_3_aarch64 "" ON "OQS_ENABLE_SIG_dilithium_3" OFF)
-endif()
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_5_avx2 "" ON "OQS_ENABLE_SIG_dilithium_5" OFF)
-endif()
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_SIG_dilithium_5_aarch64 "" ON "OQS_ENABLE_SIG_dilithium_5" OFF)
 endif()
 endif()
 
