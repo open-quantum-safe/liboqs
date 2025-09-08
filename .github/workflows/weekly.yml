@@ -17,6 +17,7 @@ jobs:
     permissions:
       id-token: write
       security-events: write
+      contents: read
 
   extended-tests:
     uses: ./.github/workflows/extended.yml
