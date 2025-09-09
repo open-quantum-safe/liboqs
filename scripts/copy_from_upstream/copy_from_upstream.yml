@@ -56,14 +56,6 @@ upstreams:
     kem_scheme_path: '.'
     patches: [icicle-mlkem-enc-derand.patch]
   -
-    name: pqcrystals-dilithium
-    git_url: https://github.com/pq-crystals/dilithium.git
-    git_branch: master
-    git_commit: 3e9b9f1412f6c7435dbeb4e10692ea58f181ee51
-    sig_meta_path: '{pretty_name_full}_META.yml'
-    sig_scheme_path: '.'
-    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch, pqcrystals-dilithium-SUF-CMA.patch]
-  -
     name: pqcrystals-dilithium-standard
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
@@ -221,30 +213,6 @@ kems:
         pqclean_scheme: ml-kem-1024
         pretty_name_full: ML-KEM-1024
 sigs:
-  # -
-  #   name: dilithium
-  #   default_implementation: ref
-  #   upstream_location: pqcrystals-dilithium
-  #   arch_specific_implementations:
-  #                                     aarch64: aarch64
-  #   arch_specific_upstream_locations:
-  #                                     aarch64: oldpqclean
-  #   schemes:
-  #     -
-  #       scheme: "2"
-  #       pqclean_scheme: dilithium2
-  #       pretty_name_full: Dilithium2
-  #       signed_msg_order: sig_then_msg
-  #     -
-  #       scheme: "3"
-  #       pqclean_scheme: dilithium3
-  #       pretty_name_full: Dilithium3
-  #       signed_msg_order: sig_then_msg
-  #     -
-  #       scheme: "5"
-  #       pqclean_scheme: dilithium5
-  #       pretty_name_full: Dilithium5
-  #       signed_msg_order: sig_then_msg
   -
     name: ml_dsa
     default_implementation: ref
