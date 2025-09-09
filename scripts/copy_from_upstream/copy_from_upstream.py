@@ -835,7 +835,7 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
-non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime'])
+non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime', 'ntru'])
 
 if args.operation == "copy":
     # copy_from_slh_dsa_c will modify slh_dsa.yml before copy_from_upstream modifies md files
