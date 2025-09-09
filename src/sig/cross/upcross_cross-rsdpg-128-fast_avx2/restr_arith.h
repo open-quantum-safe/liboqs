@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -31,12 +31,14 @@
 
 #pragma once
 
+#include "architecture_detect.h"
 #include "parameters.h"
 
 #define FZRED_SINGLE(x)   (((x) & 0x7f) + ((x) >> 7))
 #define FZRED_DOUBLE(x) FZRED_SINGLE(FZRED_SINGLE(x))
 #define FZRED_OPPOSITE(x) ((x) ^ 0x7f)
 #define FZ_DOUBLE_ZERO_NORM(x) (((x) + (((x) + 1) >> 7)) & 0x7f)
+
 
 static inline
 void fz_dz_norm_n(FZ_ELEM v[N]) {
@@ -93,6 +95,7 @@ void fz_inf_w_by_fz_matrix(FZ_ELEM res[N],
 			_mm256_store_si256 ((__m256i *) &res_dprec[j * EPI16_PER_REG], res_w);
 		}
 	}
+
 
 	/* Save result trimming to regular precision */
 	for (int i = 0; i < N - M; i++) {

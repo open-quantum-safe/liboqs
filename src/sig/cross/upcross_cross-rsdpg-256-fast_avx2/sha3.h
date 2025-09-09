@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -30,6 +30,9 @@
  **/
 
 #pragma once
+
+#include "architecture_detect.h"
+
 
 // %%%%%%%%%%%%%%%%%% Self-contained SHAKE x1 Wrappers %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -72,6 +75,7 @@ void xof_shake_release(SHAKE_STATE_STRUCT *state) {
 	shake256_inc_ctx_release(state);
 }
 
+
 // %%%%%%%%%%%%%%%%%% Self-contained SHAKE x4 Wrappers %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 #include "fips202x4.h"
@@ -108,6 +112,7 @@ static inline void xof_shake_x4_extract(SHAKE_X4_STATE_STRUCT *states,
 static inline void xof_shake_x4_release(SHAKE_X4_STATE_STRUCT *states) {
 	SHAKE_X4_RELEASE(states);
 }
+
 
 // %%%%%%%%%%%%%%%%%% Self-contained SHAKE x2 Wrappers %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
