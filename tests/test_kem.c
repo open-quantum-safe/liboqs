@@ -302,15 +302,17 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
-	rv |= memcmp(keypair_seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
-	rv |= memcmp(encaps_seed + kem->length_encaps_seed, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(ciphertext - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(keypair_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(encaps_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+	if (derand) {
+		rv |= memcmp(keypair_seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
+		rv |= memcmp(encaps_seed + kem->length_encaps_seed, magic.val, sizeof(magic_t));
+		rv |= memcmp(keypair_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+		rv |= memcmp(encaps_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+	}
 	if (rv != 0) {
 		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
