@@ -209,10 +209,10 @@ def algorithms_changed(cbom, cbom_path):
     else:
         return True
 
-def update_cbom_if_algs_not_changed(liboqs_root, liboqs_version):
+def update_cbom_if_algs_not_changed(liboqs_root, liboqs_version, force: bool = False):
     cbom_path = os.path.join(liboqs_root, 'docs', cbom_json_file)
     cbom = build_cbom(liboqs_root, liboqs_version)
-    if algorithms_changed(cbom, cbom_path):
+    if algorithms_changed(cbom, cbom_path) or force:
         with open(cbom_path, mode='w', encoding='utf-8') as out_md:
             out_md.write(json.dumps(cbom, indent=2))
             out_md.close()
@@ -221,5 +221,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--liboqs-root", default=".")
     parser.add_argument("--liboqs-version", default="git")
+    parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
-    update_cbom_if_algs_not_changed(args.liboqs_root, args.liboqs_version)
+    update_cbom_if_algs_not_changed(args.liboqs_root, args.liboqs_version, args.force)

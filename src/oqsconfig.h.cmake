@@ -160,17 +160,6 @@
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda 1
 
-#cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_2 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_2_avx2 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_2_aarch64 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_3 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_3_avx2 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_3_aarch64 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_5 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_5_avx2 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_5_aarch64 1
-
 #cmakedefine OQS_ENABLE_SIG_ML_DSA 1
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_44 1
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_44_avx2 1

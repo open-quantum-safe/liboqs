@@ -32,12 +32,6 @@ extern "C" {
 #endif
 
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
-/** Algorithm identifier for Dilithium2 */
-#define OQS_SIG_alg_dilithium_2 "Dilithium2"
-/** Algorithm identifier for Dilithium3 */
-#define OQS_SIG_alg_dilithium_3 "Dilithium3"
-/** Algorithm identifier for Dilithium5 */
-#define OQS_SIG_alg_dilithium_5 "Dilithium5"
 /** Algorithm identifier for ML-DSA-44 */
 #define OQS_SIG_alg_ml_dsa_44 "ML-DSA-44"
 /** Algorithm identifier for ML-DSA-65 */
@@ -492,7 +486,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 68 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 65 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -740,9 +734,6 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_START
-#ifdef OQS_ENABLE_SIG_DILITHIUM
-#include <oqs/sig_dilithium.h>
-#endif /* OQS_ENABLE_SIG_DILITHIUM */
 #ifdef OQS_ENABLE_SIG_ML_DSA
 #include <oqs/sig_ml_dsa.h>
 #endif /* OQS_ENABLE_SIG_ML_DSA */

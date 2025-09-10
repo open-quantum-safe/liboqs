@@ -15,7 +15,6 @@ errors, helping developers identify and fix bugs and security loopholes.
   - [ ] ml_kem
   - [ ] ntruprime
 - [ ] sig
-  - [x] dilithium
   - [x] falcon
   - [x] mayo
   - [x] ml_dsa
@@ -33,16 +32,12 @@ fuzz tests is as follows;
 
 ```bash
 mkdir build && cd build
-cmake -GNinja ..  -DOQS_BUILD_FUZZ_TESTS=ON
-ninja -j$(nproc)
+cmake -GNinja -DOQS_BUILD_FUZZ_TESTS=ON ..
+ninja
 ```
 
-You'll now be able to run a fuzz test e.g.
-```bash
-./tests/fuzz_test_dilithium2
-#9764	NEW    cov: 4 ft: 708 corp: 100/318b lim: 43 exec/s: 9764 rss: 362Mb L: 41/41 MS: 4 EraseBytes-InsertRepeatedBytes-CMP-ChangeBit- DE: "\0004m\372"-
-...
-```
+`OQS_BUILD_FUZZ_TESTS` will build two test binaries: `tests/fuzz_test_sig` and `tests/fuzz_test_kem`.
+
 The fuzzer will run indefinitely or;
 - until it finds a bug and crashes,
 - you manually stop the fuzzer i.e. CTRL-C

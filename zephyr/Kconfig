@@ -46,11 +46,6 @@ config LIBOQS_ENABLE_KEM_ML_KEM
 	default y
 	depends on LIBOQS
 
-config LIBOQS_ENABLE_SIG_DILITHIUM
-	bool "Enable the DILITHIUM signature algorithm (NIST Round 3)"
-	default n
-	depends on LIBOQS
-
 config LIBOQS_ENABLE_SIG_ML_DSA
 	bool "Enable the ML-DSA signature algorithm (ML-DSA)"
 	default y
