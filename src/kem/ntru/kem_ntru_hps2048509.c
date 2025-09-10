@@ -23,6 +23,7 @@ OQS_KEM *OQS_KEM_ntru_hps2048509_new(void) {
 	kem->length_ciphertext = OQS_KEM_ntru_hps2048509_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ntru_hps2048509_length_shared_secret;
 	kem->length_keypair_seed = OQS_KEM_ntru_hps2048509_length_keypair_seed;
+	kem->length_encaps_seed = OQS_KEM_ntru_hps2048509_length_encaps_seed;
 
 	kem->keypair = OQS_KEM_ntru_hps2048509_keypair;
 	kem->keypair_derand = OQS_KEM_ntru_hps2048509_keypair_derand;

@@ -11,6 +11,7 @@
 #define OQS_KEM_ntru_hps2048509_length_ciphertext 699
 #define OQS_KEM_ntru_hps2048509_length_shared_secret 32
 #define OQS_KEM_ntru_hps2048509_length_keypair_seed 0
+#define OQS_KEM_ntru_hps2048509_length_encaps_seed 0
 OQS_KEM *OQS_KEM_ntru_hps2048509_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps2048509_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps2048509_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
@@ -24,6 +25,7 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps2048509_decaps(uint8_t *shared_secret, const 
 #define OQS_KEM_ntru_hps2048677_length_ciphertext 930
 #define OQS_KEM_ntru_hps2048677_length_shared_secret 32
 #define OQS_KEM_ntru_hps2048677_length_keypair_seed 0
+#define OQS_KEM_ntru_hps2048677_length_encaps_seed 0
 OQS_KEM *OQS_KEM_ntru_hps2048677_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps2048677_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps2048677_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
@@ -37,6 +39,7 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps2048677_decaps(uint8_t *shared_secret, const 
 #define OQS_KEM_ntru_hps4096821_length_ciphertext 1230
 #define OQS_KEM_ntru_hps4096821_length_shared_secret 32
 #define OQS_KEM_ntru_hps4096821_length_keypair_seed 0
+#define OQS_KEM_ntru_hps4096821_length_encaps_seed 0
 OQS_KEM *OQS_KEM_ntru_hps4096821_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
@@ -50,6 +53,7 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_decaps(uint8_t *shared_secret, const 
 #define OQS_KEM_ntru_hps40961229_length_ciphertext 1842
 #define OQS_KEM_ntru_hps40961229_length_shared_secret 32
 #define OQS_KEM_ntru_hps40961229_length_keypair_seed 0
+#define OQS_KEM_ntru_hps40961229_length_encaps_seed 0
 OQS_KEM *OQS_KEM_ntru_hps40961229_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps40961229_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntru_hps40961229_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
@@ -63,6 +67,7 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps40961229_decaps(uint8_t *shared_secret, const
 #define OQS_KEM_ntru_hrss701_length_ciphertext 1138
 #define OQS_KEM_ntru_hrss701_length_shared_secret 32
 #define OQS_KEM_ntru_hrss701_length_keypair_seed 0
+#define OQS_KEM_ntru_hrss701_length_encaps_seed 0
 OQS_KEM *OQS_KEM_ntru_hrss701_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntru_hrss701_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntru_hrss701_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
@@ -76,6 +81,7 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hrss701_decaps(uint8_t *shared_secret, const uin
 #define OQS_KEM_ntru_hrss1373_length_ciphertext 2401
 #define OQS_KEM_ntru_hrss1373_length_shared_secret 32
 #define OQS_KEM_ntru_hrss1373_length_keypair_seed 0
+#define OQS_KEM_ntru_hrss1373_length_encaps_seed 0
 OQS_KEM *OQS_KEM_ntru_hrss1373_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntru_hrss1373_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntru_hrss1373_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);

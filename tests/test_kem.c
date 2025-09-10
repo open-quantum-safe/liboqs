@@ -141,44 +141,58 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		printf("================================================================================\n");
 	}
 
+	/* pk, sk, ciphertext, shared secret, and shared secret cmp are needed
+	 * regardless of derand or not
+	 */
 	public_key = OQS_MEM_malloc(kem->length_public_key + 2 * sizeof(magic_t));
 	secret_key = OQS_MEM_malloc(kem->length_secret_key + 2 * sizeof(magic_t));
 	ciphertext = OQS_MEM_malloc(kem->length_ciphertext + 2 * sizeof(magic_t));
 	shared_secret_e = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
 	shared_secret_d = OQS_MEM_malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
-	keypair_seed = malloc(kem->length_keypair_seed + 2 * sizeof(magic_t));
-	encaps_seed = malloc(kem->length_encaps_seed + 2 * sizeof(magic_t));
-
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
 		goto err;
 	}
-
-	//Set the magic numbers before
 	memcpy(public_key, magic.val, sizeof(magic_t));
 	memcpy(secret_key, magic.val, sizeof(magic_t));
 	memcpy(ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d, magic.val, sizeof(magic_t));
-	memcpy(keypair_seed, magic.val, sizeof(magic_t));
-	memcpy(encaps_seed, magic.val, sizeof(magic_t));
-
 	public_key += sizeof(magic_t);
 	secret_key += sizeof(magic_t);
 	ciphertext += sizeof(magic_t);
 	shared_secret_e += sizeof(magic_t);
 	shared_secret_d += sizeof(magic_t);
-	keypair_seed += sizeof(magic_t);
-	encaps_seed += sizeof(magic_t);
-
-	// and after
 	memcpy(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
 	memcpy(secret_key + kem->length_secret_key, magic.val, sizeof(magic_t));
 	memcpy(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
-	memcpy(keypair_seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
-	memcpy(encaps_seed + kem->length_encaps_seed, magic.val, sizeof(magic_t));
+
+	if (derand) {
+		/* keypair_seed and encaps_seed are only needed if derand */
+		keypair_seed = malloc(kem->length_keypair_seed + 2 * sizeof(magic_t));
+		if (!keypair_seed) {
+			fprintf(stderr, "Failed to allocate %zu bytes for keypair seed\n",
+			        kem->length_keypair_seed);
+			goto err;
+		}
+		encaps_seed = malloc(kem->length_encaps_seed + 2 * sizeof(magic_t));
+		if (!encaps_seed) {
+			fprintf(stderr, "Failed to allocate %zu bytes for encaps seed\n",
+			        kem->length_encaps_seed);
+			goto err;
+		}
+		memcpy(keypair_seed, magic.val, sizeof(magic_t));
+		memcpy(encaps_seed, magic.val, sizeof(magic_t));
+		keypair_seed += sizeof(magic_t);
+		encaps_seed += sizeof(magic_t);
+		memcpy(keypair_seed + kem->length_keypair_seed, magic.val,
+		       sizeof(magic_t));
+		memcpy(encaps_seed + kem->length_encaps_seed, magic.val,
+		       sizeof(magic_t));
+	}
+
 
 
 	if (derand) {
@@ -288,15 +302,17 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
-	rv |= memcmp(keypair_seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
-	rv |= memcmp(encaps_seed + kem->length_encaps_seed, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(ciphertext - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_e - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(shared_secret_d - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(keypair_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(encaps_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+	if (derand) {
+		rv |= memcmp(keypair_seed + kem->length_keypair_seed, magic.val, sizeof(magic_t));
+		rv |= memcmp(encaps_seed + kem->length_encaps_seed, magic.val, sizeof(magic_t));
+		rv |= memcmp(keypair_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+		rv |= memcmp(encaps_seed - sizeof(magic_t), magic.val, sizeof(magic_t));
+	}
 	if (rv != 0) {
 		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
