@@ -14,14 +14,14 @@
 
 ## Parameter set summary
 
-|   Parameter set    | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   |
-|:------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:----------------------------|
-| NTRU-HPS-2048-509  | NA                    | IND-CCA2         |                    1 |                       699 |                       935 |                       699 |                           32 | NA                          |
-| NTRU-HPS-2048-677  | NA                    | IND-CCA2         |                    3 |                       930 |                      1234 |                       930 |                           32 | NA                          |
-| NTRU-HPS-4096-821  | NA                    | IND-CCA2         |                    5 |                      1230 |                      1590 |                      1230 |                           32 | NA                          |
-| NTRU-HPS-4096-1229 | NA                    | IND-CCA2         |                    5 |                      1842 |                      2366 |                      1842 |                           32 | NA                          |
-|   NTRU-HRSS-701    | NA                    | IND-CCA2         |                    3 |                      1138 |                      1450 |                      1138 |                           32 | NA                          |
-|   NTRU-HRSS-1373   | NA                    | IND-CCA2         |                    5 |                      2401 |                      2983 |                      2401 |                           32 | NA                          |
+|   Parameter set    | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |
+|:------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:----------------------------|:----------------------------------|
+| NTRU-HPS-2048-509  | NA                    | IND-CCA2         |                    1 |                       699 |                       935 |                       699 |                           32 | NA                          | NA                                |
+| NTRU-HPS-2048-677  | NA                    | IND-CCA2         |                    3 |                       930 |                      1234 |                       930 |                           32 | NA                          | NA                                |
+| NTRU-HPS-4096-821  | NA                    | IND-CCA2         |                    5 |                      1230 |                      1590 |                      1230 |                           32 | NA                          | NA                                |
+| NTRU-HPS-4096-1229 | NA                    | IND-CCA2         |                    5 |                      1842 |                      2366 |                      1842 |                           32 | NA                          | NA                                |
+|   NTRU-HRSS-701    | NA                    | IND-CCA2         |                    3 |                      1138 |                      1450 |                      1138 |                           32 | NA                          | NA                                |
+|   NTRU-HRSS-1373   | NA                    | IND-CCA2         |                    5 |                      2401 |                      2983 |                      2401 |                           32 | NA                          | NA                                |
 
 ## NTRU-HPS-2048-509 implementation characteristics
 
