@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:149b75cd-1e55-4608-a41d-bf9ac463e183",
+  "serialNumber": "urn:uuid:0e4d4755-8dc0-4ae0-b54d-122723707d90",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-08-22T10:37:38.713452+00:00",
+    "timestamp": "2025-09-08T18:29:24.780436+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5ccc0a0e3b5626eda23401c8c331dad50432c162",
       "name": "liboqs",
-      "version": "1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be"
+      "version": "5ccc0a0e3b5626eda23401c8c331dad50432c162"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5ccc0a0e3b5626eda23401c8c331dad50432c162",
       "name": "liboqs",
-      "version": "1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be"
+      "version": "5ccc0a0e3b5626eda23401c8c331dad50432c162"
     },
     {
       "type": "cryptographic-asset",
@@ -2177,186 +2177,6 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium2:generic",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium2",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 2,
-          "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium2:x86_64",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium2",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 2,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium2:armv8-a",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium2",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 2,
-          "implementationPlatform": "armv8-a"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium3:generic",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium3",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium3:x86_64",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium3",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium3:armv8-a",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium3",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "armv8-a"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium5:generic",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium5",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 5,
-          "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium5:x86_64",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium5",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 5,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Dilithium5:armv8-a",
-      "name": "CRYSTALS-Dilithium",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Dilithium5",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 5,
-          "implementationPlatform": "armv8-a"
         }
       }
     },
@@ -8027,7 +7847,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
+      "ref": "pkg:github/open-quantum-safe/liboqs@5ccc0a0e3b5626eda23401c8c331dad50432c162",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -8137,15 +7957,6 @@
         "alg:cross-rsdpg-256-fast:x86_64",
         "alg:cross-rsdpg-256-small:generic",
         "alg:cross-rsdpg-256-small:x86_64",
-        "alg:Dilithium2:generic",
-        "alg:Dilithium2:x86_64",
-        "alg:Dilithium2:armv8-a",
-        "alg:Dilithium3:generic",
-        "alg:Dilithium3:x86_64",
-        "alg:Dilithium3:armv8-a",
-        "alg:Dilithium5:generic",
-        "alg:Dilithium5:x86_64",
-        "alg:Dilithium5:armv8-a",
         "alg:Falcon-512:generic",
         "alg:Falcon-512:x86_64",
         "alg:Falcon-512:armv8-a",
@@ -9082,60 +8893,6 @@
     },
     {
       "ref": "alg:cross-rsdpg-256-small:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium2:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium2:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium2:armv8-a",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium3:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium3:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium3:armv8-a",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium5:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium5:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Dilithium5:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
