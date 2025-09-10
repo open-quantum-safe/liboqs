@@ -335,7 +335,8 @@ diff --git a/crypto_sign/sphincs-shake-128s-simple/META.yml b/crypto_sign/sphinc
 index 3b8c5f3..b40d0f1 100644
 --- a/crypto_sign/sphincs-shake-128s-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-128s-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -594,7 +595,8 @@ diff --git a/crypto_sign/sphincs-shake-192f-simple/META.yml b/crypto_sign/sphinc
 index f14a505..a6bbcd8 100644
 --- a/crypto_sign/sphincs-shake-192f-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-192f-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -853,7 +855,8 @@ diff --git a/crypto_sign/sphincs-shake-192s-simple/META.yml b/crypto_sign/sphinc
 index adc9279..0aad230 100644
 --- a/crypto_sign/sphincs-shake-192s-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-192s-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -1112,7 +1115,8 @@ diff --git a/crypto_sign/sphincs-shake-256f-simple/META.yml b/crypto_sign/sphinc
 index fe03dea..03a32c3 100644
 --- a/crypto_sign/sphincs-shake-256f-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-256f-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -1371,7 +1375,8 @@ diff --git a/crypto_sign/sphincs-shake-256s-simple/META.yml b/crypto_sign/sphinc
 index 0709bb4..2457d36 100644
 --- a/crypto_sign/sphincs-shake-256s-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-256s-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
