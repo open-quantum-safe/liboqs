@@ -1,16 +1,4 @@
 {
-  "Dilithium2": {
-    "all": "38337ea2e165cc1161de2da5af515a187d20d65f1aaffde844121c3c21b27c07",
-    "single": "26ae9c1224171e957dbe38672942d31edb7dffbe700825e0cb52128cdb45280a"
-  },
-  "Dilithium3": {
-    "all": "020a69d51c3ee0332e119780451b4cdfaf5ddbd627db37e7f78c641e98e223a9",
-    "single": "eea584803c3d6991a4acbf9f117147bbdd246faf822cfb1a17effe20b2052ba9"
-  },
-  "Dilithium5": {
-    "all": "a76f63375cb3897b4fb01190976367f7cde73808f0166533a94be7c7942705ab",
-    "single": "3f6e58603a38be57cf08d79b01fcfd0ccc1129a09e14a6122c6fe22c906ddc3b"
-  },
   "Falcon-1024": {
     "all": "46f9682ebf6fd31bae60c3191ed1a6c56aa09fb4945a266f86732a90c6c4db67",
     "single": "e699d88eb214fef30597385f40814baeb84ac505d5f05f5c257b0726fc4530b8"
