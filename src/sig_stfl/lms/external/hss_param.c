@@ -29,6 +29,15 @@ bool hss_compress_param_set( unsigned char *compressed,
         case LMS_SHA256_N32_H5: case LMS_SHA256_N32_H10:
         case LMS_SHA256_N32_H15: case LMS_SHA256_N32_H20:
         case LMS_SHA256_N32_H25:
+        case LMS_SHA256_N24_H5: case LMS_SHA256_N24_H10:
+        case LMS_SHA256_N24_H15: case LMS_SHA256_N24_H20:
+        case LMS_SHA256_N24_H25:
+        case LMS_SHAKE_N32_H5: case LMS_SHAKE_N32_H10:
+        case LMS_SHAKE_N32_H15: case LMS_SHAKE_N32_H20:
+        case LMS_SHAKE_N32_H25:
+        case LMS_SHAKE_N24_H5: case LMS_SHAKE_N24_H10:
+        case LMS_SHAKE_N24_H15: case LMS_SHAKE_N24_H20:
+        case LMS_SHAKE_N24_H25:
             break;
         default:
             return false;
@@ -36,6 +45,12 @@ bool hss_compress_param_set( unsigned char *compressed,
         switch (b) {
         case LMOTS_SHA256_N32_W1: case LMOTS_SHA256_N32_W2:
         case LMOTS_SHA256_N32_W4: case LMOTS_SHA256_N32_W8:
+        case LMOTS_SHA256_N24_W1: case LMOTS_SHA256_N24_W2:
+        case LMOTS_SHA256_N24_W4: case LMOTS_SHA256_N24_W8:
+        case LMOTS_SHAKE_N32_W1: case LMOTS_SHAKE_N32_W2:
+        case LMOTS_SHAKE_N32_W4: case LMOTS_SHAKE_N32_W8:
+        case LMOTS_SHAKE_N24_W1: case LMOTS_SHAKE_N24_W2:
+        case LMOTS_SHAKE_N24_W4: case LMOTS_SHAKE_N24_W8:
             break;
         default:
             return false;
@@ -99,11 +114,16 @@ bool hss_get_parameter_set( unsigned *levels,
             /* Make sure both are supported */
             /* While we're here, add up the total Merkle height */
         switch (lm) {
-        case LMS_SHA256_N32_H5:  total_height += 5; break;
-        case LMS_SHA256_N32_H10: total_height += 10; break;
-        case LMS_SHA256_N32_H15: total_height += 15; break;
-        case LMS_SHA256_N32_H20: total_height += 20; break;
-        case LMS_SHA256_N32_H25: total_height += 25; break;
+        case LMS_SHA256_N32_H5: case LMS_SHA256_N24_H5: case LMS_SHAKE_N32_H5: case LMS_SHAKE_N24_H5:
+          total_height += 5; break;
+        case LMS_SHA256_N32_H10: case LMS_SHA256_N24_H10: case LMS_SHAKE_N32_H10: case LMS_SHAKE_N24_H10: 
+            total_height += 10; break;
+        case LMS_SHA256_N32_H15: case LMS_SHA256_N24_H15: case LMS_SHAKE_N32_H15: case LMS_SHAKE_N24_H15: 
+            total_height += 15; break;
+        case LMS_SHA256_N32_H20: case LMS_SHA256_N24_H20: case LMS_SHAKE_N32_H20: case LMS_SHAKE_N24_H20:
+            total_height += 20; break;
+        case LMS_SHA256_N32_H25: case LMS_SHA256_N24_H25: case LMS_SHAKE_N32_H25: case LMS_SHAKE_N24_H25:
+            total_height += 25; break;
         default: goto failed;
         }
         switch (ots) {
@@ -111,6 +131,18 @@ bool hss_get_parameter_set( unsigned *levels,
         case LMOTS_SHA256_N32_W2:
         case LMOTS_SHA256_N32_W4:
         case LMOTS_SHA256_N32_W8:
+        case LMOTS_SHA256_N24_W1:
+        case LMOTS_SHA256_N24_W2:
+        case LMOTS_SHA256_N24_W4:
+        case LMOTS_SHA256_N24_W8:
+        case LMOTS_SHAKE_N32_W1:
+        case LMOTS_SHAKE_N32_W2:
+        case LMOTS_SHAKE_N32_W4:
+        case LMOTS_SHAKE_N32_W8:
+        case LMOTS_SHAKE_N24_W1:
+        case LMOTS_SHAKE_N24_W2:
+        case LMOTS_SHAKE_N24_W4:
+        case LMOTS_SHAKE_N24_W8:
             break;
         default: goto failed;
         }
