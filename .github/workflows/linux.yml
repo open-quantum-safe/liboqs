@@ -96,7 +96,7 @@ jobs:
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
-            PYTEST_ARGS: --ignore=tests/test_kat_all.py -k 'not (leaks and (Dilithium or ML-DSA))'
+            PYTEST_ARGS: --ignore=tests/test_kat_all.py -k 'not (leaks and ML-DSA)'
           - name: jammy-std-openssl3
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
