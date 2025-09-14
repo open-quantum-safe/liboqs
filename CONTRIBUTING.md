@@ -25,6 +25,8 @@ particularly in case of possible bugs or new feature requests or create a
 Pull requests should clearly state their purpose, possibly referencing an existing
 [issue](https://github.com/open-quantum-safe/liboqs/issues) when resolving it.
 
+Pull requests containing code, documentation, or text producing with the help of generative AI must declare that in the pull request description and describe the nature of the use. Contributors are expected to have reviewed such contributions themselves before submission.
+
 All PRs should move to "Ready for Review" stage only if all CI tests pass (are green).
 
 The OQS core team is happy to provide feedback also to Draft PRs in order to improve
