@@ -170,6 +170,7 @@ if (OQS_ENABLE_SIG_SLH_DSA)
 	            wrappers/pure/slh_dsa_pure_shake_256s.c
 	            )
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/slh_dsa_c)
+    target_include_directories(slh_dsa_c PRIVATE ${PROJECT_SOURCE_DIR}/src/common/slhdsa_shims)
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/pure)
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/prehash_sha2_224)
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/prehash_sha2_256)
