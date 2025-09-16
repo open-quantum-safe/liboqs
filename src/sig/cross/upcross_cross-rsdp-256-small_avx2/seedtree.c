@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -208,6 +208,7 @@ void gen_seed_tree(unsigned char seed_tree[NUM_NODES_SEED_TREE * SEED_LENGTH_BYT
 	}
 } /* end generate_seed_tree */
 
+
 /*****************************************************************************/
 void seed_leaves(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
                  unsigned char seed_tree[NUM_NODES_SEED_TREE * SEED_LENGTH_BYTES]) {
@@ -224,6 +225,7 @@ void seed_leaves(unsigned char rounds_seeds[T * SEED_LENGTH_BYTES],
 		}
 	}
 }
+
 
 /*****************************************************************************/
 int seed_path(unsigned char *seed_storage,

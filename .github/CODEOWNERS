@@ -12,6 +12,7 @@
 /src/kem/kyber @bhess
 /src/kem/kyber/libjade* @praveksharma
 /src/kem/ml_kem @bhess
+/src/kem/ntru @saitomst
 /src/sig/cross @alexrow
 /src/sig/dilithium @bhess
 /src/sig/mayo @bhess

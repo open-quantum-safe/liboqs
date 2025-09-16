@@ -26,10 +26,12 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret;
 	kem->length_keypair_seed = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_keypair_seed;
+	kem->length_encaps_seed = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_encaps_seed;
 
 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair;
 	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
 	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps;
+	kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand;
 	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps;
 
 	return kem;
@@ -59,10 +61,12 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_shared_secret;
 	kem->length_keypair_seed = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_keypair_seed;
+	kem->length_encaps_seed = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_length_encaps_seed;
 
 	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair;
 	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_keypair_derand;
 	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps;
+    kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_encaps_derand;
 	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_decaps;
 
 	return kem;
@@ -91,6 +95,11 @@ extern int {{ scheme['metadata']['default_keypair_derand_signature'] }}(uint8_t 
            {%- set cleanenc = scheme['metadata'].update({'default_enc_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_enc"}) -%}
         {%- endif %}
 extern int {{ scheme['metadata']['default_enc_signature'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+
+        {%- if impl['signature_enc_derand'] %}
+           {%- set cleanencderand = scheme['metadata'].update({'default_enc_derand_signature': impl['signature_enc_derand']}) %}
+extern int {{ scheme['metadata']['default_enc_derand_signature'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+        {%- endif %}
 
         {%- if impl['signature_dec'] %}
            {%- set cleandec = scheme['metadata'].update({'default_dec_signature': impl['signature_dec']}) -%}
@@ -123,6 +132,10 @@ extern int {{ impl['signature_keypair_derand'] }}(uint8_t *pk, uint8_t *sk, cons
 extern int {{ impl['signature_enc'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
         {%- else %}
 extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+        {%- endif %}
+
+        {%- if impl['signature_enc_derand'] %}
+extern int {{ impl['signature_enc_derand'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
         {%- endif %}
 
         {%- if impl['signature_dec'] %}
@@ -275,6 +288,48 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 {%- if libjade_implementation is defined and scheme['libjade_implementation'] %}
 #endif /* OQS_LIBJADE_BUILD */
 {%- endif %}
+}
+
+OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
+{%- if scheme['derandomized_encaps'] %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- if loop.first %}
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- else %}
+#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- endif %}
+    {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+#endif /* OQS_DIST_BUILD */
+    {%- endif -%}
+        {%- if impl['signature_enc_derand'] %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_enc_derand'] }}(ciphertext, shared_secret, public_key, seed);
+        {%- else %}
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, seed);
+        {%- endif %}
+    {%- if 'required_flags' in impl and impl['required_flags'] %}
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, seed);
+	}
+#endif /* OQS_DIST_BUILD */
+    {%- endif -%}
+    {%- endfor %}
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#else
+    {%- endif %}
+	return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, seed);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+#endif
+    {%- endif %}
+    {%- else %}
+	(void)ciphertext;
+	(void)shared_secret;
+	(void)public_key;
+	(void)seed;
+	return OQS_ERROR;
+    {%- endif %}
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
@@ -447,5 +502,3 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 
 #endif
 {% endfor -%}
-
-

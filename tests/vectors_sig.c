@@ -152,7 +152,8 @@ static void MLDSA_randombytes_free(void) {
 	prng_state.pos = 0;
 }
 
-/* ML_DSA-specific functions */
+
+/* SLH-DSA-specific functions */
 static inline bool is_slh_dsa(const char *method_name) {
 	return (0 == strncmp(method_name, "SLH_DSA", 7));
 }

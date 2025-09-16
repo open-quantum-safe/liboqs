@@ -37,6 +37,7 @@ upstreams:
     git_commit: 048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
+    patches: [mlkem-native-encaps-derand.patch]
     preserve_folder_structure: True
   -
     name: cupqc
@@ -53,7 +54,7 @@ upstreams:
     git_commit: 8f215fd845928abfc2bb7d5ca15db76b839bee5c
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: []
+    patches: [icicle-mlkem-enc-derand.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
@@ -82,7 +83,7 @@ upstreams:
     name: upcross
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_branch: master
-    git_commit: efd17279e75308b000bda7c7f58866620d652bc1
+    git_commit: c8f7411fed136f0e37600973fa3dbed53465e54f
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
   -
@@ -205,6 +206,7 @@ kems:
                                       icicle_cuda: icicle
     upstream_location: mlkem-native
     derandomized_keypair: true
+    derandomized_encaps: true
     schemes:
       -
         scheme: "512"
