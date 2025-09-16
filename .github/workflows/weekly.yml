@@ -30,4 +30,3 @@ jobs:
     uses: ./.github/workflows/sig-bench.yml
     permissions:
       contents: write
-
