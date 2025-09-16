@@ -37,7 +37,8 @@ body:
       label: Environment
       description: Please describe the environment in which you are running liboqs
       value: |-
-        - OS: [e.g. Ubuntu 20]
+        - Architecture: [e.g., x86_64]
+        - OS: [e.g. Ubuntu 24.04 LTS]
         - OpenSSL version [e.g., 3.0.2]
         - Compiler version used [e.g., clang 9.0.0]
         - Build variables used [e.g., "-DOQS_ALGS_ENABLED=STD"]
