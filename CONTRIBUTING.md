@@ -26,6 +26,7 @@ Pull requests should clearly state their purpose, possibly referencing an existi
 [issue](https://github.com/open-quantum-safe/liboqs/issues) when resolving it.
 
 Pull requests containing code, documentation, or text produced with the help of generative AI must declare that in the pull request description and describe the nature of the use. Contributors are expected to have verified and affirm such contributions themselves before submission.
+Contributors using AI assistants are encouraged to read the OpenSSF's [Security-Focused Guide for AI Code Assistant Instructions](https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions).
 
 All PRs should move to "Ready for Review" stage only if all CI tests pass (are green).
 
