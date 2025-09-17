@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -173,6 +173,7 @@ static inline
 void csprng_release_x4(CSPRNG_X4_STATE_T *const csprng_state) {
 	xof_shake_x4_release(csprng_state);
 }
+
 
 /**************** Common API for Parallel CSPRNG *****************/
 

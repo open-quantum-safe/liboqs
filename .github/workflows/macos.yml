@@ -17,7 +17,7 @@ jobs:
           - macos-14
           - macos-15
         CMAKE_ARGS:
-          - -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+          - -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
           - -DCMAKE_C_COMPILER=gcc-14
           - -DOQS_USE_OPENSSL=OFF
           - -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
@@ -35,13 +35,14 @@ jobs:
             libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
           # No point in testing stateful sigs with minimal libjade build
           - libjade-build: -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            CMAKE_ARGS: -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            CMAKE_ARGS: -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
           # Failing configuration on Github actions; see https://github.com/open-quantum-safe/liboqs/pull/2148
           - os: macos-15
             CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-14
             libjade-build: -DOQS_LIBJADE_BUILD=OFF
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
     steps:
       - name: Install Python
         uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5

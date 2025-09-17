@@ -8,20 +8,23 @@
 - **Specification version**: ML-KEM.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
-  - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
+  - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
 - **Optimized Implementation sources**: https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
       - **Source**: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
+  - **icicle-icicle_cuda**:<a name="icicle-icicle_cuda"></a>
+      - **Source**: https://github.com/ingonyama-zk/icicle-liboqs/commit/8f215fd845928abfc2bb7d5ca15db76b839bee5c
+      - **Implementation license (SPDX-Identifier)**: MIT
 
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair seed size (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|----------------------------:|
-|   ML-KEM-512    | NA                    | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |                          64 |
-|   ML-KEM-768    | NA                    | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |                          64 |
-|   ML-KEM-1024   | NA                    | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |                          64 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair seed size (bytes) |   Encapsulation seed size (bytes) |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|----------------------------:|----------------------------------:|
+|   ML-KEM-512    | NA                    | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |                          64 |                                32 |
+|   ML-KEM-768    | NA                    | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |                          64 |                                32 |
+|   ML-KEM-1024   | NA                    | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |                          64 |                                32 |
 
 ## ML-KEM-512 implementation characteristics
 

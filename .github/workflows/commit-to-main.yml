@@ -17,11 +17,12 @@ jobs:
     secrets: inherit
 
   scorecard:
-    uses: ./.github/workflows/scorecard.yml
+    uses: ./.github/workflows/supplychain.yml
     secrets: inherit
     permissions:
       id-token: write
       security-events: write
+      contents: read
 
   basic-downstream:
     uses: ./.github/workflows/downstream-basic.yml

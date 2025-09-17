@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -33,6 +33,7 @@
 
 #include "namespace.h"
 
+
 void tree_root(uint8_t root[HASH_DIGEST_LENGTH],
                uint8_t leaves[T][HASH_DIGEST_LENGTH]);
 
@@ -44,3 +45,4 @@ uint8_t recompute_root(uint8_t root[HASH_DIGEST_LENGTH],
                        uint8_t recomputed_leaves[T][HASH_DIGEST_LENGTH],
                        const uint8_t mtp[W * HASH_DIGEST_LENGTH],
                        const uint8_t leaves_to_reveal[T]);
+

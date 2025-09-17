@@ -184,18 +184,18 @@ void oqs_aes256_ctr_enc_sch_upd_blks_ni(void *schedule, uint8_t *out, size_t out
 
 	while (out_blks >= 4) {
 		__m128i nv0 = _mm_shuffle_epi8(ctx->iv, mask);
-		__m128i nv1 = _mm_shuffle_epi8(_mm_add_epi64(ctx->iv, _mm_set_epi64x(1, 0)), mask);
-		__m128i nv2 = _mm_shuffle_epi8(_mm_add_epi64(ctx->iv, _mm_set_epi64x(2, 0)), mask);
-		__m128i nv3 = _mm_shuffle_epi8(_mm_add_epi64(ctx->iv, _mm_set_epi64x(3, 0)), mask);
+		__m128i nv1 = _mm_shuffle_epi8(_mm_add_epi32(ctx->iv, _mm_set_epi64x(1, 0)), mask);
+		__m128i nv2 = _mm_shuffle_epi8(_mm_add_epi32(ctx->iv, _mm_set_epi64x(2, 0)), mask);
+		__m128i nv3 = _mm_shuffle_epi8(_mm_add_epi32(ctx->iv, _mm_set_epi64x(3, 0)), mask);
 		aes256ni_encrypt_x4(schedule, nv0, nv1, nv2, nv3, out);
-		ctx->iv = _mm_add_epi64(ctx->iv, _mm_set_epi64x(4, 0));
+		ctx->iv = _mm_add_epi32(ctx->iv, _mm_set_epi64x(4, 0));
 		out += 64;
 		out_blks -= 4;
 	}
 	while (out_blks >= 1) {
 		__m128i nv0 = _mm_shuffle_epi8(ctx->iv, mask);
 		aes256ni_encrypt(schedule, nv0, out);
-		ctx->iv = _mm_add_epi64(ctx->iv, _mm_set_epi64x(1, 0));
+		ctx->iv = _mm_add_epi32(ctx->iv, _mm_set_epi64x(1, 0));
 		out += 16;
 		out_blks--;
 	}
@@ -215,11 +215,11 @@ void oqs_aes256_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const voi
 
 	while (out_len >= 64) {
 		__m128i nv0 = block;
-		__m128i nv1 = _mm_shuffle_epi8(_mm_add_epi64(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(1, 0)), mask);
-		__m128i nv2 = _mm_shuffle_epi8(_mm_add_epi64(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(2, 0)), mask);
-		__m128i nv3 = _mm_shuffle_epi8(_mm_add_epi64(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(3, 0)), mask);
+		__m128i nv1 = _mm_shuffle_epi8(_mm_add_epi32(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(1, 0)), mask);
+		__m128i nv2 = _mm_shuffle_epi8(_mm_add_epi32(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(2, 0)), mask);
+		__m128i nv3 = _mm_shuffle_epi8(_mm_add_epi32(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(3, 0)), mask);
 		aes256ni_encrypt_x4(schedule, nv0, nv1, nv2, nv3, out);
-		block = _mm_shuffle_epi8(_mm_add_epi64(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(4, 0)), mask);
+		block = _mm_shuffle_epi8(_mm_add_epi32(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(4, 0)), mask);
 		out += 64;
 		out_len -= 64;
 	}
@@ -227,7 +227,7 @@ void oqs_aes256_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const voi
 		aes256ni_encrypt(schedule, block, out);
 		out += 16;
 		out_len -= 16;
-		block = _mm_shuffle_epi8(_mm_add_epi64(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(1, 0)), mask);
+		block = _mm_shuffle_epi8(_mm_add_epi32(_mm_shuffle_epi8(block, mask), _mm_set_epi64x(1, 0)), mask);
 	}
 	if (out_len > 0) {
 		uint8_t tmp[16];

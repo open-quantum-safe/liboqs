@@ -22,6 +22,10 @@ if(OQS_ENABLE_KEM_NTRUPRIME)
     add_subdirectory(kem/ntruprime)
     set(KEM_OBJS ${KEM_OBJS} ${NTRUPRIME_OBJS})
 endif()
+if(OQS_ENABLE_KEM_NTRU)
+    add_subdirectory(kem/ntru)
+    set(KEM_OBJS ${KEM_OBJS} ${NTRU_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_START
 if(OQS_ENABLE_KEM_CLASSIC_MCELIECE)
     add_subdirectory(kem/classic_mceliece)
@@ -73,6 +77,11 @@ if(OQS_ENABLE_SIG_SNOVA)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
+if(OQS_ENABLE_SIG_SLH_DSA)
+    add_subdirectory(sig/slh_dsa)
+    set(SIG_OBJS ${SIG_OBJS} ${SLH_DSA_OBJS})
+endif()
+
 if(OQS_ENABLE_SIG_STFL_XMSS)
     add_subdirectory(sig_stfl/xmss)
     set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${XMSS_OBJS})
@@ -111,6 +120,9 @@ if(${OQS_USE_CUPQC})
     set_property(TARGET oqs PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS ON)
     target_link_libraries(oqs PRIVATE cupqc)
     target_link_options(oqs PRIVATE $<DEVICE_LINK: -dlto>)
+endif()
+if(${OQS_USE_ICICLE})
+    target_link_libraries(oqs PRIVATE icicle::icicle_pqc_package)
 endif()
 
 target_include_directories(oqs

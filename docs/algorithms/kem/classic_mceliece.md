@@ -6,7 +6,7 @@
 - **Authors' website**: https://classic.mceliece.org
 - **Specification version**: SUPERCOP-20221025.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181
+  - **Source**: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - SUPERCOP-20221025 "clean" and "avx2" implementations
@@ -18,18 +18,18 @@
 
 ## Parameter set summary
 
-|       Parameter set       | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   |
-|:-------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:----------------------------|
-|  Classic-McEliece-348864  | NA                    | IND-CCA2         |                    1 |                    261120 |                      6492 |                        96 |                           32 | NA                          |
-| Classic-McEliece-348864f  | NA                    | IND-CCA2         |                    1 |                    261120 |                      6492 |                        96 |                           32 | NA                          |
-|  Classic-McEliece-460896  | NA                    | IND-CCA2         |                    3 |                    524160 |                     13608 |                       156 |                           32 | NA                          |
-| Classic-McEliece-460896f  | NA                    | IND-CCA2         |                    3 |                    524160 |                     13608 |                       156 |                           32 | NA                          |
-| Classic-McEliece-6688128  | NA                    | IND-CCA2         |                    5 |                   1044992 |                     13932 |                       208 |                           32 | NA                          |
-| Classic-McEliece-6688128f | NA                    | IND-CCA2         |                    5 |                   1044992 |                     13932 |                       208 |                           32 | NA                          |
-| Classic-McEliece-6960119  | NA                    | IND-CCA2         |                    5 |                   1047319 |                     13948 |                       194 |                           32 | NA                          |
-| Classic-McEliece-6960119f | NA                    | IND-CCA2         |                    5 |                   1047319 |                     13948 |                       194 |                           32 | NA                          |
-| Classic-McEliece-8192128  | NA                    | IND-CCA2         |                    5 |                   1357824 |                     14120 |                       208 |                           32 | NA                          |
-| Classic-McEliece-8192128f | NA                    | IND-CCA2         |                    5 |                   1357824 |                     14120 |                       208 |                           32 | NA                          |
+|       Parameter set       | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |
+|:-------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:----------------------------|:----------------------------------|
+|  Classic-McEliece-348864  | NA                    | IND-CCA2         |                    1 |                    261120 |                      6492 |                        96 |                           32 | NA                          | NA                                |
+| Classic-McEliece-348864f  | NA                    | IND-CCA2         |                    1 |                    261120 |                      6492 |                        96 |                           32 | NA                          | NA                                |
+|  Classic-McEliece-460896  | NA                    | IND-CCA2         |                    3 |                    524160 |                     13608 |                       156 |                           32 | NA                          | NA                                |
+| Classic-McEliece-460896f  | NA                    | IND-CCA2         |                    3 |                    524160 |                     13608 |                       156 |                           32 | NA                          | NA                                |
+| Classic-McEliece-6688128  | NA                    | IND-CCA2         |                    5 |                   1044992 |                     13932 |                       208 |                           32 | NA                          | NA                                |
+| Classic-McEliece-6688128f | NA                    | IND-CCA2         |                    5 |                   1044992 |                     13932 |                       208 |                           32 | NA                          | NA                                |
+| Classic-McEliece-6960119  | NA                    | IND-CCA2         |                    5 |                   1047319 |                     13948 |                       194 |                           32 | NA                          | NA                                |
+| Classic-McEliece-6960119f | NA                    | IND-CCA2         |                    5 |                   1047319 |                     13948 |                       194 |                           32 | NA                          | NA                                |
+| Classic-McEliece-8192128  | NA                    | IND-CCA2         |                    5 |                   1357824 |                     14120 |                       208 |                           32 | NA                          | NA                                |
+| Classic-McEliece-8192128f | NA                    | IND-CCA2         |                    5 |                   1357824 |                     14120 |                       208 |                           32 | NA                          | NA                                |
 
 ## Classic-McEliece-348864 implementation characteristics
 

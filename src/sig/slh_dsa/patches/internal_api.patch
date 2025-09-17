@@ -1,0 +1,184 @@
+diff --git a/src/sig/slh_dsa/slh_dsa_c/slh_dsa.c b/src/sig/slh_dsa/slh_dsa_c/slh_dsa.c
+index 4fb3dad4..07052e72 100644
+--- a/src/sig/slh_dsa/slh_dsa_c/slh_dsa.c
++++ b/src/sig/slh_dsa/slh_dsa_c/slh_dsa.c
+@@ -572,7 +572,7 @@ static size_t slh_sign_digest(slh_var_t *var, uint8_t *sig,
+ 
+ /* Algorithm 19: slh_sign_internal(M, SK, addrnd) */
+ 
+-size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
++OQS_API size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
+                          const uint8_t *sk, const uint8_t *addrnd,
+                          const slh_param_t *prm)
+ {
+@@ -681,7 +681,7 @@ static int slh_verify_digest(slh_var_t *var, const uint8_t *digest,
+ 
+ /* Algorithm 20: slh_verify_internal(M, SIG, PK) */
+ 
+-int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
++OQS_API int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
+                         size_t sig_sz, const uint8_t *pk,
+                         const slh_param_t *prm)
+ {
+diff --git a/src/sig/slh_dsa/slh_dsa_c/slh_dsa.h b/src/sig/slh_dsa/slh_dsa_c/slh_dsa.h
+index 61b5bb0c..fd5cd6fe 100644
+--- a/src/sig/slh_dsa/slh_dsa_c/slh_dsa.h
++++ b/src/sig/slh_dsa/slh_dsa_c/slh_dsa.h
+@@ -16,6 +16,7 @@ extern "C"
+ 
+ #include <stddef.h>
+ #include <stdint.h>
++#include <oqs/oqs.h>
+ 
+ #ifndef _SLH_PARAM_H_
+   typedef struct slh_param_s slh_param_t;
+@@ -59,7 +60,7 @@ extern "C"
+                           const slh_param_t *prm);
+ 
+   /* Generate an SLH-DSA signature. */
+-  size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
++  OQS_API size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
+                            const uint8_t *sk, const uint8_t *addrnd,
+                            const slh_param_t *prm);
+ 
+@@ -69,7 +70,7 @@ extern "C"
+ 
+   /* Verify an SLH-DSA signature. */
+   /* return 0 on verification failure, 1 on success */
+-  int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
++  OQS_API int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *sig,
+                           size_t sig_sz, const uint8_t *pk,
+                           const slh_param_t *prm);
+ 
+diff --git a/src/sig/slh_dsa/slh_dsa_c/slh_sha2.c b/src/sig/slh_dsa/slh_dsa_c/slh_sha2.c
+index 8e1ab017..8a4f9cc3 100644
+--- a/src/sig/slh_dsa/slh_dsa_c/slh_sha2.c
++++ b/src/sig/slh_dsa/slh_dsa_c/slh_sha2.c
+@@ -6,6 +6,7 @@
+ /* === Portable C code: Functions for instantiation of SLH-DSA with SHA2 */
+ 
+ #include <string.h>
++#include <oqs/oqs.h>
+ #include "plat_local.h"
+ #include "sha2_api.h"
+ #include "slh_adrs.h"
+@@ -458,7 +459,7 @@ static void sha2_256_fors_hash(slh_var_t *var, uint8_t *tmp, uint32_t s)
+ 
+ /* 10.2.   SLH-DSA Using SHA2 for Security Category 1 */
+ 
+-const slh_param_t slh_dsa_sha2_128s = {/* .alg_id = */ "SLH-DSA-SHA2-128s",
++OQS_API const slh_param_t slh_dsa_sha2_128s = {/* .alg_id = */ "SLH-DSA-SHA2-128s",
+                                        /* .n = */ 16,
+                                        /* .h = */ 63,
+                                        /* .d = */ 7,
+@@ -478,7 +479,7 @@ const slh_param_t slh_dsa_sha2_128s = {/* .alg_id = */ "SLH-DSA-SHA2-128s",
+                                        /* .h_h = */ sha2_256_h,
+                                        /* .h_t = */ sha2_256_tl};
+ 
+-const slh_param_t slh_dsa_sha2_128f = {/* .alg_id = */ "SLH-DSA-SHA2-128f",
++OQS_API const slh_param_t slh_dsa_sha2_128f = {/* .alg_id = */ "SLH-DSA-SHA2-128f",
+                                        /* .n = */ 16,
+                                        /* .h = */ 66,
+                                        /* .d = */ 22,
+@@ -500,7 +501,7 @@ const slh_param_t slh_dsa_sha2_128f = {/* .alg_id = */ "SLH-DSA-SHA2-128f",
+ 
+ /* 10.3.   SLH-DSA Using SHA2 for Security Categories 3 and 5 */
+ 
+-const slh_param_t slh_dsa_sha2_192s = {/* .alg_id = */ "SLH-DSA-SHA2-192s",
++OQS_API const slh_param_t slh_dsa_sha2_192s = {/* .alg_id = */ "SLH-DSA-SHA2-192s",
+                                        /* .n = */ 24,
+                                        /* .h = */ 63,
+                                        /* .d = */ 7,
+@@ -520,7 +521,7 @@ const slh_param_t slh_dsa_sha2_192s = {/* .alg_id = */ "SLH-DSA-SHA2-192s",
+                                        /* .h_h = */ sha2_512_h,
+                                        /* .h_t = */ sha2_512_tl};
+ 
+-const slh_param_t slh_dsa_sha2_192f = {/* .alg_id = */ "SLH-DSA-SHA2-192f",
++OQS_API const slh_param_t slh_dsa_sha2_192f = {/* .alg_id = */ "SLH-DSA-SHA2-192f",
+                                        /* .n = */ 24,
+                                        /* .h = */ 66,
+                                        /* .d = */ 22,
+@@ -540,7 +541,7 @@ const slh_param_t slh_dsa_sha2_192f = {/* .alg_id = */ "SLH-DSA-SHA2-192f",
+                                        /* .h_h = */ sha2_512_h,
+                                        /* .h_t = */ sha2_512_tl};
+ 
+-const slh_param_t slh_dsa_sha2_256s = {/* .alg_id = */ "SLH-DSA-SHA2-256s",
++OQS_API const slh_param_t slh_dsa_sha2_256s = {/* .alg_id = */ "SLH-DSA-SHA2-256s",
+                                        /* .n = */ 32,
+                                        /* .h = */ 64,
+                                        /* .d = */ 8,
+@@ -560,7 +561,7 @@ const slh_param_t slh_dsa_sha2_256s = {/* .alg_id = */ "SLH-DSA-SHA2-256s",
+                                        /* .h_h = */ sha2_512_h,
+                                        /* .h_t = */ sha2_512_tl};
+ 
+-const slh_param_t slh_dsa_sha2_256f = {/* .alg_id = */ "SLH-DSA-SHA2-256f",
++OQS_API const slh_param_t slh_dsa_sha2_256f = {/* .alg_id = */ "SLH-DSA-SHA2-256f",
+                                        /* .n = */ 32,
+                                        /* .h = */ 68,
+                                        /* .d = */ 17,
+diff --git a/src/sig/slh_dsa/slh_dsa_c/slh_shake.c b/src/sig/slh_dsa/slh_dsa_c/slh_shake.c
+index 35982130..250ad1d0 100644
+--- a/src/sig/slh_dsa/slh_dsa_c/slh_shake.c
++++ b/src/sig/slh_dsa/slh_dsa_c/slh_shake.c
+@@ -5,6 +5,7 @@
+ 
+ /* === Portable C code: Functions for instantiation of SLH-DSA with SHAKE */
+ 
++#include <oqs/oqs.h>
+ #include "sha3_api.h"
+ #include "slh_adrs.h"
+ #include "slh_var.h"
+@@ -230,7 +231,7 @@ static void shake_fors_hash(slh_var_t *var, uint8_t *tmp, uint32_t s)
+ 
+ /* parameter sets */
+ 
+-const slh_param_t slh_dsa_shake_128s = {/* .alg_id = */ "SLH-DSA-SHAKE-128s",
++OQS_API const slh_param_t slh_dsa_shake_128s = {/* .alg_id = */ "SLH-DSA-SHAKE-128s",
+                                         /* .n = */ 16,
+                                         /* .h = */ 63,
+                                         /* .d = */ 7,
+@@ -250,7 +251,7 @@ const slh_param_t slh_dsa_shake_128s = {/* .alg_id = */ "SLH-DSA-SHAKE-128s",
+                                         /* .h_h = */ shake_h,
+                                         /* .h_t = */ shake_t};
+ 
+-const slh_param_t slh_dsa_shake_128f = {/* .alg_id = */ "SLH-DSA-SHAKE-128f",
++OQS_API const slh_param_t slh_dsa_shake_128f = {/* .alg_id = */ "SLH-DSA-SHAKE-128f",
+                                         /* .n = */ 16,
+                                         /* .h = */ 66,
+                                         /* .d = */ 22,
+@@ -270,7 +271,7 @@ const slh_param_t slh_dsa_shake_128f = {/* .alg_id = */ "SLH-DSA-SHAKE-128f",
+                                         /* .h_h = */ shake_h,
+                                         /* .h_t = */ shake_t};
+ 
+-const slh_param_t slh_dsa_shake_192s = {/* .alg_id = */ "SLH-DSA-SHAKE-192s",
++OQS_API const slh_param_t slh_dsa_shake_192s = {/* .alg_id = */ "SLH-DSA-SHAKE-192s",
+                                         /* .n = */ 24,
+                                         /* .h = */ 63,
+                                         /* .d = */ 7,
+@@ -290,7 +291,7 @@ const slh_param_t slh_dsa_shake_192s = {/* .alg_id = */ "SLH-DSA-SHAKE-192s",
+                                         /* .h_h = */ shake_h,
+                                         /* .h_t = */ shake_t};
+ 
+-const slh_param_t slh_dsa_shake_192f = {/* .alg_id = */ "SLH-DSA-SHAKE-192f",
++OQS_API const slh_param_t slh_dsa_shake_192f = {/* .alg_id = */ "SLH-DSA-SHAKE-192f",
+                                         /* .n = */ 24,
+                                         /* .h = */ 66,
+                                         /* .d = */ 22,
+@@ -310,7 +311,7 @@ const slh_param_t slh_dsa_shake_192f = {/* .alg_id = */ "SLH-DSA-SHAKE-192f",
+                                         /* .h_h = */ shake_h,
+                                         /* .h_t = */ shake_t};
+ 
+-const slh_param_t slh_dsa_shake_256s = {/* .alg_id = */ "SLH-DSA-SHAKE-256s",
++OQS_API const slh_param_t slh_dsa_shake_256s = {/* .alg_id = */ "SLH-DSA-SHAKE-256s",
+                                         /* .n = */ 32,
+                                         /* .h = */ 64,
+                                         /* .d = */ 8,
+@@ -330,7 +331,7 @@ const slh_param_t slh_dsa_shake_256s = {/* .alg_id = */ "SLH-DSA-SHAKE-256s",
+                                         /* .h_h = */ shake_h,
+                                         /* .h_t = */ shake_t};
+ 
+-const slh_param_t slh_dsa_shake_256f = {/* .alg_id = */ "SLH-DSA-SHAKE-256f",
++OQS_API const slh_param_t slh_dsa_shake_256f = {/* .alg_id = */ "SLH-DSA-SHAKE-256f",
+                                         /* .n = */ 32,
+                                         /* .h = */ 68,
+                                         /* .d = */ 17,

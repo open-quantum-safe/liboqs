@@ -18,11 +18,14 @@ nist-round: FIPS203
 spec-version: ML-KEM
 primary-upstream:
   source: https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
-  spdx-license-identifier: CC0-1.0 or Apache-2.0
+  spdx-license-identifier: MIT or Apache-2.0 or ISC
 optimized-upstreams:
   cupqc-cuda:
     source: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     spdx-license-identifier: Apache-2.0
+  icicle-icicle_cuda:
+    source: https://github.com/ingonyama-zk/icicle-liboqs/commit/8f215fd845928abfc2bb7d5ca15db76b839bee5c
+    spdx-license-identifier: MIT
 parameter-sets:
 - name: ML-KEM-512
   claimed-nist-level: 1
@@ -32,6 +35,7 @@ parameter-sets:
   length-secret-key: 1632
   length-shared-secret: 32
   length-keypair-seed: 64
+  length-encaps-seed: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -88,6 +92,7 @@ parameter-sets:
   length-secret-key: 2400
   length-shared-secret: 32
   length-keypair-seed: 64
+  length-encaps-seed: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -144,6 +149,7 @@ parameter-sets:
   length-secret-key: 3168
   length-shared-secret: 32
   length-keypair-seed: 64
+  length-encaps-seed: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream

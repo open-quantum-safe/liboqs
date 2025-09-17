@@ -1,0 +1,95 @@
+algDetails:
+  algVersion: FIPS205
+  eufCMA: 'true'
+  sufCMA: 'false'
+
+sources:
+  integration/liboqs/META.yml
+  plat_local.h
+  sha2_256.c
+  sha2_512.c
+  sha2_api.h
+  sha3_api.c
+  sha3_api.h
+  sha3_f1600.c
+  slh_adrs.h
+  slh_dsa.c
+  slh_dsa.h
+  slh_param.h
+  slh_prehash.c
+  slh_prehash.h
+  slh_sha2.c
+  slh_shake.c
+  slh_var.h
+  slh_sys.h
+  cbmc.h
+
+paramSets:
+  -
+    name: 128s
+    pkSize: 32
+    skSize: 64
+    sigSize: 7856
+    claimedNISTLevel: 1
+  -
+    name: 128f
+    pkSize: 32
+    skSize: 64
+    sigSize: 17088
+    claimedNISTLevel: 1
+  -  
+    name: 192s
+    pkSize: 48
+    skSize: 96
+    sigSize: 16224
+    claimedNISTLevel: 3
+  -  
+    name: 192f
+    pkSize: 48
+    skSize: 96
+    sigSize: 35664
+    claimedNISTLevel: 3
+  -  
+    name: 256s
+    pkSize: 64
+    skSize: 128
+    sigSize: 29792
+    claimedNISTLevel: 5
+  -  
+    name: 256f
+    pkSize: 64
+    skSize: 128
+    sigSize: 49856
+    claimedNISTLevel: 5
+
+hashAlgs:
+  -
+    name: sha2
+  -
+    name: shake
+
+prehashHashAlgs:
+  -
+    name: sha2_224
+  -
+    name: sha2_256
+  -
+    name: sha2_384
+  -
+    name: sha2_512
+  -
+    name: sha2_512/224
+  -
+    name: sha2_512/256
+  -
+    name: sha3_224
+  -
+    name: sha3_256
+  -
+    name: sha3_384
+  -
+    name: sha3_512
+  -
+    name: shake_128
+  -
+    name: shake_256

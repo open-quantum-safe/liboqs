@@ -26,12 +26,6 @@
 #define SHA3_256_OP_LEN         32
 #endif //OQS_ENABLE_KEM_ML_KEM
 
-struct {
-	const uint8_t *pos;
-} prng_state = {
-	.pos = 0
-};
-
 /* MLKEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
@@ -117,7 +111,7 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 		fprintf(stderr, "K value can be fetched only for ML-KEM !\n");
 		return false;
 	}
-	/* calcualte hash of the public key(len = 384k+32) stored in private key at offset of 384k */
+	/* calculate hash of the public key(len = 384k+32) stored in private key at offset of 384k */
 	OQS_SHA3_sha3_256(pkdig, sk + (ML_KEM_POLYBYTES * K), (ML_KEM_POLYBYTES * K) + 32);
 	/* compare it with public key hash stored at 768k+32 offset */
 	if (0 != memcmp(pkdig, sk + (ML_KEM_POLYBYTES * K * 2) + 32, SHA3_256_OP_LEN)) {
@@ -170,7 +164,7 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 			buff_enc[3 * j + 2] = (uint8_t)(t1 >> 4);
 		}
 	}
-	/* compare the encoded value with original public key. discard value of `rho(32 bytes)` during comparision as its not encoded */
+	/* compare the encoded value with original public key. discard value of `rho(32 bytes)` during comparison as its not encoded */
 	if (0 != memcmp(buffe, pk, pkLen - 32)) {
 		return false;
 	}
@@ -178,33 +172,15 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 }
 #endif //OQS_ENABLE_KEM_ML_KEM
 
-static void MLKEM_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
-	(void) personalization_string;
-	prng_state.pos = entropy_input;
-}
-
-static void MLKEM_randombytes(uint8_t *random_array, size_t bytes_to_read) {
-	memcpy(random_array, prng_state.pos, bytes_to_read);
-	prng_state.pos += bytes_to_read;
-}
-
-static void MLKEM_randombytes_free(void) {
-	prng_state.pos = 0;
-}
-
 static OQS_STATUS kem_kg_vector(const char *method_name,
                                 uint8_t *prng_output_stream,
                                 const uint8_t *kg_pk, const uint8_t *kg_sk) {
 
-	uint8_t *entropy_input;
 	FILE *fh = NULL;
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
-
-	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-	void (*randombytes_free)(void) = NULL;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -212,17 +188,10 @@ static OQS_STATUS kem_kg_vector(const char *method_name,
 		goto algo_not_enabled;
 	}
 
-	if (is_ml_kem(method_name)) {
-		OQS_randombytes_custom_algorithm(&MLKEM_randombytes);
-		randombytes_init = &MLKEM_randombytes_init;
-		randombytes_free = &MLKEM_randombytes_free;
-		entropy_input = (uint8_t *) prng_output_stream;
-	} else {
+	if (!is_ml_kem(method_name)) {
 		// Only ML-KEM supported
 		goto err;
 	}
-
-	randombytes_init(entropy_input, NULL);
 
 	fh = stdout;
 
@@ -239,9 +208,9 @@ static OQS_STATUS kem_kg_vector(const char *method_name,
 		goto err;
 	}
 
-	rc = OQS_KEM_keypair(kem, public_key, secret_key);
+	rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, prng_output_stream);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_keypair failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_keypair_derand failed!\n", method_name);
 		goto err;
 	}
 	fprintBstr(fh, "ek: ", public_key, kem->length_public_key);
@@ -273,9 +242,6 @@ cleanup:
 	if (kem != NULL) {
 		OQS_MEM_secure_free(secret_key, kem->length_secret_key);
 	}
-	if (randombytes_free != NULL) {
-		randombytes_free();
-	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_KEM_free(kem);
 	return ret;
@@ -286,15 +252,11 @@ static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
                                         const uint8_t *encdec_pk,
                                         const uint8_t *encdec_k, const uint8_t *encdec_c) {
 
-	uint8_t *entropy_input;
 	FILE *fh = NULL;
 	OQS_KEM *kem = NULL;
 	uint8_t *ss_encaps = NULL;
 	uint8_t *ct_encaps = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
-
-	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-	void (*randombytes_free)(void) = NULL;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -302,17 +264,10 @@ static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
 		goto algo_not_enabled;
 	}
 
-	if (is_ml_kem(method_name)) {
-		OQS_randombytes_custom_algorithm(&MLKEM_randombytes);
-		randombytes_init = &MLKEM_randombytes_init;
-		randombytes_free = &MLKEM_randombytes_free;
-		entropy_input = (uint8_t *) prng_output_stream;
-	} else {
+	if (!is_ml_kem(method_name)) {
 		// Only ML-KEM supported
 		goto err;
 	}
-
-	randombytes_init(entropy_input, NULL);
 
 	fh = stdout;
 
@@ -335,9 +290,9 @@ static OQS_STATUS kem_vector_encdec_aft(const char *method_name,
 	}
 #endif //OQS_ENABLE_KEM_ML_KEM
 
-	rc = OQS_KEM_encaps(kem, ct_encaps, ss_encaps, encdec_pk);
+	rc = OQS_KEM_encaps_derand(kem, ct_encaps, ss_encaps, encdec_pk, prng_output_stream);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps_derand failed!\n", method_name);
 		goto err;
 	}
 
@@ -363,9 +318,6 @@ algo_not_enabled:
 cleanup:
 	if (kem != NULL) {
 		OQS_MEM_secure_free(ss_encaps, kem->length_shared_secret);
-	}
-	if (randombytes_free != NULL) {
-		randombytes_free();
 	}
 	OQS_MEM_insecure_free(ct_encaps);
 	OQS_KEM_free(kem);
@@ -409,7 +361,7 @@ static OQS_STATUS kem_vector_encdec_val(const char *method_name,
 
 	rc = OQS_KEM_decaps(kem, ss_decaps, encdec_c, encdec_sk);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_decaps failed!\n", method_name);
 		goto err;
 	}
 
@@ -443,11 +395,8 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
                                     uint8_t *seed, const uint8_t *ekExpected,
                                     const uint8_t *c, const uint8_t *kExpected) {
 
-	uint8_t *entropy_input;
 	OQS_KEM *kem = NULL;
 	OQS_STATUS rc = OQS_ERROR;
-	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
-	void (*randombytes_free)(void) = NULL;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -469,21 +418,14 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 		goto err;
 	}
 
-	if (is_ml_kem(method_name)) {
-		OQS_randombytes_custom_algorithm(&MLKEM_randombytes);
-		randombytes_init = &MLKEM_randombytes_init;
-		randombytes_free = &MLKEM_randombytes_free;
-		entropy_input = seed;
-	} else {
+	if (!is_ml_kem(method_name)) {
 		// Only ML-KEM supported
 		goto err;
 	}
 
-	randombytes_init(entropy_input, NULL);
-
-	rc = OQS_KEM_keypair(kem, ek, dk);
+	rc = OQS_KEM_keypair_derand(kem, ek, dk, seed);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_keypair failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_keypair_derand failed!\n", method_name);
 		goto err;
 	}
 
@@ -495,7 +437,7 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 	// perform decapsulation
 	rc = OQS_KEM_decaps(kem, k, c, dk);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
+		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_KEM_decaps failed!\n", method_name);
 		goto err;
 	}
 
@@ -518,9 +460,6 @@ cleanup:
 		OQS_MEM_secure_free(ek, kem->length_public_key);
 		OQS_MEM_secure_free(dk, kem->length_secret_key);
 		OQS_MEM_secure_free(k, kem->length_shared_secret);
-	}
-	if (randombytes_free != NULL) {
-		randombytes_free();
 	}
 	OQS_KEM_free(kem);
 	return rc;
