@@ -104,3 +104,5 @@ add a tag to one or more of our [most active contributors](https://github.com/op
 
 If you feel like contributing but don't know what specific topic to work on,
 please check the [open issues tagged "good first issue" or "help wanted"](https://github.com/open-quantum-safe/liboqs/issues).
+
+You can also take a look at the [contribution wishlist](https://github.com/open-quantum-safe/liboqs/wiki/Contribution-wishlist) for more substantial contributions we are interested in.
