@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -66,6 +66,7 @@ typedef struct {
 	uint8_t resp_1[T - W][HASH_DIGEST_LENGTH];
 	resp_0_t resp_0[T - W];
 } CROSS_sig_t;
+
 
 /* keygen cannot fail */
 void CROSS_keygen(sk_t *SK,

@@ -36,7 +36,7 @@ It calls [platform tests](#platforms.yml), [code coverage tests](#code-coverage.
 #### <a name="weekly.yml"></a> Weekly workflow (`weekly.yml`)
 
 This workflow is triggered by a weekly schedule.
-It calls [extended tests](#extended.yml) and [scorecard analysis](#scorecard.yml).
+It calls [extended tests](#extended.yml), [scorecard analysis](#scorecard.yml), and [continuous benchmarking](#kem-bench.yml-sig-bench.yml)
 
 #### <a name="release.yml"></a> Release workflow (`release.yml`)
 
@@ -105,7 +105,12 @@ This workflow runs the [OpenSSF scorecard](https://github.com/ossf/scorecard) to
 It is additionally triggered automatically when branch protection rules are changed.
 Callers must include `secrets: inherit` in order for the appropriate access tokens to be passed to this workflow.
 
+#### <a name="kem-bench.yml-sig-bench.yml"></a> KEMs and signatures continuous benchmarking (`kem-bench.yml` and `sig-bench-yml`)
+
+These workflows execute a benchmarkig framework to retrieve the performance of KEM and signature algorithms in CPU cycles.
+When new algorithms are added to the codebase, they must be included inside the algorithms matrices found within these files.
+
 ## Travis CI
 
 In the past, we used Travis CI to test on [some IBM platforms](PLATFORMS.md#tier-3-1) that are not supported by GitHub Actions.
-Our Travis builds are currently disabled pending resolution of [issue #1888](https://github.com/open-quantum-safe/liboqs/issues/1888).
+Our Travis builds are currently disabled pending resolution of [issue #2068](https://github.com/open-quantum-safe/liboqs/issues/2068).

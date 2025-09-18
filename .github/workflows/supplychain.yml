@@ -1,6 +1,7 @@
 name: Scorecard supply-chain security
 
-permissions: {}
+permissions:
+  contents: read
 
 on:
   # For Branch-Protection check. Only the default branch is supported. See
@@ -11,7 +12,42 @@ on:
 
 
 jobs:
-  analysis:
+
+  poutine_analysis:
+    name: Poutine supply chain analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          persist-credentials: false
+
+      - name: "Run poutine supply chain check"
+        uses: boostsecurityio/poutine-action@84c0a0d32e8d57ae12651222be1eb15351429228 # v0.15.2
+        with:
+          format: sarif
+          output: poutine_results.sarif
+          publish_results: true
+
+      - name: Configure as safe directory (Poutine)
+        run: git config --global --add safe.directory /__w/liboqs/liboqs
+
+      - name: "Upload poutine artifact"
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Poutine Results SARIF
+          path: poutine_results.sarif
+          retention-days: 28
+
+      - name: "Upload poutine to code-scanning"
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
+        with:
+          sarif_file: poutine_results.sarif
+
+  scorecard_analysis:
     name: Scorecard analysis
     runs-on: ubuntu-latest
     permissions:
@@ -49,25 +85,6 @@ jobs:
           #     of the value entered here.
           publish_results: true
 
-      - name: "Run poutine supply chain check"
-        uses: boostsecurityio/poutine-action@84c0a0d32e8d57ae12651222be1eb15351429228 # v0.15.2
-        with:
-          format: sarif
-          output: poutine_results.sarif
-          publish_results: true
-
-      - name: Configure as safe directory
-        run: git config --global --add safe.directory /__w/liboqs/liboqs
-
-      # Upload the results as artifacts (optional). Commenting out will disable uploads of run results in SARIF
-      # format to the repository Actions tab.
-      - name: "Upload poutine artifact"
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: Poutine Results SARIF
-          path: poutine_results.sarif
-          retention-days: 28
-
       # Upload the results as artifacts (optional). Commenting out will disable uploads of run results in SARIF
       # format to the repository Actions tab.
       - name: "Upload ossf artifact"
@@ -76,12 +93,6 @@ jobs:
           name: OSSF Results SARIF
           path: ossf_results.sarif
           retention-days: 28
-
-      # Upload the results to GitHub's code scanning dashboard.
-      - name: "Upload to poutine to code-scanning"
-        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
-        with:
-          sarif_file: poutine_results.sarif
 
       # Upload the results to GitHub's code scanning dashboard.
       - name: "Upload to ossf to code-scanning"

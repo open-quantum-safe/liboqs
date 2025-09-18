@@ -25,6 +25,9 @@ particularly in case of possible bugs or new feature requests or create a
 Pull requests should clearly state their purpose, possibly referencing an existing
 [issue](https://github.com/open-quantum-safe/liboqs/issues) when resolving it.
 
+Pull requests containing code, documentation, or text produced with the help of generative AI must declare that in the pull request description and describe the nature of the use. Contributors are expected to have verified and affirm such contributions themselves before submission.
+Contributors using AI assistants are encouraged to read the OpenSSF's [Security-Focused Guide for AI Code Assistant Instructions](https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions).
+
 All PRs should move to "Ready for Review" stage only if all CI tests pass (are green).
 
 The OQS core team is happy to provide feedback also to Draft PRs in order to improve
@@ -101,3 +104,5 @@ add a tag to one or more of our [most active contributors](https://github.com/op
 
 If you feel like contributing but don't know what specific topic to work on,
 please check the [open issues tagged "good first issue" or "help wanted"](https://github.com/open-quantum-safe/liboqs/issues).
+
+You can also take a look at the [contribution wishlist](https://github.com/open-quantum-safe/liboqs/wiki/Contribution-wishlist) for more substantial contributions we are interested in.

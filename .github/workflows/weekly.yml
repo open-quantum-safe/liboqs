@@ -17,6 +17,17 @@ jobs:
     permissions:
       id-token: write
       security-events: write
+      contents: read
 
   extended-tests:
     uses: ./.github/workflows/extended.yml
+
+  kem-continuous-benchmarking:
+    uses: ./.github/workflows/kem-bench.yml
+    permissions:
+      contents: write
+    
+  sig-continuous-benchmarking:
+    uses: ./.github/workflows/sig-bench.yml
+    permissions:
+      contents: write

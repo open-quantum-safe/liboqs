@@ -174,51 +174,6 @@ jobs:
         run: 'tests/dump_alg_info | grep -zoP "ML-DSA-44:\n    isnull: false" && tests/dump_alg_info | grep -zoP "ML-KEM-512:\n    isnull: false"'
         working-directory: build
 
-  linux_arm_emulated:
-    runs-on: ubuntu-latest
-    timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: armhf
-            ARCH: armhf
-            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_USE_OPENSSL=OFF -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: armhf-no-stfl-key-sig-gen
-            ARCH: armhf
-            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_USE_OPENSSL=OFF -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - name: Install the emulation handlers
-        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      - name: Build in an x86_64 container
-        run: |
-          docker run --rm \
-                     -v `pwd`:`pwd` \
-                     -w `pwd` \
-                     openquantumsafe/ci-debian-buster-amd64:latest /bin/bash \
-                     -c "mkdir build && \
-                         (cd build && \
-                          cmake .. -GNinja ${{ matrix.CMAKE_ARGS }} \
-                                   -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_${{ matrix.ARCH }}.cmake && \
-                          cmake -LA -N .. && \
-                          ninja)"
-      - name: Run the tests in an ${{ matrix.ARCH }} container
-        timeout-minutes: 60
-        run: |
-          docker run --rm -e SKIP_TESTS=style,mem_kem,mem_sig \
-                          -v `pwd`:`pwd` \
-                          -w `pwd` \
-                          openquantumsafe/ci-debian-buster-${{ matrix.ARCH }}:latest /bin/bash \
-                          -c "mkdir -p tmp && \
-                              python3 -m pytest --verbose \
-                                                --numprocesses=auto \
-                                                --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
-
   linux_cross_compile:
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest

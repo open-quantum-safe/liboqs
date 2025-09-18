@@ -5,6 +5,7 @@
 /* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
 
 #include "namespace.h"
+#include <oqs/common.h>
 
 #define controlbitsfrompermutation CRYPTO_NAMESPACE(controlbitsfrompermutation)
 

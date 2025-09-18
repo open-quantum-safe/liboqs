@@ -2,7 +2,7 @@
  *
  * Reference ISO-C11 Implementation of CROSS.
  *
- * @version 2.0 (February 2025)
+ * @version 2.2 (July 2025)
  *
  * Authors listed in alphabetical order:
  *
@@ -62,6 +62,9 @@
 #define   W ( 82)
 #define POSITION_IN_FW_STRING_T uint16_t
 
+
+
+
 #define CSPRNG_DOMAIN_SEP_CONST ((uint16_t)0)
 #define HASH_DOMAIN_SEP_CONST ((uint16_t)32768)
 
@@ -117,6 +120,7 @@
 #define DENSELY_PACKED_FZ_VEC_SIZE ((N/8)*BITS_TO_REPRESENT(Z-1) + \
                                    ROUND_UP( ((N%8)*BITS_TO_REPRESENT(Z-1)),8)/8)
 
+
 /* Derived parameters computed via compute_derived_parameters.py */
 #define TREE_OFFSETS {0, 0, 0, 0, 0, 2, 2, 58, 58}
 #define TREE_NODES_PER_LEVEL {1, 2, 4, 8, 16, 30, 60, 64, 128}
@@ -130,3 +134,4 @@
 #define BITS_V_CT_RNG 28028
 #define BITS_N_FZ_CT_RNG 717
 #define BITS_CWSTR_RNG 3656
+

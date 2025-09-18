@@ -113,6 +113,38 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
 endif()
 endif()
 
+option(OQS_ENABLE_KEM_NTRU "Enable ntru algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps2048509 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps2048509_avx2 "" ON "OQS_ENABLE_KEM_ntru_hps2048509" OFF)
+endif()
+endif()
+
+cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps2048677 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps2048677_avx2 "" ON "OQS_ENABLE_KEM_ntru_hps2048677" OFF)
+endif()
+endif()
+
+cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps4096821 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps4096821_avx2 "" ON "OQS_ENABLE_KEM_ntru_hps4096821" OFF)
+endif()
+endif()
+
+cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps40961229 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_ntru_hrss701 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntru_hrss701_avx2 "" ON "OQS_ENABLE_KEM_ntru_hrss701" OFF)
+endif()
+endif()
+
+cmake_dependent_option(OQS_ENABLE_KEM_ntru_hrss1373 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
+
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_KEM_CLASSIC_MCELIECE "Enable classic_mceliece algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
