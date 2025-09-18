@@ -6,7 +6,7 @@
 - **Authors' website**: https://sqisign.org/
 - **Specification version**: Round 2.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/bhess/the-sqisign/commit/a8884349ee78b0c4da296c9f8ce6f208910d5ee6
+  - **Source**: https://github.com/shane-digi/the-sqisign/commit/a8884349ee78b0c4da296c9f8ce6f208910d5ee6
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
