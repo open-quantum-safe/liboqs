@@ -179,6 +179,13 @@ if(${OQS_USE_GMP})
   endif()
 endif()
 
+if (DEFINED PLATFORM)
+  # GMP not available for these Apple platforms
+  if (PLATFORM STREQUAL "OS64" OR PLATFORM STREQUAL "TVOS")
+    set(OQS_USE_GMP OFF)
+  endif()
+endif()
+
 if(OQS_USE_ICICLE)
     enable_language(CXX)
     set(CMAKE_CXX_STANDARD 17)
