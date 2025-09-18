@@ -52,9 +52,6 @@ jobs:
     strategy:
       matrix:
         algorithm: [ # List of available signatures to perform the benchmarking on
-          "Dilithium2",
-          "Dilithium3",
-          "Dilithium5",
           "ML-DSA-44",
           "ML-DSA-65",
           "ML-DSA-87",
