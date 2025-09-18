@@ -29,6 +29,7 @@ option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
 option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
+option(OQS_USE_GMP "Utilize GMP for supported PQC algorithms." ON)
 
 # Libfuzzer isn't supported on gcc
 if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
@@ -150,6 +151,39 @@ if(${OQS_USE_CUPQC})
       set(CMAKE_CUDA_ARCHITECTURES 80 90)
     endif()
     find_package(cuPQC 0.2.0 REQUIRED)
+endif()
+if(${OQS_USE_GMP})
+  message(STATUS "Looking for GMP")
+  find_library(GMP gmp)
+  find_path(GMP_INCLUDE gmp.h)
+
+  if(GMP AND GMP_INCLUDE)
+    message(STATUS "GMP found, enabling GMP support")
+    add_library(GMP SHARED IMPORTED)
+    set_target_properties(GMP PROPERTIES
+      IMPORTED_LOCATION ${GMP}
+      INTERFACE_INCLUDE_DIRECTORIES ${GMP_INCLUDE}
+    )
+
+    if(CMAKE_SIZEOF_VOID_P MATCHES "4")
+      add_compile_definitions(RADIX_32)
+      add_compile_definitions(GMP_LIMB_BITS=32)
+    else()
+      add_compile_definitions(RADIX_64)
+      include(CheckCSourceCompiles)
+      add_compile_definitions(GMP_LIMB_BITS=64)
+    endif()
+  else()
+    message(STATUS "GMP not found, disabling GMP support")
+    set(OQS_USE_GMP OFF)
+  endif()
+endif()
+
+if (DEFINED PLATFORM)
+  # GMP not available for these Apple platforms
+  if (PLATFORM STREQUAL "OS64" OR PLATFORM STREQUAL "TVOS")
+    set(OQS_USE_GMP OFF)
+  endif()
 endif()
 
 if(OQS_USE_ICICLE)
@@ -282,6 +316,9 @@ if(OQS_ENABLE_SIG_UOV)
 endif()
 if(OQS_ENABLE_SIG_SNOVA)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/snova/sig_snova.h)
+endif()
+if(OQS_ENABLE_SIG_SQISIGN)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/sqisign/sig_sqisign.h)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_END
 if(OQS_ENABLE_SIG_SLH_DSA)

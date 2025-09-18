@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:149b75cd-1e55-4608-a41d-bf9ac463e183",
+  "serialNumber": "urn:uuid:c4108e0a-f518-4468-b04e-b237c2b763a7",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-08-22T10:37:38.713452+00:00",
+    "timestamp": "2025-07-23T15:02:25.240714+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
       "name": "liboqs",
-      "version": "1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be"
+      "version": "1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
       "name": "liboqs",
-      "version": "1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be"
+      "version": "1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3"
     },
     {
       "type": "cryptographic-asset",
@@ -7282,6 +7282,126 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-lvl1:generic",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-lvl1",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-lvl1:x86_64",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-lvl1",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-lvl3:generic",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-lvl3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-lvl3:x86_64",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-lvl3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-lvl5:generic",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-lvl5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-lvl5:x86_64",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-lvl5",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:OV-Is:generic",
       "name": "UOV",
       "cryptoProperties": {
@@ -8027,7 +8147,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@1fe9e6cc7cd31ff7aed58d998251ceb4ad6a87be",
+      "ref": "pkg:github/open-quantum-safe/liboqs@1805ddfeaca70a7e1ac0aef11a73615fbf4d5ce3",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -8392,6 +8512,12 @@
         "alg:SPHINCS+-SHAKE-256f-simple:x86_64",
         "alg:SPHINCS+-SHAKE-256s-simple:generic",
         "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
+        "alg:SQIsign-lvl1:generic",
+        "alg:SQIsign-lvl1:x86_64",
+        "alg:SQIsign-lvl3:generic",
+        "alg:SQIsign-lvl3:x86_64",
+        "alg:SQIsign-lvl5:generic",
+        "alg:SQIsign-lvl5:x86_64",
         "alg:OV-Is:generic",
         "alg:OV-Is:armv8-a",
         "alg:OV-Is:x86_64",
@@ -9652,6 +9778,27 @@
       "ref": "alg:SPHINCS+-SHAKE-256s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-lvl1:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-lvl3:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-lvl5:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {

@@ -8,7 +8,7 @@ add_subdirectory(common)
 # initialize KEM|SIG_OBJS for --warn-uninitialized
 set(KEM_OBJS "")
 set(SIG_OBJS "")
-set(SIG_STFL_OBJS "")
+set(SIG_STFL_OBJS "")   
 
 if(${OQS_ENABLE_KEM_BIKE})
     add_subdirectory(kem/bike)
@@ -75,6 +75,10 @@ if(OQS_ENABLE_SIG_SNOVA)
     add_subdirectory(sig/snova)
     set(SIG_OBJS ${SIG_OBJS} ${SNOVA_OBJS})
 endif()
+if(OQS_ENABLE_SIG_SQISIGN)
+    add_subdirectory(sig/sqisign)
+    set(SIG_OBJS ${SIG_OBJS} ${SQISIGN_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 if(OQS_ENABLE_SIG_SLH_DSA)
@@ -123,6 +127,10 @@ if(${OQS_USE_CUPQC})
 endif()
 if(${OQS_USE_ICICLE})
     target_link_libraries(oqs PRIVATE icicle::icicle_pqc_package)
+endif()
+if(${OQS_USE_GMP})
+  target_link_libraries(oqs PRIVATE GMP)
+  target_link_libraries(oqs-internal PRIVATE GMP)
 endif()
 
 target_include_directories(oqs

@@ -168,6 +168,12 @@ extern "C" {
 #define OQS_SIG_alg_snova_SNOVA_60_10_4 "SNOVA_60_10_4"
 /** Algorithm identifier for SNOVA_29_6_5 */
 #define OQS_SIG_alg_snova_SNOVA_29_6_5 "SNOVA_29_6_5"
+/** Algorithm identifier for SQIsign-lvl1 */
+#define OQS_SIG_alg_sqisign_lvl1 "SQIsign-lvl1"
+/** Algorithm identifier for SQIsign-lvl3 */
+#define OQS_SIG_alg_sqisign_lvl3 "SQIsign-lvl3"
+/** Algorithm identifier for SQIsign-lvl5 */
+#define OQS_SIG_alg_sqisign_lvl5 "SQIsign-lvl5"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 /** Algorithm identifier for slh_dsa_pure_sha2_128s */
@@ -492,7 +498,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 68 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 71 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -764,6 +770,9 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_SNOVA
 #include <oqs/sig_snova.h>
 #endif /* OQS_ENABLE_SIG_SNOVA */
+#ifdef OQS_ENABLE_SIG_SQISIGN
+#include <oqs/sig_sqisign.h>
+#endif /* OQS_ENABLE_SIG_SQISIGN */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_SLH_DSA

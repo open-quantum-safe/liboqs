@@ -256,6 +256,15 @@ cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_37_8_4 "" ON "OQS_ENABLE_SIG_S
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_24_5_5 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_60_10_4 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_29_6_5 "" ON "OQS_ENABLE_SIG_SNOVA" OFF)
+
+if (OQS_USE_GMP)
+option(OQS_ENABLE_SIG_SQISIGN "Enable sqisign algorithm family" ON)
+else()
+option(OQS_ENABLE_SIG_SQISIGN "Enable sqisign algorithm family" OFF)
+endif()
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl1 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl3 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl5 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 ##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_SIG_SLH_DSA "Enable slh_dsa algorithm family" ON)
@@ -417,6 +426,7 @@ cmake_dependent_option(OQS_ENABLE_SIG_slh_dsa_shake_256_prehash_shake_256s "" ON
 cmake_dependent_option(OQS_ENABLE_SIG_slh_dsa_shake_256_prehash_shake_256f "" ON "OQS_ENABLE_SIG_SLH_DSA" OFF)
 ##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
+
 ##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_START
 if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
 
@@ -443,7 +453,7 @@ elseif (${OQS_ALGS_ENABLED} STREQUAL "STD")
 elseif(${OQS_ALGS_ENABLED} STREQUAL "NIST_R4")
 	filter_algs("KEM_classic_mceliece_348864;KEM_classic_mceliece_348864f;KEM_classic_mceliece_460896;KEM_classic_mceliece_460896f;KEM_classic_mceliece_6688128;KEM_classic_mceliece_6688128f;KEM_classic_mceliece_6960119;KEM_classic_mceliece_6960119f;KEM_classic_mceliece_8192128;KEM_classic_mceliece_8192128f;KEM_hqc_128;KEM_hqc_192;KEM_hqc_256;KEM_bike_l1;KEM_bike_l3;KEM_bike_l5")
 elseif(${OQS_ALGS_ENABLED} STREQUAL "NIST_SIG_ONRAMP")
-	filter_algs("SIG_mayo_1;SIG_mayo_2;SIG_mayo_3;SIG_mayo_5;SIG_cross_rsdp_128_balanced;SIG_cross_rsdp_128_fast;SIG_cross_rsdp_128_small;SIG_cross_rsdp_192_balanced;SIG_cross_rsdp_192_fast;SIG_cross_rsdp_192_small;SIG_cross_rsdp_256_balanced;SIG_cross_rsdp_256_fast;SIG_cross_rsdp_256_small;SIG_cross_rsdpg_128_balanced;SIG_cross_rsdpg_128_fast;SIG_cross_rsdpg_128_small;SIG_cross_rsdpg_192_balanced;SIG_cross_rsdpg_192_fast;SIG_cross_rsdpg_192_small;SIG_cross_rsdpg_256_balanced;SIG_cross_rsdpg_256_fast;SIG_cross_rsdpg_256_small;SIG_uov_ov_Ip;SIG_uov_ov_Is;SIG_uov_ov_III;SIG_uov_ov_V;SIG_uov_ov_Ip_pkc;SIG_uov_ov_Is_pkc;SIG_uov_ov_III_pkc;SIG_uov_ov_V_pkc;SIG_uov_ov_Ip_pkc_skc;SIG_uov_ov_Is_pkc_skc;SIG_uov_ov_III_pkc_skc;SIG_uov_ov_V_pkc_skc;SNOVA_24_5_4;SNOVA_24_5_4_SHAKE;SNOVA_24_5_4_esk;SNOVA_24_5_4_SHAKE_esk;SNOVA_37_17_2;SNOVA_25_8_3;SNOVA_56_25_2;SNOVA_49_11_3;SNOVA_37_8_4;SNOVA_24_5_5;SNOVA_60_10_4;SNOVA_29_6_5")
+	filter_algs("SIG_mayo_1;SIG_mayo_2;SIG_mayo_3;SIG_mayo_5;SIG_cross_rsdp_128_balanced;SIG_cross_rsdp_128_fast;SIG_cross_rsdp_128_small;SIG_cross_rsdp_192_balanced;SIG_cross_rsdp_192_fast;SIG_cross_rsdp_192_small;SIG_cross_rsdp_256_balanced;SIG_cross_rsdp_256_fast;SIG_cross_rsdp_256_small;SIG_cross_rsdpg_128_balanced;SIG_cross_rsdpg_128_fast;SIG_cross_rsdpg_128_small;SIG_cross_rsdpg_192_balanced;SIG_cross_rsdpg_192_fast;SIG_cross_rsdpg_192_small;SIG_cross_rsdpg_256_balanced;SIG_cross_rsdpg_256_fast;SIG_cross_rsdpg_256_small;SIG_uov_ov_Ip;SIG_uov_ov_Is;SIG_uov_ov_III;SIG_uov_ov_V;SIG_uov_ov_Ip_pkc;SIG_uov_ov_Is_pkc;SIG_uov_ov_III_pkc;SIG_uov_ov_V_pkc;SIG_uov_ov_Ip_pkc_skc;SIG_uov_ov_Is_pkc_skc;SIG_uov_ov_III_pkc_skc;SIG_uov_ov_V_pkc_skc;SNOVA_24_5_4;SNOVA_24_5_4_SHAKE;SNOVA_24_5_4_esk;SNOVA_24_5_4_SHAKE_esk;SNOVA_37_17_2;SNOVA_25_8_3;SNOVA_56_25_2;SNOVA_49_11_3;SNOVA_37_8_4;SNOVA_24_5_5;SNOVA_60_10_4;SNOVA_29_6_5;SIG_sqisign_lvl1;SIG_sqisign_lvl3;SIG_sqisign_lvl5")
 else()
 	message(STATUS "Alg enablement unchanged")
 endif()
@@ -1218,6 +1228,25 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
 if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_snova_SNOVA_29_6_5_neon "" ON "OQS_ENABLE_SIG_snova_SNOVA_29_6_5" OFF)
+endif()
+endif()
+
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl1_broadwell "" ON "OQS_ENABLE_SIG_sqisign_lvl1" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl3_broadwell "" ON "OQS_ENABLE_SIG_sqisign_lvl3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_lvl5_broadwell "" ON "OQS_ENABLE_SIG_sqisign_lvl5" OFF)
 endif()
 endif()
 

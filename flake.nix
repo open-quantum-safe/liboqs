@@ -35,7 +35,7 @@
                 else [pkgs.gcc]
               );
 
-            buildInputs = with pkgs; [openssl];
+            buildInputs = with pkgs; [openssl gmp];
 
             cmakeFlags = [
               "-GNinja"
