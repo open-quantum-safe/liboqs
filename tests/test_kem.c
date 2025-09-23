@@ -232,8 +232,8 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		if (kem->length_encaps_seed > 0) {
 			OQS_randombytes(encaps_seed, kem->length_encaps_seed);
 		}
-		rc = OQS_KEM_encaps_derand(kem, ciphertext, shared_secret_e, public_key, encaps_seed)
-		     OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		rc = OQS_KEM_encaps_derand(kem, ciphertext, shared_secret_e, public_key, encaps_seed);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (kem->length_encaps_seed == 0) {
 			// If length_encaps_seed is set to 0 for this KEM scheme, a failure is expected
 			if (rc != OQS_ERROR) {
