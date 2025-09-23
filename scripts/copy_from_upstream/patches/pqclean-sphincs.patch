@@ -3,7 +3,8 @@ diff --git a/crypto_sign/sphincs-sha2-128f-simple/META.yml b/crypto_sign/sphincs
 index 7ee7508..5bf3613 100644
 --- a/crypto_sign/sphincs-sha2-128f-simple/META.yml
 +++ b/crypto_sign/sphincs-sha2-128f-simple/META.yml
-@@ -34,3 +34,6 @@ implementations:
+@@ -34,3 +34,7 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -14,7 +15,8 @@ diff --git a/crypto_sign/sphincs-sha2-128s-simple/META.yml b/crypto_sign/sphincs
 index 2db71af..36938ad 100644
 --- a/crypto_sign/sphincs-sha2-128s-simple/META.yml
 +++ b/crypto_sign/sphincs-sha2-128s-simple/META.yml
-@@ -34,3 +34,6 @@ implementations:
+@@ -34,3 +34,7 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -25,7 +27,8 @@ diff --git a/crypto_sign/sphincs-sha2-192f-simple/META.yml b/crypto_sign/sphincs
 index f0c007f..f3885d2 100644
 --- a/crypto_sign/sphincs-sha2-192f-simple/META.yml
 +++ b/crypto_sign/sphincs-sha2-192f-simple/META.yml
-@@ -34,3 +34,6 @@ implementations:
+@@ -34,3 +34,7 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -36,7 +39,8 @@ diff --git a/crypto_sign/sphincs-sha2-192s-simple/META.yml b/crypto_sign/sphincs
 index 0e51697..7645aa2 100644
 --- a/crypto_sign/sphincs-sha2-192s-simple/META.yml
 +++ b/crypto_sign/sphincs-sha2-192s-simple/META.yml
-@@ -34,3 +34,6 @@ implementations:
+@@ -34,3 +34,7 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -47,7 +51,8 @@ diff --git a/crypto_sign/sphincs-sha2-256f-simple/META.yml b/crypto_sign/sphincs
 index e0f57c7..7627901 100644
 --- a/crypto_sign/sphincs-sha2-256f-simple/META.yml
 +++ b/crypto_sign/sphincs-sha2-256f-simple/META.yml
-@@ -34,3 +34,6 @@ implementations:
+@@ -34,3 +34,7 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -58,7 +63,8 @@ diff --git a/crypto_sign/sphincs-sha2-256s-simple/META.yml b/crypto_sign/sphincs
 index c06a39e..01d4efe 100644
 --- a/crypto_sign/sphincs-sha2-256s-simple/META.yml
 +++ b/crypto_sign/sphincs-sha2-256s-simple/META.yml
-@@ -34,3 +34,6 @@ implementations:
+@@ -34,3 +34,7 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -69,7 +75,8 @@ diff --git a/crypto_sign/sphincs-shake-128f-simple/META.yml b/crypto_sign/sphinc
 index 6eb6f96..4a934ae 100644
 --- a/crypto_sign/sphincs-shake-128f-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-128f-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -328,7 +335,8 @@ diff --git a/crypto_sign/sphincs-shake-128s-simple/META.yml b/crypto_sign/sphinc
 index 3b8c5f3..b40d0f1 100644
 --- a/crypto_sign/sphincs-shake-128s-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-128s-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -587,7 +595,8 @@ diff --git a/crypto_sign/sphincs-shake-192f-simple/META.yml b/crypto_sign/sphinc
 index f14a505..a6bbcd8 100644
 --- a/crypto_sign/sphincs-shake-192f-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-192f-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -846,7 +855,8 @@ diff --git a/crypto_sign/sphincs-shake-192s-simple/META.yml b/crypto_sign/sphinc
 index adc9279..0aad230 100644
 --- a/crypto_sign/sphincs-shake-192s-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-192s-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -1105,7 +1115,8 @@ diff --git a/crypto_sign/sphincs-shake-256f-simple/META.yml b/crypto_sign/sphinc
 index fe03dea..03a32c3 100644
 --- a/crypto_sign/sphincs-shake-256f-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-256f-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
@@ -1364,7 +1375,8 @@ diff --git a/crypto_sign/sphincs-shake-256s-simple/META.yml b/crypto_sign/sphinc
 index 0709bb4..2457d36 100644
 --- a/crypto_sign/sphincs-shake-256s-simple/META.yml
 +++ b/crypto_sign/sphincs-shake-256s-simple/META.yml
-@@ -34,6 +34,9 @@ implementations:
+@@ -34,6 +34,10 @@ implementations:
++    compile_opts: "-fno-strict-aliasing"
      supported_platforms:
        - architecture: x86_64
          required_flags: ['avx2']
