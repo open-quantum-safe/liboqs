@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
-      SIG_NAME: dilithium_2
+      SIG_NAME: ml_dsa_44
     steps:
       - name: Create random build folder
         run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
-      SIG_NAME: dilithium_2
+      SIG_NAME: ml_dsa_44
       CC: clang
       CXX: clang++
       CFLAGS: -fsanitize=fuzzer-no-link,address

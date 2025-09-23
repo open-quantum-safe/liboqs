@@ -70,7 +70,6 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_START -->
 - **CROSS**: cross-rsdp-128-balanced, cross-rsdp-128-fast, cross-rsdp-128-small†, cross-rsdp-192-balanced, cross-rsdp-192-fast, cross-rsdp-192-small†, cross-rsdp-256-balanced†, cross-rsdp-256-fast, cross-rsdp-256-small†, cross-rsdpg-128-balanced, cross-rsdpg-128-fast, cross-rsdpg-128-small, cross-rsdpg-192-balanced, cross-rsdpg-192-fast, cross-rsdpg-192-small†, cross-rsdpg-256-balanced, cross-rsdpg-256-fast, cross-rsdpg-256-small†
-- **CRYSTALS-Dilithium**: Dilithium2, Dilithium3, Dilithium5
 - **Falcon**: Falcon-512, Falcon-1024, Falcon-padded-512, Falcon-padded-1024
 - **MAYO**: MAYO-1, MAYO-2, MAYO-3, MAYO-5†
 - **ML-DSA**: ML-DSA-44, ML-DSA-65, ML-DSA-87
@@ -219,8 +218,6 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/kem/kyber/libjade_*` public domain (CC0) or Apache License v2.
 - `src/kem/ml_kem/mlkem-native_*`: MIT or Apache License v2.0 or ISC License
 - `src/kem/ntru/pqclean_*`: public domain (CC0)
-- `src/sig/dilithium/pqcrystals-*`: public domain (CC0) or Apache License v2.0
-- `src/sig/dilithium/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
 -  src/sig/falcon/pqclean_\*\_aarch64 : Apache License v2.0
 - `src/sig/mayo/*`: Apache License v2.0
 - `src/sig/ml_dsa/pqcrystals-*`: public domain (CC0) or Apache License v2.0

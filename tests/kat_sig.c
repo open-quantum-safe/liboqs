@@ -32,36 +32,6 @@ static inline uint16_t UINT16_TO_BE(const uint16_t x) {
 OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_len, const uint8_t *msg, size_t msg_len, const uint8_t *signature, size_t signature_len, const OQS_SIG *sig) {
 	if (0) {
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_START
-	} else if (0 == strcmp(sig->method_name, "Dilithium2")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Dilithium3")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Dilithium5")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "ML-DSA-44")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;

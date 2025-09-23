@@ -14,7 +14,6 @@
 /src/kem/ml_kem @bhess
 /src/kem/ntru @saitomst
 /src/sig/cross @alexrow
-/src/sig/dilithium @bhess
 /src/sig/mayo @bhess
 /src/sig/ml_dsa @bhess
 /src/sig_stfl/lms @ashman-p
