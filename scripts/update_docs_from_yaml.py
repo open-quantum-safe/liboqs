@@ -16,6 +16,38 @@ def file_get_contents(filename, encoding=None):
     with open(filename, mode='r', encoding=encoding) as fh:
         return fh.read()
 
+def update_readme(
+    kem_yamls: list[dict],
+    sig_yamls: list[dict],
+    sig_stfl_yamls: list[dict],
+    liboqs_dir: str,
+):
+    """Per liboqs/issues/2045, update README.md with an algorithm support table
+    """
+    # TODO: construct KEM table
+    # TODO: construct SIG table
+    # TODO: construct SIG_STFL table
+    md_str = f"""### KEMs
+content
+
+### Digital signatures
+content
+
+### Stateful digital signatures
+content
+"""
+    readme_path = os.path.join(liboqs_dir, "README.md")
+    fragment_start = "<!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START -->\n"
+    fragment_end = "<!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_END -->"
+    with open(readme_path, "r") as f:
+        readme = f.read()
+        fragment_start_loc = readme.find(fragment_start) + len(fragment_start)
+        fragment_end_loc = readme.find(fragment_end)
+    with open(readme_path, "w") as f:
+        f.write(readme[:fragment_start_loc])
+        f.write(md_str)
+        f.write(readme[fragment_end_loc:])
+
 ########################################
 # Update the KEM markdown documentation.
 ########################################
@@ -342,7 +374,7 @@ def do_it(liboqs_root):
 
     # TODO:construct the algorithm support table, replace the appropriate 
     # section in README.md (OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START)
-
+    update_readme(kem_yamls, sig_yamls, sig_stfl_yamls, liboqs_root)
 
 
 if __name__ == "__main__":

@@ -54,6 +54,14 @@ Falcon and SPHINCS+ have also been [selected for standardization](https://csrc.n
 All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes available a [selection mechanism for algorithms on the NIST standards track, continued NIST competition, or purely experimental nature by way of the configuration variable OQS_ALGS_ENABLED](CONFIGURE.md#oQS_ALGS_ENABLED). By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
 
 <!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START -->
+### KEMs
+content
+
+### Digital signatures
+content
+
+### Stateful digital signatures
+content
 <!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_END -->
 
 Note that for algorithms marked with a dagger (†), liboqs contains at least one implementation that uses a large amount of stack space; this may cause failures when run in threads or in constrained environments. For more information, consult the algorithm information sheets in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
