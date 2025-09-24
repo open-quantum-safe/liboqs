@@ -339,5 +339,4 @@ def test_acvp_vec_slh_dsa_sig_ver(sig_name):
 
 if __name__ == "__main__":
     import sys
-    test_acvp_vec_slh_dsa_sig_gen("SLH_DSA_SHA2_224_PREHASH_SHA2_128S")
-    # pytest.main(sys.argv)
+    pytest.main(sys.argv)
