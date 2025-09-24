@@ -16,6 +16,7 @@ auxiliary-submitters:
 - Zhenfei Zhang
 crypto-assumption: NTRU in Z[x]/(q, x^n-1) with prime n and power-of-two q
 website: https://ntru.org/
+standardization-status: Not selected
 nist-round: 3
 spec-version: NIST Round 3 submission
 upstream-ancestors:

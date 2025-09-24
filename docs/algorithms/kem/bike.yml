@@ -21,6 +21,7 @@ principal-submitters:
 crypto-assumption: QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check)
 website: http://bikesuite.org/
 nist-round: 4
+standardization-status: Not selected
 spec-version: 5.1
 primary-upstream:
   source: https://github.com/awslabs/bike-kem

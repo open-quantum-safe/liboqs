@@ -13,6 +13,8 @@ auxiliary-submitters:
 crypto-assumption: hardness of lattice problems over module lattices
 website: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/final
 nist-round: FIPS204
+standardization-status: Standardized
+spec-url: https://csrc.nist.gov/pubs/fips/204/final
 spec-version: ML-DSA
 primary-upstream:
   source: https://github.com/pq-crystals/dilithium/commit/444cdcc84eb36b66fe27b3a2529ee48f6d8150c2

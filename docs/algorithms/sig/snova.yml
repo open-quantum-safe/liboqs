@@ -13,6 +13,7 @@ principal-submitters:
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://snova.pqclab.org/
 nist-round: 2
+standardization-status: Under consideration
 spec-version: Round 2
 primary-upstream:
   source: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff

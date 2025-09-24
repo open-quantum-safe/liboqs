@@ -15,6 +15,7 @@ auxiliary-submitters:
 crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
 website: https://pq-crystals.org/
 nist-round: 3
+standardization-status: Selected for standardization
 spec-version: NIST Round 3 submission
 primary-upstream:
   source: https://github.com/pq-crystals/kyber/commit/441c0519a07e8b86c8d079954a6b10bd31d29efc

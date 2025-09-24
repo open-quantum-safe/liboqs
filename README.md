@@ -55,13 +55,34 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 
 <!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START -->
 ### KEMs
-content
+| Algorithm family                                              | Standardization status       | Primary implementation                                                                                                                  |
+|:--------------------------------------------------------------|:-----------------------------|:----------------------------------------------------------------------------------------------------------------------------------------|
+| [NTRU-Prime](./docs/algorithms/kem/ntruprime.md)              | Not selected                 | [PQClean/PQClean@4c9e5a3](https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6)                           |
+| [HQC](./docs/algorithms/kem/hqc.md)                           | Selected for standardization | [PQClean/PQClean@1eacfda](https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181)                           |
+| [FrodoKEM](./docs/algorithms/kem/frodokem.md)                 | Not selected                 | [microsoft/PQCrypto-LWEKE@b6609d3](https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2)         |
+| [BIKE](./docs/algorithms/kem/bike.md)                         | Not selected                 | [awslabs/bike-kem](https://github.com/awslabs/bike-kem)                                                                                 |
+| [NTRU](./docs/algorithms/kem/ntru.md)                         | Not selected                 | [PQClean/PQClean@4c9e5a3](https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6)                           |
+| [ML-KEM](./docs/algorithms/kem/ml_kem.md)                     | Standardized                 | [pq-code-package/mlkem-native@048fc2a](https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa) |
+| [Classic McEliece](./docs/algorithms/kem/classic_mceliece.md) | Under consideration          | [PQClean/PQClean@1eacfda](https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181)                           |
+| [Kyber](./docs/algorithms/kem/kyber.md)                       | Selected for standardization | [pq-crystals/kyber@441c051](https://github.com/pq-crystals/kyber/commit/441c0519a07e8b86c8d079954a6b10bd31d29efc)                       |
 
 ### Digital signatures
-content
+| Algorithm family                             | Standardization status       | Primary implementation                                                                                                                    |
+|:---------------------------------------------|:-----------------------------|:------------------------------------------------------------------------------------------------------------------------------------------|
+| [Falcon](./docs/algorithms/sig/falcon.md)    | Selected for standardization | [PQClean/PQClean@1eacfda](https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181)                             |
+| [SLH-DSA](./docs/algorithms/sig/slh_dsa.md)  | Standardized                 | [pq-code-package/slhdsa-c@a0fc1ff](https://github.com/pq-code-package/slhdsa-c/commit/a0fc1ff253930060d0246aebca06c2538eb92b88)           |
+| [UOV](./docs/algorithms/sig/uov.md)          | Under consideration          | [pqov/pqov@7e0832b](https://github.com/pqov/pqov/commit/7e0832b6732a476119742c4acabd11b7c767aefb)                                         |
+| [MAYO](./docs/algorithms/sig/mayo.md)        | Under consideration          | [PQCMayo/MAYO-C@4b7cd94](https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807)                               |
+| [CROSS](./docs/algorithms/sig/cross.md)      | Under consideration          | [CROSS-signature/CROSS-lib-oqs@c8f7411](https://github.com/CROSS-signature/CROSS-lib-oqs/commit/c8f7411fed136f0e37600973fa3dbed53465e54f) |
+| [SNOVA](./docs/algorithms/sig/snova.md)      | Under consideration          | [vacuas/SNOVA@1c3ca6f](https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff)                                   |
+| [ML-DSA](./docs/algorithms/sig/ml_dsa.md)    | Standardized                 | [pq-crystals/dilithium@444cdcc](https://github.com/pq-crystals/dilithium/commit/444cdcc84eb36b66fe27b3a2529ee48f6d8150c2)                 |
+| [SPHINCS+](./docs/algorithms/sig/sphincs.md) | Selected for standardization | [PQClean/PQClean@1eacfda](https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181)                             |
 
 ### Stateful digital signatures
-content
+| Algorithm family                           | Standardization status   | Primary implementation                                        |
+|:-------------------------------------------|:-------------------------|:--------------------------------------------------------------|
+| [XMSS](./docs/algorithms/sig_stfl/xmss.md) | Standardized             | [XMSS/xmss-reference](https://github.com/XMSS/xmss-reference) |
+| [LMS](./docs/algorithms/sig_stfl/lms.md)   | Standardized             | [cisco/hash-sigs](https://github.com/cisco/hash-sigs)         |
 <!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_END -->
 
 Note that for algorithms marked with a dagger (†), liboqs contains at least one implementation that uses a large amount of stack space; this may cause failures when run in threads or in constrained environments. For more information, consult the algorithm information sheets in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.

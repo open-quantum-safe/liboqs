@@ -9,6 +9,8 @@ auxiliary-submitters:
 crypto-assumption: hash-based signatures
 website: https://www.rfc-editor.org/info/rfc8554
 nist-round: 
+standardization-status: Standardized
+spec-url: https://www.rfc-editor.org/info/rfc8554
 spec-version: 
 spdx-license-identifier: 
 primary-upstream:
