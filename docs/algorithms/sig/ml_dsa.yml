@@ -15,9 +15,8 @@ website: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/
 nist-round: FIPS204
 spec-version: ML-DSA
 primary-upstream:
-  source: https://github.com/pq-crystals/dilithium/commit/444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
-    with copy_from_upstream patches
-  spdx-license-identifier: CC0-1.0 or Apache-2.0
+  source: https://github.com/pq-code-package/mldsa-native/commit/7cd8aba68be2b35fc34bbf738a097f269be60b31
+  spdx-license-identifier: MIT or Apache-2.0 or ISC
 parameter-sets:
 - name: ML-DSA-44
   claimed-nist-level: 2
@@ -36,7 +35,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
-    upstream-id: avx2
+    upstream-id: x86_64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -44,11 +43,24 @@ parameter-sets:
       - Linux
       required_flags:
       - avx2
+      - bmi2
       - popcnt
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: ML-DSA-65
   claimed-nist-level: 3
@@ -67,7 +79,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
-    upstream-id: avx2
+    upstream-id: x86_64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -75,11 +87,24 @@ parameter-sets:
       - Linux
       required_flags:
       - avx2
+      - bmi2
       - popcnt
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: ML-DSA-87
   claimed-nist-level: 5
@@ -98,7 +123,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
   - upstream: primary-upstream
-    upstream-id: avx2
+    upstream-id: x86_64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -111,4 +136,16 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
