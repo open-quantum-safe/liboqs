@@ -1,11 +1,12 @@
+#!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 
 import argparse
-import sys
 import glob
+import os
+
 import tabulate
 import yaml
-import os
 
 def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
@@ -15,14 +16,14 @@ def file_get_contents(filename, encoding=None):
     with open(filename, mode='r', encoding=encoding) as fh:
         return fh.read()
 
-kem_yamls = []
-sig_yamls = []
-sig_stfl_yamls = []
-
 ########################################
 # Update the KEM markdown documentation.
 ########################################
 def do_it(liboqs_root):
+    kem_yamls = []
+    sig_yamls = []
+    sig_stfl_yamls = []
+
     for kem_yaml_path in sorted(glob.glob(os.path.join(liboqs_root, 'docs', 'algorithms', 'kem', '*.yml'))):
         kem_yaml = load_yaml(kem_yaml_path)
         kem_yamls.append(kem_yaml)
@@ -339,103 +340,10 @@ def do_it(liboqs_root):
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
 
+    # TODO:construct the algorithm support table, replace the appropriate 
+    # section in README.md (OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START)
 
 
-    ####################
-    # Update the README.
-    ####################
-    print("Updating README.md")
-
-    readme_path = os.path.join(liboqs_root, 'README.md')
-    start_identifier_tmpl = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_{}_START -->'
-    end_identifier_tmpl = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_{}_END -->'
-
-    # KEMS
-    readme_contents = file_get_contents(readme_path)
-
-    identifier_start = start_identifier_tmpl.format('KEXS')
-    identifier_end = end_identifier_tmpl.format('KEXS')
-
-    preamble = readme_contents[:readme_contents.find(identifier_start)]
-    postamble = readme_contents[readme_contents.find(identifier_end):]
-
-    with open(readme_path, mode='w', encoding='utf-8') as readme:
-        readme.write(preamble + identifier_start + '\n')
-
-        for kem_yaml in kem_yamls:
-            parameter_sets = kem_yaml['parameter-sets']
-            if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
-                readme.write('- **{}**: {}†'.format(kem_yaml['name'], parameter_sets[0]['name']))
-                if 'alias' in parameter_sets[0]:
-                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']))
-            else:
-                readme.write('- **{}**: {}'.format(kem_yaml['name'], parameter_sets[0]['name']))
-                if 'alias' in parameter_sets[0]:
-                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']))
-            for parameter_set in parameter_sets[1:]:
-                if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
-                    readme.write(', {}†'.format(parameter_set['name']))
-                    if 'alias' in parameter_set:
-                        readme.write(' (alias: {})'.format(parameter_set['alias']))
-                else:
-                    readme.write(', {}'.format(parameter_set['name']))
-                    if 'alias' in parameter_set:
-                        readme.write(' (alias: {})'.format(parameter_set['alias']))
-            readme.write('\n')
-
-        readme.write(postamble)
-
-    # Signatures
-    readme_contents = file_get_contents(readme_path)
-
-    identifier_start = start_identifier_tmpl.format('SIGS')
-    identifier_end = end_identifier_tmpl.format('SIGS')
-
-    preamble = readme_contents[:readme_contents.find(identifier_start)]
-    postamble = readme_contents[readme_contents.find(identifier_end):]
-
-    with open(readme_path, mode='w', encoding='utf-8') as readme:
-        readme.write(preamble + identifier_start + '\n')
-
-        for sig_yaml in sig_yamls:
-            # SPHINCS requires special handling.
-            if "SPHINCS" in sig_yaml["name"]:
-                for hash_func in ['SHA2', 'SHAKE']:
-                    parameter_sets = [pset for pset in sig_yaml['parameter-sets'] if hash_func in pset['name']]
-                    if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
-                        readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
-                    else:
-                        readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\\_')))
-                    for parameter_set in parameter_sets[1:]:
-                        if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
-                            readme.write(', {}†'.format(parameter_set['name'].replace('_', '\\_')))
-                        else:
-                            readme.write(', {}'.format(parameter_set['name'].replace('_', '\\_')))
-                    readme.write('\n')
-                continue
-            
-            parameter_sets = sig_yaml['parameter-sets']
-            if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
-                readme.write('- **{}**: {}†'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\\_')))
-                if 'alias' in parameter_sets[0]:
-                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\\_'))
-            else:
-                readme.write('- **{}**: {}'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\\_')))
-                if 'alias' in parameter_sets[0]:
-                    readme.write(' (alias: {})'.format(parameter_sets[0]['alias']).replace('_','\\_'))
-            for parameter_set in parameter_sets[1:]:
-                if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
-                    readme.write(', {}†'.format(parameter_set['name'].replace('_', '\\_')))
-                    if 'alias' in parameter_set:
-                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\\_'))
-                else:
-                    readme.write(', {}'.format(parameter_set['name'].replace('_', '\\_')))
-                    if 'alias' in parameter_set:
-                        readme.write(' (alias: {})'.format(parameter_set['alias']).replace('_','\\_'))
-            readme.write('\n')
-
-
-        readme.write(postamble)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
