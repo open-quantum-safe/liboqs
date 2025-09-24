@@ -342,8 +342,6 @@ def do_it(liboqs_root):
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
 
-    # TODO:construct the algorithm support table, replace the appropriate 
-    # section in README.md (OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START)
     update_readme(liboqs_root)
 
 

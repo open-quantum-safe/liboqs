@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 
-from collections import namedtuple
 import os
 
 import tabulate
@@ -15,6 +14,7 @@ ALG_SUPPORT_HEADER = [
 ]
 COMMIT_HASH_LEN = 7
 
+
 def format_upstream_source(source: str) -> str:
     """For each YAML data sheet, the primary-upstream.source field contains some
     URL to the implementation. At this moment all URLs are links to GitHub, so
@@ -24,19 +24,20 @@ def format_upstream_source(source: str) -> str:
     <handle>/<repository> otherwise
     with a link to the repository
     """
-    prefix = "https://github.com/" 
+    prefix = "https://github.com/"
     if not prefix in source:
         raise ValueError(f"Non-GitHub source {source}")
     url_start = source.find(prefix)
     url = source[url_start:].split(" ")[0]
     # example: ["PQClean", "PQClean", "commit", "1eacfdaf..."]
-    tokens = url[len(prefix):].split("/")
+    tokens = url[len(prefix) :].split("/")
     handle, repo = tokens[0], tokens[1]
     output = f"{handle}/{repo}"
     if "commit/" in url:
         commit = tokens[3][:COMMIT_HASH_LEN]
         output += f"@{commit}"
     return f"[{output}]({url})"
+
 
 def render_alg_support_tbl(doc_dir: str) -> str:
     """Render a markdown table summarizing the algorithms described by YAML data
@@ -62,11 +63,13 @@ def render_alg_support_tbl(doc_dir: str) -> str:
         std_status = algdata["standardization-status"]
         # TODO: unsure what to do with spec-url for now
         primary_impl = format_upstream_source(algdata["primary-upstream"]["source"])
-        rows.append([
-            f"[{alg_name}]({md_url})",
-            std_status,
-            primary_impl,
-        ])
+        rows.append(
+            [
+                f"[{alg_name}]({md_url})",
+                std_status,
+                primary_impl,
+            ]
+        )
     tbl = tabulate.tabulate(rows, tablefmt="pipe", headers="firstrow")
     return tbl
 
