@@ -117,6 +117,8 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME
+
 	rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, false, NULL, 0);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
@@ -193,7 +195,6 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
-#ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	/* check magic values */
 	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
