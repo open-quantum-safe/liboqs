@@ -9,6 +9,8 @@ auxiliary-submitters:
 
 crypto-assumption: hash-based signatures
 website: https://www.rfc-editor.org/info/rfc8391
+standardization-status: Standardized
+spec-url: https://www.rfc-editor.org/info/rfc8391
 nist-round:
 spec-version:
 spdx-license-identifier: (Apache-2.0 OR MIT) AND CC0-1.0

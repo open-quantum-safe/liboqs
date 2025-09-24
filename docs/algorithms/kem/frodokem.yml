@@ -17,6 +17,7 @@ crypto-assumption: learning with errors (LWE)
 website: https://frodokem.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
+standardization-status: Not selected
 primary-upstream:
   source: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
   spdx-license-identifier: MIT
