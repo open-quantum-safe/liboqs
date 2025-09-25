@@ -57,8 +57,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha3_224_prehash_sha2_192f_sign(uint8_t *sign
 	const char *ph = "SHA3-224";
 	const uint8_t *ctx_str = NULL;
 	const size_t ctx_str_len = 0;
-	uint8_t addrnd[32];
-	OQS_randombytes(addrnd, 32);
+	uint8_t addrnd[24];
+	OQS_randombytes(addrnd, 24);
 
 	*signature_len = hash_slh_sign(signature, message, message_len, ctx_str,
 		ctx_str_len, ph, secret_key, addrnd, prm);
@@ -92,8 +92,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha3_224_prehash_sha2_192f_sign_with_ctx_str(
 	
 	const slh_param_t *prm = &slh_dsa_sha2_192f;
 	const char *ph = "SHA3-224";
-	uint8_t addrnd[32];
-	OQS_randombytes(addrnd, 32);
+	uint8_t addrnd[24];
+	OQS_randombytes(addrnd, 24);
 
 	*signature_len = hash_slh_sign(signature, message, message_len, ctx_str,
 		ctx_str_len, ph, secret_key, addrnd, prm);

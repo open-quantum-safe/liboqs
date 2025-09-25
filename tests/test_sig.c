@@ -330,7 +330,7 @@ int main(int argc, char **argv) {
 		}
 	}
 	if (argc == 5) {
-		extended_tests = (size_t)strtol(argv[4], NULL, 10);
+		extended_tests = strtol(argv[4], NULL, 10);
 		if (extended_tests != 0 && extended_tests != 1) {
 			fprintf(stderr, "ERROR: invalid value for extended_tests (must be 0 or 1)\n");
 			OQS_destroy();
