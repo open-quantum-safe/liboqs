@@ -139,6 +139,7 @@ jobs:
                           -w `pwd` \
                           openquantumsafe/ci-debian-buster-${{ matrix.ARCH }}:latest /bin/bash \
                           -c "mkdir -p tmp && \
+                              SKIP_ALGS='${{ matrix.SKIP_ALGS }}' \
                               python3 -m pytest --verbose \
                                                 --numprocesses=auto \
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
