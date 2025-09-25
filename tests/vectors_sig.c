@@ -21,60 +21,66 @@
 #define MAXCTXBYTES 255
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-extern int pqcrystals_ml_dsa_44_ref_signature_internal(uint8_t *sig,
+extern int PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(uint8_t *sig,
         size_t *siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
         size_t prelen,
         const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk);
+        const uint8_t *sk,
+        int externalmu);
 
-extern int pqcrystals_ml_dsa_44_ref_verify_internal(const uint8_t *sig,
+extern int PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(const uint8_t *sig,
         size_t siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
         size_t prelen,
-        const uint8_t *pk);
+        const uint8_t *pk,
+        int externalmu);
 #endif
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-extern int pqcrystals_ml_dsa_65_ref_signature_internal(uint8_t *sig,
+extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(uint8_t *sig,
         size_t *siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
         size_t prelen,
         const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk);
+        const uint8_t *sk,
+        int externalmu);
 
-extern int pqcrystals_ml_dsa_65_ref_verify_internal(const uint8_t *sig,
+extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(const uint8_t *sig,
         size_t siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
         size_t prelen,
-        const uint8_t *pk);
+        const uint8_t *pk,
+        int externalmu);
 #endif
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-extern int pqcrystals_ml_dsa_87_ref_signature_internal(uint8_t *sig,
+extern int PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(uint8_t *sig,
         size_t *siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
         size_t prelen,
         const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk);
+        const uint8_t *sk,
+        int externalmu);
 
-extern int pqcrystals_ml_dsa_87_ref_verify_internal(const uint8_t *sig,
+extern int PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(const uint8_t *sig,
         size_t siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
         size_t prelen,
-        const uint8_t *pk);
+        const uint8_t *pk,
+        int externalmu);
 #endif
 
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -323,15 +329,15 @@ static int sig_ver_vector(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = pqcrystals_ml_dsa_44_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = pqcrystals_ml_dsa_65_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = pqcrystals_ml_dsa_87_ref_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -456,15 +462,15 @@ static int sig_gen_vector(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = pqcrystals_ml_dsa_44_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = pqcrystals_ml_dsa_65_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = pqcrystals_ml_dsa_87_ref_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
