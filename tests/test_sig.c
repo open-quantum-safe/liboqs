@@ -137,7 +137,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 			ctx_step = 61; // using a prime slightly smaller than a power of 2 to avoid only testing word/block aligned values
 		}
 		for (size_t i = 0; i < 256; ++i) {
-			if ((i % ctx_step == 0 && extended_tests) || i == 255) {
+			if (((i % ctx_step == 0) && extended_tests) || i == 255) {
 				rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, i, secret_key);
 				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 				if (rc != OQS_SUCCESS) {
@@ -164,11 +164,13 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 			}
 		}
 
-		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 256, secret_key);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
-		if (rc != OQS_ERROR) {
-			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should only support up to 255 byte contexts\n");
-			goto err;
+		if (extended_tests) {
+			rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 256, secret_key);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			if (rc != OQS_ERROR) {
+				fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should only support up to 255 byte contexts\n");
+				goto err;
+			}
 		}
 	} else if (extended_tests) {
 		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 1, secret_key);
