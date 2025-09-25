@@ -15,7 +15,7 @@ auxiliary-submitters:
 crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
 website: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203
 nist-round: FIPS203
-standardization-status: Standardized
+standardization-status: Standardized by NIST
 spec-url: https://csrc.nist.gov/pubs/fips/203/final
 spec-version: ML-KEM
 primary-upstream:

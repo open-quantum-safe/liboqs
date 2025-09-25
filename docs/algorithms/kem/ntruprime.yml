@@ -16,6 +16,7 @@ website: https://ntruprime.cr.yp.to
 nist-round: 3
 spec-version: supercop-20200826
 standardization-status: Not selected
+spec-url: https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/NTRU-Prime-Round3.zip
 upstream-ancestors:
 - https://github.com/jschanck/package-pqclean/tree/4d9f08c3/ntruprime
 - supercop-20210604

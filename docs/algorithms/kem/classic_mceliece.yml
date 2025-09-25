@@ -18,7 +18,8 @@ crypto-assumption: Niederreiter's dual version of McEliece's public key encrypti
 website: https://classic.mceliece.org
 nist-round: 3
 spec-version: SUPERCOP-20221025
-standardization-status: Under consideration
+standardization-status: Under ISO consideration
+spec-url: https://classic.mceliece.org/mceliece-spec-20221023.pdf
 upstream-ancestors:
 - SUPERCOP-20221025 "clean" and "avx2" implementations
 advisories:

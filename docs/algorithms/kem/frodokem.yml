@@ -18,6 +18,7 @@ website: https://frodokem.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 standardization-status: Not selected
+spec-url: https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/FrodoKEM-Round3.zip
 primary-upstream:
   source: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
   spdx-license-identifier: MIT
