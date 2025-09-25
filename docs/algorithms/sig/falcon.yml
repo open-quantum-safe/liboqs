@@ -16,7 +16,9 @@ auxiliary-submitters:
 crypto-assumption: hardness of NTRU lattice problems
 website: https://falcon-sign.info
 nist-round: 3
-standardization-status: Selected for standardization
+# NOTE: https://csrc.nist.gov/news/2022/pqc-candidates-to-be-standardized-and-round-4
+standardization-status: Selected by NIST
+spec-url: https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Falcon-Round3.zip
 spec-version: 20211101
 primary-upstream:
   source: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181

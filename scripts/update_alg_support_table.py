@@ -24,6 +24,7 @@ def format_upstream_source(source: str) -> str:
     <handle>/<repository> otherwise
     with a link to the repository
     """
+    # TODO: we might get GitLab or other non-GH link, but we will figure it out when it comes
     prefix = "https://github.com/"
     if not prefix in source:
         raise ValueError(f"Non-GitHub source {source}")
@@ -61,12 +62,12 @@ def render_alg_support_tbl(doc_dir: str) -> str:
         md_basename = os.path.splitext(os.path.split(yaml_path)[1])[0]
         md_url = f"./docs/algorithms/{dirname}/{md_basename}.md"
         std_status = algdata["standardization-status"]
-        # TODO: unsure what to do with spec-url for now
+        spec_url = algdata["spec-url"]
         primary_impl = format_upstream_source(algdata["primary-upstream"]["source"])
         rows.append(
             [
                 f"[{alg_name}]({md_url})",
-                std_status,
+                f"[{std_status}]({spec_url})",
                 primary_impl,
             ]
         )

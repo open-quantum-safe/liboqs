@@ -9,7 +9,7 @@ auxiliary-submitters:
 
 crypto-assumption: hash-based signatures
 website: https://www.rfc-editor.org/info/rfc8391
-standardization-status: Standardized
+standardization-status: Standardized by Internet Research Task Force (IRTF), approved by NIST
 spec-url: https://www.rfc-editor.org/info/rfc8391
 nist-round:
 spec-version:
