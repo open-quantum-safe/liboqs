@@ -92,8 +92,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_224_prehash_shake_192f_sign_with_ctx
 	
 	const slh_param_t *prm = &slh_dsa_shake_192f;
 	const char *ph = "SHA2-512/224";
-	uint8_t addrnd[32];
-	OQS_randombytes(addrnd, 32);
+	uint8_t addrnd[24];
+	OQS_randombytes(addrnd, 24);
 
 	*signature_len = hash_slh_sign(signature, message, message_len, ctx_str,
 		ctx_str_len, ph, secret_key, addrnd, prm);
