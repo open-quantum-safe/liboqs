@@ -29,7 +29,8 @@ def format_upstream_source(source: str) -> str:
     if not prefix in source:
         raise ValueError(f"Non-GitHub source {source}")
     url_start = source.find(prefix)
-    url = source[url_start:].split(" ")[0]
+    # NOTE: split with no argument will split with all whitespaces
+    url = source[url_start:].split()[0]
     # example: ["PQClean", "PQClean", "commit", "1eacfdaf..."]
     tokens = url[len(prefix) :].split("/")
     handle, repo = tokens[0], tokens[1]
