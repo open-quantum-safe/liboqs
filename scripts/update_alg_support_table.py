@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 
+"""Helper functions for rendering the Algorithm Support table in README.md
+
+This is a separate module to facilitate code formatting and other dev tools,
+but it is not meant to be run by itself. Instead, run the legacy 
+scripts/update_docs_from_yaml.py to invoke update_readme in this module.
+"""
+
 import os
 
 import tabulate
@@ -24,7 +31,7 @@ def format_upstream_source(source: str) -> str:
     <handle>/<repository> otherwise
     with a link to the repository
     """
-    # TODO: we might get GitLab or other non-GH link, but we will figure it out when it comes
+    # TODO: we might get GitLab or other non-GH link in the future but oh well
     prefix = "https://github.com/"
     if not prefix in source:
         raise ValueError(f"Non-GitHub source {source}")
@@ -38,7 +45,7 @@ def format_upstream_source(source: str) -> str:
     if "commit/" in url:
         commit = tokens[3][:COMMIT_HASH_LEN]
         output += f"@{commit}"
-    return f"[{output}]({url})"
+    return f"[`{output}`]({url})"
 
 
 def render_alg_support_tbl(doc_dir: str) -> str:
@@ -76,9 +83,7 @@ def render_alg_support_tbl(doc_dir: str) -> str:
     return tbl
 
 
-def update_readme(
-    liboqs_dir: str,
-):
+def update_readme(liboqs_dir: str):
     """Per liboqs/issues/2045, update README.md with an algorithm support table
 
     The algorithm support table is a summary of individual algorithms currently
