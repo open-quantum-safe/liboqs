@@ -68,7 +68,7 @@ def render_alg_support_tbl(doc_dir: str) -> str:
         elif "sig_stfl/" in yaml_path:
             dirname = "sig_stfl"
         md_basename = os.path.splitext(os.path.split(yaml_path)[1])[0]
-        md_url = f"./docs/algorithms/{dirname}/{md_basename}.md"
+        md_url = f"docs/algorithms/{dirname}/{md_basename}.md"
         std_status = algdata["standardization-status"]
         spec_url = algdata["spec-url"]
         primary_impl = format_upstream_source(algdata["primary-upstream"]["source"])
@@ -101,13 +101,13 @@ def update_readme(liboqs_dir: str):
     sig_tbl = render_alg_support_tbl(sig_doc_dir)
     sig_stfl_doc_dir = os.path.join(liboqs_dir, "docs", "algorithms", "sig_stfl")
     sig_stfl_tbl = render_alg_support_tbl(sig_stfl_doc_dir)
-    md_str = f"""### KEMs
+    md_str = f"""#### Key encapsulation mechanisms
 {kem_tbl}
 
-### Digital signatures
+#### Signature schemes
 {sig_tbl}
 
-### Stateful digital signatures
+#### Stateful signature schemes
 {sig_stfl_tbl}
 """
     readme_path = os.path.join(liboqs_dir, "README.md")
