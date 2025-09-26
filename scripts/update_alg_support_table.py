@@ -63,6 +63,7 @@ def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
         for filepath in os.listdir(doc_dir)
         if os.path.splitext(filepath)[1].lower() in YAML_EXTS
     ]
+    yaml_paths.sort()
     rows = [ALG_SUPPORT_HEADER]
     for yaml_path in yaml_paths:
         with open(yaml_path) as f:
