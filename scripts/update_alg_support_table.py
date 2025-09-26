@@ -48,10 +48,16 @@ def format_upstream_source(source: str) -> str:
     return f"[`{output}`]({url})"
 
 
-def render_alg_support_tbl(doc_dir: str) -> str:
+def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
     """Render a markdown table summarizing the algorithms described by YAML data
     sheets stored in the specified doc directory
+
+    :param anchor_alg_name: if set to True, then "algorithm family" will link to
+    the corresponding markdown document under docs/algorithms/<kem|sig|sig_stfl>
+    otherwise "algorithm family" will be plain text with no link.
     """
+    # TODO: anchor_alg_name is turned off because Doxygen cannot handle links
+    # to markdown files under docs/algorithms/xxx
     yaml_paths = [
         os.path.abspath(os.path.join(doc_dir, filepath))
         for filepath in os.listdir(doc_dir)
@@ -74,7 +80,7 @@ def render_alg_support_tbl(doc_dir: str) -> str:
         primary_impl = format_upstream_source(algdata["primary-upstream"]["source"])
         rows.append(
             [
-                f"[{alg_name}]({md_url})",
+                f"[{alg_name}]({md_url})" if anchor_alg_name else f"{alg_name}",
                 f"[{std_status}]({spec_url})",
                 primary_impl,
             ]
