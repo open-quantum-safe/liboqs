@@ -35,7 +35,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 360
-        run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest -n auto --verbose ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
   nistkat-x64:
     runs-on: ubuntu-latest
@@ -99,7 +99,7 @@ jobs:
 
   linux_arm_emulated:
     runs-on: ubuntu-latest
-    timeout-minutes: 360 # max + 3*std over the last thousands of successful runs
+    timeout-minutes: 120 # max + 3*std over the last thousands of successful runs
     strategy:
       fail-fast: false
       matrix:
@@ -108,12 +108,12 @@ jobs:
             ARCH: armhf
             CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-            SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
+            SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE)(.)*'
           - name: armhf-no-stfl-key-sig-gen
             ARCH: armhf
             CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --numprocesses=auto --maxprocesses=10 --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-            SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
+            SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE)(.)*'
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
@@ -132,7 +132,6 @@ jobs:
                           cmake -LA -N .. && \
                           ninja)"
       - name: Run the tests in an ${{ matrix.ARCH }} container
-        timeout-minutes: 60
         run: |
           docker run --rm -e SKIP_TESTS=style,mem_kem,mem_sig \
                           -v `pwd`:`pwd` \
