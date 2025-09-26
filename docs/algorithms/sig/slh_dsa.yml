@@ -1,3 +1,5 @@
+# Generated from src/sig/slh_dsa/templates/slh_dsa_docs_yml_template.jinja
+# by copy_from_slh_dsa_c.py
 name: SLH-DSA
 type: signature
 principal-submitters:
