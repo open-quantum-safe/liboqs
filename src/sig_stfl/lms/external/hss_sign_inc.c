@@ -153,7 +153,7 @@ bool hss_sign_finalize(
         /* hss_generate_child_seed_I_value doesn't allow new values to */
         /* overwrite old ones */
     unsigned char I_buff[2][I_LEN];
-    unsigned char seed_buff[2][SEED_LEN];
+    unsigned char seed_buff[2][SEED_LEN_32];
 
     /* Q: should we double check the various fixed fields of the signatures */
     /* (e.g. the number of signed keys, the parameter sets? */

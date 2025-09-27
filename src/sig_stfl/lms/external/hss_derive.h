@@ -35,8 +35,8 @@ struct seed_derive {
         /* the parent it is; the higher bits indicate the parents' */
         /* identities */
 
-    unsigned char q_seed[MAX_Q_HEIGHT][SEED_LEN];
-    unsigned char j_seed[MAX_Q_HEIGHT][SEED_LEN];
+    unsigned char q_seed[MAX_Q_HEIGHT][SEED_LEN_32];
+    unsigned char j_seed[MAX_Q_HEIGHT][SEED_LEN_32];
 #endif
 };
 
