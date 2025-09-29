@@ -77,12 +77,12 @@ def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
         md_basename = os.path.splitext(os.path.split(yaml_path)[1])[0]
         md_url = f"docs/algorithms/{dirname}/{md_basename}.md"
         std_status = algdata["standardization-status"]
-        spec_url = algdata["spec-url"]
+        spec_url = algdata.get("spec-url", None)
         primary_impl = format_upstream_source(algdata["primary-upstream"]["source"])
         rows.append(
             [
                 f"[{alg_name}]({md_url})" if anchor_alg_name else f"{alg_name}",
-                f"[{std_status}]({spec_url})",
+                f"[{std_status}]({spec_url})" if spec_url else std_status,
                 primary_impl,
             ]
         )
