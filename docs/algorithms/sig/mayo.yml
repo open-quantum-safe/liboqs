@@ -9,8 +9,8 @@ principal-submitters:
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://pqmayo.org
 nist-round: 2
-standardization-status: Under NIST consideration
-spec-url: https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mayo-spec-round2-web.pdf
+standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mayo-spec-round2-web.pdf)
+  consideration
 spec-version: NIST Round 2 (February 2025)
 primary-upstream:
   source: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807

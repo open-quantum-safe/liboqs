@@ -18,8 +18,8 @@ principal-submitters:
 crypto-assumption: Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
 website: https://pqc-hqc.org/
 nist-round: 4
-standardization-status: Selected by NIST
-spec-url: https://pqc-hqc.org/doc/hqc_specifications_2025_08_22.pdf
+standardization-status: Selected by [NIST](https://pqc-hqc.org/doc/hqc_specifications_2025_08_22.pdf)
+  for future standardization
 spec-version: 2023-04-30
 upstream-ancestors:
 - https://github.com/SWilson4/package-pqclean/tree/8db1b24b/hqc
