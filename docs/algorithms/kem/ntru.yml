@@ -16,8 +16,7 @@ auxiliary-submitters:
 - Zhenfei Zhang
 crypto-assumption: NTRU in Z[x]/(q, x^n-1) with prime n and power-of-two q
 website: https://ntru.org/
-# TODO: under NTT (Nippon Telegraph and Telephone) consideration?
-standardization-status: Not selected
+standardization-status: Not selected by NIST; under standardization consideration by NTT
 spec-url: https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/NTRU-Round3.zip
 nist-round: 3
 spec-version: NIST Round 3 submission
