@@ -16,6 +16,7 @@ import json
 import platform
 import update_upstream_alg_docs
 import copy_from_slh_dsa_c
+from copy import deepcopy
 
 # kats of all algs
 kats = {}
@@ -701,12 +702,20 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
             )
 
 
-def copy_from_upstream():
+def copy_from_upstream(slh_dsa_inst: dict):
+    """Integrate upstreams implementations and algorithms described in 
+    copy_from_upstream.yml.
+
+    :param slh_dsa_inst: instruction for integrating SLH-DSA, only used for 
+    rendering alg_support.cmake
+    """
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
     instructions = load_instructions('copy_from_upstream.yml')
+    patched_inst: dict = deepcopy(instructions)
+    patched_inst["sigs"].append(slh_dsa_instruction["sigs"][0])
     process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####')
     replacer('CMakeLists.txt', instructions, '#####')
@@ -839,9 +848,19 @@ non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime', 'n
 
 if args.operation == "copy":
     # copy_from_slh_dsa_c will modify slh_dsa.yml before copy_from_upstream modifies md files
-    copy_from_slh_dsa_c.main()
+    slh_dsa_schemes: list[str] = copy_from_slh_dsa_c.main()
+    slh_dsa_instruction = {
+        "sigs": [
+            {
+                "name": "slh_dsa",
+                "schemes": {
+                    "scheme": scheme for scheme in slh_dsa_schemes
+                }
+            }
+        ]
+    }
     os.chdir(os.path.join(os.environ['LIBOQS_DIR'],"scripts","copy_from_upstream"))
-    copy_from_upstream()
+    copy_from_upstream(slh_dsa_instruction)
 elif args.operation == "libjade":
     copy_from_libjade()
 elif args.operation == "verify":
