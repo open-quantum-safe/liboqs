@@ -51,10 +51,10 @@ upstreams:
     name: icicle
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
     git_branch: main
-    git_commit: 8f215fd845928abfc2bb7d5ca15db76b839bee5c
+    git_commit: 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [icicle-mlkem-enc-derand.patch]
+    patches: []
   -
     name: pqcrystals-dilithium-standard
     git_url: https://github.com/pq-crystals/dilithium.git
