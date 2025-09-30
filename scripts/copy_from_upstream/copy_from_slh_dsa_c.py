@@ -337,5 +337,18 @@ def main():
     # apply patches
     apply_patches(slh_patch_dir)
 
+    # NOTE: from [issue 2203](https://github.com/open-quantum-safe/liboqs/issues/2203)
+    # SLH-DSA is not described in copy_from_upstream.yml. It is instead described
+    # here in this separate module. This makes replacing SPHINCS+ with SLH-DSA
+    # in list_standardized_algs.fragment non-trivial because this Jinja template
+    # is rendered from copy_from_upstream.yml.
+    # As a necessary hack, the list of variants (e.g. "pure_sha2_128s") is returned
+    # so that copy_from_upstream.py can use this list to construct a dictionary
+    # that resembles the structure of copy_from_upstream.yml.
+    # In the near future I want to consider refactoring build configuration
+    # management and upstream integration scripts. The status quo is a mess and
+    # will make future integrations all the more difficult.
+    return variants
+
 if __name__ == "__main__":
     main()
