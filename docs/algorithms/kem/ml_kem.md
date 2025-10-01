@@ -14,7 +14,7 @@
       - **Source**: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
   - **icicle-icicle_cuda**:<a name="icicle-icicle_cuda"></a>
-      - **Source**: https://github.com/ingonyama-zk/icicle-liboqs/commit/8f215fd845928abfc2bb7d5ca15db76b839bee5c
+      - **Source**: https://github.com/ingonyama-zk/icicle-liboqs/commit/4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
       - **Implementation license (SPDX-Identifier)**: MIT
 
 
