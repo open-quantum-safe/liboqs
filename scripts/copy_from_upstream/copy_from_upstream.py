@@ -902,6 +902,7 @@ if args.operation == "copy":
                 "name": "slh_dsa",
                 "schemes": [
                     {"scheme": scheme} for scheme in slh_dsa_schemes
+                    if "pure" in scheme
                 ]
             }
         ]
