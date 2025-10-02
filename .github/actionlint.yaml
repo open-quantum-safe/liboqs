@@ -5,3 +5,6 @@ config-variables:
   # - DEFAULT_RUNNER
   # - JOB_NAME
   # - ENVIRONMENT_STAGE
+self-hosted-runner:
+  labels:
+    - oqs-x64
