@@ -23,6 +23,8 @@ auxiliary-submitters:
 crypto-assumption: hash-based signatures
 website: https://sphincs.org/
 nist-round: 3
+standardization-status: Selected by [NIST](https://sphincs.org/data/sphincs+-r3.1-specification.pdf)
+  as basis for SLH-DSA (FIPS 205)
 spec-version: NIST Round 3 submission, v3.1 (June 10, 2022)
 spdx-license-identifier: CC0-1.0
 primary-upstream:
