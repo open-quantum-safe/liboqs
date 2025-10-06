@@ -16,6 +16,7 @@ import json
 import platform
 import update_upstream_alg_docs
 import copy_from_slh_dsa_c
+from copy import deepcopy
 
 # kats of all algs
 kats = {}
@@ -97,6 +98,46 @@ def generator_all(filename, instructions):
     contents = jinja2.Template(template).render({'instructions': instructions})
     file_put_contents(filename, contents)
 
+# TODO: consider refactoring replacer by calling replace_one_fragment
+def replace_one_fragment(
+    dst_path: str,
+    template_path: str,
+    instructions: dict,
+    delimiter: str,
+    libjade: bool = False,
+):
+    """Replace a single fragment with a rendered Jinja template
+
+    :param dst_path: path to the rendered file, relative to LIBOQS_DIR
+    :param template_path: path to the Jinja template file, relative to LIBOQS_DIR
+    :param instructions: copy_from_upstream.yml or some patched version
+    :param delimiter: how the identifer for the fragment in the destination file
+    is prefixed
+    """
+    liboqs_dir = os.environ.get("LIBOQS_DIR", None)
+    if not liboqs_dir:
+        raise KeyError("Environment variable LIBOQS_DIR is missing")
+    dst_path = os.path.join(liboqs_dir, dst_path)
+    template_path = os.path.join(liboqs_dir, template_path)
+    with open(template_path, "r") as template_f, open(dst_path, "r") as dst_f:
+        template = template_f.read()
+        dst_content = dst_f.read()
+    identifier, _ = os.path.splitext(os.path.basename(template_path))
+    jade_or_upstream = "LIBJADE" if libjade else "UPSTREAM"
+    identifier_start = f"{delimiter} OQS_COPY_FROM_{jade_or_upstream}_FRAGMENT_{identifier.upper()}_START"
+    identifier_end = f"{delimiter} OQS_COPY_FROM_{jade_or_upstream}_FRAGMENT_{identifier.upper()}_END"
+    preamble = dst_content[: dst_content.find(identifier_start)]
+    postamble = dst_content[dst_content.find(identifier_end) :]
+    dst_content = (
+        preamble
+        + identifier_start
+        + jinja2.Template(template).render(
+            {"instructions": instructions, "non_upstream_kems": non_upstream_kems}
+        )
+        + postamble
+    )
+    with open(dst_path, "w") as f:
+        f.write(dst_content)
 
 def replacer(filename, instructions, delimiter, libjade=False):
     fragments = glob.glob(
@@ -701,14 +742,29 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
             )
 
 
-def copy_from_upstream():
+def copy_from_upstream(slh_dsa_inst: dict):
+    """Integrate upstreams implementations and algorithms described in 
+    copy_from_upstream.yml.
+
+    :param slh_dsa_inst: instruction for integrating SLH-DSA, only used for 
+    rendering alg_support.cmake
+    """
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
     instructions = load_instructions('copy_from_upstream.yml')
+    patched_inst: dict = deepcopy(instructions)
+    patched_inst["sigs"].append(slh_dsa_inst["sigs"][0])
     process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####')
+    # NOTE: issue 2203, only for replacing list of standardized algs
+    replace_one_fragment(
+        ".CMake/alg_support.cmake",
+        "scripts/copy_from_upstream/.CMake/alg_support.cmake/list_standardized_algs.fragment",
+        patched_inst,
+        "#####"
+    )
     replacer('CMakeLists.txt', instructions, '#####')
     replacer('src/oqsconfig.h.cmake', instructions, '/////')
     replacer('src/CMakeLists.txt', instructions, '#####')
@@ -839,9 +895,20 @@ non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime', 'n
 
 if args.operation == "copy":
     # copy_from_slh_dsa_c will modify slh_dsa.yml before copy_from_upstream modifies md files
-    copy_from_slh_dsa_c.main()
+    slh_dsa_schemes: list[str] = copy_from_slh_dsa_c.main()
+    slh_dsa_instruction = {
+        "sigs": [
+            {
+                "name": "slh_dsa",
+                "schemes": [
+                    {"scheme": scheme} for scheme in slh_dsa_schemes
+                    if "pure" in scheme
+                ]
+            }
+        ]
+    }
     os.chdir(os.path.join(os.environ['LIBOQS_DIR'],"scripts","copy_from_upstream"))
-    copy_from_upstream()
+    copy_from_upstream(slh_dsa_instruction)
 elif args.operation == "libjade":
     copy_from_libjade()
 elif args.operation == "verify":
