@@ -2,6 +2,9 @@
 
 # SPDX-License-Identifier: MIT
 
+# NOTE: an example:
+# ./scripts/noregress.sh 0.14.0 "-GNinja -DOQS_ALGS_ENABLED=STD" "ninja"
+
 if [ $# -lt 1 ]; then
    echo "Usage: $0 <liboqs-release to test regression against> [<cmake opts> [<make cmd>]]. Exiting."
    exit -1
