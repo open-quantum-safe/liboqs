@@ -34,7 +34,7 @@ OQS_SIG *OQS_SIG_uov_ov_III_pkc_skc_new(void) {
 
 extern int pqov_uov_III_pkc_skc_ref_keypair(uint8_t *pk, uint8_t *sk);
 extern int pqov_uov_III_pkc_skc_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
-extern int pqov_uov_III_pkc_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+extern int pqov_uov_III_pkc_skc_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 
 #if defined(OQS_ENABLE_SIG_uov_ov_III_pkc_skc_neon)
 extern int pqov_uov_III_pkc_skc_neon_keypair(uint8_t *pk, uint8_t *sk);
@@ -108,7 +108,7 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_skc_verify(const uint8_t *message, siz
 		return (OQS_STATUS) pqov_uov_III_pkc_skc_neon_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_skc_ref_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_uov_ov_III_pkc_skc_avx2)
@@ -118,11 +118,11 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_skc_verify(const uint8_t *message, siz
 		return (OQS_STATUS) pqov_uov_III_pkc_skc_avx2_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_skc_ref_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
+	return (OQS_STATUS) pqov_uov_III_pkc_skc_ref_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
 
