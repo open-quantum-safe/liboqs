@@ -53,6 +53,7 @@ liboqs 0.15.0 was released on Oct ??, 2025.
 - Added Classic McEliece sanitization patch  [#2218](https://github.com/open-quantum-safe/liboqs/pull/2218)
 
 ## Miscellaneous
+- Deprecated `noregress` scripts ([#2295](https://github.com/open-quantum-safe/liboqs/pull/2295))
 - Updated no-pass explanation for constant-time testing ([#2294](https://github.com/open-quantum-safe/liboqs/pull/2294))
 - Fixed weekly test failures in GitHub Action ([#2285](https://github.com/open-quantum-safe/liboqs/pull/2294))
 - Improved algorithm support readability in README.md ([#2286](https://github.com/open-quantum-safe/liboqs/pull/2286))
