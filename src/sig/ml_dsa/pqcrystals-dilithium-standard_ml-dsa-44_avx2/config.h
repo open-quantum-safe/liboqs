@@ -2,7 +2,9 @@
 #define CONFIG_H
 
 //#define DILITHIUM_MODE 2
+#ifndef DILITHIUM_RANDOMIZED_SIGNING
 #define DILITHIUM_RANDOMIZED_SIGNING
+#endif
 //#define USE_RDPMC
 //#define DBENCH
 

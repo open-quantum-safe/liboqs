@@ -244,6 +244,101 @@ cleanup:
 	return ret;
 }
 
+#if defined(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
+// Test that two signatures of the same message are different.
+static OQS_STATUS sig_test_randomized_signing(const char *method_name) {
+	OQS_SIG *sig = NULL;
+	uint8_t *public_key = NULL;
+	uint8_t *secret_key = NULL;
+	uint8_t *message = NULL;
+	size_t message_len = 100;
+	uint8_t *signature1 = NULL;
+	size_t signature1_len;
+	uint8_t *signature2 = NULL;
+	size_t signature2_len;
+	OQS_STATUS rc, ret = OQS_ERROR;
+
+	sig = OQS_SIG_new(method_name);
+	if (sig == NULL) {
+		// ML-DSA is not enabled, so we can't test it.
+		return OQS_SUCCESS;
+	}
+
+	printf("Testing randomized signing for %s\n", sig->method_name);
+
+	public_key = OQS_MEM_malloc(sig->length_public_key);
+	secret_key = OQS_MEM_malloc(sig->length_secret_key);
+	message = OQS_MEM_malloc(message_len);
+	signature1 = OQS_MEM_malloc(sig->length_signature);
+	signature2 = OQS_MEM_malloc(sig->length_signature);
+
+	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature1 == NULL) || (signature2 == NULL)) {
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
+		goto err;
+	}
+
+	OQS_randombytes(message, message_len);
+
+	rc = OQS_SIG_keypair(sig, public_key, secret_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
+		goto err;
+	}
+
+	rc = OQS_SIG_sign(sig, signature1, &signature1_len, message, message_len, secret_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
+		goto err;
+	}
+
+	rc = OQS_SIG_sign(sig, signature2, &signature2_len, message, message_len, secret_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
+		goto err;
+	}
+
+	if (signature1_len != signature2_len) {
+		printf("Signatures have different lengths, so they are not identical.\n");
+	} else if (memcmp(signature1, signature2, signature1_len) == 0) {
+		fprintf(stderr, "ERROR: Two signatures of the same message are identical.\n");
+		goto err;
+	} else {
+		printf("Two signatures of the same message are not identical, as expected.\n");
+	}
+
+	rc = OQS_SIG_verify(sig, message, message_len, signature1, signature1_len, public_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_verify failed for signature 1\n");
+		goto err;
+	}
+
+	rc = OQS_SIG_verify(sig, message, message_len, signature2, signature2_len, public_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_verify failed for signature 2\n");
+		goto err;
+	}
+
+	printf("verification passes as expected\n");
+	ret = OQS_SUCCESS;
+	goto cleanup;
+
+err:
+	ret = OQS_ERROR;
+
+cleanup:
+	if (secret_key) {
+		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
+	}
+	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(message);
+	OQS_MEM_insecure_free(signature1);
+	OQS_MEM_insecure_free(signature2);
+	OQS_SIG_free(sig);
+
+	return ret;
+}
+#endif
+
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
@@ -346,6 +441,16 @@ int main(int argc, char **argv) {
 		printf("Could not generate random data with system RNG\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
+	}
+#endif
+
+#if defined(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
+	if (strncmp(alg_name, "ML-DSA", 6) == 0) {
+		rc = sig_test_randomized_signing(alg_name);
+		if (rc != OQS_SUCCESS) {
+			OQS_destroy();
+			return EXIT_FAILURE;
+		}
 	}
 #endif
 
