@@ -19,7 +19,7 @@ standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/p
 nist-round: 2
 spec-version: NIST Round 2 (February 2025)
 primary-upstream:
-  source: https://github.com/pqov/pqov/commit/7e0832b6732a476119742c4acabd11b7c767aefb
+  source: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
   spdx-license-identifier: CC0 OR Apache-2.0
 parameter-sets:
 - name: OV-Is
