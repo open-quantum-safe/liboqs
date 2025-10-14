@@ -79,7 +79,7 @@ bool lm_ots_generate_public_key(
  */
 void lm_ots_generate_randomizer(unsigned char *c, unsigned n,
                                 struct seed_derive *seed) {
-    unsigned char randomizer[ SEED_LEN ];
+    unsigned char randomizer[ seedLen_g ];
 
     hss_seed_derive_set_j( seed, SEED_RANDOMIZER_INDEX );
 
