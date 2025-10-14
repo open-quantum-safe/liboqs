@@ -6,7 +6,7 @@
 - **Authors' website**: https://www.uovsig.org/
 - **Specification version**: NIST Round 2 (February 2025).
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pqov/pqov/commit/7e0832b6732a476119742c4acabd11b7c767aefb
+  - **Source**: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
   - **Implementation license (SPDX-Identifier)**: CC0 OR Apache-2.0
 
 
