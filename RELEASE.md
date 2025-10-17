@@ -41,6 +41,7 @@ liboqs 0.15.0 was released on Oct ??, 2025.
 - Integrated ML-KEM implementation from ICICLE-PQC [#2216](https://github.com/open-quantum-safe/liboqs/pull/2216)
 
 ## Bug fixes
+- Fixed incorrect import in OV-III-pkc_skc ([#2299](https://github.com/open-quantum-safe/liboqs/pull/2299))
 - Fixed incorrect actual signature length in signature full-cycle speed test ([#2293](https://github.com/open-quantum-safe/liboqs/pull/2293))
 - Fixed ICICLE ML-KEM integration ([#2288](https://github.com/open-quantum-safe/liboqs/pull/2293))
 - Disabled strict aliasing on SPHINCS+-SHAKE ([#2264](https://github.com/open-quantum-safe/liboqs/pull/2264))
