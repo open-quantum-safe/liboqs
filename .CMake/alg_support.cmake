@@ -174,7 +174,7 @@ cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768 "" ON "OQS_ENABLE_KEM_ML_KEM" O
 cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024 "" ON "OQS_ENABLE_KEM_ML_KEM" OFF)
 
 option(OQS_ENABLE_SIG_ML_DSA "Enable ml_dsa algorithm family" ON)
-cmake_dependent_option(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING "Enable randomized signing for ML-DSA" OFF "OQS_ENABLE_SIG_ML_DSA" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING "Enable randomized signing for ML-DSA" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)

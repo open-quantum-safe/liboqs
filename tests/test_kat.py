@@ -27,6 +27,9 @@ def test_sig(sig_name):
     kats = helpers.get_kats("sig")
     # slh dsa will run ACVP vectors instead
     if ("SLH_DSA" in sig_name): pytest.skip('slhdsa not enabled for KATs')
+    # Skip ML-DSA KATs if randomized signing is not enabled
+    if sig_name in ["ML-DSA-44", "ML-DSA-65", "ML-DSA-87"] and not helpers.is_ml_dsa_randomized_signing_enabled():
+        pytest.skip("Skipping ML-DSA KAT signature test: implementation built in deterministic mode")
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_sig'), sig_name],

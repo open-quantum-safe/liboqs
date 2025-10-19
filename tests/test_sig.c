@@ -260,8 +260,8 @@ static OQS_STATUS sig_test_randomized_signing(const char *method_name) {
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
-		// ML-DSA is not enabled, so we can't test it.
-		return OQS_SUCCESS;
+		fprintf(stderr, "ERROR: OQS_SIG_new failed for %s\n", method_name);
+		return OQS_ERROR;
 	}
 
 	printf("Testing randomized signing for %s\n", sig->method_name);

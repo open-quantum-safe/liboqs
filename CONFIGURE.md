@@ -64,11 +64,11 @@ For a full list of such options and their default values, consult [.CMake/alg_su
 
 ### OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING
 
-Can be set to `ON` or `OFF`. When `ON`, ML-DSA signature algorithms are built with randomized signing enabled, resulting in non-deterministic signatures (randomized seed/nonce per signature).
+Can be set to `ON` or `OFF`. When `ON`, ML-DSA signature algorithms are built with randomized signing enabled, resulting in non-deterministic signatures. When `OFF`, ML-DSA signature algorithms use deterministic signing.
 
 This option is only available if `OQS_ENABLE_SIG_ML_DSA` is `ON`.
 
-**Default**: `OFF`.
+**Default**: `ON`.
 
 ## OQS_ALGS_ENABLED
 
