@@ -154,6 +154,9 @@ endif()
 
 add_executable(test_sig test_sig.c test_helpers.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
+if(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
+    target_compile_definitions(test_sig PRIVATE OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
+endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     # workaround for Windows .dll
     if(CMAKE_CROSSCOMPILING)

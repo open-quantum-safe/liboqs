@@ -46,6 +46,11 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
         {%- if impl['compile_opts'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
         {%- endif %}
+        {%- if family == 'ml_dsa' %}
+    if(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
+        target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC -DDILITHIUM_RANDOMIZED_SIGNING)
+    endif()
+        {%- endif %}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}>)
 endif()
     {%- endfor -%}
