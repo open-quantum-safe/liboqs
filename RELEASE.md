@@ -1,4 +1,4 @@
-# liboqs version 0.15.0
+# liboqs version 0.15.0-rc1
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.  More information on OQS can be found on our website: https://openquantumsafe.org/ and on Github at https://github.com/open-quantum-safe/.  
 
@@ -21,12 +21,13 @@ liboqs can also be used in the following programming languages via language-spec
 - Rust, via https://github.com/open-quantum-safe/liboqs-rust
 
 # Release notes
-liboqs 0.15.0 was released on Oct ??, 2025.
+Release candidate 1 for liboqs 0.15.0 was released on Oct 20, 2025.
 
 ## Deprecation notice
-0.15 is the last version to officially support SPHINCS+. SPHINCS+ will be removed in the 0.16 release and replaced by SLH-DSA.
+liboqs 0.15.0 is the last version to officially support SPHINCS+. SPHINCS+ will be removed in the 0.16.0 release and replaced by SLH-DSA. liboqs 0.15.0 also removes support for Dilithium.
 
 ## Security issues
+None reported
 
 <!--- git log HEAD...0.14.0 --->
 ## Significant changes
@@ -92,3 +93,5 @@ liboqs 0.15.0 was released on Oct ??, 2025.
 - Rodrigo Martín (@RodriM11)
 - @sukrucildirr
 - Kitsios Konstantinos (@kitsiosk)
+
+<!-- TODO: include full changelog statement at full release -->
