@@ -539,9 +539,15 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 		return NULL;
 #endif
 		// EDIT-WHEN-ADDING-KEM
+#ifdef OQS_ENABLE_KEM_ntruplus_701
+	} else if (strcmp(method_name, OQS_KEM_alg_ntruplus_701) == 0) {
+		return OQS_KEM_ntruplus_701_new();
+#endif
+
 	} else {
 		return NULL;
 	}
+
 }
 
 OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {

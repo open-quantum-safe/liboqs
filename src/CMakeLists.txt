@@ -43,6 +43,12 @@ if(OQS_ENABLE_KEM_ML_KEM)
     add_subdirectory(kem/ml_kem)
     set(KEM_OBJS ${KEM_OBJS} ${ML_KEM_OBJS})
 endif()
+##수정
+if(OQS_ENABLE_KEM_ntruplus_701)
+    add_subdirectory(kem/ntruplus)
+    set(KEM_OBJS ${KEM_OBJS} $<TARGET_OBJECTS:ntruplus>)
+endif()
+##
 if(OQS_ENABLE_SIG_ML_DSA)
     add_subdirectory(sig/ml_dsa)
     set(SIG_OBJS ${SIG_OBJS} ${ML_DSA_OBJS})
@@ -71,6 +77,7 @@ if(OQS_ENABLE_SIG_SNOVA)
     add_subdirectory(sig/snova)
     set(SIG_OBJS ${SIG_OBJS} ${SNOVA_OBJS})
 endif()
+
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 if(OQS_ENABLE_SIG_SLH_DSA)

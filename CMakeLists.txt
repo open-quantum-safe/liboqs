@@ -29,6 +29,9 @@ option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
 option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
+option(OQS_ENABLE_KEM_ntruplus_701 "Enable NTRU+701 KEM" ON)
+
+
 
 # Libfuzzer isn't supported on gcc
 if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
@@ -245,6 +248,9 @@ if(OQS_ENABLE_KEM_NTRUPRIME)
 endif()
 if(OQS_ENABLE_KEM_NTRU)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/ntru/kem_ntru.h)
+endif()
+if(OQS_ENABLE_KEM_ntruplus_701)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/ntruplus/kem_ntruplus.h)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_START
 if(OQS_ENABLE_KEM_CLASSIC_MCELIECE)

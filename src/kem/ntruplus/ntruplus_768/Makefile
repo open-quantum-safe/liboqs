@@ -1,1 +1,0 @@
-../NTRU+KEM576/Makefile
