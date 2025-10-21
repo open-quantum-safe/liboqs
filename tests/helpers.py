@@ -143,22 +143,28 @@ def is_sig_stfl_enabled_by_name(name):
     return False
 
 def filtered_test(func):
-    funcname = func.__name__[len("test_"):]
+    funcname = func.__name__[len("test_") :]
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
-            for algexp in os.environ['SKIP_ALGS'].split(','):
+        if ("SKIP_ALGS" in os.environ) and len(os.environ["SKIP_ALGS"]) > 0:
+            for algexp in os.environ["SKIP_ALGS"].split(","):
                 for arg in args:
-                    if len(re.findall(algexp, arg))>0:
+                    if isinstance(arg, str) and len(re.findall(algexp, arg)) > 0:
                         pytest.skip("Test disabled by alg filter")
                 for arg in kwargs:
-                    if len(re.findall(algexp, kwargs[arg]))>0:
+                    if (
+                        isinstance(kwargs[arg], str)
+                        and len(re.findall(algexp, kwargs[arg])) > 0
+                    ):
                         pytest.skip("Test disabled by alg filter")
-        if ('SKIP_TESTS' in os.environ) and (funcname in os.environ['SKIP_TESTS'].lower().split(',')):
+        if ("SKIP_TESTS" in os.environ) and (
+            funcname in os.environ["SKIP_TESTS"].lower().split(",")
+        ):
             pytest.skip("Test disabled by filter")
         else:
             return func(*args, **kwargs)
+
     return wrapper
 
 # So far, build dir name has been hard coded to "build".
