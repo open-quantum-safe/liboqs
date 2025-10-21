@@ -5,6 +5,7 @@ import os
 import sys
 import pytest
 import helpers
+import requests
 
 ml_kem = ["ML-KEM-512", "ML-KEM-768", "ML-KEM-1024"]
 ml_sig = ["ML-DSA-44", "ML-DSA-65", "ML-DSA-87"]
@@ -18,6 +19,8 @@ for sig in helpers.available_sigs_by_name():
 
 # FIX: define the URL and test names here, fetch the JSON file from the URL
 ml_kem_encdec = "ACVP_Vectors/ML-KEM-encapDecap-FIPS203/internalProjection.json"
+# TODO: extract the common root URL and use urllib.parse.urljoin
+ml_kem_encdec_url = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.40/gen-val/json-files/ML-KEM-encapDecap-FIPS203/internalProjection.json"
 ml_kem_kg = "ACVP_Vectors/ML-KEM-keyGen-FIPS203/internalProjection.json"
 
 ml_dsa_kg = "ACVP_Vectors/ML-DSA-keyGen-FIPS204/internalProjection.json"
@@ -76,39 +79,40 @@ def test_acvp_vec_kem_encdec_aft(kem_name):
     if not (kem_name in ml_kem):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", ml_kem_encdec), "r") as fp:
-        ml_kem_encdec_acvp = json.load(fp)
+    resp = requests.get(ml_kem_encdec_url)
+    assert resp.status_code == 200
+    ml_kem_encdec_acvp = json.loads(resp.content)
 
-        variantFound = False
-        for variant in ml_kem_encdec_acvp["testGroups"]:
-            if (
-                variant["parameterSet"] == kem_name
-                and variant["function"] == "encapsulation"
-            ):
-                variantFound = True
-                for testCase in variant["tests"]:
-                    # prompt
-                    pk = testCase["ek"]
-                    # TODO: need dk?
-                    m = testCase["m"]
-                    # expected results
-                    k = testCase["k"]
-                    c = testCase["c"]
+    variantFound = False
+    for variant in ml_kem_encdec_acvp["testGroups"]:
+        if (
+            variant["parameterSet"] == kem_name
+            and variant["function"] == "encapsulation"
+        ):
+            variantFound = True
+            for testCase in variant["tests"]:
+                # prompt
+                pk = testCase["ek"]
+                # TODO: need dk?
+                m = testCase["m"]
+                # expected results
+                k = testCase["k"]
+                c = testCase["c"]
 
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [
-                            f"{build_dir}/tests/vectors_kem",
-                            kem_name,
-                            "encDecAFT",
-                            m,
-                            pk,
-                            k,
-                            c,
-                        ]
-                    )
+                build_dir = helpers.get_current_build_dir_name()
+                helpers.run_subprocess(
+                    [
+                        f"{build_dir}/tests/vectors_kem",
+                        kem_name,
+                        "encDecAFT",
+                        m,
+                        pk,
+                        k,
+                        c,
+                    ]
+                )
 
-        assert variantFound == True
+    assert variantFound == True
 
 
 @helpers.filtered_test
