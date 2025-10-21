@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: MIT
 
 import json
-import os
 import sys
+from urllib.parse import urljoin
+
 import pytest
-import helpers
 import requests
+
+import helpers
 
 ml_kem = ["ML-KEM-512", "ML-KEM-768", "ML-KEM-1024"]
 ml_sig = ["ML-DSA-44", "ML-DSA-65", "ML-DSA-87"]
@@ -17,19 +19,17 @@ for sig in helpers.available_sigs_by_name():
     if helpers.is_sig_enabled_by_name(sig) and sig.startswith("SLH_DSA"):
         slh_sig.append(sig)
 
-# FIX: define the URL and test names here, fetch the JSON file from the URL
-ml_kem_encdec = "ACVP_Vectors/ML-KEM-encapDecap-FIPS203/internalProjection.json"
-# TODO: extract the common root URL and use urllib.parse.urljoin
-ml_kem_encdec_url = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.40/gen-val/json-files/ML-KEM-encapDecap-FIPS203/internalProjection.json"
-ml_kem_kg = "ACVP_Vectors/ML-KEM-keyGen-FIPS203/internalProjection.json"
+URLROOT = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.40/gen-val/json-files/"
+ml_kem_encdec = urljoin(URLROOT, "ML-KEM-encapDecap-FIPS203/internalProjection.json")
+ml_kem_kg = urljoin(URLROOT, "ML-KEM-keyGen-FIPS203/internalProjection.json")
 
-ml_dsa_kg = "ACVP_Vectors/ML-DSA-keyGen-FIPS204/internalProjection.json"
-ml_dsa_sig = "ACVP_Vectors/ML-DSA-sigGen-FIPS204/internalProjection.json"
-ml_dsa_ver = "ACVP_Vectors/ML-DSA-sigVer-FIPS204/internalProjection.json"
+ml_dsa_kg = urljoin(URLROOT, "ML-DSA-keyGen-FIPS204/internalProjection.json")
+ml_dsa_sig = urljoin(URLROOT, "ML-DSA-sigGen-FIPS204/internalProjection.json")
+ml_dsa_ver = urljoin(URLROOT, "ML-DSA-sigVer-FIPS204/internalProjection.json")
 
-slh_dsa_kg = "ACVP_Vectors/SLH-DSA-keyGen-FIPS205/internalProjection.json"
-slh_dsa_sig = "ACVP_Vectors/SLH-DSA-sigGen-FIPS205/internalProjection.json"
-slh_dsa_ver = "ACVP_Vectors/SLH-DSA-sigVer-FIPS205/internalProjection.json"
+slh_dsa_kg = urljoin(URLROOT, "SLH-DSA-keyGen-FIPS205/internalProjection.json")
+slh_dsa_sig = urljoin(URLROOT, "SLH-DSA-sigGen-FIPS205/internalProjection.json")
+slh_dsa_ver = urljoin(URLROOT, "SLH-DSA-sigVer-FIPS205/internalProjection.json")
 
 
 @helpers.filtered_test
@@ -41,33 +41,34 @@ def test_acvp_vec_kem_keygen(kem_name):
     if not (kem_name in ml_kem):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", ml_kem_kg), "r") as fp:
-        ml_kem_kg_acvp = json.load(fp)
+    resp = requests.get(ml_kem_kg)
+    assert resp.status_code == 200
+    ml_kem_kg_acvp = json.loads(resp.content)
 
-        variantFound = False
-        for variant in ml_kem_kg_acvp["testGroups"]:
-            if variant["parameterSet"] == kem_name:
-                variantFound = True
-                for testCase in variant["tests"]:
-                    d = testCase["d"]
-                    z = testCase["z"]
-                    pk = testCase["ek"]
-                    sk = testCase["dk"]
+    variantFound = False
+    for variant in ml_kem_kg_acvp["testGroups"]:
+        if variant["parameterSet"] == kem_name:
+            variantFound = True
+            for testCase in variant["tests"]:
+                d = testCase["d"]
+                z = testCase["z"]
+                pk = testCase["ek"]
+                sk = testCase["dk"]
 
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [
-                            f"{build_dir}/tests/vectors_kem",
-                            kem_name,
-                            "keyGen",
-                            d + z,
-                            pk,
-                            sk,
-                        ]
-                    )
+                build_dir = helpers.get_current_build_dir_name()
+                helpers.run_subprocess(
+                    [
+                        f"{build_dir}/tests/vectors_kem",
+                        kem_name,
+                        "keyGen",
+                        d + z,
+                        pk,
+                        sk,
+                    ]
+                )
 
-        # TODO: assert xxx == True is not Pythonic
-        assert variantFound == True
+    # TODO: assert xxx == True is not Pythonic
+    assert variantFound == True
 
 
 @helpers.filtered_test
@@ -79,7 +80,7 @@ def test_acvp_vec_kem_encdec_aft(kem_name):
     if not (kem_name in ml_kem):
         pytest.skip("Not supported")
 
-    resp = requests.get(ml_kem_encdec_url)
+    resp = requests.get(ml_kem_encdec)
     assert resp.status_code == 200
     ml_kem_encdec_acvp = json.loads(resp.content)
 
@@ -124,36 +125,37 @@ def test_acvp_vec_kem_encdec_val(kem_name):
     if not (kem_name in ml_kem):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", ml_kem_encdec), "r") as fp:
-        ml_kem_encdec_acvp = json.load(fp)
+    resp = requests.get(ml_kem_encdec)
+    assert resp.status_code == 200
+    ml_kem_encdec_acvp = json.loads(resp.content)
 
-        variantFound = False
-        for variant in ml_kem_encdec_acvp["testGroups"]:
-            if (
-                variant["parameterSet"] == kem_name
-                and variant["function"] == "decapsulation"
-            ):
-                variantFound = True
-                for testCase in variant["tests"]:
-                    sk = testCase["dk"]
-                    # prompt
-                    c = testCase["c"]
-                    # expected results
-                    k = testCase["k"]
+    variantFound = False
+    for variant in ml_kem_encdec_acvp["testGroups"]:
+        if (
+            variant["parameterSet"] == kem_name
+            and variant["function"] == "decapsulation"
+        ):
+            variantFound = True
+            for testCase in variant["tests"]:
+                sk = testCase["dk"]
+                # prompt
+                c = testCase["c"]
+                # expected results
+                k = testCase["k"]
 
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [
-                            f"{build_dir}/tests/vectors_kem",
-                            kem_name,
-                            "encDecVAL",
-                            sk,
-                            k,
-                            c,
-                        ]
-                    )
+                build_dir = helpers.get_current_build_dir_name()
+                helpers.run_subprocess(
+                    [
+                        f"{build_dir}/tests/vectors_kem",
+                        kem_name,
+                        "encDecVAL",
+                        sk,
+                        k,
+                        c,
+                    ]
+                )
 
-        assert variantFound == True
+    assert variantFound == True
 
 
 @helpers.filtered_test
@@ -166,31 +168,32 @@ def test_acvp_vec_ml_dsa_sig_keygen(sig_name):
     if not (sig_name in ml_sig):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", ml_dsa_kg), "r") as fp:
-        ml_sig_kg_acvp = json.load(fp)
+    resp = requests.get(ml_dsa_kg)
+    assert resp.status_code == 200
+    ml_sig_kg_acvp = json.loads(resp.content)
 
-        variantFound = False
-        for variant in ml_sig_kg_acvp["testGroups"]:
-            if variant["parameterSet"] == sig_name:
-                variantFound = True
-                for testCase in variant["tests"]:
-                    seed = testCase["seed"]
-                    pk = testCase["pk"]
-                    sk = testCase["sk"]
+    variantFound = False
+    for variant in ml_sig_kg_acvp["testGroups"]:
+        if variant["parameterSet"] == sig_name:
+            variantFound = True
+            for testCase in variant["tests"]:
+                seed = testCase["seed"]
+                pk = testCase["pk"]
+                sk = testCase["sk"]
 
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [
-                            f"{build_dir}/tests/vectors_sig",
-                            sig_name,
-                            "keyGen",
-                            seed,
-                            pk,
-                            sk,
-                        ]
-                    )
+                build_dir = helpers.get_current_build_dir_name()
+                helpers.run_subprocess(
+                    [
+                        f"{build_dir}/tests/vectors_sig",
+                        sig_name,
+                        "keyGen",
+                        seed,
+                        pk,
+                        sk,
+                    ]
+                )
 
-        assert variantFound == True
+    assert variantFound == True
 
 
 @helpers.filtered_test
@@ -203,62 +206,57 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
     if not (sig_name in ml_sig):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", ml_dsa_sig), "r") as fp:
-        ml_sig_sig_acvp = json.load(fp)
+    resp = requests.get(ml_dsa_sig)
+    assert resp.status_code == 200
+    ml_sig_sig_acvp = json.loads(resp.content)
 
-        variantFound = False
-        for variant in ml_sig_sig_acvp["testGroups"]:
-            # perform only below tests ATM:
-            # 1. internal API with externalMu as false
-            # 2. external API with "pure" implementation
-            if (
-                variant["signatureInterface"] == "internal"
-                and not variant["externalMu"]
-            ) or (
-                variant["signatureInterface"] == "external"
-                and variant["preHash"] == "pure"
-            ):
-                if variant["parameterSet"] == sig_name:
-                    variantFound = True
-                    for testCase in variant["tests"]:
-                        sk = testCase["sk"]
-                        message = testCase["message"]
-                        signature = testCase["signature"]
-                        rnd = (
-                            testCase["rnd"]
-                            if not variant["deterministic"]
-                            else "0" * 64
+    variantFound = False
+    for variant in ml_sig_sig_acvp["testGroups"]:
+        # perform only below tests ATM:
+        # 1. internal API with externalMu as false
+        # 2. external API with "pure" implementation
+        if (
+            variant["signatureInterface"] == "internal" and not variant["externalMu"]
+        ) or (
+            variant["signatureInterface"] == "external" and variant["preHash"] == "pure"
+        ):
+            if variant["parameterSet"] == sig_name:
+                variantFound = True
+                for testCase in variant["tests"]:
+                    sk = testCase["sk"]
+                    message = testCase["message"]
+                    signature = testCase["signature"]
+                    rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
+
+                    build_dir = helpers.get_current_build_dir_name()
+                    if variant["signatureInterface"] == "internal":
+                        helpers.run_subprocess(
+                            [
+                                f"{build_dir}/tests/vectors_sig",
+                                sig_name,
+                                "sigGen_int",
+                                sk,
+                                message,
+                                signature,
+                                rnd,
+                            ]
+                        )
+                    else:
+                        context = testCase["context"]
+                        helpers.run_subprocess(
+                            [
+                                f"{build_dir}/tests/vectors_sig",
+                                sig_name,
+                                "sigGen_ext",
+                                sk,
+                                message,
+                                signature,
+                                context,
+                                rnd,
+                            ]
                         )
 
-                        build_dir = helpers.get_current_build_dir_name()
-                        if variant["signatureInterface"] == "internal":
-                            helpers.run_subprocess(
-                                [
-                                    f"{build_dir}/tests/vectors_sig",
-                                    sig_name,
-                                    "sigGen_int",
-                                    sk,
-                                    message,
-                                    signature,
-                                    rnd,
-                                ]
-                            )
-                        else:
-                            context = testCase["context"]
-                            helpers.run_subprocess(
-                                [
-                                    f"{build_dir}/tests/vectors_sig",
-                                    sig_name,
-                                    "sigGen_ext",
-                                    sk,
-                                    message,
-                                    signature,
-                                    context,
-                                    rnd,
-                                ]
-                            )
-
-        assert variantFound == True
+    assert variantFound == True
 
 
 @helpers.filtered_test
@@ -271,58 +269,57 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
     if not (sig_name in ml_sig):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", ml_dsa_ver), "r") as fp:
-        ml_sig_sig_acvp = json.load(fp)
+    resp = requests.get(ml_dsa_ver)
+    assert resp.status_code == 200
+    ml_sig_sig_acvp = json.loads(resp.content)
 
-        variantFound = False
-        for variant in ml_sig_sig_acvp["testGroups"]:
-            # perform only below tests ATM:
-            # 1. internal API with externalMu as false
-            # 2. external API with "pure" implementation
-            if (
-                variant["signatureInterface"] == "internal"
-                and not variant["externalMu"]
-            ) or (
-                variant["signatureInterface"] == "external"
-                and variant["preHash"] == "pure"
-            ):
-                if variant["parameterSet"] == sig_name:
-                    variantFound = True
-                    for testCase in variant["tests"]:
-                        message = testCase["message"]
-                        signature = testCase["signature"]
-                        pk = testCase["pk"]
-                        testPassed = "1" if testCase["testPassed"] else "0"
+    variantFound = False
+    for variant in ml_sig_sig_acvp["testGroups"]:
+        # perform only below tests ATM:
+        # 1. internal API with externalMu as false
+        # 2. external API with "pure" implementation
+        if (
+            variant["signatureInterface"] == "internal" and not variant["externalMu"]
+        ) or (
+            variant["signatureInterface"] == "external" and variant["preHash"] == "pure"
+        ):
+            if variant["parameterSet"] == sig_name:
+                variantFound = True
+                for testCase in variant["tests"]:
+                    message = testCase["message"]
+                    signature = testCase["signature"]
+                    pk = testCase["pk"]
+                    testPassed = "1" if testCase["testPassed"] else "0"
 
-                        build_dir = helpers.get_current_build_dir_name()
-                        if variant["signatureInterface"] == "internal":
-                            helpers.run_subprocess(
-                                [
-                                    f"{build_dir}/tests/vectors_sig",
-                                    sig_name,
-                                    "sigVer_int",
-                                    pk,
-                                    message,
-                                    signature,
-                                    testPassed,
-                                ]
-                            )
-                        else:
-                            context = testCase["context"]
-                            helpers.run_subprocess(
-                                [
-                                    f"{build_dir}/tests/vectors_sig",
-                                    sig_name,
-                                    "sigVer_ext",
-                                    pk,
-                                    message,
-                                    signature,
-                                    context,
-                                    testPassed,
-                                ]
-                            )
+                    build_dir = helpers.get_current_build_dir_name()
+                    if variant["signatureInterface"] == "internal":
+                        helpers.run_subprocess(
+                            [
+                                f"{build_dir}/tests/vectors_sig",
+                                sig_name,
+                                "sigVer_int",
+                                pk,
+                                message,
+                                signature,
+                                testPassed,
+                            ]
+                        )
+                    else:
+                        context = testCase["context"]
+                        helpers.run_subprocess(
+                            [
+                                f"{build_dir}/tests/vectors_sig",
+                                sig_name,
+                                "sigVer_ext",
+                                pk,
+                                message,
+                                signature,
+                                context,
+                                testPassed,
+                            ]
+                        )
 
-        assert variantFound == True
+    assert variantFound == True
 
 
 # TODO: move comments to doc-string where appropriate
@@ -371,35 +368,36 @@ def test_acvp_vec_slh_dsa_sig_keygen(sig_name):
 
     acvp_sig_name = slh_format_name(sig_name)
 
-    with open(os.path.join("tests", slh_dsa_kg), "r") as fp:
-        slh_sig_kg_acvp = json.load(fp)
+    resp = requests.get(slh_dsa_kg)
+    assert resp.status_code == 200
+    slh_sig_kg_acvp = json.loads(resp.content)
 
-        variantFound = False
-        for variant in slh_sig_kg_acvp["testGroups"]:
-            if variant["parameterSet"] == acvp_sig_name:
-                variantFound = True
-                for testCase in variant["tests"]:
-                    skSeed = testCase["skSeed"]
-                    skPrf = testCase["skPrf"]
-                    pkSeed = testCase["pkSeed"]
-                    pk = testCase["pk"]
-                    sk = testCase["sk"]
+    variantFound = False
+    for variant in slh_sig_kg_acvp["testGroups"]:
+        if variant["parameterSet"] == acvp_sig_name:
+            variantFound = True
+            for testCase in variant["tests"]:
+                skSeed = testCase["skSeed"]
+                skPrf = testCase["skPrf"]
+                pkSeed = testCase["pkSeed"]
+                pk = testCase["pk"]
+                sk = testCase["sk"]
 
-                    build_dir = helpers.get_current_build_dir_name()
-                    helpers.run_subprocess(
-                        [
-                            f"{build_dir}/tests/vectors_sig",
-                            sig_name,
-                            "keyGen",
-                            skSeed,
-                            skPrf,
-                            pkSeed,
-                            pk,
-                            sk,
-                        ]
-                    )
+                build_dir = helpers.get_current_build_dir_name()
+                helpers.run_subprocess(
+                    [
+                        f"{build_dir}/tests/vectors_sig",
+                        sig_name,
+                        "keyGen",
+                        skSeed,
+                        skPrf,
+                        pkSeed,
+                        pk,
+                        sk,
+                    ]
+                )
 
-        assert variantFound == True
+    assert variantFound == True
 
 
 @helpers.filtered_test
@@ -412,49 +410,50 @@ def test_acvp_vec_slh_dsa_sig_gen(sig_name):
     if not (sig_name in slh_sig):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", slh_dsa_sig), "r") as fp:
-        slh_sig_sig_acvp = json.load(fp)
+    resp = requests.get(slh_dsa_sig)
+    assert resp.status_code == 200
+    slh_sig_sig_acvp = json.loads(resp.content)
 
-        for variant in slh_sig_sig_acvp["testGroups"]:
-            for testCase in variant["tests"]:
-                if slh_test_sig_name(variant, testCase) == sig_name:
-                    sk = testCase["sk"]
-                    message = testCase["message"]
-                    signature = testCase["signature"]
+    for variant in slh_sig_sig_acvp["testGroups"]:
+        for testCase in variant["tests"]:
+            if slh_test_sig_name(variant, testCase) == sig_name:
+                sk = testCase["sk"]
+                message = testCase["message"]
+                signature = testCase["signature"]
 
-                    rnd = (
-                        testCase["additionalRandomness"]
-                        if not variant["deterministic"]
-                        else ""
+                rnd = (
+                    testCase["additionalRandomness"]
+                    if not variant["deterministic"]
+                    else ""
+                )
+
+                build_dir = helpers.get_current_build_dir_name()
+                if variant["signatureInterface"] == "internal":
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name,
+                            "sigGen_int",
+                            sk,
+                            message,
+                            signature,
+                            rnd,
+                        ]
                     )
-
-                    build_dir = helpers.get_current_build_dir_name()
-                    if variant["signatureInterface"] == "internal":
-                        helpers.run_subprocess(
-                            [
-                                f"{build_dir}/tests/vectors_sig",
-                                sig_name,
-                                "sigGen_int",
-                                sk,
-                                message,
-                                signature,
-                                rnd,
-                            ]
-                        )
-                    else:
-                        context = testCase["context"]
-                        helpers.run_subprocess(
-                            [
-                                f"{build_dir}/tests/vectors_sig",
-                                sig_name,
-                                "sigGen_ext",
-                                sk,
-                                message,
-                                signature,
-                                context,
-                                rnd,
-                            ]
-                        )
+                else:
+                    context = testCase["context"]
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name,
+                            "sigGen_ext",
+                            sk,
+                            message,
+                            signature,
+                            context,
+                            rnd,
+                        ]
+                    )
 
 
 @helpers.filtered_test
@@ -467,44 +466,45 @@ def test_acvp_vec_slh_dsa_sig_ver(sig_name):
     if not (sig_name in slh_sig):
         pytest.skip("Not supported")
 
-    with open(os.path.join("tests", slh_dsa_ver), "r") as fp:
-        slh_sig_sig_acvp = json.load(fp)
+    resp = requests.get(slh_dsa_ver)
+    assert resp.status_code == 200
+    slh_sig_sig_acvp = json.loads(resp.content)
 
-        for variant in slh_sig_sig_acvp["testGroups"]:
-            for testCase in variant["tests"]:
-                if slh_test_sig_name(variant, testCase) == sig_name:
-                    message = testCase["message"]
-                    signature = testCase["signature"]
-                    pk = testCase["pk"]
-                    testPassed = "1" if testCase["testPassed"] else "0"
+    for variant in slh_sig_sig_acvp["testGroups"]:
+        for testCase in variant["tests"]:
+            if slh_test_sig_name(variant, testCase) == sig_name:
+                message = testCase["message"]
+                signature = testCase["signature"]
+                pk = testCase["pk"]
+                testPassed = "1" if testCase["testPassed"] else "0"
 
-                    build_dir = helpers.get_current_build_dir_name()
-                    if variant["signatureInterface"] == "internal":
-                        helpers.run_subprocess(
-                            [
-                                f"{build_dir}/tests/vectors_sig",
-                                sig_name,
-                                "sigVer_int",
-                                pk,
-                                message,
-                                signature,
-                                testPassed,
-                            ]
-                        )
-                    else:
-                        context = testCase["context"]
-                        helpers.run_subprocess(
-                            [
-                                f"{build_dir}/tests/vectors_sig",
-                                sig_name,
-                                "sigVer_ext",
-                                pk,
-                                message,
-                                signature,
-                                context,
-                                testPassed,
-                            ]
-                        )
+                build_dir = helpers.get_current_build_dir_name()
+                if variant["signatureInterface"] == "internal":
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name,
+                            "sigVer_int",
+                            pk,
+                            message,
+                            signature,
+                            testPassed,
+                        ]
+                    )
+                else:
+                    context = testCase["context"]
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name,
+                            "sigVer_ext",
+                            pk,
+                            message,
+                            signature,
+                            context,
+                            testPassed,
+                        ]
+                    )
 
 
 if __name__ == "__main__":
