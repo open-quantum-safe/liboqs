@@ -21,7 +21,7 @@ liboqs can also be used in the following programming languages via language-spec
 - Rust, via https://github.com/open-quantum-safe/liboqs-rust
 
 # Release notes
-Release candidate 1 for liboqs 0.15.0 was released on Oct 20, 2025.
+Release candidate 1 for liboqs 0.15.0 was released on Oct 22, 2025.
 
 ## Deprecation notice
 liboqs 0.15.0 is the last version to officially support SPHINCS+. SPHINCS+ will be removed in the 0.16.0 release and replaced by SLH-DSA. liboqs 0.15.0 also removes support for Dilithium.
@@ -48,7 +48,8 @@ None reported
 - Disabled strict aliasing on SPHINCS+-SHAKE ([#2264](https://github.com/open-quantum-safe/liboqs/pull/2264))
 - Fixed typo in `test_kem.c` ([#2281](https://github.com/open-quantum-safe/liboqs/pull/2281))
 - Fixed uninitialized `length_encaps_seed` for NTRU implementations ([#2266](https://github.com/open-quantum-safe/liboqs/pull/2266))
-- Patched ICICLE ML-KEM for deterministic encapsulation ([#2258](https://github.com/open-quantum-safe/liboqs/pull/2258))
+<!-- NOTES: #2258 was overwritten by #2288 and thus omitted from release notes for the sake of clarity -->
+<!-- - Patched ICICLE ML-KEM for deterministic encapsulation ([#2258](https://github.com/open-quantum-safe/liboqs/pull/2258)) -->
 - Changed 64 bit add to 32 bit add to wrap on 32 bit counter for AES-CTR AES-NI implementation [#2252](https://github.com/open-quantum-safe/liboqs/pull/2252)
 - Improved random number generator security [#2225](https://github.com/open-quantum-safe/liboqs/pull/2225)
 - Avoided invalid compiler options for MSVC [#2239](https://github.com/open-quantum-safe/liboqs/pull/2239)
@@ -85,7 +86,7 @@ None reported
 ## New contributors
 - Ganyu (Bruce) Xu (@xuganyu96)
 - Ethan Li (@lir2002)
-- @nonam3e
+- @nonam3e (associated with Ingonyama)
 - Saito Masataka (@saitomst)
 - @max-p-log-p
 - Vibhav Tiwari (@vibhav950)
