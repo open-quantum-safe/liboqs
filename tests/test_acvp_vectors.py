@@ -38,7 +38,10 @@ slh_dsa_ver = urljoin(URLROOT, "SLH-DSA-sigVer-FIPS205/internalProjection.json")
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
 def test_acvp_vec_kem_keygen(kem_name):
-    # TODO: this logic feels awkward
+    # TODO: this logic feels backwards. It will instantiate kem_name with all
+    # possible names, then filter out the overwhelming majority of them that are
+    # "not ML-KEM". This creates a lot of skipped tests that, despite not having
+    # much performance penalty, pollute the pytest output.
     if not (helpers.is_kem_enabled_by_name(kem_name)):
         pytest.skip("Not enabled")
     if not (kem_name in ml_kem):
