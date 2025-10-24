@@ -1,8 +1,4 @@
-liboqs version 0.14.0
-=====================
-
-About
------
+# liboqs version 0.15.0-rc1
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.  More information on OQS can be found on our website: https://openquantumsafe.org/ and on Github at https://github.com/open-quantum-safe/.  
 
@@ -24,85 +20,79 @@ liboqs can also be used in the following programming languages via language-spec
 - Python 3, via https://github.com/open-quantum-safe/liboqs-python
 - Rust, via https://github.com/open-quantum-safe/liboqs-rust
 
-Release notes
-=============
+# Release notes
+Release candidate 1 for liboqs 0.15.0 was released on Oct 22, 2025.
 
-This is version 0.14.0 of liboqs. It was released on July 10, 2025.
+## Deprecation notice
+liboqs 0.15.0 is the last version to officially support SPHINCS+. SPHINCS+ will be removed in the 0.16.0 release and replaced by SLH-DSA. liboqs 0.15.0 also removes support for Dilithium.
 
-This release contains a security fix for secret-dependent branching in HQC. It introduces support for SNOVA, a NIST Additional Signatures Round 2 candidate, and a new optimized implementation of SHA3 using AVX-512VL instructions. Additionally, this is the first liboqs release to include the [stable 1.0.0 version of PQ Code Package's mlkem-native](https://github.com/pq-code-package/mlkem-native/releases/tag/v1.0.0).
+## Security issues
+None reported
 
-This release also introduces a number of improvements to testing and infrastructure. The OQS project is now publishing benchmarking data on https://openquantumsafe.org/benchmarking and code coverage data on https://coveralls.io/github/open-quantum-safe/liboqs.
+<!--- git log HEAD...0.14.0 --->
+## Significant changes
+- **Integrated SLH-DSA implementation from [pq-code-package/slhdsa-c](https://github.com/pq-code-package/slhdsa-c/)**
+    - SLH-DSA ACVP tests [#2237](https://github.com/open-quantum-safe/liboqs/pull/2237)
+    - Integrate SLH-DSA-C Library [#2175](https://github.com/open-quantum-safe/liboqs/pull/2175)
+- Added NTRU back [#2176](https://github.com/open-quantum-safe/liboqs/pull/2176)
+- Removed all Dilithium implementations ([#2275](https://github.com/open-quantum-safe/liboqs/pull/2275))
+- Replaced SPHINCS+ with SLH-DSA for CMake build option `OQS_ALGS_ENABLED=STD` ([#2290](https://github.com/open-quantum-safe/liboqs/pull/2290))
+- Updated CROSS to version 2.2 [#2247](https://github.com/open-quantum-safe/liboqs/pull/2247)
+- Included DeriveEncapsulation functionality (Issue #2135) [#2221](https://github.com/open-quantum-safe/liboqs/pull/2221)
+- Integrated ML-KEM implementation from ICICLE-PQC [#2216](https://github.com/open-quantum-safe/liboqs/pull/2216)
 
-Deprecation notice
-==================
+## Bug fixes
+- Fixed incorrect import in OV-III-pkc_skc ([#2299](https://github.com/open-quantum-safe/liboqs/pull/2299))
+- Fixed incorrect actual signature length in signature full-cycle speed test ([#2293](https://github.com/open-quantum-safe/liboqs/pull/2293))
+- Fixed ICICLE ML-KEM integration ([#2288](https://github.com/open-quantum-safe/liboqs/pull/2293))
+- Disabled strict aliasing on SPHINCS+-SHAKE ([#2264](https://github.com/open-quantum-safe/liboqs/pull/2264))
+- Fixed typo in `test_kem.c` ([#2281](https://github.com/open-quantum-safe/liboqs/pull/2281))
+- Fixed uninitialized `length_encaps_seed` for NTRU implementations ([#2266](https://github.com/open-quantum-safe/liboqs/pull/2266))
+<!-- NOTES: #2258 was overwritten by #2288 and thus omitted from release notes for the sake of clarity -->
+<!-- - Patched ICICLE ML-KEM for deterministic encapsulation ([#2258](https://github.com/open-quantum-safe/liboqs/pull/2258)) -->
+- Changed 64 bit add to 32 bit add to wrap on 32 bit counter for AES-CTR AES-NI implementation [#2252](https://github.com/open-quantum-safe/liboqs/pull/2252)
+- Improved random number generator security [#2225](https://github.com/open-quantum-safe/liboqs/pull/2225)
+- Avoided invalid compiler options for MSVC [#2239](https://github.com/open-quantum-safe/liboqs/pull/2239)
+- Added Classic McEliece sanitization patch  [#2218](https://github.com/open-quantum-safe/liboqs/pull/2218)
 
-This will be the last release of liboqs to include Dilithium (that is, the NIST Round 3 version of Dilithium, prior to its standardization by NIST as ML-DSA in FIPS 204). Applications should switch to ML-DSA (FIPS 204). Please contact us if you have any concerns.
+## Miscellaneous
+- Deprecated `noregress` scripts ([#2295](https://github.com/open-quantum-safe/liboqs/pull/2295))
+- Updated no-pass explanation for constant-time testing ([#2294](https://github.com/open-quantum-safe/liboqs/pull/2294))
+- Fixed weekly test failures in GitHub Action ([#2285](https://github.com/open-quantum-safe/liboqs/pull/2294))
+- Improved algorithm support readability in README.md ([#2286](https://github.com/open-quantum-safe/liboqs/pull/2286))
+- Re-enabled all ACVP tests ([#2283](https://github.com/open-quantum-safe/liboqs/pull/2283))
+- Moved continuous benchmarking to weekly tests ([#2276](https://github.com/open-quantum-safe/liboqs/pull/2276))
+- Linked to contribution wishlist from CONTRIBUTING.md ([#2273](https://github.com/open-quantum-safe/liboqs/pull/2273))
+- Added content:read permission to scorecard workflow ([#2261](https://github.com/open-quantum-safe/liboqs/pull/2261))
+- Added guidance and questions on generative AI use ([#2269](https://github.com/open-quantum-safe/liboqs/pull/2269))
+- Moved `linux_arm_emulated` to extended tests [#2236](https://github.com/open-quantum-safe/liboqs/pull/2236)
+- Fixed pluralization in docs: "key encapsulation mechanisms (KEMs)" [#2255](https://github.com/open-quantum-safe/liboqs/pull/2255)
+- Fixed permissions for poutine_analysis job [#2246](https://github.com/open-quantum-safe/liboqs/pull/2246)
+- Disabled testing on Travis CI [#2248](https://github.com/open-quantum-safe/liboqs/pull/2248)
+- Upgraded Jinja to 3.1.6 [#2214](https://github.com/open-quantum-safe/liboqs/pull/2214)
+- Updated license info for ML-KEM [#2250](https://github.com/open-quantum-safe/liboqs/pull/2250)
+- Fixed typos across codebase [#2244](https://github.com/open-quantum-safe/liboqs/pull/2244)
+- Restructured basic checks [#2233](https://github.com/open-quantum-safe/liboqs/pull/2233)
+- Fixed code scanning workflow [#2217](https://github.com/open-quantum-safe/liboqs/pull/2217)
+- Changed Nix install action to verified [#2212](https://github.com/open-quantum-safe/liboqs/pull/2212)
+- Removed `armel` comment [#2231](https://github.com/open-quantum-safe/liboqs/pull/2231)
+- Removed `armel` support from `PLATFORMS.md` [#2232](https://github.com/open-quantum-safe/liboqs/pull/2232)
+- Added Poutine SASL [#2213](https://github.com/open-quantum-safe/liboqs/pull/2213)
+- Updated nixpkgs from 24.05 to 25.05 [#2187](https://github.com/open-quantum-safe/liboqs/pull/2187)
+- Added Custom Timeout to CI [#2189](https://github.com/open-quantum-safe/liboqs/pull/2189)
+- Updated ACVP to 1.1.0.40 [#2172](https://github.com/open-quantum-safe/liboqs/pull/2172)
+- Switched to dev mode for 0.14.1 [#2199](https://github.com/open-quantum-safe/liboqs/pull/2199)
 
-Security issues
-===============
+## New contributors
+- Ganyu (Bruce) Xu (@xuganyu96)
+- Ethan Li (@lir2002)
+- @nonam3e (associated with Ingonyama)
+- Saito Masataka (@saitomst)
+- @max-p-log-p
+- Vibhav Tiwari (@vibhav950)
+- Dmitry (@mdqst)
+- Rodrigo Martín (@RodriM11)
+- @sukrucildirr
+- Kitsios Konstantinos (@kitsiosk)
 
-- CVE-2025-52473: Disabled compiler optimizations for HQC to avoid secret-dependent branches. Thank you to Zhenzhi Lai and Zhiyuan Zhang from from the University of Melbourne and the Max Planck Institute for Security and Privacy for identifying the issue.
-
-What's New
-----------
-
-This release continues from the 0.13.0 release of liboqs.
-
-### Key encapsulation mechanisms
-
-- HQC: Disabled compiler optimizations to avoid secret-dependent branching in certain configurations. HQC remains disabled by default.
-- ML-KEM: Updated the default ML-KEM implementation to [PQCP's mlkem-native v1.0.0](https://github.com/pq-code-package/mlkem-native/releases/tag/v1.0.0).
-
-### Digital signature schemes
-
-- New API: added an API function to check if a signature scheme supports signing with a context string.
-- SNOVA: added [SNOVA](https://snova.pqclab.org/) from NIST Additional Signature Schemes Round 2.
-
-### Other changes
-
-- Added an AVX512VL-optimized backend for SHA3.
-- Improved memory management throughout the codebase.
-
----
-
-Detailed changelog
-------------------
-
-## What's Changed
-* Switch to dev mode after 0.13.0 release by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/2125
-* Restrict -Wno-maybe-uninitialized to GCC and fix stack size typo by @alraddady in https://github.com/open-quantum-safe/liboqs/pull/2111
-* Promote @SWilson4 from Committer to Maintainer [skip ci] by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/2120
-* Update Nix flake inputs by @aidenfoxivey in https://github.com/open-quantum-safe/liboqs/pull/2126
-* Change cuPQC upstream repo by @praveksharma in https://github.com/open-quantum-safe/liboqs/pull/2115
-* Integrate SNOVA into liboqs by @vacuas in https://github.com/open-quantum-safe/liboqs/pull/2109
-* Update ACVP vectors to latest release by @abhinav-thales in https://github.com/open-quantum-safe/liboqs/pull/2131
-* Add a function to check if context string is supported by @M-AlNoaimi in https://github.com/open-quantum-safe/liboqs/pull/2142
-* Skip failing CI test by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/2157
-* Use OQS_MEM_cleanse() instead of memset() by @Hussain1811 in https://github.com/open-quantum-safe/liboqs/pull/2158
-* Check for NULL dereference before using secure free by @Hussain1811 in https://github.com/open-quantum-safe/liboqs/pull/2151
-* Update mlkem-native to v1.0.0 by @mkannwischer in https://github.com/open-quantum-safe/liboqs/pull/2146
-* test: Use secure free for freeing secret key objects by @Hussain1811 in https://github.com/open-quantum-safe/liboqs/pull/2149
-* tests: Remove unused variables by @Hussain1811 in https://github.com/open-quantum-safe/liboqs/pull/2152
-* Wycheproof by @h2parson in https://github.com/open-quantum-safe/liboqs/pull/2145
-* tests: Check OQS_STATUS of RNG and fstore functions by @Hussain1811 in https://github.com/open-quantum-safe/liboqs/pull/2153
-* Adjust constant-time test exception for mlkem-native by @mkannwischer in https://github.com/open-quantum-safe/liboqs/pull/2162
-* Continuous Benchmarking using Github Actions by @pablo-gf in https://github.com/open-quantum-safe/liboqs/pull/2134
-* test: Add basic kem fuzz testing by @nathaniel-brough in https://github.com/open-quantum-safe/liboqs/pull/2133
-* Increase alert threshold for continuous benchmarking by @pablo-gf in https://github.com/open-quantum-safe/liboqs/pull/2166
-* Benchmarking comments only on alerts by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/2168
-* Adding code coverage by @aidenfoxivey in https://github.com/open-quantum-safe/liboqs/pull/2148
-* Add AVX512VL-Optimized SHA3/SHAKE Implementations by @mdcornu in https://github.com/open-quantum-safe/liboqs/pull/2167
-* Zeroize memory in SHA3 implementation by @aidenfoxivey in https://github.com/open-quantum-safe/liboqs/pull/2171
-* Disable compiler optimizations for HQC by @SWilson4 in https://github.com/open-quantum-safe/liboqs/commit/4215362acbf69b88fe1777c4c052f154e29f9897
-* liboqs 0.14.0 release candidate 1 by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/2180
-* Document public / internal API split [skip ci] by @SWilson4 in https://github.com/open-quantum-safe/liboqs/pull/2182
-
-## New Contributors
-* @alraddady made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2111
-* @vacuas made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2109
-* @M-AlNoaimi made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2142
-* @Hussain1811 made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2158
-* @h2parson made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2145
-* @mdcornu made their first contribution in https://github.com/open-quantum-safe/liboqs/pull/2167
-
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.13.0...0.14.0
+<!-- TODO: include full changelog statement at full release -->
