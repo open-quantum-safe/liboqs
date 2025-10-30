@@ -549,19 +549,57 @@
 
 
 #cmakedefine OQS_ENABLE_SIG_STFL_LMS 1
-#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1 1
-#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w2 1
-#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w4 1
-#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1  1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w2  1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w4  1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8  1
+
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w1 1
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w2 1
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w4 1
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w8 1
+
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w1 1
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w2 1
 #cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w4 1
-#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8 1
-#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w4_h5_w8 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w1 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h25_w1 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h25_w2 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h25_w4 1
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h25_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8   1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w4_h5_w8  1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w8_h5_w8  1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w2_h10_w2 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w4_h10_w4 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h10_w8_h10_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w8_h5_w8  1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w8_h10_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h15_w8_h15_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h5_w8  1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h10_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h15_w8 1
+
+#cmakedefine OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h20_w8 1
+
 
 #cmakedefine OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN 1
 #cmakedefine OQS_ALLOW_STFL_KEY_AND_SIG_GEN 1
