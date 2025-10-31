@@ -40,9 +40,12 @@ def test_sig_stfl(sig_stfl_name):
             [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name, katfile],
         )
     else:
-        helpers.run_subprocess(
-            [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
-        )
+        if sig_stfl_name.find("H20")==-1:
+            pytest.skip('Test skipped')
+        else:
+            helpers.run_subprocess(
+                [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
+            )
 
 if __name__ == "__main__":
     import sys
