@@ -124,7 +124,6 @@ endif()
 target_include_directories(oqs
                            PUBLIC
                            "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
-                           "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>"
                            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
@@ -146,6 +145,10 @@ set_target_properties(oqs
     SOVERSION 9
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
+
+set_property(TARGET oqs
+    APPEND PROPERTY
+    INTERFACE_INCLUDE_DIRECTORIES "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>")
 
 set_target_properties(oqs-internal
     PROPERTIES
