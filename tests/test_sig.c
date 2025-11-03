@@ -244,9 +244,7 @@ cleanup:
 	return ret;
 }
 
-#if defined(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
-// Test that two signatures of the same message are different.
-static OQS_STATUS sig_test_randomized_signing(const char *method_name) {
+static OQS_STATUS sig_test_repeat_signing(const char *method_name, bool is_randomized) {
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
@@ -264,7 +262,7 @@ static OQS_STATUS sig_test_randomized_signing(const char *method_name) {
 		return OQS_ERROR;
 	}
 
-	printf("Testing randomized signing for %s\n", sig->method_name);
+	printf("Testing %s signing for %s\n", is_randomized ? "randomized" : "deterministic", sig->method_name);
 
 	public_key = OQS_MEM_malloc(sig->length_public_key);
 	secret_key = OQS_MEM_malloc(sig->length_secret_key);
@@ -298,12 +296,24 @@ static OQS_STATUS sig_test_randomized_signing(const char *method_name) {
 	}
 
 	if (signature1_len != signature2_len) {
-		printf("Signatures have different lengths, so they are not identical.\n");
-	} else if (memcmp(signature1, signature2, signature1_len) == 0) {
-		fprintf(stderr, "ERROR: Two signatures of the same message are identical.\n");
+		fprintf(stderr, "ERROR: Signatures have different lengths.\n");
 		goto err;
+	}
+
+	if (is_randomized) {
+		if (memcmp(signature1, signature2, signature1_len) == 0) {
+			fprintf(stderr, "ERROR: Two signatures of the same message are identical in randomized mode.\n");
+			goto err;
+		} else {
+			printf("Two signatures of the same message are not identical, as expected for randomized mode.\n");
+		}
 	} else {
-		printf("Two signatures of the same message are not identical, as expected.\n");
+		if (memcmp(signature1, signature2, signature1_len) != 0) {
+			fprintf(stderr, "ERROR: Two signatures of the same message are NOT identical in deterministic mode.\n");
+			goto err;
+		} else {
+			printf("Two signatures of the same message are identical, as expected for deterministic mode.\n");
+		}
 	}
 
 	rc = OQS_SIG_verify(sig, message, message_len, signature1, signature1_len, public_key);
@@ -337,8 +347,6 @@ cleanup:
 
 	return ret;
 }
-#endif
-
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
@@ -444,16 +452,17 @@ int main(int argc, char **argv) {
 	}
 #endif
 
-#if defined(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
 	if (strncmp(alg_name, "ML-DSA", 6) == 0) {
-		rc = sig_test_randomized_signing(alg_name);
+#if defined(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING)
+		rc = sig_test_repeat_signing(alg_name, true);
+#else
+		rc = sig_test_repeat_signing(alg_name, false);
+#endif
 		if (rc != OQS_SUCCESS) {
 			OQS_destroy();
 			return EXIT_FAILURE;
 		}
 	}
-#endif
-
 #if OQS_USE_PTHREADS && !defined(OQS_ENABLE_TEST_CONSTANT_TIME)
 #define MAX_LEN_SIG_NAME_ 64
 	// don't run algorithms with large stack usage in threads

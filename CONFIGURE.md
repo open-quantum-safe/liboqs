@@ -62,6 +62,8 @@ To enable `XMSS` stateful signature, set `OQS_ENABLE_SIG_STFL_XMSS` to `ON`, the
 
 For a full list of such options and their default values, consult [.CMake/alg_support.cmake](https://github.com/open-quantum-safe/liboqs/blob/master/.CMake/alg_support.cmake).
 
+**Default**: Unset.
+
 ### OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING
 
 Can be set to `ON` or `OFF`. When `ON`, ML-DSA signature algorithms are built with randomized signing enabled, resulting in non-deterministic signatures. When `OFF`, ML-DSA signature algorithms use deterministic signing.
