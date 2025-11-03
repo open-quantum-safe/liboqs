@@ -36,7 +36,7 @@ if __name__ == "__main__":
                 f"{__package__}: error: the following arguments are required -f/--file"
             )
             exit(1)
-        with open(args.file, mode="r") as f:
+        with open(args.file, mode="r", encoding="utf-8") as f:
             instructions = yaml.safe_load(f)
         print(f"Successfully loaded {args.file}")
         upstreams: list[dict[str, str]] = instructions["upstreams"]
