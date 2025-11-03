@@ -296,7 +296,8 @@ static OQS_STATUS sig_test_repeat_signing(const char *method_name, bool is_rando
 	}
 
 	if (signature1_len != signature2_len) {
-		fprintf(stderr, "ERROR: Signatures have different lengths.\n");
+		fprintf(stderr, "ERROR: %s signing for %s produced signatures of different lengths (%zu vs %zu). This should not happen.\n",
+		        is_randomized ? "Randomized" : "Deterministic", sig->method_name, signature1_len, signature2_len);
 		goto err;
 	}
 
