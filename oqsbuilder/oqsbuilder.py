@@ -26,13 +26,17 @@ def git_apply(
 ):
     """Apply a patch to the specified git repository
 
+    Note that the --unsafe-paths in the "git apply" command is necessary
+
     :param dstdir: path to the git repository on which the patch will be applied
     :param patch: path to the patch file
     :param gitdir: path to the .git directory, defaults to {dstdir}/.git
     :param worktree: path to the worktree, defaults to {dstdir}
-    :param directory: prepend to filenames in the patch file, see "git apply --directory=<root>", defaults to {dstdir}
+    :param directory: prepend to filenames in the patch file, see
+        "git apply --directory=<root>", defaults to {dstdir}
     :param commit_after_apply: if True, commit the changes after applying the patch
-    :param commit_msg: specify a commit message if commit_after_apply, defaults to "applied {patch}"
+    :param commit_msg: specify a commit message if commit_after_apply, defaults
+        to "applied {patch}"
     :param dryrun: If True, print the commands instead of executing them
     """
     if not os.path.isdir(dstdir):
