@@ -49,7 +49,6 @@ if __name__ == "__main__":
                     commit=upstream.get("git_commit", None),
                     branch_or_tag=upstream.get("git_branch", None),
                 )
-            for name in os.listdir(tempdir):
-                print(name)
+            # TODO: apply patches
     else:
         argparser.print_help()
