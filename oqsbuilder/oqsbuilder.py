@@ -14,6 +14,68 @@ def get_git() -> str | None:
     return None
 
 
+def git_apply(
+    dstdir: str,
+    patch: str,
+    gitdir: str | None = None,
+    worktree: str | None = None,
+    directory: str | None = None,
+    commit_after_apply: bool = True,
+    commit_msg: str | None = None,
+    dryrun: bool = False,
+):
+    """Apply a patch to the specified git repository
+
+    :param dstdir: path to the git repository on which the patch will be applied
+    :param patch: path to the patch file
+    :param gitdir: path to the .git directory, defaults to {dstdir}/.git
+    :param worktree: path to the worktree, defaults to {dstdir}
+    :param directory: prepend to filenames in the patch file, see "git apply --directory=<root>", defaults to {dstdir}
+    :param commit_after_apply: if True, commit the changes after applying the patch
+    :param commit_msg: specify a commit message if commit_after_apply, defaults to "applied {patch}"
+    :param dryrun: If True, print the commands instead of executing them
+    """
+    if not os.path.isdir(dstdir):
+        raise FileNotFoundError(f"{dstdir} is not a valid directory")
+    if not gitdir:
+        gitdir = os.path.join(dstdir, ".git")
+    if not os.path.isdir(gitdir):
+        raise FileNotFoundError(f"{gitdir} is not a valid .git directory")
+    if not worktree:
+        worktree = dstdir
+    if not os.path.isdir(worktree):
+        raise FileNotFoundError(f"{worktree} is not a valid git work tree")
+    if not directory:
+        directory = dstdir
+    if not os.path.isdir(directory):
+        raise FileNotFoundError(f"{directory} is not a valid directory")
+    if not os.path.isfile(patch):
+        raise FileNotFoundError(f"{patch} is not a valid patch file")
+    if not commit_msg:
+        _, patch_filename = os.path.split(patch)
+        patch_name, _ = os.path.splitext(patch_filename)
+        commit_msg = f"Applied {patch_name}"
+
+    commands = [
+        ["git", "--git-dir", gitdir, "--work-tree", worktree]
+        + ["apply", "--unsafe-paths", "--verbose", "--whitespace", "fix"]
+        + ["--directory", directory, patch]
+    ]
+    if commit_after_apply:
+        commands.append(
+            ["git", "--git-dir", gitdir, "--work-tree", worktree, "add", "-A"]
+        )
+        commands.append(
+            ["git", "--git-dir", gitdir, "--work-tree", worktree]
+            + ["commit", "-m", commit_msg]
+        )
+    for cmd in commands:
+        if dryrun:
+            print(" ".join(cmd))
+        else:
+            subprocess.run(cmd, check=True)
+
+
 def clone_remote_repo(
     parentdir: str,
     dstdirname: str,
@@ -40,8 +102,11 @@ def clone_remote_repo(
     dstdir = os.path.join(parentdir, dstdirname)
     if os.path.isdir(dstdir):
         raise FileExistsError(f"{dstdir} already exists")
-    # NOTE: dstdir could contain forward slashes; create nested directories w/ makedirs
-    os.makedirs(dstdir)
+    if dryrun:
+        print(f"mkdir -p {dstdir}")
+    else:
+        # NOTE: dstdir could contain forward slashes; create nested directories w/ makedirs
+        os.makedirs(dstdir)
     gitdir = os.path.join(dstdir, ".git")
     if commit:
         # git clone <url> <dst> --depth 1
