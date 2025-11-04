@@ -1,10 +1,10 @@
 from argparse import ArgumentParser
-import os
 import sys
 from tempfile import TemporaryDirectory
 import yaml
 
 import oqsbuilder
+from oqsbuilder import LIBOQS_DIR
 from oqsbuilder.oqsbuilder import clone_remote_repo
 
 
@@ -19,6 +19,7 @@ def print_version():
 if __name__ == "__main__":
     argparser = ArgumentParser()
     argparser.add_argument("--version", action="store_true", help="Show version")
+    # TODO: add argument to specify patch dir
     argparser.add_argument(
         "-f",
         "--file",
@@ -40,7 +41,12 @@ if __name__ == "__main__":
             instructions = yaml.safe_load(f)
         print(f"Successfully loaded {args.file}")
         upstreams: list[dict[str, str]] = instructions["upstreams"]
-        with TemporaryDirectory() as tempdir:
+        # NOTE: on MacOS, TemporaryDirectory() is created under /var, which is
+        #   a symlink to private/var, but git considers tracking symlinks to be
+        #   unsafe and will refuse to run. Hence we need to use a base directory
+        #   that has not symlink component, such as LIBOQS_DIR. Fortunately,
+        #   all of TemporaryDirectory's automatic cleanup still works.
+        with TemporaryDirectory(dir=LIBOQS_DIR) as tempdir:
             for upstream in upstreams:
                 clone_remote_repo(
                     tempdir,
@@ -49,6 +55,6 @@ if __name__ == "__main__":
                     commit=upstream.get("git_commit", None),
                     branch_or_tag=upstream.get("git_branch", None),
                 )
-            # TODO: apply patches
+                # TODO: apply patches
     else:
         argparser.print_help()
