@@ -1,4 +1,4 @@
-# liboqs version 0.15.0-rc1
+# liboqs version 0.15.0
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.  More information on OQS can be found on our website: https://openquantumsafe.org/ and on Github at https://github.com/open-quantum-safe/.  
 
@@ -21,7 +21,7 @@ liboqs can also be used in the following programming languages via language-spec
 - Rust, via https://github.com/open-quantum-safe/liboqs-rust
 
 # Release notes
-Release candidate 1 for liboqs 0.15.0 was released on Oct 22, 2025.
+liboqs 0.15.0 was released on Nov 7, 2025.
 
 ## Deprecation notice
 liboqs 0.15.0 is the last version to officially support SPHINCS+. SPHINCS+ will be removed in the 0.16.0 release and replaced by SLH-DSA. liboqs 0.15.0 also removes support for Dilithium.
@@ -56,6 +56,7 @@ None reported
 - Added Classic McEliece sanitization patch ([#2218](https://github.com/open-quantum-safe/liboqs/pull/2218))
 
 ## Miscellaneous
+- Updated `PLATFORMS.md` to reflect tier 2 support for Alpine Linux ([#2308](https://github.com/open-quantum-safe/liboqs/pull/2308))
 - Deprecated `noregress` scripts ([#2295](https://github.com/open-quantum-safe/liboqs/pull/2295))
 - Updated no-pass explanation for constant-time testing ([#2294](https://github.com/open-quantum-safe/liboqs/pull/2294))
 - Fixed weekly test failures in GitHub Action ([#2285](https://github.com/open-quantum-safe/liboqs/pull/2294))
@@ -96,3 +97,4 @@ None reported
 - Kitsios Konstantinos (@kitsiosk)
 
 <!-- TODO: include full changelog statement at full release -->
+**Full Changelog**: [`0.14.0...0.15.0`](https://github.com/open-quantum-safe/liboqs/compare/0.14.0...0.15.0)
