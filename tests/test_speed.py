@@ -34,7 +34,7 @@ def test_sig(sig_stfl_name):
                         "LMS_SHA256_H15_W1",
                         "LMS_SHA256_H15_W2",
                         "LMS_SHA256_H15_W4",
-                        "LMS_SHA256_H5_W8_H5_W8"
+                        "LMS_SHA256_H5_W8_H5_W8",
                         "LMS_SHA256_H10_W4_H5_W8",]
     kats = helpers.get_kats("sig_stfl")
     if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)):
@@ -43,8 +43,7 @@ def test_sig(sig_stfl_name):
         pytest.skip('Test skipped')
     elif sig_stfl_name not in names_to_allow:
         pytest.skip('Test skipped')
-    else:
-        helpers.run_subprocess( [helpers.path_to_executable('speed_sig_stfl'), sig_stfl_name, "-f"])
+    helpers.run_subprocess( [helpers.path_to_executable('speed_sig_stfl'), sig_stfl_name, "-f"])
 
 if __name__ == "__main__":
     import sys

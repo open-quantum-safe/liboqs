@@ -42,7 +42,7 @@ def test_sig_stfl(sig_stfl_name):
                         "LMS_SHA256_H15_W1",
                         "LMS_SHA256_H15_W2",
                         "LMS_SHA256_H15_W4",
-                        "LMS_SHA256_H5_W8_H5_W8"
+                        "LMS_SHA256_H5_W8_H5_W8",
                         "LMS_SHA256_H10_W4_H5_W8",]
     if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
     # Test with KATs apply for XMSS
@@ -54,10 +54,9 @@ def test_sig_stfl(sig_stfl_name):
         )
     else:
         if sig_stfl_name not in names_to_allow:
-            pytest.skip('Test skipped')
-        else:
-            helpers.run_subprocess(
-                [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
+            pytest.skip('Skip slow stateful hash-based signature test.')
+        helpers.run_subprocess(
+            [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
             )
 
 if __name__ == "__main__":
