@@ -5,7 +5,7 @@ import yaml
 
 import oqsbuilder
 from oqsbuilder import LIBOQS_DIR
-from oqsbuilder.oqsbuilder import clone_remote_repo
+from oqsbuilder.oqsbuilder import clone_remote_repo, git_apply
 
 
 def print_version():
@@ -35,17 +35,21 @@ def copy_from_upstream(
     with open(oqsbuildfile, mode="r", encoding="utf-8") as f:
         instructions = yaml.safe_load(f)
     print(f"Successfully loaded {oqsbuildfile}")
-    upstreams: list[dict[str, str]] = instructions["upstreams"]
+    upstreams = instructions["upstreams"]
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
         for upstream in upstreams:
-            clone_remote_repo(
+            upstream_dir = clone_remote_repo(
                 tempdir,
                 upstream["name"],
                 upstream["git_url"],
                 commit=upstream.get("git_commit", None),
                 branch_or_tag=upstream.get("git_branch", None),
             )
-            # TODO: apply patches
+            patches: list[str] = [
+                os.path.join(patch_dir, patch) for patch in upstream.get("patches", [])
+            ]
+            git_apply(upstream_dir, patches)
+            input("Press enter to continue")
 
 
 if __name__ == "__main__":
