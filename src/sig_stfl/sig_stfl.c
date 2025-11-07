@@ -884,13 +884,13 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 		return NULL;
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h25_w1)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h28_w1
+#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h25_w1
 		return OQS_SIG_STFL_alg_lms_sha256_h25_w1_new();
 #else
 		return NULL;
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h25_w2)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h28_w2
+#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h25_w2
 		return OQS_SIG_STFL_alg_lms_sha256_h25_w2_new();
 #else
 		return NULL;
