@@ -3,7 +3,7 @@ This is the replacement for `copy_from_upstream.py`
 
 **Progress**:
 - ✅ clone remote repository
-- 🚧 apply patches
+- ✅ apply patches
 - ⚠️ move source file from upstream into `liboqs/src`
 - ⚠️ render `CMakeLists.txt` and other build files
 - ⚠️ figure out how to check feature parity with `copy_from_upstream.py`

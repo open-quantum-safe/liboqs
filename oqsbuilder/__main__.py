@@ -17,7 +17,10 @@ def print_version():
 
 
 def copy_from_upstream(
-    oqsbuildfile: str, patch_dir: str, upstream_parent_dir: str = LIBOQS_DIR
+    oqsbuildfile: str,
+    patch_dir: str,
+    upstream_parent_dir: str = LIBOQS_DIR,
+    headless: bool = True,
 ):
     """Copy implementations from upstream
 
@@ -31,6 +34,7 @@ def copy_from_upstream(
     :param patch_dir: path to a directory hosting the patch files for upstream
     :param upstream_parent_dir: upstream repositories will be cloned into
         a temporary subdirectory under this directory
+    :param headless: True if running in a non-interactive environment
     """
     with open(oqsbuildfile, mode="r", encoding="utf-8") as f:
         instructions = yaml.safe_load(f)
@@ -49,7 +53,8 @@ def copy_from_upstream(
                 os.path.join(patch_dir, patch) for patch in upstream.get("patches", [])
             ]
             git_apply(upstream_dir, patches)
-            input("Press enter to continue")
+            if not headless:
+                input("Press enter to continue")
 
 
 if __name__ == "__main__":
