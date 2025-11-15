@@ -142,6 +142,14 @@ def is_sig_stfl_enabled_by_name(name):
                     return True
     return False
 
+# TODO: this function needs a refactor because the scan logic currently applies
+# re.findall to all args/kwargs in the wrapped function. If the function takes
+# a non-string argument, re.findall will raise a TypeError, which is
+# undesirable. It can also cause incorrect skipping if the wrapped function
+# takes some string argument that unintentionally matches the regex.
+# Instead, I prefer replacing this decorator with a regular function that returns
+# a boolean indicating whether a KEM/SIG/STFL_SIG name matches the env var
+# SKIP_ALGS, then let the caller decide whether to call pytest.skip.
 def filtered_test(func):
     funcname = func.__name__[len("test_"):]
 
