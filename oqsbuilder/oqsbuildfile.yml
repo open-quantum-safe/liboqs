@@ -17,8 +17,7 @@ upstreams:
     # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    # patches: [pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch,
-    # pqclean-kyber-armneon-asan.patch]
+    patches: [pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch, pqclean-kyber-armneon-asan.patch]
     # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
   -
     name: pqclean
@@ -29,7 +28,7 @@ upstreams:
     # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    # patches: [pqclean-sphincs.patch, classic_mceliece_memset.patch]
+    patches: [pqclean-sphincs.patch, classic_mceliece_memset.patch]
     # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64
   -
     name: pqcrystals-kyber
@@ -38,7 +37,7 @@ upstreams:
     git_commit: 441c0519a07e8b86c8d079954a6b10bd31d29efc
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
-    # patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
+    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
     name: mlkem-native
     git_url: https://github.com/pq-code-package/mlkem-native.git
@@ -46,7 +45,7 @@ upstreams:
     git_commit: 048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
     # kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
-    # patches: [mlkem-native-encaps-derand.patch]
+    patches: [mlkem-native-encaps-derand.patch]
     # preserve_folder_structure: True
   -
     name: cupqc
@@ -55,7 +54,7 @@ upstreams:
     git_commit: b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
-    # patches: []
+    patches: []
   -
     name: icicle
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
@@ -63,7 +62,7 @@ upstreams:
     git_commit: 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
-    # patches: []
+    patches: []
   -
     name: pqcrystals-dilithium-standard
     git_url: https://github.com/pq-crystals/dilithium.git
@@ -71,7 +70,7 @@ upstreams:
     git_commit: 444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
     # sig_meta_path: '{pretty_name_full}_META.yml'
     # sig_scheme_path: '.'
-    # patches: [pqcrystals-ml_dsa.patch, pqcrystals-ml_dsa-SUF-CMA.patch]
+    patches: [pqcrystals-ml_dsa.patch, pqcrystals-ml_dsa-SUF-CMA.patch]
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
@@ -79,7 +78,7 @@ upstreams:
     git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
     # sig_meta_path: 'META/{pretty_name_full}_META.yml'
     # sig_scheme_path: '.'
-    # patches: [pqmayo-aes.patch, pqmayo-mem.patch]
+    patches: [pqmayo-aes.patch, pqmayo-mem.patch]
   -
     name: upcross
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
