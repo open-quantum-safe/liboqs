@@ -1,3 +1,6 @@
+# NOTE: any field with the key "id" must consist of only the characters [A-Za-z0-9_-].
+#   Field with the key "name" can use a broader character set and can include whitespace
+#
 # NOTE: this copy of copy_from_upstream.yml is used to keep track of feature parity
 #   between oqsbuilder and copy_from_upstream.yml
 upstreams:
@@ -100,7 +103,71 @@ upstreams:
     git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
     # sig_scheme_path: '.'
     # sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
-# kems:
+kems:
+  # TODO: what common fields exist across all KEM's?
+  families:
+    # The id of a KEM will be the directory name under src/kem
+    ml_kem:
+      name: "ML-KEM"
+      # NOTE: parameter sets are tied to the family, not individual implementations.
+      #   These entries will be used to construct the public API
+      params:
+        ml_kem_512:
+          name: "ML-KEM-512"
+          pklen: 800
+          sklen: 1632
+          ctlen: 768
+          sslen: 32
+          keypair_seedlen: 64
+          encap_seedlen: 32
+        ml_kem_768:
+          name: "ML-KEM-768"
+          pklen: 1184
+          sklen: 2400
+          ctlen: 1088
+          sslen: 32
+          keypair_seedlen: 64
+          encap_seedlen: 32
+        ml_kem_1024:
+          name: "ML-KEM-1024"
+          pklen: 1568
+          sklen: 3168
+          ctlen: 1568
+          sslen: 32
+          keypair_seedlen: 64
+          encap_seedlen: 32
+      impls:
+        # TODO: what fields are needed?
+        cupqc_ml-kem-1024_cuda:
+        cupqc_ml-kem-512_cuda:
+        cupqc_ml-kem-768_cuda:
+        icicle_ml-kem-1024_icicle_cuda:
+        icicle_ml-kem-512_icicle_cuda:
+        icicle_ml-kem-768_icicle_cuda:
+        mlkem-native_ml-kem-1024_aarch64:
+        mlkem-native_ml-kem-1024_ref:
+        mlkem-native_ml-kem-1024_x86_64:
+        mlkem-native_ml-kem-512_aarch64:
+        mlkem-native_ml-kem-512_ref:
+        mlkem-native_ml-kem-512_x86_64:
+        mlkem-native_ml-kem-768_aarch64:
+        mlkem-native_ml-kem-768_ref:
+        mlkem-native_ml-kem-768_x86_64:
+          # upstream's value must match some key under "upstreams"
+          upstream: mlkem-native
+          sources:
+            # e.g. compress.c: mlkem/src/compress.c
+            dstpath: srcpath
+          includes:
+            # TODO: should this just be a string?
+            - "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-768_x86_64"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts: 
+            public:
+              # TODO: these are not correct, yet
+              - "-DMLK_CONFIG_PARAMETER_SET=768"
+              - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
+            private: [-mavx2, -mbmi2, -mpopcnt]
 #   -
 #     name: classic_mceliece
 #     default_implementation: clean
