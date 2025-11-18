@@ -41,10 +41,10 @@ def copy_from_upstream(
     print(f"Successfully loaded {oqsbuildfile}")
     upstreams = instructions["upstreams"]
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
-        for upstream in upstreams:
+        for name, upstream in upstreams.items():
             upstream_dir = clone_remote_repo(
                 tempdir,
-                upstream["name"],
+                name,
                 upstream["git_url"],
                 commit=upstream.get("git_commit", None),
                 branch_or_tag=upstream.get("git_branch", None),
