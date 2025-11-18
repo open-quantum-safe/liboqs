@@ -4,15 +4,14 @@
 # NOTE: this copy of copy_from_upstream.yml is used to keep track of feature parity
 #   between oqsbuilder and copy_from_upstream.yml
 upstreams:
-  - name: pq-code-package/slhdsa-c
+  slhdsa-c:
     git_url: https://github.com/pq-code-package/slhdsa-c.git
     git_branch: main
     git_commit: f3f41ecf831764a3d014c105be11415dc411d12a
     # sig_meta_path: "integration/liboqs/META.yml"
     # sig_scheme_path: "."
     # preserve_folder_structure: True
-  -
-    name: oldpqclean
+  oldpqclean:
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
     git_commit: 8e220a87308154d48fdfac40abbb191ac7fce06a
@@ -22,8 +21,7 @@ upstreams:
     # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
     patches: [pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch, pqclean-kyber-armneon-asan.patch]
     # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
-  -
-    name: pqclean
+  pqclean:
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
     git_commit: 1eacfdafc15ddc5d5759d0b85b4cef26627df181
@@ -33,16 +31,14 @@ upstreams:
     # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
     patches: [pqclean-sphincs.patch, classic_mceliece_memset.patch]
     # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64
-  -
-    name: pqcrystals-kyber
+  pqcrystals-kyber:
     git_url: https://github.com/pq-crystals/kyber.git
     git_branch: master
     git_commit: 441c0519a07e8b86c8d079954a6b10bd31d29efc
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
-  -
-    name: mlkem-native
+  mlkem-native:
     git_url: https://github.com/pq-code-package/mlkem-native.git
     git_branch: v1.0.0
     git_commit: 048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
@@ -50,54 +46,47 @@ upstreams:
     # kem_scheme_path: '.'
     patches: [mlkem-native-encaps-derand.patch]
     # preserve_folder_structure: True
-  -
-    name: cupqc
+  cupqc:
     git_url: https://github.com/open-quantum-safe/liboqs-cupqc-meta.git
     git_branch: main
     git_commit: b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
     patches: []
-  -
-    name: icicle
+  icicle:
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
     git_branch: main
     git_commit: 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
     patches: []
-  -
-    name: pqcrystals-dilithium-standard
+  pqcrystals-dilithium-standard:
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
     git_commit: 444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
     # sig_meta_path: '{pretty_name_full}_META.yml'
     # sig_scheme_path: '.'
     patches: [pqcrystals-ml_dsa.patch, pqcrystals-ml_dsa-SUF-CMA.patch]
-  -
-    name: pqmayo
+  pqmayo:
     git_url: https://github.com/PQCMayo/MAYO-C.git
     git_branch: main
     git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
     # sig_meta_path: 'META/{pretty_name_full}_META.yml'
     # sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
-  -
-    name: upcross
+  upcross:
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_branch: master
     git_commit: c8f7411fed136f0e37600973fa3dbed53465e54f
     # sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     # sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
-  -
-    name: pqov
+  pqov:
     git_url: https://github.com/pqov/pqov.git
     git_branch: main
     git_commit: 33fa5278754a32064c55901c3a17d48b06cc2351
     # sig_scheme_path: '.'
     # sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
-  -
-    name: snova
+  snova:
     git_url: https://github.com/vacuas/SNOVA-OQS
     git_branch: main
     git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
