@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 from tempfile import TemporaryDirectory
 import yaml
 
@@ -20,7 +21,6 @@ def copy_from_upstream(
     oqsbuildfile: str,
     patch_dir: str,
     upstream_parent_dir: str = LIBOQS_DIR,
-    headless: bool = True,
 ):
     """Copy implementations from upstream
 
@@ -53,8 +53,31 @@ def copy_from_upstream(
                 os.path.join(patch_dir, patch) for patch in upstream.get("patches", [])
             ]
             git_apply(upstream_dir, patches)
-            if not headless:
-                input("Press enter to continue")
+        print(f"SUCCESS: fetched {len(upstreams)} upstream repositories")
+
+        kems = instructions["kems"]
+        kems_dir = os.path.join(LIBOQS_DIR, "src", "kem")
+        for kem_key, kem in kems["families"].items():
+            kem_dir = os.path.join(kems_dir, kem_key)
+            print(f"Integrating {kem_key} into {kem_dir}")
+            for impl_key, impl in kem["impls"].items():
+                upstream_key = impl["upstream"]
+                upstream_dir = os.path.join(tempdir, upstream_key)
+                impl_dir = os.path.join(kem_dir, impl_key)
+                if not os.path.isdir(upstream_dir):
+                    raise FileNotFoundError(
+                        f"{kem_key}.{impl_key}'s upstream {upstream_key} not found"
+                    )
+                for dst, src in impl["copies"].items():
+                    src = os.path.join(upstream_dir, src)
+                    dst = os.path.join(impl_dir, dst)
+                    dst_parent_dir = os.path.split(dst)[0]
+                    if not os.path.isdir(dst_parent_dir):
+                        print(f"mkdir -p {dst_parent_dir}")
+                        os.makedirs(dst_parent_dir)
+                    # use shutil instead of subprocess.run(["cp", ...]) for OS portability
+                    shutil.copyfile(src, dst)
+                print(f"Copied {len(impl["copies"])} files into {impl_dir}")
 
 
 if __name__ == "__main__":
