@@ -98,8 +98,6 @@ kems:
     # The id of a KEM will be the directory name under src/kem
     ml_kem:
       name: "ML-KEM"
-      # NOTE: parameter sets are tied to the family, not individual implementations.
-      #   These entries will be used to construct the public API
       params:
         ml_kem_512:
           name: "ML-KEM-512"
@@ -126,37 +124,484 @@ kems:
           keypair_seedlen: 64
           encap_seedlen: 32
       impls:
-        # TODO: what fields are needed?
-        cupqc_ml-kem-1024_cuda:
-        cupqc_ml-kem-512_cuda:
-        cupqc_ml-kem-768_cuda:
-        icicle_ml-kem-1024_icicle_cuda:
-        icicle_ml-kem-512_icicle_cuda:
-        icicle_ml-kem-768_icicle_cuda:
+        # TODO: cupqc_ml-kem-1024_cuda:
+        # TODO: cupqc_ml-kem-512_cuda:
+        # TODO: cupqc_ml-kem-768_cuda:
+        # TODO: icicle_ml-kem-1024_icicle_cuda:
+        # TODO: icicle_ml-kem-512_icicle_cuda:
+        # TODO: icicle_ml-kem-768_icicle_cuda:
         mlkem-native_ml-kem-1024_aarch64:
-        mlkem-native_ml-kem-1024_ref:
-        mlkem-native_ml-kem-1024_x86_64:
-        mlkem-native_ml-kem-512_aarch64:
-        mlkem-native_ml-kem-512_ref:
-        mlkem-native_ml-kem-512_x86_64:
-        mlkem-native_ml-kem-768_aarch64:
-        mlkem-native_ml-kem-768_ref:
-        mlkem-native_ml-kem-768_x86_64:
-          # upstream's value must match some key under "upstreams"
           upstream: mlkem-native
-          sources:
-            # e.g. compress.c: mlkem/src/compress.c
-            dstpath: srcpath
+          copies:
+            integration/liboqs/config_aarch64.h: integration/liboqs/config_aarch64.h
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/native/aarch64/README.md: mlkem/src/native/aarch64/README.md
+            mlkem/src/native/aarch64/meta.h: mlkem/src/native/aarch64/meta.h
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S
+            mlkem/src/native/aarch64/src/poly_tomont_asm.S: mlkem/src/native/aarch64/src/poly_tomont_asm.S
+            mlkem/src/native/aarch64/src/ntt.S: mlkem/src/native/aarch64/src/ntt.S
+            mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S: mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S
+            mlkem/src/native/aarch64/src/aarch64_zetas.c: mlkem/src/native/aarch64/src/aarch64_zetas.c
+            mlkem/src/native/aarch64/src/poly_reduce_asm.S: mlkem/src/native/aarch64/src/poly_reduce_asm.S
+            mlkem/src/native/aarch64/src/arith_native_aarch64.h: mlkem/src/native/aarch64/src/arith_native_aarch64.h
+            mlkem/src/native/aarch64/src/rej_uniform_asm.S: mlkem/src/native/aarch64/src/rej_uniform_asm.S
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S
+            mlkem/src/native/aarch64/src/rej_uniform_table.c: mlkem/src/native/aarch64/src/rej_uniform_table.c
+            mlkem/src/native/aarch64/src/consts.h: mlkem/src/native/aarch64/src/consts.h
+            mlkem/src/native/aarch64/src/poly_tobytes_asm.S: mlkem/src/native/aarch64/src/poly_tobytes_asm.S
+            mlkem/src/native/aarch64/src/intt.S: mlkem/src/native/aarch64/src/intt.S
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
           includes:
-            # TODO: should this just be a string?
-            - "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-768_x86_64"
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=1024"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
+            private: []
+        mlkem-native_ml-kem-1024_ref:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/config_c.h: integration/liboqs/config_c.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=1024" 
+              - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
+            private: []
+        mlkem-native_ml-kem-1024_x86_64:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/config_x86_64.h: integration/liboqs/config_x86_64.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/native/x86_64/meta.h: mlkem/src/native/x86_64/meta.h
+            # TODO: this README.md should be removed :(
+            mlkem/src/native/x86_64/README.md: mlkem/src/native/x86_64/README.md
+            mlkem/src/native/x86_64/src/fq.inc: mlkem/src/native/x86_64/src/fq.inc
+            mlkem/src/native/x86_64/src/rej_uniform_avx2.c: mlkem/src/native/x86_64/src/rej_uniform_avx2.c
+            mlkem/src/native/x86_64/src/align.h: mlkem/src/native/x86_64/src/align.h
+            mlkem/src/native/x86_64/src/consts.c: mlkem/src/native/x86_64/src/consts.c
+            mlkem/src/native/x86_64/src/basemul.c: mlkem/src/native/x86_64/src/basemul.c
+            mlkem/src/native/x86_64/src/x86_64_zetas.i: mlkem/src/native/x86_64/src/x86_64_zetas.i
+            mlkem/src/native/x86_64/src/ntt.S: mlkem/src/native/x86_64/src/ntt.S
+            mlkem/src/native/x86_64/src/compress_avx2.c: mlkem/src/native/x86_64/src/compress_avx2.c
+            mlkem/src/native/x86_64/src/rej_uniform_table.c: mlkem/src/native/x86_64/src/rej_uniform_table.c
+            mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i: mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i
+            mlkem/src/native/x86_64/src/reduce.S: mlkem/src/native/x86_64/src/reduce.S
+            mlkem/src/native/x86_64/src/tomont.S: mlkem/src/native/x86_64/src/tomont.S
+            mlkem/src/native/x86_64/src/basemul.S: mlkem/src/native/x86_64/src/basemul.S
+            mlkem/src/native/x86_64/src/consts.h: mlkem/src/native/x86_64/src/consts.h
+            mlkem/src/native/x86_64/src/nttfrombytes.S: mlkem/src/native/x86_64/src/nttfrombytes.S
+            mlkem/src/native/x86_64/src/arith_native_x86_64.h: mlkem/src/native/x86_64/src/arith_native_x86_64.h
+            mlkem/src/native/x86_64/src/ntttobytes.S: mlkem/src/native/x86_64/src/ntttobytes.S
+            mlkem/src/native/x86_64/src/intt.S: mlkem/src/native/x86_64/src/intt.S
+            mlkem/src/native/x86_64/src/mulcache_compute.S: mlkem/src/native/x86_64/src/mulcache_compute.S
+            mlkem/src/native/x86_64/src/nttunpack.S: mlkem/src/native/x86_64/src/nttunpack.S
+            mlkem/src/native/x86_64/src/shuffle.inc: mlkem/src/native/x86_64/src/shuffle.inc
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
             - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts: 
             public:
-              # TODO: these are not correct, yet
-              - "-DMLK_CONFIG_PARAMETER_SET=768"
+              - "-DMLK_CONFIG_PARAMETER_SET=1024"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
+            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+        mlkem-native_ml-kem-512_aarch64:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/config_aarch64.h: integration/liboqs/config_aarch64.h
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/native/aarch64/README.md: mlkem/src/native/aarch64/README.md
+            mlkem/src/native/aarch64/meta.h: mlkem/src/native/aarch64/meta.h
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S
+            mlkem/src/native/aarch64/src/poly_tomont_asm.S: mlkem/src/native/aarch64/src/poly_tomont_asm.S
+            mlkem/src/native/aarch64/src/ntt.S: mlkem/src/native/aarch64/src/ntt.S
+            mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S: mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S
+            mlkem/src/native/aarch64/src/aarch64_zetas.c: mlkem/src/native/aarch64/src/aarch64_zetas.c
+            mlkem/src/native/aarch64/src/poly_reduce_asm.S: mlkem/src/native/aarch64/src/poly_reduce_asm.S
+            mlkem/src/native/aarch64/src/arith_native_aarch64.h: mlkem/src/native/aarch64/src/arith_native_aarch64.h
+            mlkem/src/native/aarch64/src/rej_uniform_asm.S: mlkem/src/native/aarch64/src/rej_uniform_asm.S
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S
+            mlkem/src/native/aarch64/src/rej_uniform_table.c: mlkem/src/native/aarch64/src/rej_uniform_table.c
+            mlkem/src/native/aarch64/src/consts.h: mlkem/src/native/aarch64/src/consts.h
+            mlkem/src/native/aarch64/src/poly_tobytes_asm.S: mlkem/src/native/aarch64/src/poly_tobytes_asm.S
+            mlkem/src/native/aarch64/src/intt.S: mlkem/src/native/aarch64/src/intt.S
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=512"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
+            private: []
+        mlkem-native_ml-kem-512_ref:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/config_c.h: integration/liboqs/config_c.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=512" 
               - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
-            private: [-mavx2, -mbmi2, -mpopcnt]
+            private: []
+        mlkem-native_ml-kem-512_x86_64:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/config_x86_64.h: integration/liboqs/config_x86_64.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/native/x86_64/meta.h: mlkem/src/native/x86_64/meta.h
+            # TODO: this README.md should be removed :(
+            mlkem/src/native/x86_64/README.md: mlkem/src/native/x86_64/README.md
+            mlkem/src/native/x86_64/src/fq.inc: mlkem/src/native/x86_64/src/fq.inc
+            mlkem/src/native/x86_64/src/rej_uniform_avx2.c: mlkem/src/native/x86_64/src/rej_uniform_avx2.c
+            mlkem/src/native/x86_64/src/align.h: mlkem/src/native/x86_64/src/align.h
+            mlkem/src/native/x86_64/src/consts.c: mlkem/src/native/x86_64/src/consts.c
+            mlkem/src/native/x86_64/src/basemul.c: mlkem/src/native/x86_64/src/basemul.c
+            mlkem/src/native/x86_64/src/x86_64_zetas.i: mlkem/src/native/x86_64/src/x86_64_zetas.i
+            mlkem/src/native/x86_64/src/ntt.S: mlkem/src/native/x86_64/src/ntt.S
+            mlkem/src/native/x86_64/src/compress_avx2.c: mlkem/src/native/x86_64/src/compress_avx2.c
+            mlkem/src/native/x86_64/src/rej_uniform_table.c: mlkem/src/native/x86_64/src/rej_uniform_table.c
+            mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i: mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i
+            mlkem/src/native/x86_64/src/reduce.S: mlkem/src/native/x86_64/src/reduce.S
+            mlkem/src/native/x86_64/src/tomont.S: mlkem/src/native/x86_64/src/tomont.S
+            mlkem/src/native/x86_64/src/basemul.S: mlkem/src/native/x86_64/src/basemul.S
+            mlkem/src/native/x86_64/src/consts.h: mlkem/src/native/x86_64/src/consts.h
+            mlkem/src/native/x86_64/src/nttfrombytes.S: mlkem/src/native/x86_64/src/nttfrombytes.S
+            mlkem/src/native/x86_64/src/arith_native_x86_64.h: mlkem/src/native/x86_64/src/arith_native_x86_64.h
+            mlkem/src/native/x86_64/src/ntttobytes.S: mlkem/src/native/x86_64/src/ntttobytes.S
+            mlkem/src/native/x86_64/src/intt.S: mlkem/src/native/x86_64/src/intt.S
+            mlkem/src/native/x86_64/src/mulcache_compute.S: mlkem/src/native/x86_64/src/mulcache_compute.S
+            mlkem/src/native/x86_64/src/nttunpack.S: mlkem/src/native/x86_64/src/nttunpack.S
+            mlkem/src/native/x86_64/src/shuffle.inc: mlkem/src/native/x86_64/src/shuffle.inc
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts: 
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=512"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
+            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+        mlkem-native_ml-kem-768_aarch64:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/config_aarch64.h: integration/liboqs/config_aarch64.h
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/native/aarch64/README.md: mlkem/src/native/aarch64/README.md
+            mlkem/src/native/aarch64/meta.h: mlkem/src/native/aarch64/meta.h
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S
+            mlkem/src/native/aarch64/src/poly_tomont_asm.S: mlkem/src/native/aarch64/src/poly_tomont_asm.S
+            mlkem/src/native/aarch64/src/ntt.S: mlkem/src/native/aarch64/src/ntt.S
+            mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S: mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S
+            mlkem/src/native/aarch64/src/aarch64_zetas.c: mlkem/src/native/aarch64/src/aarch64_zetas.c
+            mlkem/src/native/aarch64/src/poly_reduce_asm.S: mlkem/src/native/aarch64/src/poly_reduce_asm.S
+            mlkem/src/native/aarch64/src/arith_native_aarch64.h: mlkem/src/native/aarch64/src/arith_native_aarch64.h
+            mlkem/src/native/aarch64/src/rej_uniform_asm.S: mlkem/src/native/aarch64/src/rej_uniform_asm.S
+            mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S
+            mlkem/src/native/aarch64/src/rej_uniform_table.c: mlkem/src/native/aarch64/src/rej_uniform_table.c
+            mlkem/src/native/aarch64/src/consts.h: mlkem/src/native/aarch64/src/consts.h
+            mlkem/src/native/aarch64/src/poly_tobytes_asm.S: mlkem/src/native/aarch64/src/poly_tobytes_asm.S
+            mlkem/src/native/aarch64/src/intt.S: mlkem/src/native/aarch64/src/intt.S
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=768"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
+            private: []
+        mlkem-native_ml-kem-768_ref:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/config_c.h: integration/liboqs/config_c.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=768" 
+              - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
+            private: []
+        mlkem-native_ml-kem-768_x86_64:
+          upstream: mlkem-native
+          copies:
+            integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+            integration/liboqs/config_x86_64.h: integration/liboqs/config_x86_64.h
+            integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+            mlkem/src/poly_k.h: mlkem/src/poly_k.h
+            mlkem/src/debug.h: mlkem/src/debug.h
+            mlkem/src/poly.c: mlkem/src/poly.c
+            mlkem/src/params.h: mlkem/src/params.h
+            mlkem/src/native/api.h: mlkem/src/native/api.h
+            mlkem/src/native/meta.h: mlkem/src/native/meta.h
+            mlkem/src/native/x86_64/meta.h: mlkem/src/native/x86_64/meta.h
+            # TODO: this README.md should be removed :(
+            mlkem/src/native/x86_64/README.md: mlkem/src/native/x86_64/README.md
+            mlkem/src/native/x86_64/src/fq.inc: mlkem/src/native/x86_64/src/fq.inc
+            mlkem/src/native/x86_64/src/rej_uniform_avx2.c: mlkem/src/native/x86_64/src/rej_uniform_avx2.c
+            mlkem/src/native/x86_64/src/align.h: mlkem/src/native/x86_64/src/align.h
+            mlkem/src/native/x86_64/src/consts.c: mlkem/src/native/x86_64/src/consts.c
+            mlkem/src/native/x86_64/src/basemul.c: mlkem/src/native/x86_64/src/basemul.c
+            mlkem/src/native/x86_64/src/x86_64_zetas.i: mlkem/src/native/x86_64/src/x86_64_zetas.i
+            mlkem/src/native/x86_64/src/ntt.S: mlkem/src/native/x86_64/src/ntt.S
+            mlkem/src/native/x86_64/src/compress_avx2.c: mlkem/src/native/x86_64/src/compress_avx2.c
+            mlkem/src/native/x86_64/src/rej_uniform_table.c: mlkem/src/native/x86_64/src/rej_uniform_table.c
+            mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i: mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i
+            mlkem/src/native/x86_64/src/reduce.S: mlkem/src/native/x86_64/src/reduce.S
+            mlkem/src/native/x86_64/src/tomont.S: mlkem/src/native/x86_64/src/tomont.S
+            mlkem/src/native/x86_64/src/basemul.S: mlkem/src/native/x86_64/src/basemul.S
+            mlkem/src/native/x86_64/src/consts.h: mlkem/src/native/x86_64/src/consts.h
+            mlkem/src/native/x86_64/src/nttfrombytes.S: mlkem/src/native/x86_64/src/nttfrombytes.S
+            mlkem/src/native/x86_64/src/arith_native_x86_64.h: mlkem/src/native/x86_64/src/arith_native_x86_64.h
+            mlkem/src/native/x86_64/src/ntttobytes.S: mlkem/src/native/x86_64/src/ntttobytes.S
+            mlkem/src/native/x86_64/src/intt.S: mlkem/src/native/x86_64/src/intt.S
+            mlkem/src/native/x86_64/src/mulcache_compute.S: mlkem/src/native/x86_64/src/mulcache_compute.S
+            mlkem/src/native/x86_64/src/nttunpack.S: mlkem/src/native/x86_64/src/nttunpack.S
+            mlkem/src/native/x86_64/src/shuffle.inc: mlkem/src/native/x86_64/src/shuffle.inc
+            mlkem/src/randombytes.h: mlkem/src/randombytes.h
+            mlkem/src/compress.c: mlkem/src/compress.c
+            mlkem/src/sampling.c: mlkem/src/sampling.c
+            mlkem/src/verify.c: mlkem/src/verify.c
+            mlkem/src/kem.c: mlkem/src/kem.c
+            mlkem/src/indcpa.c: mlkem/src/indcpa.c
+            mlkem/src/symmetric.h: mlkem/src/symmetric.h
+            mlkem/src/debug.c: mlkem/src/debug.c
+            mlkem/src/cbmc.h: mlkem/src/cbmc.h
+            mlkem/src/common.h: mlkem/src/common.h
+            mlkem/src/poly_k.c: mlkem/src/poly_k.c
+            mlkem/src/compress.h: mlkem/src/compress.h
+            mlkem/src/sys.h: mlkem/src/sys.h
+            mlkem/src/poly.h: mlkem/src/poly.h
+            mlkem/src/sampling.h: mlkem/src/sampling.h
+            mlkem/src/indcpa.h: mlkem/src/indcpa.h
+            mlkem/src/zetas.inc: mlkem/src/zetas.inc
+            mlkem/src/kem.h: mlkem/src/kem.h
+            mlkem/src/verify.h: mlkem/src/verify.h
+          includes:
+            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts: 
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=768"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
+            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+
 #   -
 #     name: classic_mceliece
 #     default_implementation: clean
