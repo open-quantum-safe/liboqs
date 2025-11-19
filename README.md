@@ -86,8 +86,6 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 | XMSS               | Standardized by [IRTF](https://www.rfc-editor.org/info/rfc8391), approved by [NIST](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-208.pdf) | [`XMSS/xmss-reference`](https://github.com/XMSS/xmss-reference) |
 <!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_END -->
 
-Note that for algorithms marked with a dagger (†), liboqs contains at least one implementation that uses a large amount of stack space; this may cause failures when run in threads or in constrained environments. For more information, consult the algorithm information sheets in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
-
 ### Limitations and Security
 
 While at the time of this writing there are no vulnerabilities known in any of the quantum-safe algorithms used in this library, caution is advised when deploying quantum-safe algorithms as most of the algorithms and software have not been subject to the same degree of scrutiny as for currently deployed algorithms. Particular attention should be paid to guidance provided by the standards community, especially from the NIST [Post-Quantum Cryptography Standardization](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography/Post-Quantum-Cryptography-Standardization) project.  As research advances, the supported algorithms may see rapid changes in their security, and may even prove insecure against both classical and quantum computers. Moreover, note that the `sntrup761` is only included for interop testing.
