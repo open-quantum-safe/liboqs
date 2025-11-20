@@ -6,7 +6,12 @@ import yaml
 
 import oqsbuilder
 from oqsbuilder import LIBOQS_DIR
-from oqsbuilder.oqsbuilder import clone_remote_repo, git_apply
+from oqsbuilder.oqsbuilder import (
+    clone_remote_repo,
+    git_apply,
+    CryptoPrimitive,
+    get_copies,
+)
 
 
 def print_version():
@@ -68,7 +73,10 @@ def copy_from_upstream(
                     raise FileNotFoundError(
                         f"{kem_key}.{impl_key}'s upstream {upstream_key} not found"
                     )
-                for dst, src in impl["copies"].items():
+                copies = get_copies(
+                    instructions, CryptoPrimitive.KEM, kem_key, impl_key
+                )
+                for dst, src in copies.items():
                     src = os.path.join(upstream_dir, src)
                     dst = os.path.join(impl_dir, dst)
                     dst_parent_dir = os.path.split(dst)[0]

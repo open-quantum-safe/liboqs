@@ -1,5 +1,58 @@
+import enum
 import os
 import subprocess
+
+
+class CryptoPrimitive(enum.Enum):
+    KEM = 1
+    SIG = 2
+    STFL_SIG = 3
+
+    def get_oqsbuildfile_key(self) -> str:
+        match self:
+            case CryptoPrimitive.KEM:
+                return "kems"
+            case CryptoPrimitive.SIG:
+                return "sigs"
+            case CryptoPrimitive.STFL_SIG:
+                return "stfl_sigs"
+
+    def get_subdirectory_name(self) -> str:
+        # TODO: consider refactoring src/ so it matches the plural cases
+        match self:
+            case CryptoPrimitive.KEM:
+                return "kem"
+            case CryptoPrimitive.SIG:
+                return "sig"
+            case CryptoPrimitive.STFL_SIG:
+                return "stfl_sig"
+
+
+def get_copies(
+    oqsbuild: dict, primitive: CryptoPrimitive, family_key: str, impl_key: str
+) -> dict[str, str]:
+    """Return the copy dictionary of the specified implementation. A copy
+    dictionary maps destination path to source path. Destination path is relative
+    to the implementation sub-directory. Source path is relative to the upstream
+    repostiroy's root directory.
+
+    :param oqsbuild: the data in oqsbuildfile
+    :param primitive: indicates whether to look under kems, sigs, or stfl_sigs
+        section under oqsbuildfile
+    :param family_key: the family key, such as "ml_kem"
+    :param impl_key: the implementation key, such as "mlkem-native_ml-kem-512_ref"
+    :return: a map from destination paths to source paths
+    """
+    family = oqsbuild[primitive.get_oqsbuildfile_key()]["families"][family_key]
+    impl = family["impls"][impl_key]
+    impl_copies: str | dict[str, str] = impl["copies"]
+    if isinstance(impl_copies, str):
+        return oqsbuild["copies"][impl_copies]
+    elif isinstance(impl_copies, dict):
+        return impl_copies
+    raise TypeError(
+        f"Invalid type for {family_key}.{impl_key}.copies {type(impl_copies)}"
+    )
 
 
 def get_git() -> str | None:
