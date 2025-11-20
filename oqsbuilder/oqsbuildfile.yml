@@ -121,18 +121,62 @@ kems:
           keypair_seedlen: 64
           encap_seedlen: 32
       impls:
-        # TODO: cupqc_ml-kem-1024_cuda:
-        # TODO: cupqc_ml-kem-512_cuda:
-        # TODO: cupqc_ml-kem-768_cuda:
-        # TODO: icicle_ml-kem-1024_icicle_cuda:
-        # TODO: icicle_ml-kem-512_icicle_cuda:
-        # TODO: icicle_ml-kem-768_icicle_cuda:
+        cupqc_ml-kem-1024_cuda:
+          upstream: cupqc
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-1024/cupqc_ml-kem.cu
+          link_libs:
+            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
+            private: [cupqc-pk_static]
+          # FIX: `-arch=compute_70` and `CUDA_ARCHITECTURES OFF` seem to conflict?
+          cuda_arch: off
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+        cupqc_ml-kem-512_cuda:
+          upstream: cupqc
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-512/cupqc_ml-kem.cu
+          link_libs:
+            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
+            private: [cupqc-pk_static]
+          cuda_arch: off
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+        cupqc_ml-kem-768_cuda:
+          upstream: cupqc
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-768/cupqc_ml-kem.cu
+          link_libs:
+            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
+            private: [cupqc-pk_static]
+          cuda_arch: off
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+        icicle_ml-kem-1024_icicle_cuda:
+          upstream: icicle
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp
+          link_libs:
+            private: [icicle::icicle_pqc_package]
+        icicle_ml-kem-512_icicle_cuda:
+          upstream: icicle
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-512/icicle_ml-kem.cpp
+          link_libs:
+            private: [icicle::icicle_pqc_package]
+        icicle_ml-kem-768_icicle_cuda:
+          upstream: icicle
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-768/icicle_ml-kem.cpp
+          link_libs:
+            private: [icicle::icicle_pqc_package]
         mlkem-native_ml-kem-1024_aarch64:
           upstream: mlkem-native
           copies: mlkem-native_aarch64
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=1024"
@@ -142,8 +186,9 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_ref
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=1024" 
@@ -153,8 +198,9 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_x86_64
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts: 
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=1024"
@@ -164,8 +210,9 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_aarch64
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=512"
@@ -175,8 +222,9 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_ref
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=512" 
@@ -186,8 +234,9 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_x86_64
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts: 
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=512"
@@ -197,8 +246,9 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_aarch64
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=768"
@@ -208,8 +258,9 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_ref
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=768" 
@@ -219,13 +270,15 @@ kems:
           upstream: mlkem-native
           copies: mlkem-native_x86_64
           includes:
-            - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-            - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts: 
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=768"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
             private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+
 copies:
   mlkem-native_aarch64:
     integration/liboqs/config_aarch64.h: integration/liboqs/config_aarch64.h
