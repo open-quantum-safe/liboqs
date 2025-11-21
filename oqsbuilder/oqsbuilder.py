@@ -1,6 +1,10 @@
 import enum
 import os
+import shutil
 import subprocess
+
+# TODO: make it into a proper schema with schema validation
+OQSBuild = dict
 
 
 class CryptoPrimitive(enum.Enum):
@@ -96,50 +100,36 @@ def git_apply(
     """
     if not os.path.isdir(dstdir):
         raise FileNotFoundError(f"{dstdir} is not a valid directory")
-    if not gitdir:
-        gitdir = os.path.join(dstdir, ".git")
+    gitdir = os.path.join(dstdir, ".git") if not gitdir else gitdir
     if not os.path.isdir(gitdir):
         raise FileNotFoundError(f"{gitdir} is not a valid .git directory")
-    if not worktree:
-        worktree = dstdir
+    worktree = dstdir if not worktree else worktree
     if not os.path.isdir(worktree):
         raise FileNotFoundError(f"{worktree} is not a valid git work tree")
-    if not directory:
-        directory = dstdir
+    directory = dstdir if not directory else directory
     if not os.path.isdir(directory):
         raise FileNotFoundError(f"{directory} is not a valid directory")
-    if isinstance(patches, list):
-        if len(patches) == 0:
-            return
-        for patch in patches:
-            if not os.path.isfile(patch):
-                raise FileNotFoundError(f"{patch} is not a valid patch file")
-    else:
-        if not os.path.isfile(patches):
-            raise FileNotFoundError(f"{patches} is not a valid patch file")
+    patches = [patches] if isinstance(patches, str) else patches
+    if len(patches) == 0:
+        return
+    for patch in patches:
+        if not os.path.isfile(patch):
+            raise FileNotFoundError(f"{patch} is not a valid patch file")
 
     if not commit_msg:
-        if isinstance(patches, list):
-            patch_names: list[str] = []
-            for patch in patches:
-                _, patch_filename = os.path.split(patch)
-                patch_name, _ = os.path.splitext(patch_filename)
-                patch_names.append(patch_name)
-            commit_msg = f"Applied {', '.join(patch_names)}"
-        else:
-            _, patch_filename = os.path.split(patches)
+        patch_names: list[str] = []
+        for patch in patches:
+            _, patch_filename = os.path.split(patch)
             patch_name, _ = os.path.splitext(patch_filename)
-            commit_msg = f"Applied {patch_name}"
+            patch_names.append(patch_name)
+        commit_msg = f"Applied {', '.join(patch_names)}"
 
     git_apply_cmd = (
         ["git", "--git-dir", gitdir, "--work-tree", worktree]
         + ["apply", "--unsafe-paths", "--verbose", "--whitespace", "fix"]
         + ["--directory", directory]
     )
-    if isinstance(patches, list):
-        git_apply_cmd += patches
-    else:
-        git_apply_cmd += [patches]
+    git_apply_cmd += patches
     commands = [git_apply_cmd]
     if commit_after_apply:
         commands.append(
@@ -211,3 +201,46 @@ def clone_remote_repo(
         else:
             subprocess.run(cmd, check=True)
     return dstdir
+
+
+def fetch_upstreams(
+    oqsbuild: OQSBuild, upstream_parent_dir: str, patch_dir: str
+) -> dict[str, str]:
+    """Clone upstream repositories into the specified parent directory and apply
+    patches. Return a mapping from upstream key to path to the upstream repository
+    """
+    upstream_dirs = {}
+    for name, upstream in oqsbuild["upstreams"].items():
+        upstream_dir = clone_remote_repo(
+            upstream_parent_dir,
+            name,
+            upstream["git_url"],
+            commit=upstream.get("git_commit", None),
+            branch_or_tag=upstream.get("git_branch", None),
+        )
+        patches: list[str] = [
+            os.path.join(patch_dir, patch) for patch in upstream.get("patches", [])
+        ]
+        git_apply(upstream_dir, patches)
+        upstream_dirs[name] = upstream_dir
+    print(f"SUCCESS: fetched {len(upstream_dirs)} upstream repositories")
+    return upstream_dirs
+
+
+def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
+    """Copy the specified file from upstream_dir into impl_dir.
+
+    :param copies: mapping from destination paths (relative to implementation
+    directory) to source paths (relative to upstream directory)
+    :param upstream_dir: path to the upstream directory
+    :param impl_dir: path to the implementation directory
+    """
+    for dst, src in copies.items():
+        src = os.path.join(upstream_dir, src)
+        dst = os.path.join(impl_dir, dst)
+        dst_parent_dir = os.path.split(dst)[0]
+        if not os.path.isdir(dst_parent_dir):
+            print(f"mkdir -p {dst_parent_dir}")
+            os.makedirs(dst_parent_dir)
+        shutil.copyfile(src, dst)
+    print(f"Copied {len(copies)} files into {impl_dir}")
