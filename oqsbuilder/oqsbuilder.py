@@ -290,6 +290,10 @@ def add_objs(kem_key: str, kem: dict) -> list[str]:
     targets = []
 
     for param_key, param in kem["params"].items():
+        # TODO: default impl is special for two reasons:
+        # - default impl's enable_by is overwritten by parameter set's enable_by
+        # - default impl's obj library also contains a parameter-set-level .c file,
+        #   for example: src/kem/ml_kem/kem_ml_kem_512.c
         default_impl_key, default_impl = get_default_impl(kem, param_key)
         default_impl["enable_by"] = param["enable_by"]
         targets.append(add_obj_library(default_impl_key, default_impl))
