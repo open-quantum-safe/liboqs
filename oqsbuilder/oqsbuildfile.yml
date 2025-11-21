@@ -104,6 +104,8 @@ kems:
           sslen: 32
           keypair_seedlen: 64
           encap_seedlen: 32
+          enable_by: OQS_ENABLE_KEM_ml_kem_512
+          default_impl: mlkem-native_ml-kem-512_ref
         ml_kem_768:
           name: "ML-KEM-768"
           pklen: 1184
@@ -112,6 +114,8 @@ kems:
           sslen: 32
           keypair_seedlen: 64
           encap_seedlen: 32
+          enable_by: OQS_ENABLE_KEM_ml_kem_768
+          default_impl: mlkem-native_ml-kem-768_ref
         ml_kem_1024:
           name: "ML-KEM-1024"
           pklen: 1568
@@ -120,58 +124,12 @@ kems:
           sslen: 32
           keypair_seedlen: 64
           encap_seedlen: 32
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024
+          default_impl: mlkem-native_ml-kem-1024_ref
       impls:
-        cupqc_ml-kem-1024_cuda:
-          upstream: cupqc
-          copies:
-            cupqc_ml-kem.cu: cuda/ml-kem-1024/cupqc_ml-kem.cu
-          link_libs:
-            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
-            private: [cupqc-pk_static]
-          # FIX: `-arch=compute_70` and `CUDA_ARCHITECTURES OFF` seem to conflict?
-          cuda_arch: off
-          compile_opts:
-            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
-        cupqc_ml-kem-512_cuda:
-          upstream: cupqc
-          copies:
-            cupqc_ml-kem.cu: cuda/ml-kem-512/cupqc_ml-kem.cu
-          link_libs:
-            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
-            private: [cupqc-pk_static]
-          cuda_arch: off
-          compile_opts:
-            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
-        cupqc_ml-kem-768_cuda:
-          upstream: cupqc
-          copies:
-            cupqc_ml-kem.cu: cuda/ml-kem-768/cupqc_ml-kem.cu
-          link_libs:
-            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
-            private: [cupqc-pk_static]
-          cuda_arch: off
-          compile_opts:
-            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
-        icicle_ml-kem-1024_icicle_cuda:
-          upstream: icicle
-          copies:
-            icicle_ml-kem.cpp: icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp
-          link_libs:
-            private: [icicle::icicle_pqc_package]
-        icicle_ml-kem-512_icicle_cuda:
-          upstream: icicle
-          copies:
-            icicle_ml-kem.cpp: icicle_cuda/ml-kem-512/icicle_ml-kem.cpp
-          link_libs:
-            private: [icicle::icicle_pqc_package]
-        icicle_ml-kem-768_icicle_cuda:
-          upstream: icicle
-          copies:
-            icicle_ml-kem.cpp: icicle_cuda/ml-kem-768/icicle_ml-kem.cpp
-          link_libs:
-            private: [icicle::icicle_pqc_package]
         mlkem-native_ml-kem-1024_aarch64:
           upstream: mlkem-native
+          param: ml_kem_1024
           copies: mlkem-native_aarch64
           includes:
             private:
@@ -184,6 +142,7 @@ kems:
             private: []
         mlkem-native_ml-kem-1024_ref:
           upstream: mlkem-native
+          param: ml_kem_1024
           copies: mlkem-native_ref
           includes:
             private:
@@ -196,6 +155,7 @@ kems:
             private: []
         mlkem-native_ml-kem-1024_x86_64:
           upstream: mlkem-native
+          param: ml_kem_1024
           copies: mlkem-native_x86_64
           includes:
             private:
@@ -208,6 +168,7 @@ kems:
             private: ["-mavx2", "-mbmi2", "-mpopcnt"]
         mlkem-native_ml-kem-512_aarch64:
           upstream: mlkem-native
+          param: ml_kem_512
           copies: mlkem-native_aarch64
           includes:
             private:
@@ -220,6 +181,7 @@ kems:
             private: []
         mlkem-native_ml-kem-512_ref:
           upstream: mlkem-native
+          param: ml_kem_512
           copies: mlkem-native_ref
           includes:
             private:
@@ -232,6 +194,7 @@ kems:
             private: []
         mlkem-native_ml-kem-512_x86_64:
           upstream: mlkem-native
+          param: ml_kem_512
           copies: mlkem-native_x86_64
           includes:
             private:
@@ -244,6 +207,7 @@ kems:
             private: ["-mavx2", "-mbmi2", "-mpopcnt"]
         mlkem-native_ml-kem-768_aarch64:
           upstream: mlkem-native
+          param: ml_kem_768
           copies: mlkem-native_aarch64
           includes:
             private:
@@ -256,6 +220,7 @@ kems:
             private: []
         mlkem-native_ml-kem-768_ref:
           upstream: mlkem-native
+          param: ml_kem_768
           copies: mlkem-native_ref
           includes:
             private:
@@ -268,6 +233,7 @@ kems:
             private: []
         mlkem-native_ml-kem-768_x86_64:
           upstream: mlkem-native
+          param: ml_kem_768
           copies: mlkem-native_x86_64
           includes:
             private:
@@ -278,6 +244,59 @@ kems:
               - "-DMLK_CONFIG_PARAMETER_SET=768"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
             private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+        cupqc_ml-kem-1024_cuda:
+          upstream: cupqc
+          param: ml_kem_1024
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-1024/cupqc_ml-kem.cu
+          link_libs:
+            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
+            private: [cupqc-pk_static]
+          # FIX: `-arch=compute_70` and `CUDA_ARCHITECTURES OFF` seem to conflict?
+          cuda_arch: off
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+        cupqc_ml-kem-512_cuda:
+          upstream: cupqc
+          param: ml_kem_512
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-512/cupqc_ml-kem.cu
+          link_libs:
+            private: [cupqc-pk_static]
+          cuda_arch: off
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+        cupqc_ml-kem-768_cuda:
+          upstream: cupqc
+          param: ml_kem_768
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-768/cupqc_ml-kem.cu
+          link_libs:
+            private: [cupqc-pk_static]
+          cuda_arch: off
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+        icicle_ml-kem-1024_icicle_cuda:
+          upstream: icicle
+          param: ml_kem_1024
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp
+          link_libs:
+            private: [icicle::icicle_pqc_package]
+        icicle_ml-kem-512_icicle_cuda:
+          upstream: icicle
+          param: ml_kem_512
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-512/icicle_ml-kem.cpp
+          link_libs:
+            private: [icicle::icicle_pqc_package]
+        icicle_ml-kem-768_icicle_cuda:
+          upstream: icicle
+          param: ml_kem_768
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-768/icicle_ml-kem.cpp
+          link_libs:
+            private: [icicle::icicle_pqc_package]
 
 copies:
   mlkem-native_aarch64:
