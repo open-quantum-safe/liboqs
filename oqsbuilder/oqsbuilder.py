@@ -2,9 +2,13 @@ import enum
 import os
 import shutil
 import subprocess
+from typing import Dict
+
+from oqsbuilder.templates import FAMILY_CMAKE_HEADER
 
 # TODO: make it into a proper schema with schema validation
-OQSBuild = dict
+OQSBuild = Dict
+UpstreamKey = UpstreamPath = str
 
 
 class CryptoPrimitive(enum.Enum):
@@ -153,7 +157,7 @@ def clone_remote_repo(
     commit: str | None = None,
     branch_or_tag: str | None = None,
     dryrun: bool = False,
-) -> str:
+) -> UpstreamPath:
     """Clone a remote Git repository into a local destination directory.
 
     :param parentdir: Path to the parent directory where the repository will be cloned.
@@ -205,7 +209,7 @@ def clone_remote_repo(
 
 def fetch_upstreams(
     oqsbuild: OQSBuild, upstream_parent_dir: str, patch_dir: str
-) -> dict[str, str]:
+) -> dict[UpstreamKey, UpstreamPath]:
     """Clone upstream repositories into the specified parent directory and apply
     patches. Return a mapping from upstream key to path to the upstream repository
     """
@@ -244,3 +248,82 @@ def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
             os.makedirs(dst_parent_dir)
         shutil.copyfile(src, dst)
     print(f"Copied {len(copies)} files into {impl_dir}")
+
+
+def get_default_impl(family: dict, param_key: str) -> tuple[str, dict]:
+    """Get the implementation key and the implementation metadata for the
+    specified parameter set under the given family
+    """
+    impl_key = family["params"][param_key]["default_impl"]
+    impl = family["impls"][impl_key]
+    impl_param_key = impl["param"]
+    if impl_param_key != param_key:
+        raise ValueError(
+            f"{param_key}'s default impl {impl_key} specified param set {impl_param_key}"
+        )
+    return impl_key, impl
+
+
+def get_impls(
+    family: dict, param_key: str, exclude_default: bool = False
+) -> list[tuple[str, dict]]:
+    """Return a list of (impl_key, impl_metadata) for the specified parameter set"""
+    impls = []
+    default_impl_key, _ = get_default_impl(family, param_key)
+    for impl_key, impl in family["impls"].items():
+        exclude = exclude_default and (impl_key == default_impl_key)
+        if impl["param"] == param_key and (not exclude):
+            impls.append((impl_key, impl))
+    return impls
+
+def add_obj_library(libname: str, impl_meta: dict) -> str:
+    """Given implementation metadata, return a CMake fragment that builds the 
+    implementation into an object library
+    """
+    # TODO: implement this
+    return ""
+
+def add_objs(kem_key: str, kem: dict) -> list[str]:
+    """Return a list of cmake "add_library" sections that build individual
+    implementations into an object
+    """
+    targets = []
+
+    for param_key, param in kem["params"].items():
+        default_impl_key, default_impl = get_default_impl(kem, param_key)
+        default_impl["enable_by"] = param["enable_by"]
+        targets.append(add_obj_library(default_impl_key, default_impl))
+        for impl_key, impl in get_impls(kem, param_key, True):
+            targets.append(add_obj_library(impl_key, impl))
+
+    return targets
+
+
+def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool):
+    """Generate the family-level CMakeLists.txt file for the input KEM scheme
+
+    :param cmake_path: the cmake list file will be written to this file
+    :param kem_key: the family key of the KEM scheme
+    :param kem: the content in build file under the family key
+    """
+    local_obj = f"_{kem_key}_OBJS".upper()
+    export_obj = f"{kem_key}_OBJS".upper()
+
+    targets = add_objs(kem_key, kem)
+    targets = "\n\n".join(targets)
+
+    data = f"""{FAMILY_CMAKE_HEADER}
+
+set({local_obj} "")
+
+{targets}
+
+set({export_obj} ${{{local_obj}}} PARENT_SCOPE)
+"""
+
+    if dryrun:
+        print(f">>> {cmake_path}:")
+        print(data)
+        return
+    with open(cmake_path, "w") as f:
+        f.write(data)
