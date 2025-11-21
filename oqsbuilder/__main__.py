@@ -1,16 +1,15 @@
 import os
 import sys
-import shutil
 from tempfile import TemporaryDirectory
 import yaml
 
 import oqsbuilder
 from oqsbuilder import LIBOQS_DIR
 from oqsbuilder.oqsbuilder import (
-    clone_remote_repo,
-    git_apply,
     CryptoPrimitive,
+    copy_copies,
     get_copies,
+    fetch_upstreams,
 )
 
 
@@ -42,50 +41,21 @@ def copy_from_upstream(
     :param headless: True if running in a non-interactive environment
     """
     with open(oqsbuildfile, mode="r", encoding="utf-8") as f:
-        instructions = yaml.safe_load(f)
-    print(f"Successfully loaded {oqsbuildfile}")
-    upstreams = instructions["upstreams"]
+        oqsbuild = yaml.safe_load(f)
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
-        for name, upstream in upstreams.items():
-            upstream_dir = clone_remote_repo(
-                tempdir,
-                name,
-                upstream["git_url"],
-                commit=upstream.get("git_commit", None),
-                branch_or_tag=upstream.get("git_branch", None),
-            )
-            patches: list[str] = [
-                os.path.join(patch_dir, patch) for patch in upstream.get("patches", [])
-            ]
-            git_apply(upstream_dir, patches)
-        print(f"SUCCESS: fetched {len(upstreams)} upstream repositories")
-
-        kems = instructions["kems"]
+        upstream_dirs = fetch_upstreams(oqsbuild, tempdir, patch_dir)
+        kems = oqsbuild["kems"]
         kems_dir = os.path.join(LIBOQS_DIR, "src", "kem")
         for kem_key, kem in kems["families"].items():
             kem_dir = os.path.join(kems_dir, kem_key)
             print(f"Integrating {kem_key} into {kem_dir}")
             for impl_key, impl in kem["impls"].items():
-                upstream_key = impl["upstream"]
-                upstream_dir = os.path.join(tempdir, upstream_key)
-                impl_dir = os.path.join(kem_dir, impl_key)
-                if not os.path.isdir(upstream_dir):
-                    raise FileNotFoundError(
-                        f"{kem_key}.{impl_key}'s upstream {upstream_key} not found"
-                    )
-                copies = get_copies(
-                    instructions, CryptoPrimitive.KEM, kem_key, impl_key
+                copies = get_copies(oqsbuild, CryptoPrimitive.KEM, kem_key, impl_key)
+                copy_copies(
+                    copies,
+                    upstream_dir=upstream_dirs[impl["upstream"]],
+                    impl_dir=os.path.join(kem_dir, impl_key),
                 )
-                for dst, src in copies.items():
-                    src = os.path.join(upstream_dir, src)
-                    dst = os.path.join(impl_dir, dst)
-                    dst_parent_dir = os.path.split(dst)[0]
-                    if not os.path.isdir(dst_parent_dir):
-                        print(f"mkdir -p {dst_parent_dir}")
-                        os.makedirs(dst_parent_dir)
-                    # use shutil instead of subprocess.run(["cp", ...]) for OS portability
-                    shutil.copyfile(src, dst)
-                print(f"Copied {len(impl["copies"])} files into {impl_dir}")
 
 
 if __name__ == "__main__":
