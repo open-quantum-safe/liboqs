@@ -8,6 +8,7 @@ import yaml
 from oqsbuilder.templates import FAMILY_CMAKE_HEADER
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
+SCOPE_OPTIONS = ("public", "private", "interface")
 
 
 class CryptoPrimitive(enum.Enum):
@@ -303,6 +304,35 @@ def get_impls(
     return impls
 
 
+def get_impl_compile_opts(impl_meta: dict, scope: str) -> list[str] | None:
+    """Return the list of public compiler options or None if there is none"""
+    assert scope in SCOPE_OPTIONS, f"scope must be in {SCOPE_OPTIONS}"
+    compile_opts = impl_meta.get("compile_opts", None)
+    if not compile_opts:
+        return None
+    return compile_opts.get(scope, None)
+
+
+def get_impl_include_dirs(impl_meta: dict, scope: str) -> list[str] | None:
+    """Return the list of include directories or None"""
+    assert scope in SCOPE_OPTIONS, f"scope must be in {SCOPE_OPTIONS}"
+    include_dirs = impl_meta.get("includes", None)
+    if not include_dirs:
+        return None
+    return include_dirs.get(scope, None)
+
+
+# TODO: get_impl_include_dirs, get_impl_link_libs, and get_impl_compile_opts
+#   are highly similar. Consider refactoring them into a single function
+def get_impl_link_libs(impl_meta: dict, scope: str) -> list[str] | None:
+    """Return the list of include directories or None"""
+    assert scope in SCOPE_OPTIONS, f"scope must be in {SCOPE_OPTIONS}"
+    include_dirs = impl_meta.get("link_libs", None)
+    if not include_dirs:
+        return None
+    return include_dirs.get(scope, None)
+
+
 def generate_family_cmake_targets(
     family_key: str,
     family_meta: dict,
@@ -337,7 +367,7 @@ endif()"""
     impl_targets = []
     for impl_key, impl_meta in family_meta["impls"].items():
         print(f"Generating implementation target for {family_key}.{impl_key}")
-        target_inner_lines = [f"    set(IMPL_KEY {impl_key})"]
+        target_inner_lines = [f"set(IMPL_KEY {impl_key})"]
         impl_enable_by = impl_meta["enable_by"]
         impl_param_key = impl_meta["param"]
         impl_param_meta = family_meta["params"][impl_param_key]
@@ -345,17 +375,41 @@ endif()"""
             get_default_impl(family_meta, impl_param_key)[0] == impl_key
         ):
             impl_enable_by = impl_param_meta["enable_by"]
+        # Find source files
         srcpaths = [
             os.path.join(impl_key, path)
             for path in impl_meta["copies"]
             if os.path.splitext(path)[1] in SRC_FILE_EXTS
         ]
         target_inner_lines.append(
-            f"    add_library({impl_key} OBJECT {" ".join(srcpaths)})"
+            f"add_library({impl_key} OBJECT {" ".join(srcpaths)})"
         )
-        # FIX: add compiler options
+        # Add compile options, include directories
+        for scope in ("public", "private"):
+            compile_opts = get_impl_compile_opts(impl_meta, scope)
+            if compile_opts:
+                target_inner_lines.append(
+                    f"target_compile_options({impl_key} {scope.upper()} {" ".join(compile_opts)})"
+                )
+            include_dirs = get_impl_include_dirs(impl_meta, scope)
+            if include_dirs:
+                target_inner_lines.append(
+                    f"target_include_directories({impl_key} {scope.upper()} {" ".join(include_dirs)})"
+                )
+            link_libs = get_impl_link_libs(impl_meta, scope)
+            if link_libs:
+                target_inner_lines.append(
+                    f"target_link_libraries({impl_key} {scope.upper()} {" ".join(link_libs)})"
+                )
+        # CUDA Architecture if specified
+        cuda_arch = impl_meta.get("cuda_arch", None)
+        if cuda_arch:
+            target_inner_lines.append(
+                f"set_property(TARGET {impl_key} PROPERTY CUDA_ARCHITECTURES {cuda_arch})"
+            )
+        # Aggregate objects to local obj variable
         target_inner_lines.append(
-            f"    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)"
+            f"set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)"
         )
         target = f"""\
 if({impl_enable_by})
