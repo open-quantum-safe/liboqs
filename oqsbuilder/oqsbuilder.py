@@ -2,11 +2,12 @@ import enum
 import os
 import shutil
 import subprocess
-from typing import Sequence
 
 import yaml
 
 from oqsbuilder.templates import FAMILY_CMAKE_HEADER
+
+SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
 
 
 class CryptoPrimitive(enum.Enum):
@@ -302,12 +303,6 @@ def get_impls(
     return impls
 
 
-def get_src_paths(impl_meta, src_exts: Sequence[str] = (".c", ".S")) -> list[str]:
-    """Return a list of source file paths relative to the implementation directory"""
-    # FIX: implement this
-    return []
-
-
 def generate_family_cmake_targets(
     family_key: str,
     family_meta: dict,
@@ -327,25 +322,6 @@ def generate_family_cmake_targets(
         the `enable_by` flag of the default implementation with the `enable_by`
         flag of the parameter set
     """
-    impl_targets = []
-    for impl_key, impl_meta in family_meta["impls"].items():
-        print(f"Generating implementation target for {family_key}.{impl_key}")
-        impl_enable_by = impl_meta["enable_by"]
-        impl_param_key = impl_meta["param"]
-        impl_param_meta = family_meta["params"][impl_param_key]
-        if overwrite_default_impl_enable_by and (
-            get_default_impl(family_meta, impl_param_key)[0] == impl_key
-        ):
-            impl_enable_by = impl_param_meta["enable_by"]
-        srcpaths = get_src_paths(impl_meta)
-        target = f"""\
-if({impl_enable_by})
-    add_library({impl_key} OBJECT)
-    set(IMPL_KEY {impl_key})
-    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)
-endif()"""
-        impl_targets.append(target)
-
     common_targets = []
     for param_key, param_meta in family_meta["params"].items():
         print(f"Generating common targets for {family_key}.{param_key}")
@@ -358,7 +334,30 @@ if({param_enable_by})
 endif()"""
         common_targets.append(target)
 
-    return impl_targets + common_targets
+    impl_targets = []
+    for impl_key, impl_meta in family_meta["impls"].items():
+        print(f"Generating implementation target for {family_key}.{impl_key}")
+        impl_enable_by = impl_meta["enable_by"]
+        impl_param_key = impl_meta["param"]
+        impl_param_meta = family_meta["params"][impl_param_key]
+        if overwrite_default_impl_enable_by and (
+            get_default_impl(family_meta, impl_param_key)[0] == impl_key
+        ):
+            impl_enable_by = impl_param_meta["enable_by"]
+        srcpaths = [
+            os.path.join(impl_key, path)
+            for path in impl_meta["copies"]
+            if os.path.splitext(path)[1] in SRC_FILE_EXTS
+        ]
+        target = f"""\
+if({impl_enable_by})
+    add_library({impl_key} OBJECT {" ".join(srcpaths)})
+    set(IMPL_KEY {impl_key})
+    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)
+endif()"""
+        impl_targets.append(target)
+
+    return common_targets + impl_targets
 
 
 def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool):
