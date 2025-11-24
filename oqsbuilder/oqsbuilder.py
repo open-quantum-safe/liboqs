@@ -2,13 +2,11 @@ import enum
 import os
 import shutil
 import subprocess
-from typing import Dict
+from typing import Sequence
+
+import yaml
 
 from oqsbuilder.templates import FAMILY_CMAKE_HEADER
-
-# TODO: make it into a proper schema with schema validation
-OQSBuild = Dict
-UpstreamKey = UpstreamPath = str
 
 
 class CryptoPrimitive(enum.Enum):
@@ -34,6 +32,31 @@ class CryptoPrimitive(enum.Enum):
                 return "sig"
             case CryptoPrimitive.STFL_SIG:
                 return "stfl_sig"
+
+
+def load_oqsbuildfile(path: str):
+    """Load oqsbuildfile from the specified path
+
+    For each implementation, if the `copies` field is mapped to a `copies` key,
+    then the `copies` field will be instantiated with the actual dst:src mapping
+    under the top-level `copies` section.
+    """
+    with open(path, mode="r", encoding="utf-8") as f:
+        oqsbuild = yaml.safe_load(f)
+
+    for primitive in [
+        CryptoPrimitive.KEM,
+        # FIX: uncomment this once sigs and stfl_sigs are filled in
+        # CryptoPrimitive.SIG,
+        # CryptoPrimitive.STFL_SIG,
+    ]:
+        for _, family in oqsbuild[primitive.get_oqsbuildfile_key()]["families"].items():
+            for _, impl_meta in family["impls"].items():
+                impl_copies = impl_meta["copies"]
+                if isinstance(impl_copies, str):
+                    impl_meta["copies"] = oqsbuild["copies"][impl_copies]
+
+    return oqsbuild
 
 
 def get_copies(
@@ -157,7 +180,7 @@ def clone_remote_repo(
     commit: str | None = None,
     branch_or_tag: str | None = None,
     dryrun: bool = False,
-) -> UpstreamPath:
+) -> str:
     """Clone a remote Git repository into a local destination directory.
 
     :param parentdir: Path to the parent directory where the repository will be cloned.
@@ -208,8 +231,8 @@ def clone_remote_repo(
 
 
 def fetch_upstreams(
-    oqsbuild: OQSBuild, upstream_parent_dir: str, patch_dir: str
-) -> dict[UpstreamKey, UpstreamPath]:
+    oqsbuild: dict, upstream_parent_dir: str, patch_dir: str
+) -> dict[str, str]:
     """Clone upstream repositories into the specified parent directory and apply
     patches. Return a mapping from upstream key to path to the upstream repository
     """
@@ -253,6 +276,8 @@ def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
 def get_default_impl(family: dict, param_key: str) -> tuple[str, dict]:
     """Get the implementation key and the implementation metadata for the
     specified parameter set under the given family
+
+    :return: a tuple of (impl_key, impl_meta)
     """
     impl_key = family["params"][param_key]["default_impl"]
     impl = family["impls"][impl_key]
@@ -276,35 +301,72 @@ def get_impls(
             impls.append((impl_key, impl))
     return impls
 
-def add_obj_library(libname: str, impl_meta: dict) -> str:
-    """Given implementation metadata, return a CMake fragment that builds the 
-    implementation into an object library
+
+def get_src_paths(impl_meta, src_exts: Sequence[str] = (".c", ".S")) -> list[str]:
+    """Return a list of source file paths relative to the implementation directory"""
+    # FIX: implement this
+    return []
+
+
+def generate_family_cmake_targets(
+    family_key: str,
+    family_meta: dict,
+    local_obj: str,
+    overwrite_default_impl_enable_by: bool = True,
+) -> list[str]:
+    """Generate a list of family-level CMake fragments where each fragment builds
+    an object library target. Some targets contain individual implementations,
+    such as mlkem-native_ml-kem-512_ref. Other targets contain OQS APIs, such
+    as OQS_KEM_ml_kem_512_new (specified in kem_ml_kem_512.c)
+
+    :param family_key: key of a family, such as ml_kem or ml_dsa
+    :param family_meta: this family's metadata
+    :param local_obj: the non-exported cmake variable that aggregates objects
+        for this family, such as `_ML_KEM_OBJS` in src/kem/ml_kem/CMakeLists.txt
+    :param overwrite_default_impl_enable_by: for each parameter set, overwrite
+        the `enable_by` flag of the default implementation with the `enable_by`
+        flag of the parameter set
     """
-    # TODO: implement this
-    return ""
+    impl_targets = []
+    for impl_key, impl_meta in family_meta["impls"].items():
+        print(f"Generating implementation target for {family_key}.{impl_key}")
+        impl_enable_by = impl_meta["enable_by"]
+        impl_param_key = impl_meta["param"]
+        impl_param_meta = family_meta["params"][impl_param_key]
+        if overwrite_default_impl_enable_by and (
+            get_default_impl(family_meta, impl_param_key)[0] == impl_key
+        ):
+            impl_enable_by = impl_param_meta["enable_by"]
+        srcpaths = get_src_paths(impl_meta)
+        target = f"""\
+if({impl_enable_by})
+    add_library({impl_key} OBJECT)
+    set(IMPL_KEY {impl_key})
+    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)
+endif()"""
+        impl_targets.append(target)
 
-def add_objs(kem_key: str, kem: dict) -> list[str]:
-    """Return a list of cmake "add_library" sections that build individual
-    implementations into an object
-    """
-    targets = []
+    common_targets = []
+    for param_key, param_meta in family_meta["params"].items():
+        print(f"Generating common targets for {family_key}.{param_key}")
+        param_enable_by = param_meta["enable_by"]
+        param_api_src = param_meta["api_src"]
+        target = f"""\
+if({param_enable_by})
+    add_library({param_key} OBJECT {param_api_src})
+    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{param_key}>)
+endif()"""
+        common_targets.append(target)
 
-    for param_key, param in kem["params"].items():
-        # TODO: default impl is special for two reasons:
-        # - default impl's enable_by is overwritten by parameter set's enable_by
-        # - default impl's obj library also contains a parameter-set-level .c file,
-        #   for example: src/kem/ml_kem/kem_ml_kem_512.c
-        default_impl_key, default_impl = get_default_impl(kem, param_key)
-        default_impl["enable_by"] = param["enable_by"]
-        targets.append(add_obj_library(default_impl_key, default_impl))
-        for impl_key, impl in get_impls(kem, param_key, True):
-            targets.append(add_obj_library(impl_key, impl))
-
-    return targets
+    return impl_targets + common_targets
 
 
 def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool):
     """Generate the family-level CMakeLists.txt file for the input KEM scheme
+
+    Each family-level list file (e.g. src/kem/ml_kem/CMakeLists.txt) exports a
+    cmake variable (e.g. ML_KEM_OBJS) that contains the compiled objects from
+    that family.
 
     :param cmake_path: the cmake list file will be written to this file
     :param kem_key: the family key of the KEM scheme
@@ -313,7 +375,7 @@ def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool):
     local_obj = f"_{kem_key}_OBJS".upper()
     export_obj = f"{kem_key}_OBJS".upper()
 
-    targets = add_objs(kem_key, kem)
+    targets = generate_family_cmake_targets(kem_key, kem, local_obj)
     targets = "\n\n".join(targets)
 
     data = f"""{FAMILY_CMAKE_HEADER}
@@ -326,7 +388,7 @@ set({export_obj} ${{{local_obj}}} PARENT_SCOPE)
 """
 
     if dryrun:
-        print(f">>> {cmake_path}:")
+        print(f">>>>>>>>> {cmake_path}:")
         print(data)
         return
     with open(cmake_path, "w") as f:
