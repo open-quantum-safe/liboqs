@@ -266,7 +266,7 @@ kems:
             # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
             private: [cupqc-pk_static]
           # FIX: `-arch=compute_70` and `CUDA_ARCHITECTURES OFF` seem to conflict?
-          cuda_arch: off
+          cuda_arch: OFF
           compile_opts:
             private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
         cupqc_ml-kem-512_cuda:
@@ -277,7 +277,7 @@ kems:
           enable_by: OQS_ENABLE_KEM_ml_kem_512_cuda
           link_libs:
             private: [cupqc-pk_static]
-          cuda_arch: off
+          cuda_arch: OFF
           compile_opts:
             private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
         cupqc_ml-kem-768_cuda:
@@ -288,7 +288,7 @@ kems:
           enable_by: OQS_ENABLE_KEM_ml_kem_768_cuda
           link_libs:
             private: [cupqc-pk_static]
-          cuda_arch: off
+          cuda_arch: OFF
           compile_opts:
             private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
         icicle_ml-kem-1024_icicle_cuda:
