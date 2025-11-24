@@ -106,6 +106,7 @@ kems:
           encap_seedlen: 32
           enable_by: OQS_ENABLE_KEM_ml_kem_512
           default_impl: mlkem-native_ml-kem-512_ref
+          api_src: kem_ml_kem_512.c
         ml_kem_768:
           name: "ML-KEM-768"
           pklen: 1184
@@ -116,6 +117,7 @@ kems:
           encap_seedlen: 32
           enable_by: OQS_ENABLE_KEM_ml_kem_768
           default_impl: mlkem-native_ml-kem-768_ref
+          api_src: kem_ml_kem_768.c
         ml_kem_1024:
           name: "ML-KEM-1024"
           pklen: 1568
@@ -126,11 +128,13 @@ kems:
           encap_seedlen: 32
           enable_by: OQS_ENABLE_KEM_ml_kem_1024
           default_impl: mlkem-native_ml-kem-1024_ref
+          api_src: kem_ml_kem_1024.c
       impls:
         mlkem-native_ml-kem-1024_aarch64:
           upstream: mlkem-native
           param: ml_kem_1024
           copies: mlkem-native_aarch64
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_aarch64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -144,6 +148,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_1024
           copies: mlkem-native_ref
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_ref
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -157,6 +162,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_1024
           copies: mlkem-native_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -170,6 +176,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_512
           copies: mlkem-native_aarch64
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_aarch64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -183,6 +190,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_512
           copies: mlkem-native_ref
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_ref
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -196,6 +204,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_512
           copies: mlkem-native_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_x86_64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -209,6 +218,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_768
           copies: mlkem-native_aarch64
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_aarch64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -222,6 +232,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_768
           copies: mlkem-native_ref
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_ref
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -235,6 +246,7 @@ kems:
           upstream: mlkem-native
           param: ml_kem_768
           copies: mlkem-native_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -249,6 +261,7 @@ kems:
           param: ml_kem_1024
           copies:
             cupqc_ml-kem.cu: cuda/ml-kem-1024/cupqc_ml-kem.cu
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_cuda
           link_libs:
             # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
             private: [cupqc-pk_static]
@@ -261,6 +274,7 @@ kems:
           param: ml_kem_512
           copies:
             cupqc_ml-kem.cu: cuda/ml-kem-512/cupqc_ml-kem.cu
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_cuda
           link_libs:
             private: [cupqc-pk_static]
           cuda_arch: off
@@ -271,6 +285,7 @@ kems:
           param: ml_kem_768
           copies:
             cupqc_ml-kem.cu: cuda/ml-kem-768/cupqc_ml-kem.cu
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_cuda
           link_libs:
             private: [cupqc-pk_static]
           cuda_arch: off
@@ -281,6 +296,7 @@ kems:
           param: ml_kem_1024
           copies:
             icicle_ml-kem.cpp: icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda
           link_libs:
             private: [icicle::icicle_pqc_package]
         icicle_ml-kem-512_icicle_cuda:
@@ -288,6 +304,7 @@ kems:
           param: ml_kem_512
           copies:
             icicle_ml-kem.cpp: icicle_cuda/ml-kem-512/icicle_ml-kem.cpp
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_icicle_cuda
           link_libs:
             private: [icicle::icicle_pqc_package]
         icicle_ml-kem-768_icicle_cuda:
@@ -295,6 +312,7 @@ kems:
           param: ml_kem_768
           copies:
             icicle_ml-kem.cpp: icicle_cuda/ml-kem-768/icicle_ml-kem.cpp
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_icicle_cuda
           link_libs:
             private: [icicle::icicle_pqc_package]
 
