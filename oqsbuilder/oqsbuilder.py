@@ -337,6 +337,7 @@ endif()"""
     impl_targets = []
     for impl_key, impl_meta in family_meta["impls"].items():
         print(f"Generating implementation target for {family_key}.{impl_key}")
+        target_inner_lines = [f"    set(IMPL_KEY {impl_key})"]
         impl_enable_by = impl_meta["enable_by"]
         impl_param_key = impl_meta["param"]
         impl_param_meta = family_meta["params"][impl_param_key]
@@ -349,11 +350,16 @@ endif()"""
             for path in impl_meta["copies"]
             if os.path.splitext(path)[1] in SRC_FILE_EXTS
         ]
+        target_inner_lines.append(
+            f"    add_library({impl_key} OBJECT {" ".join(srcpaths)})"
+        )
+        # FIX: add compiler options
+        target_inner_lines.append(
+            f"    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)"
+        )
         target = f"""\
 if({impl_enable_by})
-    add_library({impl_key} OBJECT {" ".join(srcpaths)})
-    set(IMPL_KEY {impl_key})
-    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)
+{"\n".join(target_inner_lines)}
 endif()"""
         impl_targets.append(target)
 
