@@ -166,6 +166,9 @@ set_property(TARGET _target PROPERTY CUDA_ARCHITECTURES OFF)
 - `sources` under each `impl` can contain both source files (`.c`, `.S`) and header/config files (`.h`)
 - Each KEM family has a family-level `CMakeLists.txt` file. For example, ML-KEM has a `src/kem/ml_kem/CMakeLists.txt` file. There is no implementation-level list file. Under each implementation, the cmake variable `CMAKE_CURRENT_LIST_DIR` refers to the family-level list file.
 
+### `header`
+**Optional:** name of the family-level header file. Defaults to `{kem|sig|stfl_sig}_{family_key}.h`
+
 ## Parameter Set
 Each KEM/SIG/STFL_SIG scheme can have one or more parameter sets listed under the `params` key. For example:
 
@@ -187,7 +190,7 @@ sigs:
 ```
 
 ### `api_src`
-Path to the source file (relative to the family directory) that contains the OQS common API (e.g. `OQS_KEM_ml_kem_512_new`) for this parameter set (e.g. `kem_ml_kem_512.c`)
+**Optional:** name of the source file that contains the OQS common API (e.g. `OQS_KEM_ml_kem_512_new`) for this parameter set (e.g. `kem_ml_kem_512.c`). Defaults to `<kem|sig|stfl_sig>_<param_key>.c`
 
 ### `<param_key>.enable_by`
 Specify the C pre-processing macro that enables this parameter set. Note that if the parameter set is disabled, then no individual implementation will be enabled even if the individual implementation is enabled.

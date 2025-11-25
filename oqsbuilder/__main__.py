@@ -10,6 +10,7 @@ from oqsbuilder.oqsbuilder import (
     generate_kem_cmake,
     load_oqsbuildfile,
     fetch_upstreams,
+    generate_kem_oqs_api,
 )
 
 
@@ -45,7 +46,9 @@ def copy_from_upstream(
         upstream_dirs = fetch_upstreams(oqsbuild, tempdir, patch_dir)
 
         kems = oqsbuild[CryptoPrimitive.KEM.get_oqsbuildfile_key()]
-        kems_dir = os.path.join(LIBOQS_DIR, "src", CryptoPrimitive.KEM.get_subdirectory_name())
+        kems_dir = os.path.join(
+            LIBOQS_DIR, "src", CryptoPrimitive.KEM.get_subdirectory_name()
+        )
         for kem_key, kem in kems["families"].items():
             kem_dir = os.path.join(kems_dir, kem_key)
             cmake_path = os.path.join(
@@ -58,6 +61,7 @@ def copy_from_upstream(
                 impl_dir = os.path.join(kem_dir, impl_key)
                 copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
             generate_kem_cmake(cmake_path, kem_key, kem)
+            generate_kem_oqs_api(kem_dir, kem_key, kem)
 
 
 if __name__ == "__main__":
