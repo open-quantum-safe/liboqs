@@ -10,7 +10,8 @@ from oqsbuilder.oqsbuilder import (
     generate_kem_cmake,
     load_oqsbuildfile,
     fetch_upstreams,
-    generate_kem_oqs_api,
+    generate_kem_header,
+    generate_kem_sources,
 )
 
 
@@ -51,17 +52,13 @@ def copy_from_upstream(
         )
         for kem_key, kem in kems["families"].items():
             kem_dir = os.path.join(kems_dir, kem_key)
-            cmake_path = os.path.join(
-                kem_dir,
-                # TODO: magic file name?
-                "CMakeLists.txt",
-            )
             print(f"Integrating {kem_key} into {kem_dir}")
             for impl_key, impl in kem["impls"].items():
                 impl_dir = os.path.join(kem_dir, impl_key)
                 copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
-            generate_kem_cmake(cmake_path, kem_key, kem)
-            generate_kem_oqs_api(kem_dir, kem_key, kem)
+            kem_cmake_path = generate_kem_cmake(kem_dir, kem_key, kem)
+            kem_header_path = generate_kem_header(kem_dir, kem_key, kem)
+            kem_src_paths = generate_kem_sources(kem_dir, kem_key, kem)
 
 
 if __name__ == "__main__":
