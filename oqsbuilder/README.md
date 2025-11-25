@@ -6,7 +6,9 @@ This is the replacement for `copy_from_upstream.py`
 - ✅ apply patches
 - 🚧 move source file from upstream into `liboqs/src`
     - 🚧 ML-KEM
-- 🚧 render `CMakeLists.txt` and other build files
+- 🚧 render family-level `CMakeLists.txt`
+- 🚧 render family-level header file (e.g. `kem_ml_kem.h`)
+- 🚧 render family-level source file (e.g. `kem_ml_kem_512.c`)
 - ⚠️ figure out how to check feature parity with `copy_from_upstream.py`
 
 
