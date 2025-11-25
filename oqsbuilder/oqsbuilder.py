@@ -385,7 +385,7 @@ endif()"""
             f"add_library({impl_key} OBJECT {" ".join(srcpaths)})"
         )
         # Add compile options, include directories
-        for scope in ("public", "private"):
+        for scope in SCOPE_OPTIONS:
             compile_opts = get_impl_compile_opts(impl_meta, scope)
             if compile_opts:
                 target_inner_lines.append(
