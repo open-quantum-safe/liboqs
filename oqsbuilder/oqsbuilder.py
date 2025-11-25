@@ -46,13 +46,23 @@ def load_oqsbuildfile(path: str):
     with open(path, mode="r", encoding="utf-8") as f:
         oqsbuild = yaml.safe_load(f)
 
+    # Expand keys and fill in defaults
     for primitive in [
         CryptoPrimitive.KEM,
         # FIX: uncomment this once sigs and stfl_sigs are filled in
         # CryptoPrimitive.SIG,
         # CryptoPrimitive.STFL_SIG,
     ]:
-        for _, family in oqsbuild[primitive.get_oqsbuildfile_key()]["families"].items():
+        for family_key, family in oqsbuild[primitive.get_oqsbuildfile_key()][
+            "families"
+        ].items():
+            family["header"] = family.get(
+                "header", f"{primitive.get_subdirectory_name()}_{family_key}.h"
+            )
+            for param_key, param_meta in family["params"].items():
+                param_meta["api_src"] = param_meta.get(
+                    "api_src", f"{primitive.get_subdirectory_name()}_{param_key}.c"
+                )
             for _, impl_meta in family["impls"].items():
                 impl_copies = impl_meta["copies"]
                 if isinstance(impl_copies, str):
@@ -420,7 +430,9 @@ endif()"""
     return common_targets + impl_targets
 
 
-def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, autoformat: bool = True):
+def generate_kem_cmake(
+    cmake_path: str, kem_key: str, kem: dict, autoformat: bool = True
+):
     """Generate the family-level CMakeLists.txt file for the input KEM scheme
 
     Each family-level list file (e.g. src/kem/ml_kem/CMakeLists.txt) exports a
@@ -453,3 +465,17 @@ set({export_obj} ${{{local_obj}}} PARENT_SCOPE)
         # Check out gersemi at https://github.com/BlankSpruce/gersemi/
         # pip install gersemi==0.23.1
         subprocess.run(["gersemi", "-i", cmake_path], check=True)
+
+
+def generate_kem_oqs_api(kem_dir: str, kem_key: str, kem_meta: dict):
+    """Generate the OQS API source and header files for the given KEM. This
+    includes:
+    - kem/<kem_key>/kem_<param_key>.c for each parameter set
+    - kem/<kem_key>/kem_<kem_key>.h
+    """
+    kem_header_path = os.path.join(kem_dir, kem_meta["header"])
+    print(f"Generating {kem_header_path}")
+
+    for param_key, param_meta in kem_meta["params"].items():
+        param_src_path = os.path.join(kem_dir, param_meta["api_src"])
+        print(f"Generating {param_src_path}")

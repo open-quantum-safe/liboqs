@@ -106,7 +106,6 @@ kems:
           encap_seedlen: 32
           enable_by: OQS_ENABLE_KEM_ml_kem_512
           default_impl: mlkem-native_ml-kem-512_ref
-          api_src: kem_ml_kem_512.c
         ml_kem_768:
           name: "ML-KEM-768"
           pklen: 1184
@@ -117,7 +116,6 @@ kems:
           encap_seedlen: 32
           enable_by: OQS_ENABLE_KEM_ml_kem_768
           default_impl: mlkem-native_ml-kem-768_ref
-          api_src: kem_ml_kem_768.c
         ml_kem_1024:
           name: "ML-KEM-1024"
           pklen: 1568
@@ -128,7 +126,6 @@ kems:
           encap_seedlen: 32
           enable_by: OQS_ENABLE_KEM_ml_kem_1024
           default_impl: mlkem-native_ml-kem-1024_ref
-          api_src: kem_ml_kem_1024.c
       impls:
         mlkem-native_ml-kem-1024_aarch64:
           upstream: mlkem-native
