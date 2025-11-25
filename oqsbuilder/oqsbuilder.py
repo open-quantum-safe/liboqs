@@ -377,7 +377,7 @@ endif()"""
             impl_enable_by = impl_param_meta["enable_by"]
         # Find source files
         srcpaths = [
-            os.path.join(impl_key, path)
+            os.path.join("${IMPL_KEY}", path)
             for path in impl_meta["copies"]
             if os.path.splitext(path)[1] in SRC_FILE_EXTS
         ]
@@ -420,7 +420,7 @@ endif()"""
     return common_targets + impl_targets
 
 
-def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool, autoformat: bool = True):
+def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, autoformat: bool = True):
     """Generate the family-level CMakeLists.txt file for the input KEM scheme
 
     Each family-level list file (e.g. src/kem/ml_kem/CMakeLists.txt) exports a
@@ -447,11 +447,9 @@ set({local_obj} "")
 set({export_obj} ${{{local_obj}}} PARENT_SCOPE)
 """
 
-    if dryrun:
-        print(f">>>>>>>>> {cmake_path}:")
-        print(data)
-        return
     with open(cmake_path, "w") as f:
         f.write(data)
     if autoformat:
+        # Check out gersemi at https://github.com/BlankSpruce/gersemi/
+        # pip install gersemi==0.23.1
         subprocess.run(["gersemi", "-i", cmake_path], check=True)
