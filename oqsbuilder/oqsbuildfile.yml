@@ -143,7 +143,6 @@ kems:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=1024"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
-            private: []
         mlkem-native_ml-kem-1024_ref:
           upstream: mlkem-native
           param: ml_kem_1024
@@ -157,7 +156,6 @@ kems:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=1024" 
               - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
-            private: []
         mlkem-native_ml-kem-1024_x86_64:
           upstream: mlkem-native
           param: ml_kem_1024
@@ -185,7 +183,6 @@ kems:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=512"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
-            private: []
         mlkem-native_ml-kem-512_ref:
           upstream: mlkem-native
           param: ml_kem_512
@@ -199,7 +196,6 @@ kems:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=512" 
               - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
-            private: []
         mlkem-native_ml-kem-512_x86_64:
           upstream: mlkem-native
           param: ml_kem_512
@@ -227,7 +223,6 @@ kems:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=768"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
-            private: []
         mlkem-native_ml-kem-768_ref:
           upstream: mlkem-native
           param: ml_kem_768
@@ -241,7 +236,6 @@ kems:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=768" 
               - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
-            private: []
         mlkem-native_ml-kem-768_x86_64:
           upstream: mlkem-native
           param: ml_kem_768
