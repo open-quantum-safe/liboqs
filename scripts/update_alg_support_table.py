@@ -20,6 +20,7 @@ ALG_SUPPORT_HEADER = [
     "Primary implementation",
 ]
 COMMIT_HASH_LEN = 7
+STD_STATUS_KEYWORDS = ["NIST", "IRTF", "ISO"]
 
 
 def format_upstream_source(source: str) -> str:
@@ -47,7 +48,22 @@ def format_upstream_source(source: str) -> str:
         output += f"@{commit}"
     return f"[`{output}`]({url})"
 
+def format_std_status_with_spec_url(std_status, spec_url=None) -> str:
+    """Embed the specification URL in the standardization status.
 
+    Looks for certain key words (e.g. NIST) to include in the hyperlink.
+    If none found, embed the whole standardification status.
+    """
+    if spec_url is None:
+        return std_status
+    separator = " "
+    words = std_status.split(separator)
+    for i, word in enumerate(words):
+        if word in STD_STATUS_KEYWORDS:
+            words[i] = f"[{word}]({spec_url})"
+            return separator.join(words)
+    return f"[{std_status}]({spec_url})"
+        
 def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
     """Render a markdown table summarizing the algorithms described by YAML data
     sheets stored in the specified doc directory
@@ -82,7 +98,7 @@ def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
         rows.append(
             [
                 f"[{alg_name}]({md_url})" if anchor_alg_name else f"{alg_name}",
-                f"[{std_status}]({spec_url})" if spec_url else std_status,
+                format_std_status_with_spec_url(std_status, spec_url),
                 primary_impl,
             ]
         )
