@@ -57,7 +57,7 @@ def copy_from_upstream(
             for impl_key, impl in kem["impls"].items():
                 impl_dir = os.path.join(kem_dir, impl_key)
                 copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
-            generate_kem_cmake(cmake_path, kem_key, kem, dryrun=False)
+            generate_kem_cmake(cmake_path, kem_key, kem)
 
 
 if __name__ == "__main__":
