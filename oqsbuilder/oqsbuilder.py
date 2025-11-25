@@ -5,6 +5,7 @@ import subprocess
 
 import yaml
 
+from oqsbuilder import LIBOQS_DIR
 from oqsbuilder.templates import FAMILY_CMAKE_HEADER
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
@@ -431,18 +432,20 @@ endif()"""
 
 
 def generate_kem_cmake(
-    cmake_path: str, kem_key: str, kem: dict, autoformat: bool = True
-):
+    kem_dir: str, kem_key: str, kem: dict, autoformat: bool = True
+) -> str:
     """Generate the family-level CMakeLists.txt file for the input KEM scheme
 
     Each family-level list file (e.g. src/kem/ml_kem/CMakeLists.txt) exports a
     cmake variable (e.g. ML_KEM_OBJS) that contains the compiled objects from
     that family.
 
-    :param cmake_path: the cmake list file will be written to this file
+    :param kem_dir: path to the family-level subdirectory, such as
+        LIBOQS_DIR/src/kem/ml_kem
     :param kem_key: the family key of the KEM scheme
     :param kem: the content in build file under the family key
     :param autoformat: format the generated list file with gersemi
+    :return: path to the family-level cmake list file
     """
     local_obj = f"_{kem_key}_OBJS".upper()
     export_obj = f"{kem_key}_OBJS".upper()
@@ -459,23 +462,65 @@ set({local_obj} "")
 set({export_obj} ${{{local_obj}}} PARENT_SCOPE)
 """
 
+    cmake_path = os.path.join(kem_dir, "CMakeLists.txt")
     with open(cmake_path, "w") as f:
         f.write(data)
     if autoformat:
         # Check out gersemi at https://github.com/BlankSpruce/gersemi/
         # pip install gersemi==0.23.1
         subprocess.run(["gersemi", "-i", cmake_path], check=True)
+    return cmake_path
 
 
-def generate_kem_oqs_api(kem_dir: str, kem_key: str, kem_meta: dict):
-    """Generate the OQS API source and header files for the given KEM. This
-    includes:
-    - kem/<kem_key>/kem_<param_key>.c for each parameter set
-    - kem/<kem_key>/kem_<kem_key>.h
+def format_with_astyle(path: str):
+    """Call astyle to format file at the input path"""
+    options_path = os.path.join(LIBOQS_DIR, ".astylerc")
+    subprocess.run(
+        ["astyle", f"--options={options_path}", '--suffix=""', path], check=True
+    )
+
+
+def generate_kem_header(
+    kem_dir: str, kem_key: str, kem_meta: dict, autoformat: bool = True
+) -> str:
+    """Generate the family-level header file, such as
+    LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem.h.
+
+    Return the path to the generated header file.
     """
-    kem_header_path = os.path.join(kem_dir, kem_meta["header"])
-    print(f"Generating {kem_header_path}")
+    header_path = os.path.join(kem_dir, kem_meta["header"])
 
+    raise NotImplementedError(f"What to write to {header_path}?")
+    if autoformat:
+        format_with_astyle(header_path)
+    return header_path
+
+
+def generate_kem_source(
+    kem_dir: str,
+    kem_key: str,
+    kem_meta: dict,
+    param_key: str,
+    param_meta: str,
+    autoformat: bool = True,
+) -> str:
+    """Generate a single family-level source file for the specified parameter set.
+    Return the path to the generated file
+    """
+    source_path = os.path.join(kem_dir, f"kem_{param_key}.c")
+    raise NotImplementedError(f"What to write to {source_path}?")
+
+
+def generate_kem_sources(
+    kem_dir: str, kem_key: str, kem_meta: dict, autoformat: bool = True
+) -> list[str]:
+    """Generate the family-level source file(s), such as
+    LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem_<512|768|1024>.c
+    """
+    source_paths = []
     for param_key, param_meta in kem_meta["params"].items():
-        param_src_path = os.path.join(kem_dir, param_meta["api_src"])
-        print(f"Generating {param_src_path}")
+        source_path = generate_kem_source(
+            kem_dir, kem_key, kem_meta, param_key, param_meta, autoformat
+        )
+        source_paths.append(source_path)
+    return source_paths
