@@ -420,7 +420,7 @@ endif()"""
     return common_targets + impl_targets
 
 
-def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool):
+def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool, autoformat: bool = True):
     """Generate the family-level CMakeLists.txt file for the input KEM scheme
 
     Each family-level list file (e.g. src/kem/ml_kem/CMakeLists.txt) exports a
@@ -430,6 +430,7 @@ def generate_kem_cmake(cmake_path: str, kem_key: str, kem: dict, dryrun: bool):
     :param cmake_path: the cmake list file will be written to this file
     :param kem_key: the family key of the KEM scheme
     :param kem: the content in build file under the family key
+    :param autoformat: format the generated list file with gersemi
     """
     local_obj = f"_{kem_key}_OBJS".upper()
     export_obj = f"{kem_key}_OBJS".upper()
@@ -452,3 +453,5 @@ set({export_obj} ${{{local_obj}}} PARENT_SCOPE)
         return
     with open(cmake_path, "w") as f:
         f.write(data)
+    if autoformat:
+        subprocess.run(["gersemi", "-i", cmake_path], check=True)
