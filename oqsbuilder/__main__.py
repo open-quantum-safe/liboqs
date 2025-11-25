@@ -5,6 +5,7 @@ from tempfile import TemporaryDirectory
 import oqsbuilder
 from oqsbuilder import LIBOQS_DIR
 from oqsbuilder.oqsbuilder import (
+    CryptoPrimitive,
     copy_copies,
     generate_kem_cmake,
     load_oqsbuildfile,
@@ -43,8 +44,8 @@ def copy_from_upstream(
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
         upstream_dirs = fetch_upstreams(oqsbuild, tempdir, patch_dir)
 
-        kems = oqsbuild["kems"]
-        kems_dir = os.path.join(LIBOQS_DIR, "src", "kem")
+        kems = oqsbuild[CryptoPrimitive.KEM.get_oqsbuildfile_key()]
+        kems_dir = os.path.join(LIBOQS_DIR, "src", CryptoPrimitive.KEM.get_subdirectory_name())
         for kem_key, kem in kems["families"].items():
             kem_dir = os.path.join(kems_dir, kem_key)
             cmake_path = os.path.join(
@@ -56,7 +57,7 @@ def copy_from_upstream(
             for impl_key, impl in kem["impls"].items():
                 impl_dir = os.path.join(kem_dir, impl_key)
                 copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
-            generate_kem_cmake(cmake_path, kem_key, kem, True)
+            generate_kem_cmake(cmake_path, kem_key, kem, dryrun=False)
 
 
 if __name__ == "__main__":
