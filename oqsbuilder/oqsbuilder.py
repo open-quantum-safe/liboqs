@@ -490,6 +490,34 @@ def generate_kem_header(
     """
     header_path = os.path.join(kem_dir, kem_meta["header"])
 
+    param_fragments = []
+    for param_key, param_meta in kem_meta["params"].items():
+        param_enable_by = param_meta["enable_by"]
+        fragment = ""  # FIX: fill in defines, API's, etc.
+        fragment = f"""\
+#if defined({param_enable_by})
+{fragment}
+#endif /* {param_enable_by} */
+"""
+        param_fragments.append(fragment)
+
+    body = "\n".join(param_fragments)
+    header = f"""\
+// SPDX-License-Identifier: MIT
+
+#ifndef OQS_KEM_{kem_key.upper()}_H
+#define OQS_KEM_{kem_key.upper()}_H
+
+#include <oqs/oqs.h>
+
+{body}
+
+#endif /* !OQS_KEM_{kem_key.upper()}_H */
+"""
+    print(f">>>>>> {header_path}")
+    print(header)
+    print(f"<<<<<<")
+
     raise NotImplementedError(f"What to write to {header_path}?")
     if autoformat:
         format_with_astyle(header_path)
