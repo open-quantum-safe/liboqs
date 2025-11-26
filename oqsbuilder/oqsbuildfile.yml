@@ -256,7 +256,7 @@ kems:
           link_libs:
             # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
             private: [cupqc-pk_static]
-          # FIX: `-arch=compute_70` and `CUDA_ARCHITECTURES OFF` seem to conflict?
+          # NOTE: `-arch=compute_70` and `CUDA_ARCHITECTURES OFF` seem to conflict?
           cuda_arch: OFF
           compile_opts:
             private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
