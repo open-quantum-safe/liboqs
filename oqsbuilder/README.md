@@ -222,3 +222,21 @@ The cmake variable is translated to [C macro](https://github.com/open-quantum-sa
 
 ### `default_impl`
 Specify a key to an implementation that implements this parameter set. The default implementation's [`enable_by`](#imple_keyenable_by) flag will be overwritten by this parameter set's [`enable_by`](#param_keyenable_by) flag so that if this parameter set is enabled, the default implementation is automatically enabled.
+
+### `pklen`
+Length of public key (bytes)
+
+### `sklen`
+Length of secret key (bytes)
+
+### `ctlen`
+Length of ciphertext (bytes). This field should exists only for KEM families.
+
+### `sslen`
+Length of shared secret (bytes). This field should exists only for KEM families.
+
+### `keypair_seedlen`
+**(optional)** Length of seed for generating keypair (bytes). If this field is not specified, it will default to 0 to indicate that this family (KEM, SIG, or STFL_SIG) does not support deterministic key generation.
+
+### `encap_seedlen`
+**(optionsl)** Length of seed for encapsulation (bytes). This field only exists for KEM families. If this field is not specified, it will default to 0 to indicate that this KEM family does not support deterministic encapsulation.
