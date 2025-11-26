@@ -18,6 +18,9 @@ option(OQS_ENABLE_SIG_{{ family['name']|upper }} "Enable {{ family['name'] }} al
 {%- else %}
 option(OQS_ENABLE_SIG_{{ family['name']|upper }} "Enable {{ family['name'] }} algorithm family" ON)
 {%- endif %}
+{%- if family['name'] == "ml_dsa" %}
+cmake_dependent_option(OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING "Enable randomized signing for ML-DSA" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
+{%- endif %}
     {%- for scheme in family['schemes'] %}
 cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_SIG_{{ family['name']|upper }}" OFF)
 {%- if 'alias_scheme' in scheme %}
