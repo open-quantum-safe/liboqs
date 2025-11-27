@@ -162,7 +162,9 @@ Will translate to the following settings for [`CUDA_ARCHITECTURES`](https://cmak
 set_property(TARGET _target PROPERTY CUDA_ARCHITECTURES OFF)
 ```
 
-## KEMs
+## Families
+Each cryptographic primitive (KEM, signature, or stateful signature) has one or more families. For example, ML-KEM, ML-DSA, and SLH-DSA are three distinct families of primitives. Each family can have many [parameter sets](#parameter-set) and many implementations. Each implementation implements exactly one parameter set.
+
 - KEM schemes are listed under the top-level key `kems`. Their files are listed under `src/kem`.
 - The key of each KEM family is the name of the subdirectory. For example, ML-KEM files are located under `src/kem/ml_kem`. The key of each implementation under the same family is the name of the subdirectory. For example, the implementation `mlkem-native_ml-kem-512_ref` is located under `src/kem/ml_kem/mlkem-native_ml-kem-512_ref`.
 - `sources` under each `impl` can contain both source files (`.c`, `.S`) and header/config files (`.h`)
@@ -170,6 +172,19 @@ set_property(TARGET _target PROPERTY CUDA_ARCHITECTURES OFF)
 
 ### `header`
 **Optional:** name of the family-level header file. Defaults to `{kem|sig|stfl_sig}_{family_key}.h`
+
+### `version`
+> **This definition diverges from `copy_from_upstream`**.
+
+Some family of algorithms went through multiple verions, such as Kyber having distinct NIST Round 2, Round 3, and Round 4 version. **`liboqs` will integrate one version per family**. If there is a case to support multiple versions of the same family, it will be listed as a separate family:
+
+```yaml
+kems:
+  kyber-r2:
+    version: "NIST Round 2"
+  kyber-r3:
+    version: "NIST Round 3"
+```
 
 ## Parameter Set
 Each KEM/SIG/STFL_SIG scheme can have one or more parameter sets listed under the `params` key. For example:
@@ -190,6 +205,12 @@ sigs:
         ml_dsa_65: # ...
         ml_dsa_87: # ...
 ```
+
+### `nist_level`
+The security level of this parameter set, measured in [NIST level](https://csrc.nist.gov/projects/post-quantum-cryptography/post-quantum-cryptography-standardization/evaluation-criteria/security-(evaluation-criteria)). Must be one of 1, 2, 3, 4, 5.
+
+### `ind_cca`
+A boolean indicating whether this scheme achieves IND-CCA security. This field only exists under KEM families.
 
 ### `api_src`
 **Optional:** name of the source file that contains the OQS common API (e.g. `OQS_KEM_ml_kem_512_new`) for this parameter set (e.g. `kem_ml_kem_512.c`). Defaults to `<kem|sig|stfl_sig>_<param_key>.c`
