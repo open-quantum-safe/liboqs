@@ -4,37 +4,57 @@ Each component should not have surrounding whitespace. The users are responsible
 for connecting them with linebreaks or other appropriate delimiters.
 """
 
+NIST_LEVELS = (1, 2, 3, 4, 5)
+
 SPDX_LICENSE_IDENTIFIER = "SPDX-License-Identifier: MIT"
 
 OQS_KEM_NEW_IMPL = """\
-OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
+OQS_KEM *OQS_KEM_{param_key}_new(void) {{
 
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
-	if (kem == NULL) {
-		return NULL;
-	}
-	kem->method_name = OQS_KEM_alg_{{ family }}_{{ scheme['scheme'] }};
-	kem->alg_version = "{{ scheme['metadata']['implementations'][0]['version'] }}";
+    OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+    if (kem == NULL) {{
+        return NULL;
+    }}
+    kem->method_name = OQS_KEM_alg_{param_key};
+    kem->alg_version = "{alg_version}";
 
-	kem->claimed_nist_level = {{ scheme['metadata']['claimed-nist-level'] }};
-	kem->ind_cca = {{ scheme['metadata']['ind_cca'] }};
+    kem->claimed_nist_level = {nist_level};
+    kem->ind_cca = {ind_cca};
 
-	kem->length_public_key = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_public_key;
-	kem->length_secret_key = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_secret_key;
-	kem->length_ciphertext = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_ciphertext;
-	kem->length_shared_secret = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_shared_secret;
-	kem->length_keypair_seed = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_keypair_seed;
-	kem->length_encaps_seed = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_length_encaps_seed;
+    kem->length_public_key = OQS_KEM_{param_key}_length_public_key;
+    kem->length_secret_key = OQS_KEM_{param_key}_length_secret_key;
+    kem->length_ciphertext = OQS_KEM_{param_key}_length_ciphertext;
+    kem->length_shared_secret = OQS_KEM_{param_key}_length_shared_secret;
+    kem->length_keypair_seed = OQS_KEM_{param_key}_length_keypair_seed;
+    kem->length_encaps_seed = OQS_KEM_{param_key}_length_encaps_seed;
 
-	kem->keypair = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair;
-	kem->keypair_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
-	kem->encaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps;
-	kem->encaps_derand = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand;
-	kem->decaps = OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps;
+    kem->keypair = OQS_KEM_{param_key}_keypair;
+    kem->keypair_derand = OQS_KEM_{param_key}_keypair_derand;
+    kem->encaps = OQS_KEM_{param_key}_encaps;
+    kem->encaps_derand = OQS_KEM_{param_key}_encaps_derand;
+    kem->decaps = OQS_KEM_{param_key}_decaps;
 
-	return kem;
-}
+    return kem;
+}}
 """
+
+
+def render_oqs_kem_new_impl(
+    param_key: str, alg_version: str, nist_level: int, ind_cca: bool
+) -> str:
+    """Render the implementation of the function
+
+    OQS_KEM *OQS_KEM_{param_key}_new(void) { /* ... */ }
+    """
+    assert nist_level in NIST_LEVELS, f"Invalid NIST level {nist_level}"
+    code = OQS_KEM_NEW_IMPL.format(
+        param_key=param_key,
+        alg_version=alg_version,
+        nist_level=nist_level,
+        ind_cca="true" if ind_cca else "false",
+    )
+    return code
+
 
 OQS_KEM_EXTERN_API_DECLARATIONS = """\
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == scheme['default_implementation'] %}
