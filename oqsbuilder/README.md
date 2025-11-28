@@ -29,6 +29,9 @@ Upstreams are external repositories from which `liboqs` curates source code.
 ## Implementations
 Each KEM, signature, and/or stateful signature can have one or more implementations.The `impls` field under each family maps one implementation key (e.g. `mlkem-native_ml_kem_768_aarch64`) to one set of implementation metadata.
 
+### `arch`
+Key of the [architecture](#architectures) of this implementation.
+
 ### External APIdeclarations
 For KEM implementations, there are five functions to declares:
 - `keypair`: name of the function that generates the key pair
@@ -192,6 +195,41 @@ kems:
     version: "NIST Round 2"
   kyber-r3:
     version: "NIST Round 3"
+```
+
+## Architecture
+The `architectures` section describes various compilation architectures.
+
+### `<arch_key>.enable_by`
+**(optional)** The C pre-processing macro that enables this architecture. If this field is empty, then this architecture is always enabled (for example, portable implementations with `arch: "portable"` should never be disabled).
+
+Architecture-level flag should surround implementation-level flags. If an architecture flag is disabled, then no implementation under this architecture is enabled.
+
+Example:
+
+```yaml
+# oqsbuildfile.yml
+kems:
+  families:
+    ml_kem:
+      impls:
+        icicle_ml-kem-768_icicle_cuda:
+          arch: icicle_cuda
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_icicle_cuda
+
+architectures:
+  icicle_cuda:
+    enable_by: "OQS_USE_ICICLE"
+```
+
+This configuration corresponds with:
+
+```c
+#if defined(OQS_USE_ICICLE)
+#if defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
+    /* ICICLE ML-KEM-768 API calls */
+#endif /* OQS_ENABLE_KEM_ml_kem_768_icicle_cuda */
+#endif /* OQS_USE_ICICLE */
 ```
 
 ## Parameter Set

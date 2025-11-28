@@ -72,6 +72,8 @@ def load_oqsbuildfile(path: str):
                 impl_copies = impl_meta["copies"]
                 if isinstance(impl_copies, str):
                     impl_meta["copies"] = oqsbuild["copies"][impl_copies]
+                impl_arch_key = impl_meta["arch"]
+                impl_meta["arch"] = oqsbuild["architectures"][impl_arch_key]
 
     return oqsbuild
 
@@ -648,7 +650,7 @@ def render_kem_extern_decl(family_meta: dict, param_key: str) -> str:
     )
     addtl_decl_frags = []
     for _, impl_meta in get_impls(family_meta, param_key, exclude_default=True):
-        arch_enable_by = None  # FIX: fix this
+        arch_enable_by = impl_meta["arch"].get("enable_by", None)
         frag = render_kem_impl_extern_decl(
             impl_meta["keypair"],
             impl_meta.get("keypair", None),
