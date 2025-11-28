@@ -7,14 +7,9 @@ import yaml
 
 from oqsbuilder import LIBOQS_DIR
 from oqsbuilder.templates import (
-    OQS_KEM_DECAPS_IMPL,
-    OQS_KEM_ENCAPS_DERAND_IMPL,
-    OQS_KEM_ENCAPS_IMPL,
-    OQS_KEM_EXTERN_API_DECLARATIONS,
-    OQS_KEM_KEYPAIR_DERAND_IMPL,
-    OQS_KEM_KEYPAIR_IMPL,
     SPDX_LICENSE_IDENTIFIER,
-    render_oqs_kem_new_impl,
+    NIST_LEVELS,
+    OQS_KEM_NEW_IMPL,
 )
 from oqsbuilder.utils import currentframe_funcname
 
@@ -545,6 +540,133 @@ OQS_API OQS_STATUS OQS_KEM_{param_key}_decaps(uint8_t *shared_secret, const uint
     return header_path
 
 
+def render_oqs_kem_new_impl(
+    param_key: str, alg_version: str, nist_level: int, ind_cca: bool
+) -> str:
+    """Render the implementation of the function
+
+    OQS_KEM *OQS_KEM_{param_key}_new(void) { /* ... */ }
+    """
+    assert nist_level in NIST_LEVELS, f"Invalid NIST level {nist_level}"
+    code = OQS_KEM_NEW_IMPL.format(
+        param_key=param_key,
+        alg_version=alg_version,
+        nist_level=nist_level,
+        ind_cca="true" if ind_cca else "false",
+    )
+    return code
+
+
+def render_kem_impl_extern_decl(
+    keypair: str,
+    keypair_derand: str | None,
+    enc: str,
+    enc_derand: str | None,
+    dec: str,
+    impl_enable_by: str | None,
+    arch_enable_by: str | None,
+) -> str:
+    """Render a single set of external API declarations for the input impl"""
+    decl_lines = [
+        f"""\
+extern int {keypair}(uint8_t *pk, uint8_t *sk);"""
+    ]
+    if keypair_derand:
+        decl_lines.append(
+            f"""\
+extern int {keypair_derand}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);"""
+        )
+    decl_lines.append(
+        f"""\
+extern int {enc}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);"""
+    )
+    if enc_derand:
+        decl_lines.append(
+            f"""\
+extern int {enc_derand}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);"""
+        )
+    decl_lines.append(
+        f"""\
+extern int {dec}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);"""
+    )
+
+    decl = "\n".join(decl_lines)
+    if impl_enable_by:
+        decl = f"""\
+#if defined({impl_enable_by})
+{decl}
+#endif /* {impl_enable_by} */"""
+    if arch_enable_by:
+        decl = f"""\
+#if defined({arch_enable_by})
+{decl}
+#endif /* {arch_enable_by} */"""
+    return decl
+
+
+def render_kem_extern_decl(family_meta: dict, param_key: str) -> str:
+    """Render and return fragment of source code that includes all external API
+    declarations for the specified parameter set.
+
+    The "enable_by" flag of each parameter set's default implementation duplicates
+    the "enable_by" flag of the parameter set, so it will be ignored. The "enable_by"
+    flag of each non-default implementation will surround this implementation's
+    declarations. Additionally, if the implementatino has a non-standard architecture
+    such as CUDA or ICICLE, this implementation's declarations will also be surrounded
+    by architecture flags.
+
+    ```c
+    #if defined(OQS_ENABLE_KEM_ml_kem_768)
+
+    /* default impl: no additional guards */
+    extern int extern int PQCP_MLKEM_NATIVE_MLKEM768_C_XXX(...);
+
+    /* non-default impl, "standard" architecture (one of ref, x86, or aarch64) */
+    #if defined(OQS_ENABLE_KEM_ml_kem_768_x86_64)
+    extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_XXX(...);
+    #endif /* OQS_ENABLE_KEM_ml_kem_768_x86_64 */
+
+    /* non-default impl, "special" architecture */
+    #if defined(OQS_USE_CUPQC)
+    #if defined(OQS_ENABLE_KEM_ml_kem_768_cuda)
+    extern int cupqc_ml_kem_768_XXX(...);
+    #endif /* OQS_ENABLE_KEM_ml_kem_768_cuda */
+    #endif /* OQS_USE_CUPQC */
+
+    #endif /* OQS_ENABLE_KEM_ml_kem_768 */
+    ```
+    """
+    _, default_impl_meta = get_default_impl(family_meta, param_key)
+    default_decl = render_kem_impl_extern_decl(
+        default_impl_meta["keypair"],
+        default_impl_meta.get("keypair_derand", None),
+        default_impl_meta["enc"],
+        default_impl_meta.get("enc_derand", None),
+        default_impl_meta["dec"],
+        None,
+        None,
+    )
+    addtl_decl_frags = []
+    for _, impl_meta in get_impls(family_meta, param_key, exclude_default=True):
+        arch_enable_by = None  # FIX: fix this
+        frag = render_kem_impl_extern_decl(
+            impl_meta["keypair"],
+            impl_meta.get("keypair", None),
+            impl_meta["enc"],
+            impl_meta.get("enc_derand", None),
+            impl_meta["dec"],
+            impl_meta["enable_by"],
+            arch_enable_by,
+        )
+        addtl_decl_frags.append(frag)
+    addtl_decl = "\n\n".join(addtl_decl_frags)
+    decl = f"""\
+{default_decl}
+
+{addtl_decl}"""
+    return decl
+
+
 def generate_kem_source(
     kem_dir: str,
     kem_key: str,
@@ -561,7 +683,7 @@ def generate_kem_source(
     oqs_kem_new = render_oqs_kem_new_impl(
         param_key, kem_meta["version"], param_meta["nist_level"], param_meta["ind_cca"]
     )
-    extern_api_decl = ""
+    extern_api_decl = render_kem_extern_decl(kem_meta, param_key)
     keypair_derand = ""
     keypair = ""
     encaps_derand = ""

@@ -29,6 +29,14 @@ Upstreams are external repositories from which `liboqs` curates source code.
 ## Implementations
 Each KEM, signature, and/or stateful signature can have one or more implementations.The `impls` field under each family maps one implementation key (e.g. `mlkem-native_ml_kem_768_aarch64`) to one set of implementation metadata.
 
+### External APIdeclarations
+For KEM implementations, there are five functions to declares:
+- `keypair`: name of the function that generates the key pair
+- `keypair_derand` (optional): name of the function that generates the key pair, using randomness expanded from a user-supplied seed
+- `enc`: name of the function that encapsulates a secret using a public key
+- `enc_derand`: (optiona) name of the function that encapsulates a secret, using randomness expanded from a user-supplied seed
+- `dec`: name of the function that decapsulates a ciphertext
+
 ### `upstream`
 An upstream key. It must match one of the upstreams described under the `upstreams` section.
 
