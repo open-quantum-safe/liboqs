@@ -39,23 +39,6 @@ OQS_KEM *OQS_KEM_{param_key}_new(void) {{
 """
 
 
-def render_oqs_kem_new_impl(
-    param_key: str, alg_version: str, nist_level: int, ind_cca: bool
-) -> str:
-    """Render the implementation of the function
-
-    OQS_KEM *OQS_KEM_{param_key}_new(void) { /* ... */ }
-    """
-    assert nist_level in NIST_LEVELS, f"Invalid NIST level {nist_level}"
-    code = OQS_KEM_NEW_IMPL.format(
-        param_key=param_key,
-        alg_version=alg_version,
-        nist_level=nist_level,
-        ind_cca="true" if ind_cca else "false",
-    )
-    return code
-
-
 OQS_KEM_EXTERN_API_DECLARATIONS = """\
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == scheme['default_implementation'] %}
 
