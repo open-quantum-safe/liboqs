@@ -139,6 +139,7 @@ kems:
           param: ml_kem_1024
           copies: mlkem-native_aarch64
           enable_by: OQS_ENABLE_KEM_ml_kem_1024_aarch64
+          arch: aarch64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -157,6 +158,7 @@ kems:
           param: ml_kem_1024
           copies: mlkem-native_ref
           enable_by: OQS_ENABLE_KEM_ml_kem_1024_ref
+          arch: portable
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -175,6 +177,7 @@ kems:
           param: ml_kem_1024
           copies: mlkem-native_x86_64
           enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
+          arch: x86_64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -194,6 +197,7 @@ kems:
           param: ml_kem_512
           copies: mlkem-native_aarch64
           enable_by: OQS_ENABLE_KEM_ml_kem_512_aarch64
+          arch: aarch64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -212,6 +216,7 @@ kems:
           param: ml_kem_512
           copies: mlkem-native_ref
           enable_by: OQS_ENABLE_KEM_ml_kem_512_ref
+          arch: portable
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -230,6 +235,7 @@ kems:
           param: ml_kem_512
           copies: mlkem-native_x86_64
           enable_by: OQS_ENABLE_KEM_ml_kem_512_x86_64
+          arch: x86_64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -249,6 +255,7 @@ kems:
           param: ml_kem_768
           copies: mlkem-native_aarch64
           enable_by: OQS_ENABLE_KEM_ml_kem_768_aarch64
+          arch: aarch64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -267,6 +274,7 @@ kems:
           param: ml_kem_768
           copies: mlkem-native_ref
           enable_by: OQS_ENABLE_KEM_ml_kem_768_ref
+          arch: portable
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -285,6 +293,7 @@ kems:
           param: ml_kem_768
           copies: mlkem-native_x86_64
           enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
+          arch: x86_64
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -302,6 +311,7 @@ kems:
         cupqc_ml-kem-1024_cuda:
           upstream: cupqc
           param: ml_kem_1024
+          arch: cuda
           copies:
             cupqc_ml-kem.cu: cuda/ml-kem-1024/cupqc_ml-kem.cu
           enable_by: OQS_ENABLE_KEM_ml_kem_1024_cuda
@@ -318,6 +328,7 @@ kems:
         cupqc_ml-kem-512_cuda:
           upstream: cupqc
           param: ml_kem_512
+          arch: cuda
           copies:
             cupqc_ml-kem.cu: cuda/ml-kem-512/cupqc_ml-kem.cu
           enable_by: OQS_ENABLE_KEM_ml_kem_512_cuda
@@ -332,6 +343,7 @@ kems:
         cupqc_ml-kem-768_cuda:
           upstream: cupqc
           param: ml_kem_768
+          arch: cuda
           copies:
             cupqc_ml-kem.cu: cuda/ml-kem-768/cupqc_ml-kem.cu
           enable_by: OQS_ENABLE_KEM_ml_kem_768_cuda
@@ -346,6 +358,7 @@ kems:
         icicle_ml-kem-1024_icicle_cuda:
           upstream: icicle
           param: ml_kem_1024
+          arch: icicle_cuda
           copies:
             icicle_ml-kem.cpp: icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp
           enable_by: OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda
@@ -358,6 +371,7 @@ kems:
         icicle_ml-kem-512_icicle_cuda:
           upstream: icicle
           param: ml_kem_512
+          arch: icicle_cuda
           copies:
             icicle_ml-kem.cpp: icicle_cuda/ml-kem-512/icicle_ml-kem.cpp
           enable_by: OQS_ENABLE_KEM_ml_kem_512_icicle_cuda
@@ -370,6 +384,7 @@ kems:
         icicle_ml-kem-768_icicle_cuda:
           upstream: icicle
           param: ml_kem_768
+          arch: icicle_cuda
           copies:
             icicle_ml-kem.cpp: icicle_cuda/ml-kem-768/icicle_ml-kem.cpp
           enable_by: OQS_ENABLE_KEM_ml_kem_768_icicle_cuda
@@ -379,6 +394,18 @@ kems:
           enc: "icicle_ml_kem_768_enc"
           enc_derand: "icicle_ml_kem_768_enc_derand"
           dec: "icicle_ml_kem_768_dec"
+
+architectures:
+  portable:
+    enable_by:
+  x86_64:
+    enable_by:
+  aarch64:
+    enable_by:
+  cuda:
+    enable_by: OQS_USE_CUPQC
+  icicle_cuda:
+    enable_by: OQS_USE_ICICLE
 
 copies:
   mlkem-native_aarch64:
