@@ -20,7 +20,7 @@ set(HQC_INCLUDE_DIRS
 )
 
 # -------------------------------
-# FIPS202 library
+# HQC ref. FIPS202 library
 # -------------------------------
 add_library(hqc_ref_fips202_obj OBJECT hqc_ref/lib/fips202/fips202.c)
 target_include_directories(hqc_ref_fips202_obj PRIVATE hqc_ref/lib/fips202)
