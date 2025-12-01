@@ -64,6 +64,7 @@ def load_oqsbuildfile(path: str):
             family["header"] = family.get(
                 "header", f"{primitive.get_subdirectory_name()}_{family_key}.h"
             )
+            family["derandomized_keypair"] = family.get("derandomized_keypair", False)
             for param_key, param_meta in family["params"].items():
                 param_meta["api_src"] = param_meta.get(
                     "api_src", f"{primitive.get_subdirectory_name()}_{param_key}.c"
@@ -668,6 +669,26 @@ def render_kem_extern_decl(family_meta: dict, param_key: str) -> str:
 {addtl_decl}"""
     return decl
 
+def render_oqs_kem_keypair_derand_impl(kem_meta: dict, param_key: str) -> str:
+    """Render the implementation of the `keypair_derand` API for the input KEM
+    parameter set.
+
+    Not all KEM families support deterministic key generation. Family support for
+    deterministic key generation is indicated by the field `derandomized_keypair`
+    under each family. If the family does not support deterministic key generation,
+    then the implementation should return an error.
+
+    :param kem_meta: KEM family's metadata
+    :param param_key: Input parameter set's key
+    """
+    # FIX: implement this
+    fragment = f"""\
+OQS_API OQS_STATUS OQS_KEM_{param_key}_keypair_derand(uint8_t *public_key,
+                                                      uint8_t *secret_key, 
+                                                      const uint8_t *seed) {{
+    /* TODO: implement this */
+}}"""
+    return fragment
 
 def generate_kem_source(
     kem_dir: str,
@@ -686,7 +707,7 @@ def generate_kem_source(
         param_key, kem_meta["version"], param_meta["nist_level"], param_meta["ind_cca"]
     )
     extern_api_decl = render_kem_extern_decl(kem_meta, param_key)
-    keypair_derand = ""
+    keypair_derand = render_oqs_kem_keypair_derand_impl(kem_meta, param_key)
     keypair = ""
     encaps_derand = ""
     encaps = ""

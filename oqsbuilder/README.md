@@ -197,6 +197,9 @@ kems:
     version: "NIST Round 3"
 ```
 
+### `derandomized_keypair`
+A boolean indicating whether this family of KEM algorithms support deterministic (derandomized) key generation. Defaults to false.
+
 ## Architecture
 The `architectures` section describes various compilation architectures.
 

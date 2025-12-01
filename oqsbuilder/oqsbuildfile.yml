@@ -96,6 +96,7 @@ kems:
     ml_kem:
       name: "ML-KEM"
       version: "FIPS203"
+      derandomized_keypair: true
       params:
         ml_kem_512:
           name: "ML-KEM-512"
