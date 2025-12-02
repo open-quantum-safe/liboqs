@@ -34,4 +34,13 @@ OQS_KEM *OQS_KEM_{{ param_key }}_new(void) {
 	return kem;
 }
 
+extern int {{ default_impl["keypair"] }}(uint8_t *pk, uint8_t *sk);
+{%- if default_impl["keypair_derand"] %}
+extern int {{ default_impl["keypair_derand"] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+{%- endif %}
+extern int {{ default_impl["enc"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+{%- if default_impl["enc_derand"] %}
+extern int {{ default_impl["enc_derand"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+{%- endif %}
+extern int {{ default_impl["dec"]  }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif /* OQS_ENABLE_KEM_{{ param_key }} */
