@@ -14,7 +14,7 @@ from oqsbuilder.utils import currentframe_funcname, load_jinja_template
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
 SCOPE_OPTIONS = ("public", "private", "interface")
 
-KEM_SRC_TEMPLATE = "kem_src_template.c"
+KEM_SRC_TEMPLATE = "kem_src.c.jinja"
 
 
 class CryptoPrimitive(enum.Enum):
