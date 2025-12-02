@@ -73,4 +73,29 @@ extern int {{ impl["dec"] }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif /* {{ impl["arch"]["enable_by"] }} */
     {%- endif %}
 {% endfor %}
+
+OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+{%- if derandomized_keypair %}
+    {%- for impl in addtl_impls_keypair_derand %}
+        {%- if loop.first %}
+#if defined({{ impl["enable_by"] }})
+        {%- else %}
+#elif defined({{ impl["enable_by"] }})
+        {%- endif %}
+    return (OQS_STATUS) {{ impl["keypair_derand"] }}(public_key, secret_key, seed);
+    {%- endfor %}
+    {%- if addtl_impls | length > 0 %}
+#else
+    return (OQS_STATUS) {{ default_impl["keypair_derand"] }}(public_key, secret_key, seed);
+#endif
+    {%- else %}
+    return (OQS_STATUS) {{ default_impl["keypair_derand"] }}(public_key, secret_key, seed);
+    {%- endif %}
+{%- else %}
+	(void)public_key;
+	(void)secret_key;
+	(void)seed;
+	return OQS_ERROR;
+{%- endif %}
+}
 #endif /* OQS_ENABLE_KEM_{{ param_key }} */
