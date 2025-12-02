@@ -26,6 +26,7 @@ def print_version():
 def copy_from_upstream(
     oqsbuildfile: str,
     patch_dir: str,
+    templates_dir: str,
     upstream_parent_dir: str = LIBOQS_DIR,
 ):
     """Copy implementations from upstream
@@ -40,8 +41,17 @@ def copy_from_upstream(
     :param patch_dir: path to a directory hosting the patch files for upstream
     :param upstream_parent_dir: upstream repositories will be cloned into
         a temporary subdirectory under this directory
+    :param templates_dir: path to a directory containing the Jinja2 templates
+        used to generate CMakeLists.txt files, source files, and header files
     :param headless: True if running in a non-interactive environment
     """
+    assert os.path.isfile(oqsbuildfile), f"{oqsbuildfile} is not a valid file"
+    assert os.path.isdir(patch_dir), f"{patch_dir} is not a valid directory"
+    assert os.path.isdir(templates_dir), f"{templates_dir} is not a valid directory"
+    assert os.path.isdir(
+        upstream_parent_dir
+    ), f"{upstream_parent_dir} is not a valid directory"
+
     oqsbuild = load_oqsbuildfile(oqsbuildfile)
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
         upstream_dirs = fetch_upstreams(oqsbuild, tempdir, patch_dir)
@@ -58,11 +68,12 @@ def copy_from_upstream(
                 copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
             kem_cmake_path = generate_kem_cmake(kem_dir, kem_key, kem)
             kem_header_path = generate_kem_header(kem_dir, kem_key, kem)
-            kem_src_paths = generate_kem_sources(kem_dir, kem_key, kem)
+            kem_src_paths = generate_kem_sources(kem_dir, kem_key, kem, templates_dir)
 
 
 if __name__ == "__main__":
     print_version()
     buildfile = os.path.join(LIBOQS_DIR, "oqsbuilder", "oqsbuildfile.yml")
     patch_dir = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
-    copy_from_upstream(buildfile, patch_dir)
+    templates_dir = os.path.join(LIBOQS_DIR, "oqsbuilder", "templates")
+    copy_from_upstream(buildfile, patch_dir, templates_dir)
