@@ -568,13 +568,8 @@ def generate_kem_source(
             "nist_level": param_meta["nist_level"],
             "ind_cca": param_meta["ind_cca"],
             "version": kem_meta["version"],
-            "default_impl": {
-                "keypair": default_impl["keypair"],
-                "keypair_derand": default_impl["keypair_derand"],
-                "enc": default_impl["enc"],
-                "enc_derand": default_impl["enc_derand"],
-                "dec": default_impl["dec"],
-            },
+            "default_impl": default_impl,
+            "addtl_impls": [impl for _, impl in get_impls(kem_meta, param_key, True)],
             "generated_by": f"{__name__}.{currentframe_funcname()}",
         }
     )

@@ -42,5 +42,35 @@ extern int {{ default_impl["enc"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk
 {%- if default_impl["enc_derand"] %}
 extern int {{ default_impl["enc_derand"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 {%- endif %}
-extern int {{ default_impl["dec"]  }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+extern int {{ default_impl["dec"] }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+
+{% for impl in addtl_impls %}
+    {%- if impl["arch"]["enable_by"] %}
+#if defined({{ impl["arch"]["enable_by"] }})
+    {%- endif %}
+    {%- if impl["enable_by"] %}
+#if defined({{ impl["enable_by"] }})
+    {%- endif %}
+    {%- if impl["keypair"] %}
+extern int {{ impl["keypair"] }}(uint8_t *pk, uint8_t *sk);
+    {%- endif %}
+    {%- if impl["keypair_derand"] %}
+extern int {{ impl["keypair_derand"] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+    {%- endif %}
+    {%- if impl["enc"] %}
+extern int {{ impl["enc"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+    {%- endif %}
+    {%- if impl["enc_derand"] %}
+extern int {{ impl["enc_derand"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+    {%- endif %}
+    {%- if impl["dec"] %}
+extern int {{ impl["dec"] }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+    {%- endif %}
+    {%- if impl["enable_by"] %}
+#endif /* {{ impl["enable_by"] }} */
+    {%- endif %}
+    {%- if impl["arch"]["enable_by"] %}
+#endif /* {{ impl["arch"]["enable_by"] }} */
+    {%- endif %}
+{% endfor %}
 #endif /* OQS_ENABLE_KEM_{{ param_key }} */
