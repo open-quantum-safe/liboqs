@@ -32,6 +32,24 @@ Each KEM, signature, and/or stateful signature can have one or more implementati
 ### `arch`
 Key of the [architecture](#architectures) of this implementation.
 
+### `runtime_cpu_features`
+A list of CPU features to check at runtime when calling API's from this implementation if `OQS_DIST_BUILD` is enabled.
+For example, `mlkem-native_ml-kem-768_aarch64` has the [feature flag `asimd`](https://github.com/pq-code-package/mlkem-native/blob/1601215a9156fc46f2204a72cfceea1a990d3d7c/integration/liboqs/ML-KEM-768_META.yml#L91), so if `OQS_DIST_BUILD`, we need:
+
+```c
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand(public_key, secret_key, seed);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
+	}
+#endif /* OQS_DIST_BUILD */
+```
+
+Valid CPU features: `avx2`, `bmi2`, `popcnt`, `asimd` (will translate to `arm_neon`)
+
 ### External APIdeclarations
 For KEM implementations, there are five functions to declares:
 - `keypair`: name of the function that generates the key pair

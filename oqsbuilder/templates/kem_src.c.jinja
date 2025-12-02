@@ -82,7 +82,22 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, u
         {%- else %}
 #elif defined({{ impl["enable_by"] }})
         {%- endif %}
+        {%- if impl["runtime_cpu_features"] %}
+#if defined(OQS_DIST_BUILD)
+    if ({%- for feat in impl["runtime_cpu_features"] -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat | upper }})
+            {%- if not loop.last %} && {% endif -%}
+        {%- endfor -%}) {
+        return (OQS_STATUS) {{ impl["keypair_derand"] }}(public_key, secret_key, seed);
+    } else {
+        return (OQS_STATUS) {{ default_impl["keypair_derand"] }}(public_key, secret_key, seed);
+    }
+#else
     return (OQS_STATUS) {{ impl["keypair_derand"] }}(public_key, secret_key, seed);
+#endif /* OQS_DIST_BUILD */
+        {%- else %}
+    return (OQS_STATUS) {{ impl["keypair_derand"] }}(public_key, secret_key, seed);
+        {%- endif %}
     {%- endfor %}
     {%- if addtl_impls | length > 0 %}
 #else

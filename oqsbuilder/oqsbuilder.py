@@ -13,6 +13,7 @@ from oqsbuilder.utils import currentframe_funcname, load_jinja_template
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
 SCOPE_OPTIONS = ("public", "private", "interface")
+CPU_RUNTIME_FEATURES = ("asimd", "avx2", "bmi2", "popcnt")
 
 KEM_SRC_TEMPLATE = "kem_src.c.jinja"
 
@@ -75,6 +76,12 @@ def load_oqsbuildfile(path: str):
                     impl_meta["copies"] = oqsbuild["copies"][impl_copies]
                 impl_arch_key = impl_meta["arch"]
                 impl_meta["arch"] = oqsbuild["architectures"][impl_arch_key]
+                feats = impl_meta.get("runtime_cpu_features", [])
+                for feat in feats:
+                    assert (
+                        feat in CPU_RUNTIME_FEATURES
+                    ), f"{feat} is not valid runtime CPU feature"
+                impl_meta["runtime_cpu_features"] = feats
 
     return oqsbuild
 

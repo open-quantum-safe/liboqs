@@ -141,6 +141,7 @@ kems:
           copies: mlkem-native_aarch64
           enable_by: OQS_ENABLE_KEM_ml_kem_1024_aarch64
           arch: aarch64
+          runtime_cpu_features: [asimd]
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -179,6 +180,7 @@ kems:
           copies: mlkem-native_x86_64
           enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
           arch: x86_64
+          runtime_cpu_features: [avx2, bmi2, popcnt]
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -199,6 +201,7 @@ kems:
           copies: mlkem-native_aarch64
           enable_by: OQS_ENABLE_KEM_ml_kem_512_aarch64
           arch: aarch64
+          runtime_cpu_features: [asimd]
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -237,6 +240,7 @@ kems:
           copies: mlkem-native_x86_64
           enable_by: OQS_ENABLE_KEM_ml_kem_512_x86_64
           arch: x86_64
+          runtime_cpu_features: [avx2, bmi2, popcnt]
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -257,6 +261,7 @@ kems:
           copies: mlkem-native_aarch64
           enable_by: OQS_ENABLE_KEM_ml_kem_768_aarch64
           arch: aarch64
+          runtime_cpu_features: [asimd]
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
@@ -295,6 +300,7 @@ kems:
           copies: mlkem-native_x86_64
           enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
           arch: x86_64
+          runtime_cpu_features: [avx2, bmi2, popcnt]
           includes:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
