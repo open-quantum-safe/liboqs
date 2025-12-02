@@ -293,6 +293,10 @@ The cmake variable is translated to [C macro](https://github.com/open-quantum-sa
 ### `default_impl`
 Specify a key to an implementation that implements this parameter set. The default implementation's [`enable_by`](#imple_keyenable_by) flag will be overwritten by this parameter set's [`enable_by`](#param_keyenable_by) flag so that if this parameter set is enabled, the default implementation is automatically enabled.
 
+Default implementation is the ultimate fallback implementation.
+
+If a family supports some optional API (e.g. de-randomized keypair for KEM/SIG, and de-randomized encapsulation for KEM), then the default implementation must support all of these optional API.
+
 ### `pklen`
 Length of public key (bytes)
 
