@@ -561,6 +561,10 @@ def generate_kem_source(
     """
     template = load_jinja_template(os.path.join(templates_dir, KEM_SRC_TEMPLATE))
     _, default_impl = get_default_impl(kem_meta, param_key)
+    addtl_impls = [impl for _, impl in get_impls(kem_meta, param_key, True)]
+    addtl_impls_keypair_derand = [
+        impl for impl in addtl_impls if impl.get("keypair_derand", None)
+    ]
     content = template.render(
         {
             "kem_key": kem_key,
@@ -568,8 +572,10 @@ def generate_kem_source(
             "nist_level": param_meta["nist_level"],
             "ind_cca": param_meta["ind_cca"],
             "version": kem_meta["version"],
+            "derandomized_keypair": kem_meta["derandomized_keypair"],
             "default_impl": default_impl,
-            "addtl_impls": [impl for _, impl in get_impls(kem_meta, param_key, True)],
+            "addtl_impls": addtl_impls,
+            "addtl_impls_keypair_derand": addtl_impls_keypair_derand,
             "generated_by": f"{__name__}.{currentframe_funcname()}",
         }
     )
