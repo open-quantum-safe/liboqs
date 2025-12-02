@@ -560,9 +560,16 @@ def generate_kem_source(
     :return: path to the rendered source file, such as src/kem/ml_kem/kem_ml_kem_768.c
     """
     template = load_jinja_template(os.path.join(templates_dir, KEM_SRC_TEMPLATE))
-    content = template.render({
-        "generated_by": f"{__name__}.{currentframe_funcname()}"
-    })
+    content = template.render(
+        {
+            "kem_key": kem_key,
+            "param_key": param_key,
+            "nist_level": param_meta["nist_level"],
+            "ind_cca": param_meta["ind_cca"],
+            "version": kem_meta["version"],
+            "generated_by": f"{__name__}.{currentframe_funcname()}",
+        }
+    )
     src_path = os.path.join(kem_dir, f"kem_{param_key}.c")
     with open(src_path, "w") as f:
         f.write(content)
