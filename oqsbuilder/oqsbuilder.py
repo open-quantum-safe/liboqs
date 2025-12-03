@@ -6,17 +6,14 @@ import subprocess
 import yaml
 
 from oqsbuilder import LIBOQS_DIR
-from oqsbuilder.templates import (
-    SPDX_LICENSE_IDENTIFIER,
-)
 from oqsbuilder.utils import currentframe_funcname, load_jinja_template
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
-SCOPE_OPTIONS = ("public", "private", "interface")
 
 CPU_RUNTIME_FEATURES = ("asimd", "avx2", "bmi2", "popcnt")
 CPU_RUNTIME_FEATURES_MAP = {"asimd": "arm_neon"}
 
+KEM_CMAKE_TEMPLATE = "kem_cmakelists.txt.jinja"
 KEM_SRC_TEMPLATE = "kem_src.c.jinja"
 KEM_HEADER_TEMPLATE = "oqs_kem.h.jinja"
 
@@ -83,10 +80,18 @@ def load_oqsbuildfile(path: str):
                 param_meta["api_src"] = param_meta.get(
                     "api_src", f"{primitive.get_subdirectory_name()}_{param_key}.c"
                 )
+                _, default_impl_meta = get_default_impl(family, param_key)
+                default_impl_meta["enable_by"] = param_meta["enable_by"]
             for _, impl_meta in family["impls"].items():
                 impl_copies = impl_meta["copies"]
                 if isinstance(impl_copies, str):
                     impl_meta["copies"] = oqsbuild["copies"][impl_copies]
+                # NOTE: this field does not exist in oqsbuildfile
+                impl_meta["cmake_src_paths"] = [
+                    os.path.join("${IMPL_KEY}", path)
+                    for path in impl_meta["copies"]
+                    if os.path.splitext(path)[1] in SRC_FILE_EXTS
+                ]
                 impl_arch_key = impl_meta["arch"]
                 impl_meta["arch"] = oqsbuild["architectures"][impl_arch_key]
                 impl_meta["runtime_cpu_features"] = load_runtime_cpu_features(
@@ -339,124 +344,12 @@ def get_impls(
     return impls
 
 
-def get_impl_compile_opts(impl_meta: dict, scope: str) -> list[str] | None:
-    """Return the list of public compiler options or None if there is none"""
-    assert scope in SCOPE_OPTIONS, f"scope must be in {SCOPE_OPTIONS}"
-    compile_opts = impl_meta.get("compile_opts", None)
-    if not compile_opts:
-        return None
-    return compile_opts.get(scope, None)
-
-
-def get_impl_include_dirs(impl_meta: dict, scope: str) -> list[str] | None:
-    """Return the list of include directories or None"""
-    assert scope in SCOPE_OPTIONS, f"scope must be in {SCOPE_OPTIONS}"
-    include_dirs = impl_meta.get("includes", None)
-    if not include_dirs:
-        return None
-    return include_dirs.get(scope, None)
-
-
-# TODO: get_impl_include_dirs, get_impl_link_libs, and get_impl_compile_opts
-#   are highly similar. Consider refactoring them into a single function
-def get_impl_link_libs(impl_meta: dict, scope: str) -> list[str] | None:
-    """Return the list of include directories or None"""
-    assert scope in SCOPE_OPTIONS, f"scope must be in {SCOPE_OPTIONS}"
-    include_dirs = impl_meta.get("link_libs", None)
-    if not include_dirs:
-        return None
-    return include_dirs.get(scope, None)
-
-
-def generate_family_cmake_targets(
-    family_key: str,
-    family_meta: dict,
-    local_obj: str,
-    overwrite_default_impl_enable_by: bool = True,
-) -> list[str]:
-    """Generate a list of family-level CMake fragments where each fragment builds
-    an object library target. Some targets contain individual implementations,
-    such as mlkem-native_ml-kem-512_ref. Other targets contain OQS APIs, such
-    as OQS_KEM_ml_kem_512_new (specified in kem_ml_kem_512.c)
-
-    :param family_key: key of a family, such as ml_kem or ml_dsa
-    :param family_meta: this family's metadata
-    :param local_obj: the non-exported cmake variable that aggregates objects
-        for this family, such as `_ML_KEM_OBJS` in src/kem/ml_kem/CMakeLists.txt
-    :param overwrite_default_impl_enable_by: for each parameter set, overwrite
-        the `enable_by` flag of the default implementation with the `enable_by`
-        flag of the parameter set
-    """
-    common_targets = []
-    for param_key, param_meta in family_meta["params"].items():
-        print(f"Generating common targets for {family_key}.{param_key}")
-        param_enable_by = param_meta["enable_by"]
-        param_api_src = param_meta["api_src"]
-        target = f"""\
-if({param_enable_by})
-    add_library({param_key} OBJECT {param_api_src})
-    set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{param_key}>)
-endif()"""
-        common_targets.append(target)
-
-    impl_targets = []
-    for impl_key, impl_meta in family_meta["impls"].items():
-        print(f"Generating implementation target for {family_key}.{impl_key}")
-        target_inner_lines = [f"set(IMPL_KEY {impl_key})"]
-        impl_enable_by = impl_meta["enable_by"]
-        impl_param_key = impl_meta["param"]
-        impl_param_meta = family_meta["params"][impl_param_key]
-        if overwrite_default_impl_enable_by and (
-            get_default_impl(family_meta, impl_param_key)[0] == impl_key
-        ):
-            impl_enable_by = impl_param_meta["enable_by"]
-        # Find source files
-        srcpaths = [
-            os.path.join("${IMPL_KEY}", path)
-            for path in impl_meta["copies"]
-            if os.path.splitext(path)[1] in SRC_FILE_EXTS
-        ]
-        target_inner_lines.append(
-            f"add_library({impl_key} OBJECT {" ".join(srcpaths)})"
-        )
-        # Add compile options, include directories
-        for scope in SCOPE_OPTIONS:
-            compile_opts = get_impl_compile_opts(impl_meta, scope)
-            if compile_opts:
-                target_inner_lines.append(
-                    f"target_compile_options({impl_key} {scope.upper()} {" ".join(compile_opts)})"
-                )
-            include_dirs = get_impl_include_dirs(impl_meta, scope)
-            if include_dirs:
-                target_inner_lines.append(
-                    f"target_include_directories({impl_key} {scope.upper()} {" ".join(include_dirs)})"
-                )
-            link_libs = get_impl_link_libs(impl_meta, scope)
-            if link_libs:
-                target_inner_lines.append(
-                    f"target_link_libraries({impl_key} {scope.upper()} {" ".join(link_libs)})"
-                )
-        # CUDA Architecture if specified
-        cuda_arch = impl_meta.get("cuda_arch", None)
-        if cuda_arch:
-            target_inner_lines.append(
-                f"set_property(TARGET {impl_key} PROPERTY CUDA_ARCHITECTURES {cuda_arch})"
-            )
-        # Aggregate objects to local obj variable
-        target_inner_lines.append(
-            f"set({local_obj} ${{{local_obj}}} $<TARGET_OBJECTS:{impl_key}>)"
-        )
-        target = f"""\
-if({impl_enable_by})
-{"\n".join(target_inner_lines)}
-endif()"""
-        impl_targets.append(target)
-
-    return common_targets + impl_targets
-
-
 def generate_kem_cmake(
-    kem_dir: str, kem_key: str, kem: dict, autoformat: bool = True
+    kem_dir: str,
+    kem_key: str,
+    kem_meta: dict,
+    templates_dir: str,
+    autoformat: bool = True,
 ) -> str:
     """Generate the family-level CMakeLists.txt file for the input KEM scheme
 
@@ -467,30 +360,24 @@ def generate_kem_cmake(
     :param kem_dir: path to the family-level subdirectory, such as
         LIBOQS_DIR/src/kem/ml_kem
     :param kem_key: the family key of the KEM scheme
-    :param kem: the content in build file under the family key
+    :param kem_meta: metadata of the KEM family
+    :param templates_dir: path to the directory containing jinja templates
     :param autoformat: format the generated list file with gersemi
     :return: path to the family-level cmake list file
     """
-    local_obj = f"_{kem_key}_OBJS".upper()
-    export_obj = f"{kem_key}_OBJS".upper()
-
-    targets = generate_family_cmake_targets(kem_key, kem, local_obj)
-    targets = "\n\n".join(targets)
-
-    data = f"""\
-# {SPDX_LICENSE_IDENTIFIER}
-# This file is generated by OQS Builder ({__name__}.{currentframe_funcname()})
-
-set({local_obj} "")
-
-{targets}
-
-set({export_obj} ${{{local_obj}}} PARENT_SCOPE)
-"""
-
+    template_path = os.path.join(templates_dir, KEM_CMAKE_TEMPLATE)
     cmake_path = os.path.join(kem_dir, "CMakeLists.txt")
+    content = load_jinja_template(template_path).render(
+        {
+            "kem_key": kem_key,
+            "kem_meta": kem_meta,
+            "generated_by": f"{__name__}.{currentframe_funcname()}",
+        }
+    )
+    # print(content)
+    # raise NotImplementedError(f"{cmake_path} is not fully rendered")
     with open(cmake_path, "w") as f:
-        f.write(data)
+        f.write(content)
     if autoformat:
         # Check out gersemi at https://github.com/BlankSpruce/gersemi/
         # pip install gersemi==0.23.1
@@ -578,7 +465,6 @@ def generate_kem_source(
         }
     )
     src_path = os.path.join(kem_dir, f"kem_{param_key}.c")
-    # raise NotImplementedError(f"{src_path} is not fully generated")
     with open(src_path, "w") as f:
         f.write(content)
     if autoformat:

@@ -60,15 +60,15 @@ def copy_from_upstream(
         kems_dir = os.path.join(
             LIBOQS_DIR, "src", CryptoPrimitive.KEM.get_subdirectory_name()
         )
-        for kem_key, kem in kems["families"].items():
+        for kem_key, kem_meta in kems["families"].items():
             kem_dir = os.path.join(kems_dir, kem_key)
             print(f"Integrating {kem_key} into {kem_dir}")
-            for impl_key, impl in kem["impls"].items():
+            for impl_key, impl in kem_meta["impls"].items():
                 impl_dir = os.path.join(kem_dir, impl_key)
                 copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
-            kem_cmake_path = generate_kem_cmake(kem_dir, kem_key, kem)
-            kem_header_path = generate_kem_header(kem_dir, kem_key, kem, templates_dir)
-            kem_src_paths = generate_kem_sources(kem_dir, kem_key, kem, templates_dir)
+            generate_kem_cmake(kem_dir, kem_key, kem_meta, templates_dir)
+            generate_kem_header(kem_dir, kem_key, kem_meta, templates_dir)
+            generate_kem_sources(kem_dir, kem_key, kem_meta, templates_dir)
 
 
 if __name__ == "__main__":
