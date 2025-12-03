@@ -67,7 +67,7 @@ def copy_from_upstream(
                 impl_dir = os.path.join(kem_dir, impl_key)
                 copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
             kem_cmake_path = generate_kem_cmake(kem_dir, kem_key, kem)
-            kem_header_path = generate_kem_header(kem_dir, kem_key, kem)
+            kem_header_path = generate_kem_header(kem_dir, kem_key, kem, templates_dir)
             kem_src_paths = generate_kem_sources(kem_dir, kem_key, kem, templates_dir)
 
 
