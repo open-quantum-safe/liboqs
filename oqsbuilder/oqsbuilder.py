@@ -13,7 +13,9 @@ from oqsbuilder.utils import currentframe_funcname, load_jinja_template
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
 SCOPE_OPTIONS = ("public", "private", "interface")
+
 CPU_RUNTIME_FEATURES = ("asimd", "avx2", "bmi2", "popcnt")
+CPU_RUNTIME_FEATURES_MAP = {"asimd": "arm_neon"}
 
 KEM_SRC_TEMPLATE = "kem_src.c.jinja"
 
@@ -41,6 +43,16 @@ class CryptoPrimitive(enum.Enum):
                 return "sig"
             case CryptoPrimitive.STFL_SIG:
                 return "stfl_sig"
+
+
+def load_runtime_cpu_features(features: list[str]) -> list[str]:
+    """Read the list of runtime CPU features, check the validity of each feature
+    name, and map to the appropriate names
+    """
+    for feat in features:
+        if feat not in CPU_RUNTIME_FEATURES:
+            raise ValueError(f"{feat} is not valid runtime CPU feature")
+    return [CPU_RUNTIME_FEATURES_MAP.get(feat, feat) for feat in features]
 
 
 def load_oqsbuildfile(path: str):
@@ -76,12 +88,9 @@ def load_oqsbuildfile(path: str):
                     impl_meta["copies"] = oqsbuild["copies"][impl_copies]
                 impl_arch_key = impl_meta["arch"]
                 impl_meta["arch"] = oqsbuild["architectures"][impl_arch_key]
-                feats = impl_meta.get("runtime_cpu_features", [])
-                for feat in feats:
-                    assert (
-                        feat in CPU_RUNTIME_FEATURES
-                    ), f"{feat} is not valid runtime CPU feature"
-                impl_meta["runtime_cpu_features"] = feats
+                impl_meta["runtime_cpu_features"] = load_runtime_cpu_features(
+                    impl_meta.get("runtime_cpu_features", [])
+                )
 
     return oqsbuild
 
@@ -572,6 +581,9 @@ def generate_kem_source(
     addtl_impls_keypair_derand = [
         impl for impl in addtl_impls if impl.get("keypair_derand", None)
     ]
+    addtl_impls_encaps_derand = [
+        impl for impl in addtl_impls if impl.get("enc_derand", None)
+    ]
     content = template.render(
         {
             "kem_key": kem_key,
@@ -580,13 +592,16 @@ def generate_kem_source(
             "ind_cca": param_meta["ind_cca"],
             "version": kem_meta["version"],
             "derandomized_keypair": kem_meta["derandomized_keypair"],
+            "derandomized_encaps": kem_meta["derandomized_encaps"],
             "default_impl": default_impl,
             "addtl_impls": addtl_impls,
             "addtl_impls_keypair_derand": addtl_impls_keypair_derand,
+            "addtl_impls_encaps_derand": addtl_impls_encaps_derand,
             "generated_by": f"{__name__}.{currentframe_funcname()}",
         }
     )
     src_path = os.path.join(kem_dir, f"kem_{param_key}.c")
+    # raise NotImplementedError(f"{src_path} is not fully generated")
     with open(src_path, "w") as f:
         f.write(content)
     if autoformat:

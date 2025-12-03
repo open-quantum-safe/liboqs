@@ -18,6 +18,56 @@ if(OQS_ENABLE_KEM_ml_kem_1024)
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:ml_kem_1024>)
 endif()
 
+if(OQS_ENABLE_KEM_ml_kem_1024_x86_64)
+    set(IMPL_KEY mlkem-native_ml-kem-1024_x86_64)
+    add_library(
+        mlkem-native_ml-kem-1024_x86_64
+        OBJECT
+        ${IMPL_KEY}/mlkem/src/poly.c
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/rej_uniform_avx2.c
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/consts.c
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/basemul.c
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/ntt.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/compress_avx2.c
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/rej_uniform_table.c
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/reduce.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/tomont.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/basemul.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/nttfrombytes.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/ntttobytes.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/intt.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/mulcache_compute.S
+        ${IMPL_KEY}/mlkem/src/native/x86_64/src/nttunpack.S
+        ${IMPL_KEY}/mlkem/src/compress.c
+        ${IMPL_KEY}/mlkem/src/sampling.c
+        ${IMPL_KEY}/mlkem/src/verify.c
+        ${IMPL_KEY}/mlkem/src/kem.c
+        ${IMPL_KEY}/mlkem/src/indcpa.c
+        ${IMPL_KEY}/mlkem/src/debug.c
+        ${IMPL_KEY}/mlkem/src/poly_k.c
+    )
+    target_compile_options(
+        mlkem-native_ml-kem-1024_x86_64
+        PUBLIC
+            -DMLK_CONFIG_PARAMETER_SET=1024
+            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h"
+    )
+    target_compile_options(
+        mlkem-native_ml-kem-1024_x86_64
+        PRIVATE -mavx2 -mbmi2 -mpopcnt
+    )
+    target_include_directories(
+        mlkem-native_ml-kem-1024_x86_64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+    set(_ML_KEM_OBJS
+        ${_ML_KEM_OBJS}
+        $<TARGET_OBJECTS:mlkem-native_ml-kem-1024_x86_64>
+    )
+endif()
+
 if(OQS_ENABLE_KEM_ml_kem_1024_aarch64)
     set(IMPL_KEY mlkem-native_ml-kem-1024_aarch64)
     add_library(
@@ -94,10 +144,10 @@ if(OQS_ENABLE_KEM_ml_kem_1024)
     )
 endif()
 
-if(OQS_ENABLE_KEM_ml_kem_1024_x86_64)
-    set(IMPL_KEY mlkem-native_ml-kem-1024_x86_64)
+if(OQS_ENABLE_KEM_ml_kem_512_x86_64)
+    set(IMPL_KEY mlkem-native_ml-kem-512_x86_64)
     add_library(
-        mlkem-native_ml-kem-1024_x86_64
+        mlkem-native_ml-kem-512_x86_64
         OBJECT
         ${IMPL_KEY}/mlkem/src/poly.c
         ${IMPL_KEY}/mlkem/src/native/x86_64/src/rej_uniform_avx2.c
@@ -123,24 +173,24 @@ if(OQS_ENABLE_KEM_ml_kem_1024_x86_64)
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
     target_compile_options(
-        mlkem-native_ml-kem-1024_x86_64
+        mlkem-native_ml-kem-512_x86_64
         PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=1024
+            -DMLK_CONFIG_PARAMETER_SET=512
             -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h"
     )
     target_compile_options(
-        mlkem-native_ml-kem-1024_x86_64
+        mlkem-native_ml-kem-512_x86_64
         PRIVATE -mavx2 -mbmi2 -mpopcnt
     )
     target_include_directories(
-        mlkem-native_ml-kem-1024_x86_64
+        mlkem-native_ml-kem-512_x86_64
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
-        $<TARGET_OBJECTS:mlkem-native_ml-kem-1024_x86_64>
+        $<TARGET_OBJECTS:mlkem-native_ml-kem-512_x86_64>
     )
 endif()
 
@@ -220,10 +270,10 @@ if(OQS_ENABLE_KEM_ml_kem_512)
     )
 endif()
 
-if(OQS_ENABLE_KEM_ml_kem_512_x86_64)
-    set(IMPL_KEY mlkem-native_ml-kem-512_x86_64)
+if(OQS_ENABLE_KEM_ml_kem_768_x86_64)
+    set(IMPL_KEY mlkem-native_ml-kem-768_x86_64)
     add_library(
-        mlkem-native_ml-kem-512_x86_64
+        mlkem-native_ml-kem-768_x86_64
         OBJECT
         ${IMPL_KEY}/mlkem/src/poly.c
         ${IMPL_KEY}/mlkem/src/native/x86_64/src/rej_uniform_avx2.c
@@ -249,24 +299,24 @@ if(OQS_ENABLE_KEM_ml_kem_512_x86_64)
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
     target_compile_options(
-        mlkem-native_ml-kem-512_x86_64
+        mlkem-native_ml-kem-768_x86_64
         PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=512
+            -DMLK_CONFIG_PARAMETER_SET=768
             -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h"
     )
     target_compile_options(
-        mlkem-native_ml-kem-512_x86_64
+        mlkem-native_ml-kem-768_x86_64
         PRIVATE -mavx2 -mbmi2 -mpopcnt
     )
     target_include_directories(
-        mlkem-native_ml-kem-512_x86_64
+        mlkem-native_ml-kem-768_x86_64
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
-        $<TARGET_OBJECTS:mlkem-native_ml-kem-512_x86_64>
+        $<TARGET_OBJECTS:mlkem-native_ml-kem-768_x86_64>
     )
 endif()
 
@@ -343,56 +393,6 @@ if(OQS_ENABLE_KEM_ml_kem_768)
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-768_ref>
-    )
-endif()
-
-if(OQS_ENABLE_KEM_ml_kem_768_x86_64)
-    set(IMPL_KEY mlkem-native_ml-kem-768_x86_64)
-    add_library(
-        mlkem-native_ml-kem-768_x86_64
-        OBJECT
-        ${IMPL_KEY}/mlkem/src/poly.c
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/rej_uniform_avx2.c
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/consts.c
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/basemul.c
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/ntt.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/compress_avx2.c
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/rej_uniform_table.c
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/reduce.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/tomont.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/basemul.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/nttfrombytes.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/ntttobytes.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/intt.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/mulcache_compute.S
-        ${IMPL_KEY}/mlkem/src/native/x86_64/src/nttunpack.S
-        ${IMPL_KEY}/mlkem/src/compress.c
-        ${IMPL_KEY}/mlkem/src/sampling.c
-        ${IMPL_KEY}/mlkem/src/verify.c
-        ${IMPL_KEY}/mlkem/src/kem.c
-        ${IMPL_KEY}/mlkem/src/indcpa.c
-        ${IMPL_KEY}/mlkem/src/debug.c
-        ${IMPL_KEY}/mlkem/src/poly_k.c
-    )
-    target_compile_options(
-        mlkem-native_ml-kem-768_x86_64
-        PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=768
-            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h"
-    )
-    target_compile_options(
-        mlkem-native_ml-kem-768_x86_64
-        PRIVATE -mavx2 -mbmi2 -mpopcnt
-    )
-    target_include_directories(
-        mlkem-native_ml-kem-768_x86_64
-        PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
-            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
-    )
-    set(_ML_KEM_OBJS
-        ${_ML_KEM_OBJS}
-        $<TARGET_OBJECTS:mlkem-native_ml-kem-768_x86_64>
     )
 endif()
 
