@@ -97,6 +97,7 @@ kems:
       name: "ML-KEM"
       version: "FIPS203"
       derandomized_keypair: true
+      derandomized_encaps: true
       params:
         ml_kem_512:
           name: "ML-KEM-512"
@@ -135,6 +136,27 @@ kems:
           nist_level: 5
           ind_cca: true
       impls:
+        mlkem-native_ml-kem-1024_x86_64:
+          upstream: mlkem-native
+          param: ml_kem_1024
+          copies: mlkem-native_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
+          arch: x86_64
+          runtime_cpu_features: [avx2, bmi2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts: 
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=1024"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
+            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_dec"
         mlkem-native_ml-kem-1024_aarch64:
           upstream: mlkem-native
           param: ml_kem_1024
@@ -174,11 +196,11 @@ kems:
           enc: "PQCP_MLKEM_NATIVE_MLKEM1024_C_enc"
           enc_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_C_enc_derand"
           dec: "PQCP_MLKEM_NATIVE_MLKEM1024_C_dec"
-        mlkem-native_ml-kem-1024_x86_64:
+        mlkem-native_ml-kem-512_x86_64:
           upstream: mlkem-native
-          param: ml_kem_1024
+          param: ml_kem_512
           copies: mlkem-native_x86_64
-          enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_x86_64
           arch: x86_64
           runtime_cpu_features: [avx2, bmi2, popcnt]
           includes:
@@ -187,14 +209,14 @@ kems:
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts: 
             public:
-              - "-DMLK_CONFIG_PARAMETER_SET=1024"
+              - "-DMLK_CONFIG_PARAMETER_SET=512"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
             private: ["-mavx2", "-mbmi2", "-mpopcnt"]
-          keypair: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair"
-          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand"
-          enc: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc"
-          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc_derand"
-          dec: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_dec"
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_dec"
         mlkem-native_ml-kem-512_aarch64:
           upstream: mlkem-native
           param: ml_kem_512
@@ -234,11 +256,11 @@ kems:
           enc: "PQCP_MLKEM_NATIVE_MLKEM512_C_enc"
           enc_derand: "PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand"
           dec: "PQCP_MLKEM_NATIVE_MLKEM512_C_dec"
-        mlkem-native_ml-kem-512_x86_64:
+        mlkem-native_ml-kem-768_x86_64:
           upstream: mlkem-native
-          param: ml_kem_512
+          param: ml_kem_768
           copies: mlkem-native_x86_64
-          enable_by: OQS_ENABLE_KEM_ml_kem_512_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
           arch: x86_64
           runtime_cpu_features: [avx2, bmi2, popcnt]
           includes:
@@ -247,14 +269,14 @@ kems:
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
           compile_opts: 
             public:
-              - "-DMLK_CONFIG_PARAMETER_SET=512"
+              - "-DMLK_CONFIG_PARAMETER_SET=768"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
             private: ["-mavx2", "-mbmi2", "-mpopcnt"]
-          keypair: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair"
-          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair_derand"
-          enc: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc"
-          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc_derand"
-          dec: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_dec"
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec"
         mlkem-native_ml-kem-768_aarch64:
           upstream: mlkem-native
           param: ml_kem_768
@@ -294,27 +316,6 @@ kems:
           enc: "PQCP_MLKEM_NATIVE_MLKEM768_C_enc"
           enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand"
           dec: "PQCP_MLKEM_NATIVE_MLKEM768_C_dec"
-        mlkem-native_ml-kem-768_x86_64:
-          upstream: mlkem-native
-          param: ml_kem_768
-          copies: mlkem-native_x86_64
-          enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
-          arch: x86_64
-          runtime_cpu_features: [avx2, bmi2, popcnt]
-          includes:
-            private:
-              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
-              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts: 
-            public:
-              - "-DMLK_CONFIG_PARAMETER_SET=768"
-              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
-            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
-          keypair: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair"
-          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand"
-          enc: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc"
-          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand"
-          dec: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec"
         cupqc_ml-kem-1024_cuda:
           upstream: cupqc
           param: ml_kem_1024
