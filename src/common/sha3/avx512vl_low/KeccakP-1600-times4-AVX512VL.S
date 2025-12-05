@@ -359,10 +359,10 @@ keccak_1600_extract_bytes_x4:
     vmovdqu8    %xmm31, (arg4){%k1}             # Extract 1 to 7 bytes of state into output 3
 
     # increment output pointers
+    addq        %r12, arg1
     addq        %r12, arg2
     addq        %r12, arg3
     addq        %r12, arg4
-    addq        %r12, arg5
     ret
 .size   keccak_1600_extract_bytes_x4,.-keccak_1600_extract_bytes_x4
 
