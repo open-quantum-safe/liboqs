@@ -25,8 +25,7 @@ auxiliary-submitters:
 crypto-assumption: hash-based signatures
 website: https://csrc.nist.gov/pubs/fips/205/final
 nist-round: FIPS205
-standardization-status: Standardized by NIST
-spec-url: https://csrc.nist.gov/pubs/fips/205/final
+standardization-status: Standardized by [NIST](https://csrc.nist.gov/pubs/fips/205/final)
 spec-version: SLH-DSA
 spdx-license-identifier: MIT or ISC or Apache 2.0
 primary-upstream:
