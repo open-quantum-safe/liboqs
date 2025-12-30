@@ -45,12 +45,20 @@ def do_it(liboqs_root):
             out_md.write('- **Primary Source**<a name="primary-source"></a>:\n')
             out_md.write('  - **Source**: {}\n'.format(kem_yaml['primary-upstream']['source']))
             out_md.write('  - **Implementation license (SPDX-Identifier)**: {}\n'.format(kem_yaml['primary-upstream']['spdx-license-identifier']))
-            if 'optimized-upstreams' in kem_yaml:
-                out_md.write('- **Optimized Implementation sources**: {}\n'.format(kem_yaml['primary-upstream']['source']))
-                for opt_upstream in kem_yaml['optimized-upstreams']:
-                    out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
-                    out_md.write('      - **Source**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['source']))
-                    out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
+            # Collect optimized implementations
+            optimized = {}
+            for ps in kem_yaml['parameter-sets']:
+                for impl in ps['implementations']:
+                    if impl['upstream'] == 'primary-upstream' and not impl.get('default'):
+                        optimized[impl['upstream-id']] = kem_yaml['primary-upstream']
+            for name, info in kem_yaml.get('optimized-upstreams', {}).items():
+                optimized[name] = info
+            if optimized:
+                out_md.write('- **Optimized Implementation sources**:\n')
+                for name, info in optimized.items():
+                    out_md.write('  - **{}**:<a name="{}"></a>\n'.format(name, name))
+                    out_md.write('      - **Source**: {}\n'.format(info['source']))
+                    out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(info['spdx-license-identifier']))
             if 'formally-verified-upstreams' in kem_yaml:
                 out_md.write('- **Formally-verified Implementation sources**: \n')
                 for opt_upstream in kem_yaml['formally-verified-upstreams']:
@@ -180,12 +188,20 @@ def do_it(liboqs_root):
             out_md.write('- **Primary Source**<a name="primary-source"></a>:\n')
             out_md.write('  - **Source**: {}\n'.format(sig_yaml['primary-upstream']['source']))
             out_md.write('  - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_yaml['primary-upstream']['spdx-license-identifier']))
-            if 'optimized-upstreams' in sig_yaml:
-                out_md.write('- **Optimized Implementation sources**: {}\n'.format(sig_yaml['primary-upstream']['source']))
-                for opt_upstream in sig_yaml['optimized-upstreams']:
-                    out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
-                    out_md.write('      - **Source**: {}\n'.format(sig_yaml['optimized-upstreams'][opt_upstream]['source']))
-                    out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
+            # Collect optimized implementations
+            optimized = {}
+            for ps in sig_yaml['parameter-sets']:
+                for impl in ps['implementations']:
+                    if impl['upstream'] == 'primary-upstream' and not impl.get('default'):
+                        optimized[impl['upstream-id']] = sig_yaml['primary-upstream']
+            for name, info in sig_yaml.get('optimized-upstreams', {}).items():
+                optimized[name] = info
+            if optimized:
+                out_md.write('- **Optimized Implementation sources**:\n')
+                for name, info in optimized.items():
+                    out_md.write('  - **{}**:<a name="{}"></a>\n'.format(name, name))
+                    out_md.write('      - **Source**: {}\n'.format(info['source']))
+                    out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(info['spdx-license-identifier']))
 
             if 'upstream-ancestors' in sig_yaml:
                 out_md.write(', which takes it from:\n')
@@ -306,7 +322,7 @@ def do_it(liboqs_root):
             out_md.write('  - **Source**: {}\n'.format(sig_stfl_yaml['primary-upstream']['source']))
             out_md.write('  - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_stfl_yaml['primary-upstream']['spdx-license-identifier']))
             if 'optimized-upstreams' in sig_stfl_yaml:
-                out_md.write('- **Optimized Implementation sources**: {}\n'.format(sig_stfl_yaml['primary-upstream']['source']))
+                out_md.write('- **Optimized Implementation sources**:\n')
                 for opt_upstream in sig_stfl_yaml['optimized-upstreams']:
                     out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
                     out_md.write('      - **Source**: {}\n'.format(sig_stfl_yaml['optimized-upstreams'][opt_upstream]['source']))

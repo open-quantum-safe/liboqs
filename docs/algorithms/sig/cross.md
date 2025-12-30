@@ -9,6 +9,10 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/c8f7411fed136f0e37600973fa3dbed53465e54f
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
+- **Optimized Implementation sources**:
+  - **avx2**:<a name="avx2"></a>
+      - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/c8f7411fed136f0e37600973fa3dbed53465e54f
+      - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
 ## Parameter set summary

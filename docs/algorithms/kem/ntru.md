@@ -9,6 +9,10 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
+- **Optimized Implementation sources**:
+  - **avx2**:<a name="avx2"></a>
+      - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+      - **Implementation license (SPDX-Identifier)**: CC0-1.0
 - **Ancestors of primary source**:
   - https://github.com/jschanck/ntru/tree/a43a4457
 

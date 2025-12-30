@@ -48,6 +48,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: master
     supported-platforms:
@@ -65,6 +66,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    default: true
 - name: BIKE-L3
   claimed-nist-level: 3
   claimed-security: IND-CPA
@@ -84,6 +86,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: master
     supported-platforms:
@@ -101,6 +104,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    default: true
 - name: BIKE-L5
   claimed-nist-level: 5
   claimed-security: IND-CPA
@@ -120,6 +124,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: master
     supported-platforms:
@@ -137,3 +142,4 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    default: true

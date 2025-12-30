@@ -38,6 +38,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
