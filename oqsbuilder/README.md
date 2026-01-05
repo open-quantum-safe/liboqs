@@ -9,6 +9,7 @@ This is the replacement for `copy_from_upstream.py`
         - ✅ render family-level `CMakeLists.txt`
         - ✅ render family-level header file (e.g. `kem_ml_kem.h`)
         - ✅ render family-level source file (e.g. `kem_ml_kem_512.c`)
+- 🔨 `copies` should support direct mapping, re-usable mapping in the same oqsbuildfile, and remote mapping from `META.yaml`
 - ⚠️ figure out how to check feature parity with `copy_from_upstream.py`
 
 
@@ -87,9 +88,10 @@ Notes:
 - Some implementations are further hidden behind platform guards. For example, CUDA implementations also need `OQS_USE_CUPQC` in addition to the individual implementation `enable_by`
 
 ### `copies`  
-A description of how the content of an implementation should be assembled. This field can be a single string or a dictionary.
-    - *Dictionary*: maps destination path to source path. Each destination path is relative to the implementation subdirectory (i.e. relative to `liboqs/src/<kem|sig|stfl_sig>/<family_key>/<impl_key>`). Each source path is relative to the upstream repository's root directory.
-    - *Key*: references a reusable set of `dst:src` mappings. For example, `mlkem-native_ml_kem_<512|768|1024>_aarch` all use the same `copies` mapping, so each of the copy field could just be as follows:
+A description of how the content of an implementation should be assembled under the implementation sub-directory. This field can have one of three types of values:
+- *Dictionary*: maps destination path to source path. Each destination path is relative to the implementation subdirectory (i.e. relative to `liboqs/src/<kem|sig|stfl_sig>/<family_key>/<impl_key>`). Each source path is relative to the upstream repository's root directory.
+- *Key*: references a reusable set of `dst:src` mappings. For example, `mlkem-native_ml_kem_<512|768|1024>_aarch` all use the same `copies` mapping, so each of the copy field could just be as follows:
+- *Remote META.yml*: a path to a `META.yml` file containing a list of source files ([example](https://github.com/pq-code-package/mlkem-native/blob/main/integration/liboqs/ML-KEM-768_META.yml)). The path is relative to the upstream repository, so if a specific commit of the upstream repository is checked out, then we will use that commit's version of `META.yml`. The folder structure will be preserved under the implementation sub-directory. For example, if the `META.yml` file lists `integration/liboqs/fips202_glue.h`, then the source file will be copied into `<impl_dir>/integration/liboqs/fips202_glue.h`. 
 
 ```yaml
 ml_kem:
