@@ -43,6 +43,102 @@ class CryptoPrimitive(enum.Enum):
                 return "stfl_sig"
 
 
+class Upstream:
+    """A git repository containing some source files"""
+
+    def __init__(
+        self,
+        url: str,
+        branch_or_tag: str | None = "main",
+        commit: str | None = None,
+        patches: list[str] | None = None,
+    ):
+        """
+        :param url: required, URL of the remote repository
+        :param branch_or_tag: optional, check out the specified branch or tag after clone
+        :param commit: optional, check out the specified commit after clone. This
+            will overwrite branch_or_tag. At least one of these two should be supplied.
+        :param patches: path to a single patch file, or a list of many patch files;
+            if a list of patches is passed in, then all of them will be applied in
+            a single "git apply" command. Empty patch list will be ignored.
+        """
+        if not url:
+            raise ValueError("url cannot be None")
+        if (not branch_or_tag) and (not commit):
+            raise ValueError("branch_or_tag and commit cannot both be None")
+        self.url = url
+        self.branch_or_tag = branch_or_tag
+        self.commit = commit
+        self.patches = patches or []
+
+    @staticmethod
+    def from_dict(data: dict):
+        return Upstream(
+            data["git_url"],
+            data.get("git_branch", None),
+            data.get("git_commit", None),
+            data.get("patches", None),
+        )
+
+    def clone(self, parentdir: str, dstdirname: str, dryrun: bool = False) -> str:
+        """Clone a remote Git repository into a local destination directory.
+
+        :param parentdir: Path to the parent directory where the repository will be cloned.
+        :param dstdirname: Name of the destination directory to create within `parentdir`.
+        :param url: URL of the remote Git repository to clone.
+        :param commit: Optional specific commit hash to check out after cloning.
+            If provided, this takes precedence over `branch_or_tag`.
+        :param branch_or_tag: Optional branch or tag name to clone.
+            Ignored if `commit` is specified.
+        :param dryrun: if set to true, print the commands that will be executed, but
+            do not execute them.
+        :return: The full path to the cloned repository directory.
+        """
+        if not os.path.isdir(parentdir):
+            raise FileNotFoundError(f"{parentdir} is not a valid directory")
+        dstdir = os.path.join(parentdir, dstdirname)
+        if os.path.isdir(dstdir):
+            raise FileExistsError(f"{dstdir} already exists")
+        if dryrun:
+            print(f"mkdir -p {dstdir}")
+        else:
+            # NOTE: dstdir could contain forward slashes; create nested directories w/ makedirs
+            os.makedirs(dstdir)
+        gitdir = os.path.join(dstdir, ".git")
+        if self.commit:
+            # git clone <url> <dst> --depth 1
+            # git fetch --git-dir ... --work-tree ... fetch origin <sha1> --depth 1
+            # git reset --git-dir ... --work-tree ... reset --hard <sha1>
+            commands = [
+                ["git", "clone", self.url, dstdir, "--depth", "1"],
+                ["git", "--git-dir", gitdir, "--work-tree", dstdir]
+                + ["fetch", "origin", self.commit, "--depth", "1"],
+                ["git", "--git-dir", gitdir, "--work-tree", dstdir]
+                + ["reset", "--hard", self.commit],
+            ]
+        elif self.branch_or_tag:
+            commands = [
+                [
+                    "git",
+                    "clone",
+                    self.url,
+                    dstdir,
+                    "--branch",
+                    self.branch_or_tag,
+                    "--depth",
+                    "1",
+                ]
+            ]
+        else:
+            commands = [["git", "clone", self.url, dstdir, "--depth", "1"]]
+        for cmd in commands:
+            if dryrun:
+                print(" ".join(cmd))
+            else:
+                subprocess.run(cmd, check=True)
+        return dstdir
+
+
 def load_runtime_cpu_features(features: list[str]) -> list[str]:
     """Read the list of runtime CPU features, check the validity of each feature
     name, and map to the appropriate names
@@ -215,63 +311,6 @@ def git_apply(
             subprocess.run(cmd, check=True)
 
 
-def clone_remote_repo(
-    parentdir: str,
-    dstdirname: str,
-    url: str,
-    commit: str | None = None,
-    branch_or_tag: str | None = None,
-    dryrun: bool = False,
-) -> str:
-    """Clone a remote Git repository into a local destination directory.
-
-    :param parentdir: Path to the parent directory where the repository will be cloned.
-    :param dstdirname: Name of the destination directory to create within `parentdir`.
-    :param url: URL of the remote Git repository to clone.
-    :param commit: Optional specific commit hash to check out after cloning.
-        If provided, this takes precedence over `branch_or_tag`.
-    :param branch_or_tag: Optional branch or tag name to clone.
-        Ignored if `commit` is specified.
-    :param dryrun: if set to true, print the commands that will be executed, but
-        do not execute them.
-    :return: The full path to the cloned repository directory.
-    """
-    if not os.path.isdir(parentdir):
-        raise FileNotFoundError(f"{parentdir} is not a valid directory")
-    dstdir = os.path.join(parentdir, dstdirname)
-    if os.path.isdir(dstdir):
-        raise FileExistsError(f"{dstdir} already exists")
-    if dryrun:
-        print(f"mkdir -p {dstdir}")
-    else:
-        # NOTE: dstdir could contain forward slashes; create nested directories w/ makedirs
-        os.makedirs(dstdir)
-    gitdir = os.path.join(dstdir, ".git")
-    if commit:
-        # git clone <url> <dst> --depth 1
-        # git fetch --git-dir ... --work-tree ... fetch origin <sha1> --depth 1
-        # git reset --git-dir ... --work-tree ... reset --hard <sha1>
-        commands = [
-            ["git", "clone", url, dstdir, "--depth", "1"],
-            ["git", "--git-dir", gitdir, "--work-tree", dstdir]
-            + ["fetch", "origin", commit, "--depth", "1"],
-            ["git", "--git-dir", gitdir, "--work-tree", dstdir]
-            + ["reset", "--hard", commit],
-        ]
-    elif branch_or_tag:
-        commands = [
-            ["git", "clone", url, dstdir, "--branch", branch_or_tag, "--depth", "1"]
-        ]
-    else:
-        commands = [["git", "clone", url, dstdir, "--depth", "1"]]
-    for cmd in commands:
-        if dryrun:
-            print(" ".join(cmd))
-        else:
-            subprocess.run(cmd, check=True)
-    return dstdir
-
-
 def fetch_upstreams(
     oqsbuild: dict, upstream_parent_dir: str, patch_dir: str
 ) -> dict[str, str]:
@@ -280,15 +319,11 @@ def fetch_upstreams(
     """
     upstream_dirs = {}
     for name, upstream in oqsbuild["upstreams"].items():
-        upstream_dir = clone_remote_repo(
-            upstream_parent_dir,
-            name,
-            upstream["git_url"],
-            commit=upstream.get("git_commit", None),
-            branch_or_tag=upstream.get("git_branch", None),
-        )
+        # TODO: move Upstream.from_dict further up, into load_oqsbuildfile
+        upstream = Upstream.from_dict(upstream)
+        upstream_dir = upstream.clone(upstream_parent_dir, name)
         patches: list[str] = [
-            os.path.join(patch_dir, patch) for patch in upstream.get("patches", [])
+            os.path.join(patch_dir, patch) for patch in upstream.patches
         ]
         git_apply(upstream_dir, patches)
         upstream_dirs[name] = upstream_dir
