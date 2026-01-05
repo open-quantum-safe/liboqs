@@ -91,6 +91,7 @@
 #define RED_MASK                              0x1f
 #define SHAKE256_512_BYTES                    64
 #define SEED_BYTES                            40
+#define DERAND_SEED_BYTES                     32
 #define SALT_SIZE_BYTES                       16
 
 #endif
