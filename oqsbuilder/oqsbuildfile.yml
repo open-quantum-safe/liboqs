@@ -1,45 +1,41 @@
 # NOTE: this copy of copy_from_upstream.yml is used to keep track of feature parity
 #   between oqsbuilder and copy_from_upstream.yml
 upstreams:
-  - name: pq-code-package/slhdsa-c
-    git_url: https://github.com/pq-code-package/slhdsa-c.git
-    git_branch: main
-    git_commit: f3f41ecf831764a3d014c105be11415dc411d12a
-    # sig_meta_path: "integration/liboqs/META.yml"
-    # sig_scheme_path: "."
-    # preserve_folder_structure: True
-  -
-    name: oldpqclean
-    git_url: https://github.com/PQClean/PQClean.git
-    git_branch: master
-    git_commit: 8e220a87308154d48fdfac40abbb191ac7fce06a
-    # kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
-    # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
-    # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
-    # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch, pqclean-kyber-armneon-asan.patch]
-    # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
-  -
-    name: pqclean
-    git_url: https://github.com/PQClean/PQClean.git
-    git_branch: master
-    git_commit: 1eacfdafc15ddc5d5759d0b85b4cef26627df181
-    # kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
-    # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
-    # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
-    # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-sphincs.patch, classic_mceliece_memset.patch]
-    # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64
-  -
-    name: pqcrystals-kyber
-    git_url: https://github.com/pq-crystals/kyber.git
-    git_branch: master
-    git_commit: 441c0519a07e8b86c8d079954a6b10bd31d29efc
-    # kem_meta_path: '{pretty_name_full}_META.yml'
-    # kem_scheme_path: '.'
-    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
-  -
-    name: mlkem-native
+  # slhdsa-c:
+  #   git_url: https://github.com/pq-code-package/slhdsa-c.git
+  #   git_branch: main
+  #   git_commit: f3f41ecf831764a3d014c105be11415dc411d12a
+  #   # sig_meta_path: "integration/liboqs/META.yml"
+  #   # sig_scheme_path: "."
+  #   # preserve_folder_structure: True
+  # oldpqclean:
+  #   git_url: https://github.com/PQClean/PQClean.git
+  #   git_branch: master
+  #   git_commit: 8e220a87308154d48fdfac40abbb191ac7fce06a
+  #   # kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
+  #   # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
+  #   # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
+  #   # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
+  #   patches: [pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch, pqclean-kyber-armneon-asan.patch]
+  #   # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
+  # pqclean:
+  #   git_url: https://github.com/PQClean/PQClean.git
+  #   git_branch: master
+  #   git_commit: 1eacfdafc15ddc5d5759d0b85b4cef26627df181
+  #   # kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
+  #   # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
+  #   # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
+  #   # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
+  #   patches: [pqclean-sphincs.patch, classic_mceliece_memset.patch]
+  #   # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64
+  # pqcrystals-kyber:
+  #   git_url: https://github.com/pq-crystals/kyber.git
+  #   git_branch: master
+  #   git_commit: 441c0519a07e8b86c8d079954a6b10bd31d29efc
+  #   # kem_meta_path: '{pretty_name_full}_META.yml'
+  #   # kem_scheme_path: '.'
+  #   patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
+  mlkem-native:
     git_url: https://github.com/pq-code-package/mlkem-native.git
     git_branch: v1.0.0
     git_commit: 048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
@@ -47,60 +43,506 @@ upstreams:
     # kem_scheme_path: '.'
     patches: [mlkem-native-encaps-derand.patch]
     # preserve_folder_structure: True
-  -
-    name: cupqc
+  cupqc:
     git_url: https://github.com/open-quantum-safe/liboqs-cupqc-meta.git
     git_branch: main
     git_commit: b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
     patches: []
-  -
-    name: icicle
+  icicle:
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
     git_branch: main
     git_commit: 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
     # kem_meta_path: '{pretty_name_full}_META.yml'
     # kem_scheme_path: '.'
     patches: []
-  -
-    name: pqcrystals-dilithium-standard
-    git_url: https://github.com/pq-crystals/dilithium.git
-    git_branch: master
-    git_commit: 444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
-    # sig_meta_path: '{pretty_name_full}_META.yml'
-    # sig_scheme_path: '.'
-    patches: [pqcrystals-ml_dsa.patch, pqcrystals-ml_dsa-SUF-CMA.patch]
-  -
-    name: pqmayo
-    git_url: https://github.com/PQCMayo/MAYO-C.git
-    git_branch: main
-    git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
-    # sig_meta_path: 'META/{pretty_name_full}_META.yml'
-    # sig_scheme_path: '.'
-    patches: [pqmayo-aes.patch, pqmayo-mem.patch]
-  -
-    name: upcross
-    git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
-    git_branch: master
-    git_commit: c8f7411fed136f0e37600973fa3dbed53465e54f
-    # sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
-    # sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
-  -
-    name: pqov
-    git_url: https://github.com/pqov/pqov.git
-    git_branch: main
-    git_commit: 33fa5278754a32064c55901c3a17d48b06cc2351
-    # sig_scheme_path: '.'
-    # sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
-  -
-    name: snova
-    git_url: https://github.com/vacuas/SNOVA-OQS
-    git_branch: main
-    git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
-    # sig_scheme_path: '.'
-    # sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
-# kems:
+  # pqcrystals-dilithium-standard:
+  #   git_url: https://github.com/pq-crystals/dilithium.git
+  #   git_branch: master
+  #   git_commit: 444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
+  #   # sig_meta_path: '{pretty_name_full}_META.yml'
+  #   # sig_scheme_path: '.'
+  #   patches: [pqcrystals-ml_dsa.patch, pqcrystals-ml_dsa-SUF-CMA.patch]
+  # pqmayo:
+  #   git_url: https://github.com/PQCMayo/MAYO-C.git
+  #   git_branch: main
+  #   git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
+  #   # sig_meta_path: 'META/{pretty_name_full}_META.yml'
+  #   # sig_scheme_path: '.'
+  #   patches: [pqmayo-aes.patch, pqmayo-mem.patch]
+  # upcross:
+  #   git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
+  #   git_branch: master
+  #   git_commit: c8f7411fed136f0e37600973fa3dbed53465e54f
+  #   # sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
+  #   # sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
+  # pqov:
+  #   git_url: https://github.com/pqov/pqov.git
+  #   git_branch: main
+  #   git_commit: 33fa5278754a32064c55901c3a17d48b06cc2351
+  #   # sig_scheme_path: '.'
+  #   # sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
+  # snova:
+  #   git_url: https://github.com/vacuas/SNOVA-OQS
+  #   git_branch: main
+  #   git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+  #   # sig_scheme_path: '.'
+  #   # sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
+kems:
+  # TODO: what common fields exist across all KEM's?
+  families:
+    # The id of a KEM will be the directory name under src/kem
+    ml_kem:
+      name: "ML-KEM"
+      version: "FIPS203"
+      derandomized_keypair: true
+      derandomized_encaps: true
+      params:
+        ml_kem_512:
+          name: "ML-KEM-512"
+          pklen: 800
+          sklen: 1632
+          ctlen: 768
+          sslen: 32
+          keypair_seedlen: 64
+          encap_seedlen: 32
+          enable_by: OQS_ENABLE_KEM_ml_kem_512
+          default_impl: mlkem-native_ml-kem-512_ref
+          nist_level: 1
+          ind_cca: true
+        ml_kem_768:
+          name: "ML-KEM-768"
+          pklen: 1184
+          sklen: 2400
+          ctlen: 1088
+          sslen: 32
+          keypair_seedlen: 64
+          encap_seedlen: 32
+          enable_by: OQS_ENABLE_KEM_ml_kem_768
+          default_impl: mlkem-native_ml-kem-768_ref
+          nist_level: 3
+          ind_cca: true
+        ml_kem_1024:
+          name: "ML-KEM-1024"
+          pklen: 1568
+          sklen: 3168
+          ctlen: 1568
+          sslen: 32
+          keypair_seedlen: 64
+          encap_seedlen: 32
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024
+          default_impl: mlkem-native_ml-kem-1024_ref
+          nist_level: 5
+          ind_cca: true
+      impls:
+        mlkem-native_ml-kem-1024_x86_64:
+          upstream: mlkem-native
+          param: ml_kem_1024
+          copies: mlkem-native_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
+          arch: x86_64
+          runtime_cpu_features: [avx2, bmi2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts: 
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=1024"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
+            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_dec"
+        mlkem-native_ml-kem-1024_aarch64:
+          upstream: mlkem-native
+          param: ml_kem_1024
+          copies: mlkem-native_aarch64
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_aarch64
+          arch: aarch64
+          runtime_cpu_features: [asimd]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=1024"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_dec"
+        mlkem-native_ml-kem-1024_ref:
+          upstream: mlkem-native
+          param: ml_kem_1024
+          copies: mlkem-native_ref
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_ref
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=1024" 
+              - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM1024_C_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM1024_C_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM1024_C_dec"
+        mlkem-native_ml-kem-512_x86_64:
+          upstream: mlkem-native
+          param: ml_kem_512
+          copies: mlkem-native_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_x86_64
+          arch: x86_64
+          runtime_cpu_features: [avx2, bmi2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts: 
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=512"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
+            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM512_X86_64_dec"
+        mlkem-native_ml-kem-512_aarch64:
+          upstream: mlkem-native
+          param: ml_kem_512
+          copies: mlkem-native_aarch64
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_aarch64
+          arch: aarch64
+          runtime_cpu_features: [asimd]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=512"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_dec"
+        mlkem-native_ml-kem-512_ref:
+          upstream: mlkem-native
+          param: ml_kem_512
+          copies: mlkem-native_ref
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_ref
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=512" 
+              - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM512_C_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM512_C_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM512_C_dec"
+        mlkem-native_ml-kem-768_x86_64:
+          upstream: mlkem-native
+          param: ml_kem_768
+          copies: mlkem-native_x86_64
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
+          arch: x86_64
+          runtime_cpu_features: [avx2, bmi2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts: 
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=768"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
+            private: ["-mavx2", "-mbmi2", "-mpopcnt"]
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec"
+        mlkem-native_ml-kem-768_aarch64:
+          upstream: mlkem-native
+          param: ml_kem_768
+          copies: mlkem-native_aarch64
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_aarch64
+          arch: aarch64
+          runtime_cpu_features: [asimd]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=768"
+              - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_dec"
+        mlkem-native_ml-kem-768_ref:
+          upstream: mlkem-native
+          param: ml_kem_768
+          copies: mlkem-native_ref
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_ref
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            public:
+              - "-DMLK_CONFIG_PARAMETER_SET=768" 
+              - "-DMLK_CONFIG_FILE=\"../../integration/liboqs/config_c.h\""
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM768_C_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM768_C_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM768_C_dec"
+        cupqc_ml-kem-1024_cuda:
+          upstream: cupqc
+          param: ml_kem_1024
+          arch: cuda
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-1024/cupqc_ml-kem.cu
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_cuda
+          link_libs:
+            # https://docs.nvidia.com/cuda/cupqc/guides/getting_started.html
+            private: [cupqc-pk_static]
+          # NOTE: `-arch=compute_70` and `CUDA_ARCHITECTURES OFF` seem to conflict?
+          cuda_arch: OFF
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+          keypair: "cupqc_ml_kem_1024_keypair"
+          enc: "cupqc_ml_kem_1024_enc"
+          dec: "cupqc_ml_kem_1024_dec"
+        cupqc_ml-kem-512_cuda:
+          upstream: cupqc
+          param: ml_kem_512
+          arch: cuda
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-512/cupqc_ml-kem.cu
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_cuda
+          link_libs:
+            private: [cupqc-pk_static]
+          cuda_arch: OFF
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+          keypair: "cupqc_ml_kem_512_keypair"
+          enc: "cupqc_ml_kem_512_enc"
+          dec: "cupqc_ml_kem_512_dec"
+        cupqc_ml-kem-768_cuda:
+          upstream: cupqc
+          param: ml_kem_768
+          arch: cuda
+          copies:
+            cupqc_ml-kem.cu: cuda/ml-kem-768/cupqc_ml-kem.cu
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_cuda
+          link_libs:
+            private: [cupqc-pk_static]
+          cuda_arch: OFF
+          compile_opts:
+            private: ["$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"]
+          keypair: "cupqc_ml_kem_768_keypair"
+          enc: "cupqc_ml_kem_768_enc"
+          dec: "cupqc_ml_kem_768_dec"
+        icicle_ml-kem-1024_icicle_cuda:
+          upstream: icicle
+          param: ml_kem_1024
+          arch: icicle_cuda
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp
+          enable_by: OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda
+          link_libs:
+            private: [icicle::icicle_pqc_package]
+          keypair: "icicle_ml_kem_1024_keypair"
+          enc: "icicle_ml_kem_1024_enc"
+          enc_derand: "icicle_ml_kem_1024_enc_derand"
+          dec: "icicle_ml_kem_1024_dec"
+        icicle_ml-kem-512_icicle_cuda:
+          upstream: icicle
+          param: ml_kem_512
+          arch: icicle_cuda
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-512/icicle_ml-kem.cpp
+          enable_by: OQS_ENABLE_KEM_ml_kem_512_icicle_cuda
+          link_libs:
+            private: [icicle::icicle_pqc_package]
+          keypair: "icicle_ml_kem_512_keypair"
+          enc: "icicle_ml_kem_512_enc"
+          enc_derand: "icicle_ml_kem_512_enc_derand"
+          dec: "icicle_ml_kem_512_dec"
+        icicle_ml-kem-768_icicle_cuda:
+          upstream: icicle
+          param: ml_kem_768
+          arch: icicle_cuda
+          copies:
+            icicle_ml-kem.cpp: icicle_cuda/ml-kem-768/icicle_ml-kem.cpp
+          enable_by: OQS_ENABLE_KEM_ml_kem_768_icicle_cuda
+          link_libs:
+            private: [icicle::icicle_pqc_package]
+          keypair: "icicle_ml_kem_768_keypair"
+          enc: "icicle_ml_kem_768_enc"
+          enc_derand: "icicle_ml_kem_768_enc_derand"
+          dec: "icicle_ml_kem_768_dec"
+
+architectures:
+  portable:
+    enable_by:
+  x86_64:
+    enable_by:
+  aarch64:
+    enable_by:
+  cuda:
+    enable_by: OQS_USE_CUPQC
+  icicle_cuda:
+    enable_by: OQS_USE_ICICLE
+
+copies:
+  mlkem-native_aarch64:
+    integration/liboqs/config_aarch64.h: integration/liboqs/config_aarch64.h
+    integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+    integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+    mlkem/src/poly_k.h: mlkem/src/poly_k.h
+    mlkem/src/debug.h: mlkem/src/debug.h
+    mlkem/src/poly.c: mlkem/src/poly.c
+    mlkem/src/params.h: mlkem/src/params.h
+    mlkem/src/native/api.h: mlkem/src/native/api.h
+    mlkem/src/native/meta.h: mlkem/src/native/meta.h
+    mlkem/src/native/aarch64/README.md: mlkem/src/native/aarch64/README.md
+    mlkem/src/native/aarch64/meta.h: mlkem/src/native/aarch64/meta.h
+    mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k4.S
+    mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k3.S
+    mlkem/src/native/aarch64/src/poly_tomont_asm.S: mlkem/src/native/aarch64/src/poly_tomont_asm.S
+    mlkem/src/native/aarch64/src/ntt.S: mlkem/src/native/aarch64/src/ntt.S
+    mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S: mlkem/src/native/aarch64/src/poly_mulcache_compute_asm.S
+    mlkem/src/native/aarch64/src/aarch64_zetas.c: mlkem/src/native/aarch64/src/aarch64_zetas.c
+    mlkem/src/native/aarch64/src/poly_reduce_asm.S: mlkem/src/native/aarch64/src/poly_reduce_asm.S
+    mlkem/src/native/aarch64/src/arith_native_aarch64.h: mlkem/src/native/aarch64/src/arith_native_aarch64.h
+    mlkem/src/native/aarch64/src/rej_uniform_asm.S: mlkem/src/native/aarch64/src/rej_uniform_asm.S
+    mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S: mlkem/src/native/aarch64/src/polyvec_basemul_acc_montgomery_cached_asm_k2.S
+    mlkem/src/native/aarch64/src/rej_uniform_table.c: mlkem/src/native/aarch64/src/rej_uniform_table.c
+    mlkem/src/native/aarch64/src/consts.h: mlkem/src/native/aarch64/src/consts.h
+    mlkem/src/native/aarch64/src/poly_tobytes_asm.S: mlkem/src/native/aarch64/src/poly_tobytes_asm.S
+    mlkem/src/native/aarch64/src/intt.S: mlkem/src/native/aarch64/src/intt.S
+    mlkem/src/randombytes.h: mlkem/src/randombytes.h
+    mlkem/src/compress.c: mlkem/src/compress.c
+    mlkem/src/sampling.c: mlkem/src/sampling.c
+    mlkem/src/verify.c: mlkem/src/verify.c
+    mlkem/src/kem.c: mlkem/src/kem.c
+    mlkem/src/indcpa.c: mlkem/src/indcpa.c
+    mlkem/src/symmetric.h: mlkem/src/symmetric.h
+    mlkem/src/debug.c: mlkem/src/debug.c
+    mlkem/src/cbmc.h: mlkem/src/cbmc.h
+    mlkem/src/common.h: mlkem/src/common.h
+    mlkem/src/poly_k.c: mlkem/src/poly_k.c
+    mlkem/src/compress.h: mlkem/src/compress.h
+    mlkem/src/sys.h: mlkem/src/sys.h
+    mlkem/src/poly.h: mlkem/src/poly.h
+    mlkem/src/sampling.h: mlkem/src/sampling.h
+    mlkem/src/indcpa.h: mlkem/src/indcpa.h
+    mlkem/src/zetas.inc: mlkem/src/zetas.inc
+    mlkem/src/kem.h: mlkem/src/kem.h
+    mlkem/src/verify.h: mlkem/src/verify.h
+  mlkem-native_x86_64:
+    integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+    integration/liboqs/config_x86_64.h: integration/liboqs/config_x86_64.h
+    integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+    mlkem/src/poly_k.h: mlkem/src/poly_k.h
+    mlkem/src/debug.h: mlkem/src/debug.h
+    mlkem/src/poly.c: mlkem/src/poly.c
+    mlkem/src/params.h: mlkem/src/params.h
+    mlkem/src/native/api.h: mlkem/src/native/api.h
+    mlkem/src/native/meta.h: mlkem/src/native/meta.h
+    mlkem/src/native/x86_64/meta.h: mlkem/src/native/x86_64/meta.h
+    mlkem/src/native/x86_64/README.md: mlkem/src/native/x86_64/README.md
+    mlkem/src/native/x86_64/src/fq.inc: mlkem/src/native/x86_64/src/fq.inc
+    mlkem/src/native/x86_64/src/rej_uniform_avx2.c: mlkem/src/native/x86_64/src/rej_uniform_avx2.c
+    mlkem/src/native/x86_64/src/align.h: mlkem/src/native/x86_64/src/align.h
+    mlkem/src/native/x86_64/src/consts.c: mlkem/src/native/x86_64/src/consts.c
+    mlkem/src/native/x86_64/src/basemul.c: mlkem/src/native/x86_64/src/basemul.c
+    mlkem/src/native/x86_64/src/x86_64_zetas.i: mlkem/src/native/x86_64/src/x86_64_zetas.i
+    mlkem/src/native/x86_64/src/ntt.S: mlkem/src/native/x86_64/src/ntt.S
+    mlkem/src/native/x86_64/src/compress_avx2.c: mlkem/src/native/x86_64/src/compress_avx2.c
+    mlkem/src/native/x86_64/src/rej_uniform_table.c: mlkem/src/native/x86_64/src/rej_uniform_table.c
+    mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i: mlkem/src/native/x86_64/src/x86_64_mulcache_twiddles.i
+    mlkem/src/native/x86_64/src/reduce.S: mlkem/src/native/x86_64/src/reduce.S
+    mlkem/src/native/x86_64/src/tomont.S: mlkem/src/native/x86_64/src/tomont.S
+    mlkem/src/native/x86_64/src/basemul.S: mlkem/src/native/x86_64/src/basemul.S
+    mlkem/src/native/x86_64/src/consts.h: mlkem/src/native/x86_64/src/consts.h
+    mlkem/src/native/x86_64/src/nttfrombytes.S: mlkem/src/native/x86_64/src/nttfrombytes.S
+    mlkem/src/native/x86_64/src/arith_native_x86_64.h: mlkem/src/native/x86_64/src/arith_native_x86_64.h
+    mlkem/src/native/x86_64/src/ntttobytes.S: mlkem/src/native/x86_64/src/ntttobytes.S
+    mlkem/src/native/x86_64/src/intt.S: mlkem/src/native/x86_64/src/intt.S
+    mlkem/src/native/x86_64/src/mulcache_compute.S: mlkem/src/native/x86_64/src/mulcache_compute.S
+    mlkem/src/native/x86_64/src/nttunpack.S: mlkem/src/native/x86_64/src/nttunpack.S
+    mlkem/src/native/x86_64/src/shuffle.inc: mlkem/src/native/x86_64/src/shuffle.inc
+    mlkem/src/randombytes.h: mlkem/src/randombytes.h
+    mlkem/src/compress.c: mlkem/src/compress.c
+    mlkem/src/sampling.c: mlkem/src/sampling.c
+    mlkem/src/verify.c: mlkem/src/verify.c
+    mlkem/src/kem.c: mlkem/src/kem.c
+    mlkem/src/indcpa.c: mlkem/src/indcpa.c
+    mlkem/src/symmetric.h: mlkem/src/symmetric.h
+    mlkem/src/debug.c: mlkem/src/debug.c
+    mlkem/src/cbmc.h: mlkem/src/cbmc.h
+    mlkem/src/common.h: mlkem/src/common.h
+    mlkem/src/poly_k.c: mlkem/src/poly_k.c
+    mlkem/src/compress.h: mlkem/src/compress.h
+    mlkem/src/sys.h: mlkem/src/sys.h
+    mlkem/src/poly.h: mlkem/src/poly.h
+    mlkem/src/sampling.h: mlkem/src/sampling.h
+    mlkem/src/indcpa.h: mlkem/src/indcpa.h
+    mlkem/src/zetas.inc: mlkem/src/zetas.inc
+    mlkem/src/kem.h: mlkem/src/kem.h
+    mlkem/src/verify.h: mlkem/src/verify.h
+  mlkem-native_ref:
+    integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
+    integration/liboqs/config_c.h: integration/liboqs/config_c.h
+    integration/liboqs/fips202x4_glue.h: integration/liboqs/fips202x4_glue.h
+    mlkem/src/poly_k.h: mlkem/src/poly_k.h
+    mlkem/src/debug.h: mlkem/src/debug.h
+    mlkem/src/poly.c: mlkem/src/poly.c
+    mlkem/src/params.h: mlkem/src/params.h
+    mlkem/src/native/api.h: mlkem/src/native/api.h
+    mlkem/src/native/meta.h: mlkem/src/native/meta.h
+    mlkem/src/randombytes.h: mlkem/src/randombytes.h
+    mlkem/src/compress.c: mlkem/src/compress.c
+    mlkem/src/sampling.c: mlkem/src/sampling.c
+    mlkem/src/verify.c: mlkem/src/verify.c
+    mlkem/src/kem.c: mlkem/src/kem.c
+    mlkem/src/indcpa.c: mlkem/src/indcpa.c
+    mlkem/src/symmetric.h: mlkem/src/symmetric.h
+    mlkem/src/debug.c: mlkem/src/debug.c
+    mlkem/src/cbmc.h: mlkem/src/cbmc.h
+    mlkem/src/common.h: mlkem/src/common.h
+    mlkem/src/poly_k.c: mlkem/src/poly_k.c
+    mlkem/src/compress.h: mlkem/src/compress.h
+    mlkem/src/sys.h: mlkem/src/sys.h
+    mlkem/src/poly.h: mlkem/src/poly.h
+    mlkem/src/sampling.h: mlkem/src/sampling.h
+    mlkem/src/indcpa.h: mlkem/src/indcpa.h
+    mlkem/src/zetas.inc: mlkem/src/zetas.inc
+    mlkem/src/kem.h: mlkem/src/kem.h
+    mlkem/src/verify.h: mlkem/src/verify.h
+
 #   -
 #     name: classic_mceliece
 #     default_implementation: clean

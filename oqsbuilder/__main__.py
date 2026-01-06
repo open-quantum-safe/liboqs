@@ -1,11 +1,18 @@
 import os
 import sys
 from tempfile import TemporaryDirectory
-import yaml
 
 import oqsbuilder
 from oqsbuilder import LIBOQS_DIR
-from oqsbuilder.oqsbuilder import clone_remote_repo, git_apply
+from oqsbuilder.oqsbuilder import (
+    CryptoPrimitive,
+    copy_copies,
+    generate_kem_cmake,
+    load_oqsbuildfile,
+    fetch_upstreams,
+    generate_kem_header,
+    generate_kem_sources,
+)
 
 
 def print_version():
@@ -19,8 +26,8 @@ def print_version():
 def copy_from_upstream(
     oqsbuildfile: str,
     patch_dir: str,
+    templates_dir: str,
     upstream_parent_dir: str = LIBOQS_DIR,
-    headless: bool = True,
 ):
     """Copy implementations from upstream
 
@@ -34,31 +41,39 @@ def copy_from_upstream(
     :param patch_dir: path to a directory hosting the patch files for upstream
     :param upstream_parent_dir: upstream repositories will be cloned into
         a temporary subdirectory under this directory
+    :param templates_dir: path to a directory containing the Jinja2 templates
+        used to generate CMakeLists.txt files, source files, and header files
     :param headless: True if running in a non-interactive environment
     """
-    with open(oqsbuildfile, mode="r", encoding="utf-8") as f:
-        instructions = yaml.safe_load(f)
-    print(f"Successfully loaded {oqsbuildfile}")
-    upstreams = instructions["upstreams"]
+    assert os.path.isfile(oqsbuildfile), f"{oqsbuildfile} is not a valid file"
+    assert os.path.isdir(patch_dir), f"{patch_dir} is not a valid directory"
+    assert os.path.isdir(templates_dir), f"{templates_dir} is not a valid directory"
+    assert os.path.isdir(
+        upstream_parent_dir
+    ), f"{upstream_parent_dir} is not a valid directory"
+
+    oqsbuild = load_oqsbuildfile(oqsbuildfile)
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
-        for upstream in upstreams:
-            upstream_dir = clone_remote_repo(
-                tempdir,
-                upstream["name"],
-                upstream["git_url"],
-                commit=upstream.get("git_commit", None),
-                branch_or_tag=upstream.get("git_branch", None),
-            )
-            patches: list[str] = [
-                os.path.join(patch_dir, patch) for patch in upstream.get("patches", [])
-            ]
-            git_apply(upstream_dir, patches)
-            if not headless:
-                input("Press enter to continue")
+        upstream_dirs = fetch_upstreams(oqsbuild, tempdir, patch_dir)
+
+        kems = oqsbuild[CryptoPrimitive.KEM.get_oqsbuildfile_key()]
+        kems_dir = os.path.join(
+            LIBOQS_DIR, "src", CryptoPrimitive.KEM.get_subdirectory_name()
+        )
+        for kem_key, kem_meta in kems["families"].items():
+            kem_dir = os.path.join(kems_dir, kem_key)
+            print(f"Integrating {kem_key} into {kem_dir}")
+            for impl_key, impl in kem_meta["impls"].items():
+                impl_dir = os.path.join(kem_dir, impl_key)
+                copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
+            generate_kem_cmake(kem_dir, kem_key, kem_meta, templates_dir)
+            generate_kem_header(kem_dir, kem_key, kem_meta, templates_dir)
+            generate_kem_sources(kem_dir, kem_key, kem_meta, templates_dir)
 
 
 if __name__ == "__main__":
     print_version()
     buildfile = os.path.join(LIBOQS_DIR, "oqsbuilder", "oqsbuildfile.yml")
     patch_dir = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
-    copy_from_upstream(buildfile, patch_dir)
+    templates_dir = os.path.join(LIBOQS_DIR, "oqsbuilder", "templates")
+    copy_from_upstream(buildfile, patch_dir, templates_dir)
