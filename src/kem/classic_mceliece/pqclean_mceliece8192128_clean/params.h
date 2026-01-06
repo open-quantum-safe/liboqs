@@ -6,6 +6,7 @@
 #define GFBITS 13
 #define SYS_N 8192
 #define SYS_T 128
+#define SEED_BYTES 32
 
 #define COND_BYTES ((1 << (GFBITS-4))*(2*GFBITS - 1))
 #define IRR_BYTES (SYS_T * 2)
