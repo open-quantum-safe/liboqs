@@ -43,6 +43,140 @@ class CryptoPrimitive(enum.Enum):
                 return "stfl_sig"
 
 
+class NistLevel(enum.Enum):
+    """https://csrc.nist.gov/projects/post-quantum-cryptography/post-quantum-cryptography-standardization/evaluation-criteria/security-(evaluation-criteria)"""
+
+    LEVEL_1 = 1
+    LEVEL_2 = 2
+    LEVEL_3 = 3
+    LEVEL_4 = 4
+    LEVEL_5 = 5
+
+
+class KemSecurity(enum.Enum):
+    IND_CPA = 1
+    IND_CCA = 2
+
+
+class ParameterSet:
+    def __init__(
+        self,
+        key: str,
+        name: str,
+        pubkeylen: int,
+        privkeylen: int,
+        ctlen: int,
+        sslen: int,
+        enable_by: str,
+        default_impl: str,
+        nist_level: NistLevel,
+        ind_cca: bool,
+    ):
+        self.key = key
+        """Unique identifier of parameter set, such as ml_kem_512"""
+
+        self.name = name
+        """Human-friendly name of parameter set, such as \"ML-KEM-512\""""
+
+        self.pubkeylen = pubkeylen
+        """Length of encapsulation key in bytes"""
+
+        self.privkeylen = privkeylen
+        """Length of decapsulation key in bytes"""
+
+        self.ctlen = ctlen
+        """Length of ciphertext in bytes"""
+
+        self.sslen = sslen
+        """Length of shared secret in bytes"""
+
+        self.enable_by = enable_by
+        """A C pre-processing macro that enables this parameter set.
+
+        If a parameter set if disabled, then all implementations of this parameter
+        set are disabled"""
+
+        self.default_impl = default_impl
+        """The key of the default implementation
+
+        The default implementation's "enable_by" field will be overwritten so that
+        if a parameter set is enabled, then its default implementation is guaranteed
+        to be enabled.
+        
+        
+        If a family supports some optional API (e.g. de-randomized keypair for KEM/SIG,
+        and de-randomized encapsulation for KEM), then the default implementation
+        must support all of these optional API."""
+
+        self.nist_level = nist_level
+        """The security level of this parameter set"""
+
+        # TODO: security should not be an attribute of a parameter set, but an attribute
+        # of a family?
+        self.ind_cca = ind_cca
+        """True iff this parameter set achieves IND-CCA security"""
+
+
+class Implementation:
+    pass
+
+
+# TODO: consider making KemFamily inherit from "AlgorithmFamily"
+class KemFamily:
+    """A family refers to a broad category of cryptographic algorithm based on a
+    shared mathematical foundation. For example, ML-KEM is a family of KEM algorithms
+    based on module-lattice constructions.
+    """
+
+    def __init__(
+        self,
+        key: str,
+        version: str,
+        header: str | None = None,
+        derandomized_keygen: bool = False,
+        derandomized_encaps: bool = False,
+        params: dict[str, ParameterSet] | None = None,
+        impls: dict[str, ParameterSet] | None = None,
+    ):
+        self.key = key
+        """unique identifier of the family, such as \"ml_kem\""""
+
+        self.primitive = CryptoPrimitive.KEM
+        """the type of primitive"""
+
+        self.header = header or f"{self.primitive.get_subdirectory_name()}_{key}.h"
+        """name of the family-level header file
+        Family-level header file parameter values and function declarations.
+        Defaults to <kem|sig|sig_stfl>_<family_key>.h"""
+
+        self.version = version
+        """liboqs will integrate one version per family.
+        If there is a case to support multiple versions of the same family,
+        such as supporting Kyber round 2 and Kyber round 3 at the same time,
+        they should be separate families"""
+
+        self.derandomized_keygen = derandomized_keygen
+        """True iff deterministic key generation is supported
+
+        NOTE: FIPS 203 abbreviates key generation as "KeyGen", so that's what we
+        will go with here.
+        """
+
+        self.derandomized_encaps = derandomized_encaps
+        """True iff deterministic encapsulation is supported
+
+        NOTE: FIPS 203 abbreviates encapsulation as "Encaps", so that's what we
+        will go with here.
+        """
+
+        self.params = params
+        """A map from parameter key (e.g. ml_kem_512) to a parameter set"""
+
+        self.impls = impls
+        """A map from implementation key (e.g. mlkem-native_ml-kem-1024_x86_64)
+        to an implementation"""
+
+
 class Upstream:
     """A git repository containing some source files"""
 
