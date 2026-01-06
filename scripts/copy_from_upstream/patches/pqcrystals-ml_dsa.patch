@@ -140,10 +140,18 @@ index 5163526..e9bff1e 100644
        - architecture: x86_64
          operating_systems:
 diff --git a/avx2/config.h b/avx2/config.h
-index a9facc0..3944cb4 100644
+index a9facc0..da97994 100644
 --- a/avx2/config.h
 +++ b/avx2/config.h
-@@ -11,17 +11,17 @@
+@@ -2,7 +2,6 @@
+ #define CONFIG_H
+ 
+ //#define DILITHIUM_MODE 2
+-#define DILITHIUM_RANDOMIZED_SIGNING
+ //#define USE_RDPMC
+ //#define DBENCH
+ 
+@@ -11,17 +10,17 @@
  #endif
  
  #if DILITHIUM_MODE == 2
@@ -520,10 +528,18 @@ index 8f3c3c5..fa49963 100644
  
  #endif
 diff --git a/ref/config.h b/ref/config.h
-index 98b8ccb..8008e11 100644
+index 98b8ccb..7d52ebc 100644
 --- a/ref/config.h
 +++ b/ref/config.h
-@@ -11,17 +11,17 @@
+@@ -2,7 +2,6 @@
+ #define CONFIG_H
+ 
+ //#define DILITHIUM_MODE 2
+-#define DILITHIUM_RANDOMIZED_SIGNING
+ //#define USE_RDPMC
+ //#define DBENCH
+ 
+@@ -11,17 +10,17 @@
  #endif
  
  #if DILITHIUM_MODE == 2

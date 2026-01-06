@@ -193,6 +193,17 @@ def available_use_options_by_name():
 def is_use_option_enabled_by_name(name):
     return name in available_use_options_by_name()
 
+def is_ml_dsa_randomized_signing_enabled():
+    header = os.path.join(get_current_build_dir_name(), 'include', 'oqs', 'oqsconfig.h')
+    try:
+        with open(header) as fh:
+            for line in fh:
+                if line.strip() == "#define OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING":
+                    return True
+    except Exception:
+        pass
+    return False
+
 def get_kats(t):
     if kats[t] is None:
         with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:

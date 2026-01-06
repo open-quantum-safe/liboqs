@@ -64,6 +64,14 @@ For a full list of such options and their default values, consult [.CMake/alg_su
 
 **Default**: Unset.
 
+### OQS_ENABLE_SIG_ML_DSA_RANDOMIZED_SIGNING
+
+Can be set to `ON` or `OFF`. When `ON`, ML-DSA signature algorithms are built with randomized signing enabled, resulting in non-deterministic signatures. When `OFF`, ML-DSA signature algorithms use deterministic signing.
+
+This option is only available if `OQS_ENABLE_SIG_ML_DSA` is `ON`.
+
+**Default**: `ON`.
+
 ## OQS_ALGS_ENABLED
 
 A selected algorithm set is enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "NIST_SIG_ONRAMP" selecting algorithms evaluated in the NIST PQC "onramp" standardization for additional signature schemes; "All" (or any other value) selecting all algorithms integrated into liboqs. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`; e.g., [oqs-provider](https://github.com/open-quantum-safe/oqs-provider) and [oqs-boringssl](https://github.com/open-quantum-safe/boringssl).

@@ -159,6 +159,9 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                 if variant["parameterSet"] == sig_name:
                     variantFound = True
                     for testCase in variant["tests"]:
+                        # Skip randomized signature vectors if built in deterministic mode
+                        if (not helpers.is_ml_dsa_randomized_signing_enabled()) and (not variant["deterministic"]):
+                            pytest.skip("Skipping randomized signature vector test: implementation built in deterministic mode")
                         sk = testCase["sk"]
                         message = testCase["message"]
                         signature = testCase["signature"]
