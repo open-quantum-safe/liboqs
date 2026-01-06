@@ -52,6 +52,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -82,6 +83,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -112,6 +114,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -142,6 +145,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -172,6 +176,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -202,6 +207,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -232,6 +238,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -262,6 +269,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -292,6 +300,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -322,6 +331,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -352,6 +362,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:
@@ -382,6 +393,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+    default: true
   - upstream: primary-upstream
     upstream-id: avx2
     supported-platforms:

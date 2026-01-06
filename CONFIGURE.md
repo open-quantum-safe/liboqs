@@ -82,7 +82,7 @@ Can be `ON` or `OFF`. When `ON`, only liboqs is built, and all the targets: `run
 
 If set, this defines a semicolon-delimited list of algorithms to be contained in a minimal build of `liboqs`: Only algorithms explicitly set here are included in a build: For example running `cmake -DOQS_MINIMAL_BUILD="KEM_ml_kem_768;SIG_ml_dsa_44" ..` will build a minimum-size `liboqs` library only containing support for ML-KEM-768 and ML-DSA-44.
 
-The full list of identifiers that can be set is listed [here for KEM algorithms](https://github.com/open-quantum-safe/liboqs/blob/main/src/kem/kem.h#L34) and [here for Signature algorithms](https://github.com/open-quantum-safe/liboqs/blob/f3caccff9e6225e7c50ca27f5ee6e58b7bc74188/src/sig/sig.h#L34). The default setting is empty, thus including all [supported algorithms](https://github.com/open-quantum-safe/liboqs#supported-algorithms) in the build.
+The full list of identifiers that can be set is listed [here for KEM algorithms](https://github.com/open-quantum-safe/liboqs/blob/main/src/kem/kem.h#L34) and [here for Signature algorithms](https://github.com/open-quantum-safe/liboqs/blob/main/src/sig/sig.h#L34). The default setting is empty, thus including all [supported algorithms](https://github.com/open-quantum-safe/liboqs#supported-algorithms) in the build.
 
 **Default**: Unset.
 

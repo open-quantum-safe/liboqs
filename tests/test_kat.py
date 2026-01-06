@@ -44,6 +44,8 @@ def test_sig_stfl(sig_stfl_name):
     if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
     katfile = helpers.get_katfile("sig_stfl", sig_stfl_name)
     if not katfile: pytest.skip("KATs file is missing")
+    if not os.path.exists(katfile): # Skip if the file does not exist
+        pytest.xfail(f'KAT not available: {sig_stfl_name}')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_sig_stfl'), sig_stfl_name, katfile],
     )

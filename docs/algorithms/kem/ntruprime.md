@@ -8,6 +8,10 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
   - **Implementation license (SPDX-Identifier)**: Public domain
+- **Optimized Implementation sources**:
+  - **avx2**:<a name="avx2"></a>
+      - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+      - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - https://github.com/jschanck/package-pqclean/tree/4d9f08c3/ntruprime, which takes it from:
   - supercop-20210604

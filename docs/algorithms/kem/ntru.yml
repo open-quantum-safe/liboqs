@@ -39,6 +39,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -71,6 +72,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -103,6 +105,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -135,6 +138,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
 - name: NTRU-HRSS-701
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -152,6 +156,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -184,6 +189,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
 primary-upstream:
   spdx-license-identifier: CC0-1.0
   source: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6

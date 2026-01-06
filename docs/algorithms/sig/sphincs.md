@@ -9,6 +9,10 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
+- **Optimized Implementation sources**:
+  - **avx2**:<a name="avx2"></a>
+      - **Source**: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181 with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
 ## Advisories

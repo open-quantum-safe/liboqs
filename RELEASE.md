@@ -1,4 +1,4 @@
-# liboqs version 0.15.0-rc1
+# liboqs version 0.15.0
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.  More information on OQS can be found on our website: https://openquantumsafe.org/ and on Github at https://github.com/open-quantum-safe/.  
 
@@ -21,7 +21,7 @@ liboqs can also be used in the following programming languages via language-spec
 - Rust, via https://github.com/open-quantum-safe/liboqs-rust
 
 # Release notes
-Release candidate 1 for liboqs 0.15.0 was released on Oct 22, 2025.
+liboqs 0.15.0 was released on Friday, Nov 14, 2025.
 
 ## Deprecation notice
 liboqs 0.15.0 is the last version to officially support SPHINCS+. SPHINCS+ will be removed in the 0.16.0 release and replaced by SLH-DSA. liboqs 0.15.0 also removes support for Dilithium.
@@ -42,6 +42,7 @@ None reported
 - Integrated ML-KEM implementation from ICICLE-PQC ([#2216](https://github.com/open-quantum-safe/liboqs/pull/2216))
 
 ## Bug fixes
+- Fixed erroneously disabled LMS variants with build flag `OQS_ENABLE_SIG_STFL_LMS` ([#2310](https://github.com/open-quantum-safe/liboqs/pull/2310))
 - Fixed incorrect import in OV-III-pkc_skc ([#2299](https://github.com/open-quantum-safe/liboqs/pull/2299))
 - Fixed incorrect actual signature length in signature full-cycle speed test ([#2293](https://github.com/open-quantum-safe/liboqs/pull/2293))
 - Fixed ICICLE ML-KEM integration ([#2288](https://github.com/open-quantum-safe/liboqs/pull/2293))
