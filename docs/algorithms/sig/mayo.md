@@ -8,6 +8,13 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
+- **Optimized Implementation sources**:
+  - **avx2**:<a name="avx2"></a>
+      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: Apache-2.0
+  - **neon**:<a name="neon"></a>
+      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
 ## Parameter set summary

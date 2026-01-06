@@ -42,6 +42,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
 - name: HQC-192
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -59,6 +60,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
 - name: HQC-256
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -76,6 +78,8 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+    default: true
 primary-upstream:
   spdx-license-identifier: Public domain
   source: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181
+default-upstream-id: clean

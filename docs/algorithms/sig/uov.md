@@ -8,6 +8,13 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
   - **Implementation license (SPDX-Identifier)**: CC0 OR Apache-2.0
+- **Optimized Implementation sources**:
+  - **neon**:<a name="neon"></a>
+      - **Source**: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
+      - **Implementation license (SPDX-Identifier)**: CC0 OR Apache-2.0
+  - **avx2**:<a name="avx2"></a>
+      - **Source**: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
+      - **Implementation license (SPDX-Identifier)**: CC0 OR Apache-2.0
 
 
 ## Parameter set summary

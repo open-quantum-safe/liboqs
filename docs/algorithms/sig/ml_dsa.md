@@ -9,6 +9,10 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/pq-crystals/dilithium/commit/444cdcc84eb36b66fe27b3a2529ee48f6d8150c2 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
+- **Optimized Implementation sources**:
+  - **avx2**:<a name="avx2"></a>
+      - **Source**: https://github.com/pq-crystals/dilithium/commit/444cdcc84eb36b66fe27b3a2529ee48f6d8150c2 with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 
 
 ## Parameter set summary

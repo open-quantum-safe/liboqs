@@ -9,6 +9,10 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/pq-code-package/slhdsa-c/commit/a0fc1ff253930060d0246aebca06c2538eb92b88
   - **Implementation license (SPDX-Identifier)**: MIT or ISC or Apache 2.0
+- **Optimized Implementation sources**:
+  - **slhdsa-c**:<a name="slhdsa-c"></a>
+      - **Source**: https://github.com/pq-code-package/slhdsa-c/commit/a0fc1ff253930060d0246aebca06c2538eb92b88
+      - **Implementation license (SPDX-Identifier)**: MIT or ISC or Apache 2.0
 
 
 ## Parameter set summary
