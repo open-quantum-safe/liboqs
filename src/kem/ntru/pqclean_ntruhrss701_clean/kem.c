@@ -18,6 +18,27 @@ int PQCLEAN_NTRUHRSS701_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
     return 0;
 }
 
+int PQCLEAN_NTRUHRSS701_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *input_seed) {
+    uint8_t seed[NTRU_SAMPLE_FG_BYTES];
+    shake256incctx state;
+
+    // Initialize SHAKE-256 with the input seed for deterministic expansion
+    shake256_inc_init(&state);
+    shake256_inc_absorb(&state, input_seed, NTRU_SEEDBYTES);
+    shake256_inc_finalize(&state);
+
+    // Generate seed for keypair generation deterministically
+    shake256_inc_squeeze(seed, NTRU_SAMPLE_FG_BYTES, &state);
+
+    PQCLEAN_NTRUHRSS701_CLEAN_owcpa_keypair(pk, sk, seed);
+
+    // Generate PRF key deterministically
+    shake256_inc_squeeze(sk + NTRU_OWCPA_SECRETKEYBYTES, NTRU_PRFKEYBYTES, &state);
+
+    shake256_inc_ctx_release(&state);
+    return 0;
+}
+
 int PQCLEAN_NTRUHRSS701_CLEAN_crypto_kem_enc(uint8_t *c, uint8_t *k, const uint8_t *pk) {
     poly r, m;
     uint8_t rm[NTRU_OWCPA_MSGBYTES];
@@ -34,6 +55,33 @@ int PQCLEAN_NTRUHRSS701_CLEAN_crypto_kem_enc(uint8_t *c, uint8_t *k, const uint8
     PQCLEAN_NTRUHRSS701_CLEAN_poly_Z3_to_Zq(&r);
     PQCLEAN_NTRUHRSS701_CLEAN_owcpa_enc(c, &r, &m, pk);
 
+    return 0;
+}
+
+int PQCLEAN_NTRUHRSS701_CLEAN_crypto_kem_enc_derand(uint8_t *c, uint8_t *k, const uint8_t *pk, const uint8_t *input_seed) {
+    poly r, m;
+    uint8_t rm[NTRU_OWCPA_MSGBYTES];
+    uint8_t rm_seed[NTRU_SAMPLE_RM_BYTES];
+    shake256incctx state;
+
+    // Initialize SHAKE-256 with the input seed for deterministic expansion
+    shake256_inc_init(&state);
+    shake256_inc_absorb(&state, input_seed, NTRU_SEEDBYTES);
+    shake256_inc_finalize(&state);
+
+    // Generate seed for encapsulation deterministically
+    shake256_inc_squeeze(rm_seed, NTRU_SAMPLE_RM_BYTES, &state);
+
+    PQCLEAN_NTRUHRSS701_CLEAN_sample_rm(&r, &m, rm_seed);
+
+    PQCLEAN_NTRUHRSS701_CLEAN_poly_S3_tobytes(rm, &r);
+    PQCLEAN_NTRUHRSS701_CLEAN_poly_S3_tobytes(rm + NTRU_PACK_TRINARY_BYTES, &m);
+    sha3_256(k, rm, NTRU_OWCPA_MSGBYTES);
+
+    PQCLEAN_NTRUHRSS701_CLEAN_poly_Z3_to_Zq(&r);
+    PQCLEAN_NTRUHRSS701_CLEAN_owcpa_enc(c, &r, &m, pk);
+
+    shake256_inc_ctx_release(&state);
     return 0;
 }
 
