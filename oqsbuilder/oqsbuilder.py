@@ -1,3 +1,4 @@
+import abc
 import enum
 import os
 import shutil
@@ -59,6 +60,8 @@ class KemSecurity(enum.Enum):
 
 
 class ParameterSet:
+    # NOTE: a parameter set is associated with a family. Should this class include
+    #   the family key?
     def __init__(
         self,
         key: str,
@@ -117,8 +120,106 @@ class ParameterSet:
         """True iff this parameter set achieves IND-CCA security"""
 
 
-class Implementation:
+# NOTE: omg, I am writing Python like Java :(
+class Copies(abc.ABC):
+    @abc.abstractmethod
+    def copy(self):
+        raise NotImplementedError()
+
+
+class Architecture(enum.Enum):
+    PORTABLE = 1
+    X86_64 = 2
+    AARCH64 = 3
+    CUDA = 4
+    ICICLE_CUDA = 5
+
+    def enable_by(self) -> str | None:
+        match self:
+            case Architecture.CUDA:
+                return "OQS_USE_CUPQC"
+            case Architecture.ICICLE_CUDA:
+                return "OQS_USE_ICICLE"
+            case _:
+                return None
+
+
+class RuntimeCpuFeature(enum.Enum):
+    AVX2 = enum.auto()
+    BMI2 = enum.auto()
+    POPCNT = enum.auto()
+    ASIMD = enum.auto()
+
+
+class CmakeInclude:
     pass
+
+
+class CmakeCompileOpt:
+    pass
+
+
+class KemApi:
+    def __init__(
+        self,
+        keypair: str,
+        encaps: str,
+        decaps: str,
+        keypair_derand: str | None = None,
+        encaps_derand: str | None = None,
+    ):
+        self.keypair = keypair
+        self.encaps = encaps
+        self.decaps = decaps
+        self.keypair_derand = keypair_derand
+        self.encaps_derand = encaps_derand
+
+
+class Implementation:
+    # NOTE: an impl is associated with a parameter set. Should this class include
+    #   the param key?
+    """A collection of source files and compilation instructions that implement
+    a specific parameter set
+    """
+
+    def __init__(
+        self,
+        key: str,
+        upstream_key: str,
+        param_key: str,
+        copies: Copies,
+        enable_by: str,
+        arch_key: Architecture,
+        runtime_cpu_features: list[RuntimeCpuFeature],
+        includes: list[CmakeInclude],
+        compile_opts: list[CmakeCompileOpt],
+        api_names: KemApi,
+    ):
+        self.key = key
+        """The unique identifier of this implementation
+        Example: mlkem-native_ml-kem-1024_x86_64"""
+
+        self.upstream_key = upstream_key
+        """The upstream repository from which source files are copies"""
+
+        self.param_key = param_key
+        """The parameter set implemented"""
+
+        self.copies = copies
+        """Instuction for how to copy source files"""
+
+        self.enable_by = enable_by
+        """C pre-processing macro that controls whether this implementation is
+        enabled
+        """
+
+        self.arch_key = arch_key
+        """The hardware architecture or micro-architecture of this implementation"""
+
+        self.runtime_cpu_features = runtime_cpu_features
+        self.includes = includes
+        self.compile_opts = compile_opts
+        self.api_names = api_names
 
 
 # TODO: consider making KemFamily inherit from "AlgorithmFamily"
