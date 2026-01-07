@@ -18,7 +18,6 @@ errors, helping developers identify and fix bugs and security loopholes.
   - [x] falcon
   - [x] mayo
   - [x] ml_dsa
-  - [x] sphincs
 - [ ] sig_stfl
   - [ ] lms
   - [ ] sig_stfl
