@@ -139,54 +139,6 @@
     "all": "b7c22da35287015006831c94ae96266de893a7ce9a221c69737ec4b4fba86aa3",
     "single": "af9205c33972a94081067f3c84f83c1779d57860158e49418cfbec733a111798"
   },
-  "SPHINCS+-SHA2-128f-simple": {
-    "all": "4437eb44516630184c3cb5d3a4392e8bb955c2bf59ad17ab3c607fb7b7285780",
-    "single": "cd1e13db3a56c0a6b3486a7b12bcddfda50cf5d1e4d14d3113e6456e969b8114"
-  },
-  "SPHINCS+-SHA2-128s-simple": {
-    "all": "5fa4dcd4eb4e47c5634fffb5facbf4172cdecb88c0db8182747f19852e567024",
-    "single": "08c2e0f08bd96f50d065ca0ced04874c709d192864bfeaccb6daa4bfa9c58a28"
-  },
-  "SPHINCS+-SHA2-192f-simple": {
-    "all": "b85a7d9751987c7cde21aaf39b027fa53a392aa78f83d90ffe0194cef7442373",
-    "single": "fd4e301339b29ed5dc392c628d6c6db3d77a46ea61d16f7ff0e2b414f962f44c"
-  },
-  "SPHINCS+-SHA2-192s-simple": {
-    "all": "a4b56dff6dbe2d026540c76a8469267da2155d4602ba56b3848108862b2fd1b9",
-    "single": "0fa07f3f77752233b382911bcc19e671522bd57069f9edca39b3924ba2713839"
-  },
-  "SPHINCS+-SHA2-256f-simple": {
-    "all": "9a2da71b2e3f725c96f1f2e5372127602546df2457e1fd4bc3992c460ee48c3e",
-    "single": "bd88b49453162a9b527e14228f037615d0fcbd13d24b48ece41ae1370ed13480"
-  },
-  "SPHINCS+-SHA2-256s-simple": {
-    "all": "0bbba98f7944ac0c013fc97030a1df6e257b293edb07797bd135ba50e68c522d",
-    "single": "05d15a74253962d35912bab3a9ee3230c2e721c798f4e757ecffa529071b0748"
-  },
-  "SPHINCS+-SHAKE-128f-simple": {
-    "all": "bffbc82279e959ddf4321ae89e09a6fcb3f90071ad97d88561dce54f93b2ed25",
-    "single": "46f4f87949dc994aa2b63b31c7307f44ca5ed025d7308ff408c8ba33473324dc"
-  },
-  "SPHINCS+-SHAKE-128s-simple": {
-    "all": "eb6d29b79cb86b8d49cc5bf4027e99672c94394a32fa6979bb0fd1dedcb94283",
-    "single": "bae2979565dabad96d885a1e264bc213ab54aff3c3b4308880b788e87702af3b"
-  },
-  "SPHINCS+-SHAKE-192f-simple": {
-    "all": "dd5206f128651f0bdebca17205743c6420af7828f3f6fdb68d3175a85138d377",
-    "single": "60a9d2fd74adbef971a74477eca3170599beb4476d6428ced78b43b9641cc929"
-  },
-  "SPHINCS+-SHAKE-192s-simple": {
-    "all": "dc398029c3d1d5ab935030a5cd0c2d2e8eccd14074a9921b49a6f7479769fa16",
-    "single": "87aedb87a77cb46f939a3bfd0099b08b0d889c9fa46be00f15c36827c117c838"
-  },
-  "SPHINCS+-SHAKE-256f-simple": {
-    "all": "fcb47ba4fecbbcefea6c1012f67a796e5f3159bdcd4192a0ba17925d6d87a5a3",
-    "single": "f6d0825afeb4ce25943c974a0efde5659ceea927d2507b0ea1a92e092f536acd"
-  },
-  "SPHINCS+-SHAKE-256s-simple": {
-    "all": "dadcf175289c25aaa530a389cc84154dc4331fabda06ffaf2a292944e4d03841",
-    "single": "37d37c9b43d71341b7dd5da7f8ebbe8bbae3d7bfc53f5378446023cbcf6e04f2"
-  },
   "cross-rsdp-128-balanced": {
     "all": "7b12a6f71166cde8289c732b3107eaa21edf59c2f336b0921a62faa93980de77",
     "single": "1261083807232119c1f0a5b0d9f958fb8cf8e5a7b897cc4b7c30336cf12da989"

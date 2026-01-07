@@ -56,11 +56,6 @@ config LIBOQS_ENABLE_SIG_FALCON
 	default y
 	depends on LIBOQS
 
-config LIBOQS_ENABLE_SIG_SPHINCS
-	bool "Enable the SPHINCS signature algorithm"
-	default y
-	depends on LIBOQS
-
 config LIBOQS_ENABLE_SIG_MAYO
 	bool "Enable the MAYO signature algorithm"
 	default y
