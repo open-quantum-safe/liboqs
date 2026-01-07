@@ -1,4 +1,3 @@
-import abc
 import enum
 import os
 import shutil
@@ -6,7 +5,7 @@ import subprocess
 
 import yaml
 
-from oqsbuilder import LIBOQS_DIR
+from oqsbuilder import LIBOQS_DIR, LIBOQS_PATCH_DIR
 from oqsbuilder.utils import currentframe_funcname, load_jinja_template
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
@@ -120,13 +119,6 @@ class ParameterSet:
         """True iff this parameter set achieves IND-CCA security"""
 
 
-# NOTE: omg, I am writing Python like Java :(
-class Copies(abc.ABC):
-    @abc.abstractmethod
-    def copy(self):
-        raise NotImplementedError()
-
-
 class Architecture(enum.Enum):
     PORTABLE = 1
     X86_64 = 2
@@ -187,7 +179,7 @@ class Implementation:
         key: str,
         upstream_key: str,
         param_key: str,
-        copies: Copies,
+        copies: dict[str, str],
         enable_by: str,
         arch_key: Architecture,
         runtime_cpu_features: list[RuntimeCpuFeature],
@@ -206,7 +198,18 @@ class Implementation:
         """The parameter set implemented"""
 
         self.copies = copies
-        """Instuction for how to copy source files"""
+        """Instuction for how to copy source files
+
+        In oqsbuildfile, an implementation's "copies" field can be one of three
+        types:
+        - (literal) A literal map from destinations to sources. Each destination
+            path is relative to the implementation sub-directory. Each source
+            path is relative to the root of upstream repository.
+        - (local) A key referencing a re-usable literal map under the "copies" section
+        - (remote) A URL referencing a remote META.yml file (legacy)
+        At parsing, local and remote type will be converte into literal mappings,
+        so here the "copies" attribute will always be a literal mapping.
+        """
 
         self.enable_by = enable_by
         """C pre-processing macro that controls whether this implementation is
@@ -228,7 +231,6 @@ class KemFamily:
     shared mathematical foundation. For example, ML-KEM is a family of KEM algorithms
     based on module-lattice constructions.
     """
-
     def __init__(
         self,
         key: str,
@@ -276,6 +278,10 @@ class KemFamily:
         self.impls = impls
         """A map from implementation key (e.g. mlkem-native_ml-kem-1024_x86_64)
         to an implementation"""
+
+    @staticmethod
+    def from_dict(data: dict):
+        raise NotImplementedError()
 
 
 class Upstream:
@@ -372,6 +378,34 @@ class Upstream:
             else:
                 subprocess.run(cmd, check=True)
         return dstdir
+
+
+class OQSBuild:
+    """Integration information"""
+    def __init__(
+        self,
+        upstreams: dict[str, Upstream],
+        kems: dict[str, KemFamily],
+        patch_dir: str | os.PathLike,
+
+    ):
+        # TODO: validate input?
+        self.upstreams = upstreams
+        self.kems = kems
+        self.patch_dir = patch_dir
+
+    @staticmethod
+    def load_oqsbuildfile(path: str | os.PathLike):
+        """Parse from an oqsbuildfile"""
+        with open(path, mode="r", encoding="utf-8") as f:
+            oqsbuild = yaml.safe_load(f)
+
+        upstreams = {key: Upstream.from_dict(meta) for key, meta in oqsbuild["upstreams"].items()}
+        kems = {key: KemFamily.from_dict(meta) for key, meta in oqsbuild["kems"].items()}
+        # FIX: need to do some processing such as instantiating "copies"
+
+        return OQSBuild(upstreams, kems, LIBOQS_PATCH_DIR)
+    
 
 
 def load_runtime_cpu_features(features: list[str]) -> list[str]:
