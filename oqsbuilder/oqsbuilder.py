@@ -297,39 +297,50 @@ class Upstream:
 
     def __init__(
         self,
+        key: str,
         url: str,
         branch_or_tag: str | None = "main",
         commit: str | None = None,
         patches: list[str] | None = None,
     ):
-        """
-        :param url: required, URL of the remote repository
-        :param branch_or_tag: optional, check out the specified branch or tag after clone
-        :param commit: optional, check out the specified commit after clone. This
-            will overwrite branch_or_tag. At least one of these two should be supplied.
-        :param patches: path to a single patch file, or a list of many patch files;
-            if a list of patches is passed in, then all of them will be applied in
-            a single "git apply" command. Empty patch list will be ignored.
-        """
-        if not url:
-            raise ValueError("url cannot be None")
         if (not branch_or_tag) and (not commit):
             raise ValueError("branch_or_tag and commit cannot both be None")
+        self.key = key
+        """unique identifier of the upstream repository, such as \"mlkem-native\""""
         self.url = url
+        """required, URL of the remote repository"""
+
         self.branch_or_tag = branch_or_tag
+        """optional, check out the specified branch or tag after clone"""
+
         self.commit = commit
+        """optional, check out the specified commit after clone.
+
+        Commit will overwrite branch/tag. At least one of these two should be supplied."""
+
         self.patches = patches or []
+        """absoluate paths to patch files to be applied after cloning
+
+        in oqsbuildfile, patch paths are relative to some patch directory; at load_oqsbuildfile
+        the patch directory will be prefixed onto the paths"""
+
+        self.dir: str | None = None
+        """path to the cloned repository, or None if not yet cloned"""
+
+        self._patched = len(self.patches) == 0
+        """True iff all patches have been applied"""
 
     @staticmethod
-    def from_dict(data: dict):
+    def from_oqsbuildfile(key: str, data: dict):
         return Upstream(
+            key,
             data["git_url"],
             data.get("git_branch", None),
             data.get("git_commit", None),
             data.get("patches", None),
         )
 
-    def clone(self, parentdir: str, dstdirname: str, dryrun: bool = False) -> str:
+    def clone(self, parentdir: str, dstdirname: str, dryrun: bool = False):
         """Clone a remote Git repository into a local destination directory.
 
         :param parentdir: Path to the parent directory where the repository will be cloned.
@@ -385,7 +396,58 @@ class Upstream:
                 print(" ".join(cmd))
             else:
                 subprocess.run(cmd, check=True)
-        return dstdir
+        self.dir = dstdir
+
+    def git_apply(
+        self,
+        commit_after_apply: bool = True,
+        dryrun: bool = False,
+    ):
+        """Apply a patch to the specified git repository
+
+        Note that the --unsafe-paths in the "git apply" command is necessary
+
+        :param commit_after_apply: commit the changes after applying the patch
+        :param dryrun: If True, print the commands instead of executing them
+        """
+        if not self.dir:
+            raise FileNotFoundError("upstream not cloned")
+        if len(self.patches) == 0:
+            return
+        for patch in self.patches:
+            if not os.path.isfile(patch):
+                raise FileNotFoundError(f"{patch} is not a valid patch file")
+
+        gitdir = os.path.join(self.dir, ".git")
+        worktree = directory = self.dir
+        git_apply_cmd = (
+            ["git", "--git-dir", gitdir, "--work-tree", worktree]
+            + ["apply", "--unsafe-paths", "--verbose", "--whitespace", "fix"]
+            + ["--directory", directory]
+        )
+        git_apply_cmd += self.patches
+        commands = [git_apply_cmd]
+        if commit_after_apply:
+            patch_names: list[str] = []
+            for patch in self.patches:
+                _, patch_filename = os.path.split(patch)
+                patch_name, _ = os.path.splitext(patch_filename)
+                patch_names.append(patch_name)
+            commit_msg = f"Applied {', '.join(patch_names)}"
+
+            commands.append(
+                ["git", "--git-dir", gitdir, "--work-tree", worktree, "add", "-A"]
+            )
+            commands.append(
+                ["git", "--git-dir", gitdir, "--work-tree", worktree]
+                + ["commit", "-m", commit_msg]
+            )
+        for cmd in commands:
+            if dryrun:
+                print(" ".join(cmd))
+            else:
+                subprocess.run(cmd, check=True)
+                self._patched = True
 
 
 class OQSBuilder:
@@ -421,9 +483,7 @@ class OQSBuilder:
                 "Fetching copy map from META.yml is not supported yet"
             )
         if buildfile_copies not in reusable_local_copies:
-            raise KeyError(
-                f"{buildfile_copies} is not a valid reusable local copy key"
-            )
+            raise KeyError(f"{buildfile_copies} is not a valid reusable local copy key")
         return reusable_local_copies[buildfile_copies]
 
     @staticmethod
@@ -437,8 +497,16 @@ class OQSBuilder:
                     impl_meta["copies"], oqsbuild["copies"]
                 )
 
+        for _, upstream in oqsbuild["upstreams"].items():
+            patch_paths = [
+                os.path.join(LIBOQS_PATCH_DIR, patch_path)
+                for patch_path in upstream.get("patches", [])
+            ]
+            upstream["patches"] = patch_paths
+
         upstreams = {
-            key: Upstream.from_dict(meta) for key, meta in oqsbuild["upstreams"].items()
+            key: Upstream.from_oqsbuildfile(key, meta)
+            for key, meta in oqsbuild["upstreams"].items()
         }
         kems = {
             key: KemFamily.from_dict(meta) for key, meta in oqsbuild["kems"].items()
@@ -466,6 +534,13 @@ def load_oqsbuildfile(path: str):
     """
     with open(path, mode="r", encoding="utf-8") as f:
         oqsbuild = yaml.safe_load(f)
+
+    for _, upstream in oqsbuild["upstreams"].items():
+        patch_paths = [
+            os.path.join(LIBOQS_PATCH_DIR, patch_path)
+            for patch_path in upstream.get("patches", [])
+        ]
+        upstream["patches"] = patch_paths
 
     # Expand keys and fill in defaults
     for primitive in [
@@ -544,97 +619,17 @@ def get_git() -> str | None:
     return None
 
 
-def git_apply(
-    dstdir: str,
-    patches: str | list[str],
-    gitdir: str | None = None,
-    worktree: str | None = None,
-    directory: str | None = None,
-    commit_after_apply: bool = True,
-    commit_msg: str | None = None,
-    dryrun: bool = False,
-):
-    """Apply a patch to the specified git repository
-
-    Note that the --unsafe-paths in the "git apply" command is necessary
-
-    :param dstdir: path to the git repository on which the patch will be applied
-    :param patches: path to a single patch file, or a list of many patch files;
-        if a list of patches is passed in, then all of them will be applied in
-        a single "git apply" command. Empty patch list will be ignored.
-    :param gitdir: path to the .git directory, defaults to {dstdir}/.git
-    :param worktree: path to the worktree, defaults to {dstdir}
-    :param directory: prepend to filenames in the patch file, see
-        "git apply --directory=<root>", defaults to {dstdir}
-    :param commit_after_apply: if True, commit the changes after applying the patch
-    :param commit_msg: specify a commit message if commit_after_apply, defaults
-        to "applied {patch1}, {patch2}, ..."
-    :param dryrun: If True, print the commands instead of executing them
-    """
-    if not os.path.isdir(dstdir):
-        raise FileNotFoundError(f"{dstdir} is not a valid directory")
-    gitdir = os.path.join(dstdir, ".git") if not gitdir else gitdir
-    if not os.path.isdir(gitdir):
-        raise FileNotFoundError(f"{gitdir} is not a valid .git directory")
-    worktree = dstdir if not worktree else worktree
-    if not os.path.isdir(worktree):
-        raise FileNotFoundError(f"{worktree} is not a valid git work tree")
-    directory = dstdir if not directory else directory
-    if not os.path.isdir(directory):
-        raise FileNotFoundError(f"{directory} is not a valid directory")
-    patches = [patches] if isinstance(patches, str) else patches
-    if len(patches) == 0:
-        return
-    for patch in patches:
-        if not os.path.isfile(patch):
-            raise FileNotFoundError(f"{patch} is not a valid patch file")
-
-    if not commit_msg:
-        patch_names: list[str] = []
-        for patch in patches:
-            _, patch_filename = os.path.split(patch)
-            patch_name, _ = os.path.splitext(patch_filename)
-            patch_names.append(patch_name)
-        commit_msg = f"Applied {', '.join(patch_names)}"
-
-    git_apply_cmd = (
-        ["git", "--git-dir", gitdir, "--work-tree", worktree]
-        + ["apply", "--unsafe-paths", "--verbose", "--whitespace", "fix"]
-        + ["--directory", directory]
-    )
-    git_apply_cmd += patches
-    commands = [git_apply_cmd]
-    if commit_after_apply:
-        commands.append(
-            ["git", "--git-dir", gitdir, "--work-tree", worktree, "add", "-A"]
-        )
-        commands.append(
-            ["git", "--git-dir", gitdir, "--work-tree", worktree]
-            + ["commit", "-m", commit_msg]
-        )
-    for cmd in commands:
-        if dryrun:
-            print(" ".join(cmd))
-        else:
-            subprocess.run(cmd, check=True)
-
-
-def fetch_upstreams(
-    oqsbuild: dict, upstream_parent_dir: str, patch_dir: str
-) -> dict[str, str]:
+def fetch_upstreams(oqsbuild: dict, upstream_parent_dir: str) -> dict[str, str]:
     """Clone upstream repositories into the specified parent directory and apply
     patches. Return a mapping from upstream key to path to the upstream repository
     """
     upstream_dirs = {}
-    for name, upstream in oqsbuild["upstreams"].items():
+    for upstream_key, upstream_meta in oqsbuild["upstreams"].items():
         # TODO: move Upstream.from_dict further up, into load_oqsbuildfile
-        upstream = Upstream.from_dict(upstream)
-        upstream_dir = upstream.clone(upstream_parent_dir, name)
-        patches: list[str] = [
-            os.path.join(patch_dir, patch) for patch in upstream.patches
-        ]
-        git_apply(upstream_dir, patches)
-        upstream_dirs[name] = upstream_dir
+        upstream_meta = Upstream.from_oqsbuildfile(upstream_key, upstream_meta)
+        upstream_meta.clone(upstream_parent_dir, upstream_key)
+        upstream_meta.git_apply()
+        upstream_dirs[upstream_key] = upstream_meta.dir
     print(f"SUCCESS: fetched {len(upstream_dirs)} upstream repositories")
     return upstream_dirs
 
