@@ -35,14 +35,13 @@ OQS_KEM *OQS_KEM_hqc_192_new(void) {
 }
 
 extern int PQCLEAN_HQC192_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_HQC192_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int PQCLEAN_HQC192_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCLEAN_HQC192_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 extern int PQCLEAN_HQC192_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
-	(void)public_key;
-	(void)secret_key;
-	(void)seed;
-	return OQS_ERROR;
+	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_keypair_derand(public_key, secret_key, seed);
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -50,11 +49,7 @@ OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key, uint8_t *secret_
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
-	(void)ciphertext;
-	(void)shared_secret;
-	(void)public_key;
-	(void)seed;
-	return OQS_ERROR;
+	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_enc_derand(ciphertext, shared_secret, public_key, seed);
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {

@@ -64,6 +64,65 @@ void PQCLEAN_HQC128_CLEAN_hqc_pke_keygen(uint8_t *pk, uint8_t *sk) {
 
 
 /**
+ * @brief Derandomized keygen of the HQC_PKE IND_CPA scheme
+ *
+ * The public key is composed of the syndrome <b>s</b> as well as the <b>seed</b> used to generate the vector <b>h</b>.
+ *
+ * The secret key is composed of the <b>seed</b> used to generate vectors <b>x</b> and  <b>y</b>.
+ * As a technicality, the public key is appended to the secret key in order to respect NIST API.
+ *
+ * The seed is a string of bytes of length, DERAND_SEED_BYTES, from which the public and secret keys will be derived.
+ *
+ * @param[out] pk String containing the public key
+ * @param[out] sk String containing the secret key
+ * @param[in]  seed String containing the seed entropy, length must be DERAND_SEED_BYTES or longer
+ */
+ void PQCLEAN_HQC128_CLEAN_hqc_pke_keygen_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
+    seedexpander_state seed_seedexpander;
+    seedexpander_state sk_seedexpander;
+    seedexpander_state pk_seedexpander;
+    uint8_t sk_seed[SEED_BYTES] = {0};
+    uint8_t sigma[VEC_K_SIZE_BYTES] = {0};
+    uint8_t pk_seed[SEED_BYTES] = {0};
+    uint64_t x[VEC_N_SIZE_64] = {0};
+    uint64_t y[VEC_N_SIZE_64] = {0};
+    uint64_t h[VEC_N_SIZE_64] = {0};
+    uint64_t s[VEC_N_SIZE_64] = {0};
+
+    // Create seed_expander from seed
+    PQCLEAN_HQC128_CLEAN_seedexpander_init(&seed_seedexpander, seed, DERAND_SEED_BYTES);
+
+    // Create seed_expanders for public key and secret key
+    PQCLEAN_HQC128_CLEAN_seedexpander(&seed_seedexpander, sk_seed, SEED_BYTES);
+    PQCLEAN_HQC128_CLEAN_seedexpander_init(&sk_seedexpander, sk_seed, SEED_BYTES);
+
+    PQCLEAN_HQC128_CLEAN_seedexpander(&seed_seedexpander, pk_seed, SEED_BYTES);
+    PQCLEAN_HQC128_CLEAN_seedexpander_init(&pk_seedexpander, pk_seed, SEED_BYTES);
+
+    // Derive sigma from seed for deterministic key generation
+    PQCLEAN_HQC128_CLEAN_seedexpander(&seed_seedexpander, sigma, VEC_K_SIZE_BYTES);
+
+    // Compute secret key
+    PQCLEAN_HQC128_CLEAN_vect_set_random_fixed_weight(&sk_seedexpander, x, PARAM_OMEGA);
+    PQCLEAN_HQC128_CLEAN_vect_set_random_fixed_weight(&sk_seedexpander, y, PARAM_OMEGA);
+
+    // Compute public key
+    PQCLEAN_HQC128_CLEAN_vect_set_random(&pk_seedexpander, h);
+    PQCLEAN_HQC128_CLEAN_vect_mul(s, y, h);
+    PQCLEAN_HQC128_CLEAN_vect_add(s, x, s, VEC_N_SIZE_64);
+
+    // Parse keys to string
+    PQCLEAN_HQC128_CLEAN_hqc_public_key_to_string(pk, pk_seed, s);
+    PQCLEAN_HQC128_CLEAN_hqc_secret_key_to_string(sk, sk_seed, sigma, pk);
+
+    PQCLEAN_HQC128_CLEAN_seedexpander_release(&seed_seedexpander);
+    PQCLEAN_HQC128_CLEAN_seedexpander_release(&pk_seedexpander);
+    PQCLEAN_HQC128_CLEAN_seedexpander_release(&sk_seedexpander);
+}
+
+
+
+/**
  * @brief Encryption of the HQC_PKE IND_CPA scheme
  *
  * The cihertext is composed of vectors <b>u</b> and <b>v</b>.

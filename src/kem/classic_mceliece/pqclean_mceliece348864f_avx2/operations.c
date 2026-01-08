@@ -35,6 +35,27 @@ int crypto_kem_enc(
     return 0;
 }
 
+int crypto_kem_enc_derand(
+    unsigned char *c,
+    unsigned char *key,
+    const unsigned char *pk,
+    const unsigned char *seed
+) {
+    unsigned char e[ SYS_N / 8 ];
+    unsigned char one_ec[ 1 + SYS_N / 8 + SYND_BYTES ] = {1};
+
+    //
+
+    encrypt_derand(c, pk, e, seed);
+
+    memcpy(one_ec + 1, e, SYS_N / 8);
+    memcpy(one_ec + 1 + SYS_N / 8, c, SYND_BYTES);
+
+    crypto_hash_32b(key, one_ec, sizeof(one_ec));
+
+    return 0;
+}
+
 int crypto_kem_dec(
     unsigned char *key,
     const unsigned char *c,
@@ -90,6 +111,79 @@ int crypto_kem_keypair
     int16_t pi[ 1 << GFBITS ]; // random permutation
 
     randombytes(seed + 1, 32);
+
+    while (1) {
+        rp = &r[ sizeof(r) - 32 ];
+        skp = sk;
+
+        // expanding and updating the seed
+
+        shake(r, sizeof(r), seed, 33);
+        memcpy(skp, seed + 1, 32);
+        skp += 32 + 8;
+        memcpy(seed + 1, &r[ sizeof(r) - 32 ], 32);
+
+        // generating irreducible polynomial
+
+        rp -= sizeof(f);
+
+        for (i = 0; i < SYS_T; i++) {
+            f[i] = load_gf(rp + i * 2);
+        }
+
+        if (genpoly_gen(irr, f)) {
+            continue;
+        }
+
+        for (i = 0; i < SYS_T; i++) {
+            store_gf(skp + i * 2, irr[i]);
+        }
+
+        skp += IRR_BYTES;
+
+        // generating permutation
+
+        rp -= sizeof(perm);
+
+        for (i = 0; i < (1 << GFBITS); i++) {
+            perm[i] = load4(rp + i * 4);
+        }
+
+        if (pk_gen(pk, skp - IRR_BYTES, perm, pi, &pivots)) {
+            continue;
+        }
+
+        controlbitsfrompermutation(skp, pi, GFBITS, 1 << GFBITS);
+        skp += COND_BYTES;
+
+        // storing the random string s
+
+        rp -= SYS_N / 8;
+        memcpy(skp, rp, SYS_N / 8);
+
+        // storing positions of the 32 pivots
+
+        store8(sk + 32, pivots);
+
+        break;
+    }
+
+    return 0;
+}
+
+int crypto_kem_keypair_derand(unsigned char *pk, unsigned char *sk, unsigned char *input_seed) {
+    int i;
+    unsigned char seed[ 33 ] = {64};
+    unsigned char r[ SYS_N / 8 + (1 << GFBITS)*sizeof(uint32_t) + SYS_T * 2 + 32 ];
+    unsigned char *rp, *skp;
+    uint64_t pivots;
+
+    gf f[ SYS_T ]; // element in GF(2^mt)
+    gf irr[ SYS_T ]; // Goppa polynomial
+    uint32_t perm[ 1 << GFBITS ]; // random permutation as 32-bit integers
+    int16_t pi[ 1 << GFBITS ]; // random permutation
+
+    shake(seed + 1, 32, input_seed, SEED_BYTES);
 
     while (1) {
         rp = &r[ sizeof(r) - 32 ];

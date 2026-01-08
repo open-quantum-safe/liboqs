@@ -2,7 +2,9 @@
 #define PQCLEAN_MCELIECE6688128F_CLEAN_CRYPTO_KEM_H
 
 #define crypto_kem_keypair CRYPTO_NAMESPACE(crypto_kem_keypair)
+#define crypto_kem_keypair_derand CRYPTO_NAMESPACE(crypto_kem_keypair_derand)
 #define crypto_kem_enc CRYPTO_NAMESPACE(crypto_kem_enc)
+#define crypto_kem_enc_derand CRYPTO_NAMESPACE(crypto_kem_enc_derand)
 #define crypto_kem_dec CRYPTO_NAMESPACE(crypto_kem_dec)
 
 #endif

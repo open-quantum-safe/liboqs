@@ -34,7 +34,23 @@ int PQCLEAN_HQC256_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
     return 0;
 }
 
-
+/**
+ * @brief Derandomized keygen of the HQC_KEM IND_CAA2 scheme
+ *
+ * The public key is composed of the syndrome <b>s</b> as well as the seed used to generate the vector <b>h</b>.
+ *
+ * The secret key is composed of the seed used to generate vectors <b>x</b> and <b>y</b>.
+ * As a technicality, the public key is appended to the secret key in order to respect NIST API.
+ *
+ * @param[out] pk String containing the public key
+ * @param[out] sk String containing the secret key
+ * @param[in] seed String containing the seed from which to generating the public and secret keys
+ * @returns 0 if keygen is successful
+ */
+int PQCLEAN_HQC256_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
+    PQCLEAN_HQC256_CLEAN_hqc_pke_keygen_derand(pk, sk, seed);
+    return 0;
+}
 
 /**
  * @brief Encapsulation of the HQC_KEM IND_CAA2 scheme
@@ -76,6 +92,57 @@ int PQCLEAN_HQC256_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t 
     PQCLEAN_HQC256_CLEAN_hqc_ciphertext_to_string(ct, u, v, salt);
 
 
+    return 0;
+}
+
+
+
+/**
+ * @brief Derandomized encapsulation of the HQC_KEM IND_CAA2 scheme
+ *
+ * @param[out] ct String containing the ciphertext
+ * @param[out] ss String containing the shared secret
+ * @param[in] pk String containing the public key
+ * @param[in] seed String containing entropy, length must be DERAND_SEED_BYTES or longer
+ * @returns 0 if encapsulation is successful
+ */
+ int PQCLEAN_HQC256_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed) {
+    seedexpander_state seed_seedexpander;
+
+    uint8_t theta[SHAKE256_512_BYTES] = {0};
+    uint64_t u[VEC_N_SIZE_64] = {0};
+    uint64_t v[VEC_N1N2_SIZE_64] = {0};
+    uint8_t mc[VEC_K_SIZE_BYTES + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES] = {0};
+    uint8_t tmp[VEC_K_SIZE_BYTES + PUBLIC_KEY_BYTES + SALT_SIZE_BYTES] = {0};
+    uint8_t *m = tmp;
+    uint8_t *salt = tmp + VEC_K_SIZE_BYTES + PUBLIC_KEY_BYTES;
+    shake256incctx shake256state;
+
+    // Create seed_expander from seed
+    PQCLEAN_HQC256_CLEAN_seedexpander_init(&seed_seedexpander, seed, DERAND_SEED_BYTES);
+
+    // Computing m
+    PQCLEAN_HQC256_CLEAN_seedexpander(&seed_seedexpander, m, VEC_K_SIZE_BYTES);
+
+    // Computing theta
+    PQCLEAN_HQC256_CLEAN_seedexpander(&seed_seedexpander, salt, SALT_SIZE_BYTES);
+
+    memcpy(tmp + VEC_K_SIZE_BYTES, pk, PUBLIC_KEY_BYTES);
+    PQCLEAN_HQC256_CLEAN_shake256_512_ds(&shake256state, theta, tmp, VEC_K_SIZE_BYTES + PUBLIC_KEY_BYTES + SALT_SIZE_BYTES, G_FCT_DOMAIN);
+
+    // Encrypting m
+    PQCLEAN_HQC256_CLEAN_hqc_pke_encrypt(u, v, m, theta, pk);
+
+    // Computing shared secret
+    memcpy(mc, m, VEC_K_SIZE_BYTES);
+    PQCLEAN_HQC256_CLEAN_store8_arr(mc + VEC_K_SIZE_BYTES, VEC_N_SIZE_BYTES, u, VEC_N_SIZE_64);
+    PQCLEAN_HQC256_CLEAN_store8_arr(mc + VEC_K_SIZE_BYTES + VEC_N_SIZE_BYTES, VEC_N1N2_SIZE_BYTES, v, VEC_N1N2_SIZE_64);
+    PQCLEAN_HQC256_CLEAN_shake256_512_ds(&shake256state, ss, mc, VEC_K_SIZE_BYTES + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, K_FCT_DOMAIN);
+
+    // Computing ciphertext
+    PQCLEAN_HQC256_CLEAN_hqc_ciphertext_to_string(ct, u, v, salt);
+
+    PQCLEAN_HQC256_CLEAN_seedexpander_release(&seed_seedexpander);
     return 0;
 }
 

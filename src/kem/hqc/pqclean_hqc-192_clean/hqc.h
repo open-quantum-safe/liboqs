@@ -11,6 +11,8 @@
 
 void PQCLEAN_HQC192_CLEAN_hqc_pke_keygen(uint8_t *pk, uint8_t *sk);
 
+void PQCLEAN_HQC192_CLEAN_hqc_pke_keygen_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+
 void PQCLEAN_HQC192_CLEAN_hqc_pke_encrypt(uint64_t *u, uint64_t *v, uint8_t *m, unsigned char *theta, const unsigned char *pk);
 
 uint8_t PQCLEAN_HQC192_CLEAN_hqc_pke_decrypt(uint8_t *m, uint8_t *sigma, const uint64_t *u, const uint64_t *v, const unsigned char *sk);

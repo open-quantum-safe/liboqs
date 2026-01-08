@@ -10,6 +10,7 @@
 #include "randombytes.h"
 
 #include "crypto_declassify.h"
+#include "crypto_hash.h"
 #include "crypto_uint16.h"
 #include "crypto_uint32.h"
 #include <stdint.h>
@@ -28,6 +29,85 @@ static inline crypto_uint32 uint32_is_equal_declassify(uint32_t t, uint32_t u) {
     crypto_declassify(&mask, sizeof mask);
     return mask;
 }
+/* output: e, an error vector of weight t */
+static void gen_e_derand(unsigned char *e, const unsigned char *input_seed) {
+    int i, j, eq, count;
+    
+    // Maintain seed state (33 bytes: first byte = 64, rest = seed)
+    unsigned char seed[33] = {64};
+    unsigned char r[SYS_T * 2 * sizeof(uint16_t) + 32];  // Buffer + 32 bytes for seed update
+
+    union {
+        uint16_t nums[ SYS_T * 2 ];
+        unsigned char bytes[ SYS_T * 2 * sizeof(uint16_t) ];
+    } buf;
+
+    uint16_t ind[ SYS_T ];
+    unsigned char mask;
+    unsigned char val[ SYS_T ];
+
+    // Initialize seed from input
+    shake(seed + 1, 32, input_seed, SEED_BYTES);
+
+    while (1) {
+        // Expand buffer: we need buf.bytes + 32 extra bytes for seed update
+        shake(r, sizeof(r), seed, 33);
+        
+        // Copy the bytes we need for this iteration
+        memcpy(buf.bytes, r, sizeof(buf.bytes));
+        
+        // Update seed from last 32 bytes for next iteration (if needed)
+        memcpy(seed + 1, &r[sizeof(buf.bytes)], 32);
+
+        for (i = 0; i < SYS_T * 2; i++) {
+            buf.nums[i] = load_gf(buf.bytes + i * 2);
+        }
+
+        // moving and counting indices in the correct range
+
+        count = 0;
+        for (i = 0; i < SYS_T * 2 && count < SYS_T; i++) {
+            if (uint16_is_smaller_declassify(buf.nums[i], SYS_N)) {
+                ind[ count++ ] = buf.nums[i];
+            }
+        }
+
+        if (count < SYS_T) {
+            continue;
+        }
+
+        // check for repetition
+
+        eq = 0;
+
+        for (i = 1; i < SYS_T; i++) {
+            for (j = 0; j < i; j++) {
+                if (uint32_is_equal_declassify(ind[i], ind[j])) {
+                    eq = 1;
+                }
+            }
+        }
+
+        if (eq == 0) {
+            break;
+        }
+    }
+
+    for (j = 0; j < SYS_T; j++) {
+        val[j] = 1 << (ind[j] & 7);
+    }
+
+    for (i = 0; i < SYS_N / 8; i++) {
+        e[i] = 0;
+
+        for (j = 0; j < SYS_T; j++) {
+            mask = same_mask((uint16_t)i, ind[j] >> 3);
+
+            e[i] |= val[j] & mask;
+        }
+    }
+}
+
 
 /* input: public key pk, error vector e */
 /* output: syndrome s */
@@ -113,4 +193,10 @@ void encrypt(unsigned char *s, const unsigned char *pk, unsigned char *e) {
     gen_e(e);
 
     syndrome_asm(s, pk, e);
+}
+
+void encrypt_derand(unsigned char *s, const unsigned char *pk, unsigned char *e, const unsigned char* input_seed) {
+    gen_e_derand(e, input_seed);
+
+    syndrome(s, pk, e);
 }

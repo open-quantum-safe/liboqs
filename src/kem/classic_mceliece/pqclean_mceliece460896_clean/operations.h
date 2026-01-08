@@ -23,4 +23,18 @@ int crypto_kem_keypair
     unsigned char *sk
 );
 
+int crypto_kem_keypair_derand
+(
+    unsigned char *pk,
+    unsigned char *sk,
+    unsigned char *seed
+);
+
+int crypto_kem_enc_derand(
+    unsigned char *c,
+    unsigned char *key,
+    const unsigned char *pk,
+    const unsigned char *input_seed
+);
+
 #endif

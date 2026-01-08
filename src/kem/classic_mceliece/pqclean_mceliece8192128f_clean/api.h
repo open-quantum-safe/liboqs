@@ -27,4 +27,20 @@ int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_keypair
     uint8_t *sk
 );
 
+
+int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_keypair_derand
+(
+    uint8_t *pk,
+    uint8_t *sk,
+    const uint8_t *seed
+);
+
+int PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_enc_derand
+(
+    uint8_t *c,
+    uint8_t *key,
+    const uint8_t *pk,
+    const uint8_t *seed
+);
+
 #endif

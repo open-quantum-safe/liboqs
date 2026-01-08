@@ -216,6 +216,67 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 				fprintf(stderr, "ERROR: OQS_KEM_keypair_derand failed\n");
 				goto err;
 			}
+			// Test determinism: same seed should produce same keys
+			uint8_t *public_key2 = NULL;
+			uint8_t *secret_key2 = NULL;
+			public_key2 = OQS_MEM_malloc(kem->length_public_key + 2 * sizeof(magic_t));
+			secret_key2 = OQS_MEM_malloc(kem->length_secret_key + 2 * sizeof(magic_t));
+			if (public_key2 == NULL || secret_key2 == NULL) {
+				fprintf(stderr, "ERROR: OQS_MEM_malloc failed for determinism test\n");
+				if (public_key2) {
+					OQS_MEM_insecure_free(public_key2 - sizeof(magic_t));
+				}
+				if (secret_key2) {
+					OQS_MEM_secure_free(secret_key2 - sizeof(magic_t), kem->length_secret_key + 2 * sizeof(magic_t));
+				}
+				goto err;
+			}
+			public_key2 += sizeof(magic_t);
+			secret_key2 += sizeof(magic_t);
+			memcpy(public_key2 - sizeof(magic_t), magic.val, sizeof(magic_t));
+			memcpy(secret_key2 - sizeof(magic_t), magic.val, sizeof(magic_t));
+			memcpy(public_key2 + kem->length_public_key, magic.val, sizeof(magic_t));
+			memcpy(secret_key2 + kem->length_secret_key, magic.val, sizeof(magic_t));
+
+			rc = OQS_KEM_keypair_derand(kem, public_key2, secret_key2, keypair_seed);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			if (rc != OQS_SUCCESS) {
+				fprintf(stderr, "ERROR: OQS_KEM_keypair_derand failed on second call (determinism test)\n");
+				OQS_MEM_insecure_free(public_key2 - sizeof(magic_t));
+				OQS_MEM_secure_free(secret_key2 - sizeof(magic_t), kem->length_secret_key + 2 * sizeof(magic_t));
+				goto err;
+			}
+
+			OQS_TEST_CT_DECLASSIFY(public_key2, kem->length_public_key);
+			OQS_TEST_CT_DECLASSIFY(secret_key2, kem->length_secret_key);
+			rv = memcmp(public_key, public_key2, kem->length_public_key);
+			rv |= memcmp(secret_key, secret_key2, kem->length_secret_key);
+			if (rv != 0) {
+				fprintf(stderr, "ERROR: keypair_derand is not deterministic - same seed produced different keys\n");
+				OQS_print_hex_string("public_key (first)", public_key, kem->length_public_key);
+				OQS_print_hex_string("public_key (second)", public_key2, kem->length_public_key);
+				OQS_MEM_insecure_free(public_key2 - sizeof(magic_t));
+				OQS_MEM_secure_free(secret_key2 - sizeof(magic_t), kem->length_secret_key + 2 * sizeof(magic_t));
+				goto err;
+			} else {
+				printf("keypair_derand determinism test passed\n");
+			}
+
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME
+			// Verify magic numbers weren't overwritten
+			rv = memcmp(public_key2 + kem->length_public_key, magic.val, sizeof(magic_t));
+			rv |= memcmp(secret_key2 + kem->length_secret_key, magic.val, sizeof(magic_t));
+			rv |= memcmp(public_key2 - sizeof(magic_t), magic.val, sizeof(magic_t));
+			rv |= memcmp(secret_key2 - sizeof(magic_t), magic.val, sizeof(magic_t));
+			if (rv != 0) {
+				fprintf(stderr, "ERROR: Magic numbers do not match in determinism test\n");
+				OQS_MEM_insecure_free(public_key2 - sizeof(magic_t));
+				OQS_MEM_secure_free(secret_key2 - sizeof(magic_t), kem->length_secret_key + 2 * sizeof(magic_t));
+				goto err;
+			}
+#endif
+			OQS_MEM_insecure_free(public_key2 - sizeof(magic_t));
+			OQS_MEM_secure_free(secret_key2 - sizeof(magic_t), kem->length_secret_key + 2 * sizeof(magic_t));
 		}
 	} else {
 		rc = OQS_KEM_keypair(kem, public_key, secret_key);
