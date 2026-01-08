@@ -3,7 +3,7 @@ import sys
 from tempfile import TemporaryDirectory
 
 import oqsbuilder
-from oqsbuilder import LIBOQS_DIR
+from oqsbuilder import LIBOQS_DIR, LIBOQS_PATCH_DIR
 from oqsbuilder.oqsbuilder import (
     CryptoPrimitive,
     copy_copies,
@@ -25,7 +25,6 @@ def print_version():
 
 def copy_from_upstream(
     oqsbuildfile: str,
-    patch_dir: str,
     templates_dir: str,
     upstream_parent_dir: str = LIBOQS_DIR,
 ):
@@ -38,7 +37,6 @@ def copy_from_upstream(
     all of TemporaryDirectory's automatic cleanup still works.
 
     :param oqsbuildfile: path to copy_from_upstream.yml
-    :param patch_dir: path to a directory hosting the patch files for upstream
     :param upstream_parent_dir: upstream repositories will be cloned into
         a temporary subdirectory under this directory
     :param templates_dir: path to a directory containing the Jinja2 templates
@@ -46,7 +44,6 @@ def copy_from_upstream(
     :param headless: True if running in a non-interactive environment
     """
     assert os.path.isfile(oqsbuildfile), f"{oqsbuildfile} is not a valid file"
-    assert os.path.isdir(patch_dir), f"{patch_dir} is not a valid directory"
     assert os.path.isdir(templates_dir), f"{templates_dir} is not a valid directory"
     assert os.path.isdir(
         upstream_parent_dir
@@ -54,7 +51,7 @@ def copy_from_upstream(
 
     oqsbuild = load_oqsbuildfile(oqsbuildfile)
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
-        upstream_dirs = fetch_upstreams(oqsbuild, tempdir, patch_dir)
+        upstream_dirs = fetch_upstreams(oqsbuild, tempdir)
 
         kems = oqsbuild[CryptoPrimitive.KEM.get_oqsbuildfile_key()]
         kems_dir = os.path.join(
@@ -74,6 +71,5 @@ def copy_from_upstream(
 if __name__ == "__main__":
     print_version()
     buildfile = os.path.join(LIBOQS_DIR, "oqsbuilder", "oqsbuildfile.yml")
-    patch_dir = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
     templates_dir = os.path.join(LIBOQS_DIR, "oqsbuilder", "templates")
-    copy_from_upstream(buildfile, patch_dir, templates_dir)
+    copy_from_upstream(buildfile, templates_dir)
