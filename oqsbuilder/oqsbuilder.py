@@ -2,11 +2,18 @@ import enum
 import os
 import shutil
 import subprocess
+import typing
 
 import yaml
 
 from oqsbuilder import LIBOQS_DIR, LIBOQS_PATCH_DIR
 from oqsbuilder.utils import currentframe_funcname, load_jinja_template
+
+# NOTE: typing.NewType is strict typing, so LocalCopiesKey is not ImplKey even though
+#   they are both str.
+LiteralCopiesMap = typing.NewType("LiteralCopiesMap", dict[str, str])
+LocalCopiesKey = typing.NewType("LocalCopiesKey", str)
+ImplKey = typing.NewType("ImplKey", str)
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
 
@@ -179,7 +186,7 @@ class Implementation:
         key: str,
         upstream_key: str,
         param_key: str,
-        copies: dict[str, str],
+        copies: LiteralCopiesMap,
         enable_by: str,
         arch_key: Architecture,
         runtime_cpu_features: list[RuntimeCpuFeature],
@@ -231,6 +238,7 @@ class KemFamily:
     shared mathematical foundation. For example, ML-KEM is a family of KEM algorithms
     based on module-lattice constructions.
     """
+
     def __init__(
         self,
         key: str,
@@ -239,7 +247,7 @@ class KemFamily:
         derandomized_keygen: bool = False,
         derandomized_encaps: bool = False,
         params: dict[str, ParameterSet] | None = None,
-        impls: dict[str, ParameterSet] | None = None,
+        impls: dict[str, Implementation] | None = None,
     ):
         self.key = key
         """unique identifier of the family, such as \"ml_kem\""""
@@ -280,7 +288,7 @@ class KemFamily:
         to an implementation"""
 
     @staticmethod
-    def from_dict(data: dict):
+    def from_dict(data: dict) -> "KemFamily":
         raise NotImplementedError()
 
 
@@ -380,14 +388,12 @@ class Upstream:
         return dstdir
 
 
-class OQSBuild:
-    """Integration information"""
+class OQSBuilder:
     def __init__(
         self,
         upstreams: dict[str, Upstream],
         kems: dict[str, KemFamily],
         patch_dir: str | os.PathLike,
-
     ):
         # TODO: validate input?
         self.upstreams = upstreams
@@ -395,17 +401,50 @@ class OQSBuild:
         self.patch_dir = patch_dir
 
     @staticmethod
+    def to_literal_copies(
+        buildfile_copies: str | LiteralCopiesMap,
+        reusable_local_copies: dict[str, LiteralCopiesMap],
+    ) -> LiteralCopiesMap:
+        """Given the value under the "copies" field in some implementation, return
+        the true copy mapping (dst -> src)
+
+        :param buildfile_copies: the value of the "copies" field in some implementation,
+        could be one of "literal mapping", "reusable local key", or "remote URL"
+        """
+        if isinstance(buildfile_copies, dict):
+            return buildfile_copies
+        # TODO: for now all liboqs integration meta file ends with "META.yml`,
+        #   in the future we need more robust logic?
+        if buildfile_copies.endswith("META.yml"):
+            # FIX: not implemented
+            raise NotImplementedError(
+                "Fetching copy map from META.yml is not supported yet"
+            )
+        if buildfile_copies not in reusable_local_copies:
+            raise KeyError(
+                f"{buildfile_copies} is not a valid reusable local copy key"
+            )
+        return reusable_local_copies[buildfile_copies]
+
+    @staticmethod
     def load_oqsbuildfile(path: str | os.PathLike):
-        """Parse from an oqsbuildfile"""
         with open(path, mode="r", encoding="utf-8") as f:
             oqsbuild = yaml.safe_load(f)
 
-        upstreams = {key: Upstream.from_dict(meta) for key, meta in oqsbuild["upstreams"].items()}
-        kems = {key: KemFamily.from_dict(meta) for key, meta in oqsbuild["kems"].items()}
-        # FIX: need to do some processing such as instantiating "copies"
+        for _, family_meta in oqsbuild["kems"]["families"].items():
+            for _, impl_meta in family_meta["impls"].items():
+                impl_meta["copies"] = OQSBuilder.to_literal_copies(
+                    impl_meta["copies"], oqsbuild["copies"]
+                )
 
-        return OQSBuild(upstreams, kems, LIBOQS_PATCH_DIR)
-    
+        upstreams = {
+            key: Upstream.from_dict(meta) for key, meta in oqsbuild["upstreams"].items()
+        }
+        kems = {
+            key: KemFamily.from_dict(meta) for key, meta in oqsbuild["kems"].items()
+        }
+
+        return OQSBuilder(upstreams, kems, LIBOQS_PATCH_DIR)
 
 
 def load_runtime_cpu_features(features: list[str]) -> list[str]:
