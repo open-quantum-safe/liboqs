@@ -86,6 +86,12 @@
 #cmakedefine OQS_ENABLE_KEM_frodokem_976_shake 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_aes 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_shake 1
+#cmakedefine OQS_ENABLE_KEM_efrodokem_640_aes 1
+#cmakedefine OQS_ENABLE_KEM_efrodokem_640_shake 1
+#cmakedefine OQS_ENABLE_KEM_efrodokem_976_aes 1
+#cmakedefine OQS_ENABLE_KEM_efrodokem_976_shake 1
+#cmakedefine OQS_ENABLE_KEM_efrodokem_1344_aes 1
+#cmakedefine OQS_ENABLE_KEM_efrodokem_1344_shake 1
 
 #cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
 #cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
