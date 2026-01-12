@@ -76,6 +76,8 @@ class ParameterSet:
         privkeylen: int,
         ctlen: int,
         sslen: int,
+        keypair_seedlen: int,
+        encap_seedlen: int,
         enable_by: str,
         default_impl: str,
         nist_level: NistLevel,
@@ -98,6 +100,12 @@ class ParameterSet:
 
         self.sslen = sslen
         """Length of shared secret in bytes"""
+
+        self.keypair_seedlen = keypair_seedlen
+        """Length of seed for deterministic key generation"""
+
+        self.encap_seedlen = encap_seedlen
+        """Length of seed for deterministic encapsulation"""
 
         self.enable_by = enable_by
         """A C pre-processing macro that enables this parameter set.
@@ -125,6 +133,23 @@ class ParameterSet:
         self.ind_cca = ind_cca
         """True iff this parameter set achieves IND-CCA security"""
 
+    @staticmethod
+    def from_oqsbuildfile(key: str, param_meta: dict):
+        return ParameterSet(
+            key,
+            param_meta["name"],
+            param_meta["pklen"],
+            param_meta["sklen"],
+            param_meta["ctlen"],
+            param_meta["sslen"],
+            param_meta.get("keypair_seedlen", 0),
+            param_meta.get("encap_seedlen", 0),
+            param_meta["enable_by"],
+            param_meta["default_impl"],
+            param_meta["nist_level"],
+            param_meta["ind_cca"],
+        )
+
 
 class Architecture(enum.Enum):
     PORTABLE = 1
@@ -142,6 +167,21 @@ class Architecture(enum.Enum):
             case _:
                 return None
 
+    @staticmethod
+    def from_oqsbuildfile(arch_key: str):
+        match arch_key:
+            case "portable":
+                return Architecture.PORTABLE
+            case "x86_64":
+                return Architecture.X86_64
+            case "aarch64":
+                return Architecture.AARCH64
+            case "cuda":
+                return Architecture.CUDA
+            case "icicle_cuda":
+                return Architecture.ICICLE_CUDA
+        raise KeyError(f"Invalid architecture {arch_key}")
+
 
 class RuntimeCpuFeature(enum.Enum):
     AVX2 = enum.auto()
@@ -149,13 +189,80 @@ class RuntimeCpuFeature(enum.Enum):
     POPCNT = enum.auto()
     ASIMD = enum.auto()
 
+    @staticmethod
+    def from_oqsbuildfile(feature: str):
+        match feature:
+            case "avx2":
+                return RuntimeCpuFeature.AVX2
+            case "bmi2":
+                return RuntimeCpuFeature.BMI2
+            case "popcnt":
+                return RuntimeCpuFeature.POPCNT
+            case "asimd":
+                return RuntimeCpuFeature.ASIMD
+        raise KeyError(f"Invalid CPU feature {feature}")
+
+
+class CmakeScope(enum.Enum):
+    PUBLIC = enum.auto()
+    PRIVATE = enum.auto()
+    INTERFACE = enum.auto()
+
+    def to_cmake_scope(self):
+        match self:
+            case CmakeScope.PUBLIC:
+                return "PUBLIC"
+            case CmakeScope.PRIVATE:
+                return "PRIVATE"
+            case CmakeScope.INTERFACE:
+                return "INTERFACE"
+
+    @staticmethod
+    def from_oqsbuildfile(key: str):
+        match key:
+            case "public":
+                return CmakeScope.PUBLIC
+            case "private":
+                return CmakeScope.PRIVATE
+            case "interface":
+                return CmakeScope.INTERFACE
+        return KeyError(f"invalid cmake scope {key}")
+
 
 class CmakeInclude:
-    pass
+    def __init__(self, scope: CmakeScope, value: str):
+        self.scope = scope
+        self.value = value
+        """Currently we only support string literals, no templating. Whatever is
+        written in the oqsbuildfile will be directly copied into the CMake list
+        file. Using CMake variables is recommended"""
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self.scope.to_cmake_scope()} {self.value}>"
 
 
 class CmakeCompileOpt:
-    pass
+    def __init__(self, scope: CmakeScope, value: str):
+        self.scope = scope
+        self.value = value
+        """Currently we only support string literals, no templating. Whatever is
+        written in the oqsbuildfile will be directly copied into the CMake list
+        file. Using CMake variables is recommended"""
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self.scope.to_cmake_scope()} {self.value}>"
+
+
+class CmakeLinkLib:
+    def __init__(self, scope: CmakeScope, value: str):
+        self.scope = scope
+        self.value = value
+        """Currently we only support string literals, no templating. Whatever is
+        written in the oqsbuildfile will be directly copied into the CMake list
+        file. Using CMake variables is recommended"""
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self.scope.to_cmake_scope()} {self.value}>"
 
 
 class KemApi:
@@ -187,11 +294,12 @@ class Implementation:
         upstream_key: str,
         param_key: str,
         copies: LiteralCopiesMap,
-        enable_by: str,
-        arch_key: Architecture,
+        enable_by: str | None,
+        arch: Architecture,
         runtime_cpu_features: list[RuntimeCpuFeature],
         includes: list[CmakeInclude],
         compile_opts: list[CmakeCompileOpt],
+        link_libs: list[CmakeLinkLib],
         api_names: KemApi,
     ):
         self.key = key
@@ -220,16 +328,76 @@ class Implementation:
 
         self.enable_by = enable_by
         """C pre-processing macro that controls whether this implementation is
-        enabled
-        """
+        enabled"""
 
-        self.arch_key = arch_key
+        self.arch = arch
         """The hardware architecture or micro-architecture of this implementation"""
 
         self.runtime_cpu_features = runtime_cpu_features
         self.includes = includes
         self.compile_opts = compile_opts
+        self.link_libs = link_libs
+        # print("includes: ", self.includes)
+        # print("compile_opts: ", self.compile_opts)
+        # print("link_libs: ", self.link_libs)
         self.api_names = api_names
+
+    @staticmethod
+    def from_oqsbuildfile(key: str, impl_meta: dict):
+        runtime_cpu_features = [
+            RuntimeCpuFeature.from_oqsbuildfile(feat)
+            for feat in impl_meta.get("runtime_cpu_features", [])
+        ]
+        includes = []
+        if oqsbuildfile_includes := impl_meta.get("includes", {}):
+            includes += [
+                CmakeInclude(CmakeScope.PRIVATE, val)
+                for val in oqsbuildfile_includes.get("private", [])
+            ]
+            includes += [
+                CmakeInclude(CmakeScope.PUBLIC, val)
+                for val in oqsbuildfile_includes.get("public", [])
+            ]
+        compile_opts = []
+        if oqsbuildfile_compile_opts := impl_meta.get("compile_opts", {}):
+            compile_opts += [
+                CmakeCompileOpt(CmakeScope.PRIVATE, val)
+                for val in oqsbuildfile_compile_opts.get("private", [])
+            ]
+            compile_opts += [
+                CmakeCompileOpt(CmakeScope.PUBLIC, val)
+                for val in oqsbuildfile_compile_opts.get("public", [])
+            ]
+        link_libs = []
+        if oqsbuildfile_link_libs := impl_meta.get("link_libs", {}):
+            link_libs += [
+                CmakeLinkLib(CmakeScope.PRIVATE, val)
+                for val in oqsbuildfile_link_libs.get("private", [])
+            ]
+            link_libs += [
+                CmakeLinkLib(CmakeScope.PUBLIC, val)
+                for val in oqsbuildfile_link_libs.get("public", [])
+            ]
+        api_names = KemApi(
+            impl_meta["keypair"],
+            impl_meta["enc"],
+            impl_meta["dec"],
+            impl_meta.get("keypair_derand", None),
+            impl_meta.get("enc_derand", None),
+        )
+        return Implementation(
+            key,
+            impl_meta["upstream"],
+            impl_meta["param"],
+            impl_meta["copies"],
+            impl_meta.get("enable_by", None),
+            Architecture.from_oqsbuildfile(impl_meta["arch"]),
+            runtime_cpu_features,
+            includes,
+            compile_opts,
+            link_libs,
+            api_names,
+        )
 
 
 # TODO: consider making KemFamily inherit from "AlgorithmFamily"
@@ -288,8 +456,24 @@ class KemFamily:
         to an implementation"""
 
     @staticmethod
-    def from_dict(data: dict) -> "KemFamily":
-        raise NotImplementedError()
+    def from_oqsbuildfile(key: str, kem_meta: dict):
+        version = kem_meta["version"]
+        header = kem_meta.get(
+            "header", f"{CryptoPrimitive.KEM.get_subdirectory_name()}_{key}.h"
+        )
+        derand_keygen = kem_meta.get("derandomized_keypair", False)
+        derand_encaps = kem_meta.get("derandomized_encaps", False)
+        params = {
+            param_key: ParameterSet.from_oqsbuildfile(param_key, param_meta)
+            for param_key, param_meta in kem_meta["params"].items()
+        }
+        impls = {
+            impl_key: Implementation.from_oqsbuildfile(impl_key, impl_meta)
+            for impl_key, impl_meta in kem_meta["impls"].items()
+        }
+        return KemFamily(
+            key, version, header, derand_keygen, derand_encaps, params, impls
+        )
 
 
 class Upstream:
@@ -509,7 +693,8 @@ class OQSBuilder:
             for key, meta in oqsbuild["upstreams"].items()
         }
         kems = {
-            key: KemFamily.from_dict(meta) for key, meta in oqsbuild["kems"].items()
+            key: KemFamily.from_oqsbuildfile(key, meta)
+            for key, meta in oqsbuild["kems"]["families"].items()
         }
 
         return OQSBuilder(upstreams, kems, LIBOQS_PATCH_DIR)
