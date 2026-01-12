@@ -2,10 +2,10 @@ import os
 import sys
 from tempfile import TemporaryDirectory
 
-import oqsbuilder
-from oqsbuilder import LIBOQS_DIR, LIBOQS_PATCH_DIR
+from oqsbuilder import LIBOQS_DIR, __version__ as oqsbuilderversion
 from oqsbuilder.oqsbuilder import (
     CryptoPrimitive,
+    OQSBuilder,
     copy_copies,
     generate_kem_cmake,
     load_oqsbuildfile,
@@ -17,7 +17,7 @@ from oqsbuilder.oqsbuilder import (
 
 def print_version():
     """Print version and system info"""
-    print(f"OQS Builder v{oqsbuilder.__version__}")
+    print(f"OQS Builder v{oqsbuilderversion}")
     print("PYTHONPATH:")
     for path in sys.path:
         print(f"-   {path}")
@@ -72,4 +72,7 @@ if __name__ == "__main__":
     print_version()
     buildfile = os.path.join(LIBOQS_DIR, "oqsbuilder", "oqsbuildfile.yml")
     templates_dir = os.path.join(LIBOQS_DIR, "oqsbuilder", "templates")
+    oqsbuilder = OQSBuilder.load_oqsbuildfile(buildfile)
+    if 1:
+        exit(0)
     copy_from_upstream(buildfile, templates_dir)

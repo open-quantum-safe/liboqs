@@ -53,7 +53,7 @@ For example, `mlkem-native_ml-kem-768_aarch64` has the [feature flag `asimd`](ht
 
 Valid CPU features: `avx2`, `bmi2`, `popcnt`, `asimd` (will translate to `arm_neon`)
 
-### External APIdeclarations
+### External API declarations
 For KEM implementations, there are five functions to declares:
 - `keypair`: name of the function that generates the key pair
 - `keypair_derand` (optional): name of the function that generates the key pair, using randomness expanded from a user-supplied seed
@@ -84,7 +84,7 @@ if(OQS_ENABLE_KEM_ml_kem_512_cuda)
 endif()
 ```
 
-If not specified, then this implementation is always included.
+If not specified, then this implementation is not enabled/disabled by implementation-specific flags. It might still be controlled by parameter flags (such as with the default implementation of each parameter set) or by platform flags (such as CUDA/ICICLE implementations).
 
 Notes:
 - Some implementations are further hidden behind platform guards. For example, CUDA implementations also need `OQS_USE_CUPQC` in addition to the individual implementation `enable_by`

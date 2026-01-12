@@ -181,7 +181,6 @@ kems:
           upstream: mlkem-native
           param: ml_kem_1024
           copies: mlkem-native_ref
-          enable_by: OQS_ENABLE_KEM_ml_kem_1024_ref
           arch: portable
           includes:
             private:
@@ -241,7 +240,6 @@ kems:
           upstream: mlkem-native
           param: ml_kem_512
           copies: mlkem-native_ref
-          enable_by: OQS_ENABLE_KEM_ml_kem_512_ref
           arch: portable
           includes:
             private:
@@ -301,7 +299,6 @@ kems:
           upstream: mlkem-native
           param: ml_kem_768
           copies: mlkem-native_ref
-          enable_by: OQS_ENABLE_KEM_ml_kem_768_ref
           arch: portable
           includes:
             private:
