@@ -89,11 +89,11 @@ If not specified, then this implementation is not enabled/disabled by implementa
 Notes:
 - Some implementations are further hidden behind platform guards. For example, CUDA implementations also need `OQS_USE_CUPQC` in addition to the individual implementation `enable_by`
 
-### `copies`  
+### `copies`
 A description of how the content of an implementation should be assembled under the implementation sub-directory. This field can have one of three types of values:
 - *Dictionary*: maps destination path to source path. Each destination path is relative to the implementation subdirectory (i.e. relative to `liboqs/src/<kem|sig|stfl_sig>/<family_key>/<impl_key>`). Each source path is relative to the upstream repository's root directory.
 - *Key*: references a reusable set of `dst:src` mappings. For example, `mlkem-native_ml_kem_<512|768|1024>_aarch` all use the same `copies` mapping, so each of the copy field could just be as follows:
-- *Remote META.yml*: a path to a `META.yml` file containing a list of source files ([example](https://github.com/pq-code-package/mlkem-native/blob/main/integration/liboqs/ML-KEM-768_META.yml)). The path is relative to the upstream repository, so if a specific commit of the upstream repository is checked out, then we will use that commit's version of `META.yml`. The folder structure will be preserved under the implementation sub-directory. For example, if the `META.yml` file lists `integration/liboqs/fips202_glue.h`, then the source file will be copied into `<impl_dir>/integration/liboqs/fips202_glue.h`. 
+- *Remote META.yml*: a path to a `META.yml` file containing a list of source files ([example](https://github.com/pq-code-package/mlkem-native/blob/main/integration/liboqs/ML-KEM-768_META.yml)). The path is relative to the upstream repository, so if a specific commit of the upstream repository is checked out, then we will use that commit's version of `META.yml`. The folder structure will be preserved under the implementation sub-directory. For example, if the `META.yml` file lists `integration/liboqs/fips202_glue.h`, then the source file will be copied into `<impl_dir>/integration/liboqs/fips202_glue.h`.
 
 ```yaml
 ml_kem:
@@ -141,7 +141,7 @@ This field is optional.
 List of compiler options that feed into `target_compile_options`.
 
 ```yaml
-compile_opts: 
+compile_opts:
   public:
     - "-DMLK_CONFIG_PARAMETER_SET=1024"
     - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h\""
@@ -152,14 +152,14 @@ Translates to:
 
 ```cmake
 target_compile_options(
-    ml_kem_1024_x86_64 
-    PRIVATE  
+    ml_kem_1024_x86_64
+    PRIVATE
         -mavx2  -mbmi2  -mpopcnt
 )
 target_compile_options(
-    ml_kem_1024_x86_64 
-        PUBLIC 
-        -DMLK_CONFIG_PARAMETER_SET=1024 
+    ml_kem_1024_x86_64
+        PUBLIC
+        -DMLK_CONFIG_PARAMETER_SET=1024
         -DMLK_CONFIG_FILE=".../integration/liboqs/config_x86_64.h"
 )
 ```
