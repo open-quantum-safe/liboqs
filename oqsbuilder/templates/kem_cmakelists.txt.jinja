@@ -3,42 +3,34 @@
 
 set(_{{ kem_key | upper }}_OBJS "")
 
-{% for param_key, param_meta in kem_meta["params"].items() %}
-if({{ param_meta["enable_by"] }})
-    add_library({{ param_key }} OBJECT {{ param_meta["api_src"] }})
+{% for param_key, param_meta in kem_meta.params.items() %}
+if({{ param_meta.enable_by }})
+    add_library({{ param_key }} OBJECT {{ param_meta.api_src }})
     set(_{{ kem_key | upper }}_OBJS ${_{{ kem_key | upper }}_OBJS} $<TARGET_OBJECTS:{{ param_key }}>)
 endif()
 {% endfor %}
 
-{% for impl_key, impl_meta in kem_meta["impls"].items() %}
-if({{ impl_meta["enable_by"] }})
-    {%- set impl_param_meta = kem_meta["params"][impl_meta["param"]] %}
+{% for impl_key, impl_meta in kem_meta.impls.items() %}
+if({{ impl_meta.enable_by }})
+    {%- set impl_param_meta = kem_meta.params[impl_meta.param_key] %}
     set(IMPL_KEY {{ impl_key }})
-    add_library({{ impl_key }} OBJECT {{ impl_meta["cmake_src_paths"] | join(" ") }})
-    {%- for scope in ["public", "private", "interface"] %}
-        {%- set compile_opts = impl_meta.get("compile_opts", None) %}
-        {%- if compile_opts %}
-            {%- set compile_opts = compile_opts.get(scope, None) %}
-            {%- if compile_opts %}
-    target_compile_options({{ impl_key }} {{ scope | upper }} {{ compile_opts | join(" ") }})
-            {%- endif %}
-        {%- endif %}
-        {%- set includes = impl_meta.get("includes", None) %}
-        {%- if includes %}
-            {%- set includes = includes.get(scope, None) %}
-            {%- if includes %}
-    target_include_directories({{ impl_key }} {{ scope | upper }} {{ includes | join(" ") }})
-            {%- endif %}
-        {%- endif %}
-        {%- set link_libs = impl_meta.get("link_libs", None) %}
-        {%- if link_libs %}
-            {%- set link_libs = link_libs.get(scope, None) %}
-            {%- if link_libs %}
-    target_link_libraries({{ impl_key }} {{ scope | upper }} {{ link_libs | join(" ") }})
-            {%- endif %}
-        {%- endif %}
-    {%- endfor %}
-    {%- if impl_meta.get("cuda_arch", None) %}
+    {{ impl_meta.generate_cmake_add_library() }}
+    {# TODO: this feels a bit redundant, but I am okay with keeping this explicit for now #}
+    {% for arg in [
+        impl_meta.generate_cmake_includes(CmakeScope.PUBLIC),
+        impl_meta.generate_cmake_includes(CmakeScope.PRIVATE),
+        impl_meta.generate_cmake_includes(CmakeScope.INTERFACE),
+        impl_meta.generate_cmake_compile_opts(CmakeScope.PUBLIC),
+        impl_meta.generate_cmake_compile_opts(CmakeScope.PRIVATE),
+        impl_meta.generate_cmake_compile_opts(CmakeScope.INTERFACE),
+        impl_meta.generate_cmake_link_libs(CmakeScope.PUBLIC),
+        impl_meta.generate_cmake_link_libs(CmakeScope.PRIVATE),
+        impl_meta.generate_cmake_link_libs(CmakeScope.INTERFACE),
+    ] -%}
+        {% if arg %}{{ arg }}{% endif %}
+    {% endfor %}
+
+    {%- if impl_meta.cuda_arch %}
     set_property(TARGET {{ impl_key }} PROPERTY CUDA_ARCHITECTURES {{ impl_meta["cuda_arch"] }})
     {%- endif %}
     set(_{{ kem_key | upper }}_OBJS ${_{{ kem_key | upper }}_OBJS} $<TARGET_OBJECTS:{{ impl_key }}>)

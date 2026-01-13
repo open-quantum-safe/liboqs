@@ -6,7 +6,17 @@ import jinja2
 
 
 def currentframe_funcname() -> str:
-    """Print the name of the function"""
+    """Retrieves the name of the caller's function using stack inspection.
+
+    Iterates through the current call stack to find the frame object of the
+    immediate caller. It accesses the code object associated with that frame
+    to extract the function name.
+
+    This function relies on CPython implementation details (stack frames).
+    It may not behave identically in other Python implementations like PyPy.
+
+    :return: The name of the function that invoked this utility.
+    """
     stack = inspect.stack()
     if len(stack) < 2:
         raise RuntimeError("current frame is missing a caller")

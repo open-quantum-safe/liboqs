@@ -290,11 +290,11 @@ kems:
             public:
               - "-DMLK_CONFIG_PARAMETER_SET=768"
               - "-DMLK_CONFIG_FILE=\"${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h\""
-          keypair: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_keypair"
-          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_keypair_derand"
-          enc: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_enc"
-          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_enc_derand"
-          dec: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH_dec"
+          keypair: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair"
+          keypair_derand: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand"
+          enc: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc"
+          enc_derand: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand"
+          dec: "PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec"
         mlkem-native_ml-kem-768_ref:
           upstream: mlkem-native
           param: ml_kem_768

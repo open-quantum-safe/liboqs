@@ -3,16 +3,7 @@ import sys
 from tempfile import TemporaryDirectory
 
 from oqsbuilder import LIBOQS_DIR, __version__ as oqsbuilderversion
-from oqsbuilder.oqsbuilder import (
-    CryptoPrimitive,
-    OQSBuilder,
-    copy_copies,
-    generate_kem_cmake,
-    load_oqsbuildfile,
-    fetch_upstreams,
-    generate_kem_header,
-    generate_kem_sources,
-)
+from oqsbuilder.oqsbuilder import OQSBuilder
 
 
 def print_version():
@@ -49,23 +40,11 @@ def copy_from_upstream(
         upstream_parent_dir
     ), f"{upstream_parent_dir} is not a valid directory"
 
-    oqsbuild = load_oqsbuildfile(oqsbuildfile)
+    oqsbuilder = OQSBuilder.load_oqsbuildfile(oqsbuildfile)
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
-        upstream_dirs = fetch_upstreams(oqsbuild, tempdir)
+        oqsbuilder.fetch_upstreams(tempdir)
 
-        kems = oqsbuild[CryptoPrimitive.KEM.get_oqsbuildfile_key()]
-        kems_dir = os.path.join(
-            LIBOQS_DIR, "src", CryptoPrimitive.KEM.get_subdirectory_name()
-        )
-        for kem_key, kem_meta in kems["families"].items():
-            kem_dir = os.path.join(kems_dir, kem_key)
-            print(f"Integrating {kem_key} into {kem_dir}")
-            for impl_key, impl in kem_meta["impls"].items():
-                impl_dir = os.path.join(kem_dir, impl_key)
-                copy_copies(impl["copies"], upstream_dirs[impl["upstream"]], impl_dir)
-            generate_kem_cmake(kem_dir, kem_key, kem_meta, templates_dir)
-            generate_kem_header(kem_dir, kem_key, kem_meta, templates_dir)
-            generate_kem_sources(kem_dir, kem_key, kem_meta, templates_dir)
+        oqsbuilder.build_kems()
 
 
 if __name__ == "__main__":
@@ -73,6 +52,4 @@ if __name__ == "__main__":
     buildfile = os.path.join(LIBOQS_DIR, "oqsbuilder", "oqsbuildfile.yml")
     templates_dir = os.path.join(LIBOQS_DIR, "oqsbuilder", "templates")
     oqsbuilder = OQSBuilder.load_oqsbuildfile(buildfile)
-    if 1:
-        exit(0)
     copy_from_upstream(buildfile, templates_dir)

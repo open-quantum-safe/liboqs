@@ -46,6 +46,14 @@ if(OQS_ENABLE_KEM_ml_kem_1024_x86_64)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
+
+    target_include_directories(
+        mlkem-native_ml-kem-1024_x86_64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
     target_compile_options(
         mlkem-native_ml-kem-1024_x86_64
         PUBLIC
@@ -56,12 +64,7 @@ if(OQS_ENABLE_KEM_ml_kem_1024_x86_64)
         mlkem-native_ml-kem-1024_x86_64
         PRIVATE -mavx2 -mbmi2 -mpopcnt
     )
-    target_include_directories(
-        mlkem-native_ml-kem-1024_x86_64
-        PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
-            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
-    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-1024_x86_64>
@@ -94,18 +97,21 @@ if(OQS_ENABLE_KEM_ml_kem_1024_aarch64)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
-    target_compile_options(
-        mlkem-native_ml-kem-1024_aarch64
-        PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=1024
-            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h"
-    )
+
     target_include_directories(
         mlkem-native_ml-kem-1024_aarch64
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
+
+    target_compile_options(
+        mlkem-native_ml-kem-1024_aarch64
+        PUBLIC
+            -DMLK_CONFIG_PARAMETER_SET=1024
+            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h"
+    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-1024_aarch64>
@@ -126,18 +132,21 @@ if(OQS_ENABLE_KEM_ml_kem_1024)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
-    target_compile_options(
-        mlkem-native_ml-kem-1024_ref
-        PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=1024
-            -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
-    )
+
     target_include_directories(
         mlkem-native_ml-kem-1024_ref
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
+
+    target_compile_options(
+        mlkem-native_ml-kem-1024_ref
+        PUBLIC
+            -DMLK_CONFIG_PARAMETER_SET=1024
+            -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
+    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-1024_ref>
@@ -172,6 +181,14 @@ if(OQS_ENABLE_KEM_ml_kem_512_x86_64)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
+
+    target_include_directories(
+        mlkem-native_ml-kem-512_x86_64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
     target_compile_options(
         mlkem-native_ml-kem-512_x86_64
         PUBLIC
@@ -182,12 +199,7 @@ if(OQS_ENABLE_KEM_ml_kem_512_x86_64)
         mlkem-native_ml-kem-512_x86_64
         PRIVATE -mavx2 -mbmi2 -mpopcnt
     )
-    target_include_directories(
-        mlkem-native_ml-kem-512_x86_64
-        PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
-            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
-    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-512_x86_64>
@@ -220,18 +232,21 @@ if(OQS_ENABLE_KEM_ml_kem_512_aarch64)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
-    target_compile_options(
-        mlkem-native_ml-kem-512_aarch64
-        PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=512
-            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h"
-    )
+
     target_include_directories(
         mlkem-native_ml-kem-512_aarch64
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
+
+    target_compile_options(
+        mlkem-native_ml-kem-512_aarch64
+        PUBLIC
+            -DMLK_CONFIG_PARAMETER_SET=512
+            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h"
+    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-512_aarch64>
@@ -252,18 +267,21 @@ if(OQS_ENABLE_KEM_ml_kem_512)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
-    target_compile_options(
-        mlkem-native_ml-kem-512_ref
-        PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=512
-            -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
-    )
+
     target_include_directories(
         mlkem-native_ml-kem-512_ref
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
+
+    target_compile_options(
+        mlkem-native_ml-kem-512_ref
+        PUBLIC
+            -DMLK_CONFIG_PARAMETER_SET=512
+            -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
+    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-512_ref>
@@ -298,6 +316,14 @@ if(OQS_ENABLE_KEM_ml_kem_768_x86_64)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
+
+    target_include_directories(
+        mlkem-native_ml-kem-768_x86_64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
     target_compile_options(
         mlkem-native_ml-kem-768_x86_64
         PUBLIC
@@ -308,12 +334,7 @@ if(OQS_ENABLE_KEM_ml_kem_768_x86_64)
         mlkem-native_ml-kem-768_x86_64
         PRIVATE -mavx2 -mbmi2 -mpopcnt
     )
-    target_include_directories(
-        mlkem-native_ml-kem-768_x86_64
-        PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
-            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
-    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-768_x86_64>
@@ -346,18 +367,21 @@ if(OQS_ENABLE_KEM_ml_kem_768_aarch64)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
-    target_compile_options(
-        mlkem-native_ml-kem-768_aarch64
-        PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=768
-            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h"
-    )
+
     target_include_directories(
         mlkem-native_ml-kem-768_aarch64
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
+
+    target_compile_options(
+        mlkem-native_ml-kem-768_aarch64
+        PUBLIC
+            -DMLK_CONFIG_PARAMETER_SET=768
+            -DMLK_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_aarch64.h"
+    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-768_aarch64>
@@ -378,18 +402,21 @@ if(OQS_ENABLE_KEM_ml_kem_768)
         ${IMPL_KEY}/mlkem/src/debug.c
         ${IMPL_KEY}/mlkem/src/poly_k.c
     )
-    target_compile_options(
-        mlkem-native_ml-kem-768_ref
-        PUBLIC
-            -DMLK_CONFIG_PARAMETER_SET=768
-            -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
-    )
+
     target_include_directories(
         mlkem-native_ml-kem-768_ref
         PRIVATE
             ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
+
+    target_compile_options(
+        mlkem-native_ml-kem-768_ref
+        PUBLIC
+            -DMLK_CONFIG_PARAMETER_SET=768
+            -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
+    )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:mlkem-native_ml-kem-768_ref>
@@ -399,33 +426,42 @@ endif()
 if(OQS_ENABLE_KEM_ml_kem_1024_cuda)
     set(IMPL_KEY cupqc_ml-kem-1024_cuda)
     add_library(cupqc_ml-kem-1024_cuda OBJECT ${IMPL_KEY}/cupqc_ml-kem.cu)
+
     target_compile_options(
         cupqc_ml-kem-1024_cuda
         PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>
     )
+
     target_link_libraries(cupqc_ml-kem-1024_cuda PRIVATE cupqc-pk_static)
+
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:cupqc_ml-kem-1024_cuda>)
 endif()
 
 if(OQS_ENABLE_KEM_ml_kem_512_cuda)
     set(IMPL_KEY cupqc_ml-kem-512_cuda)
     add_library(cupqc_ml-kem-512_cuda OBJECT ${IMPL_KEY}/cupqc_ml-kem.cu)
+
     target_compile_options(
         cupqc_ml-kem-512_cuda
         PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>
     )
+
     target_link_libraries(cupqc_ml-kem-512_cuda PRIVATE cupqc-pk_static)
+
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:cupqc_ml-kem-512_cuda>)
 endif()
 
 if(OQS_ENABLE_KEM_ml_kem_768_cuda)
     set(IMPL_KEY cupqc_ml-kem-768_cuda)
     add_library(cupqc_ml-kem-768_cuda OBJECT ${IMPL_KEY}/cupqc_ml-kem.cu)
+
     target_compile_options(
         cupqc_ml-kem-768_cuda
         PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>
     )
+
     target_link_libraries(cupqc_ml-kem-768_cuda PRIVATE cupqc-pk_static)
+
     set(_ML_KEM_OBJS ${_ML_KEM_OBJS} $<TARGET_OBJECTS:cupqc_ml-kem-768_cuda>)
 endif()
 
@@ -436,10 +472,12 @@ if(OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda)
         OBJECT
         ${IMPL_KEY}/icicle_ml-kem.cpp
     )
+
     target_link_libraries(
         icicle_ml-kem-1024_icicle_cuda
         PRIVATE icicle::icicle_pqc_package
     )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:icicle_ml-kem-1024_icicle_cuda>
@@ -453,10 +491,12 @@ if(OQS_ENABLE_KEM_ml_kem_512_icicle_cuda)
         OBJECT
         ${IMPL_KEY}/icicle_ml-kem.cpp
     )
+
     target_link_libraries(
         icicle_ml-kem-512_icicle_cuda
         PRIVATE icicle::icicle_pqc_package
     )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:icicle_ml-kem-512_icicle_cuda>
@@ -470,10 +510,12 @@ if(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
         OBJECT
         ${IMPL_KEY}/icicle_ml-kem.cpp
     )
+
     target_link_libraries(
         icicle_ml-kem-768_icicle_cuda
         PRIVATE icicle::icicle_pqc_package
     )
+
     set(_ML_KEM_OBJS
         ${_ML_KEM_OBJS}
         $<TARGET_OBJECTS:icicle_ml-kem-768_icicle_cuda>
