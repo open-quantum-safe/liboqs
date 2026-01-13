@@ -121,8 +121,7 @@ class ParameterSet:
         The default implementation's "enable_by" field will be overwritten so that
         if a parameter set is enabled, then its default implementation is guaranteed
         to be enabled.
-        
-        
+
         If a family supports some optional API (e.g. de-randomized keypair for KEM/SIG,
         and de-randomized encapsulation for KEM), then the default implementation
         must support all of these optional API."""
@@ -137,7 +136,7 @@ class ParameterSet:
 
         # TODO: does this need parameterization?
         self.api_src = f"{CryptoPrimitive.KEM.get_subdirectory_name()}_{key}.c"
-        """Name of the source file that contains the OQS common API 
+        """Name of the source file that contains the OQS common API
 
         For example, "kem_ml_kem_512.c" contains implementation of OQS function
         OQS_KEM_ml_kem_512_new. Defaults to <kem|sig|stfl_sig>_<param_key>.c
