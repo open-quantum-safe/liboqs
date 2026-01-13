@@ -6,7 +6,12 @@ import typing
 
 import yaml
 
-from oqsbuilder import LIBOQS_DIR, LIBOQS_PATCH_DIR
+from oqsbuilder import (
+    LIBOQS_DIR,
+    LIBOQS_PATCH_DIR,
+    LIBOQS_SRC_DIR,
+    LIBOQS_JINJA_TEMPLATES_DIR,
+)
 from oqsbuilder.utils import currentframe_funcname, load_jinja_template
 
 # NOTE: typing.NewType is strict typing, so LocalCopiesKey is not ImplKey even though
@@ -16,9 +21,6 @@ LocalCopiesKey = typing.NewType("LocalCopiesKey", str)
 ImplKey = typing.NewType("ImplKey", str)
 
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
-
-CPU_RUNTIME_FEATURES = ("asimd", "avx2", "bmi2", "popcnt")
-CPU_RUNTIME_FEATURES_MAP = {"asimd": "arm_neon"}
 
 KEM_CMAKE_TEMPLATE = "kem_cmakelists.txt.jinja"
 KEM_SRC_TEMPLATE = "kem_src.c.jinja"
@@ -72,14 +74,14 @@ class ParameterSet:
         self,
         key: str,
         name: str,
-        pubkeylen: int,
-        privkeylen: int,
+        pklen: int,
+        sklen: int,
         ctlen: int,
         sslen: int,
         keypair_seedlen: int,
         encap_seedlen: int,
         enable_by: str,
-        default_impl: str,
+        default_impl_key: str,
         nist_level: NistLevel,
         ind_cca: bool,
     ):
@@ -89,10 +91,10 @@ class ParameterSet:
         self.name = name
         """Human-friendly name of parameter set, such as \"ML-KEM-512\""""
 
-        self.pubkeylen = pubkeylen
+        self.pklen = pklen
         """Length of encapsulation key in bytes"""
 
-        self.privkeylen = privkeylen
+        self.sklen = sklen
         """Length of decapsulation key in bytes"""
 
         self.ctlen = ctlen
@@ -113,7 +115,7 @@ class ParameterSet:
         If a parameter set if disabled, then all implementations of this parameter
         set are disabled"""
 
-        self.default_impl = default_impl
+        self.default_impl_key = default_impl_key
         """The key of the default implementation
 
         The default implementation's "enable_by" field will be overwritten so that
@@ -132,6 +134,14 @@ class ParameterSet:
         # of a family?
         self.ind_cca = ind_cca
         """True iff this parameter set achieves IND-CCA security"""
+
+        # TODO: does this need parameterization?
+        self.api_src = f"{CryptoPrimitive.KEM.get_subdirectory_name()}_{key}.c"
+        """Name of the source file that contains the OQS common API 
+
+        For example, "kem_ml_kem_512.c" contains implementation of OQS function
+        OQS_KEM_ml_kem_512_new. Defaults to <kem|sig|stfl_sig>_<param_key>.c
+        """
 
     @staticmethod
     def from_oqsbuildfile(key: str, param_meta: dict):
@@ -202,6 +212,17 @@ class RuntimeCpuFeature(enum.Enum):
                 return RuntimeCpuFeature.ASIMD
         raise KeyError(f"Invalid CPU feature {feature}")
 
+    def to_source_code(self) -> str:
+        match self:
+            case RuntimeCpuFeature.AVX2:
+                return "avx2"
+            case RuntimeCpuFeature.BMI2:
+                return "bmi2"
+            case RuntimeCpuFeature.POPCNT:
+                return "popcnt"
+            case RuntimeCpuFeature.ASIMD:
+                return "arm_neon"
+
 
 class CmakeScope(enum.Enum):
     PUBLIC = enum.auto()
@@ -271,8 +292,8 @@ class KemApi:
         keypair: str,
         encaps: str,
         decaps: str,
-        keypair_derand: str | None = None,
-        encaps_derand: str | None = None,
+        keypair_derand: str | None,
+        encaps_derand: str | None,
     ):
         self.keypair = keypair
         self.encaps = encaps
@@ -294,8 +315,9 @@ class Implementation:
         upstream_key: str,
         param_key: str,
         copies: LiteralCopiesMap,
-        enable_by: str | None,
+        enable_by: str,
         arch: Architecture,
+        cuda_arch: str | None,
         runtime_cpu_features: list[RuntimeCpuFeature],
         includes: list[CmakeInclude],
         compile_opts: list[CmakeCompileOpt],
@@ -333,6 +355,12 @@ class Implementation:
         self.arch = arch
         """The hardware architecture or micro-architecture of this implementation"""
 
+        self.cuda_arch = cuda_arch
+        """Will be passed into set_property(... CUDA_ARCHITECTURES <cuda_arch>)
+
+        https://cmake.org/cmake/help/latest/prop_tgt/CUDA_ARCHITECTURES.html
+        """
+
         self.runtime_cpu_features = runtime_cpu_features
         self.includes = includes
         self.compile_opts = compile_opts
@@ -341,6 +369,61 @@ class Implementation:
         # print("compile_opts: ", self.compile_opts)
         # print("link_libs: ", self.link_libs)
         self.api_names = api_names
+        self.cmake_src_paths = [
+            os.path.join("${IMPL_KEY}", path)
+            for path in copies.keys()
+            if os.path.splitext(path)[1] in SRC_FILE_EXTS
+        ]
+        """A list of source file paths"""
+
+    def generate_cmake_add_library(self) -> str:
+        """Generate an "add_library" statement
+
+        Example: add_library(<impl_key> OBJECT <src1> <src2>)
+        """
+        src_paths_str = " ".join(self.cmake_src_paths)
+        return f"add_library({self.key} OBJECT {src_paths_str})"
+
+    def generate_cmake_includes(self, scope: CmakeScope) -> str:
+        """Generate a target_include_directories statement
+
+        target_include_directories(<impl_key> <SCOPE> <value1> <value2>)
+        """
+        includes = [
+            include.value for include in self.includes if include.scope == scope
+        ]
+        args = " ".join(includes)
+        if not includes:
+            return ""
+        return f"target_include_directories({self.key} {scope.to_cmake_scope()} {args})"
+
+    def generate_cmake_compile_opts(self, scope: CmakeScope) -> str:
+        """Generate a target_compile_options statement
+
+        target_compile_options(<impl_key> <SCOPE> <value1> <value2>)
+        """
+        compile_opts = [
+            compile_opt.value
+            for compile_opt in self.compile_opts
+            if compile_opt.scope == scope
+        ]
+        args = " ".join(compile_opts)
+        if not compile_opts:
+            return ""
+        return f"target_compile_options({self.key} {scope.to_cmake_scope()} {args})"
+
+    def generate_cmake_link_libs(self, scope: CmakeScope) -> str:
+        """Generate a target_link_lib_directories statement
+
+        target_link_libraries(<impl_key> <SCOPE> <value1> <value2>)
+        """
+        link_libs = [
+            link_lib.value for link_lib in self.link_libs if link_lib.scope == scope
+        ]
+        args = " ".join(link_libs)
+        if not link_libs:
+            return ""
+        return f"target_link_libraries({self.key} {scope.to_cmake_scope()} {args})"
 
     @staticmethod
     def from_oqsbuildfile(key: str, impl_meta: dict):
@@ -390,8 +473,9 @@ class Implementation:
             impl_meta["upstream"],
             impl_meta["param"],
             impl_meta["copies"],
-            impl_meta.get("enable_by", None),
+            impl_meta["enable_by"],
             Architecture.from_oqsbuildfile(impl_meta["arch"]),
+            impl_meta.get("cuda_arch", None),
             runtime_cpu_features,
             includes,
             compile_opts,
@@ -411,11 +495,11 @@ class KemFamily:
         self,
         key: str,
         version: str,
-        header: str | None = None,
-        derandomized_keygen: bool = False,
-        derandomized_encaps: bool = False,
-        params: dict[str, ParameterSet] | None = None,
-        impls: dict[str, Implementation] | None = None,
+        header: str | None,
+        derandomized_keypair: bool,
+        derandomized_encaps: bool,
+        params: dict[str, ParameterSet],
+        impls: dict[str, Implementation],
     ):
         self.key = key
         """unique identifier of the family, such as \"ml_kem\""""
@@ -434,7 +518,7 @@ class KemFamily:
         such as supporting Kyber round 2 and Kyber round 3 at the same time,
         they should be separate families"""
 
-        self.derandomized_keygen = derandomized_keygen
+        self.derandomized_keypair = derandomized_keypair
         """True iff deterministic key generation is supported
 
         NOTE: FIPS 203 abbreviates key generation as "KeyGen", so that's what we
@@ -524,7 +608,9 @@ class Upstream:
             data.get("patches", None),
         )
 
-    def clone(self, parentdir: str, dstdirname: str, dryrun: bool = False):
+    def clone(
+        self, parentdir: str | os.PathLike, dstdirname: str, dryrun: bool = False
+    ):
         """Clone a remote Git repository into a local destination directory.
 
         :param parentdir: Path to the parent directory where the repository will be cloned.
@@ -582,7 +668,7 @@ class Upstream:
                 subprocess.run(cmd, check=True)
         self.dir = dstdir
 
-    def git_apply(
+    def patch(
         self,
         commit_after_apply: bool = True,
         dryrun: bool = False,
@@ -675,18 +761,27 @@ class OQSBuilder:
         with open(path, mode="r", encoding="utf-8") as f:
             oqsbuild = yaml.safe_load(f)
 
-        for _, family_meta in oqsbuild["kems"]["families"].items():
-            for _, impl_meta in family_meta["impls"].items():
-                impl_meta["copies"] = OQSBuilder.to_literal_copies(
-                    impl_meta["copies"], oqsbuild["copies"]
-                )
-
-        for _, upstream in oqsbuild["upstreams"].items():
-            patch_paths = [
-                os.path.join(LIBOQS_PATCH_DIR, patch_path)
-                for patch_path in upstream.get("patches", [])
-            ]
-            upstream["patches"] = patch_paths
+        # FIX: refactor these pre-processing actions into a "preprocess_oqsbuildfile"
+        if True:
+            for _, family_meta in oqsbuild["kems"]["families"].items():
+                for _, impl_meta in family_meta["impls"].items():
+                    impl_meta["copies"] = OQSBuilder.to_literal_copies(
+                        impl_meta["copies"], oqsbuild["copies"]
+                    )
+                for param_key, param_meta in family_meta["params"].items():
+                    default_impl_key = param_meta["default_impl"]
+                    if default_impl_key not in family_meta["impls"]:
+                        raise KeyError(
+                            f"{param_key}'s default impl {default_impl_key} not found"
+                        )
+                    default_impl_meta = family_meta["impls"][default_impl_key]
+                    default_impl_meta["enable_by"] = param_meta["enable_by"]
+            for _, upstream in oqsbuild["upstreams"].items():
+                patch_paths = [
+                    os.path.join(LIBOQS_PATCH_DIR, patch_path)
+                    for patch_path in upstream.get("patches", [])
+                ]
+                upstream["patches"] = patch_paths
 
         upstreams = {
             key: Upstream.from_oqsbuildfile(key, meta)
@@ -699,124 +794,32 @@ class OQSBuilder:
 
         return OQSBuilder(upstreams, kems, LIBOQS_PATCH_DIR)
 
+    def fetch_upstreams(self, upstream_parent_dir: str | os.PathLike):
+        for upstream_key, upstream in self.upstreams.items():
+            upstream.clone(upstream_parent_dir, upstream_key)
+            upstream.patch()
 
-def load_runtime_cpu_features(features: list[str]) -> list[str]:
-    """Read the list of runtime CPU features, check the validity of each feature
-    name, and map to the appropriate names
-    """
-    for feat in features:
-        if feat not in CPU_RUNTIME_FEATURES:
-            raise ValueError(f"{feat} is not valid runtime CPU feature")
-    return [CPU_RUNTIME_FEATURES_MAP.get(feat, feat) for feat in features]
-
-
-def load_oqsbuildfile(path: str):
-    """Load oqsbuildfile from the specified path
-
-    For each implementation, if the `copies` field is mapped to a `copies` key,
-    then the `copies` field will be instantiated with the actual dst:src mapping
-    under the top-level `copies` section.
-    """
-    with open(path, mode="r", encoding="utf-8") as f:
-        oqsbuild = yaml.safe_load(f)
-
-    for _, upstream in oqsbuild["upstreams"].items():
-        patch_paths = [
-            os.path.join(LIBOQS_PATCH_DIR, patch_path)
-            for patch_path in upstream.get("patches", [])
-        ]
-        upstream["patches"] = patch_paths
-
-    # Expand keys and fill in defaults
-    for primitive in [
-        CryptoPrimitive.KEM,
-        # CryptoPrimitive.SIG,
-        # CryptoPrimitive.STFL_SIG,
-    ]:
-        for family_key, family in oqsbuild[primitive.get_oqsbuildfile_key()][
-            "families"
-        ].items():
-            family["header"] = family.get(
-                "header", f"{primitive.get_subdirectory_name()}_{family_key}.h"
-            )
-            family["derandomized_keypair"] = family.get("derandomized_keypair", False)
-            for param_key, param_meta in family["params"].items():
-                param_meta["api_src"] = param_meta.get(
-                    "api_src", f"{primitive.get_subdirectory_name()}_{param_key}.c"
-                )
-                _, default_impl_meta = get_default_impl(family, param_key)
-                default_impl_meta["enable_by"] = param_meta["enable_by"]
-            for _, impl_meta in family["impls"].items():
-                impl_copies = impl_meta["copies"]
-                if isinstance(impl_copies, str):
-                    impl_meta["copies"] = oqsbuild["copies"][impl_copies]
-                # NOTE: this field does not exist in oqsbuildfile
-                impl_meta["cmake_src_paths"] = [
-                    os.path.join("${IMPL_KEY}", path)
-                    for path in impl_meta["copies"]
-                    if os.path.splitext(path)[1] in SRC_FILE_EXTS
-                ]
-                impl_arch_key = impl_meta["arch"]
-                impl_meta["arch"] = oqsbuild["architectures"][impl_arch_key]
-                impl_meta["runtime_cpu_features"] = load_runtime_cpu_features(
-                    impl_meta.get("runtime_cpu_features", [])
-                )
-
-    return oqsbuild
-
-
-def get_copies(
-    oqsbuild: dict, primitive: CryptoPrimitive, family_key: str, impl_key: str
-) -> dict[str, str]:
-    """Return the copy dictionary of the specified implementation. A copy
-    dictionary maps destination path to source path. Destination path is relative
-    to the implementation sub-directory. Source path is relative to the upstream
-    repostiroy's root directory.
-
-    :param oqsbuild: the data in oqsbuildfile
-    :param primitive: indicates whether to look under kems, sigs, or stfl_sigs
-        section under oqsbuildfile
-    :param family_key: the family key, such as "ml_kem"
-    :param impl_key: the implementation key, such as "mlkem-native_ml-kem-512_ref"
-    :return: a map from destination paths to source paths
-    """
-    family = oqsbuild[primitive.get_oqsbuildfile_key()]["families"][family_key]
-    impl = family["impls"][impl_key]
-    impl_copies: str | dict[str, str] = impl["copies"]
-    if isinstance(impl_copies, str):
-        return oqsbuild["copies"][impl_copies]
-    elif isinstance(impl_copies, dict):
-        return impl_copies
-    raise TypeError(
-        f"Invalid type for {family_key}.{impl_key}.copies {type(impl_copies)}"
-    )
-
-
-def get_git() -> str | None:
-    """Check that git exists under current environment
-
-    :return: git version if git is found, None if git is not found
-    """
-    ret = subprocess.run(["git", "--version"], encoding="utf-8", capture_output=True)
-    if ret.returncode == 0:
-        # Example output "git version 2.51.1\n"
-        return ret.stdout.strip().split()[-1]
-    return None
-
-
-def fetch_upstreams(oqsbuild: dict, upstream_parent_dir: str) -> dict[str, str]:
-    """Clone upstream repositories into the specified parent directory and apply
-    patches. Return a mapping from upstream key to path to the upstream repository
-    """
-    upstream_dirs = {}
-    for upstream_key, upstream_meta in oqsbuild["upstreams"].items():
-        # TODO: move Upstream.from_dict further up, into load_oqsbuildfile
-        upstream_meta = Upstream.from_oqsbuildfile(upstream_key, upstream_meta)
-        upstream_meta.clone(upstream_parent_dir, upstream_key)
-        upstream_meta.git_apply()
-        upstream_dirs[upstream_key] = upstream_meta.dir
-    print(f"SUCCESS: fetched {len(upstream_dirs)} upstream repositories")
-    return upstream_dirs
+    def build_kems(self):
+        """For each KEM family, create the KEM subdirectory, copy over the source files,
+        then generate the family-level header/source/cmake files
+        """
+        kems_dir = os.path.join(
+            LIBOQS_SRC_DIR, CryptoPrimitive.KEM.get_subdirectory_name()
+        )
+        for kem_key, kem in self.kems.items():
+            kem_dir = os.path.join(kems_dir, kem_key)
+            print(f"Integrating {kem_key} into {kem_dir}")
+            for impl_key, impl in kem.impls.items():
+                impl_dir = os.path.join(kem_dir, impl_key)
+                upstream = self.upstreams[impl.upstream_key]
+                if (not upstream.dir) or (not upstream._patched):
+                    raise FileNotFoundError(
+                        f"Upstream {impl.upstream_key} is not cloned"
+                    )
+                copy_copies(impl.copies, upstream.dir, impl_dir)
+            generate_kem_cmake(kem_dir, kem_key, kem, LIBOQS_JINJA_TEMPLATES_DIR)
+            generate_kem_header(kem_dir, kem_key, kem, LIBOQS_JINJA_TEMPLATES_DIR)
+            generate_kem_sources(kem_dir, kem_key, kem, LIBOQS_JINJA_TEMPLATES_DIR)
 
 
 def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
@@ -838,39 +841,10 @@ def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
     print(f"Copied {len(copies)} files into {impl_dir}")
 
 
-def get_default_impl(family: dict, param_key: str) -> tuple[str, dict]:
-    """Get the implementation key and the implementation metadata for the
-    specified parameter set under the given family
-
-    :return: a tuple of (impl_key, impl_meta)
-    """
-    impl_key = family["params"][param_key]["default_impl"]
-    impl = family["impls"][impl_key]
-    impl_param_key = impl["param"]
-    if impl_param_key != param_key:
-        raise ValueError(
-            f"{param_key}'s default impl {impl_key} specified param set {impl_param_key}"
-        )
-    return impl_key, impl
-
-
-def get_impls(
-    family: dict, param_key: str, exclude_default: bool = False
-) -> list[tuple[str, dict]]:
-    """Return a list of (impl_key, impl_metadata) for the specified parameter set"""
-    impls = []
-    default_impl_key, _ = get_default_impl(family, param_key)
-    for impl_key, impl in family["impls"].items():
-        exclude = exclude_default and (impl_key == default_impl_key)
-        if impl["param"] == param_key and (not exclude):
-            impls.append((impl_key, impl))
-    return impls
-
-
 def generate_kem_cmake(
     kem_dir: str,
     kem_key: str,
-    kem_meta: dict,
+    kem: KemFamily,
     templates_dir: str,
     autoformat: bool = True,
 ) -> str:
@@ -880,8 +854,7 @@ def generate_kem_cmake(
     cmake variable (e.g. ML_KEM_OBJS) that contains the compiled objects from
     that family.
 
-    :param kem_dir: path to the family-level subdirectory, such as
-        LIBOQS_DIR/src/kem/ml_kem
+    :param kem_dir: path to the family-level subdirectory, such as $LIBOQS_DIR/src/kem/ml_kem
     :param kem_key: the family key of the KEM scheme
     :param kem_meta: metadata of the KEM family
     :param templates_dir: path to the directory containing jinja templates
@@ -893,8 +866,9 @@ def generate_kem_cmake(
     content = load_jinja_template(template_path).render(
         {
             "kem_key": kem_key,
-            "kem_meta": kem_meta,
+            "kem_meta": kem,
             "generated_by": f"{__name__}.{currentframe_funcname()}",
+            "CmakeScope": CmakeScope,
         }
     )
     # print(content)
@@ -919,7 +893,7 @@ def format_with_astyle(path: str):
 def generate_kem_header(
     kem_dir: str,
     kem_key: str,
-    kem_meta: dict,
+    kem_meta: KemFamily,
     templates_dir: str,
     autoformat: bool = True,
 ) -> str:
@@ -928,7 +902,7 @@ def generate_kem_header(
 
     Return the path to the generated header file.
     """
-    header_path = os.path.join(kem_dir, kem_meta["header"])
+    header_path = os.path.join(kem_dir, kem_meta.header)
 
     header = load_jinja_template(
         os.path.join(templates_dir, KEM_HEADER_TEMPLATE)
@@ -949,9 +923,9 @@ def generate_kem_header(
 def generate_kem_source(
     kem_dir: str,
     kem_key: str,
-    kem_meta: dict,
+    kem_meta: KemFamily,
     param_key: str,
-    param_meta: dict,
+    param_meta: ParameterSet,
     templates_dir: str,
     autoformat: bool = True,
 ) -> str:
@@ -963,23 +937,27 @@ def generate_kem_source(
     :return: path to the rendered source file, such as src/kem/ml_kem/kem_ml_kem_768.c
     """
     template = load_jinja_template(os.path.join(templates_dir, KEM_SRC_TEMPLATE))
-    _, default_impl = get_default_impl(kem_meta, param_key)
-    addtl_impls = [impl for _, impl in get_impls(kem_meta, param_key, True)]
+    default_impl = kem_meta.impls[param_meta.default_impl_key]
+    addtl_impls = [
+        impl
+        for impl_key, impl in kem_meta.impls.items()
+        if impl_key != param_meta.default_impl_key and impl.param_key == param_key
+    ]
     addtl_impls_keypair_derand = [
-        impl for impl in addtl_impls if impl.get("keypair_derand", None)
+        impl for impl in addtl_impls if impl.api_names.keypair_derand
     ]
     addtl_impls_encaps_derand = [
-        impl for impl in addtl_impls if impl.get("enc_derand", None)
+        impl for impl in addtl_impls if impl.api_names.encaps_derand
     ]
     content = template.render(
         {
             "kem_key": kem_key,
             "param_key": param_key,
-            "nist_level": param_meta["nist_level"],
-            "ind_cca": param_meta["ind_cca"],
-            "version": kem_meta["version"],
-            "derandomized_keypair": kem_meta["derandomized_keypair"],
-            "derandomized_encaps": kem_meta["derandomized_encaps"],
+            "nist_level": param_meta.nist_level,
+            "ind_cca": param_meta.ind_cca,
+            "version": kem_meta.version,
+            "derandomized_keypair": kem_meta.derandomized_keypair,
+            "derandomized_encaps": kem_meta.derandomized_encaps,
             "default_impl": default_impl,
             "addtl_impls": addtl_impls,
             "addtl_impls_keypair_derand": addtl_impls_keypair_derand,
@@ -998,7 +976,7 @@ def generate_kem_source(
 def generate_kem_sources(
     kem_dir: str,
     kem_key: str,
-    kem_meta: dict,
+    kem_meta: KemFamily,
     templates_dir: str,
     autoformat: bool = True,
 ) -> list[str]:
@@ -1006,7 +984,7 @@ def generate_kem_sources(
     LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem_<512|768|1024>.c
     """
     source_paths = []
-    for param_key, param_meta in kem_meta["params"].items():
+    for param_key, param_meta in kem_meta.params.items():
         source_path = generate_kem_source(
             kem_dir, kem_key, kem_meta, param_key, param_meta, templates_dir, autoformat
         )

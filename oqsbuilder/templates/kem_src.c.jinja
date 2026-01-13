@@ -34,43 +34,43 @@ OQS_KEM *OQS_KEM_{{ param_key }}_new(void) {
 	return kem;
 }
 
-extern int {{ default_impl["keypair"] }}(uint8_t *pk, uint8_t *sk);
-{%- if default_impl["keypair_derand"] %}
-extern int {{ default_impl["keypair_derand"] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+extern int {{ default_impl.api_names.keypair }}(uint8_t *pk, uint8_t *sk);
+{%- if default_impl.api_names.keypair_derand %}
+extern int {{ default_impl.api_names.keypair_derand }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 {%- endif %}
-extern int {{ default_impl["enc"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-{%- if default_impl["enc_derand"] %}
-extern int {{ default_impl["enc_derand"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+extern int {{ default_impl.api_names.encaps }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+{%- if default_impl.api_names.encaps_derand %}
+extern int {{ default_impl.api_names.encaps_derand }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 {%- endif %}
-extern int {{ default_impl["dec"] }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+extern int {{ default_impl.api_names.decaps }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 {% for impl in addtl_impls %}
-    {%- if impl["arch"]["enable_by"] %}
-#if defined({{ impl["arch"]["enable_by"] }})
+    {%- if impl.arch.enable_by() %}
+#if defined({{ impl.arch.enable_by() }})
     {%- endif %}
-    {%- if impl["enable_by"] %}
-#if defined({{ impl["enable_by"] }})
+    {%- if impl.enable_by %}
+#if defined({{ impl.enable_by }})
     {%- endif %}
-    {%- if impl["keypair"] %}
-extern int {{ impl["keypair"] }}(uint8_t *pk, uint8_t *sk);
+    {%- if impl.api_names.keypair %}
+extern int {{ impl.api_names.keypair }}(uint8_t *pk, uint8_t *sk);
     {%- endif %}
-    {%- if impl["keypair_derand"] %}
-extern int {{ impl["keypair_derand"] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+    {%- if impl.api_names.keypair_derand %}
+extern int {{ impl.api_names.keypair_derand }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
     {%- endif %}
-    {%- if impl["enc"] %}
-extern int {{ impl["enc"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+    {%- if impl.api_names.encaps %}
+extern int {{ impl.api_names.encaps }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
     {%- endif %}
-    {%- if impl["enc_derand"] %}
-extern int {{ impl["enc_derand"] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+    {%- if impl.api_names.encaps_derand %}
+extern int {{ impl.api_names.encaps_derand }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
     {%- endif %}
-    {%- if impl["dec"] %}
-extern int {{ impl["dec"] }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+    {%- if impl.api_names.decaps %}
+extern int {{ impl.api_names.decaps }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
     {%- endif %}
-    {%- if impl["enable_by"] %}
-#endif /* {{ impl["enable_by"] }} */
+    {%- if impl.enable_by %}
+#endif /* {{ impl.enable_by }} */
     {%- endif %}
-    {%- if impl["arch"]["enable_by"] %}
-#endif /* {{ impl["arch"]["enable_by"] }} */
+    {%- if impl.arch.enable_by() %}
+#endif /* {{ impl.arch.enable_by() }} */
     {%- endif %}
 {% endfor %}
 
@@ -78,33 +78,33 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, u
 {%- if derandomized_keypair %}
     {%- for impl in addtl_impls_keypair_derand %}
         {%- if loop.first %}
-#if defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#if defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
         {%- else %}
-#elif defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#elif defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
         {%- endif %}
-        {%- if impl["runtime_cpu_features"] %}
+        {%- if impl.runtime_cpu_features %}
 #if defined(OQS_DIST_BUILD)
-    if ({%- for feat in impl["runtime_cpu_features"] -%}
-        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat | upper }})
+    if ({%- for feat in impl.runtime_cpu_features -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat.to_source_code() | upper }})
             {%- if not loop.last %} && {% endif -%}
         {%- endfor -%}) {
-        return (OQS_STATUS) {{ impl["keypair_derand"] }}(public_key, secret_key, seed);
+        return (OQS_STATUS) {{ impl.api_names.keypair_derand }}(public_key, secret_key, seed);
     } else {
-        return (OQS_STATUS) {{ default_impl["keypair_derand"] }}(public_key, secret_key, seed);
+        return (OQS_STATUS) {{ default_impl.api_names.keypair_derand }}(public_key, secret_key, seed);
     }
 #else
-    return (OQS_STATUS) {{ impl["keypair_derand"] }}(public_key, secret_key, seed);
+    return (OQS_STATUS) {{ impl.api_names.keypair_derand }}(public_key, secret_key, seed);
 #endif /* OQS_DIST_BUILD */
         {%- else %}
-    return (OQS_STATUS) {{ impl["keypair_derand"] }}(public_key, secret_key, seed);
+    return (OQS_STATUS) {{ impl.api_names.keypair_derand }}(public_key, secret_key, seed);
         {%- endif %}
     {%- endfor %}
     {%- if addtl_impls | length > 0 %}
 #else
-    return (OQS_STATUS) {{ default_impl["keypair_derand"] }}(public_key, secret_key, seed);
+    return (OQS_STATUS) {{ default_impl.api_names.keypair_derand }}(public_key, secret_key, seed);
 #endif
     {%- else %}
-    return (OQS_STATUS) {{ default_impl["keypair_derand"] }}(public_key, secret_key, seed);
+    return (OQS_STATUS) {{ default_impl.api_names.keypair_derand }}(public_key, secret_key, seed);
     {%- endif %}
 {%- else %}
 	(void)public_key;
@@ -117,33 +117,33 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, u
 OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
 {%- for impl in addtl_impls %}
     {%- if loop.first %}
-#if defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#if defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- else %}
-#elif defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#elif defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- endif %}
-    {%- if impl["runtime_cpu_features"] %}
+    {%- if impl.runtime_cpu_features %}
 #if defined(OQS_DIST_BUILD)
-    if ({%- for feat in impl["runtime_cpu_features"] -%}
-        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat | upper }})
+    if ({%- for feat in impl.runtime_cpu_features -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat.to_source_code() | upper }})
             {%- if not loop.last %} && {% endif -%}
         {%- endfor -%}) {
-        return (OQS_STATUS) {{ impl["keypair"] }}(public_key, secret_key);
+        return (OQS_STATUS) {{ impl.api_names.keypair }}(public_key, secret_key);
     } else {
-        return (OQS_STATUS) {{ default_impl["keypair"] }}(public_key, secret_key);
+        return (OQS_STATUS) {{ default_impl.api_names.keypair }}(public_key, secret_key);
     }
 #else
-    return (OQS_STATUS) {{ impl["keypair"] }}(public_key, secret_key);
+    return (OQS_STATUS) {{ impl.api_names.keypair }}(public_key, secret_key);
 #endif /* OQS_DIST_BUILD */
     {%- else %}
-    return (OQS_STATUS) {{ impl["keypair"] }}(public_key, secret_key);
+    return (OQS_STATUS) {{ impl.api_names.keypair }}(public_key, secret_key);
     {%- endif %}
 {%- endfor %}
 {%- if addtl_impls | length > 0 %}
 #else
-    return (OQS_STATUS) {{ default_impl["keypair"] }}(public_key, secret_key);
+    return (OQS_STATUS) {{ default_impl.api_names.keypair }}(public_key, secret_key);
 #endif
 {%- else %}
-    return (OQS_STATUS) {{ default_impl["keypair"] }}(public_key, secret_key);
+    return (OQS_STATUS) {{ default_impl.api_names.keypair }}(public_key, secret_key);
 {%- endif %}
 }
 
@@ -151,33 +151,33 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_encaps_derand(uint8_t *ciphertext, ui
 {%- if derandomized_encaps %}
     {%- for impl in addtl_impls_encaps_derand %}
         {%- if loop.first %}
-#if defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#if defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
         {%- else %}
-#elif defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#elif defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
         {%- endif %}
-        {%- if impl["runtime_cpu_features"] %}
+        {%- if impl.runtime_cpu_features %}
 #if defined(OQS_DIST_BUILD)
-    if ({%- for feat in impl["runtime_cpu_features"] -%}
-        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat | upper }})
+    if ({%- for feat in impl.runtime_cpu_features -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat.to_source_code() | upper }})
             {%- if not loop.last %} && {% endif -%}
         {%- endfor -%}) {
-        return (OQS_STATUS) {{ impl["enc_derand"] }}(ciphertext, shared_secret, public_key, seed);
+        return (OQS_STATUS) {{ impl.api_names.encaps_derand }}(ciphertext, shared_secret, public_key, seed);
     } else {
-        return (OQS_STATUS) {{ default_impl["enc_derand"] }}(ciphertext, shared_secret, public_key, seed);
+        return (OQS_STATUS) {{ default_impl.api_names.encaps_derand }}(ciphertext, shared_secret, public_key, seed);
     }
 #else
-    return (OQS_STATUS) {{ impl["enc_derand"] }}(ciphertext, shared_secret, public_key, seed);
+    return (OQS_STATUS) {{ impl.api_names.encaps_derand }}(ciphertext, shared_secret, public_key, seed);
 #endif /* OQS_DIST_BUILD */
         {%- else %}
-    return (OQS_STATUS) {{ impl["enc_derand"] }}(ciphertext, shared_secret, public_key, seed);
+    return (OQS_STATUS) {{ impl.api_names.encaps_derand }}(ciphertext, shared_secret, public_key, seed);
         {%- endif %}
     {%- endfor %}
     {%- if addtl_impls | length > 0 %}
 #else
-    return (OQS_STATUS) {{ default_impl["enc_derand"] }}(ciphertext, shared_secret, public_key, seed);
+    return (OQS_STATUS) {{ default_impl.api_names.encaps_derand }}(ciphertext, shared_secret, public_key, seed);
 #endif
     {%- else %}
-    return (OQS_STATUS) {{ default_impl["enc_derand"] }}(ciphertext, shared_secret, public_key, seed);
+    return (OQS_STATUS) {{ default_impl.api_names.encaps_derand }}(ciphertext, shared_secret, public_key, seed);
     {%- endif %}
 {%- else %}
     (void) cipheretxt;
@@ -191,66 +191,66 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_encaps_derand(uint8_t *ciphertext, ui
 OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 {%- for impl in addtl_impls %}
     {%- if loop.first %}
-#if defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#if defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- else %}
-#elif defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#elif defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- endif %}
-    {%- if impl["runtime_cpu_features"] %}
+    {%- if impl.runtime_cpu_features %}
 #if defined(OQS_DIST_BUILD)
-    if ({%- for feat in impl["runtime_cpu_features"] -%}
-        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat | upper }})
+    if ({%- for feat in impl.runtime_cpu_features -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat.to_source_code() | upper }})
             {%- if not loop.last %} && {% endif -%}
         {%- endfor -%}) {
-        return (OQS_STATUS) {{ impl["enc"] }}(ciphertext, shared_secret, public_key);
+        return (OQS_STATUS) {{ impl.api_names.encaps }}(ciphertext, shared_secret, public_key);
     } else {
-        return (OQS_STATUS) {{ default_impl["enc"] }}(ciphertext, shared_secret, public_key);
+        return (OQS_STATUS) {{ default_impl.api_names.encaps }}(ciphertext, shared_secret, public_key);
     }
 #else
-    return (OQS_STATUS) {{ impl["enc"] }}(ciphertext, shared_secret, public_key);
+    return (OQS_STATUS) {{ impl.api_names.encaps }}(ciphertext, shared_secret, public_key);
 #endif /* OQS_DIST_BUILD */
     {%- else %}
-    return (OQS_STATUS) {{ impl["enc"] }}(ciphertext, shared_secret, public_key);
+    return (OQS_STATUS) {{ impl.api_names.encaps }}(ciphertext, shared_secret, public_key);
     {%- endif %}
 {%- endfor %}
 {%- if addtl_impls | length > 0 %}
 #else
-    return (OQS_STATUS) {{ default_impl["enc"] }}(ciphertext, shared_secret, public_key);
+    return (OQS_STATUS) {{ default_impl.api_names.encaps }}(ciphertext, shared_secret, public_key);
 #endif
 {%- else %}
-    return (OQS_STATUS) {{ default_impl["enc"] }}(ciphertext, shared_secret, public_key);
+    return (OQS_STATUS) {{ default_impl.api_names.encaps }}(ciphertext, shared_secret, public_key);
 {%- endif %}
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 {%- for impl in addtl_impls %}
     {%- if loop.first %}
-#if defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#if defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- else %}
-#elif defined({{ impl["enable_by"] }}) {% if impl["arch"]["enable_by"] %}&& defined({{impl["arch"]["enable_by"] }}){% endif -%}
+#elif defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- endif %}
-    {%- if impl["runtime_cpu_features"] %}
+    {%- if impl.runtime_cpu_features %}
 #if defined(OQS_DIST_BUILD)
-    if ({%- for feat in impl["runtime_cpu_features"] -%}
-        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat | upper }})
+    if ({%- for feat in impl.runtime_cpu_features -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat.to_source_code() | upper }})
             {%- if not loop.last %} && {% endif -%}
         {%- endfor -%}) {
-        return (OQS_STATUS) {{ impl["dec"] }}(shared_secret, ciphertext, secret_key);
+        return (OQS_STATUS) {{ impl.api_names.decaps }}(shared_secret, ciphertext, secret_key);
     } else {
-        return (OQS_STATUS) {{ default_impl["dec"] }}(shared_secret, ciphertext, secret_key);
+        return (OQS_STATUS) {{ default_impl.api_names.decaps }}(shared_secret, ciphertext, secret_key);
     }
 #else
-    return (OQS_STATUS) {{ impl["dec"] }}(shared_secret, ciphertext, secret_key);
+    return (OQS_STATUS) {{ impl.api_names.decaps }}(shared_secret, ciphertext, secret_key);
 #endif /* OQS_DIST_BUILD */
     {%- else %}
-    return (OQS_STATUS) {{ impl["dec"] }}(shared_secret, ciphertext, secret_key);
+    return (OQS_STATUS) {{ impl.api_names.decaps }}(shared_secret, ciphertext, secret_key);
     {%- endif %}
 {%- endfor %}
 {%- if addtl_impls | length > 0 %}
 #else
-    return (OQS_STATUS) {{ default_impl["dec"] }}(shared_secret, ciphertext, secret_key);
+    return (OQS_STATUS) {{ default_impl.api_names.decaps }}(shared_secret, ciphertext, secret_key);
 #endif
 {%- else %}
-    return (OQS_STATUS) {{ default_impl["dec"] }}(shared_secret, ciphertext, secret_key);
+    return (OQS_STATUS) {{ default_impl.api_names.decaps }}(shared_secret, ciphertext, secret_key);
 {%- endif %}
 }
 
