@@ -558,6 +558,105 @@ class KemFamily:
             key, version, header, derand_keygen, derand_encaps, params, impls
         )
 
+    def generate_header(self, kem_dir: str, autoformat: bool = True) -> str:
+        """Generate the family-level header file, such as
+        LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem.h.
+
+        Return the path to the generated header file.
+        """
+        header_path = os.path.join(kem_dir, self.header)
+
+        header = load_jinja_template(
+            os.path.join(LIBOQS_JINJA_TEMPLATES_DIR, KEM_HEADER_TEMPLATE)
+        ).render(
+            {
+                "kem_key": self.key,
+                "kem_meta": self,
+                "generated_by": f"{__name__}.{__class__.__name__}.{currentframe_funcname()}",
+            }
+        )
+        with open(header_path, "w") as f:
+            f.write(header)
+        if autoformat:
+            format_with_astyle(header_path)
+        return header_path
+
+    def generate_cmake(self, kem_dir: str, autoformat: bool = True) -> str:
+        """Generate the family-level CMakeLists.txt file for the input KEM scheme
+
+        Each family-level list file (e.g. src/kem/ml_kem/CMakeLists.txt) exports a
+        cmake variable (e.g. ML_KEM_OBJS) that contains the compiled objects from
+        that family.
+
+        :param autoformat: format the generated list file with gersemi
+        :return: path to the family-level cmake list file
+        """
+        template_path = os.path.join(LIBOQS_JINJA_TEMPLATES_DIR, KEM_CMAKE_TEMPLATE)
+        cmake_path = os.path.join(kem_dir, "CMakeLists.txt")
+        content = load_jinja_template(template_path).render(
+            {
+                "kem_key": self.key,
+                "kem_meta": self,
+                "generated_by": f"{__name__}.{__class__.__name__}.{currentframe_funcname()}",
+                "CmakeScope": CmakeScope,
+            }
+        )
+        # print(content)
+        # raise NotImplementedError(f"{cmake_path} is not fully rendered")
+        with open(cmake_path, "w") as f:
+            f.write(content)
+        if autoformat:
+            # Check out gersemi at https://github.com/BlankSpruce/gersemi/
+            # pip install gersemi==0.23.1
+            subprocess.run(["gersemi", "-i", cmake_path], check=True)
+        return cmake_path
+
+    def generate_sources(self, kem_dir: str, autoformat: bool = True) -> list[str]:
+        """Generate the family-level source file(s), such as
+        LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem_<512|768|1024>.c
+        """
+        source_paths = []
+        for param_key, param_meta in self.params.items():
+            template = load_jinja_template(
+                os.path.join(LIBOQS_JINJA_TEMPLATES_DIR, KEM_SRC_TEMPLATE)
+            )
+            default_impl = self.impls[param_meta.default_impl_key]
+            addtl_impls = [
+                impl
+                for impl_key, impl in self.impls.items()
+                if impl_key != param_meta.default_impl_key
+                and impl.param_key == param_key
+            ]
+            addtl_impls_keypair_derand = [
+                impl for impl in addtl_impls if impl.api_names.keypair_derand
+            ]
+            addtl_impls_encaps_derand = [
+                impl for impl in addtl_impls if impl.api_names.encaps_derand
+            ]
+            content = template.render(
+                {
+                    "kem_key": self.key,
+                    "param_key": param_key,
+                    "nist_level": param_meta.nist_level,
+                    "ind_cca": param_meta.ind_cca,
+                    "version": self.version,
+                    "derandomized_keypair": self.derandomized_keypair,
+                    "derandomized_encaps": self.derandomized_encaps,
+                    "default_impl": default_impl,
+                    "addtl_impls": addtl_impls,
+                    "addtl_impls_keypair_derand": addtl_impls_keypair_derand,
+                    "addtl_impls_encaps_derand": addtl_impls_encaps_derand,
+                    "generated_by": f"{__name__}.{__class__.__name__}.{currentframe_funcname()}",
+                }
+            )
+            src_path = os.path.join(kem_dir, f"kem_{param_key}.c")
+            with open(src_path, "w") as f:
+                f.write(content)
+            if autoformat:
+                format_with_astyle(src_path)
+            source_paths.append(src_path)
+        return source_paths
+
 
 class Upstream:
     """A git repository containing some source files"""
@@ -816,9 +915,9 @@ class OQSBuilder:
                         f"Upstream {impl.upstream_key} is not cloned"
                     )
                 copy_copies(impl.copies, upstream.dir, impl_dir)
-            generate_kem_cmake(kem_dir, kem_key, kem, LIBOQS_JINJA_TEMPLATES_DIR)
-            generate_kem_header(kem_dir, kem_key, kem, LIBOQS_JINJA_TEMPLATES_DIR)
-            generate_kem_sources(kem_dir, kem_key, kem, LIBOQS_JINJA_TEMPLATES_DIR)
+            kem.generate_cmake(kem_dir)
+            kem.generate_header(kem_dir)
+            kem.generate_sources(kem_dir)
 
 
 def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
@@ -840,152 +939,9 @@ def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
     print(f"Copied {len(copies)} files into {impl_dir}")
 
 
-def generate_kem_cmake(
-    kem_dir: str,
-    kem_key: str,
-    kem: KemFamily,
-    templates_dir: str,
-    autoformat: bool = True,
-) -> str:
-    """Generate the family-level CMakeLists.txt file for the input KEM scheme
-
-    Each family-level list file (e.g. src/kem/ml_kem/CMakeLists.txt) exports a
-    cmake variable (e.g. ML_KEM_OBJS) that contains the compiled objects from
-    that family.
-
-    :param kem_dir: path to the family-level subdirectory, such as $LIBOQS_DIR/src/kem/ml_kem
-    :param kem_key: the family key of the KEM scheme
-    :param kem_meta: metadata of the KEM family
-    :param templates_dir: path to the directory containing jinja templates
-    :param autoformat: format the generated list file with gersemi
-    :return: path to the family-level cmake list file
-    """
-    template_path = os.path.join(templates_dir, KEM_CMAKE_TEMPLATE)
-    cmake_path = os.path.join(kem_dir, "CMakeLists.txt")
-    content = load_jinja_template(template_path).render(
-        {
-            "kem_key": kem_key,
-            "kem_meta": kem,
-            "generated_by": f"{__name__}.{currentframe_funcname()}",
-            "CmakeScope": CmakeScope,
-        }
-    )
-    # print(content)
-    # raise NotImplementedError(f"{cmake_path} is not fully rendered")
-    with open(cmake_path, "w") as f:
-        f.write(content)
-    if autoformat:
-        # Check out gersemi at https://github.com/BlankSpruce/gersemi/
-        # pip install gersemi==0.23.1
-        subprocess.run(["gersemi", "-i", cmake_path], check=True)
-    return cmake_path
-
-
 def format_with_astyle(path: str):
     """Call astyle to format file at the input path"""
     options_path = os.path.join(LIBOQS_DIR, ".astylerc")
     subprocess.run(
         ["astyle", f"--options={options_path}", '--suffix=""', path], check=True
     )
-
-
-def generate_kem_header(
-    kem_dir: str,
-    kem_key: str,
-    kem_meta: KemFamily,
-    templates_dir: str,
-    autoformat: bool = True,
-) -> str:
-    """Generate the family-level header file, such as
-    LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem.h.
-
-    Return the path to the generated header file.
-    """
-    header_path = os.path.join(kem_dir, kem_meta.header)
-
-    header = load_jinja_template(
-        os.path.join(templates_dir, KEM_HEADER_TEMPLATE)
-    ).render(
-        {
-            "kem_key": kem_key,
-            "kem_meta": kem_meta,
-            "generated_by": f"{__name__}.{currentframe_funcname()}",
-        }
-    )
-    with open(header_path, "w") as f:
-        f.write(header)
-    if autoformat:
-        format_with_astyle(header_path)
-    return header_path
-
-
-def generate_kem_source(
-    kem_dir: str,
-    kem_key: str,
-    kem_meta: KemFamily,
-    param_key: str,
-    param_meta: ParameterSet,
-    templates_dir: str,
-    autoformat: bool = True,
-) -> str:
-    """Render source file implementing OQS' API or the given KEM parameter set
-    (such as kem_ml_kem_768.c), write the source code to the appropriate location,
-    then return the path to that source file
-
-    :param templates_dir: path to the directory containing the Jinja templates
-    :return: path to the rendered source file, such as src/kem/ml_kem/kem_ml_kem_768.c
-    """
-    template = load_jinja_template(os.path.join(templates_dir, KEM_SRC_TEMPLATE))
-    default_impl = kem_meta.impls[param_meta.default_impl_key]
-    addtl_impls = [
-        impl
-        for impl_key, impl in kem_meta.impls.items()
-        if impl_key != param_meta.default_impl_key and impl.param_key == param_key
-    ]
-    addtl_impls_keypair_derand = [
-        impl for impl in addtl_impls if impl.api_names.keypair_derand
-    ]
-    addtl_impls_encaps_derand = [
-        impl for impl in addtl_impls if impl.api_names.encaps_derand
-    ]
-    content = template.render(
-        {
-            "kem_key": kem_key,
-            "param_key": param_key,
-            "nist_level": param_meta.nist_level,
-            "ind_cca": param_meta.ind_cca,
-            "version": kem_meta.version,
-            "derandomized_keypair": kem_meta.derandomized_keypair,
-            "derandomized_encaps": kem_meta.derandomized_encaps,
-            "default_impl": default_impl,
-            "addtl_impls": addtl_impls,
-            "addtl_impls_keypair_derand": addtl_impls_keypair_derand,
-            "addtl_impls_encaps_derand": addtl_impls_encaps_derand,
-            "generated_by": f"{__name__}.{currentframe_funcname()}",
-        }
-    )
-    src_path = os.path.join(kem_dir, f"kem_{param_key}.c")
-    with open(src_path, "w") as f:
-        f.write(content)
-    if autoformat:
-        format_with_astyle(src_path)
-    return src_path
-
-
-def generate_kem_sources(
-    kem_dir: str,
-    kem_key: str,
-    kem_meta: KemFamily,
-    templates_dir: str,
-    autoformat: bool = True,
-) -> list[str]:
-    """Generate the family-level source file(s), such as
-    LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem_<512|768|1024>.c
-    """
-    source_paths = []
-    for param_key, param_meta in kem_meta.params.items():
-        source_path = generate_kem_source(
-            kem_dir, kem_key, kem_meta, param_key, param_meta, templates_dir, autoformat
-        )
-        source_paths.append(source_path)
-    return source_paths
