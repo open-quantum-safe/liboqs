@@ -338,7 +338,8 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 		return 1;
 #else
 		return 0;
-#endif	// EDIT-WHEN-ADDING-KEM
+#endif
+		// EDIT-WHEN-ADDING-KEM
 	} else {
 		return 0;
 	}
@@ -615,7 +616,7 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	// EDIT-WHEN-ADDING-KEM
+		// EDIT-WHEN-ADDING-KEM
 	} else {
 		return NULL;
 	}
