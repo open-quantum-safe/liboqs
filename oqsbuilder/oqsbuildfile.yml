@@ -1,3 +1,4 @@
+# NOTE: check $LIBOQS_DIR/oqsbuilder/docs/oqsbuildfile.md for documentation
 # NOTE: this copy of copy_from_upstream.yml is used to keep track of feature parity
 #   between oqsbuilder and copy_from_upstream.yml
 upstreams:
