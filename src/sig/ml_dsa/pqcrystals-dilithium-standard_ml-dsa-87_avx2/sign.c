@@ -9,6 +9,7 @@
 #include "randombytes.h"
 #include "symmetric.h"
 #include "fips202.h"
+#include <oqs/common.h>
 
 static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], const uint8_t rho[SEEDBYTES], unsigned int i) {
   switch(i) {
@@ -132,6 +133,11 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 
   /* Compute H(rho, t1) and store in secret key */
   shake256(sk + 2*SEEDBYTES, TRBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+
+  /* Clear sensitive data from stack */
+  OQS_MEM_cleanse(seedbuf, sizeof(seedbuf));
+  OQS_MEM_cleanse(&s1, sizeof(s1));
+  OQS_MEM_cleanse(&s2, sizeof(s2));
 
   return 0;
 }
@@ -286,6 +292,16 @@ rej:
     polyz_pack(sig + CTILDEBYTES + i*POLYZ_PACKEDBYTES, &z.vec[i]);
 
   *siglen = CRYPTO_BYTES;
+
+  /* Clear sensitive data from stack */
+  OQS_MEM_cleanse(seedbuf, sizeof(seedbuf));
+  OQS_MEM_cleanse(&s1, sizeof(s1));
+  OQS_MEM_cleanse(&s2, sizeof(s2));
+  OQS_MEM_cleanse(&t0, sizeof(t0));
+  OQS_MEM_cleanse(&z, sizeof(z));
+  OQS_MEM_cleanse(&c, sizeof(c));
+  OQS_MEM_cleanse(&tmpv, sizeof(tmpv));
+
   return 0;
 }
 
@@ -325,6 +341,10 @@ int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t
 #endif
 
   crypto_sign_signature_internal(sig,siglen,m,mlen,pre,2+ctxlen,rnd,sk);
+
+  /* Clear random buffer */
+  OQS_MEM_cleanse(rnd, sizeof(rnd));
+
   return 0;
 }
 
