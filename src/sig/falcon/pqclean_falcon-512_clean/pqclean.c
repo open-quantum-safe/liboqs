@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <string.h>
 
+#include <oqs/common.h>
 #include "api.h"
 #include "inner.h"
 
@@ -105,6 +106,15 @@ PQCLEAN_FALCON512_CLEAN_crypto_sign_keypair(
         return -1;
     }
 
+    /*
+     * Cleanse sensitive intermediate values.
+     */
+    OQS_MEM_cleanse(&tmp, sizeof(tmp));
+    OQS_MEM_cleanse(f, sizeof(f));
+    OQS_MEM_cleanse(g, sizeof(g));
+    OQS_MEM_cleanse(F, sizeof(F));
+    OQS_MEM_cleanse(seed, sizeof(seed));
+
     return 0;
 }
 
@@ -202,8 +212,26 @@ do_sign(uint8_t *nonce, uint8_t *sigbuf, size_t *sigbuflen,
     if (v != 0) {
         inner_shake256_ctx_release(&sc);
         *sigbuflen = v;
+        /*
+         * Cleanse sensitive intermediate values.
+         */
+        OQS_MEM_cleanse(&tmp, sizeof(tmp));
+        OQS_MEM_cleanse(f, sizeof(f));
+        OQS_MEM_cleanse(g, sizeof(g));
+        OQS_MEM_cleanse(F, sizeof(F));
+        OQS_MEM_cleanse(G, sizeof(G));
+        OQS_MEM_cleanse(seed, sizeof(seed));
         return 0;
     }
+    /*
+     * Cleanse sensitive intermediate values on error path.
+     */
+    OQS_MEM_cleanse(&tmp, sizeof(tmp));
+    OQS_MEM_cleanse(f, sizeof(f));
+    OQS_MEM_cleanse(g, sizeof(g));
+    OQS_MEM_cleanse(F, sizeof(F));
+    OQS_MEM_cleanse(G, sizeof(G));
+    OQS_MEM_cleanse(seed, sizeof(seed));
     return -1;
 }
 
