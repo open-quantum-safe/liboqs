@@ -5,6 +5,7 @@
 
 /* === FIPS 205 Stateless Hash-Based Digital Signature Standard */
 
+#include <oqs/common.h>
 #include "slh_dsa.h"
 #include "slh_adrs.h"
 #include "slh_var.h"
@@ -489,6 +490,9 @@ int slh_keygen_internal(uint8_t *sk, uint8_t *pk, const uint8_t *sk_seed,
   xmss_node(&var, pk + n, 0, prm->hp); /* PK.root in pk (compute) */
   memcpy(sk + 3 * n, pk + n, n);       /* PK.root in sk */
 
+  /* Cleanse sensitive intermediate values. */
+  OQS_MEM_cleanse(&var, sizeof(var));
+
   return 0;
 }
 
@@ -514,6 +518,10 @@ int slh_keygen(uint8_t *sk, uint8_t *pk, int (*rbg)(uint8_t *x, size_t xlen),
   /* fill pk_root */
   memcpy(sk + 3 * n, pk_root, n);
   memcpy(pk + n, pk_root, n);
+
+  /* Cleanse sensitive intermediate values. */
+  OQS_MEM_cleanse(&var, sizeof(var));
+
   return 0;
 }
 
@@ -601,6 +609,10 @@ OQS_API size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
   /* create FORS and HT signature parts */
   sig_sz += slh_sign_digest(&var, sig + sig_sz, digest);
 
+  /* Cleanse sensitive intermediate values. */
+  OQS_MEM_cleanse(&var, sizeof(var));
+  OQS_MEM_cleanse(digest, sizeof(digest));
+
   return sig_sz;
 }
 
@@ -639,6 +651,10 @@ size_t slh_sign(uint8_t *sig, const uint8_t *m, size_t m_sz, const uint8_t *ctx,
 
   /* create FORS and HT signature parts */
   sig_sz += slh_sign_digest(&var, sig + sig_sz, digest);
+
+  /* Cleanse sensitive intermediate values. */
+  OQS_MEM_cleanse(&var, sizeof(var));
+  OQS_MEM_cleanse(digest, sizeof(digest));
 
   return sig_sz;
 }

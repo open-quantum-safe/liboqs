@@ -62,6 +62,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_128f_sign(uint8_t *signature, size_
 	*signature_len = slh_sign(signature, message, message_len, ctx, ctxlen,
 	                          secret_key, addrnd, prm);
 
+	OQS_MEM_cleanse(addrnd, sizeof(addrnd));
+
 	if (*signature_len == 0) {
 		return OQS_ERROR;
 	}
@@ -95,6 +97,8 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_128f_sign_with_ctx_str(uint8_t *sig
 
 	*signature_len = slh_sign(signature, message, message_len, ctx_str, ctx_str_len,
 	                          secret_key, addrnd, prm);
+
+	OQS_MEM_cleanse(addrnd, sizeof(addrnd));
 
 	if (*signature_len == 0) {
 		return OQS_ERROR;
