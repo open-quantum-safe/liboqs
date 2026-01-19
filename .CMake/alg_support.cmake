@@ -104,6 +104,12 @@ cmake_dependent_option(OQS_ENABLE_KEM_frodokem_976_aes "" ON "OQS_ENABLE_KEM_FRO
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_976_shake "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_1344_aes "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_1344_shake "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_efrodokem_640_aes "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_efrodokem_640_shake "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_efrodokem_976_aes "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_efrodokem_976_shake "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_efrodokem_1344_aes "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_efrodokem_1344_shake "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
 
 option(OQS_ENABLE_KEM_NTRUPRIME "Enable ntruprime algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
