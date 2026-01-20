@@ -12,4 +12,14 @@ LIBOQS_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "pa
 LIBOQS_SRC_DIR = os.path.join(LIBOQS_DIR, "src")
 LIBOQS_JINJA_TEMPLATES_DIR = os.path.join(LIBOQS_DIR, "oqsbuilder", "templates")
 
+OQSBUILDER_AUTOFORMAT_CMAKE = False
+try:
+    import gersemi as _
+
+    OQSBUILDER_AUTOFORMAT_CMAKE = True
+except:
+    pass
+finally:
+    print(f"OQSBUILDER_AUTOFORMAT_CMAKE = {OQSBUILDER_AUTOFORMAT_CMAKE}")
+
 __version__ = "0.1"
