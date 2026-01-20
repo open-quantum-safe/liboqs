@@ -11,6 +11,7 @@ from oqsbuilder import (
     LIBOQS_PATCH_DIR,
     LIBOQS_SRC_DIR,
     LIBOQS_JINJA_TEMPLATES_DIR,
+    OQSBUILDER_AUTOFORMAT_CMAKE,
 )
 from oqsbuilder.utils import currentframe_funcname, load_jinja_template
 
@@ -915,7 +916,7 @@ class OQSBuilder:
                         f"Upstream {impl.upstream_key} is not cloned"
                     )
                 copy_copies(impl.copies, upstream.dir, impl_dir)
-            kem.generate_cmake(kem_dir)
+            kem.generate_cmake(kem_dir, autoformat=OQSBUILDER_AUTOFORMAT_CMAKE)
             kem.generate_header(kem_dir)
             kem.generate_sources(kem_dir)
 

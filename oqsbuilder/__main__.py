@@ -2,7 +2,11 @@ import os
 import sys
 from tempfile import TemporaryDirectory
 
-from oqsbuilder import LIBOQS_DIR, __version__ as oqsbuilderversion
+from oqsbuilder import (
+    LIBOQS_DIR,
+    LIBOQS_JINJA_TEMPLATES_DIR,
+    __version__ as oqsbuilderversion,
+)
 from oqsbuilder.oqsbuilder import OQSBuilder
 
 
@@ -42,6 +46,7 @@ def copy_from_upstream(
 
     oqsbuilder = OQSBuilder.load_oqsbuildfile(oqsbuildfile)
     with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
+        print(f"upstreams will be cloned into {tempdir}")
         oqsbuilder.fetch_upstreams(tempdir)
 
         oqsbuilder.build_kems()
@@ -50,6 +55,4 @@ def copy_from_upstream(
 if __name__ == "__main__":
     print_version()
     buildfile = os.path.join(LIBOQS_DIR, "oqsbuilder", "oqsbuildfile.yml")
-    templates_dir = os.path.join(LIBOQS_DIR, "oqsbuilder", "templates")
-    oqsbuilder = OQSBuilder.load_oqsbuildfile(buildfile)
-    copy_from_upstream(buildfile, templates_dir)
+    copy_from_upstream(buildfile, LIBOQS_JINJA_TEMPLATES_DIR)

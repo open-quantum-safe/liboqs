@@ -44,22 +44,33 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Configure
         run: |
-          git config --global user.name "ciuser" && \
-          git config --global user.email "ci@openquantumsafe.org" && \
-          git config --global --add safe.directory "$PWD" && \
-          echo "LIBOQS_DIR=$PWD" >> "$GITHUB_ENV"
+          git config --global user.name "ciuser" \
+          && git config --global user.email "ci@openquantumsafe.org" \
+          && git config --global --add safe.directory "$PWD" \
+          && apt-get update -qq \
+          && apt-get install -y python3-venv \
+          && python3 -m venv /.venv \
+          && . /.venv/bin/activate \
+          && pip install --upgrade pip wheel setuptools \
+          && pip install -r oqsbuilder/dev-requirements.txt \
+          && echo "LIBOQS_DIR=$PWD" >> "$GITHUB_ENV"
       - name: Verify copy_from_upstream state after copy
-        working-directory: "scripts/copy_from_upstream"
+        # working-directory: "scripts/copy_from_upstream"
         run: |
-          python3 copy_from_upstream.py -d copy && \
-          git status --porcelain && \
-          test -z "$(git status --porcelain)"
+          python3 ./scripts/copy_from_upstream/copy_from_upstream.py -d copy \
+          && . /.venv/bin/activate \
+          && python3 -m oqsbuilder \
+          && git status --porcelain \
+          && test -z "$(git status --porcelain)"
       - name: Verify copy_from_upstream state after libjade
         working-directory: "scripts/copy_from_upstream"
         run: |
-          python3 copy_from_upstream.py -d libjade && \
-          git status --porcelain && \
-          test -z "$(git status --porcelain)"
+          python3 ./copy_from_upstream.py -d libjade \
+          && cd $LIBOQS_DIR \
+          && . /.venv/bin/activate \
+          && python3 -m oqsbuilder \
+          && git status --porcelain \
+          && test -z "$(git status --porcelain)"
 
   buildcheck:
     name: Check that code passes a basic build
