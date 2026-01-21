@@ -4,6 +4,7 @@
 
 #include "../../sig_slh_dsa.h"
 #include "../../slh_dsa_c/slh_dsa.h"
+#include "../../slh_dsa_c/slh_param.h"
 #include "../../slh_dsa_c/slh_prehash.h"
 #include <oqs/oqs.h>
 
