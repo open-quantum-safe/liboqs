@@ -55,13 +55,11 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_sign(uint8_t *signature, size
         const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 
 	const slh_param_t *prm = &slh_dsa_shake_256s;
-	const uint8_t *ctx = NULL;
-	const size_t ctxlen = SLH_CTX_SZ_NO_CONTEXT;
 	uint8_t addrnd[32];
 	OQS_randombytes(addrnd, 32);
 
-	*signature_len = slh_sign(signature, message, message_len, ctx, ctxlen,
-	                          secret_key, addrnd, prm);
+	*signature_len = slh_sign_internal(signature, message, message_len,
+	                                    secret_key, addrnd, prm);
 
 	if (*signature_len == 0) {
 		return OQS_ERROR;
@@ -74,11 +72,9 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_verify(const uint8_t *message
         const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 
 	const slh_param_t *prm = &slh_dsa_shake_256s;
-	const uint8_t *ctx = NULL;
-	const size_t ctxlen = SLH_CTX_SZ_NO_CONTEXT;
 
-	int res = slh_verify(message, message_len, signature, signature_len, ctx,
-	                     ctxlen, public_key, prm);
+	int res = slh_verify_internal(message, message_len, signature, signature_len,
+	                              public_key, prm);
 
 	if (res == 0) {
 		return OQS_ERROR;
@@ -89,6 +85,10 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_verify(const uint8_t *message
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_sign_with_ctx_str(uint8_t *signature,
         size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str,
         size_t ctx_str_len, const uint8_t *secret_key) {
+
+	if (ctx_str_len > 255) {
+		return OQS_ERROR;
+	}
 
 	const slh_param_t *prm = &slh_dsa_shake_256s;
 	uint8_t addrnd[32];
@@ -105,6 +105,10 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_sign_with_ctx_str(uint8_t *si
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_shake_256s_verify_with_ctx_str(const uint8_t *message,
         size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
+
+	if (ctx_str_len > 255) {
+		return OQS_ERROR;
+	}
 
 	const slh_param_t *prm = &slh_dsa_shake_256s;
 

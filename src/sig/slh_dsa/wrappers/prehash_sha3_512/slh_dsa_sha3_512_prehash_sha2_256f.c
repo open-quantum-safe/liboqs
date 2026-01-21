@@ -91,6 +91,10 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha3_512_prehash_sha2_256f_sign_with_ctx_str(
 	size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, 
 	size_t ctx_str_len, const uint8_t *secret_key) {
 	
+	if (ctx_str_len > 255) {
+		return OQS_ERROR;
+	}
+
 	const slh_param_t *prm = &slh_dsa_sha2_256f;
 	const char *ph = "SHA3-512";
 	uint8_t addrnd[32];
@@ -109,6 +113,10 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha3_512_prehash_sha2_256f_verify_with_ctx_st
 	size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, 
 	size_t ctx_str_len, const uint8_t *public_key) {
 	
+	if (ctx_str_len > 255) {
+		return OQS_ERROR;
+	}
+
 	const slh_param_t *prm = &slh_dsa_sha2_256f;
 	const char *ph = "SHA3-512";
 	int res = hash_slh_verify(message, message_len, signature, signature_len,
