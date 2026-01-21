@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:e3f0e064-0a7b-49da-8f9c-20969271ed8f",
+  "serialNumber": "urn:uuid:96e5dd1c-c97c-4290-82e0-77879e474f25",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-09-11T19:12:41.723813+00:00",
+    "timestamp": "2025-09-25T05:06:11.659435+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@c25f169f5ad77d5b96984357a396f98c223b7a98",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f684a57e2d787d1fc41edfe69f5bbce551568701",
       "name": "liboqs",
-      "version": "c25f169f5ad77d5b96984357a396f98c223b7a98"
+      "version": "f684a57e2d787d1fc41edfe69f5bbce551568701"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@c25f169f5ad77d5b96984357a396f98c223b7a98",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f684a57e2d787d1fc41edfe69f5bbce551568701",
       "name": "liboqs",
-      "version": "c25f169f5ad77d5b96984357a396f98c223b7a98"
+      "version": "f684a57e2d787d1fc41edfe69f5bbce551568701"
     },
     {
       "type": "cryptographic-asset",
@@ -2702,6 +2702,26 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-44:armv8-a",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "ML-DSA-44",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 2,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-65:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
@@ -2742,6 +2762,26 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-65:armv8-a",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "ML-DSA-65",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-DSA-87:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
@@ -2777,6 +2817,26 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-DSA-87:armv8-a",
+      "name": "ML-DSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "ML-DSA-87",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
         }
       }
     },
@@ -7847,7 +7907,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@c25f169f5ad77d5b96984357a396f98c223b7a98",
+      "ref": "pkg:github/open-quantum-safe/liboqs@f684a57e2d787d1fc41edfe69f5bbce551568701",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -7983,10 +8043,13 @@
         "alg:MAYO-5:armv8-a",
         "alg:ML-DSA-44:generic",
         "alg:ML-DSA-44:x86_64",
+        "alg:ML-DSA-44:armv8-a",
         "alg:ML-DSA-65:generic",
         "alg:ML-DSA-65:x86_64",
+        "alg:ML-DSA-65:armv8-a",
         "alg:ML-DSA-87:generic",
         "alg:ML-DSA-87:x86_64",
+        "alg:ML-DSA-87:armv8-a",
         "alg:SLH_DSA_PURE_SHA2_128S:generic",
         "alg:SLH_DSA_PURE_SHA2_128F:generic",
         "alg:SLH_DSA_PURE_SHA2_192S:generic",
@@ -9064,6 +9127,12 @@
       ]
     },
     {
+      "ref": "alg:ML-DSA-44:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
       "ref": "alg:ML-DSA-65:generic",
       "dependsOn": [
         "alg:sha3"
@@ -9076,6 +9145,12 @@
       ]
     },
     {
+      "ref": "alg:ML-DSA-65:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
       "ref": "alg:ML-DSA-87:generic",
       "dependsOn": [
         "alg:sha3"
@@ -9083,6 +9158,12 @@
     },
     {
       "ref": "alg:ML-DSA-87:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:ML-DSA-87:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
