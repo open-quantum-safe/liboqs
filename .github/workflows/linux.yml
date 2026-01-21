@@ -280,7 +280,7 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           mkdir -p tmp && sde64 ${{ matrix.SDE_ARCH }} -- \
             python3 -m pytest --verbose --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
