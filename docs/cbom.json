@@ -2,41 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-<<<<<<< HEAD
-  "serialNumber": "urn:uuid:0430be99-577d-44bf-a05d-1efca40ef21b",
+  "serialNumber": "urn:uuid:4cbf41fc-098b-4dc2-b668-46bbbadaad90",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-01-07T20:37:47.072555+00:00",
+    "timestamp": "2026-01-22T16:40:56.249455+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@ea1126629fcd0236733d7a8f4197e9082ae09efc",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab",
       "name": "liboqs",
-      "version": "ea1126629fcd0236733d7a8f4197e9082ae09efc"
-=======
-  "serialNumber": "urn:uuid:96e5dd1c-c97c-4290-82e0-77879e474f25",
-  "version": 1,
-  "metadata": {
-    "timestamp": "2025-09-25T05:06:11.659435+00:00",
-    "component": {
-      "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f684a57e2d787d1fc41edfe69f5bbce551568701",
-      "name": "liboqs",
-      "version": "f684a57e2d787d1fc41edfe69f5bbce551568701"
->>>>>>> main
+      "version": "6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab"
     }
   },
   "components": [
     {
       "type": "library",
-<<<<<<< HEAD
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@ea1126629fcd0236733d7a8f4197e9082ae09efc",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab",
       "name": "liboqs",
-      "version": "ea1126629fcd0236733d7a8f4197e9082ae09efc"
-=======
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f684a57e2d787d1fc41edfe69f5bbce551568701",
-      "name": "liboqs",
-      "version": "f684a57e2d787d1fc41edfe69f5bbce551568701"
->>>>>>> main
+      "version": "6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab"
     },
     {
       "type": "cryptographic-asset",
@@ -7445,7 +7427,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@f684a57e2d787d1fc41edfe69f5bbce551568701",
+      "ref": "pkg:github/open-quantum-safe/liboqs@6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
