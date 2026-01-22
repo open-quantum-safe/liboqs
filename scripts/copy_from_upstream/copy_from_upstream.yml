@@ -56,13 +56,13 @@ upstreams:
     kem_scheme_path: '.'
     patches: []
   -
-    name: pqcrystals-dilithium-standard
-    git_url: https://github.com/pq-crystals/dilithium.git
-    git_branch: master
-    git_commit: 444cdcc84eb36b66fe27b3a2529ee48f6d8150c2
-    sig_meta_path: '{pretty_name_full}_META.yml'
+    name: mldsa-native
+    git_url: https://github.com/pq-code-package/mldsa-native.git
+    git_branch: v1.0.0-alpha2
+    git_commit: f48f164cefb07f4ffa519ddda7cee670b8ee3517
+    sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-ml_dsa.patch, pqcrystals-ml_dsa-SUF-CMA.patch]
+    preserve_folder_structure: True
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
@@ -216,7 +216,7 @@ sigs:
   -
     name: ml_dsa
     default_implementation: ref
-    upstream_location: pqcrystals-dilithium-standard
+    upstream_location: mldsa-native
     schemes:
       -
         scheme: "44"

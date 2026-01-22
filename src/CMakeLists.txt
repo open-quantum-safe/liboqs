@@ -142,6 +142,10 @@ set_target_properties(oqs
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 
+set_property(TARGET oqs
+    APPEND PROPERTY
+    INTERFACE_INCLUDE_DIRECTORIES "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>")
+
 set_target_properties(oqs-internal
     PROPERTIES
     C_VISIBILITY_PRESET default
