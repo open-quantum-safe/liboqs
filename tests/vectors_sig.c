@@ -409,6 +409,18 @@ static int sig_ver_vector_ext(const char *method_name,
 		ret = EXIT_SUCCESS;
 	}
 
+	// NOTE: OQS_SIG_verify should be equivalent to OQS_SIG_verify_with_ctx_str(ctx=Null, ctxlen=0)
+	if ((sigVer_ctx == NULL) && (sigVer_ctxLen == 0)) {
+		rc = OQS_SIG_verify(sig, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigLen, sigVer_pk_bytes);
+
+		if ((!rc) != testPassed) {
+			fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_verify failed!\n", method_name);
+			goto err;
+		} else {
+			ret = EXIT_SUCCESS;
+		}
+	}
+
 	fprintBstr(fh, "testPassed: ", (const uint8_t *)&testPassed, 1);
 
 	goto cleanup;
@@ -510,8 +522,10 @@ cleanup:
 
 static int sig_gen_vector_ext(const char *method_name,
                               uint8_t *prng_output_stream,
-                              const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen,
-                              const uint8_t *sigGen_ctx, size_t sigGen_ctxLen, const uint8_t *sigGen_sig) {
+                              const uint8_t *sigGen_sk,
+                              const uint8_t *sigGen_msg, size_t sigGen_msgLen,
+                              const uint8_t *sigGen_ctx, size_t sigGen_ctxLen,
+                              const uint8_t *sigGen_sig) {
 
 	uint8_t *entropy_input;
 	FILE *fh = NULL;
@@ -574,7 +588,24 @@ static int sig_gen_vector_ext(const char *method_name,
 		ret = EXIT_SUCCESS;
 	} else {
 		ret = EXIT_FAILURE;
-		fprintf(stderr, "[vectors_sig] %s ERROR: signature doesn't match!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_sign_with_ctx_str doesn't match!\n", method_name);
+	}
+
+	// NOTE: OQS_SIG_sign should be equivalent to OQS_SIG_sign_with_ctx_str(ctx=NULL, ctxlen=0)
+	if ((sigGen_ctx == NULL) && (sigGen_ctxLen == 0)) {
+		// reset PRNG to ensure identical output
+		randombytes_init(entropy_input, NULL);
+		rc = OQS_SIG_sign(sig, signature, &sigLen, sigGen_msg, sigGen_msgLen, sigGen_sk);
+		if (rc) {
+			fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_sign failed!\n", method_name);
+			goto err;
+		}
+		if (!memcmp(signature, sigGen_sig, sigLen)) {
+			ret = EXIT_SUCCESS;
+		} else {
+			ret = EXIT_FAILURE;
+			fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_sign doesn't match!\n", method_name);
+		}
 	}
 	goto cleanup;
 
