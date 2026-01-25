@@ -140,8 +140,8 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 /* ML_DSA-specific functions */
 static inline bool is_ml_dsa(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
+	|| (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
+	|| (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
 }
 
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
@@ -308,7 +308,8 @@ static int sig_ver_vector(const char *method_name,
                           const uint8_t *sigVer_msg_bytes,
                           size_t msgLen,
                           const uint8_t *sigVer_sig_bytes, int testPassed,
-                          size_t sigLen) {
+                          size_t sigLen,
+                          int extMu) {
 
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -329,15 +330,15 @@ static int sig_ver_vector(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, extMu);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, extMu);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(sigVer_sig_bytes, sig->length_signature, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, extMu);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -442,7 +443,7 @@ cleanup:
 
 static int sig_gen_vector(const char *method_name,
                           uint8_t *prng_output_stream,
-                          const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig) {
+                          const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig, int extMu) {
 
 	FILE *fh = NULL;
 	uint8_t *signature = NULL;
@@ -474,15 +475,15 @@ static int sig_gen_vector(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, extMu);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, extMu);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, extMu);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -695,8 +696,8 @@ int main(int argc, char **argv) {
 			kg_sk = argv[5];
 
 			if (strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			        strlen(kg_pk) != 2 * sig->length_public_key ||
-			        strlen(kg_sk) != 2 * sig->length_secret_key) {
+			                                  strlen(kg_pk) != 2 * sig->length_public_key ||
+			                                      strlen(kg_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -706,8 +707,8 @@ int main(int argc, char **argv) {
 			prng_output_stream = kg_sk;
 
 			if (strlen(prng_output_stream) != 2 * sig->length_secret_key ||
-			        strlen(kg_pk) != 2 * sig->length_public_key ||
-			        strlen(kg_sk) != 2 * sig->length_secret_key) {
+			                                  strlen(kg_pk) != 2 * sig->length_public_key ||
+			                                      strlen(kg_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -733,8 +734,8 @@ int main(int argc, char **argv) {
 		rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
 
 	} else if (!strcmp(test_name, "sigGen_int")) {
-		/* vectors_sig alg_name sigGen_int sk message signature rnd ---> (argc 7) */
-		if (argc != 7) {
+		/* vectors_sig alg_name sigGen_int sk message signature rnd extmu ---> (argc 8) */
+		if (argc != 8) {
 			valid_args = false;
 			goto err;
 		}
@@ -742,13 +743,14 @@ int main(int argc, char **argv) {
 		sigGen_msg = argv[4];
 		sigGen_sig = argv[5];
 		prng_output_stream = argv[6];
+		int extMu = atoi(argv[7]);
 		/* still need to deal with prehash FIX */
 
 		if (is_ml_dsa(alg_name)) {
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			                               strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+			                                   strlen(sigGen_sig) != 2 * sig->length_signature ||
+			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -764,9 +766,9 @@ int main(int argc, char **argv) {
 			}
 
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(prng_output_stream) != sig->length_public_key ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			                               strlen(prng_output_stream) != sig->length_public_key ||
+			                                   strlen(sigGen_sig) != 2 * sig->length_signature ||
+			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -790,7 +792,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SLH_DSA)
-		rc = sig_gen_vector(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
+		rc = sig_gen_vector(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes, extMu);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
@@ -810,10 +812,10 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-			        strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
+			                               strlen(sigGen_sig) != 2 * sig->length_signature ||
+			                                   strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+			                                           strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -829,11 +831,11 @@ int main(int argc, char **argv) {
 			}
 
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(prng_output_stream) != sig->length_public_key ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-			        strlen(sigGen_ctx) % 2 != 0 ||
-			        strlen(sigGen_ctx) > 2 * 255) {
+			                               strlen(prng_output_stream) != sig->length_public_key ||
+			                                   strlen(sigGen_sig) != 2 * sig->length_signature ||
+			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+			                                           strlen(sigGen_ctx) % 2 != 0 ||
+			                                               strlen(sigGen_ctx) > 2 * 255) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -872,31 +874,32 @@ int main(int argc, char **argv) {
 #endif
 
 	} else if (!strcmp(test_name, "sigVer_int")) {
-		/* vectors_sig alg_name sigVer_int pk message signature testPassed ---> (argc 7) */
-		if (argc != 7) {
+		/* vectors_sig alg_name sigVer_int pk message signature testPassed extmu---> (argc 8) */
+		if (argc != 8) {
 			valid_args = false;
 			goto err;
 		}
 		sigVer_pk = argv[3];
 		sigVer_msg = argv[4];
 		sigVer_sig = argv[5];
+		int extMu = atoi(argv[7]);
 
 		int sigVerPassed = atoi(argv[6]);
 
 		if (is_ml_dsa(alg_name)) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) != 2 * sig->length_signature ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			                              strlen(sigVer_sig) != 2 * sig->length_signature ||
+			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			                                      (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
 		} else if (is_slh_dsa(alg_name)) {
 			/* SLHDSA also tests for wrong sig lengths so we don't fail here */
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) % 2 != 0 ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			                              strlen(sigVer_sig) % 2 != 0 ||
+			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			                                      (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
@@ -918,7 +921,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
-		rc = sig_ver_vector(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigVerPassed, strlen(sigVer_sig) / 2);
+		rc = sig_ver_vector(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigVerPassed, strlen(sigVer_sig) / 2, extMu);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
@@ -939,21 +942,21 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) != 2 * sig->length_signature ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			                              strlen(sigVer_sig) != 2 * sig->length_signature ||
+			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			                                      strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
+			                                      (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
 		} else if (is_slh_dsa(alg_name)) {
 			/* SLHDSA also tests for wrong sig lengths so we don't fail here */
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) % 2 != 0 ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        strlen(sigVer_ctx) % 2 != 0 ||
-			        strlen(sigVer_ctx) > 2 * 255 ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			                              strlen(sigVer_sig) % 2 != 0 ||
+			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			                                      strlen(sigVer_ctx) % 2 != 0 ||
+			                                          strlen(sigVer_ctx) > 2 * 255 ||
+			                                          (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
