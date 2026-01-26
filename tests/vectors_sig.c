@@ -140,8 +140,8 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 /* ML_DSA-specific functions */
 static inline bool is_ml_dsa(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44))
-	|| (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
-	|| (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
+	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
+	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
 }
 
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
@@ -696,8 +696,8 @@ int main(int argc, char **argv) {
 			kg_sk = argv[5];
 
 			if (strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			                                  strlen(kg_pk) != 2 * sig->length_public_key ||
-			                                      strlen(kg_sk) != 2 * sig->length_secret_key) {
+			        strlen(kg_pk) != 2 * sig->length_public_key ||
+			        strlen(kg_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -707,8 +707,8 @@ int main(int argc, char **argv) {
 			prng_output_stream = kg_sk;
 
 			if (strlen(prng_output_stream) != 2 * sig->length_secret_key ||
-			                                  strlen(kg_pk) != 2 * sig->length_public_key ||
-			                                      strlen(kg_sk) != 2 * sig->length_secret_key) {
+			        strlen(kg_pk) != 2 * sig->length_public_key ||
+			        strlen(kg_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -748,9 +748,9 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			                               strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			                                   strlen(sigGen_sig) != 2 * sig->length_signature ||
-			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+			        strlen(sigGen_sig) != 2 * sig->length_signature ||
+			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -766,9 +766,9 @@ int main(int argc, char **argv) {
 			}
 
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			                               strlen(prng_output_stream) != sig->length_public_key ||
-			                                   strlen(sigGen_sig) != 2 * sig->length_signature ||
-			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			        strlen(prng_output_stream) != sig->length_public_key ||
+			        strlen(sigGen_sig) != 2 * sig->length_signature ||
+			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -812,10 +812,10 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			                               strlen(sigGen_sig) != 2 * sig->length_signature ||
-			                                   strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-			                                           strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
+			        strlen(sigGen_sig) != 2 * sig->length_signature ||
+			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+			        strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -831,11 +831,11 @@ int main(int argc, char **argv) {
 			}
 
 			if ( strlen(sigGen_msg) % 2 != 0 ||
-			                               strlen(prng_output_stream) != sig->length_public_key ||
-			                                   strlen(sigGen_sig) != 2 * sig->length_signature ||
-			                                       strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-			                                           strlen(sigGen_ctx) % 2 != 0 ||
-			                                               strlen(sigGen_ctx) > 2 * 255) {
+			        strlen(prng_output_stream) != sig->length_public_key ||
+			        strlen(sigGen_sig) != 2 * sig->length_signature ||
+			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+			        strlen(sigGen_ctx) % 2 != 0 ||
+			        strlen(sigGen_ctx) > 2 * 255) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -888,18 +888,18 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			                              strlen(sigVer_sig) != 2 * sig->length_signature ||
-			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			                                      (sigVerPassed != 0 && sigVerPassed != 1)) {
+			        strlen(sigVer_sig) != 2 * sig->length_signature ||
+			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			        (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
 		} else if (is_slh_dsa(alg_name)) {
 			/* SLHDSA also tests for wrong sig lengths so we don't fail here */
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			                              strlen(sigVer_sig) % 2 != 0 ||
-			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			                                      (sigVerPassed != 0 && sigVerPassed != 1)) {
+			        strlen(sigVer_sig) % 2 != 0 ||
+			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			        (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
@@ -942,21 +942,21 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			                              strlen(sigVer_sig) != 2 * sig->length_signature ||
-			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			                                      strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
-			                                      (sigVerPassed != 0 && sigVerPassed != 1)) {
+			        strlen(sigVer_sig) != 2 * sig->length_signature ||
+			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
+			        (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
 		} else if (is_slh_dsa(alg_name)) {
 			/* SLHDSA also tests for wrong sig lengths so we don't fail here */
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			                              strlen(sigVer_sig) % 2 != 0 ||
-			                                  strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			                                      strlen(sigVer_ctx) % 2 != 0 ||
-			                                          strlen(sigVer_ctx) > 2 * 255 ||
-			                                          (sigVerPassed != 0 && sigVerPassed != 1)) {
+			        strlen(sigVer_sig) % 2 != 0 ||
+			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			        strlen(sigVer_ctx) % 2 != 0 ||
+			        strlen(sigVer_ctx) > 2 * 255 ||
+			        (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
