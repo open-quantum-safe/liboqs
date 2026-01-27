@@ -750,7 +750,8 @@ int main(int argc, char **argv) {
 			if ( strlen(sigGen_msg) % 2 != 0 ||
 			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
 			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+			        (extMu != 0 && extMu != 1)) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -890,7 +891,8 @@ int main(int argc, char **argv) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
 			        strlen(sigVer_sig) != 2 * sig->length_signature ||
 			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			        (sigVerPassed != 0 && sigVerPassed != 1) ||
+			        (extMu != 0 && extMu != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
