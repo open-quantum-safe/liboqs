@@ -1,8 +1,11 @@
 # SPDX-License-Identifier: MIT
 
+import functools
 import json
 import sys
 from urllib.parse import urljoin
+import unittest
+import unittest.mock
 
 import pytest
 import requests
@@ -35,6 +38,19 @@ slh_dsa_sig = urljoin(URLROOT, "SLH-DSA-sigGen-FIPS205/internalProjection.json")
 slh_dsa_ver = urljoin(URLROOT, "SLH-DSA-sigVer-FIPS205/internalProjection.json")
 
 
+@pytest.fixture(autouse=True, scope="module")
+def requests_get():
+    with unittest.mock.patch("requests.get", wraps=requests.get) as mock_get:
+        yield mock_get
+        print(f"mock_get is called {mock_get.call_count} times")
+
+
+@functools.lru_cache
+def cached_requests_get(url: str):
+    resp = requests.get(url)
+    return resp
+
+
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
 def test_acvp_vec_kem_keygen(kem_name):
@@ -47,7 +63,7 @@ def test_acvp_vec_kem_keygen(kem_name):
     if not (kem_name in ml_kem):
         pytest.skip("Not supported")
 
-    resp = requests.get(ml_kem_kg)
+    resp = cached_requests_get(ml_kem_kg)
     assert resp.status_code == 200
     ml_kem_kg_acvp = json.loads(resp.content)
 
@@ -86,7 +102,7 @@ def test_acvp_vec_kem_encdec_aft(kem_name):
     if not (kem_name in ml_kem):
         pytest.skip("Not supported")
 
-    resp = requests.get(ml_kem_encdec)
+    resp = cached_requests_get(ml_kem_encdec)
     assert resp.status_code == 200
     ml_kem_encdec_acvp = json.loads(resp.content)
 
@@ -131,7 +147,7 @@ def test_acvp_vec_kem_encdec_val(kem_name):
     if not (kem_name in ml_kem):
         pytest.skip("Not supported")
 
-    resp = requests.get(ml_kem_encdec)
+    resp = cached_requests_get(ml_kem_encdec)
     assert resp.status_code == 200
     ml_kem_encdec_acvp = json.loads(resp.content)
 
@@ -174,7 +190,7 @@ def test_acvp_vec_ml_dsa_sig_keygen(sig_name):
     if not (sig_name in ml_sig):
         pytest.skip("Not supported")
 
-    resp = requests.get(ml_dsa_kg)
+    resp = cached_requests_get(ml_dsa_kg)
     assert resp.status_code == 200
     ml_sig_kg_acvp = json.loads(resp.content)
 
@@ -212,7 +228,7 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
     if not (sig_name in ml_sig):
         pytest.skip("Not supported")
 
-    resp = requests.get(ml_dsa_sig)
+    resp = cached_requests_get(ml_dsa_sig)
     assert resp.status_code == 200
     ml_sig_sig_acvp = json.loads(resp.content)
 
@@ -275,7 +291,7 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
     if not (sig_name in ml_sig):
         pytest.skip("Not supported")
 
-    resp = requests.get(ml_dsa_ver)
+    resp = cached_requests_get(ml_dsa_ver)
     assert resp.status_code == 200
     ml_sig_sig_acvp = json.loads(resp.content)
 
@@ -374,7 +390,7 @@ def test_acvp_vec_slh_dsa_sig_keygen(sig_name):
 
     acvp_sig_name = slh_format_name(sig_name)
 
-    resp = requests.get(slh_dsa_kg)
+    resp = cached_requests_get(slh_dsa_kg)
     assert resp.status_code == 200
     slh_sig_kg_acvp = json.loads(resp.content)
 
@@ -416,7 +432,7 @@ def test_acvp_vec_slh_dsa_sig_gen(sig_name):
     if not (sig_name in slh_sig):
         pytest.skip("Not supported")
 
-    resp = requests.get(slh_dsa_sig)
+    resp = cached_requests_get(slh_dsa_sig)
     assert resp.status_code == 200
     slh_sig_sig_acvp = json.loads(resp.content)
 
@@ -472,7 +488,7 @@ def test_acvp_vec_slh_dsa_sig_ver(sig_name):
     if not (sig_name in slh_sig):
         pytest.skip("Not supported")
 
-    resp = requests.get(slh_dsa_ver)
+    resp = cached_requests_get(slh_dsa_ver)
     assert resp.status_code == 200
     slh_sig_sig_acvp = json.loads(resp.content)
 
