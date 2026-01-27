@@ -29,8 +29,8 @@
 /* MLKEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
+	|| (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
+	|| (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
 }
 
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
@@ -577,8 +577,8 @@ int main(int argc, char **argv) {
 		kg_sk = argv[5];
 
 		if (strlen(prng_output_stream) != 128 ||
-		        strlen(kg_pk) != 2 * kem->length_public_key ||
-		        strlen(kg_sk) != 2 * kem->length_secret_key) {
+		                                  strlen(kg_pk) != 2 * kem->length_public_key ||
+		                                      strlen(kg_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -606,9 +606,9 @@ int main(int argc, char **argv) {
 		encdec_aft_c = argv[6];
 
 		if (strlen(prng_output_stream) != 64 ||
-		        strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
-		        strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
-		        strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
+		                                  strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
+		                                      strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
+		                                          strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -636,8 +636,8 @@ int main(int argc, char **argv) {
 		encdec_val_c = argv[5];
 
 		if (strlen(encdec_val_c) != 2 * kem->length_ciphertext ||
-		        strlen(encdec_val_k) != 2 * kem->length_shared_secret ||
-		        strlen(encdec_val_sk) != 2 * kem->length_secret_key) {
+		                            strlen(encdec_val_k) != 2 * kem->length_shared_secret ||
+		                                strlen(encdec_val_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -664,9 +664,9 @@ int main(int argc, char **argv) {
 		strcmp_k = argv[6];
 
 		if (strlen(strcmp_seed) != 128 ||
-		        strlen(strcmp_ek) != 2 * kem->length_public_key ||
-		        strlen(strcmp_c) != 2 * kem->length_ciphertext ||
-		        strlen(strcmp_k) != 2 * kem->length_shared_secret) {
+		                           strlen(strcmp_ek) != 2 * kem->length_public_key ||
+		                               strlen(strcmp_c) != 2 * kem->length_ciphertext ||
+		                                   strlen(strcmp_k) != 2 * kem->length_shared_secret) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -678,7 +678,7 @@ int main(int argc, char **argv) {
 		strcmp_k_bytes = OQS_MEM_malloc(kem->length_shared_secret);
 
 		if ((strcmp_seed_bytes == NULL) || (strcmp_ek_bytes == NULL) ||
-		        (strcmp_c_bytes == NULL) || (strcmp_k_bytes == NULL)) {
+		(strcmp_c_bytes == NULL) || (strcmp_k_bytes == NULL)) {
 			fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
 			rc = OQS_ERROR;
 			goto err;
