@@ -16,17 +16,17 @@ principal-submitters:
 crypto-assumption: learning with errors (LWE)
 website: https://frodokem.org/
 nist-round: 3
-spec-version: NIST Round 3 submission
+spec-version: ISO Preliminary Standardization Proposal - 2023/03/14
 standardization-status: Under [ISO](https://frodokem.org/) consideration
 primary-upstream:
-  source: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
+  source: https://github.com/microsoft/PQCrypto-LWEKE/commit/a2f9dec8917ccc3464b3378d46b140fa7353320d
   spdx-license-identifier: MIT
 parameter-sets:
 - name: FrodoKEM-640-AES
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 9616
-  length-ciphertext: 9720
+  length-ciphertext: 9752
   length-secret-key: 19888
   length-shared-secret: 16
   implementations-switch-on-runtime-cpu-features: true
@@ -63,7 +63,7 @@ parameter-sets:
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 9616
-  length-ciphertext: 9720
+  length-ciphertext: 9752
   length-secret-key: 19888
   length-shared-secret: 16
   implementations-switch-on-runtime-cpu-features: true
@@ -100,7 +100,7 @@ parameter-sets:
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 15632
-  length-ciphertext: 15744
+  length-ciphertext: 15792
   length-secret-key: 31296
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: true
@@ -137,7 +137,7 @@ parameter-sets:
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 15632
-  length-ciphertext: 15744
+  length-ciphertext: 15792
   length-secret-key: 31296
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: true
@@ -174,7 +174,7 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 21520
-  length-ciphertext: 21632
+  length-ciphertext: 21696
   length-secret-key: 43088
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
@@ -208,6 +208,227 @@ parameter-sets:
     default: true
     default: true
 - name: FrodoKEM-1344-SHAKE
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 21520
+  length-ciphertext: 21696
+  length-secret-key: 43088
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      - Windows
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: eFrodoKEM-640-AES
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 9616
+  length-ciphertext: 9720
+  length-secret-key: 19888
+  length-shared-secret: 16
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      - Windows
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+    default: true
+- name: eFrodoKEM-640-SHAKE
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 9616
+  length-ciphertext: 9720
+  length-secret-key: 19888
+  length-shared-secret: 16
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      - Windows
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+    default: true
+- name: eFrodoKEM-976-AES
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-public-key: 15632
+  length-ciphertext: 15744
+  length-secret-key: 31296
+  length-shared-secret: 24
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      - Windows
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+    default: true
+- name: eFrodoKEM-976-SHAKE
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-public-key: 15632
+  length-ciphertext: 15744
+  length-secret-key: 31296
+  length-shared-secret: 24
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      - Windows
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+    default: true
+- name: eFrodoKEM-1344-AES
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 21520
+  length-ciphertext: 21632
+  length-secret-key: 43088
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      - Windows
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+    default: true
+- name: eFrodoKEM-1344-SHAKE
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 21520
