@@ -11,6 +11,7 @@ import pytest
 import requests
 
 import helpers
+import hashlib
 
 ml_kem = ["ML-KEM-512", "ML-KEM-768", "ML-KEM-1024"]
 ml_sig = ["ML-DSA-44", "ML-DSA-65", "ML-DSA-87"]
@@ -37,6 +38,35 @@ slh_dsa_kg = urljoin(URLROOT, "SLH-DSA-keyGen-FIPS205/internalProjection.json")
 slh_dsa_sig = urljoin(URLROOT, "SLH-DSA-sigGen-FIPS205/internalProjection.json")
 slh_dsa_ver = urljoin(URLROOT, "SLH-DSA-sigVer-FIPS205/internalProjection.json")
 
+def calc_hash(msg, algo):
+    msg_bytes = bytes.fromhex(msg)
+
+    if algo == "SHA2-224":
+        return hashlib.sha224(msg_bytes).hexdigest(), 1
+    elif algo == "SHA2-256":
+        return hashlib.sha256(msg_bytes).hexdigest(), 2
+    elif algo == "SHA2-384":
+        return hashlib.sha384(msg_bytes).hexdigest(), 3
+    elif algo == "SHA2-512":
+        return hashlib.sha512(msg_bytes).hexdigest(), 4
+    elif algo == "SHA2-512/224":
+        return hashlib.new("sha512_224", msg_bytes).hexdigest(), 5
+    elif algo == "SHA2-512/256":
+        return hashlib.new("sha512_256", msg_bytes).hexdigest(), 6
+    elif algo == "SHA3-224":
+        return hashlib.sha3_224(msg_bytes).hexdigest(), 7
+    elif algo == "SHA3-256":
+        return hashlib.sha3_256(msg_bytes).hexdigest(), 8
+    elif algo == "SHA3-384":
+        return hashlib.sha3_384(msg_bytes).hexdigest(), 9
+    elif algo == "SHA3-512":
+        return hashlib.sha3_512(msg_bytes).hexdigest(), 10
+    elif algo == "SHAKE-128":
+        return hashlib.shake_128(msg_bytes).hexdigest(32), 11
+    elif algo == "SHAKE-256":
+        return hashlib.shake_256(msg_bytes).hexdigest(64), 12
+    else:
+        raise ValueError(f"Unsupported hash algorithm: {algo}")
 
 @pytest.fixture(autouse=True, scope="module")
 def requests_get():
@@ -234,57 +264,73 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
 
     variantFound = False
     for variant in ml_sig_sig_acvp["testGroups"]:
-        # only external pre-hash tests are disabled ATM
-        if not (
-            variant["signatureInterface"] == "external"
-            and variant["preHash"] == "preHash"
-        ):
-            if variant["parameterSet"] == sig_name:
-                variantFound = True
-                for testCase in variant["tests"]:
-                    sk = testCase["sk"]
-                    if variant["signatureInterface"] == "internal":
-                        if variant["externalMu"]:
-                            message = testCase["mu"]
-                            extmu = "1"
-                        else:
-                            message = testCase["message"]
-                            extmu = "0"
+        if variant["parameterSet"] == sig_name:
+            variantFound = True
+            for testCase in variant["tests"]:
+                sk = testCase["sk"]
+                if variant["signatureInterface"] == "internal":
+                    if variant["externalMu"]:
+                        message = testCase["mu"]
+                        extmu = "1"
                     else:
                         message = testCase["message"]
+                        extmu = "0"
+                else:
+                    message = testCase["message"]
 
-                    signature = testCase["signature"]
-                    rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
+                if variant["preHash"] == "preHash":
+                    message, alg_num = calc_hash(message, testCase["hashAlg"])
 
-                    build_dir = helpers.get_current_build_dir_name()
-                    if variant["signatureInterface"] == "internal":
-                        helpers.run_subprocess(
-                            [
-                                f"{build_dir}/tests/vectors_sig",
-                                sig_name,
-                                "sigGen_int",
-                                sk,
-                                message,
-                                signature,
-                                rnd,
-                                extmu
-                            ]
-                        )
-                    else:
-                        context = testCase["context"]
-                        helpers.run_subprocess(
-                            [
-                                f"{build_dir}/tests/vectors_sig",
-                                sig_name,
-                                "sigGen_ext",
-                                sk,
-                                message,
-                                signature,
-                                context,
-                                rnd
-                            ]
-                        )
+                signature = testCase["signature"]
+                rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
 
+                build_dir = helpers.get_current_build_dir_name()
+                if variant["signatureInterface"] == "internal":
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name,
+                            "sigGen_int",
+                            sk,
+                            message,
+                            signature,
+                            rnd,
+                            extmu
+                        ]
+                    )
+                elif variant["signatureInterface"] == "external" and variant["preHash"] == "pure":
+                    context = testCase["context"]
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name,
+                            "sigGen_ext",
+                            sk,
+                            message,
+                            signature,
+                            context,
+                            rnd
+                        ]
+                    )
+                elif variant["signatureInterface"] == "external" and variant["preHash"] == "preHash":
+                    context = testCase["context"]
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name,
+                            "sigGen_prehash_ext",
+                            sk,
+                            message,
+                            signature,
+                            context,
+                            rnd,
+                            str(alg_num)
+                        ]
+                    )
+                else:
+                    raise ValueError(
+                        f"Unsupported combination: {variant["signatureInterface"]}, {variant["preHash"]}"
+                    )
     assert variantFound == True
 
 
