@@ -499,14 +499,14 @@ cleanup:
 }
 
 static int sig_ver_prehash_vector_ext(const char *method_name,
-                              const uint8_t *sigVer_pk_bytes,
-                              const uint8_t *sigVer_msg_bytes,
-                              size_t msgLen,
-                              const uint8_t *sigVer_sig_bytes,
-                              const uint8_t *sigVer_ctx, size_t sigVer_ctxLen,
-                              int testPassed,
-                              size_t sigLen,
-							  int hashalg) {
+                                      const uint8_t *sigVer_pk_bytes,
+                                      const uint8_t *sigVer_msg_bytes,
+                                      size_t msgLen,
+                                      const uint8_t *sigVer_sig_bytes,
+                                      const uint8_t *sigVer_ctx, size_t sigVer_ctxLen,
+                                      int testPassed,
+                                      size_t sigLen,
+                                      int hashalg) {
 
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -749,12 +749,12 @@ cleanup:
 }
 
 static int sig_gen_prehash_vector_ext(const char *method_name,
-                              uint8_t *prng_output_stream,
-                              const uint8_t *sigGen_sk,
-                              const uint8_t *sigGen_msg, size_t sigGen_msgLen,
-                              const uint8_t *sigGen_ctx, size_t sigGen_ctxLen,
-                              const uint8_t *sigGen_sig,
-							  int algo_name) {
+                                      uint8_t *prng_output_stream,
+                                      const uint8_t *sigGen_sk,
+                                      const uint8_t *sigGen_msg, size_t sigGen_msgLen,
+                                      const uint8_t *sigGen_ctx, size_t sigGen_ctxLen,
+                                      const uint8_t *sigGen_sig,
+                                      int algo_name) {
 
 	uint8_t *entropy_input;
 	FILE *fh = NULL;
@@ -1107,11 +1107,11 @@ int main(int argc, char **argv) {
 		int hash_alg = atoi(argv[8]);
 
 		if ( strlen(sigGen_msg) % 2 != 0 ||
-				strlen(sigGen_sig) != 2 * sig->length_signature ||
-				strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-				strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-				strlen(sigGen_ctx) > 2 * MAXCTXBYTES ||
-				(hash_alg < 1 || hash_alg > 12)) {
+		        strlen(sigGen_sig) != 2 * sig->length_signature ||
+		        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+		        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+		        strlen(sigGen_ctx) > 2 * MAXCTXBYTES ||
+		        (hash_alg < 1 || hash_alg > 12)) {
 			printf("lengths bad or incorrect hash algo constant \n");
 			goto err;
 		}
@@ -1282,11 +1282,11 @@ int main(int argc, char **argv) {
 		int hash_alg = atoi(argv[8]);
 
 		if (strlen(sigVer_msg) % 2 != 0 ||
-				strlen(sigVer_sig) != 2 * sig->length_signature ||
-				strlen(sigVer_pk) != 2 * sig->length_public_key ||
-				strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
-				(sigVerPassed != 0 && sigVerPassed != 1) ||
-				(hash_alg < 1 || hash_alg > 12)) {
+		        strlen(sigVer_sig) != 2 * sig->length_signature ||
+		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
+		        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
+		        (sigVerPassed != 0 && sigVerPassed != 1) ||
+		        (hash_alg < 1 || hash_alg > 12)) {
 			printf("lengths bad or incorrect verification status or incorrect hash algo constant \n");
 			goto err;
 		}
