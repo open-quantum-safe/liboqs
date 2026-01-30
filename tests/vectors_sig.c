@@ -1332,7 +1332,7 @@ int main(int argc, char **argv) {
 		        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
 		        (sigVerPassed != 0 && sigVerPassed != 1) ||
 		        (prehash_id < 1 || prehash_id > 12)) {
-			printf("lengths bad or incorrect verification status or incorrect hash algo constant %s %d\n", hash_algo, prehash_id);
+			printf("lengths bad or incorrect verification status or incorrect hash algo constant \n");
 			goto err;
 		}
 
