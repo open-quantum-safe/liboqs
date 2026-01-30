@@ -26,7 +26,7 @@ standardization-status: Under [NIST](https://www.cross-crypto.com/CROSS_Specific
   consideration
 spec-version: 2.2 + PQClean and OQS patches
 primary-upstream:
-  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/018fb70bc40a98c7840401ef5fb6ee2267a49ad5
+  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/debc4feee97c2d2f85db50249cbf7fb516e2dc94
   spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: cross-rsdp-128-balanced
