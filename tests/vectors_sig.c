@@ -276,20 +276,44 @@ static const slh_param_t *SLHDSA_param_set(const char *method_name) {
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 int prehash_from_string(const char *s) {
-    if (!strcmp(s, "SHA2-224"))     return 1;
-    if (!strcmp(s, "SHA2-256"))     return 2;
-    if (!strcmp(s, "SHA2-384"))     return 3;
-    if (!strcmp(s, "SHA2-512"))     return 4;
-    if (!strcmp(s, "SHA2-512/224")) return 5;
-    if (!strcmp(s, "SHA2-512/256")) return 6;
-    if (!strcmp(s, "SHA3-224"))     return 7;
-    if (!strcmp(s, "SHA3-256"))     return 8;
-    if (!strcmp(s, "SHA3-384"))     return 9;
-    if (!strcmp(s, "SHA3-512"))     return 10;
-    if (!strcmp(s, "SHAKE-128"))    return 11;
-    if (!strcmp(s, "SHAKE-256"))    return 12;
+	if (!strcmp(s, "SHA2-224")) {
+		return 1;
+	}
+	if (!strcmp(s, "SHA2-256")) {
+		return 2;
+	}
+	if (!strcmp(s, "SHA2-384")) {
+		return 3;
+	}
+	if (!strcmp(s, "SHA2-512")) {
+		return 4;
+	}
+	if (!strcmp(s, "SHA2-512/224")) {
+		return 5;
+	}
+	if (!strcmp(s, "SHA2-512/256")) {
+		return 6;
+	}
+	if (!strcmp(s, "SHA3-224")) {
+		return 7;
+	}
+	if (!strcmp(s, "SHA3-256")) {
+		return 8;
+	}
+	if (!strcmp(s, "SHA3-384")) {
+		return 9;
+	}
+	if (!strcmp(s, "SHA3-512")) {
+		return 10;
+	}
+	if (!strcmp(s, "SHAKE-128")) {
+		return 11;
+	}
+	if (!strcmp(s, "SHAKE-256")) {
+		return 12;
+	}
 
-    return -1;
+	return -1;
 }
 #endif
 
@@ -1123,7 +1147,7 @@ int main(int argc, char **argv) {
 		sigGen_sig = argv[5];
 		sigGen_ctx = argv[6];
 		prng_output_stream = argv[7];
-		char* hash_algo = argv[8];
+		char *hash_algo = argv[8];
 		int prehash_id = prehash_from_string(hash_algo);
 
 		if ( strlen(sigGen_msg) % 2 != 0 ||
