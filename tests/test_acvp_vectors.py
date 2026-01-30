@@ -42,29 +42,29 @@ def calc_hash(msg, algo):
     msg_bytes = bytes.fromhex(msg)
 
     if algo == "SHA2-224":
-        return hashlib.sha224(msg_bytes).hexdigest(), 1
+        return hashlib.sha224(msg_bytes).hexdigest()
     elif algo == "SHA2-256":
-        return hashlib.sha256(msg_bytes).hexdigest(), 2
+        return hashlib.sha256(msg_bytes).hexdigest()
     elif algo == "SHA2-384":
-        return hashlib.sha384(msg_bytes).hexdigest(), 3
+        return hashlib.sha384(msg_bytes).hexdigest()
     elif algo == "SHA2-512":
-        return hashlib.sha512(msg_bytes).hexdigest(), 4
+        return hashlib.sha512(msg_bytes).hexdigest()
     elif algo == "SHA2-512/224":
-        return hashlib.new("sha512_224", msg_bytes).hexdigest(), 5
+        return hashlib.new("sha512_224", msg_bytes).hexdigest()
     elif algo == "SHA2-512/256":
-        return hashlib.new("sha512_256", msg_bytes).hexdigest(), 6
+        return hashlib.new("sha512_256", msg_bytes).hexdigest()
     elif algo == "SHA3-224":
-        return hashlib.sha3_224(msg_bytes).hexdigest(), 7
+        return hashlib.sha3_224(msg_bytes).hexdigest()
     elif algo == "SHA3-256":
-        return hashlib.sha3_256(msg_bytes).hexdigest(), 8
+        return hashlib.sha3_256(msg_bytes).hexdigest()
     elif algo == "SHA3-384":
-        return hashlib.sha3_384(msg_bytes).hexdigest(), 9
+        return hashlib.sha3_384(msg_bytes).hexdigest()
     elif algo == "SHA3-512":
-        return hashlib.sha3_512(msg_bytes).hexdigest(), 10
+        return hashlib.sha3_512(msg_bytes).hexdigest()
     elif algo == "SHAKE-128":
-        return hashlib.shake_128(msg_bytes).hexdigest(32), 11
+        return hashlib.shake_128(msg_bytes).hexdigest(32)
     elif algo == "SHAKE-256":
-        return hashlib.shake_256(msg_bytes).hexdigest(64), 12
+        return hashlib.shake_256(msg_bytes).hexdigest(64)
     else:
         raise ValueError(f"Unsupported hash algorithm: {algo}")
 
@@ -279,7 +279,8 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                     message = testCase["message"]
 
                 if variant["preHash"] == "preHash":
-                    message, alg_num = calc_hash(message, testCase["hashAlg"])
+                    hash_algo = testCase["hashAlg"]
+                    message = calc_hash(message, hash_algo)
 
                 signature = testCase["signature"]
                 rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
@@ -324,7 +325,7 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                             signature,
                             context,
                             rnd,
-                            str(alg_num)
+                            hash_algo
                         ]
                     )
                 else:
@@ -364,7 +365,8 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                     message = testCase["message"]
 
                 if variant["preHash"] == "preHash":
-                    message, alg_num = calc_hash(message, testCase["hashAlg"])
+                    hash_algo = testCase["hashAlg"]
+                    message = calc_hash(message, hash_algo)
 
                 signature = testCase["signature"]
                 pk = testCase["pk"]
@@ -410,7 +412,7 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                             signature,
                             context,
                             testPassed,
-                            str(alg_num)
+                            hash_algo
                         ]
                     )
                 else:
