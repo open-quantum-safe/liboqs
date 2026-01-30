@@ -7,11 +7,11 @@
 - **Authors' website**: https://www.cross-crypto.com/
 - **Specification version**: 2.2 + PQClean and OQS patches.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/c8f7411fed136f0e37600973fa3dbed53465e54f
+  - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/018fb70bc40a98c7840401ef5fb6ee2267a49ad5
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 - **Optimized Implementation sources**:
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/c8f7411fed136f0e37600973fa3dbed53465e54f
+      - **Source**: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/018fb70bc40a98c7840401ef5fb6ee2267a49ad5
       - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
