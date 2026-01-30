@@ -274,6 +274,25 @@ static const slh_param_t *SLHDSA_param_set(const char *method_name) {
 }
 #endif
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
+int prehash_from_string(const char *s) {
+    if (!strcmp(s, "SHA2-224"))     return 1;
+    if (!strcmp(s, "SHA2-256"))     return 2;
+    if (!strcmp(s, "SHA2-384"))     return 3;
+    if (!strcmp(s, "SHA2-512"))     return 4;
+    if (!strcmp(s, "SHA2-512/224")) return 5;
+    if (!strcmp(s, "SHA2-512/256")) return 6;
+    if (!strcmp(s, "SHA3-224"))     return 7;
+    if (!strcmp(s, "SHA3-256"))     return 8;
+    if (!strcmp(s, "SHA3-384"))     return 9;
+    if (!strcmp(s, "SHA3-512"))     return 10;
+    if (!strcmp(s, "SHAKE-128"))    return 11;
+    if (!strcmp(s, "SHAKE-256"))    return 12;
+
+    return -1;
+}
+#endif
+
 static OQS_STATUS sig_kg_vector(const char *method_name,
                                 uint8_t *prng_output_stream,
                                 const uint8_t *kg_pk, const uint8_t *kg_sk) {
@@ -1104,14 +1123,15 @@ int main(int argc, char **argv) {
 		sigGen_sig = argv[5];
 		sigGen_ctx = argv[6];
 		prng_output_stream = argv[7];
-		int hash_alg = atoi(argv[8]);
+		char* hash_algo = argv[8];
+		int prehash_id = prehash_from_string(hash_algo);
 
 		if ( strlen(sigGen_msg) % 2 != 0 ||
 		        strlen(sigGen_sig) != 2 * sig->length_signature ||
 		        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
 		        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
 		        strlen(sigGen_ctx) > 2 * MAXCTXBYTES ||
-		        (hash_alg < 1 || hash_alg > 12)) {
+		        (prehash_id < 1 || prehash_id > 12)) {
 			printf("lengths bad or incorrect hash algo constant \n");
 			goto err;
 		}
@@ -1142,7 +1162,7 @@ int main(int argc, char **argv) {
 		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
-		rc = sig_gen_prehash_vector_ext(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_ctx_bytes, ctxlen, sigGen_sig_bytes, hash_alg);
+		rc = sig_gen_prehash_vector_ext(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_ctx_bytes, ctxlen, sigGen_sig_bytes, prehash_id);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
@@ -1279,15 +1299,16 @@ int main(int argc, char **argv) {
 		sigVer_sig = argv[5];
 		sigVer_ctx = argv[6];
 		int sigVerPassed = atoi(argv[7]);
-		int hash_alg = atoi(argv[8]);
+		char *hash_algo = argv[8];
+		int prehash_id = prehash_from_string(hash_algo);
 
 		if (strlen(sigVer_msg) % 2 != 0 ||
 		        strlen(sigVer_sig) != 2 * sig->length_signature ||
 		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
 		        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
 		        (sigVerPassed != 0 && sigVerPassed != 1) ||
-		        (hash_alg < 1 || hash_alg > 12)) {
-			printf("lengths bad or incorrect verification status or incorrect hash algo constant \n");
+		        (prehash_id < 1 || prehash_id > 12)) {
+			printf("lengths bad or incorrect verification status or incorrect hash algo constant %s %d\n", hash_algo, prehash_id);
 			goto err;
 		}
 
@@ -1315,7 +1336,7 @@ int main(int argc, char **argv) {
 		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
-		rc = sig_ver_prehash_vector_ext(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigVer_ctx_bytes, ctxlen, sigVerPassed, strlen(sigVer_sig) / 2, hash_alg) ;
+		rc = sig_ver_prehash_vector_ext(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigVer_ctx_bytes, ctxlen, sigVerPassed, strlen(sigVer_sig) / 2, prehash_id) ;
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
