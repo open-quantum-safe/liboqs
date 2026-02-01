@@ -210,5 +210,53 @@
   "cross-rsdpg-256-small": {
     "all": "dda985a30c9af0f472dda305fdde3942d19ec4ae4189a36c6a4612db1b58ad39",
     "single": "f4fc8719a1bf18bc016ea7b2d172110cf82bc464d595014d9f4a72b6eb196470"
+  },
+  "mqom2_cat1_gf16_fast_r3": {
+    "all": "7b5cbfd5207fbae972886a6eb2626a284ddeea45f86108be5453e1b7a674c999",
+    "single": "7ea1036840e5a867c2b83ace1d02f1a8782bc75ea91b81aa60315f47abd95abc"
+  },
+  "mqom2_cat1_gf16_fast_r5": {
+    "all": "0562eb716548a3f3eec806292a9ab7c76293b1c07879ec95ac33f6c9e73ae3a1",
+    "single": "8ff666360144cfe4c398564db1a08e4021e8531e5e97337108561ad6d31d6b55"
+  },
+  "mqom2_cat1_gf16_short_r3": {
+    "all": "49909ff5d5dee96eeb6d8d90b70f95f36cd2083b09393d43486b6c6aeb78626c",
+    "single": "073f7c5bf82aff26c5287cca5782e65f9e8dbf415fcb6509c4b2c37e3d66226a"
+  },
+  "mqom2_cat1_gf16_short_r5": {
+    "all": "48b92e573ec654eadc1c874a10261e3c88a1776d2b9ff12c94aa10ca2d076fcc",
+    "single": "09ec6c9cde4f3c635aaf2f4f98f02bdc89e138bd6ee996109847466effb0f5f3"
+  },
+  "mqom2_cat3_gf16_fast_r3": {
+    "all": "eeac8079bac5f79d13cd0ba602342acb25c6ac85dd089c15de3caaf01564ef61",
+    "single": "2f53db529a4345d609cf4fd9e5c9abfdf6f3752c60802dbbf293af0681ba54b5"
+  },
+  "mqom2_cat3_gf16_fast_r5": {
+    "all": "0eb8679a2a5546d7a767baa14d61f5c6c13a11e8bfefe2e8c6e946d9a9766318",
+    "single": "491ba3d0d53c056503920cd4835fe25aa52de18231040fa3bea835e7c6db3220"
+  },
+  "mqom2_cat3_gf16_short_r3": {
+    "all": "07de62ef290ce98ca1fd25de91e2dba03cce74d09dcb036fc093433d91a38e63",
+    "single": "5eea5230f9fb42d606a2bd06927aeac7f79c21f449a5b40e2cfa88ebf9ce760e"
+  },
+  "mqom2_cat3_gf16_short_r5": {
+    "all": "7ee36549fccd6209865ee8680f81430fb68a4a69e843c1d6f02239a3bbe1f3e4",
+    "single": "e7215a9e5c459620d861ad94712e9ec51c888f72d0eb1f6a431661713759f25c"
+  },
+  "mqom2_cat5_gf16_fast_r3": {
+    "all": "c7280ed19747563208eceb0b17db6191da35fd2d474e75e3eae66a6f9d08c445",
+    "single": "4d9a6390ed07afbeb7f6d9ee32851a2d1072223e9ec92f989052beb8d6fcf059"
+  },
+  "mqom2_cat5_gf16_fast_r5": {
+    "all": "32916ef90257a6619b73facf01e1dcee12a0726fc463e8509191487e9272c25a",
+    "single": "4514e356610613d02afd88bec00d39eb9f2352f05464c4b4a01bea015bebe144"
+  },
+  "mqom2_cat5_gf16_short_r3": {
+    "all": "bad902999c7e01fa80a19faeea44e5d5da9dcf0ce45086888f49d94f9c304aca",
+    "single": "848d26f05c944b4e240084d8e0314e6bb496eeefc5af521056ea7e31e86cf57f"
+  },
+  "mqom2_cat5_gf16_short_r5": {
+    "all": "63cebbbc9b55e5275fbec62f9ca209a33c4a84929947359772983f1bd2f9c8ec",
+    "single": "58a1fd38d5bb7bdbe59ba896827784239397fee0117b52d631f317d912caac06"
   }
 }

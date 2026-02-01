@@ -40,5 +40,17 @@
   "SNOVA_37_8_4": ["snova"],
   "SNOVA_49_11_3": ["snova"],
   "SNOVA_56_25_2": ["snova"],
-  "SNOVA_60_10_4": ["snova"]
+  "SNOVA_60_10_4": ["snova"],
+  "mqom2_cat1_gf16_fast_r3": ["mqom"],
+  "mqom2_cat1_gf16_fast_r5": ["mqom"],
+  "mqom2_cat1_gf16_short_r3": ["mqom"],
+  "mqom2_cat1_gf16_short_r5": ["mqom"],
+  "mqom2_cat3_gf16_fast_r3": ["mqom"],
+  "mqom2_cat3_gf16_fast_r5": ["mqom"],
+  "mqom2_cat3_gf16_short_r3": ["mqom"],
+  "mqom2_cat3_gf16_short_r5": ["mqom"],
+  "mqom2_cat5_gf16_fast_r3": ["mqom"],
+  "mqom2_cat5_gf16_fast_r5": ["mqom"],
+  "mqom2_cat5_gf16_short_r3": ["mqom"],
+  "mqom2_cat5_gf16_short_r5": ["mqom"]
 }

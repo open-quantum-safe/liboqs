@@ -1,0 +1,51 @@
+# For all variants
+{
+   Rejection loop for challenge sampling.
+   Memcheck:Cond
+   ...
+   fun:mqom2_*SampleChallenge
+}
+
+{
+   Usage of i_star which is derived as public data.
+   Memcheck:Value8
+   ...
+   fun:mqom2_*GGMTree_Open
+}
+{
+   Usage of i_star which is derived as public data.
+   Memcheck:Cond
+   ...
+   fun:mqom2_*GGMTree_Open
+}
+
+{
+   Usage of i_star which is derived as public data.
+   Memcheck:Value8
+   ...
+   fun:mqom2_*BLC_Open_*
+}
+{
+   Usage of i_star which is derived as public data.
+   Memcheck:Cond
+   ...
+   fun:mqom2_*BLC_Open_*
+}
+
+# Specific to Default and Memopt (on AVX2 variant, constant time AES-NI)
+{
+   Usage of public data (salt) to derive encryption keys for PRG during Equations Expansion, hence non-CT code.
+   Memcheck:Value8
+   fun:mqom2_*rijndael256_table_enc
+   ...
+   fun:mqom2_*ExpandEquations*
+}
+
+{
+   Key schedule is always public in MQOM's BLC, hence non-CT code.
+   Memcheck:Value8
+   fun:mqom2_*rijndael256_*_setkey_enc*
+   ...
+   fun:mqom2_*BLC_Commit_*
+}
+
