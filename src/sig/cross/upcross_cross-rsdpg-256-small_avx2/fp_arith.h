@@ -335,9 +335,7 @@ void fp_synd_minus_fp_vec_scaled(FP_ELEM res[N - K],
 	}
 }
 
-/* liboqs-edit: don't inline for Category 1 (liboqs/issues/2343) */
-static
-inline
+static inline
 void convert_restr_vec_to_fp(FP_ELEM res[N], const FZ_ELEM in[N]) {
 	/* res: expand, align */
 	alignas(32) FP_ELEM res_x[ROUND_UP(N, EPI16_PER_REG)];
