@@ -75,7 +75,7 @@ upstreams:
     name: upcross
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_branch: master
-    git_commit: c8f7411fed136f0e37600973fa3dbed53465e54f
+    git_commit: a21ebc314e06b0972a9bbcf2813a185ecb2917f1
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
   -
