@@ -22,7 +22,7 @@ def test_sig_leak(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if sys.platform != "linux" or os.system("grep ubuntu /etc/os-release") != 0 or os.system("uname -a | grep x86_64") != 0: pytest.skip('Leak testing not supported on this platform')
     helpers.run_subprocess(
-        ["valgrind", "-s", "--error-exitcode=1", "--leak-check=full", "--show-leak-kinds=all", helpers.path_to_executable('test_sig'), sig_name],
+        ["valgrind", "-s", "--error-exitcode=1", "--leak-check=full", "--show-leak-kinds=all", "--max-stackframe=20480000", helpers.path_to_executable('test_sig'), sig_name],
     )
 
 @pytest.mark.skipif("SLH_DSA_LEAK_TEST" not in os.environ, reason="SLH DSA leak testing only performed in extended tests")
