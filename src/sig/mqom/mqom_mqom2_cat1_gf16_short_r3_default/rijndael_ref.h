@@ -40,7 +40,6 @@
 #define rijndael256_ref_enc_x8_x8 MQOM_NAMESPACE(rijndael256_ref_enc_x8_x8)
 
 /* The general Rijndael core context structure */
-PACKED_BEGIN
 typedef struct {
 	rijndael_type rtype; /* Type of Rijndael */
 	uint32_t Nr; /* Number of rounds */
@@ -49,8 +48,7 @@ typedef struct {
 	/* Round keys aligned on 4 bytes to avoid unaligned accesses */
 	/* NOTE: alignment to allow uint32_t dereference on platforms where unalignment might be an issue */
 	ALIGN(4) uint8_t rk[176];  /* Round keys    */
-} rijndael_ref_ctx_aes128 PACKED_END;
-PACKED_BEGIN
+} rijndael_ref_ctx_aes128;
 typedef struct {
 	rijndael_type rtype; /* Type of Rijndael */
 	uint32_t Nr; /* Number of rounds */
@@ -59,8 +57,7 @@ typedef struct {
 	/* Round keys aligned on 4 bytes to avoid unaligned accesses */
 	/* NOTE: alignment to allow uint32_t dereference on platforms where unalignment might be an issue */
 	ALIGN(4) uint8_t rk[240];  /* Round keys    */
-} rijndael_ref_ctx_aes256 PACKED_END;
-PACKED_BEGIN
+} rijndael_ref_ctx_aes256;
 typedef struct {
 	rijndael_type rtype; /* Type of Rijndael */
 	uint32_t Nr; /* Number of rounds */
@@ -69,7 +66,7 @@ typedef struct {
 	/* Round keys aligned on 4 bytes to avoid unaligned accesses */
 	/* NOTE: alignment to allow uint32_t dereference on platforms where unalignment might be an issue */
 	ALIGN(4) uint8_t rk[480];  /* Round keys    */
-} rijndael_ref_ctx_rijndael256 PACKED_END;
+} rijndael_ref_ctx_rijndael256;
 
 /* x2, x4 and x8 contexts */
 MAKE_GENERIC_CTX_XX(aes128, ref)

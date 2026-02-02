@@ -96,7 +96,7 @@ upstreams:
     name: mqom
     git_url: https://github.com/rben-dev/mqom-liboqs.git
     git_branch: main
-    git_commit: e7c08113e75466f1cf16776d259528ae38864ecb
+    git_commit: 49338027aafd5cd6cea9424bcefa2b200c3b635d
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/META_{pretty_name_full}.yml'
 kems:
