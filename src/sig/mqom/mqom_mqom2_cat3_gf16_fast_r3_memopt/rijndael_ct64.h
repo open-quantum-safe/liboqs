@@ -3,9 +3,7 @@
 
 #include "rijndael_common.h"
 
-#include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
 
 /* Deal with namespacing */
 #define aes128_ct64_setkey_enc MQOM_NAMESPACE(aes128_ct64_setkey_enc)
