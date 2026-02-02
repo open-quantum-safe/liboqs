@@ -1,7 +1,7 @@
 /********************************************************************************************
 * FrodoKEM: Learning with Errors Key Encapsulation
 *
-* Abstract: Key Encapsulation Mechanism (KEM) based on Frodo
+* Abstract: Ephemeral Key Encapsulation Mechanism (KEM) based on Frodo
 *********************************************************************************************/
 
 #include <string.h>
@@ -17,8 +17,8 @@ OQS_STATUS crypto_kem_keypair_derand(unsigned char *pk, unsigned char *sk, const
 
 OQS_STATUS crypto_kem_keypair(unsigned char* pk, unsigned char* sk)
 { // FrodoKEM's key generation
-  // Outputs: public key pk (               BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 bytes)
-  //          secret key sk (CRYPTO_BYTES + BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + 2*PARAMS_N*PARAMS_NBAR + BYTES_PKHASH bytes)
+  // Outputs: public key pk = pk_seedA||pk_b                      (               BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 bytes)
+  //          secret key sk = sk_s||pk_seedA||pk_b||sk_S||sk_pkh  (CRYPTO_BYTES + BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + 2*PARAMS_N*PARAMS_NBAR + BYTES_PKHASH bytes)
     uint8_t *pk_seedA = &pk[0];
     uint8_t *pk_b = &pk[BYTES_SEED_A];
     uint8_t *sk_s = &sk[0];
@@ -84,6 +84,9 @@ OQS_STATUS crypto_kem_enc_derand(unsigned char *ct, unsigned char *ss, const uns
 
 OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk)
 { // FrodoKEM's key encapsulation
+  // Input:   public key pk = pk_seedA||pk_b      (BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 bytes)
+  // Outputs: ciphertext ct = ct_c1||ct_c2        (               (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + (PARAMS_LOGQ*PARAMS_NBAR*PARAMS_NBAR)/8 bytes)
+  //          shared key ss                       (CRYPTO_BYTES bytes)
     const uint8_t *pk_seedA = &pk[0];
     const uint8_t *pk_b = &pk[BYTES_SEED_A];
     uint8_t *ct_c1 = &ct[0];
@@ -153,6 +156,9 @@ OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned c
 
 OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk)
 { // FrodoKEM's key decapsulation
+  // Inputs: ciphertext ct = ct_c1||ct_c2                        (                              (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + (PARAMS_LOGQ*PARAMS_NBAR*PARAMS_NBAR)/8 bytes)
+  //         secret key sk = sk_s||pk_seedA||pk_b||sk_S||sk_pkh  (CRYPTO_BYTES + BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + 2*PARAMS_N*PARAMS_NBAR + BYTES_PKHASH bytes)
+  // Output: shared key ss                                       (CRYPTO_BYTES bytes)
     uint16_t B[PARAMS_N*PARAMS_NBAR] = {0};
     uint16_t Bp[PARAMS_N*PARAMS_NBAR] = {0};
     uint16_t W[PARAMS_NBAR*PARAMS_NBAR] = {0};                // contains secret data
@@ -223,10 +229,7 @@ OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsi
     // Reducing BBp modulo q
     for (int i = 0; i < PARAMS_N*PARAMS_NBAR; i++) BBp[i] = BBp[i] & ((1 << PARAMS_LOGQ)-1);
 
-    // If (Bp == BBp & C == CC) then ss = F(ct || k'), else ss = F(ct || s)
-    // Needs to avoid branching on secret data as per:
-    //     Qian Guo, Thomas Johansson, Alexander Nilsson. A key-recovery timing attack on post-quantum 
-    //     primitives using the Fujisaki-Okamoto transformation and its application on FrodoKEM. In CRYPTO 2020.
+    // Needs to avoid branching on secret data using constant-time implementation.
     int8_t selector = ct_verify(Bp, BBp, PARAMS_N*PARAMS_NBAR) | ct_verify(C, CC, PARAMS_NBAR*PARAMS_NBAR);
     // If (selector == 0) then load k' to do ss = F(ct || k'), else if (selector == -1) load s to do ss = F(ct || s)
     ct_select((uint8_t*)Fin_k, (uint8_t*)kprime, (uint8_t*)sk_s, CRYPTO_BYTES, selector);
