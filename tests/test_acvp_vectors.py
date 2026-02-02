@@ -278,7 +278,7 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                         extmu = "0"
                 else:
                     message = testCase["message"]
-                # internal APIs take hash as "message"
+                # internal pre-hash API take hash as "message"
                 if variant["preHash"] == "preHash":
                     hash_algo = testCase["hashAlg"]
                     message = calc_hash(message, hash_algo)
@@ -366,7 +366,7 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                 else:
                     message = testCase["message"]
 
-                # internal APIs take hash as "message"
+                # internal pre-hash API take hash as "message"
                 if variant["preHash"] == "preHash":
                     hash_algo = testCase["hashAlg"]
                     message = calc_hash(message, hash_algo)
