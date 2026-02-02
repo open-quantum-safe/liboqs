@@ -395,9 +395,9 @@ static int sig_ver_vector(const char *method_name,
                           const uint8_t *sigVer_pk_bytes,
                           const uint8_t *sigVer_msg_bytes,
                           size_t msgLen,
-                          const uint8_t *sigVer_sig_bytes, 
-						  size_t sigLen,
-						  int testPassed,
+                          const uint8_t *sigVer_sig_bytes,
+                          size_t sigLen,
+                          int testPassed,
                           int extMu) {
 
 	FILE *fh = NULL;
@@ -469,9 +469,9 @@ static int sig_ver_vector_ext(const char *method_name,
                               const uint8_t *sigVer_msg_bytes,
                               size_t msgLen,
                               const uint8_t *sigVer_sig_bytes,
-							  size_t sigLen,
-                              const uint8_t *sigVer_ctx, 
-							  size_t sigVer_ctxLen,
+                              size_t sigLen,
+                              const uint8_t *sigVer_ctx,
+                              size_t sigVer_ctxLen,
                               int testPassed) {
 
 	FILE *fh = NULL;
@@ -536,9 +536,9 @@ static int sig_ver_prehash_vector_ext(const char *method_name,
                                       const uint8_t *sigVer_msg_bytes,
                                       size_t msgLen,
                                       const uint8_t *sigVer_sig_bytes,
-									  size_t sigLen,
-                                      const uint8_t *sigVer_ctx, 
-									  size_t sigVer_ctxLen,
+                                      size_t sigLen,
+                                      const uint8_t *sigVer_ctx,
+                                      size_t sigVer_ctxLen,
                                       int testPassed,
                                       int hashalg) {
 
@@ -785,10 +785,10 @@ cleanup:
 static int sig_gen_prehash_vector_ext(const char *method_name,
                                       uint8_t *prng_output_stream,
                                       const uint8_t *sigGen_sk,
-                                      const uint8_t *sigGen_msg, 
-									  size_t sigGen_msgLen,
-                                      const uint8_t *sigGen_ctx, 
-									  size_t sigGen_ctxLen,
+                                      const uint8_t *sigGen_msg,
+                                      size_t sigGen_msgLen,
+                                      const uint8_t *sigGen_ctx,
+                                      size_t sigGen_ctxLen,
                                       const uint8_t *sigGen_sig,
                                       int algo_name) {
 
