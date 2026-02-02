@@ -130,7 +130,7 @@ int Sign(const uint8_t sk[MQOM2_SK_SIZE], const uint8_t *msg, unsigned long long
 	blc_key_t key;
 	field_base_elt x[FIELD_BASE_PACKING(MQOM2_PARAM_MQ_N)];
 	/* XXX: alignment of u0 because of aliasing of i_star */
-	ALIGN(sizeof(uint16_t)) field_ext_elt u0[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_ETA)];
+	ALIGN(4) field_ext_elt u0[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_ETA)];
 	field_ext_elt u1[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_ETA)];
 	/* Aliasing to save stack space */
 	field_ext_elt (*alpha0)[FIELD_EXT_PACKING(MQOM2_PARAM_ETA)] = u0;
