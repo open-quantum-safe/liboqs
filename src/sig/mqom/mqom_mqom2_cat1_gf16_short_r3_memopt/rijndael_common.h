@@ -19,6 +19,46 @@
 #endif
 #endif
 
+/* Alignment macro */
+#ifdef ALIGN
+#undef ALIGN
+#endif
+#if defined(__GNUC__)
+#define ALIGN(x) __attribute__ ((aligned(x)))
+#elif defined(_MSC_VER)
+#define ALIGN(x) __declspec(align(x))
+#elif defined(__ARMCC_VERSION)
+#define ALIGN(x) __align(x)
+#else
+#define ALIGN(x)
+#endif
+
+/* Packing macro */
+#ifdef PACKED_BEGIN
+#undef PACKED_BEGIN
+#endif
+#ifdef PACKED_END
+#undef PACKED_END
+#endif
+#if defined(_MSC_VER)
+/* MSVC uses pragmas */
+#define PACKED_BEGIN __pragma(pack(push, 1))
+#define PACKED_END   __pragma(pack(pop))
+#elif defined(__GNUC__) || defined(__clang__)
+/* GCC / Clang */
+#define PACKED_BEGIN
+#define PACKED_END   __attribute__((packed))
+#elif defined(__ARMCC_VERSION)
+/* ARM Compiler */
+#define PACKED_BEGIN
+#define PACKED_END   __packed
+#else
+/* Fallback */
+#define PACKED_BEGIN
+#define PACKED_END
+#endif
+
+
 typedef enum {
 	AES128 = 0, /* Actually Rijndael_128_128 */
 	AES256 = 1, /* Actually Rijndael_128_256  */
