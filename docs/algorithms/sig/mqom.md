@@ -6,14 +6,14 @@
 - **Authors' website**: https://mqom.org/
 - **Specification version**: NIST Round 2.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/rben-dev/mqom-liboqs/commit/5da98097b37bb71688ab9c4a8c7f8249fe8dbcd8
+  - **Source**: https://github.com/rben-dev/mqom-liboqs/commit/22de36f55b601500c53a922187380c9e799c6dcc
   - **Implementation license (SPDX-Identifier)**: MIT
 - **Optimized Implementation sources**:
   - **memopt**:<a name="memopt"></a>
-      - **Source**: https://github.com/rben-dev/mqom-liboqs/commit/5da98097b37bb71688ab9c4a8c7f8249fe8dbcd8
+      - **Source**: https://github.com/rben-dev/mqom-liboqs/commit/22de36f55b601500c53a922187380c9e799c6dcc
       - **Implementation license (SPDX-Identifier)**: MIT
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/rben-dev/mqom-liboqs/commit/5da98097b37bb71688ab9c4a8c7f8249fe8dbcd8
+      - **Source**: https://github.com/rben-dev/mqom-liboqs/commit/22de36f55b601500c53a922187380c9e799c6dcc
       - **Implementation license (SPDX-Identifier)**: MIT
 
 
