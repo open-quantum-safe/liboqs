@@ -12,7 +12,7 @@ standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/p
   consideration
 spec-version: NIST Round 2
 primary-upstream:
-  source: https://github.com/mqom/mqo/commit/dcccd61b78fbb2ac1ec83a098442de6178373a95
+  source: https://github.com/mqom/mqom-v2/commit/dcccd61b78fbb2ac1ec83a098442de6178373a95
   spdx-license-identifier: MIT
 parameter-sets:
 - name: mqom2_cat1_gf16_fast_r5
