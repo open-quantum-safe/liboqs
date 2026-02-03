@@ -94,7 +94,7 @@ upstreams:
     sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
   -
     name: mqom
-    git_url: https://github.com/mqom/mqom-v2
+    git_url: https://github.com/mqom/mqom-v2.git
     git_branch: main
     git_commit: dcccd61b78fbb2ac1ec83a098442de6178373a95
     sig_scheme_path: '.'
