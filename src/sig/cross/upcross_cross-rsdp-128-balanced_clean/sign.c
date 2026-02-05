@@ -125,15 +125,14 @@ int crypto_sign_verify(const unsigned char *sig,                // in parameter
                        const unsigned char *pk                  // in parameter
                       ) {
 
-	/* PQClean-edit: unused parameter */
-	(void)siglen;
-
 	/* verify returns 1 if signature is ok, 0 otherwise */
 	int ok = CROSS_verify((const pk_t * const) pk,               // in parameter
 	                      (const char *const) m,                 // in parameter
 	                      (const size_t) mlen,                   // in parameter
 	                      (const CROSS_sig_t *const) sig);       // in parameter
 
+	/* liboqs-edit: check signature length */
+	ok = ok && (siglen == sizeof(CROSS_sig_t));
 
 	return ok - 1; // NIST convention: 0 == zero errors, -1 == error condition
 } // end crypto_sign_verify
