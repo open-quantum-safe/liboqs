@@ -274,8 +274,8 @@ static const slh_param_t *SLHDSA_param_set(const char *method_name) {
 }
 #endif
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 int prehash_id_from_string(const char *s) {
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 	if (!strcmp(s, "SHA2-224")) {
 		return 1;
 	} else if (!strcmp(s, "SHA2-256")) {
@@ -301,9 +301,9 @@ int prehash_id_from_string(const char *s) {
 	} else if (!strcmp(s, "SHAKE-256")) {
 		return 12;
 	}
+#endif
 	return -1;
 }
-#endif
 
 static OQS_STATUS sig_kg_vector(const char *method_name,
                                 uint8_t *prng_output_stream,

@@ -331,7 +331,7 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                     )
                 else:
                     raise ValueError(
-                        f"Unsupported combination: {variant["signatureInterface"]}, {variant["preHash"]}"
+                        f"Unsupported combination: {variant['signatureInterface']}, {variant['preHash']}"
                     )
     assert variantFound == True
 
@@ -420,7 +420,7 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                     )
                 else:
                     raise ValueError(
-                        f"Unsupported combination: {variant["signatureInterface"]}, {variant["preHash"]}"
+                        f"Unsupported combination: {variant['signatureInterface']}, {variant['preHash']}"
                     )
 
     assert variantFound == True
