@@ -4,16 +4,19 @@
 
 #include <oqs/kem_hqc.h>
 
+#include "oqs_adapter.h"
+
 #if defined(OQS_ENABLE_KEM_hqc_192)
 
 OQS_KEM *OQS_KEM_hqc_192_new(void) {
-
 	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_hqc_192;
-	kem->alg_version = "hqc-submission_2023-04-30 via https://github.com/SWilson4/package-pqclean/tree/9b509aa7/hqc";
+	kem->alg_version =
+	    "HQC reference implementation via https://gitlab.com/pqc-hqc/hqc "
+	    "commit f46e5422 (v5.0.0, Aug. 22, 2025)";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -34,22 +37,25 @@ OQS_KEM *OQS_KEM_hqc_192_new(void) {
 	return kem;
 }
 
-extern int PQCLEAN_HQC192_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCLEAN_HQC192_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int PQCLEAN_HQC192_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
-
-OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair_derand(uint8_t *public_key,
+        uint8_t *secret_key,
+        const uint8_t *seed) {
 	(void)public_key;
 	(void)secret_key;
 	(void)seed;
 	return OQS_ERROR;
 }
 
-OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_keypair(public_key, secret_key);
+OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key,
+        uint8_t *secret_key) {
+	return (OQS_STATUS)OQS_MAKE_FN(KEM_PREFIX, crypto_kem_keypair)(public_key,
+	        secret_key);
 }
 
-OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
+OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps_derand(uint8_t *ciphertext,
+        uint8_t *shared_secret,
+        const uint8_t *public_key,
+        const uint8_t *seed) {
 	(void)ciphertext;
 	(void)shared_secret;
 	(void)public_key;
@@ -57,12 +63,18 @@ OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps_derand(uint8_t *ciphertext, uint8_t *s
 	return OQS_ERROR;
 }
 
-OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps(uint8_t *ciphertext,
+        uint8_t *shared_secret,
+        const uint8_t *public_key) {
+	return (OQS_STATUS)OQS_MAKE_FN(KEM_PREFIX, crypto_kem_enc)(
+	           ciphertext, shared_secret, public_key);
 }
 
-OQS_API OQS_STATUS OQS_KEM_hqc_192_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-	return (OQS_STATUS) PQCLEAN_HQC192_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+OQS_API OQS_STATUS OQS_KEM_hqc_192_decaps(uint8_t *shared_secret,
+        const uint8_t *ciphertext,
+        const uint8_t *secret_key) {
+	return (OQS_STATUS)OQS_MAKE_FN(KEM_PREFIX, crypto_kem_dec)(
+	           shared_secret, ciphertext, secret_key);
 }
 
 #endif
