@@ -25,7 +25,7 @@ for sig in helpers.available_sigs_by_name():
 # NOTE: these are not made into fixture because each is used once or twice, so
 # the (probably non-existent) performance gain is not worth the loss of
 # debuggability
-URLROOT = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.40/gen-val/json-files/"
+URLROOT = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.41/gen-val/json-files/"
 ml_kem_encdec = urljoin(URLROOT, "ML-KEM-encapDecap-FIPS203/internalProjection.json")
 ml_kem_kg = urljoin(URLROOT, "ML-KEM-keyGen-FIPS203/internalProjection.json")
 
@@ -234,19 +234,25 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
 
     variantFound = False
     for variant in ml_sig_sig_acvp["testGroups"]:
-        # perform only below tests ATM:
-        # 1. internal API with externalMu as false
-        # 2. external API with "pure" implementation
-        if (
-            variant["signatureInterface"] == "internal" and not variant["externalMu"]
-        ) or (
-            variant["signatureInterface"] == "external" and variant["preHash"] == "pure"
+        # only external pre-hash tests are disabled ATM
+        if not (
+            variant["signatureInterface"] == "external"
+            and variant["preHash"] == "preHash"
         ):
             if variant["parameterSet"] == sig_name:
                 variantFound = True
                 for testCase in variant["tests"]:
                     sk = testCase["sk"]
-                    message = testCase["message"]
+                    if variant["signatureInterface"] == "internal":
+                        if variant["externalMu"]:
+                            message = testCase["mu"]
+                            extmu = "1"
+                        else:
+                            message = testCase["message"]
+                            extmu = "0"
+                    else:
+                        message = testCase["message"]
+
                     signature = testCase["signature"]
                     rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
 
@@ -261,6 +267,7 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                                 message,
                                 signature,
                                 rnd,
+                                extmu
                             ]
                         )
                     else:
@@ -274,7 +281,7 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                                 message,
                                 signature,
                                 context,
-                                rnd,
+                                rnd
                             ]
                         )
 
@@ -297,18 +304,23 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
 
     variantFound = False
     for variant in ml_sig_sig_acvp["testGroups"]:
-        # perform only below tests ATM:
-        # 1. internal API with externalMu as false
-        # 2. external API with "pure" implementation
-        if (
-            variant["signatureInterface"] == "internal" and not variant["externalMu"]
-        ) or (
-            variant["signatureInterface"] == "external" and variant["preHash"] == "pure"
+        # only external pre-hash tests are disabled ATM
+        if not (
+            variant["signatureInterface"] == "external"
+            and variant["preHash"] == "preHash"
         ):
             if variant["parameterSet"] == sig_name:
                 variantFound = True
                 for testCase in variant["tests"]:
-                    message = testCase["message"]
+                    if variant["signatureInterface"] == "internal":
+                        if variant["externalMu"]:
+                            message = testCase["mu"]
+                            extmu = "1"
+                        else:
+                            message = testCase["message"]
+                            extmu = "0"
+                    else:
+                        message = testCase["message"]
                     signature = testCase["signature"]
                     pk = testCase["pk"]
                     testPassed = "1" if testCase["testPassed"] else "0"
@@ -324,6 +336,7 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                                 message,
                                 signature,
                                 testPassed,
+                                extmu
                             ]
                         )
                     else:
@@ -460,6 +473,7 @@ def test_acvp_vec_slh_dsa_sig_gen(sig_name):
                             message,
                             signature,
                             rnd,
+                            "0"
                         ]
                     )
                 else:
@@ -511,6 +525,7 @@ def test_acvp_vec_slh_dsa_sig_ver(sig_name):
                             message,
                             signature,
                             testPassed,
+                            "0"
                         ]
                     )
                 else:
