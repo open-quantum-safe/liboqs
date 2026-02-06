@@ -301,6 +301,8 @@ int prehash_id_from_string(const char *s) {
 	} else if (!strcmp(s, "SHAKE-256")) {
 		return 12;
 	}
+#else
+	(void)s;
 #endif
 	return -1;
 }
