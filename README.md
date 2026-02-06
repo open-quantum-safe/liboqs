@@ -50,7 +50,7 @@ The list below indicates all algorithms currently supported by liboqs, including
 
 The only algorithms in `liboqs` that implement NIST standards are the [`ML-KEM`](https://csrc.nist.gov/pubs/fips/203/final) (final standard) and [`ML-DSA`](https://csrc.nist.gov/pubs/fips/204/final) (final standard) variants with their respective different bit strengths. `liboqs` will retain these algorithm names selected by NIST throughout the finishing stages of the standardization process, so users can rely on their presence going forward. If NIST changes the implementation details of these algorithms, `liboqs` will adjust the implementation so that users are protected from such potential changes.
 
-Falcon and SPHINCS+ have also been [selected for standardization](https://csrc.nist.gov/Projects/post-quantum-cryptography/selected-algorithms-2022), but the `liboqs` implementations of these algorithms are currently tracking Round 3 submissions and not NIST standards drafts.
+Falcon has also been [selected for standardization](https://csrc.nist.gov/Projects/post-quantum-cryptography/selected-algorithms-2022), but the `liboqs` implementations of these algorithms are currently tracking Round 3 submissions and not NIST standards drafts.
 
 All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes available a [selection mechanism for algorithms on the NIST standards track, continued NIST competition, or purely experimental nature by way of the configuration variable OQS_ALGS_ENABLED](CONFIGURE.md#oQS_ALGS_ENABLED). By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
 
@@ -70,13 +70,12 @@ All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes
 #### Signature schemes
 | Algorithm family   | Standardization status                                                                                                                                               | Primary implementation                                                                                                                      |
 |:-------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| CROSS              | Under [NIST](https://www.cross-crypto.com/CROSS_Specification_v2.2.pdf) consideration                                                                                | [`CROSS-signature/CROSS-lib-oqs@c8f7411`](https://github.com/CROSS-signature/CROSS-lib-oqs/commit/c8f7411fed136f0e37600973fa3dbed53465e54f) |
+| CROSS              | Under [NIST](https://www.cross-crypto.com/CROSS_Specification_v2.2.pdf) consideration                                                                                | [`CROSS-signature/CROSS-lib-oqs@a21ebc3`](https://github.com/CROSS-signature/CROSS-lib-oqs/commit/a21ebc314e06b0972a9bbcf2813a185ecb2917f1) |
 | Falcon             | Selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Falcon-Round3.zip) for upcoming standardization | [`PQClean/PQClean@1eacfda`](https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181)                             |
 | MAYO               | Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mayo-spec-round2-web.pdf) consideration                              | [`PQCMayo/MAYO-C@4b7cd94`](https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807)                               |
 | ML-DSA             | Standardized by [NIST](https://csrc.nist.gov/pubs/fips/204/final)                                                                                                    | [`pq-code-package/mldsa-native@f48f164`](https://github.com/pq-code-package/mldsa-native/commit/f48f164cefb07f4ffa519ddda7cee670b8ee3517)   |
 | SLH-DSA            | Standardized by [NIST](https://csrc.nist.gov/pubs/fips/205/final)                                                                                                    | [`pq-code-package/slhdsa-c@a0fc1ff`](https://github.com/pq-code-package/slhdsa-c/commit/a0fc1ff253930060d0246aebca06c2538eb92b88)           |
 | SNOVA              | Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/snova-spec-round2-web.pdf) consideration                             | [`vacuas/SNOVA@1c3ca6f`](https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff)                                   |
-| SPHINCS+           | Selected by [NIST](https://sphincs.org/data/sphincs+-r3.1-specification.pdf) as basis for SLH-DSA (FIPS 205)                                                         | [`PQClean/PQClean@1eacfda`](https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181)                             |
 | UOV                | Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/uov-spec-round2-web.pdf) consideration                               | [`pqov/pqov@33fa527`](https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351)                                         |
 
 #### Stateful signature schemes
@@ -223,7 +222,6 @@ liboqs includes some third party libraries or modules that are licensed differen
 -  src/sig/falcon/pqclean_\*\_aarch64 : Apache License v2.0
 - `src/sig/mayo/*`: Apache License v2.0
 - `src/sig/ml_dsa/pqcrystals-*`: public domain (CC0) or Apache License v2.0
-- `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 
 ## Acknowledgements
 
