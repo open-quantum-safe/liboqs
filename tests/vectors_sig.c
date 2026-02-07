@@ -461,9 +461,6 @@ algo_not_enabled:
 cleanup:
 	OQS_SIG_free(sig);
 	return ret;
-
-	/* __attribute__ doesn't work on windows, so "use" sigLen to make compiler happy */
-	(void)sigLen;
 }
 
 static int sig_ver_vector_ext(const char *method_name,
