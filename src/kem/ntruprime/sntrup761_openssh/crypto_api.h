@@ -11,3 +11,4 @@
 #define crypto_kem_sntrup761_keypair PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_keypair
 #define crypto_kem_sntrup761_enc PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_enc
 #define crypto_kem_sntrup761_dec PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_dec
+#define explicit_bzero OQS_MEM_cleanse
