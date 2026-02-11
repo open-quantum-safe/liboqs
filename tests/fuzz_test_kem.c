@@ -76,7 +76,10 @@ static OQS_STATUS fuzz_kem(const uint8_t *data, size_t data_len) {
 	fuzz_ctx_t ctx = init_fuzz_context(data, data_len);
 	const char *algorithm = OQS_KEM_alg_identifier(ctx.init.algorithm_index);
 	kem = OQS_KEM_new(algorithm);
-	assert(kem != NULL);
+	if (kem == NULL) {
+		printf("%s was not enabled at compile-time.\n", algorithm);
+		return OQS_ERROR;
+	}
 
 	public_key = OQS_MEM_malloc(kem->length_public_key);
 	secret_key = OQS_MEM_malloc(kem->length_secret_key);
@@ -111,15 +114,14 @@ static OQS_STATUS fuzz_kem(const uint8_t *data, size_t data_len) {
 		return rc;
 	}
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
-	assert(memcmp(shared_secret_d, shared_secret_e, kem->length_shared_secret));
-
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_decaps failed!\n");
+		fprintf(stderr, "ERROR: OQS_KEM_decaps failed! with algorithm index %u\n", ctx.init.algorithm_index);
 		cleanup_heap(secret_key, shared_secret_e, shared_secret_d, public_key,
 		             ciphertext, kem);
 
 		return rc;
 	}
+	assert(memcmp(shared_secret_d, shared_secret_e, kem->length_shared_secret) == 0);
 
 	cleanup_heap(secret_key, shared_secret_e, shared_secret_d, public_key,
 	             ciphertext, kem);

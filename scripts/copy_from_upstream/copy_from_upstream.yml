@@ -10,7 +10,7 @@ upstreams:
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
     patches: [pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch,
     pqclean-kyber-armneon-asan.patch]
-    ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
+    ignore: ""
   -
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
@@ -20,8 +20,8 @@ upstreams:
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-sphincs.patch, classic_mceliece_memset.patch]
-    ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64 
+    patches: [classic_mceliece_memset.patch]
+    ignore: pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64 
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
@@ -75,7 +75,7 @@ upstreams:
     name: upcross
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_branch: master
-    git_commit: c8f7411fed136f0e37600973fa3dbed53465e54f
+    git_commit: a21ebc314e06b0972a9bbcf2813a185ecb2917f1
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
   -
@@ -257,71 +257,6 @@ sigs:
         scheme: "padded_1024"
         pqclean_scheme: falcon-padded-1024
         pretty_name_full: Falcon-padded-1024
-        signed_msg_order: sig_then_msg
-  -
-    name: sphincs
-    default_implementation: clean
-    upstream_location: pqclean
-    schemes:
-      -
-        scheme: sha2_128f_simple
-        pqclean_scheme: sphincs-sha2-128f-simple
-        pretty_name_full: SPHINCS+-SHA2-128f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha2_128s_simple
-        pqclean_scheme: sphincs-sha2-128s-simple
-        pretty_name_full: SPHINCS+-SHA2-128s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha2_192f_simple
-        pqclean_scheme: sphincs-sha2-192f-simple
-        pretty_name_full: SPHINCS+-SHA2-192f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha2_192s_simple
-        pqclean_scheme: sphincs-sha2-192s-simple
-        pretty_name_full: SPHINCS+-SHA2-192s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha2_256f_simple
-        pqclean_scheme: sphincs-sha2-256f-simple
-        pretty_name_full: SPHINCS+-SHA2-256f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha2_256s_simple
-        pqclean_scheme: sphincs-sha2-256s-simple
-        pretty_name_full: SPHINCS+-SHA2-256s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake_128f_simple
-        pqclean_scheme: sphincs-shake-128f-simple
-        pretty_name_full: SPHINCS+-SHAKE-128f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake_128s_simple
-        pqclean_scheme: sphincs-shake-128s-simple
-        pretty_name_full: SPHINCS+-SHAKE-128s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake_192f_simple
-        pqclean_scheme: sphincs-shake-192f-simple
-        pretty_name_full: SPHINCS+-SHAKE-192f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake_192s_simple
-        pqclean_scheme: sphincs-shake-192s-simple
-        pretty_name_full: SPHINCS+-SHAKE-192s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake_256f_simple
-        pqclean_scheme: sphincs-shake-256f-simple
-        pretty_name_full: SPHINCS+-SHAKE-256f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake_256s_simple
-        pqclean_scheme: sphincs-shake-256s-simple
-        pretty_name_full: SPHINCS+-SHAKE-256s-simple
         signed_msg_order: sig_then_msg
   -
     name: mayo

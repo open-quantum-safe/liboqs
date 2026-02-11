@@ -379,12 +379,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
 
                 index, oqs_scheme_yaml = get_oqs_yaml(oqs_yaml['parameter-sets'], scheme['pretty_name_full'])
 
-                # TODO: PQClean and liboqs pretty-naming conventions for the
-                # following algorithms are out of sync.
-                if sig['name'] == 'sphincs':
-                    oqs_scheme_yaml['name'] = rhs_if_not_equal(oqs_scheme_yaml['name'], scheme['pretty_name_full'], "scheme pretty name")
-                else:
-                    oqs_scheme_yaml['name'] = rhs_if_not_equal(oqs_scheme_yaml['name'], upstream_yaml['name'], "scheme pretty name")
+                oqs_scheme_yaml['name'] = rhs_if_not_equal(oqs_scheme_yaml['name'], upstream_yaml['name'], "scheme pretty name")
 
                 oqs_scheme_yaml['claimed-nist-level'] = rhs_if_not_equal(oqs_scheme_yaml['claimed-nist-level'], upstream_yaml['claimed-nist-level'], "claimed-nist-level")
                 if oqs_scheme_yaml['claimed-security'] not in ["EUF-CMA", "SUF-CMA"]:
