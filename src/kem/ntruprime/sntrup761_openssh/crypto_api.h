@@ -12,3 +12,7 @@
 #define crypto_kem_sntrup761_enc PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_enc
 #define crypto_kem_sntrup761_dec PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_dec
 #define explicit_bzero OQS_MEM_cleanse
+
+volatile crypto_int16 crypto_int16_optblocker = 0;
+volatile crypto_int32 crypto_int32_optblocker = 0;
+volatile crypto_int64 crypto_int64_optblocker = 0;
