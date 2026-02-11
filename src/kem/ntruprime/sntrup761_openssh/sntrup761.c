@@ -1753,7 +1753,7 @@ static void Encode(unsigned char *out, const uint16_t *R, const uint16_t *M, lon
     }
   }
   if (len > 1) {
-    uint16_t R2[(len + 1) / 2], M2[(len + 1) / 2];
+    uint16_t *R2 = (uint16_t *)alloca(sizeof(uint16_t) * ((len + 1) / 2)), *M2 = (uint16_t *)alloca(sizeof(uint16_t) * ((len + 1) / 2));
     long long i;
     for (i = 0; i < len - 1; i += 2) {
       uint32_t m0 = M[i];
@@ -1785,8 +1785,8 @@ static void Decode(uint16_t *out, const unsigned char *S, const uint16_t *M, lon
       *out = uint32_mod_uint14(S[0] + (((uint16_t)S[1]) << 8), M[0]);
   }
   if (len > 1) {
-    uint16_t R2[(len + 1) / 2], M2[(len + 1) / 2], bottomr[len / 2];
-    uint32_t bottomt[len / 2];
+    uint16_t *R2 = (uint16_t *)alloca(sizeof(uint16_t) * ((len + 1) / 2)), *M2 = (uint16_t *)alloca(sizeof(uint16_t) * ((len + 1) / 2)), *bottomr = (uint16_t *)alloca(sizeof(uint16_t) * (len / 2));
+    uint32_t *bottomt = (uint32_t *)alloca(sizeof(uint32_t) * (len / 2));
     long long i;
     for (i = 0; i < len - 1; i += 2) {
       uint32_t m = M[i] * (uint32_t)M[i + 1];
@@ -1952,7 +1952,7 @@ static void Short_fromlist(small *out, const uint32_t *in) {
 }
 
 static void Hash_prefix(unsigned char *out, int b, const unsigned char *in, int inlen) {
-  unsigned char x[inlen + 1], h[64];
+  unsigned char *x = (unsigned char *)alloca(inlen + 1), h[64];
   int i;
   x[0] = b;
   for (i = 0; i < inlen; ++i) x[i + 1] = in[i];
