@@ -1,19 +1,56 @@
+#!/usr/bin/env python3
+"""OQSBuilder
+
+**Progress**:
+- ✅ clone remote repository
+- ✅ apply patches
+- ✅ move source file from upstream into `liboqs/src`
+- 🔨 Re-produce existing builds
+    - ✅ ML-KEM
+        - ✅ render family-level `CMakeLists.txt`
+        - ✅ render family-level header file (e.g. `kem_ml_kem.h`)
+        - ✅ render family-level source file (e.g. `kem_ml_kem_512.c`)
+        - 🔨 render `.CMake/alg_support.cmake`
+        - 🔨 render documentation
+- ✅ Parse `oqsbuildfile.yml` into structured data instead of Python dictionary
+- 🔨 Experiment with converting `oqsbuildfile.yml` into TOML. TOML is better
+  because I can key a table with dot-separated namespacing instead of indenting
+  by more than 3 levels
+- 🔨 `copies` should support direct mapping, re-usable mapping in the same
+  oqsbuildfile, and remote mapping from `META.yaml`
+- ⚠️ figure out how to check feature parity with `copy_from_upstream.py`
+"""
+
+import argparse
 import enum
 import os
 import shutil
 import subprocess
+import sys
+import inspect
+from tempfile import TemporaryDirectory
 import typing
 
+import jinja2
 import yaml
 
-from oqsbuilder import (
-    LIBOQS_DIR,
-    LIBOQS_PATCH_DIR,
-    LIBOQS_SRC_DIR,
-    LIBOQS_JINJA_TEMPLATES_DIR,
-    OQSBUILDER_AUTOFORMAT_CMAKE,
-)
-from oqsbuilder.utils import currentframe_funcname, load_jinja_template
+__version__ = "0.1"
+_liboqs_dir = os.environ.get("LIBOQS_DIR")
+if not _liboqs_dir:
+    raise KeyError("Missing environment variable LIBOQS_DIR")
+LIBOQS_DIR = _liboqs_dir
+LIBOQS_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
+LIBOQS_SRC_DIR = os.path.join(LIBOQS_DIR, "src")
+LIBOQS_JINJA_TEMPLATES_DIR = os.path.join(LIBOQS_DIR, "scripts", "oqsbuilder_templates")
+
+OQSBUILDER_AUTOFORMAT_CMAKE = False
+try:
+    import gersemi as _
+
+    OQSBUILDER_AUTOFORMAT_CMAKE = True
+except:
+    pass
+OQSBUILDFILE_PATH = os.path.join(LIBOQS_DIR, "scripts", "oqsbuildfile.yml")
 
 # NOTE: typing.NewType is strict typing, so LocalCopiesKey is not ImplKey even though
 #   they are both str.
@@ -573,7 +610,7 @@ class KemFamily:
             {
                 "kem_key": self.key,
                 "kem_meta": self,
-                "generated_by": f"{__name__}.{__class__.__name__}.{currentframe_funcname()}",
+                "generated_by": f"scripts/oqsbuilder.py:{__class__.__name__}.{currentframe_funcname()}",
             }
         )
         with open(header_path, "w") as f:
@@ -598,7 +635,7 @@ class KemFamily:
             {
                 "kem_key": self.key,
                 "kem_meta": self,
-                "generated_by": f"{__name__}.{__class__.__name__}.{currentframe_funcname()}",
+                "generated_by": f"scripts/oqsbuilder.py:{__class__.__name__}.{currentframe_funcname()}",
                 "CmakeScope": CmakeScope,
             }
         )
@@ -647,7 +684,7 @@ class KemFamily:
                     "addtl_impls": addtl_impls,
                     "addtl_impls_keypair_derand": addtl_impls_keypair_derand,
                     "addtl_impls_encaps_derand": addtl_impls_encaps_derand,
-                    "generated_by": f"{__name__}.{__class__.__name__}.{currentframe_funcname()}",
+                    "generated_by": f"scripts/oqsbuilder.py:{__class__.__name__}.{currentframe_funcname()}",
                 }
             )
             src_path = os.path.join(kem_dir, f"kem_{param_key}.c")
@@ -946,3 +983,110 @@ def format_with_astyle(path: str):
     subprocess.run(
         ["astyle", f"--options={options_path}", '--suffix=""', path], check=True
     )
+
+
+def currentframe_funcname() -> str:
+    """Retrieves the name of the caller's function using stack inspection.
+
+    Iterates through the current call stack to find the frame object of the
+    immediate caller. It accesses the code object associated with that frame
+    to extract the function name.
+
+    This function relies on CPython implementation details (stack frames).
+    It may not behave identically in other Python implementations like PyPy.
+
+    :return: The name of the function that invoked this utility.
+    """
+    stack = inspect.stack()
+    if len(stack) < 2:
+        raise RuntimeError("current frame is missing a caller")
+    return stack[1].frame.f_code.co_name
+
+
+def load_jinja_template(path: str) -> jinja2.Template:
+    """Read from the input path, then instantiate a template object"""
+    with open(path, "r", encoding="utf-8") as f:
+        template_str = f.read()
+    return jinja2.Template(template_str)
+
+
+def print_version():
+    """Print version and system info"""
+    print(f"OQS Builder v{__version__}")
+    print("PYTHONPATH:")
+    for path in sys.path:
+        print(f"-   {path}")
+
+
+def copy_from_upstream(_: argparse.Namespace):
+    """Copy implementations from upstream
+
+    on MacOS, TemporaryDirectory() is created under /var, which is
+    a symlink to private/var, but git considers tracking symlinks to be
+    unsafe and will refuse to run. Hence we need to use a base directory
+    that has not symlink component, such as LIBOQS_DIR. Fortunately,
+    all of TemporaryDirectory's automatic cleanup still works.
+
+    :param oqsbuildfile: path to copy_from_upstream.yml
+    :param upstream_parent_dir: upstream repositories will be cloned into
+        a temporary subdirectory under this directory
+    :param templates_dir: path to a directory containing the Jinja2 templates
+        used to generate CMakeLists.txt files, source files, and header files
+    :param headless: True if running in a non-interactive environment
+    """
+    oqsbuildfile = OQSBUILDFILE_PATH
+    templates_dir = LIBOQS_JINJA_TEMPLATES_DIR
+    upstream_parent_dir = LIBOQS_DIR
+    assert os.path.isfile(oqsbuildfile), f"{oqsbuildfile} is not a valid file"
+    assert os.path.isdir(templates_dir), f"{templates_dir} is not a valid directory"
+    assert os.path.isdir(
+        upstream_parent_dir
+    ), f"{upstream_parent_dir} is not a valid directory"
+
+    oqsbuilder = OQSBuilder.load_oqsbuildfile(oqsbuildfile)
+    with TemporaryDirectory(dir=upstream_parent_dir) as tempdir:
+        print(f"upstreams will be cloned into {tempdir}")
+        oqsbuilder.fetch_upstreams(tempdir)
+
+        oqsbuilder.build_kems()
+
+
+def print_diagnostics(_: argparse.Namespace):
+    keys = [
+        "LIBOQS_DIR",
+        "LIBOQS_PATCH_DIR",
+        "LIBOQS_SRC_DIR",
+        "LIBOQS_JINJA_TEMPLATES_DIR",
+        "OQSBUILDER_AUTOFORMAT_CMAKE",
+        "OQSBUILDFILE_PATH",
+    ]
+    for key in sorted(keys):
+        val = globals()[key]
+        print(f"{key:32}:{val}")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="oqsbuilder.py",
+        description="OQS Builder",
+    )
+
+    subparsers = parser.add_subparsers(required=True, help="subcommands")
+    subparser_diagnose = subparsers.add_parser(
+        "diagnose", help="print diagnostic information"
+    )
+    subparser_diagnose.set_defaults(func=print_diagnostics)
+    subparser_copy = subparsers.add_parser(
+        "copy",
+        help="build liboqs sources",
+    )
+    subparser_copy.set_defaults(func=copy_from_upstream)
+
+    args = parser.parse_args()
+    args.func(args)
+
+
+if __name__ == "__main__":
+    # print_version()
+    # copy_from_upstream(OQSBUILDFILE_PATH, LIBOQS_JINJA_TEMPLATES_DIR)
+    main()
