@@ -59,7 +59,7 @@ jobs:
         run: |
           python3 ./scripts/copy_from_upstream/copy_from_upstream.py -d copy \
           && . /.venv/bin/activate \
-          && python3 -m oqsbuilder \
+          && python3 scripts/oqsbuilder.py copy \
           && git status --porcelain \
           && test -z "$(git status --porcelain)"
       - name: Verify copy_from_upstream state after libjade
@@ -68,7 +68,7 @@ jobs:
           python3 ./copy_from_upstream.py -d libjade \
           && cd $LIBOQS_DIR \
           && . /.venv/bin/activate \
-          && python3 -m oqsbuilder \
+          && python3 scripts/oqsbuilder.py copy \
           && git status --porcelain \
           && test -z "$(git status --porcelain)"
 
