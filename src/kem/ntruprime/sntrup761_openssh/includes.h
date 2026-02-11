@@ -4,3 +4,7 @@
 #include <oqs/rand.h>
 #include "sntrup761.h"
 #define USE_SNTRUP761X25519
+
+#ifdef _MSC_VER
+#define __attribute__(x)
+#endif
