@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:4cbf41fc-098b-4dc2-b668-46bbbadaad90",
+  "serialNumber": "urn:uuid:9a9c29b4-e3bb-429b-879c-842923901fd6",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-01-22T16:40:56.249455+00:00",
+    "timestamp": "2026-01-29T15:05:35.665029+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f523d7f02389c3ddf7735f989a93a16dcbe75989",
       "name": "liboqs",
-      "version": "6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab"
+      "version": "f523d7f02389c3ddf7735f989a93a16dcbe75989"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f523d7f02389c3ddf7735f989a93a16dcbe75989",
       "name": "liboqs",
-      "version": "6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab"
+      "version": "f523d7f02389c3ddf7735f989a93a16dcbe75989"
     },
     {
       "type": "cryptographic-asset",
@@ -708,6 +708,246 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "parameterSetIdentifier": "FrodoKEM-1344-SHAKE",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-640-AES:generic",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-640-AES",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-640-AES:x86_64",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-640-AES",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-640-SHAKE:generic",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-640-SHAKE",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-640-SHAKE:x86_64",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-640-SHAKE",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-976-AES:generic",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-976-AES",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-976-AES:x86_64",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-976-AES",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-976-SHAKE:generic",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-976-SHAKE",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-976-SHAKE:x86_64",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-976-SHAKE",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-1344-AES:generic",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-1344-AES",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-1344-AES:x86_64",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-1344-AES",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-1344-SHAKE:generic",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-1344-SHAKE",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:eFrodoKEM-1344-SHAKE:x86_64",
+      "name": "FrodoKEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "eFrodoKEM-1344-SHAKE",
           "primitive": "kem",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -7427,7 +7667,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@6ac58f9febb8f2c291e5b975ced10f0c3c8c78ab",
+      "ref": "pkg:github/open-quantum-safe/liboqs@f523d7f02389c3ddf7735f989a93a16dcbe75989",
       "provides": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -7464,6 +7704,18 @@
         "alg:FrodoKEM-1344-AES:x86_64",
         "alg:FrodoKEM-1344-SHAKE:generic",
         "alg:FrodoKEM-1344-SHAKE:x86_64",
+        "alg:eFrodoKEM-640-AES:generic",
+        "alg:eFrodoKEM-640-AES:x86_64",
+        "alg:eFrodoKEM-640-SHAKE:generic",
+        "alg:eFrodoKEM-640-SHAKE:x86_64",
+        "alg:eFrodoKEM-976-AES:generic",
+        "alg:eFrodoKEM-976-AES:x86_64",
+        "alg:eFrodoKEM-976-SHAKE:generic",
+        "alg:eFrodoKEM-976-SHAKE:x86_64",
+        "alg:eFrodoKEM-1344-AES:generic",
+        "alg:eFrodoKEM-1344-AES:x86_64",
+        "alg:eFrodoKEM-1344-SHAKE:generic",
+        "alg:eFrodoKEM-1344-SHAKE:x86_64",
         "alg:HQC-128:generic",
         "alg:HQC-192:generic",
         "alg:HQC-256:generic",
@@ -8037,6 +8289,90 @@
     },
     {
       "ref": "alg:FrodoKEM-1344-SHAKE:x86_64",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-640-AES:generic",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-640-AES:x86_64",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-640-SHAKE:generic",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-640-SHAKE:x86_64",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-976-AES:generic",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-976-AES:x86_64",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-976-SHAKE:generic",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-976-SHAKE:x86_64",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-1344-AES:generic",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-1344-AES:x86_64",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-1344-SHAKE:generic",
+      "dependsOn": [
+        "alg:aes",
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:eFrodoKEM-1344-SHAKE:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"

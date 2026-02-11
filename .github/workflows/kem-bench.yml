@@ -77,7 +77,13 @@ jobs:
           "FrodoKEM-976-AES", 
           "FrodoKEM-976-SHAKE",
           "FrodoKEM-1344-AES", 
-          "FrodoKEM-1344-SHAKE"
+          "FrodoKEM-1344-SHAKE",
+          "eFrodoKEM-640-AES", 
+          "eFrodoKEM-640-SHAKE",
+          "eFrodoKEM-976-AES", 
+          "eFrodoKEM-976-SHAKE",
+          "eFrodoKEM-1344-AES", 
+          "eFrodoKEM-1344-SHAKE"
         ]
       max-parallel: 1 # No parallel jobs to not compromise the pull-push operations of the benchmarking actions below
 
