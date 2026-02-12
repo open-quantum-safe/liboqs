@@ -12,7 +12,9 @@
         - ✅ render family-level source file (e.g. `kem_ml_kem_512.c`)
         - 🔨 render `.CMake/alg_support.cmake`
         - 🔨 render documentation
+    - 🔨 !!! ML-DSA !!!
 - ✅ Parse `oqsbuildfile.yml` into structured data instead of Python dictionary
+- 🔨 Consider documenting oqsbuildfile's schema in Python code
 - 🔨 Experiment with converting `oqsbuildfile.yml` into TOML. TOML is better
   because I can key a table with dot-separated namespacing instead of indenting
   by more than 3 levels
@@ -38,6 +40,7 @@ __version__ = "0.1"
 _liboqs_dir = os.environ.get("LIBOQS_DIR")
 if not _liboqs_dir:
     raise KeyError("Missing environment variable LIBOQS_DIR")
+# TODO: some of these "constants" can be parameterized at CLI level
 LIBOQS_DIR = _liboqs_dir
 LIBOQS_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
 LIBOQS_SRC_DIR = os.path.join(LIBOQS_DIR, "src")
@@ -105,7 +108,50 @@ class KemSecurity(enum.Enum):
     IND_CCA = 2
 
 
-class ParameterSet:
+class SigSecurity(enum.Enum):
+    SUF_CMA = 2
+    EUF_CMA = 1
+
+
+class SigParameterSet:
+    def __init__(
+        self,
+        key: str,
+        name: str,
+        pklen: int,
+        sklen: int,
+        siglen: int,
+        enable_by: str,
+        default_impl_key: ImplKey,
+        nist_level: NistLevel,
+        security_model: SigSecurity,
+    ):
+        self.key = key
+        self.name = name
+        self.pklen = pklen
+        self.sklen = sklen
+        self.siglen = siglen
+        self.enable_by = enable_by
+        self.default_impl_key = default_impl_key
+        self.nist_level = nist_level
+        self.security_model = security_model
+
+    @staticmethod
+    def from_oqsbuildfile(key: str, param_meta: dict):
+        return SigParameterSet(
+            key,
+            param_meta["name"],
+            param_meta["pklen"],
+            param_meta["sklen"],
+            param_meta["siglen"],
+            param_meta["enable_by"],
+            param_meta["default_impl"],
+            param_meta["nist_level"],
+            param_meta["security_model"],
+        )
+
+
+class KemParameterSet:
     # NOTE: a parameter set is associated with a family. Should this class include
     #   the family key?
     def __init__(
@@ -182,7 +228,7 @@ class ParameterSet:
 
     @staticmethod
     def from_oqsbuildfile(key: str, param_meta: dict):
-        return ParameterSet(
+        return KemParameterSet(
             key,
             param_meta["name"],
             param_meta["pklen"],
@@ -323,6 +369,18 @@ class CmakeLinkLib:
         return f"<{self.__class__.__name__} {self.scope.to_cmake_scope()} {self.value}>"
 
 
+class SigApi:
+    def __init__(
+        self,
+        keypair: str,
+        sign: str,
+        verify: str,
+    ):
+        self.keypair = keypair
+        self.sign = sign
+        self.verify = verify
+
+
 class KemApi:
     def __init__(
         self,
@@ -359,7 +417,7 @@ class Implementation:
         includes: list[CmakeInclude],
         compile_opts: list[CmakeCompileOpt],
         link_libs: list[CmakeLinkLib],
-        api_names: KemApi,
+        api_names: KemApi | SigApi,
     ):
         self.key = key
         """The unique identifier of this implementation
@@ -463,7 +521,7 @@ class Implementation:
         return f"target_link_libraries({self.key} {scope.to_cmake_scope()} {args})"
 
     @staticmethod
-    def from_oqsbuildfile(key: str, impl_meta: dict):
+    def from_oqsbuildfile(key: str, primitive: CryptoPrimitive, impl_meta: dict):
         runtime_cpu_features = [
             RuntimeCpuFeature.from_oqsbuildfile(feat)
             for feat in impl_meta.get("runtime_cpu_features", [])
@@ -498,13 +556,21 @@ class Implementation:
                 CmakeLinkLib(CmakeScope.PUBLIC, val)
                 for val in oqsbuildfile_link_libs.get("public", [])
             ]
-        api_names = KemApi(
-            impl_meta["keypair"],
-            impl_meta["enc"],
-            impl_meta["dec"],
-            impl_meta.get("keypair_derand", None),
-            impl_meta.get("enc_derand", None),
-        )
+        match primitive:
+            case CryptoPrimitive.KEM:
+                api_names = KemApi(
+                    impl_meta["keypair"],
+                    impl_meta["enc"],
+                    impl_meta["dec"],
+                    impl_meta.get("keypair_derand", None),
+                    impl_meta.get("enc_derand", None),
+                )
+            case CryptoPrimitive.SIG:
+                api_names = SigApi(
+                    impl_meta["keypair"], impl_meta["sign"], impl_meta["verify"]
+                )
+            case CryptoPrimitive.STFL_SIG:
+                raise NotImplementedError()
         return Implementation(
             key,
             impl_meta["upstream"],
@@ -519,6 +585,51 @@ class Implementation:
             link_libs,
             api_names,
         )
+
+    def has_kem_keypair_derand(self) -> bool:
+        return isinstance(self.api_names, KemApi) and (
+            self.api_names.keypair_derand is not None
+        )
+
+    def has_kem_encaps_derand(self) -> bool:
+        return isinstance(self.api_names, KemApi) and (
+            self.api_names.encaps_derand is not None
+        )
+
+
+class SigFamily:
+    def __init__(
+        self,
+        key: str,
+        version: str,
+        header: str | None,
+        params: dict[str, SigParameterSet],
+        impls: dict[str, Implementation],
+    ):
+        self.key = key
+        self.primitive = CryptoPrimitive.SIG
+        self.header = header or f"{self.primitive.get_subdirectory_name()}_{key}.h"
+        self.version = version
+        self.params = params
+        self.impls = impls
+
+    @staticmethod
+    def from_oqsbuildfile(key: str, sig_meta: dict):
+        version = sig_meta["version"]
+        header = sig_meta.get(
+            "header", f"{CryptoPrimitive.SIG.get_subdirectory_name()}_{key}.h"
+        )
+        params = {
+            param_key: SigParameterSet.from_oqsbuildfile(param_key, param_meta)
+            for param_key, param_meta in sig_meta["params"].items()
+        }
+        impls = {
+            impl_key: Implementation.from_oqsbuildfile(
+                impl_key, CryptoPrimitive.SIG, impl_meta
+            )
+            for impl_key, impl_meta in sig_meta["impls"].items()
+        }
+        return SigFamily(key, version, header, params, impls)
 
 
 # TODO: consider making KemFamily inherit from "AlgorithmFamily"
@@ -535,7 +646,7 @@ class KemFamily:
         header: str | None,
         derandomized_keypair: bool,
         derandomized_encaps: bool,
-        params: dict[str, ParameterSet],
+        params: dict[str, KemParameterSet],
         impls: dict[str, Implementation],
     ):
         self.key = key
@@ -585,11 +696,13 @@ class KemFamily:
         derand_keygen = kem_meta.get("derandomized_keypair", False)
         derand_encaps = kem_meta.get("derandomized_encaps", False)
         params = {
-            param_key: ParameterSet.from_oqsbuildfile(param_key, param_meta)
+            param_key: KemParameterSet.from_oqsbuildfile(param_key, param_meta)
             for param_key, param_meta in kem_meta["params"].items()
         }
         impls = {
-            impl_key: Implementation.from_oqsbuildfile(impl_key, impl_meta)
+            impl_key: Implementation.from_oqsbuildfile(
+                impl_key, CryptoPrimitive.KEM, impl_meta
+            )
             for impl_key, impl_meta in kem_meta["impls"].items()
         }
         return KemFamily(
@@ -666,10 +779,10 @@ class KemFamily:
                 and impl.param_key == param_key
             ]
             addtl_impls_keypair_derand = [
-                impl for impl in addtl_impls if impl.api_names.keypair_derand
+                impl for impl in addtl_impls if impl.has_kem_keypair_derand()
             ]
             addtl_impls_encaps_derand = [
-                impl for impl in addtl_impls if impl.api_names.encaps_derand
+                impl for impl in addtl_impls if impl.has_kem_encaps_derand()
             ]
             content = template.render(
                 {
@@ -861,11 +974,13 @@ class OQSBuilder:
         self,
         upstreams: dict[str, Upstream],
         kems: dict[str, KemFamily],
+        sigs: dict[str, SigFamily],
         patch_dir: str | os.PathLike,
     ):
         # TODO: validate input?
         self.upstreams = upstreams
         self.kems = kems
+        self.sigs = sigs
         self.patch_dir = patch_dir
 
     @staticmethod
@@ -893,31 +1008,41 @@ class OQSBuilder:
         return reusable_local_copies[buildfile_copies]
 
     @staticmethod
+    def _preprocess_all_family_meta(primitive: CryptoPrimitive, oqsbuild: dict):
+        """Translate all copies mapping into literal mappings
+
+        Overwrite impl's enable_by with parameter's enable_by where appropriate
+        """
+        for _, family_meta in oqsbuild[primitive.get_oqsbuildfile_key()][
+            "families"
+        ].items():
+            for _, impl_meta in family_meta["impls"].items():
+                impl_meta["copies"] = OQSBuilder.to_literal_copies(
+                    impl_meta["copies"], oqsbuild["copies"]
+                )
+            for param_key, param_meta in family_meta["params"].items():
+                default_impl_key = param_meta["default_impl"]
+                if default_impl_key not in family_meta["impls"]:
+                    raise KeyError(
+                        f"{param_key}'s default impl {default_impl_key} not found"
+                    )
+                default_impl_meta = family_meta["impls"][default_impl_key]
+                default_impl_meta["enable_by"] = param_meta["enable_by"]
+
+    @staticmethod
     def load_oqsbuildfile(path: str | os.PathLike):
         with open(path, mode="r", encoding="utf-8") as f:
             oqsbuild = yaml.safe_load(f)
 
-        # FIX: refactor these pre-processing actions into a "preprocess_oqsbuildfile"
-        if True:
-            for _, family_meta in oqsbuild["kems"]["families"].items():
-                for _, impl_meta in family_meta["impls"].items():
-                    impl_meta["copies"] = OQSBuilder.to_literal_copies(
-                        impl_meta["copies"], oqsbuild["copies"]
-                    )
-                for param_key, param_meta in family_meta["params"].items():
-                    default_impl_key = param_meta["default_impl"]
-                    if default_impl_key not in family_meta["impls"]:
-                        raise KeyError(
-                            f"{param_key}'s default impl {default_impl_key} not found"
-                        )
-                    default_impl_meta = family_meta["impls"][default_impl_key]
-                    default_impl_meta["enable_by"] = param_meta["enable_by"]
-            for _, upstream in oqsbuild["upstreams"].items():
-                patch_paths = [
-                    os.path.join(LIBOQS_PATCH_DIR, patch_path)
-                    for patch_path in upstream.get("patches", [])
-                ]
-                upstream["patches"] = patch_paths
+        # NOTE: some preprocessing on the raw YAML data before loading into structured data
+        OQSBuilder._preprocess_all_family_meta(CryptoPrimitive.KEM, oqsbuild)
+        OQSBuilder._preprocess_all_family_meta(CryptoPrimitive.SIG, oqsbuild)
+        for _, upstream in oqsbuild["upstreams"].items():
+            patch_paths = [
+                os.path.join(LIBOQS_PATCH_DIR, patch_path)
+                for patch_path in upstream.get("patches", [])
+            ]
+            upstream["patches"] = patch_paths
 
         upstreams = {
             key: Upstream.from_oqsbuildfile(key, meta)
@@ -927,8 +1052,12 @@ class OQSBuilder:
             key: KemFamily.from_oqsbuildfile(key, meta)
             for key, meta in oqsbuild["kems"]["families"].items()
         }
+        sigs = {
+            key: SigFamily.from_oqsbuildfile(key, meta)
+            for key, meta in oqsbuild["sigs"]["families"].items()
+        }
 
-        return OQSBuilder(upstreams, kems, LIBOQS_PATCH_DIR)
+        return OQSBuilder(upstreams, kems, sigs, LIBOQS_PATCH_DIR)
 
     def fetch_upstreams(self, upstream_parent_dir: str | os.PathLike):
         for upstream_key, upstream in self.upstreams.items():
@@ -956,6 +1085,13 @@ class OQSBuilder:
             kem.generate_cmake(kem_dir, autoformat=OQSBUILDER_AUTOFORMAT_CMAKE)
             kem.generate_header(kem_dir)
             kem.generate_sources(kem_dir)
+
+    def build_sigs(self):
+        sigs_dir = os.path.join(
+            LIBOQS_SRC_DIR, CryptoPrimitive.SIG.get_subdirectory_name()
+        )
+        for sig_key, sig_meta in self.sigs.items():
+            raise NotImplementedError()
 
 
 def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):
@@ -1026,13 +1162,6 @@ def copy_from_upstream(_: argparse.Namespace):
     unsafe and will refuse to run. Hence we need to use a base directory
     that has not symlink component, such as LIBOQS_DIR. Fortunately,
     all of TemporaryDirectory's automatic cleanup still works.
-
-    :param oqsbuildfile: path to copy_from_upstream.yml
-    :param upstream_parent_dir: upstream repositories will be cloned into
-        a temporary subdirectory under this directory
-    :param templates_dir: path to a directory containing the Jinja2 templates
-        used to generate CMakeLists.txt files, source files, and header files
-    :param headless: True if running in a non-interactive environment
     """
     oqsbuildfile = OQSBUILDFILE_PATH
     templates_dir = LIBOQS_JINJA_TEMPLATES_DIR
@@ -1049,6 +1178,7 @@ def copy_from_upstream(_: argparse.Namespace):
         oqsbuilder.fetch_upstreams(tempdir)
 
         oqsbuilder.build_kems()
+        oqsbuilder.build_sigs()
 
 
 def print_diagnostics(_: argparse.Namespace):
