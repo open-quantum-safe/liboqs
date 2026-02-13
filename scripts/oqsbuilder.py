@@ -631,6 +631,17 @@ class SigFamily:
         }
         return SigFamily(key, version, header, params, impls)
 
+    def generate_cmake(
+        self, sig_dir: str, autoformat: bool = OQSBUILDER_AUTOFORMAT_CMAKE
+    ):
+        raise NotImplementedError()
+
+    def generate_header(self, sig_dir: str):
+        raise NotImplementedError()
+
+    def generate_sources(self, sig_dir: str):
+        raise NotImplementedError()
+
 
 # TODO: consider making KemFamily inherit from "AlgorithmFamily"
 class KemFamily:
@@ -1091,7 +1102,19 @@ class OQSBuilder:
             LIBOQS_SRC_DIR, CryptoPrimitive.SIG.get_subdirectory_name()
         )
         for sig_key, sig_meta in self.sigs.items():
-            raise NotImplementedError()
+            sig_dir = os.path.join(sigs_dir, sig_key)
+            print(f"Integrating {sig_key} into {sig_dir}")
+            for impl_key, impl_meta in sig_meta.impls.items():
+                impl_dir = os.path.join(sig_dir, impl_key)
+                upstream = self.upstreams[impl_meta.upstream_key]
+                if (not upstream.dir) or (not upstream._patched):
+                    raise FileNotFoundError(
+                        f"Upstream {impl_meta.upstream_key} is not cloned"
+                    )
+                copy_copies(impl_meta.copies, upstream.dir, impl_dir)
+            sig_meta.generate_cmake(sig_dir, autoformat=OQSBUILDER_AUTOFORMAT_CMAKE)
+            sig_meta.generate_header(sig_dir)
+            sig_meta.generate_sources(sig_dir)
 
 
 def copy_copies(copies: dict[str, str], upstream_dir: str, impl_dir: str):

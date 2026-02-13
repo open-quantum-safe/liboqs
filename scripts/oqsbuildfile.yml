@@ -568,7 +568,6 @@ copies:
     mldsa/src/poly_kl.h: mldsa/src/poly_kl.h
     mldsa/src/native/api.h: mldsa/src/native/api.h
     mldsa/src/native/meta.h: mldsa/src/native/meta.h
-    mldsa/src/native/aarch64: mldsa/src/native/aarch64
     mldsa/src/native/aarch64/meta.h: mldsa/src/native/aarch64/meta.h
     mldsa/src/native/aarch64/src/rej_uniform_eta4_asm.S: mldsa/src/native/aarch64/src/rej_uniform_eta4_asm.S
     mldsa/src/native/aarch64/src/poly_caddq_asm.S: mldsa/src/native/aarch64/src/poly_caddq_asm.S
