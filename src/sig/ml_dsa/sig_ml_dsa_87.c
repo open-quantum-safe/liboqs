@@ -44,5 +44,16 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_keypair(uint8_t *public_key, uint8_t *secre
 	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA87_C_keypair(public_key, secret_key);
 }
 
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+
+
+
+
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA87_C_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+
+
+}
+
+
 
 #endif

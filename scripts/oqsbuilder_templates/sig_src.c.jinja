@@ -101,54 +101,66 @@ OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_keypair(uint8_t *public_key, uint8_t 
 {%- endif %}
 }
 
-{# FIX: implement this
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
-    {%- if loop.first %}
-#if defined(OQS_ENABLE_SIG_{{ param_key }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
-    {%- else %}
-#elif defined(OQS_ENABLE_SIG_{{ param_key }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
-    {%- endif %}
-    {%- if 'required_flags' in impl and impl['required_flags'] %}
+{% for impl in addtl_impls %}
+    {% if loop.first %}
+#if defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %} && defined({{ impl.arch.enable_by() }}) {% endif %}
+    {% else %}
+#elif defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %} && defined({{ impl.arch.enable_by() }}) {% endif %}
+    {% endif %}
+    {% if impl.runtime_cpu_features %}
 #if defined(OQS_DIST_BUILD)
-	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
-#endif /* OQS_DIST_BUILD */
-    {%- endif %}
-           {%- if impl['signature_signature'] %}
-           {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
-		return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
-           {%- else %}
-		return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, secret_key);
-           {%- endif %}
-           {%- else %}
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
-           {%- endif %}
-    {%- if 'required_flags' in impl and impl['required_flags'] %}
-#if defined(OQS_DIST_BUILD)
-	} else {
-        {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
-		return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
-        {%- else %}
-		return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, message_len, secret_key);
-        {%- endif %}
-	}
-#endif /* OQS_DIST_BUILD */
-    {%- endif %}
-    {%- endfor %}
-    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+    if ({%- for feat in impl.runtime_cpu_features -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat.to_source_code() | upper }})
+            {%- if not loop.last %} && {% endif -%}
+        {%- endfor -%}) {
+        {% if impl.can_sign_with_ctx() %}
+        return (OQS_STATUS) {{ impl.api_names.sign }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
+        {% else %}
+        return (OQS_STATUS) {{ impl.api_names.sign }}(signature, signature_len, message, message_len, secret_key);
+        {% endif %}
+    } else {
+        {% if default_impl.can_sign_with_ctx() %}
+        return (OQS_STATUS) {{ default_impl.api_names.sign }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
+        {% else %}
+        return (OQS_STATUS) {{ default_impl.api_names.sign }}(signature, signature_len, message, message_len, secret_key);
+        {% endif %}
+    }
 #else
-    {%- endif %}
-    {%- set default_impl = scheme['metadata']['implementations'] | selectattr("name", "equalto", scheme['default_implementation']) | first -%}
-    {%- if 'api-with-context-string' in default_impl and default_impl['api-with-context-string'] %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
-    {%- else %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, message_len, secret_key);
-    {%- endif %}
-    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+    {% if impl.can_sign_with_ctx() %}
+    return (OQS_STATUS) {{ impl.api_names.sign }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
+    {% else %}
+    return (OQS_STATUS) {{ impl.api_names.sign }}(signature, signature_len, message, message_len, secret_key);
+    {% endif %}
+#endif /* OQS_DIST_BUILD */
+    {% else %}
+    {% if impl.can_sign_with_ctx() %}
+    return (OQS_STATUS) {{ impl.api_names.sign }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
+    {% else %}
+    return (OQS_STATUS) {{ impl.api_names.sign }}(signature, signature_len, message, message_len, secret_key);
+    {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if addtl_impls | length > 0 %}
+#else
+    {% if default_impl.can_sign_with_ctx() %}
+    return (OQS_STATUS) {{ default_impl.api_names.sign }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
+    {% else %}
+    return (OQS_STATUS) {{ default_impl.api_names.sign }}(signature, signature_len, message, message_len, secret_key);
+    {% endif %}
 #endif
-    {%- endif %}
+{% else %}
+    {% if default_impl.can_sign_with_ctx() %}
+    return (OQS_STATUS) {{ default_impl.api_names.sign }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
+    {% else %}
+    return (OQS_STATUS) {{ default_impl.api_names.sign }}(signature, signature_len, message, message_len, secret_key);
+    {% endif %}
+{% endif %}
 }
 
+
+{# FIX: implement this
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}

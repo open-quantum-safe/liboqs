@@ -65,5 +65,39 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair(uint8_t *public_key, uint8_t *secre
 #endif
 }
 
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+
+
+#if defined(OQS_ENABLE_SIG_ml_dsa_44_aarch64)
+
+
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+
+	} else {
+
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+
+	}
+#else
+
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+
+#endif /* OQS_DIST_BUILD */
+
+
+
+
+#else
+
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+
+#endif
+
+}
+
+
 
 #endif
