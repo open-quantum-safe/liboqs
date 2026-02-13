@@ -40,5 +40,9 @@ extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify(const uint8_t *sig, size_t siglen,
 
 
 
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_keypair(uint8_t *public_key, uint8_t *secret_key) {
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
+}
+
 
 #endif

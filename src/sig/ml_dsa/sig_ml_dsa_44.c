@@ -49,5 +49,21 @@ extern int PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify(const uint8_t *sig, size_t s
 #endif /* OQS_ENABLE_SIG_ml_dsa_44_aarch64 */
 
 
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair(uint8_t *public_key, uint8_t *secret_key) {
+#if defined(OQS_ENABLE_SIG_ml_dsa_44_aarch64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair(public_key, secret_key);
+	} else {
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_keypair(public_key, secret_key);
+	}
+#else
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair(public_key, secret_key);
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_keypair(public_key, secret_key);
+#endif
+}
+
 
 #endif

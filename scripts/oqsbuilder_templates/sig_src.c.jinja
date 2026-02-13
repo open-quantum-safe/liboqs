@@ -68,41 +68,40 @@ extern int {{ impl.api_names.verify  }}(const uint8_t *sig, size_t siglen, const
     {%- endif %}
 {% endfor %}
 
-{# FIX: implement this
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+{%- for impl in addtl_impls %}
     {%- if loop.first %}
-#if defined(OQS_ENABLE_SIG_{{ param_key }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+#if defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- else %}
-#elif defined(OQS_ENABLE_SIG_{{ param_key }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+#elif defined({{ impl.enable_by }}) {% if impl.arch.enable_by() %}&& defined({{impl.arch.enable_by() }}){% endif -%}
     {%- endif %}
-    {%- if 'required_flags' in impl and impl['required_flags'] %}
+    {%- if impl.runtime_cpu_features %}
 #if defined(OQS_DIST_BUILD)
-	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
-#endif /* OQS_DIST_BUILD */
-    {%- endif %}
-           {%- if impl['signature_keypair'] %}
-		return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
-           {%- else %}
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair(public_key, secret_key);
-           {%- endif %}
-    {%- if 'required_flags' in impl and impl['required_flags'] %}
-#if defined(OQS_DIST_BUILD)
-	} else {
-		return (OQS_STATUS) {{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
-	}
-#endif /* OQS_DIST_BUILD */
-    {%- endif %}
-    {%- endfor %}
-    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+    if ({%- for feat in impl.runtime_cpu_features -%}
+        OQS_CPU_has_extension(OQS_CPU_EXT_{{ feat.to_source_code() | upper }})
+            {%- if not loop.last %} && {% endif -%}
+        {%- endfor -%}) {
+        return (OQS_STATUS) {{ impl.api_names.keypair }}(public_key, secret_key);
+    } else {
+        return (OQS_STATUS) {{ default_impl.api_names.keypair }}(public_key, secret_key);
+    }
 #else
+    return (OQS_STATUS) {{ impl.api_names.keypair }}(public_key, secret_key);
+#endif /* OQS_DIST_BUILD */
+    {%- else %}
+    return (OQS_STATUS) {{ impl.api_names.keypair }}(public_key, secret_key);
     {%- endif %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
-    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
+{%- endfor %}
+{%- if addtl_impls | length > 0 %}
+#else
+    return (OQS_STATUS) {{ default_impl.api_names.keypair }}(public_key, secret_key);
 #endif
-    {%- endif %}
+{%- else %}
+    return (OQS_STATUS) {{ default_impl.api_names.keypair }}(public_key, secret_key);
+{%- endif %}
 }
 
+{# FIX: implement this
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
