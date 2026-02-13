@@ -64,8 +64,11 @@ ImplKey = typing.NewType("ImplKey", str)
 SRC_FILE_EXTS = (".c", ".s", ".S", ".cpp", ".cu")
 
 KEM_CMAKE_TEMPLATE = "kem_cmakelists.txt.jinja"
+SIG_CMAKE_TEMPLATE = "sig_cmakelists.txt.jinja"
 KEM_SRC_TEMPLATE = "kem_src.c.jinja"
+SIG_SRC_TEMPLATE = "sig_src.c.jinja"
 KEM_HEADER_TEMPLATE = "oqs_kem.h.jinja"
+SIG_HEADER_TEMPLATE = "oqs_sig.h.jinja"
 
 
 class CryptoPrimitive(enum.Enum):
@@ -109,8 +112,17 @@ class KemSecurity(enum.Enum):
 
 
 class SigSecurity(enum.Enum):
-    SUF_CMA = 2
     EUF_CMA = 1
+    SUF_CMA = 2
+
+    @staticmethod
+    def from_oqsbuildfile(val: str):
+        match val:
+            case "SUF-CMA":
+                return SigSecurity.SUF_CMA
+            case "EUF-CMA":
+                return SigSecurity.EUF_CMA
+        raise ValueError(f"Invalid sig security value {val}")
 
 
 class SigParameterSet:
@@ -135,6 +147,7 @@ class SigParameterSet:
         self.default_impl_key = default_impl_key
         self.nist_level = nist_level
         self.security_model = security_model
+        self.api_src = f"{CryptoPrimitive.SIG.get_subdirectory_name()}_{key}.c"
 
     @staticmethod
     def from_oqsbuildfile(key: str, param_meta: dict):
@@ -147,8 +160,15 @@ class SigParameterSet:
             param_meta["enable_by"],
             param_meta["default_impl"],
             param_meta["nist_level"],
-            param_meta["security_model"],
+            SigSecurity.from_oqsbuildfile(param_meta["security_model"]),
         )
+
+    def is_euf_cma(self):
+        # TODO: SUF-CMA is EUF-CMA
+        return True
+
+    def is_suf_cma(self):
+        return self.security_model == SigSecurity.SUF_CMA
 
 
 class KemParameterSet:
@@ -375,10 +395,12 @@ class SigApi:
         keypair: str,
         sign: str,
         verify: str,
+        can_sign_with_ctx: bool,
     ):
         self.keypair = keypair
         self.sign = sign
         self.verify = verify
+        self.can_sign_with_ctx = can_sign_with_ctx
 
 
 class KemApi:
@@ -567,7 +589,10 @@ class Implementation:
                 )
             case CryptoPrimitive.SIG:
                 api_names = SigApi(
-                    impl_meta["keypair"], impl_meta["sign"], impl_meta["verify"]
+                    impl_meta["keypair"],
+                    impl_meta["sign"],
+                    impl_meta["verify"],
+                    impl_meta["can_sign_with_ctx"],
                 )
             case CryptoPrimitive.STFL_SIG:
                 raise NotImplementedError()
@@ -595,6 +620,9 @@ class Implementation:
         return isinstance(self.api_names, KemApi) and (
             self.api_names.encaps_derand is not None
         )
+
+    def can_sign_with_ctx(self) -> bool:
+        return isinstance(self.api_names, SigApi) and (self.api_names.can_sign_with_ctx)
 
 
 class SigFamily:
@@ -634,13 +662,87 @@ class SigFamily:
     def generate_cmake(
         self, sig_dir: str, autoformat: bool = OQSBUILDER_AUTOFORMAT_CMAKE
     ):
-        raise NotImplementedError()
+        # TODO: this implementation of generate_cmake and SIG_CMAKE_TEMPLATE are
+        #   both highly similar to KEM's list file generation. For now they will
+        #   be kept separate to prevent premature abstraction, but if appropriate
+        #   I want to avoid duplicate code
+        template_path = os.path.join(LIBOQS_JINJA_TEMPLATES_DIR, SIG_CMAKE_TEMPLATE)
+        cmake_path = os.path.join(sig_dir, "CMakeLists.txt")
+        content = load_jinja_template(template_path).render(
+            {
+                "sig_key": self.key,
+                "sig_meta": self,
+                "generated_by": f"scripts/oqsbuilder.py:{__class__.__name__}.{currentframe_funcname()}",
+                "CmakeScope": CmakeScope,
+            }
+        )
+        # print(content)
+        # raise NotImplementedError(f"{cmake_path} is not fully rendered")
+        with open(cmake_path, "w") as f:
+            f.write(content)
+        if autoformat:
+            # Check out gersemi at https://github.com/BlankSpruce/gersemi/
+            # pip install gersemi==0.23.1
+            subprocess.run(["gersemi", "-i", cmake_path], check=True)
+        return cmake_path
 
-    def generate_header(self, sig_dir: str):
-        raise NotImplementedError()
+    def generate_header(self, sig_dir: str, autoformat: bool = True) -> str:
+        """Generate the family-level header file, such as
+        LIBOQS_DIR/src/kem/ml_kem/sig_ml_kem.h.
 
-    def generate_sources(self, sig_dir: str):
-        raise NotImplementedError()
+        Return the path to the generated header file.
+        """
+        header_path = os.path.join(sig_dir, self.header)
+
+        header = load_jinja_template(
+            os.path.join(LIBOQS_JINJA_TEMPLATES_DIR, SIG_HEADER_TEMPLATE)
+        ).render(
+            {
+                "sig_key": self.key,
+                "sig_meta": self,
+                "generated_by": f"scripts/oqsbuilder.py:{__class__.__name__}.{currentframe_funcname()}",
+            }
+        )
+        with open(header_path, "w") as f:
+            f.write(header)
+        if autoformat:
+            format_with_astyle(header_path)
+        return header_path
+
+    def generate_sources(self, sig_dir: str, autoformat: bool = True):
+        """Generate the family-level source file(s), such as
+        LIBOQS_DIR/src/kem/ml_kem/kem_ml_kem_<512|768|1024>.c
+        """
+        source_paths = []
+        for param_key, param_meta in self.params.items():
+            template = load_jinja_template(
+                os.path.join(LIBOQS_JINJA_TEMPLATES_DIR, SIG_SRC_TEMPLATE)
+            )
+            default_impl = self.impls[param_meta.default_impl_key]
+            addtl_impls = [
+                impl
+                for impl_key, impl in self.impls.items()
+                if impl_key != param_meta.default_impl_key
+                and impl.param_key == param_key
+            ]
+            content = template.render(
+                {
+                    "sig_key": self.key,
+                    "sig_meta": self,
+                    "param_key": param_key,
+                    "param_meta": param_meta,
+                    "default_impl": default_impl,
+                    "addtl_impls": addtl_impls,
+                    "generated_by": f"scripts/oqsbuilder.py:{__class__.__name__}.{currentframe_funcname()}",
+                }
+            )
+            src_path = os.path.join(sig_dir, f"sig_{param_key}.c")
+            with open(src_path, "w") as f:
+                f.write(content)
+            if autoformat:
+                format_with_astyle(src_path)
+            source_paths.append(src_path)
+        return source_paths
 
 
 # TODO: consider making KemFamily inherit from "AlgorithmFamily"

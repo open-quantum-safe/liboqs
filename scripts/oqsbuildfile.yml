@@ -462,6 +462,7 @@ sigs:
           keypair: "PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair"
           sign: "PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature"
           verify: "PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify"
+          can_sign_with_ctx: true
         mldsa-native_ml-dsa-44_ref:
           upstream: mldsa-native
           param: ml_dsa_44
@@ -478,6 +479,7 @@ sigs:
           keypair: "PQCP_MLDSA_NATIVE_MLDSA44_C_keypair"
           sign: "PQCP_MLDSA_NATIVE_MLDSA44_C_signature"
           verify: "PQCP_MLDSA_NATIVE_MLDSA44_C_verify"
+          can_sign_with_ctx: true
         # mldsa-native_ml-dsa-44_x86_64:
         # mldsa-native_ml-dsa-65_aarch64:
         mldsa-native_ml-dsa-65_ref:
@@ -496,6 +498,7 @@ sigs:
           keypair: "PQCP_MLDSA_NATIVE_MLDSA65_C_keypair"
           sign: "PQCP_MLDSA_NATIVE_MLDSA65_C_signature"
           verify: "PQCP_MLDSA_NATIVE_MLDSA65_C_verify"
+          can_sign_with_ctx: true
         # mldsa-native_ml-dsa-65_x86_64:
         # mldsa-native_ml-dsa-87_aarch64:
         mldsa-native_ml-dsa-87_ref:
@@ -514,6 +517,7 @@ sigs:
           keypair: "PQCP_MLDSA_NATIVE_MLDSA87_C_keypair"
           sign: "PQCP_MLDSA_NATIVE_MLDSA87_C_signature"
           verify: "PQCP_MLDSA_NATIVE_MLDSA87_C_verify"
+          can_sign_with_ctx: true
         # mldsa-native_ml-dsa-87_x86_64:
 
 architectures:
