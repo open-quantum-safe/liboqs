@@ -189,6 +189,22 @@ If you want to create Visual Studio build files, e.g., if not using `ninja`, be 
 
 You can cross compile liboqs for various platforms. Detailed information is available [in the Wiki](https://github.com/open-quantum-safe/liboqs/wiki/Platform-specific-notes-for-building-liboqs#cross-compiling).
 
+
+## KAT Hash Sources
+
+The `kat_kem`, `kat_sig`, and `kat_sig_stfl` executables generate deterministic Known Answer Test (KAT) outputs following the same procedures used in the NIST Post-Quantum Cryptography (PQC) submission requirements.
+
+For testing purposes, the output of these executables is normalized to Unix-style line endings and hashed using SHA256. The expected hash values are stored in:
+
+- `tests/KATs/kem/kats.json`
+- `tests/KATs/sig/kats.json`
+- `tests/KATs/sig_stfl/kats.json`
+
+These JSON files serve as the authoritative expected values ("source of truth") for KAT verification within liboqs. During testing, the hash of the generated KAT output is compared against the corresponding value in these files to ensure deterministic behavior and cross-platform consistency.
+
+If changes are made to KAT generation logic, the corresponding hash values in these JSON files must be regenerated to reflect the updated deterministic outputs.
+
+
 ## Documentation
 
 More detailed information on building, optional build parameters, example applications, coding conventions and more can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
