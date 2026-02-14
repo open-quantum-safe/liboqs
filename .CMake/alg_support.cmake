@@ -178,6 +178,11 @@ cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44 "" ON "OQS_ENABLE_SIG_ML_DSA" OF
 cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87 "" ON "OQS_ENABLE_SIG_ML_DSA" OFF)
 
+option(OQS_ENABLE_SIG_ML_DSA_EXTMU "Enable ml_dsa algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44_extmu "" ON "OQS_ENABLE_SIG_ML_DSA_EXTMU" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65_extmu "" ON "OQS_ENABLE_SIG_ML_DSA_EXTMU" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87_extmu "" ON "OQS_ENABLE_SIG_ML_DSA_EXTMU" OFF)
+
 option(OQS_ENABLE_SIG_FALCON "Enable falcon algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_falcon_512 "" ON "OQS_ENABLE_SIG_FALCON" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_falcon_1024 "" ON "OQS_ENABLE_SIG_FALCON" OFF)
@@ -628,8 +633,20 @@ endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44_extmu_x86_64 "" ON "OQS_ENABLE_SIG_ml_dsa_44_extmu" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44_aarch64 "" ON "OQS_ENABLE_SIG_ml_dsa_44" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_44_extmu_aarch64 "" ON "OQS_ENABLE_SIG_ml_dsa_44_extmu" OFF)
 endif()
 endif()
 
@@ -640,8 +657,20 @@ endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65_extmu_x86_64 "" ON "OQS_ENABLE_SIG_ml_dsa_65_extmu" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65_aarch64 "" ON "OQS_ENABLE_SIG_ml_dsa_65" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64 "" ON "OQS_ENABLE_SIG_ml_dsa_65_extmu" OFF)
 endif()
 endif()
 
@@ -652,11 +681,22 @@ endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87_extmu_x86_64 "" ON "OQS_ENABLE_SIG_ml_dsa_87_extmu" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87_aarch64 "" ON "OQS_ENABLE_SIG_ml_dsa_87" OFF)
 endif()
 endif()
 
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_ml_dsa_87_extmu_aarch64 "" ON "OQS_ENABLE_SIG_ml_dsa_87_extmu" OFF)
+endif()
+endif()
 
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_falcon_512_avx2 "" ON "OQS_ENABLE_SIG_falcon_512" OFF)
