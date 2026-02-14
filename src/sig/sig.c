@@ -19,7 +19,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_ml_dsa_65,
 		OQS_SIG_alg_ml_dsa_87,
 		OQS_SIG_alg_ml_dsa_44_extmu,
-        OQS_SIG_alg_ml_dsa_65_extmu,
+		OQS_SIG_alg_ml_dsa_65_extmu,
 		OQS_SIG_alg_ml_dsa_87_extmu,
 		OQS_SIG_alg_falcon_512,
 		OQS_SIG_alg_falcon_1024,
@@ -1592,8 +1592,7 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 		return NULL;
 #endif
 
-	} 
-	else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu)) {
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu)) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44_extmu
 		return OQS_SIG_ml_dsa_44_extmu_new();
 #else

@@ -126,7 +126,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify(const uint8_t *message, size_t
 #endif
 }
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
-	if(ctx_str != NULL || ctx_str_len != 0) {
+	if (ctx_str != NULL || ctx_str_len != 0) {
 		return OQS_ERROR;
 	}
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_x86_64)
@@ -155,7 +155,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_sign_with_ctx_str(uint8_t *signature,
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
-	if(ctx_str != NULL || ctx_str_len != 0) {
+	if (ctx_str != NULL || ctx_str_len != 0) {
 		return OQS_ERROR;
 	}
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_x86_64)
