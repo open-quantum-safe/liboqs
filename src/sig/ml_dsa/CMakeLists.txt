@@ -107,6 +107,119 @@ if(OQS_ENABLE_SIG_ml_dsa_44)
     )
 endif()
 
+if(OQS_ENABLE_SIG_ml_dsa_44_x86_64)
+    set(IMPL_KEY mldsa-native_ml-dsa-44_x86_64)
+    add_library(
+        mldsa-native_ml-dsa-44_x86_64
+        OBJECT
+        ${IMPL_KEY}/mldsa/src/ct.c
+        ${IMPL_KEY}/mldsa/src/poly.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_chknorm_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_use_hint_88_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/polyz_unpack_17_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/consts.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_use_hint_32_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l4.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_eta2_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_caddq_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/polyz_unpack_19_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l7.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_eta4_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/ntt.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_table.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_decompose_88_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l5.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_decompose_32_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/intt.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/nttunpack.S
+        ${IMPL_KEY}/mldsa/src/sign.c
+        ${IMPL_KEY}/mldsa/src/debug.c
+        ${IMPL_KEY}/mldsa/src/poly_kl.c
+        ${IMPL_KEY}/mldsa/src/polyvec.c
+        ${IMPL_KEY}/mldsa/src/packing.c
+    )
+
+    target_include_directories(
+        mldsa-native_ml-dsa-44_x86_64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
+    target_compile_options(
+        mldsa-native_ml-dsa-44_x86_64
+        PUBLIC
+            -DMLD_CONFIG_PARAMETER_SET=44
+            -DMLD_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h"
+    )
+    target_compile_options(
+        mldsa-native_ml-dsa-44_x86_64
+        PRIVATE -mavx2 -mbmi2 -mpopcnt
+    )
+
+    set(_ML_DSA_OBJS
+        ${_ML_DSA_OBJS}
+        $<TARGET_OBJECTS:mldsa-native_ml-dsa-44_x86_64>
+    )
+endif()
+
+if(OQS_ENABLE_SIG_ml_dsa_65_aarch64)
+    set(IMPL_KEY mldsa-native_ml-dsa-65_aarch64)
+    add_library(
+        mldsa-native_ml-dsa-65_aarch64
+        OBJECT
+        ${IMPL_KEY}/mldsa/src/ct.c
+        ${IMPL_KEY}/mldsa/src/poly.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_eta4_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_caddq_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/polyz_unpack_table.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_eta2_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_chknorm_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_decompose_88_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/polyz_unpack_17_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_decompose_32_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l5.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/pointwise_montgomery.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/ntt.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/aarch64_zetas.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/polyz_unpack_19_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_table.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_use_hint_32_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_use_hint_88_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l4.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l7.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_eta_table.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/intt.S
+        ${IMPL_KEY}/mldsa/src/sign.c
+        ${IMPL_KEY}/mldsa/src/debug.c
+        ${IMPL_KEY}/mldsa/src/poly_kl.c
+        ${IMPL_KEY}/mldsa/src/polyvec.c
+        ${IMPL_KEY}/mldsa/src/packing.c
+    )
+
+    target_include_directories(
+        mldsa-native_ml-dsa-65_aarch64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
+    target_compile_options(
+        mldsa-native_ml-dsa-65_aarch64
+        PUBLIC
+            -DMLD_CONFIG_PARAMETER_SET=65
+            -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+    )
+
+    set(_ML_DSA_OBJS
+        ${_ML_DSA_OBJS}
+        $<TARGET_OBJECTS:mldsa-native_ml-dsa-65_aarch64>
+    )
+endif()
+
 if(OQS_ENABLE_SIG_ml_dsa_65)
     set(IMPL_KEY mldsa-native_ml-dsa-65_ref)
     add_library(
@@ -141,6 +254,119 @@ if(OQS_ENABLE_SIG_ml_dsa_65)
     )
 endif()
 
+if(OQS_ENABLE_SIG_ml_dsa_65_x86_64)
+    set(IMPL_KEY mldsa-native_ml-dsa-65_x86_64)
+    add_library(
+        mldsa-native_ml-dsa-65_x86_64
+        OBJECT
+        ${IMPL_KEY}/mldsa/src/ct.c
+        ${IMPL_KEY}/mldsa/src/poly.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_chknorm_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_use_hint_88_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/polyz_unpack_17_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/consts.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_use_hint_32_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l4.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_eta2_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_caddq_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/polyz_unpack_19_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l7.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_eta4_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/ntt.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_table.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_decompose_88_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l5.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_decompose_32_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/intt.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/nttunpack.S
+        ${IMPL_KEY}/mldsa/src/sign.c
+        ${IMPL_KEY}/mldsa/src/debug.c
+        ${IMPL_KEY}/mldsa/src/poly_kl.c
+        ${IMPL_KEY}/mldsa/src/polyvec.c
+        ${IMPL_KEY}/mldsa/src/packing.c
+    )
+
+    target_include_directories(
+        mldsa-native_ml-dsa-65_x86_64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
+    target_compile_options(
+        mldsa-native_ml-dsa-65_x86_64
+        PUBLIC
+            -DMLD_CONFIG_PARAMETER_SET=65
+            -DMLD_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h"
+    )
+    target_compile_options(
+        mldsa-native_ml-dsa-65_x86_64
+        PRIVATE -mavx2 -mbmi2 -mpopcnt
+    )
+
+    set(_ML_DSA_OBJS
+        ${_ML_DSA_OBJS}
+        $<TARGET_OBJECTS:mldsa-native_ml-dsa-65_x86_64>
+    )
+endif()
+
+if(OQS_ENABLE_SIG_ml_dsa_87_aarch64)
+    set(IMPL_KEY mldsa-native_ml-dsa-87_aarch64)
+    add_library(
+        mldsa-native_ml-dsa-87_aarch64
+        OBJECT
+        ${IMPL_KEY}/mldsa/src/ct.c
+        ${IMPL_KEY}/mldsa/src/poly.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_eta4_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_caddq_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/polyz_unpack_table.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_eta2_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_chknorm_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_decompose_88_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/polyz_unpack_17_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_decompose_32_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l5.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/pointwise_montgomery.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/ntt.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/aarch64_zetas.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/polyz_unpack_19_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_table.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_use_hint_32_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/poly_use_hint_88_asm.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l4.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l7.S
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/rej_uniform_eta_table.c
+        ${IMPL_KEY}/mldsa/src/native/aarch64/src/intt.S
+        ${IMPL_KEY}/mldsa/src/sign.c
+        ${IMPL_KEY}/mldsa/src/debug.c
+        ${IMPL_KEY}/mldsa/src/poly_kl.c
+        ${IMPL_KEY}/mldsa/src/polyvec.c
+        ${IMPL_KEY}/mldsa/src/packing.c
+    )
+
+    target_include_directories(
+        mldsa-native_ml-dsa-87_aarch64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
+    target_compile_options(
+        mldsa-native_ml-dsa-87_aarch64
+        PUBLIC
+            -DMLD_CONFIG_PARAMETER_SET=87
+            -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+    )
+
+    set(_ML_DSA_OBJS
+        ${_ML_DSA_OBJS}
+        $<TARGET_OBJECTS:mldsa-native_ml-dsa-87_aarch64>
+    )
+endif()
+
 if(OQS_ENABLE_SIG_ml_dsa_87)
     set(IMPL_KEY mldsa-native_ml-dsa-87_ref)
     add_library(
@@ -172,6 +398,64 @@ if(OQS_ENABLE_SIG_ml_dsa_87)
     set(_ML_DSA_OBJS
         ${_ML_DSA_OBJS}
         $<TARGET_OBJECTS:mldsa-native_ml-dsa-87_ref>
+    )
+endif()
+
+if(OQS_ENABLE_SIG_ml_dsa_87_x86_64)
+    set(IMPL_KEY mldsa-native_ml-dsa-87_x86_64)
+    add_library(
+        mldsa-native_ml-dsa-87_x86_64
+        OBJECT
+        ${IMPL_KEY}/mldsa/src/ct.c
+        ${IMPL_KEY}/mldsa/src/poly.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_chknorm_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_use_hint_88_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/polyz_unpack_17_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/consts.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_use_hint_32_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l4.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_eta2_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_caddq_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/polyz_unpack_19_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l7.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_eta4_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/ntt.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/rej_uniform_table.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_decompose_88_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/pointwise_acc_l5.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/poly_decompose_32_avx2.c
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/intt.S
+        ${IMPL_KEY}/mldsa/src/native/x86_64/src/nttunpack.S
+        ${IMPL_KEY}/mldsa/src/sign.c
+        ${IMPL_KEY}/mldsa/src/debug.c
+        ${IMPL_KEY}/mldsa/src/poly_kl.c
+        ${IMPL_KEY}/mldsa/src/polyvec.c
+        ${IMPL_KEY}/mldsa/src/packing.c
+    )
+
+    target_include_directories(
+        mldsa-native_ml-dsa-87_x86_64
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}
+            ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
+    )
+
+    target_compile_options(
+        mldsa-native_ml-dsa-87_x86_64
+        PUBLIC
+            -DMLD_CONFIG_PARAMETER_SET=87
+            -DMLD_CONFIG_FILE="${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}/integration/liboqs/config_x86_64.h"
+    )
+    target_compile_options(
+        mldsa-native_ml-dsa-87_x86_64
+        PRIVATE -mavx2 -mbmi2 -mpopcnt
+    )
+
+    set(_ML_DSA_OBJS
+        ${_ML_DSA_OBJS}
+        $<TARGET_OBJECTS:mldsa-native_ml-dsa-87_x86_64>
     )
 endif()
 

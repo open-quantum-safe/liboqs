@@ -12,7 +12,7 @@
 #define OQS_SIG_{{ param_key }}_length_secret_key {{ param_meta.sklen }}
 #define OQS_SIG_{{ param_key }}_length_signature {{ param_meta.siglen }}
 
-OQS_SIG *OQS_sig_{{ param_key }}_new(void);
+OQS_SIG *OQS_SIG_{{ param_key }}_new(void);
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
