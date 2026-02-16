@@ -54,6 +54,17 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_sign(uint8_t *signature, size_t *signature_
 
 }
 
+OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+
+
+
+
+
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA87_C_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+
+
+}
+
 
 
 #endif
