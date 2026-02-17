@@ -10,7 +10,7 @@
 #if defined(OQS_ENABLE_SIG_ml_dsa_44)
 #define OQS_SIG_ml_dsa_44_length_public_key 1312
 #define OQS_SIG_ml_dsa_44_length_secret_key 2560
-#define OQS_SIG_ml_dsa_44_length_signature 1312
+#define OQS_SIG_ml_dsa_44_length_signature 2420
 
 OQS_SIG *OQS_SIG_ml_dsa_44_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_keypair(uint8_t *public_key, uint8_t *secret_key);

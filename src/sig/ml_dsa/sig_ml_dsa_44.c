@@ -131,25 +131,25 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_sign_with_ctx_str(uint8_t *signature, size_
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
 	}
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_44_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
 	}
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
 #endif
 }
 
@@ -157,25 +157,25 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_verify_with_ctx_str(const uint8_t *message,
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
 	}
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_44_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
 	}
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA44_C_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
 #endif
 }
 

@@ -420,7 +420,7 @@ sigs:
           name: "ML-DSA-44"
           pklen: 1312
           sklen: 2560
-          siglen: 1312
+          siglen: 2420
           enable_by: OQS_ENABLE_SIG_ml_dsa_44
           default_impl: mldsa-native_ml-dsa-44_ref
           nist_level: 2
