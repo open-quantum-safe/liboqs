@@ -95,7 +95,6 @@
 
 #cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
 #cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
-#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
 
 #cmakedefine OQS_ENABLE_KEM_NTRU 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hps2048509 1
