@@ -79,7 +79,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_extmu_sign(uint8_t *signature, size_t *sign
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA87_X86_64_signature_extmu(signature, signature_len, message, message_len, NULL, 0, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA87_X86_64_signature_extmu(signature, signature_len, message, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA87_C_signature_extmu(signature, signature_len, message, secret_key);
