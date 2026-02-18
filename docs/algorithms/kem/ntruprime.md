@@ -6,15 +6,11 @@
 - **Authors' website**: https://ntruprime.cr.yp.to
 - **Specification version**: supercop-20200826.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+  - **Source**: https://github.com/openssh/openssh-portable/blob/1cc936b2fabffeac7fff14ca1070d7d7a317ab7b/sntrup761.c
   - **Implementation license (SPDX-Identifier)**: Public domain
-- **Optimized Implementation sources**:
-  - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
-      - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
-  - https://github.com/jschanck/package-pqclean/tree/4d9f08c3/ntruprime, which takes it from:
-  - supercop-20210604
+  - https://github.com/jedisct1/supercop/releases/tag/20240808, which takes it from:
+  - supercop-20240808
 
 ## Parameter set summary
 
@@ -26,8 +22,7 @@
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                 |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                 |
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
