@@ -12,7 +12,7 @@
         - ✅ render family-level source file (e.g. `kem_ml_kem_512.c`)
         - 🔨 render `.CMake/alg_support.cmake`
         - 🔨 render documentation
-    - 🔨 !!! ML-DSA !!!
+    - 🔨 ML-DSA
 - ✅ Parse `oqsbuildfile.yml` into structured data instead of Python dictionary
 - 🔨 Consider documenting oqsbuildfile's schema in Python code
 - 🔨 Experiment with converting `oqsbuildfile.yml` into TOML. TOML is better
@@ -21,6 +21,9 @@
 - 🔨 `copies` should support direct mapping, re-usable mapping in the same
   oqsbuildfile, and remote mapping from `META.yaml`
 - ⚠️ figure out how to check feature parity with `copy_from_upstream.py`
+- ⚠️ consider separating configurations (e.g. what is the flag that enables an architecture?)
+  and data (e.g. what is the public key size of ML-KEM-512)
+- ⚠️ express the schema of oqsbuildfile using Python classes and generate documentation
 """
 
 import argparse
