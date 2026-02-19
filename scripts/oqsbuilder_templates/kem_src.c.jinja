@@ -180,7 +180,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_encaps_derand(uint8_t *ciphertext, ui
     return (OQS_STATUS) {{ default_impl.api_names.encaps_derand }}(ciphertext, shared_secret, public_key, seed);
     {%- endif %}
 {%- else %}
-    (void) cipheretxt;
+    (void) ciphertext;
     (void) shared_secret;
     (void) public_key;
     (void) seed;

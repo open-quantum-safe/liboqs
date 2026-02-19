@@ -19,16 +19,16 @@ upstreams:
   #   # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
   #   patches: [pqclean-kyber-armneon-shake-fixes.patch, pqclean-kyber-armneon-768-1024-fixes.patch, pqclean-kyber-armneon-variable-timing-fix.patch, pqclean-kyber-armneon-asan.patch]
   #   # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
-  # pqclean:
-  #   git_url: https://github.com/PQClean/PQClean.git
-  #   git_branch: master
-  #   git_commit: 1eacfdafc15ddc5d5759d0b85b4cef26627df181
-  #   # kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
-  #   # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
-  #   # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
-  #   # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-  #   patches: [pqclean-sphincs.patch, classic_mceliece_memset.patch]
-  #   # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64
+  pqclean:
+    git_url: https://github.com/PQClean/PQClean.git
+    git_branch: master
+    git_commit: 1eacfdafc15ddc5d5759d0b85b4cef26627df181
+    # kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
+    # sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
+    # kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
+    # sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
+    patches: [classic_mceliece_memset.patch]
+    # ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64, pqclean_kyber512_aarch64, pqclean_kyber1024_aarch64, pqclean_kyber768_aarch64
   # pqcrystals-kyber:
   #   git_url: https://github.com/pq-crystals/kyber.git
   #   git_branch: master
@@ -100,6 +100,518 @@ kems:
   # TODO: what common fields exist across all KEM's?
   families:
     # The id of a KEM will be the directory name under src/kem
+    classic_mceliece:
+      name: "Classic McEliece"
+      version: "SUPERCOP-20221025"
+      derandomized_keypair: false
+      derandomized_encaps: false
+      params:
+        classic_mceliece_348864:
+          name: "Classic-McEliece-348864"
+          pklen: 261120
+          sklen: 6492
+          ctlen: 96
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_348864"
+          default_impl: "pqclean_mceliece348864_clean"
+          nist_level: 1
+          ind_cca: true
+        classic_mceliece_348864f:
+          name: "Classic-McEliece-348864f"
+          pklen: 261120
+          sklen: 6492
+          ctlen: 96
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_348864f"
+          default_impl: "pqclean_mceliece348864f_clean"
+          nist_level: 1
+          ind_cca: true
+        classic_mceliece_460896:
+          name: "Classic-McEliece-460896"
+          pklen: 524160
+          sklen: 13608
+          ctlen: 156
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_460896"
+          default_impl: "pqclean_mceliece460896_clean"
+          nist_level: 3
+          ind_cca: true
+        classic_mceliece_460896f:
+          name: "Classic-McEliece-460896f"
+          pklen: 524160
+          sklen: 13608
+          ctlen: 156
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_460896f"
+          default_impl: "pqclean_mceliece460896f_clean"
+          nist_level: 3
+          ind_cca: true
+        classic_mceliece_6688128:
+          name: "Classic-McEliece-6688128"
+          pklen: 1044992
+          sklen: 13932
+          ctlen: 208
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_6688128"
+          default_impl: "pqclean_mceliece6688128_clean"
+          nist_level: 5
+          ind_cca: true
+        classic_mceliece_6688128f:
+          name: "Classic-McEliece-6688128f"
+          pklen: 1044992
+          sklen: 13932
+          ctlen: 208
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_6688128f"
+          default_impl: "pqclean_mceliece6688128f_clean"
+          nist_level: 5
+          ind_cca: true
+        classic_mceliece_6960119:
+          name: "Classic-McEliece-6960119"
+          pklen: 1047319
+          sklen: 13948
+          ctlen: 194
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_6960119"
+          default_impl: "pqclean_mceliece6960119_clean"
+          nist_level: 5
+          ind_cca: true
+        classic_mceliece_6960119f:
+          name: "Classic-McEliece-6960119f"
+          pklen: 1047319
+          sklen: 13948
+          ctlen: 194
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_6960119f"
+          default_impl: "pqclean_mceliece6960119f_clean"
+          nist_level: 5
+          ind_cca: true
+        classic_mceliece_8192128:
+          name: "Classic-McEliece-8192128"
+          pklen: 1357824
+          sklen: 14120
+          ctlen: 208
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_8192128"
+          default_impl: "pqclean_mceliece8192128_clean"
+          nist_level: 5
+          ind_cca: true
+        classic_mceliece_8192128f:
+          name: "Classic-McEliece-8192128f"
+          pklen: 1357824
+          sklen: 14120
+          ctlen: 208
+          sslen: 32
+          keypair_seedlen: 0
+          encap_seedlen: 0
+          enable_by: "OQS_ENABLE_KEM_classic_mceliece_8192128f"
+          default_impl: "pqclean_mceliece8192128f_clean"
+          nist_level: 5
+          ind_cca: true
+      impls:
+        pqclean_mceliece348864_avx2:
+          upstream: pqclean
+          param: classic_mceliece_348864
+          copies: pqclean_mceliece348864_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_348864_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2",
+              "-mpopcnt",
+              "-Wno-language-extension-token",
+              "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE348864_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE348864_AVX2_crypto_kem_dec"
+        pqclean_mceliece348864_clean:
+          upstream: pqclean
+          param: classic_mceliece_348864
+          copies: pqclean_mceliece348864_clean
+          # enable_by: # NOTE: default impl of mceliece348864
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_dec"
+        pqclean_mceliece348864f_avx2:
+          upstream: pqclean
+          param: classic_mceliece_348864f
+          copies: pqclean_mceliece348864f_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_348864f_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt, bmi]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2",
+              "-mpopcnt",
+              "-mbmi",
+              "-Wno-language-extension-token",
+              "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_dec"
+        pqclean_mceliece348864f_clean:
+          upstream: pqclean
+          param: classic_mceliece_348864f
+          copies: pqclean_mceliece348864f_clean
+          # enable_by: # NOTE: default impl of mceliece348864f
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_dec"
+        pqclean_mceliece460896_avx2:
+          upstream: pqclean
+          param: classic_mceliece_460896
+          copies: pqclean_mceliece460896_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_460896_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2",
+              "-mpopcnt",
+              "-Wno-language-extension-token",
+              "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE460896_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE460896_AVX2_crypto_kem_dec"
+        pqclean_mceliece460896_clean:
+          upstream: pqclean
+          param: classic_mceliece_460896
+          copies: pqclean_mceliece460896_clean
+          # enable_by: # NOTE: default impl of mceliece460896
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_dec"
+        pqclean_mceliece460896f_avx2:
+          upstream: pqclean
+          param: classic_mceliece_460896f
+          copies: pqclean_mceliece460896f_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_460896f_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt, bmi]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2",
+              "-mpopcnt",
+              "-mbmi",
+              "-Wno-language-extension-token",
+              "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_dec"
+        pqclean_mceliece460896f_clean:
+          upstream: pqclean
+          param: classic_mceliece_460896f
+          copies: pqclean_mceliece460896f_clean
+          # enable_by: # NOTE: default impl of mceliece460896f
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_dec"
+        pqclean_mceliece6688128_avx2:
+          upstream: pqclean
+          param: classic_mceliece_6688128
+          copies: pqclean_mceliece6688128_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2",
+              "-mpopcnt",
+              "-Wno-language-extension-token",
+              "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_dec"
+        pqclean_mceliece6688128_clean:
+          upstream: pqclean
+          param: classic_mceliece_6688128
+          copies: pqclean_mceliece6688128_clean
+          # enable_by: # NOTE: default impl of mceliece6688128
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_dec"
+        pqclean_mceliece6688128f_avx2:
+          upstream: pqclean
+          param: classic_mceliece_6688128f
+          copies: pqclean_mceliece6688128f_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128f_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt, bmi]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2",
+              "-mpopcnt",
+              "-mbmi",
+              "-Wno-language-extension-token",
+              "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_dec"
+        pqclean_mceliece6688128f_clean:
+          upstream: pqclean
+          param: classic_mceliece_6688128f
+          copies: pqclean_mceliece6688128f_clean
+          # enable_by: # NOTE: default impl of mceliece6688128f
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_dec"
+        pqclean_mceliece6960119_avx2:
+          upstream: pqclean
+          param: classic_mceliece_6960119
+          copies: pqclean_mceliece6960119_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2",
+              "-mpopcnt",
+              "-Wno-language-extension-token",
+              "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_dec"
+        pqclean_mceliece6960119_clean:
+          upstream: pqclean
+          param: classic_mceliece_6960119
+          copies: pqclean_mceliece6960119_clean
+          # enable_by: # NOTE: default impl of mceliece6960119
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_dec"
+        pqclean_mceliece6960119f_avx2:
+          upstream: pqclean
+          param: classic_mceliece_6960119f
+          copies: pqclean_mceliece6960119f_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119f_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt, bmi]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2", "-mpopcnt", "-mbmi", "-Wno-language-extension-token", "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_dec"
+        pqclean_mceliece6960119f_clean:
+          upstream: pqclean
+          param: classic_mceliece_6960119f
+          copies: pqclean_mceliece6960119f_clean
+          # enable_by: # NOTE: default impl of mceliece6960119f
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_dec"
+        pqclean_mceliece8192128_avx2:
+          upstream: pqclean
+          param: classic_mceliece_8192128
+          copies: pqclean_mceliece8192128_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2", "-mpopcnt", "-Wno-language-extension-token", "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_dec"
+        pqclean_mceliece8192128_clean:
+          upstream: pqclean
+          param: classic_mceliece_8192128
+          copies: pqclean_mceliece8192128_clean
+          # enable_by: # NOTE: default impl of mceliece8192128
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_dec"
+        pqclean_mceliece8192128f_avx2:
+          upstream: pqclean
+          param: classic_mceliece_8192128f
+          copies: pqclean_mceliece8192128f_avx2
+          enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128f_avx2
+          arch: x86_64
+          runtime_cpu_features: [avx2, popcnt, bmi]
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              "-mavx2", "-mpopcnt", "-mbmi", "-Wno-language-extension-token", "-O1",
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_dec"
+        pqclean_mceliece8192128f_clean:
+          upstream: pqclean
+          param: classic_mceliece_8192128f
+          copies: pqclean_mceliece8192128f_clean
+          # enable_by: # NOTE: default impl of mceliece8192128f
+          arch: portable
+          includes:
+            private:
+              - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
+              - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          compile_opts:
+            private: [
+              # "!!!old_gas_syntax"
+            ]
+          keypair: "PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_keypair"
+          enc: "PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_enc"
+          dec: "PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_dec"
+
     ml_kem:
       name: "ML-KEM"
       version: "FIPS203"
@@ -626,6 +1138,1151 @@ architectures:
     enable_by: OQS_USE_ICICLE
 
 copies:
+  pqclean_mceliece348864_avx2:
+    fft.h: crypto_kem/mceliece348864/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece348864/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece348864/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece348864/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece348864/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece348864/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece348864/avx2/params.h
+    update_asm.S: crypto_kem/mceliece348864/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece348864/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece348864/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece348864/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece348864/avx2/operations.h
+    vec128.h: crypto_kem/mceliece348864/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece348864/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece348864/avx2/crypto_uint64.c
+    vec.h: crypto_kem/mceliece348864/avx2/vec.h
+    aes256ctr.c: crypto_kem/mceliece348864/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece348864/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece348864/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece348864/avx2/sk_gen.c
+    powers.data: crypto_kem/mceliece348864/avx2/powers.data
+    vec256.c: crypto_kem/mceliece348864/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece348864/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece348864/avx2/bm.h
+    vec_mul_asm.S: crypto_kem/mceliece348864/avx2/vec_mul_asm.S
+    crypto_hash.h: crypto_kem/mceliece348864/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece348864/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece348864/avx2/crypto_int16.c
+    uint64_sort.h: crypto_kem/mceliece348864/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece348864/avx2/architectures
+    namespace.h: crypto_kem/mceliece348864/avx2/namespace.h
+    benes.c: crypto_kem/mceliece348864/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece348864/avx2/pk_gen.h
+    scalars.data: crypto_kem/mceliece348864/avx2/scalars.data
+    consts.data: crypto_kem/mceliece348864/avx2/consts.data
+    api.h: crypto_kem/mceliece348864/avx2/api.h
+    controlbits.h: crypto_kem/mceliece348864/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece348864/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece348864/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece348864/avx2/fft.c
+    vec.c: crypto_kem/mceliece348864/avx2/vec.c
+    crypto_uint64.h: crypto_kem/mceliece348864/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece348864/avx2/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece348864/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece348864/avx2/operations.c
+    util.h: crypto_kem/mceliece348864/avx2/util.h
+    consts.S: crypto_kem/mceliece348864/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece348864/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece348864/avx2/gf.h
+    bm.c: crypto_kem/mceliece348864/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece348864/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece348864/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece348864/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece348864/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece348864/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece348864/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece348864/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece348864/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece348864/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece348864/avx2/benes.h
+    vec_mul_sp_asm.S: crypto_kem/mceliece348864/avx2/vec_mul_sp_asm.S
+    transpose.h: crypto_kem/mceliece348864/avx2/transpose.h
+    syndrome_asm.S: crypto_kem/mceliece348864/avx2/syndrome_asm.S
+    crypto_int16.h: crypto_kem/mceliece348864/avx2/crypto_int16.h
+
+  pqclean_mceliece348864_clean:
+    crypto_uint32.h: crypto_kem/mceliece348864/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece348864/clean/controlbits.c
+    gf.c: crypto_kem/mceliece348864/clean/gf.c
+    params.h: crypto_kem/mceliece348864/clean/params.h
+    util.c: crypto_kem/mceliece348864/clean/util.c
+    decrypt.h: crypto_kem/mceliece348864/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece348864/clean/LICENSE
+    operations.h: crypto_kem/mceliece348864/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece348864/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece348864/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece348864/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece348864/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece348864/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece348864/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece348864/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece348864/clean/bm.h
+    root.c: crypto_kem/mceliece348864/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece348864/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece348864/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece348864/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece348864/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece348864/clean/namespace.h
+    transpose.c: crypto_kem/mceliece348864/clean/transpose.c
+    benes.c: crypto_kem/mceliece348864/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece348864/clean/pk_gen.h
+    api.h: crypto_kem/mceliece348864/clean/api.h
+    controlbits.h: crypto_kem/mceliece348864/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece348864/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece348864/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece348864/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece348864/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece348864/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece348864/clean/operations.c
+    util.h: crypto_kem/mceliece348864/clean/util.h
+    decrypt.c: crypto_kem/mceliece348864/clean/decrypt.c
+    gf.h: crypto_kem/mceliece348864/clean/gf.h
+    root.h: crypto_kem/mceliece348864/clean/root.h
+    bm.c: crypto_kem/mceliece348864/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece348864/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece348864/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece348864/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece348864/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece348864/clean/benes.h
+    transpose.h: crypto_kem/mceliece348864/clean/transpose.h
+    crypto_int16.h: crypto_kem/mceliece348864/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece348864/clean/synd.c
+
+  pqclean_mceliece348864f_avx2:
+    fft.h: crypto_kem/mceliece348864f/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece348864f/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece348864f/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece348864f/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece348864f/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece348864f/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece348864f/avx2/params.h
+    update_asm.S: crypto_kem/mceliece348864f/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece348864f/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece348864f/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece348864f/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece348864f/avx2/operations.h
+    vec128.h: crypto_kem/mceliece348864f/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece348864f/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece348864f/avx2/crypto_uint64.c
+    vec.h: crypto_kem/mceliece348864f/avx2/vec.h
+    aes256ctr.c: crypto_kem/mceliece348864f/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece348864f/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece348864f/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece348864f/avx2/sk_gen.c
+    powers.data: crypto_kem/mceliece348864f/avx2/powers.data
+    vec256.c: crypto_kem/mceliece348864f/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece348864f/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece348864f/avx2/bm.h
+    vec_mul_asm.S: crypto_kem/mceliece348864f/avx2/vec_mul_asm.S
+    crypto_hash.h: crypto_kem/mceliece348864f/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece348864f/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece348864f/avx2/crypto_int16.c
+    uint64_sort.h: crypto_kem/mceliece348864f/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece348864f/avx2/architectures
+    namespace.h: crypto_kem/mceliece348864f/avx2/namespace.h
+    benes.c: crypto_kem/mceliece348864f/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece348864f/avx2/pk_gen.h
+    scalars.data: crypto_kem/mceliece348864f/avx2/scalars.data
+    consts.data: crypto_kem/mceliece348864f/avx2/consts.data
+    api.h: crypto_kem/mceliece348864f/avx2/api.h
+    controlbits.h: crypto_kem/mceliece348864f/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece348864f/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece348864f/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece348864f/avx2/fft.c
+    vec.c: crypto_kem/mceliece348864f/avx2/vec.c
+    crypto_uint64.h: crypto_kem/mceliece348864f/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece348864f/avx2/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece348864f/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece348864f/avx2/operations.c
+    util.h: crypto_kem/mceliece348864f/avx2/util.h
+    consts.S: crypto_kem/mceliece348864f/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece348864f/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece348864f/avx2/gf.h
+    bm.c: crypto_kem/mceliece348864f/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece348864f/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece348864f/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece348864f/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece348864f/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece348864f/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece348864f/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece348864f/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece348864f/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece348864f/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece348864f/avx2/benes.h
+    vec_mul_sp_asm.S: crypto_kem/mceliece348864f/avx2/vec_mul_sp_asm.S
+    transpose.h: crypto_kem/mceliece348864f/avx2/transpose.h
+    syndrome_asm.S: crypto_kem/mceliece348864f/avx2/syndrome_asm.S
+    crypto_int16.h: crypto_kem/mceliece348864f/avx2/crypto_int16.h
+
+  pqclean_mceliece348864f_clean:
+    crypto_uint32.h: crypto_kem/mceliece348864f/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece348864f/clean/controlbits.c
+    gf.c: crypto_kem/mceliece348864f/clean/gf.c
+    params.h: crypto_kem/mceliece348864f/clean/params.h
+    util.c: crypto_kem/mceliece348864f/clean/util.c
+    decrypt.h: crypto_kem/mceliece348864f/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece348864f/clean/LICENSE
+    operations.h: crypto_kem/mceliece348864f/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece348864f/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece348864f/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece348864f/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece348864f/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece348864f/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece348864f/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece348864f/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece348864f/clean/bm.h
+    root.c: crypto_kem/mceliece348864f/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece348864f/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece348864f/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece348864f/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece348864f/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece348864f/clean/namespace.h
+    transpose.c: crypto_kem/mceliece348864f/clean/transpose.c
+    benes.c: crypto_kem/mceliece348864f/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece348864f/clean/pk_gen.h
+    api.h: crypto_kem/mceliece348864f/clean/api.h
+    controlbits.h: crypto_kem/mceliece348864f/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece348864f/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece348864f/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece348864f/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece348864f/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece348864f/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece348864f/clean/operations.c
+    util.h: crypto_kem/mceliece348864f/clean/util.h
+    decrypt.c: crypto_kem/mceliece348864f/clean/decrypt.c
+    gf.h: crypto_kem/mceliece348864f/clean/gf.h
+    root.h: crypto_kem/mceliece348864f/clean/root.h
+    bm.c: crypto_kem/mceliece348864f/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece348864f/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece348864f/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece348864f/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece348864f/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece348864f/clean/benes.h
+    transpose.h: crypto_kem/mceliece348864f/clean/transpose.h
+    crypto_int16.h: crypto_kem/mceliece348864f/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece348864f/clean/synd.c
+
+  pqclean_mceliece460896_avx2:
+    fft.h: crypto_kem/mceliece460896/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece460896/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece460896/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece460896/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece460896/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece460896/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece460896/avx2/params.h
+    update_asm.S: crypto_kem/mceliece460896/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece460896/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece460896/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece460896/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece460896/avx2/operations.h
+    vec128.h: crypto_kem/mceliece460896/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece460896/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece460896/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece460896/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece460896/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece460896/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece460896/avx2/sk_gen.c
+    vec256.c: crypto_kem/mceliece460896/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece460896/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece460896/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece460896/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece460896/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece460896/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece460896/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece460896/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece460896/avx2/architectures
+    namespace.h: crypto_kem/mceliece460896/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece460896/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece460896/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece460896/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece460896/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece460896/avx2/consts.data
+    api.h: crypto_kem/mceliece460896/avx2/api.h
+    controlbits.h: crypto_kem/mceliece460896/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece460896/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece460896/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece460896/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece460896/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece460896/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece460896/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece460896/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece460896/avx2/operations.c
+    util.h: crypto_kem/mceliece460896/avx2/util.h
+    consts.S: crypto_kem/mceliece460896/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece460896/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece460896/avx2/gf.h
+    bm.c: crypto_kem/mceliece460896/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece460896/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece460896/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece460896/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece460896/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece460896/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece460896/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece460896/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece460896/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece460896/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece460896/avx2/benes.h
+    transpose.h: crypto_kem/mceliece460896/avx2/transpose.h
+    syndrome_asm.S: crypto_kem/mceliece460896/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece460896/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece460896/avx2/crypto_int16.h
+
+  pqclean_mceliece460896_clean:
+    crypto_uint32.h: crypto_kem/mceliece460896/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece460896/clean/controlbits.c
+    gf.c: crypto_kem/mceliece460896/clean/gf.c
+    params.h: crypto_kem/mceliece460896/clean/params.h
+    util.c: crypto_kem/mceliece460896/clean/util.c
+    decrypt.h: crypto_kem/mceliece460896/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece460896/clean/LICENSE
+    operations.h: crypto_kem/mceliece460896/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece460896/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece460896/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece460896/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece460896/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece460896/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece460896/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece460896/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece460896/clean/bm.h
+    root.c: crypto_kem/mceliece460896/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece460896/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece460896/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece460896/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece460896/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece460896/clean/namespace.h
+    transpose.c: crypto_kem/mceliece460896/clean/transpose.c
+    benes.c: crypto_kem/mceliece460896/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece460896/clean/pk_gen.h
+    api.h: crypto_kem/mceliece460896/clean/api.h
+    controlbits.h: crypto_kem/mceliece460896/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece460896/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece460896/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece460896/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece460896/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece460896/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece460896/clean/operations.c
+    util.h: crypto_kem/mceliece460896/clean/util.h
+    decrypt.c: crypto_kem/mceliece460896/clean/decrypt.c
+    gf.h: crypto_kem/mceliece460896/clean/gf.h
+    root.h: crypto_kem/mceliece460896/clean/root.h
+    bm.c: crypto_kem/mceliece460896/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece460896/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece460896/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece460896/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece460896/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece460896/clean/benes.h
+    transpose.h: crypto_kem/mceliece460896/clean/transpose.h
+    crypto_int16.h: crypto_kem/mceliece460896/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece460896/clean/synd.c
+
+  pqclean_mceliece460896f_avx2:
+    fft.h: crypto_kem/mceliece460896f/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece460896f/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece460896f/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece460896f/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece460896f/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece460896f/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece460896f/avx2/params.h
+    update_asm.S: crypto_kem/mceliece460896f/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece460896f/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece460896f/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece460896f/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece460896f/avx2/operations.h
+    vec128.h: crypto_kem/mceliece460896f/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece460896f/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece460896f/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece460896f/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece460896f/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece460896f/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece460896f/avx2/sk_gen.c
+    vec256.c: crypto_kem/mceliece460896f/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece460896f/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece460896f/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece460896f/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece460896f/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece460896f/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece460896f/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece460896f/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece460896f/avx2/architectures
+    namespace.h: crypto_kem/mceliece460896f/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece460896f/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece460896f/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece460896f/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece460896f/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece460896f/avx2/consts.data
+    api.h: crypto_kem/mceliece460896f/avx2/api.h
+    controlbits.h: crypto_kem/mceliece460896f/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece460896f/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece460896f/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece460896f/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece460896f/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece460896f/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece460896f/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece460896f/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece460896f/avx2/operations.c
+    util.h: crypto_kem/mceliece460896f/avx2/util.h
+    consts.S: crypto_kem/mceliece460896f/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece460896f/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece460896f/avx2/gf.h
+    bm.c: crypto_kem/mceliece460896f/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece460896f/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece460896f/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece460896f/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece460896f/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece460896f/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece460896f/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece460896f/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece460896f/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece460896f/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece460896f/avx2/benes.h
+    transpose.h: crypto_kem/mceliece460896f/avx2/transpose.h
+    syndrome_asm.S: crypto_kem/mceliece460896f/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece460896f/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece460896f/avx2/crypto_int16.h
+
+  pqclean_mceliece460896f_clean:
+    crypto_uint32.h: crypto_kem/mceliece460896f/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece460896f/clean/controlbits.c
+    gf.c: crypto_kem/mceliece460896f/clean/gf.c
+    params.h: crypto_kem/mceliece460896f/clean/params.h
+    util.c: crypto_kem/mceliece460896f/clean/util.c
+    decrypt.h: crypto_kem/mceliece460896f/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece460896f/clean/LICENSE
+    operations.h: crypto_kem/mceliece460896f/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece460896f/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece460896f/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece460896f/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece460896f/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece460896f/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece460896f/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece460896f/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece460896f/clean/bm.h
+    root.c: crypto_kem/mceliece460896f/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece460896f/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece460896f/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece460896f/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece460896f/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece460896f/clean/namespace.h
+    transpose.c: crypto_kem/mceliece460896f/clean/transpose.c
+    benes.c: crypto_kem/mceliece460896f/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece460896f/clean/pk_gen.h
+    api.h: crypto_kem/mceliece460896f/clean/api.h
+    controlbits.h: crypto_kem/mceliece460896f/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece460896f/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece460896f/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece460896f/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece460896f/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece460896f/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece460896f/clean/operations.c
+    util.h: crypto_kem/mceliece460896f/clean/util.h
+    decrypt.c: crypto_kem/mceliece460896f/clean/decrypt.c
+    gf.h: crypto_kem/mceliece460896f/clean/gf.h
+    root.h: crypto_kem/mceliece460896f/clean/root.h
+    bm.c: crypto_kem/mceliece460896f/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece460896f/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece460896f/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece460896f/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece460896f/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece460896f/clean/benes.h
+    transpose.h: crypto_kem/mceliece460896f/clean/transpose.h
+    crypto_int16.h: crypto_kem/mceliece460896f/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece460896f/clean/synd.c
+
+  pqclean_mceliece6688128_avx2:
+    fft.h: crypto_kem/mceliece6688128/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece6688128/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece6688128/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6688128/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece6688128/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece6688128/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece6688128/avx2/params.h
+    update_asm.S: crypto_kem/mceliece6688128/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece6688128/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece6688128/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece6688128/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece6688128/avx2/operations.h
+    vec128.h: crypto_kem/mceliece6688128/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece6688128/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6688128/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6688128/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6688128/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6688128/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6688128/avx2/sk_gen.c
+    powers.data: crypto_kem/mceliece6688128/avx2/powers.data
+    vec256.c: crypto_kem/mceliece6688128/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece6688128/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece6688128/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece6688128/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece6688128/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece6688128/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece6688128/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece6688128/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece6688128/avx2/architectures
+    namespace.h: crypto_kem/mceliece6688128/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece6688128/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece6688128/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece6688128/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece6688128/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece6688128/avx2/consts.data
+    api.h: crypto_kem/mceliece6688128/avx2/api.h
+    controlbits.h: crypto_kem/mceliece6688128/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6688128/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6688128/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece6688128/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece6688128/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6688128/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece6688128/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece6688128/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece6688128/avx2/operations.c
+    util.h: crypto_kem/mceliece6688128/avx2/util.h
+    consts.S: crypto_kem/mceliece6688128/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece6688128/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece6688128/avx2/gf.h
+    bm.c: crypto_kem/mceliece6688128/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece6688128/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece6688128/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece6688128/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece6688128/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece6688128/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece6688128/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece6688128/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece6688128/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6688128/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece6688128/avx2/benes.h
+    transpose.h: crypto_kem/mceliece6688128/avx2/transpose.h
+    syndrome_asm.S: crypto_kem/mceliece6688128/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece6688128/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece6688128/avx2/crypto_int16.h
+
+  pqclean_mceliece6688128_clean:
+    crypto_uint32.h: crypto_kem/mceliece6688128/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6688128/clean/controlbits.c
+    gf.c: crypto_kem/mceliece6688128/clean/gf.c
+    params.h: crypto_kem/mceliece6688128/clean/params.h
+    util.c: crypto_kem/mceliece6688128/clean/util.c
+    decrypt.h: crypto_kem/mceliece6688128/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece6688128/clean/LICENSE
+    operations.h: crypto_kem/mceliece6688128/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece6688128/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6688128/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6688128/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6688128/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6688128/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6688128/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece6688128/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece6688128/clean/bm.h
+    root.c: crypto_kem/mceliece6688128/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece6688128/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece6688128/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece6688128/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece6688128/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece6688128/clean/namespace.h
+    transpose.c: crypto_kem/mceliece6688128/clean/transpose.c
+    benes.c: crypto_kem/mceliece6688128/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece6688128/clean/pk_gen.h
+    api.h: crypto_kem/mceliece6688128/clean/api.h
+    controlbits.h: crypto_kem/mceliece6688128/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6688128/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6688128/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece6688128/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6688128/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece6688128/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece6688128/clean/operations.c
+    util.h: crypto_kem/mceliece6688128/clean/util.h
+    decrypt.c: crypto_kem/mceliece6688128/clean/decrypt.c
+    gf.h: crypto_kem/mceliece6688128/clean/gf.h
+    root.h: crypto_kem/mceliece6688128/clean/root.h
+    bm.c: crypto_kem/mceliece6688128/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece6688128/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece6688128/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece6688128/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6688128/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece6688128/clean/benes.h
+    transpose.h: crypto_kem/mceliece6688128/clean/transpose.h
+    crypto_int16.h: crypto_kem/mceliece6688128/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece6688128/clean/synd.c
+
+  pqclean_mceliece6688128f_avx2:
+    fft.h: crypto_kem/mceliece6688128f/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece6688128f/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece6688128f/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6688128f/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece6688128f/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece6688128f/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece6688128f/avx2/params.h
+    update_asm.S: crypto_kem/mceliece6688128f/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece6688128f/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece6688128f/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece6688128f/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece6688128f/avx2/operations.h
+    vec128.h: crypto_kem/mceliece6688128f/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece6688128f/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6688128f/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6688128f/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6688128f/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6688128f/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6688128f/avx2/sk_gen.c
+    powers.data: crypto_kem/mceliece6688128f/avx2/powers.data
+    vec256.c: crypto_kem/mceliece6688128f/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece6688128f/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece6688128f/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece6688128f/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece6688128f/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece6688128f/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece6688128f/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece6688128f/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece6688128f/avx2/architectures
+    namespace.h: crypto_kem/mceliece6688128f/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece6688128f/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece6688128f/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece6688128f/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece6688128f/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece6688128f/avx2/consts.data
+    api.h: crypto_kem/mceliece6688128f/avx2/api.h
+    controlbits.h: crypto_kem/mceliece6688128f/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6688128f/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6688128f/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece6688128f/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece6688128f/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6688128f/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece6688128f/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece6688128f/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece6688128f/avx2/operations.c
+    util.h: crypto_kem/mceliece6688128f/avx2/util.h
+    consts.S: crypto_kem/mceliece6688128f/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece6688128f/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece6688128f/avx2/gf.h
+    bm.c: crypto_kem/mceliece6688128f/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece6688128f/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece6688128f/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece6688128f/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece6688128f/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece6688128f/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece6688128f/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece6688128f/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece6688128f/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6688128f/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece6688128f/avx2/benes.h
+    transpose.h: crypto_kem/mceliece6688128f/avx2/transpose.h
+    syndrome_asm.S: crypto_kem/mceliece6688128f/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece6688128f/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece6688128f/avx2/crypto_int16.h
+
+  pqclean_mceliece6688128f_clean:
+    crypto_uint32.h: crypto_kem/mceliece6688128f/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6688128f/clean/controlbits.c
+    gf.c: crypto_kem/mceliece6688128f/clean/gf.c
+    params.h: crypto_kem/mceliece6688128f/clean/params.h
+    util.c: crypto_kem/mceliece6688128f/clean/util.c
+    decrypt.h: crypto_kem/mceliece6688128f/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece6688128f/clean/LICENSE
+    operations.h: crypto_kem/mceliece6688128f/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece6688128f/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6688128f/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6688128f/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6688128f/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6688128f/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6688128f/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece6688128f/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece6688128f/clean/bm.h
+    root.c: crypto_kem/mceliece6688128f/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece6688128f/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece6688128f/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece6688128f/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece6688128f/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece6688128f/clean/namespace.h
+    transpose.c: crypto_kem/mceliece6688128f/clean/transpose.c
+    benes.c: crypto_kem/mceliece6688128f/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece6688128f/clean/pk_gen.h
+    api.h: crypto_kem/mceliece6688128f/clean/api.h
+    controlbits.h: crypto_kem/mceliece6688128f/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6688128f/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6688128f/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece6688128f/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6688128f/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece6688128f/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece6688128f/clean/operations.c
+    util.h: crypto_kem/mceliece6688128f/clean/util.h
+    decrypt.c: crypto_kem/mceliece6688128f/clean/decrypt.c
+    gf.h: crypto_kem/mceliece6688128f/clean/gf.h
+    root.h: crypto_kem/mceliece6688128f/clean/root.h
+    bm.c: crypto_kem/mceliece6688128f/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece6688128f/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece6688128f/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece6688128f/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6688128f/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece6688128f/clean/benes.h
+    transpose.h: crypto_kem/mceliece6688128f/clean/transpose.h
+    crypto_int16.h: crypto_kem/mceliece6688128f/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece6688128f/clean/synd.c
+
+  pqclean_mceliece6960119_avx2:
+    fft.h: crypto_kem/mceliece6960119/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece6960119/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece6960119/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6960119/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece6960119/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece6960119/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece6960119/avx2/params.h
+    update_asm.S: crypto_kem/mceliece6960119/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece6960119/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece6960119/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece6960119/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece6960119/avx2/operations.h
+    vec128.h: crypto_kem/mceliece6960119/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece6960119/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6960119/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6960119/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6960119/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6960119/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6960119/avx2/sk_gen.c
+    vec256.c: crypto_kem/mceliece6960119/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece6960119/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece6960119/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece6960119/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece6960119/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece6960119/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece6960119/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece6960119/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece6960119/avx2/architectures
+    namespace.h: crypto_kem/mceliece6960119/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece6960119/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece6960119/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece6960119/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece6960119/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece6960119/avx2/consts.data
+    api.h: crypto_kem/mceliece6960119/avx2/api.h
+    controlbits.h: crypto_kem/mceliece6960119/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6960119/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6960119/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece6960119/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece6960119/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6960119/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece6960119/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece6960119/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece6960119/avx2/operations.c
+    util.h: crypto_kem/mceliece6960119/avx2/util.h
+    consts.S: crypto_kem/mceliece6960119/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece6960119/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece6960119/avx2/gf.h
+    bm.c: crypto_kem/mceliece6960119/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece6960119/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece6960119/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece6960119/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece6960119/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece6960119/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece6960119/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece6960119/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece6960119/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6960119/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece6960119/avx2/benes.h
+    transpose.h: crypto_kem/mceliece6960119/avx2/transpose.h
+    namespacing: crypto_kem/mceliece6960119/avx2/namespacing
+    syndrome_asm.S: crypto_kem/mceliece6960119/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece6960119/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece6960119/avx2/crypto_int16.h
+
+  pqclean_mceliece6960119_clean:
+    crypto_uint32.h: crypto_kem/mceliece6960119/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6960119/clean/controlbits.c
+    gf.c: crypto_kem/mceliece6960119/clean/gf.c
+    params.h: crypto_kem/mceliece6960119/clean/params.h
+    util.c: crypto_kem/mceliece6960119/clean/util.c
+    decrypt.h: crypto_kem/mceliece6960119/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece6960119/clean/LICENSE
+    operations.h: crypto_kem/mceliece6960119/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece6960119/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6960119/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6960119/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6960119/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6960119/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6960119/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece6960119/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece6960119/clean/bm.h
+    root.c: crypto_kem/mceliece6960119/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece6960119/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece6960119/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece6960119/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece6960119/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece6960119/clean/namespace.h
+    transpose.c: crypto_kem/mceliece6960119/clean/transpose.c
+    benes.c: crypto_kem/mceliece6960119/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece6960119/clean/pk_gen.h
+    api.h: crypto_kem/mceliece6960119/clean/api.h
+    controlbits.h: crypto_kem/mceliece6960119/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6960119/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6960119/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece6960119/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6960119/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece6960119/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece6960119/clean/operations.c
+    util.h: crypto_kem/mceliece6960119/clean/util.h
+    decrypt.c: crypto_kem/mceliece6960119/clean/decrypt.c
+    gf.h: crypto_kem/mceliece6960119/clean/gf.h
+    root.h: crypto_kem/mceliece6960119/clean/root.h
+    bm.c: crypto_kem/mceliece6960119/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece6960119/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece6960119/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece6960119/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6960119/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece6960119/clean/benes.h
+    transpose.h: crypto_kem/mceliece6960119/clean/transpose.h
+    namespacing: crypto_kem/mceliece6960119/clean/namespacing
+    crypto_int16.h: crypto_kem/mceliece6960119/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece6960119/clean/synd.c
+
+  pqclean_mceliece6960119f_avx2:
+    fft.h: crypto_kem/mceliece6960119f/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece6960119f/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece6960119f/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6960119f/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece6960119f/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece6960119f/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece6960119f/avx2/params.h
+    update_asm.S: crypto_kem/mceliece6960119f/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece6960119f/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece6960119f/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece6960119f/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece6960119f/avx2/operations.h
+    vec128.h: crypto_kem/mceliece6960119f/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece6960119f/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6960119f/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6960119f/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6960119f/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6960119f/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6960119f/avx2/sk_gen.c
+    vec256.c: crypto_kem/mceliece6960119f/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece6960119f/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece6960119f/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece6960119f/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece6960119f/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece6960119f/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece6960119f/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece6960119f/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece6960119f/avx2/architectures
+    namespace.h: crypto_kem/mceliece6960119f/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece6960119f/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece6960119f/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece6960119f/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece6960119f/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece6960119f/avx2/consts.data
+    api.h: crypto_kem/mceliece6960119f/avx2/api.h
+    controlbits.h: crypto_kem/mceliece6960119f/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6960119f/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6960119f/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece6960119f/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece6960119f/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6960119f/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece6960119f/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece6960119f/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece6960119f/avx2/operations.c
+    util.h: crypto_kem/mceliece6960119f/avx2/util.h
+    consts.S: crypto_kem/mceliece6960119f/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece6960119f/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece6960119f/avx2/gf.h
+    bm.c: crypto_kem/mceliece6960119f/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece6960119f/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece6960119f/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece6960119f/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece6960119f/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece6960119f/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece6960119f/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece6960119f/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece6960119f/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6960119f/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece6960119f/avx2/benes.h
+    transpose.h: crypto_kem/mceliece6960119f/avx2/transpose.h
+    namespacing: crypto_kem/mceliece6960119f/avx2/namespacing
+    syndrome_asm.S: crypto_kem/mceliece6960119f/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece6960119f/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece6960119f/avx2/crypto_int16.h
+
+  pqclean_mceliece6960119f_clean:
+    crypto_uint32.h: crypto_kem/mceliece6960119f/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece6960119f/clean/controlbits.c
+    gf.c: crypto_kem/mceliece6960119f/clean/gf.c
+    params.h: crypto_kem/mceliece6960119f/clean/params.h
+    util.c: crypto_kem/mceliece6960119f/clean/util.c
+    decrypt.h: crypto_kem/mceliece6960119f/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece6960119f/clean/LICENSE
+    operations.h: crypto_kem/mceliece6960119f/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece6960119f/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece6960119f/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece6960119f/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece6960119f/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece6960119f/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece6960119f/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece6960119f/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece6960119f/clean/bm.h
+    root.c: crypto_kem/mceliece6960119f/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece6960119f/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece6960119f/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece6960119f/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece6960119f/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece6960119f/clean/namespace.h
+    transpose.c: crypto_kem/mceliece6960119f/clean/transpose.c
+    benes.c: crypto_kem/mceliece6960119f/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece6960119f/clean/pk_gen.h
+    api.h: crypto_kem/mceliece6960119f/clean/api.h
+    controlbits.h: crypto_kem/mceliece6960119f/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece6960119f/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece6960119f/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece6960119f/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece6960119f/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece6960119f/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece6960119f/clean/operations.c
+    util.h: crypto_kem/mceliece6960119f/clean/util.h
+    decrypt.c: crypto_kem/mceliece6960119f/clean/decrypt.c
+    gf.h: crypto_kem/mceliece6960119f/clean/gf.h
+    root.h: crypto_kem/mceliece6960119f/clean/root.h
+    bm.c: crypto_kem/mceliece6960119f/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece6960119f/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece6960119f/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece6960119f/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece6960119f/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece6960119f/clean/benes.h
+    transpose.h: crypto_kem/mceliece6960119f/clean/transpose.h
+    namespacing: crypto_kem/mceliece6960119f/clean/namespacing
+    crypto_int16.h: crypto_kem/mceliece6960119f/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece6960119f/clean/synd.c
+
+  pqclean_mceliece8192128_avx2:
+    fft.h: crypto_kem/mceliece8192128/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece8192128/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece8192128/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece8192128/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece8192128/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece8192128/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece8192128/avx2/params.h
+    update_asm.S: crypto_kem/mceliece8192128/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece8192128/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece8192128/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece8192128/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece8192128/avx2/operations.h
+    vec128.h: crypto_kem/mceliece8192128/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece8192128/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece8192128/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece8192128/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece8192128/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece8192128/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece8192128/avx2/sk_gen.c
+    powers.data: crypto_kem/mceliece8192128/avx2/powers.data
+    vec256.c: crypto_kem/mceliece8192128/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece8192128/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece8192128/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece8192128/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece8192128/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece8192128/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece8192128/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece8192128/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece8192128/avx2/architectures
+    namespace.h: crypto_kem/mceliece8192128/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece8192128/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece8192128/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece8192128/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece8192128/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece8192128/avx2/consts.data
+    api.h: crypto_kem/mceliece8192128/avx2/api.h
+    controlbits.h: crypto_kem/mceliece8192128/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece8192128/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece8192128/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece8192128/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece8192128/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece8192128/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece8192128/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece8192128/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece8192128/avx2/operations.c
+    util.h: crypto_kem/mceliece8192128/avx2/util.h
+    consts.S: crypto_kem/mceliece8192128/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece8192128/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece8192128/avx2/gf.h
+    bm.c: crypto_kem/mceliece8192128/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece8192128/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece8192128/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece8192128/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece8192128/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece8192128/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece8192128/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece8192128/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece8192128/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece8192128/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece8192128/avx2/benes.h
+    transpose.h: crypto_kem/mceliece8192128/avx2/transpose.h
+    namespacing: crypto_kem/mceliece8192128/avx2/namespacing
+    syndrome_asm.S: crypto_kem/mceliece8192128/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece8192128/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece8192128/avx2/crypto_int16.h
+
+  pqclean_mceliece8192128_clean:
+    crypto_uint32.h: crypto_kem/mceliece8192128/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece8192128/clean/controlbits.c
+    gf.c: crypto_kem/mceliece8192128/clean/gf.c
+    params.h: crypto_kem/mceliece8192128/clean/params.h
+    util.c: crypto_kem/mceliece8192128/clean/util.c
+    decrypt.h: crypto_kem/mceliece8192128/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece8192128/clean/LICENSE
+    operations.h: crypto_kem/mceliece8192128/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece8192128/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece8192128/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece8192128/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece8192128/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece8192128/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece8192128/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece8192128/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece8192128/clean/bm.h
+    root.c: crypto_kem/mceliece8192128/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece8192128/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece8192128/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece8192128/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece8192128/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece8192128/clean/namespace.h
+    transpose.c: crypto_kem/mceliece8192128/clean/transpose.c
+    benes.c: crypto_kem/mceliece8192128/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece8192128/clean/pk_gen.h
+    api.h: crypto_kem/mceliece8192128/clean/api.h
+    controlbits.h: crypto_kem/mceliece8192128/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece8192128/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece8192128/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece8192128/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece8192128/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece8192128/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece8192128/clean/operations.c
+    util.h: crypto_kem/mceliece8192128/clean/util.h
+    decrypt.c: crypto_kem/mceliece8192128/clean/decrypt.c
+    gf.h: crypto_kem/mceliece8192128/clean/gf.h
+    root.h: crypto_kem/mceliece8192128/clean/root.h
+    bm.c: crypto_kem/mceliece8192128/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece8192128/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece8192128/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece8192128/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece8192128/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece8192128/clean/benes.h
+    transpose.h: crypto_kem/mceliece8192128/clean/transpose.h
+    namespacing: crypto_kem/mceliece8192128/clean/namespacing
+    crypto_int16.h: crypto_kem/mceliece8192128/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece8192128/clean/synd.c
+
+  pqclean_mceliece8192128f_avx2:
+    fft.h: crypto_kem/mceliece8192128f/avx2/fft.h
+    vec128_mul_asm.S: crypto_kem/mceliece8192128f/avx2/vec128_mul_asm.S
+    crypto_uint32.h: crypto_kem/mceliece8192128f/avx2/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece8192128f/avx2/controlbits.c
+    gf.c: crypto_kem/mceliece8192128f/avx2/gf.c
+    transpose_64x256_sp_asm.S: crypto_kem/mceliece8192128f/avx2/transpose_64x256_sp_asm.S
+    params.h: crypto_kem/mceliece8192128f/avx2/params.h
+    update_asm.S: crypto_kem/mceliece8192128f/avx2/update_asm.S
+    decrypt.h: crypto_kem/mceliece8192128f/avx2/decrypt.h
+    LICENSE: crypto_kem/mceliece8192128f/avx2/LICENSE
+    vec_reduce_asm.S: crypto_kem/mceliece8192128f/avx2/vec_reduce_asm.S
+    operations.h: crypto_kem/mceliece8192128f/avx2/operations.h
+    vec128.h: crypto_kem/mceliece8192128f/avx2/vec128.h
+    crypto_int32.h: crypto_kem/mceliece8192128f/avx2/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece8192128f/avx2/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece8192128f/avx2/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece8192128f/avx2/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece8192128f/avx2/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece8192128f/avx2/sk_gen.c
+    powers.data: crypto_kem/mceliece8192128f/avx2/powers.data
+    vec256.c: crypto_kem/mceliece8192128f/avx2/vec256.c
+    int32_sort.h: crypto_kem/mceliece8192128f/avx2/int32_sort.h
+    bm.h: crypto_kem/mceliece8192128f/avx2/bm.h
+    crypto_hash.h: crypto_kem/mceliece8192128f/avx2/crypto_hash.h
+    fft_tr.h: crypto_kem/mceliece8192128f/avx2/fft_tr.h
+    crypto_int16.c: crypto_kem/mceliece8192128f/avx2/crypto_int16.c
+    transpose_64x128_sp_asm.S: crypto_kem/mceliece8192128f/avx2/transpose_64x128_sp_asm.S
+    uint64_sort.h: crypto_kem/mceliece8192128f/avx2/uint64_sort.h
+    architectures: crypto_kem/mceliece8192128f/avx2/architectures
+    namespace.h: crypto_kem/mceliece8192128f/avx2/namespace.h
+    vec256_maa_asm.S: crypto_kem/mceliece8192128f/avx2/vec256_maa_asm.S
+    benes.c: crypto_kem/mceliece8192128f/avx2/benes.c
+    pk_gen.h: crypto_kem/mceliece8192128f/avx2/pk_gen.h
+    vec256_ama_asm.S: crypto_kem/mceliece8192128f/avx2/vec256_ama_asm.S
+    consts.data: crypto_kem/mceliece8192128f/avx2/consts.data
+    api.h: crypto_kem/mceliece8192128f/avx2/api.h
+    controlbits.h: crypto_kem/mceliece8192128f/avx2/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece8192128f/avx2/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece8192128f/avx2/crypto_kem.h
+    fft.c: crypto_kem/mceliece8192128f/avx2/fft.c
+    crypto_uint64.h: crypto_kem/mceliece8192128f/avx2/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece8192128f/avx2/aes256ctr.h
+    vec128.c: crypto_kem/mceliece8192128f/avx2/vec128.c
+    crypto_int32.c: crypto_kem/mceliece8192128f/avx2/crypto_int32.c
+    operations.c: crypto_kem/mceliece8192128f/avx2/operations.c
+    util.h: crypto_kem/mceliece8192128f/avx2/util.h
+    consts.S: crypto_kem/mceliece8192128f/avx2/consts.S
+    decrypt.c: crypto_kem/mceliece8192128f/avx2/decrypt.c
+    gf.h: crypto_kem/mceliece8192128f/avx2/gf.h
+    bm.c: crypto_kem/mceliece8192128f/avx2/bm.c
+    fft_tr.c: crypto_kem/mceliece8192128f/avx2/fft_tr.c
+    vec256.h: crypto_kem/mceliece8192128f/avx2/vec256.h
+    vec256_mul_asm.S: crypto_kem/mceliece8192128f/avx2/vec256_mul_asm.S
+    sk_gen.h: crypto_kem/mceliece8192128f/avx2/sk_gen.h
+    transpose_64x64_asm.S: crypto_kem/mceliece8192128f/avx2/transpose_64x64_asm.S
+    encrypt.h: crypto_kem/mceliece8192128f/avx2/encrypt.h
+    scalars_2x.data: crypto_kem/mceliece8192128f/avx2/scalars_2x.data
+    crypto_uint16.h: crypto_kem/mceliece8192128f/avx2/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece8192128f/avx2/pk_gen.c
+    benes.h: crypto_kem/mceliece8192128f/avx2/benes.h
+    transpose.h: crypto_kem/mceliece8192128f/avx2/transpose.h
+    namespacing: crypto_kem/mceliece8192128f/avx2/namespacing
+    syndrome_asm.S: crypto_kem/mceliece8192128f/avx2/syndrome_asm.S
+    scalars_4x.data: crypto_kem/mceliece8192128f/avx2/scalars_4x.data
+    crypto_int16.h: crypto_kem/mceliece8192128f/avx2/crypto_int16.h
+
+  pqclean_mceliece8192128f_clean:
+    crypto_uint32.h: crypto_kem/mceliece8192128f/clean/crypto_uint32.h
+    controlbits.c: crypto_kem/mceliece8192128f/clean/controlbits.c
+    gf.c: crypto_kem/mceliece8192128f/clean/gf.c
+    params.h: crypto_kem/mceliece8192128f/clean/params.h
+    util.c: crypto_kem/mceliece8192128f/clean/util.c
+    decrypt.h: crypto_kem/mceliece8192128f/clean/decrypt.h
+    LICENSE: crypto_kem/mceliece8192128f/clean/LICENSE
+    operations.h: crypto_kem/mceliece8192128f/clean/operations.h
+    crypto_int32.h: crypto_kem/mceliece8192128f/clean/crypto_int32.h
+    crypto_uint64.c: crypto_kem/mceliece8192128f/clean/crypto_uint64.c
+    aes256ctr.c: crypto_kem/mceliece8192128f/clean/aes256ctr.c
+    encrypt.c: crypto_kem/mceliece8192128f/clean/encrypt.c
+    crypto_uint16.c: crypto_kem/mceliece8192128f/clean/crypto_uint16.c
+    sk_gen.c: crypto_kem/mceliece8192128f/clean/sk_gen.c
+    int32_sort.h: crypto_kem/mceliece8192128f/clean/int32_sort.h
+    bm.h: crypto_kem/mceliece8192128f/clean/bm.h
+    root.c: crypto_kem/mceliece8192128f/clean/root.c
+    crypto_hash.h: crypto_kem/mceliece8192128f/clean/crypto_hash.h
+    crypto_int16.c: crypto_kem/mceliece8192128f/clean/crypto_int16.c
+    synd.h: crypto_kem/mceliece8192128f/clean/synd.h
+    uint64_sort.h: crypto_kem/mceliece8192128f/clean/uint64_sort.h
+    namespace.h: crypto_kem/mceliece8192128f/clean/namespace.h
+    transpose.c: crypto_kem/mceliece8192128f/clean/transpose.c
+    benes.c: crypto_kem/mceliece8192128f/clean/benes.c
+    pk_gen.h: crypto_kem/mceliece8192128f/clean/pk_gen.h
+    api.h: crypto_kem/mceliece8192128f/clean/api.h
+    controlbits.h: crypto_kem/mceliece8192128f/clean/controlbits.h
+    crypto_uint32.c: crypto_kem/mceliece8192128f/clean/crypto_uint32.c
+    crypto_kem.h: crypto_kem/mceliece8192128f/clean/crypto_kem.h
+    crypto_uint64.h: crypto_kem/mceliece8192128f/clean/crypto_uint64.h
+    aes256ctr.h: crypto_kem/mceliece8192128f/clean/aes256ctr.h
+    crypto_int32.c: crypto_kem/mceliece8192128f/clean/crypto_int32.c
+    operations.c: crypto_kem/mceliece8192128f/clean/operations.c
+    util.h: crypto_kem/mceliece8192128f/clean/util.h
+    decrypt.c: crypto_kem/mceliece8192128f/clean/decrypt.c
+    gf.h: crypto_kem/mceliece8192128f/clean/gf.h
+    root.h: crypto_kem/mceliece8192128f/clean/root.h
+    bm.c: crypto_kem/mceliece8192128f/clean/bm.c
+    sk_gen.h: crypto_kem/mceliece8192128f/clean/sk_gen.h
+    encrypt.h: crypto_kem/mceliece8192128f/clean/encrypt.h
+    crypto_uint16.h: crypto_kem/mceliece8192128f/clean/crypto_uint16.h
+    pk_gen.c: crypto_kem/mceliece8192128f/clean/pk_gen.c
+    benes.h: crypto_kem/mceliece8192128f/clean/benes.h
+    transpose.h: crypto_kem/mceliece8192128f/clean/transpose.h
+    namespacing: crypto_kem/mceliece8192128f/clean/namespacing
+    crypto_int16.h: crypto_kem/mceliece8192128f/clean/crypto_int16.h
+    synd.c: crypto_kem/mceliece8192128f/clean/synd.c
+
+
   mldsa-native_x86_64:
     integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
     integration/liboqs/config_x86_64.h: integration/liboqs/config_x86_64.h
@@ -678,6 +2335,7 @@ copies:
     mldsa/src/zetas.inc: mldsa/src/zetas.inc
     mldsa/src/sign.h: mldsa/src/sign.h
     mldsa/src/packing.c: mldsa/src/packing.c
+
   mldsa-native_ref:
     integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
     integration/liboqs/config_c.h: integration/liboqs/config_c.h
@@ -705,6 +2363,7 @@ copies:
     mldsa/src/zetas.inc: mldsa/src/zetas.inc
     mldsa/src/sign.h: mldsa/src/sign.h
     mldsa/src/packing.c: mldsa/src/packing.c
+
   mldsa-native_aarch64:
     integration/liboqs/config_aarch64.h: integration/liboqs/config_aarch64.h
     integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
@@ -757,6 +2416,7 @@ copies:
     mldsa/src/zetas.inc: mldsa/src/zetas.inc
     mldsa/src/sign.h: mldsa/src/sign.h
     mldsa/src/packing.c: mldsa/src/packing.c
+
   mlkem-native_aarch64:
     integration/liboqs/config_aarch64.h: integration/liboqs/config_aarch64.h
     integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
@@ -802,6 +2462,7 @@ copies:
     mlkem/src/zetas.inc: mlkem/src/zetas.inc
     mlkem/src/kem.h: mlkem/src/kem.h
     mlkem/src/verify.h: mlkem/src/verify.h
+
   mlkem-native_x86_64:
     integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
     integration/liboqs/config_x86_64.h: integration/liboqs/config_x86_64.h
@@ -854,6 +2515,7 @@ copies:
     mlkem/src/zetas.inc: mlkem/src/zetas.inc
     mlkem/src/kem.h: mlkem/src/kem.h
     mlkem/src/verify.h: mlkem/src/verify.h
+
   mlkem-native_ref:
     integration/liboqs/fips202_glue.h: integration/liboqs/fips202_glue.h
     integration/liboqs/config_c.h: integration/liboqs/config_c.h

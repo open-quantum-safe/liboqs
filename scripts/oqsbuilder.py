@@ -302,6 +302,7 @@ class Architecture(enum.Enum):
 class RuntimeCpuFeature(enum.Enum):
     AVX2 = enum.auto()
     BMI2 = enum.auto()
+    BMI = enum.auto()
     POPCNT = enum.auto()
     ASIMD = enum.auto()
 
@@ -312,6 +313,8 @@ class RuntimeCpuFeature(enum.Enum):
                 return RuntimeCpuFeature.AVX2
             case "bmi2":
                 return RuntimeCpuFeature.BMI2
+            case "bmi":
+                return RuntimeCpuFeature.BMI
             case "popcnt":
                 return RuntimeCpuFeature.POPCNT
             case "asimd":
@@ -324,6 +327,8 @@ class RuntimeCpuFeature(enum.Enum):
                 return "avx2"
             case RuntimeCpuFeature.BMI2:
                 return "bmi2"
+            case RuntimeCpuFeature.BMI:
+                return "bmi"
             case RuntimeCpuFeature.POPCNT:
                 return "popcnt"
             case RuntimeCpuFeature.ASIMD:
@@ -369,7 +374,14 @@ class CmakeInclude:
 
 
 class CmakeCompileOpt:
+    # FIX: TRIPLE_BANGS really needs to be in an interface like BecomeCmakeCommand
+    TRIPLE_BANGS = "!!!"
+
     def __init__(self, scope: CmakeScope, value: str):
+        if value.startswith(self.TRIPLE_BANGS):
+            raise NotImplementedError(
+                "Figure out how to implement special compile options like old_gas_syntax"
+            )
         self.scope = scope
         self.value = value
         """Currently we only support string literals, no templating. Whatever is
