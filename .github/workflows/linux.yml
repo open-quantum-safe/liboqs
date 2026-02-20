@@ -87,6 +87,11 @@ jobs:
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
             PYTEST_ARGS: --ignore=tests/test_namespace.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+          - name: noble-memopt
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_MEMOPT_BUILD=ON
+            PYTEST_ARGS: --ignore=tests/test_kat_all.py
           - name: jammy-clang
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest

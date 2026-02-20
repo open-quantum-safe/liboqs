@@ -1,6 +1,15 @@
 {% for family in instructions['kems'] %}
     {%- for scheme in family['schemes'] %}
-        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and (impl['supported_platforms'] or impl.get('memory_optimized', false)) -%}
+            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+if(OQS_MEMOPT_BUILD)
+            {%- endif -%}
+            {%- if impl.get('memory_optimized', false) and not impl['supported_platforms'] %}
+    cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+    cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
+{%- endif %}
+            {%- endif -%}
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
@@ -55,13 +64,25 @@ endif()
 {% if platform['operating_systems'] %}endif()
 {% endif -%}
             {%- endfor -%}
+            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+endif() # OQS_MEMOPT_BUILD
+            {%- endif -%}
         {%- endfor -%}
     {%- endfor %}
 {% endfor -%}
 
 {% for family in instructions['sigs'] %}
     {%- for scheme in family['schemes'] %}
-        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and (impl['supported_platforms'] or impl.get('memory_optimized', false)) -%}
+            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+if(OQS_MEMOPT_BUILD)
+            {%- endif -%}
+            {%- if impl.get('memory_optimized', false) and not impl['supported_platforms'] %}
+    cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+    cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}" OFF)
+{%- endif %}
+            {%- endif -%}
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
@@ -86,6 +107,9 @@ endif()
 {% if platform['operating_systems'] %}endif()
 {% endif -%}
             {%- endfor -%}
+            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+endif() # OQS_MEMOPT_BUILD
+            {%- endif -%}
         {%- endfor -%}
     {%- endfor %}
 {% endfor -%}
