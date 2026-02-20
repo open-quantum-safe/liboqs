@@ -244,7 +244,6 @@ kems:
               "-mpopcnt",
               "-Wno-language-extension-token",
               "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE348864_AVX2_crypto_kem_enc"
@@ -259,10 +258,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_dec"
@@ -284,7 +279,6 @@ kems:
               "-mbmi",
               "-Wno-language-extension-token",
               "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_enc"
@@ -299,10 +293,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_dec"
@@ -323,7 +313,6 @@ kems:
               "-mpopcnt",
               "-Wno-language-extension-token",
               "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE460896_AVX2_crypto_kem_enc"
@@ -338,10 +327,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_dec"
@@ -363,7 +348,6 @@ kems:
               "-mbmi",
               "-Wno-language-extension-token",
               "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_enc"
@@ -378,10 +362,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_dec"
@@ -402,7 +382,6 @@ kems:
               "-mpopcnt",
               "-Wno-language-extension-token",
               "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_enc"
@@ -417,10 +396,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_dec"
@@ -442,7 +417,6 @@ kems:
               "-mbmi",
               "-Wno-language-extension-token",
               "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_enc"
@@ -457,10 +431,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_dec"
@@ -481,7 +451,6 @@ kems:
               "-mpopcnt",
               "-Wno-language-extension-token",
               "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_enc"
@@ -496,10 +465,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_dec"
@@ -517,7 +482,6 @@ kems:
           compile_opts:
             private: [
               "-mavx2", "-mpopcnt", "-mbmi", "-Wno-language-extension-token", "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_enc"
@@ -532,10 +496,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_dec"
@@ -553,7 +513,6 @@ kems:
           compile_opts:
             private: [
               "-mavx2", "-mpopcnt", "-Wno-language-extension-token", "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_enc"
@@ -568,10 +527,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_dec"
@@ -589,7 +544,6 @@ kems:
           compile_opts:
             private: [
               "-mavx2", "-mpopcnt", "-mbmi", "-Wno-language-extension-token", "-O1",
-              # "!!!old_gas_syntax"
             ]
           keypair: "PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_enc"
@@ -604,10 +558,6 @@ kems:
             private:
               - "${CMAKE_CURRENT_LIST_DIR}/${IMPL_KEY}"
               - "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-          compile_opts:
-            private: [
-              # "!!!old_gas_syntax"
-            ]
           keypair: "PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_keypair"
           enc: "PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_enc"
           dec: "PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_dec"
