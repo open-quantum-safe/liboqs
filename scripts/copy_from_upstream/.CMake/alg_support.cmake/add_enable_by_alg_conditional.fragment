@@ -1,7 +1,11 @@
 {% for family in instructions['kems'] %}
     {%- for scheme in family['schemes'] %}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and (impl['supported_platforms'] or impl.get('memory_optimized', false)) -%}
+<<<<<<< HEAD
             {%- if impl.get("memory_optimized", false) %}
+=======
+            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+>>>>>>> 3b35fffa (Introduce OQS_MEMOPT_BUILD to enable memory‑optimized implementations)
 if(OQS_MEMOPT_BUILD)
             {%- endif -%}
             {%- if impl.get('memory_optimized', false) and not impl['supported_platforms'] %}
