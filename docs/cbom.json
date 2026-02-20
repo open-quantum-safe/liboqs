@@ -2,27 +2,27 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:9a9c29b4-e3bb-429b-879c-842923901fd6",
+  "serialNumber": "urn:uuid:b94dbb44-6f02-46d2-8674-4669d0a0e8e2",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-01-29T15:05:35.665029+00:00",
+    "timestamp": "2026-02-20T14:01:02.620635+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f523d7f02389c3ddf7735f989a93a16dcbe75989",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@fc08ab40cf34941a41e67d91921c20a428aa6ec0",
       "name": "liboqs",
-      "version": "f523d7f02389c3ddf7735f989a93a16dcbe75989"
+      "version": "fc08ab40cf34941a41e67d91921c20a428aa6ec0"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f523d7f02389c3ddf7735f989a93a16dcbe75989",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@fc08ab40cf34941a41e67d91921c20a428aa6ec0",
       "name": "liboqs",
-      "version": "f523d7f02389c3ddf7735f989a93a16dcbe75989"
+      "version": "fc08ab40cf34941a41e67d91921c20a428aa6ec0"
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:BIKE-L1:x86_64",
+      "bom-ref": "alg:BIKE-L1:master:x86_64",
       "name": "BIKE",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -42,7 +42,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:BIKE-L3:x86_64",
+      "bom-ref": "alg:BIKE-L3:master:x86_64",
       "name": "BIKE",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -62,7 +62,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:BIKE-L5:x86_64",
+      "bom-ref": "alg:BIKE-L5:master:x86_64",
       "name": "BIKE",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -82,7 +82,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-348864:generic",
+      "bom-ref": "alg:Classic-McEliece-348864:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -102,7 +102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-348864:x86_64",
+      "bom-ref": "alg:Classic-McEliece-348864:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -122,7 +122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-348864f:generic",
+      "bom-ref": "alg:Classic-McEliece-348864f:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -142,7 +142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-348864f:x86_64",
+      "bom-ref": "alg:Classic-McEliece-348864f:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -162,7 +162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-460896:generic",
+      "bom-ref": "alg:Classic-McEliece-460896:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -182,7 +182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-460896:x86_64",
+      "bom-ref": "alg:Classic-McEliece-460896:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -202,7 +202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-460896f:generic",
+      "bom-ref": "alg:Classic-McEliece-460896f:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -222,7 +222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-460896f:x86_64",
+      "bom-ref": "alg:Classic-McEliece-460896f:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -242,7 +242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6688128:generic",
+      "bom-ref": "alg:Classic-McEliece-6688128:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -262,7 +262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6688128:x86_64",
+      "bom-ref": "alg:Classic-McEliece-6688128:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -282,7 +282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6688128f:generic",
+      "bom-ref": "alg:Classic-McEliece-6688128f:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -302,7 +302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6688128f:x86_64",
+      "bom-ref": "alg:Classic-McEliece-6688128f:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -322,7 +322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6960119:generic",
+      "bom-ref": "alg:Classic-McEliece-6960119:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -342,7 +342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6960119:x86_64",
+      "bom-ref": "alg:Classic-McEliece-6960119:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -362,7 +362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6960119f:generic",
+      "bom-ref": "alg:Classic-McEliece-6960119f:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -382,7 +382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-6960119f:x86_64",
+      "bom-ref": "alg:Classic-McEliece-6960119f:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -402,7 +402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-8192128:generic",
+      "bom-ref": "alg:Classic-McEliece-8192128:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -422,7 +422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-8192128:x86_64",
+      "bom-ref": "alg:Classic-McEliece-8192128:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -442,7 +442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-8192128f:generic",
+      "bom-ref": "alg:Classic-McEliece-8192128f:clean:generic",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -462,7 +462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Classic-McEliece-8192128f:x86_64",
+      "bom-ref": "alg:Classic-McEliece-8192128f:avx2:x86_64",
       "name": "Classic McEliece",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -482,7 +482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-640-AES:generic",
+      "bom-ref": "alg:FrodoKEM-640-AES:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -502,7 +502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-640-AES:x86_64",
+      "bom-ref": "alg:FrodoKEM-640-AES:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -522,7 +522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-640-SHAKE:generic",
+      "bom-ref": "alg:FrodoKEM-640-SHAKE:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -542,7 +542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-640-SHAKE:x86_64",
+      "bom-ref": "alg:FrodoKEM-640-SHAKE:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -562,7 +562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-976-AES:generic",
+      "bom-ref": "alg:FrodoKEM-976-AES:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -582,7 +582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-976-AES:x86_64",
+      "bom-ref": "alg:FrodoKEM-976-AES:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -602,7 +602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-976-SHAKE:generic",
+      "bom-ref": "alg:FrodoKEM-976-SHAKE:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -622,7 +622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-976-SHAKE:x86_64",
+      "bom-ref": "alg:FrodoKEM-976-SHAKE:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -642,7 +642,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-1344-AES:generic",
+      "bom-ref": "alg:FrodoKEM-1344-AES:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -662,7 +662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-1344-AES:x86_64",
+      "bom-ref": "alg:FrodoKEM-1344-AES:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -682,7 +682,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-1344-SHAKE:generic",
+      "bom-ref": "alg:FrodoKEM-1344-SHAKE:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -702,7 +702,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:FrodoKEM-1344-SHAKE:x86_64",
+      "bom-ref": "alg:FrodoKEM-1344-SHAKE:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -722,7 +722,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-640-AES:generic",
+      "bom-ref": "alg:eFrodoKEM-640-AES:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -742,7 +742,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-640-AES:x86_64",
+      "bom-ref": "alg:eFrodoKEM-640-AES:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -762,7 +762,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-640-SHAKE:generic",
+      "bom-ref": "alg:eFrodoKEM-640-SHAKE:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -782,7 +782,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-640-SHAKE:x86_64",
+      "bom-ref": "alg:eFrodoKEM-640-SHAKE:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -802,7 +802,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-976-AES:generic",
+      "bom-ref": "alg:eFrodoKEM-976-AES:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -822,7 +822,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-976-AES:x86_64",
+      "bom-ref": "alg:eFrodoKEM-976-AES:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -842,7 +842,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-976-SHAKE:generic",
+      "bom-ref": "alg:eFrodoKEM-976-SHAKE:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -862,7 +862,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-976-SHAKE:x86_64",
+      "bom-ref": "alg:eFrodoKEM-976-SHAKE:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -882,7 +882,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-1344-AES:generic",
+      "bom-ref": "alg:eFrodoKEM-1344-AES:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -902,7 +902,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-1344-AES:x86_64",
+      "bom-ref": "alg:eFrodoKEM-1344-AES:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -922,7 +922,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-1344-SHAKE:generic",
+      "bom-ref": "alg:eFrodoKEM-1344-SHAKE:master:generic",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -942,7 +942,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:eFrodoKEM-1344-SHAKE:x86_64",
+      "bom-ref": "alg:eFrodoKEM-1344-SHAKE:master:x86_64",
       "name": "FrodoKEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -962,7 +962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-128:generic",
+      "bom-ref": "alg:HQC-128:clean:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -982,7 +982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-192:generic",
+      "bom-ref": "alg:HQC-192:clean:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1002,7 +1002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-256:generic",
+      "bom-ref": "alg:HQC-256:clean:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1022,7 +1022,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber512:generic",
+      "bom-ref": "alg:Kyber512:ref:generic",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1042,7 +1042,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber512:x86_64",
+      "bom-ref": "alg:Kyber512:avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1062,7 +1062,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber512:armv8-a",
+      "bom-ref": "alg:Kyber512:aarch64:armv8-a",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1082,7 +1082,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber512:jasmin:x86_64",
+      "bom-ref": "alg:Kyber512:jasmin_ref:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1102,7 +1102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber512:jasmin:avx2:x86_64",
+      "bom-ref": "alg:Kyber512:jasmin_avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1122,7 +1122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber768:generic",
+      "bom-ref": "alg:Kyber768:ref:generic",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1142,7 +1142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber768:x86_64",
+      "bom-ref": "alg:Kyber768:avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1162,7 +1162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber768:armv8-a",
+      "bom-ref": "alg:Kyber768:aarch64:armv8-a",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1182,7 +1182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber768:jasmin:x86_64",
+      "bom-ref": "alg:Kyber768:jasmin_ref:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1202,7 +1202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber768:jasmin:avx2:x86_64",
+      "bom-ref": "alg:Kyber768:jasmin_avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1222,7 +1222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber1024:generic",
+      "bom-ref": "alg:Kyber1024:ref:generic",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1242,7 +1242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber1024:x86_64",
+      "bom-ref": "alg:Kyber1024:avx2:x86_64",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1262,7 +1262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber1024:armv8-a",
+      "bom-ref": "alg:Kyber1024:aarch64:armv8-a",
       "name": "Kyber",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1282,7 +1282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-512:generic",
+      "bom-ref": "alg:ML-KEM-512:ref:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1302,7 +1302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-512:x86_64",
+      "bom-ref": "alg:ML-KEM-512:x86_64:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1322,7 +1322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-512:armv8-a",
+      "bom-ref": "alg:ML-KEM-512:aarch64:armv8-a",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1342,7 +1342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-768:generic",
+      "bom-ref": "alg:ML-KEM-768:ref:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1362,7 +1362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-768:x86_64",
+      "bom-ref": "alg:ML-KEM-768:x86_64:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1382,7 +1382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-768:armv8-a",
+      "bom-ref": "alg:ML-KEM-768:aarch64:armv8-a",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1402,7 +1402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-1024:generic",
+      "bom-ref": "alg:ML-KEM-1024:ref:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1422,7 +1422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-1024:x86_64",
+      "bom-ref": "alg:ML-KEM-1024:x86_64:x86_64",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1442,7 +1442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-KEM-1024:armv8-a",
+      "bom-ref": "alg:ML-KEM-1024:aarch64:armv8-a",
       "name": "ML-KEM",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1462,7 +1462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HPS-2048-509:generic",
+      "bom-ref": "alg:NTRU-HPS-2048-509:clean:generic",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1482,7 +1482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HPS-2048-509:x86_64",
+      "bom-ref": "alg:NTRU-HPS-2048-509:avx2:x86_64",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1502,7 +1502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HPS-2048-677:generic",
+      "bom-ref": "alg:NTRU-HPS-2048-677:clean:generic",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1522,7 +1522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HPS-2048-677:x86_64",
+      "bom-ref": "alg:NTRU-HPS-2048-677:avx2:x86_64",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1542,7 +1542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HPS-4096-821:generic",
+      "bom-ref": "alg:NTRU-HPS-4096-821:clean:generic",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1562,7 +1562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HPS-4096-821:x86_64",
+      "bom-ref": "alg:NTRU-HPS-4096-821:avx2:x86_64",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1582,7 +1582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HPS-4096-1229:generic",
+      "bom-ref": "alg:NTRU-HPS-4096-1229:clean:generic",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1602,7 +1602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HRSS-701:generic",
+      "bom-ref": "alg:NTRU-HRSS-701:clean:generic",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1622,7 +1622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HRSS-701:x86_64",
+      "bom-ref": "alg:NTRU-HRSS-701:avx2:x86_64",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1642,7 +1642,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:NTRU-HRSS-1373:generic",
+      "bom-ref": "alg:NTRU-HRSS-1373:clean:generic",
       "name": "NTRU",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1662,7 +1662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:sntrup761:generic",
+      "bom-ref": "alg:sntrup761:clean:generic",
       "name": "NTRU-Prime",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1682,7 +1682,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:sntrup761:x86_64",
+      "bom-ref": "alg:sntrup761:avx2:x86_64",
       "name": "NTRU-Prime",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1702,7 +1702,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-128-balanced:generic",
+      "bom-ref": "alg:cross-rsdp-128-balanced:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1722,7 +1722,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-128-balanced:x86_64",
+      "bom-ref": "alg:cross-rsdp-128-balanced:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1742,7 +1742,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-128-fast:generic",
+      "bom-ref": "alg:cross-rsdp-128-fast:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1762,7 +1762,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-128-fast:x86_64",
+      "bom-ref": "alg:cross-rsdp-128-fast:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1782,7 +1782,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-128-small:generic",
+      "bom-ref": "alg:cross-rsdp-128-small:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1802,7 +1802,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-128-small:x86_64",
+      "bom-ref": "alg:cross-rsdp-128-small:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1822,7 +1822,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-192-balanced:generic",
+      "bom-ref": "alg:cross-rsdp-192-balanced:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1842,7 +1842,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-192-balanced:x86_64",
+      "bom-ref": "alg:cross-rsdp-192-balanced:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1862,7 +1862,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-192-fast:generic",
+      "bom-ref": "alg:cross-rsdp-192-fast:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1882,7 +1882,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-192-fast:x86_64",
+      "bom-ref": "alg:cross-rsdp-192-fast:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1902,7 +1902,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-192-small:generic",
+      "bom-ref": "alg:cross-rsdp-192-small:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1922,7 +1922,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-192-small:x86_64",
+      "bom-ref": "alg:cross-rsdp-192-small:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1942,7 +1942,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-256-balanced:generic",
+      "bom-ref": "alg:cross-rsdp-256-balanced:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1962,7 +1962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-256-balanced:x86_64",
+      "bom-ref": "alg:cross-rsdp-256-balanced:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1982,7 +1982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-256-fast:generic",
+      "bom-ref": "alg:cross-rsdp-256-fast:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2002,7 +2002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-256-fast:x86_64",
+      "bom-ref": "alg:cross-rsdp-256-fast:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2022,7 +2022,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-256-small:generic",
+      "bom-ref": "alg:cross-rsdp-256-small:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2042,7 +2042,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdp-256-small:x86_64",
+      "bom-ref": "alg:cross-rsdp-256-small:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2062,7 +2062,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-128-balanced:generic",
+      "bom-ref": "alg:cross-rsdpg-128-balanced:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2082,7 +2082,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-128-balanced:x86_64",
+      "bom-ref": "alg:cross-rsdpg-128-balanced:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2102,7 +2102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-128-fast:generic",
+      "bom-ref": "alg:cross-rsdpg-128-fast:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2122,7 +2122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-128-fast:x86_64",
+      "bom-ref": "alg:cross-rsdpg-128-fast:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2142,7 +2142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-128-small:generic",
+      "bom-ref": "alg:cross-rsdpg-128-small:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2162,7 +2162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-128-small:x86_64",
+      "bom-ref": "alg:cross-rsdpg-128-small:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2182,7 +2182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-192-balanced:generic",
+      "bom-ref": "alg:cross-rsdpg-192-balanced:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2202,7 +2202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-192-balanced:x86_64",
+      "bom-ref": "alg:cross-rsdpg-192-balanced:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2222,7 +2222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-192-fast:generic",
+      "bom-ref": "alg:cross-rsdpg-192-fast:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2242,7 +2242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-192-fast:x86_64",
+      "bom-ref": "alg:cross-rsdpg-192-fast:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2262,7 +2262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-192-small:generic",
+      "bom-ref": "alg:cross-rsdpg-192-small:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2282,7 +2282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-192-small:x86_64",
+      "bom-ref": "alg:cross-rsdpg-192-small:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2302,7 +2302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-256-balanced:generic",
+      "bom-ref": "alg:cross-rsdpg-256-balanced:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2322,7 +2322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-256-balanced:x86_64",
+      "bom-ref": "alg:cross-rsdpg-256-balanced:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2342,7 +2342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-256-fast:generic",
+      "bom-ref": "alg:cross-rsdpg-256-fast:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2362,7 +2362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-256-fast:x86_64",
+      "bom-ref": "alg:cross-rsdpg-256-fast:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2382,7 +2382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-256-small:generic",
+      "bom-ref": "alg:cross-rsdpg-256-small:clean:generic",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2402,7 +2402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:cross-rsdpg-256-small:x86_64",
+      "bom-ref": "alg:cross-rsdpg-256-small:avx2:x86_64",
       "name": "CROSS",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2422,7 +2422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-512:generic",
+      "bom-ref": "alg:Falcon-512:clean:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2442,7 +2442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-512:x86_64",
+      "bom-ref": "alg:Falcon-512:avx2:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2462,7 +2462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-512:armv8-a",
+      "bom-ref": "alg:Falcon-512:aarch64:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2482,7 +2482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-1024:generic",
+      "bom-ref": "alg:Falcon-1024:clean:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2502,7 +2502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-1024:x86_64",
+      "bom-ref": "alg:Falcon-1024:avx2:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2522,7 +2522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-1024:armv8-a",
+      "bom-ref": "alg:Falcon-1024:aarch64:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2542,7 +2542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-padded-512:generic",
+      "bom-ref": "alg:Falcon-padded-512:clean:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2562,7 +2562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-padded-512:x86_64",
+      "bom-ref": "alg:Falcon-padded-512:avx2:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2582,7 +2582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-padded-512:armv8-a",
+      "bom-ref": "alg:Falcon-padded-512:aarch64:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2602,7 +2602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-padded-1024:generic",
+      "bom-ref": "alg:Falcon-padded-1024:clean:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2622,7 +2622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-padded-1024:x86_64",
+      "bom-ref": "alg:Falcon-padded-1024:avx2:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2642,7 +2642,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Falcon-padded-1024:armv8-a",
+      "bom-ref": "alg:Falcon-padded-1024:aarch64:armv8-a",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2662,7 +2662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-1:generic",
+      "bom-ref": "alg:MAYO-1:opt:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2682,7 +2682,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-1:x86_64",
+      "bom-ref": "alg:MAYO-1:avx2:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2702,7 +2702,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-1:armv8-a",
+      "bom-ref": "alg:MAYO-1:neon:armv8-a",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2722,7 +2722,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-2:generic",
+      "bom-ref": "alg:MAYO-2:opt:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2742,7 +2742,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-2:x86_64",
+      "bom-ref": "alg:MAYO-2:avx2:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2762,7 +2762,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-2:armv8-a",
+      "bom-ref": "alg:MAYO-2:neon:armv8-a",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2782,7 +2782,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-3:generic",
+      "bom-ref": "alg:MAYO-3:opt:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2802,7 +2802,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-3:x86_64",
+      "bom-ref": "alg:MAYO-3:avx2:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2822,7 +2822,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-3:armv8-a",
+      "bom-ref": "alg:MAYO-3:neon:armv8-a",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2842,7 +2842,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-5:generic",
+      "bom-ref": "alg:MAYO-5:opt:generic",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2862,7 +2862,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-5:x86_64",
+      "bom-ref": "alg:MAYO-5:avx2:x86_64",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2882,7 +2882,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:MAYO-5:armv8-a",
+      "bom-ref": "alg:MAYO-5:neon:armv8-a",
       "name": "MAYO",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2902,7 +2902,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-44:generic",
+      "bom-ref": "alg:ML-DSA-44:ref:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2922,7 +2922,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-44:x86_64",
+      "bom-ref": "alg:ML-DSA-44:x86_64:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2942,7 +2942,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-44:armv8-a",
+      "bom-ref": "alg:ML-DSA-44:aarch64:armv8-a",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2962,7 +2962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-65:generic",
+      "bom-ref": "alg:ML-DSA-65:ref:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2982,7 +2982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-65:x86_64",
+      "bom-ref": "alg:ML-DSA-65:x86_64:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3002,7 +3002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-65:armv8-a",
+      "bom-ref": "alg:ML-DSA-65:aarch64:armv8-a",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3022,7 +3022,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-87:generic",
+      "bom-ref": "alg:ML-DSA-87:ref:generic",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3042,7 +3042,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-87:x86_64",
+      "bom-ref": "alg:ML-DSA-87:x86_64:x86_64",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3062,7 +3062,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:ML-DSA-87:armv8-a",
+      "bom-ref": "alg:ML-DSA-87:aarch64:armv8-a",
       "name": "ML-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3082,7 +3082,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3102,7 +3102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3122,7 +3122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3142,7 +3142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3162,7 +3162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3182,7 +3182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3202,7 +3202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3222,7 +3222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3242,7 +3242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3262,7 +3262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3282,7 +3282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3302,7 +3302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_PURE_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3322,7 +3322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3342,7 +3342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3362,7 +3362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3382,7 +3382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3402,7 +3402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3422,7 +3422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3442,7 +3442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3462,7 +3462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3482,7 +3482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3502,7 +3502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3522,7 +3522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3542,7 +3542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3562,7 +3562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3582,7 +3582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3602,7 +3602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3622,7 +3622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3642,7 +3642,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3662,7 +3662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3682,7 +3682,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3702,7 +3702,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3722,7 +3722,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3742,7 +3742,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3762,7 +3762,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3782,7 +3782,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3802,7 +3802,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3822,7 +3822,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3842,7 +3842,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3862,7 +3862,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3882,7 +3882,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3902,7 +3902,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3922,7 +3922,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3942,7 +3942,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3962,7 +3962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3982,7 +3982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4002,7 +4002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4022,7 +4022,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4042,7 +4042,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4062,7 +4062,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4082,7 +4082,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4102,7 +4102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4122,7 +4122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4142,7 +4142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4162,7 +4162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4182,7 +4182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4202,7 +4202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4222,7 +4222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4242,7 +4242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4262,7 +4262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4282,7 +4282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4302,7 +4302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4322,7 +4322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4342,7 +4342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4362,7 +4362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4382,7 +4382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4402,7 +4402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4422,7 +4422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4442,7 +4442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4462,7 +4462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4482,7 +4482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4502,7 +4502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4522,7 +4522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4542,7 +4542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4562,7 +4562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4582,7 +4582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4602,7 +4602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4622,7 +4622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4642,7 +4642,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4662,7 +4662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4682,7 +4682,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4702,7 +4702,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4722,7 +4722,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4742,7 +4742,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4762,7 +4762,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4782,7 +4782,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4802,7 +4802,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4822,7 +4822,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4842,7 +4842,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4862,7 +4862,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4882,7 +4882,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4902,7 +4902,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4922,7 +4922,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4942,7 +4942,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4962,7 +4962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -4982,7 +4982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5002,7 +5002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5022,7 +5022,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5042,7 +5042,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5062,7 +5062,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5082,7 +5082,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5102,7 +5102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5122,7 +5122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5142,7 +5142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5162,7 +5162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5182,7 +5182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5202,7 +5202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5222,7 +5222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5242,7 +5242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5262,7 +5262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5282,7 +5282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5302,7 +5302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5322,7 +5322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5342,7 +5342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5362,7 +5362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5382,7 +5382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5402,7 +5402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5422,7 +5422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5442,7 +5442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5462,7 +5462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5482,7 +5482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5502,7 +5502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5522,7 +5522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5542,7 +5542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5562,7 +5562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5582,7 +5582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5602,7 +5602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5622,7 +5622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5642,7 +5642,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5662,7 +5662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5682,7 +5682,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5702,7 +5702,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5722,7 +5722,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5742,7 +5742,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5762,7 +5762,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5782,7 +5782,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5802,7 +5802,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5822,7 +5822,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5842,7 +5842,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5862,7 +5862,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5882,7 +5882,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5902,7 +5902,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5922,7 +5922,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5942,7 +5942,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5962,7 +5962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -5982,7 +5982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6002,7 +6002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6022,7 +6022,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6042,7 +6042,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6062,7 +6062,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6082,7 +6082,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6102,7 +6102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6122,7 +6122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6142,7 +6142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6162,7 +6162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6182,7 +6182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F:generic",
+      "bom-ref": "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
       "name": "SLH-DSA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6202,7 +6202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4:generic",
+      "bom-ref": "alg:SNOVA_24_5_4:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6222,7 +6222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4:x86_64",
+      "bom-ref": "alg:SNOVA_24_5_4:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6242,7 +6242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4:armv8-a",
+      "bom-ref": "alg:SNOVA_24_5_4:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6262,7 +6262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:generic",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6282,7 +6282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:x86_64",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6302,7 +6302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:armv8-a",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6322,7 +6322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_esk:generic",
+      "bom-ref": "alg:SNOVA_24_5_4_esk:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6342,7 +6342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_esk:x86_64",
+      "bom-ref": "alg:SNOVA_24_5_4_esk:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6362,7 +6362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_esk:armv8-a",
+      "bom-ref": "alg:SNOVA_24_5_4_esk:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6382,7 +6382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:generic",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6402,7 +6402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:x86_64",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6422,7 +6422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:armv8-a",
+      "bom-ref": "alg:SNOVA_24_5_4_SHAKE_esk:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6442,7 +6442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_37_17_2:generic",
+      "bom-ref": "alg:SNOVA_37_17_2:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6462,7 +6462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_37_17_2:x86_64",
+      "bom-ref": "alg:SNOVA_37_17_2:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6482,7 +6482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_37_17_2:armv8-a",
+      "bom-ref": "alg:SNOVA_37_17_2:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6502,7 +6502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_25_8_3:generic",
+      "bom-ref": "alg:SNOVA_25_8_3:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6522,7 +6522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_25_8_3:x86_64",
+      "bom-ref": "alg:SNOVA_25_8_3:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6542,7 +6542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_25_8_3:armv8-a",
+      "bom-ref": "alg:SNOVA_25_8_3:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6562,7 +6562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_56_25_2:generic",
+      "bom-ref": "alg:SNOVA_56_25_2:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6582,7 +6582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_56_25_2:x86_64",
+      "bom-ref": "alg:SNOVA_56_25_2:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6602,7 +6602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_56_25_2:armv8-a",
+      "bom-ref": "alg:SNOVA_56_25_2:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6622,7 +6622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_49_11_3:generic",
+      "bom-ref": "alg:SNOVA_49_11_3:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6642,7 +6642,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_49_11_3:x86_64",
+      "bom-ref": "alg:SNOVA_49_11_3:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6662,7 +6662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_49_11_3:armv8-a",
+      "bom-ref": "alg:SNOVA_49_11_3:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6682,7 +6682,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_37_8_4:generic",
+      "bom-ref": "alg:SNOVA_37_8_4:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6702,7 +6702,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_37_8_4:x86_64",
+      "bom-ref": "alg:SNOVA_37_8_4:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6722,7 +6722,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_37_8_4:armv8-a",
+      "bom-ref": "alg:SNOVA_37_8_4:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6742,7 +6742,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_5:generic",
+      "bom-ref": "alg:SNOVA_24_5_5:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6762,7 +6762,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_5:x86_64",
+      "bom-ref": "alg:SNOVA_24_5_5:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6782,7 +6782,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_24_5_5:armv8-a",
+      "bom-ref": "alg:SNOVA_24_5_5:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6802,7 +6802,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_60_10_4:generic",
+      "bom-ref": "alg:SNOVA_60_10_4:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6822,7 +6822,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_60_10_4:x86_64",
+      "bom-ref": "alg:SNOVA_60_10_4:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6842,7 +6842,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_60_10_4:armv8-a",
+      "bom-ref": "alg:SNOVA_60_10_4:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6862,7 +6862,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_29_6_5:generic",
+      "bom-ref": "alg:SNOVA_29_6_5:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6882,7 +6882,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_29_6_5:x86_64",
+      "bom-ref": "alg:SNOVA_29_6_5:avx2:x86_64",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6902,7 +6902,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_29_6_5:armv8-a",
+      "bom-ref": "alg:SNOVA_29_6_5:neon:armv8-a",
       "name": "SNOVA",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6922,7 +6922,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is:generic",
+      "bom-ref": "alg:OV-Is:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6942,7 +6942,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is:armv8-a",
+      "bom-ref": "alg:OV-Is:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6962,7 +6962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is:x86_64",
+      "bom-ref": "alg:OV-Is:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -6982,7 +6982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip:generic",
+      "bom-ref": "alg:OV-Ip:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7002,7 +7002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip:armv8-a",
+      "bom-ref": "alg:OV-Ip:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7022,7 +7022,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip:x86_64",
+      "bom-ref": "alg:OV-Ip:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7042,7 +7042,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III:generic",
+      "bom-ref": "alg:OV-III:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7062,7 +7062,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III:armv8-a",
+      "bom-ref": "alg:OV-III:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7082,7 +7082,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III:x86_64",
+      "bom-ref": "alg:OV-III:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7102,7 +7102,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V:generic",
+      "bom-ref": "alg:OV-V:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7122,7 +7122,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V:armv8-a",
+      "bom-ref": "alg:OV-V:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7142,7 +7142,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V:x86_64",
+      "bom-ref": "alg:OV-V:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7162,7 +7162,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is-pkc:generic",
+      "bom-ref": "alg:OV-Is-pkc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7182,7 +7182,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is-pkc:armv8-a",
+      "bom-ref": "alg:OV-Is-pkc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7202,7 +7202,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is-pkc:x86_64",
+      "bom-ref": "alg:OV-Is-pkc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7222,7 +7222,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip-pkc:generic",
+      "bom-ref": "alg:OV-Ip-pkc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7242,7 +7242,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip-pkc:armv8-a",
+      "bom-ref": "alg:OV-Ip-pkc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7262,7 +7262,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip-pkc:x86_64",
+      "bom-ref": "alg:OV-Ip-pkc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7282,7 +7282,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III-pkc:generic",
+      "bom-ref": "alg:OV-III-pkc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7302,7 +7302,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III-pkc:armv8-a",
+      "bom-ref": "alg:OV-III-pkc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7322,7 +7322,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III-pkc:x86_64",
+      "bom-ref": "alg:OV-III-pkc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7342,7 +7342,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V-pkc:generic",
+      "bom-ref": "alg:OV-V-pkc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7362,7 +7362,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V-pkc:armv8-a",
+      "bom-ref": "alg:OV-V-pkc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7382,7 +7382,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V-pkc:x86_64",
+      "bom-ref": "alg:OV-V-pkc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7402,7 +7402,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is-pkc-skc:generic",
+      "bom-ref": "alg:OV-Is-pkc-skc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7422,7 +7422,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is-pkc-skc:armv8-a",
+      "bom-ref": "alg:OV-Is-pkc-skc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7442,7 +7442,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Is-pkc-skc:x86_64",
+      "bom-ref": "alg:OV-Is-pkc-skc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7462,7 +7462,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip-pkc-skc:generic",
+      "bom-ref": "alg:OV-Ip-pkc-skc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7482,7 +7482,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip-pkc-skc:armv8-a",
+      "bom-ref": "alg:OV-Ip-pkc-skc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7502,7 +7502,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-Ip-pkc-skc:x86_64",
+      "bom-ref": "alg:OV-Ip-pkc-skc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7522,7 +7522,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III-pkc-skc:generic",
+      "bom-ref": "alg:OV-III-pkc-skc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7542,7 +7542,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III-pkc-skc:armv8-a",
+      "bom-ref": "alg:OV-III-pkc-skc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7562,7 +7562,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-III-pkc-skc:x86_64",
+      "bom-ref": "alg:OV-III-pkc-skc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7582,7 +7582,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V-pkc-skc:generic",
+      "bom-ref": "alg:OV-V-pkc-skc:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7602,7 +7602,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V-pkc-skc:armv8-a",
+      "bom-ref": "alg:OV-V-pkc-skc:neon:armv8-a",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7622,7 +7622,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:OV-V-pkc-skc:x86_64",
+      "bom-ref": "alg:OV-V-pkc-skc:avx2:x86_64",
       "name": "UOV",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -7667,1838 +7667,1838 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@f523d7f02389c3ddf7735f989a93a16dcbe75989",
+      "ref": "pkg:github/open-quantum-safe/liboqs@fc08ab40cf34941a41e67d91921c20a428aa6ec0",
       "provides": [
-        "alg:BIKE-L1:x86_64",
-        "alg:BIKE-L3:x86_64",
-        "alg:BIKE-L5:x86_64",
-        "alg:Classic-McEliece-348864:generic",
-        "alg:Classic-McEliece-348864:x86_64",
-        "alg:Classic-McEliece-348864f:generic",
-        "alg:Classic-McEliece-348864f:x86_64",
-        "alg:Classic-McEliece-460896:generic",
-        "alg:Classic-McEliece-460896:x86_64",
-        "alg:Classic-McEliece-460896f:generic",
-        "alg:Classic-McEliece-460896f:x86_64",
-        "alg:Classic-McEliece-6688128:generic",
-        "alg:Classic-McEliece-6688128:x86_64",
-        "alg:Classic-McEliece-6688128f:generic",
-        "alg:Classic-McEliece-6688128f:x86_64",
-        "alg:Classic-McEliece-6960119:generic",
-        "alg:Classic-McEliece-6960119:x86_64",
-        "alg:Classic-McEliece-6960119f:generic",
-        "alg:Classic-McEliece-6960119f:x86_64",
-        "alg:Classic-McEliece-8192128:generic",
-        "alg:Classic-McEliece-8192128:x86_64",
-        "alg:Classic-McEliece-8192128f:generic",
-        "alg:Classic-McEliece-8192128f:x86_64",
-        "alg:FrodoKEM-640-AES:generic",
-        "alg:FrodoKEM-640-AES:x86_64",
-        "alg:FrodoKEM-640-SHAKE:generic",
-        "alg:FrodoKEM-640-SHAKE:x86_64",
-        "alg:FrodoKEM-976-AES:generic",
-        "alg:FrodoKEM-976-AES:x86_64",
-        "alg:FrodoKEM-976-SHAKE:generic",
-        "alg:FrodoKEM-976-SHAKE:x86_64",
-        "alg:FrodoKEM-1344-AES:generic",
-        "alg:FrodoKEM-1344-AES:x86_64",
-        "alg:FrodoKEM-1344-SHAKE:generic",
-        "alg:FrodoKEM-1344-SHAKE:x86_64",
-        "alg:eFrodoKEM-640-AES:generic",
-        "alg:eFrodoKEM-640-AES:x86_64",
-        "alg:eFrodoKEM-640-SHAKE:generic",
-        "alg:eFrodoKEM-640-SHAKE:x86_64",
-        "alg:eFrodoKEM-976-AES:generic",
-        "alg:eFrodoKEM-976-AES:x86_64",
-        "alg:eFrodoKEM-976-SHAKE:generic",
-        "alg:eFrodoKEM-976-SHAKE:x86_64",
-        "alg:eFrodoKEM-1344-AES:generic",
-        "alg:eFrodoKEM-1344-AES:x86_64",
-        "alg:eFrodoKEM-1344-SHAKE:generic",
-        "alg:eFrodoKEM-1344-SHAKE:x86_64",
-        "alg:HQC-128:generic",
-        "alg:HQC-192:generic",
-        "alg:HQC-256:generic",
-        "alg:Kyber512:generic",
-        "alg:Kyber512:x86_64",
-        "alg:Kyber512:armv8-a",
-        "alg:Kyber512:jasmin:x86_64",
-        "alg:Kyber512:jasmin:avx2:x86_64",
-        "alg:Kyber768:generic",
-        "alg:Kyber768:x86_64",
-        "alg:Kyber768:armv8-a",
-        "alg:Kyber768:jasmin:x86_64",
-        "alg:Kyber768:jasmin:avx2:x86_64",
-        "alg:Kyber1024:generic",
-        "alg:Kyber1024:x86_64",
-        "alg:Kyber1024:armv8-a",
-        "alg:ML-KEM-512:generic",
-        "alg:ML-KEM-512:x86_64",
-        "alg:ML-KEM-512:armv8-a",
-        "alg:ML-KEM-768:generic",
-        "alg:ML-KEM-768:x86_64",
-        "alg:ML-KEM-768:armv8-a",
-        "alg:ML-KEM-1024:generic",
-        "alg:ML-KEM-1024:x86_64",
-        "alg:ML-KEM-1024:armv8-a",
-        "alg:NTRU-HPS-2048-509:generic",
-        "alg:NTRU-HPS-2048-509:x86_64",
-        "alg:NTRU-HPS-2048-677:generic",
-        "alg:NTRU-HPS-2048-677:x86_64",
-        "alg:NTRU-HPS-4096-821:generic",
-        "alg:NTRU-HPS-4096-821:x86_64",
-        "alg:NTRU-HPS-4096-1229:generic",
-        "alg:NTRU-HRSS-701:generic",
-        "alg:NTRU-HRSS-701:x86_64",
-        "alg:NTRU-HRSS-1373:generic",
-        "alg:sntrup761:generic",
-        "alg:sntrup761:x86_64",
-        "alg:cross-rsdp-128-balanced:generic",
-        "alg:cross-rsdp-128-balanced:x86_64",
-        "alg:cross-rsdp-128-fast:generic",
-        "alg:cross-rsdp-128-fast:x86_64",
-        "alg:cross-rsdp-128-small:generic",
-        "alg:cross-rsdp-128-small:x86_64",
-        "alg:cross-rsdp-192-balanced:generic",
-        "alg:cross-rsdp-192-balanced:x86_64",
-        "alg:cross-rsdp-192-fast:generic",
-        "alg:cross-rsdp-192-fast:x86_64",
-        "alg:cross-rsdp-192-small:generic",
-        "alg:cross-rsdp-192-small:x86_64",
-        "alg:cross-rsdp-256-balanced:generic",
-        "alg:cross-rsdp-256-balanced:x86_64",
-        "alg:cross-rsdp-256-fast:generic",
-        "alg:cross-rsdp-256-fast:x86_64",
-        "alg:cross-rsdp-256-small:generic",
-        "alg:cross-rsdp-256-small:x86_64",
-        "alg:cross-rsdpg-128-balanced:generic",
-        "alg:cross-rsdpg-128-balanced:x86_64",
-        "alg:cross-rsdpg-128-fast:generic",
-        "alg:cross-rsdpg-128-fast:x86_64",
-        "alg:cross-rsdpg-128-small:generic",
-        "alg:cross-rsdpg-128-small:x86_64",
-        "alg:cross-rsdpg-192-balanced:generic",
-        "alg:cross-rsdpg-192-balanced:x86_64",
-        "alg:cross-rsdpg-192-fast:generic",
-        "alg:cross-rsdpg-192-fast:x86_64",
-        "alg:cross-rsdpg-192-small:generic",
-        "alg:cross-rsdpg-192-small:x86_64",
-        "alg:cross-rsdpg-256-balanced:generic",
-        "alg:cross-rsdpg-256-balanced:x86_64",
-        "alg:cross-rsdpg-256-fast:generic",
-        "alg:cross-rsdpg-256-fast:x86_64",
-        "alg:cross-rsdpg-256-small:generic",
-        "alg:cross-rsdpg-256-small:x86_64",
-        "alg:Falcon-512:generic",
-        "alg:Falcon-512:x86_64",
-        "alg:Falcon-512:armv8-a",
-        "alg:Falcon-1024:generic",
-        "alg:Falcon-1024:x86_64",
-        "alg:Falcon-1024:armv8-a",
-        "alg:Falcon-padded-512:generic",
-        "alg:Falcon-padded-512:x86_64",
-        "alg:Falcon-padded-512:armv8-a",
-        "alg:Falcon-padded-1024:generic",
-        "alg:Falcon-padded-1024:x86_64",
-        "alg:Falcon-padded-1024:armv8-a",
-        "alg:MAYO-1:generic",
-        "alg:MAYO-1:x86_64",
-        "alg:MAYO-1:armv8-a",
-        "alg:MAYO-2:generic",
-        "alg:MAYO-2:x86_64",
-        "alg:MAYO-2:armv8-a",
-        "alg:MAYO-3:generic",
-        "alg:MAYO-3:x86_64",
-        "alg:MAYO-3:armv8-a",
-        "alg:MAYO-5:generic",
-        "alg:MAYO-5:x86_64",
-        "alg:MAYO-5:armv8-a",
-        "alg:ML-DSA-44:generic",
-        "alg:ML-DSA-44:x86_64",
-        "alg:ML-DSA-44:armv8-a",
-        "alg:ML-DSA-65:generic",
-        "alg:ML-DSA-65:x86_64",
-        "alg:ML-DSA-65:armv8-a",
-        "alg:ML-DSA-87:generic",
-        "alg:ML-DSA-87:x86_64",
-        "alg:ML-DSA-87:armv8-a",
-        "alg:SLH_DSA_PURE_SHA2_128S:generic",
-        "alg:SLH_DSA_PURE_SHA2_128F:generic",
-        "alg:SLH_DSA_PURE_SHA2_192S:generic",
-        "alg:SLH_DSA_PURE_SHA2_192F:generic",
-        "alg:SLH_DSA_PURE_SHA2_256S:generic",
-        "alg:SLH_DSA_PURE_SHA2_256F:generic",
-        "alg:SLH_DSA_PURE_SHAKE_128S:generic",
-        "alg:SLH_DSA_PURE_SHAKE_128F:generic",
-        "alg:SLH_DSA_PURE_SHAKE_192S:generic",
-        "alg:SLH_DSA_PURE_SHAKE_192F:generic",
-        "alg:SLH_DSA_PURE_SHAKE_256S:generic",
-        "alg:SLH_DSA_PURE_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128S:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128F:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192S:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192F:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256S:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256F:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S:generic",
-        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F:generic",
-        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F:generic",
-        "alg:SNOVA_24_5_4:generic",
-        "alg:SNOVA_24_5_4:x86_64",
-        "alg:SNOVA_24_5_4:armv8-a",
-        "alg:SNOVA_24_5_4_SHAKE:generic",
-        "alg:SNOVA_24_5_4_SHAKE:x86_64",
-        "alg:SNOVA_24_5_4_SHAKE:armv8-a",
-        "alg:SNOVA_24_5_4_esk:generic",
-        "alg:SNOVA_24_5_4_esk:x86_64",
-        "alg:SNOVA_24_5_4_esk:armv8-a",
-        "alg:SNOVA_24_5_4_SHAKE_esk:generic",
-        "alg:SNOVA_24_5_4_SHAKE_esk:x86_64",
-        "alg:SNOVA_24_5_4_SHAKE_esk:armv8-a",
-        "alg:SNOVA_37_17_2:generic",
-        "alg:SNOVA_37_17_2:x86_64",
-        "alg:SNOVA_37_17_2:armv8-a",
-        "alg:SNOVA_25_8_3:generic",
-        "alg:SNOVA_25_8_3:x86_64",
-        "alg:SNOVA_25_8_3:armv8-a",
-        "alg:SNOVA_56_25_2:generic",
-        "alg:SNOVA_56_25_2:x86_64",
-        "alg:SNOVA_56_25_2:armv8-a",
-        "alg:SNOVA_49_11_3:generic",
-        "alg:SNOVA_49_11_3:x86_64",
-        "alg:SNOVA_49_11_3:armv8-a",
-        "alg:SNOVA_37_8_4:generic",
-        "alg:SNOVA_37_8_4:x86_64",
-        "alg:SNOVA_37_8_4:armv8-a",
-        "alg:SNOVA_24_5_5:generic",
-        "alg:SNOVA_24_5_5:x86_64",
-        "alg:SNOVA_24_5_5:armv8-a",
-        "alg:SNOVA_60_10_4:generic",
-        "alg:SNOVA_60_10_4:x86_64",
-        "alg:SNOVA_60_10_4:armv8-a",
-        "alg:SNOVA_29_6_5:generic",
-        "alg:SNOVA_29_6_5:x86_64",
-        "alg:SNOVA_29_6_5:armv8-a",
-        "alg:OV-Is:generic",
-        "alg:OV-Is:armv8-a",
-        "alg:OV-Is:x86_64",
-        "alg:OV-Ip:generic",
-        "alg:OV-Ip:armv8-a",
-        "alg:OV-Ip:x86_64",
-        "alg:OV-III:generic",
-        "alg:OV-III:armv8-a",
-        "alg:OV-III:x86_64",
-        "alg:OV-V:generic",
-        "alg:OV-V:armv8-a",
-        "alg:OV-V:x86_64",
-        "alg:OV-Is-pkc:generic",
-        "alg:OV-Is-pkc:armv8-a",
-        "alg:OV-Is-pkc:x86_64",
-        "alg:OV-Ip-pkc:generic",
-        "alg:OV-Ip-pkc:armv8-a",
-        "alg:OV-Ip-pkc:x86_64",
-        "alg:OV-III-pkc:generic",
-        "alg:OV-III-pkc:armv8-a",
-        "alg:OV-III-pkc:x86_64",
-        "alg:OV-V-pkc:generic",
-        "alg:OV-V-pkc:armv8-a",
-        "alg:OV-V-pkc:x86_64",
-        "alg:OV-Is-pkc-skc:generic",
-        "alg:OV-Is-pkc-skc:armv8-a",
-        "alg:OV-Is-pkc-skc:x86_64",
-        "alg:OV-Ip-pkc-skc:generic",
-        "alg:OV-Ip-pkc-skc:armv8-a",
-        "alg:OV-Ip-pkc-skc:x86_64",
-        "alg:OV-III-pkc-skc:generic",
-        "alg:OV-III-pkc-skc:armv8-a",
-        "alg:OV-III-pkc-skc:x86_64",
-        "alg:OV-V-pkc-skc:generic",
-        "alg:OV-V-pkc-skc:armv8-a",
-        "alg:OV-V-pkc-skc:x86_64"
+        "alg:BIKE-L1:master:x86_64",
+        "alg:BIKE-L3:master:x86_64",
+        "alg:BIKE-L5:master:x86_64",
+        "alg:Classic-McEliece-348864:clean:generic",
+        "alg:Classic-McEliece-348864:avx2:x86_64",
+        "alg:Classic-McEliece-348864f:clean:generic",
+        "alg:Classic-McEliece-348864f:avx2:x86_64",
+        "alg:Classic-McEliece-460896:clean:generic",
+        "alg:Classic-McEliece-460896:avx2:x86_64",
+        "alg:Classic-McEliece-460896f:clean:generic",
+        "alg:Classic-McEliece-460896f:avx2:x86_64",
+        "alg:Classic-McEliece-6688128:clean:generic",
+        "alg:Classic-McEliece-6688128:avx2:x86_64",
+        "alg:Classic-McEliece-6688128f:clean:generic",
+        "alg:Classic-McEliece-6688128f:avx2:x86_64",
+        "alg:Classic-McEliece-6960119:clean:generic",
+        "alg:Classic-McEliece-6960119:avx2:x86_64",
+        "alg:Classic-McEliece-6960119f:clean:generic",
+        "alg:Classic-McEliece-6960119f:avx2:x86_64",
+        "alg:Classic-McEliece-8192128:clean:generic",
+        "alg:Classic-McEliece-8192128:avx2:x86_64",
+        "alg:Classic-McEliece-8192128f:clean:generic",
+        "alg:Classic-McEliece-8192128f:avx2:x86_64",
+        "alg:FrodoKEM-640-AES:master:generic",
+        "alg:FrodoKEM-640-AES:master:x86_64",
+        "alg:FrodoKEM-640-SHAKE:master:generic",
+        "alg:FrodoKEM-640-SHAKE:master:x86_64",
+        "alg:FrodoKEM-976-AES:master:generic",
+        "alg:FrodoKEM-976-AES:master:x86_64",
+        "alg:FrodoKEM-976-SHAKE:master:generic",
+        "alg:FrodoKEM-976-SHAKE:master:x86_64",
+        "alg:FrodoKEM-1344-AES:master:generic",
+        "alg:FrodoKEM-1344-AES:master:x86_64",
+        "alg:FrodoKEM-1344-SHAKE:master:generic",
+        "alg:FrodoKEM-1344-SHAKE:master:x86_64",
+        "alg:eFrodoKEM-640-AES:master:generic",
+        "alg:eFrodoKEM-640-AES:master:x86_64",
+        "alg:eFrodoKEM-640-SHAKE:master:generic",
+        "alg:eFrodoKEM-640-SHAKE:master:x86_64",
+        "alg:eFrodoKEM-976-AES:master:generic",
+        "alg:eFrodoKEM-976-AES:master:x86_64",
+        "alg:eFrodoKEM-976-SHAKE:master:generic",
+        "alg:eFrodoKEM-976-SHAKE:master:x86_64",
+        "alg:eFrodoKEM-1344-AES:master:generic",
+        "alg:eFrodoKEM-1344-AES:master:x86_64",
+        "alg:eFrodoKEM-1344-SHAKE:master:generic",
+        "alg:eFrodoKEM-1344-SHAKE:master:x86_64",
+        "alg:HQC-128:clean:generic",
+        "alg:HQC-192:clean:generic",
+        "alg:HQC-256:clean:generic",
+        "alg:Kyber512:ref:generic",
+        "alg:Kyber512:avx2:x86_64",
+        "alg:Kyber512:aarch64:armv8-a",
+        "alg:Kyber512:jasmin_ref:x86_64",
+        "alg:Kyber512:jasmin_avx2:x86_64",
+        "alg:Kyber768:ref:generic",
+        "alg:Kyber768:avx2:x86_64",
+        "alg:Kyber768:aarch64:armv8-a",
+        "alg:Kyber768:jasmin_ref:x86_64",
+        "alg:Kyber768:jasmin_avx2:x86_64",
+        "alg:Kyber1024:ref:generic",
+        "alg:Kyber1024:avx2:x86_64",
+        "alg:Kyber1024:aarch64:armv8-a",
+        "alg:ML-KEM-512:ref:generic",
+        "alg:ML-KEM-512:x86_64:x86_64",
+        "alg:ML-KEM-512:aarch64:armv8-a",
+        "alg:ML-KEM-768:ref:generic",
+        "alg:ML-KEM-768:x86_64:x86_64",
+        "alg:ML-KEM-768:aarch64:armv8-a",
+        "alg:ML-KEM-1024:ref:generic",
+        "alg:ML-KEM-1024:x86_64:x86_64",
+        "alg:ML-KEM-1024:aarch64:armv8-a",
+        "alg:NTRU-HPS-2048-509:clean:generic",
+        "alg:NTRU-HPS-2048-509:avx2:x86_64",
+        "alg:NTRU-HPS-2048-677:clean:generic",
+        "alg:NTRU-HPS-2048-677:avx2:x86_64",
+        "alg:NTRU-HPS-4096-821:clean:generic",
+        "alg:NTRU-HPS-4096-821:avx2:x86_64",
+        "alg:NTRU-HPS-4096-1229:clean:generic",
+        "alg:NTRU-HRSS-701:clean:generic",
+        "alg:NTRU-HRSS-701:avx2:x86_64",
+        "alg:NTRU-HRSS-1373:clean:generic",
+        "alg:sntrup761:clean:generic",
+        "alg:sntrup761:avx2:x86_64",
+        "alg:cross-rsdp-128-balanced:clean:generic",
+        "alg:cross-rsdp-128-balanced:avx2:x86_64",
+        "alg:cross-rsdp-128-fast:clean:generic",
+        "alg:cross-rsdp-128-fast:avx2:x86_64",
+        "alg:cross-rsdp-128-small:clean:generic",
+        "alg:cross-rsdp-128-small:avx2:x86_64",
+        "alg:cross-rsdp-192-balanced:clean:generic",
+        "alg:cross-rsdp-192-balanced:avx2:x86_64",
+        "alg:cross-rsdp-192-fast:clean:generic",
+        "alg:cross-rsdp-192-fast:avx2:x86_64",
+        "alg:cross-rsdp-192-small:clean:generic",
+        "alg:cross-rsdp-192-small:avx2:x86_64",
+        "alg:cross-rsdp-256-balanced:clean:generic",
+        "alg:cross-rsdp-256-balanced:avx2:x86_64",
+        "alg:cross-rsdp-256-fast:clean:generic",
+        "alg:cross-rsdp-256-fast:avx2:x86_64",
+        "alg:cross-rsdp-256-small:clean:generic",
+        "alg:cross-rsdp-256-small:avx2:x86_64",
+        "alg:cross-rsdpg-128-balanced:clean:generic",
+        "alg:cross-rsdpg-128-balanced:avx2:x86_64",
+        "alg:cross-rsdpg-128-fast:clean:generic",
+        "alg:cross-rsdpg-128-fast:avx2:x86_64",
+        "alg:cross-rsdpg-128-small:clean:generic",
+        "alg:cross-rsdpg-128-small:avx2:x86_64",
+        "alg:cross-rsdpg-192-balanced:clean:generic",
+        "alg:cross-rsdpg-192-balanced:avx2:x86_64",
+        "alg:cross-rsdpg-192-fast:clean:generic",
+        "alg:cross-rsdpg-192-fast:avx2:x86_64",
+        "alg:cross-rsdpg-192-small:clean:generic",
+        "alg:cross-rsdpg-192-small:avx2:x86_64",
+        "alg:cross-rsdpg-256-balanced:clean:generic",
+        "alg:cross-rsdpg-256-balanced:avx2:x86_64",
+        "alg:cross-rsdpg-256-fast:clean:generic",
+        "alg:cross-rsdpg-256-fast:avx2:x86_64",
+        "alg:cross-rsdpg-256-small:clean:generic",
+        "alg:cross-rsdpg-256-small:avx2:x86_64",
+        "alg:Falcon-512:clean:generic",
+        "alg:Falcon-512:avx2:x86_64",
+        "alg:Falcon-512:aarch64:armv8-a",
+        "alg:Falcon-1024:clean:generic",
+        "alg:Falcon-1024:avx2:x86_64",
+        "alg:Falcon-1024:aarch64:armv8-a",
+        "alg:Falcon-padded-512:clean:generic",
+        "alg:Falcon-padded-512:avx2:x86_64",
+        "alg:Falcon-padded-512:aarch64:armv8-a",
+        "alg:Falcon-padded-1024:clean:generic",
+        "alg:Falcon-padded-1024:avx2:x86_64",
+        "alg:Falcon-padded-1024:aarch64:armv8-a",
+        "alg:MAYO-1:opt:generic",
+        "alg:MAYO-1:avx2:x86_64",
+        "alg:MAYO-1:neon:armv8-a",
+        "alg:MAYO-2:opt:generic",
+        "alg:MAYO-2:avx2:x86_64",
+        "alg:MAYO-2:neon:armv8-a",
+        "alg:MAYO-3:opt:generic",
+        "alg:MAYO-3:avx2:x86_64",
+        "alg:MAYO-3:neon:armv8-a",
+        "alg:MAYO-5:opt:generic",
+        "alg:MAYO-5:avx2:x86_64",
+        "alg:MAYO-5:neon:armv8-a",
+        "alg:ML-DSA-44:ref:generic",
+        "alg:ML-DSA-44:x86_64:x86_64",
+        "alg:ML-DSA-44:aarch64:armv8-a",
+        "alg:ML-DSA-65:ref:generic",
+        "alg:ML-DSA-65:x86_64:x86_64",
+        "alg:ML-DSA-65:aarch64:armv8-a",
+        "alg:ML-DSA-87:ref:generic",
+        "alg:ML-DSA-87:x86_64:x86_64",
+        "alg:ML-DSA-87:aarch64:armv8-a",
+        "alg:SLH_DSA_PURE_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_PURE_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHA2_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_128F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_224_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_384_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_224_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA2_512_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_224_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_384_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHA3_512_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_128_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F:slhdsa-c:generic",
+        "alg:SNOVA_24_5_4:opt:generic",
+        "alg:SNOVA_24_5_4:avx2:x86_64",
+        "alg:SNOVA_24_5_4:neon:armv8-a",
+        "alg:SNOVA_24_5_4_SHAKE:opt:generic",
+        "alg:SNOVA_24_5_4_SHAKE:avx2:x86_64",
+        "alg:SNOVA_24_5_4_SHAKE:neon:armv8-a",
+        "alg:SNOVA_24_5_4_esk:opt:generic",
+        "alg:SNOVA_24_5_4_esk:avx2:x86_64",
+        "alg:SNOVA_24_5_4_esk:neon:armv8-a",
+        "alg:SNOVA_24_5_4_SHAKE_esk:opt:generic",
+        "alg:SNOVA_24_5_4_SHAKE_esk:avx2:x86_64",
+        "alg:SNOVA_24_5_4_SHAKE_esk:neon:armv8-a",
+        "alg:SNOVA_37_17_2:opt:generic",
+        "alg:SNOVA_37_17_2:avx2:x86_64",
+        "alg:SNOVA_37_17_2:neon:armv8-a",
+        "alg:SNOVA_25_8_3:opt:generic",
+        "alg:SNOVA_25_8_3:avx2:x86_64",
+        "alg:SNOVA_25_8_3:neon:armv8-a",
+        "alg:SNOVA_56_25_2:opt:generic",
+        "alg:SNOVA_56_25_2:avx2:x86_64",
+        "alg:SNOVA_56_25_2:neon:armv8-a",
+        "alg:SNOVA_49_11_3:opt:generic",
+        "alg:SNOVA_49_11_3:avx2:x86_64",
+        "alg:SNOVA_49_11_3:neon:armv8-a",
+        "alg:SNOVA_37_8_4:opt:generic",
+        "alg:SNOVA_37_8_4:avx2:x86_64",
+        "alg:SNOVA_37_8_4:neon:armv8-a",
+        "alg:SNOVA_24_5_5:opt:generic",
+        "alg:SNOVA_24_5_5:avx2:x86_64",
+        "alg:SNOVA_24_5_5:neon:armv8-a",
+        "alg:SNOVA_60_10_4:opt:generic",
+        "alg:SNOVA_60_10_4:avx2:x86_64",
+        "alg:SNOVA_60_10_4:neon:armv8-a",
+        "alg:SNOVA_29_6_5:opt:generic",
+        "alg:SNOVA_29_6_5:avx2:x86_64",
+        "alg:SNOVA_29_6_5:neon:armv8-a",
+        "alg:OV-Is:ref:generic",
+        "alg:OV-Is:neon:armv8-a",
+        "alg:OV-Is:avx2:x86_64",
+        "alg:OV-Ip:ref:generic",
+        "alg:OV-Ip:neon:armv8-a",
+        "alg:OV-Ip:avx2:x86_64",
+        "alg:OV-III:ref:generic",
+        "alg:OV-III:neon:armv8-a",
+        "alg:OV-III:avx2:x86_64",
+        "alg:OV-V:ref:generic",
+        "alg:OV-V:neon:armv8-a",
+        "alg:OV-V:avx2:x86_64",
+        "alg:OV-Is-pkc:ref:generic",
+        "alg:OV-Is-pkc:neon:armv8-a",
+        "alg:OV-Is-pkc:avx2:x86_64",
+        "alg:OV-Ip-pkc:ref:generic",
+        "alg:OV-Ip-pkc:neon:armv8-a",
+        "alg:OV-Ip-pkc:avx2:x86_64",
+        "alg:OV-III-pkc:ref:generic",
+        "alg:OV-III-pkc:neon:armv8-a",
+        "alg:OV-III-pkc:avx2:x86_64",
+        "alg:OV-V-pkc:ref:generic",
+        "alg:OV-V-pkc:neon:armv8-a",
+        "alg:OV-V-pkc:avx2:x86_64",
+        "alg:OV-Is-pkc-skc:ref:generic",
+        "alg:OV-Is-pkc-skc:neon:armv8-a",
+        "alg:OV-Is-pkc-skc:avx2:x86_64",
+        "alg:OV-Ip-pkc-skc:ref:generic",
+        "alg:OV-Ip-pkc-skc:neon:armv8-a",
+        "alg:OV-Ip-pkc-skc:avx2:x86_64",
+        "alg:OV-III-pkc-skc:ref:generic",
+        "alg:OV-III-pkc-skc:neon:armv8-a",
+        "alg:OV-III-pkc-skc:avx2:x86_64",
+        "alg:OV-V-pkc-skc:ref:generic",
+        "alg:OV-V-pkc-skc:neon:armv8-a",
+        "alg:OV-V-pkc-skc:avx2:x86_64"
       ]
     },
     {
-      "ref": "alg:BIKE-L1:x86_64",
+      "ref": "alg:BIKE-L1:master:x86_64",
       "dependsOn": [
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:BIKE-L3:x86_64",
+      "ref": "alg:BIKE-L3:master:x86_64",
       "dependsOn": [
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:BIKE-L5:x86_64",
+      "ref": "alg:BIKE-L5:master:x86_64",
       "dependsOn": [
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-348864:generic",
-      "dependsOn": [
-        "alg:aes",
-        "alg:sha3"
-      ]
-    },
-    {
-      "ref": "alg:Classic-McEliece-348864:x86_64",
+      "ref": "alg:Classic-McEliece-348864:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-348864f:generic",
+      "ref": "alg:Classic-McEliece-348864:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-348864f:x86_64",
+      "ref": "alg:Classic-McEliece-348864f:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-460896:generic",
+      "ref": "alg:Classic-McEliece-348864f:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-460896:x86_64",
+      "ref": "alg:Classic-McEliece-460896:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-460896f:generic",
+      "ref": "alg:Classic-McEliece-460896:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-460896f:x86_64",
+      "ref": "alg:Classic-McEliece-460896f:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6688128:generic",
+      "ref": "alg:Classic-McEliece-460896f:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6688128:x86_64",
+      "ref": "alg:Classic-McEliece-6688128:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6688128f:generic",
+      "ref": "alg:Classic-McEliece-6688128:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6688128f:x86_64",
+      "ref": "alg:Classic-McEliece-6688128f:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6960119:generic",
+      "ref": "alg:Classic-McEliece-6688128f:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6960119:x86_64",
+      "ref": "alg:Classic-McEliece-6960119:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6960119f:generic",
+      "ref": "alg:Classic-McEliece-6960119:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-6960119f:x86_64",
+      "ref": "alg:Classic-McEliece-6960119f:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-8192128:generic",
+      "ref": "alg:Classic-McEliece-6960119f:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-8192128:x86_64",
+      "ref": "alg:Classic-McEliece-8192128:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-8192128f:generic",
+      "ref": "alg:Classic-McEliece-8192128:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Classic-McEliece-8192128f:x86_64",
+      "ref": "alg:Classic-McEliece-8192128f:clean:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-640-AES:generic",
+      "ref": "alg:Classic-McEliece-8192128f:avx2:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-640-AES:x86_64",
+      "ref": "alg:FrodoKEM-640-AES:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-640-SHAKE:generic",
+      "ref": "alg:FrodoKEM-640-AES:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-640-SHAKE:x86_64",
+      "ref": "alg:FrodoKEM-640-SHAKE:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-976-AES:generic",
+      "ref": "alg:FrodoKEM-640-SHAKE:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-976-AES:x86_64",
+      "ref": "alg:FrodoKEM-976-AES:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-976-SHAKE:generic",
+      "ref": "alg:FrodoKEM-976-AES:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-976-SHAKE:x86_64",
+      "ref": "alg:FrodoKEM-976-SHAKE:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-1344-AES:generic",
+      "ref": "alg:FrodoKEM-976-SHAKE:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-1344-AES:x86_64",
+      "ref": "alg:FrodoKEM-1344-AES:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-1344-SHAKE:generic",
+      "ref": "alg:FrodoKEM-1344-AES:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:FrodoKEM-1344-SHAKE:x86_64",
+      "ref": "alg:FrodoKEM-1344-SHAKE:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-640-AES:generic",
+      "ref": "alg:FrodoKEM-1344-SHAKE:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-640-AES:x86_64",
+      "ref": "alg:eFrodoKEM-640-AES:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-640-SHAKE:generic",
+      "ref": "alg:eFrodoKEM-640-AES:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-640-SHAKE:x86_64",
+      "ref": "alg:eFrodoKEM-640-SHAKE:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-976-AES:generic",
+      "ref": "alg:eFrodoKEM-640-SHAKE:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-976-AES:x86_64",
+      "ref": "alg:eFrodoKEM-976-AES:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-976-SHAKE:generic",
+      "ref": "alg:eFrodoKEM-976-AES:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-976-SHAKE:x86_64",
+      "ref": "alg:eFrodoKEM-976-SHAKE:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-1344-AES:generic",
+      "ref": "alg:eFrodoKEM-976-SHAKE:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-1344-AES:x86_64",
+      "ref": "alg:eFrodoKEM-1344-AES:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-1344-SHAKE:generic",
+      "ref": "alg:eFrodoKEM-1344-AES:master:x86_64",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:eFrodoKEM-1344-SHAKE:x86_64",
+      "ref": "alg:eFrodoKEM-1344-SHAKE:master:generic",
       "dependsOn": [
         "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:HQC-128:generic",
+      "ref": "alg:eFrodoKEM-1344-SHAKE:master:x86_64",
       "dependsOn": [
+        "alg:aes",
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:HQC-192:generic",
+      "ref": "alg:HQC-128:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:HQC-256:generic",
+      "ref": "alg:HQC-192:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber512:generic",
+      "ref": "alg:HQC-256:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber512:x86_64",
+      "ref": "alg:Kyber512:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber512:armv8-a",
+      "ref": "alg:Kyber512:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber768:generic",
+      "ref": "alg:Kyber512:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber768:x86_64",
+      "ref": "alg:Kyber768:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber768:armv8-a",
+      "ref": "alg:Kyber768:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber1024:generic",
+      "ref": "alg:Kyber768:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber1024:x86_64",
+      "ref": "alg:Kyber1024:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Kyber1024:armv8-a",
+      "ref": "alg:Kyber1024:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-512:generic",
+      "ref": "alg:Kyber1024:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-512:x86_64",
+      "ref": "alg:ML-KEM-512:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-512:armv8-a",
+      "ref": "alg:ML-KEM-512:x86_64:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-768:generic",
+      "ref": "alg:ML-KEM-512:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-768:x86_64",
+      "ref": "alg:ML-KEM-768:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-768:armv8-a",
+      "ref": "alg:ML-KEM-768:x86_64:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-1024:generic",
+      "ref": "alg:ML-KEM-768:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-1024:x86_64",
+      "ref": "alg:ML-KEM-1024:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-KEM-1024:armv8-a",
+      "ref": "alg:ML-KEM-1024:x86_64:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HPS-2048-509:generic",
+      "ref": "alg:ML-KEM-1024:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HPS-2048-509:x86_64",
+      "ref": "alg:NTRU-HPS-2048-509:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HPS-2048-677:generic",
+      "ref": "alg:NTRU-HPS-2048-509:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HPS-2048-677:x86_64",
+      "ref": "alg:NTRU-HPS-2048-677:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HPS-4096-821:generic",
+      "ref": "alg:NTRU-HPS-2048-677:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HPS-4096-821:x86_64",
+      "ref": "alg:NTRU-HPS-4096-821:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HPS-4096-1229:generic",
+      "ref": "alg:NTRU-HPS-4096-821:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HRSS-701:generic",
+      "ref": "alg:NTRU-HPS-4096-1229:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HRSS-701:x86_64",
+      "ref": "alg:NTRU-HRSS-701:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:NTRU-HRSS-1373:generic",
+      "ref": "alg:NTRU-HRSS-701:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:sntrup761:generic",
+      "ref": "alg:NTRU-HRSS-1373:clean:generic",
       "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:sntrup761:clean:generic",
+      "dependsOn": [
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:sntrup761:x86_64",
+      "ref": "alg:sntrup761:avx2:x86_64",
       "dependsOn": [
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-128-balanced:generic",
+      "ref": "alg:cross-rsdp-128-balanced:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-128-balanced:x86_64",
+      "ref": "alg:cross-rsdp-128-balanced:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-128-fast:generic",
+      "ref": "alg:cross-rsdp-128-fast:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-128-fast:x86_64",
+      "ref": "alg:cross-rsdp-128-fast:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-128-small:generic",
+      "ref": "alg:cross-rsdp-128-small:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-128-small:x86_64",
+      "ref": "alg:cross-rsdp-128-small:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-192-balanced:generic",
+      "ref": "alg:cross-rsdp-192-balanced:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-192-balanced:x86_64",
+      "ref": "alg:cross-rsdp-192-balanced:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-192-fast:generic",
+      "ref": "alg:cross-rsdp-192-fast:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-192-fast:x86_64",
+      "ref": "alg:cross-rsdp-192-fast:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-192-small:generic",
+      "ref": "alg:cross-rsdp-192-small:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-192-small:x86_64",
+      "ref": "alg:cross-rsdp-192-small:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-256-balanced:generic",
+      "ref": "alg:cross-rsdp-256-balanced:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-256-balanced:x86_64",
+      "ref": "alg:cross-rsdp-256-balanced:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-256-fast:generic",
+      "ref": "alg:cross-rsdp-256-fast:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-256-fast:x86_64",
+      "ref": "alg:cross-rsdp-256-fast:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-256-small:generic",
+      "ref": "alg:cross-rsdp-256-small:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdp-256-small:x86_64",
+      "ref": "alg:cross-rsdp-256-small:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-128-balanced:generic",
+      "ref": "alg:cross-rsdpg-128-balanced:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-128-balanced:x86_64",
+      "ref": "alg:cross-rsdpg-128-balanced:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-128-fast:generic",
+      "ref": "alg:cross-rsdpg-128-fast:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-128-fast:x86_64",
+      "ref": "alg:cross-rsdpg-128-fast:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-128-small:generic",
+      "ref": "alg:cross-rsdpg-128-small:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-128-small:x86_64",
+      "ref": "alg:cross-rsdpg-128-small:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-192-balanced:generic",
+      "ref": "alg:cross-rsdpg-192-balanced:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-192-balanced:x86_64",
+      "ref": "alg:cross-rsdpg-192-balanced:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-192-fast:generic",
+      "ref": "alg:cross-rsdpg-192-fast:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-192-fast:x86_64",
+      "ref": "alg:cross-rsdpg-192-fast:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-192-small:generic",
+      "ref": "alg:cross-rsdpg-192-small:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-192-small:x86_64",
+      "ref": "alg:cross-rsdpg-192-small:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-256-balanced:generic",
+      "ref": "alg:cross-rsdpg-256-balanced:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-256-balanced:x86_64",
+      "ref": "alg:cross-rsdpg-256-balanced:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-256-fast:generic",
+      "ref": "alg:cross-rsdpg-256-fast:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-256-fast:x86_64",
+      "ref": "alg:cross-rsdpg-256-fast:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-256-small:generic",
+      "ref": "alg:cross-rsdpg-256-small:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:cross-rsdpg-256-small:x86_64",
+      "ref": "alg:cross-rsdpg-256-small:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-512:generic",
+      "ref": "alg:Falcon-512:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-512:x86_64",
+      "ref": "alg:Falcon-512:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-512:armv8-a",
+      "ref": "alg:Falcon-512:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-1024:generic",
+      "ref": "alg:Falcon-1024:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-1024:x86_64",
+      "ref": "alg:Falcon-1024:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-1024:armv8-a",
+      "ref": "alg:Falcon-1024:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-padded-512:generic",
+      "ref": "alg:Falcon-padded-512:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-padded-512:x86_64",
+      "ref": "alg:Falcon-padded-512:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-padded-512:armv8-a",
+      "ref": "alg:Falcon-padded-512:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-padded-1024:generic",
+      "ref": "alg:Falcon-padded-1024:clean:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-padded-1024:x86_64",
+      "ref": "alg:Falcon-padded-1024:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:Falcon-padded-1024:armv8-a",
+      "ref": "alg:Falcon-padded-1024:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:MAYO-1:generic",
+      "ref": "alg:MAYO-1:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-1:x86_64",
+      "ref": "alg:MAYO-1:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-1:armv8-a",
+      "ref": "alg:MAYO-1:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-2:generic",
+      "ref": "alg:MAYO-2:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-2:x86_64",
+      "ref": "alg:MAYO-2:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-2:armv8-a",
+      "ref": "alg:MAYO-2:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-3:generic",
+      "ref": "alg:MAYO-3:opt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:MAYO-3:x86_64",
+      "ref": "alg:MAYO-3:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-3:armv8-a",
+      "ref": "alg:MAYO-3:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-5:generic",
+      "ref": "alg:MAYO-5:opt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:MAYO-5:x86_64",
+      "ref": "alg:MAYO-5:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:MAYO-5:armv8-a",
+      "ref": "alg:MAYO-5:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:ML-DSA-44:generic",
+      "ref": "alg:ML-DSA-44:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-44:x86_64",
+      "ref": "alg:ML-DSA-44:x86_64:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-44:armv8-a",
+      "ref": "alg:ML-DSA-44:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-65:generic",
+      "ref": "alg:ML-DSA-65:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-65:x86_64",
+      "ref": "alg:ML-DSA-65:x86_64:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-65:armv8-a",
+      "ref": "alg:ML-DSA-65:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-87:generic",
+      "ref": "alg:ML-DSA-87:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-87:x86_64",
+      "ref": "alg:ML-DSA-87:x86_64:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:ML-DSA-87:armv8-a",
+      "ref": "alg:ML-DSA-87:aarch64:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4:generic",
+      "ref": "alg:SNOVA_24_5_4:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4:x86_64",
+      "ref": "alg:SNOVA_24_5_4:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4:armv8-a",
+      "ref": "alg:SNOVA_24_5_4:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_SHAKE:generic",
+      "ref": "alg:SNOVA_24_5_4_SHAKE:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_SHAKE:x86_64",
+      "ref": "alg:SNOVA_24_5_4_SHAKE:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_SHAKE:armv8-a",
+      "ref": "alg:SNOVA_24_5_4_SHAKE:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_esk:generic",
+      "ref": "alg:SNOVA_24_5_4_esk:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_esk:x86_64",
+      "ref": "alg:SNOVA_24_5_4_esk:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_esk:armv8-a",
+      "ref": "alg:SNOVA_24_5_4_esk:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:generic",
+      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:x86_64",
+      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:armv8-a",
+      "ref": "alg:SNOVA_24_5_4_SHAKE_esk:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_37_17_2:generic",
+      "ref": "alg:SNOVA_37_17_2:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_37_17_2:x86_64",
+      "ref": "alg:SNOVA_37_17_2:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_37_17_2:armv8-a",
+      "ref": "alg:SNOVA_37_17_2:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_25_8_3:generic",
+      "ref": "alg:SNOVA_25_8_3:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_25_8_3:x86_64",
+      "ref": "alg:SNOVA_25_8_3:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_25_8_3:armv8-a",
+      "ref": "alg:SNOVA_25_8_3:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_56_25_2:generic",
+      "ref": "alg:SNOVA_56_25_2:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_56_25_2:x86_64",
+      "ref": "alg:SNOVA_56_25_2:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_56_25_2:armv8-a",
+      "ref": "alg:SNOVA_56_25_2:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_49_11_3:generic",
+      "ref": "alg:SNOVA_49_11_3:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_49_11_3:x86_64",
+      "ref": "alg:SNOVA_49_11_3:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_49_11_3:armv8-a",
+      "ref": "alg:SNOVA_49_11_3:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_37_8_4:generic",
+      "ref": "alg:SNOVA_37_8_4:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_37_8_4:x86_64",
+      "ref": "alg:SNOVA_37_8_4:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_37_8_4:armv8-a",
+      "ref": "alg:SNOVA_37_8_4:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_5:generic",
+      "ref": "alg:SNOVA_24_5_5:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_5:x86_64",
+      "ref": "alg:SNOVA_24_5_5:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_24_5_5:armv8-a",
+      "ref": "alg:SNOVA_24_5_5:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_60_10_4:generic",
+      "ref": "alg:SNOVA_60_10_4:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_60_10_4:x86_64",
+      "ref": "alg:SNOVA_60_10_4:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_60_10_4:armv8-a",
+      "ref": "alg:SNOVA_60_10_4:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_29_6_5:generic",
+      "ref": "alg:SNOVA_29_6_5:opt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_29_6_5:x86_64",
+      "ref": "alg:SNOVA_29_6_5:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:SNOVA_29_6_5:armv8-a",
+      "ref": "alg:SNOVA_29_6_5:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is:generic",
+      "ref": "alg:OV-Is:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is:armv8-a",
+      "ref": "alg:OV-Is:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is:x86_64",
+      "ref": "alg:OV-Is:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip:generic",
+      "ref": "alg:OV-Ip:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip:armv8-a",
+      "ref": "alg:OV-Ip:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip:x86_64",
+      "ref": "alg:OV-Ip:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III:generic",
+      "ref": "alg:OV-III:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III:armv8-a",
+      "ref": "alg:OV-III:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III:x86_64",
+      "ref": "alg:OV-III:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V:generic",
+      "ref": "alg:OV-V:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V:armv8-a",
+      "ref": "alg:OV-V:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V:x86_64",
+      "ref": "alg:OV-V:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is-pkc:generic",
+      "ref": "alg:OV-Is-pkc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is-pkc:armv8-a",
+      "ref": "alg:OV-Is-pkc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is-pkc:x86_64",
+      "ref": "alg:OV-Is-pkc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip-pkc:generic",
+      "ref": "alg:OV-Ip-pkc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip-pkc:armv8-a",
+      "ref": "alg:OV-Ip-pkc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip-pkc:x86_64",
+      "ref": "alg:OV-Ip-pkc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III-pkc:generic",
+      "ref": "alg:OV-III-pkc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III-pkc:armv8-a",
+      "ref": "alg:OV-III-pkc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III-pkc:x86_64",
+      "ref": "alg:OV-III-pkc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V-pkc:generic",
+      "ref": "alg:OV-V-pkc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V-pkc:armv8-a",
+      "ref": "alg:OV-V-pkc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V-pkc:x86_64",
+      "ref": "alg:OV-V-pkc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is-pkc-skc:generic",
+      "ref": "alg:OV-Is-pkc-skc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is-pkc-skc:armv8-a",
+      "ref": "alg:OV-Is-pkc-skc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Is-pkc-skc:x86_64",
+      "ref": "alg:OV-Is-pkc-skc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip-pkc-skc:generic",
+      "ref": "alg:OV-Ip-pkc-skc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip-pkc-skc:armv8-a",
+      "ref": "alg:OV-Ip-pkc-skc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-Ip-pkc-skc:x86_64",
+      "ref": "alg:OV-Ip-pkc-skc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III-pkc-skc:generic",
+      "ref": "alg:OV-III-pkc-skc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III-pkc-skc:armv8-a",
+      "ref": "alg:OV-III-pkc-skc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-III-pkc-skc:x86_64",
+      "ref": "alg:OV-III-pkc-skc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V-pkc-skc:generic",
+      "ref": "alg:OV-V-pkc-skc:ref:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V-pkc-skc:armv8-a",
+      "ref": "alg:OV-V-pkc-skc:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:OV-V-pkc-skc:x86_64",
+      "ref": "alg:OV-V-pkc-skc:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
