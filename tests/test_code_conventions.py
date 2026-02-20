@@ -28,7 +28,10 @@ def test_datasheet_sig(sig_name):
 
 # Ensure astyle agrees with the formatting.
 @helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
+@pytest.mark.skipif(
+    sys.platform.startswith("win") or sys.platform == "darwin",
+    reason="Only test astyle on CI pipeline"
+)
 def test_style():
 
     result = helpers.run_subprocess(
@@ -37,7 +40,10 @@ def test_style():
     assert 'Formatted' not in result
 
 @helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
+@pytest.mark.skipif(
+    sys.platform.startswith("win") or sys.platform == "darwin",
+    reason="Only test astyle on CI pipeline"
+)
 def test_spdx():
 
     result = helpers.run_subprocess(
