@@ -143,6 +143,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_348864_avx2)
         PRIVATE -mavx2 -mpopcnt -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece348864_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece348864_avx2>
@@ -182,6 +188,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_348864)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece348864_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece348864_clean>
@@ -236,6 +248,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_348864f_avx2)
         PRIVATE -mavx2 -mpopcnt -mbmi -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece348864f_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece348864f_avx2>
@@ -275,6 +293,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_348864f)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece348864f_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece348864f_clean>
@@ -330,6 +354,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_460896_avx2)
         PRIVATE -mavx2 -mpopcnt -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece460896_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece460896_avx2>
@@ -369,6 +399,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_460896)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece460896_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece460896_clean>
@@ -424,6 +460,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_460896f_avx2)
         PRIVATE -mavx2 -mpopcnt -mbmi -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece460896f_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece460896f_avx2>
@@ -463,6 +505,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_460896f)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece460896f_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece460896f_clean>
@@ -518,6 +566,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6688128_avx2)
         PRIVATE -mavx2 -mpopcnt -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6688128_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6688128_avx2>
@@ -557,6 +611,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6688128)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6688128_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6688128_clean>
@@ -612,6 +672,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6688128f_avx2)
         PRIVATE -mavx2 -mpopcnt -mbmi -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6688128f_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6688128f_avx2>
@@ -651,6 +717,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6688128f)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6688128f_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6688128f_clean>
@@ -706,6 +778,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6960119_avx2)
         PRIVATE -mavx2 -mpopcnt -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6960119_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6960119_avx2>
@@ -745,6 +823,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6960119)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6960119_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6960119_clean>
@@ -800,6 +884,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6960119f_avx2)
         PRIVATE -mavx2 -mpopcnt -mbmi -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6960119f_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6960119f_avx2>
@@ -839,6 +929,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_6960119f)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece6960119f_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece6960119f_clean>
@@ -894,6 +990,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_8192128_avx2)
         PRIVATE -mavx2 -mpopcnt -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece8192128_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece8192128_avx2>
@@ -933,6 +1035,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_8192128)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece8192128_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece8192128_clean>
@@ -988,6 +1096,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_8192128f_avx2)
         PRIVATE -mavx2 -mpopcnt -mbmi -Wno-language-extension-token -O1
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece8192128f_avx2
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece8192128f_avx2>
@@ -1027,6 +1141,12 @@ if(OQS_ENABLE_KEM_classic_mceliece_8192128f)
             ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims
     )
 
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions(
+            pqclean_mceliece8192128f_clean
+            PRIVATE old_gas_syntax
+        )
+    endif()
     set(_CLASSIC_MCELIECE_OBJS
         ${_CLASSIC_MCELIECE_OBJS}
         $<TARGET_OBJECTS:pqclean_mceliece8192128f_clean>

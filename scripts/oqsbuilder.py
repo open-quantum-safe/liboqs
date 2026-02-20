@@ -454,6 +454,7 @@ class Implementation:
         includes: list[CmakeInclude],
         compile_opts: list[CmakeCompileOpt],
         link_libs: list[CmakeLinkLib],
+        old_gas_syntax_darwin: bool,
         api_names: KemApi | SigApi,
     ):
         self.key = key
@@ -500,6 +501,17 @@ class Implementation:
         # print("includes: ", self.includes)
         # print("compile_opts: ", self.compile_opts)
         # print("link_libs: ", self.link_libs)
+
+        # FIX: document this
+        self.old_gas_syntax_darwin = old_gas_syntax_darwin
+        """If true, add a private compile definition "old_gas_syntax" to the appropriate
+        section under the appropriate CMakeLists.txt file:
+
+        if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+            target_compile_definitions(kyber_1024_aarch64 PRIVATE old_gas_syntax)
+        endif()
+        """
+
         self.api_names = api_names
         self.cmake_src_paths = [
             os.path.join("${IMPL_KEY}", path)
@@ -623,6 +635,7 @@ class Implementation:
             includes,
             compile_opts,
             link_libs,
+            impl_meta.get("old_gas_syntax_darwin", False),
             api_names,
         )
 

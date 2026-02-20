@@ -33,6 +33,11 @@ if({{ impl_meta.enable_by }})
     {%- if impl_meta.cuda_arch %}
     set_property(TARGET {{ impl_key }} PROPERTY CUDA_ARCHITECTURES {{ impl_meta["cuda_arch"] }})
     {%- endif %}
+    {%- if impl_meta.old_gas_syntax_darwin %}
+    if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_definitions({{ impl_key }} PRIVATE old_gas_syntax)
+    endif()
+    {%- endif %}
     set(_{{ kem_key | upper }}_OBJS ${_{{ kem_key | upper }}_OBJS} $<TARGET_OBJECTS:{{ impl_key }}>)
 endif()
 {% endfor %}
