@@ -76,7 +76,10 @@ def generator(destination_file_path, template_filename, delimiter, family, schem
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
     f = copy.deepcopy(family)
-    contents = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], destination_file_path))
+    try:
+        contents = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], destination_file_path))
+    except FileNotFoundError:
+        contents = ''
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
     identifier = '{} OQS_COPY_FROM_{}_FRAGMENT_{}'.format(delimiter, 'LIBJADE', os.path.splitext(os.path.basename(template_filename))[0].upper())
@@ -90,6 +93,7 @@ def generator(destination_file_path, template_filename, delimiter, family, schem
         contents = preamble + identifier_start + '\n' + libjade_contents + '\n' + postamble
     else:
         contents = jinja2.Template(template).render(f)
+    os.makedirs(os.path.dirname(destination_file_path), exist_ok=True)
     file_put_contents(destination_file_path, contents)
 
 
@@ -294,6 +298,13 @@ def load_instructions(file='copy_from_upstream.yml'):
                                 metadata['implementations'].append(imp)
                                 break
             scheme['metadata'] = metadata
+            # Sort implementations so that memory_optimized ones come before
+            # non-memory_optimized ones (preserving relative order within each group).
+            # This ensures memopt implementations take priority in the #if/#elif dispatch chain.
+            scheme['metadata']['implementations'] = sorted(
+                scheme['metadata']['implementations'],
+                key=lambda imp: (0 if imp.get('memory_optimized', False) else 1)
+            )
             if not 'scheme_paths' in scheme:
                 scheme['scheme_paths'] = {}
                 for imp in scheme['metadata']['implementations']:
@@ -394,6 +405,13 @@ def load_instructions(file='copy_from_upstream.yml'):
                                 metadata['implementations'].append(imp)
                                 break
             scheme['metadata'] = metadata
+            # Sort implementations so that memory_optimized ones come before
+            # non-memory_optimized ones (preserving relative order within each group).
+            # This ensures memopt implementations take priority in the #if/#elif dispatch chain.
+            scheme['metadata']['implementations'] = sorted(
+                scheme['metadata']['implementations'],
+                key=lambda imp: (0 if imp.get('memory_optimized', False) else 1)
+            )
             if not 'scheme_paths' in scheme:
                 scheme['scheme_paths'] = {}
                 for imp in scheme['metadata']['implementations']:
@@ -670,7 +688,8 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                 impl['required_flags'] = req['required_flags']
                                 family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
-                        if (impl['name'] != family['default_implementation']):
+                        # should not trigger if there is a memory_optimized field and set to true
+                        if (impl['name'] != family['default_implementation'] and not 'memory_optimized' in impl and impl['memory_optimized'] == False):
                             print("No required flags found for %s (KeyError %s on impl %s)" % (
                                 scheme['scheme'], str(ke), impl['name']))
                         pass

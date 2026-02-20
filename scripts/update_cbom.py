@@ -104,7 +104,7 @@ def add_cbom_component(out, kem_yaml, parameter_set):
         if impl['supported-platforms'] == "all":
             algorithmProperties['implementationPlatform'] = dic[impl['supported-platforms']]
             component_cpy = copy.deepcopy(component)
-            component_cpy['bom-ref'] += ":" + algorithmProperties['implementationPlatform'] 
+            component_cpy['bom-ref'] += ":" + impl['upstream-id'] + ":" + algorithmProperties['implementationPlatform']
             cbom_components.append(component_cpy)
             bom_algs_bomrefs.append(component_cpy['bom-ref'])
             if (dep):
@@ -117,12 +117,10 @@ def add_cbom_component(out, kem_yaml, parameter_set):
                     algorithmProperties['implementationPlatform'] = dic[plat['architecture']]
                     component_cpy = copy.deepcopy(component)
                     if 'upstream' in impl and impl['upstream'] == 'libjade':
-                        tag = ":jasmin:"
-                        if any('required_flags' in i for i in impl['supported-platforms']):
-                            tag += impl['upstream-id'] + ':'
-                        component_cpy['bom-ref'] += tag + algorithmProperties['implementationPlatform'] 
+                        impl_name = "jasmin_" + impl['upstream-id']
                     else:
-                        component_cpy['bom-ref'] += ":" + algorithmProperties['implementationPlatform'] 
+                        impl_name = impl['upstream-id']
+                    component_cpy['bom-ref'] += ":" + impl_name + ":" + algorithmProperties['implementationPlatform']
                     cbom_components.append(component_cpy)
                     bom_algs_bomrefs.append(component_cpy['bom-ref'])
                     if dep:
