@@ -22,6 +22,9 @@ def test_datasheet_kem(kem_name):
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_datasheet_sig(sig_name):
+    # Skip External Mu variants
+    if "-extmu" in sig_name:
+        pytest.skip('External Mu variants do not have separate datasheets')
     helpers.run_subprocess(
         ['grep', '-r', sig_name, 'docs/algorithms']
     )

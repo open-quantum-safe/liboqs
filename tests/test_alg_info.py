@@ -43,6 +43,9 @@ def test_alg_info_kem(kem_name):
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_alg_info_sig(sig_name):
+    # Skip External Mu variants as they are not explicitly documented
+    if "-extmu" in sig_name:
+        pytest.skip('External Mu variants do not have separate datasheets')
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     # get the algorithm info from liboqs
     output = helpers.run_subprocess([helpers.path_to_executable('dump_alg_info')])

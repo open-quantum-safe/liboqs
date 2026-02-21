@@ -16,7 +16,7 @@ nist-round: FIPS204
 standardization-status: Standardized by [NIST](https://csrc.nist.gov/pubs/fips/204/final)
 spec-version: ML-DSA
 primary-upstream:
-  source: https://github.com/pq-code-package/mldsa-native/commit/f48f164cefb07f4ffa519ddda7cee670b8ee3517
+  source: https://github.com/abhi-dev-engg/mldsa-native/commit/7664b40ef55b2fb28e7ff6191c815f3c2b8e9bd2
   spdx-license-identifier: MIT or Apache-2.0 or ISC
 parameter-sets:
 - name: ML-DSA-44

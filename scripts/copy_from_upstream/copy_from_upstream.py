@@ -76,7 +76,12 @@ def generator(destination_file_path, template_filename, delimiter, family, schem
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
     f = copy.deepcopy(family)
-    contents = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], destination_file_path))
+    # Check if the destination file exists to avoid FileNotFoundError on new files
+    full_destination_path = os.path.join(os.environ['LIBOQS_DIR'], destination_file_path)
+    if os.path.exists(full_destination_path):
+        contents = file_get_contents(full_destination_path)
+    else:
+        contents = "" # Initialize empty for new files like _extmu.c
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
     identifier = '{} OQS_COPY_FROM_{}_FRAGMENT_{}'.format(delimiter, 'LIBJADE', os.path.splitext(os.path.basename(template_filename))[0].upper())
@@ -548,7 +553,8 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             if 'sources' in i:
                 if i['sources']:
                     preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
-                    srcs = i['sources'].split(" ")
+                    # Check if sources is already a list to prevent the split() error
+                    srcs = i['sources'].split(" ") if isinstance(i['sources'], str) else i['sources']
                     for s in srcs:
                         # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
                         if os.path.isfile(os.path.join(origfolder, s)):
@@ -632,7 +638,10 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     expected_sources = list(filter(lambda x: x.lower().endswith(".c") or x.lower().endswith(".s"), common_dep['sources']))
                     assert (len(expected_sources) == len(srcs))
                     common_dep['sources_addl'] = srcs
+
+        # --- LOOP 1: Process original implementations first ---
         for scheme in family['schemes']:
+            scheme['is_extmu'] = False # Mark as standard variant
             if 'implementation' in scheme:
                 impl = scheme['implementation']
                 srcs = handle_implementation(impl, family, scheme, basedir)
@@ -640,8 +649,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     print("SRCs found: %s" % (srcs))
                 if ('sources' in scheme):
                     assert (len(scheme['sources']) == len(srcs))
-                # in any case: add 'sources' to implementation(s)
-                # Only retain this 1 implementation:
+                # retain the 1 implementation and add sources
                 scheme['metadata']['implementations'] = [imp for imp in scheme['metadata']['implementations'] if
                                                          imp['name'] == impl]
                 scheme['metadata']['implementations'][0]['sources'] = srcs
@@ -650,14 +658,11 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     srcs = handle_implementation(impl['name'], family, scheme, basedir)
                     if DEBUG > 2:
                         print("SRCs found: %s" % (srcs))
-                    # in any case: add 'sources' to implementation(s)
                     impl['sources'] = srcs
-                    # also add suitable defines:
+                    # handle architecture defines and flags
                     try:
                         for i in range(len(impl['supported_platforms'])):
                             req = impl['supported_platforms'][i]
-                            # if compiling for ARM64_V8, asimd/neon is implied and will cause errors
-                            # when provided to the compiler; OQS uses the term ARM_NEON
                             if req['architecture'] == 'arm_8':
                                 req['architecture'] = 'ARM64_V8'
                             if 'required_flags' in req:
@@ -675,50 +680,61 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
 
+        # --- DELTA: ML-DSA EXTERNAL MU VARIANT EXPANSION ---
+        extmu_variants = []
+        for s in family['schemes']:
+            # Only expand if it's an original scheme and has the extmu keys in metadata
+            if not s.get('is_extmu', False) and any('signature_signature_extmu' in imp for imp in s['metadata']['implementations']):
+                ext_s = deepcopy(s)
+                # Ensure unique API names for constructors and wrappers
+                ext_s['scheme'] += "_extmu"
+                ext_s['scheme_c'] += "_extmu"
+                ext_s['pretty_name_full'] += "-extmu"
+                ext_s['is_extmu'] = True
+                
+                # NOTE: pqclean_scheme is NOT modified to reuse original folders
 
-            if with_kat:
-                if family in instructions['kems']:
-                    try:
-                        if kats['kem'][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:
-                            print("Info: Updating KAT for %s" % (scheme['pretty_name_full']))
-                    except KeyError:  # new key
-                        print("Adding new KAT for %s" % (scheme['pretty_name_full']))
-                        # either a new scheme or a new KAT
-                        if scheme['pretty_name_full'] not in kats['kem']:
-                            kats['kem'][scheme['pretty_name_full']] = {}
-                        pass
-                    kats['kem'][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
-                    if 'alias_pretty_name_full' in scheme:
-                        kats['kem'][scheme['alias_pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
-                else:
-                    try:
-                        if kats['sig'][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:
-                            print("Info: Updating KAT for %s" % (scheme['pretty_name_full']))
-                    except KeyError:  # new key
-                        print("Adding new KAT for %s" % (scheme['pretty_name_full']))
-                        # either a new scheme or a new KAT
-                        if scheme['pretty_name_full'] not in kats['sig']:
-                            kats['sig'][scheme['pretty_name_full']] = {}
-                        pass
-                    kats['sig'][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
-                    if 'alias_pretty_name_full' in scheme:
-                        kats['sig'][scheme['alias_pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
+                # Swap metadata symbols to map OQS API to External Mu implementation
+                for imp in ext_s['metadata']['implementations']:
+                    if 'signature_signature_extmu' in imp:
+                        imp['signature_signature'] = imp['signature_signature_extmu']
+                    if 'signature_verify_extmu' in imp:
+                        imp['signature_verify'] = imp['signature_verify_extmu']
+                    # The extmu API typically does not use context strings
+                    imp['api-with-context-string'] = False 
+                extmu_variants.append(ext_s)
+        
+        # Extend the family schemes list with the new variants
+        family['schemes'].extend(extmu_variants)
 
+        # --- LOOP 2: Handle KATs for the full expanded list ---
+        if with_kat:
+            for scheme in family['schemes']:
+                # Skip KAT entries for External Mu variants
+                if scheme.get('is_extmu', False):
+                    continue
+                type_key = 'kem' if family['type'] == 'kem' else 'sig'
+                try:
+                    if kats[type_key][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:
+                        print("Info: Updating KAT for %s" % (scheme['pretty_name_full']))
+                except KeyError:
+                    print("Adding new KAT for %s" % (scheme['pretty_name_full']))
+                    if scheme['pretty_name_full'] not in kats[type_key]:
+                        kats[type_key][scheme['pretty_name_full']] = {}
+                kats[type_key][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
+
+        # --- LOOP 3: Generators ---
         if with_generator:
             generator(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
                              family['type'] + '_{}.h'.format(family['name'])),
                 os.path.join('src', family['type'], 'family', family['type'] + '_family.h'),
-                '/////',
-                family,
-                None,
+                '/////', family, None,
             )
             generator(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
                 os.path.join('src', family['type'], 'family', 'CMakeLists.txt'),
-                '#####',
-                family,
-                None,
+                '#####', family, None,
             )
 
             for scheme in family['schemes']:
@@ -726,21 +742,15 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
                                  family['type'] + '_{}_{}.c'.format(family['name'], scheme['scheme_c'])),
                     os.path.join('src', family['type'], 'family', family['type'] + '_scheme.c'),
-                    '/////',
-                    family,
-                    scheme,
+                    '/////', family, scheme,
                 )
         
         if with_libjade:
             replacer_contextual(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
                 os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade'),
-                '#####',
-                family,
-                None,
-                libjade=True
+                '#####', family, None, libjade=True
             )
-
 
 def copy_from_upstream(slh_dsa_inst: dict):
     """Integrate upstreams implementations and algorithms described in 

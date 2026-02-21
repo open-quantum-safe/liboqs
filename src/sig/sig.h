@@ -38,12 +38,12 @@ extern "C" {
 #define OQS_SIG_alg_ml_dsa_65 "ML-DSA-65"
 /** Algorithm identifier for ML-DSA-87 */
 #define OQS_SIG_alg_ml_dsa_87 "ML-DSA-87"
-/** Algorithm identifier for ML-DSA-44-ExternalMu */
-#define OQS_SIG_alg_ml_dsa_44_extmu "ML-DSA-44-ExternalMu"
-/** Algorithm identifier for ML-DSA-65-ExternalMu */
-#define OQS_SIG_alg_ml_dsa_65_extmu "ML-DSA-65-ExternalMu"
-/** Algorithm identifier for ML-DSA-87-ExternalMu */
-#define OQS_SIG_alg_ml_dsa_87_extmu "ML-DSA-87-ExternalMu"
+/** Algorithm identifier for ML-DSA-44-extmu */
+#define OQS_SIG_alg_ml_dsa_44_extmu "ML-DSA-44-extmu"
+/** Algorithm identifier for ML-DSA-65-extmu */
+#define OQS_SIG_alg_ml_dsa_65_extmu "ML-DSA-65-extmu"
+/** Algorithm identifier for ML-DSA-87-extmu */
+#define OQS_SIG_alg_ml_dsa_87_extmu "ML-DSA-87-extmu"
 /** Algorithm identifier for Falcon-512 */
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
@@ -719,9 +719,6 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_ML_DSA
 #include <oqs/sig_ml_dsa.h>
 #endif /* OQS_ENABLE_SIG_ML_DSA */
-#ifdef OQS_ENABLE_SIG_ML_DSA_EXTMU
-#include <oqs/sig_ml_dsa_extmu.h>
-#endif /* OQS_ENABLE_SIG_ML_DSA_EXTMU */
 #ifdef OQS_ENABLE_SIG_FALCON
 #include <oqs/sig_falcon.h>
 #endif /* OQS_ENABLE_SIG_FALCON */

@@ -274,18 +274,21 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
+
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu)) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65_extmu
 		return 1;
 #else
 		return 0;
 #endif
+
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu)) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87_extmu
 		return 1;
 #else
 		return 0;
 #endif
+
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_falcon_512)) {
 #ifdef OQS_ENABLE_SIG_falcon_512
 		return 1;
@@ -1592,13 +1595,6 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu)) {
-#ifdef OQS_ENABLE_SIG_ml_dsa_44_extmu
-		return OQS_SIG_ml_dsa_44_extmu_new();
-#else
-		return NULL;
-#endif
-
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_65)) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
 		return OQS_SIG_ml_dsa_65_new();
@@ -1606,16 +1602,23 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu)) {
-#ifdef OQS_ENABLE_SIG_ml_dsa_65_extmu
-		return OQS_SIG_ml_dsa_65_extmu_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_87)) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_87
+		return OQS_SIG_ml_dsa_87_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_87)) {
-#ifdef OQS_ENABLE_SIG_ml_dsa_87
-		return OQS_SIG_ml_dsa_87_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu)) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_44_extmu
+		return OQS_SIG_ml_dsa_44_extmu_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu)) {
+#ifdef OQS_ENABLE_SIG_ml_dsa_65_extmu
+		return OQS_SIG_ml_dsa_65_extmu_new();
 #else
 		return NULL;
 #endif

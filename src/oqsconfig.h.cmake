@@ -170,8 +170,6 @@
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_87 1
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_87_x86_64 1
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_87_aarch64 1
-
-#cmakedefine OQS_ENABLE_SIG_ML_DSA_EXTMU 1
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_44_extmu 1
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_44_extmu_x86_64 1
 #cmakedefine OQS_ENABLE_SIG_ml_dsa_44_extmu_aarch64 1
