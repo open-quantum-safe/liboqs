@@ -82,6 +82,7 @@ int BLC_Commit_memopt(const uint8_t mseed[MQOM2_PARAM_SEED_SIZE], const uint8_t 
 
 	ret = 0;
 err:
+	xof_clean_ctx(&xof_ctx_hash_ls_com);
 	return ret;
 }
 
@@ -208,5 +209,6 @@ int BLC_Eval_memopt(const uint8_t salt[MQOM2_PARAM_SALT_SIZE], const uint8_t com
 
 	ret = 0;
 err:
+	xof_clean_ctx(&xof_ctx_hash_ls_com);
 	return ret;
 }
