@@ -1131,72 +1131,108 @@ endif()
 endif()
 
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3" OFF)
 endif()
 endif()
 
+if(OQS_MEMOPT_BUILD)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5_memopt "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5" OFF)
+endif() # OQS_MEMOPT_BUILD
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5_avx2 "" ON "OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5" OFF)
