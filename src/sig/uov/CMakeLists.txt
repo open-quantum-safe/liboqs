@@ -6,16 +6,22 @@
 set(_UOV_OBJS "")
 
 if(OQS_ENABLE_SIG_uov_ov_Is)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_Is_ref OBJECT sig_uov_ov_Is.c pqov_ov_Is_ref/blas_matrix.c pqov_ov_Is_ref/blas_matrix_ref.c pqov_ov_Is_ref/ov.c pqov_ov_Is_ref/ov_keypair.c pqov_ov_Is_ref/ov_keypair_computation.c pqov_ov_Is_ref/ov_publicmap.c pqov_ov_Is_ref/parallel_matrix_op.c pqov_ov_Is_ref/sign.c pqov_ov_Is_ref/utils_hash.c pqov_ov_Is_ref/utils_prng.c pqov_ov_Is_ref/utils_randombytes.c)
     target_compile_options(uov_ov_Is_ref PUBLIC -D_OV16_160_64 -D_OV_CLASSIC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_Is_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_ref)
     target_include_directories(uov_ov_Is_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_ref PUBLIC -D_OV16_160_64 -D_OV_CLASSIC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Is_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Is_neon)
     add_library(uov_ov_Is_neon OBJECT pqov_ov_Is_neon/blas_matrix.c pqov_ov_Is_neon/blas_matrix_neon.c pqov_ov_Is_neon/gf16_tabs_neon.c pqov_ov_Is_neon/ov.c pqov_ov_Is_neon/ov_keypair.c pqov_ov_Is_neon/ov_keypair_computation.c pqov_ov_Is_neon/ov_publicmap.c pqov_ov_Is_neon/parallel_matrix_op.c pqov_ov_Is_neon/sign.c pqov_ov_Is_neon/utils_hash.c pqov_ov_Is_neon/utils_prng.c pqov_ov_Is_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Is_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_neon)
     target_include_directories(uov_ov_Is_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_neon PRIVATE)
@@ -23,8 +29,11 @@ if(OQS_ENABLE_SIG_uov_ov_Is_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Is_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Is_avx2)
     add_library(uov_ov_Is_avx2 OBJECT pqov_ov_Is_avx2/blas_matrix.c pqov_ov_Is_avx2/blas_matrix_avx2.c pqov_ov_Is_avx2/blas_matrix_ref.c pqov_ov_Is_avx2/gf16_tabs.c pqov_ov_Is_avx2/gf256_tabs.c pqov_ov_Is_avx2/ov.c pqov_ov_Is_avx2/ov_keypair.c pqov_ov_Is_avx2/ov_keypair_computation.c pqov_ov_Is_avx2/ov_publicmap.c pqov_ov_Is_avx2/parallel_matrix_op.c pqov_ov_Is_avx2/sign.c pqov_ov_Is_avx2/utils_hash.c pqov_ov_Is_avx2/utils_prng.c pqov_ov_Is_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Is_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_avx2)
     target_include_directories(uov_ov_Is_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_avx2 PRIVATE -mavx2)
@@ -33,16 +42,22 @@ if(OQS_ENABLE_SIG_uov_ov_Is_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_Ip)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_Ip_ref OBJECT sig_uov_ov_Ip.c pqov_ov_Ip_ref/blas_matrix.c pqov_ov_Ip_ref/blas_matrix_ref.c pqov_ov_Ip_ref/ov.c pqov_ov_Ip_ref/ov_keypair.c pqov_ov_Ip_ref/ov_keypair_computation.c pqov_ov_Ip_ref/ov_publicmap.c pqov_ov_Ip_ref/parallel_matrix_op.c pqov_ov_Ip_ref/sign.c pqov_ov_Ip_ref/utils_hash.c pqov_ov_Ip_ref/utils_prng.c pqov_ov_Ip_ref/utils_randombytes.c)
     target_compile_options(uov_ov_Ip_ref PUBLIC -D_OV256_112_44 -D_OV_CLASSIC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_Ip_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_ref)
     target_include_directories(uov_ov_Ip_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_ref PUBLIC -D_OV256_112_44 -D_OV_CLASSIC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Ip_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Ip_neon)
     add_library(uov_ov_Ip_neon OBJECT pqov_ov_Ip_neon/blas_matrix.c pqov_ov_Ip_neon/blas_matrix_neon.c pqov_ov_Ip_neon/gf16_tabs_neon.c pqov_ov_Ip_neon/ov.c pqov_ov_Ip_neon/ov_keypair.c pqov_ov_Ip_neon/ov_keypair_computation.c pqov_ov_Ip_neon/ov_publicmap.c pqov_ov_Ip_neon/parallel_matrix_op.c pqov_ov_Ip_neon/sign.c pqov_ov_Ip_neon/utils_hash.c pqov_ov_Ip_neon/utils_prng.c pqov_ov_Ip_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Ip_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_neon)
     target_include_directories(uov_ov_Ip_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_neon PRIVATE)
@@ -50,8 +65,11 @@ if(OQS_ENABLE_SIG_uov_ov_Ip_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Ip_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Ip_avx2)
     add_library(uov_ov_Ip_avx2 OBJECT pqov_ov_Ip_avx2/blas_matrix.c pqov_ov_Ip_avx2/blas_matrix_avx2.c pqov_ov_Ip_avx2/gf16_tabs.c pqov_ov_Ip_avx2/gf256_tabs.c pqov_ov_Ip_avx2/ov.c pqov_ov_Ip_avx2/ov_keypair.c pqov_ov_Ip_avx2/ov_keypair_computation.c pqov_ov_Ip_avx2/ov_publicmap.c pqov_ov_Ip_avx2/parallel_matrix_op.c pqov_ov_Ip_avx2/sign.c pqov_ov_Ip_avx2/utils_hash.c pqov_ov_Ip_avx2/utils_prng.c pqov_ov_Ip_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Ip_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_avx2)
     target_include_directories(uov_ov_Ip_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_avx2 PRIVATE -mavx2)
@@ -60,16 +78,22 @@ if(OQS_ENABLE_SIG_uov_ov_Ip_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_III)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_III_ref OBJECT sig_uov_ov_III.c pqov_ov_III_ref/blas_matrix.c pqov_ov_III_ref/blas_matrix_ref.c pqov_ov_III_ref/ov.c pqov_ov_III_ref/ov_keypair.c pqov_ov_III_ref/ov_keypair_computation.c pqov_ov_III_ref/ov_publicmap.c pqov_ov_III_ref/parallel_matrix_op.c pqov_ov_III_ref/sign.c pqov_ov_III_ref/utils_hash.c pqov_ov_III_ref/utils_prng.c pqov_ov_III_ref/utils_randombytes.c)
     target_compile_options(uov_ov_III_ref PUBLIC -D_OV256_184_72 -D_OV_CLASSIC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_III_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_ref)
     target_include_directories(uov_ov_III_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_ref PUBLIC -D_OV256_184_72 -D_OV_CLASSIC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_III_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_III_neon)
     add_library(uov_ov_III_neon OBJECT pqov_ov_III_neon/blas_matrix.c pqov_ov_III_neon/blas_matrix_neon.c pqov_ov_III_neon/gf16_tabs_neon.c pqov_ov_III_neon/ov.c pqov_ov_III_neon/ov_keypair.c pqov_ov_III_neon/ov_keypair_computation.c pqov_ov_III_neon/ov_publicmap.c pqov_ov_III_neon/parallel_matrix_op.c pqov_ov_III_neon/sign.c pqov_ov_III_neon/utils_hash.c pqov_ov_III_neon/utils_prng.c pqov_ov_III_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_III_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_neon)
     target_include_directories(uov_ov_III_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_neon PRIVATE)
@@ -77,8 +101,11 @@ if(OQS_ENABLE_SIG_uov_ov_III_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_III_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_III_avx2)
     add_library(uov_ov_III_avx2 OBJECT pqov_ov_III_avx2/blas_matrix.c pqov_ov_III_avx2/blas_matrix_avx2.c pqov_ov_III_avx2/gf16_tabs.c pqov_ov_III_avx2/gf256_tabs.c pqov_ov_III_avx2/ov.c pqov_ov_III_avx2/ov_keypair.c pqov_ov_III_avx2/ov_keypair_computation.c pqov_ov_III_avx2/ov_publicmap.c pqov_ov_III_avx2/parallel_matrix_op.c pqov_ov_III_avx2/sign.c pqov_ov_III_avx2/utils_hash.c pqov_ov_III_avx2/utils_prng.c pqov_ov_III_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_III_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_avx2)
     target_include_directories(uov_ov_III_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_avx2 PRIVATE -mavx2)
@@ -87,16 +114,22 @@ if(OQS_ENABLE_SIG_uov_ov_III_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_V)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_V_ref OBJECT sig_uov_ov_V.c pqov_ov_V_ref/blas_matrix.c pqov_ov_V_ref/blas_matrix_ref.c pqov_ov_V_ref/ov.c pqov_ov_V_ref/ov_keypair.c pqov_ov_V_ref/ov_keypair_computation.c pqov_ov_V_ref/ov_publicmap.c pqov_ov_V_ref/parallel_matrix_op.c pqov_ov_V_ref/sign.c pqov_ov_V_ref/utils_hash.c pqov_ov_V_ref/utils_prng.c pqov_ov_V_ref/utils_randombytes.c)
     target_compile_options(uov_ov_V_ref PUBLIC -D_OV256_244_96 -D_OV_CLASSIC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_V_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_ref)
     target_include_directories(uov_ov_V_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_ref PUBLIC -D_OV256_244_96 -D_OV_CLASSIC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_V_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_V_neon)
     add_library(uov_ov_V_neon OBJECT pqov_ov_V_neon/blas_matrix.c pqov_ov_V_neon/blas_matrix_neon.c pqov_ov_V_neon/gf16_tabs_neon.c pqov_ov_V_neon/ov.c pqov_ov_V_neon/ov_keypair.c pqov_ov_V_neon/ov_keypair_computation.c pqov_ov_V_neon/ov_publicmap.c pqov_ov_V_neon/parallel_matrix_op.c pqov_ov_V_neon/sign.c pqov_ov_V_neon/utils_hash.c pqov_ov_V_neon/utils_prng.c pqov_ov_V_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_V_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_neon)
     target_include_directories(uov_ov_V_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_neon PRIVATE)
@@ -104,8 +137,11 @@ if(OQS_ENABLE_SIG_uov_ov_V_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_V_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_V_avx2)
     add_library(uov_ov_V_avx2 OBJECT pqov_ov_V_avx2/blas_matrix.c pqov_ov_V_avx2/blas_matrix_avx2.c pqov_ov_V_avx2/gf16_tabs.c pqov_ov_V_avx2/gf256_tabs.c pqov_ov_V_avx2/ov.c pqov_ov_V_avx2/ov_keypair.c pqov_ov_V_avx2/ov_keypair_computation.c pqov_ov_V_avx2/ov_publicmap.c pqov_ov_V_avx2/parallel_matrix_op.c pqov_ov_V_avx2/sign.c pqov_ov_V_avx2/utils_hash.c pqov_ov_V_avx2/utils_prng.c pqov_ov_V_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_V_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_avx2)
     target_include_directories(uov_ov_V_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_avx2 PRIVATE -mavx2)
@@ -114,16 +150,22 @@ if(OQS_ENABLE_SIG_uov_ov_V_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_Is_pkc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_Is_pkc_ref OBJECT sig_uov_ov_Is_pkc.c pqov_ov_Is_pkc_ref/blas_matrix.c pqov_ov_Is_pkc_ref/blas_matrix_ref.c pqov_ov_Is_pkc_ref/ov.c pqov_ov_Is_pkc_ref/ov_keypair.c pqov_ov_Is_pkc_ref/ov_keypair_computation.c pqov_ov_Is_pkc_ref/ov_publicmap.c pqov_ov_Is_pkc_ref/parallel_matrix_op.c pqov_ov_Is_pkc_ref/sign.c pqov_ov_Is_pkc_ref/utils_hash.c pqov_ov_Is_pkc_ref/utils_prng.c pqov_ov_Is_pkc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_Is_pkc_ref PUBLIC -D_OV16_160_64 -D_OV_PKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_Is_pkc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_ref)
     target_include_directories(uov_ov_Is_pkc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_pkc_ref PUBLIC -D_OV16_160_64 -D_OV_PKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Is_pkc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Is_pkc_neon)
     add_library(uov_ov_Is_pkc_neon OBJECT pqov_ov_Is_pkc_neon/blas_matrix.c pqov_ov_Is_pkc_neon/blas_matrix_neon.c pqov_ov_Is_pkc_neon/gf16_tabs_neon.c pqov_ov_Is_pkc_neon/ov.c pqov_ov_Is_pkc_neon/ov_keypair.c pqov_ov_Is_pkc_neon/ov_keypair_computation.c pqov_ov_Is_pkc_neon/ov_publicmap.c pqov_ov_Is_pkc_neon/parallel_matrix_op.c pqov_ov_Is_pkc_neon/sign.c pqov_ov_Is_pkc_neon/utils_hash.c pqov_ov_Is_pkc_neon/utils_prng.c pqov_ov_Is_pkc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Is_pkc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_neon)
     target_include_directories(uov_ov_Is_pkc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_pkc_neon PRIVATE)
@@ -131,8 +173,11 @@ if(OQS_ENABLE_SIG_uov_ov_Is_pkc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Is_pkc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Is_pkc_avx2)
     add_library(uov_ov_Is_pkc_avx2 OBJECT pqov_ov_Is_pkc_avx2/blas_matrix.c pqov_ov_Is_pkc_avx2/blas_matrix_avx2.c pqov_ov_Is_pkc_avx2/blas_matrix_ref.c pqov_ov_Is_pkc_avx2/gf16_tabs.c pqov_ov_Is_pkc_avx2/gf256_tabs.c pqov_ov_Is_pkc_avx2/ov.c pqov_ov_Is_pkc_avx2/ov_keypair.c pqov_ov_Is_pkc_avx2/ov_keypair_computation.c pqov_ov_Is_pkc_avx2/ov_publicmap.c pqov_ov_Is_pkc_avx2/parallel_matrix_op.c pqov_ov_Is_pkc_avx2/sign.c pqov_ov_Is_pkc_avx2/utils_hash.c pqov_ov_Is_pkc_avx2/utils_prng.c pqov_ov_Is_pkc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Is_pkc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_avx2)
     target_include_directories(uov_ov_Is_pkc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_pkc_avx2 PRIVATE -mavx2)
@@ -141,16 +186,22 @@ if(OQS_ENABLE_SIG_uov_ov_Is_pkc_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_Ip_pkc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_Ip_pkc_ref OBJECT sig_uov_ov_Ip_pkc.c pqov_ov_Ip_pkc_ref/blas_matrix.c pqov_ov_Ip_pkc_ref/blas_matrix_ref.c pqov_ov_Ip_pkc_ref/ov.c pqov_ov_Ip_pkc_ref/ov_keypair.c pqov_ov_Ip_pkc_ref/ov_keypair_computation.c pqov_ov_Ip_pkc_ref/ov_publicmap.c pqov_ov_Ip_pkc_ref/parallel_matrix_op.c pqov_ov_Ip_pkc_ref/sign.c pqov_ov_Ip_pkc_ref/utils_hash.c pqov_ov_Ip_pkc_ref/utils_prng.c pqov_ov_Ip_pkc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_Ip_pkc_ref PUBLIC -D_OV256_112_44 -D_OV_PKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_Ip_pkc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_ref)
     target_include_directories(uov_ov_Ip_pkc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_pkc_ref PUBLIC -D_OV256_112_44 -D_OV_PKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Ip_pkc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_neon)
     add_library(uov_ov_Ip_pkc_neon OBJECT pqov_ov_Ip_pkc_neon/blas_matrix.c pqov_ov_Ip_pkc_neon/blas_matrix_neon.c pqov_ov_Ip_pkc_neon/gf16_tabs_neon.c pqov_ov_Ip_pkc_neon/ov.c pqov_ov_Ip_pkc_neon/ov_keypair.c pqov_ov_Ip_pkc_neon/ov_keypair_computation.c pqov_ov_Ip_pkc_neon/ov_publicmap.c pqov_ov_Ip_pkc_neon/parallel_matrix_op.c pqov_ov_Ip_pkc_neon/sign.c pqov_ov_Ip_pkc_neon/utils_hash.c pqov_ov_Ip_pkc_neon/utils_prng.c pqov_ov_Ip_pkc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Ip_pkc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_neon)
     target_include_directories(uov_ov_Ip_pkc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_pkc_neon PRIVATE)
@@ -158,8 +209,11 @@ if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Ip_pkc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_avx2)
     add_library(uov_ov_Ip_pkc_avx2 OBJECT pqov_ov_Ip_pkc_avx2/blas_matrix.c pqov_ov_Ip_pkc_avx2/blas_matrix_avx2.c pqov_ov_Ip_pkc_avx2/gf16_tabs.c pqov_ov_Ip_pkc_avx2/gf256_tabs.c pqov_ov_Ip_pkc_avx2/ov.c pqov_ov_Ip_pkc_avx2/ov_keypair.c pqov_ov_Ip_pkc_avx2/ov_keypair_computation.c pqov_ov_Ip_pkc_avx2/ov_publicmap.c pqov_ov_Ip_pkc_avx2/parallel_matrix_op.c pqov_ov_Ip_pkc_avx2/sign.c pqov_ov_Ip_pkc_avx2/utils_hash.c pqov_ov_Ip_pkc_avx2/utils_prng.c pqov_ov_Ip_pkc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Ip_pkc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_avx2)
     target_include_directories(uov_ov_Ip_pkc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_pkc_avx2 PRIVATE -mavx2)
@@ -168,16 +222,22 @@ if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_III_pkc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_III_pkc_ref OBJECT sig_uov_ov_III_pkc.c pqov_ov_III_pkc_ref/blas_matrix.c pqov_ov_III_pkc_ref/blas_matrix_ref.c pqov_ov_III_pkc_ref/ov.c pqov_ov_III_pkc_ref/ov_keypair.c pqov_ov_III_pkc_ref/ov_keypair_computation.c pqov_ov_III_pkc_ref/ov_publicmap.c pqov_ov_III_pkc_ref/parallel_matrix_op.c pqov_ov_III_pkc_ref/sign.c pqov_ov_III_pkc_ref/utils_hash.c pqov_ov_III_pkc_ref/utils_prng.c pqov_ov_III_pkc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_III_pkc_ref PUBLIC -D_OV256_184_72 -D_OV_PKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_III_pkc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_ref)
     target_include_directories(uov_ov_III_pkc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_pkc_ref PUBLIC -D_OV256_184_72 -D_OV_PKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_III_pkc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_III_pkc_neon)
     add_library(uov_ov_III_pkc_neon OBJECT pqov_ov_III_pkc_neon/blas_matrix.c pqov_ov_III_pkc_neon/blas_matrix_neon.c pqov_ov_III_pkc_neon/gf16_tabs_neon.c pqov_ov_III_pkc_neon/ov.c pqov_ov_III_pkc_neon/ov_keypair.c pqov_ov_III_pkc_neon/ov_keypair_computation.c pqov_ov_III_pkc_neon/ov_publicmap.c pqov_ov_III_pkc_neon/parallel_matrix_op.c pqov_ov_III_pkc_neon/sign.c pqov_ov_III_pkc_neon/utils_hash.c pqov_ov_III_pkc_neon/utils_prng.c pqov_ov_III_pkc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_III_pkc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_neon)
     target_include_directories(uov_ov_III_pkc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_pkc_neon PRIVATE)
@@ -185,8 +245,11 @@ if(OQS_ENABLE_SIG_uov_ov_III_pkc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_III_pkc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_III_pkc_avx2)
     add_library(uov_ov_III_pkc_avx2 OBJECT pqov_ov_III_pkc_avx2/blas_matrix.c pqov_ov_III_pkc_avx2/blas_matrix_avx2.c pqov_ov_III_pkc_avx2/gf16_tabs.c pqov_ov_III_pkc_avx2/gf256_tabs.c pqov_ov_III_pkc_avx2/ov.c pqov_ov_III_pkc_avx2/ov_keypair.c pqov_ov_III_pkc_avx2/ov_keypair_computation.c pqov_ov_III_pkc_avx2/ov_publicmap.c pqov_ov_III_pkc_avx2/parallel_matrix_op.c pqov_ov_III_pkc_avx2/sign.c pqov_ov_III_pkc_avx2/utils_hash.c pqov_ov_III_pkc_avx2/utils_prng.c pqov_ov_III_pkc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_III_pkc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_avx2)
     target_include_directories(uov_ov_III_pkc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_pkc_avx2 PRIVATE -mavx2)
@@ -195,16 +258,22 @@ if(OQS_ENABLE_SIG_uov_ov_III_pkc_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_V_pkc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_V_pkc_ref OBJECT sig_uov_ov_V_pkc.c pqov_ov_V_pkc_ref/blas_matrix.c pqov_ov_V_pkc_ref/blas_matrix_ref.c pqov_ov_V_pkc_ref/ov.c pqov_ov_V_pkc_ref/ov_keypair.c pqov_ov_V_pkc_ref/ov_keypair_computation.c pqov_ov_V_pkc_ref/ov_publicmap.c pqov_ov_V_pkc_ref/parallel_matrix_op.c pqov_ov_V_pkc_ref/sign.c pqov_ov_V_pkc_ref/utils_hash.c pqov_ov_V_pkc_ref/utils_prng.c pqov_ov_V_pkc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_V_pkc_ref PUBLIC -D_OV256_244_96 -D_OV_PKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_V_pkc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_ref)
     target_include_directories(uov_ov_V_pkc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_pkc_ref PUBLIC -D_OV256_244_96 -D_OV_PKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_V_pkc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_V_pkc_neon)
     add_library(uov_ov_V_pkc_neon OBJECT pqov_ov_V_pkc_neon/blas_matrix.c pqov_ov_V_pkc_neon/blas_matrix_neon.c pqov_ov_V_pkc_neon/gf16_tabs_neon.c pqov_ov_V_pkc_neon/ov.c pqov_ov_V_pkc_neon/ov_keypair.c pqov_ov_V_pkc_neon/ov_keypair_computation.c pqov_ov_V_pkc_neon/ov_publicmap.c pqov_ov_V_pkc_neon/parallel_matrix_op.c pqov_ov_V_pkc_neon/sign.c pqov_ov_V_pkc_neon/utils_hash.c pqov_ov_V_pkc_neon/utils_prng.c pqov_ov_V_pkc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_V_pkc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_neon)
     target_include_directories(uov_ov_V_pkc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_pkc_neon PRIVATE)
@@ -212,8 +281,11 @@ if(OQS_ENABLE_SIG_uov_ov_V_pkc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_V_pkc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_V_pkc_avx2)
     add_library(uov_ov_V_pkc_avx2 OBJECT pqov_ov_V_pkc_avx2/blas_matrix.c pqov_ov_V_pkc_avx2/blas_matrix_avx2.c pqov_ov_V_pkc_avx2/gf16_tabs.c pqov_ov_V_pkc_avx2/gf256_tabs.c pqov_ov_V_pkc_avx2/ov.c pqov_ov_V_pkc_avx2/ov_keypair.c pqov_ov_V_pkc_avx2/ov_keypair_computation.c pqov_ov_V_pkc_avx2/ov_publicmap.c pqov_ov_V_pkc_avx2/parallel_matrix_op.c pqov_ov_V_pkc_avx2/sign.c pqov_ov_V_pkc_avx2/utils_hash.c pqov_ov_V_pkc_avx2/utils_prng.c pqov_ov_V_pkc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_V_pkc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_avx2)
     target_include_directories(uov_ov_V_pkc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_pkc_avx2 PRIVATE -mavx2)
@@ -222,16 +294,22 @@ if(OQS_ENABLE_SIG_uov_ov_V_pkc_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_Is_pkc_skc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_Is_pkc_skc_ref OBJECT sig_uov_ov_Is_pkc_skc.c pqov_ov_Is_pkc_skc_ref/blas_matrix.c pqov_ov_Is_pkc_skc_ref/blas_matrix_ref.c pqov_ov_Is_pkc_skc_ref/ov.c pqov_ov_Is_pkc_skc_ref/ov_keypair.c pqov_ov_Is_pkc_skc_ref/ov_keypair_computation.c pqov_ov_Is_pkc_skc_ref/ov_publicmap.c pqov_ov_Is_pkc_skc_ref/parallel_matrix_op.c pqov_ov_Is_pkc_skc_ref/sign.c pqov_ov_Is_pkc_skc_ref/utils_hash.c pqov_ov_Is_pkc_skc_ref/utils_prng.c pqov_ov_Is_pkc_skc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_Is_pkc_skc_ref PUBLIC -D_OV16_160_64 -D_OV_PKC_SKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_Is_pkc_skc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_skc_ref)
     target_include_directories(uov_ov_Is_pkc_skc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_pkc_skc_ref PUBLIC -D_OV16_160_64 -D_OV_PKC_SKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Is_pkc_skc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_neon)
     add_library(uov_ov_Is_pkc_skc_neon OBJECT pqov_ov_Is_pkc_skc_neon/blas_matrix.c pqov_ov_Is_pkc_skc_neon/blas_matrix_neon.c pqov_ov_Is_pkc_skc_neon/gf16_tabs_neon.c pqov_ov_Is_pkc_skc_neon/ov.c pqov_ov_Is_pkc_skc_neon/ov_keypair.c pqov_ov_Is_pkc_skc_neon/ov_keypair_computation.c pqov_ov_Is_pkc_skc_neon/ov_publicmap.c pqov_ov_Is_pkc_skc_neon/parallel_matrix_op.c pqov_ov_Is_pkc_skc_neon/sign.c pqov_ov_Is_pkc_skc_neon/utils_hash.c pqov_ov_Is_pkc_skc_neon/utils_prng.c pqov_ov_Is_pkc_skc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Is_pkc_skc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_skc_neon)
     target_include_directories(uov_ov_Is_pkc_skc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_pkc_skc_neon PRIVATE)
@@ -239,8 +317,11 @@ if(OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Is_pkc_skc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_avx2)
     add_library(uov_ov_Is_pkc_skc_avx2 OBJECT pqov_ov_Is_pkc_skc_avx2/blas_matrix.c pqov_ov_Is_pkc_skc_avx2/blas_matrix_avx2.c pqov_ov_Is_pkc_skc_avx2/blas_matrix_ref.c pqov_ov_Is_pkc_skc_avx2/gf16_tabs.c pqov_ov_Is_pkc_skc_avx2/gf256_tabs.c pqov_ov_Is_pkc_skc_avx2/ov.c pqov_ov_Is_pkc_skc_avx2/ov_keypair.c pqov_ov_Is_pkc_skc_avx2/ov_keypair_computation.c pqov_ov_Is_pkc_skc_avx2/ov_publicmap.c pqov_ov_Is_pkc_skc_avx2/parallel_matrix_op.c pqov_ov_Is_pkc_skc_avx2/sign.c pqov_ov_Is_pkc_skc_avx2/utils_hash.c pqov_ov_Is_pkc_skc_avx2/utils_prng.c pqov_ov_Is_pkc_skc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Is_pkc_skc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_skc_avx2)
     target_include_directories(uov_ov_Is_pkc_skc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Is_pkc_skc_avx2 PRIVATE -mavx2)
@@ -249,16 +330,22 @@ if(OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_Ip_pkc_skc_ref OBJECT sig_uov_ov_Ip_pkc_skc.c pqov_ov_Ip_pkc_skc_ref/blas_matrix.c pqov_ov_Ip_pkc_skc_ref/blas_matrix_ref.c pqov_ov_Ip_pkc_skc_ref/ov.c pqov_ov_Ip_pkc_skc_ref/ov_keypair.c pqov_ov_Ip_pkc_skc_ref/ov_keypair_computation.c pqov_ov_Ip_pkc_skc_ref/ov_publicmap.c pqov_ov_Ip_pkc_skc_ref/parallel_matrix_op.c pqov_ov_Ip_pkc_skc_ref/sign.c pqov_ov_Ip_pkc_skc_ref/utils_hash.c pqov_ov_Ip_pkc_skc_ref/utils_prng.c pqov_ov_Ip_pkc_skc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_Ip_pkc_skc_ref PUBLIC -D_OV256_112_44 -D_OV_PKC_SKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_Ip_pkc_skc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_skc_ref)
     target_include_directories(uov_ov_Ip_pkc_skc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_pkc_skc_ref PUBLIC -D_OV256_112_44 -D_OV_PKC_SKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Ip_pkc_skc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_neon)
     add_library(uov_ov_Ip_pkc_skc_neon OBJECT pqov_ov_Ip_pkc_skc_neon/blas_matrix.c pqov_ov_Ip_pkc_skc_neon/blas_matrix_neon.c pqov_ov_Ip_pkc_skc_neon/gf16_tabs_neon.c pqov_ov_Ip_pkc_skc_neon/ov.c pqov_ov_Ip_pkc_skc_neon/ov_keypair.c pqov_ov_Ip_pkc_skc_neon/ov_keypair_computation.c pqov_ov_Ip_pkc_skc_neon/ov_publicmap.c pqov_ov_Ip_pkc_skc_neon/parallel_matrix_op.c pqov_ov_Ip_pkc_skc_neon/sign.c pqov_ov_Ip_pkc_skc_neon/utils_hash.c pqov_ov_Ip_pkc_skc_neon/utils_prng.c pqov_ov_Ip_pkc_skc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Ip_pkc_skc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_skc_neon)
     target_include_directories(uov_ov_Ip_pkc_skc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_pkc_skc_neon PRIVATE)
@@ -266,8 +353,11 @@ if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_Ip_pkc_skc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_avx2)
     add_library(uov_ov_Ip_pkc_skc_avx2 OBJECT pqov_ov_Ip_pkc_skc_avx2/blas_matrix.c pqov_ov_Ip_pkc_skc_avx2/blas_matrix_avx2.c pqov_ov_Ip_pkc_skc_avx2/gf16_tabs.c pqov_ov_Ip_pkc_skc_avx2/gf256_tabs.c pqov_ov_Ip_pkc_skc_avx2/ov.c pqov_ov_Ip_pkc_skc_avx2/ov_keypair.c pqov_ov_Ip_pkc_skc_avx2/ov_keypair_computation.c pqov_ov_Ip_pkc_skc_avx2/ov_publicmap.c pqov_ov_Ip_pkc_skc_avx2/parallel_matrix_op.c pqov_ov_Ip_pkc_skc_avx2/sign.c pqov_ov_Ip_pkc_skc_avx2/utils_hash.c pqov_ov_Ip_pkc_skc_avx2/utils_prng.c pqov_ov_Ip_pkc_skc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_Ip_pkc_skc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_skc_avx2)
     target_include_directories(uov_ov_Ip_pkc_skc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_Ip_pkc_skc_avx2 PRIVATE -mavx2)
@@ -276,16 +366,22 @@ if(OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_III_pkc_skc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_III_pkc_skc_ref OBJECT sig_uov_ov_III_pkc_skc.c pqov_ov_III_pkc_skc_ref/blas_matrix.c pqov_ov_III_pkc_skc_ref/blas_matrix_ref.c pqov_ov_III_pkc_skc_ref/ov.c pqov_ov_III_pkc_skc_ref/ov_keypair.c pqov_ov_III_pkc_skc_ref/ov_keypair_computation.c pqov_ov_III_pkc_skc_ref/ov_publicmap.c pqov_ov_III_pkc_skc_ref/parallel_matrix_op.c pqov_ov_III_pkc_skc_ref/sign.c pqov_ov_III_pkc_skc_ref/utils_hash.c pqov_ov_III_pkc_skc_ref/utils_prng.c pqov_ov_III_pkc_skc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_III_pkc_skc_ref PUBLIC -D_OV256_184_72 -D_OV_PKC_SKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_III_pkc_skc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_skc_ref)
     target_include_directories(uov_ov_III_pkc_skc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_pkc_skc_ref PUBLIC -D_OV256_184_72 -D_OV_PKC_SKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_III_pkc_skc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_III_pkc_skc_neon)
     add_library(uov_ov_III_pkc_skc_neon OBJECT pqov_ov_III_pkc_skc_neon/blas_matrix.c pqov_ov_III_pkc_skc_neon/blas_matrix_neon.c pqov_ov_III_pkc_skc_neon/gf16_tabs_neon.c pqov_ov_III_pkc_skc_neon/ov.c pqov_ov_III_pkc_skc_neon/ov_keypair.c pqov_ov_III_pkc_skc_neon/ov_keypair_computation.c pqov_ov_III_pkc_skc_neon/ov_publicmap.c pqov_ov_III_pkc_skc_neon/parallel_matrix_op.c pqov_ov_III_pkc_skc_neon/sign.c pqov_ov_III_pkc_skc_neon/utils_hash.c pqov_ov_III_pkc_skc_neon/utils_prng.c pqov_ov_III_pkc_skc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_III_pkc_skc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_skc_neon)
     target_include_directories(uov_ov_III_pkc_skc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_pkc_skc_neon PRIVATE)
@@ -293,8 +389,11 @@ if(OQS_ENABLE_SIG_uov_ov_III_pkc_skc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_III_pkc_skc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_III_pkc_skc_avx2)
     add_library(uov_ov_III_pkc_skc_avx2 OBJECT pqov_ov_III_pkc_skc_avx2/blas_matrix.c pqov_ov_III_pkc_skc_avx2/blas_matrix_avx2.c pqov_ov_III_pkc_skc_avx2/gf16_tabs.c pqov_ov_III_pkc_skc_avx2/gf256_tabs.c pqov_ov_III_pkc_skc_avx2/ov.c pqov_ov_III_pkc_skc_avx2/ov_keypair.c pqov_ov_III_pkc_skc_avx2/ov_keypair_computation.c pqov_ov_III_pkc_skc_avx2/ov_publicmap.c pqov_ov_III_pkc_skc_avx2/parallel_matrix_op.c pqov_ov_III_pkc_skc_avx2/sign.c pqov_ov_III_pkc_skc_avx2/utils_hash.c pqov_ov_III_pkc_skc_avx2/utils_prng.c pqov_ov_III_pkc_skc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_III_pkc_skc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_skc_avx2)
     target_include_directories(uov_ov_III_pkc_skc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_III_pkc_skc_avx2 PRIVATE -mavx2)
@@ -303,16 +402,22 @@ if(OQS_ENABLE_SIG_uov_ov_III_pkc_skc_avx2)
 endif()
 
 if(OQS_ENABLE_SIG_uov_ov_V_pkc_skc)
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
     add_library(uov_ov_V_pkc_skc_ref OBJECT sig_uov_ov_V_pkc_skc.c pqov_ov_V_pkc_skc_ref/blas_matrix.c pqov_ov_V_pkc_skc_ref/blas_matrix_ref.c pqov_ov_V_pkc_skc_ref/ov.c pqov_ov_V_pkc_skc_ref/ov_keypair.c pqov_ov_V_pkc_skc_ref/ov_keypair_computation.c pqov_ov_V_pkc_skc_ref/ov_publicmap.c pqov_ov_V_pkc_skc_ref/parallel_matrix_op.c pqov_ov_V_pkc_skc_ref/sign.c pqov_ov_V_pkc_skc_ref/utils_hash.c pqov_ov_V_pkc_skc_ref/utils_prng.c pqov_ov_V_pkc_skc_ref/utils_randombytes.c)
     target_compile_options(uov_ov_V_pkc_skc_ref PUBLIC -D_OV256_244_96 -D_OV_PKC_SKC -D_UTILS_OQS_)
+
+
     target_include_directories(uov_ov_V_pkc_skc_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_skc_ref)
     target_include_directories(uov_ov_V_pkc_skc_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_pkc_skc_ref PUBLIC -D_OV256_244_96 -D_OV_PKC_SKC -D_UTILS_OQS_)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_V_pkc_skc_ref>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_V_pkc_skc_neon)
     add_library(uov_ov_V_pkc_skc_neon OBJECT pqov_ov_V_pkc_skc_neon/blas_matrix.c pqov_ov_V_pkc_skc_neon/blas_matrix_neon.c pqov_ov_V_pkc_skc_neon/gf16_tabs_neon.c pqov_ov_V_pkc_skc_neon/ov.c pqov_ov_V_pkc_skc_neon/ov_keypair.c pqov_ov_V_pkc_skc_neon/ov_keypair_computation.c pqov_ov_V_pkc_skc_neon/ov_publicmap.c pqov_ov_V_pkc_skc_neon/parallel_matrix_op.c pqov_ov_V_pkc_skc_neon/sign.c pqov_ov_V_pkc_skc_neon/utils_hash.c pqov_ov_V_pkc_skc_neon/utils_prng.c pqov_ov_V_pkc_skc_neon/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_V_pkc_skc_neon PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_skc_neon)
     target_include_directories(uov_ov_V_pkc_skc_neon PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_pkc_skc_neon PRIVATE)
@@ -320,8 +425,11 @@ if(OQS_ENABLE_SIG_uov_ov_V_pkc_skc_neon)
     set(_UOV_OBJS ${_UOV_OBJS} $<TARGET_OBJECTS:uov_ov_V_pkc_skc_neon>)
 endif()
 
+
 if(OQS_ENABLE_SIG_uov_ov_V_pkc_skc_avx2)
     add_library(uov_ov_V_pkc_skc_avx2 OBJECT pqov_ov_V_pkc_skc_avx2/blas_matrix.c pqov_ov_V_pkc_skc_avx2/blas_matrix_avx2.c pqov_ov_V_pkc_skc_avx2/gf16_tabs.c pqov_ov_V_pkc_skc_avx2/gf256_tabs.c pqov_ov_V_pkc_skc_avx2/ov.c pqov_ov_V_pkc_skc_avx2/ov_keypair.c pqov_ov_V_pkc_skc_avx2/ov_keypair_computation.c pqov_ov_V_pkc_skc_avx2/ov_publicmap.c pqov_ov_V_pkc_skc_avx2/parallel_matrix_op.c pqov_ov_V_pkc_skc_avx2/sign.c pqov_ov_V_pkc_skc_avx2/utils_hash.c pqov_ov_V_pkc_skc_avx2/utils_prng.c pqov_ov_V_pkc_skc_avx2/utils_randombytes.c)
+
+
     target_include_directories(uov_ov_V_pkc_skc_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_skc_avx2)
     target_include_directories(uov_ov_V_pkc_skc_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(uov_ov_V_pkc_skc_avx2 PRIVATE -mavx2)

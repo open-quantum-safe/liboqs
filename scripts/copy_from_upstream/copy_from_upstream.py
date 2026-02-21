@@ -680,7 +680,8 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
 
-        # --- DELTA: ML-DSA EXTERNAL MU VARIANT EXPANSION ---
+        # --- ML-DSA EXTERNAL MU VARIANT EXPANSION ---
+# --- ML-DSA EXTERNAL MU VARIANT EXPANSION ---
         extmu_variants = []
         for s in family['schemes']:
             if not s.get('is_extmu', False) and any('signature_signature_extmu' in imp for imp in s['metadata']['implementations']):
@@ -691,14 +692,16 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                 ext_s['is_extmu'] = True
                 
                 for imp in ext_s['metadata']['implementations']:
+                    # Map OQS API to the External Mu native functions
                     imp['signature_signature'] = imp.get('signature_signature_extmu', imp['signature_signature'])
                     imp['signature_verify'] = imp.get('signature_verify_extmu', imp['signature_verify'])
+                    # Context strings are not used in External Mu variants
                     imp['api-with-context-string'] = False 
                 
                 extmu_variants.append(ext_s)
         
         family['schemes'].extend(extmu_variants)
-
+        
         # --- LOOP 2: Handle KATs for the full expanded list ---
         if with_kat:
             for scheme in family['schemes']:
