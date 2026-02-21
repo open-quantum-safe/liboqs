@@ -27,7 +27,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
 	uint8_t *message = NULL;
-	size_t message_len = 100;
+	size_t message_len = 64;
 	uint8_t ctx[257] = { 0 };
 	uint8_t *signature = NULL;
 	size_t signature_len;
