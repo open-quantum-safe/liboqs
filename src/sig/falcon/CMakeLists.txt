@@ -6,11 +6,8 @@
 set(_FALCON_OBJS "")
 
 if(OQS_ENABLE_SIG_falcon_512)
-    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
-    add_library(falcon_512_clean OBJECT sig_falcon_512.c pqclean_falcon-512_clean/codec.c pqclean_falcon-512_clean/common.c pqclean_falcon-512_clean/fft.c pqclean_falcon-512_clean/fpr.c pqclean_falcon-512_clean/keygen.c pqclean_falcon-512_clean/pqclean.c pqclean_falcon-512_clean/rng.c pqclean_falcon-512_clean/sign.c pqclean_falcon-512_clean/vrfy.c)
-
-
-    target_include_directories(falcon_512_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_clean)
+    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
+    add_library(falcon_512_clean OBJECT sig_falcon_512.c pqclean_falcon-512_clean/codec.c pqclean_falcon-512_clean/common.c pqclean_falcon-512_clean/fft.c pqclean_falcon-512_clean/fpr.c pqclean_falcon-512_clean/keygen.c pqclean_falcon-512_clean/pqclean.c pqclean_falcon-512_clean/rng.c pqclean_falcon-512_clean/sign.c pqclean_falcon-512_clean/vrfy.c)target_include_directories(falcon_512_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_clean)
     target_include_directories(falcon_512_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_FALCON_OBJS ${_FALCON_OBJS} $<TARGET_OBJECTS:falcon_512_clean>)
 endif()
@@ -18,8 +15,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_512_avx2)
     add_library(falcon_512_avx2 OBJECT pqclean_falcon-512_avx2/codec.c pqclean_falcon-512_avx2/common.c pqclean_falcon-512_avx2/fft.c pqclean_falcon-512_avx2/fpr.c pqclean_falcon-512_avx2/keygen.c pqclean_falcon-512_avx2/pqclean.c pqclean_falcon-512_avx2/rng.c pqclean_falcon-512_avx2/sign.c pqclean_falcon-512_avx2/vrfy.c)
-
-
     target_include_directories(falcon_512_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_avx2)
     target_include_directories(falcon_512_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_512_avx2 PRIVATE -mavx2)
@@ -29,8 +24,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_512_aarch64)
     add_library(falcon_512_aarch64 OBJECT pqclean_falcon-512_aarch64/codec.c pqclean_falcon-512_aarch64/common.c pqclean_falcon-512_aarch64/fft.c pqclean_falcon-512_aarch64/fft_tree.c pqclean_falcon-512_aarch64/fpr.c pqclean_falcon-512_aarch64/keygen.c pqclean_falcon-512_aarch64/ntt.c pqclean_falcon-512_aarch64/ntt_consts.c pqclean_falcon-512_aarch64/poly_float.c pqclean_falcon-512_aarch64/poly_int.c pqclean_falcon-512_aarch64/pqclean.c pqclean_falcon-512_aarch64/rng.c pqclean_falcon-512_aarch64/sampler.c pqclean_falcon-512_aarch64/sign.c pqclean_falcon-512_aarch64/util.c pqclean_falcon-512_aarch64/vrfy.c)
-
-
     target_include_directories(falcon_512_aarch64 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_aarch64)
     target_include_directories(falcon_512_aarch64 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_512_aarch64 PRIVATE)
@@ -38,11 +31,8 @@ if(OQS_ENABLE_SIG_falcon_512_aarch64)
 endif()
 
 if(OQS_ENABLE_SIG_falcon_1024)
-    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
-    add_library(falcon_1024_clean OBJECT sig_falcon_1024.c pqclean_falcon-1024_clean/codec.c pqclean_falcon-1024_clean/common.c pqclean_falcon-1024_clean/fft.c pqclean_falcon-1024_clean/fpr.c pqclean_falcon-1024_clean/keygen.c pqclean_falcon-1024_clean/pqclean.c pqclean_falcon-1024_clean/rng.c pqclean_falcon-1024_clean/sign.c pqclean_falcon-1024_clean/vrfy.c)
-
-
-    target_include_directories(falcon_1024_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_clean)
+    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
+    add_library(falcon_1024_clean OBJECT sig_falcon_1024.c pqclean_falcon-1024_clean/codec.c pqclean_falcon-1024_clean/common.c pqclean_falcon-1024_clean/fft.c pqclean_falcon-1024_clean/fpr.c pqclean_falcon-1024_clean/keygen.c pqclean_falcon-1024_clean/pqclean.c pqclean_falcon-1024_clean/rng.c pqclean_falcon-1024_clean/sign.c pqclean_falcon-1024_clean/vrfy.c)target_include_directories(falcon_1024_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_clean)
     target_include_directories(falcon_1024_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_FALCON_OBJS ${_FALCON_OBJS} $<TARGET_OBJECTS:falcon_1024_clean>)
 endif()
@@ -50,8 +40,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_1024_avx2)
     add_library(falcon_1024_avx2 OBJECT pqclean_falcon-1024_avx2/codec.c pqclean_falcon-1024_avx2/common.c pqclean_falcon-1024_avx2/fft.c pqclean_falcon-1024_avx2/fpr.c pqclean_falcon-1024_avx2/keygen.c pqclean_falcon-1024_avx2/pqclean.c pqclean_falcon-1024_avx2/rng.c pqclean_falcon-1024_avx2/sign.c pqclean_falcon-1024_avx2/vrfy.c)
-
-
     target_include_directories(falcon_1024_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_avx2)
     target_include_directories(falcon_1024_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_1024_avx2 PRIVATE -mavx2)
@@ -61,8 +49,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_1024_aarch64)
     add_library(falcon_1024_aarch64 OBJECT pqclean_falcon-1024_aarch64/codec.c pqclean_falcon-1024_aarch64/common.c pqclean_falcon-1024_aarch64/fft.c pqclean_falcon-1024_aarch64/fft_tree.c pqclean_falcon-1024_aarch64/fpr.c pqclean_falcon-1024_aarch64/keygen.c pqclean_falcon-1024_aarch64/ntt.c pqclean_falcon-1024_aarch64/ntt_consts.c pqclean_falcon-1024_aarch64/poly_float.c pqclean_falcon-1024_aarch64/poly_int.c pqclean_falcon-1024_aarch64/pqclean.c pqclean_falcon-1024_aarch64/rng.c pqclean_falcon-1024_aarch64/sampler.c pqclean_falcon-1024_aarch64/sign.c pqclean_falcon-1024_aarch64/util.c pqclean_falcon-1024_aarch64/vrfy.c)
-
-
     target_include_directories(falcon_1024_aarch64 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_aarch64)
     target_include_directories(falcon_1024_aarch64 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_1024_aarch64 PRIVATE)
@@ -70,11 +56,8 @@ if(OQS_ENABLE_SIG_falcon_1024_aarch64)
 endif()
 
 if(OQS_ENABLE_SIG_falcon_padded_512)
-    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
-    add_library(falcon_padded_512_clean OBJECT sig_falcon_padded_512.c pqclean_falcon-padded-512_clean/codec.c pqclean_falcon-padded-512_clean/common.c pqclean_falcon-padded-512_clean/fft.c pqclean_falcon-padded-512_clean/fpr.c pqclean_falcon-padded-512_clean/keygen.c pqclean_falcon-padded-512_clean/pqclean.c pqclean_falcon-padded-512_clean/rng.c pqclean_falcon-padded-512_clean/sign.c pqclean_falcon-padded-512_clean/vrfy.c)
-
-
-    target_include_directories(falcon_padded_512_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-512_clean)
+    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
+    add_library(falcon_padded_512_clean OBJECT sig_falcon_padded_512.c pqclean_falcon-padded-512_clean/codec.c pqclean_falcon-padded-512_clean/common.c pqclean_falcon-padded-512_clean/fft.c pqclean_falcon-padded-512_clean/fpr.c pqclean_falcon-padded-512_clean/keygen.c pqclean_falcon-padded-512_clean/pqclean.c pqclean_falcon-padded-512_clean/rng.c pqclean_falcon-padded-512_clean/sign.c pqclean_falcon-padded-512_clean/vrfy.c)target_include_directories(falcon_padded_512_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-512_clean)
     target_include_directories(falcon_padded_512_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_FALCON_OBJS ${_FALCON_OBJS} $<TARGET_OBJECTS:falcon_padded_512_clean>)
 endif()
@@ -82,8 +65,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_padded_512_avx2)
     add_library(falcon_padded_512_avx2 OBJECT pqclean_falcon-padded-512_avx2/codec.c pqclean_falcon-padded-512_avx2/common.c pqclean_falcon-padded-512_avx2/fft.c pqclean_falcon-padded-512_avx2/fpr.c pqclean_falcon-padded-512_avx2/keygen.c pqclean_falcon-padded-512_avx2/pqclean.c pqclean_falcon-padded-512_avx2/rng.c pqclean_falcon-padded-512_avx2/sign.c pqclean_falcon-padded-512_avx2/vrfy.c)
-
-
     target_include_directories(falcon_padded_512_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-512_avx2)
     target_include_directories(falcon_padded_512_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_padded_512_avx2 PRIVATE -mavx2)
@@ -93,8 +74,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_padded_512_aarch64)
     add_library(falcon_padded_512_aarch64 OBJECT pqclean_falcon-padded-512_aarch64/codec.c pqclean_falcon-padded-512_aarch64/common.c pqclean_falcon-padded-512_aarch64/fft.c pqclean_falcon-padded-512_aarch64/fft_tree.c pqclean_falcon-padded-512_aarch64/fpr.c pqclean_falcon-padded-512_aarch64/keygen.c pqclean_falcon-padded-512_aarch64/ntt.c pqclean_falcon-padded-512_aarch64/ntt_consts.c pqclean_falcon-padded-512_aarch64/poly_float.c pqclean_falcon-padded-512_aarch64/poly_int.c pqclean_falcon-padded-512_aarch64/pqclean.c pqclean_falcon-padded-512_aarch64/rng.c pqclean_falcon-padded-512_aarch64/sampler.c pqclean_falcon-padded-512_aarch64/sign.c pqclean_falcon-padded-512_aarch64/util.c pqclean_falcon-padded-512_aarch64/vrfy.c)
-
-
     target_include_directories(falcon_padded_512_aarch64 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-512_aarch64)
     target_include_directories(falcon_padded_512_aarch64 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_padded_512_aarch64 PRIVATE)
@@ -102,11 +81,8 @@ if(OQS_ENABLE_SIG_falcon_padded_512_aarch64)
 endif()
 
 if(OQS_ENABLE_SIG_falcon_padded_1024)
-    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
-    add_library(falcon_padded_1024_clean OBJECT sig_falcon_padded_1024.c pqclean_falcon-padded-1024_clean/codec.c pqclean_falcon-padded-1024_clean/common.c pqclean_falcon-padded-1024_clean/fft.c pqclean_falcon-padded-1024_clean/fpr.c pqclean_falcon-padded-1024_clean/keygen.c pqclean_falcon-padded-1024_clean/pqclean.c pqclean_falcon-padded-1024_clean/rng.c pqclean_falcon-padded-1024_clean/sign.c pqclean_falcon-padded-1024_clean/vrfy.c)
-
-
-    target_include_directories(falcon_padded_1024_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-1024_clean)
+    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
+    add_library(falcon_padded_1024_clean OBJECT sig_falcon_padded_1024.c pqclean_falcon-padded-1024_clean/codec.c pqclean_falcon-padded-1024_clean/common.c pqclean_falcon-padded-1024_clean/fft.c pqclean_falcon-padded-1024_clean/fpr.c pqclean_falcon-padded-1024_clean/keygen.c pqclean_falcon-padded-1024_clean/pqclean.c pqclean_falcon-padded-1024_clean/rng.c pqclean_falcon-padded-1024_clean/sign.c pqclean_falcon-padded-1024_clean/vrfy.c)target_include_directories(falcon_padded_1024_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-1024_clean)
     target_include_directories(falcon_padded_1024_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_FALCON_OBJS ${_FALCON_OBJS} $<TARGET_OBJECTS:falcon_padded_1024_clean>)
 endif()
@@ -114,8 +90,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_padded_1024_avx2)
     add_library(falcon_padded_1024_avx2 OBJECT pqclean_falcon-padded-1024_avx2/codec.c pqclean_falcon-padded-1024_avx2/common.c pqclean_falcon-padded-1024_avx2/fft.c pqclean_falcon-padded-1024_avx2/fpr.c pqclean_falcon-padded-1024_avx2/keygen.c pqclean_falcon-padded-1024_avx2/pqclean.c pqclean_falcon-padded-1024_avx2/rng.c pqclean_falcon-padded-1024_avx2/sign.c pqclean_falcon-padded-1024_avx2/vrfy.c)
-
-
     target_include_directories(falcon_padded_1024_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-1024_avx2)
     target_include_directories(falcon_padded_1024_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_padded_1024_avx2 PRIVATE -mavx2)
@@ -125,8 +99,6 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_padded_1024_aarch64)
     add_library(falcon_padded_1024_aarch64 OBJECT pqclean_falcon-padded-1024_aarch64/codec.c pqclean_falcon-padded-1024_aarch64/common.c pqclean_falcon-padded-1024_aarch64/fft.c pqclean_falcon-padded-1024_aarch64/fft_tree.c pqclean_falcon-padded-1024_aarch64/fpr.c pqclean_falcon-padded-1024_aarch64/keygen.c pqclean_falcon-padded-1024_aarch64/ntt.c pqclean_falcon-padded-1024_aarch64/ntt_consts.c pqclean_falcon-padded-1024_aarch64/poly_float.c pqclean_falcon-padded-1024_aarch64/poly_int.c pqclean_falcon-padded-1024_aarch64/pqclean.c pqclean_falcon-padded-1024_aarch64/rng.c pqclean_falcon-padded-1024_aarch64/sampler.c pqclean_falcon-padded-1024_aarch64/sign.c pqclean_falcon-padded-1024_aarch64/util.c pqclean_falcon-padded-1024_aarch64/vrfy.c)
-
-
     target_include_directories(falcon_padded_1024_aarch64 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-1024_aarch64)
     target_include_directories(falcon_padded_1024_aarch64 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_compile_options(falcon_padded_1024_aarch64 PRIVATE)
