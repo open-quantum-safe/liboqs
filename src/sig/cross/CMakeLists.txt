@@ -7,7 +7,9 @@ set(_CROSS_OBJS "")
 
 if(OQS_ENABLE_SIG_cross_rsdp_128_balanced)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_128_balanced_clean OBJECT sig_cross_rsdp_128_balanced.c upcross_cross-rsdp-128-balanced_clean/CROSS.c upcross_cross-rsdp-128-balanced_clean/csprng_hash.c upcross_cross-rsdp-128-balanced_clean/merkle.c upcross_cross-rsdp-128-balanced_clean/pack_unpack.c upcross_cross-rsdp-128-balanced_clean/seedtree.c upcross_cross-rsdp-128-balanced_clean/sign.c)target_include_directories(cross_rsdp_128_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-balanced_clean)
+    add_library(cross_rsdp_128_balanced_clean OBJECT sig_cross_rsdp_128_balanced.c upcross_cross-rsdp-128-balanced_clean/CROSS.c upcross_cross-rsdp-128-balanced_clean/csprng_hash.c upcross_cross-rsdp-128-balanced_clean/merkle.c upcross_cross-rsdp-128-balanced_clean/pack_unpack.c upcross_cross-rsdp-128-balanced_clean/seedtree.c upcross_cross-rsdp-128-balanced_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_128_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-balanced_clean)
     target_include_directories(cross_rsdp_128_balanced_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_128_balanced_clean>)
 endif()
@@ -23,7 +25,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_128_fast)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_128_fast_clean OBJECT sig_cross_rsdp_128_fast.c upcross_cross-rsdp-128-fast_clean/CROSS.c upcross_cross-rsdp-128-fast_clean/csprng_hash.c upcross_cross-rsdp-128-fast_clean/merkle.c upcross_cross-rsdp-128-fast_clean/pack_unpack.c upcross_cross-rsdp-128-fast_clean/seedtree.c upcross_cross-rsdp-128-fast_clean/sign.c)target_include_directories(cross_rsdp_128_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-fast_clean)
+    add_library(cross_rsdp_128_fast_clean OBJECT sig_cross_rsdp_128_fast.c upcross_cross-rsdp-128-fast_clean/CROSS.c upcross_cross-rsdp-128-fast_clean/csprng_hash.c upcross_cross-rsdp-128-fast_clean/merkle.c upcross_cross-rsdp-128-fast_clean/pack_unpack.c upcross_cross-rsdp-128-fast_clean/seedtree.c upcross_cross-rsdp-128-fast_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_128_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-fast_clean)
     target_include_directories(cross_rsdp_128_fast_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_128_fast_clean>)
 endif()
@@ -39,7 +43,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_128_small)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_128_small_clean OBJECT sig_cross_rsdp_128_small.c upcross_cross-rsdp-128-small_clean/CROSS.c upcross_cross-rsdp-128-small_clean/csprng_hash.c upcross_cross-rsdp-128-small_clean/merkle.c upcross_cross-rsdp-128-small_clean/pack_unpack.c upcross_cross-rsdp-128-small_clean/seedtree.c upcross_cross-rsdp-128-small_clean/sign.c)target_include_directories(cross_rsdp_128_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-small_clean)
+    add_library(cross_rsdp_128_small_clean OBJECT sig_cross_rsdp_128_small.c upcross_cross-rsdp-128-small_clean/CROSS.c upcross_cross-rsdp-128-small_clean/csprng_hash.c upcross_cross-rsdp-128-small_clean/merkle.c upcross_cross-rsdp-128-small_clean/pack_unpack.c upcross_cross-rsdp-128-small_clean/seedtree.c upcross_cross-rsdp-128-small_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_128_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-small_clean)
     target_include_directories(cross_rsdp_128_small_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_128_small_clean>)
 endif()
@@ -55,7 +61,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_192_balanced)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_192_balanced_clean OBJECT sig_cross_rsdp_192_balanced.c upcross_cross-rsdp-192-balanced_clean/CROSS.c upcross_cross-rsdp-192-balanced_clean/csprng_hash.c upcross_cross-rsdp-192-balanced_clean/merkle.c upcross_cross-rsdp-192-balanced_clean/pack_unpack.c upcross_cross-rsdp-192-balanced_clean/seedtree.c upcross_cross-rsdp-192-balanced_clean/sign.c)target_include_directories(cross_rsdp_192_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-balanced_clean)
+    add_library(cross_rsdp_192_balanced_clean OBJECT sig_cross_rsdp_192_balanced.c upcross_cross-rsdp-192-balanced_clean/CROSS.c upcross_cross-rsdp-192-balanced_clean/csprng_hash.c upcross_cross-rsdp-192-balanced_clean/merkle.c upcross_cross-rsdp-192-balanced_clean/pack_unpack.c upcross_cross-rsdp-192-balanced_clean/seedtree.c upcross_cross-rsdp-192-balanced_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_192_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-balanced_clean)
     target_include_directories(cross_rsdp_192_balanced_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_192_balanced_clean>)
 endif()
@@ -71,7 +79,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_192_fast)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_192_fast_clean OBJECT sig_cross_rsdp_192_fast.c upcross_cross-rsdp-192-fast_clean/CROSS.c upcross_cross-rsdp-192-fast_clean/csprng_hash.c upcross_cross-rsdp-192-fast_clean/merkle.c upcross_cross-rsdp-192-fast_clean/pack_unpack.c upcross_cross-rsdp-192-fast_clean/seedtree.c upcross_cross-rsdp-192-fast_clean/sign.c)target_include_directories(cross_rsdp_192_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-fast_clean)
+    add_library(cross_rsdp_192_fast_clean OBJECT sig_cross_rsdp_192_fast.c upcross_cross-rsdp-192-fast_clean/CROSS.c upcross_cross-rsdp-192-fast_clean/csprng_hash.c upcross_cross-rsdp-192-fast_clean/merkle.c upcross_cross-rsdp-192-fast_clean/pack_unpack.c upcross_cross-rsdp-192-fast_clean/seedtree.c upcross_cross-rsdp-192-fast_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_192_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-fast_clean)
     target_include_directories(cross_rsdp_192_fast_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_192_fast_clean>)
 endif()
@@ -87,7 +97,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_192_small)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_192_small_clean OBJECT sig_cross_rsdp_192_small.c upcross_cross-rsdp-192-small_clean/CROSS.c upcross_cross-rsdp-192-small_clean/csprng_hash.c upcross_cross-rsdp-192-small_clean/merkle.c upcross_cross-rsdp-192-small_clean/pack_unpack.c upcross_cross-rsdp-192-small_clean/seedtree.c upcross_cross-rsdp-192-small_clean/sign.c)target_include_directories(cross_rsdp_192_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-small_clean)
+    add_library(cross_rsdp_192_small_clean OBJECT sig_cross_rsdp_192_small.c upcross_cross-rsdp-192-small_clean/CROSS.c upcross_cross-rsdp-192-small_clean/csprng_hash.c upcross_cross-rsdp-192-small_clean/merkle.c upcross_cross-rsdp-192-small_clean/pack_unpack.c upcross_cross-rsdp-192-small_clean/seedtree.c upcross_cross-rsdp-192-small_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_192_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-small_clean)
     target_include_directories(cross_rsdp_192_small_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_192_small_clean>)
 endif()
@@ -103,7 +115,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_256_balanced)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_256_balanced_clean OBJECT sig_cross_rsdp_256_balanced.c upcross_cross-rsdp-256-balanced_clean/CROSS.c upcross_cross-rsdp-256-balanced_clean/csprng_hash.c upcross_cross-rsdp-256-balanced_clean/merkle.c upcross_cross-rsdp-256-balanced_clean/pack_unpack.c upcross_cross-rsdp-256-balanced_clean/seedtree.c upcross_cross-rsdp-256-balanced_clean/sign.c)target_include_directories(cross_rsdp_256_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-balanced_clean)
+    add_library(cross_rsdp_256_balanced_clean OBJECT sig_cross_rsdp_256_balanced.c upcross_cross-rsdp-256-balanced_clean/CROSS.c upcross_cross-rsdp-256-balanced_clean/csprng_hash.c upcross_cross-rsdp-256-balanced_clean/merkle.c upcross_cross-rsdp-256-balanced_clean/pack_unpack.c upcross_cross-rsdp-256-balanced_clean/seedtree.c upcross_cross-rsdp-256-balanced_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_256_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-balanced_clean)
     target_include_directories(cross_rsdp_256_balanced_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_256_balanced_clean>)
 endif()
@@ -119,7 +133,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_256_fast)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_256_fast_clean OBJECT sig_cross_rsdp_256_fast.c upcross_cross-rsdp-256-fast_clean/CROSS.c upcross_cross-rsdp-256-fast_clean/csprng_hash.c upcross_cross-rsdp-256-fast_clean/merkle.c upcross_cross-rsdp-256-fast_clean/pack_unpack.c upcross_cross-rsdp-256-fast_clean/seedtree.c upcross_cross-rsdp-256-fast_clean/sign.c)target_include_directories(cross_rsdp_256_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-fast_clean)
+    add_library(cross_rsdp_256_fast_clean OBJECT sig_cross_rsdp_256_fast.c upcross_cross-rsdp-256-fast_clean/CROSS.c upcross_cross-rsdp-256-fast_clean/csprng_hash.c upcross_cross-rsdp-256-fast_clean/merkle.c upcross_cross-rsdp-256-fast_clean/pack_unpack.c upcross_cross-rsdp-256-fast_clean/seedtree.c upcross_cross-rsdp-256-fast_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_256_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-fast_clean)
     target_include_directories(cross_rsdp_256_fast_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_256_fast_clean>)
 endif()
@@ -135,7 +151,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdp_256_small)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdp_256_small_clean OBJECT sig_cross_rsdp_256_small.c upcross_cross-rsdp-256-small_clean/CROSS.c upcross_cross-rsdp-256-small_clean/csprng_hash.c upcross_cross-rsdp-256-small_clean/merkle.c upcross_cross-rsdp-256-small_clean/pack_unpack.c upcross_cross-rsdp-256-small_clean/seedtree.c upcross_cross-rsdp-256-small_clean/sign.c)target_include_directories(cross_rsdp_256_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-small_clean)
+    add_library(cross_rsdp_256_small_clean OBJECT sig_cross_rsdp_256_small.c upcross_cross-rsdp-256-small_clean/CROSS.c upcross_cross-rsdp-256-small_clean/csprng_hash.c upcross_cross-rsdp-256-small_clean/merkle.c upcross_cross-rsdp-256-small_clean/pack_unpack.c upcross_cross-rsdp-256-small_clean/seedtree.c upcross_cross-rsdp-256-small_clean/sign.c)
+    
+    target_include_directories(cross_rsdp_256_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-small_clean)
     target_include_directories(cross_rsdp_256_small_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdp_256_small_clean>)
 endif()
@@ -151,7 +169,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_128_balanced)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_128_balanced_clean OBJECT sig_cross_rsdpg_128_balanced.c upcross_cross-rsdpg-128-balanced_clean/CROSS.c upcross_cross-rsdpg-128-balanced_clean/csprng_hash.c upcross_cross-rsdpg-128-balanced_clean/merkle.c upcross_cross-rsdpg-128-balanced_clean/pack_unpack.c upcross_cross-rsdpg-128-balanced_clean/seedtree.c upcross_cross-rsdpg-128-balanced_clean/sign.c)target_include_directories(cross_rsdpg_128_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-balanced_clean)
+    add_library(cross_rsdpg_128_balanced_clean OBJECT sig_cross_rsdpg_128_balanced.c upcross_cross-rsdpg-128-balanced_clean/CROSS.c upcross_cross-rsdpg-128-balanced_clean/csprng_hash.c upcross_cross-rsdpg-128-balanced_clean/merkle.c upcross_cross-rsdpg-128-balanced_clean/pack_unpack.c upcross_cross-rsdpg-128-balanced_clean/seedtree.c upcross_cross-rsdpg-128-balanced_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_128_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-balanced_clean)
     target_include_directories(cross_rsdpg_128_balanced_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_128_balanced_clean>)
 endif()
@@ -167,7 +187,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_128_fast)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_128_fast_clean OBJECT sig_cross_rsdpg_128_fast.c upcross_cross-rsdpg-128-fast_clean/CROSS.c upcross_cross-rsdpg-128-fast_clean/csprng_hash.c upcross_cross-rsdpg-128-fast_clean/merkle.c upcross_cross-rsdpg-128-fast_clean/pack_unpack.c upcross_cross-rsdpg-128-fast_clean/seedtree.c upcross_cross-rsdpg-128-fast_clean/sign.c)target_include_directories(cross_rsdpg_128_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-fast_clean)
+    add_library(cross_rsdpg_128_fast_clean OBJECT sig_cross_rsdpg_128_fast.c upcross_cross-rsdpg-128-fast_clean/CROSS.c upcross_cross-rsdpg-128-fast_clean/csprng_hash.c upcross_cross-rsdpg-128-fast_clean/merkle.c upcross_cross-rsdpg-128-fast_clean/pack_unpack.c upcross_cross-rsdpg-128-fast_clean/seedtree.c upcross_cross-rsdpg-128-fast_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_128_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-fast_clean)
     target_include_directories(cross_rsdpg_128_fast_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_128_fast_clean>)
 endif()
@@ -183,7 +205,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_128_small)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_128_small_clean OBJECT sig_cross_rsdpg_128_small.c upcross_cross-rsdpg-128-small_clean/CROSS.c upcross_cross-rsdpg-128-small_clean/csprng_hash.c upcross_cross-rsdpg-128-small_clean/merkle.c upcross_cross-rsdpg-128-small_clean/pack_unpack.c upcross_cross-rsdpg-128-small_clean/seedtree.c upcross_cross-rsdpg-128-small_clean/sign.c)target_include_directories(cross_rsdpg_128_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-small_clean)
+    add_library(cross_rsdpg_128_small_clean OBJECT sig_cross_rsdpg_128_small.c upcross_cross-rsdpg-128-small_clean/CROSS.c upcross_cross-rsdpg-128-small_clean/csprng_hash.c upcross_cross-rsdpg-128-small_clean/merkle.c upcross_cross-rsdpg-128-small_clean/pack_unpack.c upcross_cross-rsdpg-128-small_clean/seedtree.c upcross_cross-rsdpg-128-small_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_128_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-small_clean)
     target_include_directories(cross_rsdpg_128_small_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_128_small_clean>)
 endif()
@@ -199,7 +223,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_192_balanced)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_192_balanced_clean OBJECT sig_cross_rsdpg_192_balanced.c upcross_cross-rsdpg-192-balanced_clean/CROSS.c upcross_cross-rsdpg-192-balanced_clean/csprng_hash.c upcross_cross-rsdpg-192-balanced_clean/merkle.c upcross_cross-rsdpg-192-balanced_clean/pack_unpack.c upcross_cross-rsdpg-192-balanced_clean/seedtree.c upcross_cross-rsdpg-192-balanced_clean/sign.c)target_include_directories(cross_rsdpg_192_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-balanced_clean)
+    add_library(cross_rsdpg_192_balanced_clean OBJECT sig_cross_rsdpg_192_balanced.c upcross_cross-rsdpg-192-balanced_clean/CROSS.c upcross_cross-rsdpg-192-balanced_clean/csprng_hash.c upcross_cross-rsdpg-192-balanced_clean/merkle.c upcross_cross-rsdpg-192-balanced_clean/pack_unpack.c upcross_cross-rsdpg-192-balanced_clean/seedtree.c upcross_cross-rsdpg-192-balanced_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_192_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-balanced_clean)
     target_include_directories(cross_rsdpg_192_balanced_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_192_balanced_clean>)
 endif()
@@ -215,7 +241,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_192_fast)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_192_fast_clean OBJECT sig_cross_rsdpg_192_fast.c upcross_cross-rsdpg-192-fast_clean/CROSS.c upcross_cross-rsdpg-192-fast_clean/csprng_hash.c upcross_cross-rsdpg-192-fast_clean/merkle.c upcross_cross-rsdpg-192-fast_clean/pack_unpack.c upcross_cross-rsdpg-192-fast_clean/seedtree.c upcross_cross-rsdpg-192-fast_clean/sign.c)target_include_directories(cross_rsdpg_192_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-fast_clean)
+    add_library(cross_rsdpg_192_fast_clean OBJECT sig_cross_rsdpg_192_fast.c upcross_cross-rsdpg-192-fast_clean/CROSS.c upcross_cross-rsdpg-192-fast_clean/csprng_hash.c upcross_cross-rsdpg-192-fast_clean/merkle.c upcross_cross-rsdpg-192-fast_clean/pack_unpack.c upcross_cross-rsdpg-192-fast_clean/seedtree.c upcross_cross-rsdpg-192-fast_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_192_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-fast_clean)
     target_include_directories(cross_rsdpg_192_fast_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_192_fast_clean>)
 endif()
@@ -231,7 +259,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_192_small)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_192_small_clean OBJECT sig_cross_rsdpg_192_small.c upcross_cross-rsdpg-192-small_clean/CROSS.c upcross_cross-rsdpg-192-small_clean/csprng_hash.c upcross_cross-rsdpg-192-small_clean/merkle.c upcross_cross-rsdpg-192-small_clean/pack_unpack.c upcross_cross-rsdpg-192-small_clean/seedtree.c upcross_cross-rsdpg-192-small_clean/sign.c)target_include_directories(cross_rsdpg_192_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-small_clean)
+    add_library(cross_rsdpg_192_small_clean OBJECT sig_cross_rsdpg_192_small.c upcross_cross-rsdpg-192-small_clean/CROSS.c upcross_cross-rsdpg-192-small_clean/csprng_hash.c upcross_cross-rsdpg-192-small_clean/merkle.c upcross_cross-rsdpg-192-small_clean/pack_unpack.c upcross_cross-rsdpg-192-small_clean/seedtree.c upcross_cross-rsdpg-192-small_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_192_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-small_clean)
     target_include_directories(cross_rsdpg_192_small_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_192_small_clean>)
 endif()
@@ -247,7 +277,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_256_balanced)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_256_balanced_clean OBJECT sig_cross_rsdpg_256_balanced.c upcross_cross-rsdpg-256-balanced_clean/CROSS.c upcross_cross-rsdpg-256-balanced_clean/csprng_hash.c upcross_cross-rsdpg-256-balanced_clean/merkle.c upcross_cross-rsdpg-256-balanced_clean/pack_unpack.c upcross_cross-rsdpg-256-balanced_clean/seedtree.c upcross_cross-rsdpg-256-balanced_clean/sign.c)target_include_directories(cross_rsdpg_256_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-balanced_clean)
+    add_library(cross_rsdpg_256_balanced_clean OBJECT sig_cross_rsdpg_256_balanced.c upcross_cross-rsdpg-256-balanced_clean/CROSS.c upcross_cross-rsdpg-256-balanced_clean/csprng_hash.c upcross_cross-rsdpg-256-balanced_clean/merkle.c upcross_cross-rsdpg-256-balanced_clean/pack_unpack.c upcross_cross-rsdpg-256-balanced_clean/seedtree.c upcross_cross-rsdpg-256-balanced_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_256_balanced_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-balanced_clean)
     target_include_directories(cross_rsdpg_256_balanced_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_256_balanced_clean>)
 endif()
@@ -263,7 +295,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_256_fast)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_256_fast_clean OBJECT sig_cross_rsdpg_256_fast.c upcross_cross-rsdpg-256-fast_clean/CROSS.c upcross_cross-rsdpg-256-fast_clean/csprng_hash.c upcross_cross-rsdpg-256-fast_clean/merkle.c upcross_cross-rsdpg-256-fast_clean/pack_unpack.c upcross_cross-rsdpg-256-fast_clean/seedtree.c upcross_cross-rsdpg-256-fast_clean/sign.c)target_include_directories(cross_rsdpg_256_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-fast_clean)
+    add_library(cross_rsdpg_256_fast_clean OBJECT sig_cross_rsdpg_256_fast.c upcross_cross-rsdpg-256-fast_clean/CROSS.c upcross_cross-rsdpg-256-fast_clean/csprng_hash.c upcross_cross-rsdpg-256-fast_clean/merkle.c upcross_cross-rsdpg-256-fast_clean/pack_unpack.c upcross_cross-rsdpg-256-fast_clean/seedtree.c upcross_cross-rsdpg-256-fast_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_256_fast_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-fast_clean)
     target_include_directories(cross_rsdpg_256_fast_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_256_fast_clean>)
 endif()
@@ -279,7 +313,9 @@ endif()
 
 if(OQS_ENABLE_SIG_cross_rsdpg_256_small)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
-    add_library(cross_rsdpg_256_small_clean OBJECT sig_cross_rsdpg_256_small.c upcross_cross-rsdpg-256-small_clean/CROSS.c upcross_cross-rsdpg-256-small_clean/csprng_hash.c upcross_cross-rsdpg-256-small_clean/merkle.c upcross_cross-rsdpg-256-small_clean/pack_unpack.c upcross_cross-rsdpg-256-small_clean/seedtree.c upcross_cross-rsdpg-256-small_clean/sign.c)target_include_directories(cross_rsdpg_256_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-small_clean)
+    add_library(cross_rsdpg_256_small_clean OBJECT sig_cross_rsdpg_256_small.c upcross_cross-rsdpg-256-small_clean/CROSS.c upcross_cross-rsdpg-256-small_clean/csprng_hash.c upcross_cross-rsdpg-256-small_clean/merkle.c upcross_cross-rsdpg-256-small_clean/pack_unpack.c upcross_cross-rsdpg-256-small_clean/seedtree.c upcross_cross-rsdpg-256-small_clean/sign.c)
+    
+    target_include_directories(cross_rsdpg_256_small_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-small_clean)
     target_include_directories(cross_rsdpg_256_small_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_CROSS_OBJS ${_CROSS_OBJS} $<TARGET_OBJECTS:cross_rsdpg_256_small_clean>)
 endif()

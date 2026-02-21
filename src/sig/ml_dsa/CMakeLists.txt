@@ -8,7 +8,10 @@ set(_ML_DSA_OBJS "")
 if(OQS_ENABLE_SIG_ml_dsa_44)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_44_ref OBJECT sig_ml_dsa_44.c mldsa-native_ml-dsa-44_ref/mldsa/src/ct.c mldsa-native_ml-dsa-44_ref/mldsa/src/debug.c mldsa-native_ml-dsa-44_ref/mldsa/src/packing.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-44_ref/mldsa/src/sign.c)
-    target_compile_options(ml_dsa_44_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")target_include_directories(ml_dsa_44_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref)
+    
+    target_compile_options(ml_dsa_44_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
+    
+    target_include_directories(ml_dsa_44_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref)
     target_include_directories(ml_dsa_44_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_44_ref>)
 endif()
@@ -36,7 +39,10 @@ endif()
 if(OQS_ENABLE_SIG_ml_dsa_65)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_65_ref OBJECT sig_ml_dsa_65.c mldsa-native_ml-dsa-65_ref/mldsa/src/ct.c mldsa-native_ml-dsa-65_ref/mldsa/src/debug.c mldsa-native_ml-dsa-65_ref/mldsa/src/packing.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-65_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-65_ref/mldsa/src/sign.c)
-    target_compile_options(ml_dsa_65_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")target_include_directories(ml_dsa_65_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref)
+    
+    target_compile_options(ml_dsa_65_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
+    
+    target_include_directories(ml_dsa_65_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref)
     target_include_directories(ml_dsa_65_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_65_ref>)
 endif()
@@ -64,7 +70,10 @@ endif()
 if(OQS_ENABLE_SIG_ml_dsa_87)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_87_ref OBJECT sig_ml_dsa_87.c mldsa-native_ml-dsa-87_ref/mldsa/src/ct.c mldsa-native_ml-dsa-87_ref/mldsa/src/debug.c mldsa-native_ml-dsa-87_ref/mldsa/src/packing.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-87_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-87_ref/mldsa/src/sign.c)
-    target_compile_options(ml_dsa_87_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")target_include_directories(ml_dsa_87_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref)
+    
+    target_compile_options(ml_dsa_87_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
+    
+    target_include_directories(ml_dsa_87_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref)
     target_include_directories(ml_dsa_87_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_87_ref>)
 endif()
@@ -92,7 +101,10 @@ endif()
 if(OQS_ENABLE_SIG_ml_dsa_44_extmu)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_44_extmu_ref OBJECT sig_ml_dsa_44_extmu.c )
-    target_compile_options(ml_dsa_44_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")target_include_directories(ml_dsa_44_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref)
+    
+    target_compile_options(ml_dsa_44_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
+    
+    target_include_directories(ml_dsa_44_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref)
     target_include_directories(ml_dsa_44_extmu_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_44_extmu_ref>)
 endif()
@@ -104,7 +116,10 @@ endif()
 if(OQS_ENABLE_SIG_ml_dsa_65_extmu)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_65_extmu_ref OBJECT sig_ml_dsa_65_extmu.c )
-    target_compile_options(ml_dsa_65_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")target_include_directories(ml_dsa_65_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref)
+    
+    target_compile_options(ml_dsa_65_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
+    
+    target_include_directories(ml_dsa_65_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref)
     target_include_directories(ml_dsa_65_extmu_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_65_extmu_ref>)
 endif()
@@ -116,7 +131,10 @@ endif()
 if(OQS_ENABLE_SIG_ml_dsa_87_extmu)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_87_extmu_ref OBJECT sig_ml_dsa_87_extmu.c )
-    target_compile_options(ml_dsa_87_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")target_include_directories(ml_dsa_87_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref)
+    
+    target_compile_options(ml_dsa_87_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
+    
+    target_include_directories(ml_dsa_87_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref)
     target_include_directories(ml_dsa_87_extmu_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_87_extmu_ref>)
 endif()

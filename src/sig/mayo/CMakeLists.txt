@@ -8,7 +8,10 @@ set(_MAYO_OBJS "")
 if(OQS_ENABLE_SIG_mayo_1)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(mayo_1_opt OBJECT sig_mayo_1.c pqmayo_mayo-1_opt/api.c pqmayo_mayo-1_opt/arithmetic.c pqmayo_mayo-1_opt/mayo.c pqmayo_mayo-1_opt/params.c)
-    target_compile_options(mayo_1_opt PUBLIC -DMAYO_VARIANT=MAYO_1 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL -DHAVE_STACKEFFICIENT)target_include_directories(mayo_1_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-1_opt)
+    
+    target_compile_options(mayo_1_opt PUBLIC -DMAYO_VARIANT=MAYO_1 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL -DHAVE_STACKEFFICIENT)
+    
+    target_include_directories(mayo_1_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-1_opt)
     target_include_directories(mayo_1_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_MAYO_OBJS ${_MAYO_OBJS} $<TARGET_OBJECTS:mayo_1_opt>)
 endif()
@@ -36,7 +39,10 @@ endif()
 if(OQS_ENABLE_SIG_mayo_2)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(mayo_2_opt OBJECT sig_mayo_2.c pqmayo_mayo-2_opt/api.c pqmayo_mayo-2_opt/arithmetic.c pqmayo_mayo-2_opt/mayo.c pqmayo_mayo-2_opt/params.c)
-    target_compile_options(mayo_2_opt PUBLIC -DMAYO_VARIANT=MAYO_2 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL)target_include_directories(mayo_2_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-2_opt)
+    
+    target_compile_options(mayo_2_opt PUBLIC -DMAYO_VARIANT=MAYO_2 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL)
+    
+    target_include_directories(mayo_2_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-2_opt)
     target_include_directories(mayo_2_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_MAYO_OBJS ${_MAYO_OBJS} $<TARGET_OBJECTS:mayo_2_opt>)
 endif()
@@ -64,7 +70,10 @@ endif()
 if(OQS_ENABLE_SIG_mayo_3)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(mayo_3_opt OBJECT sig_mayo_3.c pqmayo_mayo-3_opt/api.c pqmayo_mayo-3_opt/arithmetic.c pqmayo_mayo-3_opt/mayo.c pqmayo_mayo-3_opt/params.c)
-    target_compile_options(mayo_3_opt PUBLIC -DMAYO_VARIANT=MAYO_3 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL -DHAVE_STACKEFFICIENT)target_include_directories(mayo_3_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-3_opt)
+    
+    target_compile_options(mayo_3_opt PUBLIC -DMAYO_VARIANT=MAYO_3 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL -DHAVE_STACKEFFICIENT)
+    
+    target_include_directories(mayo_3_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-3_opt)
     target_include_directories(mayo_3_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_MAYO_OBJS ${_MAYO_OBJS} $<TARGET_OBJECTS:mayo_3_opt>)
 endif()
@@ -92,7 +101,10 @@ endif()
 if(OQS_ENABLE_SIG_mayo_5)
     # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(mayo_5_opt OBJECT sig_mayo_5.c pqmayo_mayo-5_opt/api.c pqmayo_mayo-5_opt/arithmetic.c pqmayo_mayo-5_opt/mayo.c pqmayo_mayo-5_opt/params.c)
-    target_compile_options(mayo_5_opt PUBLIC -DMAYO_VARIANT=MAYO_5 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL -DHAVE_STACKEFFICIENT)target_include_directories(mayo_5_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-5_opt)
+    
+    target_compile_options(mayo_5_opt PUBLIC -DMAYO_VARIANT=MAYO_5 -DMAYO_BUILD_TYPE_OPT -DHAVE_RANDOMBYTES_NORETVAL -DHAVE_STACKEFFICIENT)
+    
+    target_include_directories(mayo_5_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqmayo_mayo-5_opt)
     target_include_directories(mayo_5_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_MAYO_OBJS ${_MAYO_OBJS} $<TARGET_OBJECTS:mayo_5_opt>)
 endif()
