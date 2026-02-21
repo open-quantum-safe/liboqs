@@ -27,6 +27,7 @@ option(OQS_LIBJADE_BUILD "Enable formally verified implementation of supported a
 option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsupported architecture." OFF)
 option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
+option(OQS_MEMOPT_BUILD "Build with memory-optimized implementations where available." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
 option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
 
@@ -276,6 +277,9 @@ if(OQS_ENABLE_SIG_UOV)
 endif()
 if(OQS_ENABLE_SIG_SNOVA)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/snova/sig_snova.h)
+endif()
+if(OQS_ENABLE_SIG_MQOM)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/mqom/sig_mqom.h)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_END
 if(OQS_ENABLE_SIG_SLH_DSA)
