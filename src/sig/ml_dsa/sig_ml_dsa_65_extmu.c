@@ -39,7 +39,7 @@ extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(const uint8_t *sig, size_t s
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_x86_64)
 extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair(uint8_t *pk, uint8_t *sk);
 extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu(uint8_t *sig, size_t *siglen, const uint8_t *m, const uint8_t *sk);
-extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_extmu(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
 #endif
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
@@ -107,7 +107,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify(const uint8_t *message, size_t
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu(signature, signature_len, message, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_extmu(signature, signature_len, message, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(signature, signature_len, message, public_key);
@@ -129,7 +129,6 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify(const uint8_t *message, size_t
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
-	(void)message_len;
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_ml_dsa_65_extmu_sign(signature, signature_len, message, message_len, secret_key);
 	} else {
@@ -138,7 +137,6 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_sign_with_ctx_str(uint8_t *signature,
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
-	(void)message_len;
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_ml_dsa_65_extmu_verify(message, message_len, signature, signature_len, public_key);
 	} else {
