@@ -75,6 +75,10 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_keypair(uint8_t *public_key, uint8_t 
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+	/* External Mu variants require exactly 64 bytes of input message representative */
+	if (message_len != 64) {
+		return OQS_ERROR;
+	}
 	(void)message_len;
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu_x86_64)
 #if defined(OQS_DIST_BUILD)
@@ -102,6 +106,10 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_sign(uint8_t *signature, size_t *sign
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+	/* External Mu variants require exactly 64 bytes of input message representative */
+	if (message_len != 64) {
+		return OQS_ERROR;
+	}
 	(void)message_len;
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu_x86_64)
 #if defined(OQS_DIST_BUILD)
@@ -129,6 +137,10 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_verify(const uint8_t *message, size_t
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
+	if (message_len != 64) {
+		return OQS_ERROR;
+	}
+	(void)message_len;
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_ml_dsa_44_extmu_sign(signature, signature_len, message, message_len, secret_key);
 	} else {
@@ -137,6 +149,10 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_sign_with_ctx_str(uint8_t *signature,
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
+	if (message_len != 64) {
+		return OQS_ERROR;
+	}
+	(void)message_len;
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_ml_dsa_44_extmu_verify(message, message_len, signature, signature_len, public_key);
 	} else {
