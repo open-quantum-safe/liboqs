@@ -683,28 +683,20 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
         # --- DELTA: ML-DSA EXTERNAL MU VARIANT EXPANSION ---
         extmu_variants = []
         for s in family['schemes']:
-            # Only expand if it's an original scheme and has the extmu keys in metadata
             if not s.get('is_extmu', False) and any('signature_signature_extmu' in imp for imp in s['metadata']['implementations']):
                 ext_s = deepcopy(s)
-                # Ensure unique API names for constructors and wrappers
                 ext_s['scheme'] += "_extmu"
                 ext_s['scheme_c'] += "_extmu"
                 ext_s['pretty_name_full'] += "-extmu"
                 ext_s['is_extmu'] = True
                 
-                # NOTE: pqclean_scheme is NOT modified to reuse original folders
-
-                # Swap metadata symbols to map OQS API to External Mu implementation
                 for imp in ext_s['metadata']['implementations']:
-                    if 'signature_signature_extmu' in imp:
-                        imp['signature_signature'] = imp['signature_signature_extmu']
-                    if 'signature_verify_extmu' in imp:
-                        imp['signature_verify'] = imp['signature_verify_extmu']
-                    # The extmu API typically does not use context strings
+                    imp['signature_signature'] = imp.get('signature_signature_extmu', imp['signature_signature'])
+                    imp['signature_verify'] = imp.get('signature_verify_extmu', imp['signature_verify'])
                     imp['api-with-context-string'] = False 
+                
                 extmu_variants.append(ext_s)
         
-        # Extend the family schemes list with the new variants
         family['schemes'].extend(extmu_variants)
 
         # --- LOOP 2: Handle KATs for the full expanded list ---

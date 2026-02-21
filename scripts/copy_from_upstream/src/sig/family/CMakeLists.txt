@@ -28,16 +28,22 @@ endif()
         {%- if impl['name'] == scheme['default_implementation'] %}
 
 if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})
-    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
+    # extmu variants are virtual: they only compile the wrapper file and reuse standard implementation objects
+    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c {% if not scheme.is_extmu %}{% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%}{% endif %})
            {%- if impl['compile_opts'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
            {%- endif -%}
 
         {%- else %}
-
+{# Skip non-default implementations (x86/aarch64) for extmu variants to avoid duplicate symbol errors #}
+{% if not scheme.is_extmu %}
 if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
+{%- endif %}
+
         {%- endif %}
+{# Include paths are still needed for the wrapper file to find headers #}
+{% if not scheme.is_extmu or impl['name'] == scheme['default_implementation'] %}
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] %}
@@ -48,8 +54,8 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
         {%- endif %}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}>)
 endif()
+{%- endif %}
     {%- endfor -%}
 {%- endfor %}
 
 set({{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} PARENT_SCOPE)
-
