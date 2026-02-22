@@ -35,11 +35,14 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
 	uint8_t *message = NULL;
-	size_t message_len = 100;
+	size_t message_len = 64;
 	uint8_t *signature = NULL;
 	size_t signature_len;
 	OQS_STATUS rc, ret = OQS_ERROR;
-
+	// If it is NOT an extmu variant, use the standard test length of 100
+    if (strstr(method_name, "-extmu") == NULL) {
+        message_len = 100;
+    }
 	//The magic numbers are random values.
 	//The length of the magic number was chosen to be 31 to break alignment
 	magic_t magic;
