@@ -147,6 +147,15 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_SNOVA OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_MQOM)
+                set(OQS_ENABLE_SIG_MQOM ON)
+                # Force the "memopt" variants of MQOM as these are
+                # the only ones suitable here (i.e. no large stack usage)
+                set(OQS_MEMOPT_BUILD ON)
+        else()
+                set(OQS_ENABLE_SIG_MQOM OFF)
+        endif()
+
         # Add the actual liboqs targets
         add_subdirectory(.. build)
 
