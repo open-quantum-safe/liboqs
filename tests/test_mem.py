@@ -18,9 +18,9 @@ def test_mem_kem(kem_name):
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_mem_sig(sig_name):
-    # Skip External Mu variants as they require exactly 64-byte inputs
+    # skip extmu variants as they require exactly 64-byte inputs
     if "-extmu" in sig_name:
-        pytest.skip('External Mu variants require specific input sizes not supported by this benchmark')
+        pytest.skip('External Mu variants require specific input sizes and are not supported by this benchmark')
     if not(helpers.is_sig_enabled_by_name(sig_name)):
         pytest.skip('Not enabled')
 

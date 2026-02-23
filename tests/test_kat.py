@@ -25,9 +25,9 @@ def test_kem(kem_name):
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
     kats = helpers.get_kats("sig")
-    # Skip SLH-DSA and External Mu variants
+    # skip slh-dsa and extmu variants
     if ("SLH_DSA" in sig_name or "-extmu" in sig_name): 
-        pytest.skip('Skipping KATs for slh-dsa and extmu variant')
+        pytest.skip('Skipping KATs for slh-dsa and extmu variants')
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_sig'), sig_name],

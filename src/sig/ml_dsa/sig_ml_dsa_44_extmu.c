@@ -75,7 +75,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_keypair(uint8_t *public_key, uint8_t 
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	/* External Mu variants require exactly 64 bytes of input message representative */
+	/* extmu variants require exactly 64 bytes of input message representative */
 	if (message_len != 64) {
 		return OQS_ERROR;
 	}
@@ -106,7 +106,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_sign(uint8_t *signature, size_t *sign
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-	/* External Mu variants require exactly 64 bytes of input message representative */
+	/* extmu variants require exactly 64 bytes of input message representative */
 	if (message_len != 64) {
 		return OQS_ERROR;
 	}

@@ -6,16 +6,13 @@
 set(_SNOVA_OBJS "")
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_24_5_4_opt OBJECT sig_snova_SNOVA_24_5_4.c snova_SNOVA_24_5_4_opt/oqs_snova.c snova_SNOVA_24_5_4_opt/snova.c snova_SNOVA_24_5_4_opt/snova_aes.c snova_SNOVA_24_5_4_opt/snova_common.c snova_SNOVA_24_5_4_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_24_5_4_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_24_5_4_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_4_opt)
     target_include_directories(snova_SNOVA_24_5_4_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_24_5_4_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_avx2)
     add_library(snova_SNOVA_24_5_4_avx2 OBJECT snova_SNOVA_24_5_4_avx2/oqs_snova.c snova_SNOVA_24_5_4_avx2/snova.c snova_SNOVA_24_5_4_avx2/snova_aes.c snova_SNOVA_24_5_4_avx2/snova_common.c snova_SNOVA_24_5_4_avx2/snova_shake.c)
@@ -25,7 +22,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_avx2)
     target_compile_options(snova_SNOVA_24_5_4_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_neon)
     add_library(snova_SNOVA_24_5_4_neon OBJECT snova_SNOVA_24_5_4_neon/oqs_snova.c snova_SNOVA_24_5_4_neon/snova.c snova_SNOVA_24_5_4_neon/snova_aes.c snova_SNOVA_24_5_4_neon/snova_common.c snova_SNOVA_24_5_4_neon/snova_shake.c)
@@ -37,16 +33,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_24_5_4_SHAKE_opt OBJECT sig_snova_SNOVA_24_5_4_SHAKE.c snova_SNOVA_24_5_4_SHAKE_opt/oqs_snova.c snova_SNOVA_24_5_4_SHAKE_opt/snova.c snova_SNOVA_24_5_4_SHAKE_opt/snova_aes.c snova_SNOVA_24_5_4_SHAKE_opt/snova_common.c snova_SNOVA_24_5_4_SHAKE_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_24_5_4_SHAKE_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=1 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_24_5_4_SHAKE_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_4_SHAKE_opt)
     target_include_directories(snova_SNOVA_24_5_4_SHAKE_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_24_5_4_SHAKE_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=1 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_SHAKE_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_avx2)
     add_library(snova_SNOVA_24_5_4_SHAKE_avx2 OBJECT snova_SNOVA_24_5_4_SHAKE_avx2/oqs_snova.c snova_SNOVA_24_5_4_SHAKE_avx2/snova.c snova_SNOVA_24_5_4_SHAKE_avx2/snova_aes.c snova_SNOVA_24_5_4_SHAKE_avx2/snova_common.c snova_SNOVA_24_5_4_SHAKE_avx2/snova_shake.c)
@@ -56,7 +49,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_avx2)
     target_compile_options(snova_SNOVA_24_5_4_SHAKE_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=1 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_SHAKE_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_neon)
     add_library(snova_SNOVA_24_5_4_SHAKE_neon OBJECT snova_SNOVA_24_5_4_SHAKE_neon/oqs_snova.c snova_SNOVA_24_5_4_SHAKE_neon/snova.c snova_SNOVA_24_5_4_SHAKE_neon/snova_aes.c snova_SNOVA_24_5_4_SHAKE_neon/snova_common.c snova_SNOVA_24_5_4_SHAKE_neon/snova_shake.c)
@@ -68,16 +60,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_24_5_4_esk_opt OBJECT sig_snova_SNOVA_24_5_4_esk.c snova_SNOVA_24_5_4_esk_opt/oqs_snova.c snova_SNOVA_24_5_4_esk_opt/snova.c snova_SNOVA_24_5_4_esk_opt/snova_aes.c snova_SNOVA_24_5_4_esk_opt/snova_common.c snova_SNOVA_24_5_4_esk_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_24_5_4_esk_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=0 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_24_5_4_esk_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_4_esk_opt)
     target_include_directories(snova_SNOVA_24_5_4_esk_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_24_5_4_esk_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=0 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_esk_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk_avx2)
     add_library(snova_SNOVA_24_5_4_esk_avx2 OBJECT snova_SNOVA_24_5_4_esk_avx2/oqs_snova.c snova_SNOVA_24_5_4_esk_avx2/snova.c snova_SNOVA_24_5_4_esk_avx2/snova_aes.c snova_SNOVA_24_5_4_esk_avx2/snova_common.c snova_SNOVA_24_5_4_esk_avx2/snova_shake.c)
@@ -87,7 +76,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk_avx2)
     target_compile_options(snova_SNOVA_24_5_4_esk_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=0 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_esk_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk_neon)
     add_library(snova_SNOVA_24_5_4_esk_neon OBJECT snova_SNOVA_24_5_4_esk_neon/oqs_snova.c snova_SNOVA_24_5_4_esk_neon/snova.c snova_SNOVA_24_5_4_esk_neon/snova_aes.c snova_SNOVA_24_5_4_esk_neon/snova_common.c snova_SNOVA_24_5_4_esk_neon/snova_shake.c)
@@ -99,16 +87,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_24_5_4_SHAKE_esk_opt OBJECT sig_snova_SNOVA_24_5_4_SHAKE_esk.c snova_SNOVA_24_5_4_SHAKE_esk_opt/oqs_snova.c snova_SNOVA_24_5_4_SHAKE_esk_opt/snova.c snova_SNOVA_24_5_4_SHAKE_esk_opt/snova_aes.c snova_SNOVA_24_5_4_SHAKE_esk_opt/snova_common.c snova_SNOVA_24_5_4_SHAKE_esk_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_24_5_4_SHAKE_esk_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=0 -DPK_EXPAND_SHAKE=1 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_24_5_4_SHAKE_esk_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_4_SHAKE_esk_opt)
     target_include_directories(snova_SNOVA_24_5_4_SHAKE_esk_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_24_5_4_SHAKE_esk_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=0 -DPK_EXPAND_SHAKE=1 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_SHAKE_esk_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_avx2)
     add_library(snova_SNOVA_24_5_4_SHAKE_esk_avx2 OBJECT snova_SNOVA_24_5_4_SHAKE_esk_avx2/oqs_snova.c snova_SNOVA_24_5_4_SHAKE_esk_avx2/snova.c snova_SNOVA_24_5_4_SHAKE_esk_avx2/snova_aes.c snova_SNOVA_24_5_4_SHAKE_esk_avx2/snova_common.c snova_SNOVA_24_5_4_SHAKE_esk_avx2/snova_shake.c)
@@ -118,7 +103,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_avx2)
     target_compile_options(snova_SNOVA_24_5_4_SHAKE_esk_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 -Dsk_is_seed=0 -DPK_EXPAND_SHAKE=1 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_4_SHAKE_esk_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_neon)
     add_library(snova_SNOVA_24_5_4_SHAKE_esk_neon OBJECT snova_SNOVA_24_5_4_SHAKE_esk_neon/oqs_snova.c snova_SNOVA_24_5_4_SHAKE_esk_neon/snova.c snova_SNOVA_24_5_4_SHAKE_esk_neon/snova_aes.c snova_SNOVA_24_5_4_SHAKE_esk_neon/snova_common.c snova_SNOVA_24_5_4_SHAKE_esk_neon/snova_shake.c)
@@ -130,16 +114,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_37_17_2)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_37_17_2_opt OBJECT sig_snova_SNOVA_37_17_2.c snova_SNOVA_37_17_2_opt/oqs_snova.c snova_SNOVA_37_17_2_opt/snova.c snova_SNOVA_37_17_2_opt/snova_aes.c snova_SNOVA_37_17_2_opt/snova_common.c snova_SNOVA_37_17_2_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_37_17_2_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=17 -Dl_SNOVA=2 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_37_17_2_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_17_2_opt)
     target_include_directories(snova_SNOVA_37_17_2_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_37_17_2_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=17 -Dl_SNOVA=2 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_37_17_2_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_37_17_2_avx2)
     add_library(snova_SNOVA_37_17_2_avx2 OBJECT snova_SNOVA_37_17_2_avx2/oqs_snova.c snova_SNOVA_37_17_2_avx2/snova.c snova_SNOVA_37_17_2_avx2/snova_aes.c snova_SNOVA_37_17_2_avx2/snova_common.c snova_SNOVA_37_17_2_avx2/snova_shake.c)
@@ -149,7 +130,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_37_17_2_avx2)
     target_compile_options(snova_SNOVA_37_17_2_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=37 -Do_SNOVA=17 -Dl_SNOVA=2 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_37_17_2_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_37_17_2_neon)
     add_library(snova_SNOVA_37_17_2_neon OBJECT snova_SNOVA_37_17_2_neon/oqs_snova.c snova_SNOVA_37_17_2_neon/snova.c snova_SNOVA_37_17_2_neon/snova_aes.c snova_SNOVA_37_17_2_neon/snova_common.c snova_SNOVA_37_17_2_neon/snova_shake.c)
@@ -161,16 +141,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_37_17_2_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_25_8_3)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_25_8_3_opt OBJECT sig_snova_SNOVA_25_8_3.c snova_SNOVA_25_8_3_opt/oqs_snova.c snova_SNOVA_25_8_3_opt/snova.c snova_SNOVA_25_8_3_opt/snova_aes.c snova_SNOVA_25_8_3_opt/snova_common.c snova_SNOVA_25_8_3_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_25_8_3_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=25 -Do_SNOVA=8 -Dl_SNOVA=3 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_25_8_3_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_25_8_3_opt)
     target_include_directories(snova_SNOVA_25_8_3_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_25_8_3_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=25 -Do_SNOVA=8 -Dl_SNOVA=3 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_25_8_3_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_25_8_3_avx2)
     add_library(snova_SNOVA_25_8_3_avx2 OBJECT snova_SNOVA_25_8_3_avx2/oqs_snova.c snova_SNOVA_25_8_3_avx2/snova.c snova_SNOVA_25_8_3_avx2/snova_aes.c snova_SNOVA_25_8_3_avx2/snova_common.c snova_SNOVA_25_8_3_avx2/snova_shake.c)
@@ -180,7 +157,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_25_8_3_avx2)
     target_compile_options(snova_SNOVA_25_8_3_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=25 -Do_SNOVA=8 -Dl_SNOVA=3 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_25_8_3_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_25_8_3_neon)
     add_library(snova_SNOVA_25_8_3_neon OBJECT snova_SNOVA_25_8_3_neon/oqs_snova.c snova_SNOVA_25_8_3_neon/snova.c snova_SNOVA_25_8_3_neon/snova_aes.c snova_SNOVA_25_8_3_neon/snova_common.c snova_SNOVA_25_8_3_neon/snova_shake.c)
@@ -192,16 +168,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_25_8_3_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_56_25_2)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_56_25_2_opt OBJECT sig_snova_SNOVA_56_25_2.c snova_SNOVA_56_25_2_opt/oqs_snova.c snova_SNOVA_56_25_2_opt/snova.c snova_SNOVA_56_25_2_opt/snova_aes.c snova_SNOVA_56_25_2_opt/snova_common.c snova_SNOVA_56_25_2_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_56_25_2_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=56 -Do_SNOVA=25 -Dl_SNOVA=2 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_56_25_2_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_56_25_2_opt)
     target_include_directories(snova_SNOVA_56_25_2_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_56_25_2_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=56 -Do_SNOVA=25 -Dl_SNOVA=2 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_56_25_2_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_56_25_2_avx2)
     add_library(snova_SNOVA_56_25_2_avx2 OBJECT snova_SNOVA_56_25_2_avx2/oqs_snova.c snova_SNOVA_56_25_2_avx2/snova.c snova_SNOVA_56_25_2_avx2/snova_aes.c snova_SNOVA_56_25_2_avx2/snova_common.c snova_SNOVA_56_25_2_avx2/snova_shake.c)
@@ -211,7 +184,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_56_25_2_avx2)
     target_compile_options(snova_SNOVA_56_25_2_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=56 -Do_SNOVA=25 -Dl_SNOVA=2 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_56_25_2_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_56_25_2_neon)
     add_library(snova_SNOVA_56_25_2_neon OBJECT snova_SNOVA_56_25_2_neon/oqs_snova.c snova_SNOVA_56_25_2_neon/snova.c snova_SNOVA_56_25_2_neon/snova_aes.c snova_SNOVA_56_25_2_neon/snova_common.c snova_SNOVA_56_25_2_neon/snova_shake.c)
@@ -223,16 +195,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_56_25_2_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_49_11_3)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_49_11_3_opt OBJECT sig_snova_SNOVA_49_11_3.c snova_SNOVA_49_11_3_opt/oqs_snova.c snova_SNOVA_49_11_3_opt/snova.c snova_SNOVA_49_11_3_opt/snova_aes.c snova_SNOVA_49_11_3_opt/snova_common.c snova_SNOVA_49_11_3_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_49_11_3_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=49 -Do_SNOVA=11 -Dl_SNOVA=3 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_49_11_3_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_49_11_3_opt)
     target_include_directories(snova_SNOVA_49_11_3_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_49_11_3_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=49 -Do_SNOVA=11 -Dl_SNOVA=3 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_49_11_3_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_49_11_3_avx2)
     add_library(snova_SNOVA_49_11_3_avx2 OBJECT snova_SNOVA_49_11_3_avx2/oqs_snova.c snova_SNOVA_49_11_3_avx2/snova.c snova_SNOVA_49_11_3_avx2/snova_aes.c snova_SNOVA_49_11_3_avx2/snova_common.c snova_SNOVA_49_11_3_avx2/snova_shake.c)
@@ -242,7 +211,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_49_11_3_avx2)
     target_compile_options(snova_SNOVA_49_11_3_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=49 -Do_SNOVA=11 -Dl_SNOVA=3 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_49_11_3_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_49_11_3_neon)
     add_library(snova_SNOVA_49_11_3_neon OBJECT snova_SNOVA_49_11_3_neon/oqs_snova.c snova_SNOVA_49_11_3_neon/snova.c snova_SNOVA_49_11_3_neon/snova_aes.c snova_SNOVA_49_11_3_neon/snova_common.c snova_SNOVA_49_11_3_neon/snova_shake.c)
@@ -254,16 +222,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_49_11_3_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_37_8_4)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_37_8_4_opt OBJECT sig_snova_SNOVA_37_8_4.c snova_SNOVA_37_8_4_opt/oqs_snova.c snova_SNOVA_37_8_4_opt/snova.c snova_SNOVA_37_8_4_opt/snova_aes.c snova_SNOVA_37_8_4_opt/snova_common.c snova_SNOVA_37_8_4_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_37_8_4_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=8 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_37_8_4_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_8_4_opt)
     target_include_directories(snova_SNOVA_37_8_4_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_37_8_4_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=8 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_37_8_4_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_37_8_4_avx2)
     add_library(snova_SNOVA_37_8_4_avx2 OBJECT snova_SNOVA_37_8_4_avx2/oqs_snova.c snova_SNOVA_37_8_4_avx2/snova.c snova_SNOVA_37_8_4_avx2/snova_aes.c snova_SNOVA_37_8_4_avx2/snova_common.c snova_SNOVA_37_8_4_avx2/snova_shake.c)
@@ -273,7 +238,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_37_8_4_avx2)
     target_compile_options(snova_SNOVA_37_8_4_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=37 -Do_SNOVA=8 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_37_8_4_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_37_8_4_neon)
     add_library(snova_SNOVA_37_8_4_neon OBJECT snova_SNOVA_37_8_4_neon/oqs_snova.c snova_SNOVA_37_8_4_neon/snova.c snova_SNOVA_37_8_4_neon/snova_aes.c snova_SNOVA_37_8_4_neon/snova_common.c snova_SNOVA_37_8_4_neon/snova_shake.c)
@@ -285,16 +249,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_37_8_4_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_5)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_24_5_5_opt OBJECT sig_snova_SNOVA_24_5_5.c snova_SNOVA_24_5_5_opt/oqs_snova.c snova_SNOVA_24_5_5_opt/snova.c snova_SNOVA_24_5_5_opt/snova_aes.c snova_SNOVA_24_5_5_opt/snova_common.c snova_SNOVA_24_5_5_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_24_5_5_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=5 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_24_5_5_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_5_opt)
     target_include_directories(snova_SNOVA_24_5_5_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_24_5_5_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=5 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_5_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_5_avx2)
     add_library(snova_SNOVA_24_5_5_avx2 OBJECT snova_SNOVA_24_5_5_avx2/oqs_snova.c snova_SNOVA_24_5_5_avx2/snova.c snova_SNOVA_24_5_5_avx2/snova_aes.c snova_SNOVA_24_5_5_avx2/snova_common.c snova_SNOVA_24_5_5_avx2/snova_shake.c)
@@ -304,7 +265,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_5_avx2)
     target_compile_options(snova_SNOVA_24_5_5_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=5 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_24_5_5_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_24_5_5_neon)
     add_library(snova_SNOVA_24_5_5_neon OBJECT snova_SNOVA_24_5_5_neon/oqs_snova.c snova_SNOVA_24_5_5_neon/snova.c snova_SNOVA_24_5_5_neon/snova_aes.c snova_SNOVA_24_5_5_neon/snova_common.c snova_SNOVA_24_5_5_neon/snova_shake.c)
@@ -316,16 +276,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_24_5_5_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_60_10_4)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_60_10_4_opt OBJECT sig_snova_SNOVA_60_10_4.c snova_SNOVA_60_10_4_opt/oqs_snova.c snova_SNOVA_60_10_4_opt/snova.c snova_SNOVA_60_10_4_opt/snova_aes.c snova_SNOVA_60_10_4_opt/snova_common.c snova_SNOVA_60_10_4_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_60_10_4_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=60 -Do_SNOVA=10 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_60_10_4_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_60_10_4_opt)
     target_include_directories(snova_SNOVA_60_10_4_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_60_10_4_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=60 -Do_SNOVA=10 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_60_10_4_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_60_10_4_avx2)
     add_library(snova_SNOVA_60_10_4_avx2 OBJECT snova_SNOVA_60_10_4_avx2/oqs_snova.c snova_SNOVA_60_10_4_avx2/snova.c snova_SNOVA_60_10_4_avx2/snova_aes.c snova_SNOVA_60_10_4_avx2/snova_common.c snova_SNOVA_60_10_4_avx2/snova_shake.c)
@@ -335,7 +292,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_60_10_4_avx2)
     target_compile_options(snova_SNOVA_60_10_4_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=60 -Do_SNOVA=10 -Dl_SNOVA=4 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_60_10_4_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_60_10_4_neon)
     add_library(snova_SNOVA_60_10_4_neon OBJECT snova_SNOVA_60_10_4_neon/oqs_snova.c snova_SNOVA_60_10_4_neon/snova.c snova_SNOVA_60_10_4_neon/snova_aes.c snova_SNOVA_60_10_4_neon/snova_common.c snova_SNOVA_60_10_4_neon/snova_shake.c)
@@ -347,16 +303,13 @@ if(OQS_ENABLE_SIG_snova_SNOVA_60_10_4_neon)
 endif()
 
 if(OQS_ENABLE_SIG_snova_SNOVA_29_6_5)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(snova_SNOVA_29_6_5_opt OBJECT sig_snova_SNOVA_29_6_5.c snova_SNOVA_29_6_5_opt/oqs_snova.c snova_SNOVA_29_6_5_opt/snova.c snova_SNOVA_29_6_5_opt/snova_aes.c snova_SNOVA_29_6_5_opt/snova_common.c snova_SNOVA_29_6_5_opt/snova_shake.c)
-    
     target_compile_options(snova_SNOVA_29_6_5_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=29 -Do_SNOVA=6 -Dl_SNOVA=5 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
-    
     target_include_directories(snova_SNOVA_29_6_5_opt PRIVATE ${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_29_6_5_opt)
     target_include_directories(snova_SNOVA_29_6_5_opt PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(snova_SNOVA_29_6_5_opt PUBLIC -DOPTIMISATION=1 -Dv_SNOVA=29 -Do_SNOVA=6 -Dl_SNOVA=5 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_29_6_5_opt>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_29_6_5_avx2)
     add_library(snova_SNOVA_29_6_5_avx2 OBJECT snova_SNOVA_29_6_5_avx2/oqs_snova.c snova_SNOVA_29_6_5_avx2/snova.c snova_SNOVA_29_6_5_avx2/snova_aes.c snova_SNOVA_29_6_5_avx2/snova_common.c snova_SNOVA_29_6_5_avx2/snova_shake.c)
@@ -366,7 +319,6 @@ if(OQS_ENABLE_SIG_snova_SNOVA_29_6_5_avx2)
     target_compile_options(snova_SNOVA_29_6_5_avx2 PUBLIC -DOPTIMISATION=2 -Dv_SNOVA=29 -Do_SNOVA=6 -Dl_SNOVA=5 -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS)
     set(_SNOVA_OBJS ${_SNOVA_OBJS} $<TARGET_OBJECTS:snova_SNOVA_29_6_5_avx2>)
 endif()
-
 
 if(OQS_ENABLE_SIG_snova_SNOVA_29_6_5_neon)
     add_library(snova_SNOVA_29_6_5_neon OBJECT snova_SNOVA_29_6_5_neon/oqs_snova.c snova_SNOVA_29_6_5_neon/snova.c snova_SNOVA_29_6_5_neon/snova_aes.c snova_SNOVA_29_6_5_neon/snova_common.c snova_SNOVA_29_6_5_neon/snova_shake.c)

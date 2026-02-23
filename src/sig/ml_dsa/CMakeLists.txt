@@ -6,16 +6,13 @@
 set(_ML_DSA_OBJS "")
 
 if(OQS_ENABLE_SIG_ml_dsa_44)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_44_ref OBJECT sig_ml_dsa_44.c mldsa-native_ml-dsa-44_ref/mldsa/src/ct.c mldsa-native_ml-dsa-44_ref/mldsa/src/debug.c mldsa-native_ml-dsa-44_ref/mldsa/src/packing.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-44_ref/mldsa/src/sign.c)
-    
     target_compile_options(ml_dsa_44_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
-    
     target_include_directories(ml_dsa_44_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref)
     target_include_directories(ml_dsa_44_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(ml_dsa_44_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_44_ref>)
 endif()
-
 
 if(OQS_ENABLE_SIG_ml_dsa_44_x86_64)
     add_library(ml_dsa_44_x86_64 OBJECT mldsa-native_ml-dsa-44_x86_64/mldsa/src/ct.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/debug.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/consts.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/intt.S mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/ntt.S mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/nttunpack.S mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/pointwise.S mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l4.S mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l5.S mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l7.S mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/poly_caddq_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/poly_chknorm_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/poly_decompose_32_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/poly_decompose_88_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/poly_use_hint_32_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/poly_use_hint_88_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/polyz_unpack_17_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/polyz_unpack_19_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/rej_uniform_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/rej_uniform_eta2_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/rej_uniform_eta4_avx2.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/native/x86_64/src/rej_uniform_table.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/packing.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/poly.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/poly_kl.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/polyvec.c mldsa-native_ml-dsa-44_x86_64/mldsa/src/sign.c)
@@ -25,7 +22,6 @@ if(OQS_ENABLE_SIG_ml_dsa_44_x86_64)
     target_compile_options(ml_dsa_44_x86_64 PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_44_x86_64>)
 endif()
-
 
 if(OQS_ENABLE_SIG_ml_dsa_44_aarch64)
     add_library(ml_dsa_44_aarch64 OBJECT mldsa-native_ml-dsa-44_aarch64/mldsa/src/ct.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/debug.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/aarch64_zetas.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/intt.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l4.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l5.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l7.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/ntt.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/pointwise_montgomery.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/poly_caddq_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/poly_chknorm_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/poly_decompose_32_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/poly_decompose_88_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/poly_use_hint_32_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/poly_use_hint_88_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_17_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_19_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_table.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/rej_uniform_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta2_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta4_asm.S mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta_table.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/native/aarch64/src/rej_uniform_table.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/packing.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/poly.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/poly_kl.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/polyvec.c mldsa-native_ml-dsa-44_aarch64/mldsa/src/sign.c)
@@ -37,16 +33,13 @@ if(OQS_ENABLE_SIG_ml_dsa_44_aarch64)
 endif()
 
 if(OQS_ENABLE_SIG_ml_dsa_65)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_65_ref OBJECT sig_ml_dsa_65.c mldsa-native_ml-dsa-65_ref/mldsa/src/ct.c mldsa-native_ml-dsa-65_ref/mldsa/src/debug.c mldsa-native_ml-dsa-65_ref/mldsa/src/packing.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-65_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-65_ref/mldsa/src/sign.c)
-    
     target_compile_options(ml_dsa_65_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
-    
     target_include_directories(ml_dsa_65_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref)
     target_include_directories(ml_dsa_65_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(ml_dsa_65_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_65_ref>)
 endif()
-
 
 if(OQS_ENABLE_SIG_ml_dsa_65_x86_64)
     add_library(ml_dsa_65_x86_64 OBJECT mldsa-native_ml-dsa-65_x86_64/mldsa/src/ct.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/debug.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/consts.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/intt.S mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/ntt.S mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/nttunpack.S mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/pointwise.S mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l4.S mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l5.S mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l7.S mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/poly_caddq_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/poly_chknorm_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/poly_decompose_32_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/poly_decompose_88_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/poly_use_hint_32_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/poly_use_hint_88_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/polyz_unpack_17_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/polyz_unpack_19_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/rej_uniform_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/rej_uniform_eta2_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/rej_uniform_eta4_avx2.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/native/x86_64/src/rej_uniform_table.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/packing.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/poly.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/poly_kl.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/polyvec.c mldsa-native_ml-dsa-65_x86_64/mldsa/src/sign.c)
@@ -56,7 +49,6 @@ if(OQS_ENABLE_SIG_ml_dsa_65_x86_64)
     target_compile_options(ml_dsa_65_x86_64 PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_65_x86_64>)
 endif()
-
 
 if(OQS_ENABLE_SIG_ml_dsa_65_aarch64)
     add_library(ml_dsa_65_aarch64 OBJECT mldsa-native_ml-dsa-65_aarch64/mldsa/src/ct.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/debug.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/aarch64_zetas.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/intt.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l4.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l5.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l7.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/ntt.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/pointwise_montgomery.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/poly_caddq_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/poly_chknorm_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/poly_decompose_32_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/poly_decompose_88_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/poly_use_hint_32_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/poly_use_hint_88_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_17_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_19_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_table.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/rej_uniform_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta2_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta4_asm.S mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta_table.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/native/aarch64/src/rej_uniform_table.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/packing.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/poly.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/poly_kl.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/polyvec.c mldsa-native_ml-dsa-65_aarch64/mldsa/src/sign.c)
@@ -68,16 +60,13 @@ if(OQS_ENABLE_SIG_ml_dsa_65_aarch64)
 endif()
 
 if(OQS_ENABLE_SIG_ml_dsa_87)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_87_ref OBJECT sig_ml_dsa_87.c mldsa-native_ml-dsa-87_ref/mldsa/src/ct.c mldsa-native_ml-dsa-87_ref/mldsa/src/debug.c mldsa-native_ml-dsa-87_ref/mldsa/src/packing.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-87_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-87_ref/mldsa/src/sign.c)
-    
     target_compile_options(ml_dsa_87_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
-    
     target_include_directories(ml_dsa_87_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref)
     target_include_directories(ml_dsa_87_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(ml_dsa_87_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_87_ref>)
 endif()
-
 
 if(OQS_ENABLE_SIG_ml_dsa_87_x86_64)
     add_library(ml_dsa_87_x86_64 OBJECT mldsa-native_ml-dsa-87_x86_64/mldsa/src/ct.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/debug.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/consts.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/intt.S mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/ntt.S mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/nttunpack.S mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/pointwise.S mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l4.S mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l5.S mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/pointwise_acc_l7.S mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/poly_caddq_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/poly_chknorm_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/poly_decompose_32_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/poly_decompose_88_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/poly_use_hint_32_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/poly_use_hint_88_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/polyz_unpack_17_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/polyz_unpack_19_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/rej_uniform_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/rej_uniform_eta2_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/rej_uniform_eta4_avx2.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/native/x86_64/src/rej_uniform_table.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/packing.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/poly.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/poly_kl.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/polyvec.c mldsa-native_ml-dsa-87_x86_64/mldsa/src/sign.c)
@@ -87,7 +76,6 @@ if(OQS_ENABLE_SIG_ml_dsa_87_x86_64)
     target_compile_options(ml_dsa_87_x86_64 PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_87_x86_64>)
 endif()
-
 
 if(OQS_ENABLE_SIG_ml_dsa_87_aarch64)
     add_library(ml_dsa_87_aarch64 OBJECT mldsa-native_ml-dsa-87_aarch64/mldsa/src/ct.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/debug.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/aarch64_zetas.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/intt.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l4.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l5.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/mld_polyvecl_pointwise_acc_montgomery_l7.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/ntt.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/pointwise_montgomery.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/poly_caddq_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/poly_chknorm_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/poly_decompose_32_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/poly_decompose_88_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/poly_use_hint_32_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/poly_use_hint_88_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_17_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_19_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/polyz_unpack_table.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/rej_uniform_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta2_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta4_asm.S mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/rej_uniform_eta_table.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/native/aarch64/src/rej_uniform_table.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/packing.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/poly.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/poly_kl.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/polyvec.c mldsa-native_ml-dsa-87_aarch64/mldsa/src/sign.c)
@@ -99,48 +87,30 @@ if(OQS_ENABLE_SIG_ml_dsa_87_aarch64)
 endif()
 
 if(OQS_ENABLE_SIG_ml_dsa_44_extmu)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_44_extmu_ref OBJECT sig_ml_dsa_44_extmu.c )
-    
     target_compile_options(ml_dsa_44_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
-    
     target_include_directories(ml_dsa_44_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref)
     target_include_directories(ml_dsa_44_extmu_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(ml_dsa_44_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_44_extmu_ref>)
 endif()
 
-
-
-
-
 if(OQS_ENABLE_SIG_ml_dsa_65_extmu)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_65_extmu_ref OBJECT sig_ml_dsa_65_extmu.c )
-    
     target_compile_options(ml_dsa_65_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
-    
     target_include_directories(ml_dsa_65_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref)
     target_include_directories(ml_dsa_65_extmu_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(ml_dsa_65_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_65_extmu_ref>)
 endif()
 
-
-
-
-
 if(OQS_ENABLE_SIG_ml_dsa_87_extmu)
-    # extmu variants are virtual: they only compile the wrapper file and link against standard variant objects
     add_library(ml_dsa_87_extmu_ref OBJECT sig_ml_dsa_87_extmu.c )
-    
     target_compile_options(ml_dsa_87_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
-    
     target_include_directories(ml_dsa_87_extmu_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref)
     target_include_directories(ml_dsa_87_extmu_ref PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_compile_options(ml_dsa_87_extmu_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     set(_ML_DSA_OBJS ${_ML_DSA_OBJS} $<TARGET_OBJECTS:ml_dsa_87_extmu_ref>)
 endif()
-
-
-
-
 
 set(ML_DSA_OBJS ${_ML_DSA_OBJS} PARENT_SCOPE)

@@ -76,12 +76,12 @@ def generator(destination_file_path, template_filename, delimiter, family, schem
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
     f = copy.deepcopy(family)
-    # Check if the destination file exists to avoid FileNotFoundError on new files
+    # check if the destination file exists to avoid "FileNotFoundError" on new files
     full_destination_path = os.path.join(os.environ['LIBOQS_DIR'], destination_file_path)
     if os.path.exists(full_destination_path):
         contents = file_get_contents(full_destination_path)
     else:
-        contents = "" # Initialize empty for new files like _extmu.c
+        contents = "" # initialize empty for new files like _extmu.c
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
     identifier = '{} OQS_COPY_FROM_{}_FRAGMENT_{}'.format(delimiter, 'LIBJADE', os.path.splitext(os.path.basename(template_filename))[0].upper())
@@ -553,7 +553,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             if 'sources' in i:
                 if i['sources']:
                     preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
-                    # Check if sources is already a list to prevent the split() error
+                    # check if sources is already a list to prevent the split() error
                     srcs = i['sources'].split(" ") if isinstance(i['sources'], str) else i['sources']
                     for s in srcs:
                         # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
@@ -638,8 +638,6 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     expected_sources = list(filter(lambda x: x.lower().endswith(".c") or x.lower().endswith(".s"), common_dep['sources']))
                     assert (len(expected_sources) == len(srcs))
                     common_dep['sources_addl'] = srcs
-
-        # --- LOOP 1: Process original implementations first ---
         for scheme in family['schemes']:
             scheme['is_extmu'] = False # Mark as standard variant
             if 'implementation' in scheme:
@@ -649,7 +647,8 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     print("SRCs found: %s" % (srcs))
                 if ('sources' in scheme):
                     assert (len(scheme['sources']) == len(srcs))
-                # retain the 1 implementation and add sources
+                # in any case: add 'sources' to implementation(s)
+                # Only retain this 1 implementation:
                 scheme['metadata']['implementations'] = [imp for imp in scheme['metadata']['implementations'] if
                                                          imp['name'] == impl]
                 scheme['metadata']['implementations'][0]['sources'] = srcs
@@ -658,11 +657,14 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     srcs = handle_implementation(impl['name'], family, scheme, basedir)
                     if DEBUG > 2:
                         print("SRCs found: %s" % (srcs))
+                    # in any case: add 'sources' to implementation(s)
                     impl['sources'] = srcs
-                    # handle architecture defines and flags
+                    # also add suitable defines:
                     try:
                         for i in range(len(impl['supported_platforms'])):
                             req = impl['supported_platforms'][i]
+                            # if compiling for ARM64_V8, asimd/neon is implied and will cause errors
+                            # when provided to the compiler; OQS uses the term ARM_NEON
                             if req['architecture'] == 'arm_8':
                                 req['architecture'] = 'ARM64_V8'
                             if 'required_flags' in req:
@@ -680,8 +682,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
 
-        # --- ML-DSA EXTERNAL MU VARIANT EXPANSION ---
-# --- ML-DSA EXTERNAL MU VARIANT EXPANSION ---
+
         extmu_variants = []
         for s in family['schemes']:
             if not s.get('is_extmu', False) and any('signature_signature_extmu' in imp for imp in s['metadata']['implementations']):
@@ -702,7 +703,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
         
         family['schemes'].extend(extmu_variants)
         
-        # --- LOOP 2: Handle KATs for the full expanded list ---
+
         if with_kat:
             for scheme in family['schemes']:
                 # Skip KAT entries for External Mu variants
@@ -718,18 +719,21 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                         kats[type_key][scheme['pretty_name_full']] = {}
                 kats[type_key][scheme['pretty_name_full']]['single'] = scheme['metadata']['nistkat-sha256']
 
-        # --- LOOP 3: Generators ---
         if with_generator:
             generator(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
                              family['type'] + '_{}.h'.format(family['name'])),
                 os.path.join('src', family['type'], 'family', family['type'] + '_family.h'),
-                '/////', family, None,
+                '/////',
+                family,
+                None,
             )
             generator(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
                 os.path.join('src', family['type'], 'family', 'CMakeLists.txt'),
-                '#####', family, None,
+                '#####',
+                family,
+                None,
             )
 
             for scheme in family['schemes']:
@@ -737,15 +741,21 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
                                  family['type'] + '_{}_{}.c'.format(family['name'], scheme['scheme_c'])),
                     os.path.join('src', family['type'], 'family', family['type'] + '_scheme.c'),
-                    '/////', family, scheme,
+                    '/////',
+                    family,
+                    scheme,
                 )
         
         if with_libjade:
             replacer_contextual(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
                 os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade'),
-                '#####', family, None, libjade=True
+                '#####',
+                family,
+                None,
+                libjade=True
             )
+
 
 def copy_from_upstream(slh_dsa_inst: dict):
     """Integrate upstreams implementations and algorithms described in 
