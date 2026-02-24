@@ -18,6 +18,7 @@
 #include "../src/sig/slh_dsa/slh_dsa_c/slh_dsa.h"
 
 #define MLDSA_RNDBYTES 32
+#define MLDSA_MULEN	   64
 #define MAXCTXBYTES 255
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
@@ -199,6 +200,13 @@ static inline bool is_ml_dsa(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44))
 	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
 	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
+}
+
+/* ML_DSA-specific extmu functions */
+static inline bool is_ml_dsa_extmu(const char *method_name) {
+	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu))
+		   || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu))
+		   || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu));
 }
 
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
@@ -392,15 +400,15 @@ cleanup:
 	return ret;
 }
 
+/* signature verification internal APIs tests */
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
-static int sig_ver_vector(const char *method_name,
+static int sig_ver_vector_int(const char *method_name,
                           const uint8_t *sigVer_pk_bytes,
                           const uint8_t *sigVer_msg_bytes,
                           size_t msgLen,
                           const uint8_t *sigVer_sig_bytes,
                           size_t sigLen,
-                          int testPassed,
-                          int extMu) {
+                          int testPassed) {
 
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -421,15 +429,15 @@ static int sig_ver_vector(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, extMu);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, extMu);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, extMu);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -463,6 +471,7 @@ cleanup:
 	return ret;
 }
 
+/* signature verification external APIs with context tests */
 static int sig_ver_vector_ext(const char *method_name,
                               const uint8_t *sigVer_pk_bytes,
                               const uint8_t *sigVer_msg_bytes,
@@ -530,6 +539,58 @@ cleanup:
 	(void)sigLen;
 }
 
+/* signature verification external-MU APIs tests */
+static int sig_ver_vector_extmu(const char *method_name,
+                              const uint8_t *sigVer_pk_bytes,
+                              const uint8_t *sigVer_msg_bytes,
+                              size_t msgLen,
+                              const uint8_t *sigVer_sig_bytes,
+                              size_t sigLen,
+                              int testPassed) {
+
+	FILE *fh = NULL;
+	OQS_SIG *sig = NULL;
+	int rc = -1, ret = -1;
+
+	if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL) || (msgLen != MLDSA_MULEN)) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL or mu length incorrect!\n", method_name);
+		goto err;
+	}
+
+	sig = OQS_SIG_new(method_name);
+	if (sig == NULL) {
+		printf("[vectors_sig] %s was not enabled at compile-time.\n", method_name);
+		goto algo_not_enabled;
+	}
+
+	fh = stdout;
+
+	rc = OQS_SIG_verify(sig, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, sigLen, sigVer_pk_bytes);
+
+	if ((!rc) != testPassed) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_verify failed!\n", method_name);
+		goto err;
+	} else {
+		ret = EXIT_SUCCESS;
+	}
+
+	fprintBstr(fh, "testPassed: ", (const uint8_t *)&testPassed, 1);
+
+	goto cleanup;
+
+err:
+	ret = EXIT_FAILURE;
+	goto cleanup;
+
+algo_not_enabled:
+	ret = EXIT_SUCCESS;
+
+cleanup:
+	OQS_SIG_free(sig);
+	return ret;
+}
+
+/* signature verification prehash APIs with context tests */
 static int sig_ver_prehash_vector_ext(const char *method_name,
                                       const uint8_t *sigVer_pk_bytes,
                                       const uint8_t *sigVer_msg_bytes,
@@ -596,9 +657,10 @@ cleanup:
 	return ret;
 }
 
-static int sig_gen_vector(const char *method_name,
+/* signature generation internal API tests */
+static int sig_gen_vector_int(const char *method_name,
                           uint8_t *prng_output_stream,
-                          const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig, int extMu) {
+                          const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig) {
 
 	FILE *fh = NULL;
 	uint8_t *signature = NULL;
@@ -630,15 +692,15 @@ static int sig_gen_vector(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, extMu);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, extMu);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, extMu);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -676,6 +738,7 @@ cleanup:
 	return ret;
 }
 
+/* signature generation external APIs with context tests */
 static int sig_gen_vector_ext(const char *method_name,
                               uint8_t *prng_output_stream,
                               const uint8_t *sigGen_sk,
@@ -744,7 +807,7 @@ static int sig_gen_vector_ext(const char *method_name,
 		ret = EXIT_SUCCESS;
 	} else {
 		ret = EXIT_FAILURE;
-		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_sign_with_ctx_str doesn't match!\n", method_name);
+		fprintf(stderr, "[vectors_sig] %s ERROR: signature doesn't match!\n", method_name);
 	}
 
 	// NOTE: OQS_SIG_sign should be equivalent to OQS_SIG_sign_with_ctx_str(ctx=NULL, ctxlen=0)
@@ -781,6 +844,90 @@ cleanup:
 	return ret;
 }
 
+/* signature generation external-MU APIs tests */
+static int sig_gen_vector_extmu(const char *method_name,
+                              uint8_t *prng_output_stream,
+                              const uint8_t *sigGen_sk,
+                              const uint8_t *sigGen_msg, size_t sigGen_msgLen,
+                              const uint8_t *sigGen_sig) {
+
+	uint8_t *entropy_input;
+	FILE *fh = NULL;
+	uint8_t *signature = NULL;
+	OQS_SIG *sig = NULL;
+	int rc = -1, ret = -1;
+	size_t sigLen;
+
+	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
+	void (*randombytes_free)(void) = NULL;
+
+	sig = OQS_SIG_new(method_name);
+	if (sig == NULL) {
+		printf("[vectors_sig] %s was not enabled at compile-time.\n", method_name);
+		goto algo_not_enabled;
+	}
+
+	if (is_ml_dsa_extmu(method_name)) {
+		OQS_randombytes_custom_algorithm(&MLDSA_randombytes);
+		randombytes_init = &MLDSA_randombytes_init;
+		randombytes_free = &MLDSA_randombytes_free;
+		entropy_input = (uint8_t *) prng_output_stream;
+	} else {
+		// Only ML-DSA-Extmu supported
+		goto err;
+	}
+
+	randombytes_init(entropy_input, NULL);
+
+	sigLen = sig->length_signature;
+
+	fh = stdout;
+
+	signature = OQS_MEM_malloc(sigLen);
+
+	if (signature == NULL) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
+		goto err;
+	}
+
+	if ((prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msg == NULL) || (sigGen_sig == NULL) || (sigGen_msgLen != MLDSA_MULEN)) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL or mu length incorrect !\n", method_name);
+		goto err;
+	}
+
+	rc = OQS_SIG_sign(sig, signature, &sigLen, sigGen_msg, sigGen_msgLen, sigGen_sk);
+
+	if (rc) {
+		fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_sign failed!\n", method_name);
+		goto err;
+	}
+	fprintBstr(fh, "signature: ", signature, sig->length_signature);
+
+	if (!memcmp(signature, sigGen_sig, sigLen)) {
+		ret = EXIT_SUCCESS;
+	} else {
+		ret = EXIT_FAILURE;
+		fprintf(stderr, "[vectors_sig] %s ERROR: signature doesn't match!\n", method_name);
+	}
+	goto cleanup;
+
+err:
+	ret = EXIT_FAILURE;
+	goto cleanup;
+
+algo_not_enabled:
+	ret = EXIT_SUCCESS;
+
+cleanup:
+	OQS_MEM_insecure_free(signature);
+	if (randombytes_free != NULL) {
+		randombytes_free();
+	}
+	OQS_SIG_free(sig);
+	return ret;
+}
+
+/* signature generation pre-hash external APIs with context tests */
 static int sig_gen_prehash_vector_ext(const char *method_name,
                                       uint8_t *prng_output_stream,
                                       const uint8_t *sigGen_sk,
@@ -988,8 +1135,8 @@ int main(int argc, char **argv) {
 		rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
 
 	} else if (!strcmp(test_name, "sigGen_int")) {
-		/* vectors_sig alg_name sigGen_int sk message signature rnd extmu ---> (argc 8) */
-		if (argc != 8) {
+		/* vectors_sig alg_name sigGen_int sk message signature rnd ---> (argc 8) */
+		if (argc != 7) {
 			valid_args = false;
 			goto err;
 		}
@@ -997,16 +1144,13 @@ int main(int argc, char **argv) {
 		sigGen_msg = argv[4];
 		sigGen_sig = argv[5];
 		prng_output_stream = argv[6];
-		int extMu = atoi(argv[7]);
 		/* still need to deal with prehash FIX */
-
 		if (is_ml_dsa(alg_name)) {
 			if ( strlen(sigGen_msg) % 2 != 0 ||
 			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
 			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-			        (extMu != 0 && extMu != 1)) {
-				printf("lengths bad or external mu value incorrect\n");
+			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+				printf("lengths bad\n");
 				goto err;
 			}
 		} else if (is_slh_dsa(alg_name)) {
@@ -1047,7 +1191,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SLH_DSA)
-		rc = sig_gen_vector(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes, extMu);
+		rc = sig_gen_vector_int(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
@@ -1128,6 +1272,48 @@ int main(int argc, char **argv) {
 		goto cleanup;
 #endif
 
+	} else if (!strcmp(test_name, "sigGen_extmu")) {
+		/* vectors_sig alg_name sigGen_extmu sk message signature rnd ---> (argc 7) */
+		if (argc != 7) {
+			valid_args = false;
+			goto err;
+		}
+		sigGen_sk = argv[3];
+		sigGen_msg = argv[4];
+		sigGen_sig = argv[5];
+		prng_output_stream = argv[6];
+
+		if ( strlen(sigGen_msg)  != 2 *  MLDSA_MULEN ||
+				strlen(sigGen_sig) != 2 * sig->length_signature ||
+				strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+				strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			printf("lengths bad\n");
+			goto err;
+		}
+		msgLen = strlen(sigGen_msg) / 2;
+		ctxlen = strlen(sigGen_ctx) / 2;
+
+		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
+		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
+		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
+
+		if ((sigGen_sk_bytes == NULL) || (sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
+			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
+			goto err;
+		}
+
+		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
+		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
+		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
+#if defined(OQS_SIG_alg_ml_dsa_44_extmu) || defined(OQS_SIG_alg_ml_dsa_65_extmu) || defined(OQS_SIG_alg_ml_dsa_87_extmu)
+		rc = sig_gen_vector_extmu(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
+#else
+		rc = EXIT_SUCCESS;
+		goto cleanup;
+#endif
+
 	} else if (!strcmp(test_name, "sigGen_prehash_ext")) {
 		/* vectors_sig alg_name sigGen_ext sk message signature context rnd algname ---> (argc 9) */
 		if (argc != 9) {
@@ -1185,15 +1371,14 @@ int main(int argc, char **argv) {
 #endif
 
 	} else if (!strcmp(test_name, "sigVer_int")) {
-		/* vectors_sig alg_name sigVer_int pk message signature testPassed extmu ---> (argc 8) */
-		if (argc != 8) {
+		/* vectors_sig alg_name sigVer_int pk message signature testPassed ---> (argc 7) */
+		if (argc != 7) {
 			valid_args = false;
 			goto err;
 		}
 		sigVer_pk = argv[3];
 		sigVer_msg = argv[4];
 		sigVer_sig = argv[5];
-		int extMu = atoi(argv[7]);
 
 		int sigVerPassed = atoi(argv[6]);
 
@@ -1201,8 +1386,7 @@ int main(int argc, char **argv) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
 			        strlen(sigVer_sig) != 2 * sig->length_signature ||
 			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        (sigVerPassed != 0 && sigVerPassed != 1) ||
-			        (extMu != 0 && extMu != 1)) {
+			        (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
@@ -1233,7 +1417,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
-		rc = sig_ver_vector(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVerPassed, extMu);
+		rc = sig_ver_vector_int(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVerPassed);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
@@ -1299,6 +1483,46 @@ int main(int argc, char **argv) {
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 		rc = sig_ver_vector_ext(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVer_ctx_bytes, ctxlen, sigVerPassed);
+#else
+		rc = EXIT_SUCCESS;
+		goto cleanup;
+#endif
+
+	}  else if (!strcmp(test_name, "sigVer_extmu")) {
+		/* vectors_sig alg_name sigVer_extmu pk message signature testPassed ---> (argc 7) */
+		if (argc != 7) {
+			valid_args = false;
+			goto err;
+		}
+		sigVer_pk = argv[3];
+		sigVer_msg = argv[4];
+		sigVer_sig = argv[5];
+		int sigVerPassed = atoi(argv[6]);
+
+		if (strlen(sigVer_msg) % 2 != 0 ||
+				strlen(sigVer_sig) != 2 * sig->length_signature ||
+				strlen(sigVer_pk) != 2 * sig->length_public_key ||
+				(sigVerPassed != 0 && sigVerPassed != 1)) {
+			printf("lengths bad or incorrect verification status \n");
+			goto err;
+		}
+
+		msgLen = strlen(sigVer_msg) / 2;
+		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
+		sigVer_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigVer_sig_bytes = OQS_MEM_malloc(strlen(sigVer_sig) / 2);
+
+		if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
+			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
+			goto err;
+		}
+
+		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
+		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
+
+#if defined(OQS_SIG_alg_ml_dsa_44_extmu) || defined(OQS_SIG_alg_ml_dsa_65_extmu) || defined(OQS_SIG_alg_ml_dsa_87_extmu)
+		rc = sig_ver_vector_extmu(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVerPassed);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;

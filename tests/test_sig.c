@@ -358,7 +358,7 @@ int main(int argc, char **argv) {
 	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5", "cross-rsdp-128-small", "cross-rsdp-192-small", "cross-rsdp-256-balanced", "cross-rsdp-256-small", "cross-rsdpg-192-small", "cross-rsdpg-256-small", "SNOVA_37_17_2", "SNOVA_56_25_2", "SNOVA_49_11_3", "SNOVA_37_8_4", "SNOVA_24_5_5", "SNOVA_60_10_4", "SNOVA_29_6_5"};
 	int test_in_thread = 1;
 	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
-		if ((strncmp(alg_name, "SLH_DSA", 7) == 0) || (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) ) {
+		if ((strncmp(alg_name, "SLH_DSA", 7) == 0) || (strstr(alg_name, no_thread_sig_patterns[i]) != NULL)) {
 			test_in_thread = 0;
 			break;
 		}

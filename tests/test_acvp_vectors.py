@@ -272,10 +272,8 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                 if variant["signatureInterface"] == "internal":
                     if variant["externalMu"]:
                         message = testCase["mu"]
-                        extmu = "1"
                     else:
                         message = testCase["message"]
-                        extmu = "0"
                 else:
                     message = testCase["message"]
                 # internal pre-hash API take hash as "message"
@@ -287,7 +285,7 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                 rnd = testCase["rnd"] if not variant["deterministic"] else "0" * 64
 
                 build_dir = helpers.get_current_build_dir_name()
-                if variant["signatureInterface"] == "internal":
+                if variant["signatureInterface"] == "internal" and not variant["externalMu"]:
                     helpers.run_subprocess(
                         [
                             f"{build_dir}/tests/vectors_sig",
@@ -296,8 +294,19 @@ def test_acvp_vec_ml_dsa_sig_gen(sig_name):
                             sk,
                             message,
                             signature,
+                            rnd
+                        ]
+                    )
+                elif variant["signatureInterface"] == "internal" and variant["externalMu"]:
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name+"-extmu",
+                            "sigGen_extmu",
+                            sk,
+                            message,
+                            signature,
                             rnd,
-                            extmu
                         ]
                     )
                 elif variant["signatureInterface"] == "external" and variant["preHash"] == "pure":
@@ -359,10 +368,8 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                 if variant["signatureInterface"] == "internal":
                     if variant["externalMu"]:
                         message = testCase["mu"]
-                        extmu = "1"
                     else:
                         message = testCase["message"]
-                        extmu = "0"
                 else:
                     message = testCase["message"]
 
@@ -376,7 +383,7 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                 testPassed = "1" if testCase["testPassed"] else "0"
 
                 build_dir = helpers.get_current_build_dir_name()
-                if variant["signatureInterface"] == "internal":
+                if variant["signatureInterface"] == "internal" and not variant["externalMu"]:
                     helpers.run_subprocess(
                         [
                             f"{build_dir}/tests/vectors_sig",
@@ -385,8 +392,19 @@ def test_acvp_vec_ml_dsa_sig_ver(sig_name):
                             pk,
                             message,
                             signature,
+                            testPassed                       
+                        ]
+                    )
+                elif variant["signatureInterface"] == "internal" and variant["externalMu"]:
+                    helpers.run_subprocess(
+                        [
+                            f"{build_dir}/tests/vectors_sig",
+                            sig_name+"-extmu",
+                            "sigVer_extmu",
+                            pk,
+                            message,
+                            signature,
                             testPassed,
-                            extmu
                         ]
                     )
                 elif variant["signatureInterface"] == "external" and variant["preHash"] == "pure":
@@ -541,9 +559,7 @@ def test_acvp_vec_slh_dsa_sig_gen(sig_name):
                             sk,
                             message,
                             signature,
-                            rnd,
-                            "0"
-                        ]
+                            rnd                        ]
                     )
                 else:
                     context = testCase["context"]
@@ -593,9 +609,7 @@ def test_acvp_vec_slh_dsa_sig_ver(sig_name):
                             pk,
                             message,
                             signature,
-                            testPassed,
-                            "0"
-                        ]
+                            testPassed                        ]
                     )
                 else:
                     context = testCase["context"]
