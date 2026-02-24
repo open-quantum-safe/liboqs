@@ -13,6 +13,7 @@
 /src/kem/kyber/libjade* @praveksharma
 /src/kem/ml_kem @bhess
 /src/kem/ntru @saitomst
+/src/kem/ntruprime @bbbrumley
 /src/sig/cross @alexrow
 /src/sig/mayo @bhess
 /src/sig/ml_dsa @bhess
