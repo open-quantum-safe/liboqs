@@ -28,4 +28,4 @@ For algorithms that participated in the NIST Post-Quantum Cryptography (PQC) sta
 Not all algorithms in liboqs were part of the NIST PQC process. In particular, stateful signature schemes were not included in the NIST PQC standardization. Their KAT values are generated based on the deterministic behavior defined by their respective implementations within liboqs. 
 The `kat_sig_stfl` test program produces deterministic outputs for these algorithms, and the resulting SHA256 hashes are stored in `sig_stfl/kats.json`.
 
-If c  hanges are made to KAT generation logic or algorithm implementations, the corresponding hash values in the `kats.json` files must be regenerated.
+If changes are made to KAT generation logic or algorithm implementations, the corresponding hash values in the `kats.json` files must be regenerated.

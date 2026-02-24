@@ -190,6 +190,7 @@ If you want to create Visual Studio build files, e.g., if not using `ninja`, be 
 You can cross compile liboqs for various platforms. Detailed information is available [in the Wiki](https://github.com/open-quantum-safe/liboqs/wiki/Platform-specific-notes-for-building-liboqs#cross-compiling).
 
 ## Documentation
+
 More detailed information on building, optional build parameters, example applications, coding conventions and more can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
 
 ## Contributing
