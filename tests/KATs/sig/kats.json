@@ -36,21 +36,21 @@
     "single": "9a196e7fb32fbc93757dc2d8dc1924460eab66303c0c08aeb8b798fb8d8f8cf3"
   },
   "ML-DSA-44-extmu": {
-    "single": "9a196e7fb32fbc93757dc2d8dc1924460eab66303c0c08aeb8b798fb8d8f8cf3"
+    "single": 0
   },
   "ML-DSA-65": {
     "all": "47e1ca6d4a45e9853e381954cf97206eca22993deade3cade45bd9d9457c93f9",
     "single": "7cb96242eac9907a55b5c84c202f0ebd552419c50b2e986dc2e28f07ecebf072"
   },
   "ML-DSA-65-extmu": {
-    "single": "7cb96242eac9907a55b5c84c202f0ebd552419c50b2e986dc2e28f07ecebf072"
+    "single": 0
   },
   "ML-DSA-87": {
     "all": "12382114979d5b64436aebfe6db02d61c07859429233105e936752cb77cc585a",
     "single": "4537905d2aabcf302fab2f242baed293459ecda7c230e6a67063b02c7e2840ed"
   },
   "ML-DSA-87-extmu": {
-    "single": "4537905d2aabcf302fab2f242baed293459ecda7c230e6a67063b02c7e2840ed"
+    "single": 0
   },
   "OV-III": {
     "all": "1058a0eda01f1352a8997423ac88b4f4015e5ed45c3541981f6d9c2dad779a93",

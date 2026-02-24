@@ -182,8 +182,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 {%- if scheme.is_extmu %}
-	/* extmu variants require exactly 64 bytes of input message representative */
-	if (message_len != 64) {
+	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
 	(void)message_len;
@@ -236,8 +235,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *sig
 
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 {%- if scheme.is_extmu %}
-	/* extmu variants require exactly 64 bytes of input message representative */
-	if (message_len != 64) {
+	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
 	(void)message_len;
@@ -292,7 +290,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
 {%- if 'api-with-context-string' in default_impl and default_impl['api-with-context-string'] %}
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
 {%- if scheme.is_extmu %}
-	if (message_len != 64) {
+	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
 	(void)message_len;
@@ -333,7 +331,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str
 
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
 {%- if scheme.is_extmu %}
-	if (message_len != 64) {
+	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
 	(void)message_len;
@@ -375,7 +373,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_s
 
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
 {%- if scheme.is_extmu %}
-	if (message_len != 64) {
+	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
 	(void)message_len;
@@ -389,7 +387,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str
 
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
 {%- if scheme.is_extmu %}
-	if (message_len != 64) {
+	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
 	(void)message_len;

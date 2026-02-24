@@ -48,6 +48,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_verify_with_ctx_str(const uint8_t *message,
 #define OQS_SIG_ml_dsa_44_extmu_length_public_key 1312
 #define OQS_SIG_ml_dsa_44_extmu_length_secret_key 2560
 #define OQS_SIG_ml_dsa_44_extmu_length_signature 2420
+#define OQS_SIG_ml_dsa_44_extmu_length_mu 64
 
 OQS_SIG *OQS_SIG_ml_dsa_44_extmu_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -61,6 +62,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_44_extmu_verify_with_ctx_str(const uint8_t *me
 #define OQS_SIG_ml_dsa_65_extmu_length_public_key 1952
 #define OQS_SIG_ml_dsa_65_extmu_length_secret_key 4032
 #define OQS_SIG_ml_dsa_65_extmu_length_signature 3309
+#define OQS_SIG_ml_dsa_65_extmu_length_mu 64
 
 OQS_SIG *OQS_SIG_ml_dsa_65_extmu_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -74,6 +76,7 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify_with_ctx_str(const uint8_t *me
 #define OQS_SIG_ml_dsa_87_extmu_length_public_key 2592
 #define OQS_SIG_ml_dsa_87_extmu_length_secret_key 4896
 #define OQS_SIG_ml_dsa_87_extmu_length_signature 4627
+#define OQS_SIG_ml_dsa_87_extmu_length_mu 64
 
 OQS_SIG *OQS_SIG_ml_dsa_87_extmu_new(void);
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_extmu_keypair(uint8_t *public_key, uint8_t *secret_key);
