@@ -1291,8 +1291,7 @@ int main(int argc, char **argv) {
 			goto err;
 		}
 		msgLen = strlen(sigGen_msg) / 2;
-		ctxlen = strlen(sigGen_ctx) / 2;
-
+		
 		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
 		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
