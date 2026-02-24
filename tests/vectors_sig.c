@@ -1307,7 +1307,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
 		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
-#if defined(OQS_SIG_alg_ml_dsa_44_extmu) || defined(OQS_SIG_alg_ml_dsa_65_extmu) || defined(OQS_SIG_alg_ml_dsa_87_extmu)
+#if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_gen_vector_extmu(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
 #else
 		rc = EXIT_SUCCESS;
@@ -1521,7 +1521,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 
-#if defined(OQS_SIG_alg_ml_dsa_44_extmu) || defined(OQS_SIG_alg_ml_dsa_65_extmu) || defined(OQS_SIG_alg_ml_dsa_87_extmu)
+#if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_ver_vector_extmu(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVerPassed);
 #else
 		rc = EXIT_SUCCESS;
