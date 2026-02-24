@@ -18,7 +18,7 @@
 #include "../src/sig/slh_dsa/slh_dsa_c/slh_dsa.h"
 
 #define MLDSA_RNDBYTES 32
-#define MLDSA_MULEN	   64
+#define MLDSA_MULEN    64
 #define MAXCTXBYTES 255
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
@@ -205,8 +205,8 @@ static inline bool is_ml_dsa(const char *method_name) {
 /* ML_DSA-specific extmu functions */
 static inline bool is_ml_dsa_extmu(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu))
-		   || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu))
-		   || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu));
+	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu))
+	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu));
 }
 
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
@@ -403,12 +403,12 @@ cleanup:
 /* signature verification internal APIs tests */
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
 static int sig_ver_vector_int(const char *method_name,
-                          const uint8_t *sigVer_pk_bytes,
-                          const uint8_t *sigVer_msg_bytes,
-                          size_t msgLen,
-                          const uint8_t *sigVer_sig_bytes,
-                          size_t sigLen,
-                          int testPassed) {
+                              const uint8_t *sigVer_pk_bytes,
+                              const uint8_t *sigVer_msg_bytes,
+                              size_t msgLen,
+                              const uint8_t *sigVer_sig_bytes,
+                              size_t sigLen,
+                              int testPassed) {
 
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -541,12 +541,12 @@ cleanup:
 
 /* signature verification external-MU APIs tests */
 static int sig_ver_vector_extmu(const char *method_name,
-                              const uint8_t *sigVer_pk_bytes,
-                              const uint8_t *sigVer_msg_bytes,
-                              size_t msgLen,
-                              const uint8_t *sigVer_sig_bytes,
-                              size_t sigLen,
-                              int testPassed) {
+                                const uint8_t *sigVer_pk_bytes,
+                                const uint8_t *sigVer_msg_bytes,
+                                size_t msgLen,
+                                const uint8_t *sigVer_sig_bytes,
+                                size_t sigLen,
+                                int testPassed) {
 
 	FILE *fh = NULL;
 	OQS_SIG *sig = NULL;
@@ -659,8 +659,8 @@ cleanup:
 
 /* signature generation internal API tests */
 static int sig_gen_vector_int(const char *method_name,
-                          uint8_t *prng_output_stream,
-                          const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig) {
+                              uint8_t *prng_output_stream,
+                              const uint8_t *sigGen_sk, const uint8_t *sigGen_msg, size_t sigGen_msgLen, const uint8_t *sigGen_sig) {
 
 	FILE *fh = NULL;
 	uint8_t *signature = NULL;
@@ -846,10 +846,10 @@ cleanup:
 
 /* signature generation external-MU APIs tests */
 static int sig_gen_vector_extmu(const char *method_name,
-                              uint8_t *prng_output_stream,
-                              const uint8_t *sigGen_sk,
-                              const uint8_t *sigGen_msg, size_t sigGen_msgLen,
-                              const uint8_t *sigGen_sig) {
+                                uint8_t *prng_output_stream,
+                                const uint8_t *sigGen_sk,
+                                const uint8_t *sigGen_msg, size_t sigGen_msgLen,
+                                const uint8_t *sigGen_sig) {
 
 	uint8_t *entropy_input;
 	FILE *fh = NULL;
@@ -1284,9 +1284,9 @@ int main(int argc, char **argv) {
 		prng_output_stream = argv[6];
 
 		if ( strlen(sigGen_msg)  != 2 *  MLDSA_MULEN ||
-				strlen(sigGen_sig) != 2 * sig->length_signature ||
-				strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-				strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+		        strlen(sigGen_sig) != 2 * sig->length_signature ||
+		        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+		        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 			printf("lengths bad\n");
 			goto err;
 		}
@@ -1500,9 +1500,9 @@ int main(int argc, char **argv) {
 		int sigVerPassed = atoi(argv[6]);
 
 		if (strlen(sigVer_msg) % 2 != 0 ||
-				strlen(sigVer_sig) != 2 * sig->length_signature ||
-				strlen(sigVer_pk) != 2 * sig->length_public_key ||
-				(sigVerPassed != 0 && sigVerPassed != 1)) {
+		        strlen(sigVer_sig) != 2 * sig->length_signature ||
+		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
+		        (sigVerPassed != 0 && sigVerPassed != 1)) {
 			printf("lengths bad or incorrect verification status \n");
 			goto err;
 		}
