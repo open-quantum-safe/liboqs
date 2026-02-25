@@ -24,19 +24,20 @@ endif()
 {%- endif %}
 
 {%- for scheme in schemes -%}
+    {%- if not scheme.is_extmu %}
+        {%- set has_extmu = (schemes | selectattr("scheme_c", "equalto", scheme['scheme_c'] ~ "_extmu") | list | length > 0) %}
     {%- for impl in scheme['metadata']['implementations'] -%}
-{%- if not scheme.is_extmu or impl['name'] == scheme['default_implementation'] %}
         {%- if impl['name'] == scheme['default_implementation'] %}
 
-if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})
-    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c {% if not scheme.is_extmu %}{% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%}{% endif %})
+if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %}{%- if has_extmu %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_extmu{%- endif %})
+    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
            {%- if impl['compile_opts'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
            {%- endif -%}
 
         {%- else %}
 
-if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
+if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %}{%- if has_extmu %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_extmu_{{ impl['name'] }}{%- endif %})
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
         {%- endif %}
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
@@ -49,8 +50,17 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
         {%- endif %}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}>)
 endif()
-{%- endif %}
-    {%- endfor -%}
+        {%- endfor %}
+    {%- else %}
+
+if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }})
+    add_library({{ family }}_{{ scheme['scheme'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c)
+    {%- set base_pqclean = scheme['pqclean_scheme'] | replace('-extmu', '') %}
+    target_include_directories({{ family }}_{{ scheme['scheme'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ scheme['metadata']['implementations'][0]['upstream']['name'] }}_{{ base_pqclean }}_{{ scheme['default_implementation'] }})
+    target_include_directories({{ family }}_{{ scheme['scheme'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}>)
+endif()
+    {%- endif %}
 {%- endfor %}
 
 set({{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} PARENT_SCOPE)

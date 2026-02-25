@@ -59,7 +59,7 @@ upstreams:
     name: mldsa-native
     git_url: https://github.com/abhi-dev-engg/mldsa-native.git
     git_branch: supp_extmu
-    git_commit: ffc732d1984a208f33e61e2f365a79db09c8b725
+    git_commit: d562dad07d0679a4cbe41860c5b981c630bc6484
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     preserve_folder_structure: True
