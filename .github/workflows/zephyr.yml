@@ -17,12 +17,12 @@ jobs:
         matrix:
           config:
             - zephyr-ref: v3.7.0
-            - zephyr-ref: v4.3.0
 
     steps:
         - name: Init Zephyr workspace
           run: |
-            mkdir -p zephyr/manifest && cd zephyr/manifest
+            mkdir zephyr && cd zephyr
+            mkdir manifest && cd manifest
             echo "manifest:" > west.yml
             echo "  remotes:" >> west.yml
             echo "    - name: zephyr" >> west.yml
@@ -58,7 +58,7 @@ jobs:
           working-directory: zephyr
           run: |
             west twister --integration -T modules/crypto/liboqs/zephyr/samples/KEMs -vvv
-
+  
   zephyr4_test:
     runs-on: oqs-x64
     container: ghcr.io/zephyrproject-rtos/ci:v0.28.7
