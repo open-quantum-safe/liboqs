@@ -16,8 +16,8 @@ jobs:
         fail-fast: false
         matrix:
           config:
-            - zephyr-ref: v3.4.0
             - zephyr-ref: v3.7.0
+            - zephyr-ref: v4.3.0
 
     steps:
         - name: Init Zephyr workspace
