@@ -62,36 +62,6 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "ML-DSA-44-extmu")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "ML-DSA-65-extmu")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "ML-DSA-87-extmu")) {
-		// signed_msg = signature || msg
-		*signed_msg_len = signature_len + msg_len;
-		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, signature, signature_len);
-		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Falcon-512")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x29 || sig
 		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
@@ -611,8 +581,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		}
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
-		return OQS_SUCCESS;
-		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
+		return OQS_SUCCESS;///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
 	} else {
 		return OQS_ERROR;
 	}
