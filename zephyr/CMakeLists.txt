@@ -44,6 +44,9 @@ if(CONFIG_LIBOQS)
 
         set(CMAKE_CROSSCOMPILING ON)
 
+        # Activate the "memopt" variants of the algorithms if they exist
+        set(OQS_MEMOPT_BUILD ON)
+
         # Disable features by hand, as CMake won't find them properly with Zephyr
         set(CMAKE_HAVE_GETENTROPY OFF)
         set(CMAKE_HAVE_ALIGNED_ALLOC OFF)
@@ -149,9 +152,6 @@ if(CONFIG_LIBOQS)
 
         if(CONFIG_LIBOQS_ENABLE_SIG_MQOM)
                 set(OQS_ENABLE_SIG_MQOM ON)
-                # Force the "memopt" variants of MQOM as these are
-                # the only ones suitable here (i.e. no large stack usage)
-                set(OQS_MEMOPT_BUILD ON)
         else()
                 set(OQS_ENABLE_SIG_MQOM OFF)
         endif()
