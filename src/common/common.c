@@ -437,6 +437,11 @@ OQS_API char *OQS_MEM_strdup(const char *str) {
 #if defined(OQS_USE_OPENSSL)
 	return OSSL_FUNC(CRYPTO_strdup)(str, OPENSSL_FILE, OPENSSL_LINE);
 #else
-	return strdup(str); // IGNORE memory-check
+	size_t len = strlen(str) + 1;
+	char *dup = (char *)malloc(len); // IGNORE memory-check
+	if (dup != NULL) {
+		memcpy(dup, str, len);
+	}
+	return dup;
 #endif
 }

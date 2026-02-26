@@ -1,0 +1,521 @@
+name: MQOM
+type: signature
+principal-submitters:
+- Ryad Benadjila
+- Charles Bouillaguet
+- Thibauld Feneuil
+- Matthieu Rivain
+crypto-assumption: Computing the solution of a Multivariate Quadratic problem.
+website: https://mqom.org/
+nist-round: 2
+standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mqom-spec-round2-web.pdf)
+  consideration
+spec-version: NIST Round 2
+primary-upstream:
+  source: https://github.com/mqom/mqom-v2/commit/15667dbc45448cce9265470921a2e51d4a134b2b
+  spdx-license-identifier: MIT
+parameter-sets:
+- name: mqom2_cat1_gf16_fast_r5
+  oqs_alg: OQS_SIG_mqom2_cat1_gf16_fast_r5
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 60
+  length-secret-key: 88
+  length-signature: 3280
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat1_gf16_fast_r3
+  oqs_alg: OQS_SIG_mqom2_cat1_gf16_fast_r3
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 60
+  length-secret-key: 88
+  length-signature: 3484
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat1_gf16_short_r5
+  oqs_alg: OQS_SIG_mqom2_cat1_gf16_short_r5
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 60
+  length-secret-key: 88
+  length-signature: 2916
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat1_gf16_short_r3
+  oqs_alg: OQS_SIG_mqom2_cat1_gf16_short_r3
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 60
+  length-secret-key: 88
+  length-signature: 3060
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat3_gf16_fast_r5
+  oqs_alg: OQS_SIG_mqom2_cat3_gf16_fast_r5
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 90
+  length-secret-key: 132
+  length-signature: 7738
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat3_gf16_fast_r3
+  oqs_alg: OQS_SIG_mqom2_cat3_gf16_fast_r3
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 90
+  length-secret-key: 132
+  length-signature: 8224
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat3_gf16_short_r5
+  oqs_alg: OQS_SIG_mqom2_cat3_gf16_short_r5
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 90
+  length-secret-key: 132
+  length-signature: 6496
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat3_gf16_short_r3
+  oqs_alg: OQS_SIG_mqom2_cat3_gf16_short_r3
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 90
+  length-secret-key: 132
+  length-signature: 6820
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat5_gf16_fast_r5
+  oqs_alg: OQS_SIG_mqom2_cat5_gf16_fast_r5
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 122
+  length-secret-key: 180
+  length-signature: 13772
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat5_gf16_fast_r3
+  oqs_alg: OQS_SIG_mqom2_cat5_gf16_fast_r3
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 122
+  length-secret-key: 180
+  length-signature: 14708
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat5_gf16_short_r5
+  oqs_alg: OQS_SIG_mqom2_cat5_gf16_short_r5
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 122
+  length-secret-key: 180
+  length-signature: 12014
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom2_cat5_gf16_short_r3
+  oqs_alg: OQS_SIG_mqom2_cat5_gf16_short_r3
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 122
+  length-secret-key: 180
+  length-signature: 12664
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true

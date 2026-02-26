@@ -22,6 +22,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
+- [OQS_MEMOPT_BUILD](#OQS_MEMOPT_BUILD)
 - [OQS_LIBJADE_BUILD](#OQS_LIBJADE_BUILD)
 - [OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG](#OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG)
 - [OQS_BUILD_FUZZ_TESTS](#OQS_BUILD_FUZZ_TESTS)
@@ -245,6 +246,14 @@ Can be `ON` or `OFF`. When `ON`, calls to standard library functions typically n
 At the moment, this is **only** considered for random number generation, as both `getentropy()` and a file based `/dev/urandom` are not available on embedded targets (e.g. the Zephyr port).
 
 **Attention**: When this option is enabled, you have to supply a custom callback for obtaining random numbers using the `OQS_randombytes_custom_algorithm()` API before accessing the cryptographic API. Otherwise, all key generation and signing operations will fail. 
+
+**Default**: `OFF`.
+
+## OQS_MEMOPT_BUILD
+
+Can be `ON` or `OFF`. When `ON`, selects memory-optimized implementations of algorithms where available. Memory-optimized implementations reduce memory usage at a potential cost to performance. If no memory-optimized implementation exists for a given algorithm or platform, the standard implementation is used as a fallback.
+
+Upstream projects can provide memory-optimized implementations by adding a separate implementation entry in their META.yml file with `memory_optimized: true`.
 
 **Default**: `OFF`.
 

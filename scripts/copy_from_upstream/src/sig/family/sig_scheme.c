@@ -159,9 +159,9 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 #endif /* OQS_DIST_BUILD */
     {%- endif %}
            {%- if impl['signature_keypair'] %}
-		return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
            {%- else %}
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair(public_key, secret_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
@@ -194,12 +194,12 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *sig
     {%- endif %}
            {%- if impl['signature_signature'] %}
            {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
-		return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
            {%- else %}
-		return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, secret_key);
            {%- endif %}
            {%- else %}
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
@@ -241,12 +241,12 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
     {%- endif %}
            {%- if impl['signature_verify'] %}
            {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
-		return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, message_len, NULL, 0, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, message_len, NULL, 0, public_key);
            {%- else %}
-		return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, message_len, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, message_len, public_key);
            {%- endif %}
            {%- else %}
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
@@ -289,9 +289,9 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str
 #endif /* OQS_DIST_BUILD */
     {%- endif %}
            {%- if impl['signature_signature'] %}
-		return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
            {%- else %}
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
@@ -324,9 +324,9 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_s
 #endif /* OQS_DIST_BUILD */
     {%- endif %}
            {%- if impl['signature_verify'] %}
-		return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
            {%- else %}
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
