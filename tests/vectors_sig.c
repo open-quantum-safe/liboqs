@@ -400,9 +400,9 @@ cleanup:
 	return ret;
 }
 
-/* signature verification internal APIs tests */
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA) || defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 
+/* signature verification internal APIs tests */
 static int sig_ver_vector_int(const char *method_name,
                               const uint8_t *sigVer_pk_bytes,
                               const uint8_t *sigVer_msg_bytes,
