@@ -536,8 +536,6 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 
-	/* __attribute__ doesn't work on windows, so "use" sigLen to make compiler happy */
-	(void)sigLen;
 }
 
 /* signature verification external-MU APIs tests */
