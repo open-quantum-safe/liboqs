@@ -1,23 +1,25 @@
 # SPDX-License-Identifier: MIT
 
-import functools
-import json
+import helpers
 import os
-import unittest
-import unittest.mock
-import subprocess
-from urllib.parse import urljoin
-
 import pytest
+import sys
+import json
+
+import subprocess
+import functools
+import unittest.mock
+from urllib.parse import urljoin
 import requests
 
-import helpers
-
-# Standard ML-KEM algorithm identifiers
-ml_kem = ["ML-KEM-512", "ML-KEM-768", "ML-KEM-1024"]
-
-# Wycheproof Vector Source
 WYCHE_ROOT = "https://raw.githubusercontent.com/C2SP/wycheproof/main/testvectors_v1/"
+
+# Maps supported ML-KEM algorithms to their respective public key (ek) and ciphertext (c) byte lengths.
+ML_KEM_PARAMS = {
+    "ML-KEM-512":  {"pk": 800,  "c": 768},
+    "ML-KEM-768":  {"pk": 1184, "c": 1088},
+    "ML-KEM-1024": {"pk": 1568, "c": 1568},
+}
 
 @pytest.fixture(autouse=True, scope="module")
 def requests_get():
@@ -26,185 +28,161 @@ def requests_get():
 
 @functools.lru_cache
 def cached_requests_get(url: str):
-    resp = requests.get(url)
-    return resp
+    return requests.get(url)
 
-def get_wyche_url(kem_name, suffix):
-    """Maps e.g. ML-KEM-512 -> mlkem_512_<suffix>.json"""
+def fetch_wycheproof_test_cases(kem_name, suffix, valid_types):
+    """
+    Generator that fetches Wycheproof vectors and yields individual test cases.
+    Handles URL formatting, downloading, and filtering by test group type.
+    """
     alg_id = kem_name.lower().replace("ml-kem-", "mlkem_")
-    return urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
+    url = urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
+    
+    resp = cached_requests_get(url)
+    if resp.status_code != 200:
+        return
 
-def get_c_len(kem_name):
-    if "512" in kem_name: return 768
-    if "768" in kem_name: return 1088
-    if "1024" in kem_name: return 1568
-    return 0
-
-def get_pk_len(kem_name):
-    if "512" in kem_name: return 800
-    if "768" in kem_name: return 1184
-    if "1024" in kem_name: return 1568
-    return 0
+    data = json.loads(resp.content)
+    for group in data.get("testGroups", []):
+        if group["parameterSet"] == kem_name and group["type"] in valid_types:
+            yield from group["tests"]
 
 def run_test_case(cmd, tc):
-    """
-    Executes the C binary and asserts the return code.
-    """
     result = subprocess.run(cmd, capture_output=True, text=True)
-    is_valid = tc.get("result", "valid") in ["valid", "acceptable"]
+    is_valid = tc["result"] == "valid"
     cmd_type = cmd[2]
 
-    # 1. Modulus Overflow Tests
+    # 1. Modulus Overflow edge case
     if cmd_type == "modOverflow":
-        # kem_modOverflow_vector returns 0 if it SUCCESSFULLY detects an unreduced key.
-        if result.returncode != 0:
-            pytest.fail(f"TC {tc['tcId']} FAILED: modOverflow check failed (binary accepted invalid key).\nCommand: {' '.join(cmd)}\nStderr: {result.stderr}")
+        # vector_kem returns 0 only if it successfully blocked the unreduced key
+        assert result.returncode == 0, (
+            f"TC {tc['tcId']} FAILED: Accepted unreduced key.\nCmd: {' '.join(cmd)}"
+        )
         return
 
-    # 2. Expected Rejections / Structural Errors
+    # 2. Structural Errors & Expected Rejections
     if not is_valid:
-        if result.returncode == 0:
-            pytest.fail(f"TC {tc['tcId']} FAILED: Expected INVALID/REJECTION, but binary accepted it.\nCommand: {' '.join(cmd)}")
+        # Invalid inputs must cause the vector_kem to return a non-zero exit code
+        assert result.returncode != 0, (
+            f"TC {tc['tcId']} FAILED: Expected rejection, but binary accepted it.\nCmd: {' '.join(cmd)}"
+        )
         return
 
-    # 3. Valid Test Cases
+    # 3. Standard Valid Tests
     if cmd_type == "encDecVAL" and "K" not in tc:
-        # Wycheproof's semi_expanded file omits 'K' for valid decapsulation tests.
-        # We pass dummy zeroes, so C binary's memcmp will intentionally fail (returncode 1).
-        # But we consider it a PASS if it successfully performed decapsulation (meaning it printed 'k: ').
-        if "k: " not in result.stdout:
-            pytest.fail(f"TC {tc['tcId']} FAILED: Expected VALID decapsulation, but failed early.\n"
-                        f"Stderr: {result.stderr}\nCommand: {' '.join(cmd)}")
+        # Edge Case: Wycheproof's 'semi_expanded' file omits 'K' for valid decapsulation tests.
+        # Since we padded 'K' with dummy zeroes for argv parsing, the vector_kem memcmp will 
+        # intentionally fail (returncode 1). We verify success by checking if it completed decapsulation.
+        assert "k: " in result.stdout, (
+            f"TC {tc['tcId']} FAILED: Decapsulation failed early.\n"
+            f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
+        )
     else:
-        # Standard valid tests must succeed cleanly (returncode 0)
-        if result.returncode != 0:
-            pytest.fail(f"TC {tc['tcId']} FAILED: Expected VALID, but binary rejected it.\n"
-                        f"Stderr: {result.stderr}\nCommand: {' '.join(cmd)}")
+        # All other valid tests must exit cleanly
+        assert result.returncode == 0, (
+            f"TC {tc['tcId']} FAILED: Rejected valid input.\n"
+            f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
+        )
 
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
 def test_wycheproof_vec_kem_keygen(kem_name):
-    if not (helpers.is_kem_enabled_by_name(kem_name)) or not (kem_name in ml_kem):
+    if not helpers.is_kem_enabled_by_name(kem_name) or kem_name not in ML_KEM_PARAMS:
         pytest.skip("Not enabled or supported")
 
-    url = get_wyche_url(kem_name, "keygen_seed_test")
-    resp = cached_requests_get(url)
-    assert resp.status_code == 200
-    data = json.loads(resp.content)
-
-    variantFound = False
     build_dir = helpers.get_current_build_dir_name()
+    test_cases = list(fetch_wycheproof_test_cases(kem_name, "keygen_seed_test", ["MLKEMKeyGen"]))
+    assert test_cases, "No keygen test cases found."
 
-    for variant in data["testGroups"]:
-        if variant["parameterSet"] == kem_name and variant["type"] == "MLKEMKeyGen":
-            variantFound = True
-            for tc in variant["tests"]:
-                cmd = [
-                    f"{build_dir}/tests/vectors_kem",
-                    kem_name,
-                    "keyGen",
-                    tc["seed"],
-                    tc["ek"],
-                    tc["dk"],
-                ]
-                run_test_case(cmd, tc)
-    assert variantFound == True
+    for tc in test_cases:
+        cmd = [
+            f"{build_dir}/tests/vectors_kem",
+            kem_name, "keyGen",
+            tc["seed"], tc["ek"], tc["dk"]
+        ]
+        run_test_case(cmd, tc)
 
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
 def test_wycheproof_vec_kem_encaps(kem_name):
-    if not (helpers.is_kem_enabled_by_name(kem_name)) or not (kem_name in ml_kem):
+    if not helpers.is_kem_enabled_by_name(kem_name) or kem_name not in ML_KEM_PARAMS:
         pytest.skip("Not enabled or supported")
 
-    url = get_wyche_url(kem_name, "encaps_test")
-    resp = cached_requests_get(url)
-    assert resp.status_code == 200
-    data = json.loads(resp.content)
-
-    variantFound = False
     build_dir = helpers.get_current_build_dir_name()
+    test_cases = list(fetch_wycheproof_test_cases(kem_name, "encaps_test", ["MLKEMEncapsTest"]))
+    assert test_cases, "No encaps test cases found."
 
-    for variant in data["testGroups"]:
-        if variant["parameterSet"] == kem_name and variant["type"] == "MLKEMEncapsTest":
-            variantFound = True
-            for tc in variant["tests"]:
-                m = tc.get("m", "")
-                ek = tc.get("ek", "")
-                expected_k = tc.get("K", "")
-                expected_c = tc.get("c", "")
+    pk_len = ML_KEM_PARAMS[kem_name]["pk"]
+    c_len = ML_KEM_PARAMS[kem_name]["c"]
 
-                is_invalid_pk = not expected_c or not expected_k or "ModulusOverflow" in tc.get("flags", [])
-                
-                # Only use modOverflow if the key is the exact expected length.
-                # If it's too short (like TC 218), encDecAFT's built-in strlen check gracefully handles it.
-                if is_invalid_pk and len(ek) == 2 * get_pk_len(kem_name):
-                    cmd = [
-                        f"{build_dir}/tests/vectors_kem",
-                        kem_name,
-                        "modOverflow",
-                        ek
-                    ]
-                else:
-                    cmd = [
-                        f"{build_dir}/tests/vectors_kem",
-                        kem_name,
-                        "encDecAFT",
-                        m if m else "00" * 32,
-                        ek if ek else "00" * get_pk_len(kem_name),
-                        expected_k if expected_k else "00" * 32,
-                        expected_c if expected_c else "00" * get_c_len(kem_name)
-                    ]
-                run_test_case(cmd, tc)
-    assert variantFound == True
+    for tc in test_cases:
+        # Extract inputs, providing empty strings if they are missing
+        m = tc.get("m", "")
+        ek = tc.get("ek", "")
+        expected_k = tc.get("K", "")
+        expected_c = tc.get("c", "")
+
+        is_invalid_pk = not expected_c or not expected_k or "ModulusOverflow" in tc.get("flags", [])
+        
+        # If the key is the correct length but mathematically invalid, use modOverflow.
+        # Otherwise, pass it to standard encapsulation (short keys will fail the C strlen check).
+        if is_invalid_pk and len(ek) == 2 * pk_len:
+            cmd = [
+                f"{build_dir}/tests/vectors_kem",
+                kem_name, "modOverflow", ek
+            ]
+        else:
+            # We provide dummy zeroes for missing fields so the vector_kem argv parser 
+            # doesn't crash, allowing the C code to gracefully reject the bad data.
+            cmd = [
+                f"{build_dir}/tests/vectors_kem",
+                kem_name, "encDecAFT",
+                m or "00" * 32,
+                ek or "00" * pk_len,
+                expected_k or "00" * 32,
+                expected_c or "00" * c_len
+            ]
+        run_test_case(cmd, tc)
 
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
 def test_wycheproof_vec_kem_decaps(kem_name):
-    if not (helpers.is_kem_enabled_by_name(kem_name)) or not (kem_name in ml_kem):
+    if not helpers.is_kem_enabled_by_name(kem_name) or kem_name not in ML_KEM_PARAMS:
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
-    variantFound = False
+    test_cases_found = False
+    c_len = ML_KEM_PARAMS[kem_name]["c"]
     
+    # Wycheproof splits decaps tests into structural/functional (semi_expanded) and edge-cases (test)
     for suffix in ["test", "semi_expanded_decaps_test"]:
-        url = get_wyche_url(kem_name, suffix)
-        resp = cached_requests_get(url)
-        if resp.status_code != 200:
-            continue
+        for tc in fetch_wycheproof_test_cases(kem_name, suffix, ["MLKEMDecapsValidationTest", "MLKEMTest"]):
+            test_cases_found = True
             
-        data = json.loads(resp.content)
-        for variant in data["testGroups"]:
-            if variant["parameterSet"] == kem_name and variant["type"] in ["MLKEMDecapsValidationTest", "MLKEMTest"]:
-                variantFound = True
-                for tc in variant["tests"]:
-                    expected_k = tc.get("K", "")
-                    c = tc.get("c", "")
+            # Pad missing fields for vector_kem argv stability
+            expected_k = tc.get("K") or "00" * 32
+            c = tc.get("c") or "00" * c_len
 
-                    if "seed" in tc and "ek" in tc:
-                        cmd = [
-                            f"{build_dir}/tests/vectors_kem",
-                            kem_name,
-                            "strcmp",
-                            tc["seed"],
-                            tc["ek"],
-                            c if c else "00" * get_c_len(kem_name),
-                            expected_k if expected_k else "00" * 32
-                        ]
-                    elif "dk" in tc:
-                        cmd = [
-                            f"{build_dir}/tests/vectors_kem",
-                            kem_name,
-                            "encDecVAL",
-                            tc["dk"],
-                            expected_k if expected_k else "00" * 32,
-                            c if c else "00" * get_c_len(kem_name)
-                        ]
-                    else:
-                        continue 
+            # Seed-based tests (e.g. constant-time strcmp bug checks)
+            if "seed" in tc and "ek" in tc:
+                cmd = [
+                    f"{build_dir}/tests/vectors_kem",
+                    kem_name, "strcmp",
+                    tc["seed"], tc["ek"], c, expected_k
+                ]
+            # Static key decapsulation tests
+            elif "dk" in tc:
+                cmd = [
+                    f"{build_dir}/tests/vectors_kem",
+                    kem_name, "encDecVAL",
+                    tc["dk"], expected_k, c
+                ]
+            else:
+                continue 
 
-                    run_test_case(cmd, tc)
-    assert variantFound == True
+            run_test_case(cmd, tc)
+            
+    assert test_cases_found, "No decaps test cases found."
 
 if __name__ == "__main__":
-    import sys
     pytest.main(sys.argv)
