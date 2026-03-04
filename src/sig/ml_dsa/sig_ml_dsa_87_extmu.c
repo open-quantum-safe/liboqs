@@ -78,7 +78,6 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_extmu_sign(uint8_t *signature, size_t *sign
 	if (message_len != OQS_SIG_ml_dsa_87_extmu_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 #if defined(OQS_ENABLE_SIG_ml_dsa_87_extmu_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -108,7 +107,6 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_extmu_verify(const uint8_t *message, size_t
 	if (message_len != OQS_SIG_ml_dsa_87_extmu_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 #if defined(OQS_ENABLE_SIG_ml_dsa_87_extmu_x86_64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
@@ -138,7 +136,6 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_extmu_sign_with_ctx_str(uint8_t *signature,
 	if (message_len != OQS_SIG_ml_dsa_87_extmu_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_ml_dsa_87_extmu_sign(signature, signature_len, message, message_len, secret_key);
 	} else {
@@ -150,7 +147,6 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_87_extmu_verify_with_ctx_str(const uint8_t *me
 	if (message_len != OQS_SIG_ml_dsa_87_extmu_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_ml_dsa_87_extmu_verify(message, message_len, signature, signature_len, public_key);
 	} else {

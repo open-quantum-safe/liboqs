@@ -185,7 +185,6 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *sig
 	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 {%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
@@ -238,7 +237,6 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
 	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 {%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
@@ -293,7 +291,6 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str
 	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 {%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
@@ -334,7 +331,6 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_s
 	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 {%- endif %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}
@@ -376,7 +372,6 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign_with_ctx_str
 	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 {%- endif %}
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(signature, signature_len, message, message_len, secret_key);
@@ -390,7 +385,6 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify_with_ctx_s
 	if (message_len != OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu) {
 		return OQS_ERROR;
 	}
-	(void)message_len;
 {%- endif %}
 	if (ctx_str == NULL && ctx_str_len == 0) {
 		return OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(message, message_len, signature, signature_len, public_key);
