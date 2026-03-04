@@ -1,7 +1,7 @@
 {% for family in instructions['kems'] %}
     {%- for scheme in family['schemes'] %}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and (impl['supported_platforms'] or impl.get('memory_optimized', false)) -%}
-            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+            {%- if impl.get("memory_optimized", false) %}
 if(OQS_MEMOPT_BUILD)
             {%- endif -%}
             {%- if impl.get('memory_optimized', false) and not impl['supported_platforms'] %}
@@ -64,7 +64,7 @@ endif()
 {% if platform['operating_systems'] %}endif()
 {% endif -%}
             {%- endfor -%}
-            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+            {%- if impl.get("memory_optimized", false) %}
 endif() # OQS_MEMOPT_BUILD
             {%- endif -%}
         {%- endfor -%}
@@ -74,7 +74,7 @@ endif() # OQS_MEMOPT_BUILD
 {% for family in instructions['sigs'] %}
     {%- for scheme in family['schemes'] %}
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and (impl['supported_platforms'] or impl.get('memory_optimized', false)) -%}
-            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+            {%- if impl.get("memory_optimized", false) %}
 if(OQS_MEMOPT_BUILD)
             {%- endif -%}
             {%- if impl.get('memory_optimized', false) and not impl['supported_platforms'] %}
@@ -107,7 +107,7 @@ endif()
 {% if platform['operating_systems'] %}endif()
 {% endif -%}
             {%- endfor -%}
-            {%- if 'memory_optimized' in impl and impl['memory_optimized'] %}
+            {%- if impl.get("memory_optimized", false) %}
 endif() # OQS_MEMOPT_BUILD
             {%- endif -%}
         {%- endfor -%}
