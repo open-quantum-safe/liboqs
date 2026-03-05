@@ -170,3 +170,4 @@ def test_wycheproof_vec_kem_decaps(kem_name):
 
 if __name__ == "__main__":
     pytest.main(sys.argv)
+
