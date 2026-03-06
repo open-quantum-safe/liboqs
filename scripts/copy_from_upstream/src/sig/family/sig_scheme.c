@@ -201,10 +201,10 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *sig
            {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
 	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
            {%- else %}
-    {% if impl.get('required_flags', false) %}  {% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
+    {% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
            {%- endif %}
            {%- else %}
-    {% if impl.get('required_flags', false) %}  {% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
+    {% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
            {%- endif %}
     {%- if impl.get('required_flags', false) %}
 #if defined(OQS_DIST_BUILD)
@@ -212,7 +212,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *sig
         {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
 		return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
         {%- else %}
-        return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
+		return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
         {%- endif %}
 	}
 #endif /* OQS_DIST_BUILD */
@@ -225,7 +225,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *sig
     {%- if 'api-with-context-string' in default_impl and default_impl['api-with-context-string'] %}
 	return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
     {%- else %}
-    return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
+	return (OQS_STATUS) {{ scheme['metadata']['default_signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
     {%- endif %}
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
@@ -253,10 +253,10 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
            {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
 	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, message_len, NULL, 0, public_key);
            {%- else %}
-    {% if impl.get('required_flags', false) %}  {% endif %}return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
+	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_verify'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
            {%- endif %}
            {%- else %}
-    {% if impl.get('required_flags', false) %}  {% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
+	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
            {%- endif %}
     {%- if impl.get('required_flags', false) %}
 #if defined(OQS_DIST_BUILD)
@@ -264,7 +264,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
         {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
 		return (OQS_STATUS) {{ scheme['metadata']['default_verify_signature'] }}(signature, signature_len, message, message_len, NULL, 0, public_key);
         {%- else %}
-        return (OQS_STATUS) {{ scheme['metadata']['default_verify_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
+		return (OQS_STATUS) {{ scheme['metadata']['default_verify_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
         {%- endif %}
 	}
 #endif /* OQS_DIST_BUILD */
@@ -277,7 +277,7 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
     {%- if 'api-with-context-string' in default_impl and default_impl['api-with-context-string'] %}
 	return (OQS_STATUS) {{ scheme['metadata']['default_verify_signature'] }}(signature, signature_len, message, message_len, NULL, 0, public_key);
     {%- else %}
-    return (OQS_STATUS) {{ scheme['metadata']['default_verify_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
+	return (OQS_STATUS) {{ scheme['metadata']['default_verify_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}public_key);
     {%- endif %}
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
