@@ -79,7 +79,7 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_24_5_4_SHAKE_sign(uint8_t *signature, siz
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-    	return (OQS_STATUS) _snova_24_5_4_shake_ssk_avx2_sign(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) _snova_24_5_4_shake_ssk_avx2_sign(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) _snova_24_5_4_shake_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);
@@ -89,7 +89,7 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_24_5_4_SHAKE_sign(uint8_t *signature, siz
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-    	return (OQS_STATUS) _snova_24_5_4_shake_ssk_neon_sign(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) _snova_24_5_4_shake_ssk_neon_sign(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) _snova_24_5_4_shake_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);

@@ -201,10 +201,10 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *sig
            {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
 	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, message_len, NULL, 0, secret_key);
            {%- else %}
-    {% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
+	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_signature'] }}(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
            {%- endif %}
            {%- else %}
-    {% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
+	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(signature, signature_len, message, {% if not scheme.is_extmu %}message_len, {% endif %}secret_key);
            {%- endif %}
     {%- if impl.get('required_flags', false) %}
 #if defined(OQS_DIST_BUILD)

@@ -79,7 +79,7 @@ OQS_API OQS_STATUS OQS_SIG_falcon_padded_512_sign(uint8_t *signature, size_t *si
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-    	return (OQS_STATUS) PQCLEAN_FALCONPADDED512_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) PQCLEAN_FALCONPADDED512_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_FALCONPADDED512_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
@@ -89,7 +89,7 @@ OQS_API OQS_STATUS OQS_SIG_falcon_padded_512_sign(uint8_t *signature, size_t *si
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-    	return (OQS_STATUS) PQCLEAN_FALCONPADDED512_AARCH64_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) PQCLEAN_FALCONPADDED512_AARCH64_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_FALCONPADDED512_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);

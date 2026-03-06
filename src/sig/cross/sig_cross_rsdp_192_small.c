@@ -63,7 +63,7 @@ OQS_API OQS_STATUS OQS_SIG_cross_rsdp_192_small_sign(uint8_t *signature, size_t 
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-    	return (OQS_STATUS) PQCLEAN_CROSSRSDP192SMALL_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) PQCLEAN_CROSSRSDP192SMALL_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
