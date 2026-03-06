@@ -79,24 +79,24 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_sign(uint8_t *signature, size_t *signa
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) pqov_uov_III_pkc_neon_signature(signature, signature_len, message, message_len, secret_key);
+    	return (OQS_STATUS) pqov_uov_III_pkc_neon_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) pqov_uov_III_pkc_ref_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_ref_signature(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_uov_ov_III_pkc_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) pqov_uov_III_pkc_avx2_signature(signature, signature_len, message, message_len, secret_key);
+    	return (OQS_STATUS) pqov_uov_III_pkc_avx2_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) pqov_uov_III_pkc_ref_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_ref_signature(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) pqov_uov_III_pkc_ref_signature(signature, signature_len, message, message_len, secret_key);
+	return (OQS_STATUS) pqov_uov_III_pkc_ref_signature(signature, signature_len, message, message_len, secret_key);
 #endif
 }
 
@@ -105,24 +105,24 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_verify(const uint8_t *message, size_t 
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) pqov_uov_III_pkc_neon_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_neon_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_uov_ov_III_pkc_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) pqov_uov_III_pkc_avx2_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_avx2_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
+	return (OQS_STATUS) pqov_uov_III_pkc_ref_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
 

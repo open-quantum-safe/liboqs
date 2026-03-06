@@ -79,24 +79,24 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_37_8_4_sign(uint8_t *signature, size_t *s
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) _snova_37_8_4_aes_ssk_avx2_sign(signature, signature_len, message, message_len, secret_key);
+    	return (OQS_STATUS) _snova_37_8_4_aes_ssk_avx2_sign(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_snova_SNOVA_37_8_4_neon)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) _snova_37_8_4_aes_ssk_neon_sign(signature, signature_len, message, message_len, secret_key);
+    	return (OQS_STATUS) _snova_37_8_4_aes_ssk_neon_sign(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);
+	return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_sign(signature, signature_len, message, message_len, secret_key);
 #endif
 }
 
@@ -105,24 +105,24 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_37_8_4_verify(const uint8_t *message, siz
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) _snova_37_8_4_aes_ssk_avx2_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) _snova_37_8_4_aes_ssk_avx2_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_snova_SNOVA_37_8_4_neon)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) _snova_37_8_4_aes_ssk_neon_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) _snova_37_8_4_aes_ssk_neon_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-        return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_verify(signature, signature_len, message, message_len, public_key);
+	return (OQS_STATUS) _snova_37_8_4_aes_ssk_opt_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
 
