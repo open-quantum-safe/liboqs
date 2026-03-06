@@ -51,26 +51,26 @@ extern int PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify_extmu(const uint8_t *sig, si
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_x86_64)
 #if defined(OQS_DIST_BUILD)
-    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
-    } else {
-        return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
-    }
+	} else {
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
+	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
 #if defined(OQS_DIST_BUILD)
-    if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-      return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
-    } else {
-        return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
-    }
+	} else {
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
+	}
 #endif /* OQS_DIST_BUILD */
 #else
-    return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
 #endif
 }
 
@@ -80,23 +80,23 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_sign(uint8_t *signature, size_t *sign
     }
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_x86_64)
 #if defined(OQS_DIST_BUILD)
-    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
       return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu(signature, signature_len, message, secret_key);
 #if defined(OQS_DIST_BUILD)
-    } else {
+	} else {
         return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu(signature, signature_len, message, secret_key);
-    }
+	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
 #if defined(OQS_DIST_BUILD)
-    if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
       return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature_extmu(signature, signature_len, message, secret_key);
 #if defined(OQS_DIST_BUILD)
-    } else {
+	} else {
         return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu(signature, signature_len, message, secret_key);
-    }
+	}
 #endif /* OQS_DIST_BUILD */
 #else
     return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu(signature, signature_len, message, secret_key);
@@ -109,23 +109,23 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify(const uint8_t *message, size_t
     }
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_x86_64)
 #if defined(OQS_DIST_BUILD)
-    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
       return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_extmu(signature, signature_len, message, public_key);
 #if defined(OQS_DIST_BUILD)
-    } else {
+	} else {
         return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(signature, signature_len, message, public_key);
-    }
+	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
 #if defined(OQS_DIST_BUILD)
-    if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
       return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify_extmu(signature, signature_len, message, public_key);
 #if defined(OQS_DIST_BUILD)
-    } else {
+	} else {
         return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(signature, signature_len, message, public_key);
-    }
+	}
 #endif /* OQS_DIST_BUILD */
 #else
     return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(signature, signature_len, message, public_key);
@@ -136,21 +136,21 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_sign_with_ctx_str(uint8_t *signature,
     if (message_len != OQS_SIG_ml_dsa_65_extmu_length_mu) {
         return OQS_ERROR;
     }
-    if (ctx_str == NULL && ctx_str_len == 0) {
-        return OQS_SIG_ml_dsa_65_extmu_sign(signature, signature_len, message, message_len, secret_key);
-    } else {
-        return OQS_ERROR;
-    }
+	if (ctx_str == NULL && ctx_str_len == 0) {
+		return OQS_SIG_ml_dsa_65_extmu_sign(signature, signature_len, message, message_len, secret_key);
+	} else {
+		return OQS_ERROR;
+	}
 }
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
     if (message_len != OQS_SIG_ml_dsa_65_extmu_length_mu) {
         return OQS_ERROR;
     }
-    if (ctx_str == NULL && ctx_str_len == 0) {
-        return OQS_SIG_ml_dsa_65_extmu_verify(message, message_len, signature, signature_len, public_key);
-    } else {
-        return OQS_ERROR;
-    }
+	if (ctx_str == NULL && ctx_str_len == 0) {
+		return OQS_SIG_ml_dsa_65_extmu_verify(message, message_len, signature, signature_len, public_key);
+	} else {
+		return OQS_ERROR;
+	}
 }
 #endif
