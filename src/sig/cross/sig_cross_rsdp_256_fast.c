@@ -45,64 +45,64 @@ extern int PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_verify(const uint8_t *sig, 
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_cross_rsdp_256_fast_avx2)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
+    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_keypair(public_key, secret_key);
+      return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
-	} else {
-		return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_keypair(public_key, secret_key);
-	}
+    } else {
+        return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_keypair(public_key, secret_key);
+    }
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_keypair(public_key, secret_key);
+    return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_keypair(public_key, secret_key);
 #endif
 }
 
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_cross_rsdp_256_fast_avx2)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
+    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+      return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
-	} else {
-		return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
-	}
+    } else {
+        return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+    }
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+    return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #endif
 }
 
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_SIG_cross_rsdp_256_fast_avx2)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
+    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+      return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
-	} else {
-		return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
-	}
+    } else {
+        return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+    }
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+    return (OQS_STATUS) PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
 
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
-	if (ctx_str == NULL && ctx_str_len == 0) {
-		return OQS_SIG_cross_rsdp_256_fast_sign(signature, signature_len, message, message_len, secret_key);
-	} else {
-		return OQS_ERROR;
-	}
+    if (ctx_str == NULL && ctx_str_len == 0) {
+        return OQS_SIG_cross_rsdp_256_fast_sign(signature, signature_len, message, message_len, secret_key);
+    } else {
+        return OQS_ERROR;
+    }
 }
 
 OQS_API OQS_STATUS OQS_SIG_cross_rsdp_256_fast_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
-	if (ctx_str == NULL && ctx_str_len == 0) {
-		return OQS_SIG_cross_rsdp_256_fast_verify(message, message_len, signature, signature_len, public_key);
-	} else {
-		return OQS_ERROR;
-	}
+    if (ctx_str == NULL && ctx_str_len == 0) {
+        return OQS_SIG_cross_rsdp_256_fast_verify(message, message_len, signature, signature_len, public_key);
+    } else {
+        return OQS_ERROR;
+    }
 }
 #endif
