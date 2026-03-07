@@ -48,32 +48,22 @@ def fetch_wycheproof_test_cases(kem_name, suffix, valid_types):
 def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
     """
     Fetches Wycheproof vectors and returns a list of (group, test_case) tuples.
-    Handles URL formatting and filtering by test group type for ML-DSA.
+    Handles URL formatting, local file fallback, and filtering by test group type for ML-DSA.
     """
     base_alg = sig_name.replace("-extmu", "")
     alg_id = base_alg.lower().replace("ml-dsa-", "mldsa_")
     file_name = f"{alg_id}_{suffix}.json"
     
-    print(f"\n[DEBUG] ----- Loading Wycheproof Data -----")
-    print(f"[DEBUG] Algorithm: {sig_name}")
-    print(f"[DEBUG] Looking for local file: {os.path.abspath(file_name)}")
-    
     if os.path.exists(file_name):
-        print(f"[DEBUG] SUCCESS: Local file '{file_name}' found!")
         with open(file_name, "r") as f:
             data = json.load(f)
     else:
         url = urljoin(WYCHE_ROOT, file_name)
-        print(f"[DEBUG] Local file NOT found. Attempting to download: {url}")
         resp = helpers.cached_requests_get(url)
-        print(f"[DEBUG] Download response HTTP status: {resp.status_code}")
         
         if resp.status_code == 404:
             raise FileNotFoundError(
-                f"\n\n*** TEST VECTOR NOT FOUND ***\n"
-                f"The file '{file_name}' was not found locally at: {os.path.abspath(file_name)}\n"
-                f"It is also NOT available upstream at: {url}\n\n"
-                f"ACTION REQUIRED: Please copy the '{file_name}' file directly into the directory where you are running pytest (e.g., your liboqs root folder).\n"
+                f"The file '{file_name}' was not found locally and is not available upstream at {url}."
             )
         resp.raise_for_status()
         data = json.loads(resp.content)
@@ -84,7 +74,6 @@ def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
             for tc in group["tests"]:
                 test_cases.append((group, tc))
                 
-    print(f"[DEBUG] Found {len(test_cases)} valid test cases in the JSON.")
     return test_cases
 
 def run_test_case(cmd, tc):
