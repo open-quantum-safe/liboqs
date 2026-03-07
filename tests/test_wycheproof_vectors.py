@@ -45,6 +45,48 @@ def fetch_wycheproof_test_cases(kem_name, suffix, valid_types):
         
     return test_cases
 
+def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
+    """
+    Fetches Wycheproof vectors and returns a list of (group, test_case) tuples.
+    Handles URL formatting and filtering by test group type for ML-DSA.
+    """
+    base_alg = sig_name.replace("-extmu", "")
+    alg_id = base_alg.lower().replace("ml-dsa-", "mldsa_")
+    file_name = f"{alg_id}_{suffix}.json"
+    
+    print(f"\n[DEBUG] ----- Loading Wycheproof Data -----")
+    print(f"[DEBUG] Algorithm: {sig_name}")
+    print(f"[DEBUG] Looking for local file: {os.path.abspath(file_name)}")
+    
+    if os.path.exists(file_name):
+        print(f"[DEBUG] SUCCESS: Local file '{file_name}' found!")
+        with open(file_name, "r") as f:
+            data = json.load(f)
+    else:
+        url = urljoin(WYCHE_ROOT, file_name)
+        print(f"[DEBUG] Local file NOT found. Attempting to download: {url}")
+        resp = helpers.cached_requests_get(url)
+        print(f"[DEBUG] Download response HTTP status: {resp.status_code}")
+        
+        if resp.status_code == 404:
+            raise FileNotFoundError(
+                f"\n\n*** TEST VECTOR NOT FOUND ***\n"
+                f"The file '{file_name}' was not found locally at: {os.path.abspath(file_name)}\n"
+                f"It is also NOT available upstream at: {url}\n\n"
+                f"ACTION REQUIRED: Please copy the '{file_name}' file directly into the directory where you are running pytest (e.g., your liboqs root folder).\n"
+            )
+        resp.raise_for_status()
+        data = json.loads(resp.content)
+
+    test_cases = []
+    for group in data.get("testGroups", []):
+        if group["type"] in valid_types:
+            for tc in group["tests"]:
+                test_cases.append((group, tc))
+                
+    print(f"[DEBUG] Found {len(test_cases)} valid test cases in the JSON.")
+    return test_cases
+
 def run_test_case(cmd, tc):
     """
     Executes vector_kem and verifies the exit code.
@@ -56,21 +98,16 @@ def run_test_case(cmd, tc):
 
     if cmd_type == "modOverflow":
         # 1. Modulus Overflow edge case
-        # vector_kem returns 0 only if it successfully blocked the unreduced key
         assert result.returncode == 0, (
             f"TC {tc['tcId']} FAILED: Accepted unreduced key.\nCmd: {' '.join(cmd)}"
         )
     elif not is_valid:
         # 2. Structural Errors & Expected Rejections
-        # Invalid inputs must cause vector_kem to return a non-zero exit code
         assert result.returncode != 0, (
             f"TC {tc['tcId']} FAILED: Expected rejection, but binary accepted it.\nCmd: {' '.join(cmd)}"
         )
     elif cmd_type == "encDecVAL" and "K" not in tc:
         # 3. Standard Valid Tests (Edge Case)
-        # Wycheproof's 'semi_expanded' file omits 'K' for valid decapsulation tests.
-        # Since we padded 'K' with dummy zeroes for argv parsing, vector_kem memcmp will 
-        # intentionally fail (returncode 1). We verify success by checking if it completed decapsulation.
         assert "k: " in result.stdout, (
             f"TC {tc['tcId']} FAILED: Decapsulation failed early.\n"
             f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
@@ -81,6 +118,35 @@ def run_test_case(cmd, tc):
             f"TC {tc['tcId']} FAILED: Rejected valid input.\n"
             f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
         )
+
+def run_sig_test_case(cmd, tc):
+    """
+    Executes vectors_sig and verifies the exit code.
+    """
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    is_valid = tc.get("result", "valid") in ["valid", "acceptable"]
+    
+    if "sigVer" in cmd[2]:
+        if result.returncode != 0:
+            if not is_valid and "ERROR: OQS_SIG_verify" not in result.stderr and "failed!" not in result.stderr:
+                return 
+            elif not is_valid and "failed!" in result.stderr:
+                pytest.fail(f"TC {tc['tcId']} FAILED: Binary accepted an invalid signature.\n"
+                            f"Stderr: {result.stderr}\nStdout: {result.stdout}\nCmd: {' '.join(cmd)}")
+            else:
+                pytest.fail(f"TC {tc['tcId']} FAILED: Verification assertion mismatch.\n"
+                            f"Stderr: {result.stderr}\nStdout: {result.stdout}\nCmd: {' '.join(cmd)}")
+    else:
+        if result.returncode != 0:
+            if not is_valid:
+                return # Passed: Generation failed or mismatched as correctly anticipated by Wycheproof
+            else:
+                pytest.fail(f"TC {tc['tcId']} FAILED: Signature generation failed or mismatched.\n"
+                            f"Stderr: {result.stderr}\nStdout: {result.stdout}\nCmd: {' '.join(cmd)}")
+        else:
+            if not is_valid:
+                pytest.fail(f"TC {tc['tcId']} FAILED: Generated signature unexpectedly matched invalid test.\n"
+                            f"Cmd: {' '.join(cmd)}")
 
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
@@ -168,6 +234,91 @@ def test_wycheproof_vec_kem_decaps(kem_name):
 
             run_test_case(cmd, tc)
 
+@helpers.filtered_test
+@pytest.mark.parametrize("sig_name", helpers.available_sigs_by_name())
+def test_wycheproof_vec_sig_verify(sig_name):
+    if not helpers.is_sig_enabled_by_name(sig_name) or not sig_name.startswith("ML-DSA"):
+        pytest.skip("Not enabled or supported")
+
+    build_dir = helpers.get_current_build_dir_name()
+    is_extmu = sig_name.endswith("-extmu")
+
+    test_cases = fetch_wycheproof_sig_test_cases(sig_name, "verify_test", ["MlDsaVerify"])
+    if not test_cases:
+        pytest.skip("No verify test cases found.")
+
+    for group, tc in test_cases:
+        pk = group.get("publicKey", "")
+        msg = tc.get("msg", "")
+        sig = tc.get("sig", "")
+        ctx = tc.get("ctx", "")
+        mu = tc.get("mu", "")
+        
+        is_valid = tc.get("result", "valid") in ["valid", "acceptable"]
+        testPassed = "1" if is_valid else "0"
+        flags = tc.get("flags", [])
+
+        if is_extmu:
+            if not mu:
+                continue
+            cmd = [
+                f"{build_dir}/tests/vectors_sig",
+                sig_name, "sigVer_extmu",
+                pk, mu, sig, testPassed
+            ]
+        else:
+            if "Internal" in flags or (mu and not msg):
+                continue
+            cmd = [
+                f"{build_dir}/tests/vectors_sig",
+                sig_name, "sigVer_ext",
+                pk, msg, sig, ctx, testPassed
+            ]
+        
+        run_sig_test_case(cmd, tc)
+
+@helpers.filtered_test
+@pytest.mark.parametrize("sig_name", helpers.available_sigs_by_name())
+def test_wycheproof_vec_sig_sign(sig_name):
+    if not helpers.is_sig_enabled_by_name(sig_name) or not sig_name.startswith("ML-DSA"):
+        pytest.skip("Not enabled or supported")
+
+    build_dir = helpers.get_current_build_dir_name()
+    is_extmu = sig_name.endswith("-extmu")
+
+    test_cases = fetch_wycheproof_sig_test_cases(sig_name, "sign_noseed_test", ["MlDsaSign"])
+    if not test_cases:
+        pytest.skip("No sign test cases found.")
+
+    for group, tc in test_cases:
+        sk = group.get("privateKey", "")
+        if not sk:
+            continue
+            
+        msg = tc.get("msg", "")
+        sig = tc.get("sig", "")
+        ctx = tc.get("ctx", "")
+        mu = tc.get("mu", "")
+        flags = tc.get("flags", [])
+
+        if is_extmu:
+            if not mu:
+                continue
+            cmd = [
+                f"{build_dir}/tests/vectors_sig",
+                sig_name, "sigGen_extmu",
+                sk, mu, sig, "00" * 32
+            ]
+        else:
+            if "Internal" in flags or (mu and not msg):
+                continue
+            cmd = [
+                f"{build_dir}/tests/vectors_sig",
+                sig_name, "sigGen_ext",
+                sk, msg, sig, ctx, "00" * 32
+            ]
+            
+        run_sig_test_case(cmd, tc)
+
 if __name__ == "__main__":
     pytest.main(sys.argv)
-
