@@ -20,8 +20,7 @@
 #ifndef MLK_COMPRESS_H
 #define MLK_COMPRESS_H
 
-#include <stddef.h>
-#include <stdint.h>
+
 #include "cbmc.h"
 #include "common.h"
 #include "debug.h"
@@ -50,9 +49,9 @@
 #endif
 
 /* Reference: Part of poly_tomsg() in the reference implementation @[REF]. */
-static MLK_INLINE uint32_t mlk_scalar_compress_d1(uint16_t u)
+static MLK_INLINE uint8_t mlk_scalar_compress_d1(int16_t u)
 __contract__(
-  requires(u <= MLKEM_Q - 1)
+  requires(0 <= u && u <= MLKEM_Q - 1)
   ensures(return_value < 2)
   ensures(return_value == (((uint32_t)u * 2 + MLKEM_Q / 2) / MLKEM_Q) % 2)  )
 {
@@ -65,7 +64,8 @@ __contract__(
    */
   /* check-magic: 1290168 == 2*round(2^31 / MLKEM_Q) */
   uint32_t d0 = (uint32_t)u * 1290168;
-  return (d0 + (1u << 30)) >> 31;
+  /* Unsigned shifting by 31 positions leaves only the top bit. */
+  return (uint8_t)((d0 + ((uint32_t)1u << 30)) >> 31);
 }
 #ifdef CBMC
 #pragma CPROVER check pop
@@ -93,9 +93,9 @@ __contract__(
 
 /* Reference: Embedded into `poly_compress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint32_t mlk_scalar_compress_d4(uint16_t u)
+static MLK_INLINE uint8_t mlk_scalar_compress_d4(int16_t u)
 __contract__(
-  requires(u <= MLKEM_Q - 1)
+  requires(0 <= u && u <= MLKEM_Q - 1)
   ensures(return_value < 16)
   ensures(return_value == (((uint32_t)u * 16 + MLKEM_Q / 2) / MLKEM_Q) % 16))
 {
@@ -108,7 +108,8 @@ __contract__(
    */
   /* check-magic: 1290160 == 16 * round(2^28 / MLKEM_Q) */
   uint32_t d0 = (uint32_t)u * 1290160;
-  return (d0 + (1u << 27)) >> 28; /* round(d0/2^28) */
+  /* The return value is < 16, so not altered by the conversion to uint8_t. */
+  return (uint8_t)((d0 + ((uint32_t)1u << 27)) >> 28); /* round(d0/2^28) */
 }
 #ifdef CBMC
 #pragma CPROVER check pop
@@ -128,11 +129,16 @@ __contract__(
 
 /* Reference: Embedded into `poly_decompress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint16_t mlk_scalar_decompress_d4(uint32_t u)
+static MLK_INLINE int16_t mlk_scalar_decompress_d4(uint8_t u)
 __contract__(
   requires(0 <= u && u < 16)
   ensures(return_value <= (MLKEM_Q - 1))
-) { return ((u * MLKEM_Q) + 8) >> 4; }
+)
+{
+  /* The return value is in 0..MLKEM_Q-1, hence not altered by the
+   * conversion to int16_t. */
+  return (int16_t)((((uint32_t)u * MLKEM_Q) + 8) >> 4);
+}
 
 /************************************************************
  * Name: mlk_scalar_compress_d5
@@ -156,9 +162,9 @@ __contract__(
 
 /* Reference: Embedded into `poly_compress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint32_t mlk_scalar_compress_d5(uint16_t u)
+static MLK_INLINE uint8_t mlk_scalar_compress_d5(int16_t u)
 __contract__(
-  requires(u <= MLKEM_Q - 1)
+  requires(0 <= u && u <= MLKEM_Q - 1)
   ensures(return_value < 32)
   ensures(return_value == (((uint32_t)u * 32 + MLKEM_Q / 2) / MLKEM_Q) % 32)  )
 {
@@ -171,7 +177,8 @@ __contract__(
    */
   /* check-magic: 1290176 == 2^5 * round(2^27 / MLKEM_Q) */
   uint32_t d0 = (uint32_t)u * 1290176;
-  return (d0 + (1u << 26)) >> 27; /* round(d0/2^27) */
+  /* The return value is < 32, so not altered by the conversion to uint8_t. */
+  return (uint8_t)((d0 + ((uint32_t)1u << 26)) >> 27); /* round(d0/2^27) */
 }
 #ifdef CBMC
 #pragma CPROVER check pop
@@ -191,11 +198,16 @@ __contract__(
 
 /* Reference: Embedded into `poly_decompress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint16_t mlk_scalar_decompress_d5(uint32_t u)
+static MLK_INLINE int16_t mlk_scalar_decompress_d5(uint8_t u)
 __contract__(
   requires(0 <= u && u < 32)
-  ensures(return_value <= MLKEM_Q - 1)
-) { return ((u * MLKEM_Q) + 16) >> 5; }
+  ensures(0 <= return_value && return_value <= MLKEM_Q - 1)
+)
+{
+  /* The return value is in 0..MLKEM_Q-1, hence not altered by the
+   * conversion to int16_t. */
+  return (int16_t)((((uint32_t)u * MLKEM_Q) + 16) >> 5);
+}
 
 /************************************************************
  * Name: mlk_scalar_compress_d10
@@ -219,9 +231,9 @@ __contract__(
 
 /* Reference: Embedded into `polyvec_compress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint32_t mlk_scalar_compress_d10(uint16_t u)
+static MLK_INLINE uint16_t mlk_scalar_compress_d10(int16_t u)
 __contract__(
-  requires(u <= MLKEM_Q - 1)
+  requires(0 <= u && u <= MLKEM_Q - 1)
   ensures(return_value < (1u << 10))
   ensures(return_value == (((uint32_t)u * (1u << 10) + MLKEM_Q / 2) / MLKEM_Q) % (1 << 10)))
 {
@@ -255,11 +267,16 @@ __contract__(
 
 /* Reference: Embedded into `polyvec_decompress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint16_t mlk_scalar_decompress_d10(uint32_t u)
+static MLK_INLINE int16_t mlk_scalar_decompress_d10(uint16_t u)
 __contract__(
   requires(0 <= u && u < 1024)
-  ensures(return_value <= (MLKEM_Q - 1))
-) { return ((u * MLKEM_Q) + 512) >> 10; }
+  ensures(0 <= return_value && return_value <= (MLKEM_Q - 1))
+)
+{
+  /* The return value is in 0..MLKEM_Q-1, hence not altered by the
+   * conversion to int16_t. */
+  return (int16_t)((((uint32_t)u * MLKEM_Q) + 512) >> 10);
+}
 
 /************************************************************
  * Name: mlk_scalar_compress_d11
@@ -283,9 +300,9 @@ __contract__(
 
 /* Reference: Embedded into `polyvec_compress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint32_t mlk_scalar_compress_d11(uint16_t u)
+static MLK_INLINE uint16_t mlk_scalar_compress_d11(int16_t u)
 __contract__(
-  requires(u <= MLKEM_Q - 1)
+  requires(0 <= u && u <= MLKEM_Q - 1)
   ensures(return_value < (1u << 11))
   ensures(return_value == (((uint32_t)u * (1u << 11) + MLKEM_Q / 2) / MLKEM_Q) % (1 << 11)))
 {
@@ -319,11 +336,16 @@ __contract__(
 
 /* Reference: Embedded into `polyvec_decompress()` in the
  *            reference implementation @[REF]. */
-static MLK_INLINE uint16_t mlk_scalar_decompress_d11(uint32_t u)
+static MLK_INLINE int16_t mlk_scalar_decompress_d11(uint16_t u)
 __contract__(
   requires(0 <= u && u < 2048)
-  ensures(return_value <= (MLKEM_Q - 1))
-) { return ((u * MLKEM_Q) + 1024) >> 11; }
+  ensures(0 <= return_value && return_value <= (MLKEM_Q - 1))
+)
+{
+  /* The return value is in 0..MLKEM_Q-1, hence not altered by the
+   * conversion to int16_t. */
+  return (int16_t)((((uint32_t)u * MLKEM_Q) + 1024) >> 11);
+}
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || (MLKEM_K == 2 || MLKEM_K == 3)
 #define mlk_poly_compress_d4 MLK_NAMESPACE(poly_compress_d4)
@@ -575,7 +597,7 @@ __contract__(
   requires(memory_no_alias(r, MLKEM_POLYBYTES))
   requires(memory_no_alias(a, sizeof(mlk_poly)))
   requires(array_bound(a->coeffs, 0, MLKEM_N, 0, MLKEM_Q))
-  assigns(object_whole(r))
+  assigns(memory_slice(r, MLKEM_POLYBYTES))
 );
 
 
@@ -631,7 +653,7 @@ void mlk_poly_frommsg(mlk_poly *r, const uint8_t msg[MLKEM_INDCPA_MSGBYTES])
 __contract__(
   requires(memory_no_alias(msg, MLKEM_INDCPA_MSGBYTES))
   requires(memory_no_alias(r, sizeof(mlk_poly)))
-  assigns(object_whole(r))
+  assigns(memory_slice(r, sizeof(mlk_poly)))
   ensures(array_bound(r->coeffs, 0, MLKEM_N, 0, MLKEM_Q))
 );
 
@@ -660,7 +682,7 @@ __contract__(
   requires(memory_no_alias(msg, MLKEM_INDCPA_MSGBYTES))
   requires(memory_no_alias(r, sizeof(mlk_poly)))
   requires(array_bound(r->coeffs, 0, MLKEM_N, 0, MLKEM_Q))
-  assigns(object_whole(msg))
+  assigns(memory_slice(msg, MLKEM_INDCPA_MSGBYTES))
 );
 
 #endif /* !MLK_COMPRESS_H */

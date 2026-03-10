@@ -20,8 +20,7 @@
 #include "common.h"
 #if !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED)
 
-#include <stdint.h>
-#include <string.h>
+
 #include "cbmc.h"
 #include "debug.h"
 #include "poly.h"
@@ -29,9 +28,6 @@
 #include "symmetric.h"
 #include "verify.h"
 
-#if !defined(MLK_USE_NATIVE_POLY_TOMONT) ||           \
-    !defined(MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE) || \
-    !defined(MLK_USE_NATIVE_NTT) || !defined(MLK_USE_NATIVE_INTT)
 /*************************************************
  * Name:        mlk_fqmul
  *
@@ -68,10 +64,7 @@ __contract__(
   mlk_assert_abs_bound(&res, 1, MLKEM_Q);
   return res;
 }
-#endif /* !MLK_USE_NATIVE_POLY_TOMONT || !MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE \
-          || !MLK_USE_NATIVE_NTT || !MLK_USE_NATIVE_INTT */
 
-#if !defined(MLK_USE_NATIVE_POLY_REDUCE) || !defined(MLK_USE_NATIVE_INTT)
 /*************************************************
  * Name:        mlk_barrett_reduce
  *
@@ -107,7 +100,7 @@ __contract__(
    * Here, we assume it's sign-preserving "arithmetic" shift right.
    * See (C99 6.5.7 (5))
    */
-  const int32_t t = (magic * a + (1 << 25)) >> 26;
+  const int32_t t = (magic * a + ((int32_t)1 << 25)) >> 26;
 
   /*
    * t is in -10 .. +10, so we need 32-bit math to
@@ -118,12 +111,14 @@ __contract__(
   mlk_assert_abs_bound(&res, 1, MLKEM_Q_HALF);
   return res;
 }
-#endif /* !MLK_USE_NATIVE_POLY_REDUCE || !MLK_USE_NATIVE_INTT */
 
-#if !defined(MLK_USE_NATIVE_POLY_TOMONT)
 /* Reference: `poly_tomont()` in the reference implementation @[REF]. */
-MLK_INTERNAL_API
-void mlk_poly_tomont(mlk_poly *r)
+MLK_STATIC_TESTABLE void mlk_poly_tomont_c(mlk_poly *r)
+__contract__(
+  requires(memory_no_alias(r, sizeof(mlk_poly)))
+  assigns(memory_slice(r, sizeof(mlk_poly)))
+  ensures(array_abs_bound(r->coeffs, 0, MLKEM_N, MLKEM_Q))
+)
 {
   unsigned i;
   const int16_t f = 1353; /* check-magic: 1353 == signed_mod(2^32, MLKEM_Q) */
@@ -137,16 +132,23 @@ void mlk_poly_tomont(mlk_poly *r)
 
   mlk_assert_abs_bound(r, MLKEM_N, MLKEM_Q);
 }
-#else  /* !MLK_USE_NATIVE_POLY_TOMONT */
+
 MLK_INTERNAL_API
 void mlk_poly_tomont(mlk_poly *r)
 {
-  mlk_poly_tomont_native(r->coeffs);
-  mlk_assert_abs_bound(r, MLKEM_N, MLKEM_Q);
-}
+#if defined(MLK_USE_NATIVE_POLY_TOMONT)
+  int ret;
+  ret = mlk_poly_tomont_native(r->coeffs);
+  if (ret == MLK_NATIVE_FUNC_SUCCESS)
+  {
+    mlk_assert_abs_bound(r, MLKEM_N, MLKEM_Q);
+    return;
+  }
 #endif /* MLK_USE_NATIVE_POLY_TOMONT */
 
-#if !defined(MLK_USE_NATIVE_POLY_REDUCE)
+  mlk_poly_tomont_c(r);
+}
+
 /************************************************************
  * Name: mlk_scalar_signed_to_unsigned_q
  *
@@ -162,7 +164,7 @@ void mlk_poly_tomont(mlk_poly *r)
  *            - Used here to implement different semantics of `poly_reduce()`;
  *              see below. in the reference implementation @[REF], this logic is
  *              part of all compression functions (see `compress.c`). */
-static MLK_INLINE uint16_t mlk_scalar_signed_to_unsigned_q(int16_t c)
+static MLK_INLINE int16_t mlk_scalar_signed_to_unsigned_q(int16_t c)
 __contract__(
   requires(c > -MLKEM_Q && c < MLKEM_Q)
   ensures(return_value >= 0 && return_value < MLKEM_Q)
@@ -170,12 +172,14 @@ __contract__(
 {
   mlk_assert_abs_bound(&c, 1, MLKEM_Q);
 
-  /* Add Q if c is negative, but in constant time */
-  c = mlk_ct_sel_int16(c + MLKEM_Q, c, mlk_ct_cmask_neg_i16(c));
+  /* Add MLKEM_Q if c is negative, but in constant time.
+   *
+   * Note that c + MLKEM_Q does not overflow in int16_t,
+   * so the cast to uint16_t is safe. */
+  c = mlk_ct_sel_int16((int16_t)(c + MLKEM_Q), c, mlk_ct_cmask_neg_i16(c));
 
-  /* and therefore cast to uint16_t is safe. */
   mlk_assert_bound(&c, 1, 0, MLKEM_Q);
-  return (uint16_t)c;
+  return c;
 }
 
 /* Reference: `poly_reduce()` in the reference implementation @[REF]
@@ -185,10 +189,15 @@ __contract__(
  *              here to go from signed to unsigned representatives.
  *              This conditional addition is then dropped from all
  *              polynomial compression functions instead (see `compress.c`). */
-MLK_INTERNAL_API
-void mlk_poly_reduce(mlk_poly *r)
+MLK_STATIC_TESTABLE void mlk_poly_reduce_c(mlk_poly *r)
+__contract__(
+  requires(memory_no_alias(r, sizeof(mlk_poly)))
+  assigns(memory_slice(r, sizeof(mlk_poly)))
+  ensures(array_bound(r->coeffs, 0, MLKEM_N, 0, MLKEM_Q))
+)
 {
   unsigned i;
+
   for (i = 0; i < MLKEM_N; i++)
   __loop__(
     invariant(i <= MLKEM_N)
@@ -202,14 +211,22 @@ void mlk_poly_reduce(mlk_poly *r)
 
   mlk_assert_bound(r, MLKEM_N, 0, MLKEM_Q);
 }
-#else  /* !MLK_USE_NATIVE_POLY_REDUCE */
+
 MLK_INTERNAL_API
 void mlk_poly_reduce(mlk_poly *r)
 {
-  mlk_poly_reduce_native(r->coeffs);
-  mlk_assert_bound(r, MLKEM_N, 0, MLKEM_Q);
-}
+#if defined(MLK_USE_NATIVE_POLY_REDUCE)
+  int ret;
+  ret = mlk_poly_reduce_native(r->coeffs);
+  if (ret == MLK_NATIVE_FUNC_SUCCESS)
+  {
+    mlk_assert_bound(r, MLKEM_N, 0, MLKEM_Q);
+    return;
+  }
 #endif /* MLK_USE_NATIVE_POLY_REDUCE */
+
+  mlk_poly_reduce_c(r);
+}
 
 /* Reference: `poly_add()` in the reference implementation @[REF].
  *            - We use destructive version (output=first input) to avoid
@@ -224,7 +241,8 @@ void mlk_poly_add(mlk_poly *r, const mlk_poly *b)
     invariant(forall(k0, i, MLKEM_N, r->coeffs[k0] == loop_entry(*r).coeffs[k0]))
     invariant(forall(k1, 0, i, r->coeffs[k1] == loop_entry(*r).coeffs[k1] + b->coeffs[k1])))
   {
-    r->coeffs[i] = r->coeffs[i] + b->coeffs[i];
+    /* The preconditions imply that the addition stays within int16_t. */
+    r->coeffs[i] = (int16_t)(r->coeffs[i] + b->coeffs[i]);
   }
 }
 
@@ -241,24 +259,24 @@ void mlk_poly_sub(mlk_poly *r, const mlk_poly *b)
     invariant(forall(k0, i, MLKEM_N, r->coeffs[k0] == loop_entry(*r).coeffs[k0]))
     invariant(forall(k1, 0, i, r->coeffs[k1] == loop_entry(*r).coeffs[k1] - b->coeffs[k1])))
   {
-    r->coeffs[i] = r->coeffs[i] - b->coeffs[i];
+    /* The preconditions imply that the subtraction stays within int16_t. */
+    r->coeffs[i] = (int16_t)(r->coeffs[i] - b->coeffs[i]);
   }
 }
 
-/* Include zeta table unless NTT, invNTT and mulcache computation
- * have been replaced by native implementations. */
-#if !defined(MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE) || \
-    !defined(MLK_USE_NATIVE_NTT) || !defined(MLK_USE_NATIVE_INTT)
 #include "zetas.inc"
-#endif
 
-#if !defined(MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE)
 /* Reference: Does not exist in the reference implementation @[REF].
  *            - The reference implementation does not use a
  *              multiplication cache ('mulcache'). This idea originates
  *              from @[NeonNTT] and is used at the C level here. */
-MLK_INTERNAL_API
-void mlk_poly_mulcache_compute(mlk_poly_mulcache *x, const mlk_poly *a)
+MLK_STATIC_TESTABLE void mlk_poly_mulcache_compute_c(mlk_poly_mulcache *x,
+                                                     const mlk_poly *a)
+__contract__(
+  requires(memory_no_alias(x, sizeof(mlk_poly_mulcache)))
+  requires(memory_no_alias(a, sizeof(mlk_poly)))
+  assigns(memory_slice(x, sizeof(mlk_poly_mulcache)))
+)
 {
   unsigned i;
   for (i = 0; i < MLKEM_N / 4; i++)
@@ -266,8 +284,11 @@ void mlk_poly_mulcache_compute(mlk_poly_mulcache *x, const mlk_poly *a)
     invariant(i <= MLKEM_N / 4)
     invariant(array_abs_bound(x->coeffs, 0, 2 * i, MLKEM_Q)))
   {
-    x->coeffs[2 * i + 0] = mlk_fqmul(a->coeffs[4 * i + 1], zetas[64 + i]);
-    x->coeffs[2 * i + 1] = mlk_fqmul(a->coeffs[4 * i + 3], -zetas[64 + i]);
+    x->coeffs[2 * i + 0] = mlk_fqmul(a->coeffs[4 * i + 1], mlk_zetas[64 + i]);
+    /* The values in zeta table are <= MLKEM_Q in absolute value,
+     * so the negation in int16_t is safe. */
+    x->coeffs[2 * i + 1] =
+        mlk_fqmul(a->coeffs[4 * i + 3], (int16_t)(-mlk_zetas[64 + i]));
   }
 
   /*
@@ -278,15 +299,22 @@ void mlk_poly_mulcache_compute(mlk_poly_mulcache *x, const mlk_poly *a)
    */
   mlk_assert_abs_bound(x, MLKEM_N / 2, MLKEM_Q);
 }
-#else  /* !MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE */
+
 MLK_INTERNAL_API
 void mlk_poly_mulcache_compute(mlk_poly_mulcache *x, const mlk_poly *a)
 {
-  mlk_poly_mulcache_compute_native(x->coeffs, a->coeffs);
-}
+#if defined(MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE)
+  int ret;
+  ret = mlk_poly_mulcache_compute_native(x->coeffs, a->coeffs);
+  if (ret == MLK_NATIVE_FUNC_SUCCESS)
+  {
+    return;
+  }
 #endif /* MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE */
 
-#if !defined(MLK_USE_NATIVE_NTT)
+  mlk_poly_mulcache_compute_c(x, a);
+}
+
 /*
  * Computes a block CT butterflies with a fixed twiddle factor,
  * using Montgomery multiplication.
@@ -316,7 +344,8 @@ void mlk_poly_mulcache_compute(mlk_poly_mulcache *x, const mlk_poly *a)
 
 /* Reference: Embedded in `ntt()` in the reference implementation @[REF]. */
 static void mlk_ntt_butterfly_block(int16_t r[MLKEM_N], int16_t zeta,
-                                    unsigned start, unsigned len, int bound)
+                                    unsigned start, unsigned len,
+                                    unsigned bound)
 __contract__(
   requires(start < MLKEM_N)
   requires(1 <= len && len <= MLKEM_N / 2 && start + 2 * len <= MLKEM_N)
@@ -346,8 +375,9 @@ __contract__(
   {
     int16_t t;
     t = mlk_fqmul(r[j + len], zeta);
-    r[j + len] = r[j] - t;
-    r[j] = r[j] + t;
+    /* The precondition implies that the arithmetic does not overflow. */
+    r[j + len] = (int16_t)(r[j] - t);
+    r[j] = (int16_t)(r[j] + t);
   }
 }
 
@@ -370,7 +400,7 @@ __contract__(
   unsigned start, k, len;
   /* Twiddle factors for layer n are at indices 2^(n-1)..2^n-1. */
   k = 1u << (layer - 1);
-  len = MLKEM_N >> layer;
+  len = (unsigned)MLKEM_N >> layer;
   for (start = 0; start < MLKEM_N; start += 2 * len)
   __loop__(
     invariant(start < MLKEM_N + 2 * len)
@@ -378,7 +408,7 @@ __contract__(
     invariant(array_abs_bound(r, 0, start, layer * MLKEM_Q + MLKEM_Q))
     invariant(array_abs_bound(r, start, MLKEM_N, layer * MLKEM_Q)))
   {
-    int16_t zeta = zetas[k++];
+    int16_t zeta = mlk_zetas[k++];
     mlk_ntt_butterfly_block(r, zeta, start, len, layer * MLKEM_Q);
   }
 }
@@ -395,12 +425,19 @@ __contract__(
 /* Reference: `ntt()` in the reference implementation @[REF].
  * - Iterate over `layer` instead of `len` in the outer loop
  *   to simplify computation of zeta index. */
-MLK_INTERNAL_API
-void mlk_poly_ntt(mlk_poly *p)
+MLK_STATIC_TESTABLE void mlk_poly_ntt_c(mlk_poly *p)
+__contract__(
+  requires(memory_no_alias(p, sizeof(mlk_poly)))
+  requires(array_abs_bound(p->coeffs, 0, MLKEM_N, MLKEM_Q))
+  assigns(memory_slice(p, sizeof(mlk_poly)))
+  ensures(array_abs_bound(p->coeffs, 0, MLKEM_N, MLK_NTT_BOUND))
+)
 {
   unsigned layer;
   int16_t *r;
+
   mlk_assert_abs_bound(p, MLKEM_N, MLKEM_Q);
+
   r = p->coeffs;
 
   for (layer = 1; layer <= 7; layer++)
@@ -414,18 +451,24 @@ void mlk_poly_ntt(mlk_poly *p)
   /* Check the stronger bound */
   mlk_assert_abs_bound(p, MLKEM_N, MLK_NTT_BOUND);
 }
-#else  /* !MLK_USE_NATIVE_NTT */
 
 MLK_INTERNAL_API
 void mlk_poly_ntt(mlk_poly *p)
 {
+#if defined(MLK_USE_NATIVE_NTT)
+  int ret;
   mlk_assert_abs_bound(p, MLKEM_N, MLKEM_Q);
-  mlk_ntt_native(p->coeffs);
-  mlk_assert_abs_bound(p, MLKEM_N, MLK_NTT_BOUND);
-}
+  ret = mlk_ntt_native(p->coeffs);
+  if (ret == MLK_NATIVE_FUNC_SUCCESS)
+  {
+    mlk_assert_abs_bound(p, MLKEM_N, MLK_NTT_BOUND);
+    return;
+  }
 #endif /* MLK_USE_NATIVE_NTT */
 
-#if !defined(MLK_USE_NATIVE_INTT)
+  mlk_poly_ntt_c(p);
+}
+
 
 /* Compute one layer of inverse NTT */
 
@@ -439,7 +482,7 @@ __contract__(
   ensures(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q)))
 {
   unsigned start, k, len;
-  len = (MLKEM_N >> layer);
+  len = (unsigned)MLKEM_N >> layer;
   k = (1u << layer) - 1;
   for (start = 0; start < MLKEM_N; start += 2 * len)
   __loop__(
@@ -449,7 +492,7 @@ __contract__(
     invariant(2 * len * k + start == 2 * MLKEM_N - 2 * len))
   {
     unsigned j;
-    int16_t zeta = zetas[k--];
+    int16_t zeta = mlk_zetas[k--];
     for (j = start; j < start + len; j++)
     __loop__(
       invariant(start <= j && j <= start + len)
@@ -457,8 +500,9 @@ __contract__(
       invariant(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q)))
     {
       int16_t t = r[j];
-      r[j] = mlk_barrett_reduce(t + r[j + len]);
-      r[j + len] = r[j + len] - t;
+      /* The preconditions imply that the arithmetic does not overflow. */
+      r[j] = mlk_barrett_reduce((int16_t)(t + r[j + len]));
+      r[j + len] = (int16_t)(r[j + len] - t);
       r[j + len] = mlk_fqmul(r[j + len], zeta);
     }
   }
@@ -469,18 +513,22 @@ __contract__(
  *              while the reference implementation normalizes at
  *              the end. This allows us to drop a call to `poly_reduce()`
  *              from the base multiplication. */
-MLK_INTERNAL_API
-void mlk_poly_invntt_tomont(mlk_poly *p)
+MLK_STATIC_TESTABLE void mlk_poly_invntt_tomont_c(mlk_poly *p)
+__contract__(
+  requires(memory_no_alias(p, sizeof(mlk_poly)))
+  assigns(memory_slice(p, sizeof(mlk_poly)))
+  ensures(array_abs_bound(p->coeffs, 0, MLKEM_N, MLK_INVNTT_BOUND))
+)
 {
+  unsigned j, layer;
+  const int16_t f = 1441; /* check-magic: 1441 == pow(2,32 - 7,MLKEM_Q) */
+  int16_t *r = p->coeffs;
+
   /*
    * Scale input polynomial to account for Montgomery factor
    * and NTT twist. This also brings coefficients down to
    * absolute value < MLKEM_Q.
    */
-  unsigned j, layer;
-  const int16_t f = 1441; /* check-magic: 1441 == pow(2,32 - 7,MLKEM_Q) */
-  int16_t *r = p->coeffs;
-
   for (j = 0; j < MLKEM_N; j++)
   __loop__(
     invariant(j <= MLKEM_N)
@@ -500,15 +548,22 @@ void mlk_poly_invntt_tomont(mlk_poly *p)
 
   mlk_assert_abs_bound(p, MLKEM_N, MLK_INVNTT_BOUND);
 }
-#else  /* !MLK_USE_NATIVE_INTT */
 
 MLK_INTERNAL_API
 void mlk_poly_invntt_tomont(mlk_poly *p)
 {
-  mlk_intt_native(p->coeffs);
-  mlk_assert_abs_bound(p, MLKEM_N, MLK_INVNTT_BOUND);
-}
+#if defined(MLK_USE_NATIVE_INTT)
+  int ret;
+  ret = mlk_intt_native(p->coeffs);
+  if (ret == MLK_NATIVE_FUNC_SUCCESS)
+  {
+    mlk_assert_abs_bound(p, MLKEM_N, MLK_INVNTT_BOUND);
+    return;
+  }
 #endif /* MLK_USE_NATIVE_INTT */
+
+  mlk_poly_invntt_tomont_c(p);
+}
 
 #else /* !MLK_CONFIG_MULTILEVEL_NO_SHARED */
 
