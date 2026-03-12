@@ -426,6 +426,9 @@ OQS_API void *OQS_MEM_malloc(size_t size) {
 
 OQS_API void *OQS_MEM_calloc(size_t num_elements, size_t element_size) {
 #if defined(OQS_USE_OPENSSL)
+	if (element_size != 0 && num_elements > SIZE_MAX / element_size) {
+		return NULL;
+	}
 	return OSSL_FUNC(CRYPTO_zalloc)(num_elements * element_size,
 	                                OPENSSL_FILE, OPENSSL_LINE);
 #else
