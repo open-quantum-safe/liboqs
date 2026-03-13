@@ -39,6 +39,9 @@ def fetch_wycheproof_kem_test_cases(kem_name, suffix, valid_types):
     for group in data.get("testGroups", []):
         if group["parameterSet"] == kem_name and group["type"] in valid_types:
             test_cases.extend(group["tests"])
+
+    if not test_cases:
+        raise ValueError(f"Malformed test data or no matching test groups for {kem_name} in {url}")
             
     return test_cases
 
@@ -60,7 +63,10 @@ def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
         if group["type"] in valid_types:
             for tc in group["tests"]:
                 test_cases.append((group, tc))
-                
+
+    if not test_cases:
+        raise ValueError(f"Malformed test data or no matching test groups for {sig_name} in {url}")
+            
     return test_cases
 
 def run_kem_test_case(cmd, tc):
