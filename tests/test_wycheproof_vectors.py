@@ -22,7 +22,7 @@ ML_KEM_PARAMS = {
 }
 
 MlDsaParam = namedtuple("MlDsaParam", ["pk", "sk"])
-# Add lengths for ML-DSA so we can generate dummy strings for key expansio
+# Add lengths for ML-DSA so we can generate dummy strings for key expansion
 ML_DSA_PARAMS = {
     "ML-DSA-44": MlDsaParam(1312, 2560),
     "ML-DSA-65": MlDsaParam(1952, 4032),
