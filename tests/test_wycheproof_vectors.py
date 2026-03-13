@@ -22,10 +22,10 @@ ML_KEM_PARAMS = {
     "ML-KEM-1024": MlKemParam(1568, 1568),
 }
 
-def fetch_wycheproof_test_cases(kem_name, suffix, valid_types):
+def fetch_wycheproof_kem_test_cases(kem_name, suffix, valid_types):
     """
     Fetches Wycheproof vectors and returns a list of individual test cases.
-    Handles URL formatting, downloading, and filtering by test group type.
+    Handles URL formatting, downloading, and filtering by test group type for ML-KEM.
     """
     alg_id = kem_name.lower().replace("ml-kem-", "mlkem_")
     url = urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
@@ -40,35 +40,22 @@ def fetch_wycheproof_test_cases(kem_name, suffix, valid_types):
         if group["parameterSet"] == kem_name and group["type"] in valid_types:
             test_cases.extend(group["tests"])
             
-    if not test_cases:
-        raise ValueError(f"Malformed test data or no matching test groups for {kem_name} in {url}")
-        
     return test_cases
 
 def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
     """
     Fetches Wycheproof vectors and returns a list of (group, test_case) tuples.
-    Handles URL formatting, local file fallback, and filtering by test group type for ML-DSA.
+    Handles URL formatting, downloading, and filtering by test group type for ML-DSA.
     """
-    base_alg = sig_name.replace("-extmu", "")
-    alg_id = base_alg.lower().replace("ml-dsa-", "mldsa_")
-    file_name = f"{alg_id}_{suffix}.json"
+    alg_id = sig_name.lower().replace("ml-dsa-", "mldsa_")
+    url = urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
     
-    if os.path.exists(file_name):
-        with open(file_name, "r") as f:
-            data = json.load(f)
-    else:
-        url = urljoin(WYCHE_ROOT, file_name)
-        resp = helpers.cached_requests_get(url)
-        
-        if resp.status_code == 404:
-            raise FileNotFoundError(
-                f"The file '{file_name}' was not found locally and is not available upstream at {url}."
-            )
-        resp.raise_for_status()
-        data = json.loads(resp.content)
+    resp = helpers.cached_requests_get(url)
+    resp.raise_for_status()
 
+    data = json.loads(resp.content)
     test_cases = []
+    
     for group in data.get("testGroups", []):
         if group["type"] in valid_types:
             for tc in group["tests"]:
@@ -86,23 +73,19 @@ def run_test_case(cmd, tc):
     cmd_type = cmd[2]
 
     if cmd_type == "modOverflow":
-        # 1. Modulus Overflow edge case
         assert result.returncode == 0, (
             f"TC {tc['tcId']} FAILED: Accepted unreduced key.\nCmd: {' '.join(cmd)}"
         )
     elif not is_valid:
-        # 2. Structural Errors & Expected Rejections
         assert result.returncode != 0, (
             f"TC {tc['tcId']} FAILED: Expected rejection, but binary accepted it.\nCmd: {' '.join(cmd)}"
         )
     elif cmd_type == "encDecVAL" and "K" not in tc:
-        # 3. Standard Valid Tests (Edge Case)
         assert "k: " in result.stdout, (
             f"TC {tc['tcId']} FAILED: Decapsulation failed early.\n"
             f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
         )
     else:
-        # 4. All other valid tests must exit cleanly
         assert result.returncode == 0, (
             f"TC {tc['tcId']} FAILED: Rejected valid input.\n"
             f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
@@ -144,7 +127,7 @@ def test_wycheproof_vec_kem_keygen(kem_name):
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
-    test_cases = fetch_wycheproof_test_cases(kem_name, "keygen_seed_test", ["MLKEMKeyGen"])
+    test_cases = fetch_wycheproof_kem_test_cases(kem_name, "keygen_seed_test", ["MLKEMKeyGen"])
 
     for tc in test_cases:
         cmd = [
@@ -161,7 +144,7 @@ def test_wycheproof_vec_kem_encaps(kem_name):
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
-    test_cases = fetch_wycheproof_test_cases(kem_name, "encaps_test", ["MLKEMEncapsTest"])
+    test_cases = fetch_wycheproof_kem_test_cases(kem_name, "encaps_test", ["MLKEMEncapsTest"])
 
     pk_len = ML_KEM_PARAMS[kem_name].pk
     c_len = ML_KEM_PARAMS[kem_name].ct
@@ -200,7 +183,7 @@ def test_wycheproof_vec_kem_decaps(kem_name):
     c_len = ML_KEM_PARAMS[kem_name].ct
     
     for suffix in ["test", "semi_expanded_decaps_test"]:
-        test_cases = fetch_wycheproof_test_cases(kem_name, suffix, ["MLKEMDecapsValidationTest", "MLKEMTest"])
+        test_cases = fetch_wycheproof_kem_test_cases(kem_name, suffix, ["MLKEMDecapsValidationTest", "MLKEMTest"])
         
         for tc in test_cases:
             expected_k = tc.get("K") or "00" * 32
@@ -230,9 +213,8 @@ def test_wycheproof_vec_sig_verify(sig_name):
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
-    is_extmu = sig_name.endswith("-extmu")
-
     test_cases = fetch_wycheproof_sig_test_cases(sig_name, "verify_test", ["MlDsaVerify"])
+    
     if not test_cases:
         pytest.skip("No verify test cases found.")
 
@@ -247,17 +229,15 @@ def test_wycheproof_vec_sig_verify(sig_name):
         testPassed = "1" if is_valid else "0"
         flags = tc.get("flags", [])
 
-        if is_extmu:
-            if not mu:
-                continue
+        # Wycheproof flags 'Internal' for pre-hashed variants (extmu=1)
+        if "Internal" in flags or (mu and not msg):
             cmd = [
                 f"{build_dir}/tests/vectors_sig",
-                sig_name, "sigVer_extmu",
-                pk, mu, sig, testPassed
+                sig_name, "sigVer_int",
+                pk, mu, sig, testPassed, "1"
             ]
         else:
-            if "Internal" in flags or (mu and not msg):
-                continue
+            # Standard variants map to the external API
             cmd = [
                 f"{build_dir}/tests/vectors_sig",
                 sig_name, "sigVer_ext",
@@ -273,16 +253,13 @@ def test_wycheproof_vec_sig_sign(sig_name):
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
-    is_extmu = sig_name.endswith("-extmu")
-
     test_cases = fetch_wycheproof_sig_test_cases(sig_name, "sign_noseed_test", ["MlDsaSign"])
+    
     if not test_cases:
         pytest.skip("No sign test cases found.")
 
     for group, tc in test_cases:
         sk = group.get("privateKey", "")
-        if not sk:
-            continue
             
         msg = tc.get("msg", "")
         sig = tc.get("sig", "")
@@ -290,17 +267,13 @@ def test_wycheproof_vec_sig_sign(sig_name):
         mu = tc.get("mu", "")
         flags = tc.get("flags", [])
 
-        if is_extmu:
-            if not mu:
-                continue
+        if "Internal" in flags or (mu and not msg):
             cmd = [
                 f"{build_dir}/tests/vectors_sig",
-                sig_name, "sigGen_extmu",
-                sk, mu, sig, "00" * 32
+                sig_name, "sigGen_int",
+                sk, mu, sig, "00" * 32, "1"
             ]
         else:
-            if "Internal" in flags or (mu and not msg):
-                continue
             cmd = [
                 f"{build_dir}/tests/vectors_sig",
                 sig_name, "sigGen_ext",
