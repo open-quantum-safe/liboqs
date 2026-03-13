@@ -27,7 +27,7 @@ parameter-sets:
   length-public-key: 1158
   length-secret-key: 1763
   length-shared-secret: 32
-  implementations-switch-on-runtime-cpu-features: true
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream-id: master
     supported-platforms: all
