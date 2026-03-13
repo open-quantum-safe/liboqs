@@ -299,3 +299,4 @@ def test_wycheproof_vec_sig_sign(sig_name):
 
 if __name__ == "__main__":
     pytest.main(sys.argv)
+
