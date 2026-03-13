@@ -63,7 +63,7 @@ def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
                 
     return test_cases
 
-def run_test_case(cmd, tc):
+def run_kem_test_case(cmd, tc):
     """
     Executes vector_kem and verifies the exit code.
     The C test harness internally checks values via memcmp() and returns 0 for success.
@@ -73,19 +73,28 @@ def run_test_case(cmd, tc):
     cmd_type = cmd[2]
 
     if cmd_type == "modOverflow":
+        # 1. Modulus Overflow edge case
+        # vector_kem returns 0 only if it successfully blocked the unreduced key
         assert result.returncode == 0, (
             f"TC {tc['tcId']} FAILED: Accepted unreduced key.\nCmd: {' '.join(cmd)}"
         )
     elif not is_valid:
+        # 2. Structural Errors & Expected Rejections
+        # Invalid inputs must cause vector_kem to return a non-zero exit code
         assert result.returncode != 0, (
             f"TC {tc['tcId']} FAILED: Expected rejection, but binary accepted it.\nCmd: {' '.join(cmd)}"
         )
     elif cmd_type == "encDecVAL" and "K" not in tc:
+        # 3. Standard Valid Tests (Edge Case)
+        # Wycheproof's 'semi_expanded' file omits 'K' for valid decapsulation tests.
+        # Since we padded 'K' with dummy zeroes for argv parsing, vector_kem memcmp will 
+        # intentionally fail (returncode 1). We verify success by checking if it completed decapsulation.
         assert "k: " in result.stdout, (
             f"TC {tc['tcId']} FAILED: Decapsulation failed early.\n"
             f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
         )
     else:
+        # 4. All other valid tests must exit cleanly
         assert result.returncode == 0, (
             f"TC {tc['tcId']} FAILED: Rejected valid input.\n"
             f"Stderr: {result.stderr}\nCmd: {' '.join(cmd)}"
@@ -135,7 +144,7 @@ def test_wycheproof_vec_kem_keygen(kem_name):
             kem_name, "keyGen",
             tc["seed"], tc["ek"], tc["dk"]
         ]
-        run_test_case(cmd, tc)
+        run_kem_test_case(cmd, tc)
 
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
@@ -171,7 +180,7 @@ def test_wycheproof_vec_kem_encaps(kem_name):
                 expected_k or "00" * 32,
                 expected_c or "00" * c_len
             ]
-        run_test_case(cmd, tc)
+        run_kem_test_case(cmd, tc)
 
 @helpers.filtered_test
 @pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
@@ -204,7 +213,7 @@ def test_wycheproof_vec_kem_decaps(kem_name):
             else:
                 continue 
 
-            run_test_case(cmd, tc)
+            run_kem_test_case(cmd, tc)
 
 @helpers.filtered_test
 @pytest.mark.parametrize("sig_name", helpers.available_sigs_by_name())
