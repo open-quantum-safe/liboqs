@@ -44,8 +44,8 @@ extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(const uint8_t *sk);
 /* MLKEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
+	|| (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
+	|| (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
 }
 
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
@@ -521,35 +521,47 @@ cleanup:
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 static OQS_STATUS kem_encapKeyCheck_vector(const char *method_name, const uint8_t *ek, bool expected_pass) {
-    int result = 0;
-    
+	int result = 0;
+
 #ifdef OQS_ENABLE_KEM_ml_kem_512
-    if (strcmp(method_name, OQS_KEM_alg_ml_kem_512) == 0) result = PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(ek);
+	if (strcmp(method_name, OQS_KEM_alg_ml_kem_512) == 0) {
+		result = PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(ek);
+	}
 #endif
 #ifdef OQS_ENABLE_KEM_ml_kem_768
-    if (strcmp(method_name, OQS_KEM_alg_ml_kem_768) == 0) result = PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(ek);
+	if (strcmp(method_name, OQS_KEM_alg_ml_kem_768) == 0) {
+		result = PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(ek);
+	}
 #endif
 #ifdef OQS_ENABLE_KEM_ml_kem_1024
-    if (strcmp(method_name, OQS_KEM_alg_ml_kem_1024) == 0) result = PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(ek);
+	if (strcmp(method_name, OQS_KEM_alg_ml_kem_1024) == 0) {
+		result = PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(ek);
+	}
 #endif
 
-    return ( (result == 0) == expected_pass ) ? OQS_SUCCESS : OQS_ERROR;
+	return ((result == 0) == expected_pass ) ? OQS_SUCCESS : OQS_ERROR;
 }
 
 static OQS_STATUS kem_decapKeyCheck_vector(const char *method_name, const uint8_t *sk, bool expected_pass) {
-    int result = 0;
+	int result = 0;
 
 #ifdef OQS_ENABLE_KEM_ml_kem_512
-    if (strcmp(method_name, OQS_KEM_alg_ml_kem_512) == 0) result = PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(sk);
+	if (strcmp(method_name, OQS_KEM_alg_ml_kem_512) == 0) {
+		result = PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(sk);
+	}
 #endif
 #ifdef OQS_ENABLE_KEM_ml_kem_768
-    if (strcmp(method_name, OQS_KEM_alg_ml_kem_768) == 0) result = PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(sk);
+	if (strcmp(method_name, OQS_KEM_alg_ml_kem_768) == 0) {
+		result = PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(sk);
+	}
 #endif
 #ifdef OQS_ENABLE_KEM_ml_kem_1024
-    if (strcmp(method_name, OQS_KEM_alg_ml_kem_1024) == 0) result = PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(sk);
+	if (strcmp(method_name, OQS_KEM_alg_ml_kem_1024) == 0) {
+		result = PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(sk);
+	}
 #endif
 
-    return ( (result == 0) == expected_pass ) ? OQS_SUCCESS : OQS_ERROR;
+	return ((result == 0) == expected_pass ) ? OQS_SUCCESS : OQS_ERROR;
 }
 #endif // OQS_ENABLE_KEM_ML_KEM
 
@@ -627,8 +639,8 @@ int main(int argc, char **argv) {
 		kg_sk = argv[5];
 
 		if (strlen(prng_output_stream) != 128 ||
-		        strlen(kg_pk) != 2 * kem->length_public_key ||
-		        strlen(kg_sk) != 2 * kem->length_secret_key) {
+		                                  strlen(kg_pk) != 2 * kem->length_public_key ||
+		                                      strlen(kg_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -656,9 +668,9 @@ int main(int argc, char **argv) {
 		encdec_aft_c = argv[6];
 
 		if (strlen(prng_output_stream) != 64 ||
-		        strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
-		        strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
-		        strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
+		                                  strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
+		                                      strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
+		                                          strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -686,8 +698,8 @@ int main(int argc, char **argv) {
 		encdec_val_c = argv[5];
 
 		if (strlen(encdec_val_c) != 2 * kem->length_ciphertext ||
-		        strlen(encdec_val_k) != 2 * kem->length_shared_secret ||
-		        strlen(encdec_val_sk) != 2 * kem->length_secret_key) {
+		                            strlen(encdec_val_k) != 2 * kem->length_shared_secret ||
+		                                strlen(encdec_val_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -714,9 +726,9 @@ int main(int argc, char **argv) {
 		strcmp_k = argv[6];
 
 		if (strlen(strcmp_seed) != 128 ||
-		        strlen(strcmp_ek) != 2 * kem->length_public_key ||
-		        strlen(strcmp_c) != 2 * kem->length_ciphertext ||
-		        strlen(strcmp_k) != 2 * kem->length_shared_secret) {
+		                           strlen(strcmp_ek) != 2 * kem->length_public_key ||
+		                               strlen(strcmp_c) != 2 * kem->length_ciphertext ||
+		                                   strlen(strcmp_k) != 2 * kem->length_shared_secret) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -728,7 +740,7 @@ int main(int argc, char **argv) {
 		strcmp_k_bytes = OQS_MEM_malloc(kem->length_shared_secret);
 
 		if ((strcmp_seed_bytes == NULL) || (strcmp_ek_bytes == NULL) ||
-		        (strcmp_c_bytes == NULL) || (strcmp_k_bytes == NULL)) {
+		(strcmp_c_bytes == NULL) || (strcmp_k_bytes == NULL)) {
 			fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
 			rc = OQS_ERROR;
 			goto err;
@@ -762,45 +774,45 @@ int main(int argc, char **argv) {
 
 		rc = kem_modOverflow_vector(alg_name, modOverflow_ek_bytes);
 	} else if (!strcmp(test_name, "encapsulationKeyCheck") || !strcmp(test_name, "decapsulationKeyCheck")) {
-        char *key_input = argv[3];
-        char *expected_result_str = argv[4];
-        bool expected_pass = (strcmp(expected_result_str, "true") == 0);
-        
-        // result will be 0 if key is valid, 1 if corrupted/invalid size
-        int result = 1; 
+		char *key_input = argv[3];
+		char *expected_result_str = argv[4];
+		bool expected_pass = (strcmp(expected_result_str, "true") == 0);
 
-        size_t key_len = (!strcmp(test_name, "encapsulationKeyCheck")) ? kem->length_public_key : kem->length_secret_key;
-        
-        // Step 1: Check Length
-        if(strlen(key_input) == 2 * key_len) {
-            key_bytes = OQS_MEM_malloc(key_len);
-            if (key_bytes == NULL) {
+		// result will be 0 if key is valid, 1 if corrupted/invalid size
+		int result = 1;
+
+		size_t key_len = (!strcmp(test_name, "encapsulationKeyCheck")) ? kem->length_public_key : kem->length_secret_key;
+
+		// Step 1: Check Length
+		if (strlen(key_input) == 2 * key_len) {
+			key_bytes = OQS_MEM_malloc(key_len);
+			if (key_bytes == NULL) {
 				fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
-                rc = OQS_ERROR;
-                goto err;
-            }
-            hexStringToByteArray(key_input, key_bytes);
+				rc = OQS_ERROR;
+				goto err;
+			}
+			hexStringToByteArray(key_input, key_bytes);
 
-            // Step 2: If length is OK, perform sanity check
+			// Step 2: If length is OK, perform sanity check
 #ifdef OQS_ENABLE_KEM_ML_KEM
-            if (!strcmp(test_name, "encapsulationKeyCheck")) {
-                result = kem_encapKeyCheck_vector(alg_name, key_bytes, true); // We just want the raw result
-            } else {
-                result = kem_decapKeyCheck_vector(alg_name, key_bytes, true);
-            }
+			if (!strcmp(test_name, "encapsulationKeyCheck")) {
+				result = kem_encapKeyCheck_vector(alg_name, key_bytes, true); // We just want the raw result
+			} else {
+				result = kem_decapKeyCheck_vector(alg_name, key_bytes, true);
+			}
 #endif
-        } else {
-            // Length is wrong, so the key is automatically invalid (result = 1)
-            result = 1;
-        }
+		} else {
+			// Length is wrong, so the key is automatically invalid (result = 1)
+			result = 1;
+		}
 
-        // Step 3: Compare our result with NIST's expectation
-        // If we found it invalid (1) and NIST expected false -> Test Passed (OQS_SUCCESS)
-        // If we found it valid (0) and NIST expected true -> Test Passed (OQS_SUCCESS)
-        bool actual_pass = (result == 0);
-        rc = (actual_pass == expected_pass) ? OQS_SUCCESS : OQS_ERROR;
+		// Step 3: Compare our result with NIST's expectation
+		// If we found it invalid (1) and NIST expected false -> Test Passed (OQS_SUCCESS)
+		// If we found it valid (0) and NIST expected true -> Test Passed (OQS_SUCCESS)
+		bool actual_pass = (result == 0);
+		rc = (actual_pass == expected_pass) ? OQS_SUCCESS : OQS_ERROR;
 
-    } else {
+	} else {
 		printf("[vectors_kem] %s only keyGen/encDecAFT/encDecVAL/encapsulationKeyCheck/decapsulationKeyCheck/modOverflow/strcmp supported!\n", alg_name);
 	}
 
