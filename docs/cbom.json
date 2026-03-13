@@ -962,7 +962,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-128:clean:generic",
+      "bom-ref": "alg:HQC-128:ref:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -982,7 +982,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-192:clean:generic",
+      "bom-ref": "alg:HQC-192:ref:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1002,7 +1002,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-256:clean:generic",
+      "bom-ref": "alg:HQC-256:ref:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -8416,9 +8416,9 @@
         "alg:eFrodoKEM-1344-AES:master:x86_64",
         "alg:eFrodoKEM-1344-SHAKE:master:generic",
         "alg:eFrodoKEM-1344-SHAKE:master:x86_64",
-        "alg:HQC-128:clean:generic",
-        "alg:HQC-192:clean:generic",
-        "alg:HQC-256:clean:generic",
+        "alg:HQC-128:ref:generic",
+        "alg:HQC-192:ref:generic",
+        "alg:HQC-256:ref:generic",
         "alg:Kyber512:ref:generic",
         "alg:Kyber512:avx2:x86_64",
         "alg:Kyber512:aarch64:armv8-a",
@@ -9114,19 +9114,19 @@
       ]
     },
     {
-      "ref": "alg:HQC-128:clean:generic",
+      "ref": "alg:HQC-128:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:HQC-192:clean:generic",
+      "ref": "alg:HQC-192:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:HQC-256:clean:generic",
+      "ref": "alg:HQC-256:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
