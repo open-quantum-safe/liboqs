@@ -480,45 +480,6 @@ cleanup:
 	return rc;
 }
 
-static OQS_STATUS kem_modOverflow_vector(const char *method_name, const uint8_t *ek) {
-	OQS_KEM *kem = NULL;
-	OQS_STATUS ret = OQS_ERROR;
-
-	kem = OQS_KEM_new(method_name);
-	if (kem == NULL) {
-		printf("[vectors_kem] %s was not enabled at compile-time.\n", method_name);
-		goto algo_not_enabled;
-	}
-
-	if (ek == NULL) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
-		goto err;
-	}
-
-#ifdef OQS_ENABLE_KEM_ML_KEM
-	if (true == sanityCheckPK(ek, kem->length_public_key, method_name)) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: Modulus flow not detected !\n", method_name);
-		goto err;
-	}
-	ret = 0;
-#endif //OQS_ENABLE_KEM_ML_KEM
-
-	goto cleanup;
-
-err:
-	ret = OQS_ERROR;
-	goto cleanup;
-
-algo_not_enabled:
-	ret = OQS_SUCCESS;
-
-cleanup:
-	if (kem != NULL) {
-		OQS_KEM_free(kem);
-	}
-	return ret;
-}
-
 #ifdef OQS_ENABLE_KEM_ML_KEM
 static OQS_STATUS kem_encapKeyCheck_vector(const char *method_name, const uint8_t *ek, bool expected_pass) {
 	int result = 0;
@@ -772,7 +733,10 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(modOverflow_ek,  modOverflow_ek_bytes);
 
 
-		rc = kem_modOverflow_vector(alg_name, modOverflow_ek_bytes);
+#ifdef OQS_ENABLE_KEM_ML_KEM
+        /* For modOverflow tests, we expect the key to be corrupted (expected_pass = false) */
+        rc = kem_encapKeyCheck_vector(alg_name, modOverflow_ek_bytes, false);
+#endif
 	} else if (!strcmp(test_name, "encapsulationKeyCheck") || !strcmp(test_name, "decapsulationKeyCheck")) {
 		char *key_input = argv[3];
 		char *expected_result_str = argv[4];
