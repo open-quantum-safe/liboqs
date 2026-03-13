@@ -268,34 +268,45 @@ def test_wycheproof_vec_sig_sign(sig_name):
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
-    test_cases = fetch_wycheproof_sig_test_cases(sig_name, "sign_noseed_test", ["MlDsaSign"])
-    
-    if not test_cases:
-        pytest.skip("No sign test cases found.")
+    is_extmu = sig_name.endswith("-extmu")
 
-    for group, tc in test_cases:
-        sk = group.get("privateKey", "")
-            
-        msg = tc.get("msg", "")
-        sig = tc.get("sig", "")
-        ctx = tc.get("ctx", "")
-        mu = tc.get("mu", "")
-        flags = tc.get("flags", [])
+    # Loop over both deterministic (noseed) and randomized (seed) Wycheproof files
+    for suffix in ["sign_noseed_test", "sign_seed_test"]:
+        test_cases = fetch_wycheproof_sig_test_cases(sig_name, suffix, ["MlDsaSign"])
+        
+        if not test_cases:
+            continue
 
-        if "Internal" in flags or (mu and not msg):
-            cmd = [
-                f"{build_dir}/tests/vectors_sig",
-                sig_name, "sigGen_int",
-                sk, mu, sig, "00" * 32, "1"
-            ]
-        else:
-            cmd = [
-                f"{build_dir}/tests/vectors_sig",
-                sig_name, "sigGen_ext",
-                sk, msg, sig, ctx, "00" * 32
-            ]
+        for group, tc in test_cases:
+            sk = group.get("privateKey", "")
+            if not sk:
+                continue
+                
+            msg = tc.get("msg", "")
+            sig = tc.get("sig", "")
+            ctx = tc.get("ctx", "")
+            mu = tc.get("mu", "")
+            flags = tc.get("flags", [])
             
-        run_sig_test_case(cmd, tc)
+            # Wycheproof 'seed' files provide 'rnd'. 'noseed' files do not, so we fallback to zeros.
+            rnd = tc.get("rnd", "00" * 32)
+
+            if "Internal" in flags or (mu and not msg):
+                if not mu:
+                    continue
+                cmd = [
+                    f"{build_dir}/tests/vectors_sig",
+                    sig_name, "sigGen_int",
+                    sk, mu, sig, rnd, "1"
+                ]
+            else:
+                cmd = [
+                    f"{build_dir}/tests/vectors_sig",
+                    sig_name, "sigGen_ext",
+                    sk, msg, sig, ctx, rnd
+                ]
+                
+            run_sig_test_case(cmd, tc)
 
 if __name__ == "__main__":
     pytest.main(sys.argv)
