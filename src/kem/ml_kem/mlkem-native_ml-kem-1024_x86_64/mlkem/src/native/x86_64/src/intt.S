@@ -37,15 +37,25 @@
  *   dev/x86_64/src/intt.S using scripts/simpasm. Do not modify it directly.
  */
 
+#if defined(__ELF__)
+.section .note.GNU-stack,"",@progbits
+#endif
 
 .text
 .balign 4
 .global MLK_ASM_NAMESPACE(invntt_avx2)
 MLK_ASM_FN_SYMBOL(invntt_avx2)
 
-        vmovdqa	(%rsi), %ymm0
-        vmovdqa	0x60(%rsi), %ymm2
-        vmovdqa	0x80(%rsi), %ymm3
+        .cfi_startproc
+        movl	$0xd010d01, %eax        # imm = 0xD010D01
+        vmovd	%eax, %xmm0
+        vpbroadcastd	%xmm0, %ymm0
+        movl	$0xd8a1d8a1, %eax       # imm = 0xD8A1D8A1
+        vmovd	%eax, %xmm2
+        vpbroadcastd	%xmm2, %ymm2
+        movl	$0x5a105a1, %eax        # imm = 0x5A105A1
+        vmovd	%eax, %xmm3
+        vpbroadcastd	%xmm3, %ymm3
         vmovdqa	(%rdi), %ymm4
         vmovdqa	0x40(%rdi), %ymm6
         vmovdqa	0x20(%rdi), %ymm5
@@ -86,11 +96,11 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpmulhw	%ymm3, %ymm11, %ymm11
         vpmulhw	%ymm0, %ymm12, %ymm12
         vpsubw	%ymm12, %ymm11, %ymm11
-        vpermq	$0x4e, 0x4a0(%rsi), %ymm15 # ymm15 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x460(%rsi), %ymm1 # ymm1 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x4c0(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x480(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
-        vmovdqa	0x100(%rsi), %ymm12
+        vpermq	$0x4e, 0x3a0(%rsi), %ymm15 # ymm15 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x360(%rsi), %ymm1 # ymm1 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x3c0(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x380(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
+        vmovdqa	(%rsi), %ymm12
         vpshufb	%ymm12, %ymm15, %ymm15
         vpshufb	%ymm12, %ymm1, %ymm1
         vpshufb	%ymm12, %ymm2, %ymm2
@@ -119,9 +129,9 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpsubw	%ymm7, %ymm13, %ymm7
         vpsubw	%ymm10, %ymm14, %ymm10
         vpsubw	%ymm11, %ymm15, %ymm11
-        vpermq	$0x4e, 0x420(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x440(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
-        vmovdqa	0x100(%rsi), %ymm1
+        vpermq	$0x4e, 0x320(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x340(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
+        vmovdqa	(%rsi), %ymm1
         vpshufb	%ymm1, %ymm2, %ymm2
         vpshufb	%ymm1, %ymm3, %ymm3
         vpsubw	%ymm4, %ymm8, %ymm12
@@ -164,9 +174,9 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpblendw	$0xaa, %ymm8, %ymm10, %ymm8 # ymm8 = ymm10[0],ymm8[1],ymm10[2],ymm8[3],ymm10[4],ymm8[5],ymm10[6],ymm8[7],ymm10[8],ymm8[9],ymm10[10],ymm8[11],ymm10[12],ymm8[13],ymm10[14],ymm8[15]
         vpsrld	$0x10, %ymm10, %ymm10
         vpblendw	$0xaa, %ymm11, %ymm10, %ymm11 # ymm11 = ymm10[0],ymm11[1],ymm10[2],ymm11[3],ymm10[4],ymm11[5],ymm10[6],ymm11[7],ymm10[8],ymm11[9],ymm10[10],ymm11[11],ymm10[12],ymm11[13],ymm10[14],ymm11[15]
-        vmovdqa	0x120(%rsi), %ymm12
-        vpermd	0x3e0(%rsi), %ymm12, %ymm2
-        vpermd	0x400(%rsi), %ymm12, %ymm10
+        vmovdqa	0x20(%rsi), %ymm12
+        vpermd	0x2e0(%rsi), %ymm12, %ymm2
+        vpermd	0x300(%rsi), %ymm12, %ymm10
         vpsubw	%ymm3, %ymm5, %ymm12
         vpaddw	%ymm5, %ymm3, %ymm3
         vpsubw	%ymm4, %ymm7, %ymm13
@@ -191,7 +201,9 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpsubw	%ymm7, %ymm13, %ymm7
         vpsubw	%ymm9, %ymm14, %ymm9
         vpsubw	%ymm11, %ymm15, %ymm11
-        vmovdqa	0x40(%rsi), %ymm1
+        movl	$0x4ebf4ebf, %eax       # imm = 0x4EBF4EBF
+        vmovd	%eax, %xmm1
+        vpbroadcastd	%xmm1, %ymm1
         vpmulhw	%ymm1, %ymm3, %ymm12
         vpsraw	$0xa, %ymm12, %ymm12
         vpmullw	%ymm0, %ymm12, %ymm12
@@ -212,8 +224,8 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpblendd	$0xaa, %ymm5, %ymm9, %ymm5 # ymm5 = ymm9[0],ymm5[1],ymm9[2],ymm5[3],ymm9[4],ymm5[5],ymm9[6],ymm5[7]
         vpsrlq	$0x20, %ymm9, %ymm9
         vpblendd	$0xaa, %ymm11, %ymm9, %ymm11 # ymm11 = ymm9[0],ymm11[1],ymm9[2],ymm11[3],ymm9[4],ymm11[5],ymm9[6],ymm11[7]
-        vpermq	$0x1b, 0x3a0(%rsi), %ymm2 # ymm2 = mem[3,2,1,0]
-        vpermq	$0x1b, 0x3c0(%rsi), %ymm9 # ymm9 = mem[3,2,1,0]
+        vpermq	$0x1b, 0x2a0(%rsi), %ymm2 # ymm2 = mem[3,2,1,0]
+        vpermq	$0x1b, 0x2c0(%rsi), %ymm9 # ymm9 = mem[3,2,1,0]
         vpsubw	%ymm10, %ymm4, %ymm12
         vpaddw	%ymm4, %ymm10, %ymm10
         vpsubw	%ymm3, %ymm8, %ymm13
@@ -250,8 +262,8 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpunpckhqdq	%ymm8, %ymm4, %ymm8 # ymm8 = ymm4[1],ymm8[1],ymm4[3],ymm8[3]
         vpunpcklqdq	%ymm11, %ymm7, %ymm4 # ymm4 = ymm7[0],ymm11[0],ymm7[2],ymm11[2]
         vpunpckhqdq	%ymm11, %ymm7, %ymm11 # ymm11 = ymm7[1],ymm11[1],ymm7[3],ymm11[3]
-        vpermq	$0x4e, 0x360(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x380(%rsi), %ymm7 # ymm7 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x260(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x280(%rsi), %ymm7 # ymm7 = mem[2,3,0,1]
         vpsubw	%ymm9, %ymm3, %ymm12
         vpaddw	%ymm3, %ymm9, %ymm9
         vpsubw	%ymm10, %ymm5, %ymm13
@@ -288,8 +300,8 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vperm2i128	$0x31, %ymm5, %ymm3, %ymm5 # ymm5 = ymm3[2,3],ymm5[2,3]
         vperm2i128	$0x20, %ymm11, %ymm8, %ymm3 # ymm3 = ymm8[0,1],ymm11[0,1]
         vperm2i128	$0x31, %ymm11, %ymm8, %ymm11 # ymm11 = ymm8[2,3],ymm11[2,3]
-        vmovdqa	0x320(%rsi), %ymm2
-        vmovdqa	0x340(%rsi), %ymm8
+        vmovdqa	0x220(%rsi), %ymm2
+        vmovdqa	0x240(%rsi), %ymm8
         vpsubw	%ymm7, %ymm10, %ymm12
         vpaddw	%ymm10, %ymm7, %ymm7
         vpsubw	%ymm9, %ymm4, %ymm13
@@ -326,8 +338,12 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vmovdqa	%ymm4, 0xa0(%rdi)
         vmovdqa	%ymm5, 0xc0(%rdi)
         vmovdqa	%ymm11, 0xe0(%rdi)
-        vmovdqa	0x60(%rsi), %ymm2
-        vmovdqa	0x80(%rsi), %ymm3
+        movl	$0xd8a1d8a1, %eax       # imm = 0xD8A1D8A1
+        vmovd	%eax, %xmm2
+        vpbroadcastd	%xmm2, %ymm2
+        movl	$0x5a105a1, %eax        # imm = 0x5A105A1
+        vmovd	%eax, %xmm3
+        vpbroadcastd	%xmm3, %ymm3
         vmovdqa	0x100(%rdi), %ymm4
         vmovdqa	0x140(%rdi), %ymm6
         vmovdqa	0x120(%rdi), %ymm5
@@ -368,11 +384,11 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpmulhw	%ymm3, %ymm11, %ymm11
         vpmulhw	%ymm0, %ymm12, %ymm12
         vpsubw	%ymm12, %ymm11, %ymm11
-        vpermq	$0x4e, 0x2e0(%rsi), %ymm15 # ymm15 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x2a0(%rsi), %ymm1 # ymm1 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x300(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x2c0(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
-        vmovdqa	0x100(%rsi), %ymm12
+        vpermq	$0x4e, 0x1e0(%rsi), %ymm15 # ymm15 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x1a0(%rsi), %ymm1 # ymm1 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x200(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x1c0(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
+        vmovdqa	(%rsi), %ymm12
         vpshufb	%ymm12, %ymm15, %ymm15
         vpshufb	%ymm12, %ymm1, %ymm1
         vpshufb	%ymm12, %ymm2, %ymm2
@@ -401,9 +417,9 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpsubw	%ymm7, %ymm13, %ymm7
         vpsubw	%ymm10, %ymm14, %ymm10
         vpsubw	%ymm11, %ymm15, %ymm11
-        vpermq	$0x4e, 0x260(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x280(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
-        vmovdqa	0x100(%rsi), %ymm1
+        vpermq	$0x4e, 0x160(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
+        vpermq	$0x4e, 0x180(%rsi), %ymm3 # ymm3 = mem[2,3,0,1]
+        vmovdqa	(%rsi), %ymm1
         vpshufb	%ymm1, %ymm2, %ymm2
         vpshufb	%ymm1, %ymm3, %ymm3
         vpsubw	%ymm4, %ymm8, %ymm12
@@ -446,9 +462,9 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpblendw	$0xaa, %ymm8, %ymm10, %ymm8 # ymm8 = ymm10[0],ymm8[1],ymm10[2],ymm8[3],ymm10[4],ymm8[5],ymm10[6],ymm8[7],ymm10[8],ymm8[9],ymm10[10],ymm8[11],ymm10[12],ymm8[13],ymm10[14],ymm8[15]
         vpsrld	$0x10, %ymm10, %ymm10
         vpblendw	$0xaa, %ymm11, %ymm10, %ymm11 # ymm11 = ymm10[0],ymm11[1],ymm10[2],ymm11[3],ymm10[4],ymm11[5],ymm10[6],ymm11[7],ymm10[8],ymm11[9],ymm10[10],ymm11[11],ymm10[12],ymm11[13],ymm10[14],ymm11[15]
-        vmovdqa	0x120(%rsi), %ymm12
-        vpermd	0x220(%rsi), %ymm12, %ymm2
-        vpermd	0x240(%rsi), %ymm12, %ymm10
+        vmovdqa	0x20(%rsi), %ymm12
+        vpermd	0x120(%rsi), %ymm12, %ymm2
+        vpermd	0x140(%rsi), %ymm12, %ymm10
         vpsubw	%ymm3, %ymm5, %ymm12
         vpaddw	%ymm5, %ymm3, %ymm3
         vpsubw	%ymm4, %ymm7, %ymm13
@@ -473,7 +489,9 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpsubw	%ymm7, %ymm13, %ymm7
         vpsubw	%ymm9, %ymm14, %ymm9
         vpsubw	%ymm11, %ymm15, %ymm11
-        vmovdqa	0x40(%rsi), %ymm1
+        movl	$0x4ebf4ebf, %eax       # imm = 0x4EBF4EBF
+        vmovd	%eax, %xmm1
+        vpbroadcastd	%xmm1, %ymm1
         vpmulhw	%ymm1, %ymm3, %ymm12
         vpsraw	$0xa, %ymm12, %ymm12
         vpmullw	%ymm0, %ymm12, %ymm12
@@ -494,8 +512,8 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpblendd	$0xaa, %ymm5, %ymm9, %ymm5 # ymm5 = ymm9[0],ymm5[1],ymm9[2],ymm5[3],ymm9[4],ymm5[5],ymm9[6],ymm5[7]
         vpsrlq	$0x20, %ymm9, %ymm9
         vpblendd	$0xaa, %ymm11, %ymm9, %ymm11 # ymm11 = ymm9[0],ymm11[1],ymm9[2],ymm11[3],ymm9[4],ymm11[5],ymm9[6],ymm11[7]
-        vpermq	$0x1b, 0x1e0(%rsi), %ymm2 # ymm2 = mem[3,2,1,0]
-        vpermq	$0x1b, 0x200(%rsi), %ymm9 # ymm9 = mem[3,2,1,0]
+        vpermq	$0x1b, 0xe0(%rsi), %ymm2 # ymm2 = mem[3,2,1,0]
+        vpermq	$0x1b, 0x100(%rsi), %ymm9 # ymm9 = mem[3,2,1,0]
         vpsubw	%ymm10, %ymm4, %ymm12
         vpaddw	%ymm4, %ymm10, %ymm10
         vpsubw	%ymm3, %ymm8, %ymm13
@@ -532,8 +550,8 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vpunpckhqdq	%ymm8, %ymm4, %ymm8 # ymm8 = ymm4[1],ymm8[1],ymm4[3],ymm8[3]
         vpunpcklqdq	%ymm11, %ymm7, %ymm4 # ymm4 = ymm7[0],ymm11[0],ymm7[2],ymm11[2]
         vpunpckhqdq	%ymm11, %ymm7, %ymm11 # ymm11 = ymm7[1],ymm11[1],ymm7[3],ymm11[3]
-        vpermq	$0x4e, 0x1a0(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
-        vpermq	$0x4e, 0x1c0(%rsi), %ymm7 # ymm7 = mem[2,3,0,1]
+        vpermq	$0x4e, 0xa0(%rsi), %ymm2 # ymm2 = mem[2,3,0,1]
+        vpermq	$0x4e, 0xc0(%rsi), %ymm7 # ymm7 = mem[2,3,0,1]
         vpsubw	%ymm9, %ymm3, %ymm12
         vpaddw	%ymm3, %ymm9, %ymm9
         vpsubw	%ymm10, %ymm5, %ymm13
@@ -570,8 +588,8 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vperm2i128	$0x31, %ymm5, %ymm3, %ymm5 # ymm5 = ymm3[2,3],ymm5[2,3]
         vperm2i128	$0x20, %ymm11, %ymm8, %ymm3 # ymm3 = ymm8[0,1],ymm11[0,1]
         vperm2i128	$0x31, %ymm11, %ymm8, %ymm11 # ymm11 = ymm8[2,3],ymm11[2,3]
-        vmovdqa	0x160(%rsi), %ymm2
-        vmovdqa	0x180(%rsi), %ymm8
+        vmovdqa	0x60(%rsi), %ymm2
+        vmovdqa	0x80(%rsi), %ymm8
         vpsubw	%ymm7, %ymm10, %ymm12
         vpaddw	%ymm10, %ymm7, %ymm7
         vpsubw	%ymm9, %ymm4, %ymm13
@@ -612,12 +630,12 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vmovdqa	0x100(%rdi), %ymm8
         vmovdqa	0x20(%rdi), %ymm5
         vmovdqa	0x120(%rdi), %ymm9
-        vpbroadcastq	0x140(%rsi), %ymm2
+        vpbroadcastq	0x40(%rsi), %ymm2
         vmovdqa	0x40(%rdi), %ymm6
         vmovdqa	0x140(%rdi), %ymm10
         vmovdqa	0x60(%rdi), %ymm7
         vmovdqa	0x160(%rdi), %ymm11
-        vpbroadcastq	0x148(%rsi), %ymm3
+        vpbroadcastq	0x48(%rsi), %ymm3
         vpsubw	%ymm4, %ymm8, %ymm12
         vpaddw	%ymm8, %ymm4, %ymm4
         vpsubw	%ymm5, %ymm9, %ymm13
@@ -654,12 +672,12 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vmovdqa	0x180(%rdi), %ymm8
         vmovdqa	0xa0(%rdi), %ymm5
         vmovdqa	0x1a0(%rdi), %ymm9
-        vpbroadcastq	0x140(%rsi), %ymm2
+        vpbroadcastq	0x40(%rsi), %ymm2
         vmovdqa	0xc0(%rdi), %ymm6
         vmovdqa	0x1c0(%rdi), %ymm10
         vmovdqa	0xe0(%rdi), %ymm7
         vmovdqa	0x1e0(%rdi), %ymm11
-        vpbroadcastq	0x148(%rsi), %ymm3
+        vpbroadcastq	0x48(%rsi), %ymm3
         vpsubw	%ymm4, %ymm8, %ymm12
         vpaddw	%ymm8, %ymm4, %ymm4
         vpsubw	%ymm5, %ymm9, %ymm13
@@ -693,6 +711,9 @@ MLK_ASM_FN_SYMBOL(invntt_avx2)
         vmovdqa	%ymm10, 0x1c0(%rdi)
         vmovdqa	%ymm11, 0x1e0(%rdi)
         retq
+        .cfi_endproc
+
+MLK_ASM_FN_SIZE(invntt_avx2)
 
 #endif /* MLK_ARITH_BACKEND_X86_64_DEFAULT && !MLK_CONFIG_MULTILEVEL_NO_SHARED \
         */

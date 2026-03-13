@@ -18,7 +18,7 @@ nist-round: FIPS203
 standardization-status: Standardized by [NIST](https://csrc.nist.gov/pubs/fips/203/final)
 spec-version: ML-KEM
 primary-upstream:
-  source: https://github.com/pq-code-package/mlkem-native/commit/048fc2a7a7b4ba0ad4c989c1ac82491aa94d5bfa
+  source: https://github.com/pq-code-package/mlkem-native/commit/0c4d5957b495d03d9976ad0e5984a3b5e4454d11
   spdx-license-identifier: MIT or Apache-2.0 or ISC
 optimized-upstreams:
   cupqc-cuda:

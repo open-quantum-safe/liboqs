@@ -3,21 +3,39 @@
  * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
  */
 
-/*************************************************
- * Name:        mlk_rej_uniform_asm
- *
- * Description: Run rejection sampling on uniform random bytes to generate
- *              uniform random integers mod q
- *
- * Arguments:   - int16_t *r:          pointer to output buffer of MLKEM_N
- *                                     16-bit coefficients.
- *              - const uint8_t *buf:  pointer to input buffer
- *                                     (assumed to be uniform random bytes)
- *              - unsigned buflen:     length of input buffer in bytes.
- *                                     Must be a multiple of 24.
- *
- * Returns number of sampled 16-bit integers (at most MLKEM_N).
- **************************************************/
+/*yaml
+  Name: rej_uniform_asm
+  Description: Run rejection sampling on uniform random bytes to generate uniform random integers mod q
+  Signature: uint64_t mlk_rej_uniform_asm(int16_t r[256], const uint8_t *buf, unsigned buflen, const uint8_t table[2048])
+  ABI:
+    x0:
+      type: buffer
+      size_bytes: 512
+      permissions: write-only
+      c_parameter: int16_t r[256]
+      description: Output buffer
+    x1:
+      type: buffer
+      size_bytes: x2
+      permissions: read-only
+      c_parameter: const uint8_t *buf
+      description: Input buffer
+    x2:
+      type: scalar
+      c_parameter: unsigned buflen
+      description: Length of input buffer (must be multiple of 24)
+      test_with: 504  # MLKEM_GEN_MATRIX_NBLOCKS * MLK_XOF_RATE
+    x3:
+      type: buffer
+      size_bytes: 2048
+      permissions: read-only
+      c_parameter: const uint8_t table[2048]
+      description: Lookup table
+  Stack:
+    bytes: 576
+    description: register preservation and temporary storage
+*/
+
 #include "../../../common.h"
 #if defined(MLK_ARITH_BACKEND_AARCH64) && \
     !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED)
@@ -27,13 +45,18 @@
  *   dev/aarch64_opt/src/rej_uniform_asm.S using scripts/simpasm. Do not modify it directly.
  */
 
+#if defined(__ELF__)
+.section .note.GNU-stack,"",@progbits
+#endif
 
 .text
 .balign 4
 .global MLK_ASM_NAMESPACE(rej_uniform_asm)
 MLK_ASM_FN_SYMBOL(rej_uniform_asm)
 
+        .cfi_startproc
         sub	sp, sp, #0x240
+        .cfi_adjust_cfa_offset 0x240
         mov	x7, #0x1                // =1
         movk	x7, #0x2, lsl #16
         movk	x7, #0x4, lsl #32
@@ -51,23 +74,23 @@ MLK_ASM_FN_SYMBOL(rej_uniform_asm)
         mov	x11, #0x0               // =0
         eor	v16.16b, v16.16b, v16.16b
 
-rej_uniform_initial_zero:
+Lrej_uniform_initial_zero:
         str	q16, [x7], #0x40
         stur	q16, [x7, #-0x30]
         stur	q16, [x7, #-0x20]
         stur	q16, [x7, #-0x10]
         add	x11, x11, #0x20
         cmp	x11, #0x100
-        b.lt	rej_uniform_initial_zero
+        b.lt	Lrej_uniform_initial_zero
         mov	x7, x8
         mov	x9, #0x0                // =0
         mov	x4, #0x100              // =256
         cmp	x2, #0x30
-        b.lo	rej_uniform_loop48_end
+        b.lo	Lrej_uniform_loop48_end
 
-rej_uniform_loop48:
+Lrej_uniform_loop48:
         cmp	x9, x4
-        b.hs	rej_uniform_memory_copy
+        b.hs	Lrej_uniform_memory_copy
         sub	x2, x2, #0x30
         ld3	{ v0.16b, v1.16b, v2.16b }, [x1], #48
         zip1	v4.16b, v0.16b, v1.16b
@@ -118,26 +141,26 @@ rej_uniform_loop48:
         tbl	v17.16b, { v17.16b }, v25.16b
         tbl	v18.16b, { v18.16b }, v26.16b
         tbl	v19.16b, { v19.16b }, v27.16b
-        str	q16, [x7]
+        st1	{ v16.8h }, [x7]
         add	x7, x7, x12, lsl #1
-        str	q17, [x7]
+        st1	{ v17.8h }, [x7]
         add	x7, x7, x13, lsl #1
-        str	q18, [x7]
+        st1	{ v18.8h }, [x7]
         add	x7, x7, x14, lsl #1
-        str	q19, [x7]
+        st1	{ v19.8h }, [x7]
         add	x7, x7, x15, lsl #1
         add	x12, x12, x13
         add	x14, x14, x15
         add	x9, x9, x12
         add	x9, x9, x14
         cmp	x2, #0x30
-        b.hs	rej_uniform_loop48
+        b.hs	Lrej_uniform_loop48
 
-rej_uniform_loop48_end:
+Lrej_uniform_loop48_end:
         cmp	x9, x4
-        b.hs	rej_uniform_memory_copy
+        b.hs	Lrej_uniform_memory_copy
         cmp	x2, #0x18
-        b.lo	rej_uniform_memory_copy
+        b.lo	Lrej_uniform_memory_copy
         sub	x2, x2, #0x18
         ld3	{ v0.8b, v1.8b, v2.8b }, [x1], #24
         zip1	v4.16b, v0.16b, v1.16b
@@ -164,20 +187,20 @@ rej_uniform_loop48_end:
         fmov	w13, s21
         tbl	v16.16b, { v16.16b }, v24.16b
         tbl	v17.16b, { v17.16b }, v25.16b
-        str	q16, [x7]
+        st1	{ v16.8h }, [x7]
         add	x7, x7, x12, lsl #1
-        str	q17, [x7]
+        st1	{ v17.8h }, [x7]
         add	x7, x7, x13, lsl #1
         add	x9, x9, x12
         add	x9, x9, x13
 
-rej_uniform_memory_copy:
+Lrej_uniform_memory_copy:
         cmp	x9, x4
         csel	x9, x9, x4, lo
         mov	x11, #0x0               // =0
         mov	x7, x8
 
-rej_uniform_final_copy:
+Lrej_uniform_final_copy:
         ldr	q16, [x7], #0x40
         ldur	q17, [x7, #-0x30]
         ldur	q18, [x7, #-0x20]
@@ -188,12 +211,16 @@ rej_uniform_final_copy:
         stur	q19, [x0, #-0x10]
         add	x11, x11, #0x20
         cmp	x11, #0x100
-        b.lt	rej_uniform_final_copy
+        b.lt	Lrej_uniform_final_copy
         mov	x0, x9
-        b	rej_uniform_return
+        b	Lrej_uniform_return
 
-rej_uniform_return:
+Lrej_uniform_return:
         add	sp, sp, #0x240
+        .cfi_adjust_cfa_offset -0x240
         ret
+        .cfi_endproc
+
+MLK_ASM_FN_SIZE(rej_uniform_asm)
 
 #endif /* MLK_ARITH_BACKEND_AARCH64 && !MLK_CONFIG_MULTILEVEL_NO_SHARED */

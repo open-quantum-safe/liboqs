@@ -33,19 +33,25 @@
  *   dev/x86_64/src/ntt.S using scripts/simpasm. Do not modify it directly.
  */
 
+#if defined(__ELF__)
+.section .note.GNU-stack,"",@progbits
+#endif
 
 .text
 .balign 4
 .global MLK_ASM_NAMESPACE(ntt_avx2)
 MLK_ASM_FN_SYMBOL(ntt_avx2)
 
-        vmovdqa	(%rsi), %ymm0
-        vpbroadcastq	0x140(%rsi), %ymm15
+        .cfi_startproc
+        movl	$0xd010d01, %eax        # imm = 0xD010D01
+        vmovd	%eax, %xmm0
+        vpbroadcastd	%xmm0, %ymm0
+        vpbroadcastq	0x40(%rsi), %ymm15
         vmovdqa	0x100(%rdi), %ymm8
         vmovdqa	0x120(%rdi), %ymm9
         vmovdqa	0x140(%rdi), %ymm10
         vmovdqa	0x160(%rdi), %ymm11
-        vpbroadcastq	0x148(%rsi), %ymm2
+        vpbroadcastq	0x48(%rsi), %ymm2
         vpmullw	%ymm15, %ymm8, %ymm12
         vpmullw	%ymm15, %ymm9, %ymm13
         vpmullw	%ymm15, %ymm10, %ymm14
@@ -86,12 +92,12 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vmovdqa	%ymm9, 0x120(%rdi)
         vmovdqa	%ymm10, 0x140(%rdi)
         vmovdqa	%ymm11, 0x160(%rdi)
-        vpbroadcastq	0x140(%rsi), %ymm15
+        vpbroadcastq	0x40(%rsi), %ymm15
         vmovdqa	0x180(%rdi), %ymm8
         vmovdqa	0x1a0(%rdi), %ymm9
         vmovdqa	0x1c0(%rdi), %ymm10
         vmovdqa	0x1e0(%rdi), %ymm11
-        vpbroadcastq	0x148(%rsi), %ymm2
+        vpbroadcastq	0x48(%rsi), %ymm2
         vpmullw	%ymm15, %ymm8, %ymm12
         vpmullw	%ymm15, %ymm9, %ymm13
         vpmullw	%ymm15, %ymm10, %ymm14
@@ -132,12 +138,12 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vmovdqa	%ymm9, 0x1a0(%rdi)
         vmovdqa	%ymm10, 0x1c0(%rdi)
         vmovdqa	%ymm11, 0x1e0(%rdi)
-        vmovdqa	0x160(%rsi), %ymm15
+        vmovdqa	0x60(%rsi), %ymm15
         vmovdqa	0x80(%rdi), %ymm8
         vmovdqa	0xa0(%rdi), %ymm9
         vmovdqa	0xc0(%rdi), %ymm10
         vmovdqa	0xe0(%rdi), %ymm11
-        vmovdqa	0x180(%rsi), %ymm2
+        vmovdqa	0x80(%rsi), %ymm2
         vpmullw	%ymm15, %ymm8, %ymm12
         vpmullw	%ymm15, %ymm9, %ymm13
         vpmullw	%ymm15, %ymm10, %ymm14
@@ -174,8 +180,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vperm2i128	$0x31, %ymm10, %ymm5, %ymm10 # ymm10 = ymm5[2,3],ymm10[2,3]
         vperm2i128	$0x20, %ymm11, %ymm6, %ymm5 # ymm5 = ymm6[0,1],ymm11[0,1]
         vperm2i128	$0x31, %ymm11, %ymm6, %ymm11 # ymm11 = ymm6[2,3],ymm11[2,3]
-        vmovdqa	0x1a0(%rsi), %ymm15
-        vmovdqa	0x1c0(%rsi), %ymm2
+        vmovdqa	0xa0(%rsi), %ymm15
+        vmovdqa	0xc0(%rsi), %ymm2
         vpmullw	%ymm15, %ymm7, %ymm12
         vpmullw	%ymm15, %ymm10, %ymm13
         vpmullw	%ymm15, %ymm5, %ymm14
@@ -212,8 +218,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpunpckhqdq	%ymm5, %ymm8, %ymm5 # ymm5 = ymm8[1],ymm5[1],ymm8[3],ymm5[3]
         vpunpcklqdq	%ymm11, %ymm3, %ymm8 # ymm8 = ymm3[0],ymm11[0],ymm3[2],ymm11[2]
         vpunpckhqdq	%ymm11, %ymm3, %ymm11 # ymm11 = ymm3[1],ymm11[1],ymm3[3],ymm11[3]
-        vmovdqa	0x1e0(%rsi), %ymm15
-        vmovdqa	0x200(%rsi), %ymm2
+        vmovdqa	0xe0(%rsi), %ymm15
+        vmovdqa	0x100(%rsi), %ymm2
         vpmullw	%ymm15, %ymm9, %ymm12
         vpmullw	%ymm15, %ymm5, %ymm13
         vpmullw	%ymm15, %ymm8, %ymm14
@@ -254,8 +260,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpblendd	$0xaa, %ymm7, %ymm4, %ymm7 # ymm7 = ymm4[0],ymm7[1],ymm4[2],ymm7[3],ymm4[4],ymm7[5],ymm4[6],ymm7[7]
         vpsrlq	$0x20, %ymm4, %ymm4
         vpblendd	$0xaa, %ymm11, %ymm4, %ymm11 # ymm11 = ymm4[0],ymm11[1],ymm4[2],ymm11[3],ymm4[4],ymm11[5],ymm4[6],ymm11[7]
-        vmovdqa	0x220(%rsi), %ymm15
-        vmovdqa	0x240(%rsi), %ymm2
+        vmovdqa	0x120(%rsi), %ymm15
+        vmovdqa	0x140(%rsi), %ymm2
         vpmullw	%ymm15, %ymm10, %ymm12
         vpmullw	%ymm15, %ymm8, %ymm13
         vpmullw	%ymm15, %ymm7, %ymm14
@@ -300,8 +306,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpblendw	$0xaa, %ymm9, %ymm6, %ymm9 # ymm9 = ymm6[0],ymm9[1],ymm6[2],ymm9[3],ymm6[4],ymm9[5],ymm6[6],ymm9[7],ymm6[8],ymm9[9],ymm6[10],ymm9[11],ymm6[12],ymm9[13],ymm6[14],ymm9[15]
         vpsrld	$0x10, %ymm6, %ymm6
         vpblendw	$0xaa, %ymm11, %ymm6, %ymm11 # ymm11 = ymm6[0],ymm11[1],ymm6[2],ymm11[3],ymm6[4],ymm11[5],ymm6[6],ymm11[7],ymm6[8],ymm11[9],ymm6[10],ymm11[11],ymm6[12],ymm11[13],ymm6[14],ymm11[15]
-        vmovdqa	0x260(%rsi), %ymm15
-        vmovdqa	0x280(%rsi), %ymm2
+        vmovdqa	0x160(%rsi), %ymm15
+        vmovdqa	0x180(%rsi), %ymm2
         vpmullw	%ymm15, %ymm5, %ymm12
         vpmullw	%ymm15, %ymm7, %ymm13
         vpmullw	%ymm15, %ymm9, %ymm14
@@ -338,10 +344,10 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpaddw	%ymm14, %ymm9, %ymm9
         vpsubw	%ymm15, %ymm3, %ymm3
         vpaddw	%ymm15, %ymm11, %ymm11
-        vmovdqa	0x2a0(%rsi), %ymm14
-        vmovdqa	0x2e0(%rsi), %ymm15
-        vmovdqa	0x2c0(%rsi), %ymm8
-        vmovdqa	0x300(%rsi), %ymm2
+        vmovdqa	0x1a0(%rsi), %ymm14
+        vmovdqa	0x1e0(%rsi), %ymm15
+        vmovdqa	0x1c0(%rsi), %ymm8
+        vmovdqa	0x200(%rsi), %ymm2
         vpmullw	%ymm14, %ymm10, %ymm12
         vpmullw	%ymm14, %ymm3, %ymm13
         vpmullw	%ymm15, %ymm9, %ymm14
@@ -378,12 +384,12 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vmovdqa	%ymm5, 0xa0(%rdi)
         vmovdqa	%ymm9, 0xc0(%rdi)
         vmovdqa	%ymm11, 0xe0(%rdi)
-        vmovdqa	0x320(%rsi), %ymm15
+        vmovdqa	0x220(%rsi), %ymm15
         vmovdqa	0x180(%rdi), %ymm8
         vmovdqa	0x1a0(%rdi), %ymm9
         vmovdqa	0x1c0(%rdi), %ymm10
         vmovdqa	0x1e0(%rdi), %ymm11
-        vmovdqa	0x340(%rsi), %ymm2
+        vmovdqa	0x240(%rsi), %ymm2
         vpmullw	%ymm15, %ymm8, %ymm12
         vpmullw	%ymm15, %ymm9, %ymm13
         vpmullw	%ymm15, %ymm10, %ymm14
@@ -420,8 +426,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vperm2i128	$0x31, %ymm10, %ymm5, %ymm10 # ymm10 = ymm5[2,3],ymm10[2,3]
         vperm2i128	$0x20, %ymm11, %ymm6, %ymm5 # ymm5 = ymm6[0,1],ymm11[0,1]
         vperm2i128	$0x31, %ymm11, %ymm6, %ymm11 # ymm11 = ymm6[2,3],ymm11[2,3]
-        vmovdqa	0x360(%rsi), %ymm15
-        vmovdqa	0x380(%rsi), %ymm2
+        vmovdqa	0x260(%rsi), %ymm15
+        vmovdqa	0x280(%rsi), %ymm2
         vpmullw	%ymm15, %ymm7, %ymm12
         vpmullw	%ymm15, %ymm10, %ymm13
         vpmullw	%ymm15, %ymm5, %ymm14
@@ -458,8 +464,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpunpckhqdq	%ymm5, %ymm8, %ymm5 # ymm5 = ymm8[1],ymm5[1],ymm8[3],ymm5[3]
         vpunpcklqdq	%ymm11, %ymm3, %ymm8 # ymm8 = ymm3[0],ymm11[0],ymm3[2],ymm11[2]
         vpunpckhqdq	%ymm11, %ymm3, %ymm11 # ymm11 = ymm3[1],ymm11[1],ymm3[3],ymm11[3]
-        vmovdqa	0x3a0(%rsi), %ymm15
-        vmovdqa	0x3c0(%rsi), %ymm2
+        vmovdqa	0x2a0(%rsi), %ymm15
+        vmovdqa	0x2c0(%rsi), %ymm2
         vpmullw	%ymm15, %ymm9, %ymm12
         vpmullw	%ymm15, %ymm5, %ymm13
         vpmullw	%ymm15, %ymm8, %ymm14
@@ -500,8 +506,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpblendd	$0xaa, %ymm7, %ymm4, %ymm7 # ymm7 = ymm4[0],ymm7[1],ymm4[2],ymm7[3],ymm4[4],ymm7[5],ymm4[6],ymm7[7]
         vpsrlq	$0x20, %ymm4, %ymm4
         vpblendd	$0xaa, %ymm11, %ymm4, %ymm11 # ymm11 = ymm4[0],ymm11[1],ymm4[2],ymm11[3],ymm4[4],ymm11[5],ymm4[6],ymm11[7]
-        vmovdqa	0x3e0(%rsi), %ymm15
-        vmovdqa	0x400(%rsi), %ymm2
+        vmovdqa	0x2e0(%rsi), %ymm15
+        vmovdqa	0x300(%rsi), %ymm2
         vpmullw	%ymm15, %ymm10, %ymm12
         vpmullw	%ymm15, %ymm8, %ymm13
         vpmullw	%ymm15, %ymm7, %ymm14
@@ -546,8 +552,8 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpblendw	$0xaa, %ymm9, %ymm6, %ymm9 # ymm9 = ymm6[0],ymm9[1],ymm6[2],ymm9[3],ymm6[4],ymm9[5],ymm6[6],ymm9[7],ymm6[8],ymm9[9],ymm6[10],ymm9[11],ymm6[12],ymm9[13],ymm6[14],ymm9[15]
         vpsrld	$0x10, %ymm6, %ymm6
         vpblendw	$0xaa, %ymm11, %ymm6, %ymm11 # ymm11 = ymm6[0],ymm11[1],ymm6[2],ymm11[3],ymm6[4],ymm11[5],ymm6[6],ymm11[7],ymm6[8],ymm11[9],ymm6[10],ymm11[11],ymm6[12],ymm11[13],ymm6[14],ymm11[15]
-        vmovdqa	0x420(%rsi), %ymm15
-        vmovdqa	0x440(%rsi), %ymm2
+        vmovdqa	0x320(%rsi), %ymm15
+        vmovdqa	0x340(%rsi), %ymm2
         vpmullw	%ymm15, %ymm5, %ymm12
         vpmullw	%ymm15, %ymm7, %ymm13
         vpmullw	%ymm15, %ymm9, %ymm14
@@ -584,10 +590,10 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vpaddw	%ymm14, %ymm9, %ymm9
         vpsubw	%ymm15, %ymm3, %ymm3
         vpaddw	%ymm15, %ymm11, %ymm11
-        vmovdqa	0x460(%rsi), %ymm14
-        vmovdqa	0x4a0(%rsi), %ymm15
-        vmovdqa	0x480(%rsi), %ymm8
-        vmovdqa	0x4c0(%rsi), %ymm2
+        vmovdqa	0x360(%rsi), %ymm14
+        vmovdqa	0x3a0(%rsi), %ymm15
+        vmovdqa	0x380(%rsi), %ymm8
+        vmovdqa	0x3c0(%rsi), %ymm2
         vpmullw	%ymm14, %ymm10, %ymm12
         vpmullw	%ymm14, %ymm3, %ymm13
         vpmullw	%ymm15, %ymm9, %ymm14
@@ -625,6 +631,9 @@ MLK_ASM_FN_SYMBOL(ntt_avx2)
         vmovdqa	%ymm9, 0x1c0(%rdi)
         vmovdqa	%ymm11, 0x1e0(%rdi)
         retq
+        .cfi_endproc
+
+MLK_ASM_FN_SIZE(ntt_avx2)
 
 #endif /* MLK_ARITH_BACKEND_X86_64_DEFAULT && !MLK_CONFIG_MULTILEVEL_NO_SHARED \
         */
