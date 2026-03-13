@@ -320,7 +320,7 @@ def test_wycheproof_vec_sig_sign(sig_name):
     for suffix in ["sign_noseed_test", "sign_seed_test"]:
         test_cases = fetch_wycheproof_sig_test_cases(sig_name, suffix, ["MlDsaSign"])
         if not test_cases:
-            pytest.skip("No verify test cases found.")
+            pytest.skip("No sign test cases found.")
 
         for group, tc in test_cases:
             # 1. Try to fetch the fully expanded private key directly (standard for 'noseed' files)
@@ -334,7 +334,7 @@ def test_wycheproof_vec_sig_sign(sig_name):
             # Passing None/empty to the subprocess would crash Python or fail the vector_sig arg parser.
             # Skip and move to next
             if not sk:
-                continue
+                pytest.fail(f"TC {tc['tcId']} FAILED: Could not obtain or expand secret key.")
                 
             msg = tc.get("msg", "")
             sig = tc.get("sig", "")
