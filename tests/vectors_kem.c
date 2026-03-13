@@ -26,6 +26,21 @@
 #define SHA3_256_OP_LEN         32
 #endif //OQS_ENABLE_KEM_ML_KEM
 
+#ifdef OQS_ENABLE_KEM_ml_kem_512
+extern int PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(const uint8_t *sk);
+#endif
+
+#ifdef OQS_ENABLE_KEM_ml_kem_768
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(const uint8_t *sk);
+#endif
+
+#ifdef OQS_ENABLE_KEM_ml_kem_1024
+extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(const uint8_t *sk);
+#endif
+
 /* MLKEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
@@ -504,12 +519,46 @@ cleanup:
 	return ret;
 }
 
+#ifdef OQS_ENABLE_KEM_ML_KEM
+static OQS_STATUS kem_encapKeyCheck_vector(const char *method_name, const uint8_t *ek, bool expected_pass) {
+    int result = 0;
+    
+#ifdef OQS_ENABLE_KEM_ml_kem_512
+    if (strcmp(method_name, OQS_KEM_alg_ml_kem_512) == 0) result = PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(ek);
+#endif
+#ifdef OQS_ENABLE_KEM_ml_kem_768
+    if (strcmp(method_name, OQS_KEM_alg_ml_kem_768) == 0) result = PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(ek);
+#endif
+#ifdef OQS_ENABLE_KEM_ml_kem_1024
+    if (strcmp(method_name, OQS_KEM_alg_ml_kem_1024) == 0) result = PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(ek);
+#endif
+
+    return ( (result == 0) == expected_pass ) ? OQS_SUCCESS : OQS_ERROR;
+}
+
+static OQS_STATUS kem_decapKeyCheck_vector(const char *method_name, const uint8_t *sk, bool expected_pass) {
+    int result = 0;
+
+#ifdef OQS_ENABLE_KEM_ml_kem_512
+    if (strcmp(method_name, OQS_KEM_alg_ml_kem_512) == 0) result = PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(sk);
+#endif
+#ifdef OQS_ENABLE_KEM_ml_kem_768
+    if (strcmp(method_name, OQS_KEM_alg_ml_kem_768) == 0) result = PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(sk);
+#endif
+#ifdef OQS_ENABLE_KEM_ml_kem_1024
+    if (strcmp(method_name, OQS_KEM_alg_ml_kem_1024) == 0) result = PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(sk);
+#endif
+
+    return ( (result == 0) == expected_pass ) ? OQS_SUCCESS : OQS_ERROR;
+}
+#endif // OQS_ENABLE_KEM_ML_KEM
+
 int main(int argc, char **argv) {
 	OQS_STATUS rc = OQS_SUCCESS;
 
 	OQS_init();
 
-	if (argc != 4 && argc != 6 && argc != 7) {
+	if (argc != 4 && argc != 5 && argc != 6 && argc != 7) {
 		fprintf(stderr, "Usage: vectors_kem algname testname [testargs]\n");
 		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
 			if (i > 0) {
@@ -544,6 +593,7 @@ int main(int argc, char **argv) {
 	char *strcmp_k;
 
 	char *modOverflow_ek;
+	uint8_t *key_bytes = NULL;
 
 	uint8_t *prng_output_stream_bytes = NULL;
 	uint8_t *kg_pk_bytes = NULL;
@@ -711,8 +761,47 @@ int main(int argc, char **argv) {
 
 
 		rc = kem_modOverflow_vector(alg_name, modOverflow_ek_bytes);
-	} else {
-		printf("[vectors_kem] %s only keyGen supported!\n", alg_name);
+	} else if (!strcmp(test_name, "encapsulationKeyCheck") || !strcmp(test_name, "decapsulationKeyCheck")) {
+        char *key_input = argv[3];
+        char *expected_result_str = argv[4];
+        bool expected_pass = (strcmp(expected_result_str, "true") == 0);
+        
+        // result will be 0 if key is valid, 1 if corrupted/invalid size
+        int result = 1; 
+
+        size_t key_len = (!strcmp(test_name, "encapsulationKeyCheck")) ? kem->length_public_key : kem->length_secret_key;
+        
+        // Step 1: Check Length
+        if(strlen(key_input) == 2 * key_len) {
+            key_bytes = OQS_MEM_malloc(key_len);
+            if (key_bytes == NULL) {
+				fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
+                rc = OQS_ERROR;
+                goto err;
+            }
+            hexStringToByteArray(key_input, key_bytes);
+
+            // Step 2: If length is OK, perform sanity check
+#ifdef OQS_ENABLE_KEM_ML_KEM
+            if (!strcmp(test_name, "encapsulationKeyCheck")) {
+                result = kem_encapKeyCheck_vector(alg_name, key_bytes, true); // We just want the raw result
+            } else {
+                result = kem_decapKeyCheck_vector(alg_name, key_bytes, true);
+            }
+#endif
+        } else {
+            // Length is wrong, so the key is automatically invalid (result = 1)
+            result = 1;
+        }
+
+        // Step 3: Compare our result with NIST's expectation
+        // If we found it invalid (1) and NIST expected false -> Test Passed (OQS_SUCCESS)
+        // If we found it valid (0) and NIST expected true -> Test Passed (OQS_SUCCESS)
+        bool actual_pass = (result == 0);
+        rc = (actual_pass == expected_pass) ? OQS_SUCCESS : OQS_ERROR;
+
+    } else {
+		printf("[vectors_kem] %s only keyGen/encDecAFT/encDecVAL/encapsulationKeyCheck/decapsulationKeyCheck/modOverflow/strcmp supported!\n", alg_name);
 	}
 
 err:
@@ -738,7 +827,7 @@ err:
 	OQS_MEM_insecure_free(strcmp_k_bytes);
 
 	OQS_MEM_insecure_free(modOverflow_ek_bytes);
-
+	OQS_MEM_insecure_free(key_bytes);
 	OQS_KEM_free(kem);
 
 	OQS_destroy();
