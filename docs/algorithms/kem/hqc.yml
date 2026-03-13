@@ -1,20 +1,7 @@
 name: HQC
 type: kem
 principal-submitters:
-- Carlos Aguilar Melchor
-- Nicolas Aragon
-- Slim Bettaieb
-- Loïc Bidoux
-- Olivier Blazy
-- Jurjen Bos
-- Jean-Christophe Deneuville
-- Arnaud Dion
 - Philippe Gaborit
-- Jérôme Lacan
-- Edoardo Persichetti
-- Jean-Marc Robert
-- Pascal Véron
-- Gilles Zémor
 crypto-assumption: Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
 website: https://pqc-hqc.org/
 nist-round: 4
@@ -28,10 +15,10 @@ parameter-sets:
 - name: HQC-128
   claimed-nist-level: 1
   claimed-security: IND-CCA2
-  length-public-key: 2249
+  length-public-key: 2241
   length-ciphertext: 4433
-  length-secret-key: 2305
-  length-shared-secret: 64
+  length-secret-key: 2321
+  length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: ref
@@ -81,5 +68,28 @@ parameter-sets:
     default: true
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://gitlab.com/pqc-hqc
+  source: https://github.com/xuganyu96/pqc/commit/d2c8c46773748220b1732cb4da39e0a377a0a267
 default-upstream-id: ref
+auxiliary-submitters:
+- Carlos Aguilar-Melchor
+- Nicolas Aragon
+- Slim Bettaieb
+- Loïc Bidoux
+- Olivier Blazy
+- Jean-Christophe Deneuville
+- Edoardo Persichetti
+- Gilles Zémor
+- Jurjen Bos
+- Arnaud Dion
+- Jérôme Lacan
+- Jean-Marc Robert
+- Pascal Véron
+- Paulo L. Barreto
+- Santosh Ghosh
+- Shay Gueron
+- Tim Güneysu
+- Rafael Misoczki
+- Jan Richter-Brokmann
+- Nicolas Sendrier
+- Jean-Pierre Tillich
+- Valentin Vasseur
