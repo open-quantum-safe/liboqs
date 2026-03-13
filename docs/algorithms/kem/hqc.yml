@@ -20,10 +20,10 @@ website: https://pqc-hqc.org/
 nist-round: 4
 standardization-status: Selected by [NIST](https://pqc-hqc.org/doc/hqc_specifications_2025_08_22.pdf)
   for upcoming standardization
-spec-version: 2023-04-30
+spec-version: 2025-08-22
 upstream-ancestors:
-- https://github.com/SWilson4/package-pqclean/tree/8db1b24b/hqc
-- submission 2023-04-30 at https://pqc-hqc.org/implementation.html
+- https://gitlab.com/pqc-hqc
+- submission 2025-08-22 at https://pqc-hqc.org/implementation.html
 parameter-sets:
 - name: HQC-128
   claimed-nist-level: 1
@@ -34,7 +34,7 @@ parameter-sets:
   length-shared-secret: 64
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
@@ -52,7 +52,7 @@ parameter-sets:
   length-shared-secret: 64
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
@@ -70,7 +70,7 @@ parameter-sets:
   length-shared-secret: 64
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
@@ -81,5 +81,5 @@ parameter-sets:
     default: true
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181
-default-upstream-id: clean
+  source: https://gitlab.com/pqc-hqc
+default-upstream-id: ref
