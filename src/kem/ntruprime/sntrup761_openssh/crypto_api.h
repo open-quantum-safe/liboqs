@@ -8,9 +8,9 @@
 #define crypto_uint64 uint64_t
 #define crypto_hash_sha512 OQS_SHA2_sha512
 #define randombytes(buf,len) OQS_randombytes((uint8_t *)(buf),(len))
-#define crypto_kem_sntrup761_keypair PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_keypair
-#define crypto_kem_sntrup761_enc PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_enc
-#define crypto_kem_sntrup761_dec PQCLEAN_SNTRUP761_OPENSSH_crypto_kem_dec
+#define crypto_kem_sntrup761_keypair OPENSSH_SNTRUP761_crypto_kem_keypair
+#define crypto_kem_sntrup761_enc OPENSSH_SNTRUP761_crypto_kem_enc
+#define crypto_kem_sntrup761_dec OPENSSH_SNTRUP761_crypto_kem_dec
 #define explicit_bzero OQS_MEM_cleanse
 
 volatile crypto_int16 crypto_int16_optblocker = 0;
