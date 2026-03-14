@@ -623,6 +623,23 @@ def handle_implementation(impl, family, scheme, dst_basedir):
 
 def process_families(instructions, basedir, with_kat, with_generator, with_libjade=False):
     for family in instructions['kems'] + instructions['sigs']:
+        extmu_variants = []
+        for s in family['schemes']:
+            if 'metadata' in s and any('signature_signature_extmu' in imp for imp in s['metadata']['implementations']):
+                ext_s = copy.deepcopy(s)
+                ext_s['scheme'] += "_extmu"
+                ext_s['scheme_c'] += "_extmu"
+                ext_s['pretty_name_full'] += "-extmu"
+                ext_s['is_extmu'] = True
+                for imp in ext_s['metadata']['implementations']:
+                    if 'signature_signature_extmu' in imp:
+                        imp['signature_signature'] = imp['signature_signature_extmu']
+                    if 'signature_verify_extmu' in imp:
+                        imp['signature_verify'] = imp['signature_verify_extmu']
+                    imp['api-with-context-string'] = False
+                extmu_variants.append(ext_s)
+        family['schemes'].extend(extmu_variants)
+
         try:
             os.makedirs(os.path.join(basedir, 'src', family['type'], family['name']))
         except:
@@ -694,8 +711,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
 
-
-            if with_kat:
+            if with_kat and not scheme.get('is_extmu', False):
                 if family in instructions['kems']:
                     try:
                         if kats['kem'][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:

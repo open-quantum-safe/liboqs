@@ -103,6 +103,12 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_ML_DSA OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_ML_DSA_EXTMU)
+                set(OQS_ENABLE_SIG_ML_DSA_EXTMU ON)
+        else()
+                set(OQS_ENABLE_SIG_ML_DSA_EXTMU OFF)
+        endif()
+
         if(CONFIG_LIBOQS_ENABLE_SIG_FALCON)
                 set(OQS_ENABLE_SIG_FALCON ON)
         else()
