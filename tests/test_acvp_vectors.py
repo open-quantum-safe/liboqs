@@ -208,7 +208,6 @@ def test_acvp_vec_kem_key_check(kem_name):
     variantFound = False
     for variant in acvp_data["testGroups"]:
         if variant["parameterSet"] == kem_name:
-            # We handle both encapsulationKeyCheck and decapsulationKeyCheck groups
             func = variant["function"]
             if func not in ["encapsulationKeyCheck", "decapsulationKeyCheck"]:
                 continue
@@ -217,8 +216,7 @@ def test_acvp_vec_kem_key_check(kem_name):
             key_attr = "ek" if func == "encapsulationKeyCheck" else "dk"
             
             for testCase in variant["tests"]:
-                key_hex = testCase[key_attr]
-                # testPassed is a boolean in the JSON
+                key = testCase[key_attr]
                 expected = "true" if testCase["testPassed"] else "false"
 
                 build_dir = helpers.get_current_build_dir_name()
@@ -227,7 +225,7 @@ def test_acvp_vec_kem_key_check(kem_name):
                         f"{build_dir}/tests/vectors_kem",
                         kem_name,
                         func,
-                        key_hex,
+                        key,
                         expected,
                     ]
                 )

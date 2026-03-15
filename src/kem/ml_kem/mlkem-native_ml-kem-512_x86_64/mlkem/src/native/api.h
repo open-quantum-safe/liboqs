@@ -424,9 +424,9 @@ __contract__(
   requires(memory_no_alias(buf, buflen))
   assigns(memory_slice(r, sizeof(int16_t) * len))
   ensures(return_value != MLK_NATIVE_FUNC_FALLBACK
-	      ==> (0 <= return_value && return_value <= len))
+              ==> (0 <= return_value && return_value <= len))
   ensures(return_value != MLK_NATIVE_FUNC_FALLBACK
-	      ==> array_bound(r, 0, (unsigned) return_value, 0, MLKEM_Q))
+              ==> array_bound(r, 0, (unsigned) return_value, 0, MLKEM_Q))
 );
 #endif /* MLK_USE_NATIVE_REJ_UNIFORM */
 

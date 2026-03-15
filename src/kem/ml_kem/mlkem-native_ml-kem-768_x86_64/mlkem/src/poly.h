@@ -61,7 +61,7 @@ typedef struct
 static MLK_ALWAYS_INLINE int16_t mlk_montgomery_reduce(int32_t a)
 __contract__(
     requires(a < +(INT32_MAX - (((int32_t)1 << 15) * MLKEM_Q)) &&
-	     a > -(INT32_MAX - (((int32_t)1 << 15) * MLKEM_Q)))
+             a > -(INT32_MAX - (((int32_t)1 << 15) * MLKEM_Q)))
     /* We don't attempt to express an input-dependent output bound
      * as the post-condition here. There are two call-sites for this
      * function:

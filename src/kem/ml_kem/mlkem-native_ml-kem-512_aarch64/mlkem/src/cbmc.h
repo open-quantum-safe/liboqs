@@ -93,7 +93,7 @@
     ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==> (predicate)   \
   }
 
-#define exists(qvar, qvar_lb, qvar_ub, predicate)         \
+#define exists(qvar, qvar_lb, qvar_ub, predicate)               \
   __CPROVER_exists                                              \
   {                                                             \
     unsigned qvar;                                              \
@@ -128,11 +128,11 @@
   {                                                                    \
     unsigned qvar;                                                     \
     ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==>                    \
-        (((int)(value_lb) <= ((array_var)[(qvar)])) &&		       \
-         (((array_var)[(qvar)]) < (int)(value_ub)))		       \
+        (((int)(value_lb) <= ((array_var)[(qvar)])) &&                 \
+         (((array_var)[(qvar)]) < (int)(value_ub)))                    \
   }
 
-#define array_bound(array_var, qvar_lb, qvar_ub, value_lb, value_ub) \
+#define array_bound(array_var, qvar_lb, qvar_ub, value_lb, value_ub)    \
   array_bound_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), (qvar_lb),      \
       (qvar_ub), (array_var), (value_lb), (value_ub))
 
@@ -147,7 +147,7 @@
 #define array_unchanged(array_var, N) \
     array_unchanged_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), 0, (N), (array_var))
 
-#define array_unchanged_u64_core(qvar, qvar_lb, qvar_ub, array_var)        \
+#define array_unchanged_u64_core(qvar, qvar_lb, qvar_ub, array_var)    \
   __CPROVER_forall                                                     \
   {                                                                    \
     unsigned qvar;                                                     \

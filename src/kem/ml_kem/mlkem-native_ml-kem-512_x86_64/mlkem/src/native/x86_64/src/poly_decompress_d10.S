@@ -48,176 +48,176 @@
 MLK_ASM_FN_SYMBOL(poly_decompress_d10_avx2)
 
         .cfi_startproc
-        movl	$0xd013404, %eax        # imm = 0xD013404
-        vmovd	%eax, %xmm0
-        vpbroadcastd	%xmm0, %ymm0
-        movl	$0x4, %eax
-        vmovq	%rax, %xmm1
-        vpbroadcastq	%xmm1, %ymm1
-        movl	$0x7fe01ff8, %eax       # imm = 0x7FE01FF8
-        vmovd	%eax, %xmm2
-        vpbroadcastd	%xmm2, %ymm2
-        vmovdqa	(%rdx), %ymm3
-        vmovdqu	(%rsi), %xmm4
-        vmovd	0x10(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, (%rdi)
-        vmovdqu	0x14(%rsi), %xmm4
-        vmovd	0x24(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x20(%rdi)
-        vmovdqu	0x28(%rsi), %xmm4
-        vmovd	0x38(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x40(%rdi)
-        vmovdqu	0x3c(%rsi), %xmm4
-        vmovd	0x4c(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x60(%rdi)
-        vmovdqu	0x50(%rsi), %xmm4
-        vmovd	0x60(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x80(%rdi)
-        vmovdqu	0x64(%rsi), %xmm4
-        vmovd	0x74(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0xa0(%rdi)
-        vmovdqu	0x78(%rsi), %xmm4
-        vmovd	0x88(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0xc0(%rdi)
-        vmovdqu	0x8c(%rsi), %xmm4
-        vmovd	0x9c(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0xe0(%rdi)
-        vmovdqu	0xa0(%rsi), %xmm4
-        vmovd	0xb0(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x100(%rdi)
-        vmovdqu	0xb4(%rsi), %xmm4
-        vmovd	0xc4(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x120(%rdi)
-        vmovdqu	0xc8(%rsi), %xmm4
-        vmovd	0xd8(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x140(%rdi)
-        vmovdqu	0xdc(%rsi), %xmm4
-        vmovd	0xec(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x160(%rdi)
-        vmovdqu	0xf0(%rsi), %xmm4
-        vmovd	0x100(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x180(%rdi)
-        vmovdqu	0x104(%rsi), %xmm4
-        vmovd	0x114(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x1a0(%rdi)
-        vmovdqu	0x118(%rsi), %xmm4
-        vmovd	0x128(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x1c0(%rdi)
-        vmovdqu	0x12c(%rsi), %xmm4
-        vmovd	0x13c(%rsi), %xmm5
-        vinserti128	$0x1, %xmm5, %ymm4, %ymm4
-        vpermq	$0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
-        vpshufb	%ymm3, %ymm4, %ymm4
-        vpsllvd	%ymm1, %ymm4, %ymm4
-        vpsrlw	$0x1, %ymm4, %ymm4
-        vpand	%ymm2, %ymm4, %ymm4
-        vpmulhrsw	%ymm0, %ymm4, %ymm4
-        vmovdqu	%ymm4, 0x1e0(%rdi)
+        movl $0xd013404, %eax        # imm = 0xD013404
+        vmovd %eax, %xmm0
+        vpbroadcastd %xmm0, %ymm0
+        movl $0x4, %eax
+        vmovq %rax, %xmm1
+        vpbroadcastq %xmm1, %ymm1
+        movl $0x7fe01ff8, %eax       # imm = 0x7FE01FF8
+        vmovd %eax, %xmm2
+        vpbroadcastd %xmm2, %ymm2
+        vmovdqa (%rdx), %ymm3
+        vmovdqu (%rsi), %xmm4
+        vmovd 0x10(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, (%rdi)
+        vmovdqu 0x14(%rsi), %xmm4
+        vmovd 0x24(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x20(%rdi)
+        vmovdqu 0x28(%rsi), %xmm4
+        vmovd 0x38(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x40(%rdi)
+        vmovdqu 0x3c(%rsi), %xmm4
+        vmovd 0x4c(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x60(%rdi)
+        vmovdqu 0x50(%rsi), %xmm4
+        vmovd 0x60(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x80(%rdi)
+        vmovdqu 0x64(%rsi), %xmm4
+        vmovd 0x74(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0xa0(%rdi)
+        vmovdqu 0x78(%rsi), %xmm4
+        vmovd 0x88(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0xc0(%rdi)
+        vmovdqu 0x8c(%rsi), %xmm4
+        vmovd 0x9c(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0xe0(%rdi)
+        vmovdqu 0xa0(%rsi), %xmm4
+        vmovd 0xb0(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x100(%rdi)
+        vmovdqu 0xb4(%rsi), %xmm4
+        vmovd 0xc4(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x120(%rdi)
+        vmovdqu 0xc8(%rsi), %xmm4
+        vmovd 0xd8(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x140(%rdi)
+        vmovdqu 0xdc(%rsi), %xmm4
+        vmovd 0xec(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x160(%rdi)
+        vmovdqu 0xf0(%rsi), %xmm4
+        vmovd 0x100(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x180(%rdi)
+        vmovdqu 0x104(%rsi), %xmm4
+        vmovd 0x114(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x1a0(%rdi)
+        vmovdqu 0x118(%rsi), %xmm4
+        vmovd 0x128(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x1c0(%rdi)
+        vmovdqu 0x12c(%rsi), %xmm4
+        vmovd 0x13c(%rsi), %xmm5
+        vinserti128 $0x1, %xmm5, %ymm4, %ymm4
+        vpermq $0x94, %ymm4, %ymm4     # ymm4 = ymm4[0,1,1,2]
+        vpshufb %ymm3, %ymm4, %ymm4
+        vpsllvd %ymm1, %ymm4, %ymm4
+        vpsrlw $0x1, %ymm4, %ymm4
+        vpand %ymm2, %ymm4, %ymm4
+        vpmulhrsw %ymm0, %ymm4, %ymm4
+        vmovdqu %ymm4, 0x1e0(%rdi)
         retq
         .cfi_endproc
 
