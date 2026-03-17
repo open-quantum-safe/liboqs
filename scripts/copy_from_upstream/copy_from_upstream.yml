@@ -65,10 +65,12 @@ upstreams:
     preserve_folder_structure: True
   -
     name: pqmayo
-    git_url: https://github.com/PQCMayo/MAYO-C.git
-    git_branch: main
-    git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
+    #git_url: /Users/bhe/git/MAYO-C
+    git_url: https://github.com/bhess/MAYO-C.git
+    git_branch: bhe-oqscommon
+    git_commit: dd51da7e7e83b09eea725b4705c09b17f64fc1cb
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
+    common_meta_path: 'META/COMMONS.yml' 
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
   -
