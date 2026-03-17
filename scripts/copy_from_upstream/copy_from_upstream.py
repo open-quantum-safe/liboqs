@@ -226,6 +226,7 @@ def load_instructions(file='copy_from_upstream.yml'):
             for common_dep in common_deps['commons']:
                 if not 'folder_name' in common_dep or not 'sources' in common_dep:
                     raise Exception("folder_name and sources required in common dependencies.")
+                common_dep['include_only'] = common_dep.get('include_only', False)
                 common_dep['sources'] = common_dep['sources'].split(" ")
                 if 'supported_platforms' in common_dep:
                     for i in range(len(common_dep['supported_platforms'])):
@@ -493,13 +494,14 @@ def handle_common_deps(common_dep, family, dst_basedir):
     # We checked before that 'sources' are available in the common dependency
     srcs = common_dep['sources']
     for s in srcs:
-        # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
+        # Copy with flat directory structure (no subfolders)
         if os.path.isfile(os.path.join(origfolder, s)):
-            os.makedirs(os.path.join(srcfolder, os.path.dirname(s)), exist_ok=True)
-            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, s)])
+            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
         else:
-            subprocess.run(
-                ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+            # For directories, copy contents flat
+            for root, _, files in os.walk(os.path.join(origfolder, s)):
+                for f in files:
+                    subprocess.run(['cp', os.path.join(root, f), os.path.join(srcfolder, f)])
 
 
     extensions = ['.c', '.s']

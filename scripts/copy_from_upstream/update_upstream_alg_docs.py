@@ -190,7 +190,11 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                         implementations = upstream_yaml['implementations']
                         uir = get_upstream_info(implementations, impl['upstream-id'])
                         if (uir != None) and ('common_dep' in uir):
-                            upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
+                            current_ui = ouis[upstream_name] if impl['upstream'] in ouis else ui
+                            if 'common_meta_path' in current_ui:
+                                upstream_common_path = os.path.join(current_ui['upstream_root'], current_ui['common_meta_path'])
+                            else:
+                                upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
                             upstream_common_yaml = load_yaml(upstream_common_path)
                             for c in uir['common_dep'].split(' '):
                                 ur = get_upstream_info(upstream_common_yaml['commons'], c)
@@ -412,7 +416,11 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                     implementations = upstream_yaml['implementations']
                     uir = get_upstream_info(implementations, impl['upstream-id'])
                     if (uir != None) and ('common_dep' in uir):
-                        upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
+                        current_ui = ouis[upstream_name] if impl['upstream'] in ouis else ui
+                        if 'common_meta_path' in current_ui:
+                            upstream_common_path = os.path.join(current_ui['upstream_root'], current_ui['common_meta_path'])
+                        else:
+                            upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
                         upstream_common_yaml = load_yaml(upstream_common_path)
                         for c in uir['common_dep'].split(' '):
                             ur = get_upstream_info(upstream_common_yaml['commons'], c)
