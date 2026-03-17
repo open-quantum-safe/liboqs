@@ -95,7 +95,7 @@ _INLINE_ ret_t generate_sparse_rep_for_sk(OUT pad_r_t *r,
   bike_memcpy(wlist, wlist_temp, D * sizeof(idx_t));
   ctx->secure_set_bits(r, 0, wlist, D);
 
-  secure_clean((uint8_t *)wlist_temp, sizeof(*wlist_temp));
+  secure_clean((uint8_t *)wlist_temp, sizeof(wlist_temp));
   return SUCCESS;
 }
 
@@ -140,7 +140,7 @@ ret_t generate_error_vector(OUT pad_e_t *e, IN const seed_t *seed)
   bike_memset(&PE0_RAW(e)[R_BYTES], 0, R_PADDED_BYTES - R_BYTES);
   bike_memset(&PE1_RAW(e)[R_BYTES], 0, R_PADDED_BYTES - R_BYTES);
 
-  secure_clean((uint8_t *)wlist, sizeof(*wlist));
+  secure_clean((uint8_t *)wlist, sizeof(wlist));
 
   return SUCCESS;
 }
