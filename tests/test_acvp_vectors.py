@@ -1,17 +1,13 @@
 # SPDX-License-Identifier: MIT
 
-import functools
 import json
 import sys
 from urllib.parse import urljoin
-import unittest
-import unittest.mock
-
 import pytest
-import requests
-
 import helpers
 import hashlib
+
+from helpers import requests_get, cached_requests_get
 
 ml_kem = ["ML-KEM-512", "ML-KEM-768", "ML-KEM-1024"]
 ml_sig = ["ML-DSA-44", "ML-DSA-65", "ML-DSA-87"]
@@ -67,18 +63,6 @@ def calc_hash(msg, algo):
         return hashlib.shake_256(msg_bytes).hexdigest(64)
     else:
         raise ValueError(f"Unsupported hash algorithm: {algo}")
-
-@pytest.fixture(autouse=True, scope="module")
-def requests_get():
-    with unittest.mock.patch("requests.get", wraps=requests.get) as mock_get:
-        yield mock_get
-        print(f"mock_get is called {mock_get.call_count} times")
-
-
-@functools.lru_cache
-def cached_requests_get(url: str):
-    resp = requests.get(url)
-    return resp
 
 
 @helpers.filtered_test

@@ -42,6 +42,7 @@
 #cmakedefine OQS_OPENSSL_CRYPTO_SONAME "@OQS_OPENSSL_CRYPTO_SONAME@"
 
 #cmakedefine OQS_EMBEDDED_BUILD 1
+#cmakedefine OQS_MEMOPT_BUILD 1
 
 #cmakedefine OQS_USE_PTHREADS 1
 
