@@ -976,6 +976,35 @@ err:
 	return OQS_ERROR;
 }
 
+/*
+ * This function is used to test the invalid signature verification.
+ * @param method_name: The name of the signature algorithm to test.
+ * @return OQS_SUCCESS if the invalid signature verification is fails, OQS_ERROR otherwise.
+ */
+int test_invlaid_sig(const char *method_name) {
+	// Use proper API to create sig object
+	if (method_name == NULL) {
+		return OQS_ERROR;
+	}
+	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
+	if (sig == NULL) {
+		return OQS_ERROR;
+	}
+
+	uint8_t pk[68] = {0};
+	pk[3] = 0x01; //The Actual public key can be any value.
+
+	uint8_t message[] = "test";
+	uint8_t malicious_sig[10] = {0};  // Only 10 bytes!
+
+	// This triggers the bug via proper API
+	OQS_STATUS status = OQS_SIG_STFL_verify(sig, message, sizeof(message), malicious_sig, 10, pk);
+	OQS_SIG_STFL_free(sig);
+	if (status == OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
+}
 
 typedef struct thread_data {
 	const char *alg_name;
@@ -1063,7 +1092,7 @@ static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
 }
 
 int main(int argc, char **argv) {
-	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR;
+	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR, rc2 = OQS_ERROR;
 	OQS_init();
 	rc = oqs_fstore_init();
 	if (rc != OQS_SUCCESS) {
@@ -1261,13 +1290,13 @@ err:
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile, bitflips_all, bitflips);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
+	rc2 = test_invlaid_sig(alg_name);
 
 	OQS_destroy();
 	rc = update_test_result(rc, is_xmss);
 	rc1 = update_test_result(rc1, is_xmss);
 
-
-	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS || rc2 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
 	return exit_status;
