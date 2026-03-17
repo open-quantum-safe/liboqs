@@ -14,4 +14,6 @@
 #define alloca _alloca
 /* drop attributes on MSVC */
 #define __attribute__(x)
+#elif !defined(alloca)
+#define alloca __builtin_alloca
 #endif
