@@ -981,7 +981,7 @@ err:
  * @param method_name: The name of the signature algorithm to test.
  * @return OQS_SUCCESS if the invalid signature verification is fails, OQS_ERROR otherwise.
  */
-static OQS_STATUS test_invlaid_sig(const char *method_name) {
+static OQS_STATUS test_invalid_sig(const char *method_name) {
 	// Use proper API to create sig object
 	if (method_name == NULL) {
 		return OQS_ERROR;
@@ -1290,7 +1290,7 @@ err:
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile, bitflips_all, bitflips);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
-	rc2 = test_invlaid_sig(alg_name);
+	rc2 = test_invalid_sig(alg_name);
 
 	OQS_destroy();
 	rc = update_test_result(rc, is_xmss);
