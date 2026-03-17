@@ -18,6 +18,7 @@ standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/p
 spec-version: Round 2
 primary-upstream:
   source: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+    with copy_from_upstream patches
   spdx-license-identifier: MIT
 parameter-sets:
 - name: SNOVA_24_5_4
