@@ -24,7 +24,7 @@
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 | [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
  ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
