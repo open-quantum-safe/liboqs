@@ -981,7 +981,7 @@ err:
  * @param method_name: The name of the signature algorithm to test.
  * @return OQS_SUCCESS if the invalid signature verification is fails, OQS_ERROR otherwise.
  */
-int test_invlaid_sig(const char *method_name) {
+static OQS_STATUS test_invlaid_sig(const char *method_name) {
 	// Use proper API to create sig object
 	if (method_name == NULL) {
 		return OQS_ERROR;
