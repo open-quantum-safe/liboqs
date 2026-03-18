@@ -1051,7 +1051,7 @@ void *test_create_keys(void *arg) {
 void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile, td->bitflips_all, td->bitflips);
-	td-rc2 = test_invalid_sig(td->alg_name);
+	td->rc2 = test_invalid_sig(td->alg_name);
 	OQS_thread_stop();
 	return NULL;
 }
