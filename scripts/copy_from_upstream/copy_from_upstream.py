@@ -471,7 +471,6 @@ def handle_common_deps(common_dep, family, dst_basedir):
     # if 'upstream_location' in scheme and os.environ.get(scheme['upstream_location']):
     if DEBUG > 3:
         print("Obtain files for common dependency %s" % (common_dep))
-        print("Obtain files for %s" % (scheme))
 
     cdep_folder_name = '{}_{}'.format(family['upstream_location'], common_dep['name'])
     shutil.rmtree(os.path.join(dst_basedir, 'src', family['type'], family['name'],
