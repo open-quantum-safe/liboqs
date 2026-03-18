@@ -482,9 +482,9 @@ cleanup:
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 static OQS_STATUS kem_keyCheck_vector(const char *method_name,
-                                       const uint8_t *key,
-                                       bool expected_pass,
-                                       bool is_pk) {
+                                      const uint8_t *key,
+                                      bool expected_pass,
+                                      bool is_pk) {
 
 	if ((method_name == NULL) || (key == NULL)) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
@@ -728,8 +728,8 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(modOverflow_ek,  modOverflow_ek_bytes);
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
-        /* For modOverflow tests, we expect the key to be corrupted (expected_pass = false) */
-        rc = kem_keyCheck_vector(alg_name, modOverflow_ek_bytes, false, true);
+		/* For modOverflow tests, we expect the key to be corrupted (expected_pass = false) */
+		rc = kem_keyCheck_vector(alg_name, modOverflow_ek_bytes, false, true);
 #endif
 	} else if (!strcmp(test_name, "encapsulationKeyCheck") || !strcmp(test_name, "decapsulationKeyCheck")) {
 		char *key_input = argv[3];
