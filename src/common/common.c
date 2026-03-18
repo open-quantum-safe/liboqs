@@ -447,6 +447,11 @@ OQS_API char *OQS_MEM_strdup(const char *str) {
 	}
 	return dup;
 #else
-	return strdup(str); // IGNORE memory-check
+	size_t len = strlen(str) + 1;
+	char *dup = (char *)malloc(len); // IGNORE memory-check
+	if (dup != NULL) {
+		memcpy(dup, str, len);
+	}
+	return dup;
 #endif
 }
