@@ -215,6 +215,9 @@ target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
 add_executable(vectors_kem vectors_kem.c)
 target_link_libraries(vectors_kem PRIVATE ${TEST_DEPS})
 
+add_executable(kem_fo_cache_oracle kem_fo_cache_oracle.c)
+target_link_libraries(kem_fo_cache_oracle PRIVATE ${TEST_DEPS})
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     # workaround for Windows .dll
     if(MINGW OR MSYS OR CYGWIN OR CMAKE_CROSSCOMPILING)
