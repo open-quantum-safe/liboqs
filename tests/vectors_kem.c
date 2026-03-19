@@ -737,7 +737,6 @@ int main(int argc, char **argv) {
 		// result will be 0 if key is valid, 1 if corrupted/invalid size
 		int result = 1;
 		size_t key_len = (!strcmp(test_name, "encapsulationKeyCheck")) ? kem->length_public_key : kem->length_secret_key;
-		
 		// Step 1: Check Length
 		if (strlen(key_input) == 2 * key_len) {
 			key_bytes = OQS_MEM_malloc(key_len);
@@ -763,7 +762,6 @@ int main(int argc, char **argv) {
 	} else {
 		printf("[vectors_kem] %s only keyGen/encDecAFT/encDecVAL/encapsulationKeyCheck/decapsulationKeyCheck/modOverflow/strcmp supported!\n", alg_name);
 	}
-
 err:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
 	OQS_MEM_insecure_free(kg_pk_bytes);
