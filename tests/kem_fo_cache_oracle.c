@@ -1,4 +1,9 @@
 /*
+ * TODO:
+ * - [ ] Parameterize KEM scheme name, probe loc, control loc
+ * - [ ] Reformat output into CSV
+ * - [ ] Expand platforms to aarch64
+ *
  * FrodoKEM Flush+Reload Cache Timing PoC
  *
  * Demonstrates secret-dependent cache residency in FrodoKEM decaps
