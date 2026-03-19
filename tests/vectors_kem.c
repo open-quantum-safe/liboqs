@@ -502,7 +502,7 @@ static OQS_STATUS kem_keyCheck_vector(const char *method_name,
 #endif
 
 #ifdef OQS_ENABLE_KEM_ml_kem_768
-	else if (!strcmp(method_name, OQS_KEM_alg_ml_kem_768)) {
+	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_768)) {
 		result = is_pk ?
 		         PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(key) :
 		         PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(key);
@@ -510,7 +510,7 @@ static OQS_STATUS kem_keyCheck_vector(const char *method_name,
 #endif
 
 #ifdef OQS_ENABLE_KEM_ml_kem_1024
-	else if (!strcmp(method_name, OQS_KEM_alg_ml_kem_1024)) {
+	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_1024)) {
 		result = is_pk ?
 		         PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(key) :
 		         PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(key);
