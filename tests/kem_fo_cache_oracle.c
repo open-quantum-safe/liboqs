@@ -74,7 +74,7 @@ static inline uint64_t rdtscp(void) {
 }
 
 static inline void cache_flush(volatile void *p) {
-    __asm__ volatile("cache_flush (%0)" ::"r"(p) : "memory");
+    __asm__ volatile("clflush (%0)" ::"r"(p) : "memory");
 }
 
 static inline uint64_t probe(volatile void *addr) {
@@ -89,11 +89,11 @@ static inline uint64_t probe(volatile void *addr) {
 }
 
 static inline void mem_fence(void) {
-    __asm__ volatile("mem_fence" ::: "memory");
+    __asm__ volatile("mfence" ::: "memory");
 }
 
 static inline void load_fence(void) {
-    __asm__ volatile("load_fence" ::: "memory");
+    __asm__ volatile("lfence" ::: "memory");
 }
 
 static void setup_realtime(int cpu) {
