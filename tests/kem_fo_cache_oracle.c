@@ -25,8 +25,8 @@
  *     -DCMAKE_C_COMPILER="/path/to/clang" \
  *     ..
  * ninja
- * sudo ./tests/kem_fo_cache_oracle FrodoKEM-640-AES 0
- *
+ * sudo ./tests/kem_fo_cache_oracle FrodoKEM-640-AES 0 2>/dev/null 1>raw.csv
+ * 
  * Notes:
  * - sudo may or may not be necessary
  * - cache timing channel can only be detected with Clang 17 or newer
@@ -47,6 +47,8 @@
 #define NUM_ROUNDS 30
 #define MEMALIGN 4096
 #define ONE_BILLION 1000000000
+#define CSV_HEADER "epoch,sample,good,probe,ctrl\n"
+#define CSV_DATA "%d,%d,%d,%" PRIu64 ",%" PRIu64 "\n"
 
 #define ARGS_HELP_TEXT                                                         \
     "Usage: %s <kem_name> <probe_loc>\n"                                       \
@@ -88,32 +90,28 @@ static inline uint64_t probe(volatile void *addr) {
     return t2 - t1;
 }
 
-static inline void mem_fence(void) {
-    __asm__ volatile("mfence" ::: "memory");
-}
+static inline void mem_fence(void) { __asm__ volatile("mfence" ::: "memory"); }
 
-static inline void load_fence(void) {
-    __asm__ volatile("lfence" ::: "memory");
-}
+static inline void load_fence(void) { __asm__ volatile("lfence" ::: "memory"); }
 
 static void setup_realtime(int cpu) {
     cpu_set_t set;
     CPU_ZERO(&set);
     CPU_SET(cpu, &set);
     if (sched_setaffinity(0, sizeof(set), &set) == 0)
-        printf("  CPU pinned to %d\n", cpu);
+        fprintf(stderr, "  CPU pinned to %d\n", cpu);
     else
         perror("  sched_setaffinity");
 
     struct sched_param sp;
     sp.sched_priority = sched_get_priority_max(SCHED_FIFO);
     if (sched_setscheduler(0, SCHED_FIFO, &sp) == 0)
-        printf("  SCHED_FIFO prio %d\n", sp.sched_priority);
+        fprintf(stderr, "  SCHED_FIFO prio %d\n", sp.sched_priority);
     else
         perror("  sched_setscheduler");
 
     if (mlockall(MCL_CURRENT | MCL_FUTURE) == 0)
-        printf("  mlockall OK\n");
+        fprintf(stderr, "  mlockall OK\n");
     else
         perror("  mlockall");
 }
@@ -213,7 +211,7 @@ typedef struct {
 
 static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
                       uint8_t *ss2, uint32_t *rng, round_result_t *res,
-                      size_t probe_loc, size_t ctrl_loc) {
+                      size_t probe_loc, size_t ctrl_loc, int epoch) {
     uint64_t *vg = malloc(SAMPLES_PER_ROUND * sizeof(uint64_t));
     uint64_t *vb = malloc(SAMPLES_PER_ROUND * sizeof(uint64_t));
     uint64_t *cg = malloc(SAMPLES_PER_ROUND * sizeof(uint64_t));
@@ -240,16 +238,18 @@ static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
 
         mem_fence();
         load_fence();
-        uint64_t t0 = probe(&sk[probe_loc]);
-        uint64_t t1 = probe(&sk[ctrl_loc]);
+        uint64_t t_probe = probe(&sk[probe_loc]);
+        uint64_t t_ctrl = probe(&sk[ctrl_loc]);
 
         if (use_bad) {
-            vb[nb] = t0;
-            cb[nb] = t1;
+            vb[nb] = t_probe;
+            cb[nb] = t_ctrl;
+            printf(CSV_DATA, epoch, i, 0, t_probe, t_ctrl);
             nb++;
         } else {
-            vg[ng] = t0;
-            cg[ng] = t1;
+            vg[ng] = t_probe;
+            cg[ng] = t_ctrl;
+            printf(CSV_DATA, epoch, i, 1, t_probe, t_ctrl);
             ng++;
         }
     }
@@ -260,7 +260,7 @@ static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
     qsort(cb, nb, sizeof(uint64_t), cmp_u64);
 
     size_t vg_median_loc = ng / 2;
-    size_t vb_median_loc = ng / 2;
+    size_t vb_median_loc = nb / 2;
     res->good_median = (double)vg[vg_median_loc];
     res->bad_median = (double)vb[vb_median_loc];
     res->good_tmean = trimmed_mean(vg, ng);
@@ -363,7 +363,7 @@ static void calibrate(unsigned int nsamples, uint8_t *addr) {
         cal[i] = probe(sk);
     }
     qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-    printf("    Decaps-warm (bad  ct): p50=%lu\n", cal[50]);
+    fprintf(stderr, "    Decaps-warm (bad  ct): p50=%lu\n", cal[50]);
 #endif
 }
 
@@ -449,9 +449,11 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "%4s | %18s | %18s | %18s | %18s\n", "R", probelabel_good,
             probelabel_bad, ctrllabel_good, ctrllabel_bad);
 
+    /* the main loop */
+    printf(CSV_HEADER);
     for (int r = 0; r < NUM_ROUNDS; r++) {
         run_round(kem, sk, ct, ct_bad, ss2, &rng, &R[r], args.probe_loc,
-                  args.ctrl_loc);
+                  args.ctrl_loc, r);
         fprintf(stderr,
                 "  %02d | %14.1f     | %14.1f     | %14.1f     | %14.1f\n",
                 r + 1, R[r].good_tmean, R[r].bad_tmean, R[r].ctrl_good_tmean,
