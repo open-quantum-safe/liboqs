@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 
+// TODO: replace `printf` with `OQS_DEBUG`, then use compiler flag to control
+// whether OQS_DEBUG is printing to stdout, printing to stderr, or doing nothing
+
 // based on macros in https://sourceforge.net/p/predef/wiki/Compilers/
 static void print_compiler_info(void) {
 #if defined(__clang__)
