@@ -33,6 +33,7 @@
  */
 
 #define _GNU_SOURCE
+#include <inttypes.h>
 #include <oqs/oqs.h>
 #include <sched.h>
 #include <stdint.h>
@@ -41,8 +42,10 @@
 #include <string.h>
 #include <sys/mman.h>
 
+#define CALIBRATE_SAMPLE_SIZE 100
 #define SAMPLES_PER_ROUND 3000
 #define NUM_ROUNDS 30
+#define MEMALIGN 4096
 #define ONE_BILLION 1000000000
 
 #define ARGS_HELP_TEXT                                                         \
@@ -176,10 +179,13 @@ static int cmp_u64(const void *a, const void *b) {
     uint64_t va = *(const uint64_t *)a, vb = *(const uint64_t *)b;
     return (va > vb) - (va < vb);
 }
+
 static int cmp_double(const void *a, const void *b) {
     double va = *(const double *)a, vb = *(const double *)b;
     return (va > vb) - (va < vb);
 }
+
+/* naive prng */
 static uint32_t xorshift32(uint32_t *s) {
     uint32_t x = *s;
     x ^= x << 13;
@@ -188,14 +194,14 @@ static uint32_t xorshift32(uint32_t *s) {
     return (*s = x);
 }
 
-static double trimmed_mean(uint64_t *sorted, int n) {
-    int trim = n / 10;
+static double trimmed_mean(uint64_t *sorted, size_t n) {
+    size_t trim = n / 10;
     if (trim < 1)
         trim = 1;
     double sum = 0;
-    for (int i = trim; i < n - trim; i++)
-        sum += sorted[i];
-    return sum / (n - 2 * trim);
+    for (size_t i = trim; i < n - trim; i++)
+        sum += (double)sorted[i];
+    return sum / (double)(n - 2 * trim);
 }
 
 typedef struct {
@@ -253,13 +259,15 @@ static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
     qsort(cg, ng, sizeof(uint64_t), cmp_u64);
     qsort(cb, nb, sizeof(uint64_t), cmp_u64);
 
-    res->good_median = vg[ng / 2];
-    res->bad_median = vb[nb / 2];
+    size_t vg_median_loc = ng / 2;
+    size_t vb_median_loc = ng / 2;
+    res->good_median = (double)vg[vg_median_loc];
+    res->bad_median = (double)vb[vb_median_loc];
     res->good_tmean = trimmed_mean(vg, ng);
     res->bad_tmean = trimmed_mean(vb, nb);
 
-    res->ctrl_good_median = cg[ng / 2];
-    res->ctrl_bad_median = cb[nb / 2];
+    res->ctrl_good_median = (double)cg[vg_median_loc];
+    res->ctrl_bad_median = (double)cb[vb_median_loc];
     res->ctrl_good_tmean = trimmed_mean(cg, ng);
     res->ctrl_bad_tmean = trimmed_mean(cb, nb);
 
@@ -269,7 +277,7 @@ static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
     free(cb);
 }
 
-static void print_aggregate(const char *label, double *diffs, int n) {
+static void print_aggregate(const char *label, double *diffs, unsigned int n) {
     qsort(diffs, n, sizeof(double), cmp_double);
     double sum = 0;
     int pos = 0;
@@ -278,8 +286,9 @@ static void print_aggregate(const char *label, double *diffs, int n) {
         if (diffs[r] > 0)
             pos++;
     }
-    printf("%-10s | %+7.1f  | %+7.1f  | %+7.1f  | %+7.1f  | %d/%d\n", label,
-           diffs[n / 2], sum / n, diffs[n / 4], diffs[n * 3 / 4], pos, n);
+    fprintf(stderr, "%-10s | %+7.1f  | %+7.1f  | %+7.1f  | %+7.1f  | %d/%d\n",
+            label, diffs[n / 2], sum / n, diffs[n / 4], diffs[n * 3 / 4], pos,
+            n);
 }
 
 struct Args {
@@ -307,7 +316,59 @@ static int args_parse(int argc, char *argv[], struct Args *args) {
     return 0;
 }
 
+static void calibrate(unsigned int nsamples, uint8_t *addr) {
+    fprintf(stderr, "\n  Calibration:\n");
+    uint64_t *cal = malloc(nsamples * sizeof(uint64_t));
+    if (!cal)
+        exit(EXIT_FAILURE);
+    for (volatile unsigned int i = 0; i < nsamples; i++) {
+        *(volatile char *)addr;
+        mem_fence();
+        cal[i] = probe(addr);
+    }
+    qsort(cal, 100, sizeof(uint64_t), cmp_u64);
+    fprintf(stderr, "    Warm hit (read+probe):   p50=%" PRIu64 "\n", cal[50]);
+
+    for (volatile unsigned int i = 0; i < nsamples; i++) {
+        cache_flush(addr);
+        mem_fence();
+        load_fence();
+        for (volatile int j = 0; j < 30; j++)
+            ;
+        cal[i] = probe(addr);
+    }
+    qsort(cal, 100, sizeof(uint64_t), cmp_u64);
+    fprintf(stderr, "    Cold miss (flush+probe): p50=%" PRIu64 "\n", cal[50]);
+
+#if 0 /* disable these for now */
+    for (volatile unsigned int i = 0; i < nsamples; i++) {
+        cache_flush(sk);
+        mem_fence();
+        load_fence();
+        OQS_KEM_decaps(kem, ss2, ct, sk);
+        mem_fence();
+        load_fence();
+        cal[i] = probe(sk);
+    }
+    qsort(cal, 100, sizeof(uint64_t), cmp_u64);
+    fprintf(stderr, "    Decaps-warm (good ct): p50=%" PRIu64 "\n", cal[50]);
+
+    for (volatile unsigned int i = 0; i < nsamples; i++) {
+        cache_flush(sk);
+        mem_fence();
+        load_fence();
+        OQS_KEM_decaps(kem, ss2, ct_bad, sk);
+        mem_fence();
+        load_fence();
+        cal[i] = probe(sk);
+    }
+    qsort(cal, 100, sizeof(uint64_t), cmp_u64);
+    printf("    Decaps-warm (bad  ct): p50=%lu\n", cal[50]);
+#endif
+}
+
 int main(int argc, char *argv[]) {
+    int exitcode = 0;
     struct Args args;
     args_init(&args);
     if (args_parse(argc, argv, &args) < 0) {
@@ -336,13 +397,15 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    printf("\n%s Flush+Reload PoC\n", args.kem_name);
-    printf("  Probes: %s (target) + %s (control)\n", probelabel, ctrllabel);
-    printf("  Rounds=%d  Samples/round=%d\n", NUM_ROUNDS, SAMPLES_PER_ROUND);
+    fprintf(stderr, "%s Flush+Reload cache timing detector\n", args.kem_name);
+    fprintf(stderr, "  Probes: %s (target) + %s (control)\n", probelabel,
+            ctrllabel);
+    fprintf(stderr, "  Rounds=%d  Samples/round=%d\n", NUM_ROUNDS,
+            SAMPLES_PER_ROUND);
 
     uint8_t *pk = malloc(kem->length_public_key);
     uint8_t *sk;
-    if (posix_memalign((void **)&sk, 4096, kem->length_secret_key)) {
+    if (posix_memalign((void **)&sk, MEMALIGN, kem->length_secret_key)) {
         fprintf(stderr, "posix_memalign failed\n");
         return 1;
     }
@@ -352,65 +415,29 @@ int main(int argc, char *argv[]) {
     uint8_t *ss2 = malloc(kem->length_shared_secret);
     if (!pk || !ct || !ct_bad || !ss1 || !ss2) {
         fprintf(stderr, "malloc failed\n");
-        return 1;
+        exitcode = 1;
+        goto exit;
     }
 
-    OQS_KEM_keypair(kem, pk, sk);
-    OQS_KEM_encaps(kem, ct, ss1, pk);
+    calibrate(CALIBRATE_SAMPLE_SIZE, sk);
+
+    if (OQS_KEM_keypair(kem, pk, sk) != OQS_SUCCESS) {
+        fprintf(stderr, "OQS_KEM_keypair failed\n");
+        exitcode = 1;
+        goto exit;
+    }
+    if (OQS_KEM_encaps(kem, ct, ss1, pk) != OQS_SUCCESS) {
+        fprintf(stderr, "OQS_KEM_encaps failed\n");
+        exitcode = 1;
+        goto exit;
+    }
     memcpy(ct_bad, ct, kem->length_ciphertext);
     for (int i = 0; i < 32; i++)
         ct_bad[i] ^= 0xFF;
 
-    printf("  sk @ %p\n", (void *)sk);
+    fprintf(stderr, "  sk @ %p\n", (void *)sk);
 
-    printf("\n  Calibration:\n");
-    {
-        uint64_t cal[100];
-        for (int i = 0; i < 100; i++) {
-            *(volatile char *)sk;
-            mem_fence();
-            cal[i] = probe(sk);
-        }
-        qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-        printf("    Warm hit (read+probe):   p50=%lu\n", cal[50]);
-
-        for (int i = 0; i < 100; i++) {
-            cache_flush(sk);
-            mem_fence();
-            load_fence();
-            for (volatile int j = 0; j < 30; j++)
-                ;
-            cal[i] = probe(sk);
-        }
-        qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-        printf("    Cold miss (cache_flush+probe): p50=%lu\n", cal[50]);
-
-        for (int i = 0; i < 100; i++) {
-            cache_flush(sk);
-            mem_fence();
-            load_fence();
-            OQS_KEM_decaps(kem, ss2, ct, sk);
-            mem_fence();
-            load_fence();
-            cal[i] = probe(sk);
-        }
-        qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-        printf("    Decaps-warm (good ct): p50=%lu\n", cal[50]);
-
-        for (int i = 0; i < 100; i++) {
-            cache_flush(sk);
-            mem_fence();
-            load_fence();
-            OQS_KEM_decaps(kem, ss2, ct_bad, sk);
-            mem_fence();
-            load_fence();
-            cal[i] = probe(sk);
-        }
-        qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-        printf("    Decaps-warm (bad  ct): p50=%lu\n", cal[50]);
-    }
-
-    for (int i = 0; i < 100; i++) {
+    for (volatile int i = 0; i < CALIBRATE_SAMPLE_SIZE; i++) {
         OQS_KEM_decaps(kem, ss2, ct, sk);
         OQS_KEM_decaps(kem, ss2, ct_bad, sk);
     }
@@ -418,16 +445,17 @@ int main(int argc, char *argv[]) {
     round_result_t R[NUM_ROUNDS];
     uint32_t rng = 42;
 
-    printf("\n=== Per-round statistics (cycles, trimmed mean) ===\n");
-    printf("%4s | %18s | %18s | %18s | %18s\n", "R", probelabel_good,
-           probelabel_bad, ctrllabel_good, ctrllabel_bad);
+    fprintf(stderr, "\n=== Per-round statistics (cycles, trimmed mean) ===\n");
+    fprintf(stderr, "%4s | %18s | %18s | %18s | %18s\n", "R", probelabel_good,
+            probelabel_bad, ctrllabel_good, ctrllabel_bad);
 
     for (int r = 0; r < NUM_ROUNDS; r++) {
         run_round(kem, sk, ct, ct_bad, ss2, &rng, &R[r], args.probe_loc,
                   args.ctrl_loc);
-        printf("  %02d | %14.1f     | %14.1f     | %14.1f     | %14.1f\n",
-               r + 1, R[r].good_tmean, R[r].bad_tmean, R[r].ctrl_good_tmean,
-               R[r].ctrl_bad_tmean);
+        fprintf(stderr,
+                "  %02d | %14.1f     | %14.1f     | %14.1f     | %14.1f\n",
+                r + 1, R[r].good_tmean, R[r].bad_tmean, R[r].ctrl_good_tmean,
+                R[r].ctrl_bad_tmean);
     }
 
     double diff_tmean_0[NUM_ROUNDS], diff_tmean_ctrl[NUM_ROUNDS];
@@ -436,10 +464,11 @@ int main(int argc, char *argv[]) {
         diff_tmean_ctrl[r] = R[r].ctrl_good_tmean - R[r].ctrl_bad_tmean;
     }
 
-    printf("\n=== Aggregate: good - bad (positive = good slower = target "
-           "colder for good) ===\n");
-    printf("%-10s | %8s | %8s | %8s | %8s | positive\n", "Probe", "Median",
-           "Mean", "Q1", "Q3");
+    fprintf(stderr,
+            "\n=== Aggregate: good - bad (positive = good slower = target "
+            "colder for good) ===\n");
+    fprintf(stderr, "%-10s | %8s | %8s | %8s | %8s | positive\n", "Probe",
+            "Median", "Mean", "Q1", "Q3");
     print_aggregate(probelabel, diff_tmean_0, NUM_ROUNDS);
     print_aggregate(ctrllabel, diff_tmean_ctrl, NUM_ROUNDS);
 
@@ -458,27 +487,34 @@ int main(int argc, char *argv[]) {
             pos_c++;
     }
 
-    printf("\n=== Verdict ===\n");
-    printf("%s  (cmovs target):  median diff = %+.1f  positive = %d/%d\n",
-           probelabel, d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
-    printf("%s (control line):  median diff = %+.1f  positive = %d/%d\n",
-           ctrllabel, dc[NUM_ROUNDS / 2], pos_c, NUM_ROUNDS);
+    fprintf(stderr, "\n=== Verdict ===\n");
+    fprintf(stderr,
+            "%s  (cmovs target):  median diff = %+.1f  positive = %d/%d\n",
+            probelabel, d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
+    fprintf(stderr,
+            "%s (control line):  median diff = %+.1f  positive = %d/%d\n",
+            ctrllabel, dc[NUM_ROUNDS / 2], pos_c, NUM_ROUNDS);
 
     if (d0[NUM_ROUNDS / 2] > 1.0 && pos_0 > NUM_ROUNDS * 2 / 3) {
-        printf("\n%s: SECRET-DEPENDENT cache residency change detected\n",
-               probelabel);
-        printf("  %d/%d rounds show consistent direction\n", pos_0, NUM_ROUNDS);
+        fprintf(stderr,
+                "\n%s: SECRET-DEPENDENT cache residency change detected\n",
+                probelabel);
+        fprintf(stderr, "  %d/%d rounds show consistent direction\n", pos_0,
+                NUM_ROUNDS);
         if (pos_c <= NUM_ROUNDS * 2 / 3) {
-            printf("%s: No consistent direction (%d/%d)\n", ctrllabel, pos_c,
-                   NUM_ROUNDS);
-            printf("  -> Signal is specific to the conditional load target, "
-                   "not overall noise\n");
+            fprintf(stderr, "%s: No consistent direction (%d/%d)\n", ctrllabel,
+                    pos_c, NUM_ROUNDS);
+            fprintf(stderr,
+                    "  -> Signal is specific to the conditional load target, "
+                    "not overall noise\n");
         }
     } else {
-        printf("\nNo significant difference at %s (med=%.1f, pos=%d/%d)\n",
-               probelabel, d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
+        fprintf(stderr,
+                "\nNo significant difference at %s (med=%.1f, pos=%d/%d)\n",
+                probelabel, d0[NUM_ROUNDS / 2], pos_0, NUM_ROUNDS);
     }
 
+exit:
     free(d0);
     free(dc);
     free(pk);
@@ -488,5 +524,5 @@ int main(int argc, char *argv[]) {
     free(ss1);
     free(ss2);
     OQS_KEM_free(kem);
-    return 0;
+    return exitcode;
 }
