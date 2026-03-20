@@ -43,8 +43,8 @@
 #include <sys/mman.h>
 
 #define CALIBRATE_SAMPLE_SIZE 100
-#define SAMPLES_PER_ROUND 3000
-#define NUM_ROUNDS 30
+#define SAMPLES_PER_ROUND 10000
+#define NUM_ROUNDS 10
 #define MEMALIGN 4096
 #define ONE_BILLION 1000000000
 #define CSV_HEADER "epoch,sample,good,probe,ctrl\n"
