@@ -1,8 +1,8 @@
 /*
  * TODO:
- * - [ ] Parameterize KEM scheme name, probe loc, control loc
- * - [ ] Reformat output into CSV
+ * - [ ] Output raw statistics, leave analysis to Python
  * - [ ] Expand platforms to aarch64
+ * - [x] Parameterize KEM scheme name, probe loc, control loc
  *
  * FrodoKEM Flush+Reload Cache Timing PoC
  *
@@ -43,6 +43,7 @@
 
 #define SAMPLES_PER_ROUND 3000
 #define NUM_ROUNDS 30
+#define ONE_BILLION 1000000000
 
 #define ARGS_HELP_TEXT                                                         \
     "Usage: %s <kem_name> <probe_loc>\n"                                       \
@@ -50,46 +51,46 @@
     "    kem_name: FrodoKEM-640-AES\n"                                         \
     "    probe_loc: 0\n"
 
+static inline void mem_fence(void);
+static inline void load_fence(void);
+static inline uint64_t probe(volatile void *addr);
+static inline void cache_flush(volatile void *addr);
+static void setup_realtime(int cpu);
+
+#if defined(__x86_64__)
 static inline uint64_t rdtsc(void) {
     uint32_t lo, hi;
     __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
     return ((uint64_t)hi << 32) | lo;
 }
+
 static inline uint64_t rdtscp(void) {
     uint32_t lo, hi, aux;
     __asm__ volatile("rdtscp" : "=a"(lo), "=d"(hi), "=c"(aux));
     return ((uint64_t)hi << 32) | lo;
 }
-static inline void clflush(volatile void *p) {
-    __asm__ volatile("clflush (%0)" ::"r"(p) : "memory");
+
+static inline void cache_flush(volatile void *p) {
+    __asm__ volatile("cache_flush (%0)" ::"r"(p) : "memory");
 }
-static inline void mfence(void) { __asm__ volatile("mfence" ::: "memory"); }
-static inline void lfence(void) { __asm__ volatile("lfence" ::: "memory"); }
+
 static inline uint64_t probe(volatile void *addr) {
     uint64_t t1, t2;
-    lfence();
+    load_fence();
     t1 = rdtsc();
-    lfence();
+    load_fence();
     *(volatile char *)addr;
-    lfence();
+    load_fence();
     t2 = rdtscp();
     return t2 - t1;
 }
 
-static int cmp_u64(const void *a, const void *b) {
-    uint64_t va = *(const uint64_t *)a, vb = *(const uint64_t *)b;
-    return (va > vb) - (va < vb);
+static inline void mem_fence(void) {
+    __asm__ volatile("mem_fence" ::: "memory");
 }
-static int cmp_double(const void *a, const void *b) {
-    double va = *(const double *)a, vb = *(const double *)b;
-    return (va > vb) - (va < vb);
-}
-static uint32_t xorshift32(uint32_t *s) {
-    uint32_t x = *s;
-    x ^= x << 13;
-    x ^= x >> 17;
-    x ^= x << 5;
-    return (*s = x);
+
+static inline void load_fence(void) {
+    __asm__ volatile("load_fence" ::: "memory");
 }
 
 static void setup_realtime(int cpu) {
@@ -112,6 +113,79 @@ static void setup_realtime(int cpu) {
         printf("  mlockall OK\n");
     else
         perror("  mlockall");
+}
+#elif defined(__APPLE__)
+#include <mach/mach_time.h>
+
+static inline uint64_t probe(volatile void *addr) {
+    uint64_t t1, t2;
+    load_fence();
+    t1 = mach_absolute_time();
+    load_fence();
+    *(volatile char *)addr;
+    load_fence();
+    t2 = mach_absolute_time();
+    return t2 - t1;
+}
+
+/* FIX:
+ * According to Hetterich et al.
+ * (https://dl.acm.org/doi/10.1007/978-3-031-09484-2_7) ARMv8 instructions like
+ * DC CIVAC do not work on Apple Silicon: the instruction will be executed
+ * without exception but actually fails silently.
+ */
+static inline void cache_flush(volatile void *p) {
+    __asm__ volatile("dc civac, %0" ::"r"(p) : "memory");
+    __asm__ volatile("dsb ish" ::: "memory"); /* wait for completion */
+}
+
+static void setup_realtime(int cpu) { (void)cpu; }
+
+static inline void mem_fence(void) { __asm__ volatile("dmb ish" ::: "memory"); }
+static inline void load_fence(void) {
+    __asm__ volatile("dmb ishld; isb" ::: "memory");
+}
+#else
+/* A truly portable setup that is basically useless for deteting timing channel,
+ * but useful for testing compilation
+ */
+#include <time.h>
+
+static inline uint64_t probe(volatile void *addr) {
+    struct timespec t1, t2;
+    load_fence();
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    load_fence();
+    *(volatile char *)addr;
+    load_fence();
+    clock_gettime(CLOCK_MONOTONIC, &t2);
+    return (uint64_t)((t2.tv_sec - t1.tv_sec) * ONE_BILLION) +
+           (uint64_t)(t2.tv_nsec - t1.tv_nsec);
+}
+
+static inline void cache_flush(volatile void *addr) { (void)addr; }
+
+static void setup_realtime(int cpu) { (void)cpu; }
+
+static inline void mem_fence(void) {}
+
+static inline void load_fence(void) {}
+#endif /* platform-specific code */
+
+static int cmp_u64(const void *a, const void *b) {
+    uint64_t va = *(const uint64_t *)a, vb = *(const uint64_t *)b;
+    return (va > vb) - (va < vb);
+}
+static int cmp_double(const void *a, const void *b) {
+    double va = *(const double *)a, vb = *(const double *)b;
+    return (va > vb) - (va < vb);
+}
+static uint32_t xorshift32(uint32_t *s) {
+    uint32_t x = *s;
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    return (*s = x);
 }
 
 static double trimmed_mean(uint64_t *sorted, int n) {
@@ -151,15 +225,15 @@ static void run_round(OQS_KEM *kem, uint8_t *sk, uint8_t *ct, uint8_t *ct_bad,
 
         uint8_t *tct = use_bad ? ct_bad : ct;
 
-        clflush(&sk[probe_loc]);
-        clflush(&sk[ctrl_loc]);
-        mfence();
-        lfence();
+        cache_flush(&sk[probe_loc]);
+        cache_flush(&sk[ctrl_loc]);
+        mem_fence();
+        load_fence();
 
         OQS_KEM_decaps(kem, ss2, tct, sk);
 
-        mfence();
-        lfence();
+        mem_fence();
+        load_fence();
         uint64_t t0 = probe(&sk[probe_loc]);
         uint64_t t1 = probe(&sk[ctrl_loc]);
 
@@ -294,42 +368,42 @@ int main(int argc, char *argv[]) {
         uint64_t cal[100];
         for (int i = 0; i < 100; i++) {
             *(volatile char *)sk;
-            mfence();
+            mem_fence();
             cal[i] = probe(sk);
         }
         qsort(cal, 100, sizeof(uint64_t), cmp_u64);
         printf("    Warm hit (read+probe):   p50=%lu\n", cal[50]);
 
         for (int i = 0; i < 100; i++) {
-            clflush(sk);
-            mfence();
-            lfence();
+            cache_flush(sk);
+            mem_fence();
+            load_fence();
             for (volatile int j = 0; j < 30; j++)
                 ;
             cal[i] = probe(sk);
         }
         qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-        printf("    Cold miss (clflush+probe): p50=%lu\n", cal[50]);
+        printf("    Cold miss (cache_flush+probe): p50=%lu\n", cal[50]);
 
         for (int i = 0; i < 100; i++) {
-            clflush(sk);
-            mfence();
-            lfence();
+            cache_flush(sk);
+            mem_fence();
+            load_fence();
             OQS_KEM_decaps(kem, ss2, ct, sk);
-            mfence();
-            lfence();
+            mem_fence();
+            load_fence();
             cal[i] = probe(sk);
         }
         qsort(cal, 100, sizeof(uint64_t), cmp_u64);
         printf("    Decaps-warm (good ct): p50=%lu\n", cal[50]);
 
         for (int i = 0; i < 100; i++) {
-            clflush(sk);
-            mfence();
-            lfence();
+            cache_flush(sk);
+            mem_fence();
+            load_fence();
             OQS_KEM_decaps(kem, ss2, ct_bad, sk);
-            mfence();
-            lfence();
+            mem_fence();
+            load_fence();
             cal[i] = probe(sk);
         }
         qsort(cal, 100, sizeof(uint64_t), cmp_u64);
