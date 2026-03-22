@@ -1130,7 +1130,6 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(kg_pk, kg_pk_bytes);
 		hexStringToByteArray(kg_sk, kg_sk_bytes);
 
-
 		rc = sig_kg_vector(alg_name, prng_output_stream_bytes, kg_pk_bytes, kg_sk_bytes);
 
 	} else if (!strcmp(test_name, "sigGen_int")) {
@@ -1185,7 +1184,9 @@ int main(int argc, char **argv) {
 		}
 
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
-		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		}
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 
@@ -1257,9 +1258,11 @@ int main(int argc, char **argv) {
 		}
 
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
-		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
-		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
+		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		}		
 		if (ctxlen) {
 			hexStringToByteArray(sigGen_ctx, sigGen_ctx_bytes);
 		}
@@ -1411,7 +1414,9 @@ int main(int argc, char **argv) {
 		}
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
-		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		}
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
@@ -1473,8 +1478,10 @@ int main(int argc, char **argv) {
 		}
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
-		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		}		
 		if (ctxlen) {
 			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
 		}
