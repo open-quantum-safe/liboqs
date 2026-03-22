@@ -1460,7 +1460,7 @@ int main(int argc, char **argv) {
 		ctxlen = strlen(sigVer_ctx) / 2;
 
 		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
-	    sigVer_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
+		sigVer_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigVer_sig_bytes = OQS_MEM_malloc(strlen(sigVer_sig) / 2);
 		/* allocate memory if required */
 		if (ctxlen) {
