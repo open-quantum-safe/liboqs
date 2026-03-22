@@ -1262,7 +1262,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
 		if (msgLen) {
 			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
-		}		
+		}
 		if (ctxlen) {
 			hexStringToByteArray(sigGen_ctx, sigGen_ctx_bytes);
 		}
@@ -1481,7 +1481,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 		if (msgLen) {
 			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
-		}		
+		}
 		if (ctxlen) {
 			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
 		}
