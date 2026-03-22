@@ -98,7 +98,7 @@ def expand_private_key_from_seed(build_dir, sig_name, seed):
     ]
     
     result = subprocess.run(cmd, capture_output=True, text=True)
-    
+        
     for line in result.stdout.splitlines():
         if line.startswith("sk: "):
             return line.split("sk: ")[1].strip()
@@ -273,7 +273,7 @@ def test_wycheproof_vec_kem_decaps(kem_name):
 @helpers.filtered_test
 @pytest.mark.parametrize("sig_name", helpers.available_sigs_by_name())
 def test_wycheproof_vec_sig_verify(sig_name):
-    if not helpers.is_sig_enabled_by_name(sig_name) or not sig_name.startswith("ML-DSA"):
+    if not helpers.is_sig_enabled_by_name(sig_name) or sig_name not in ML_DSA_PARAMS:
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
@@ -297,8 +297,8 @@ def test_wycheproof_vec_sig_verify(sig_name):
         if "Internal" in flags or (mu and not msg):
             cmd = [
                 f"{build_dir}/tests/vectors_sig",
-                sig_name, "sigVer_int",
-                pk, mu, sig, testPassed, "1"
+                sig_name, "sigVer_extmu",
+                pk, mu, sig, testPassed
             ]
         else:
             cmd = [
@@ -312,7 +312,7 @@ def test_wycheproof_vec_sig_verify(sig_name):
 @helpers.filtered_test
 @pytest.mark.parametrize("sig_name", helpers.available_sigs_by_name())
 def test_wycheproof_vec_sig_sign(sig_name):
-    if not helpers.is_sig_enabled_by_name(sig_name) or not sig_name.startswith("ML-DSA"):
+    if not helpers.is_sig_enabled_by_name(sig_name) or sig_name not in ML_DSA_PARAMS:
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
@@ -323,6 +323,7 @@ def test_wycheproof_vec_sig_sign(sig_name):
             pytest.skip("No sign test cases found.")
 
         for group, tc in test_cases:
+            is_valid = tc.get("result") == "valid"
             # 1. Try to fetch the fully expanded private key directly (standard for 'noseed' files)
             sk = tc.get("privateKey") or group.get("privateKey")
             
@@ -334,8 +335,12 @@ def test_wycheproof_vec_sig_sign(sig_name):
             # Passing None/empty to the subprocess would crash Python or fail the vector_sig arg parser.
             # Skip and move to next
             if not sk:
-                pytest.fail(f"TC {tc['tcId']} FAILED: Could not obtain or expand secret key.")
-                
+                if not is_valid:
+                    # Expansion failed as expected for invalid seed tests
+                    continue
+                else:
+                    pytest.fail(f"TC {tc['tcId']} FAILED: Seed expansion failed for valid input.") 
+
             msg = tc.get("msg", "")
             sig = tc.get("sig", "")
             ctx = tc.get("ctx", "")
@@ -349,8 +354,8 @@ def test_wycheproof_vec_sig_sign(sig_name):
             if "Internal" in flags or (mu and not msg):
                 cmd = [
                     f"{build_dir}/tests/vectors_sig",
-                    sig_name, "sigGen_int",
-                    sk, mu, sig, rnd, "1"
+                    sig_name+"-extmu", "sigGen_extmu",
+                    sk, mu, sig, rnd
                 ]
             else:
                 cmd = [

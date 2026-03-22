@@ -423,7 +423,7 @@ static int sig_ver_vector_int(const char *method_name,
 
 	fh = stdout;
 
-	if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
+	if ((sigVer_pk_bytes == NULL) || (msgLen && sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
@@ -487,7 +487,7 @@ static int sig_ver_vector_ext(const char *method_name,
 	OQS_SIG *sig = NULL;
 	int rc = -1, ret = -1;
 
-	if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL) || (sigVer_ctxLen && sigVer_ctx == NULL)) {
+	if ((sigVer_pk_bytes == NULL) || (msgLen && sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL) || (sigVer_ctxLen && sigVer_ctx == NULL)) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
@@ -684,7 +684,7 @@ static int sig_gen_vector_int(const char *method_name,
 		goto err;
 	}
 
-	if ((prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msg == NULL) || (sigGen_sig == NULL)) {
+	if ((prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msgLen && sigGen_msg == NULL) || (sigGen_sig == NULL)) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
@@ -789,7 +789,7 @@ static int sig_gen_vector_ext(const char *method_name,
 		goto err;
 	}
 
-	if ((prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msg == NULL) || (sigGen_sig == NULL) || (sigGen_ctxLen && sigGen_ctx == NULL)) {
+	if ((prng_output_stream == NULL) || (sigGen_sk == NULL) || (sigGen_msgLen && sigGen_msg == NULL) || (sigGen_sig == NULL) || (sigGen_ctxLen && sigGen_ctx == NULL)) {
 		fprintf(stderr, "[vectors_sig] %s ERROR: inputs NULL!\n", method_name);
 		goto err;
 	}
@@ -1175,11 +1175,11 @@ int main(int argc, char **argv) {
 		msgLen = strlen(sigGen_msg) / 2;
 
 		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
-		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigGen_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
 
-		if ((sigGen_sk_bytes == NULL) || (sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
+		if ((sigGen_sk_bytes == NULL) || (msgLen && sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
@@ -1243,7 +1243,7 @@ int main(int argc, char **argv) {
 		ctxlen = strlen(sigGen_ctx) / 2;
 
 		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
-		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigGen_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
 		/* allocate memory if required */
@@ -1251,7 +1251,7 @@ int main(int argc, char **argv) {
 			sigGen_ctx_bytes = OQS_MEM_malloc(ctxlen);
 		}
 
-		if ((sigGen_sk_bytes == NULL) || (sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (ctxlen && sigGen_ctx_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
+		if ((sigGen_sk_bytes == NULL) || (msgLen && sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (ctxlen && sigGen_ctx_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
@@ -1402,10 +1402,10 @@ int main(int argc, char **argv) {
 		msgLen = strlen(sigVer_msg) / 2;
 
 		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
-		sigVer_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigVer_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigVer_sig_bytes = OQS_MEM_malloc(strlen(sigVer_sig) / 2);
 
-		if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
+		if ((sigVer_pk_bytes == NULL) || (msgLen && sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
@@ -1460,14 +1460,14 @@ int main(int argc, char **argv) {
 		ctxlen = strlen(sigVer_ctx) / 2;
 
 		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
-		sigVer_msg_bytes = OQS_MEM_malloc(msgLen);
+	    sigVer_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigVer_sig_bytes = OQS_MEM_malloc(strlen(sigVer_sig) / 2);
 		/* allocate memory if required */
 		if (ctxlen) {
 			sigVer_ctx_bytes = OQS_MEM_malloc(ctxlen);
 		}
 
-		if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL) || (ctxlen && sigVer_ctx_bytes == NULL)) {
+		if ((sigVer_pk_bytes == NULL) || (msgLen && sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL) || (ctxlen && sigVer_ctx_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
