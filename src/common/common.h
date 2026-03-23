@@ -20,6 +20,55 @@ extern "C" {
 #endif
 
 /**
+ * Value barrier: prevent compiler from optimizing on secret values
+ */
+#if defined(__GNUC__) || defined(__clang__)
+
+#define OQS_MEM_BLACK_BOX(v)                                                   \
+    do {                                                                       \
+        __asm__ volatile("" : "+r"(v) :);                                      \
+    } while (0)
+
+#elif defined(_MSC_VER)
+
+#include <intrin.h>
+
+static __forceinline void oqs_black_box_impl(volatile void *p, size_t sz) {
+    volatile unsigned char *q = (volatile unsigned char *)p;
+    unsigned char tmp;
+    size_t i;
+    _ReadWriteBarrier();
+    for (i = 0; i < sz; i++) {
+        tmp = q[i]; /* volatile read  */
+        q[i] = tmp; /* volatile write */
+    }
+    _ReadWriteBarrier();
+}
+
+#define OQS_MEM_BLACK_BOX(v)                                                   \
+    oqs_black_box_impl((volatile void *)&(v), sizeof(v))
+
+#else
+
+#pragma message("OQS_MEM_BLACK_BOX: unrecognised compiler. "                   \
+                "Falling back to volatile round-trip. "                        \
+                "Verify generated assembly for constant-time correctness.")
+
+static inline void oqs_black_box_fallback(volatile void *p, size_t sz) {
+    volatile unsigned char *q = (volatile unsigned char *)p;
+    unsigned char tmp;
+    size_t i;
+    for (i = 0; i < sz; i++) {
+        tmp = q[i];
+        q[i] = tmp;
+    }
+}
+
+#define OQS_MEM_BLACK_BOX(v)                                                   \
+    oqs_black_box_fallback((volatile void *)&(v), sizeof(v))
+#endif
+
+/**
  * Macro for terminating the program if x is
  * a null pointer.
  */
