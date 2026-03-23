@@ -22,7 +22,16 @@ extern "C" {
 /**
  * Value barrier: prevent compiler from optimizing on secret values
  */
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(OQS_DISABLE_MEM_BLACK_BOX)
+
+/** DANGER!
+ * __OQS_DISABLE_MEM_BLACK_BOX will disable OQS's value barrier, which can lead
+ * to timing side channels introduced by aggressive compiler optimization. This
+ * is defined for internal testing only and should NEVER be used externally.
+ */
+#define OQS_MEM_BLACK_BOX(v) (void)v
+
+#elif defined(__GNUC__) || defined(__clang__)
 
 #define OQS_MEM_BLACK_BOX(v)                                                   \
     do {                                                                       \
@@ -54,7 +63,11 @@ static __forceinline void oqs_black_box_impl(volatile void *p, size_t sz) {
                 "Falling back to volatile round-trip. "                        \
                 "Verify generated assembly for constant-time correctness.")
 
-static inline void oqs_black_box_fallback(volatile void *p, size_t sz) {
+static inline void oqs_black_box_fallback(volatile void *p, size_t sz)
+    __attribute__((unused));
+
+static inline void oqs_black_box_fallback(volatile void *p, size_t sz)
+    __attribute__((unused)) {
     volatile unsigned char *q = (volatile unsigned char *)p;
     unsigned char tmp;
     size_t i;
