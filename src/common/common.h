@@ -24,11 +24,8 @@ extern "C" {
  */
 #if defined(OQS_DISABLE_MEM_BLACK_BOX)
 
-/** DANGER!
- * __OQS_DISABLE_MEM_BLACK_BOX will disable OQS's value barrier, which can lead
- * to timing side channels introduced by aggressive compiler optimization. This
- * is defined for internal testing only and should NEVER be used externally.
- */
+#warning "DANGER: OQS_DISABLE_MEM_BLACK_BOX is for internal testing only"
+#warning "disabling memory value barrier may introduce timing side channels"
 #define OQS_MEM_BLACK_BOX(v) (void)v
 
 #elif defined(__GNUC__) || defined(__clang__)
