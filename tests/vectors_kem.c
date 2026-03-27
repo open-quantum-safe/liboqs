@@ -487,7 +487,7 @@ static OQS_STATUS kem_keyCheck_vector(const char *method_name,
                                       bool is_pk) {
 
 	if ((method_name == NULL) || (key == NULL)) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
+		fprintf(stderr, "[vectors_kem] ERROR: method or key NULL!\n");
 		return OQS_ERROR;
 	}
 
