@@ -26,7 +26,6 @@
 #ifndef MLD_CT_H
 #define MLD_CT_H
 
-#include <stdint.h>
 #include "cbmc.h"
 #include "common.h"
 
@@ -83,30 +82,38 @@ extern volatile uint64_t mld_ct_opt_blocker_u64;
  * Its validity relies on the assumption that the global opt-blocker
  * constant mld_ct_opt_blocker_u64 is not modified.
  */
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint64_t mld_ct_get_optblocker_u64(void)
 __contract__(ensures(return_value == 0)) { return mld_ct_opt_blocker_u64; }
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int64_t mld_ct_get_optblocker_i64(void)
 __contract__(ensures(return_value == 0)) { return (int64_t)mld_ct_get_optblocker_u64(); }
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint32_t mld_ct_get_optblocker_u32(void)
 __contract__(ensures(return_value == 0)) { return (uint32_t)mld_ct_get_optblocker_u64(); }
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint8_t mld_ct_get_optblocker_u8(void)
 __contract__(ensures(return_value == 0)) { return (uint8_t)mld_ct_get_optblocker_u64(); }
 
 /* Opt-blocker based implementation of value barriers */
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int64_t mld_value_barrier_i64(int64_t b)
 __contract__(ensures(return_value == b)) { return (b ^ mld_ct_get_optblocker_i64()); }
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint32_t mld_value_barrier_u32(uint32_t b)
 __contract__(ensures(return_value == b)) { return (b ^ mld_ct_get_optblocker_u32()); }
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint8_t mld_value_barrier_u8(uint8_t b)
 __contract__(ensures(return_value == b)) { return (b ^ mld_ct_get_optblocker_u8()); }
 
 
 #else  /* !MLD_USE_ASM_VALUE_BARRIER */
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int64_t mld_value_barrier_i64(int64_t b)
 __contract__(ensures(return_value == b))
 {
@@ -114,6 +121,7 @@ __contract__(ensures(return_value == b))
   return b;
 }
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint32_t mld_value_barrier_u32(uint32_t b)
 __contract__(ensures(return_value == b))
 {
@@ -121,6 +129,7 @@ __contract__(ensures(return_value == b))
   return b;
 }
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint8_t mld_value_barrier_u8(uint8_t b)
 __contract__(ensures(return_value == b))
 {
@@ -147,6 +156,7 @@ __contract__(ensures(return_value == b))
  *              - x >= 2^31: returns x - 2^31
  *
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_ALWAYS_INLINE int32_t mld_cast_uint32_to_int32(uint32_t x)
 {
   /*
@@ -172,6 +182,7 @@ static MLD_ALWAYS_INLINE int32_t mld_cast_uint32_to_int32(uint32_t x)
  * Returns:     For int64_t x, the unique y in uint32_t
  *              so that x == y mod 2^32.
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_ALWAYS_INLINE uint32_t mld_cast_int64_to_uint32(int64_t x)
 {
   return (uint32_t)(x & (int64_t)UINT32_MAX);
@@ -185,6 +196,7 @@ static MLD_ALWAYS_INLINE uint32_t mld_cast_int64_to_uint32(int64_t x)
  * Returns:     For int32_t x, the unique y in uint32_t
  *              so that x == y mod 2^32.
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_ALWAYS_INLINE uint32_t mld_cast_int32_to_uint32(int32_t x)
 {
   return mld_cast_int64_to_uint32((int64_t)x);
@@ -203,6 +215,7 @@ static MLD_ALWAYS_INLINE uint32_t mld_cast_int32_to_uint32(int32_t x)
  *
  *
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_ct_sel_int32(int32_t a, int32_t b, uint32_t cond)
 __contract__(
   requires(cond == 0x0 || cond == 0xFFFFFFFF)
@@ -223,6 +236,7 @@ __contract__(
  * Arguments:   uint32_t x: Value to be converted into a mask
  *
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint32_t mld_ct_cmask_nonzero_u32(uint32_t x)
 __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFFFFFFFF)))
 {
@@ -239,6 +253,7 @@ __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFFFFFFFF)))
  * Arguments:   uint8_t x: Value to be converted into a mask
  *
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint8_t mld_ct_cmask_nonzero_u8(uint8_t x)
 __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFF)))
 {
@@ -254,6 +269,7 @@ __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFF)))
  * Arguments:   int32_t x: Value to be converted into a mask
  *
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint32_t mld_ct_cmask_neg_i32(int32_t x)
 __contract__(
   ensures(return_value == ((x < 0) ? 0xFFFFFFFF : 0))
@@ -272,6 +288,7 @@ __contract__(
  * Arguments:   int32_t x: Input value
  *
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_ct_abs_i32(int32_t x)
 __contract__(
   requires(x >= -INT32_MAX)
@@ -294,6 +311,7 @@ __contract__(
  *
  * Returns 0 if the byte arrays are equal, 0xFF otherwise.
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint8_t mld_ct_memcmp(const uint8_t *a, const uint8_t *b,
                                         const size_t len)
 __contract__(
@@ -309,7 +327,8 @@ __contract__(
   for (i = 0; i < len; i++)
   __loop__(
     invariant(i <= len)
-    invariant((r == 0) == (forall(k, 0, i, (a[k] == b[k])))))
+    invariant((r == 0) == (forall(k, 0, i, (a[k] == b[k]))))
+    decreases(len - i))
   {
     r |= a[i] ^ b[i];
     /* s is useless, but prevents the loop from being aborted once r=0xff. */

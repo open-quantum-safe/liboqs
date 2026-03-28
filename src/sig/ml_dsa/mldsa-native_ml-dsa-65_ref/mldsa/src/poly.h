@@ -5,7 +5,6 @@
 #ifndef MLD_POLY_H
 #define MLD_POLY_H
 
-#include <stdint.h>
 #include "cbmc.h"
 #include "common.h"
 #include "reduce.h"
@@ -381,6 +380,7 @@ __contract__(
  *
  **************************************************/
 MLD_INTERNAL_API
+MLD_MUST_CHECK_RETURN_VALUE
 uint32_t mld_poly_chknorm(const mld_poly *a, int32_t B)
 __contract__(
   requires(memory_no_alias(a, sizeof(mld_poly)))

@@ -74,4 +74,6 @@ Lpoly_pointwise_montgomery_loop_start:
         ret
         .cfi_endproc
 
+MLD_ASM_FN_SIZE(poly_pointwise_montgomery_asm)
+
 #endif /* MLD_ARITH_BACKEND_AARCH64 && !MLD_CONFIG_MULTILEVEL_NO_SHARED */

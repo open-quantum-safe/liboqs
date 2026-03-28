@@ -3,10 +3,6 @@
  * Copyright (c) The mldsa-native project authors
  * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
  */
-/*
- * This file is derived from the public domain
- * AVX2 Dilithium implementation @[REF_AVX2].
- */
 
 /* References
  * ==========
@@ -16,6 +12,11 @@
  *   Bai, Ducas, Kiltz, Lepoint, Lyubashevsky, Schwabe, Seiler, Stehlé
  *   https://github.com/pq-crystals/dilithium/tree/master/avx2
  */
+
+ /*
+  * This file is derived from the public domain
+  * AVX2 Dilithium implementation @[REF_AVX2].
+  */
 
 #include "../../../common.h"
 #if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
@@ -178,7 +179,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm3, %ymm1    # ymm1 = ymm3[1,1,3,3,5,5,7,7]
         vmovshdup	%ymm15, %ymm2   # ymm2 = ymm15[1,1,3,3,5,5,7,7]
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm8, %ymm14
@@ -191,7 +192,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm9, %ymm14
@@ -204,7 +205,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm10, %ymm14
@@ -217,7 +218,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm11, %ymm14
@@ -274,7 +275,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm6, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm9, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -323,7 +324,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm4, %ymm12, %ymm4 # ymm4 = ymm12[0],ymm4[1],ymm12[2],ymm4[3],ymm12[4],ymm4[5],ymm12[6],ymm4[7]
         vpsubd	%ymm3, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm3, %ymm3
+        vpaddd	%ymm3, %ymm8, %ymm3
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -349,7 +350,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm5, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm11, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -398,7 +399,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm5, %ymm12, %ymm5 # ymm5 = ymm12[0],ymm5[1],ymm12[2],ymm5[3],ymm12[4],ymm5[5],ymm12[6],ymm5[7]
         vpsubd	%ymm6, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm8, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -411,7 +412,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm4, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm11, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -572,7 +573,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm3, %ymm1    # ymm1 = ymm3[1,1,3,3,5,5,7,7]
         vmovshdup	%ymm15, %ymm2   # ymm2 = ymm15[1,1,3,3,5,5,7,7]
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm8, %ymm14
@@ -585,7 +586,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm9, %ymm14
@@ -598,7 +599,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm10, %ymm14
@@ -611,7 +612,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm11, %ymm14
@@ -668,7 +669,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm6, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm9, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -717,7 +718,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm4, %ymm12, %ymm4 # ymm4 = ymm12[0],ymm4[1],ymm12[2],ymm4[3],ymm12[4],ymm4[5],ymm12[6],ymm4[7]
         vpsubd	%ymm3, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm3, %ymm3
+        vpaddd	%ymm3, %ymm8, %ymm3
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -743,7 +744,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm5, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm11, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -792,7 +793,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm5, %ymm12, %ymm5 # ymm5 = ymm12[0],ymm5[1],ymm12[2],ymm5[3],ymm12[4],ymm5[5],ymm12[6],ymm5[7]
         vpsubd	%ymm6, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm8, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -805,7 +806,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm4, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm11, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -966,7 +967,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm3, %ymm1    # ymm1 = ymm3[1,1,3,3,5,5,7,7]
         vmovshdup	%ymm15, %ymm2   # ymm2 = ymm15[1,1,3,3,5,5,7,7]
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm8, %ymm14
@@ -979,7 +980,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm9, %ymm14
@@ -992,7 +993,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm10, %ymm14
@@ -1005,7 +1006,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm11, %ymm14
@@ -1062,7 +1063,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm6, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm9, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -1111,7 +1112,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm4, %ymm12, %ymm4 # ymm4 = ymm12[0],ymm4[1],ymm12[2],ymm4[3],ymm12[4],ymm4[5],ymm12[6],ymm4[7]
         vpsubd	%ymm3, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm3, %ymm3
+        vpaddd	%ymm3, %ymm8, %ymm3
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -1137,7 +1138,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm5, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm11, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -1186,7 +1187,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm5, %ymm12, %ymm5 # ymm5 = ymm12[0],ymm5[1],ymm12[2],ymm5[3],ymm12[4],ymm5[5],ymm12[6],ymm5[7]
         vpsubd	%ymm6, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm8, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -1199,7 +1200,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm4, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm11, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -1360,7 +1361,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm3, %ymm1    # ymm1 = ymm3[1,1,3,3,5,5,7,7]
         vmovshdup	%ymm15, %ymm2   # ymm2 = ymm15[1,1,3,3,5,5,7,7]
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm8, %ymm14
@@ -1373,7 +1374,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm9, %ymm14
@@ -1386,7 +1387,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm10, %ymm14
@@ -1399,7 +1400,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm3, %ymm11, %ymm14
@@ -1456,7 +1457,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm6, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm9, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -1505,7 +1506,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm4, %ymm12, %ymm4 # ymm4 = ymm12[0],ymm4[1],ymm12[2],ymm4[3],ymm12[4],ymm4[5],ymm12[6],ymm4[7]
         vpsubd	%ymm3, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm3, %ymm3
+        vpaddd	%ymm3, %ymm8, %ymm3
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -1531,7 +1532,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm7, %ymm12, %ymm7 # ymm7 = ymm12[0],ymm7[1],ymm12[2],ymm7[3],ymm12[4],ymm7[5],ymm12[6],ymm7[7]
         vpsubd	%ymm5, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm11, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -1580,7 +1581,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm5, %ymm12, %ymm5 # ymm5 = ymm12[0],ymm5[1],ymm12[2],ymm5[3],ymm12[4],ymm5[5],ymm12[6],ymm5[7]
         vpsubd	%ymm6, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm8, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -1593,7 +1594,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm4, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm11, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -1680,7 +1681,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vpbroadcastd	0x80(%rsi), %ymm1
         vpbroadcastd	0x520(%rsi), %ymm2
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -1693,7 +1694,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -1706,7 +1707,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm10, %ymm14
@@ -1719,7 +1720,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -1852,7 +1853,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vpbroadcastd	0x80(%rsi), %ymm1
         vpbroadcastd	0x520(%rsi), %ymm2
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -1865,7 +1866,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -1878,7 +1879,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm10, %ymm14
@@ -1891,7 +1892,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -2024,7 +2025,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vpbroadcastd	0x80(%rsi), %ymm1
         vpbroadcastd	0x520(%rsi), %ymm2
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -2037,7 +2038,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -2050,7 +2051,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm10, %ymm14
@@ -2063,7 +2064,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -2196,7 +2197,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vpbroadcastd	0x80(%rsi), %ymm1
         vpbroadcastd	0x520(%rsi), %ymm2
         vpsubd	%ymm4, %ymm8, %ymm12
-        vpaddd	%ymm8, %ymm4, %ymm4
+        vpaddd	%ymm4, %ymm8, %ymm4
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm8   # ymm8 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm8, %ymm14
@@ -2209,7 +2210,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm8, %ymm12, %ymm8 # ymm8 = ymm12[0],ymm8[1],ymm12[2],ymm8[3],ymm12[4],ymm8[5],ymm12[6],ymm8[7]
         vpsubd	%ymm5, %ymm9, %ymm12
-        vpaddd	%ymm9, %ymm5, %ymm5
+        vpaddd	%ymm5, %ymm9, %ymm5
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm9   # ymm9 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm9, %ymm14
@@ -2222,7 +2223,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm9, %ymm12, %ymm9 # ymm9 = ymm12[0],ymm9[1],ymm12[2],ymm9[3],ymm12[4],ymm9[5],ymm12[6],ymm9[7]
         vpsubd	%ymm6, %ymm10, %ymm12
-        vpaddd	%ymm10, %ymm6, %ymm6
+        vpaddd	%ymm6, %ymm10, %ymm6
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm10  # ymm10 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm10, %ymm14
@@ -2235,7 +2236,7 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovshdup	%ymm12, %ymm12  # ymm12 = ymm12[1,1,3,3,5,5,7,7]
         vpblendd	$0xaa, %ymm10, %ymm12, %ymm10 # ymm10 = ymm12[0],ymm10[1],ymm12[2],ymm10[3],ymm12[4],ymm10[5],ymm12[6],ymm10[7]
         vpsubd	%ymm7, %ymm11, %ymm12
-        vpaddd	%ymm11, %ymm7, %ymm7
+        vpaddd	%ymm7, %ymm11, %ymm7
         vpmuldq	%ymm1, %ymm12, %ymm13
         vmovshdup	%ymm12, %ymm11  # ymm11 = ymm12[1,1,3,3,5,5,7,7]
         vpmuldq	%ymm1, %ymm11, %ymm14
@@ -2303,6 +2304,8 @@ MLD_ASM_FN_SYMBOL(invntt_avx2)
         vmovdqa	%ymm7, 0x1e0(%rdi)
         retq
         .cfi_endproc
+
+MLD_ASM_FN_SIZE(invntt_avx2)
 
 #endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
         */

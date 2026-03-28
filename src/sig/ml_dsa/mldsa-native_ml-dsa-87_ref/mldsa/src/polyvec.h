@@ -5,7 +5,6 @@
 #ifndef MLD_POLYVEC_H
 #define MLD_POLYVEC_H
 
-#include <stdint.h>
 #include "cbmc.h"
 #include "common.h"
 #include "poly.h"
@@ -656,6 +655,7 @@ __contract__(
  * Returns pointer to the row (mld_polyvecl)
  **************************************************/
 MLD_INTERNAL_API
+MLD_MUST_CHECK_RETURN_VALUE
 const mld_polyvecl *mld_polymat_get_row(mld_polymat *mat, unsigned int row);
 
 #define mld_polyvec_matrix_expand MLD_NAMESPACE_KL(polyvec_matrix_expand)
