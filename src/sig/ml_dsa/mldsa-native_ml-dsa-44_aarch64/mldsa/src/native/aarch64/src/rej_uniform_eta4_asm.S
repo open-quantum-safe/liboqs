@@ -6,7 +6,8 @@
 
 #include "../../../common.h"
 #if defined(MLD_ARITH_BACKEND_AARCH64) && \
-    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) && \
+    (defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_ETA == 4)
 
 /*
  * WARNING: This file is auto-derived from the mldsa-native source file
@@ -84,9 +85,9 @@ Lrej_uniform_eta4_loop8:
         fmov	w13, s21
         tbl	v16.16b, { v16.16b }, v24.16b
         tbl	v17.16b, { v17.16b }, v25.16b
-        str	q16, [x7]
+        st1	{ v16.8h }, [x7]
         add	x7, x7, x12, lsl #1
-        str	q17, [x7]
+        st1	{ v17.8h }, [x7]
         add	x7, x7, x13, lsl #1
         add	x12, x12, x13
         add	x9, x9, x12
@@ -121,4 +122,7 @@ Lrej_uniform_eta4_final_copy:
         ret
         .cfi_endproc
 
-#endif /* MLD_ARITH_BACKEND_AARCH64 && !MLD_CONFIG_MULTILEVEL_NO_SHARED */
+MLD_ASM_FN_SIZE(rej_uniform_eta4_asm)
+
+#endif /* MLD_ARITH_BACKEND_AARCH64 && !MLD_CONFIG_MULTILEVEL_NO_SHARED && \
+          (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_ETA == 4) */

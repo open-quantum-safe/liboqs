@@ -16,7 +16,6 @@
 #define MLD_SIGN_H
 
 #include <stddef.h>
-#include <stdint.h>
 #include "cbmc.h"
 #include "common.h"
 #include "poly.h"
