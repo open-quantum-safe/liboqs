@@ -11,7 +11,8 @@ import pytest
 import helpers
 from helpers import requests_get, cached_requests_get
 
-WYCHE_ROOT = "https://raw.githubusercontent.com/C2SP/wycheproof/main/testvectors_v1/"
+WYCHEPROOF_COMMIT = "45d916899992c5e42dba75106104ca8ce7ff8370"
+WYCHE_ROOT = f"https://raw.githubusercontent.com/C2SP/wycheproof/{WYCHEPROOF_COMMIT}/testvectors_v1/"
 
 MlKemParam = namedtuple("MlKemParam", ["pk", "ct"])
 # Maps supported ML-KEM algorithms to their respective public key (ek) and ciphertext (c) byte lengths.
@@ -245,6 +246,7 @@ def test_wycheproof_vec_kem_decaps(kem_name):
 
     build_dir = helpers.get_current_build_dir_name()
     c_len = ML_KEM_PARAMS[kem_name].ct
+    pk_len = ML_KEM_PARAMS[kem_name].pk
     
     for suffix in ["test", "semi_expanded_decaps_test"]:
         test_cases = fetch_wycheproof_kem_test_cases(kem_name, suffix, ["MLKEMDecapsValidationTest", "MLKEMTest"])
@@ -253,11 +255,14 @@ def test_wycheproof_vec_kem_decaps(kem_name):
             expected_k = tc.get("K") or "00" * 32
             c = tc.get("c") or "00" * c_len
 
-            if "seed" in tc and "ek" in tc:
+            if "seed" in tc:
+                # Provide dummy 'ek' if the JSON omits it (e.g., for invalid seed length tests)
+                ek = tc.get("ek") or "00" * pk_len
+                seed = tc.get("seed") or ""
                 cmd = [
                     f"{build_dir}/tests/vectors_kem",
                     kem_name, "strcmp",
-                    tc["seed"], tc["ek"], c, expected_k
+                    seed, ek, c, expected_k
                 ]
             elif "dk" in tc:
                 cmd = [
@@ -273,7 +278,7 @@ def test_wycheproof_vec_kem_decaps(kem_name):
 @helpers.filtered_test
 @pytest.mark.parametrize("sig_name", helpers.available_sigs_by_name())
 def test_wycheproof_vec_sig_verify(sig_name):
-    if not helpers.is_sig_enabled_by_name(sig_name) or not sig_name.startswith("ML-DSA"):
+    if not helpers.is_sig_enabled_by_name(sig_name) or sig_name not in ML_DSA_PARAMS:
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
@@ -312,7 +317,7 @@ def test_wycheproof_vec_sig_verify(sig_name):
 @helpers.filtered_test
 @pytest.mark.parametrize("sig_name", helpers.available_sigs_by_name())
 def test_wycheproof_vec_sig_sign(sig_name):
-    if not helpers.is_sig_enabled_by_name(sig_name) or not sig_name.startswith("ML-DSA"):
+    if not helpers.is_sig_enabled_by_name(sig_name) or sig_name not in ML_DSA_PARAMS:
         pytest.skip("Not enabled or supported")
 
     build_dir = helpers.get_current_build_dir_name()
@@ -323,6 +328,13 @@ def test_wycheproof_vec_sig_sign(sig_name):
             pytest.skip("No sign test cases found.")
 
         for group, tc in test_cases:
+            flags = tc.get("flags", [])
+            # FIPS 204 does not mandate validating secret keys, and mldsa-native does not perform
+            # this validation. We skip these cases atm
+            if "InvalidPrivateKey" in flags:
+                continue
+            
+            is_valid = tc.get("result") == "valid"
             # 1. Try to fetch the fully expanded private key directly (standard for 'noseed' files)
             sk = tc.get("privateKey") or group.get("privateKey")
             
@@ -334,8 +346,12 @@ def test_wycheproof_vec_sig_sign(sig_name):
             # Passing None/empty to the subprocess would crash Python or fail the vector_sig arg parser.
             # Skip and move to next
             if not sk:
-                pytest.fail(f"TC {tc['tcId']} FAILED: Could not obtain or expand secret key.")
-                
+                if not is_valid:
+                    # Expansion failed as expected for invalid seed tests
+                    continue
+                else:
+                    pytest.fail(f"TC {tc['tcId']} FAILED: Seed expansion failed for valid input.") 
+ 
             msg = tc.get("msg", "")
             sig = tc.get("sig", "")
             ctx = tc.get("ctx", "")
@@ -363,4 +379,5 @@ def test_wycheproof_vec_sig_sign(sig_name):
 
 if __name__ == "__main__":
     pytest.main(sys.argv)
+
 
