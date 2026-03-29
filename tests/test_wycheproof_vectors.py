@@ -11,7 +11,8 @@ import pytest
 import helpers
 from helpers import requests_get, cached_requests_get
 
-WYCHE_ROOT = "https://raw.githubusercontent.com/C2SP/wycheproof/main/testvectors_v1/"
+WYCHEPROOF_COMMIT = "45d916899992c5e42dba75106104ca8ce7ff8370"
+WYCHE_ROOT = f"https://raw.githubusercontent.com/C2SP/wycheproof/{WYCHEPROOF_COMMIT}/testvectors_v1/"
 
 MlKemParam = namedtuple("MlKemParam", ["pk", "ct"])
 # Maps supported ML-KEM algorithms to their respective public key (ek) and ciphertext (c) byte lengths.
