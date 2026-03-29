@@ -11,8 +11,7 @@ import pytest
 import helpers
 from helpers import requests_get, cached_requests_get
 
-# TODO: 032b56a is the last good commit with which all test cases pass
-WYCHEPROOF_COMMIT = "032b56abd1368843e4def50b4975032ec1ec7ba4"
+WYCHEPROOF_COMMIT = "45d916899992c5e42dba75106104ca8ce7ff8370"
 WYCHE_ROOT = f"https://raw.githubusercontent.com/C2SP/wycheproof/{WYCHEPROOF_COMMIT}/testvectors_v1/"
 
 MlKemParam = namedtuple("MlKemParam", ["pk", "ct"])
