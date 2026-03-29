@@ -327,6 +327,12 @@ def test_wycheproof_vec_sig_sign(sig_name):
             pytest.skip("No sign test cases found.")
 
         for group, tc in test_cases:
+            flags = tc.get("flags", [])
+            # FIPS 204 does not mandate validating secret keys, and mldsa-native does not perform
+            # this validation. We skip these cases atm
+            if "InvalidPrivateKey" in flags:
+                continue
+            
             is_valid = tc.get("result") == "valid"
             # 1. Try to fetch the fully expanded private key directly (standard for 'noseed' files)
             sk = tc.get("privateKey") or group.get("privateKey")
@@ -372,4 +378,5 @@ def test_wycheproof_vec_sig_sign(sig_name):
 
 if __name__ == "__main__":
     pytest.main(sys.argv)
+
 
