@@ -425,7 +425,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h20_256_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_length_sk (5998 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_length_signature 4963
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h20_2_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H20_2_new(void);
@@ -443,7 +442,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_2_sigs_total(unsigned long
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_length_sk (10938 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_length_signature 9251
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h20_4_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H20_4_new(void);
@@ -461,7 +459,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h20_4_sigs_total(unsigned long
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_length_sk (9600 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_length_signature 5605
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h40_2_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_2_new(void);
@@ -479,7 +476,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_2_sigs_total(unsigned long
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_length_sk (15252 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_length_signature 9893
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h40_4_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_4_new(void);
@@ -497,7 +493,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_4_sigs_total(unsigned long
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_length_sk (24516 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_length_signature 18469
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h40_8_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H40_8_new(void);
@@ -515,7 +510,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h40_8_sigs_total(unsigned long
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_length_sk (16629 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_length_signature 8392
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h60_3_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H60_3_new(void);
@@ -533,7 +527,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_3_sigs_total(unsigned long
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_length_sk (24507 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_length_signature 14824
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h60_6_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H60_6_new(void);
@@ -551,7 +544,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_6_sigs_total(unsigned long
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_length_sk (38095 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_length_signature 27688
-#define OQS_SIG_STFL_alg_xmss_mt_sha256_h60_12_length_signature OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_H60_12_new(void);
@@ -569,7 +561,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_h60_12_sigs_total(unsigned lon
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_length_sk (5998 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_length_signature 4963
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h20_2_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H20_2_new(void);
@@ -587,7 +578,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_2_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_length_sk (10938 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_length_signature 9251
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h20_4_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H20_4_new(void);
@@ -605,7 +595,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h20_4_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_length_sk (9600 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_length_signature 5605
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h40_2_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H40_2_new(void);
@@ -623,7 +612,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_2_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_length_sk (15252 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_length_signature 9893
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h40_4_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H40_4_new(void);
@@ -641,7 +629,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_4_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_length_sk (24516 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_length_signature 18469
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h40_8_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H40_8_new(void);
@@ -659,7 +646,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h40_8_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_length_sk (16629 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_length_signature 8392
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h60_3_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_3_new(void);
@@ -677,7 +663,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_3_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_length_sk (24507 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_length_signature 14824
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h60_6_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_6_new(void);
@@ -695,7 +680,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_shake128_h60_6_sigs_total(unsigned lo
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_length_sk (38095 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_length_pk (64 + XMSS_OID_LEN)
 #define OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_length_signature 27688
-#define OQS_SIG_STFL_alg_xmss_mt_shake128_h60_12_length_signature OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_length_signature
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_shake128_h60_12_new(void);
 OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHAKE128_H60_12_new(void);
