@@ -81,11 +81,11 @@
   },
   "HQC-192": {
     "all": "1b0137144f718965ab467d77636f7ea6f7a3bc7f10fd10452be39ee740cbbc83",
-    "single": "771c5e421c4eea951850d5883e2329c40783a3c0f363d8dc8e1be7c4026d1ab7"
+    "single": "xxx"
   },
   "HQC-256": {
     "all": "c13dcd7fa9ec891ee3dd29378467bc160ca3fb2a786d1ce6b8912232a6fde81e",
-    "single": "e89c520e1ac615ecf6923f211569177c536a89bf94bebf85bb263528282092c4"
+    "single": "xxx"
   },
   "Kyber1024": {
     "all": "b72b97eb9270d76f2c7a8a0b03022c81c879af9e247abff52405127d77dd3a46",
