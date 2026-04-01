@@ -3,7 +3,7 @@ upstreams:
     name: xuganyu96-hqc
     git_url: https://github.com/xuganyu96/pqc-hqc
     git_branch: liboqs-integration
-    git_commit: d2c8c46773748220b1732cb4da39e0a377a0a267
+    git_commit: bda445e7d938fc22a9c04769c3594ba115b03989
     kem_meta_path: "integrations/{pretty_name_full}_META.yml"
     kem_scheme_path: .
     patches: []
@@ -163,14 +163,14 @@ kems:
         scheme: "128"
         pqclean_scheme: hqc-128
         pretty_name_full: HQC-128
-      # -
-      #   scheme: "192"
-      #   # pqclean_scheme: hqc-192
-      #   pretty_name_full: HQC-192
-      # -
-      #   scheme: "256"
-      #   # pqclean_scheme: hqc-256
-      #   pretty_name_full: HQC-256
+      -
+        scheme: "192"
+        pqclean_scheme: hqc-192
+        pretty_name_full: HQC-192
+      -
+        scheme: "256"
+        pqclean_scheme: hqc-256
+        pretty_name_full: HQC-256
   -
     name: kyber
     default_implementation: ref

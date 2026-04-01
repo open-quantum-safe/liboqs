@@ -7,7 +7,7 @@
 - **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: 2025-08-22.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/xuganyu96/pqc/commit/d2c8c46773748220b1732cb4da39e0a377a0a267
+  - **Source**: https://github.com/xuganyu96/pqc/commit/bda445e7d938fc22a9c04769c3594ba115b03989
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - https://gitlab.com/pqc-hqc, which takes it from:
@@ -18,8 +18,8 @@
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |
 |:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:----------------------------|:----------------------------------|
 |     HQC-128     | NA                    | IND-CCA2         |                    1 |                      2241 |                      2321 |                      4433 |                           32 | NA                          | NA                                |
-|     HQC-192     | NA                    | IND-CCA2         |                    3 |                      4522 |                      4586 |                      8978 |                           64 | NA                          | NA                                |
-|     HQC-256     | NA                    | IND-CCA2         |                    5 |                      7245 |                      7317 |                     14421 |                           64 | NA                          | NA                                |
+|     HQC-192     | NA                    | IND-CCA2         |                    3 |                      4514 |                      4602 |                      8978 |                           32 | NA                          | NA                                |
+|     HQC-256     | NA                    | IND-CCA2         |                    5 |                      7237 |                      7333 |                     14421 |                           32 | NA                          | NA                                |
 
 ## HQC-128 implementation characteristics
 
