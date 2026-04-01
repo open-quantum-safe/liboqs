@@ -60,6 +60,10 @@ extern "C" {
 #define OQS_KEM_alg_classic_mceliece_8192128f "Classic-McEliece-8192128f"
 /** Algorithm identifier for HQC-128 KEM. */
 #define OQS_KEM_alg_hqc_128 "HQC-128"
+/** Algorithm identifier for HQC-192 KEM. */
+#define OQS_KEM_alg_hqc_192 "HQC-192"
+/** Algorithm identifier for HQC-256 KEM. */
+#define OQS_KEM_alg_hqc_256 "HQC-256"
 /** Algorithm identifier for Kyber512 KEM. */
 #define OQS_KEM_alg_kyber_512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */
@@ -115,7 +119,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 39
+#define OQS_KEM_algs_length 41
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
