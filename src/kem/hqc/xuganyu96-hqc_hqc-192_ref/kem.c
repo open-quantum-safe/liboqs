@@ -120,8 +120,10 @@ int crypto_kem_enc(uint8_t *c_kem, uint8_t *K, const uint8_t *ek_kem) {
     ciphertext_kem_t c_kem_t = {0};
 
     // Sample message m and salt
-    prng_get_bytes(m, PARAM_SECURITY_BYTES);
-    prng_get_bytes(c_kem_t.salt, SALT_BYTES);
+    // prng_get_bytes(m, PARAM_SECURITY_BYTES);
+    // prng_get_bytes(c_kem_t.salt, SALT_BYTES);
+    OQS_randombytes(m, PARAM_SECURITY_BYTES);
+    OQS_randombytes(c_kem_t.salt, SALT_BYTES);
 
     // Compute shared key K and ciphertext c_kem
     hash_h(hash_ek_kem, ek_kem);
