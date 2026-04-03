@@ -75,17 +75,17 @@
     "all": "57a952206ee7058482b5490b8f18c5e6ac43d6ffc416639e4dcf8926f1f8ed9c",
     "single": "4699638b07d1831a4c90719c8c5a2112d48fedc8a997ee2f2b52038fc1dde6f2"
   },
-  "HQC-128": {
-    "all": "2d566f0a27438a882b962396ececda27438cbb63f3e21a0d033c6b425f86a116",
-    "single": "xxx"
+  "HQC-1": {
+    "all": "b3389b12e932373de55a14223acf2c7e67dddcf4df46a133bd3724fe0460b4d1",
+    "single": "0f1f4fd014b32492ec6490d2ad9e9f75ccc0c2b27d72f34918c7f73f9698c2e4"
   },
-  "HQC-192": {
-    "all": "1b0137144f718965ab467d77636f7ea6f7a3bc7f10fd10452be39ee740cbbc83",
-    "single": "xxx"
+  "HQC-3": {
+    "all": "f7a3369d573edf9e4546ecf76b5fa3c35363a236cc9133c147b874fb1fb48888",
+    "single": "282436d182f80677d9df95adb3743d5f9beb7d6f377b97d1e8541856b2beb4a4"
   },
-  "HQC-256": {
-    "all": "c13dcd7fa9ec891ee3dd29378467bc160ca3fb2a786d1ce6b8912232a6fde81e",
-    "single": "xxx"
+  "HQC-5": {
+    "all": "17b5f6700eb258b86ce52179d8a101a146753f4f4987fa956541d444fe780c9c",
+    "single": "4f5efbf077e2f3eded342c6b9bc689a8d41ee8f8cd13ef42df1d981616230206"
   },
   "Kyber1024": {
     "all": "b72b97eb9270d76f2c7a8a0b03022c81c879af9e247abff52405127d77dd3a46",
