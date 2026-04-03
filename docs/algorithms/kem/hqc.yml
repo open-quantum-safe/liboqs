@@ -12,7 +12,7 @@ upstream-ancestors:
 - https://gitlab.com/pqc-hqc
 - submission 2025-08-22 at https://pqc-hqc.org/implementation.html
 parameter-sets:
-- name: HQC-128
+- name: HQC-1
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 2241
@@ -30,7 +30,7 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
-- name: HQC-192
+- name: HQC-3
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-ciphertext: 8978
@@ -48,7 +48,7 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
-- name: HQC-256
+- name: HQC-5
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-ciphertext: 14421
@@ -68,7 +68,7 @@ parameter-sets:
     default: true
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://github.com/xuganyu96/pqc/commit/6752965d752e1cdbebc2eec51cb2c66718480116
+  source: https://github.com/xuganyu96/pqc/commit/24849d2a8431fe913278e2a4e6629b3c593ae674
 default-upstream-id: ref
 auxiliary-submitters:
 - Carlos Aguilar-Melchor

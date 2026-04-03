@@ -7,7 +7,7 @@
 - **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: 2025-08-22.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/xuganyu96/pqc/commit/6752965d752e1cdbebc2eec51cb2c66718480116
+  - **Source**: https://github.com/xuganyu96/pqc/commit/24849d2a8431fe913278e2a4e6629b3c593ae674
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - https://gitlab.com/pqc-hqc, which takes it from:
@@ -17,11 +17,11 @@
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |
 |:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|:----------------------------|:----------------------------------|
-|     HQC-128     | NA                    | IND-CCA2         |                    1 |                      2241 |                      2321 |                      4433 |                           32 | NA                          | NA                                |
-|     HQC-192     | NA                    | IND-CCA2         |                    3 |                      4514 |                      4602 |                      8978 |                           32 | NA                          | NA                                |
-|     HQC-256     | NA                    | IND-CCA2         |                    5 |                      7237 |                      7333 |                     14421 |                           32 | NA                          | NA                                |
+|      HQC-1      | NA                    | IND-CCA2         |                    1 |                      2241 |                      2321 |                      4433 |                           32 | NA                          | NA                                |
+|      HQC-3      | NA                    | IND-CCA2         |                    3 |                      4514 |                      4602 |                      8978 |                           32 | NA                          | NA                                |
+|      HQC-5      | NA                    | IND-CCA2         |                    5 |                      7237 |                      7333 |                     14421 |                           32 | NA                          | NA                                |
 
-## HQC-128 implementation characteristics
+## HQC-1 implementation characteristics
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
@@ -31,7 +31,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
  ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
-## HQC-192 implementation characteristics
+## HQC-3 implementation characteristics
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -39,7 +39,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
-## HQC-256 implementation characteristics
+## HQC-5 implementation characteristics
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
