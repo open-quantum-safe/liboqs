@@ -797,6 +797,7 @@ def copy_from_upstream(slh_dsa_inst: dict):
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
@@ -826,6 +827,7 @@ def copy_from_libjade():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
 
