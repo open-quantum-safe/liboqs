@@ -240,7 +240,7 @@ endif()
 add_custom_target(
     run_tests
     # skip long KAT tests
-    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
+    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=2 --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS} ${UNIX_TESTS}
     USES_TERMINAL)
