@@ -6,6 +6,8 @@
 #ifndef HQC_API_H
 #define HQC_API_H
 
+#include "namespace.h"
+
 #define CRYPTO_ALGNAME "HQC-5"
 
 #define CRYPTO_SECRETKEYBYTES  7333
@@ -15,6 +17,10 @@
 
 // As a technicality, the public key is appended to the secret key in order to respect the NIST API.
 // Without this constraint, CRYPTO_SECRETKEYBYTES would be defined as 32
+
+#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
+#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
+#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
 int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);

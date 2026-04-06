@@ -7,7 +7,7 @@
 - **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: 2025-08-22.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/xuganyu96/pqc/commit/24849d2a8431fe913278e2a4e6629b3c593ae674
+  - **Source**: https://github.com/xuganyu96/pqc/commit/c0216454c693af58e873d16e2016b08ccbf03235
   - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
   - https://gitlab.com/pqc-hqc, which takes it from:
