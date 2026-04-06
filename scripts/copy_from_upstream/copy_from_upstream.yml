@@ -57,9 +57,9 @@ upstreams:
     patches: []
   -
     name: mldsa-native
-    git_url: https://github.com/pq-code-package/mldsa-native.git
-    git_branch: v1.0.0-alpha2
-    git_commit: f48f164cefb07f4ffa519ddda7cee670b8ee3517
+    git_url: https://github.com/abhi-dev-engg/mldsa-native.git
+    git_branch: supp_extmu
+    git_commit: d562dad07d0679a4cbe41860c5b981c630bc6484
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     preserve_folder_structure: True
