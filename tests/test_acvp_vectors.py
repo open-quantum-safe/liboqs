@@ -193,6 +193,44 @@ def test_acvp_vec_kem_encdec_val(kem_name):
 
     assert variantFound == True
 
+@helpers.filtered_test
+@pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
+def test_acvp_vec_kem_key_check(kem_name):
+    if not (helpers.is_kem_enabled_by_name(kem_name)):
+        pytest.skip("Not enabled")
+    if not (kem_name in ml_kem):
+        pytest.skip("Not supported")
+
+    resp = cached_requests_get(ml_kem_encdec) 
+    assert resp.status_code == 200
+    acvp_data = json.loads(resp.content)
+
+    variantFound = False
+    for variant in acvp_data["testGroups"]:
+        if variant["parameterSet"] == kem_name:
+            func = variant["function"]
+            if func not in ["encapsulationKeyCheck", "decapsulationKeyCheck"]:
+                continue
+                
+            variantFound = True
+            key_attr = "ek" if func == "encapsulationKeyCheck" else "dk"
+            
+            for testCase in variant["tests"]:
+                key = testCase[key_attr]
+                expected = "true" if testCase["testPassed"] else "false"
+
+                build_dir = helpers.get_current_build_dir_name()
+                helpers.run_subprocess(
+                    [
+                        f"{build_dir}/tests/vectors_kem",
+                        kem_name,
+                        func,
+                        key,
+                        expected,
+                    ]
+                )
+
+    assert variantFound == True
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
