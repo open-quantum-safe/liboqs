@@ -8,7 +8,7 @@
 #include "parameters.h"
 
 static uint16_t gf_reduce(uint16_t x);
-static void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b);
+void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b);
 
 /**
  * @brief Generates exp and log lookup tables of GF(2^8).
@@ -73,7 +73,7 @@ static const uint8_t gf_reduction_taps[] = {4, 3, 2};
  * @param x 16-bit input polynomial to reduce (deg(x) ≤ 14)
  * @return Reduced 8-bit polynomial modulo PARAM_GF_POLY (deg(x) < 8)
  */
-static uint16_t gf_reduce(uint16_t x) {
+uint16_t gf_reduce(uint16_t x) {
     uint64_t mod;
     const int reduction_steps = 2;            // For deg(x) = 2 * (8 - 1) = 14, reduce twice to bring degree < 8
     const size_t gf_reduction_tap_count = 3;  // Number of feedback positions
@@ -106,7 +106,7 @@ static uint16_t gf_reduce(uint16_t x) {
  * @param[in] a The first polynomial
  * @param[in] b The second polynomial
  */
-static void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b) {
+void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b) {
     uint16_t h = 0, l = 0, g, u[4];
     u[0] = 0;
     u[1] = b & ((1UL << 7) - 1UL);

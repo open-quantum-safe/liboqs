@@ -9,7 +9,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "parameters.h"
-#include "namespace.h"
 
 /**
  * @brief  Precomputed Galois‐field powers for Reed–Solomon operations.
@@ -80,10 +79,6 @@ static const uint16_t alpha_ij_pow[30][45] = {
      110, 239, 250, 45,  35, 30,  26,  218, 99, 130, 69, 108, 143, 40,  211, 206, 132, 229, 7,   144, 2,   96},
     {96, 185, 223, 59,  85, 150, 89,  44,  38,  193, 15, 26, 169, 145, 100, 36, 1,   96, 185, 223, 59,  85, 150,
      89, 44,  38,  193, 15, 26,  169, 145, 100, 36,  1,  96, 185, 223, 59,  85, 150, 89, 44,  38,  193, 15}};
-
-#define reed_solomon_encode PQCHQC_NAMESPACE(reed_solomon_encode)
-#define reed_solomon_decode PQCHQC_NAMESPACE(reed_solomon_decode)
-#define compute_generator_poly PQCHQC_NAMESPACE(compute_generator_poly)
 
 void reed_solomon_encode(uint64_t* cdw, const uint64_t* msg);
 void reed_solomon_decode(uint64_t* msg, uint64_t* cdw);

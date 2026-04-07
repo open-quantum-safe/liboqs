@@ -8,7 +8,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "namespace.h"
 
 /**
  * Powers of the root alpha of 1 + x^2 + x^3 + x^4 + x^8.
@@ -46,12 +45,6 @@ static const uint16_t gf_log[256] = {
     164, 118, 196, 23,  73,  236, 127, 12,  111, 246, 108, 161, 59,  82,  41,  157, 85,  170, 251, 96,  134, 177,
     187, 204, 62,  90,  203, 89,  95,  176, 156, 169, 160, 81,  11,  245, 22,  235, 122, 117, 44,  215, 79,  174,
     213, 233, 230, 231, 173, 232, 116, 214, 244, 234, 168, 80,  88,  175};
-
-#define gf_generate PQCHQC_NAMESPACE(gf_generate)
-#define gf_mul PQCHQC_NAMESPACE(gf_mul)
-#define gf_mul_vect PQCHQC_NAMESPACE(gf_mul_vect)
-#define gf_square PQCHQC_NAMESPACE(gf_square)
-#define gf_inverse PQCHQC_NAMESPACE(gf_inverse)
 
 void gf_generate(uint16_t *exp, uint16_t *log, const int16_t m);
 
