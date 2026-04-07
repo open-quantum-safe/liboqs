@@ -46,7 +46,7 @@ void code_encode(uint64_t *em, const uint64_t *m) {
  * @param[out] m Pointer to an array that is the message
  * @param[in] em Pointer to an array that is the code word
  */
-void hqc_code_decode(uint64_t *m, const uint64_t *em) {
+void code_decode(uint64_t *m, const uint64_t *em) {
     uint64_t tmp[VEC_N1_SIZE_64] = {0};
 
     reed_muller_decode(tmp, em);

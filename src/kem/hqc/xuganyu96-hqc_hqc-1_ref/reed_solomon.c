@@ -215,8 +215,8 @@ static uint16_t compute_elp(uint16_t *sigma, const uint16_t *syndromes) {
 static void compute_roots(uint8_t *error, uint16_t *sigma) {
     uint16_t w[1 << PARAM_M] = {0};
 
-    hqc_fft(w, sigma, PARAM_DELTA + 1);
-    hqc_fft_retrieve_error_poly(error, w);
+    fft(w, sigma, PARAM_DELTA + 1);
+    fft_retrieve_error_poly(error, w);
 }
 
 /**

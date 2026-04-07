@@ -10,6 +10,9 @@
 #include <stdint.h>
 #include "parameters.h"
 
+#define reed_muller_encode hqc_reed_muller_encode
+#define reed_muller_decode hqc_reed_muller_decode
+
 void reed_muller_encode(uint64_t* cdw, const uint64_t* msg);
 void reed_muller_decode(uint64_t* msg, const uint64_t* cdw);
 

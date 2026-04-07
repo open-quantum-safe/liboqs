@@ -80,6 +80,10 @@ static const uint16_t alpha_ij_pow[30][45] = {
     {96, 185, 223, 59,  85, 150, 89,  44,  38,  193, 15, 26, 169, 145, 100, 36, 1,   96, 185, 223, 59,  85, 150,
      89, 44,  38,  193, 15, 26,  169, 145, 100, 36,  1,  96, 185, 223, 59,  85, 150, 89, 44,  38,  193, 15}};
 
+#define reed_solomon_encode hqc_reed_solomon_encode
+#define reed_solomon_decode hqc_reed_solomon_decode
+#define compute_generator_poly hqc_compute_generator_poly
+
 void reed_solomon_encode(uint64_t* cdw, const uint64_t* msg);
 void reed_solomon_decode(uint64_t* msg, uint64_t* cdw);
 

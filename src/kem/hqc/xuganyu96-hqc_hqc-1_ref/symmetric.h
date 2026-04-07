@@ -68,6 +68,15 @@ typedef OQS_SHA3_shake256_inc_ctx shake256_xof_ctx;
  */
 #define HQC_J_FCT_DOMAIN 3
 
+#define prng_init hqc_prng_init
+#define prng_get_bytes hqc_prng_get_bytes
+#define xof_init hqc_xof_init
+#define xof_get_bytes hqc_xof_get_bytes
+#define hash_g hqc_hash_g
+#define hash_h hqc_hash_h
+#define hash_i hqc_hash_i
+#define hash_j hqc_hash_j
+
 void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t enlen, uint32_t perlen);
 void prng_get_bytes(uint8_t *output, uint32_t outlen);
 

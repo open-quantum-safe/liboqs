@@ -34,10 +34,10 @@ typedef int16_t rm_expanded_cdw[128];
 #define BIT0MASK(x) (int32_t)(-((x) & 1))
 // clang-format on
 
-void encode(rm_codeword_t *word, int32_t message);
-void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst);
-void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]);
-int32_t find_peaks(rm_expanded_cdw *transform);
+static void encode(rm_codeword_t *word, int32_t message);
+static void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst);
+static void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]);
+static int32_t find_peaks(rm_expanded_cdw *transform);
 
 /**
  * @brief Encode a single byte into a single codeword using RM(1,7)

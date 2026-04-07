@@ -46,6 +46,12 @@ static const uint16_t gf_log[256] = {
     187, 204, 62,  90,  203, 89,  95,  176, 156, 169, 160, 81,  11,  245, 22,  235, 122, 117, 44,  215, 79,  174,
     213, 233, 230, 231, 173, 232, 116, 214, 244, 234, 168, 80,  88,  175};
 
+#define gf_generate hqc_gf_generate
+#define gf_mul hqc_gf_mul
+#define gf_mul_vect hqc_gf_mul_vect
+#define gf_square hqc_gf_square
+#define gf_inverse hqc_gf_inverse
+
 void gf_generate(uint16_t *exp, uint16_t *log, const int16_t m);
 
 uint16_t gf_mul(uint16_t a, uint16_t b);

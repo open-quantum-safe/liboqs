@@ -9,7 +9,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
-void hqc_fft(uint16_t *w, const uint16_t *f, size_t f_coeffs);
-void hqc_fft_retrieve_error_poly(uint8_t *error, const uint16_t *w);
+#define fft hqc_fft
+#define fft_retrieve_error_poly hqc_fft_retrieve_error_poly
+
+void fft(uint16_t *w, const uint16_t *f, size_t f_coeffs);
+void fft_retrieve_error_poly(uint8_t *error, const uint16_t *w);
 
 #endif  // HQC_FFT_H
