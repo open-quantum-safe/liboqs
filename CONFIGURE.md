@@ -39,14 +39,14 @@ This means liboqs is built as a static library by default.
 
 Can be set to the following values:
 
-- `Debug`: This turns off all compiler optimizations and produces debugging information. **This value only has effect when the compiler is GCC or Clang**
+- `Debug`: This compiles code with `-g` (GCC/Clang default `-O0`) and produces debugging information.
   - The [USE_COVERAGE](#USE_COVERAGE) option can also be specified to enable code coverage testing.
   - When the compiler is Clang, the [USE_SANITIZER](#USE_SANITIZER) option can also be specified to enable a Clang sanitizer.
 - `MinSizeRel`: This compiles code with `-Os -DNDEBUG` flags for reducing code size
 - `RelWithDebInfo`: This compiles code with `-O2 -g -DNDEBUG` flags
-- `Release`: This compiles code with `-O3 -DNDEBUG` flags. In the rare case where user needs to override compilation flags under `CMAKE_BUILD_TYPE=Release`, use `CMAKE_C_FLAGS_RELEASE`.
+- `Release`: This compiles code with `-O3 -DNDEBUG` flags. In the rare case where a user needs to override compilation flags under `CMAKE_BUILD_TYPE=Release`, use `CMAKE_C_FLAGS_RELEASE` (or `CMAKE_C_FLAGS` to append flags to every configuration).
 
-**Default**: `Release`.
+**Default**: `Release` for single-configuration generators (Ninja, Makefile). Multi-configuration generators (Visual Studio, Xcode, Ninja Multi-Config) ignore `CMAKE_BUILD_TYPE` and instead select the configuration at build time via `--config`.
 
 **Examples**:
 ```bash
