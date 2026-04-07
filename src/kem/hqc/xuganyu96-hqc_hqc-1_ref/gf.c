@@ -8,7 +8,7 @@
 #include "parameters.h"
 
 static uint16_t gf_reduce(uint16_t x);
-void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b);
+static void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b);
 
 /**
  * @brief Generates exp and log lookup tables of GF(2^8).
