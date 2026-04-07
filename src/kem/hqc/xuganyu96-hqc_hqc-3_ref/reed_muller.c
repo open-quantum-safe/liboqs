@@ -34,10 +34,10 @@ typedef int16_t rm_expanded_cdw[128];
 #define BIT0MASK(x) (int32_t)(-((x) & 1))
 // clang-format on
 
-static void encode(rm_codeword_t *word, int32_t message);
-static void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst);
-static void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]);
-static int32_t find_peaks(rm_expanded_cdw *transform);
+void encode(rm_codeword_t *word, int32_t message);
+void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst);
+void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]);
+int32_t find_peaks(rm_expanded_cdw *transform);
 
 /**
  * @brief Encode a single byte into a single codeword using RM(1,7)
@@ -56,7 +56,7 @@ static int32_t find_peaks(rm_expanded_cdw *transform);
  * @param[out] word An RM(1,7) codeword
  * @param[in] message A message
  */
-static void encode(rm_codeword_t *word, int32_t message) {
+void encode(rm_codeword_t *word, int32_t message) {
     int32_t first_word;
 
     first_word = BIT0MASK(message >> 7);
@@ -87,7 +87,7 @@ static void encode(rm_codeword_t *word, int32_t message) {
  * @param[out] src Structure that contain the expanded codeword
  * @param[out] dst Structure that contain the expanded codeword
  */
-static void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst) {
+void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst) {
     // the passes move data:
     // src -> dst -> src -> dst -> src -> dst -> src -> dst
     // using p1 and p2 alternately
@@ -118,7 +118,7 @@ static void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst) {
  * @param[out] dest Structure that contain the expanded codeword
  * @param[in] src Structure that contain the codeword
  */
-static void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]) {
+void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]) {
     // start with the first copy
     for (int32_t part = 0; part < 4; part++) {
         for (int32_t bit = 0; bit < 32; bit++) {
@@ -144,7 +144,7 @@ static void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]) {
  * in the lowest 7 bits it taken
  * @param[in] transform Structure that contain the expanded codeword
  */
-static int32_t find_peaks(rm_expanded_cdw *transform) {
+int32_t find_peaks(rm_expanded_cdw *transform) {
     int32_t peak_abs_value = 0;
     int32_t peak_value = 0;
     int32_t peak_pos = 0;
