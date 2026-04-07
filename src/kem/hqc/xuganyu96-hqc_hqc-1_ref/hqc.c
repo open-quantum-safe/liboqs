@@ -196,7 +196,7 @@ uint8_t hqc_pke_decrypt(uint64_t *m, const uint8_t *dk_pke, const ciphertext_pke
 #endif
 
     // Compute plaintext m
-    hqc_code_decode(m, tmp2);
+    code_decode(m, tmp2);
 
     // Zeroize sensitive data
     memset_zero(y, sizeof y);
