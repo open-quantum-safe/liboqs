@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:b94dbb44-6f02-46d2-8674-4669d0a0e8e2",
+  "serialNumber": "urn:uuid:c77a5f29-0f07-4b46-91bd-f100576ece71",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-02-20T14:01:02.620635+00:00",
+    "timestamp": "2026-03-17T15:12:37.093134+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@fc08ab40cf34941a41e67d91921c20a428aa6ec0",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@c0c020c49a1ef2f16a333da15b7fab66a15777f1",
       "name": "liboqs",
-      "version": "fc08ab40cf34941a41e67d91921c20a428aa6ec0"
+      "version": "c0c020c49a1ef2f16a333da15b7fab66a15777f1"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@fc08ab40cf34941a41e67d91921c20a428aa6ec0",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@c0c020c49a1ef2f16a333da15b7fab66a15777f1",
       "name": "liboqs",
-      "version": "fc08ab40cf34941a41e67d91921c20a428aa6ec0"
+      "version": "c0c020c49a1ef2f16a333da15b7fab66a15777f1"
     },
     {
       "type": "cryptographic-asset",
@@ -1662,7 +1662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:sntrup761:clean:generic",
+      "bom-ref": "alg:sntrup761:master:generic",
       "name": "NTRU-Prime",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1677,26 +1677,6 @@
           ],
           "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:sntrup761:avx2:x86_64",
-      "name": "NTRU-Prime",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "sntrup761",
-          "primitive": "kem",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "nistQuantumSecurityLevel": 2,
-          "implementationPlatform": "x86_64"
         }
       }
     },
@@ -7667,7 +7647,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@fc08ab40cf34941a41e67d91921c20a428aa6ec0",
+      "ref": "pkg:github/open-quantum-safe/liboqs@c0c020c49a1ef2f16a333da15b7fab66a15777f1",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -7751,8 +7731,7 @@
         "alg:NTRU-HRSS-701:clean:generic",
         "alg:NTRU-HRSS-701:avx2:x86_64",
         "alg:NTRU-HRSS-1373:clean:generic",
-        "alg:sntrup761:clean:generic",
-        "alg:sntrup761:avx2:x86_64",
+        "alg:sntrup761:master:generic",
         "alg:cross-rsdp-128-balanced:clean:generic",
         "alg:cross-rsdp-128-balanced:avx2:x86_64",
         "alg:cross-rsdp-128-fast:clean:generic",
@@ -8565,13 +8544,7 @@
       ]
     },
     {
-      "ref": "alg:sntrup761:clean:generic",
-      "dependsOn": [
-        "alg:aes"
-      ]
-    },
-    {
-      "ref": "alg:sntrup761:avx2:x86_64",
+      "ref": "alg:sntrup761:master:generic",
       "dependsOn": [
         "alg:aes"
       ]
