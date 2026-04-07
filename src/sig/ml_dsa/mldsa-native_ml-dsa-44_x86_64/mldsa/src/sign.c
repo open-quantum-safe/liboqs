@@ -24,8 +24,7 @@
  *   https://pq-crystals.org/dilithium/data/dilithium-specification-round3-20210208.pdf
  */
 
-#include <stdint.h>
-#include <string.h>
+#include "sign.h"
 
 #include "cbmc.h"
 #include "ct.h"
@@ -35,7 +34,6 @@
 #include "poly_kl.h"
 #include "polyvec.h"
 #include "randombytes.h"
-#include "sign.h"
 #include "symmetric.h"
 
 /* Parameter set namespacing
@@ -490,6 +488,7 @@ __contract__(
   __loop__(
     assigns(i, memory_slice(z, sizeof(mld_poly)), memory_slice(sig, MLDSA_CRYPTO_BYTES))
     invariant(i <= MLDSA_L)
+    decreases(MLDSA_L - i)
   )
   {
     mld_poly_pointwise_montgomery(z, cp, &s1->vec[i]);
@@ -802,6 +801,7 @@ int mld_sign_signature_internal(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
     invariant(forall(k3, 0, MLDSA_L, array_abs_bound(s1->vec[k3].coeffs, 0, MLDSA_N, MLD_NTT_BOUND)))
     invariant(forall(k4, 0, MLDSA_K, array_abs_bound(s2->vec[k4].coeffs, 0, MLDSA_N, MLD_NTT_BOUND)))
     invariant(ret == MLD_ERR_FAIL)
+    decreases(MLD_NONCE_UB - nonce)
   )
   {
     /* Reference: this code explicitly checks for exhaustion of nonce     */
@@ -960,6 +960,7 @@ int mld_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen,
   __loop__(
     assigns(i, object_whole(sm))
     invariant(i <= mlen)
+    decreases(mlen - i)
   )
   {
     sm[MLDSA_CRYPTO_BYTES + mlen - 1 - i] = m[mlen - 1 - i];
@@ -1165,6 +1166,7 @@ int mld_sign_open(uint8_t *m, size_t *mlen, const uint8_t *sm, size_t smlen,
     __loop__(
       assigns(i, memory_slice(m, *mlen))
       invariant(i <= *mlen)
+      decreases(*mlen - i)
     )
     {
       m[i] = sm[MLDSA_CRYPTO_BYTES + i];
@@ -1341,6 +1343,7 @@ static void mld_get_hash_oid(uint8_t oid[MLD_PRE_HASH_OID_LEN], int hashalg)
   for (i = 0; i < sizeof(oid_map) / sizeof(oid_map[0]); i++)
   __loop__(
     invariant(i <= sizeof(oid_map) / sizeof(oid_map[0]))
+    decreases(sizeof(oid_map) / sizeof(oid_map[0]) - i)
   )
   {
     if (oid_map[i].alg == hashalg)

@@ -14,7 +14,6 @@
 #if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
-#include <stdint.h>
 #include "arith_native_x86_64.h"
 
 /*

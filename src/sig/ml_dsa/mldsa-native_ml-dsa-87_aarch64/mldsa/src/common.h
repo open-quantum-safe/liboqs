@@ -6,6 +6,11 @@
 #ifndef MLD_COMMON_H
 #define MLD_COMMON_H
 
+#ifndef __ASSEMBLER__
+#include <stdint.h>
+#endif
+
+
 #define MLD_BUILD_INTERNAL
 
 #if defined(MLD_CONFIG_FILE)
@@ -77,8 +82,24 @@
  */
 #if defined(MLD_SYS_X86_64)
 #define MLD_ASM_FN_SYMBOL(sym) MLD_ASM_NAMESPACE(sym) : MLD_CET_ENDBR
-#else
+#elif defined(MLD_SYS_ARMV81M_MVE)
+/* clang-format off */
+#define MLD_ASM_FN_SYMBOL(sym) \
+  .type MLD_ASM_NAMESPACE(sym), %function; \
+  MLD_ASM_NAMESPACE(sym) :
+/* clang-format on */
+#else /* !MLD_SYS_X86_64 && MLD_SYS_ARMV81M_MVE */
 #define MLD_ASM_FN_SYMBOL(sym) MLD_ASM_NAMESPACE(sym) :
+#endif /* !MLD_SYS_X86_64 && !MLD_SYS_ARMV81M_MVE */
+
+/*
+ * Output the size of an assembly function.
+ */
+#if defined(__ELF__)
+#define MLD_ASM_FN_SIZE(sym) \
+  .size MLD_ASM_NAMESPACE(sym), .- MLD_ASM_NAMESPACE(sym)
+#else
+#define MLD_ASM_FN_SIZE(sym)
 #endif
 
 /* We aim to simplify the user's life by supporting builds where

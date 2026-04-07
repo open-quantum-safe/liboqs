@@ -18,7 +18,6 @@
  * and run sanity checks.
  */
 
-#include <stdint.h>
 #include "../cbmc.h"
 #include "../common.h"
 
@@ -40,13 +39,13 @@
 
 /* Bound on absolute value of coefficients after NTT.
  *
- * NOTE: This is the same bound as in ntt.h and has to be kept
+ * NOTE: This is the same bound as in poly.h and has to be kept
  * in sync. */
 #define MLD_NTT_BOUND (9 * MLDSA_Q)
 
 /* Absolute exclusive upper bound for the output of the inverse NTT
  *
- * NOTE: This is the same bound as in ntt.h and has to be kept
+ * NOTE: This is the same bound as in poly.h and has to be kept
  * in sync. */
 #define MLD_INTT_BOUND MLDSA_Q
 
@@ -55,7 +54,7 @@
  * NOTE: This is the same bound as in reduce.h and has to be kept
  * in sync. */
 /* check-magic: 6283009 == (MLD_REDUCE32_DOMAIN_MAX - 255 * MLDSA_Q + 1) */
-#define REDUCE32_RANGE_MAX 6283009
+#define MLD_REDUCE32_RANGE_MAX 6283009
 /*
  * This is the C<->native interface allowing for the drop-in of
  * native code for performance critical arithmetic components of ML-DSA.
@@ -85,6 +84,7 @@
  *
  * Arguments:   - int32_t p[MLDSA_N]: pointer to in/output polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_ntt_native(int32_t p[MLDSA_N])
 __contract__(
     requires(memory_no_alias(p, sizeof(int32_t) * MLDSA_N))
@@ -147,6 +147,7 @@ __contract__(
  *
  * Arguments:   - uint32_t p[MLDSA_N]: pointer to in/output polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_intt_native(int32_t p[MLDSA_N])
 __contract__(
   requires(memory_no_alias(p, sizeof(int32_t) * MLDSA_N))
@@ -177,6 +178,7 @@ __contract__(
  * lengths. Otherwise, returns non-negative number of sampled 32-bit integers
  * (at most len).
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_rej_uniform_native(int32_t *r, unsigned len,
                                              const uint8_t *buf,
                                              unsigned buflen)
@@ -192,6 +194,7 @@ __contract__(
 #endif /* MLD_USE_NATIVE_REJ_UNIFORM */
 
 #if defined(MLD_USE_NATIVE_REJ_UNIFORM_ETA2)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_ETA == 2
 /*************************************************
  * Name:        mld_rej_uniform_eta2_native
  *
@@ -209,6 +212,7 @@ __contract__(
  *lengths. Otherwise, returns non-negative number of sampled 32-bit integers
  *(at most len).
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_rej_uniform_eta2_native(int32_t *r, unsigned len,
                                                   const uint8_t *buf,
                                                   unsigned buflen)
@@ -221,9 +225,11 @@ __contract__(
   ensures(return_value == MLD_NATIVE_FUNC_FALLBACK || (0 <= return_value && return_value <= len))
   ensures((return_value != MLD_NATIVE_FUNC_FALLBACK) ==> (array_abs_bound(r, 0, return_value, MLDSA_ETA + 1)))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_ETA == 2 */
 #endif /* MLD_USE_NATIVE_REJ_UNIFORM_ETA2 */
 
 #if defined(MLD_USE_NATIVE_REJ_UNIFORM_ETA4)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_ETA == 4
 /*************************************************
  * Name:        mld_rej_uniform_eta4_native
  *
@@ -241,6 +247,7 @@ __contract__(
  *lengths. Otherwise, returns non-negative number of sampled 32-bit integers
  *(at most len).
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_rej_uniform_eta4_native(int32_t *r, unsigned len,
                                                   const uint8_t *buf,
                                                   unsigned buflen)
@@ -253,9 +260,12 @@ __contract__(
   ensures(return_value == MLD_NATIVE_FUNC_FALLBACK || (0 <= return_value && return_value <= len))
   ensures((return_value != MLD_NATIVE_FUNC_FALLBACK) ==> (array_abs_bound(r, 0, return_value, MLDSA_ETA + 1)))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_ETA == 4 */
 #endif /* MLD_USE_NATIVE_REJ_UNIFORM_ETA4 */
 
 #if defined(MLD_USE_NATIVE_POLY_DECOMPOSE_32)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
+    (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87)
 /*************************************************
  * Name:        mld_poly_decompose_32_native
  *
@@ -272,6 +282,7 @@ __contract__(
  *              - int32_t *a0: input/output polynomial.
  *                             Output has coefficients c0
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_decompose_32_native(int32_t *a1, int32_t *a0)
 __contract__(
   requires(memory_no_alias(a1,  sizeof(int32_t) * MLDSA_N))
@@ -285,9 +296,12 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_bound(a0, 0, MLDSA_N, 0, MLDSA_Q))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(a0, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
+          || MLD_CONFIG_PARAMETER_SET == 87 */
 #endif /* MLD_USE_NATIVE_POLY_DECOMPOSE_32 */
 
 #if defined(MLD_USE_NATIVE_POLY_DECOMPOSE_88)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLD_CONFIG_PARAMETER_SET == 44
 /*************************************************
  * Name:        mld_poly_decompose_88_native
  *
@@ -304,6 +318,7 @@ __contract__(
  *              - int32_t *a0: output polynomial with coefficients c0.
  *                             Output has coefficients c0
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_decompose_88_native(int32_t *a1, int32_t *a0)
 __contract__(
   requires(memory_no_alias(a1,  sizeof(int32_t) * MLDSA_N))
@@ -317,6 +332,8 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_bound(a0, 0, MLDSA_N, 0, MLDSA_Q))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(a0, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44 \
+        */
 #endif /* MLD_USE_NATIVE_POLY_DECOMPOSE_88 */
 
 #if defined(MLD_USE_NATIVE_POLY_CADDQ)
@@ -328,6 +345,7 @@ __contract__(
  *
  * Arguments:   - int32_t *a: pointer to input/output polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_caddq_native(int32_t a[MLDSA_N])
 __contract__(
   requires(memory_no_alias(a, sizeof(int32_t) * MLDSA_N))
@@ -341,6 +359,8 @@ __contract__(
 #endif /* MLD_USE_NATIVE_POLY_CADDQ */
 
 #if defined(MLD_USE_NATIVE_POLY_USE_HINT_32)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
+    (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87)
 /*************************************************
  * Name:        mld_poly_use_hint_32_native
  *
@@ -352,6 +372,7 @@ __contract__(
  *              - const int32_t *a: pointer to input polynomial
  *              - const int32_t *h: pointer to input hint polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_use_hint_32_native(int32_t *b, const int32_t *a,
                                                   const int32_t *h)
 __contract__(
@@ -365,9 +386,12 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_SUCCESS) ==> array_bound(b, 0, MLDSA_N, 0, (MLDSA_Q-1)/(2*MLDSA_GAMMA2)))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(b, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
+          || MLD_CONFIG_PARAMETER_SET == 87 */
 #endif /* MLD_USE_NATIVE_POLY_USE_HINT_32 */
 
 #if defined(MLD_USE_NATIVE_POLY_USE_HINT_88)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLD_CONFIG_PARAMETER_SET == 44
 /*************************************************
  * Name:        mld_poly_use_hint_88_native
  *
@@ -379,6 +403,7 @@ __contract__(
  *              - const int32_t *a: pointer to input polynomial
  *              - const int32_t *h: pointer to input hint polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_use_hint_88_native(int32_t *b, const int32_t *a,
                                                   const int32_t *h)
 __contract__(
@@ -392,6 +417,8 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_SUCCESS) ==> array_bound(b, 0, MLDSA_N, 0, (MLDSA_Q-1)/(2*MLDSA_GAMMA2)))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(b, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44 \
+        */
 #endif /* MLD_USE_NATIVE_POLY_USE_HINT_88 */
 
 #if defined(MLD_USE_NATIVE_POLY_CHKNORM)
@@ -402,22 +429,32 @@ __contract__(
  *              Assumes input coefficients were reduced by mld_reduce32().
  *
  * Arguments:   - const int32_t *a: pointer to polynomial
- *              - int32_t B: norm bound
+ *              - int32_t B: norm bound, which must be in the range
+ *                0 .. MLDSA_Q - MLD_REDUCE32_RANGE_MAX inclusive.
  *
- * Returns 0 if the infinity norm is strictly smaller than B, and 1
- * otherwise. B must not be larger than MLDSA_Q - MLD_REDUCE32_RANGE_MAX.
+ * Returns MLD_NATIVE_FUNC_FALLBACK (-1) if the target CPU cannot
+ * support a native implementation of this function.
+ *
+ * If the target CPU can support this function, then
+ *  Returns MLD_NATIVE_FUNC_SUCCESS (0) if the infinity norm is strictly
+ *     smaller than B
+ *  Returns 1 otherwise
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_chknorm_native(const int32_t *a, int32_t B)
 __contract__(
   requires(memory_no_alias(a, sizeof(int32_t) * MLDSA_N))
-  requires(0 <= B && B <= MLDSA_Q - REDUCE32_RANGE_MAX)
-  requires(array_bound(a, 0, MLDSA_N, -REDUCE32_RANGE_MAX, REDUCE32_RANGE_MAX))
-  ensures(return_value == MLD_NATIVE_FUNC_FALLBACK || return_value == MLD_NATIVE_FUNC_SUCCESS)
-  ensures((return_value == 0) == array_abs_bound(a, 0, MLDSA_N, B))
+  requires(0 <= B && B <= MLDSA_Q - MLD_REDUCE32_RANGE_MAX)
+  requires(array_bound(a, 0, MLDSA_N, -MLD_REDUCE32_RANGE_MAX, MLD_REDUCE32_RANGE_MAX))
+  ensures(return_value == MLD_NATIVE_FUNC_FALLBACK || return_value == 0  ||
+          return_value == 1)
+  ensures((return_value != MLD_NATIVE_FUNC_FALLBACK) ==>
+          ((return_value == 0) == array_abs_bound(a, 0, MLDSA_N, B)))
 );
 #endif /* MLD_USE_NATIVE_POLY_CHKNORM */
 
 #if defined(MLD_USE_NATIVE_POLYZ_UNPACK_17)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLD_CONFIG_PARAMETER_SET == 44
 /*************************************************
  * Name:        mld_polyz_unpack_17_native
  *
@@ -428,6 +465,7 @@ __contract__(
  * Arguments:   - int32_t *r: pointer to output polynomial
  *              - const uint8_t *a: byte array with bit-packed polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyz_unpack_17_native(int32_t *r, const uint8_t *a)
 __contract__(
   requires(memory_no_alias(r, sizeof(int32_t) * MLDSA_N))
@@ -437,9 +475,13 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_SUCCESS) ==> array_bound(r, 0, MLDSA_N, -(MLDSA_GAMMA1 - 1), MLDSA_GAMMA1 + 1))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(r, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44 \
+        */
 #endif /* MLD_USE_NATIVE_POLYZ_UNPACK_17 */
 
 #if defined(MLD_USE_NATIVE_POLYZ_UNPACK_19)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
+    (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87)
 /*************************************************
  * Name:        mld_polyz_unpack_19_native
  *
@@ -450,6 +492,7 @@ __contract__(
  * Arguments:   - int32_t *r: pointer to output polynomial
  *              - const uint8_t *a: byte array with bit-packed polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyz_unpack_19_native(int32_t *r, const uint8_t *a)
 __contract__(
   requires(memory_no_alias(r, sizeof(int32_t) * MLDSA_N))
@@ -459,6 +502,8 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_SUCCESS) ==> array_bound(r, 0, MLDSA_N, -(MLDSA_GAMMA1 - 1), MLDSA_GAMMA1 + 1))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(r, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
+          || MLD_CONFIG_PARAMETER_SET == 87 */
 #endif /* MLD_USE_NATIVE_POLYZ_UNPACK_19 */
 
 #if defined(MLD_USE_NATIVE_POINTWISE_MONTGOMERY)
@@ -475,6 +520,7 @@ __contract__(
  *              - const int32_t a[MLDSA_N]: first input polynomial
  *              - const int32_t b[MLDSA_N]: second input polynomial
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_pointwise_montgomery_native(
     int32_t c[MLDSA_N], const int32_t a[MLDSA_N], const int32_t b[MLDSA_N])
 __contract__(
@@ -493,6 +539,7 @@ __contract__(
 #endif /* MLD_USE_NATIVE_POINTWISE_MONTGOMERY */
 
 #if defined(MLD_USE_NATIVE_POLYVECL_POINTWISE_ACC_MONTGOMERY_L4)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_L == 4
 /*************************************************
  * Name:        mld_polyvecl_pointwise_acc_montgomery_l4_native
  *
@@ -507,6 +554,7 @@ __contract__(
  *              - const int32_t u[MLDSA_L][MLDSA_N]: first input vector
  *              - const int32_t v[MLDSA_L][MLDSA_N]: second input vector
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l4_native(
     int32_t w[MLDSA_N], const int32_t u[4][MLDSA_N],
     const int32_t v[4][MLDSA_N])
@@ -523,9 +571,11 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_SUCCESS) ==> array_abs_bound(w, 0, MLDSA_N, MLDSA_Q))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(w, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 4 */
 #endif /* MLD_USE_NATIVE_POLYVECL_POINTWISE_ACC_MONTGOMERY_L4 */
 
 #if defined(MLD_USE_NATIVE_POLYVECL_POINTWISE_ACC_MONTGOMERY_L5)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_L == 5
 /*************************************************
  * Name:        mld_polyvecl_pointwise_acc_montgomery_l5_native
  *
@@ -540,6 +590,7 @@ __contract__(
  *              - const int32_t u[MLDSA_L][MLDSA_N]: first input vector
  *              - const int32_t v[MLDSA_L][MLDSA_N]: second input vector
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l5_native(
     int32_t w[MLDSA_N], const int32_t u[5][MLDSA_N],
     const int32_t v[5][MLDSA_N])
@@ -556,9 +607,11 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_SUCCESS) ==> array_abs_bound(w, 0, MLDSA_N, MLDSA_Q))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(w, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 5 */
 #endif /* MLD_USE_NATIVE_POLYVECL_POINTWISE_ACC_MONTGOMERY_L5 */
 
 #if defined(MLD_USE_NATIVE_POLYVECL_POINTWISE_ACC_MONTGOMERY_L7)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_L == 7
 /*************************************************
  * Name:        mld_polyvecl_pointwise_acc_montgomery_l7_native
  *
@@ -573,6 +626,7 @@ __contract__(
  *              - const int32_t u[MLDSA_L][MLDSA_N]: first input vector
  *              - const int32_t v[MLDSA_L][MLDSA_N]: second input vector
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l7_native(
     int32_t w[MLDSA_N], const int32_t u[7][MLDSA_N],
     const int32_t v[7][MLDSA_N])
@@ -589,6 +643,7 @@ __contract__(
   ensures((return_value == MLD_NATIVE_FUNC_SUCCESS) ==> array_abs_bound(w, 0, MLDSA_N, MLDSA_Q))
   ensures((return_value == MLD_NATIVE_FUNC_FALLBACK) ==> array_unchanged(w, MLDSA_N))
 );
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 7 */
 #endif /* MLD_USE_NATIVE_POLYVECL_POINTWISE_ACC_MONTGOMERY_L7 */
 
 #endif /* !MLD_NATIVE_API_H */

@@ -23,7 +23,6 @@
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
 #include <immintrin.h>
-#include <stdint.h>
 #include "arith_native_x86_64.h"
 
 int mld_poly_chknorm_avx2(const int32_t *a, int32_t B)
