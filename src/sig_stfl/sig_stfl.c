@@ -534,19 +534,19 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 		return 0;
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h20_w8_h10_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
+#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h10_w8
 		return 1;
 #else
 		return 0;
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h20_w8_h15_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
+#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h15_w8
 		return 1;
 #else
 		return 0;
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
+#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h20_w8
 		return 1;
 #else
 		return 0;
@@ -1417,7 +1417,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h25_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h25_w4
+#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h25_w8
 		return OQS_SECRET_KEY_LMS_SHA256_H25_W8_new();
 #else
 		return NULL;
@@ -1467,7 +1467,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h15_w8_h10_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h10_w8_h10_w8
+#ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h15_w8_h10_w8
 		return OQS_SECRET_KEY_LMS_SHA256_H15_W8_H10_W8_new();
 #else
 		return NULL;

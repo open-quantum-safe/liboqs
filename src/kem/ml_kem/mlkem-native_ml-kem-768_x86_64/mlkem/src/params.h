@@ -5,12 +5,6 @@
 #ifndef MLK_PARAMS_H
 #define MLK_PARAMS_H
 
-#if defined(MLK_CONFIG_FILE)
-#include MLK_CONFIG_FILE
-#else
-#include "config.h"
-#endif
-
 #if !defined(MLK_CONFIG_PARAMETER_SET)
 #error MLK_CONFIG_PARAMETER_SET is not defined
 #endif
