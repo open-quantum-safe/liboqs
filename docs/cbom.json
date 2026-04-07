@@ -1662,7 +1662,7 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:sntrup761:clean:generic",
+      "bom-ref": "alg:sntrup761:master:generic",
       "name": "NTRU-Prime",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1677,26 +1677,6 @@
           ],
           "nistQuantumSecurityLevel": 2,
           "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:sntrup761:avx2:x86_64",
-      "name": "NTRU-Prime",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "sntrup761",
-          "primitive": "kem",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "nistQuantumSecurityLevel": 2,
-          "implementationPlatform": "x86_64"
         }
       }
     },
@@ -8471,8 +8451,7 @@
         "alg:NTRU-HRSS-701:clean:generic",
         "alg:NTRU-HRSS-701:avx2:x86_64",
         "alg:NTRU-HRSS-1373:clean:generic",
-        "alg:sntrup761:clean:generic",
-        "alg:sntrup761:avx2:x86_64",
+        "alg:sntrup761:master:generic",
         "alg:cross-rsdp-128-balanced:clean:generic",
         "alg:cross-rsdp-128-balanced:avx2:x86_64",
         "alg:cross-rsdp-128-fast:clean:generic",
@@ -9321,13 +9300,7 @@
       ]
     },
     {
-      "ref": "alg:sntrup761:clean:generic",
-      "dependsOn": [
-        "alg:aes"
-      ]
-    },
-    {
-      "ref": "alg:sntrup761:avx2:x86_64",
+      "ref": "alg:sntrup761:master:generic",
       "dependsOn": [
         "alg:aes"
       ]
