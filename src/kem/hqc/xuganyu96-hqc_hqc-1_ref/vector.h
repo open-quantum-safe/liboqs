@@ -8,17 +8,18 @@
 
 #include <stdint.h>
 #include "symmetric.h"
+#include "namespace.h"
 
-#define vect_generate_random_support1 hqc_vect_generate_random_support1
-#define vect_generate_random_support2 hqc_vect_generate_random_support2
-#define vect_write_support_to_vector hqc_vect_write_support_to_vector
-#define vect_sample_fixed_weight1 hqc_vect_sample_fixed_weight1
-#define vect_sample_fixed_weight2 hqc_vect_sample_fixed_weight2
-#define vect_set_random hqc_vect_set_random
-#define vect_add hqc_vect_add
-#define vect_compare hqc_vect_compare
-#define vect_truncate hqc_vect_truncate
-#define vect_print hqc_vect_print
+#define vect_generate_random_support1 PQCHQC_NAMESPACE(vect_generate_random_support1)
+#define vect_generate_random_support2 PQCHQC_NAMESPACE(vect_generate_random_support2)
+#define vect_write_support_to_vector PQCHQC_NAMESPACE(vect_write_support_to_vector)
+#define vect_sample_fixed_weight1 PQCHQC_NAMESPACE(vect_sample_fixed_weight1)
+#define vect_sample_fixed_weight2 PQCHQC_NAMESPACE(vect_sample_fixed_weight2)
+#define vect_set_random PQCHQC_NAMESPACE(vect_set_random)
+#define vect_add PQCHQC_NAMESPACE(vect_add)
+#define vect_compare PQCHQC_NAMESPACE(vect_compare)
+#define vect_truncate PQCHQC_NAMESPACE(vect_truncate)
+#define vect_print PQCHQC_NAMESPACE(vect_print)
 
 void vect_generate_random_support1(shake256_xof_ctx *ctx, uint32_t *support, uint16_t weight);
 void vect_generate_random_support2(shake256_xof_ctx *ctx, uint32_t *support, uint16_t weight);
