@@ -6,14 +6,14 @@
 - **Authors' website**: https://snova.pqclab.org/
 - **Specification version**: Round 2.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+  - **Source**: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: MIT
 - **Optimized Implementation sources**:
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+      - **Source**: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: MIT
   - **neon**:<a name="neon"></a>
-      - **Source**: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+      - **Source**: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: MIT
 
 
