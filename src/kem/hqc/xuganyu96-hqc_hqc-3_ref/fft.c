@@ -271,7 +271,7 @@ static void fft_rec(uint16_t *w, uint16_t *f, size_t f_coeffs, uint8_t m, uint32
  * @param[in] f Array of 2^PARAM_FFT elements
  * @param[in] f_coeffs Number coefficients of f (i.e. deg(f)+1)
  */
-void fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
+void hqc_fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
     uint16_t betas[PARAM_M - 1] = {0};
     uint16_t betas_sums[1 << (PARAM_M - 1)] = {0};
     uint16_t f0[1 << (PARAM_FFT - 1)] = {0};
@@ -328,7 +328,7 @@ void fft(uint16_t *w, const uint16_t *f, size_t f_coeffs) {
  * @param[out] error Array with the error
  * @param[in] w Array of size 2^PARAM_M
  */
-void fft_retrieve_error_poly(uint8_t *error, const uint16_t *w) {
+void hqc_fft_retrieve_error_poly(uint8_t *error, const uint16_t *w) {
     uint16_t gammas[PARAM_M - 1] = {0};
     uint16_t gammas_sums[1 << (PARAM_M - 1)] = {0};
     uint16_t k;

@@ -11,6 +11,6 @@
 #include "parameters.h"
 
 void code_encode(uint64_t *em, const uint64_t *m);
-void code_decode(uint64_t *m, const uint64_t *em);
+void hqc_code_decode(uint64_t *m, const uint64_t *em);
 
 #endif  // HQC_CODE_H
