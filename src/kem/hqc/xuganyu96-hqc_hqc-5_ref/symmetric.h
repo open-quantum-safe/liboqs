@@ -10,7 +10,6 @@
 #include <oqs/sha3.h>
 #include "data_structures.h"
 #include "parameters.h"
-#include "namespace.h"
 
 /**
  * @typedef sha3_512_ctx
@@ -68,15 +67,6 @@ typedef OQS_SHA3_shake256_inc_ctx shake256_xof_ctx;
  *  @brief Domain separator for the J(·) function in HQC.
  */
 #define HQC_J_FCT_DOMAIN 3
-
-#define prng_init PQCHQC_NAMESPACE(prng_init)
-#define prng_get_bytes PQCHQC_NAMESPACE(prng_get_bytes)
-#define xof_init PQCHQC_NAMESPACE(xof_init)
-#define xof_get_bytes PQCHQC_NAMESPACE(xof_get_bytes)
-#define hash_g PQCHQC_NAMESPACE(hash_g)
-#define hash_h PQCHQC_NAMESPACE(hash_h)
-#define hash_i PQCHQC_NAMESPACE(hash_i)
-#define hash_j PQCHQC_NAMESPACE(hash_j)
 
 void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t enlen, uint32_t perlen);
 void prng_get_bytes(uint8_t *output, uint32_t outlen);
