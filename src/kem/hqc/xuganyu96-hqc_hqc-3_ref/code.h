@@ -9,9 +9,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "parameters.h"
+#include "namespace.h"
 
-#define code_encode hqc_code_encode
-#define code_decode hqc_code_decode
+#define code_encode PQCHQC_NAMESPACE(code_encode)
+#define code_decode PQCHQC_NAMESPACE(code_decode)
 
 void code_encode(uint64_t *em, const uint64_t *m);
 void code_decode(uint64_t *m, const uint64_t *em);
