@@ -7,6 +7,7 @@ set(_{{ family|upper }}_OBJS "")
 
 {%- if common_deps is defined %}
     {%- for common_dep in common_deps %}
+        {%- if not common_dep['include_only'] %}
 
 if({% for used_by in common_deps_usedby[common_dep['name']] -%}OQS_ENABLE_SIG_{{ family }}_{{ used_by['scheme_c'] }}{%- if used_by['impl_name'] != default_implementation %}_{{ used_by['impl_name'] }}{% endif -%}{%- if not loop.last %} OR {% endif -%}{%- endfor -%})
     add_library({{ family }}_{{ common_dep['name'] }} OBJECT {% for source_file in common_dep['sources_addl']|sort -%}{{ upstream_location }}_{{ common_dep['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
@@ -19,6 +20,7 @@ if({% for used_by in common_deps_usedby[common_dep['name']] -%}OQS_ENABLE_SIG_{{
         {%- endif %}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ common_dep['name'] }}>)
 endif()
+        {%- endif %}
 
     {%- endfor %}
 {%- endif %}
@@ -28,7 +30,7 @@ endif()
         {%- if impl['name'] == scheme['default_implementation'] %}
 
 if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})
-    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
+    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%}{%- if common_deps is defined %}{%- for cdep in common_deps %}{%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'].replace(',', ' ').split() %} {% for sf in cdep['sources_addl']|sort -%}{{ upstream_location }}_{{ cdep['name'] }}/{{ sf }}{%- if not loop.last %} {% endif -%}{%- endfor %}{%- endif %}{%- endfor %}{%- endif -%})
            {%- if impl['compile_opts'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
            {%- endif -%}
@@ -36,10 +38,17 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in 
         {%- else %}
 
 if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}{%- endif %})
-    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
+    add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%}{%- if common_deps is defined %}{%- for cdep in common_deps %}{%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'].replace(',', ' ').split() %} {% for sf in cdep['sources_addl']|sort -%}{{ upstream_location }}_{{ cdep['name'] }}/{{ sf }}{%- if not loop.last %} {% endif -%}{%- endfor %}{%- endif %}{%- endfor %}{%- endif -%})
         {%- endif %}
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+        {%- if common_deps is defined %}
+            {%- for cdep in common_deps %}
+                {%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'].replace(',', ' ').split() %}
+    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ upstream_location }}_{{ cdep['name'] }})
+                {%- endif %}
+            {%- endfor %}
+        {%- endif %}
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {%- for flag in impl['required_flags'] %}{%- if flag == 'arm_sha3' %} -march=armv8-a+crypto+sha3 {%- else -%}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endif -%}{%- endfor -%})
         {%- endif %}
