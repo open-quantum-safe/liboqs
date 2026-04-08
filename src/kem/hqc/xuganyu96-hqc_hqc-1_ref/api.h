@@ -13,6 +13,12 @@
 #define CRYPTO_BYTES           32
 #define CRYPTO_CIPHERTEXTBYTES 4433
 
+#include "namespace.h"
+
+#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
+#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
+#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
+
 // As a technicality, the public key is appended to the secret key in order to respect the NIST API.
 // Without this constraint, CRYPTO_SECRETKEYBYTES would be defined as 32
 
