@@ -421,8 +421,8 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		return OQS_ERROR;
 	}
 #ifndef OQS_ENABLE_SIG_STFL_XMSS
-        (void)method_name;
-        return OQS_SUCCESS;
+	(void)method_name;
+	return OQS_SUCCESS;
 #else
 	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
 	if (sig == NULL) {
