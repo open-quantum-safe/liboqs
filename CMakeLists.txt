@@ -184,7 +184,7 @@ endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 
-if(WIN32 AND MSVC)
+if(MSVC)
     set(CMAKE_GENERATOR_CC cl)
 endif()
 
