@@ -9,6 +9,13 @@
 #include <stdint.h>
 #include "data_structures.h"
 #include "parameters.h"
+#include "namespace.h"
+
+#define hqc_dk_pke_from_string PQCHQC_NAMESPACE(hqc_dk_pke_from_string)
+#define hqc_ek_pke_from_string PQCHQC_NAMESPACE(hqc_ek_pke_from_string)
+#define hqc_c_kem_to_string PQCHQC_NAMESPACE(hqc_c_kem_to_string)
+#define hqc_c_kem_from_string PQCHQC_NAMESPACE(hqc_c_kem_from_string)
+
 
 void hqc_dk_pke_from_string(uint64_t *y, const uint8_t *dk_pke);
 void hqc_ek_pke_from_string(uint64_t *h, uint64_t *s, const uint8_t *ek_pke);
