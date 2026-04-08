@@ -1,25 +1,18 @@
 /*
- * TODO:
- * - [ ] Output raw statistics, leave analysis to Python
- * - [ ] Expand platforms to aarch64
- * - [x] Parameterize KEM scheme name, probe loc, control loc
+ * TODO: Expand platforms to aarch64
  *
- * FrodoKEM Flush+Reload Cache Timing PoC
+ * Flush+Reload Cache Timing PoC
  *
- * Demonstrates secret-dependent cache residency in FrodoKEM decaps
- * when compiled with -Os (value barrier missing in ct_select).
+ * Usage:
+ * sudo ./tests/kem_fo_cache_oracle <KEM> <secret key location>
  *
- * Method:
- *   1. raw cycle comparison (no hit/miss thresholding)
- *   2. good ct vs bad ct: compare probe(sk[probe_loc]) trimmed mean
- *   3. sk[ctrl_loc] as control line (not touched by cmovs+movups)
- *      -> if sk[probe_loc] shows diff but sk[ctrl_loc] does not, the signal
- *        is specific to the conditional load, not overall noise
- *   4. 30 rounds x 3000 samples, trimmed mean (drop top/bottom 10%)
+ * Demonstrates secret-dependent cache residency in FO-transformed KEM decapsulation
+ *
+ * Raw statistics are printed to stdout. Human-readable summary is printed to stderr.
  *
  * x86_64 Linux only
  *
- * Build instructions:
+ * Exampe build commands:
  * mkdir build && cd build
  * cmake -GNinja -DCMAKE_BUILD_TYPE=<Debug|MinSizeRel|RelWithDebInfo|Release> \
  *     -DCMAKE_C_COMPILER="/path/to/clang" \
@@ -29,7 +22,6 @@
  * 
  * Notes:
  * - sudo may or may not be necessary
- * - cache timing channel can only be detected with Clang 17 or newer
  */
 
 #define _GNU_SOURCE
