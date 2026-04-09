@@ -67,7 +67,7 @@ upstreams:
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
     git_branch: main
-    git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
+    git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
