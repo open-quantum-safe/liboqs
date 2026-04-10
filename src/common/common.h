@@ -35,7 +35,12 @@ extern "C" {
         __asm__ volatile("" : "+r"(v) :);                                      \
     } while (0)
 
-#elif defined(_MSC_VER)
+#elif defined(_MSC_VER) && 0
+
+/* TODO: according to https://learn.microsoft.com/en-us/cpp/intrinsics/readwritebarrier?view=msvc-170
+ * _ReadWriteBarrier is deprecated and Microsoft does not recommend using it.
+ * For now, any platform that does not support inline ASM will use the fallback
+ */
 
 #include <intrin.h>
 
