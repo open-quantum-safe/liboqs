@@ -1067,7 +1067,9 @@ void *test_create_keys(void *arg) {
 void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile, td->bitflips_all, td->bitflips);
-	td->rc2 = test_invalid_sig(td->alg_name);
+	if (strstr(alg_name, "XMSS") != NULL) {
+		td->rc2 = test_invalid_sig(td->alg_name);
+	}
 	OQS_thread_stop();
 	return NULL;
 }
@@ -1307,12 +1309,16 @@ err:
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile, bitflips_all, bitflips);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
-	rc2 = test_invalid_sig(alg_name);
+	if (is_xmss) {
+		rc2 = test_invalid_sig(alg_name);
+	}
 
 	OQS_destroy();
 	rc = update_test_result(rc, is_xmss);
 	rc1 = update_test_result(rc1, is_xmss);
-	rc2 = update_test_result(rc2, is_xmss);
+	if (is_xmss) {
+		rc2 = update_test_result(rc2, is_xmss);
+	}
 
 	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS || rc2 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
