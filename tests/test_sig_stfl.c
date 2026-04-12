@@ -1316,9 +1316,6 @@ err:
 	OQS_destroy();
 	rc = update_test_result(rc, is_xmss);
 	rc1 = update_test_result(rc1, is_xmss);
-	if (is_xmss) {
-		rc2 = update_test_result(rc2, is_xmss);
-	}
 
 	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS || rc2 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
