@@ -167,7 +167,7 @@ extern int libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_dec(uint8
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
 {%- if scheme['derandomized_keypair'] %}
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl['signature_keypair_derand'] %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl.get('signature_keypair_derand') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
@@ -177,7 +177,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(ui
 #if defined(OQS_DIST_BUILD)
 	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
-    {%- endif -%}
+    {%- endif %}
 	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_keypair_derand'] }}(public_key, secret_key, seed);
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
@@ -295,7 +295,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
 {%- if scheme['derandomized_encaps'] %}
-    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl['signature_enc_derand'] %}
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl.get('signature_enc_derand') %}
     {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
     {%- else %}
@@ -305,7 +305,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uin
 #if defined(OQS_DIST_BUILD)
 	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
-    {%- endif -%}
+    {%- endif %}
 	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_enc_derand'] }}(ciphertext, shared_secret, public_key, seed);
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
