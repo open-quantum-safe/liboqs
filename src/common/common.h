@@ -28,8 +28,7 @@ extern "C" {
 #warning "disabling memory value barrier may introduce timing side channels"
 #define OQS_MEM_BLACK_BOX(v) (void)v
 
-// #elif defined(__GNUC__) || defined(__clang__)
-#elif 0
+#elif defined(__GNUC__) || defined(__clang__)
 
 #define OQS_MEM_BLACK_BOX(v)                                                   \
     do {                                                                       \
