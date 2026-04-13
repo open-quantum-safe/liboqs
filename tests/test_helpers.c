@@ -152,7 +152,7 @@ void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 
 void OQS_fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
-	fprintf(fp, "%s (%zu bytes)", S, L);
+	fprintf(fp, "%s", S);
 	for (i = 0; i < L; i++) {
 		fprintf(fp, "%02X", A[i]);
 	}
