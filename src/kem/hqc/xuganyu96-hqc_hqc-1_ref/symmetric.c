@@ -12,7 +12,7 @@
  * @brief Incremental SHAKE-256 prng context.
  *
  */
-OQS_SHA3_shake256_inc_ctx shake256_prng_ctx;
+static OQS_SHA3_shake256_inc_ctx shake256_prng_ctx;
 
 /**
  * @brief SHAKE-256 with incremental API and domain separation

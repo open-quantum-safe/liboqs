@@ -7,7 +7,9 @@
 #define HQC_CRYPTO_MEMSET_H
 
 #include <stddef.h>
+#include "namespace.h"
 
+#define memset_volatile PQCHQC_NAMESPACE(memset_volatile)
 /**
  * safer call to memset https://github.com/veorq/cryptocoding#problem-4
  */
