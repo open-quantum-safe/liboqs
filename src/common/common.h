@@ -28,38 +28,21 @@ extern "C" {
 #warning "disabling memory value barrier may introduce timing side channels"
 #define OQS_MEM_BLACK_BOX(v) (void)v
 
-#elif defined(__GNUC__) || defined(__clang__)
+// #elif defined(__GNUC__) || defined(__clang__)
+#elif 0
 
 #define OQS_MEM_BLACK_BOX(v)                                                   \
     do {                                                                       \
         __asm__ volatile("" : "+r"(v) :);                                      \
     } while (0)
 
-#elif defined(_MSC_VER) && 0
-
-/* TODO: according to https://learn.microsoft.com/en-us/cpp/intrinsics/readwritebarrier?view=msvc-170
- * _ReadWriteBarrier is deprecated and Microsoft does not recommend using it.
- * For now, any platform that does not support inline ASM will use the fallback
- */
-
-#include <intrin.h>
-
-static __forceinline void oqs_black_box_impl(volatile void *p, size_t sz) {
-    volatile unsigned char *q = (volatile unsigned char *)p;
-    unsigned char tmp;
-    size_t i;
-    _ReadWriteBarrier();
-    for (i = 0; i < sz; i++) {
-        tmp = q[i]; /* volatile read  */
-        q[i] = tmp; /* volatile write */
-    }
-    _ReadWriteBarrier();
-}
-
-#define OQS_MEM_BLACK_BOX(v)                                                   \
-    oqs_black_box_impl((volatile void *)&(v), sizeof(v))
-
 #else
+/* The fallback implementation: pure C, no inline assembly, portable 
+ *
+ * TODO: this is a best effort implementation that provides no guarantee; the
+ * forced memory round trip could also incur significant performance penalty if
+ * the input array is large.
+ */
 
 #pragma message("OQS_MEM_BLACK_BOX: unrecognised compiler. "                   \
                 "Falling back to volatile round-trip. "                        \
