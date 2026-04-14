@@ -189,7 +189,7 @@ endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 
-if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
+if(MSVC)
     set(CMAKE_GENERATOR_CC cl)
 endif()
 
@@ -351,4 +351,3 @@ if(NOT TARGET uninstall)
   add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
-
