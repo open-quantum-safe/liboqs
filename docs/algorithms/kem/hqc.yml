@@ -26,7 +26,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
     default: true
@@ -44,7 +44,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
     default: true
@@ -62,13 +62,13 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
     default: true
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://github.com/xuganyu96/pqc-hqc/commit/ab607029943ae12002836095b75388466125b141
+  source: https://github.com/xuganyu96/pqc-hqc/commit/37555f24745e93554a10875c66fa5dd30594eefc
 default-upstream-id: ref
 auxiliary-submitters:
 - Carlos Aguilar-Melchor
