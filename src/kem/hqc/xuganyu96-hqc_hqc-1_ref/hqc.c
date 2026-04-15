@@ -46,10 +46,12 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
     xof_init(&dk_xof_ctx, seed_dk, SEED_BYTES);
     vect_sample_fixed_weight1(&dk_xof_ctx, y, PARAM_OMEGA);
     vect_sample_fixed_weight1(&dk_xof_ctx, x, PARAM_OMEGA);
+    xof_ctx_release(&dk_xof_ctx);
 
     // Compute encryption key
     xof_init(&ek_xof_ctx, seed_ek, SEED_BYTES);
     vect_set_random(&ek_xof_ctx, h);
+    xof_ctx_release(&ek_xof_ctx);
     vect_mul(s, y, h);
     vect_add(s, x, s, VEC_N_SIZE_64);
 
@@ -113,6 +115,7 @@ void hqc_pke_encrypt(ciphertext_pke_t *c_pke, const uint8_t *ek_pke, const uint6
     vect_sample_fixed_weight2(&theta_xof_ctx, r2, PARAM_OMEGA_R);
     vect_sample_fixed_weight2(&theta_xof_ctx, e, PARAM_OMEGA_E);
     vect_sample_fixed_weight2(&theta_xof_ctx, r1, PARAM_OMEGA_R);
+    xof_ctx_release(&theta_xof_ctx);
 
     // Compute u = r1 + r2.h
     vect_mul(c_pke->u, r2, h);

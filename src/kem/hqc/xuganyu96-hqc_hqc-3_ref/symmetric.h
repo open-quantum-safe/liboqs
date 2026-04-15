@@ -73,6 +73,7 @@ typedef OQS_SHA3_shake256_inc_ctx shake256_xof_ctx;
 #define prng_get_bytes PQCHQC_NAMESPACE(prng_get_bytes)
 #define xof_init PQCHQC_NAMESPACE(xof_init)
 #define xof_get_bytes PQCHQC_NAMESPACE(xof_get_bytes)
+#define xof_ctx_release PQCHQC_NAMESPACE(xof_ctx_release)
 #define hash_g PQCHQC_NAMESPACE(hash_g)
 #define hash_h PQCHQC_NAMESPACE(hash_h)
 #define hash_i PQCHQC_NAMESPACE(hash_i)
@@ -83,6 +84,7 @@ void prng_get_bytes(uint8_t *output, uint32_t outlen);
 
 void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size);
 void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_size);
+void xof_ctx_release(shake256_xof_ctx *xof_ctx);
 
 void hash_g(uint8_t *output, const uint8_t h_ek[SEED_BYTES], const uint8_t m[VEC_K_SIZE_BYTES],
             const uint8_t salt[SALT_BYTES]);
