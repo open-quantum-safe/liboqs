@@ -61,6 +61,7 @@ int crypto_kem_keypair(uint8_t *ek_kem, uint8_t *dk_kem) {
     xof_init(&ctx_kem, seed_kem, SEED_BYTES);
     xof_get_bytes(&ctx_kem, seed_pke, SEED_BYTES);
     xof_get_bytes(&ctx_kem, sigma, PARAM_SECURITY_BYTES);
+    xof_ctx_release(&ctx_kem);
 
     // Compute HQC-PKE keypair
     hqc_pke_keygen(ek_pke, dk_pke, seed_pke);

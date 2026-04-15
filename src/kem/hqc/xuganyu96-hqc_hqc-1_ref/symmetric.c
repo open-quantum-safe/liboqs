@@ -76,6 +76,13 @@ void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_s
 }
 
 /**
+ * @brief Free heap-allocated memory in the SHAKE256 XOF context
+ */
+void xof_ctx_release(shake256_xof_ctx *xof_ctx) {
+    OQS_SHA3_shake256_inc_ctx_release(xof_ctx);
+}
+
+/**
  * @brief Computes the hash function I (SHA3-512) with domain separation.
  *
  * @param[out] output Pointer to the buffer where the 64-byte hash output will be stored.
@@ -91,6 +98,7 @@ void hash_i(uint8_t *output, const uint8_t *seed) {
     OQS_SHA3_sha3_512_inc_absorb(&i_hash_ctx, seed, SEED_BYTES);
     OQS_SHA3_sha3_512_inc_absorb(&i_hash_ctx, &i_domain, 1);
     OQS_SHA3_sha3_512_inc_finalize(output, &i_hash_ctx);
+    OQS_SHA3_sha3_512_inc_ctx_release(&i_hash_ctx);
 }
 
 /**
@@ -106,6 +114,7 @@ void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES]) {
     OQS_SHA3_sha3_256_inc_absorb(&h_hash_ctx, ek_kem, PUBLIC_KEY_BYTES);
     OQS_SHA3_sha3_256_inc_absorb(&h_hash_ctx, &h_domain, 1);
     OQS_SHA3_sha3_256_inc_finalize(output, &h_hash_ctx);
+    OQS_SHA3_sha3_256_inc_ctx_release(&h_hash_ctx);
 }
 
 /**
@@ -126,6 +135,7 @@ void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
     OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
     OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
     OQS_SHA3_sha3_512_inc_finalize(output, &g_hash_ctx);
+    OQS_SHA3_sha3_512_inc_ctx_release(&g_hash_ctx);
 }
 
 /**
@@ -148,4 +158,5 @@ void hash_j(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
     OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, c_kem->salt, SALT_BYTES);
     OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, &k_domain, 1);
     OQS_SHA3_sha3_256_inc_finalize(output, &k_hash_ctx);
+    OQS_SHA3_sha3_256_inc_ctx_release(&k_hash_ctx);
 }
