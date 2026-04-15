@@ -5,7 +5,6 @@
 
 #include <stdint.h>
 #include <string.h>
-#include <oqs/rand.h>
 #include "api.h"
 #include "crypto_memset.h"
 #include "hqc.h"
@@ -49,13 +48,7 @@ int crypto_kem_keypair(uint8_t *ek_kem, uint8_t *dk_kem) {
     uint8_t ek_pke[PUBLIC_KEY_BYTES] = {0};
     uint8_t dk_pke[SEED_BYTES] = {0};
 
-    /* FIX: modification for liboqs:
-     * the PRNG was replaced with OQS_randombytes, need to determined if this
-     * is ok
-     */
-    // // Sample seed_kem
-    // prng_get_bytes(seed_kem, SEED_BYTES);
-    OQS_randombytes(seed_kem, SEED_BYTES);
+    prng_get_bytes(seed_kem, SEED_BYTES);
 
     // Compute seed_pke and randomness sigma
     xof_init(&ctx_kem, seed_kem, SEED_BYTES);
@@ -121,10 +114,8 @@ int crypto_kem_enc(uint8_t *c_kem, uint8_t *K, const uint8_t *ek_kem) {
     ciphertext_kem_t c_kem_t = {0};
 
     // Sample message m and salt
-    // prng_get_bytes(m, PARAM_SECURITY_BYTES);
-    // prng_get_bytes(c_kem_t.salt, SALT_BYTES);
-    OQS_randombytes(m, PARAM_SECURITY_BYTES);
-    OQS_randombytes(c_kem_t.salt, SALT_BYTES);
+    prng_get_bytes(m, PARAM_SECURITY_BYTES);
+    prng_get_bytes(c_kem_t.salt, SALT_BYTES);
 
     // Compute shared key K and ciphertext c_kem
     hash_h(hash_ek_kem, ek_kem);
