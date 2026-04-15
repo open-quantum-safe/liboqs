@@ -7,6 +7,20 @@
 #include "symmetric.h"
 #include <stdint.h>
 
+#ifdef USE_OQS_RANDOMBYTES
+#include <oqs/rand.h>
+
+void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t enlen, uint32_t perlen) {
+    (void)entropy_input;
+    (void)personalization_string;
+    (void)enlen;
+    (void)perlen;
+}
+
+void prng_get_bytes(uint8_t *output, uint32_t outlen) {
+    OQS_randombytes(output, outlen);
+}
+#else
 /**
  * @typedef shake256_prng_ctx
  * @brief Incremental SHAKE-256 prng context.
@@ -44,6 +58,7 @@ void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t
 void prng_get_bytes(uint8_t *output, uint32_t outlen) {
     OQS_SHA3_shake256_inc_squeeze(output, outlen, &shake256_prng_ctx);
 }
+#endif /* USE_OQS_RANDOMBYTES */
 
 /**
  * @brief Initializes a SHAKE256 XOF context with a given seed.
