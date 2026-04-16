@@ -3,7 +3,7 @@ upstreams:
     name: xuganyu96-hqc
     git_url: https://github.com/xuganyu96/pqc-hqc.git
     git_branch: liboqs-integration
-    git_commit: 73a974d43e896a9c7d0c601748a5e1c70a195093
+    git_commit: ee00532ae4a722768c33c33e9148052a2465228d
     kem_meta_path: "integrations/{pretty_name_full}_META.yml"
     kem_scheme_path: .
     patches: []

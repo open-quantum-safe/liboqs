@@ -12,18 +12,9 @@
 #include "parameters.h"
 #include "symmetric.h"
 #include "vector.h"
-
-#define DEBUG_KEYGEN 0
-
 #ifdef VERBOSE
 #include <stdio.h>
 #endif
-
-#if DEBUG_KEYGEN
-#include <stdio.h>
-#include <inttypes.h>
-#endif
-
 
 /**
  * @brief Generates a key pair for the HQC public-key encryption (PKE) scheme.
@@ -62,27 +53,7 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
     vect_set_random(&ek_xof_ctx, h);
     xof_ctx_release(&ek_xof_ctx);
     vect_mul(s, y, h);
-#if DEBUG_KEYGEN
-    fprintf(stderr, "var,val\n");
-    char varname[64] = {0};
-    for (int i = 0; i < VEC_N_SIZE_64; i++) {
-        snprintf(varname, sizeof(varname), "s[%d]", i);
-        fprintf(stderr, "%s,%016llX\n", varname, s[i]);
-        snprintf(varname, sizeof(varname), "y[%d]", i);
-        fprintf(stderr, "%s,%016llX\n", varname, y[i]);
-        snprintf(varname, sizeof(varname), "h[%d]", i);
-        fprintf(stderr, "%s,%016llX\n", varname, h[i]);
-    }
-#endif
     vect_add(s, x, s, VEC_N_SIZE_64);
-#if DEBUG_KEYGEN
-    for (int i = 0; i < VEC_N_SIZE_64; i++) {
-        snprintf(varname, sizeof(varname), "s[%d]", i);
-        fprintf(stderr, "%s,%016llX\n", varname, s[i]);
-        snprintf(varname, sizeof(varname), "x[%d]", i);
-        fprintf(stderr, "%s,%016llX\n", varname, x[i]);
-    }
-#endif
 
     // Parse encryption key to string
     memcpy(ek_pke, seed_ek, SEED_BYTES);
