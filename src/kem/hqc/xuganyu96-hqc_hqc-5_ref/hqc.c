@@ -13,7 +13,7 @@
 #include "symmetric.h"
 #include "vector.h"
 
-#define DEBUG_KEYGEN 1
+#define DEBUG_KEYGEN 0
 
 #ifdef VERBOSE
 #include <stdio.h>
