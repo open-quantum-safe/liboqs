@@ -7,9 +7,10 @@
 #define HQC_PARAMETERS_H
 
 #include "api.h"
+#include <stdint.h>
 
 #define CEIL_DIVIDE(a, b) (((a) / (b)) + ((a) % (b) == 0 ? 0 : 1)) /*!< Divide a by b and ceil the result*/
-#define BITMASK(a, size)  ((1UL << (a % size)) - 1)                /*!< Create a mask*/
+#define BITMASK(a, size)  ((((uint64_t) 1UL) << (a % size)) - 1)   /*!< Create a mask*/
 
 #define PARAM_N                     35851       ///< Define the parameter n of the scheme
 #define PARAM_N1                    56          ///< Define the parameter n1 of the scheme (length of Reed-Solomon code)
