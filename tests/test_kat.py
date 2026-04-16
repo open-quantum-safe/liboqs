@@ -19,7 +19,10 @@ def test_kem(kem_name):
     h256 = sha256()
     h256.update(output.encode())
 
-    assert(kats[kem_name]['single'] == h256.hexdigest())
+    if kats[kem_name]['single'] != h256.hexdigest():
+        print(output)
+
+    assert kats[kem_name]['single'] == h256.hexdigest()
 
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
