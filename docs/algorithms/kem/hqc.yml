@@ -1,85 +1,95 @@
 name: HQC
 type: kem
 principal-submitters:
-- Carlos Aguilar Melchor
-- Nicolas Aragon
-- Slim Bettaieb
-- Loïc Bidoux
-- Olivier Blazy
-- Jurjen Bos
-- Jean-Christophe Deneuville
-- Arnaud Dion
 - Philippe Gaborit
-- Jérôme Lacan
-- Edoardo Persichetti
-- Jean-Marc Robert
-- Pascal Véron
-- Gilles Zémor
 crypto-assumption: Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
 website: https://pqc-hqc.org/
 nist-round: 4
 standardization-status: Selected by [NIST](https://pqc-hqc.org/doc/hqc_specifications_2025_08_22.pdf)
   for upcoming standardization
-spec-version: 2023-04-30
+spec-version: 2025-08-22
 upstream-ancestors:
-- https://github.com/SWilson4/package-pqclean/tree/8db1b24b/hqc
-- submission 2023-04-30 at https://pqc-hqc.org/implementation.html
+- https://gitlab.com/pqc-hqc
+- submission 2025-08-22 at https://pqc-hqc.org/implementation.html
 parameter-sets:
-- name: HQC-128
+- name: HQC-1
   claimed-nist-level: 1
   claimed-security: IND-CCA2
-  length-public-key: 2249
+  length-public-key: 2241
   length-ciphertext: 4433
-  length-secret-key: 2305
-  length-shared-secret: 64
+  length-secret-key: 2321
+  length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
     default: true
-- name: HQC-192
+- name: HQC-3
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-ciphertext: 8978
-  length-public-key: 4522
-  length-secret-key: 4586
-  length-shared-secret: 64
+  length-public-key: 4514
+  length-secret-key: 4602
+  length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
     default: true
-- name: HQC-256
+- name: HQC-5
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-ciphertext: 14421
-  length-public-key: 7245
-  length-secret-key: 7317
-  length-shared-secret: 64
+  length-public-key: 7237
+  length-secret-key: 7333
+  length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
     default: true
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://github.com/PQClean/PQClean/commit/1eacfdafc15ddc5d5759d0b85b4cef26627df181
-default-upstream-id: clean
+  source: https://github.com/xuganyu96/pqc-hqc/commit/ee00532ae4a722768c33c33e9148052a2465228d
+default-upstream-id: ref
+auxiliary-submitters:
+- Carlos Aguilar-Melchor
+- Nicolas Aragon
+- Slim Bettaieb
+- Loïc Bidoux
+- Olivier Blazy
+- Jean-Christophe Deneuville
+- Edoardo Persichetti
+- Gilles Zémor
+- Jurjen Bos
+- Arnaud Dion
+- Jérôme Lacan
+- Jean-Marc Robert
+- Pascal Véron
+- Paulo L. Barreto
+- Santosh Ghosh
+- Shay Gueron
+- Tim Güneysu
+- Rafael Misoczki
+- Jan Richter-Brokmann
+- Nicolas Sendrier
+- Jean-Pierre Tillich
+- Valentin Vasseur
