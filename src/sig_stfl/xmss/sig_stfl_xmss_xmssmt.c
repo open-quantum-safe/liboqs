@@ -73,6 +73,9 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_sign(uint8_t *signature, size
 }\
 \
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {\
+        if (signature_len != OQS_SIG_STFL_alg_xmss##xmss_v##_length_signature) {\
+                return OQS_ERROR;\
+        }\
         return OQS_SIG_STFL_alg_xmss##mt##_verify(message, message_len, signature, signature_len, public_key);\
 }\
 \

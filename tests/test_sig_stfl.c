@@ -399,6 +399,52 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 	return strdup(file_store);
 }
 
+#ifdef OQS_ENABLE_SIG_STFL_XMSS
+/* test_invalid_sig: n=32 XMSS / XMSSMT pk layout (see sig_stfl_xmss.h): raw key material + OID prefix. */
+#define TEST_INVALID_SIG_XMSS_PK_RAW_LEN 64
+#define TEST_XMSS_OID_LEN 4
+#define TEST_INVALID_SIG_PK_LEN (TEST_INVALID_SIG_XMSS_PK_RAW_LEN + TEST_XMSS_OID_LEN)
+/* Deliberately short signature buffer to exercise verify bounds (real XMSS sigs are kilobytes). */
+#define TEST_INVALID_SIG_MALICIOUS_SIG_LEN 10
+/* XMSS-SHA2_10_256 OID; stored so low byte is at pk[TEST_XMSS_OID_LEN - 1] (see xmss.c). */
+#define TEST_XMSS_OID_SHA2_10_256 0x01U
+#endif
+
+/*
+ * This function is used to test the invalid signature verification.
+ * @param method_name: The name of the signature algorithm to test.
+ * @return OQS_SUCCESS if the invalid signature verification is fails, OQS_ERROR otherwise.
+ */
+static OQS_STATUS test_invalid_sig(const char *method_name) {
+	// Use proper API to create sig object
+	if (method_name == NULL) {
+		return OQS_ERROR;
+	}
+#ifndef OQS_ENABLE_SIG_STFL_XMSS
+	(void)method_name;
+	return OQS_SUCCESS;
+#else
+	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
+	if (sig == NULL) {
+		return OQS_ERROR;
+	}
+
+	uint8_t pk[TEST_INVALID_SIG_PK_LEN] = {0};
+	pk[TEST_XMSS_OID_LEN - 1] = (uint8_t)TEST_XMSS_OID_SHA2_10_256;
+
+	uint8_t message[] = "test";
+	uint8_t malicious_sig[TEST_INVALID_SIG_MALICIOUS_SIG_LEN] = {0};
+
+	// This triggers the bug via proper API
+	OQS_STATUS status = OQS_SIG_STFL_verify(sig, message, sizeof(message) - 1, malicious_sig, TEST_INVALID_SIG_MALICIOUS_SIG_LEN, pk);
+	OQS_SIG_STFL_free(sig);
+	if (status == OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
+#endif
+}
+
 static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile, bool bitflips_all[2], size_t bitflips[2]) {
 
 	OQS_SIG_STFL *sig = NULL;
@@ -976,14 +1022,13 @@ err:
 	return OQS_ERROR;
 }
 
-
 typedef struct thread_data {
 	const char *alg_name;
 	const char *katfile;
 	bool *bitflips_all;
 	size_t *bitflips;
 	OQS_STATUS rc;
-	// OQS_STATUS rc1;
+	OQS_STATUS rc2;
 } thread_data_t;
 
 typedef struct lock_test_data {
@@ -1022,6 +1067,9 @@ void *test_create_keys(void *arg) {
 void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile, td->bitflips_all, td->bitflips);
+	if (strstr(alg_name, "XMSS") != NULL) {
+		td->rc2 = test_invalid_sig(td->alg_name);
+	}
 	OQS_thread_stop();
 	return NULL;
 }
@@ -1063,7 +1111,7 @@ static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
 }
 
 int main(int argc, char **argv) {
-	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR;
+	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR, rc2 = OQS_SUCCESS;
 	OQS_init();
 	rc = oqs_fstore_init();
 	if (rc != OQS_SUCCESS) {
@@ -1261,13 +1309,15 @@ err:
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile, bitflips_all, bitflips);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
+	if (is_xmss) {
+		rc2 = test_invalid_sig(alg_name);
+	}
 
 	OQS_destroy();
 	rc = update_test_result(rc, is_xmss);
 	rc1 = update_test_result(rc1, is_xmss);
 
-
-	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS || rc2 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
 	return exit_status;
