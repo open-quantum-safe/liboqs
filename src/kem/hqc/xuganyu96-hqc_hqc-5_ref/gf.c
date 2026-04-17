@@ -153,7 +153,7 @@ static void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b) {
 uint16_t gf_mul(uint16_t a, uint16_t b) {
     uint8_t c[2] = {0};
     gf_carryless_mul(c, (uint8_t)a, (uint8_t)b);
-    uint16_t tmp = (uint16_t)(c[0] ^ (c[1] << 8));
+    uint16_t tmp = (uint16_t)(c[0] ^ ((uint16_t)c[1] << 8));
     return gf_reduce(tmp);
 }
 
