@@ -30,6 +30,9 @@ option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a 
 option(OQS_MEMOPT_BUILD "Build with memory-optimized implementations where available." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
 option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
+# --- Test Configuration ---
+set(OQS_PYTEST_NUMPROCESSES "auto" CACHE STRING "Number of parallel processes for pytest (e.g., 'auto', '1', '2'). Useful for limiting memory usage on constrained CI/CD systems.")
+message(STATUS "OQS Testing: Pytest parallel workers set to '${OQS_PYTEST_NUMPROCESSES}'")
 
 # Libfuzzer isn't supported on gcc
 if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
