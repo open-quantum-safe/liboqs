@@ -1,25 +1,29 @@
 # https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+# Note: the LAST matching pattern wins, so more general patterns must come before more specific ones.
 
-* @dstebila @baentsch
-/.github/workflows @SWilson4
+* @dstebila @baentsch @xuganyu96
+/scripts/ @xuganyu96
+/tests/ @xuganyu96 @bhess
+/zephyr/ @Frauschi @bhess
 /docs/cbom.json @bhess
-/scripts/copy_from_upstream @baentsch @bhess @alexrow @praveksharma
+/scripts/copy_from_upstream @xuganyu96
 /src/common @dstebila
-/src/common/*/*arm* @Martyrshot
-/src/common/libjade_shims @praveksharma
 /src/kem/bike @brian-jarvis-aws
 /src/kem/frodokem @dstebila
 /src/kem/kyber @bhess
-/src/kem/kyber/libjade* @praveksharma
-/src/kem/ml_kem @bhess
+/src/kem/ml_kem @bhess @mkannwischer
 /src/kem/ntru @saitomst
 /src/kem/ntruprime @bbbrumley
-/src/sig/cross @alexrow
+/src/sig/cross @alexrow @rtjk
 /src/sig/mayo @bhess
-/src/sig/ml_dsa @bhess
+/src/sig/ml_dsa @bhess @mkannwischer
+/src/sig/mqom @rben-dev
+/src/sig/uov @mkannwischer
 /src/sig_stfl/lms @ashman-p
-/src/sig_stfl/xmss @cothan
-/tests/ACVP_Vectors @bhess
+/src/sig_stfl/xmss @cothan @ashman-p
+/tests/ACVP_Vectors @bhess @abhi-dev-engg
+/tests/Wycheproof_Vectors @bhess @abhi-dev-engg
 /tests/PQC_Intermediate_Values @bhess
-/tests/test_acvp_vectors.py @bhess
+/tests/test_acvp_vectors.py @bhess @abhi-dev-engg
+/tests/test_wycheproof_vectors.py @bhess @abhi-dev-engg
 /tests/test_sig_stfl.c @ashman-p @cothan
