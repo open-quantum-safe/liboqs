@@ -4,8 +4,12 @@
 import os
 import sys
 
+import pytest
+
 LIBOQS_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.join(LIBOQS_ROOT, "scripts"))
+
+pytest.importorskip("yaml")
 
 import update_alg_support_table as uast  # noqa: E402
 
@@ -19,8 +23,6 @@ def test_format_upstream_source_with_commit():
 
 import textwrap
 import tempfile
-
-import pytest
 
 
 def _write_yaml(dirpath, name, body):
