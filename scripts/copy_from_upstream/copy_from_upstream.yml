@@ -92,6 +92,7 @@ upstreams:
     git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
     sig_scheme_path: '.'
     sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
+    patches: [snova-unused-param.patch]
   -
     name: mqom
     git_url: https://github.com/mqom/mqom-v2.git
