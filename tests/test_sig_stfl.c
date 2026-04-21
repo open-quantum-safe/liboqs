@@ -1261,7 +1261,13 @@ int main(int argc, char **argv) {
 	}
 	pthread_join(create_key_thread, NULL);
 	rc_create = td_create.rc;
-	rc_create = update_test_result(rc_create, is_xmss);
+	/* For XMSS, test_create_keys loads from KATs rather than generating keys, so
+	 * its result does not depend on OQS_ALLOW_XMSS_KEY_AND_SIG_GEN and should not
+	 * be flipped by update_test_result. LMS falls through to real keygen and
+	 * does need the flip. */
+	if (!is_xmss) {
+		rc_create = update_test_result(rc_create, is_xmss);
+	}
 
 	if (pthread_create(&sign_key_thread, NULL, test_sig_gen, &td_sign)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_sig_gen\n");
