@@ -1,0 +1,33 @@
+name: docs-sync
+
+on:
+  pull_request:
+    paths:
+      - 'docs/algorithms/**'
+      - 'scripts/update_docs_from_yaml.py'
+      - 'scripts/update_alg_support_table.py'
+      - 'scripts/generate_algorithms_md.py'
+      - 'README.md'
+      - 'ALGORITHMS.md'
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install pyyaml tabulate jinja2
+      - name: Regenerate docs
+        run: python3 scripts/update_docs_from_yaml.py --liboqs-root .
+      - name: Fail if generated files drift
+        run: |
+          if ! git diff --quiet; then
+            echo "Generated docs are out of sync with YAML. Run scripts/update_docs_from_yaml.py and commit the result."
+            git --no-pager diff
+            exit 1
+          fi

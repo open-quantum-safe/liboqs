@@ -18,6 +18,9 @@ website: https://frodokem.org/
 nist-round: 3
 spec-version: ISO Preliminary Standardization Proposal - 2023/03/14
 standardization-status: Under [ISO](https://frodokem.org/) consideration
+upstream-maintenance: TBD
+upstream-statement-url: null
+oqs-support-tier: 2
 primary-upstream:
   source: https://github.com/microsoft/PQCrypto-LWEKE/commit/a2f9dec8917ccc3464b3378d46b140fa7353320d
   spdx-license-identifier: MIT

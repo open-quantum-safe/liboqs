@@ -18,8 +18,22 @@ ALG_SUPPORT_HEADER = [
     "Algorithm family",
     "Standardization status",
     "Primary implementation",
+    "[Upstream maintenance](ALGORITHMS.md#upstream-maintenance)",
+    "[OQS tier](ALGORITHMS.md#oqs-support-tier)",
 ]
 COMMIT_HASH_LEN = 7
+TIER_LABELS = {1: "Tier 1 (Core)", 2: "Tier 2 (Supported)", 3: "Tier 3 (Community)"}
+
+
+def format_upstream_maintenance(algdata: dict) -> str:
+    label = algdata.get("upstream-maintenance", "TBD")
+    url = algdata.get("upstream-statement-url")
+    return f"[{label}]({url})" if url else label
+
+
+def format_oqs_tier(algdata: dict) -> str:
+    tier = algdata.get("oqs-support-tier", 3)
+    return TIER_LABELS.get(tier, f"Tier {tier}")
 
 
 def format_upstream_source(source: str) -> str:
@@ -84,6 +98,8 @@ def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
                 f"[{alg_name}]({md_url})" if anchor_alg_name else f"{alg_name}",
                 f"[{std_status}]({spec_url})" if spec_url else std_status,
                 primary_impl,
+                format_upstream_maintenance(algdata),
+                format_oqs_tier(algdata),
             ]
         )
     tbl = tabulate.tabulate(rows, tablefmt="pipe", headers="firstrow")
