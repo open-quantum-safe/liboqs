@@ -57,12 +57,12 @@ In this policy, the words "must" and "must not" specify absolute requirements th
 - armeabi-v7a, arm64-v8a, x86, x86_64 for Android
 - aarch64 for Apple iOS and tvOS (CMake `-DPLATFORM=OS64` and `TVOS`)
 - arm64, arm (32 bit), x86, x86_64, riscv32, riscv64 for Zephyr
-- armhf/ARM7 emulation on Ubuntu
 - amd64 for Alpine Linux
 
 ### Tier 3
 
 - x86 for Windows (Visual Studio Toolchain)
+- armhf/ARM7 emulation on Ubuntu
 - ppc64le for Ubuntu (Focal)
 - s390x for Ubuntu (Focal)
 - loongarch64 for Debian Linux (trixie)

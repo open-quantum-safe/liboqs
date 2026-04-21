@@ -374,6 +374,7 @@ int mayo_sign_signature(const mayo_params_t *p, unsigned char *sig,
     unsigned char tmp[DIGEST_BYTES_MAX + SALT_BYTES_MAX + SK_SEED_BYTES_MAX + 1];
     unsigned char *ctrbyte;
     unsigned char *vi;
+    int sol_found = 0;
 
     const int param_m = PARAM_m(p);
     const int param_n = PARAM_n(p);
@@ -468,11 +469,16 @@ int mayo_sign_signature(const mayo_params_t *p, unsigned char *sig,
                param_o);
 
         if (sample_solution(p, A, y, r, x, param_k, param_o, param_m, param_A_cols)) {
+            sol_found = 1;
             break;
         } else {
             memset(Mtmp, 0, sizeof(Mtmp));
             memset(A, 0, sizeof(A));
         }
+    }
+    if (!sol_found) {
+        ret = MAYO_ERR;
+        goto err;
     }
 
     for (int i = 0; i <= param_k - 1; ++i) {

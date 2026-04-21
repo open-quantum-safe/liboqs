@@ -67,7 +67,7 @@ upstreams:
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
     git_branch: main
-    git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
+    git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
@@ -75,7 +75,7 @@ upstreams:
     name: upcross
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_branch: master
-    git_commit: a21ebc314e06b0972a9bbcf2813a185ecb2917f1
+    git_commit: 179d61b8b59e524fba86954f7fa269495650030a
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
   -
