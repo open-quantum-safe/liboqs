@@ -18,8 +18,8 @@ ALG_SUPPORT_HEADER = [
     "Algorithm family",
     "Standardization status",
     "Primary implementation",
-    "[Upstream maintenance](ALGORITHMS.md#upstream-maintenance)",
-    "[OQS tier](ALGORITHMS.md#oqs-support-tier)",
+    "[Upstream maintenance](https://github.com/open-quantum-safe/liboqs/blob/main/ALGORITHMS.md#upstream-maintenance)",
+    "[OQS tier](https://github.com/open-quantum-safe/liboqs/blob/main/ALGORITHMS.md#oqs-support-tier)",
 ]
 COMMIT_HASH_LEN = 7
 TIER_LABELS = {1: "Tier 1 (Core)", 2: "Tier 2 (Supported)", 3: "Tier 3 (Community)"}
