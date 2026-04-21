@@ -19,12 +19,12 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
         with:
           python-version: '3.11'
       - name: Install deps
-        run: pip install pyyaml tabulate jinja2
+        run: pip install --require-hashes -r .github/workflows/requirements.txt
       - name: Regenerate docs
         run: python3 scripts/update_docs_from_yaml.py --liboqs-root .
       - name: Fail if generated files drift
