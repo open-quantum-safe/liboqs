@@ -12,6 +12,11 @@
   - https://github.com/jedisct1/supercop/releases/tag/20240808, which takes it from:
   - supercop-20240808
 
+## Support
+
+- **Upstream maintenance**: TBD
+- **OQS support tier**: Tier 3
+
 ## Parameter set summary
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |

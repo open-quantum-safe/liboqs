@@ -18,6 +18,11 @@
       - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
 
 
+## Support
+
+- **Upstream maintenance**: Actively maintained ([statement](https://github.com/pq-code-package/mldsa-native))
+- **OQS support tier**: Tier 2
+
 ## Parameter set summary
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
