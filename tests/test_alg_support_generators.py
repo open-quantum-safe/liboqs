@@ -20,6 +20,8 @@ def test_format_upstream_source_with_commit():
 import textwrap
 import tempfile
 
+import pytest
+
 
 def _write_yaml(dirpath, name, body):
     path = os.path.join(dirpath, name)
@@ -29,6 +31,7 @@ def _write_yaml(dirpath, name, body):
 
 
 def test_render_alg_support_tbl_includes_new_columns():
+    pytest.importorskip("tabulate")
     with tempfile.TemporaryDirectory() as d:
         _write_yaml(d, "foo.yml", textwrap.dedent("""
             name: Foo

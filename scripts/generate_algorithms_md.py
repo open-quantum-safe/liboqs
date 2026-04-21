@@ -18,7 +18,6 @@ import glob
 import os
 from typing import List
 
-import tabulate
 import yaml
 
 from update_alg_support_table import (
@@ -135,6 +134,7 @@ def render_section(doc_dir: str) -> str:
         with open(p) as f:
             algdata = yaml.safe_load(f)
         rows.append(family_row(algdata))
+    import tabulate
     return tabulate.tabulate(rows, tablefmt="pipe", headers="firstrow")
 
 

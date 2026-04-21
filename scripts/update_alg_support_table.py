@@ -10,7 +10,6 @@ scripts/update_docs_from_yaml.py to invoke update_readme in this module.
 
 import os
 
-import tabulate
 import yaml
 
 YAML_EXTS = [".yaml", ".yml"]
@@ -102,6 +101,7 @@ def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
                 format_oqs_tier(algdata),
             ]
         )
+    import tabulate
     tbl = tabulate.tabulate(rows, tablefmt="pipe", headers="firstrow")
     return tbl
 
