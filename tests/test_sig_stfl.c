@@ -1220,20 +1220,33 @@ int main(int argc, char **argv) {
 	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_query = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 
-	test_sk_lock = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
-	if (test_sk_lock == NULL) {
+	pthread_mutex_t *test_sk_lock_local = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
+	if (test_sk_lock_local == NULL) {
 		goto err;
 	}
-	sk_lock = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
-	if (sk_lock == NULL) {
+	pthread_mutex_t *sk_lock_local = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
+	if (sk_lock_local == NULL) {
+		OQS_MEM_insecure_free(test_sk_lock_local);
 		goto err;
 	}
 
-	if (pthread_mutex_init(test_sk_lock, NULL) || pthread_mutex_init(sk_lock, NULL)) {
+	if (pthread_mutex_init(test_sk_lock_local, NULL)) {
 		fprintf(stderr, "ERROR: Initializing mutex\n");
+		OQS_MEM_insecure_free(test_sk_lock_local);
+		OQS_MEM_insecure_free(sk_lock_local);
 		exit_status = EXIT_FAILURE;
 		goto err;
 	}
+	if (pthread_mutex_init(sk_lock_local, NULL)) {
+		fprintf(stderr, "ERROR: Initializing mutex\n");
+		pthread_mutex_destroy(test_sk_lock_local);
+		OQS_MEM_insecure_free(test_sk_lock_local);
+		OQS_MEM_insecure_free(sk_lock_local);
+		exit_status = EXIT_FAILURE;
+		goto err;
+	}
+	test_sk_lock = test_sk_lock_local;
+	sk_lock = sk_lock_local;
 
 	if (pthread_create(&thread, NULL, test_correctness_wrapper, &td)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_wrapper\n");
