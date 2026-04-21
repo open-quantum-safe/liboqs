@@ -21,7 +21,7 @@
 #include "system_info.c"
 #include "test_helpers.h"
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 #include <pthread.h>
 static pthread_mutex_t *test_sk_lock = NULL;
 static pthread_mutex_t *sk_lock = NULL;
@@ -151,7 +151,7 @@ static OQS_STATUS save_secret_key(uint8_t *key_buf, size_t buf_len, void *contex
 	return OQS_ERROR;
 }
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 
 static OQS_SIG_STFL_SECRET_KEY *lock_test_sk = NULL;
 static OQS_SIG_STFL *lock_test_sig_obj = NULL;
@@ -514,7 +514,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	context = strdup(((file_store)));
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, save_secret_key, (void *)context);
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(secret_key, sk_lock);
 #endif
 	public_key = OQS_MEM_malloc(sig->length_public_key + 2 * sizeof(magic_t));
@@ -791,7 +791,7 @@ static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_rea
 }
 #endif
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	size_t message_len_1 = sizeof(message_1);
@@ -1067,7 +1067,7 @@ void *test_create_keys(void *arg) {
 void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile, td->bitflips_all, td->bitflips);
-	if (strstr(alg_name, "XMSS") != NULL) {
+	if (strstr(td->alg_name, "XMSS") != NULL) {
 		td->rc2 = test_invalid_sig(td->alg_name);
 	}
 	OQS_thread_stop();
@@ -1204,7 +1204,7 @@ int main(int argc, char **argv) {
 
 	int exit_status = EXIT_SUCCESS;
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 #define MAX_LEN_SIG_NAME_ 64
 	OQS_STATUS rc_create = OQS_ERROR, rc_sign = OQS_ERROR, rc_query = OQS_ERROR;
 
@@ -1213,8 +1213,8 @@ int main(int argc, char **argv) {
 	pthread_t sign_key_thread;
 	pthread_t query_key_thread;
 
-	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR};
-	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR};
+	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
+	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
 
 	lock_test_data_t td_create = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
@@ -1243,6 +1243,7 @@ int main(int argc, char **argv) {
 	pthread_join(thread, NULL);
 	rc = td.rc;
 	rc = update_test_result(rc, is_xmss);
+	rc2 = td.rc2;
 
 	if (pthread_create(&thread, NULL, test_secret_key_wrapper, &td_2)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_wrapper_2\n");
@@ -1296,11 +1297,11 @@ err:
 	OQS_MEM_insecure_free(signature_2);
 
 	OQS_destroy();
-	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS || rc2 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 	if (rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
