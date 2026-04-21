@@ -161,8 +161,6 @@ jobs:
           nm -gu lib/liboqs.so | sed -n 's/^[[:space:]]*[Uw] \([^_].*\)/\1/p' > undefined-syms.txt &&
           ! (grep '^\(CRYPTO\|ERR\|EVP\|OPENSSL\|RAND\)_' undefined-syms.txt)
         working-directory: build
-      - name: Install Python test requirements
-        run: python3 -m pip install --break-system-packages -r .github/workflows/requirements.txt
       - name: Run tests
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
