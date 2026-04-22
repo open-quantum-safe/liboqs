@@ -137,8 +137,8 @@ cleanup:
 }
 
 int main(int argc, char **argv) {
-
 	OQS_init();
+	OQS_DEBUGLOGGING_setenv();
 	if (argc < 2 || argc > 3 || (argc == 3 && strcmp(argv[2], "--all"))) {
 		fprintf(stderr, "Usage: kat_kem algname [--all]\n");
 		fprintf(stderr, "  algname: ");
