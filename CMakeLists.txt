@@ -189,6 +189,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInf
 else()
     set(OQS_DEBUG_BUILD OFF)
 endif()
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(OQS_DEBUGLOGGING ON)
+else()
+    set(OQS_DEBUGLOGGING OFF)
+endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 

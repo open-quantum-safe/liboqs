@@ -450,3 +450,82 @@ OQS_API char *OQS_MEM_strdup(const char *str) {
 	return strdup(str); // IGNORE memory-check
 #endif
 }
+
+#if OQS_DEBUGLOGGING
+
+#define DEBUGLOGGING_LINE_WIDTH 80
+
+static int oqs_debuglogging_on = 0;
+
+/* Return 1 iff environment variable OQS_DEBUGLOGGING=1. Otherwise return 0 */
+static int OQS_DEBUGLOGGING_getenv(void) {
+	const char *env = getenv("OQS_DEBUGLOGGING");
+	if (!env) {
+		return 0;
+	}
+	return (*env == '1') ? 1 : 0;
+}
+
+void OQS_DEBUGLOGGING_setenv(void) {
+	oqs_debuglogging_on = OQS_DEBUGLOGGING_getenv();
+}
+
+void OQS_DEBUGLOGGING_enable(void) {
+	oqs_debuglogging_on = 1;
+}
+
+void OQS_DEBUGLOGGING_disable(void) {
+	oqs_debuglogging_on = 0;
+}
+
+void OQS_DEBUGLOGGING_fprintf(FILE *f, const char *fmt, ...) {
+	if (!oqs_debuglogging_on) {
+		return;
+	}
+	va_list args;
+	va_start(args, fmt);
+	vfprintf(f, fmt, args);
+	va_end(args);
+}
+
+/* Pretty-print a buffer in lower-case hexadecimal.
+ *
+ * Each byte is formatted with %02x, separated by a space. Line should wrap at
+ * DEBUGLOGGING_LINE_WIDTH.
+ */
+void OQS_DEBUGLOGGING_hexbuf(FILE *f, const uint8_t *buf, size_t buflen) {
+	if (!oqs_debuglogging_on || !buf || buflen == 0) {
+		return;
+	}
+	unsigned int line_len = 0;
+	for (size_t offset = 0; offset < buflen; offset++) {
+		if (line_len + 2 <= DEBUGLOGGING_LINE_WIDTH) {
+			fprintf(f, "%02x", buf[offset]);
+			line_len += 2;
+			if (offset + 1 < buflen &&
+			        line_len + 1 <= DEBUGLOGGING_LINE_WIDTH) {
+				fprintf(f, " ");
+				line_len += 1;
+			}
+		} else {
+			fprintf(f, "\n");
+			line_len = 0;
+		}
+	}
+	fprintf(f, "\n");
+}
+
+#else
+void OQS_DEBUGLOGGING_enable(void) {}
+void OQS_DEBUGLOGGING_disable(void) {}
+void OQS_DEBUGLOGGING_setenv(void) {}
+void OQS_DEBUGLOGGING_fprintf(FILE *f, const char *fmt, ...) {
+	(void)f;
+	(void)fmt;
+}
+void OQS_DEBUGLOGGING_hexbuf(FILE *f, const uint8_t *buf, size_t buflen) {
+	(void)f;
+	(void)buf;
+	(void)buflen;
+}
+#endif /* OQS_DEBUGLOGGING */
