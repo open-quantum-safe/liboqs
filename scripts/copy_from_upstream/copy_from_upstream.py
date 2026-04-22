@@ -68,6 +68,10 @@ def shell(command, expect=0):
     subprocess_stdout = None if DEBUG > 0 else subprocess.DEVNULL
     ret = subprocess.run(command, stdout=subprocess_stdout, stderr=subprocess_stdout)
     if ret.returncode != expect:
+        if ret.stdout:
+            print(ret.stdout.decode("utf-8"))
+        if ret.stderr:
+            print(ret.stderr.decode("utf-8"))
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 # Generate template from specified scheme to replace old file in 'copy' mode
