@@ -1,12 +1,12 @@
 upstreams:
   -
-    name: xuganyu96-hqc
-    git_url: https://github.com/xuganyu96/pqc-hqc.git
-    git_branch: liboqs-integration
-    git_commit: ee00532ae4a722768c33c33e9148052a2465228d
+    name: pqc-hqc
+    git_url: https://gitlab.com/pqc-hqc/hqc.git
+    git_branch: next-release
+    git_commit: 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
     kem_meta_path: "integrations/{pretty_name_full}_META.yml"
     kem_scheme_path: .
-    patches: []
+    patches: [pqchqc-liboqs-integration.patch]
   -
     name: oldpqclean
     git_url: https://github.com/PQClean/PQClean.git
@@ -158,7 +158,7 @@ kems:
   -
     name: hqc
     default_implementation: ref
-    upstream_location: xuganyu96-hqc
+    upstream_location: pqc-hqc
     schemes:
       -
         scheme: "1"
