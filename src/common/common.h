@@ -105,7 +105,7 @@ extern "C" {
 #endif
 
 /**
- * Enable debug logging at runtime 
+ * Enable debug logging at runtime
  */
 void OQS_DEBUGLOGGING_enable(void);
 
