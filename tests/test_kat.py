@@ -23,15 +23,13 @@ def test_kem(kem_name):
     h256 = sha256()
     h256.update(output.encode())
 
-    if kats[kem_name]['single'] != h256.hexdigest():
-        # print(output)
-        rerun = subprocess.run(
-            [helpers.path_to_executable('kat_kem'), kem_name],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE,
-            env={**os.environ, "OQS_DEBUGLOGGING": "1"}
-        )
-        print(rerun.stderr.decode("utf-8"))
+    rerun = subprocess.run(
+        [helpers.path_to_executable('kat_kem'), kem_name],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        env={**os.environ, "OQS_DEBUGLOGGING": "1"}
+    )
+    print(rerun.stderr.decode("utf-8"))
 
     assert kats[kem_name]['single'] == h256.hexdigest()
 
