@@ -68,7 +68,7 @@ parameter-sets:
     default: true
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://github.com/xuganyu96/pqc/commit/ee00532ae4a722768c33c33e9148052a2465228d
+  source: https://github.com/xuganyu96/pqc/commit/9ddf96e2166abb2033429cd4583f86cf25125d00
 default-upstream-id: ref
 auxiliary-submitters:
 - Carlos Aguilar-Melchor

@@ -6,6 +6,7 @@
 
 #include "symmetric.h"
 #include <stdint.h>
+#include <string.h>
 
 #ifdef USE_OQS_RANDOMBYTES
 #include <oqs/rand.h>
@@ -142,15 +143,19 @@ void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES]) {
  */
 void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_t m[PARAM_SECURITY_BYTES],
             const uint8_t salt[SALT_BYTES]) {
-    sha3_512_ctx g_hash_ctx = {0};
+    /* TODO: does avoiding incremental update work */
     uint8_t i_domain = HQC_G_FCT_DOMAIN;
-    OQS_SHA3_sha3_512_inc_init(&g_hash_ctx);
-    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
-    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_SECURITY_BYTES);
-    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
-    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
-    OQS_SHA3_sha3_512_inc_finalize(output, &g_hash_ctx);
-    OQS_SHA3_sha3_512_inc_ctx_release(&g_hash_ctx);
+    uint8_t input[SEED_BYTES + PARAM_SECURITY_BYTES + SALT_BYTES + 1];
+    size_t offset = 0;
+    memcpy(input + offset, hash_ek_kem, SEED_BYTES);
+    offset += SEED_BYTES;
+    memcpy(input + offset, m, PARAM_SECURITY_BYTES);
+    offset += PARAM_SECURITY_BYTES;
+    memcpy(input + offset, salt, SALT_BYTES);
+    offset += SALT_BYTES;
+    memcpy(input + offset, &i_domain, 1);
+
+    OQS_SHA3_sha3_512(output, input, sizeof(input));
 }
 
 /**
