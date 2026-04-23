@@ -24,7 +24,7 @@ def test_kem(kem_name):
     h256.update(output.encode())
 
     if kats[kem_name]['single'] != h256.hexdigest():
-        print(output)
+        # print(output)
         rerun = subprocess.run(
             [helpers.path_to_executable('kat_kem'), kem_name],
             stdout=subprocess.DEVNULL,
