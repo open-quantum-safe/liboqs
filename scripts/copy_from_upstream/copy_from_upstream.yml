@@ -1,4 +1,10 @@
 upstreams:
+  - name: xuganyu96-pqc-hqc
+    git_url: https://github.com/xuganyu96/pqc-hqc
+    git_branch: liboqs-integration
+    git_commit: ee00532ae4a722768c33c33e9148052a2465228d
+    kem_meta_path: "integrations/{pretty_name_full}_META.yml"
+    kem_scheme_path: .
   -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git
@@ -158,7 +164,7 @@ kems:
   -
     name: hqc
     default_implementation: ref
-    upstream_location: pqc-hqc
+    upstream_location: xuganyu96-pqc-hqc
     schemes:
       -
         scheme: "1"

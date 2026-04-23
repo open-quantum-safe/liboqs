@@ -120,17 +120,7 @@ int crypto_kem_enc(uint8_t *c_kem, uint8_t *K, const uint8_t *ek_kem) {
     // Compute shared key K and ciphertext c_kem
     hash_h(hash_ek_kem, ek_kem);
     hash_g(K_theta, hash_ek_kem, m, c_kem_t.salt);
-    OQS_DEBUGLOGGING_fprintf(stderr, "\n%s (%s:%d) = \n", "hash_ek_kem", __FILE__, __LINE__);
-    OQS_DEBUGLOGGING_hexbuf(stderr, hash_ek_kem, sizeof(hash_ek_kem));
-    OQS_DEBUGLOGGING_fprintf(stderr, "\n%s (%s:%d) = \n", "m", __FILE__, __LINE__);
-    OQS_DEBUGLOGGING_hexbuf(stderr, m, sizeof(m));
-    OQS_DEBUGLOGGING_fprintf(stderr, "\n%s (%s:%d) = \n", "c_kem_t.salt", __FILE__, __LINE__);
-    OQS_DEBUGLOGGING_hexbuf(stderr, c_kem_t.salt, sizeof(c_kem_t.salt));
-    OQS_DEBUGLOGGING_fprintf(stderr, "\n%s (%s:%d) = \n", "K_theta", __FILE__, __LINE__);
-    OQS_DEBUGLOGGING_hexbuf(stderr, K_theta, sizeof(K_theta));
     memcpy(theta, K_theta + SEED_BYTES, SEED_BYTES);
-    OQS_DEBUGLOGGING_fprintf(stderr, "\n%s (%s:%d) = \n", "theta", __FILE__, __LINE__);
-    OQS_DEBUGLOGGING_hexbuf(stderr, theta, sizeof(theta));
     hqc_pke_encrypt(&c_kem_t.c_pke, ek_kem, (uint64_t *)m, theta);
 
     hqc_c_kem_to_string(c_kem, &c_kem_t);
