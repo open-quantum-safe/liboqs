@@ -189,7 +189,7 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(OQS_DEBUGLOGGING ON)
 else()
-    set(OQS_DEBUGLOGGING OFF)
+    set(OQS_DEBUGLOGGING ON)
 endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
