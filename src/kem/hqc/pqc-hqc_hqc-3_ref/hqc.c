@@ -105,9 +105,6 @@ void hqc_pke_encrypt(ciphertext_pke_t *c_pke, const uint8_t *ek_pke, const uint6
     uint64_t e[VEC_N_SIZE_64] = {0};
     uint64_t tmp[VEC_N_SIZE_64] = {0};
 
-    OQS_DEBUGLOGGING_fprintf(stderr, "%s (%s:%d) = \n", "theta", __FILE__, __LINE__);
-    OQS_DEBUGLOGGING_hexbuf(stderr, theta, SEED_BYTES);
-
     // Initialize Xof using theta
     xof_init(&theta_xof_ctx, theta, SEED_BYTES);
 
