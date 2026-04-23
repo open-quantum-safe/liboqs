@@ -15,6 +15,11 @@
 - **Ancestors of primary source**:
   - SUPERCOP-20221025 "clean" and "avx2" implementations
 
+## Support
+
+- **Upstream maintenance**: No active maintenance ([statement](https://github.com/PQClean/PQClean/blob/dca1ee2458b399d0aa11bacde535393ee7c447aa/README.md))
+- **OQS support tier**: Tier 3
+
 ## Advisories
 
 - Classic-McEliece-460896, Classic-McEliece-460896f, Classic-McEliece-6960119, and Classic-McEliece-6960119f parameter sets fail memory leak testing on x86-64 when building with ``clang`` using optimization level ``-O2`` and ``-O3``. Care is advised when using the algorithm at higher optimization levels, and any other compiler and architecture.

@@ -10,6 +10,9 @@ website: https://mqom.org/
 nist-round: 2
 standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mqom-spec-round2-web.pdf)
   consideration
+upstream-maintenance: TBD
+upstream-statement-url: null
+oqs-support-tier: 3
 spec-version: NIST Round 2
 primary-upstream:
   source: https://github.com/mqom/mqom-v2/commit/ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7

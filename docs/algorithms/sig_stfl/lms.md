@@ -11,6 +11,11 @@
   - **Implementation license (SPDX-Identifier)**: MIT
 
 
+## Support
+
+- **Upstream maintenance**: TBD
+- **OQS support tier**: Tier 2
+
 ## Parameter set summary
 
 |      Parameter set       | Security model   | Claimed NIST Level   |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |

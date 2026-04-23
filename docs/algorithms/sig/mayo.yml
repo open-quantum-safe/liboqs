@@ -11,6 +11,9 @@ website: https://pqmayo.org
 nist-round: 2
 standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mayo-spec-round2-web.pdf)
   consideration
+upstream-maintenance: TBD
+upstream-statement-url: null
+oqs-support-tier: 3
 spec-version: NIST Round 2 (February 2025)
 primary-upstream:
   source: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106

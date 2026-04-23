@@ -16,6 +16,9 @@ crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
 website: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203
 nist-round: FIPS203
 standardization-status: Standardized by [NIST](https://csrc.nist.gov/pubs/fips/203/final)
+upstream-maintenance: Actively maintained
+upstream-statement-url: https://github.com/pq-code-package/mlkem-native
+oqs-support-tier: 1
 spec-version: ML-KEM
 primary-upstream:
   source: https://github.com/pq-code-package/mlkem-native/commit/d2cae2be522a67bfae26100fdb520576f1b2ef90
