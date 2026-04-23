@@ -145,11 +145,29 @@ void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
     sha3_512_ctx g_hash_ctx = {0};
     uint8_t i_domain = HQC_G_FCT_DOMAIN;
     OQS_SHA3_sha3_512_inc_init(&g_hash_ctx);
+    OQS_DEBUGLOGGING_fprintf(stderr, "g_hash_ctx after init = \n");
+    OQS_DEBUGLOGGING_hexbuf(stderr, (uint8_t *)g_hash_ctx.ctx, 224);
+
     OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
+    OQS_DEBUGLOGGING_fprintf(stderr, "g_hash_ctx after hash_ek_kem = \n");
+    OQS_DEBUGLOGGING_hexbuf(stderr, (uint8_t *)g_hash_ctx.ctx, 224);
+
     OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_SECURITY_BYTES);
+    OQS_DEBUGLOGGING_fprintf(stderr, "g_hash_ctx after m = \n");
+    OQS_DEBUGLOGGING_hexbuf(stderr, (uint8_t *)g_hash_ctx.ctx, 224);
+
     OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
+    OQS_DEBUGLOGGING_fprintf(stderr, "g_hash_ctx after salt = \n");
+    OQS_DEBUGLOGGING_hexbuf(stderr, (uint8_t *)g_hash_ctx.ctx, 224);
+
     OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
+    OQS_DEBUGLOGGING_fprintf(stderr, "g_hash_ctx after domain = \n");
+    OQS_DEBUGLOGGING_hexbuf(stderr, (uint8_t *)g_hash_ctx.ctx, 224);
+
     OQS_SHA3_sha3_512_inc_finalize(output, &g_hash_ctx);
+    OQS_DEBUGLOGGING_fprintf(stderr, "g_hash out = \n");
+    OQS_DEBUGLOGGING_hexbuf(stderr, (uint8_t *)output, 64);
+
     OQS_SHA3_sha3_512_inc_ctx_release(&g_hash_ctx);
 }
 
