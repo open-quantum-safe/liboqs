@@ -29,7 +29,7 @@ def test_kem(kem_name):
             [helpers.path_to_executable('kat_kem'), kem_name],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.PIPE,
-            env={"OQS_DEBUGLOGGING": "1"},
+            env={**os.environ, "OQS_DEBUGLOGGING": "1"}
         )
         print(rerun.stderr.decode("utf-8"))
 
