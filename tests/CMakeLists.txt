@@ -130,6 +130,12 @@ if(OQS_BUILD_FUZZ_TESTS AND CMAKE_C_COMPILER_ID MATCHES "Clang")
         COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
         LINK_FLAGS "${FUZZING_LINK_FLAGS}"
     )
+    add_executable(fuzz_test_sig_stfl_lms fuzz_test_sig_stfl_lms.c)
+    target_link_libraries(fuzz_test_sig_stfl_lms PRIVATE ${TEST_DEPS})
+    set_target_properties(fuzz_test_sig_stfl_lms PROPERTIES
+        COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
+        LINK_FLAGS "${FUZZING_LINK_FLAGS}"
+    )
 endif()
 
 # Stateful SIG API tests
