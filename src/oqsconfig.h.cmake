@@ -24,6 +24,7 @@
 #cmakedefine OQS_DIST_ARM32_V7_BUILD 1
 #cmakedefine OQS_DIST_PPC64LE_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1
+#cmakedefine OQS_DEBUGLOGGING 1
 #cmakedefine ARCH_X86_64 1
 #cmakedefine ARCH_ARM64v8 1
 #cmakedefine ARCH_ARM32v7 1
@@ -134,9 +135,9 @@
 #cmakedefine OQS_ENABLE_KEM_classic_mceliece_8192128f_avx2 1
 
 #cmakedefine OQS_ENABLE_KEM_HQC 1
-#cmakedefine OQS_ENABLE_KEM_hqc_128 1
-#cmakedefine OQS_ENABLE_KEM_hqc_192 1
-#cmakedefine OQS_ENABLE_KEM_hqc_256 1
+#cmakedefine OQS_ENABLE_KEM_hqc_1 1
+#cmakedefine OQS_ENABLE_KEM_hqc_3 1
+#cmakedefine OQS_ENABLE_KEM_hqc_5 1
 
 #cmakedefine OQS_ENABLE_KEM_KYBER 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512 1

@@ -15,6 +15,11 @@
 
 #include <oqs/oqsconfig.h>
 
+#if OQS_DEBUGLOGGING
+#include <stdarg.h>
+#include <assert.h>
+#endif /* OQS_DEBUGLOGGING */
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -98,6 +103,32 @@ extern "C" {
 #undef OQS_API
 #define OQS_API
 #endif
+
+/**
+ * Enable debug logging at runtime
+ */
+void OQS_DEBUGLOGGING_enable(void);
+
+/**
+ * Disable debug logging at runtime
+ */
+void OQS_DEBUGLOGGING_disable(void);
+
+/**
+ * Enable debug logging iff environment variable OQS_DEBUGLOGGING is set to "1"
+ */
+void OQS_DEBUGLOGGING_setenv(void);
+
+/**
+ * Print debug logging message. Only works if OQS_DEBUGLOGGING is turned on at
+ * compile time AND enabled at runtime
+ */
+void OQS_DEBUGLOGGING_fprintf(FILE *f, const char *fmt, ...);
+
+/**
+ * Pretty-print a dense buffer
+ */
+void OQS_DEBUGLOGGING_hexbuf(FILE *f, const uint8_t *buf, size_t buflen);
 
 /**
  * Represents return values from functions.
