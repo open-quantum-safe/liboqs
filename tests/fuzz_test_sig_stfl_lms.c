@@ -30,9 +30,9 @@ static const size_t NUM_TARGET_ALGS = 2;
 
 /*
  * Fuzz input layout:
- *   [0]              algorithm selector byte (index into TARGET_ALGS)
- *   [1..pk_len]      mutated public key
- *   [pk_len+1..end]  mutated signature + message (split at sig_len boundary)
+ *   [0]    algorithm selector byte (index into TARGET_ALGS)
+ *   [1]    field selector byte (% 3 → 0: pk/sig/msg, 1: sig/pk/msg, 2: msg/pk/sig)
+ *   [2..]  fuzz bytes applied sequentially to the three fields in selected order
  */
 
 typedef struct {
@@ -184,7 +184,7 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 		return OQS_ERROR;
 	}
 
-	/* Select target algorithm from first byte of fuzz input */
+	/* Byte 0: algorithm selector */
 	size_t alg_idx = data[0] % NUM_TARGET_ALGS;
 	stfl_keypair_t *kp = &cached[alg_idx];
 	OQS_SIG_STFL *sig = kp->sig;
@@ -192,11 +192,15 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 	const uint8_t *fuzz_data = data + 1;
 	size_t fuzz_len = data_len - 1;
 
-	/*
-	 * Build mutated public_key, signature, and message from fuzz input.
-	 * Use the real sizes from the sig object but fill with fuzzed bytes.
-	 * If fuzz input is too short, zero-pad.
-	 */
+	if (fuzz_len < 1) {
+		return OQS_ERROR;
+	}
+
+	/* Byte 1: field selector — determines which field is mutated first */
+	size_t field_selector = fuzz_data[0] % 3;
+	fuzz_data++;
+	fuzz_len--;
+
 	size_t pk_len = sig->length_public_key;
 	size_t sig_len = kp->signature_len;
 	size_t msg_len = kp->message_len;
@@ -212,26 +216,51 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 		return OQS_ERROR;
 	}
 
-	/* Start from KAT values, then overwrite with fuzz bytes */
+	/* Start from KAT values, then overwrite with fuzz bytes in selected order */
 	memcpy(mutated_pk, kp->public_key, pk_len);
 	memcpy(mutated_sig, kp->signature, sig_len);
 	memcpy(mutated_msg, kp->message, msg_len);
 
-	size_t offset = 0;
+	/*
+	 * field_selector % 3 controls which field is overwritten first:
+	 *   0 → pk, sig, msg   1 → sig, pk, msg   2 → msg, pk, sig
+	 */
+	uint8_t *fp[3];
+	size_t fl[3];
+	switch (field_selector) {
+	case 1:
+		fp[0] = mutated_sig;
+		fl[0] = sig_len;
+		fp[1] = mutated_pk;
+		fl[1] = pk_len;
+		fp[2] = mutated_msg;
+		fl[2] = msg_len;
+		break;
+	case 2:
+		fp[0] = mutated_msg;
+		fl[0] = msg_len;
+		fp[1] = mutated_pk;
+		fl[1] = pk_len;
+		fp[2] = mutated_sig;
+		fl[2] = sig_len;
+		break;
+	default:
+		fp[0] = mutated_pk;
+		fl[0] = pk_len;
+		fp[1] = mutated_sig;
+		fl[1] = sig_len;
+		fp[2] = mutated_msg;
+		fl[2] = msg_len;
+		break;
+	}
 
-	if (offset < fuzz_len) {
-		size_t copy = (fuzz_len - offset) < pk_len ? (fuzz_len - offset) : pk_len;
-		memcpy(mutated_pk, fuzz_data + offset, copy);
-		offset += copy;
-	}
-	if (offset < fuzz_len) {
-		size_t copy = (fuzz_len - offset) < sig_len ? (fuzz_len - offset) : sig_len;
-		memcpy(mutated_sig, fuzz_data + offset, copy);
-		offset += copy;
-	}
-	if (offset < fuzz_len) {
-		size_t copy = (fuzz_len - offset) < msg_len ? (fuzz_len - offset) : msg_len;
-		memcpy(mutated_msg, fuzz_data + offset, copy);
+	size_t offset = 0;
+	for (size_t i = 0; i < 3; i++) {
+		if (offset < fuzz_len) {
+			size_t copy = (fuzz_len - offset) < fl[i] ? (fuzz_len - offset) : fl[i];
+			memcpy(fp[i], fuzz_data + offset, copy);
+			offset += copy;
+		}
 	}
 
 	/*
