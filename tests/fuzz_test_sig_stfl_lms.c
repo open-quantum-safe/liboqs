@@ -31,7 +31,7 @@ static const size_t NUM_TARGET_ALGS = 2;
 /*
  * Fuzz input layout:
  *   [0]    algorithm selector byte (index into TARGET_ALGS)
- *   [1]    field selector byte (% 3 → 0: pk/sig/msg, 1: sig/pk/msg, 2: msg/pk/sig)
+ *   [1]    field selector byte (% 3 → 0: pk/sig/msg, 1: sig/msg/pk, 2: msg/pk/sig)
  *   [2..]  fuzz bytes applied sequentially to the three fields in selected order
  */
 
@@ -223,7 +223,7 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 
 	/*
 	 * field_selector % 3 controls which field is overwritten first:
-	 *   0 → pk, sig, msg   1 → sig, pk, msg   2 → msg, pk, sig
+	 *   0 → pk, sig, msg   1 → sig, msg, pk   2 → msg, pk, sig
 	 */
 	uint8_t *fp[3];
 	size_t fl[3];
@@ -231,10 +231,10 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 	case 1:
 		fp[0] = mutated_sig;
 		fl[0] = sig_len;
-		fp[1] = mutated_pk;
-		fl[1] = pk_len;
-		fp[2] = mutated_msg;
-		fl[2] = msg_len;
+		fp[1] = mutated_msg;
+		fl[1] = msg_len;
+		fp[2] = mutated_pk;
+		fl[2] = pk_len;
 		break;
 	case 2:
 		fp[0] = mutated_msg;
@@ -244,6 +244,7 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 		fp[2] = mutated_sig;
 		fl[2] = sig_len;
 		break;
+	case 0:
 	default:
 		fp[0] = mutated_pk;
 		fl[0] = pk_len;
