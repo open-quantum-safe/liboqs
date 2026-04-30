@@ -8,7 +8,6 @@
 #include "common.h"
 
 #if defined(MLDSA_DEBUG)
-#include <stdint.h>
 
 /*************************************************
  * Name:        mld_assert
@@ -91,14 +90,14 @@ void mld_debug_check_bounds(const char *file, int line, const int32_t *ptr,
 
 /* Because of https://github.com/diffblue/cbmc/issues/8570, we can't
  * just use a single flattened array_bound(...) here. */
-#define mld_assert_bound_2d(ptr, M, N, value_lb, value_ub)             \
-  cassert(forall(kN, 0, (M),                                           \
-                 array_bound(&((int32_t(*)[(N)])(ptr))[kN][0], 0, (N), \
+#define mld_assert_bound_2d(ptr, M, N, value_lb, value_ub)              \
+  cassert(forall(kN, 0, (M),                                            \
+                 array_bound(&((int32_t (*)[(N)])(ptr))[kN][0], 0, (N), \
                              (value_lb), (value_ub))))
 
-#define mld_assert_abs_bound_2d(ptr, M, N, value_abs_bd)                   \
-  cassert(forall(kN, 0, (M),                                               \
-                 array_abs_bound(&((int32_t(*)[(N)])(ptr))[kN][0], 0, (N), \
+#define mld_assert_abs_bound_2d(ptr, M, N, value_abs_bd)                    \
+  cassert(forall(kN, 0, (M),                                                \
+                 array_abs_bound(&((int32_t (*)[(N)])(ptr))[kN][0], 0, (N), \
                                  (value_abs_bd))))
 
 #else /* !MLDSA_DEBUG && CBMC */

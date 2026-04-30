@@ -58,6 +58,7 @@ __contract__(
  * Returns number of 1 bits.
  **************************************************/
 MLD_INTERNAL_API
+MLD_MUST_CHECK_RETURN_VALUE
 unsigned int mld_poly_make_hint(mld_poly *h, const mld_poly *a0,
                                 const mld_poly *a1)
 __contract__(

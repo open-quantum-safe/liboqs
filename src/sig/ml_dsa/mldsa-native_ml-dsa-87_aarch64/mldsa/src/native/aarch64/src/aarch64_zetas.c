@@ -14,7 +14,6 @@
 #if defined(MLD_ARITH_BACKEND_AARCH64) && \
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
-#include <stdint.h>
 #include "arith_native_aarch64.h"
 
 /*

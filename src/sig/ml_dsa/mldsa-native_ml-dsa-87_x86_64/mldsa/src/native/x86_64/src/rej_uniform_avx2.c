@@ -23,8 +23,6 @@
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
 #include <immintrin.h>
-#include <stdint.h>
-#include <string.h>
 #include "arith_native_x86_64.h"
 #include "consts.h"
 
