@@ -27,6 +27,7 @@ void mld_pack_pk(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   __loop__(
     assigns(i, memory_slice(pk, MLDSA_CRYPTO_PUBLICKEYBYTES))
     invariant(i <= MLDSA_K)
+    decreases(MLDSA_K - i)
   )
   {
     mld_polyt1_pack(pk + MLDSA_SEEDBYTES + i * MLDSA_POLYT1_PACKEDBYTES,
@@ -136,6 +137,7 @@ void mld_pack_sig_c_h(uint8_t sig[MLDSA_CRYPTO_BYTES],
     invariant(i <= MLDSA_K)
     invariant(k <= number_of_hints)
     invariant(number_of_hints <= MLDSA_OMEGA)
+    decreases(MLDSA_K - i)
   )
   {
     /* For each coefficient in that polynomial, record it as as hint */
@@ -147,6 +149,7 @@ void mld_pack_sig_c_h(uint8_t sig[MLDSA_CRYPTO_BYTES],
       invariant(j <= MLDSA_N)
       invariant(k <= number_of_hints)
       invariant(number_of_hints <= MLDSA_OMEGA)
+      decreases(MLDSA_N - j)
     )
     {
       /* The reference implementation implicitly relies on the total */
@@ -215,6 +218,7 @@ __contract__(
     invariant(i <= MLDSA_K)
     /* Maintain the post-condition */
     invariant(forall(k1, 0, MLDSA_K, array_bound(h->vec[k1].coeffs, 0, MLDSA_N, 0, 2)))
+    decreases(MLDSA_K - i)
   )
   {
     /* Grab the hint count for the i'th polynomial */
@@ -235,7 +239,9 @@ __contract__(
     __loop__(
         invariant(i <= MLDSA_K)
         /* Maintain the post-condition */
+        invariant(j <= new_hint_count && new_hint_count <= MLDSA_OMEGA)
         invariant(forall(k1, 0, MLDSA_K, array_bound(h->vec[k1].coeffs, 0, MLDSA_N, 0, 2)))
+        decreases(new_hint_count - j)
       )
     {
       const uint8_t this_hint_index = packed_hints[j];
@@ -257,6 +263,7 @@ __contract__(
     invariant(j <= MLDSA_OMEGA)
     /* Maintain the post-condition */
     invariant(forall(k1, 0, MLDSA_K, array_bound(h->vec[k1].coeffs, 0, MLDSA_N, 0, 2)))
+    decreases(MLDSA_OMEGA - j)
   )
   {
     if (packed_hints[j] != 0)
