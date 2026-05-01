@@ -179,6 +179,11 @@ if(OQS_PORTABLE_BUILD)
     message(FATAL_ERROR "OQS_PORTABLE_BUILD is deprecated")
 endif()
 
+get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(NOT _isMultiConfig AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     set(OQS_DEBUG_BUILD ON)
 else()
@@ -187,7 +192,7 @@ endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 
-if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
+if(MSVC)
     set(CMAKE_GENERATOR_CC cl)
 endif()
 
@@ -349,4 +354,3 @@ if(NOT TARGET uninstall)
   add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
-

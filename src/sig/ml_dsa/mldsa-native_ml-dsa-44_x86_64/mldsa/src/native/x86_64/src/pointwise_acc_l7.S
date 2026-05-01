@@ -19,7 +19,8 @@
 
 #include "../../../common.h"
 #if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
-    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) && \
+    (defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_L == 7)
 
 /*
  * WARNING: This file is auto-derived from the mldsa-native source file
@@ -180,5 +181,7 @@ Lpointwise_acc_l7_avx2_looptop2:
         retq
         .cfi_endproc
 
+MLD_ASM_FN_SIZE(pointwise_acc_l7_avx2)
+
 #endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
-        */
+          && (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 7) */

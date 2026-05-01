@@ -23,12 +23,12 @@
 
 #include "../../../common.h"
 
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
-    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) &&   \
+    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) &&   \
+    (defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
+     (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87))
 
 #include <immintrin.h>
-#include <stdint.h>
-#include <string.h>
 #include "arith_native_x86_64.h"
 #include "consts.h"
 
@@ -61,7 +61,7 @@ void mld_poly_decompose_32_avx2(int32_t *a1, int32_t *a0)
      * range: 0 <= f <= Q-1 = 32*GAMMA2 = 16*128*B
      */
 
-    /* Compute f1' = ceil(f / 128) as floor((f + 127) >> 7) */
+    /* Compute f1' = ceil(f / 128) as floor((f + 127) / 2^7) */
     f1 = _mm256_add_epi32(f, off);
     f1 = _mm256_srli_epi32(f1, 7);
     /*
@@ -74,8 +74,8 @@ void mld_poly_decompose_32_avx2(int32_t *a1, int32_t *a0)
 
     /*
      * Compute f1 = round-(f1' / B) ≈ round(f1' * 1025 / 2^22). This is exact
-     * for 0 <= f1' < 2^16. Note that half is rounded down since 1025 / 2^22 ≲
-     * 1 / 4092.
+     * for 0 <= f1' < 2^16. See mld_decompose() in mldsa/src/rounding.h for the
+     * proof, and proofs/isabelle/compress for a formalization of the argument.
      *
      * round(f1' * 1025 / 2^22) is in turn computed in 2 steps as
      * round(floor(f1' * 1025 / 2^16) / 2^6). The mulhi computes f1'' =
@@ -87,7 +87,9 @@ void mld_poly_decompose_32_avx2(int32_t *a1, int32_t *a0)
      */
     f1 = _mm256_mulhi_epu16(f1, v);
     /*
-     * range: 0 <= f1'' < floor(2^16 * 1025 / 2^16) = 1025
+     * range: 0 <= f1''  = floor(f1' * 1025 / 2^16)
+     *                  <= f1' * 1025 / 2^16
+     *                   < 2^16 * 1025 / 2^16 = 1025
      *
      * Because 0 <= f1'' < 2^15, the multiplication in mulhrs is unsigned, that
      * is, no erroneous sign-extension occurs.
@@ -142,9 +144,12 @@ void mld_poly_decompose_32_avx2(int32_t *a1, int32_t *a0)
 }
 
 #else /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
-       */
+         && (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == \
+         65 || MLD_CONFIG_PARAMETER_SET == 87) */
 
 MLD_EMPTY_CU(avx2_poly_decompose_32)
 
-#endif /* !(MLD_ARITH_BACKEND_X86_64_DEFAULT && \
-          !MLD_CONFIG_MULTILEVEL_NO_SHARED) */
+#endif /* !(MLD_ARITH_BACKEND_X86_64_DEFAULT &&                                \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED &&                                  \
+          (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
+          || MLD_CONFIG_PARAMETER_SET == 87)) */
