@@ -19,6 +19,12 @@
 extern "C" {
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+#define IGNORE_UNUSED_FUNC __attribute__((unused))
+#else
+#define IGNORE_UNUSED_FUNC
+#endif
+
 /**
  * Value barrier: prevent compiler from optimizing on secret values
  */
@@ -36,7 +42,7 @@ extern "C" {
     } while (0)
 
 #else
-/* The fallback implementation: pure C, no inline assembly, portable 
+/* The fallback implementation: pure C, no inline assembly, portable
  *
  * TODO: this is a best effort implementation that provides no guarantee; the
  * forced memory round trip could also incur significant performance penalty if
@@ -47,18 +53,18 @@ extern "C" {
                 "Falling back to volatile round-trip. "                        \
                 "Verify generated assembly for constant-time correctness.")
 
-static inline void oqs_black_box_fallback(volatile void *p, size_t sz)
-    __attribute__((unused));
+static inline void oqs_black_box_fallback(volatile void *p,
+        size_t sz) IGNORE_UNUSED_FUNC;
 
-static inline void oqs_black_box_fallback(volatile void *p, size_t sz)
-    __attribute__((unused)) {
-    volatile unsigned char *q = (volatile unsigned char *)p;
-    unsigned char tmp;
-    size_t i;
-    for (i = 0; i < sz; i++) {
-        tmp = q[i];
-        q[i] = tmp;
-    }
+static inline void oqs_black_box_fallback(volatile void *p,
+        size_t sz) IGNORE_UNUSED_FUNC {
+	volatile unsigned char *q = (volatile unsigned char *)p;
+	unsigned char tmp;
+	size_t i;
+	for (i = 0; i < sz; i++) {
+		tmp = q[i];
+		q[i] = tmp;
+	}
 }
 
 #define OQS_MEM_BLACK_BOX(v)                                                   \
