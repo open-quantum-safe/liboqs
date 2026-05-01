@@ -339,8 +339,8 @@ static void calibrate(unsigned int nsamples, uint8_t *addr) {
 		mem_fence();
 		cal[i] = probe(addr);
 	}
-	qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-	fprintf(stderr, "    Warm hit (read+probe):   p50=%" PRIu64 "\n", cal[50]);
+	qsort(cal, nsamples, sizeof(uint64_t), cmp_u64);
+	fprintf(stderr, "    Warm hit (read+probe):   p50=%" PRIu64 "\n", cal[nsamples / 2]);
 
 	for (volatile unsigned int i = 0; i < nsamples; i++) {
 		cache_flush(addr);
@@ -350,34 +350,8 @@ static void calibrate(unsigned int nsamples, uint8_t *addr) {
 			;
 		cal[i] = probe(addr);
 	}
-	qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-	fprintf(stderr, "    Cold miss (flush+probe): p50=%" PRIu64 "\n", cal[50]);
-
-#if 0 /* disable these for now */
-	for (volatile unsigned int i = 0; i < nsamples; i++) {
-		cache_flush(sk);
-		mem_fence();
-		load_fence();
-		OQS_KEM_decaps(kem, ss2, ct, sk);
-		mem_fence();
-		load_fence();
-		cal[i] = probe(sk);
-	}
-	qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-	fprintf(stderr, "    Decaps-warm (good ct): p50=%" PRIu64 "\n", cal[50]);
-
-	for (volatile unsigned int i = 0; i < nsamples; i++) {
-		cache_flush(sk);
-		mem_fence();
-		load_fence();
-		OQS_KEM_decaps(kem, ss2, ct_bad, sk);
-		mem_fence();
-		load_fence();
-		cal[i] = probe(sk);
-	}
-	qsort(cal, 100, sizeof(uint64_t), cmp_u64);
-	fprintf(stderr, "    Decaps-warm (bad  ct): p50=%lu\n", cal[50]);
-#endif
+	qsort(cal, nsamples, sizeof(uint64_t), cmp_u64);
+	fprintf(stderr, "    Cold miss (flush+probe): p50=%" PRIu64 "\n", cal[nsamples / 2]);
 }
 
 int main(int argc, char *argv[]) {
@@ -389,6 +363,7 @@ int main(int argc, char *argv[]) {
 	}
 	char probelabel[16], ctrllabel[16], probelabel_good[24], probelabel_bad[24],
 	     ctrllabel_good[24], ctrllabel_bad[24];
+	double *d0 = NULL, *dc = NULL;
 	snprintf(probelabel, sizeof(probelabel), "sk[%lu]", args.probe_loc);
 	snprintf(ctrllabel, sizeof(ctrllabel), "sk[%lu]", args.ctrl_loc);
 	snprintf(probelabel_good, sizeof(probelabel_good), "%s G.CT", probelabel);
@@ -488,8 +463,8 @@ int main(int argc, char *argv[]) {
 	print_aggregate(probelabel, diff_tmean_0, NUM_ROUNDS);
 	print_aggregate(ctrllabel, diff_tmean_ctrl, NUM_ROUNDS);
 
-	double *d0 = malloc(NUM_ROUNDS * sizeof(double));
-	double *dc = malloc(NUM_ROUNDS * sizeof(double));
+	d0 = malloc(NUM_ROUNDS * sizeof(double));
+	dc = malloc(NUM_ROUNDS * sizeof(double));
 	memcpy(d0, diff_tmean_0, NUM_ROUNDS * sizeof(double));
 	memcpy(dc, diff_tmean_ctrl, NUM_ROUNDS * sizeof(double));
 	qsort(d0, NUM_ROUNDS, sizeof(double), cmp_double);
