@@ -2,7 +2,6 @@ name: CodeQL analysis
 
 permissions:
   contents: read
-  security-events: write
 
 on:
   workflow_call:
@@ -14,6 +13,10 @@ on:
 
 jobs:
   codeql:
+    permissions:
+      contents: read
+      security-events: write
+
     name: CodeQL
     runs-on: ubuntu-latest
     steps:
