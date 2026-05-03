@@ -130,6 +130,12 @@ if(OQS_BUILD_FUZZ_TESTS AND CMAKE_C_COMPILER_ID MATCHES "Clang")
         COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
         LINK_FLAGS "${FUZZING_LINK_FLAGS}"
     )
+    add_executable(fuzz_test_sig_stfl_lms fuzz_test_sig_stfl_lms.c)
+    target_link_libraries(fuzz_test_sig_stfl_lms PRIVATE ${TEST_DEPS})
+    set_target_properties(fuzz_test_sig_stfl_lms PROPERTIES
+        COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
+        LINK_FLAGS "${FUZZING_LINK_FLAGS}"
+    )
 endif()
 
 # Stateful SIG API tests
@@ -246,7 +252,7 @@ endif()
 add_custom_target(
     run_tests
     # skip long KAT tests
-    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
+    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=${OQS_PYTEST_NUMPROCESSES} --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS} ${UNIX_TESTS}
     USES_TERMINAL)
