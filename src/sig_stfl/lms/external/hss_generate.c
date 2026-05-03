@@ -310,18 +310,26 @@ bool hss_generate_working_key(
 
     /* Initialize all the levels of the tree */
 
+    /*
+     * Loop indices must be signed so down-loops can use i >= 0 (RFC reference
+     * implementation uses int). w->levels is unsigned; convert once — safe
+     * because allocate_working_key restricts levels to [MIN_HSS_LEVELS,
+     * MAX_HSS_LEVELS] (see common_defs.h).
+     */
+    const int nlevels = (int)w->levels;
+
     /* Initialize the current count for each level (from the bottom-up) */
-    sequence_t i;
+    int i;
     sequence_t count = current_count;
-    for (i = w->levels; i >= 1 ; i--) {
-        struct merkle_level *tree = w->tree[i-1];
+    for (i = nlevels - 1; i >= 0; i--) {
+        struct merkle_level *tree = w->tree[i];
         unsigned index = count & tree->max_index;
         count >>= tree->level;
         tree->current_index = index;
     }
 
     /* Initialize the I values */
-    for (i = 0; i < w->levels; i++) {
+    for (i = 0; i < nlevels; i++) {
         struct merkle_level *tree = w->tree[i];
 
         /* Initialize the I, I_next elements */
@@ -378,8 +386,8 @@ bool hss_generate_working_key(
 
     /* Step through the levels, and for each Merkle tree, compile a list of */
     /* the orders to initialize the bottoms of the subtrees that we'll need */
-    for (i = w->levels; i >= 1 ; i--) {
-        struct merkle_level *tree = w->tree[i-1];
+    for (i = nlevels - 1; i >= 0; i--) {
+        struct merkle_level *tree = w->tree[i];
         unsigned hash_size = tree->hash_size;
             /* The current count within this tree */
         merkle_index_t tree_count = tree->current_index;
@@ -388,8 +396,8 @@ bool hss_generate_working_key(
 
         /* Generate the active subtrees */
         int j;
-        /*int bot_level_subtree = (int)tree->level;*/  /* The level of the bottom of */
-                                              /* the subtree */
+        int bot_level_subtree = (int)tree->level;  /* The level of the bottom of */
+                                                   /* the subtree */
         unsigned char *active_prev_node = 0;
         unsigned char *next_prev_node = 0;
         for (j=tree->sublevels-1; j>=0; j--) {
@@ -413,7 +421,7 @@ bool hss_generate_working_key(
                 /* update process will miss the very first update before we */
                 /* need to sign.  To account for that, generate one more */
                 /* node than what our current count would suggest */
-            if (i != w->levels - 1) {
+            if (i != nlevels - 1) {
                 subtree_count++;
             }
             active->current_index = 0;
@@ -501,7 +509,7 @@ bool hss_generate_working_key(
             }
 
             /* And the NEXT_TREE (which is always left-aligned) */
-            if ((i-1) > 0) {
+            if (i > 0) {
                 struct subtree *next = tree->subtree[j][NEXT_TREE];
                 next->left_leaf = 0;
                 merkle_index_t leaf_size =
@@ -512,7 +520,7 @@ bool hss_generate_working_key(
                 /* update process will miss the very first update before we */
                 /* need to sign.  To account for that, potetially generate */
                 /* one more node than what our current count would suggest */
-                if ((i-1) != w->levels - 1) {
+                if (i != nlevels - 1) {
                     next_index++;
                 }
 
@@ -563,15 +571,13 @@ bool hss_generate_working_key(
                 next_prev_node = next_next_node;
             }
 
-//            bot_level_subtree -= h_subtree;
-            if (j == 0) break; //This is a single level tree
+           bot_level_subtree -= h_subtree;
          }
-        if (i == 0) break; //This is a single level tree
     }
 
 #if DO_FLOATING_POINT
     /* Fill in the cost estimates */
-    for (i=0; i<(sequence_t)count_order; i++) {
+    for (i=0; i<count_order; i++) {
         p_order = &order[i];
 
         /*
@@ -633,7 +639,7 @@ bool hss_generate_working_key(
     float est_max_per_work_item = est_total / num_tracks;
 
     /* Scan through the items, and see which ones should be subdivided */
-    for (i=0; i<(sequence_t)count_order; i++) {
+    for (i=0; i<count_order; i++) {
         p_order = &order[i];
         if (p_order->cost <= est_max_per_work_item) {
             break; /* Break because once we hit this point, the rest of the */
@@ -681,7 +687,7 @@ bool hss_generate_working_key(
     float prev_cost = 0;
 #endif
 
-    for (i=0; i<(sequence_t)count_order; i++) {
+    for (i=0; i<count_order; i++) {
         p_order = &order[i];
         if (p_order->already_computed_lower) continue;  /* If it's already */
                                                   /* done, we needn't bother */
@@ -795,7 +801,7 @@ bool hss_generate_working_key(
             /* One of the worker threads detected an error */
 #if DO_FLOATING_POINT
             /* Don't leak suborders on an intermediate error */
-        for (i=0; i<(sequence_t)count_order; i++) {
+        for (i=0; i<count_order; i++) {
             OQS_MEM_insecure_free( order[i].sub );
         }
 #endif
@@ -808,7 +814,7 @@ bool hss_generate_working_key(
      * Now, if we did have suborders, recombine them into what was actually
      * wanted
      */
-    for (i=0; i<(sequence_t)count_order; i++) {
+    for (i=0; i<count_order; i++) {
         p_order = &order[i];
         struct sub_order *sub = p_order->sub;
         if (!sub) continue;   /* This order wasn't subdivided */
@@ -878,7 +884,7 @@ bool hss_generate_working_key(
      * Again, we could parallelize this; it's also fast enough not to be worth
      * the complexity
      */
-    for (i = 1; i < w->levels; i++) {
+    for (i = 1; i < nlevels; i++) {
         if (!hss_create_signed_public_key( w->signed_pk[i], w->siglen[i-1],
                                        w->tree[i], w->tree[i-1], w )) {
             info->error_code = hss_error_internal; /* Really shouldn't */
@@ -892,7 +898,7 @@ bool hss_generate_working_key(
      * And, we make each level as not needing an update from below (as we've
      * initialized them as already having the first update)
      */
-    for (i = 0; i < w->levels - 1; i++) {
+    for (i = 0; i < nlevels - 1; i++) {
         w->tree[i]->update_count = UPDATE_DONE;
     }
 
