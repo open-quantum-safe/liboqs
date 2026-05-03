@@ -396,8 +396,6 @@ bool hss_generate_working_key(
 
         /* Generate the active subtrees */
         int j;
-        int bot_level_subtree = (int)tree->level;  /* The level of the bottom of */
-                                                   /* the subtree */
         unsigned char *active_prev_node = 0;
         unsigned char *next_prev_node = 0;
         for (j=tree->sublevels-1; j>=0; j--) {
@@ -570,8 +568,6 @@ bool hss_generate_working_key(
                 }
                 next_prev_node = next_next_node;
             }
-
-           bot_level_subtree -= h_subtree;
          }
     }
 
