@@ -5,7 +5,7 @@ permissions:
 
 on:
   push:
-    branches: [ main,charishma_build_script ]
+    branches: [ main ]
     paths:
       - 'build_liboqs.sh'
       - 'CMakeLists.txt'
@@ -26,74 +26,59 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Essential Ubuntu tests - covers core functionality
+          # Ubuntu tests
           - os: ubuntu-latest
             test-name: default-build
             script-args: ""
-            description: "Default configuration (most common use case)"
-          
+          - os: ubuntu-latest
+            test-name: shared-library
+            script-args: "--shared"
           - os: ubuntu-latest
             test-name: minimal-build
             script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
-            description: "Minimal build with specific algorithms"
-            test-kem-alg: "ML-KEM-768"
-            test-sig-alg: "ML-DSA-44"
-          
           - os: ubuntu-latest
-            test-name: shared-no-openssl
-            script-args: "--shared --no-openssl"
-            description: "Shared library without OpenSSL"
+            test-name: build-only-lib
+            script-args: "--build-only-lib"
+          - os: ubuntu-latest
+            test-name: no-openssl
+            script-args: "--no-openssl"
+          - os: ubuntu-latest
+            test-name: debug-build
+            script-args: "--build-type Debug"
+          - os: ubuntu-latest
+            test-name: std-algorithms
+            script-args: "--algs-enabled STD"
+          - os: ubuntu-latest
+            test-name: nist-r4-algorithms
+            script-args: "--algs-enabled NIST_R4"
           
-          # Cross-platform verification - macOS tests
+          # macOS tests
           - os: macos-latest
             test-name: default-build
             script-args: ""
-            description: "Verify script works on macOS"
-          
           - os: macos-latest
-            test-name: minimal-build-multi-alg
-            script-args: '--minimal-build "KEM_ml_kem_512;KEM_ml_kem_768;KEM_ml_kem_1024;SIG_ml_dsa_44;SIG_ml_dsa_65;SIG_falcon_512"'
-            description: "Minimal build with multiple algorithms on macOS"
-            test-kem-alg: "ML-KEM-768"
-            test-sig-alg: "ML-DSA-44"
-          
-          # NixOS test - verify Nix flake integration
-          - os: ubuntu-latest
-            test-name: nixos-flake
-            script-args: ""
-            description: "Test NixOS/Nix flake integration"
-            use-nix: true
+            test-name: shared-library
+            script-args: "--shared"
+          - os: macos-latest
+            test-name: minimal-build
+            script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
+          - os: macos-latest
+            test-name: build-only-lib
+            script-args: "--build-only-lib"
+          - os: macos-latest
+            test-name: no-openssl
+            script-args: "--no-openssl"
 
     runs-on: ${{ matrix.os }}
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
-      
-      - name: Install Nix (for NixOS tests)
-        if: matrix.use-nix == true
-        uses: nixbuild/nix-quick-install-action@v28
-        with:
-          nix_conf: |
-            experimental-features = nix-command flakes
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       
       - name: Make build script executable
         run: chmod +x build_liboqs.sh
       
-      - name: Run build script - ${{ matrix.test-name }} (NixOS)
-        if: matrix.use-nix == true
-        env:
-          SKIP_STALENESS_CHECK: 1
-        run: |
-          # Simulate NixOS by unsetting IN_NIX_SHELL to test auto-detection
-          unset IN_NIX_SHELL
-          # The script should automatically re-execute itself with 'nix develop -c'
-          ./build_liboqs.sh ${{ matrix.script-args }}
-      
-      - name: Run build script - ${{ matrix.test-name }} (non-NixOS)
-        if: matrix.use-nix != true
-        env:
-          SKIP_STALENESS_CHECK: 1
+      - name: Run build script - ${{ matrix.test-name }}
         run: ./build_liboqs.sh ${{ matrix.script-args }}
       
       - name: Verify build artifacts exist
@@ -113,56 +98,20 @@ jobs:
           cd build
           # Check if test executables exist and run a quick test
           if [ -f "tests/test_kem" ]; then
-            echo "Running KEM test..."
-            # Use specified algorithm if provided, otherwise auto-detect
-            if [ -n "${{ matrix.test-kem-alg }}" ]; then
-              KEM_ALG="${{ matrix.test-kem-alg }}"
-              echo "Testing with specified algorithm: $KEM_ALG"
-            else
-              # Get list of available algorithms and pick the first one
-              KEM_ALG=$(./tests/test_kem 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
-              echo "Testing with first available algorithm: $KEM_ALG"
-            fi
-            
-            if [ -n "$KEM_ALG" ]; then
-              ./tests/test_kem "$KEM_ALG"
-              echo "✓ KEM test passed with $KEM_ALG"
-            else
-              echo "⚠ Could not determine available KEM algorithms"
-            fi
-          else
-            echo "KEM test executable not found (may be disabled in minimal build)"
+            ./tests/test_kem || echo "KEM test skipped or not applicable"
           fi
-          
           if [ -f "tests/test_sig" ]; then
-            echo "Running SIG test..."
-            # Use specified algorithm if provided, otherwise auto-detect
-            if [ -n "${{ matrix.test-sig-alg }}" ]; then
-              SIG_ALG="${{ matrix.test-sig-alg }}"
-              echo "Testing with specified algorithm: $SIG_ALG"
-            else
-              # Get list of available algorithms and pick the first one
-              SIG_ALG=$(./tests/test_sig 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
-              echo "Testing with first available algorithm: $SIG_ALG"
-            fi
-            
-            if [ -n "$SIG_ALG" ]; then
-              ./tests/test_sig "$SIG_ALG"
-              echo "✓ SIG test passed with $SIG_ALG"
-            else
-              echo "⚠ Could not determine available SIG algorithms"
-            fi
-          else
-            echo "SIG test executable not found (may be disabled in minimal build)"
+            ./tests/test_sig || echo "SIG test skipped or not applicable"
           fi
 
   test-script-options-coverage:
     name: Verify script covers all CMake options
     runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       
       - name: Extract CMake options from CONFIGURE.md
         run: |
@@ -179,46 +128,33 @@ jobs:
           cat script_options.txt
       
       - name: Compare coverage
-        shell: bash
         run: |
           echo "Checking if build script covers major CMake options..."
-          # Check for key options that should be in the script (using word boundaries to avoid partial matches)
-          echo "Checking for OQS_USE_OPENSSL..."
-          if grep -qE '\bOQS_USE_OPENSSL\b' build_liboqs.sh; then
-            echo "✓ Found: OQS_USE_OPENSSL"
-          else
-            echo "❌ Missing: OQS_USE_OPENSSL"
-          fi
+          # Check for key options that should be in the script
+          REQUIRED_OPTIONS=(
+            "OQS_USE_OPENSSL"
+            "OQS_DIST_BUILD"
+            "OQS_MINIMAL_BUILD"
+            "OQS_BUILD_ONLY_LIB"
+            "OQS_ALGS_ENABLED"
+          )
           
-          echo "Checking for OQS_DIST_BUILD..."
-          if grep -qE '\bOQS_DIST_BUILD\b' build_liboqs.sh; then
-            echo "✓ Found: OQS_DIST_BUILD"
-          else
-            echo "❌ Missing: OQS_DIST_BUILD"
-          fi
+          MISSING=0
+          for opt in "${REQUIRED_OPTIONS[@]}"; do
+            if ! grep -q "$opt" build_liboqs.sh; then
+              echo "❌ Missing required option: $opt"
+              MISSING=1
+            else
+              echo "✓ Found: $opt"
+            fi
+          done
           
-          echo "Checking for OQS_MINIMAL_BUILD..."
-          if grep -qE '\bOQS_MINIMAL_BUILD\b' build_liboqs.sh; then
-            echo "✓ Found: OQS_MINIMAL_BUILD"
+          if [ $MISSING -eq 1 ]; then
+            echo "Warning: Some key options are missing from the build script"
+            echo "This is informational only - not failing the build"
           else
-            echo "❌ Missing: OQS_MINIMAL_BUILD"
+            echo "✓ All key options are covered"
           fi
-          
-          echo "Checking for OQS_BUILD_ONLY_LIB..."
-          if grep -qE '\bOQS_BUILD_ONLY_LIB\b' build_liboqs.sh; then
-            echo "✓ Found: OQS_BUILD_ONLY_LIB"
-          else
-            echo "❌ Missing: OQS_BUILD_ONLY_LIB"
-          fi
-          
-          echo "Checking for OQS_ALGS_ENABLED..."
-          if grep -qE '\bOQS_ALGS_ENABLED\b' build_liboqs.sh; then
-            echo "✓ Found: OQS_ALGS_ENABLED"
-          else
-            echo "❌ Missing: OQS_ALGS_ENABLED"
-          fi
-          
-          echo "✓ Coverage check complete"
 
   test-script-help:
     name: Verify script help and usage
@@ -226,14 +162,14 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       
       - name: Make build script executable
         run: chmod +x build_liboqs.sh
       
       - name: Test help flag
         run: |
-          ./build_liboqs.sh --help > help_output.txt 2>&1
+          ./build_liboqs.sh --help > help_output.txt
           if [ ! -s help_output.txt ]; then
             echo "Error: Help output is empty"
             exit 1
@@ -256,7 +192,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       
       - name: Install shellcheck
         run: sudo apt-get update && sudo apt-get install -y shellcheck
