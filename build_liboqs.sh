@@ -19,15 +19,6 @@ Usage: $0 [OPTIONS]
 
 Build liboqs with optional CMake configuration options.
 
-DEFAULT SETTINGS (when no options specified):
-    - Build type: Release
-    - Library type: Static (.a)
-    - Algorithm set: All (OQS_ALGS_ENABLED=All)
-    - Distribution build: ON (OQS_DIST_BUILD=ON)
-    - OpenSSL: ON (OQS_USE_OPENSSL=ON)
-    - Optimization target: auto (OQS_OPT_TARGET=auto)
-    - Tests and docs: Built (OQS_BUILD_ONLY_LIB=OFF)
-
 OPTIONS:
     -h, --help                          Show this help message
     
@@ -38,14 +29,10 @@ OPTIONS:
     
     Algorithm Selection:
     --algs-enabled SET                  Algorithm set: STD, NIST_R4, NIST_SIG_ONRAMP, All (default: All)
-    --minimal-build "ALG1;ALG2;..."     Build ONLY specified algorithms (disables all others)
-                                        Supports multiple semicolon-separated algorithms
-                                        Works for KEM, SIG, and SIG_STFL families
-                                        (e.g., "KEM_ml_kem_768;SIG_ml_dsa_44;SIG_falcon_512")
-                                        IMPORTANT: Must be quoted to prevent shell from treating ; as command separator
-    --enable-kem-ALG                    Enable specific KEM algorithm (additive with defaults)
-    --enable-sig-ALG                    Enable specific signature algorithm (additive with defaults)
-    --enable-sig-stfl-ALG               Enable specific stateful signature algorithm (additive with defaults)
+    --minimal-build "ALG1;ALG2"         Build only specified algorithms (e.g., "KEM_ml_kem_768;SIG_ml_dsa_44")
+    --enable-kem-ALG                    Enable specific KEM algorithm
+    --enable-sig-ALG                    Enable specific signature algorithm
+    --enable-sig-stfl-ALG               Enable specific stateful signature algorithm
     
     Build Options:
     --build-only-lib                    Build only library, exclude tests and docs (OQS_BUILD_ONLY_LIB=ON)
@@ -74,7 +61,6 @@ OPTIONS:
     --embedded-build                    Build for embedded systems (OQS_EMBEDDED_BUILD=ON)
     --memopt-build                      Use memory-optimized implementations (OQS_MEMOPT_BUILD=ON)
     --libjade-build                     Use Libjade implementations (OQS_LIBJADE_BUILD=ON)
-    --permit-unsupported-arch           Permit compilation on unsupported architecture (OQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON)
     --strict-warnings                   Enable strict compiler warnings (OQS_STRICT_WARNINGS=ON)
     --enable-constant-time-test         Enable constant-time testing (OQS_ENABLE_TEST_CONSTANT_TIME=ON)
     --use-coverage                      Enable code coverage (USE_COVERAGE=ON)
@@ -83,10 +69,7 @@ OPTIONS:
     Stateful Signatures:
     --enable-xmss                       Enable XMSS stateful signatures (OQS_ENABLE_SIG_STFL_XMSS=ON)
     --enable-lms                        Enable LMS stateful signatures (OQS_ENABLE_SIG_STFL_LMS=ON)
-    
-    Note: Stateful key/signature generation is HAZARDOUS and disabled by default.
-          To enable (NOT RECOMMENDED), use: -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
-          See CONFIGURE.md for security implications before enabling.
+    --enable-stfl-key-sig-gen           Enable stateful key/sig generation (HAZARDOUS, see docs)
     
     Custom CMake Options:
     -D KEY=VALUE                        Pass custom CMake option directly
@@ -116,126 +99,12 @@ EOF
     exit 0
 }
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "========================================"
+echo "  liboqs Build Script"
+echo "========================================"
+echo ""
 
-# Function to check if script is outdated by validating CMake options
-check_script_staleness() {
-    local SCRIPT_FILE="${BASH_SOURCE[0]}"
-    local CMAKE_FILE="${SCRIPT_DIR}/CMakeLists.txt"
-    local ALG_SUPPORT_FILE="${SCRIPT_DIR}/.CMake/alg_support.cmake"
-    local WARNED=0
-    local MISSING_OPTIONS=()
-    
-    # Skip check if CMake files don't exist
-    if [ ! -f "$CMAKE_FILE" ] && [ ! -f "$ALG_SUPPORT_FILE" ]; then
-        return 0
-    fi
-    
-    # Extract all option() declarations from CMake files
-    local CMAKE_OPTIONS=()
-    
-    # Parse main CMakeLists.txt
-    if [ -f "$CMAKE_FILE" ]; then
-        while IFS= read -r line; do
-            [ -n "$line" ] && CMAKE_OPTIONS+=("$line")
-        done < <(grep -E '^option\(OQS_|^option\(USE_|^option\(BUILD_' "$CMAKE_FILE" 2>/dev/null | sed 's/option(//;s/ .*//' || true)
-    fi
-    
-    # Parse .CMake/alg_support.cmake for algorithm options
-    if [ -f "$ALG_SUPPORT_FILE" ]; then
-        while IFS= read -r line; do
-            [ -n "$line" ] && CMAKE_OPTIONS+=("$line")
-        done < <(grep -E '^option\(OQS_' "$ALG_SUPPORT_FILE" 2>/dev/null | sed 's/option(//;s/ .*//' || true)
-    fi
-    
-    # Remove duplicates (handle empty array safely)
-    if [ ${#CMAKE_OPTIONS[@]} -gt 0 ]; then
-        CMAKE_OPTIONS=($(printf '%s\n' "${CMAKE_OPTIONS[@]}" | sort -u || true))
-    fi
-    
-    # Check each CMake option against the script
-    for opt in "${CMAKE_OPTIONS[@]}"; do
-        # Skip empty lines
-        [ -z "$opt" ] && continue
-        
-        # Skip algorithm-specific options that are covered by generic patterns
-        # (e.g., OQS_ENABLE_KEM_KYBER is covered by --enable-kem-* pattern)
-        if [[ "$opt" =~ ^OQS_ENABLE_KEM_ ]] || [[ "$opt" =~ ^OQS_ENABLE_SIG_ ]] || [[ "$opt" =~ ^OQS_ENABLE_LIBJADE_ ]]; then
-            continue
-        fi
-        
-        # Convert option name to script format (e.g., OQS_USE_OPENSSL -> --use-openssl or -DOQS_USE_OPENSSL)
-        # Check if option is referenced in the script (either as flag or -D option)
-        if ! grep -q "$opt" "$SCRIPT_FILE" 2>/dev/null; then
-            MISSING_OPTIONS+=("$opt")
-        fi
-    done
-    
-    # Report missing options
-    if [ ${#MISSING_OPTIONS[@]} -gt 0 ]; then
-        echo -e "${YELLOW}⚠️  Warning: Found CMake options not exposed in this build script:${NC}"
-        
-        # Group and display missing options (limit to first 10 to avoid clutter)
-        local count=0
-        for opt in "${MISSING_OPTIONS[@]}"; do
-            if [ $count -lt 10 ]; then
-                echo -e "${YELLOW}   - $opt${NC}"
-                count=$((count+1))
-            fi
-        done
-        
-        if [ ${#MISSING_OPTIONS[@]} -gt 10 ]; then
-            echo -e "${YELLOW}   ... and $((${#MISSING_OPTIONS[@]} - 10)) more${NC}"
-        fi
-        
-        echo -e "${YELLOW}   You can use these options with: -D<OPTION>=ON/OFF${NC}"
-        echo -e "${YELLOW}   Example: $0 -DOQS_SPEED_USE_ARM_PMU=ON${NC}"
-        echo ""
-        WARNED=1
-    fi
-    
-    # Additional validation: Check for new algorithm families
-    if [ -f "$ALG_SUPPORT_FILE" ]; then
-        local ALG_FAMILIES=$(grep -E '^option\(OQS_ENABLE_(KEM|SIG)_[A-Z_]+' "$ALG_SUPPORT_FILE" 2>/dev/null | \
-                            sed 's/option(OQS_ENABLE_[KS][EI][MG]_//;s/ .*//' | sort -u || true)
-        
-        local MISSING_ALG_FAMILIES=()
-        for alg in $ALG_FAMILIES; do
-            # Check if algorithm family is mentioned in help text or options
-            if ! grep -qi "$alg" "$SCRIPT_FILE" 2>/dev/null; then
-                MISSING_ALG_FAMILIES+=("$alg")
-            fi
-        done
-        
-        if [ ${#MISSING_ALG_FAMILIES[@]} -gt 0 ] && [ ${#MISSING_ALG_FAMILIES[@]} -le 5 ]; then
-            if [ $WARNED -eq 0 ]; then
-                echo -e "${YELLOW}⚠️  Warning: New algorithm families detected:${NC}"
-            else
-                echo -e "${YELLOW}   New algorithm families detected:${NC}"
-            fi
-            for alg in "${MISSING_ALG_FAMILIES[@]}"; do
-                echo -e "${YELLOW}   - $alg${NC}"
-            done
-            echo -e "${YELLOW}   Use --enable-kem-<alg> or --enable-sig-<alg> to enable${NC}"
-            echo ""
-            WARNED=1
-        fi
-    fi
-    
-    if [ $WARNED -eq 1 ]; then
-        echo -e "${YELLOW}   You can still proceed. Use cmake directly for full control.${NC}"
-        echo ""
-        
-        # Check if staleness check is disabled (useful for CI)
-        # Issue warning but allow CI to continue
-        if [ "${SKIP_STALENESS_CHECK:-}" = "1" ]; then
-            echo -e "${YELLOW}⚠️  Note: Staleness check is disabled (SKIP_STALENESS_CHECK=1)${NC}"
-            echo -e "${YELLOW}   The above warnings are informational only and will not fail the build.${NC}"
-            echo -e "${YELLOW}   Please review and update the build script if needed.${NC}"
-            echo ""
-        fi
-    fi
-}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Array to store CMake options
 CMAKE_OPTIONS=()
@@ -356,10 +225,6 @@ while [[ $# -gt 0 ]]; do
             CMAKE_OPTIONS+=("-DOQS_LIBJADE_BUILD=ON")
             shift
             ;;
-        --permit-unsupported-arch)
-            CMAKE_OPTIONS+=("-DOQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON")
-            shift
-            ;;
         --strict-warnings)
             CMAKE_OPTIONS+=("-DOQS_STRICT_WARNINGS=ON")
             shift
@@ -384,6 +249,12 @@ while [[ $# -gt 0 ]]; do
             CMAKE_OPTIONS+=("-DOQS_ENABLE_SIG_STFL_LMS=ON")
             shift
             ;;
+        --enable-stfl-key-sig-gen)
+            echo -e "${RED}WARNING: Enabling stateful signature key/signature generation is HAZARDOUS!${NC}"
+            echo -e "${RED}See CONFIGURE.md for security implications.${NC}"
+            CMAKE_OPTIONS+=("-DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON")
+            shift
+            ;;
         -D*)
             CMAKE_OPTIONS+=("$1")
             shift
@@ -396,15 +267,116 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-echo "========================================"
-echo "  liboqs Build Script"
-echo "========================================"
-echo ""
+install_brew_package_if_missing() {
+    local package="$1"
+    if brew list --versions "$package" >/dev/null 2>&1; then
+        echo "$package is already installed. Skipping."
+    else
+        echo "Installing $package..."
+        brew install "$package"
+    fi
+}
 
-# Check for script staleness only for real build execution paths
-check_script_staleness
+# Function to install Python test dependencies on macOS
+install_python_test_deps_macos() {
+    echo ""
+    echo "Installing Python test dependencies..."
+    
+    # Detect Python and pip
+    local PYTHON_CMD=""
+    local PIP_CMD=""
+    
+    # Try to find Python 3
+    if command -v python3 &> /dev/null; then
+        PYTHON_CMD="python3"
+        echo "✓ Found python3: $(python3 --version)"
+    elif command -v python &> /dev/null; then
+        PYTHON_VERSION=$(python --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+        MAJOR_VERSION=$(echo $PYTHON_VERSION | cut -d. -f1)
+        if [ "$MAJOR_VERSION" -ge 3 ]; then
+            PYTHON_CMD="python"
+            echo "✓ Found python: $(python --version)"
+        fi
+    fi
+    
+    if [ -z "$PYTHON_CMD" ]; then
+        echo -e "${RED}Error: Python 3 is not installed. Please install Python 3 first.${NC}"
+        echo "You can install it via Homebrew: brew install python3"
+        exit 1
+    fi
+    
+    # Determine the best pip command to use
+    if command -v pip3 &> /dev/null; then
+        PIP_CMD="pip3"
+        echo "✓ Found pip3"
+    elif $PYTHON_CMD -m pip --version &> /dev/null; then
+        PIP_CMD="$PYTHON_CMD -m pip"
+        echo "✓ Using python -m pip"
+    elif command -v pip &> /dev/null; then
+        PIP_CMD="pip"
+        echo "✓ Found pip"
+    else
+        echo "Installing pip..."
+        $PYTHON_CMD -m ensurepip --upgrade || {
+            echo -e "${RED}Failed to install pip. Please install pip manually.${NC}"
+            exit 1
+        }
+        PIP_CMD="$PYTHON_CMD -m pip"
+    fi
+    
+    # Check if we need --break-system-packages flag (for Python 3.11+ on some systems)
+    local BREAK_SYSTEM_PACKAGES=""
+    if $PIP_CMD install --help 2>&1 | grep -q "break-system-packages"; then
+        echo "ℹ️  Detected externally-managed Python environment"
+        BREAK_SYSTEM_PACKAGES="--break-system-packages"
+    fi
+    
+    # Try to install from requirements.txt with hash verification first
+    if [ -f "${SCRIPT_DIR}/.github/workflows/requirements.txt" ]; then
+        echo "Installing from requirements.txt (with hash verification)..."
+        if $PIP_CMD install --require-hashes $BREAK_SYSTEM_PACKAGES -r "${SCRIPT_DIR}/.github/workflows/requirements.txt" 2>/dev/null; then
+            echo -e "${GREEN}✓ Test dependencies installed from requirements.txt${NC}"
+        else
+            echo -e "${YELLOW}Warning: Failed to install from requirements.txt, trying individual packages...${NC}"
+            install_python_packages_individually "$PIP_CMD" "$BREAK_SYSTEM_PACKAGES"
+        fi
+    else
+        echo "requirements.txt not found, installing packages individually..."
+        install_python_packages_individually "$PIP_CMD" "$BREAK_SYSTEM_PACKAGES"
+    fi
+    
+    # Verify installation
+    echo "Verifying Python test dependencies..."
+    if $PYTHON_CMD -c "import pytest; import xdist; import yaml" 2>/dev/null; then
+        echo -e "${GREEN}✓ All Python test dependencies verified${NC}"
+    else
+        echo -e "${YELLOW}Warning: Some Python test dependencies may not be installed correctly${NC}"
+    fi
+}
 
-# No helper functions needed - brew and apt handle idempotency
+# Helper function to install Python packages individually
+install_python_packages_individually() {
+    local PIP_CMD="$1"
+    local BREAK_SYSTEM_PACKAGES="$2"
+    
+    local PACKAGES="pytest pytest-xdist pyyaml"
+    
+    echo "Installing: pytest, pytest-xdist, pyyaml..."
+    if [ -n "$BREAK_SYSTEM_PACKAGES" ]; then
+        $PIP_CMD install $BREAK_SYSTEM_PACKAGES $PACKAGES
+    else
+        $PIP_CMD install $PACKAGES
+    fi
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ Test dependencies installed successfully${NC}"
+    else
+        echo -e "${RED}Error: Failed to install Python test dependencies${NC}"
+        echo "You can try manually with:"
+        echo "  $PIP_CMD install $BREAK_SYSTEM_PACKAGES pytest pytest-xdist pyyaml"
+        exit 1
+    fi
+}
 
 # Detect OS and install dependencies
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -419,45 +391,28 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         exit 1
     fi
     
-    echo "Installing dependencies..."
-    brew install cmake ninja openssl@3 wget doxygen graphviz astyle python3
+    echo "Checking dependencies..."
+    install_brew_package_if_missing cmake
+    install_brew_package_if_missing ninja
+    install_brew_package_if_missing openssl@3
+    install_brew_package_if_missing wget
+    install_brew_package_if_missing doxygen
+    install_brew_package_if_missing graphviz
+    install_brew_package_if_missing astyle
     
-    # Install Python test dependencies (optional - tests can run without pytest)
-    echo ""
-    echo "Installing Python test dependencies..."
-    # Modern macOS/Homebrew Python uses externally-managed environments (PEP 668)
-    # Try to install with --user flag, but don't fail if it doesn't work
-    if pip3 install --user pytest pytest-xdist pyyaml 2>/dev/null; then
-        echo "✓ Python packages installed successfully"
-    else
-        echo -e "${YELLOW}⚠ Could not install Python packages via pip (externally-managed environment)${NC}"
-        echo -e "${YELLOW}  This is normal on modern macOS. The C test executables will still work.${NC}"
-        echo -e "${YELLOW}  If you need pytest, create a virtual environment:${NC}"
-        echo -e "${YELLOW}    python3 -m venv venv && source venv/bin/activate && pip install pytest pytest-xdist pyyaml${NC}"
-    fi
+    # Install Python test dependencies
+    install_python_test_deps_macos
     
 elif [[ -f /etc/os-release ]]; then
     # Source the os-release file
     . /etc/os-release
     
     if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]] || [[ "$ID_LIKE" == *"debian"* ]]; then
-        # Ubuntu/Debian - but check if Nix is available first
-        if command -v nix &> /dev/null && [ -f "${SCRIPT_DIR}/flake.nix" ] && [ -z "$IN_NIX_SHELL" ]; then
-            # Nix is available and flake.nix exists - use Nix environment
-            echo -e "${GREEN}Detected OS: $NAME (with Nix available)${NC}"
-            echo -e "${YELLOW}Using Nix development environment for reproducible builds...${NC}"
-            echo ""
-            
-            # Re-execute this script inside the Nix development environment
-            exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
-        fi
-        
-        # Standard Ubuntu/Debian path
+        # Ubuntu/Debian
         echo -e "${GREEN}Detected OS: $NAME${NC}"
         echo ""
         
         echo "Installing dependencies..."
-        echo -e "${YELLOW}Note: This will use 'sudo' and may prompt for your password.${NC}"
         sudo apt update
         sudo apt install -y astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
         
@@ -466,24 +421,8 @@ elif [[ -f /etc/os-release ]]; then
         echo -e "${GREEN}Detected OS: NixOS${NC}"
         echo ""
         
-        # Check if already in a Nix development environment
-        if [ -n "$IN_NIX_SHELL" ]; then
-            echo "✓ Already in Nix development environment"
-        else
-            # Check if flake.nix exists
-            if [ ! -f "${SCRIPT_DIR}/flake.nix" ]; then
-                echo -e "${RED}Error: flake.nix not found in ${SCRIPT_DIR}${NC}"
-                echo "Cannot automatically enter Nix development environment."
-                exit 1
-            fi
-            
-            echo -e "${YELLOW}Not in Nix development environment. Re-executing with 'nix develop'...${NC}"
-            echo ""
-            
-            # Re-execute this script inside the Nix development environment
-            # Pass all original arguments to the re-executed script
-            exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
-        fi
+        echo "Entering Nix development environment..."
+        nix develop
         
     else
         echo -e "${YELLOW}Warning: Unsupported Linux distribution: $NAME${NC}"
