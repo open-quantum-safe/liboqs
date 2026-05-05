@@ -19,6 +19,8 @@ jobs:
 
     name: CodeQL
     runs-on: ubuntu-latest
+    env:
+      CODEQL_EXTRACTOR_CPP_TRAP_CACHING: false
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
