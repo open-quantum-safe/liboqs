@@ -128,33 +128,46 @@ jobs:
           cat script_options.txt
       
       - name: Compare coverage
+        shell: bash
         run: |
           echo "Checking if build script covers major CMake options..."
           # Check for key options that should be in the script
-          REQUIRED_OPTIONS=(
-            "OQS_USE_OPENSSL"
-            "OQS_DIST_BUILD"
-            "OQS_MINIMAL_BUILD"
-            "OQS_BUILD_ONLY_LIB"
-            "OQS_ALGS_ENABLED"
-          )
-          
-          MISSING=0
-          for opt in "${REQUIRED_OPTIONS[@]}"; do
-            if ! grep -q "$opt" build_liboqs.sh; then
-              echo "❌ Missing required option: $opt"
-              MISSING=1
-            else
-              echo "✓ Found: $opt"
-            fi
-          done
-          
-          if [ $MISSING -eq 1 ]; then
-            echo "Warning: Some key options are missing from the build script"
-            echo "This is informational only - not failing the build"
+          echo "Checking for OQS_USE_OPENSSL..."
+          if grep -q "OQS_USE_OPENSSL" build_liboqs.sh; then
+            echo "✓ Found: OQS_USE_OPENSSL"
           else
-            echo "✓ All key options are covered"
+            echo "❌ Missing: OQS_USE_OPENSSL"
           fi
+          
+          echo "Checking for OQS_DIST_BUILD..."
+          if grep -q "OQS_DIST_BUILD" build_liboqs.sh; then
+            echo "✓ Found: OQS_DIST_BUILD"
+          else
+            echo "❌ Missing: OQS_DIST_BUILD"
+          fi
+          
+          echo "Checking for OQS_MINIMAL_BUILD..."
+          if grep -q "OQS_MINIMAL_BUILD" build_liboqs.sh; then
+            echo "✓ Found: OQS_MINIMAL_BUILD"
+          else
+            echo "❌ Missing: OQS_MINIMAL_BUILD"
+          fi
+          
+          echo "Checking for OQS_BUILD_ONLY_LIB..."
+          if grep -q "OQS_BUILD_ONLY_LIB" build_liboqs.sh; then
+            echo "✓ Found: OQS_BUILD_ONLY_LIB"
+          else
+            echo "❌ Missing: OQS_BUILD_ONLY_LIB"
+          fi
+          
+          echo "Checking for OQS_ALGS_ENABLED..."
+          if grep -q "OQS_ALGS_ENABLED" build_liboqs.sh; then
+            echo "✓ Found: OQS_ALGS_ENABLED"
+          else
+            echo "❌ Missing: OQS_ALGS_ENABLED"
+          fi
+          
+          echo "✓ Coverage check complete"
 
   test-script-help:
     name: Verify script help and usage
