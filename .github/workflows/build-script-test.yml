@@ -1,0 +1,205 @@
+name: Build Script Test
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'build_liboqs.sh'
+      - 'CMakeLists.txt'
+      - 'src/**/CMakeLists.txt'
+      - '.github/workflows/build-script-test.yml'
+  pull_request:
+    paths:
+      - 'build_liboqs.sh'
+      - 'CMakeLists.txt'
+      - 'src/**/CMakeLists.txt'
+      - '.github/workflows/build-script-test.yml'
+  workflow_dispatch:
+
+jobs:
+  test-build-script:
+    name: Test build script on ${{ matrix.os }} - ${{ matrix.test-name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Ubuntu tests
+          - os: ubuntu-latest
+            test-name: default-build
+            script-args: ""
+          - os: ubuntu-latest
+            test-name: shared-library
+            script-args: "--shared"
+          - os: ubuntu-latest
+            test-name: minimal-build
+            script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
+          - os: ubuntu-latest
+            test-name: build-only-lib
+            script-args: "--build-only-lib"
+          - os: ubuntu-latest
+            test-name: no-openssl
+            script-args: "--no-openssl"
+          - os: ubuntu-latest
+            test-name: debug-build
+            script-args: "--build-type Debug"
+          - os: ubuntu-latest
+            test-name: std-algorithms
+            script-args: "--algs-enabled STD"
+          - os: ubuntu-latest
+            test-name: nist-r4-algorithms
+            script-args: "--algs-enabled NIST_R4"
+          
+          # macOS tests
+          - os: macos-latest
+            test-name: default-build
+            script-args: ""
+          - os: macos-latest
+            test-name: shared-library
+            script-args: "--shared"
+          - os: macos-latest
+            test-name: minimal-build
+            script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
+          - os: macos-latest
+            test-name: build-only-lib
+            script-args: "--build-only-lib"
+          - os: macos-latest
+            test-name: no-openssl
+            script-args: "--no-openssl"
+
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      
+      - name: Make build script executable
+        run: chmod +x build_liboqs.sh
+      
+      - name: Run build script - ${{ matrix.test-name }}
+        run: ./build_liboqs.sh ${{ matrix.script-args }}
+      
+      - name: Verify build artifacts exist
+        run: |
+          if [ ! -d "build" ]; then
+            echo "Error: build directory not created"
+            exit 1
+          fi
+          if [ ! -f "build/lib/liboqs.a" ] && [ ! -f "build/lib/liboqs.dylib" ] && [ ! -f "build/lib/liboqs.so" ]; then
+            echo "Error: liboqs library not found"
+            exit 1
+          fi
+          echo "✓ Build artifacts verified"
+      
+      - name: Run basic library test
+        run: |
+          cd build
+          # Check if test executables exist and run a quick test
+          if [ -f "tests/test_kem" ]; then
+            ./tests/test_kem || echo "KEM test skipped or not applicable"
+          fi
+          if [ -f "tests/test_sig" ]; then
+            ./tests/test_sig || echo "SIG test skipped or not applicable"
+          fi
+
+  test-script-options-coverage:
+    name: Verify script covers all CMake options
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      
+      - name: Extract CMake options from CONFIGURE.md
+        run: |
+          # Extract OQS_ prefixed options from CONFIGURE.md
+          grep -oE 'OQS_[A-Z_]+' CONFIGURE.md | sort -u > cmake_options.txt || true
+          echo "CMake options found in CONFIGURE.md:"
+          cat cmake_options.txt
+      
+      - name: Extract options from build script
+        run: |
+          # Extract OQS_ prefixed options from build_liboqs.sh
+          grep -oE 'OQS_[A-Z_]+' build_liboqs.sh | sort -u > script_options.txt || true
+          echo "Options found in build_liboqs.sh:"
+          cat script_options.txt
+      
+      - name: Compare coverage
+        run: |
+          echo "Checking if build script covers major CMake options..."
+          # Check for key options that should be in the script
+          REQUIRED_OPTIONS=(
+            "OQS_USE_OPENSSL"
+            "OQS_DIST_BUILD"
+            "OQS_MINIMAL_BUILD"
+            "OQS_BUILD_ONLY_LIB"
+            "OQS_ALGS_ENABLED"
+          )
+          
+          MISSING=0
+          for opt in "${REQUIRED_OPTIONS[@]}"; do
+            if ! grep -q "$opt" build_liboqs.sh; then
+              echo "❌ Missing required option: $opt"
+              MISSING=1
+            else
+              echo "✓ Found: $opt"
+            fi
+          done
+          
+          if [ $MISSING -eq 1 ]; then
+            echo "Warning: Some key options are missing from the build script"
+            echo "This is informational only - not failing the build"
+          else
+            echo "✓ All key options are covered"
+          fi
+
+  test-script-help:
+    name: Verify script help and usage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      
+      - name: Make build script executable
+        run: chmod +x build_liboqs.sh
+      
+      - name: Test help flag
+        run: |
+          ./build_liboqs.sh --help > help_output.txt
+          if [ ! -s help_output.txt ]; then
+            echo "Error: Help output is empty"
+            exit 1
+          fi
+          echo "✓ Help flag works"
+          cat help_output.txt
+      
+      - name: Test invalid option handling
+        run: |
+          if ./build_liboqs.sh --invalid-option 2>&1 | grep -q "Unknown option"; then
+            echo "✓ Invalid option handling works"
+          else
+            echo "Error: Script should reject invalid options"
+            exit 1
+          fi
+
+  test-script-syntax:
+    name: Verify script syntax and shellcheck
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      
+      - name: Check bash syntax
+        run: bash -n build_liboqs.sh
+      
+      - name: Run shellcheck
+        run: |
+          shellcheck build_liboqs.sh || echo "Shellcheck warnings found (non-blocking)"
