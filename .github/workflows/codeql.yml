@@ -27,7 +27,7 @@ jobs:
         uses: github/codeql-action/init@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
         with:
           languages: cpp
-          queries: .github/codeql/openssl-return-check.ql
+          config-file: ./.github/codeql/codeql-config.yml
 
       - name: Build liboqs
         run: |

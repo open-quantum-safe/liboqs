@@ -1,0 +1,3 @@
+name: "OQS CodeQL config"
+queries:
+  - uses: ./.github/codeql/openssl-return-check.ql
