@@ -113,6 +113,40 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 ### Linux and Mac
 
+#### Option 1: Using the automated build script (Recommended)
+
+1. Get the source:
+
+		git clone -b main https://github.com/open-quantum-safe/liboqs.git
+		cd liboqs
+
+2. Run the build script:
+
+		./build_liboqs.sh
+
+	The script will automatically:
+	- Detect your operating system (macOS, Ubuntu/Debian, or NixOS)
+	- Install all required dependencies (including Python test dependencies on macOS with automatic pip handling)
+	- Configure and build liboqs with default settings
+
+	For custom build options, see the help:
+
+		./build_liboqs.sh --help
+
+	Examples:
+	```bash
+	# Build shared library with debug symbols
+	./build_liboqs.sh --shared --build-type Debug
+	
+	# Minimal build with only ML-KEM-768 and ML-DSA-44
+	./build_liboqs.sh --minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"
+	
+	# Build without OpenSSL
+	./build_liboqs.sh --no-openssl
+	```
+
+#### Option 2: Manual installation
+
 1. Install dependencies:
 
 	On Ubuntu:
