@@ -106,6 +106,39 @@ echo ""
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Function to check if script is outdated
+check_script_staleness() {
+    local SCRIPT_FILE="${BASH_SOURCE[0]}"
+    local CMAKE_FILE="${SCRIPT_DIR}/CMakeLists.txt"
+    local CONFIGURE_FILE="${SCRIPT_DIR}/CONFIGURE.md"
+    local WARNED=0
+    
+    # Check if CMakeLists.txt is newer than the script
+    if [ -f "$CMAKE_FILE" ] && [ "$CMAKE_FILE" -nt "$SCRIPT_FILE" ]; then
+        echo -e "${YELLOW}⚠️  Warning: CMakeLists.txt is newer than this build script${NC}"
+        echo -e "${YELLOW}   Some build options may be missing or outdated${NC}"
+        echo -e "${YELLOW}   Consider updating the script or using cmake directly${NC}"
+        WARNED=1
+    fi
+    
+    # Check if CONFIGURE.md is newer than the script
+    if [ -f "$CONFIGURE_FILE" ] && [ "$CONFIGURE_FILE" -nt "$SCRIPT_FILE" ]; then
+        if [ $WARNED -eq 0 ]; then
+            echo -e "${YELLOW}⚠️  Warning: CONFIGURE.md is newer than this build script${NC}"
+        fi
+        echo -e "${YELLOW}   Documentation may describe options not available in this script${NC}"
+        WARNED=1
+    fi
+    
+    if [ $WARNED -eq 1 ]; then
+        echo -e "${YELLOW}   You can still proceed, but some newer options may not be available${NC}"
+        echo ""
+    fi
+}
+
+# Check for script staleness
+check_script_staleness
+
 # Array to store CMake options
 CMAKE_OPTIONS=()
 
