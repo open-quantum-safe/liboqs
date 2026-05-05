@@ -317,7 +317,6 @@ jobs:
                 labels: ['maintenance', 'build-script-outdated', 'automated']
               });
             }
-          fi
 
   test-script-syntax:
     name: Verify script syntax and shellcheck
