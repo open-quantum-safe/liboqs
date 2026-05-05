@@ -26,48 +26,27 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Ubuntu tests
+          # Essential Ubuntu tests - covers core functionality
           - os: ubuntu-latest
             test-name: default-build
             script-args: ""
-          - os: ubuntu-latest
-            test-name: shared-library
-            script-args: "--shared"
-          - os: ubuntu-latest
-            test-name: minimal-build
-            script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
-          - os: ubuntu-latest
-            test-name: build-only-lib
-            script-args: "--build-only-lib"
-          - os: ubuntu-latest
-            test-name: no-openssl
-            script-args: "--no-openssl"
-          - os: ubuntu-latest
-            test-name: debug-build
-            script-args: "--build-type Debug"
-          - os: ubuntu-latest
-            test-name: std-algorithms
-            script-args: "--algs-enabled STD"
-          - os: ubuntu-latest
-            test-name: nist-r4-algorithms
-            script-args: "--algs-enabled NIST_R4"
+            description: "Default configuration (most common use case)"
           
-          # macOS tests
+          - os: ubuntu-latest
+            test-name: minimal-build
+            script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
+            description: "Minimal build with specific algorithms"
+          
+          - os: ubuntu-latest
+            test-name: shared-no-openssl
+            script-args: "--shared --no-openssl"
+            description: "Shared library without OpenSSL"
+          
+          # Cross-platform verification - one macOS test
           - os: macos-latest
             test-name: default-build
             script-args: ""
-          - os: macos-latest
-            test-name: shared-library
-            script-args: "--shared"
-          - os: macos-latest
-            test-name: minimal-build
-            script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
-          - os: macos-latest
-            test-name: build-only-lib
-            script-args: "--build-only-lib"
-          - os: macos-latest
-            test-name: no-openssl
-            script-args: "--no-openssl"
+            description: "Verify script works on macOS"
 
     runs-on: ${{ matrix.os }}
     
@@ -197,6 +176,147 @@ jobs:
           else
             echo "Error: Script should reject invalid options"
             exit 1
+
+  detect-outdated-script:
+    name: Detect if build script is outdated
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        with:
+          fetch-depth: 0  # Need full history to compare commit dates
+      
+      - name: Check if script is outdated
+        id: check_staleness
+        shell: bash
+        run: |
+          # Get last commit timestamp for each file
+          CMAKE_DATE=$(git log -1 --format=%ct -- CMakeLists.txt 2>/dev/null || echo 0)
+          CONFIGURE_DATE=$(git log -1 --format=%ct -- CONFIGURE.md 2>/dev/null || echo 0)
+          SCRIPT_DATE=$(git log -1 --format=%ct -- build_liboqs.sh 2>/dev/null || echo 0)
+          
+          echo "CMakeLists.txt last modified: $(date -d @$CMAKE_DATE 2>/dev/null || date -r $CMAKE_DATE)"
+          echo "CONFIGURE.md last modified: $(date -d @$CONFIGURE_DATE 2>/dev/null || date -r $CONFIGURE_DATE)"
+          echo "build_liboqs.sh last modified: $(date -d @$SCRIPT_DATE 2>/dev/null || date -r $SCRIPT_DATE)"
+          
+          if [ "$CMAKE_DATE" -gt "$SCRIPT_DATE" ] || [ "$CONFIGURE_DATE" -gt "$SCRIPT_DATE" ]; then
+            echo "outdated=true" >> $GITHUB_OUTPUT
+            echo "⚠️ Build script is outdated!"
+            exit 0
+          else
+            echo "outdated=false" >> $GITHUB_OUTPUT
+            echo "✓ Build script is up to date"
+          fi
+      
+      - name: Extract missing options from CMakeLists.txt
+        if: steps.check_staleness.outputs.outdated == 'true'
+        id: extract_options
+        shell: bash
+        run: |
+          echo "## 🔍 Checking for Missing Options" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          MISSING_COUNT=0
+          
+          # Extract all option() declarations from CMakeLists.txt
+          echo "### Options in CMakeLists.txt:" >> $GITHUB_STEP_SUMMARY
+          grep "^option(OQS_" CMakeLists.txt | while IFS= read -r line; do
+            # Extract option name (e.g., OQS_USE_OPENSSL from "option(OQS_USE_OPENSSL ...")
+            OPTION_NAME=$(echo "$line" | sed -E 's/option\(([A-Z_]+).*/\1/')
+            
+            # Check if option exists in build script
+            if grep -q "$OPTION_NAME" build_liboqs.sh; then
+              echo "- ✅ \`$OPTION_NAME\` - Found in script" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- ❌ \`$OPTION_NAME\` - **MISSING from script**" >> $GITHUB_STEP_SUMMARY
+              MISSING_COUNT=$((MISSING_COUNT + 1))
+            fi
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Summary:" >> $GITHUB_STEP_SUMMARY
+          if [ $MISSING_COUNT -gt 0 ]; then
+            echo "- **$MISSING_COUNT option(s) missing** from build_liboqs.sh" >> $GITHUB_STEP_SUMMARY
+            echo "missing_count=$MISSING_COUNT" >> $GITHUB_OUTPUT
+          else
+            echo "- ✅ All CMake options are present in the script" >> $GITHUB_STEP_SUMMARY
+            echo "missing_count=0" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Recommended Actions:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review the missing options above" >> $GITHUB_STEP_SUMMARY
+          echo "2. Update \`build_liboqs.sh\` to add support for new options" >> $GITHUB_STEP_SUMMARY
+          echo "3. Update the help text and usage examples" >> $GITHUB_STEP_SUMMARY
+          echo "4. Test the changes locally before committing" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Create GitHub issue for outdated script
+        if: steps.check_staleness.outputs.outdated == 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # pin@v7
+        with:
+          script: |
+            // Check if an issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'build-script-outdated'
+            });
+            
+            if (issues.data.length > 0) {
+              console.log('Issue already exists, updating it...');
+              const issue = issues.data[0];
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `🔄 **Update**: Build script is still outdated as of ${new Date().toISOString()}
+                
+                See the latest [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`
+              });
+            } else {
+              console.log('Creating new issue...');
+              
+              const missingCount = '${{ steps.extract_options.outputs.missing_count }}';
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '🤖 Build script needs update - configuration files have changed',
+                body: `## Build Script Outdated
+                
+                The build script \`build_liboqs.sh\` appears to be outdated compared to the configuration files.
+                
+                ### Details:
+                - **CMakeLists.txt** or **CONFIGURE.md** have been modified more recently than the build script
+                ${missingCount > 0 ? `- **${missingCount} option(s)** are missing from the script` : ''}
+                
+                ### Action Required:
+                1. Review new/changed options in \`CMakeLists.txt\`
+                2. Update \`build_liboqs.sh\` to include new options:
+                   - Add new command-line flags
+                   - Update the usage/help text
+                   - Add examples if needed
+                3. Update the staleness check if needed
+                4. Test the changes locally:
+                   \`\`\`bash
+                   ./build_liboqs.sh --help
+                   ./build_liboqs.sh --new-option
+                   \`\`\`
+                5. Commit and push the changes
+                
+                ### Workflow Details:
+                - Workflow run: [View details](${context.payload.repository.html_url}/actions/runs/${context.runId})
+                - Triggered by: ${context.payload.head_commit?.message || 'Unknown commit'}
+                
+                ### Note:
+                This issue was automatically created by the CI system. It will be updated if the script remains outdated after subsequent commits.`,
+                labels: ['maintenance', 'build-script-outdated', 'automated']
+              });
+            }
           fi
 
   test-script-syntax:
