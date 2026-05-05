@@ -1,0 +1,475 @@
+#!/bin/bash
+
+# build_liboqs.sh - Build script for liboqs with OS detection and dependency installation
+# Supports runtime CMake configuration options from CONFIGURE.md
+
+set -e  # Exit on error
+
+# Color codes for output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to display usage information
+usage() {
+    cat << EOF
+Usage: $0 [OPTIONS]
+
+Build liboqs with optional CMake configuration options.
+
+OPTIONS:
+    -h, --help                          Show this help message
+    
+    Build Configuration:
+    --shared                            Build shared library (BUILD_SHARED_LIBS=ON)
+    --build-type TYPE                   Set build type: Debug, Release, MinSizeRel, RelWithDebInfo (default: Release)
+    --install-prefix PATH               Set installation prefix (CMAKE_INSTALL_PREFIX)
+    
+    Algorithm Selection:
+    --algs-enabled SET                  Algorithm set: STD, NIST_R4, NIST_SIG_ONRAMP, All (default: All)
+    --minimal-build "ALG1;ALG2"         Build only specified algorithms (e.g., "KEM_ml_kem_768;SIG_ml_dsa_44")
+    --enable-kem-ALG                    Enable specific KEM algorithm
+    --enable-sig-ALG                    Enable specific signature algorithm
+    --enable-sig-stfl-ALG               Enable specific stateful signature algorithm
+    
+    Build Options:
+    --build-only-lib                    Build only library, exclude tests and docs (OQS_BUILD_ONLY_LIB=ON)
+    --dist-build                        Build for distribution (OQS_DIST_BUILD=ON, default)
+    --no-dist-build                     Build for single machine (OQS_DIST_BUILD=OFF)
+    --opt-target TARGET                 Optimization target: auto, generic, or specific CPU (default: auto)
+    
+    OpenSSL Options:
+    --use-openssl                       Use OpenSSL (OQS_USE_OPENSSL=ON, default)
+    --no-openssl                        Don't use OpenSSL (OQS_USE_OPENSSL=OFF)
+    --openssl-root PATH                 OpenSSL root directory (OPENSSL_ROOT_DIR)
+    --dlopen-openssl                    Dynamically load OpenSSL (OQS_DLOPEN_OPENSSL=ON)
+    
+    GPU Acceleration:
+    --use-cupqc                         Use NVIDIA cuPQC library (OQS_USE_CUPQC=ON)
+    --use-icicle                        Use ICICLE GPU acceleration (OQS_USE_ICICLE=ON)
+    
+    CPU Features (for non-dist builds):
+    --use-adx                           Use ADX instructions (OQS_USE_ADX_INSTRUCTIONS=ON)
+    --use-aes                           Use AES instructions (OQS_USE_AES_INSTRUCTIONS=ON)
+    --use-avx                           Use AVX instructions (OQS_USE_AVX_INSTRUCTIONS=ON)
+    --use-avx2                          Use AVX2 instructions (OQS_USE_AVX2_INSTRUCTIONS=ON)
+    --use-avx512                        Use AVX512 instructions (OQS_USE_AVX512_INSTRUCTIONS=ON)
+    
+    Advanced Options:
+    --embedded-build                    Build for embedded systems (OQS_EMBEDDED_BUILD=ON)
+    --memopt-build                      Use memory-optimized implementations (OQS_MEMOPT_BUILD=ON)
+    --libjade-build                     Use Libjade implementations (OQS_LIBJADE_BUILD=ON)
+    --strict-warnings                   Enable strict compiler warnings (OQS_STRICT_WARNINGS=ON)
+    --enable-constant-time-test         Enable constant-time testing (OQS_ENABLE_TEST_CONSTANT_TIME=ON)
+    --use-coverage                      Enable code coverage (USE_COVERAGE=ON)
+    --use-sanitizer TYPE                Enable sanitizer: Address, Memory, Undefined, Thread, Leak
+    
+    Stateful Signatures:
+    --enable-xmss                       Enable XMSS stateful signatures (OQS_ENABLE_SIG_STFL_XMSS=ON)
+    --enable-lms                        Enable LMS stateful signatures (OQS_ENABLE_SIG_STFL_LMS=ON)
+    --enable-stfl-key-sig-gen           Enable stateful key/sig generation (HAZARDOUS, see docs)
+    
+    Custom CMake Options:
+    -D KEY=VALUE                        Pass custom CMake option directly
+
+EXAMPLES:
+    # Basic build with defaults
+    $0
+    
+    # Build shared library with debug symbols
+    $0 --shared --build-type Debug
+    
+    # Minimal build with only ML-KEM-768 and ML-DSA-44
+    $0 --minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"
+    
+    # Build for distribution with OpenSSL
+    $0 --dist-build --use-openssl
+    
+    # Build with GPU acceleration
+    $0 --use-icicle
+    
+    # Build with custom options
+    $0 --build-type Release --strict-warnings -DOQS_USE_AVX2_INSTRUCTIONS=ON
+
+For more details, see CONFIGURE.md
+
+EOF
+    exit 0
+}
+
+echo "========================================"
+echo "  liboqs Build Script"
+echo "========================================"
+echo ""
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Array to store CMake options
+CMAKE_OPTIONS=()
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            usage
+            ;;
+        --shared)
+            CMAKE_OPTIONS+=("-DBUILD_SHARED_LIBS=ON")
+            shift
+            ;;
+        --build-type)
+            CMAKE_OPTIONS+=("-DCMAKE_BUILD_TYPE=$2")
+            shift 2
+            ;;
+        --install-prefix)
+            CMAKE_OPTIONS+=("-DCMAKE_INSTALL_PREFIX=$2")
+            shift 2
+            ;;
+        --algs-enabled)
+            CMAKE_OPTIONS+=("-DOQS_ALGS_ENABLED=$2")
+            shift 2
+            ;;
+        --minimal-build)
+            CMAKE_OPTIONS+=("-DOQS_MINIMAL_BUILD=$2")
+            shift 2
+            ;;
+        --enable-kem-*)
+            ALG="${1#--enable-kem-}"
+            ALG_UPPER=$(echo "$ALG" | tr '[:lower:]' '[:upper:]')
+            CMAKE_OPTIONS+=("-DOQS_ENABLE_KEM_${ALG_UPPER}=ON")
+            shift
+            ;;
+        --enable-sig-*)
+            ALG="${1#--enable-sig-}"
+            ALG_UPPER=$(echo "$ALG" | tr '[:lower:]' '[:upper:]')
+            CMAKE_OPTIONS+=("-DOQS_ENABLE_SIG_${ALG_UPPER}=ON")
+            shift
+            ;;
+        --enable-sig-stfl-*)
+            ALG="${1#--enable-sig-stfl-}"
+            ALG_UPPER=$(echo "$ALG" | tr '[:lower:]' '[:upper:]')
+            CMAKE_OPTIONS+=("-DOQS_ENABLE_SIG_STFL_${ALG_UPPER}=ON")
+            shift
+            ;;
+        --build-only-lib)
+            CMAKE_OPTIONS+=("-DOQS_BUILD_ONLY_LIB=ON")
+            shift
+            ;;
+        --dist-build)
+            CMAKE_OPTIONS+=("-DOQS_DIST_BUILD=ON")
+            shift
+            ;;
+        --no-dist-build)
+            CMAKE_OPTIONS+=("-DOQS_DIST_BUILD=OFF")
+            shift
+            ;;
+        --opt-target)
+            CMAKE_OPTIONS+=("-DOQS_OPT_TARGET=$2")
+            shift 2
+            ;;
+        --use-openssl)
+            CMAKE_OPTIONS+=("-DOQS_USE_OPENSSL=ON")
+            shift
+            ;;
+        --no-openssl)
+            CMAKE_OPTIONS+=("-DOQS_USE_OPENSSL=OFF")
+            shift
+            ;;
+        --openssl-root)
+            CMAKE_OPTIONS+=("-DOPENSSL_ROOT_DIR=$2")
+            shift 2
+            ;;
+        --dlopen-openssl)
+            CMAKE_OPTIONS+=("-DOQS_DLOPEN_OPENSSL=ON")
+            shift
+            ;;
+        --use-cupqc)
+            CMAKE_OPTIONS+=("-DOQS_USE_CUPQC=ON")
+            shift
+            ;;
+        --use-icicle)
+            CMAKE_OPTIONS+=("-DOQS_USE_ICICLE=ON")
+            shift
+            ;;
+        --use-adx)
+            CMAKE_OPTIONS+=("-DOQS_USE_ADX_INSTRUCTIONS=ON")
+            shift
+            ;;
+        --use-aes)
+            CMAKE_OPTIONS+=("-DOQS_USE_AES_INSTRUCTIONS=ON")
+            shift
+            ;;
+        --use-avx)
+            CMAKE_OPTIONS+=("-DOQS_USE_AVX_INSTRUCTIONS=ON")
+            shift
+            ;;
+        --use-avx2)
+            CMAKE_OPTIONS+=("-DOQS_USE_AVX2_INSTRUCTIONS=ON")
+            shift
+            ;;
+        --use-avx512)
+            CMAKE_OPTIONS+=("-DOQS_USE_AVX512_INSTRUCTIONS=ON")
+            shift
+            ;;
+        --embedded-build)
+            CMAKE_OPTIONS+=("-DOQS_EMBEDDED_BUILD=ON")
+            shift
+            ;;
+        --memopt-build)
+            CMAKE_OPTIONS+=("-DOQS_MEMOPT_BUILD=ON")
+            shift
+            ;;
+        --libjade-build)
+            CMAKE_OPTIONS+=("-DOQS_LIBJADE_BUILD=ON")
+            shift
+            ;;
+        --strict-warnings)
+            CMAKE_OPTIONS+=("-DOQS_STRICT_WARNINGS=ON")
+            shift
+            ;;
+        --enable-constant-time-test)
+            CMAKE_OPTIONS+=("-DOQS_ENABLE_TEST_CONSTANT_TIME=ON")
+            shift
+            ;;
+        --use-coverage)
+            CMAKE_OPTIONS+=("-DUSE_COVERAGE=ON")
+            shift
+            ;;
+        --use-sanitizer)
+            CMAKE_OPTIONS+=("-DUSE_SANITIZER=$2")
+            shift 2
+            ;;
+        --enable-xmss)
+            CMAKE_OPTIONS+=("-DOQS_ENABLE_SIG_STFL_XMSS=ON")
+            shift
+            ;;
+        --enable-lms)
+            CMAKE_OPTIONS+=("-DOQS_ENABLE_SIG_STFL_LMS=ON")
+            shift
+            ;;
+        --enable-stfl-key-sig-gen)
+            echo -e "${RED}WARNING: Enabling stateful signature key/signature generation is HAZARDOUS!${NC}"
+            echo -e "${RED}See CONFIGURE.md for security implications.${NC}"
+            CMAKE_OPTIONS+=("-DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON")
+            shift
+            ;;
+        -D*)
+            CMAKE_OPTIONS+=("$1")
+            shift
+            ;;
+        *)
+            echo -e "${RED}Error: Unknown option: $1${NC}"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
+install_brew_package_if_missing() {
+    local package="$1"
+    if brew list --versions "$package" >/dev/null 2>&1; then
+        echo "$package is already installed. Skipping."
+    else
+        echo "Installing $package..."
+        brew install "$package"
+    fi
+}
+
+# Function to install Python test dependencies on macOS
+install_python_test_deps_macos() {
+    echo ""
+    echo "Installing Python test dependencies..."
+    
+    # Detect Python and pip
+    local PYTHON_CMD=""
+    local PIP_CMD=""
+    
+    # Try to find Python 3
+    if command -v python3 &> /dev/null; then
+        PYTHON_CMD="python3"
+        echo "✓ Found python3: $(python3 --version)"
+    elif command -v python &> /dev/null; then
+        PYTHON_VERSION=$(python --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+        MAJOR_VERSION=$(echo $PYTHON_VERSION | cut -d. -f1)
+        if [ "$MAJOR_VERSION" -ge 3 ]; then
+            PYTHON_CMD="python"
+            echo "✓ Found python: $(python --version)"
+        fi
+    fi
+    
+    if [ -z "$PYTHON_CMD" ]; then
+        echo -e "${RED}Error: Python 3 is not installed. Please install Python 3 first.${NC}"
+        echo "You can install it via Homebrew: brew install python3"
+        exit 1
+    fi
+    
+    # Determine the best pip command to use
+    if command -v pip3 &> /dev/null; then
+        PIP_CMD="pip3"
+        echo "✓ Found pip3"
+    elif $PYTHON_CMD -m pip --version &> /dev/null; then
+        PIP_CMD="$PYTHON_CMD -m pip"
+        echo "✓ Using python -m pip"
+    elif command -v pip &> /dev/null; then
+        PIP_CMD="pip"
+        echo "✓ Found pip"
+    else
+        echo "Installing pip..."
+        $PYTHON_CMD -m ensurepip --upgrade || {
+            echo -e "${RED}Failed to install pip. Please install pip manually.${NC}"
+            exit 1
+        }
+        PIP_CMD="$PYTHON_CMD -m pip"
+    fi
+    
+    # Check if we need --break-system-packages flag (for Python 3.11+ on some systems)
+    local BREAK_SYSTEM_PACKAGES=""
+    if $PIP_CMD install --help 2>&1 | grep -q "break-system-packages"; then
+        echo "ℹ️  Detected externally-managed Python environment"
+        BREAK_SYSTEM_PACKAGES="--break-system-packages"
+    fi
+    
+    # Try to install from requirements.txt with hash verification first
+    if [ -f "${SCRIPT_DIR}/.github/workflows/requirements.txt" ]; then
+        echo "Installing from requirements.txt (with hash verification)..."
+        if $PIP_CMD install --require-hashes $BREAK_SYSTEM_PACKAGES -r "${SCRIPT_DIR}/.github/workflows/requirements.txt" 2>/dev/null; then
+            echo -e "${GREEN}✓ Test dependencies installed from requirements.txt${NC}"
+        else
+            echo -e "${YELLOW}Warning: Failed to install from requirements.txt, trying individual packages...${NC}"
+            install_python_packages_individually "$PIP_CMD" "$BREAK_SYSTEM_PACKAGES"
+        fi
+    else
+        echo "requirements.txt not found, installing packages individually..."
+        install_python_packages_individually "$PIP_CMD" "$BREAK_SYSTEM_PACKAGES"
+    fi
+    
+    # Verify installation
+    echo "Verifying Python test dependencies..."
+    if $PYTHON_CMD -c "import pytest; import xdist; import yaml" 2>/dev/null; then
+        echo -e "${GREEN}✓ All Python test dependencies verified${NC}"
+    else
+        echo -e "${YELLOW}Warning: Some Python test dependencies may not be installed correctly${NC}"
+    fi
+}
+
+# Helper function to install Python packages individually
+install_python_packages_individually() {
+    local PIP_CMD="$1"
+    local BREAK_SYSTEM_PACKAGES="$2"
+    
+    local PACKAGES="pytest pytest-xdist pyyaml"
+    
+    echo "Installing: pytest, pytest-xdist, pyyaml..."
+    if [ -n "$BREAK_SYSTEM_PACKAGES" ]; then
+        $PIP_CMD install $BREAK_SYSTEM_PACKAGES $PACKAGES
+    else
+        $PIP_CMD install $PACKAGES
+    fi
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ Test dependencies installed successfully${NC}"
+    else
+        echo -e "${RED}Error: Failed to install Python test dependencies${NC}"
+        echo "You can try manually with:"
+        echo "  $PIP_CMD install $BREAK_SYSTEM_PACKAGES pytest pytest-xdist pyyaml"
+        exit 1
+    fi
+}
+
+# Detect OS and install dependencies
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    echo -e "${GREEN}Detected OS: macOS${NC}"
+    echo ""
+    
+    # Check if Homebrew is installed
+    if ! command -v brew &> /dev/null; then
+        echo -e "${RED}Error: Homebrew is not installed!${NC}"
+        echo "Please install Homebrew first: https://brew.sh"
+        exit 1
+    fi
+    
+    echo "Checking dependencies..."
+    install_brew_package_if_missing cmake
+    install_brew_package_if_missing ninja
+    install_brew_package_if_missing openssl@3
+    install_brew_package_if_missing wget
+    install_brew_package_if_missing doxygen
+    install_brew_package_if_missing graphviz
+    install_brew_package_if_missing astyle
+    
+    # Install Python test dependencies
+    install_python_test_deps_macos
+    
+elif [[ -f /etc/os-release ]]; then
+    # Source the os-release file
+    . /etc/os-release
+    
+    if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]] || [[ "$ID_LIKE" == *"debian"* ]]; then
+        # Ubuntu/Debian
+        echo -e "${GREEN}Detected OS: $NAME${NC}"
+        echo ""
+        
+        echo "Installing dependencies..."
+        sudo apt update
+        sudo apt install -y astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
+        
+    elif [[ "$ID" == "nixos" ]]; then
+        # NixOS
+        echo -e "${GREEN}Detected OS: NixOS${NC}"
+        echo ""
+        
+        echo "Entering Nix development environment..."
+        nix develop
+        
+    else
+        echo -e "${YELLOW}Warning: Unsupported Linux distribution: $NAME${NC}"
+        echo "Please install dependencies manually."
+        exit 1
+    fi
+    
+else
+    echo -e "${RED}Error: Unable to detect operating system${NC}"
+    echo "Supported OS: macOS, Ubuntu, Debian, NixOS"
+    exit 1
+fi
+
+echo -e "${GREEN}Dependencies installed successfully!${NC}"
+mkdir -p "${SCRIPT_DIR}/build"
+cd "${SCRIPT_DIR}/build"
+
+echo ""
+echo "========================================"
+echo "  Building liboqs"
+echo "========================================"
+
+# Display CMake options if any were provided
+if [ ${#CMAKE_OPTIONS[@]} -gt 0 ]; then
+    echo -e "${BLUE}CMake options:${NC}"
+    for opt in "${CMAKE_OPTIONS[@]}"; do
+        echo "  $opt"
+    done
+    echo ""
+fi
+
+# Run CMake with all options
+echo "Running CMake configuration..."
+cmake -GNinja "${CMAKE_OPTIONS[@]}" ..
+
+echo ""
+echo "Building with Ninja..."
+ninja
+
+echo ""
+echo "========================================"
+echo "  Build Complete!"
+echo "========================================"
+echo -e "${GREEN}✓${NC} Build completed successfully in: ${SCRIPT_DIR}/build"
+echo ""
+echo "To install liboqs, run:"
+echo "  cd ${SCRIPT_DIR}/build && sudo ninja install"
+echo ""
+echo "To run tests, run:"
+echo "  cd ${SCRIPT_DIR}/build && ninja run_tests"
