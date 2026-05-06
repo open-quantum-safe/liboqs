@@ -88,7 +88,6 @@ jobs:
   test-script-options-coverage:
     name: Verify script covers all CMake options
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
     
     steps:
       - name: Checkout code
