@@ -108,6 +108,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Function to check if script is outdated by validating CMake options
 check_script_staleness() {
+    # Skip check if disabled via environment variable (useful for CI)
+    if [ "${SKIP_STALENESS_CHECK:-}" = "1" ]; then
+        return 0
+    fi
+    
     local SCRIPT_FILE="${BASH_SOURCE[0]}"
     local CMAKE_FILE="${SCRIPT_DIR}/CMakeLists.txt"
     local ALG_SUPPORT_FILE="${SCRIPT_DIR}/.CMake/alg_support.cmake"
