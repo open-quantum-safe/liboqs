@@ -106,32 +106,99 @@ echo ""
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Function to check if script is outdated
+# Function to check if script is outdated by validating CMake options
 check_script_staleness() {
     local SCRIPT_FILE="${BASH_SOURCE[0]}"
     local CMAKE_FILE="${SCRIPT_DIR}/CMakeLists.txt"
-    local CONFIGURE_FILE="${SCRIPT_DIR}/CONFIGURE.md"
+    local ALG_SUPPORT_FILE="${SCRIPT_DIR}/.CMake/alg_support.cmake"
     local WARNED=0
+    local MISSING_OPTIONS=()
     
-    # Check if CMakeLists.txt is newer than the script
-    if [ -f "$CMAKE_FILE" ] && [ "$CMAKE_FILE" -nt "$SCRIPT_FILE" ]; then
-        echo -e "${YELLOW}⚠️  Warning: CMakeLists.txt is newer than this build script${NC}"
-        echo -e "${YELLOW}   Some build options may be missing or outdated${NC}"
-        echo -e "${YELLOW}   Consider updating the script or using cmake directly${NC}"
+    # Extract all option() declarations from CMake files
+    local CMAKE_OPTIONS=()
+    
+    # Parse main CMakeLists.txt
+    if [ -f "$CMAKE_FILE" ]; then
+        while IFS= read -r line; do
+            CMAKE_OPTIONS+=("$line")
+        done < <(grep -E '^option\(OQS_|^option\(USE_|^option\(BUILD_' "$CMAKE_FILE" 2>/dev/null | sed -E 's/option\(([A-Z_]+).*/\1/')
+    fi
+    
+    # Parse .CMake/alg_support.cmake for algorithm options
+    if [ -f "$ALG_SUPPORT_FILE" ]; then
+        while IFS= read -r line; do
+            CMAKE_OPTIONS+=("$line")
+        done < <(grep -E '^option\(OQS_' "$ALG_SUPPORT_FILE" 2>/dev/null | sed -E 's/option\(([A-Z_]+).*/\1/')
+    fi
+    
+    # Remove duplicates
+    CMAKE_OPTIONS=($(printf '%s\n' "${CMAKE_OPTIONS[@]}" | sort -u))
+    
+    # Check each CMake option against the script
+    for opt in "${CMAKE_OPTIONS[@]}"; do
+        # Skip empty lines
+        [ -z "$opt" ] && continue
+        
+        # Convert option name to script format (e.g., OQS_USE_OPENSSL -> --use-openssl or -DOQS_USE_OPENSSL)
+        # Check if option is referenced in the script (either as flag or -D option)
+        if ! grep -q "$opt" "$SCRIPT_FILE" 2>/dev/null; then
+            MISSING_OPTIONS+=("$opt")
+        fi
+    done
+    
+    # Report missing options
+    if [ ${#MISSING_OPTIONS[@]} -gt 0 ]; then
+        echo -e "${YELLOW}⚠️  Warning: Found CMake options not exposed in this build script:${NC}"
+        
+        # Group and display missing options (limit to first 10 to avoid clutter)
+        local count=0
+        for opt in "${MISSING_OPTIONS[@]}"; do
+            if [ $count -lt 10 ]; then
+                echo -e "${YELLOW}   - $opt${NC}"
+                ((count++))
+            fi
+        done
+        
+        if [ ${#MISSING_OPTIONS[@]} -gt 10 ]; then
+            echo -e "${YELLOW}   ... and $((${#MISSING_OPTIONS[@]} - 10)) more${NC}"
+        fi
+        
+        echo -e "${YELLOW}   You can use these options with: -D<OPTION>=ON/OFF${NC}"
+        echo -e "${YELLOW}   Example: $0 -DOQS_SPEED_USE_ARM_PMU=ON${NC}"
+        echo ""
         WARNED=1
     fi
     
-    # Check if CONFIGURE.md is newer than the script
-    if [ -f "$CONFIGURE_FILE" ] && [ "$CONFIGURE_FILE" -nt "$SCRIPT_FILE" ]; then
-        if [ $WARNED -eq 0 ]; then
-            echo -e "${YELLOW}⚠️  Warning: CONFIGURE.md is newer than this build script${NC}"
+    # Additional validation: Check for new algorithm families
+    if [ -f "$ALG_SUPPORT_FILE" ]; then
+        local ALG_FAMILIES=$(grep -E '^option\(OQS_ENABLE_(KEM|SIG)_[A-Z_]+' "$ALG_SUPPORT_FILE" 2>/dev/null | \
+                            sed -E 's/option\(OQS_ENABLE_(KEM|SIG)_([A-Z_]+).*/\2/' | sort -u)
+        
+        local MISSING_ALG_FAMILIES=()
+        for alg in $ALG_FAMILIES; do
+            # Check if algorithm family is mentioned in help text or options
+            if ! grep -qi "$alg" "$SCRIPT_FILE" 2>/dev/null; then
+                MISSING_ALG_FAMILIES+=("$alg")
+            fi
+        done
+        
+        if [ ${#MISSING_ALG_FAMILIES[@]} -gt 0 ] && [ ${#MISSING_ALG_FAMILIES[@]} -le 5 ]; then
+            if [ $WARNED -eq 0 ]; then
+                echo -e "${YELLOW}⚠️  Warning: New algorithm families detected:${NC}"
+            else
+                echo -e "${YELLOW}   New algorithm families detected:${NC}"
+            fi
+            for alg in "${MISSING_ALG_FAMILIES[@]}"; do
+                echo -e "${YELLOW}   - $alg${NC}"
+            done
+            echo -e "${YELLOW}   Use --enable-kem-<alg> or --enable-sig-<alg> to enable${NC}"
+            echo ""
+            WARNED=1
         fi
-        echo -e "${YELLOW}   Documentation may describe options not available in this script${NC}"
-        WARNED=1
     fi
     
     if [ $WARNED -eq 1 ]; then
-        echo -e "${YELLOW}   You can still proceed, but some newer options may not be available${NC}"
+        echo -e "${YELLOW}   You can still proceed. Use cmake directly for full control.${NC}"
         echo ""
     fi
 }
