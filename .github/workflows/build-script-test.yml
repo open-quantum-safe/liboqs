@@ -161,7 +161,7 @@ jobs:
       
       - name: Test help flag
         run: |
-          ./build_liboqs.sh --help > help_output.txt
+          ./build_liboqs.sh --help > help_output.txt 2>&1
           if [ ! -s help_output.txt ]; then
             echo "Error: Help output is empty"
             exit 1
