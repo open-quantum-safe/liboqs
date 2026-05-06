@@ -61,6 +61,7 @@ OPTIONS:
     --embedded-build                    Build for embedded systems (OQS_EMBEDDED_BUILD=ON)
     --memopt-build                      Use memory-optimized implementations (OQS_MEMOPT_BUILD=ON)
     --libjade-build                     Use Libjade implementations (OQS_LIBJADE_BUILD=ON)
+    --permit-unsupported-arch           Permit compilation on unsupported architecture (OQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON)
     --strict-warnings                   Enable strict compiler warnings (OQS_STRICT_WARNINGS=ON)
     --enable-constant-time-test         Enable constant-time testing (OQS_ENABLE_TEST_CONSTANT_TIME=ON)
     --use-coverage                      Enable code coverage (USE_COVERAGE=ON)
@@ -103,11 +104,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Function to check if script is outdated by validating CMake options
 check_script_staleness() {
-    # Skip check if disabled via environment variable (useful for CI)
-    if [ "${SKIP_STALENESS_CHECK:-}" = "1" ]; then
-        return 0
-    fi
-    
     local SCRIPT_FILE="${BASH_SOURCE[0]}"
     local CMAKE_FILE="${SCRIPT_DIR}/CMakeLists.txt"
     local ALG_SUPPORT_FILE="${SCRIPT_DIR}/.CMake/alg_support.cmake"
@@ -145,6 +141,12 @@ check_script_staleness() {
     for opt in "${CMAKE_OPTIONS[@]}"; do
         # Skip empty lines
         [ -z "$opt" ] && continue
+        
+        # Skip algorithm-specific options that are covered by generic patterns
+        # (e.g., OQS_ENABLE_KEM_KYBER is covered by --enable-kem-* pattern)
+        if [[ "$opt" =~ ^OQS_ENABLE_KEM_ ]] || [[ "$opt" =~ ^OQS_ENABLE_SIG_ ]] || [[ "$opt" =~ ^OQS_ENABLE_LIBJADE_ ]]; then
+            continue
+        fi
         
         # Convert option name to script format (e.g., OQS_USE_OPENSSL -> --use-openssl or -DOQS_USE_OPENSSL)
         # Check if option is referenced in the script (either as flag or -D option)
@@ -207,6 +209,20 @@ check_script_staleness() {
     if [ $WARNED -eq 1 ]; then
         echo -e "${YELLOW}   You can still proceed. Use cmake directly for full control.${NC}"
         echo ""
+        
+        # Check if staleness check is disabled (useful for CI)
+        # Issue warning but allow CI to continue
+        if [ "${SKIP_STALENESS_CHECK:-}" = "1" ]; then
+            echo -e "${YELLOW}⚠️  Note: Staleness check is disabled (SKIP_STALENESS_CHECK=1)${NC}"
+            echo -e "${YELLOW}   The above warnings are informational only and will not fail the build.${NC}"
+            echo -e "${YELLOW}   Please review and update the build script if needed.${NC}"
+            echo ""
+        fi
+    else
+        # No staleness detected, but check is disabled - no need to warn
+        if [ "${SKIP_STALENESS_CHECK:-}" = "1" ]; then
+            return 0
+        fi
     fi
 }
 
@@ -327,6 +343,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --libjade-build)
             CMAKE_OPTIONS+=("-DOQS_LIBJADE_BUILD=ON")
+            shift
+            ;;
+        --permit-unsupported-arch)
+            CMAKE_OPTIONS+=("-DOQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON")
             shift
             ;;
         --strict-warnings)
