@@ -52,7 +52,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
       
       - name: Make build script executable
         run: chmod +x build_liboqs.sh
@@ -91,7 +91,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
       
       - name: Extract CMake options from CONFIGURE.md
         run: |
@@ -155,7 +155,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
       
       - name: Make build script executable
         run: chmod +x build_liboqs.sh
@@ -185,7 +185,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
       
       - name: Install shellcheck
         run: sudo apt-get update && sudo apt-get install -y shellcheck
