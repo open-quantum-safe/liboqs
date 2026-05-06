@@ -58,6 +58,8 @@ jobs:
         run: chmod +x build_liboqs.sh
       
       - name: Run build script - ${{ matrix.test-name }}
+        env:
+          SKIP_STALENESS_CHECK: 1
         run: ./build_liboqs.sh ${{ matrix.script-args }}
       
       - name: Verify build artifacts exist
