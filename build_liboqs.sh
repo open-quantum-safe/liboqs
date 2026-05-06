@@ -99,11 +99,6 @@ EOF
     exit 0
 }
 
-echo "========================================"
-echo "  liboqs Build Script"
-echo "========================================"
-echo ""
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Function to check if script is outdated by validating CMake options
@@ -214,9 +209,6 @@ check_script_staleness() {
         echo ""
     fi
 }
-
-# Check for script staleness
-check_script_staleness
 
 # Array to store CMake options
 CMAKE_OPTIONS=()
@@ -378,6 +370,14 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+echo "========================================"
+echo "  liboqs Build Script"
+echo "========================================"
+echo ""
+
+# Check for script staleness only for real build execution paths
+check_script_staleness
 
 install_brew_package_if_missing() {
     local package="$1"
