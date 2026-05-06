@@ -114,25 +114,32 @@ check_script_staleness() {
     local WARNED=0
     local MISSING_OPTIONS=()
     
+    # Skip check if CMake files don't exist
+    if [ ! -f "$CMAKE_FILE" ] && [ ! -f "$ALG_SUPPORT_FILE" ]; then
+        return 0
+    fi
+    
     # Extract all option() declarations from CMake files
     local CMAKE_OPTIONS=()
     
     # Parse main CMakeLists.txt
     if [ -f "$CMAKE_FILE" ]; then
         while IFS= read -r line; do
-            CMAKE_OPTIONS+=("$line")
-        done < <(grep -E '^option\(OQS_|^option\(USE_|^option\(BUILD_' "$CMAKE_FILE" 2>/dev/null | sed -E 's/option\(([A-Z_]+).*/\1/')
+            [ -n "$line" ] && CMAKE_OPTIONS+=("$line")
+        done < <(grep -E '^option\(OQS_|^option\(USE_|^option\(BUILD_' "$CMAKE_FILE" 2>/dev/null | sed 's/option(//;s/ .*//' || true)
     fi
     
     # Parse .CMake/alg_support.cmake for algorithm options
     if [ -f "$ALG_SUPPORT_FILE" ]; then
         while IFS= read -r line; do
-            CMAKE_OPTIONS+=("$line")
-        done < <(grep -E '^option\(OQS_' "$ALG_SUPPORT_FILE" 2>/dev/null | sed -E 's/option\(([A-Z_]+).*/\1/')
+            [ -n "$line" ] && CMAKE_OPTIONS+=("$line")
+        done < <(grep -E '^option\(OQS_' "$ALG_SUPPORT_FILE" 2>/dev/null | sed 's/option(//;s/ .*//' || true)
     fi
     
-    # Remove duplicates
-    CMAKE_OPTIONS=($(printf '%s\n' "${CMAKE_OPTIONS[@]}" | sort -u))
+    # Remove duplicates (handle empty array safely)
+    if [ ${#CMAKE_OPTIONS[@]} -gt 0 ]; then
+        CMAKE_OPTIONS=($(printf '%s\n' "${CMAKE_OPTIONS[@]}" | sort -u || true))
+    fi
     
     # Check each CMake option against the script
     for opt in "${CMAKE_OPTIONS[@]}"; do
@@ -172,7 +179,7 @@ check_script_staleness() {
     # Additional validation: Check for new algorithm families
     if [ -f "$ALG_SUPPORT_FILE" ]; then
         local ALG_FAMILIES=$(grep -E '^option\(OQS_ENABLE_(KEM|SIG)_[A-Z_]+' "$ALG_SUPPORT_FILE" 2>/dev/null | \
-                            sed -E 's/option\(OQS_ENABLE_(KEM|SIG)_([A-Z_]+).*/\2/' | sort -u)
+                            sed 's/option(OQS_ENABLE_[KS][EI][MG]_//;s/ .*//' | sort -u || true)
         
         local MISSING_ALG_FAMILIES=()
         for alg in $ALG_FAMILIES; do
