@@ -113,39 +113,41 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 ### Linux and Mac
 
-#### Option 1: Using the automated build script (Recommended)
+#### Automated Build Script
 
-1. Get the source:
+For a simplified build process, you can use the provided build script that automatically detects your OS, installs dependencies, and builds liboqs:
 
-		git clone -b main https://github.com/open-quantum-safe/liboqs.git
-		cd liboqs
+```bash
+git clone -b main https://github.com/open-quantum-safe/liboqs.git
+cd liboqs
+./build_liboqs.sh
+```
 
-2. Run the build script:
+The script supports various build options. View all available options with:
 
-		./build_liboqs.sh
+```bash
+./build_liboqs.sh --help
+```
 
-	The script will automatically:
-	- Detect your operating system (macOS, Ubuntu/Debian, or NixOS)
-	- Install all required dependencies (including Python test dependencies on macOS with automatic pip handling)
-	- Configure and build liboqs with default settings
+Common examples:
 
-	For custom build options, see the help:
+```bash
+# Build shared library with debug symbols
+./build_liboqs.sh --shared --build-type Debug
 
-		./build_liboqs.sh --help
+# Minimal build with only ML-KEM-768 and ML-DSA-44
+./build_liboqs.sh --minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"
 
-	Examples:
-	```bash
-	# Build shared library with debug symbols
-	./build_liboqs.sh --shared --build-type Debug
-	
-	# Minimal build with only ML-KEM-768 and ML-DSA-44
-	./build_liboqs.sh --minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"
-	
-	# Build without OpenSSL
-	./build_liboqs.sh --no-openssl
-	```
+# Build without OpenSSL
+./build_liboqs.sh --no-openssl
 
-#### Option 2: Manual installation
+# Build for distribution
+./build_liboqs.sh --dist-build
+```
+
+The script automatically handles dependency installation on Ubuntu, macOS (via Homebrew), and NixOS systems.
+
+#### Manual Installation
 
 1. Install dependencies:
 
