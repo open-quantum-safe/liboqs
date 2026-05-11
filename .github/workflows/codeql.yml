@@ -1,8 +1,6 @@
 name: CodeQL analysis
-
 permissions:
   contents: read
-
 on:
   workflow_call:
   workflow_dispatch:
@@ -10,32 +8,25 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   codeql:
     permissions:
       contents: read
       security-events: write
-
     name: CodeQL
     runs-on: ubuntu-latest
-    env:
-      CODEQL_EXTRACTOR_CPP_TRAP_CACHING: false
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
         with:
           languages: cpp
-          config-file: ./.github/codeql/codeql-config.yml
-
+          queries: security-and-quality,./.github/codeql/openssl-return-check.ql
       - name: Build liboqs
         run: |
           cmake -S . -B build -DOQS_MINIMAL_BUILD="KEM_ml_kem_768;SIG_ml_dsa_65"
           cmake --build build --parallel $(nproc)
-
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
         with:
