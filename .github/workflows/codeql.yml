@@ -33,3 +33,4 @@ jobs:
         uses: github/codeql-action/analyze@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
         with:
           category: "/language:cpp"
+          upload: false
