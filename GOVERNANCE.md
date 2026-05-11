@@ -6,7 +6,7 @@ The Open Quantum Safe project aims to operate by the following principles:
 
 - **Openness**: The project will be open in its operation, open to contributions, and produce open source software.
 - **Respect**: The project will foster respectful interactions with all participants.
-- **Scientific integrity**: The project will follow advancements in cryptographic research and will be guided by standards and best practices.
+- **Scientific integrity**: The project will follow advancements in cryptographic research and will be guided by standards and best practices with a slant towards favouring the advancement of long term research goals over short term commercial interests.
 
 Decision making in the project will follow the principles above, and be governed first and foremost by reason and mutually respectful interaction between all participants.
 The project will aim to build consensus for decisions, and will where possible operate by the approach of [lazy consensus](https://community.apache.org/committers/decisionMaking.html).
@@ -41,26 +41,36 @@ A **Contributor** is a Community Member who contributes directly to the project 
 
 ### Committers
 
-A **Committer** is a Contributor with increased experience in the project who helps review pull requests and actively participates in discussions about the project. Committers will be members of the open-quantum-safe GitHub organization and will have "write" permissions in GitHub.
+A **Committer** is a Contributor with increased interest in the project who helps review pull requests and actively participates in discussions about the project. Committers will be members of the open-quantum-safe GitHub organization and will have "write" permissions in GitHub.
 
 Responsibilities:
 
 - Further the goals of the project.
 - Monitor and respond to GitHub issues.
-- Review and merge pull requests.
+- Review and merge pull requests in cooperation with other Committers.
 - Assist with security releases when required.
+- Jointly agree on general and technical guidelines for the project.
+- Jointly agree project priorities.
 - Participate in discussions and project meetings.
 
-### Maintainers
+### Release managers
 
-A **Maintainer** is a Committer who makes significant and sustained contributions to the project, and is committed to guiding the direction of the project. Maintainers will have "administrative" permissions in GitHub.
+A release manager is a Contributor versed in creating releases of the project.
 
 Responsibilities:
 
-- Oversee the overall project health and growth.
-- Lead communication for the project.
-- Define general and technical guidelines for the project.
-- Identify priorities and manage the release cycle.
+- Manage the release cycle, incl. creation of suitable user documentation.
+- Execution of downstream tests ascertaining quality of releases.
+
+### Maintainers
+
+A **Maintainer** is a Committer with additional responsibilities and experience. Maintainers will have "administrative" permissions in GitHub.
+
+Responsibilities:
+
+- Assess project status and role assignments.
+- Propose communication about the project.
+- Propose changes to this governance document.
 
 ### Change of role
 
@@ -96,28 +106,36 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 
 ### Maintainers
 
-@baentsch (on leave of absence as of March 11, 2025)
+@baentsch
 @dstebila
-@SWilson4
+@xuganyu96
 
 ### Committers
 
-@baentsch (on leave of absence as of March 11, 2025)
+@ashman-p
+@baentsch
 @bhess
-@christianpaquin
 @dstebila
-@Martyrshot
-@praveksharma
-@SWilson4
-@vsoftco
+@mkannwischer
+@RodriM11
+@xuganyu96
 
 ## Former Maintainers and Committers
 
 OQS is grateful to the following individuals who have previously served as Maintainers or Committers for liboqs.
 
-### Former Committers
+### Emeritus Maintainers
 
+@SWilson4
+
+### Emeritus Committers
+
+@christianpaquin
 @jschanck
+@Martyrshot
+@praveksharma
+@SWilson4
+@vsoftco
 
 ## Afterword
 
