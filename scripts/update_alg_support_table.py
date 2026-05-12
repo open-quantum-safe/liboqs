@@ -20,20 +20,33 @@ ALG_SUPPORT_HEADER = [
     "Primary implementation",
 ]
 COMMIT_HASH_LEN = 7
+SUPPORTED_URL_PREFIXES = [
+    "https://github.com/",
+    "https://gitlab.com/",
+]
 
+def match_prefix(url: str, prefixes = SUPPORTED_URL_PREFIXES) -> str | None:
+    """If the url is prefixed by one of the allowed prefixes, then return the
+    allowed prefix, otherwise return None
+    """
+    for prefix in prefixes:
+        if prefix in url:
+            return prefix
+    return None
 
 def format_upstream_source(source: str) -> str:
     """For each YAML data sheet, the primary-upstream.source field contains some
-    URL to the implementation. At this moment all URLs are links to GitHub, so
-    we can format them as follows:
+    URL to the implementation.
+
+    Correctly formatting source relies on Git service provider having specific
+    URL format, so for now we only support GitHub and GitLab URLs
 
     <handle>/<repository>@<commit> if commit is available
     <handle>/<repository> otherwise
     with a link to the repository
     """
-    # TODO: we might get GitLab or other non-GH link in the future but oh well
-    prefix = "https://github.com/"
-    if not prefix in source:
+    prefix = match_prefix(source)
+    if not prefix:
         raise ValueError(f"Non-GitHub source {source}")
     url_start = source.find(prefix)
     # NOTE: split with no argument will split with all whitespaces
