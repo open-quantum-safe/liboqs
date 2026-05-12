@@ -19,6 +19,15 @@ Usage: $0 [OPTIONS]
 
 Build liboqs with optional CMake configuration options.
 
+DEFAULT SETTINGS (when no options specified):
+    - Build type: Release
+    - Library type: Static (.a)
+    - Algorithm set: All (OQS_ALGS_ENABLED=All)
+    - Distribution build: ON (OQS_DIST_BUILD=ON)
+    - OpenSSL: ON (OQS_USE_OPENSSL=ON)
+    - Optimization target: auto (OQS_OPT_TARGET=auto)
+    - Tests and docs: Built (OQS_BUILD_ONLY_LIB=OFF)
+
 OPTIONS:
     -h, --help                          Show this help message
     
@@ -29,10 +38,13 @@ OPTIONS:
     
     Algorithm Selection:
     --algs-enabled SET                  Algorithm set: STD, NIST_R4, NIST_SIG_ONRAMP, All (default: All)
-    --minimal-build "ALG1;ALG2"         Build only specified algorithms (e.g., "KEM_ml_kem_768;SIG_ml_dsa_44")
-    --enable-kem-ALG                    Enable specific KEM algorithm
-    --enable-sig-ALG                    Enable specific signature algorithm
-    --enable-sig-stfl-ALG               Enable specific stateful signature algorithm
+    --minimal-build "ALG1;ALG2;..."     Build ONLY specified algorithms (disables all others)
+                                        Supports multiple semicolon-separated algorithms
+                                        Works for KEM, SIG, and SIG_STFL families
+                                        (e.g., "KEM_ml_kem_768;SIG_ml_dsa_44;SIG_falcon_512")
+    --enable-kem-ALG                    Enable specific KEM algorithm (additive with defaults)
+    --enable-sig-ALG                    Enable specific signature algorithm (additive with defaults)
+    --enable-sig-stfl-ALG               Enable specific stateful signature algorithm (additive with defaults)
     
     Build Options:
     --build-only-lib                    Build only library, exclude tests and docs (OQS_BUILD_ONLY_LIB=ON)
@@ -70,7 +82,10 @@ OPTIONS:
     Stateful Signatures:
     --enable-xmss                       Enable XMSS stateful signatures (OQS_ENABLE_SIG_STFL_XMSS=ON)
     --enable-lms                        Enable LMS stateful signatures (OQS_ENABLE_SIG_STFL_LMS=ON)
-    --enable-stfl-key-sig-gen           Enable stateful key/sig generation (HAZARDOUS, see docs)
+    
+    Note: Stateful key/signature generation is HAZARDOUS and disabled by default.
+          To enable (NOT RECOMMENDED), use: -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
+          See CONFIGURE.md for security implications before enabling.
     
     Custom CMake Options:
     -D KEY=VALUE                        Pass custom CMake option directly
@@ -217,11 +232,6 @@ check_script_staleness() {
             echo -e "${YELLOW}   The above warnings are informational only and will not fail the build.${NC}"
             echo -e "${YELLOW}   Please review and update the build script if needed.${NC}"
             echo ""
-        fi
-    else
-        # No staleness detected, but check is disabled - no need to warn
-        if [ "${SKIP_STALENESS_CHECK:-}" = "1" ]; then
-            return 0
         fi
     fi
 }
@@ -373,12 +383,6 @@ while [[ $# -gt 0 ]]; do
             CMAKE_OPTIONS+=("-DOQS_ENABLE_SIG_STFL_LMS=ON")
             shift
             ;;
-        --enable-stfl-key-sig-gen)
-            echo -e "${RED}WARNING: Enabling stateful signature key/signature generation is HAZARDOUS!${NC}"
-            echo -e "${RED}See CONFIGURE.md for security implications.${NC}"
-            CMAKE_OPTIONS+=("-DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON")
-            shift
-            ;;
         -D*)
             CMAKE_OPTIONS+=("$1")
             shift
@@ -399,116 +403,7 @@ echo ""
 # Check for script staleness only for real build execution paths
 check_script_staleness
 
-install_brew_package_if_missing() {
-    local package="$1"
-    if brew list --versions "$package" >/dev/null 2>&1; then
-        echo "$package is already installed. Skipping."
-    else
-        echo "Installing $package..."
-        brew install "$package"
-    fi
-}
-
-# Function to install Python test dependencies on macOS
-install_python_test_deps_macos() {
-    echo ""
-    echo "Installing Python test dependencies..."
-    
-    # Detect Python and pip
-    local PYTHON_CMD=""
-    local PIP_CMD=""
-    
-    # Try to find Python 3
-    if command -v python3 &> /dev/null; then
-        PYTHON_CMD="python3"
-        echo "✓ Found python3: $(python3 --version)"
-    elif command -v python &> /dev/null; then
-        PYTHON_VERSION=$(python --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
-        MAJOR_VERSION=$(echo $PYTHON_VERSION | cut -d. -f1)
-        if [ "$MAJOR_VERSION" -ge 3 ]; then
-            PYTHON_CMD="python"
-            echo "✓ Found python: $(python --version)"
-        fi
-    fi
-    
-    if [ -z "$PYTHON_CMD" ]; then
-        echo -e "${RED}Error: Python 3 is not installed. Please install Python 3 first.${NC}"
-        echo "You can install it via Homebrew: brew install python3"
-        exit 1
-    fi
-    
-    # Determine the best pip command to use
-    if command -v pip3 &> /dev/null; then
-        PIP_CMD="pip3"
-        echo "✓ Found pip3"
-    elif $PYTHON_CMD -m pip --version &> /dev/null; then
-        PIP_CMD="$PYTHON_CMD -m pip"
-        echo "✓ Using python -m pip"
-    elif command -v pip &> /dev/null; then
-        PIP_CMD="pip"
-        echo "✓ Found pip"
-    else
-        echo "Installing pip..."
-        $PYTHON_CMD -m ensurepip --upgrade || {
-            echo -e "${RED}Failed to install pip. Please install pip manually.${NC}"
-            exit 1
-        }
-        PIP_CMD="$PYTHON_CMD -m pip"
-    fi
-    
-    # Check if we need --break-system-packages flag (for Python 3.11+ on some systems)
-    local BREAK_SYSTEM_PACKAGES=""
-    if $PIP_CMD install --help 2>&1 | grep -q "break-system-packages"; then
-        echo "ℹ️  Detected externally-managed Python environment"
-        BREAK_SYSTEM_PACKAGES="--break-system-packages"
-    fi
-    
-    # Try to install from requirements.txt with hash verification first
-    if [ -f "${SCRIPT_DIR}/.github/workflows/requirements.txt" ]; then
-        echo "Installing from requirements.txt (with hash verification)..."
-        if $PIP_CMD install --require-hashes $BREAK_SYSTEM_PACKAGES -r "${SCRIPT_DIR}/.github/workflows/requirements.txt" 2>/dev/null; then
-            echo -e "${GREEN}✓ Test dependencies installed from requirements.txt${NC}"
-        else
-            echo -e "${YELLOW}Warning: Failed to install from requirements.txt, trying individual packages...${NC}"
-            install_python_packages_individually "$PIP_CMD" "$BREAK_SYSTEM_PACKAGES"
-        fi
-    else
-        echo "requirements.txt not found, installing packages individually..."
-        install_python_packages_individually "$PIP_CMD" "$BREAK_SYSTEM_PACKAGES"
-    fi
-    
-    # Verify installation
-    echo "Verifying Python test dependencies..."
-    if $PYTHON_CMD -c "import pytest; import xdist; import yaml" 2>/dev/null; then
-        echo -e "${GREEN}✓ All Python test dependencies verified${NC}"
-    else
-        echo -e "${YELLOW}Warning: Some Python test dependencies may not be installed correctly${NC}"
-    fi
-}
-
-# Helper function to install Python packages individually
-install_python_packages_individually() {
-    local PIP_CMD="$1"
-    local BREAK_SYSTEM_PACKAGES="$2"
-    
-    local PACKAGES="pytest pytest-xdist pyyaml"
-    
-    echo "Installing: pytest, pytest-xdist, pyyaml..."
-    if [ -n "$BREAK_SYSTEM_PACKAGES" ]; then
-        $PIP_CMD install $BREAK_SYSTEM_PACKAGES $PACKAGES
-    else
-        $PIP_CMD install $PACKAGES
-    fi
-    
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓ Test dependencies installed successfully${NC}"
-    else
-        echo -e "${RED}Error: Failed to install Python test dependencies${NC}"
-        echo "You can try manually with:"
-        echo "  $PIP_CMD install $BREAK_SYSTEM_PACKAGES pytest pytest-xdist pyyaml"
-        exit 1
-    fi
-}
+# No helper functions needed - brew and apt handle idempotency
 
 # Detect OS and install dependencies
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -523,17 +418,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         exit 1
     fi
     
-    echo "Checking dependencies..."
-    install_brew_package_if_missing cmake
-    install_brew_package_if_missing ninja
-    install_brew_package_if_missing openssl@3
-    install_brew_package_if_missing wget
-    install_brew_package_if_missing doxygen
-    install_brew_package_if_missing graphviz
-    install_brew_package_if_missing astyle
+    echo "Installing dependencies..."
+    brew install cmake ninja openssl@3 wget doxygen graphviz astyle python3
     
-    # Install Python test dependencies
-    install_python_test_deps_macos
+    # Install Python test dependencies using pip3
+    echo ""
+    echo "Installing Python test dependencies..."
+    pip3 install --break-system-packages pytest pytest-xdist pyyaml
     
 elif [[ -f /etc/os-release ]]; then
     # Source the os-release file
