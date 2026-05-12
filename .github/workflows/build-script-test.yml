@@ -36,6 +36,8 @@ jobs:
             test-name: minimal-build
             script-args: '--minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"'
             description: "Minimal build with specific algorithms"
+            test-kem-alg: "ML-KEM-768"
+            test-sig-alg: "ML-DSA-44"
           
           - os: ubuntu-latest
             test-name: shared-no-openssl
@@ -52,6 +54,8 @@ jobs:
             test-name: minimal-build-multi-alg
             script-args: '--minimal-build "KEM_ml_kem_512;KEM_ml_kem_768;KEM_ml_kem_1024;SIG_ml_dsa_44;SIG_ml_dsa_65;SIG_falcon_512"'
             description: "Minimal build with multiple algorithms on macOS"
+            test-kem-alg: "ML-KEM-768"
+            test-sig-alg: "ML-DSA-44"
           
           # NixOS test - verify Nix flake integration
           - os: ubuntu-latest
@@ -110,12 +114,19 @@ jobs:
           # Check if test executables exist and run a quick test
           if [ -f "tests/test_kem" ]; then
             echo "Running KEM test..."
-            # Get list of available algorithms and pick the first one
-            FIRST_KEM=$(./tests/test_kem 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
-            if [ -n "$FIRST_KEM" ]; then
-              echo "Testing with algorithm: $FIRST_KEM"
-              ./tests/test_kem "$FIRST_KEM"
-              echo "✓ KEM test passed"
+            # Use specified algorithm if provided, otherwise auto-detect
+            if [ -n "${{ matrix.test-kem-alg }}" ]; then
+              KEM_ALG="${{ matrix.test-kem-alg }}"
+              echo "Testing with specified algorithm: $KEM_ALG"
+            else
+              # Get list of available algorithms and pick the first one
+              KEM_ALG=$(./tests/test_kem 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
+              echo "Testing with first available algorithm: $KEM_ALG"
+            fi
+            
+            if [ -n "$KEM_ALG" ]; then
+              ./tests/test_kem "$KEM_ALG"
+              echo "✓ KEM test passed with $KEM_ALG"
             else
               echo "⚠ Could not determine available KEM algorithms"
             fi
@@ -125,12 +136,19 @@ jobs:
           
           if [ -f "tests/test_sig" ]; then
             echo "Running SIG test..."
-            # Get list of available algorithms and pick the first one
-            FIRST_SIG=$(./tests/test_sig 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
-            if [ -n "$FIRST_SIG" ]; then
-              echo "Testing with algorithm: $FIRST_SIG"
-              ./tests/test_sig "$FIRST_SIG"
-              echo "✓ SIG test passed"
+            # Use specified algorithm if provided, otherwise auto-detect
+            if [ -n "${{ matrix.test-sig-alg }}" ]; then
+              SIG_ALG="${{ matrix.test-sig-alg }}"
+              echo "Testing with specified algorithm: $SIG_ALG"
+            else
+              # Get list of available algorithms and pick the first one
+              SIG_ALG=$(./tests/test_sig 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
+              echo "Testing with first available algorithm: $SIG_ALG"
+            fi
+            
+            if [ -n "$SIG_ALG" ]; then
+              ./tests/test_sig "$SIG_ALG"
+              echo "✓ SIG test passed with $SIG_ALG"
             else
               echo "⚠ Could not determine available SIG algorithms"
             fi
