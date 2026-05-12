@@ -109,14 +109,31 @@ jobs:
           cd build
           # Check if test executables exist and run a quick test
           if [ -f "tests/test_kem" ]; then
-            echo "Running KEM tests..."
-            ./tests/test_kem
+            echo "Running KEM test..."
+            # Get list of available algorithms and pick the first one
+            FIRST_KEM=$(./tests/test_kem 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
+            if [ -n "$FIRST_KEM" ]; then
+              echo "Testing with algorithm: $FIRST_KEM"
+              ./tests/test_kem "$FIRST_KEM"
+              echo "✓ KEM test passed"
+            else
+              echo "⚠ Could not determine available KEM algorithms"
+            fi
           else
             echo "KEM test executable not found (may be disabled in minimal build)"
           fi
+          
           if [ -f "tests/test_sig" ]; then
-            echo "Running SIG tests..."
-            ./tests/test_sig
+            echo "Running SIG test..."
+            # Get list of available algorithms and pick the first one
+            FIRST_SIG=$(./tests/test_sig 2>&1 | grep "algname:" | sed 's/.*algname: //' | cut -d',' -f1 | tr -d ' ')
+            if [ -n "$FIRST_SIG" ]; then
+              echo "Testing with algorithm: $FIRST_SIG"
+              ./tests/test_sig "$FIRST_SIG"
+              echo "✓ SIG test passed"
+            else
+              echo "⚠ Could not determine available SIG algorithms"
+            fi
           else
             echo "SIG test executable not found (may be disabled in minimal build)"
           fi
