@@ -44,6 +44,11 @@
 #define MLD_SYS_AARCH64_EB
 #endif
 
+/* Check if we're running on an Armv8.1-M system with MVE */
+#if defined(__ARM_ARCH_8_1M_MAIN__) || defined(__ARM_FEATURE_MVE)
+#define MLD_SYS_ARMV81M_MVE
+#endif
+
 #if defined(__x86_64__)
 #define MLD_SYS_X86_64
 #if defined(__AVX2__)
@@ -57,6 +62,11 @@
 
 #if defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen == 64
 #define MLD_SYS_RISCV64
+#endif
+
+#if defined(MLD_SYS_RISCV64) && defined(__riscv_vector) && \
+    defined(__riscv_v_intrinsic)
+#define MLD_SYS_RISCV64_RVV
 #endif
 
 #if defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen == 32
@@ -237,6 +247,7 @@ typedef enum
 #if !defined(MLD_CONFIG_CUSTOM_CAPABILITY_FUNC)
 #include "cbmc.h"
 
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_sys_check_capability(mld_sys_cap cap)
 __contract__(
   ensures(return_value == 0 || return_value == 1)

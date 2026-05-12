@@ -21,7 +21,7 @@
 #include "system_info.c"
 #include "test_helpers.h"
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 #include <pthread.h>
 static pthread_mutex_t *test_sk_lock = NULL;
 static pthread_mutex_t *sk_lock = NULL;
@@ -151,7 +151,7 @@ static OQS_STATUS save_secret_key(uint8_t *key_buf, size_t buf_len, void *contex
 	return OQS_ERROR;
 }
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 
 static OQS_SIG_STFL_SECRET_KEY *lock_test_sk = NULL;
 static OQS_SIG_STFL *lock_test_sig_obj = NULL;
@@ -399,6 +399,52 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 	return strdup(file_store);
 }
 
+#ifdef OQS_ENABLE_SIG_STFL_XMSS
+/* test_invalid_sig: n=32 XMSS / XMSSMT pk layout (see sig_stfl_xmss.h): raw key material + OID prefix. */
+#define TEST_INVALID_SIG_XMSS_PK_RAW_LEN 64
+#define TEST_XMSS_OID_LEN 4
+#define TEST_INVALID_SIG_PK_LEN (TEST_INVALID_SIG_XMSS_PK_RAW_LEN + TEST_XMSS_OID_LEN)
+/* Deliberately short signature buffer to exercise verify bounds (real XMSS sigs are kilobytes). */
+#define TEST_INVALID_SIG_MALICIOUS_SIG_LEN 10
+/* XMSS-SHA2_10_256 OID; stored so low byte is at pk[TEST_XMSS_OID_LEN - 1] (see xmss.c). */
+#define TEST_XMSS_OID_SHA2_10_256 0x01U
+#endif
+
+/*
+ * This function is used to test the invalid signature verification.
+ * @param method_name: The name of the signature algorithm to test.
+ * @return OQS_SUCCESS if the invalid signature verification is fails, OQS_ERROR otherwise.
+ */
+static OQS_STATUS test_invalid_sig(const char *method_name) {
+	// Use proper API to create sig object
+	if (method_name == NULL) {
+		return OQS_ERROR;
+	}
+#ifndef OQS_ENABLE_SIG_STFL_XMSS
+	(void)method_name;
+	return OQS_SUCCESS;
+#else
+	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
+	if (sig == NULL) {
+		return OQS_ERROR;
+	}
+
+	uint8_t pk[TEST_INVALID_SIG_PK_LEN] = {0};
+	pk[TEST_XMSS_OID_LEN - 1] = (uint8_t)TEST_XMSS_OID_SHA2_10_256;
+
+	uint8_t message[] = "test";
+	uint8_t malicious_sig[TEST_INVALID_SIG_MALICIOUS_SIG_LEN] = {0};
+
+	// This triggers the bug via proper API
+	OQS_STATUS status = OQS_SIG_STFL_verify(sig, message, sizeof(message) - 1, malicious_sig, TEST_INVALID_SIG_MALICIOUS_SIG_LEN, pk);
+	OQS_SIG_STFL_free(sig);
+	if (status == OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
+#endif
+}
+
 static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char *katfile, bool bitflips_all[2], size_t bitflips[2]) {
 
 	OQS_SIG_STFL *sig = NULL;
@@ -468,7 +514,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	context = strdup(((file_store)));
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, save_secret_key, (void *)context);
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(secret_key, sk_lock);
 #endif
 	public_key = OQS_MEM_malloc(sig->length_public_key + 2 * sizeof(magic_t));
@@ -745,7 +791,7 @@ static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_rea
 }
 #endif
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	OQS_STATUS rc = OQS_SUCCESS;
 	size_t message_len_1 = sizeof(message_1);
@@ -976,14 +1022,13 @@ err:
 	return OQS_ERROR;
 }
 
-
 typedef struct thread_data {
 	const char *alg_name;
 	const char *katfile;
 	bool *bitflips_all;
 	size_t *bitflips;
 	OQS_STATUS rc;
-	// OQS_STATUS rc1;
+	OQS_STATUS rc2;
 } thread_data_t;
 
 typedef struct lock_test_data {
@@ -1022,6 +1067,9 @@ void *test_create_keys(void *arg) {
 void *test_correctness_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile, td->bitflips_all, td->bitflips);
+	if (strstr(td->alg_name, "XMSS") != NULL) {
+		td->rc2 = test_invalid_sig(td->alg_name);
+	}
 	OQS_thread_stop();
 	return NULL;
 }
@@ -1063,7 +1111,7 @@ static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
 }
 
 int main(int argc, char **argv) {
-	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR;
+	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR, rc2 = OQS_SUCCESS;
 	OQS_init();
 	rc = oqs_fstore_init();
 	if (rc != OQS_SUCCESS) {
@@ -1156,7 +1204,7 @@ int main(int argc, char **argv) {
 
 	int exit_status = EXIT_SUCCESS;
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 #define MAX_LEN_SIG_NAME_ 64
 	OQS_STATUS rc_create = OQS_ERROR, rc_sign = OQS_ERROR, rc_query = OQS_ERROR;
 
@@ -1165,27 +1213,40 @@ int main(int argc, char **argv) {
 	pthread_t sign_key_thread;
 	pthread_t query_key_thread;
 
-	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR};
-	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR};
+	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
+	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
 
 	lock_test_data_t td_create = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 	lock_test_data_t td_query = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
 
-	test_sk_lock = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
-	if (test_sk_lock == NULL) {
+	pthread_mutex_t *test_sk_lock_local = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
+	if (test_sk_lock_local == NULL) {
 		goto err;
 	}
-	sk_lock = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
-	if (sk_lock == NULL) {
+	pthread_mutex_t *sk_lock_local = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
+	if (sk_lock_local == NULL) {
+		OQS_MEM_insecure_free(test_sk_lock_local);
 		goto err;
 	}
 
-	if (pthread_mutex_init(test_sk_lock, NULL) || pthread_mutex_init(sk_lock, NULL)) {
+	if (pthread_mutex_init(test_sk_lock_local, NULL)) {
 		fprintf(stderr, "ERROR: Initializing mutex\n");
+		OQS_MEM_insecure_free(test_sk_lock_local);
+		OQS_MEM_insecure_free(sk_lock_local);
 		exit_status = EXIT_FAILURE;
 		goto err;
 	}
+	if (pthread_mutex_init(sk_lock_local, NULL)) {
+		fprintf(stderr, "ERROR: Initializing mutex\n");
+		pthread_mutex_destroy(test_sk_lock_local);
+		OQS_MEM_insecure_free(test_sk_lock_local);
+		OQS_MEM_insecure_free(sk_lock_local);
+		exit_status = EXIT_FAILURE;
+		goto err;
+	}
+	test_sk_lock = test_sk_lock_local;
+	sk_lock = sk_lock_local;
 
 	if (pthread_create(&thread, NULL, test_correctness_wrapper, &td)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_wrapper\n");
@@ -1195,6 +1256,7 @@ int main(int argc, char **argv) {
 	pthread_join(thread, NULL);
 	rc = td.rc;
 	rc = update_test_result(rc, is_xmss);
+	rc2 = td.rc2;
 
 	if (pthread_create(&thread, NULL, test_secret_key_wrapper, &td_2)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_wrapper_2\n");
@@ -1205,6 +1267,13 @@ int main(int argc, char **argv) {
 	rc1 = td_2.rc;
 	rc1 = update_test_result(rc1, is_xmss);
 
+	/* The three-thread mutex tests below exercise the lock/unlock paths around
+	 * real sign operations. When key/sig gen is compiled out, those paths
+	 * aren't reachable in a meaningful way (and whether setup succeeds or
+	 * fails depends on whether the alg has a KAT mapping, not on anything we
+	 * want to assert), so skip them in that case. */
+#if (defined(OQS_ALLOW_XMSS_KEY_AND_SIG_GEN) || !defined(OQS_ENABLE_SIG_STFL_XMSS)) && \
+    (defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN) || !defined(OQS_ENABLE_SIG_STFL_LMS))
 	if (pthread_create(&create_key_thread, NULL, test_create_keys, &td_create)) {
 		fprintf(stderr, "ERROR: Creating pthread for test_create_keys\n");
 		exit_status = EXIT_FAILURE;
@@ -1231,6 +1300,15 @@ int main(int argc, char **argv) {
 	pthread_join(query_key_thread, NULL);
 	rc_query = td_query.rc;
 	rc_query = update_test_result(rc_query, is_xmss);
+#else
+	rc_create = rc_sign = rc_query = OQS_SUCCESS;
+	(void)td_create;
+	(void)td_sign;
+	(void)td_query;
+	(void)create_key_thread;
+	(void)sign_key_thread;
+	(void)query_key_thread;
+#endif
 
 err:
 	if (test_sk_lock) {
@@ -1248,11 +1326,11 @@ err:
 	OQS_MEM_insecure_free(signature_2);
 
 	OQS_destroy();
-	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS || rc2 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
 
-#if OQS_USE_PTHREADS_IN_TESTS
+#if OQS_USE_PTHREADS
 	if (rc_create != OQS_SUCCESS || rc_sign != OQS_SUCCESS || rc_query != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
@@ -1261,13 +1339,15 @@ err:
 #else
 	rc = sig_stfl_test_correctness(alg_name, katfile, bitflips_all, bitflips);
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
+	if (is_xmss) {
+		rc2 = test_invalid_sig(alg_name);
+	}
 
 	OQS_destroy();
 	rc = update_test_result(rc, is_xmss);
 	rc1 = update_test_result(rc1, is_xmss);
 
-
-	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS) {
+	if (rc != OQS_SUCCESS || rc1 != OQS_SUCCESS || rc2 != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
 	return exit_status;

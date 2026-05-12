@@ -15,7 +15,6 @@
 #ifndef MLD_ROUNDING_H
 #define MLD_ROUNDING_H
 
-#include <stdint.h>
 #include "cbmc.h"
 #include "common.h"
 #include "ct.h"
@@ -115,10 +114,34 @@ __contract__(
 #if MLD_CONFIG_PARAMETER_SET == 44
   /* check-magic: 1488 == 2 * intdiv(intdiv(MLDSA_Q - 1, 88), 128) */
   /* check-magic: 11275 == floor(2**24 / 1488) */
+  /* check-magic: 1560281088 == 1 / (1 / 1488 - 11275 / 2**24) */
   /*
-   * Compute f1 = round-(f1' / B) ≈ round(f1' * 11275 / 2^24). This is exact
-   * for 0 <= f1' < 2^16. Note that half is rounded down since 11275 / 2^24 ≲
-   * 1 / 1488.
+   * Compute f1 = round-(f1' / B) ≈ round(f1' * 11275 / 2^24). This is exact for
+   * 0 <= f1' < 2^16.
+   *
+   * To see this, consider the (signed) error f1' * (1 / B - 11275 / 2^24)
+   * between f1' / B and the (under-)approximation f1' * 11275 / 2^24. Because
+   * eps := 1 / B - 11275 / 2^24 is 1 / 1560281088 ≈ 2^(-30.54) < 2^(-30), we
+   * have 0 <= f1' * eps < 2^16 * 2^(-30) = 1 / 2^14 < 1 / 2^11 < 1 / B (note
+   * that f1' is non-negative).
+   *
+   * On the other hand, 1 / B is the spacing between the integral multiples
+   * of 1 / B, which includes all rounding boundaries n + 0.5 (since B is even).
+   * Hence, if f1' / B is not of the form n + 0.5, then it is at least 1 / B
+   * away from the nearest rounding boundary, so moving from f1' / B to
+   * f1' * 11275 / 2^24 does not affect the rounding result, no matter the type
+   * of rounding used in either side. In particular, we have round-(f1' / B) =
+   * round(f1' * 11275 / 2^24) as claimed.
+   *
+   * As for the remaining case where f1' / B _is_ of the form n + 0.5, because
+   * f1' * 11275 / 2^24 is slightly but strictly below f1' / B = n + 0.5 (note
+   * that f1' and thus the error f1' * eps cannot be 0 here), it is always
+   * rounded down to n. More precisely, we have round-(f1' / B) =
+   * round(f1' * 11275 / 2^24), where the round-down on the LHS is essential,
+   * and on the RHS the type of rounding again does not matter. This concludes
+   * the proof.
+   *
+   * See proofs/isabelle/compress for a formalization of the above argument.
    */
   *a1 = (*a1 * 11275 + (1 << 23)) >> 24;
   mld_assert(*a1 >= 0 && *a1 <= 44);
@@ -128,10 +151,13 @@ __contract__(
 #else /* MLD_CONFIG_PARAMETER_SET == 44 */
   /* check-magic: 4092 == 2 * intdiv(intdiv(MLDSA_Q - 1, 32), 128) */
   /* check-magic: 1025 == floor(2**22 / 4092) */
+  /* check-magic: 4290772992 == 1 / (1 / 4092 - 1025 / 2**22) */
   /*
-   * Compute f1 = round-(f1' / B) ≈ round(f1' * 1025 / 2^22). This is exact
-   * for 0 <= f1' < 2^16. Note that half is rounded down since 1025 / 2^22 ≲
-   * 1 / 4092.
+   * Compute f1 = round-(f1' / B) ≈ round(f1' * 1025 / 2^22). This is exact for
+   * 0 <= f1' < 2^16. Following the same argument above, it suffices to show
+   * that f1' * eps < 1 / B, where eps := 1 / B - 1025 / 2^22. Indeed, we have
+   * eps = 1 / 4290772992 ≈ 2^(-31.99) < 2^(-31), therefore f1' * eps <
+   * 2^16 * 2^(-31) = 1 / 2^15 < 1 / 2^12 < 1 / B.
    */
   *a1 = (*a1 * 1025 + (1 << 21)) >> 22;
   mld_assert(*a1 >= 0 && *a1 <= 16);
@@ -157,6 +183,7 @@ __contract__(
  *
  * Returns 1 if overflow, 0 otherwise
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE unsigned int mld_make_hint(int32_t a0, int32_t a1)
 __contract__(
   ensures(return_value >= 0 && return_value <= 1)
@@ -181,6 +208,7 @@ __contract__(
  *
  * Returns corrected high bits.
  **************************************************/
+MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_use_hint(int32_t a, int32_t hint)
 __contract__(
   requires(hint >= 0 && hint <= 1)

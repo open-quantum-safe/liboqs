@@ -22,7 +22,7 @@ MLD_ASM_FN_SYMBOL(poly_chknorm_asm)
 
         .cfi_startproc
         dup	v20.4s, w1
-        movi	v21.4s, #0x0
+        eor	v21.16b, v21.16b, v21.16b
         mov	x2, #0x10               // =16
 
 Lpoly_chknorm_loop:
@@ -49,5 +49,7 @@ Lpoly_chknorm_loop:
         and	w0, w0, #0x1
         ret
         .cfi_endproc
+
+MLD_ASM_FN_SIZE(poly_chknorm_asm)
 
 #endif /* MLD_ARITH_BACKEND_AARCH64 && !MLD_CONFIG_MULTILEVEL_NO_SHARED */

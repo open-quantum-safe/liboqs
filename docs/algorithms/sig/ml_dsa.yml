@@ -19,7 +19,7 @@ upstream-statement-url: https://github.com/pq-code-package/mldsa-native
 oqs-support-tier: 2
 spec-version: ML-DSA
 primary-upstream:
-  source: https://github.com/pq-code-package/mldsa-native/commit/f48f164cefb07f4ffa519ddda7cee670b8ee3517
+  source: https://github.com/pq-code-package/mldsa-native/commit/db65535319d9750d75d34c6d170677415f9d2c46
   spdx-license-identifier: MIT or Apache-2.0 or ISC
 parameter-sets:
 - name: ML-DSA-44

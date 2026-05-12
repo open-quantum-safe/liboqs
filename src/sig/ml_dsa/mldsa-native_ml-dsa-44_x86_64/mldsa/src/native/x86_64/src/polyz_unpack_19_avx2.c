@@ -19,11 +19,12 @@
 
 #include "../../../common.h"
 
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
-    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) &&   \
+    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) &&   \
+    (defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
+     (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87))
 
 #include <immintrin.h>
-#include <stdint.h>
 #include "arith_native_x86_64.h"
 
 void mld_polyz_unpack_19_avx2(int32_t *r, const uint8_t *a)
@@ -81,9 +82,12 @@ void mld_polyz_unpack_19_avx2(int32_t *r, const uint8_t *a)
 }
 
 #else /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
-       */
+         && (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == \
+         65 || MLD_CONFIG_PARAMETER_SET == 87) */
 
 MLD_EMPTY_CU(avx2_polyz_unpack_19)
 
-#endif /* !(MLD_ARITH_BACKEND_X86_64_DEFAULT && \
-          !MLD_CONFIG_MULTILEVEL_NO_SHARED) */
+#endif /* !(MLD_ARITH_BACKEND_X86_64_DEFAULT &&                                \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED &&                                  \
+          (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
+          || MLD_CONFIG_PARAMETER_SET == 87)) */
