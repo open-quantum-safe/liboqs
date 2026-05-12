@@ -5,7 +5,7 @@ permissions:
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main,charishma_build_script ]
     paths:
       - 'build_liboqs.sh'
       - 'CMakeLists.txt'
@@ -52,6 +52,13 @@ jobs:
             test-name: minimal-build-multi-alg
             script-args: '--minimal-build "KEM_ml_kem_512;KEM_ml_kem_768;KEM_ml_kem_1024;SIG_ml_dsa_44;SIG_ml_dsa_65;SIG_falcon_512"'
             description: "Minimal build with multiple algorithms on macOS"
+          
+          # NixOS test - verify Nix flake integration
+          - os: ubuntu-latest
+            test-name: nixos-flake
+            script-args: ""
+            description: "Test NixOS/Nix flake integration"
+            use-nix: true
 
     runs-on: ${{ matrix.os }}
     
@@ -59,10 +66,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4.2.2
       
+      - name: Install Nix (for NixOS tests)
+        if: matrix.use-nix == true
+        uses: nixbuild/nix-quick-install-action@v28
+        with:
+          nix_conf: |
+            experimental-features = nix-command flakes
+      
       - name: Make build script executable
         run: chmod +x build_liboqs.sh
       
-      - name: Run build script - ${{ matrix.test-name }}
+      - name: Run build script - ${{ matrix.test-name }} (NixOS)
+        if: matrix.use-nix == true
+        env:
+          SKIP_STALENESS_CHECK: 1
+        run: |
+          # Simulate NixOS by unsetting IN_NIX_SHELL to test auto-detection
+          unset IN_NIX_SHELL
+          # The script should automatically re-execute itself with 'nix develop -c'
+          ./build_liboqs.sh ${{ matrix.script-args }}
+      
+      - name: Run build script - ${{ matrix.test-name }} (non-NixOS)
+        if: matrix.use-nix != true
         env:
           SKIP_STALENESS_CHECK: 1
         run: ./build_liboqs.sh ${{ matrix.script-args }}
@@ -84,10 +109,16 @@ jobs:
           cd build
           # Check if test executables exist and run a quick test
           if [ -f "tests/test_kem" ]; then
-            ./tests/test_kem || echo "KEM test skipped or not applicable"
+            echo "Running KEM tests..."
+            ./tests/test_kem
+          else
+            echo "KEM test executable not found (may be disabled in minimal build)"
           fi
           if [ -f "tests/test_sig" ]; then
-            ./tests/test_sig || echo "SIG test skipped or not applicable"
+            echo "Running SIG tests..."
+            ./tests/test_sig
+          else
+            echo "SIG test executable not found (may be disabled in minimal build)"
           fi
 
   test-script-options-coverage:
@@ -116,37 +147,37 @@ jobs:
         shell: bash
         run: |
           echo "Checking if build script covers major CMake options..."
-          # Check for key options that should be in the script
+          # Check for key options that should be in the script (using word boundaries to avoid partial matches)
           echo "Checking for OQS_USE_OPENSSL..."
-          if grep -q "OQS_USE_OPENSSL" build_liboqs.sh; then
+          if grep -qE '\bOQS_USE_OPENSSL\b' build_liboqs.sh; then
             echo "✓ Found: OQS_USE_OPENSSL"
           else
             echo "❌ Missing: OQS_USE_OPENSSL"
           fi
           
           echo "Checking for OQS_DIST_BUILD..."
-          if grep -q "OQS_DIST_BUILD" build_liboqs.sh; then
+          if grep -qE '\bOQS_DIST_BUILD\b' build_liboqs.sh; then
             echo "✓ Found: OQS_DIST_BUILD"
           else
             echo "❌ Missing: OQS_DIST_BUILD"
           fi
           
           echo "Checking for OQS_MINIMAL_BUILD..."
-          if grep -q "OQS_MINIMAL_BUILD" build_liboqs.sh; then
+          if grep -qE '\bOQS_MINIMAL_BUILD\b' build_liboqs.sh; then
             echo "✓ Found: OQS_MINIMAL_BUILD"
           else
             echo "❌ Missing: OQS_MINIMAL_BUILD"
           fi
           
           echo "Checking for OQS_BUILD_ONLY_LIB..."
-          if grep -q "OQS_BUILD_ONLY_LIB" build_liboqs.sh; then
+          if grep -qE '\bOQS_BUILD_ONLY_LIB\b' build_liboqs.sh; then
             echo "✓ Found: OQS_BUILD_ONLY_LIB"
           else
             echo "❌ Missing: OQS_BUILD_ONLY_LIB"
           fi
           
           echo "Checking for OQS_ALGS_ENABLED..."
-          if grep -q "OQS_ALGS_ENABLED" build_liboqs.sh; then
+          if grep -qE '\bOQS_ALGS_ENABLED\b' build_liboqs.sh; then
             echo "✓ Found: OQS_ALGS_ENABLED"
           else
             echo "❌ Missing: OQS_ALGS_ENABLED"
