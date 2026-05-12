@@ -5,7 +5,7 @@ permissions:
 
 on:
   push:
-    branches: [ main, charishma_build_script ]
+    branches: [ main ]
     paths:
       - 'build_liboqs.sh'
       - 'CMakeLists.txt'
