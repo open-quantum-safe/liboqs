@@ -42,11 +42,16 @@ jobs:
             script-args: "--shared --no-openssl"
             description: "Shared library without OpenSSL"
           
-          # Cross-platform verification - one macOS test
+          # Cross-platform verification - macOS tests
           - os: macos-latest
             test-name: default-build
             script-args: ""
             description: "Verify script works on macOS"
+          
+          - os: macos-latest
+            test-name: minimal-build-multi-alg
+            script-args: '--minimal-build "KEM_ml_kem_512;KEM_ml_kem_768;KEM_ml_kem_1024;SIG_ml_dsa_44;SIG_ml_dsa_65;SIG_falcon_512"'
+            description: "Minimal build with multiple algorithms on macOS"
 
     runs-on: ${{ matrix.os }}
     
