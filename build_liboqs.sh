@@ -42,6 +42,7 @@ OPTIONS:
                                         Supports multiple semicolon-separated algorithms
                                         Works for KEM, SIG, and SIG_STFL families
                                         (e.g., "KEM_ml_kem_768;SIG_ml_dsa_44;SIG_falcon_512")
+                                        IMPORTANT: Must be quoted to prevent shell from treating ; as command separator
     --enable-kem-ALG                    Enable specific KEM algorithm (additive with defaults)
     --enable-sig-ALG                    Enable specific signature algorithm (additive with defaults)
     --enable-sig-stfl-ALG               Enable specific stateful signature algorithm (additive with defaults)
@@ -179,7 +180,7 @@ check_script_staleness() {
         for opt in "${MISSING_OPTIONS[@]}"; do
             if [ $count -lt 10 ]; then
                 echo -e "${YELLOW}   - $opt${NC}"
-                ((count++))
+                count=$((count+1))
             fi
         done
         
@@ -424,18 +425,32 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # Install Python test dependencies using pip3
     echo ""
     echo "Installing Python test dependencies..."
-    pip3 install --break-system-packages pytest pytest-xdist pyyaml
+    # Note: Requires pip to be configured to allow system-wide installations
+    # If this fails, configure pip with: echo "break-system-packages = true" >> ~/.config/pip/pip.conf
+    pip3 install pytest pytest-xdist pyyaml
     
 elif [[ -f /etc/os-release ]]; then
     # Source the os-release file
     . /etc/os-release
     
     if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]] || [[ "$ID_LIKE" == *"debian"* ]]; then
-        # Ubuntu/Debian
+        # Ubuntu/Debian - but check if Nix is available first
+        if command -v nix &> /dev/null && [ -f "${SCRIPT_DIR}/flake.nix" ] && [ -z "$IN_NIX_SHELL" ]; then
+            # Nix is available and flake.nix exists - use Nix environment
+            echo -e "${GREEN}Detected OS: $NAME (with Nix available)${NC}"
+            echo -e "${YELLOW}Using Nix development environment for reproducible builds...${NC}"
+            echo ""
+            
+            # Re-execute this script inside the Nix development environment
+            exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
+        fi
+        
+        # Standard Ubuntu/Debian path
         echo -e "${GREEN}Detected OS: $NAME${NC}"
         echo ""
         
         echo "Installing dependencies..."
+        echo -e "${YELLOW}Note: This will use 'sudo' and may prompt for your password.${NC}"
         sudo apt update
         sudo apt install -y astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
         
@@ -444,8 +459,24 @@ elif [[ -f /etc/os-release ]]; then
         echo -e "${GREEN}Detected OS: NixOS${NC}"
         echo ""
         
-        echo "Entering Nix development environment..."
-        nix develop
+        # Check if already in a Nix development environment
+        if [ -n "$IN_NIX_SHELL" ]; then
+            echo "✓ Already in Nix development environment"
+        else
+            # Check if flake.nix exists
+            if [ ! -f "${SCRIPT_DIR}/flake.nix" ]; then
+                echo -e "${RED}Error: flake.nix not found in ${SCRIPT_DIR}${NC}"
+                echo "Cannot automatically enter Nix development environment."
+                exit 1
+            fi
+            
+            echo -e "${YELLOW}Not in Nix development environment. Re-executing with 'nix develop'...${NC}"
+            echo ""
+            
+            # Re-execute this script inside the Nix development environment
+            # Pass all original arguments to the re-executed script
+            exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
+        fi
         
     else
         echo -e "${YELLOW}Warning: Unsupported Linux distribution: $NAME${NC}"

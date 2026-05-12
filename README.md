@@ -115,7 +115,7 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 #### Automated Build Script
 
-For a simplified build process, you can use the provided build script that automatically detects your OS, installs dependencies, and builds liboqs:
+For a simplified build process on Linux or Mac, you can use the provided build script that automatically detects your OS, installs dependencies, and builds liboqs:
 
 ```bash
 git clone -b main https://github.com/open-quantum-safe/liboqs.git
