@@ -422,12 +422,19 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Installing dependencies..."
     brew install cmake ninja openssl@3 wget doxygen graphviz astyle python3
     
-    # Install Python test dependencies
+    # Install Python test dependencies (optional - tests can run without pytest)
     echo ""
     echo "Installing Python test dependencies..."
     # Modern macOS/Homebrew Python uses externally-managed environments (PEP 668)
-    # Use --user flag to install in user directory, which is safe and doesn't require system modifications
-    pip3 install --user pytest pytest-xdist pyyaml
+    # Try to install with --user flag, but don't fail if it doesn't work
+    if pip3 install --user pytest pytest-xdist pyyaml 2>/dev/null; then
+        echo "✓ Python packages installed successfully"
+    else
+        echo -e "${YELLOW}⚠ Could not install Python packages via pip (externally-managed environment)${NC}"
+        echo -e "${YELLOW}  This is normal on modern macOS. The C test executables will still work.${NC}"
+        echo -e "${YELLOW}  If you need pytest, create a virtual environment:${NC}"
+        echo -e "${YELLOW}    python3 -m venv venv && source venv/bin/activate && pip install pytest pytest-xdist pyyaml${NC}"
+    fi
     
 elif [[ -f /etc/os-release ]]; then
     # Source the os-release file
