@@ -14,6 +14,9 @@ crypto-assumption: hardness of lattice problems over module lattices
 website: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/final
 nist-round: FIPS204
 standardization-status: Standardized by [NIST](https://csrc.nist.gov/pubs/fips/204/final)
+upstream-maintenance: Actively maintained
+upstream-statement-url: https://github.com/pq-code-package/mldsa-native
+oqs-support-tier: 2
 spec-version: ML-DSA
 primary-upstream:
   source: https://github.com/pq-code-package/mldsa-native/commit/db65535319d9750d75d34c6d170677415f9d2c46

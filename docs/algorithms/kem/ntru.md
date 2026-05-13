@@ -16,6 +16,11 @@
 - **Ancestors of primary source**:
   - https://github.com/jschanck/ntru/tree/a43a4457
 
+## Support
+
+- **Upstream maintenance**: TBD
+- **OQS support tier**: Tier 3
+
 ## Parameter set summary
 
 |   Parameter set    | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |

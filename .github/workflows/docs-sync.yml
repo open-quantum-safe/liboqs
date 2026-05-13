@@ -1,0 +1,36 @@
+name: docs-sync
+
+on:
+  pull_request:
+    paths:
+      - 'docs/algorithms/**'
+      - 'scripts/update_docs_from_yaml.py'
+      - 'scripts/update_alg_support_table.py'
+      - 'scripts/generate_algorithms_md.py'
+      - 'README.md'
+      - 'ALGORITHMS.md'
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install --require-hashes -r .github/workflows/requirements.txt
+      - name: Regenerate docs
+        run: python3 scripts/update_docs_from_yaml.py --liboqs-root .
+      - name: Fail if generated files drift
+        run: |
+          if ! git diff --quiet; then
+            echo "Generated docs are out of sync with YAML. Run scripts/update_docs_from_yaml.py and commit the result."
+            git --no-pager diff
+            exit 1
+          fi

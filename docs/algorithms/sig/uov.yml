@@ -16,6 +16,9 @@ crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://www.uovsig.org/
 standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/uov-spec-round2-web.pdf)
   consideration
+upstream-maintenance: TBD
+upstream-statement-url: null
+oqs-support-tier: 3
 nist-round: 2
 spec-version: NIST Round 2 (February 2025)
 primary-upstream:

@@ -15,6 +15,11 @@
       - **Implementation license (SPDX-Identifier)**: MIT or ISC or Apache 2.0
 
 
+## Support
+
+- **Upstream maintenance**: TBD
+- **OQS support tier**: Tier 3
+
 ## Parameter set summary
 
 |                 Parameter set                  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
