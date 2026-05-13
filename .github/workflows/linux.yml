@@ -149,7 +149,7 @@ jobs:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -192,7 +192,7 @@ jobs:
             CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DBUILD_SHARED_LIBS=ON
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -205,16 +205,16 @@ jobs:
       image: openquantumsafe/ci-ubuntu-jammy:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Retrieve OpenSSL330 from cache
         id: cache-openssl330
-        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # pin@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # pin@v4
         with:
           path: .localopenssl330
           key: ${{ runner.os }}-openssl330
       - name: Checkout the OpenSSL v3.3.0 commit
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
         with:
           repository: 'openssl/openssl'
           ref: 'openssl-3.3.0-beta1'
@@ -231,7 +231,7 @@ jobs:
       - name: Save OpenSSL
         id: cache-openssl-save
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/cache/save@d4323d4df104b026a6aa633fdb11d772146be0bf # pin@v4
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # pin@v4
         with:
           path: |
             .localopenssl330
@@ -250,7 +250,7 @@ jobs:
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Configure
         run: mkdir build && cd build && scan-build --status-bugs cmake -GNinja ..
       - name: Build
@@ -273,7 +273,7 @@ jobs:
       SDE_URL: https://downloadmirror.intel.com/850782/sde-external-9.53.0-2025-03-16-lin.tar.xz
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Setup Intel SDE
         run: |
           wget -O sde.tar.xz "$SDE_URL" && \

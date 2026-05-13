@@ -43,11 +43,11 @@ jobs:
     timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
     steps:
       - name: Install Python
-        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # pin@v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # pin@v5
         with:
           python-version: '3.12'
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Install dependencies
         run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
       - name: Get system information
