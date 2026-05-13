@@ -1,5 +1,5 @@
+// SPDX-License-Identifier: MIT
 /*
- * TODO: Expand platforms to aarch64
  *
  * Flush+Reload Cache Timing PoC
  *
@@ -20,8 +20,10 @@
  * ninja
  * sudo ./tests/kem_fo_cache_oracle FrodoKEM-640-AES 0 2>/dev/null 1>raw.csv
  *
- * Notes:
+ * NOTE:
  * - sudo may or may not be necessary
+ * TODO:
+ * - expand to AArch64
  */
 
 #define _GNU_SOURCE
