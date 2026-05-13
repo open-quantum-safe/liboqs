@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 
 option(OQS_ENABLE_TEST_CONSTANT_TIME "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
-option(OQS_ENABLE_KEM_FO_CACHE_ORACLE "Build kem_fo_cache_oracle for detecting cache timing channel." OFF)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
@@ -216,7 +215,8 @@ target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
 add_executable(vectors_kem vectors_kem.c)
 target_link_libraries(vectors_kem PRIVATE ${TEST_DEPS})
 
-if(OQS_ENABLE_KEM_FO_CACHE_ORACLE)
+set(OQS_ENABLE_KEM_FO_CACHE_ORACLE OFF CACHE BOOL "Build kem_fo_cache_oracle for detecting cache timing channel.")
+if(${OQS_ENABLE_KEM_FO_CACHE_ORACLE})
     add_executable(kem_fo_cache_oracle kem_fo_cache_oracle.c)
     target_link_libraries(kem_fo_cache_oracle PRIVATE ${TEST_DEPS})
 endif()

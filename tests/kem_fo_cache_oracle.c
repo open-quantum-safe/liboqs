@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+
 /*
  *
  * Flush+Reload Cache Timing PoC
@@ -24,6 +25,8 @@
  * - sudo may or may not be necessary
  * TODO:
  * - expand to AArch64
+ *
+ * Credits to @kaminuma
  */
 
 #define _GNU_SOURCE
