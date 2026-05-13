@@ -20,8 +20,18 @@ extern "C" {
 #endif
 
 #if defined(__GNUC__) || defined(__clang__)
+/**
+ * @def IGNORE_UNUSED_FUNC
+ *
+ * @brief suppress compiler warning for unused functions
+ */
 #define IGNORE_UNUSED_FUNC __attribute__((unused))
 #else
+/**
+ * @def IGNORE_UNUSED_FUNC
+ *
+ * @brief suppress compiler warning for unused functions
+ */
 #define IGNORE_UNUSED_FUNC
 #endif
 
@@ -36,6 +46,11 @@ extern "C" {
 
 #elif defined(__GNUC__) || defined(__clang__)
 
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief prevent compiler from optimizing on secret values
+ */
 #define OQS_MEM_BLACK_BOX(v)                                                   \
     do {                                                                       \
         __asm__ volatile("" : "+r"(v) :);                                      \
@@ -67,6 +82,11 @@ static inline void oqs_black_box_fallback(volatile void *p,
 	}
 }
 
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief prevent compiler from optimizing on secret values
+ */
 #define OQS_MEM_BLACK_BOX(v)                                                   \
     oqs_black_box_fallback((volatile void *)&(v), sizeof(v))
 #endif
