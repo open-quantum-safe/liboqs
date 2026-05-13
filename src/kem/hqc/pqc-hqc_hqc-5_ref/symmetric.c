@@ -6,7 +6,6 @@
 
 #include "symmetric.h"
 #include <stdint.h>
-#include <string.h>
 
 #ifdef USE_OQS_RANDOMBYTES
 #include <oqs/rand.h>
@@ -143,29 +142,15 @@ void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES]) {
  */
 void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_t m[PARAM_SECURITY_BYTES],
             const uint8_t salt[SALT_BYTES]) {
-    /* TODO: For liboqs integration, hash_g implementation has been modified
-     * There are some unexpected dispatch errors under liboqs/src/common/sha3
-     * that causes intermittent GitHub Action test failures. Due to the
-     * difficulty of debugging on GitHub action, I chose this shortcut of
-     * replacing incremental API with a single hash over a continuous strip of
-     * memory. There might be performance and stack memory usage penalty
-     * associated with this approach, but I deemed it acceptable.
-     *
-     * FIX: we need to eventually figure out what happened with Keccak dispatch
-     * and restore the usage of incremental API
-     */
+    sha3_512_ctx g_hash_ctx = {0};
     uint8_t i_domain = HQC_G_FCT_DOMAIN;
-    uint8_t input[SEED_BYTES + PARAM_SECURITY_BYTES + SALT_BYTES + 1];
-    size_t offset = 0;
-    memcpy(input + offset, hash_ek_kem, SEED_BYTES);
-    offset += SEED_BYTES;
-    memcpy(input + offset, m, PARAM_SECURITY_BYTES);
-    offset += PARAM_SECURITY_BYTES;
-    memcpy(input + offset, salt, SALT_BYTES);
-    offset += SALT_BYTES;
-    memcpy(input + offset, &i_domain, 1);
-
-    OQS_SHA3_sha3_512(output, input, sizeof(input));
+    OQS_SHA3_sha3_512_inc_init(&g_hash_ctx);
+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_SECURITY_BYTES);
+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
+    OQS_SHA3_sha3_512_inc_finalize(output, &g_hash_ctx);
+    OQS_SHA3_sha3_512_inc_ctx_release(&g_hash_ctx);
 }
 
 /**
