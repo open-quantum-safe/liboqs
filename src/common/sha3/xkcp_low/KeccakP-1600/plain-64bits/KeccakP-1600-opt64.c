@@ -373,6 +373,7 @@ static void fromWordToBytes(uint8_t *bytes, const uint64_t word) {
 
 void KeccakP1600_ExtractLanes(const void *state, unsigned char *data, unsigned int laneCount) {
 #if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
+	if (laneCount > 25) return;
 	memcpy(data, state, laneCount * 8);
 #else
 	for (unsigned int i = 0; i < laneCount; i++) {

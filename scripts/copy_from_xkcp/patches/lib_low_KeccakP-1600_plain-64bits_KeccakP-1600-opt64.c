@@ -89,6 +89,7 @@
 +            ((uint64_t*)state)[lanePosition] = ~((uint64_t*)state)[lanePosition];
 +    }
  #else
++    if (laneCount > 25) return;
      memcpy(state, data, laneCount*8);
  #endif
 @@ -282,7 +291,7 @@
@@ -111,6 +112,7 @@
          lane = ~lane;
 @@ -409,30 +418,30 @@
  #if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
++    if (laneCount > 25) return;
      memcpy(data, state, laneCount*8);
  #else
 -    unsigned int i;
