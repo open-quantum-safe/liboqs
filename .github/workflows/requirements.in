@@ -7,5 +7,5 @@ pluggy==1.6.0
 pytest==9.0.3
 pytest-xdist==3.8.0
 pyyaml==6.0.3
-requests==2.34.0
+requests==2.34.1
 tabulate==0.10.0
