@@ -11,7 +11,7 @@ The **Upstream maintenance** column records the maintenance level the upstream i
 - **Actively maintained.** There is a named, responsive upstream contact or team. Upstream commits to investigating security reports in a timely manner and incorporating fixes. Upstream releases updates that OQS can track. Upstream has a public written statement describing this commitment, which OQS links to.
 - **Best effort.** There is a named upstream contact who acknowledges OQS's integration. Upstream will attempt to respond to security reports and incorporate fixes when able, with no commitment on timing or release cadence. Users should not depend on timely upstream fixes.
 - **No active maintenance.** There is no responsive upstream contact, or upstream has publicly stated wind-down or end-of-life. Fixes will not necessarily be incorporated from upstream. Users considering this algorithm should plan accordingly (alternatives, migration, or maintaining their own fork).
-- **TBD.** OQS has not yet obtained a confirmed statement from the upstream. This is not a judgment about the upstream; it means the conversation has not happened or not concluded.
+- **TBD.** OQS has not yet obtained a confirmed statement from the upstream. This is not a judgment about the upstream; it means the conversation has not concluded.
 
 ## OQS support tier
 
