@@ -333,10 +333,10 @@ def load_instructions(file='copy_from_upstream.yml'):
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
-                    cdeps_names = impl['common_dep'].split(" ")
+                    impl['common_dep'] = impl['common_dep'].split()
                     sname = scheme['pretty_name_full']
                     uloc = scheme['upstream_location']
-                    for cdep_name in cdeps_names:
+                    for cdep_name in impl['common_dep']:
                         cdep = upstreams[uloc]['commons'][cdep_name]
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
@@ -444,10 +444,10 @@ def load_instructions(file='copy_from_upstream.yml'):
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
-                    cdeps_names = impl['common_dep'].split(" ")
+                    impl['common_dep'] = impl['common_dep'].split()
                     sname = scheme['pretty_name_full']
                     uloc = scheme['upstream_location']
-                    for cdep_name in cdeps_names:
+                    for cdep_name in impl['common_dep']:
                         cdep = upstreams[uloc]['commons'][cdep_name]
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
