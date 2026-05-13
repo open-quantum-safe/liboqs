@@ -122,21 +122,23 @@ static uint16_t compute_elp(uint16_t *sigma, const uint16_t *syndromes) {
         mask12 = mask1 & mask2;
         deg_sigma ^= mask12 & (deg_X_sigma_p ^ deg_sigma);
 
-        if (mu == (2 * PARAM_DELTA - 1)) {
-            break;
-        }
+        // CT FIX: replace secret-dependent break with a not_last mask.
+        // On the last iteration (mu == 2*PARAM_DELTA-1), not_last = 0x0000
+        // so all updates below are frozen — same work every iteration.
+        uint16_t not_last = (uint16_t)(-((uint16_t)(mu - (2 * PARAM_DELTA - 1)) != 0));
 
-        pp ^= mask12 & (mu ^ pp);
-        d_p ^= mask12 & (d ^ d_p);
+        pp ^= not_last & mask12 & (mu ^ pp);
+        d_p ^= not_last & mask12 & (d ^ d_p);
         for (i = PARAM_DELTA; i; --i) {
-            X_sigma_p[i] = (mask12 & sigma_copy[i - 1]) ^ (~mask12 & X_sigma_p[i - 1]);
+            X_sigma_p[i] = (uint16_t)((not_last & ((mask12 & sigma_copy[i - 1]) ^ (~mask12 & X_sigma_p[i - 1])))
+                           | (~not_last & X_sigma_p[i]));
         }
 
-        deg_sigma_p ^= mask12 & (deg_sigma_copy ^ deg_sigma_p);
+        deg_sigma_p ^= not_last & mask12 & (deg_sigma_copy ^ deg_sigma_p);
         d = syndromes[mu + 1];
 
         for (i = 1; (i <= mu + 1) && (i <= PARAM_DELTA); ++i) {
-            d ^= PQCLEAN_HQC256_CLEAN_gf_mul(sigma[i], syndromes[mu + 1 - i]);
+            d ^= not_last & PQCLEAN_HQC256_CLEAN_gf_mul(sigma[i], syndromes[mu + 1 - i]);
         }
     }
 
