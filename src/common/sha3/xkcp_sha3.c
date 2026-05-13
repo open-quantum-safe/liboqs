@@ -41,15 +41,17 @@ extern struct OQS_SHA3_callbacks sha3_default_callbacks;
 
 static void Keccak_Dispatch(void) {
 // TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
+//
+// Selection of an alternate top-level SHA3 callbacks table (e.g. AVX512VL) is
+// intentionally NOT performed here. Doing so would race against concurrent
+// SHA3 callers (the assignment is a non-atomic struct copy) and would split a
+// single in-flight call across two backends — `_inc_init` would run via the
+// XKCP path that triggered this dispatch, but the subsequent `_inc_absorb` /
+// `_inc_finalize` calls on the same context would route through the
+// newly-installed table. The top-level dispatch is now handled once, before
+// any SHA3 entry point can run, in sha3.c.
 #if defined(OQS_DIST_X86_64_BUILD)
 #if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
-#if defined(OQS_USE_SHA3_AVX512VL)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX512)) {
-		extern const struct OQS_SHA3_callbacks sha3_avx512vl_callbacks;
-
-		sha3_default_callbacks = sha3_avx512vl_callbacks;
-	}
-#endif
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 		Keccak_Initialize_ptr = &KeccakP1600_Initialize_avx2;
 		Keccak_AddByte_ptr = &KeccakP1600_AddByte_avx2;
