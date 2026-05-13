@@ -10,7 +10,7 @@
 
 extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
 
-static struct OQS_SHA3_x4_callbacks *callbacks = &sha3_x4_default_callbacks;
+static const struct OQS_SHA3_x4_callbacks *callbacks = &sha3_x4_default_callbacks;
 
 /* See sha3.c for the rationale: select the backend once, with a single
  * atomic pointer swap, before any SHA3-x4 entry point can dispatch. */
@@ -24,7 +24,7 @@ static void init_callbacks(void) {
 #if defined(OQS_USE_SHA3_AVX512VL) && defined(OQS_DIST_X86_64_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX512)) {
 		extern const struct OQS_SHA3_x4_callbacks sha3_x4_avx512vl_callbacks;
-		callbacks = (struct OQS_SHA3_x4_callbacks *) &sha3_x4_avx512vl_callbacks;
+		callbacks = &sha3_x4_avx512vl_callbacks;
 	}
 #endif
 }
@@ -40,7 +40,7 @@ static inline void ensure_callbacks_initialized(void) {
 #endif
 }
 
-static inline struct OQS_SHA3_x4_callbacks *get_cb(void) {
+static inline const struct OQS_SHA3_x4_callbacks *get_cb(void) {
 	ensure_callbacks_initialized();
 	return callbacks;
 }
