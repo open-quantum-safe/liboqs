@@ -20,6 +20,7 @@ The following options can be passed to CMake before the build file generation pr
 - [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
+- [OQS_ENABLE_KEM_FO_CACHE_ORACLE](#OQS_ENABLE_KEM_FO_CACHE_ORACLE)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 - [OQS_MEMOPT_BUILD](#OQS_MEMOPT_BUILD)
@@ -261,6 +262,34 @@ See the documentation in [`tests/test_constant_time.py`](https://github.com/open
 When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is made available to control whether liboqs is built using `-O3` optimization, as in a release build, or using the default "Debug" profile. By default, `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is `OFF`.
 
 **Default**: `OFF`.
+
+## OQS_ENABLE_KEM_FO_CACHE_ORACLE
+Can be `ON` or `OFF`.
+
+When turned on, `tests/kem_fo_cache_oracle` will be built.
+`kem_fo_cache_oracle` performs flush-then-reload cache timing measurements and computes a simple statistical test to detect the presence of cache-timing side channels that can be turned into a plaintext-checking oracle.
+This test binary prints raw statistics to stdout and human-readable statistical test results to stderr.
+The raw statistics can be further analyzed using a [Python script](./tests/kem_fo_cache_oracle.py):
+
+```bash
+# quick start tested with matplotlib==3.10.9, scipy==1.17.1, pandas==3.0.3
+cmake -GNinja \
+    -DCMAKE_C_COMPILER="/usr/bin/clang-18" \
+    -DCMAKE_BUILD_TYPE=MinSizeRel \
+    -DCMAKE_C_FLAGS="-DOQS_DISABLE_MEM_BLACK_BOX" \
+    -DOQS_MINIMAL_BUILD="KEM_frodokem_640_aes" \
+    -DOQS_ENABLE_KEM_FO_CACHE_ORACLE="ON" \
+    ..
+ninja
+sudo ./tests/kem_fo_cache_oracle FrodoKEM-640-AES 0 1>raw.csv
+python $LIBOQS_DIR/tests/kem_fo_cache_oracle.py \
+    --save-plot plot.png \
+    raw.csv > verdict.txt
+```
+
+Known limitation: this currently only works on x86_64 platforms
+
+**Default**: `OFF`
 
 ## OQS_STRICT_WARNINGS
 
