@@ -48,18 +48,28 @@ bool hss_validate_signature_init(
     uint_fast32_t levels = (uint_fast32_t)get_bigendian( signature, 4 ) + 1;
         /* +1 because what's in the signature is levels-1 */
     signature += 4; signature_len -= 4;
-    if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS ||
-                               levels != (uint_fast32_t)get_bigendian( public_key, 4 )) {
+    uint_fast32_t pub_levels = (uint_fast32_t)get_bigendian( public_key, 4 );
+    public_key += 4;
+
+    if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS ) {
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
     }
-    uint_fast32_t pub_levels = (uint_fast32_t)get_bigendian( public_key, 4 );
+
+    /*
+    * The level for public keys for single level trees sometimes have a value of zero.
+    * in this case, bump  public key level to 1.
+    */
+    if ((levels == 1) && (pub_levels == 0)) {
+       pub_levels = 1;
+    }
+
     if (levels != pub_levels) {
         /* Signature and public key don't agree */
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
     }
-    public_key += 4;
+
 
     /* Validate the upper levels of the signature */
     struct thread_collection *col = NULL;

@@ -771,6 +771,8 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *s
 	lms_key_data->sec_key = lms_sk;
 	lms_key_data->len_sec_key = lms_sk_len;
 	lms_key_data->context = context;
+	lms_key_data->len_aux_data = 0;
+	lms_key_data->aux_data = NULL;
 
 	if (aux_buf_len) {
 		lms_aux = OQS_MEM_malloc(aux_buf_len * sizeof(uint8_t));
