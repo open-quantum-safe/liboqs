@@ -21,12 +21,12 @@ jobs:
       contents: read
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           persist-credentials: false
 
       - name: "Run poutine supply chain check"
-        uses: boostsecurityio/poutine-action@84c0a0d32e8d57ae12651222be1eb15351429228 # v0.15.2
+        uses: boostsecurityio/poutine-action@e240ebd3eff8b2db5a8e5f6b28f58739d7db2247 # v1.1.4
         with:
           format: sarif
           output: poutine_results.sarif
@@ -43,7 +43,7 @@ jobs:
           retention-days: 28
 
       - name: "Upload poutine to code-scanning"
-        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
+        uses: github/codeql-action/upload-sarif@68bde559dea0fdcac2102bfdf6230c5f70eb485e # v3
         with:
           sarif_file: poutine_results.sarif
 
@@ -61,12 +61,12 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           persist-credentials: false
 
       - name: "Run ossf scorecard"
-        uses: ossf/scorecard-action@62b2cac7ed8198b15735ed49ab1e5cf35480ba46 # v2.4.0
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3
         with:
           results_format: sarif
           results_file: ossf_results.sarif
@@ -96,6 +96,6 @@ jobs:
 
       # Upload the results to GitHub's code scanning dashboard.
       - name: "Upload to ossf to code-scanning"
-        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3
+        uses: github/codeql-action/upload-sarif@68bde559dea0fdcac2102bfdf6230c5f70eb485e # v3
         with:
           sarif_file: ossf_results.sarif
