@@ -63,20 +63,6 @@ cmake -GNinja -DCMAKE_C_FLAGS_RELEASE="-O1 -DNDEBUG" ..
 
 The exact compilation commands can be found in `compile_commands.json` under the build directory.
 
-**Examples**:
-```bash
-# Defaults to CMAKE_BUILD_TYPE=Release
-cmake -GNinja ..
-# User-specified build types
-cmake -GNinja -DCMAKE_BUILD_TYPE="Debug" ..
-cmake -GNinja -DCMAKE_BUILD_TYPE="MinSizeRel" ..
-cmake -GNinja -DCMAKE_BUILD_TYPE="RelWithDebInfo" ..
-# Override with user-specified C flags
-cmake -GNinja -DCMAKE_C_FLAGS_RELEASE="-O1 -DNDEBUG" ..
-```
-
-The exact compilation commands can be found in `compile_commands.json` under the build directory.
-
 ## CMAKE_INSTALL_PREFIX
 
 See the [CMake documentation](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html).
