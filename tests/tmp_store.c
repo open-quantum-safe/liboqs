@@ -67,14 +67,20 @@ static OQS_STATUS oqs_fload(const char *fname, const char *mname, uint8_t *data,
 		fprintf(stderr, "Couldn't open %s for reading.\n", fpath);
 		return OQS_ERROR;
 	}
-	do { // assume some OSs don't deliver all data in one go...
+	// assume some OSs don't deliver all data in one go...
+	while (len_read < len) {
+		size_t want = len - len_read;
 		dr = (uint8_t *)(data + len_read);
-		r = fread(dr, 1, len - len_read, fp);
+		r = fread(dr, 1, want, fp);
 		len_read += r;
-	} while (r > 0);
+		if (r < want) {
+			break;
+		}
+	}
 	*rcvd = len_read;
-	if (len_read <= 0) {
+	if (len_read == 0) {
 		fprintf(stderr, "Error reading data (operations called in proper sequence?). Expecting %zu. Exiting.\n", len);
+		fclose(fp);
 		return OQS_ERROR;
 	}
 	fclose(fp);
