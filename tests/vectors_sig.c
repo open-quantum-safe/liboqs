@@ -460,9 +460,11 @@ algo_not_enabled:
 
 cleanup:
 	OQS_SIG_free(sig);
+	(void)extMu;
 	return ret;
 }
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 static int sig_ver_vector_ext(const char *method_name,
                               const uint8_t *sigVer_pk_bytes,
                               const uint8_t *sigVer_msg_bytes,
@@ -595,6 +597,7 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 }
+#endif
 
 static int sig_gen_vector(const char *method_name,
                           uint8_t *prng_output_stream,
@@ -673,6 +676,7 @@ algo_not_enabled:
 cleanup:
 	OQS_MEM_insecure_free(signature);
 	OQS_SIG_free(sig);
+	(void)extMu;
 	return ret;
 }
 
@@ -781,6 +785,7 @@ cleanup:
 	return ret;
 }
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 static int sig_gen_prehash_vector_ext(const char *method_name,
                                       uint8_t *prng_output_stream,
                                       const uint8_t *sigGen_sk,
@@ -879,6 +884,7 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 }
+#endif
 #endif
 
 int main(int argc, char **argv) {
@@ -1046,7 +1052,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SLH_DSA)
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
 		rc = sig_gen_vector(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes, extMu);
 #else
 		rc = EXIT_SUCCESS;
