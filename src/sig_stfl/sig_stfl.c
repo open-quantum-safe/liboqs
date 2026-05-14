@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #if defined(_WIN32)
 #include <string.h>
@@ -114,6 +115,14 @@ OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 
 OQS_API int OQS_SIG_STFL_alg_count(void) {
 	return OQS_SIG_STFL_algs_length;
+}
+
+OQS_API int OQS_SIG_STFL_keygen_and_sign_supported(void) {
+#ifdef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
+	return 1;
+#else
+	return 0;
+#endif
 }
 
 OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
@@ -999,6 +1008,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public
 	(void)sig;
 	(void)public_key;
 	(void)secret_key;
+	fprintf(stderr, "OQS_SIG_STFL_keypair: stateful key generation is not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
 	if (sig == NULL || sig->keypair == NULL || sig->keypair(public_key, secret_key) != 0) {
@@ -1019,6 +1029,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature
 	(void)message;
 	(void)message_len;
 	(void)secret_key;
+	fprintf(stderr, "OQS_SIG_STFL_sign: stateful signing is not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
 	if (sig == NULL || sig->sign == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != 0) {
@@ -1042,6 +1053,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned
 	(void)sig;
 	(void)remain;
 	(void)secret_key;
+	fprintf(stderr, "OQS_SIG_STFL_sigs_remaining: stateful signatures are not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
 	if (sig == NULL || sig->sigs_remaining == NULL || sig->sigs_remaining(remain, secret_key) != 0) {
@@ -1057,6 +1069,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned lon
 	(void)sig;
 	(void)max;
 	(void)secret_key;
+	fprintf(stderr, "OQS_SIG_STFL_sigs_total: stateful signatures are not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
 	if (sig == NULL || sig->sigs_total == NULL || sig->sigs_total(max, secret_key) != 0) {
