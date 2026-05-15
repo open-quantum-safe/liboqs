@@ -19,6 +19,79 @@
 extern "C" {
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+/**
+ * @def IGNORE_UNUSED_FUNC
+ *
+ * @brief suppress compiler warning for unused functions
+ */
+#define IGNORE_UNUSED_FUNC __attribute__((unused))
+#else
+/**
+ * @def IGNORE_UNUSED_FUNC
+ *
+ * @brief __attribute__((unused)) is unique to GNU C and/or Clang ecosystem,
+ */
+#define IGNORE_UNUSED_FUNC
+#endif
+
+/**
+ * Value barrier: prevent compiler from optimizing on secret values
+ */
+#if defined(OQS_DISABLE_MEM_BLACK_BOX)
+
+#warning "DANGER: OQS_DISABLE_MEM_BLACK_BOX is for internal testing only"
+#warning "disabling memory value barrier may introduce timing side channels"
+#define OQS_MEM_BLACK_BOX(v) (void)v
+
+#elif defined(__GNUC__) || defined(__clang__)
+
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief prevent compiler from optimizing on secret values. Within GNU C and
+ * Clang ecosystem, inline ASM is the preferred method.
+ */
+#define OQS_MEM_BLACK_BOX(v)                                                   \
+    do {                                                                       \
+        __asm__ volatile("" : "+r"(v) :);                                      \
+    } while (0)
+
+#else
+/* The fallback implementation: pure C, no inline assembly, portable */
+
+#pragma message("OQS_MEM_BLACK_BOX: unrecognised compiler. "                   \
+                "Falling back to volatile round-trip. "                        \
+                "Verify generated assembly for constant-time correctness.")
+
+static inline void oqs_black_box_fallback(volatile void *p,
+        size_t sz) IGNORE_UNUSED_FUNC;
+
+static inline void oqs_black_box_fallback(volatile void *p,
+        size_t sz) IGNORE_UNUSED_FUNC {
+	volatile unsigned char *q = (volatile unsigned char *)p;
+	unsigned char tmp;
+	size_t i;
+	for (i = 0; i < sz; i++) {
+		tmp = q[i];
+		q[i] = tmp;
+	}
+}
+
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief prevent compiler from optimizing on secret values. Where inline ASM
+ * is not supported, use a forced memory round trip.
+ *
+ * TODO: this is a best effort implementation that provides no guarantee; the
+ * forced memory round trip could also incur significant performance penalty if
+ * the input array is large.
+ */
+#define OQS_MEM_BLACK_BOX(v)                                                   \
+    oqs_black_box_fallback((volatile void *)&(v), sizeof(v))
+#endif
+
 /**
  * Macro for terminating the program if x is
  * a null pointer.
