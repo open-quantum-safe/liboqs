@@ -435,8 +435,28 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 	uint8_t message[] = "test";
 	uint8_t malicious_sig[TEST_INVALID_SIG_MALICIOUS_SIG_LEN] = {0};
 
-	// This triggers the bug via proper API
+	// Sub-case 1 (GHSA-wf7v-fhxj-73m2): caller-supplied signature_len shorter than the
+	// declared algorithm's expected size. Must be rejected by the wrapper length check.
 	OQS_STATUS status = OQS_SIG_STFL_verify(sig, message, sizeof(message) - 1, malicious_sig, TEST_INVALID_SIG_MALICIOUS_SIG_LEN, pk);
+	if (status == OQS_SUCCESS) {
+		OQS_SIG_STFL_free(sig);
+		return OQS_ERROR;
+	}
+
+	// Sub-case 2 (GHSA-2wxh-55qf-c7wg): correctly-sized signature buffer for the declared
+	// algorithm, but the pk's OID bytes reference a different parameter set. Pre-fix, this
+	// caused xmssmt_core_sign_open to index sig_bytes (derived from the mutated OID) past
+	// the end of the caller-supplied signature buffer (OOB read, see xmss_commons.c).
+	// Post-fix, the wrapper rejects the OID mismatch before the OOB read.
+	uint8_t *full_sig = OQS_MEM_malloc(sig->length_signature);
+	if (full_sig == NULL) {
+		OQS_SIG_STFL_free(sig);
+		return OQS_ERROR;
+	}
+	memset(full_sig, 0, sig->length_signature);
+	pk[TEST_XMSS_OID_LEN - 1] = 0x02; // mirrors the GHSA-2wxh-55qf-c7wg PoC for XMSS-SHA2_10_256
+	status = OQS_SIG_STFL_verify(sig, message, sizeof(message) - 1, full_sig, sig->length_signature, pk);
+	OQS_MEM_insecure_free(full_sig);
 	OQS_SIG_STFL_free(sig);
 	if (status == OQS_SUCCESS) {
 		return OQS_ERROR;
