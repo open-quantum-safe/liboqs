@@ -62,11 +62,14 @@ static void SHA3_shake128_x4_inc_finalize(OQS_SHA3_shake128_x4_inc_ctx *state) {
 static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake128_x4_inc_ctx *state) {
 	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
-	EVP_DigestSqueeze(s->mdctx0, out0, outlen);
-	EVP_DigestSqueeze(s->mdctx1, out1, outlen);
-	EVP_DigestSqueeze(s->mdctx2, out2, outlen);
-	EVP_DigestSqueeze(s->mdctx3, out3, outlen);
-#else
+	if (oqs_ossl_can_digest_squeeze()) {
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx0, out0, outlen));
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx1, out1, outlen));
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx2, out2, outlen));
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx3, out3, outlen));
+		return;
+	}
+#endif
 	EVP_MD_CTX *clone;
 
 	clone = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -99,7 +102,6 @@ static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 	}
 	OSSL_FUNC(EVP_MD_CTX_free)(clone);
 	s->n_out += outlen;
-#endif
 }
 
 static void SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, const OQS_SHA3_shake128_x4_inc_ctx *src) {
@@ -184,11 +186,14 @@ static void SHA3_shake256_x4_inc_finalize(OQS_SHA3_shake256_x4_inc_ctx *state) {
 static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake256_x4_inc_ctx *state) {
 	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
-	EVP_DigestSqueeze(s->mdctx0, out0, outlen);
-	EVP_DigestSqueeze(s->mdctx1, out1, outlen);
-	EVP_DigestSqueeze(s->mdctx2, out2, outlen);
-	EVP_DigestSqueeze(s->mdctx3, out3, outlen);
-#else
+	if (oqs_ossl_can_digest_squeeze()) {
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx0, out0, outlen));
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx1, out1, outlen));
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx2, out2, outlen));
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx3, out3, outlen));
+		return;
+	}
+#endif
 	EVP_MD_CTX *clone;
 
 	clone = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -221,7 +226,6 @@ static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 	}
 	OSSL_FUNC(EVP_MD_CTX_free)(clone);
 	s->n_out += outlen;
-#endif
 }
 
 static void SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, const OQS_SHA3_shake256_x4_inc_ctx *src) {

@@ -14,6 +14,9 @@
 
 static pthread_once_t init_once_control = PTHREAD_ONCE_INIT;
 static pthread_once_t free_once_control = PTHREAD_ONCE_INIT;
+#if OPENSSL_VERSION_NUMBER >= 0x30300000L
+static pthread_once_t squeeze_probe_once_control = PTHREAD_ONCE_INIT;
+#endif
 #endif
 
 static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr,
@@ -100,6 +103,47 @@ void oqs_ossl_destroy(void) {
 void oqs_thread_stop(void) {
 	OSSL_FUNC(OPENSSL_thread_stop)();
 }
+
+#if OPENSSL_VERSION_NUMBER >= 0x30300000L
+/* Cached result of probing whether the active provider implements
+ * EVP_DigestSqueeze. A FIPS 3.0 provider loaded under libcrypto >= 3.3 will
+ * raise EVP_R_METHOD_NOT_SUPPORTED; under OQS_DLOPEN_OPENSSL the symbol itself
+ * may be absent from the libcrypto loaded at runtime. The provider's
+ * capability does not change across the process lifetime, so probe once. */
+static int oqs_ossl_squeeze_works = 0;
+
+static void probe_digest_squeeze(void) {
+	if (!OSSL_FUNC_AVAILABLE(EVP_DigestSqueeze)) {
+		return;
+	}
+	EVP_MD_CTX *probe = OSSL_FUNC(EVP_MD_CTX_new)();
+	if (probe == NULL) {
+		return;
+	}
+	if (OSSL_FUNC(EVP_DigestInit_ex)(probe, oqs_shake128(), NULL) == 1) {
+		unsigned char scratch[1];
+		if (OSSL_FUNC(EVP_DigestSqueeze)(probe, scratch, sizeof(scratch)) == 1) {
+			oqs_ossl_squeeze_works = 1;
+		} else {
+			ERR_clear_error();
+		}
+	}
+	OSSL_FUNC(EVP_MD_CTX_free)(probe);
+}
+
+int oqs_ossl_can_digest_squeeze(void) {
+#if defined(OQS_USE_PTHREADS)
+	pthread_once(&squeeze_probe_once_control, probe_digest_squeeze);
+#else
+	static int probed = 0;
+	if (!probed) {
+		probe_digest_squeeze();
+		probed = 1;
+	}
+#endif
+	return oqs_ossl_squeeze_works;
+}
+#endif
 
 const EVP_MD *oqs_sha256(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
@@ -332,7 +376,9 @@ static pthread_once_t dlopen_once_control = PTHREAD_ONCE_INIT;
     static ret(*_oqs_ossl_sym_##name)args;
 #endif
 #define VOID_FUNC FUNC
+#define OPTIONAL_FUNC FUNC
 #include "ossl_functions.h"
+#undef OPTIONAL_FUNC
 #undef VOID_FUNC
 #undef FUNC
 
@@ -351,7 +397,23 @@ ret _oqs_ossl_##name args           \
     assert(_oqs_ossl_sym_##name);       \
     _oqs_ossl_sym_##name cargs;  \
 }
+/* Optional symbols may legitimately be absent from the loaded libcrypto.
+ * Wrapper returns 0 (failure) when the symbol is unresolved; an
+ * _oqs_ossl_has_##name() probe lets callers branch before invoking. */
+#define OPTIONAL_FUNC(ret, name, args, cargs)   \
+ret _oqs_ossl_##name args                       \
+{                                               \
+    ENSURE_LIBRARY;                             \
+    if (!_oqs_ossl_sym_##name) { return 0; }    \
+    return _oqs_ossl_sym_##name cargs;          \
+}                                               \
+int _oqs_ossl_has_##name(void)                  \
+{                                               \
+    ENSURE_LIBRARY;                             \
+    return _oqs_ossl_sym_##name != NULL;        \
+}
 #include "ossl_functions.h"
+#undef OPTIONAL_FUNC
 #undef VOID_FUNC
 #undef FUNC
 
@@ -362,6 +424,13 @@ static void ensure_symbol(const char *name, void **symp) {
 			exit(EXIT_FAILURE);
 		}
 		*symp = sym;
+	}
+}
+
+/* Non-fatal: leaves *symp NULL when the symbol is missing. */
+static void ensure_optional_symbol(const char *name, void **symp) {
+	if (!*symp) {
+		*symp = dlsym(libcrypto_dlhandle, name);
 	}
 }
 
@@ -376,12 +445,18 @@ static void ensure_library(void) {
 
 #define ENSURE_SYMBOL(name) \
     ensure_symbol(#name, (void **)&_oqs_ossl_sym_##name)
+#define ENSURE_OPTIONAL_SYMBOL(name) \
+    ensure_optional_symbol(#name, (void **)&_oqs_ossl_sym_##name)
 #define FUNC(ret, name, args, cargs)        \
     ENSURE_SYMBOL(name);
 #define VOID_FUNC FUNC
+#define OPTIONAL_FUNC(ret, name, args, cargs) \
+    ENSURE_OPTIONAL_SYMBOL(name);
 #include "ossl_functions.h"
+#undef OPTIONAL_FUNC
 #undef VOID_FUNC
 #undef FUNC
+#undef ENSURE_OPTIONAL_SYMBOL
 #undef ENSURE_SYMBOL
 }
 
