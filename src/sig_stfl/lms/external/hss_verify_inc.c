@@ -17,6 +17,62 @@
 #include "hss.h"
 
 /*
+ * public key buffer as HSS format: level || lm_type || lm_ots || ...
+ *                    LMS format: lm_type || lm_ots || ...
+ * big-endian 32-bit word (bytes 8..11) is a supported LM-OTS parameter set
+ * (see OQS_LMOTS_TYPE_LIST). In that layout, bytes 0..3 are the level count,
+ * bytes 4..7 are the top-level LMS type, and bytes 8..11 are lm_ots. For a
+ * bare LMS public key, bytes 8..11 are the start of the I field and are not
+ * generally a valid LM-OTS id, so this function returns false.
+ *
+
+ * Returns true if the third word matches a known LM-OTS code; false otherwise.
+ */
+static bool is_hss_public_key(const unsigned char *public_key) {
+	param_set_t w2 = (param_set_t)get_bigendian(public_key + 8, 4);
+	return oqs_lmots_type_list_contains(w2);
+}
+
+/*
+ * Parse a public key buffer as a serialized LMS or HSS.
+ * Returns 0 on failure; 1 for a single-tree LMS public key; or the HSS level
+ * count (from the first four bytes) when the buffer matches the HSS layout.
+ *
+ * In HSS form, bytes 8..11 are lm_ots (see OQS_LMOTS_TYPE_LIST);
+ * in LMS form, bytes 8..11 begin the I field. is_hss_public_key() encodes
+ * that distinction; lm_type fields are checked against OQS_LMS_TYPE_LIST.
+ */
+static uint_fast32_t public_key_levels(const unsigned char *public_key) {
+	param_set_t w0 = (param_set_t)get_bigendian(public_key, 4);
+	param_set_t w1 = (param_set_t)get_bigendian(public_key + 4, 4);
+	param_set_t w2 = (param_set_t)get_bigendian(public_key + 8, 4);
+
+	if (is_hss_public_key(public_key)) {
+		uint_fast32_t levels = (uint_fast32_t)w0;
+        /*
+         * The level for public keys for single level trees sometimes have a value of zero.
+         * in this case, bump  public key level to 1.
+         */
+        if (levels == 0)
+            levels = 1;
+		if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS) {
+			return 0;
+		}
+		if (!oqs_lms_type_list_contains(w1) || !oqs_lmots_type_list_contains(w2)) {
+			return 0;
+		}
+
+		return levels;
+	}
+
+	if (oqs_lms_type_list_contains(w0) && oqs_lmots_type_list_contains(w1)) {
+		return 1;
+	}
+
+	return 0;
+}
+
+/*
  * Start the process of validating an HSS signature incrementally. Parameters:
  * ctx - The state we'll use to track the incremental validation
  * public_key - pointer to the public key
@@ -39,7 +95,7 @@ bool hss_validate_signature_init(
                                        /* we got a failure */
 
     const unsigned char *orig_signature = signature;
-;
+
     /* Get the number of levels the signature claims */
     if (signature_len < 4) {
         ctx->status = info->error_code = hss_error_bad_signature;
@@ -48,20 +104,14 @@ bool hss_validate_signature_init(
     uint_fast32_t levels = (uint_fast32_t)get_bigendian( signature, 4 ) + 1;
         /* +1 because what's in the signature is levels-1 */
     signature += 4; signature_len -= 4;
-    uint_fast32_t pub_levels = (uint_fast32_t)get_bigendian( public_key, 4 );
-    public_key += 4;
+    uint_fast32_t pub_levels = public_key_levels(public_key);
+    if (is_hss_public_key(public_key)) {
+        public_key += 4;
+    }
 
     if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS ) {
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
-    }
-
-    /*
-    * The level for public keys for single level trees sometimes have a value of zero.
-    * in this case, bump  public key level to 1.
-    */
-    if ((levels == 1) && (pub_levels == 0)) {
-       pub_levels = 1;
     }
 
     if (levels != pub_levels) {

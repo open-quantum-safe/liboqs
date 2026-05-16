@@ -4,13 +4,13 @@
 // To extract the subset from a submission file, use the command:
 
 #include <assert.h>
+#include <ctype.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <ctype.h>
 
 #include <oqs/oqs.h>
 
@@ -20,7 +20,8 @@
 
 #define MAX_MARKER_LEN 50
 
-static OQS_STATUS do_nothing_save(uint8_t *key_buf, size_t buf_len, void *context) {
+static OQS_STATUS do_nothing_save(uint8_t *key_buf, size_t buf_len,
+                                  void *context) {
 	(void)(context);
 	(void)(buf_len);
 	return key_buf != NULL ? OQS_SUCCESS : OQS_ERROR;
@@ -71,7 +72,8 @@ int FindMarker(FILE *infile, const char *marker) {
 //
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
 //
-size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length, const char *str) {
+size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length,
+               const char *str) {
 	int ch, started;
 	unsigned long i;
 	unsigned char ich;
@@ -126,9 +128,11 @@ size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length, const char 
 			}
 
 			for (i = 0; i < Length - 1; i++) {
-				a[i] = (unsigned char) (a[i] << 4) | (unsigned char) (a[i + 1] >> 4);
+				a[i] = (unsigned char)(a[i] << 4)
+				       | (unsigned char)(a[i + 1] >> 4);
 			}
-			a[Length - 1] = (unsigned char) (a[Length - 1] << 4) | (unsigned char) ich;
+			a[Length - 1]
+			    = (unsigned char)(a[Length - 1] << 4) | (unsigned char)ich;
 		} else {
 		return 0;
 	}
@@ -172,7 +176,8 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 
 	sig = OQS_SIG_STFL_new(method_name);
 	if (sig == NULL) {
-		fprintf(stderr, "[sig_stfl_kat] %s was not enabled at compile-time.\n", method_name);
+		fprintf(stderr, "[sig_stfl_kat] %s was not enabled at compile-time.\n",
+		        method_name);
 		goto algo_not_enabled;
 	}
 
@@ -190,7 +195,8 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	signature_kat = OQS_MEM_calloc(sig->length_signature, sizeof(uint8_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (signature == NULL)) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
+		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_MEM_malloc failed!\n",
+		        method_name);
 		goto err;
 	}
 
@@ -199,7 +205,8 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 
-	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, "sk = ")) {
+	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key,
+	             "sk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'sk' from <%s>\n", katfile);
 		goto err;
 	}
@@ -207,7 +214,8 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	fh = stdout;
 
 	OQS_fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
-	OQS_fprintBstr(fh, "sk = ", secret_key->secret_key_data, sig->length_secret_key);
+	OQS_fprintBstr(fh, "sk = ", secret_key->secret_key_data,
+	               sig->length_secret_key);
 	fprintf(fh, "\n\n");
 
 	fprintf(fh, "count = 0\n");
@@ -241,16 +249,21 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	OQS_fprintBstr(fh, "msg = ", msg, msg_len);
 
 #ifdef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
-	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
+	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, msg, msg_len,
+	                       secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sign failed!\n", method_name);
+		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sign failed!\n",
+		        method_name);
 		goto err;
 	}
 	fprintf(fh, "smlen = %zu\n", signature_len);
 	OQS_fprintBstr(fh, "sm = ", signature, signature_len);
 
 	if (signature_len != sig->length_signature) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sign incorrect length of signature!\n", method_name);
+		fprintf(
+		    stderr,
+		    "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sign incorrect length of signature!\n",
+		    method_name);
 		goto err;
 	}
 
@@ -265,22 +278,30 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 
-	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, signature, signature_len, public_key);
+	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, signature, signature_len,
+	                         public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_verify failed!\n", method_name);
+		fprintf(stderr,
+		        "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_verify failed!\n",
+		        method_name);
 		goto err;
 	}
 
 	rc = OQS_SIG_STFL_sigs_remaining(sig, &sigs_remain, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_remaining failed!\n", method_name);
+		fprintf(
+		    stderr,
+		    "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_remaining failed!\n",
+		    method_name);
 		goto err;
 	}
 	fprintf(fh, "remain = %llu\n", sigs_remain);
 
 	rc = OQS_SIG_STFL_sigs_total(sig, &sigs_maximum, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
+		fprintf(stderr,
+		        "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n",
+		        method_name);
 		goto err;
 	}
 	fprintf(fh, "max = %llu\n", sigs_maximum);
@@ -289,9 +310,10 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	goto cleanup;
 #else
 	/*
-	 * Signature generation is disabled so only signature verification can be tested.
+	 * Signature generation is disabled so only signature verification can be
+	 * tested.
 	 */
-	signature_len =  sig->length_signature;
+	signature_len = sig->length_signature;
 	if (!ReadHex(fp_rsp, signature_kat, signature_len, "sm = ")) {
 		fprintf(stderr, "ERROR: unable to read 'msg' from <%s>\n", katfile);
 		goto err;
@@ -301,33 +323,46 @@ OQS_STATUS sig_stfl_kat(const char *method_name, const char *katfile) {
 	fprintf(fh, "smlen = %zu\n", sig->length_signature);
 	OQS_fprintBstr(fh, "sm = ", signature_kat, sig->length_signature);
 
-	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, signature_kat, signature_len, public_key);
+	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, signature_kat, signature_len,
+	                         public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_verify failed!\n", method_name);
+		fprintf(stderr,
+		        "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_verify failed!\n",
+		        method_name);
 		goto err;
 	}
 
 	// Echo back remain
 	if (FindMarker(fp_rsp, "remain = ")) {
 		if (EOF == fscanf(fp_rsp, "%llu", &sigs_remain)) {
-			fprintf(stderr, "[kat_stfl_sig] %s ERROR: unable to read 'remain' from <%s>\n", method_name, katfile);
+			fprintf(
+			    stderr,
+			    "[kat_stfl_sig] %s ERROR: unable to read 'remain' from <%s>\n",
+			    method_name, katfile);
 			goto err;
 		};
 		fprintf(fh, "remain = %llu\n", sigs_remain);
 	} else {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_remaining failed!\n", method_name);
+		fprintf(
+		    stderr,
+		    "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_remaining failed!\n",
+		    method_name);
 		goto err;
 	}
 
 	// Echo back max
 	if (FindMarker(fp_rsp, "max = ")) {
 		if (EOF == fscanf(fp_rsp, "%llu", &sigs_maximum)) {
-			fprintf(stderr, "[kat_stfl_sig] %s ERROR: unable to read 'max' from <%s>\n", method_name, katfile);
+			fprintf(stderr,
+			        "[kat_stfl_sig] %s ERROR: unable to read 'max' from <%s>\n",
+			        method_name, katfile);
 			goto err;
 		};
 		fprintf(fh, "max = %llu\n", sigs_maximum);
 	} else {
-		fprintf(stderr, "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n", method_name);
+		fprintf(stderr,
+		        "[kat_stfl_sig] %s ERROR: OQS_SIG_STFL_sigs_total failed!\n",
+		        method_name);
 		goto err;
 	}
 
@@ -364,7 +399,7 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *msg = NULL;
-	size_t msg_len = 0;
+	size_t msg_len = 0, public_key_len = 0;
 	uint8_t *sm = NULL;
 	FILE *fp_rsp = NULL;
 	FILE *fh = NULL;
@@ -374,10 +409,11 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 
-	//Allocate a OQS stateful signature struct
+	// Allocate a OQS stateful signature struct
 	sig = OQS_SIG_STFL_new(method_name);
 	if (sig == NULL) {
-		fprintf(stderr, "ERROR: Failed to create signature object for %s\n", method_name);
+		fprintf(stderr, "ERROR: Failed to create signature object for %s\n",
+		        method_name);
 		goto err;
 	}
 
@@ -410,7 +446,20 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 	/*
 	 * Read signature and public key, msg and signature data from KAT file
 	 */
-	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, "pk = ")) {
+	public_key_len = ReadHex(fp_rsp, 0, 0, "pk = ");
+	if (!(public_key_len > 0)) {
+		fprintf(stderr, "No pk present\n");
+		goto err;
+	}
+
+	fclose(fp_rsp);
+	if ((fp_rsp = fopen(katfile, "r")) == NULL) {
+		fprintf(stderr, "Couldn't open <%s> for read\n", katfile);
+		goto err;
+	}
+
+	if ((public_key_len > sig->length_public_key)
+	        || (!ReadHex(fp_rsp, public_key, public_key_len, "pk = "))) {
 		fprintf(stderr, "ERROR: unable to read 'pk' from <%s>\n", katfile);
 		goto err;
 	}
@@ -436,7 +485,8 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 	}
 
 	// Verify KAT
-	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, sm, sig->length_signature, public_key);
+	rc = OQS_SIG_STFL_verify(sig, msg, msg_len, sm, sig->length_signature,
+	                         public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: Verify test vector failed: %s\n", method_name);
 	} else {
@@ -445,7 +495,7 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		fprintf(fh, "\n");
 		fprint_l_str(fh, "sm = ", sm, sig->length_signature);
 		fprintf(fh, "\n");
-		fprint_l_str(fh, "pk = ", public_key, sig->length_public_key);
+		fprint_l_str(fh, "pk = ", public_key, public_key_len);
 		fprintf(fh, "\n");
 	}
 err:
