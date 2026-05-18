@@ -21,7 +21,6 @@ ALG_SUPPORT_HEADER = [
     "[OQS tier](https://github.com/open-quantum-safe/liboqs/blob/main/ALGORITHMS.md#oqs-support-tier)",
 ]
 COMMIT_HASH_LEN = 7
-<<<<<<< HEAD
 TIER_LABELS = {1: "Tier 1 (Core)", 2: "Tier 2 (Supported)", 3: "Tier 3 (Community)"}
 
 
@@ -34,12 +33,12 @@ def format_upstream_maintenance(algdata: dict) -> str:
 def format_oqs_tier(algdata: dict) -> str:
     tier = algdata.get("oqs-support-tier", 3)
     return TIER_LABELS.get(tier, f"Tier {tier}")
-=======
+
 SUPPORTED_URL_PREFIXES = [
     "https://github.com/",
     "https://gitlab.com/",
 ]
->>>>>>> 5f0fdfcf9 ([extended tests] Switch from personal fork to official repo)
+
 
 def match_prefix(url: str, prefixes = SUPPORTED_URL_PREFIXES) -> str | None:
     """If the url is prefixed by one of the allowed prefixes, then return the
