@@ -8,7 +8,7 @@
 
 OQS_KEM *OQS_KEM_ntru_hps4096821_new(void) {
 
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}
@@ -28,6 +28,7 @@ OQS_KEM *OQS_KEM_ntru_hps4096821_new(void) {
 	kem->keypair = OQS_KEM_ntru_hps4096821_keypair;
 	kem->keypair_derand = OQS_KEM_ntru_hps4096821_keypair_derand;
 	kem->encaps = OQS_KEM_ntru_hps4096821_encaps;
+	kem->encaps_derand = OQS_KEM_ntru_hps4096821_encaps_derand;
 	kem->decaps = OQS_KEM_ntru_hps4096821_decaps;
 
 	return kem;
@@ -62,6 +63,14 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_keypair(uint8_t *public_key, uint8_t 
 OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
 	(void)public_key;
 	(void)secret_key;
+	(void)seed;
+	return OQS_ERROR;
+}
+
+OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
+	(void)ciphertext;
+	(void)shared_secret;
+	(void)public_key;
 	(void)seed;
 	return OQS_ERROR;
 }
