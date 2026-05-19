@@ -115,13 +115,32 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 #### Automated Build Script
 
-For a simplified build process on Linux or Mac, you can use the provided build script that automatically detects your OS, installs dependencies, and builds liboqs:
+For a simplified build process on Linux or Mac, you can use the provided build script that automatically installs dependencies and builds liboqs:
 
 ```bash
 git clone -b main https://github.com/open-quantum-safe/liboqs.git
 cd liboqs
 ./build_liboqs.sh
 ```
+
+**Dependency Management:**
+
+By default, the script automatically detects your OS and installs all required dependencies before building. If you prefer to manage dependencies yourself:
+
+```bash
+# Check dependencies and build only (exits with error if dependencies are missing)
+./build_liboqs.sh --build-only
+```
+
+**Python Testing Dependencies:**
+
+Python testing dependencies are listed in `requirements.txt` and can be installed separately:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+**Build Configuration Options:**
 
 The script supports various build options. View all available options with:
 
@@ -132,6 +151,12 @@ The script supports various build options. View all available options with:
 Common examples:
 
 ```bash
+# Default: Install dependencies and build
+./build_liboqs.sh
+
+# Build only (check dependencies, don't install)
+./build_liboqs.sh --build-only
+
 # Build shared library with debug symbols
 ./build_liboqs.sh --shared --build-type Debug
 
@@ -143,9 +168,12 @@ Common examples:
 
 # Build for distribution
 ./build_liboqs.sh --dist-build
+
+# Build only mode with custom options
+./build_liboqs.sh --build-only --build-type Release --shared
 ```
 
-The script automatically handles dependency installation on Ubuntu, macOS (via Homebrew), and NixOS systems.
+The script supports Ubuntu, macOS (via Homebrew), and NixOS systems.
 
 #### Manual Installation
 

@@ -1,0 +1,6 @@
+# Python dependencies for liboqs testing
+# Install with: pip3 install -r requirements.txt
+
+pytest>=6.0.0
+pytest-xdist>=2.0.0
+pyyaml>=5.1

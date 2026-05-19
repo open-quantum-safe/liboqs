@@ -27,9 +27,13 @@ DEFAULT SETTINGS (when no options specified):
     - OpenSSL: ON (OQS_USE_OPENSSL=ON)
     - Optimization target: auto (OQS_OPT_TARGET=auto)
     - Tests and docs: Built (OQS_BUILD_ONLY_LIB=OFF)
+    - Dependencies: Install automatically and build
 
 OPTIONS:
     -h, --help                          Show this help message
+    
+    Dependency Management:
+    --build-only                        Only build (check dependencies and exit with error if missing)
     
     Build Configuration:
     --shared                            Build shared library (BUILD_SHARED_LIBS=ON)
@@ -118,6 +122,182 @@ EOF
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Dependency management mode
+DEPS_MODE="install"  # Default: install dependencies and build
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" &> /dev/null
+}
+
+# Function to check dependencies
+check_dependencies() {
+    local missing_deps=()
+    local os_type=""
+    
+    # Detect OS
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        os_type="macos"
+        
+        # Check for Homebrew
+        if ! command_exists brew; then
+            missing_deps+=("homebrew (https://brew.sh)")
+        fi
+        
+        # Check for required tools
+        local required_tools=("cmake" "ninja" "wget" "doxygen" "graphviz" "astyle" "python3")
+        for tool in "${required_tools[@]}"; do
+            if ! command_exists "$tool"; then
+                missing_deps+=("$tool")
+            fi
+        done
+        
+        # Check for OpenSSL 3
+        if ! brew list openssl@3 &> /dev/null && ! [ -d "/usr/local/opt/openssl@3" ] && ! [ -d "/opt/homebrew/opt/openssl@3" ]; then
+            missing_deps+=("openssl@3")
+        fi
+        
+    elif [[ -f /etc/os-release ]]; then
+        . /etc/os-release
+        
+        if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]] || [[ "$ID_LIKE" == *"debian"* ]]; then
+            os_type="debian"
+            
+            # Check for required packages
+            local required_packages=("cmake" "gcc" "ninja-build" "libssl-dev" "python3-pytest" "python3-pytest-xdist" "unzip" "xsltproc" "doxygen" "graphviz" "astyle" "python3-yaml" "valgrind")
+            for pkg in "${required_packages[@]}"; do
+                if ! dpkg -l | grep -q "^ii  $pkg"; then
+                    missing_deps+=("$pkg")
+                fi
+            done
+            
+        elif [[ "$ID" == "nixos" ]]; then
+            os_type="nixos"
+            # For NixOS, check if in nix-shell
+            if [ -z "$IN_NIX_SHELL" ]; then
+                echo -e "${YELLOW}Note: Not in Nix development environment${NC}"
+                echo "Run: nix develop"
+                return 1
+            fi
+        else
+            echo -e "${RED}Error: Unsupported Linux distribution: $NAME${NC}"
+            return 1
+        fi
+    else
+        echo -e "${RED}Error: Unable to detect operating system${NC}"
+        return 1
+    fi
+    
+    # Report missing dependencies
+    if [ ${#missing_deps[@]} -gt 0 ]; then
+        echo -e "${RED}Error: Missing required dependencies:${NC}"
+        for dep in "${missing_deps[@]}"; do
+            echo -e "${RED}  - $dep${NC}"
+        done
+        echo ""
+        
+        if [[ "$os_type" == "macos" ]]; then
+            echo "Install with:"
+            echo "  brew install cmake ninja openssl@3 wget doxygen graphviz astyle python3"
+        elif [[ "$os_type" == "debian" ]]; then
+            echo "Install with:"
+            echo "  sudo apt update"
+            echo "  sudo apt install -y astyle cmake gcc ninja-build libssl-dev unzip xsltproc doxygen graphviz valgrind"
+        elif [[ "$os_type" == "nixos" ]]; then
+            echo "Enter Nix development environment with:"
+            echo "  nix develop"
+        fi
+        echo ""
+        echo "For Python testing dependencies, install separately:"
+        echo "  pip3 install -r requirements.txt"
+        return 1
+    fi
+    
+    echo -e "${GREEN}✓ All dependencies are installed${NC}"
+    return 0
+}
+
+# Function to install dependencies
+install_dependencies() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        echo -e "${GREEN}Detected OS: macOS${NC}"
+        echo ""
+        
+        # Check if Homebrew is installed
+        if ! command_exists brew; then
+            echo -e "${RED}Error: Homebrew is not installed!${NC}"
+            echo "Please install Homebrew first: https://brew.sh"
+            exit 1
+        fi
+        
+        echo "Installing dependencies..."
+        brew install cmake ninja openssl@3 wget doxygen graphviz astyle python3
+        
+    elif [[ -f /etc/os-release ]]; then
+        # Source the os-release file
+        . /etc/os-release
+        
+        if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]] || [[ "$ID_LIKE" == *"debian"* ]]; then
+            # Ubuntu/Debian - but check if Nix is available first
+            if command_exists nix && [ -f "${SCRIPT_DIR}/flake.nix" ] && [ -z "$IN_NIX_SHELL" ]; then
+                # Nix is available and flake.nix exists - use Nix environment
+                echo -e "${GREEN}Detected OS: $NAME (with Nix available)${NC}"
+                echo -e "${YELLOW}Using Nix development environment for reproducible builds...${NC}"
+                echo ""
+                
+                # Re-execute this script inside the Nix development environment
+                exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
+            fi
+            
+            # Standard Ubuntu/Debian path
+            echo -e "${GREEN}Detected OS: $NAME${NC}"
+            echo ""
+            
+            echo "Installing dependencies..."
+            echo -e "${YELLOW}Note: This will use 'sudo' and may prompt for your password.${NC}"
+            sudo apt update
+            sudo apt install -y astyle cmake gcc ninja-build libssl-dev unzip xsltproc doxygen graphviz valgrind
+            
+        elif [[ "$ID" == "nixos" ]]; then
+            # NixOS
+            echo -e "${GREEN}Detected OS: NixOS${NC}"
+            echo ""
+            
+            # Check if already in a Nix development environment
+            if [ -n "$IN_NIX_SHELL" ]; then
+                echo "✓ Already in Nix development environment"
+            else
+                # Check if flake.nix exists
+                if [ ! -f "${SCRIPT_DIR}/flake.nix" ]; then
+                    echo -e "${RED}Error: flake.nix not found in ${SCRIPT_DIR}${NC}"
+                    echo "Cannot automatically enter Nix development environment."
+                    exit 1
+                fi
+                
+                echo -e "${YELLOW}Not in Nix development environment. Re-executing with 'nix develop'...${NC}"
+                echo ""
+                
+                # Re-execute this script inside the Nix development environment
+                # Pass all original arguments to the re-executed script
+                exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
+            fi
+            
+        else
+            echo -e "${YELLOW}Warning: Unsupported Linux distribution: $NAME${NC}"
+            echo "Please install dependencies manually."
+            exit 1
+        fi
+        
+    else
+        echo -e "${RED}Error: Unable to detect operating system${NC}"
+        echo "Supported OS: macOS, Ubuntu, Debian, NixOS"
+        exit 1
+    fi
+    
+    echo -e "${GREEN}Dependencies installed successfully!${NC}"
+}
+
 # Function to check if script is outdated by validating CMake options
 check_script_staleness() {
     local SCRIPT_FILE="${BASH_SOURCE[0]}"
@@ -135,17 +315,19 @@ check_script_staleness() {
     local CMAKE_OPTIONS=()
     
     # Parse main CMakeLists.txt
+    # Match both option() and cmake_dependent_option(), with or without leading whitespace
     if [ -f "$CMAKE_FILE" ]; then
         while IFS= read -r line; do
             [ -n "$line" ] && CMAKE_OPTIONS+=("$line")
-        done < <(grep -E '^option\(OQS_|^option\(USE_|^option\(BUILD_' "$CMAKE_FILE" 2>/dev/null | sed 's/option(//;s/ .*//' || true)
+        done < <(grep -E '^\s*(option|cmake_dependent_option)\((OQS_|USE_|BUILD_)' "$CMAKE_FILE" 2>/dev/null | sed -E 's/^\s*(option|cmake_dependent_option)\(//;s/[" ].*//' || true)
     fi
     
     # Parse .CMake/alg_support.cmake for algorithm options
+    # Match both option() and cmake_dependent_option(), with or without leading whitespace
     if [ -f "$ALG_SUPPORT_FILE" ]; then
         while IFS= read -r line; do
             [ -n "$line" ] && CMAKE_OPTIONS+=("$line")
-        done < <(grep -E '^option\(OQS_' "$ALG_SUPPORT_FILE" 2>/dev/null | sed 's/option(//;s/ .*//' || true)
+        done < <(grep -E '^\s*(option|cmake_dependent_option)\(OQS_' "$ALG_SUPPORT_FILE" 2>/dev/null | sed -E 's/^\s*(option|cmake_dependent_option)\(//;s/[" ].*//' || true)
     fi
     
     # Remove duplicates (handle empty array safely)
@@ -245,6 +427,10 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         -h|--help)
             usage
+            ;;
+        --build-only)
+            DEPS_MODE="check"
+            shift
             ;;
         --shared)
             CMAKE_OPTIONS+=("-DBUILD_SHARED_LIBS=ON")
@@ -404,93 +590,31 @@ echo ""
 # Check for script staleness only for real build execution paths
 check_script_staleness
 
-# No helper functions needed - brew and apt handle idempotency
-
-# Detect OS and install dependencies
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    echo -e "${GREEN}Detected OS: macOS${NC}"
-    echo ""
-    
-    # Check if Homebrew is installed
-    if ! command -v brew &> /dev/null; then
-        echo -e "${RED}Error: Homebrew is not installed!${NC}"
-        echo "Please install Homebrew first: https://brew.sh"
+# Handle dependency management based on mode
+if [ "$DEPS_MODE" = "check" ]; then
+    echo "Checking dependencies (--build-only mode)..."
+    if ! check_dependencies; then
+        echo -e "${RED}Please install missing dependencies before building.${NC}"
         exit 1
     fi
-    
-    echo "Installing dependencies..."
-    brew install cmake ninja openssl@3 wget doxygen graphviz astyle python3
-    
-    # Install Python test dependencies
     echo ""
-    echo "Installing Python test dependencies..."
-    # Modern macOS/Homebrew Python uses externally-managed environments (PEP 668)
-    # Use --user flag to install in user directory, which is safe and doesn't require system modifications
-    pip3 install --user pytest pytest-xdist pyyaml
-    
-elif [[ -f /etc/os-release ]]; then
-    # Source the os-release file
-    . /etc/os-release
-    
-    if [[ "$ID" == "ubuntu" ]] || [[ "$ID" == "debian" ]] || [[ "$ID_LIKE" == *"debian"* ]]; then
-        # Ubuntu/Debian - but check if Nix is available first
-        if command -v nix &> /dev/null && [ -f "${SCRIPT_DIR}/flake.nix" ] && [ -z "$IN_NIX_SHELL" ]; then
-            # Nix is available and flake.nix exists - use Nix environment
-            echo -e "${GREEN}Detected OS: $NAME (with Nix available)${NC}"
-            echo -e "${YELLOW}Using Nix development environment for reproducible builds...${NC}"
-            echo ""
-            
-            # Re-execute this script inside the Nix development environment
-            exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
-        fi
-        
-        # Standard Ubuntu/Debian path
-        echo -e "${GREEN}Detected OS: $NAME${NC}"
-        echo ""
-        
-        echo "Installing dependencies..."
-        echo -e "${YELLOW}Note: This will use 'sudo' and may prompt for your password.${NC}"
-        sudo apt update
-        sudo apt install -y astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
-        
-    elif [[ "$ID" == "nixos" ]]; then
-        # NixOS
-        echo -e "${GREEN}Detected OS: NixOS${NC}"
-        echo ""
-        
-        # Check if already in a Nix development environment
-        if [ -n "$IN_NIX_SHELL" ]; then
-            echo "✓ Already in Nix development environment"
-        else
-            # Check if flake.nix exists
-            if [ ! -f "${SCRIPT_DIR}/flake.nix" ]; then
-                echo -e "${RED}Error: flake.nix not found in ${SCRIPT_DIR}${NC}"
-                echo "Cannot automatically enter Nix development environment."
-                exit 1
-            fi
-            
-            echo -e "${YELLOW}Not in Nix development environment. Re-executing with 'nix develop'...${NC}"
-            echo ""
-            
-            # Re-execute this script inside the Nix development environment
-            # Pass all original arguments to the re-executed script
-            exec nix develop "${SCRIPT_DIR}" -c "$0" "$@"
-        fi
-        
-    else
-        echo -e "${YELLOW}Warning: Unsupported Linux distribution: $NAME${NC}"
-        echo "Please install dependencies manually."
-        exit 1
-    fi
-    
-else
-    echo -e "${RED}Error: Unable to detect operating system${NC}"
-    echo "Supported OS: macOS, Ubuntu, Debian, NixOS"
-    exit 1
+elif [ "$DEPS_MODE" = "install" ]; then
+    echo "Installing dependencies and building..."
+    install_dependencies
+    echo ""
 fi
 
-echo -e "${GREEN}Dependencies installed successfully!${NC}"
+# Check if build directory exists and has CMakeCache.txt with different generator
+if [ -d "${SCRIPT_DIR}/build" ] && [ -f "${SCRIPT_DIR}/build/CMakeCache.txt" ]; then
+    # Check if the existing cache uses a different generator than Ninja
+    if ! grep -q "CMAKE_GENERATOR:INTERNAL=Ninja" "${SCRIPT_DIR}/build/CMakeCache.txt" 2>/dev/null; then
+        EXISTING_GENERATOR=$(grep "CMAKE_GENERATOR:INTERNAL=" "${SCRIPT_DIR}/build/CMakeCache.txt" 2>/dev/null | cut -d'=' -f2)
+        echo -e "${YELLOW}Detected existing build directory with different generator: ${EXISTING_GENERATOR}${NC}"
+        echo "Cleaning build directory to use Ninja..."
+        rm -rf "${SCRIPT_DIR}/build"
+    fi
+fi
+
 mkdir -p "${SCRIPT_DIR}/build"
 cd "${SCRIPT_DIR}/build"
 
@@ -527,3 +651,6 @@ echo "  cd ${SCRIPT_DIR}/build && sudo ninja install"
 echo ""
 echo "To run tests, run:"
 echo "  cd ${SCRIPT_DIR}/build && ninja run_tests"
+echo ""
+echo -e "${BLUE}Note:${NC} For Python-based testing, install Python dependencies:"
+echo "  pip3 install -r requirements.txt"

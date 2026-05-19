@@ -8,12 +8,14 @@ on:
     branches: [ main,charishma_build_script ]
     paths:
       - 'build_liboqs.sh'
+      - 'requirements.txt'
       - 'CMakeLists.txt'
       - 'src/**/CMakeLists.txt'
       - '.github/workflows/build-script-test.yml'
   pull_request:
     paths:
       - 'build_liboqs.sh'
+      - 'requirements.txt'
       - 'CMakeLists.txt'
       - 'src/**/CMakeLists.txt'
       - '.github/workflows/build-script-test.yml'
@@ -43,6 +45,11 @@ jobs:
             test-name: shared-no-openssl
             script-args: "--shared --no-openssl"
             description: "Shared library without OpenSSL"
+          
+          - os: ubuntu-latest
+            test-name: build-only-mode
+            script-args: "--build-only"
+            description: "Build-only mode (check dependencies without installing)"
           
           # Cross-platform verification - macOS tests
           - os: macos-latest
