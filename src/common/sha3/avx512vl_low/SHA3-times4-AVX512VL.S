@@ -347,7 +347,7 @@
 
 # -----------------------------------------------------------------------------
 #
-# void SHA3_shake128_x4_inc_ctx_reset_avx512vl(OQS_SHA3_shake128_inc_ctx *state);
+# void SHA3_shake128_x4_inc_ctx_reset_avx512vl(OQS_SHA3_shake128_x4_inc_ctx *state);
 #
 .globl  SHA3_shake128_x4_inc_ctx_reset_avx512vl
 .type   SHA3_shake128_x4_inc_ctx_reset_avx512vl,@function
@@ -356,7 +356,7 @@
 
 # -----------------------------------------------------------------------------
 #
-# void SHA3_shake256_inc_ctx_reset_x4_avx512vl(OQS_SHA3_shake256_inc_ctx *state);
+# void SHA3_shake256_x4_inc_ctx_reset_avx512vl(OQS_SHA3_shake256_x4_inc_ctx *state);
 #
 .globl  SHA3_shake256_x4_inc_ctx_reset_avx512vl
 .type   SHA3_shake256_x4_inc_ctx_reset_avx512vl,@function
