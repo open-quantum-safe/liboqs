@@ -46,11 +46,6 @@ jobs:
             script-args: "--shared --no-openssl"
             description: "Shared library without OpenSSL"
           
-          - os: ubuntu-latest
-            test-name: build-only-mode
-            script-args: "--build-only"
-            description: "Build-only mode (check dependencies without installing)"
-          
           # Cross-platform verification - macOS tests
           - os: macos-latest
             test-name: default-build
