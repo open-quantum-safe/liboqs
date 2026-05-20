@@ -17,44 +17,61 @@
 #include "hss.h"
 
 /*
- * public key buffer as HSS format: level || lm_type || lm_ots || ...
- *                    LMS format: lm_type || lm_ots || ...
- * big-endian 32-bit word (bytes 8..11) is a supported LM-OTS parameter set
- * (see OQS_LMOTS_TYPE_LIST). In that layout, bytes 0..3 are the level count,
- * bytes 4..7 are the top-level LMS type, and bytes 8..11 are lm_ots. For a
- * bare LMS public key, bytes 8..11 are the start of the I field and are not
- * generally a valid LM-OTS id, so this function returns false.
+ * Classify a serialized public key buffer as HSS or LMS by correlating its
+ * leading fields with the incremental-signature header.
  *
-
- * Returns true if the third word matches a known LM-OTS code; false otherwise.
+ * Public-key layouts (RFC 8554, sec. 5.3 and 6.1):
+ *   - HSS pk: u32(L) || u32(lm_type) || u32(lm_ots) || I || T[1]
+ *   - LMS pk:           u32(lm_type) || u32(lm_ots) || I || T[1]
+ *
+ * signature header :
+ *   sig[0..3]   = u32(L) || u32(lm_type) || u32(lm_ots) ...
+ *                     L = (the HSS level count minus one)
+ * Therefore, for an HSS public key, sig[0..3] + 1 must equal pk[0..3] and the
+ * resulting level count must be a valid HSS level (1..MAX_HSS_LEVELS). As a
+ * cross-check, pk[4..7] is required to be a valid LMS type for HSS 
+ * and pk[8..11] is required to be a valid LM-OTS type for LMS;
+ * Further, the signature LM and LM-OTS types must those present in the public key.
  */
-static bool is_hss_public_key(const unsigned char *public_key) {
-	param_set_t w2 = (param_set_t)get_bigendian(public_key + 8, 4);
-	return oqs_lmots_type_list_contains(w2);
+static bool is_hss_public_key(const unsigned char *public_key,
+                              const unsigned char *signature) {
+	uint_fast32_t sig_levels =
+	    (uint_fast32_t)get_bigendian(signature, 4) + 1;
+    uint_fast32_t sig_lm_type = (uint_fast32_t)get_bigendian(signature + 4, 4);
+    uint_fast32_t sig_lm_ots  = (uint_fast32_t)get_bigendian(signature + 8, 4);
+	uint_fast32_t pk_levels   = (uint_fast32_t)get_bigendian(public_key, 4);
+	uint_fast32_t pk_lm_type  = (uint_fast32_t)get_bigendian(public_key + 4, 4);
+    uint_fast32_t pk_lm_ots   = (uint_fast32_t)get_bigendian(public_key + 8, 4);
+
+	if (sig_levels < MIN_HSS_LEVELS || sig_levels > MAX_HSS_LEVELS) {
+		return false;
+	}
+	if (pk_levels != sig_levels) {
+		return false;
+	}
+    if (pk_lm_type != sig_lm_type || pk_lm_ots != sig_lm_ots) {
+        return false;
+    }
+	return oqs_lms_type_list_contains(pk_lm_type) && oqs_lmots_type_list_contains(pk_lm_ots);
 }
 
 /*
- * Parse a public key buffer as a serialized LMS or HSS.
+ * Parse a public key buffer as a serialized LMS or HSS public key.
  * Returns 0 on failure; 1 for a single-tree LMS public key; or the HSS level
  * count (from the first four bytes) when the buffer matches the HSS layout.
  *
- * In HSS form, bytes 8..11 are lm_ots (see OQS_LMOTS_TYPE_LIST);
- * in LMS form, bytes 8..11 begin the I field. is_hss_public_key() encodes
- * that distinction; lm_type fields are checked against OQS_LMS_TYPE_LIST.
+ * The signature pointer is consulted (via is_hss_public_key) to disambiguate
+ * the two on-wire layouts since the public-key buffer alone does not carry an
+ * explicit type indicator.
  */
-static uint_fast32_t public_key_levels(const unsigned char *public_key) {
+static uint_fast32_t public_key_levels(const unsigned char *public_key,
+                                       const unsigned char *signature) {
 	param_set_t w0 = (param_set_t)get_bigendian(public_key, 4);
 	param_set_t w1 = (param_set_t)get_bigendian(public_key + 4, 4);
 	param_set_t w2 = (param_set_t)get_bigendian(public_key + 8, 4);
 
-	if (is_hss_public_key(public_key)) {
+	if (is_hss_public_key(public_key, signature)) {
 		uint_fast32_t levels = (uint_fast32_t)w0;
-        /*
-         * The level for public keys for single level trees sometimes have a value of zero.
-         * in this case, bump  public key level to 1.
-         */
-        if (levels == 0)
-            levels = 1;
 		if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS) {
 			return 0;
 		}
@@ -103,11 +120,11 @@ bool hss_validate_signature_init(
     }
     uint_fast32_t levels = (uint_fast32_t)get_bigendian( signature, 4 ) + 1;
         /* +1 because what's in the signature is levels-1 */
-    signature += 4; signature_len -= 4;
-    uint_fast32_t pub_levels = public_key_levels(public_key);
-    if (is_hss_public_key(public_key)) {
+    uint_fast32_t pub_levels = public_key_levels(public_key, orig_signature);
+    if (is_hss_public_key(public_key, orig_signature)) {
         public_key += 4;
     }
+    signature += 4; signature_len -= 4;
 
     if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS ) {
         ctx->status = info->error_code = hss_error_bad_signature;
