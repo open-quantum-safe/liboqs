@@ -19,7 +19,7 @@
 
 ## Support
 
-- **Upstream maintenance**: TBD
+- **Upstream maintenance**: Actively maintained ([statement](https://github.com/PQCMayo/MAYO-C))
 - **OQS support tier**: Tier 3
 
 ## Parameter set summary
