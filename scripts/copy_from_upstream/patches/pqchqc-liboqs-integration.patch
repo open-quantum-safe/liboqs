@@ -362,14 +362,12 @@ index d4c22b4..4bd8609 100644
  void reed_muller_encode(uint64_t* cdw, const uint64_t* msg);
  void reed_muller_decode(uint64_t* msg, const uint64_t* cdw);
 diff --git a/src/common/symmetric.c b/src/common/symmetric.c
-index b963673..d0a8c23 100644
+index b963673..5169d9e 100644
 --- a/src/common/symmetric.c
 +++ b/src/common/symmetric.c
-@@ -6,13 +6,28 @@
- 
+@@ -7,12 +7,26 @@
  #include "symmetric.h"
  #include <stdint.h>
-+#include <string.h>
  
 +#ifdef USE_OQS_RANDOMBYTES
 +#include <oqs/rand.h>
@@ -395,7 +393,7 @@ index b963673..d0a8c23 100644
  
  /**
   * @brief SHAKE-256 with incremental API and domain separation
-@@ -26,11 +41,11 @@ shake256incctx shake256_prng_ctx;
+@@ -26,11 +40,11 @@ shake256incctx shake256_prng_ctx;
   */
  void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t enlen, uint32_t perlen) {
      uint8_t domain = HQC_PRNG_DOMAIN;
@@ -412,7 +410,7 @@ index b963673..d0a8c23 100644
  }
  
  /**
-@@ -42,8 +57,9 @@ void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t
+@@ -42,8 +56,9 @@ void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t
   * @param[in] outlen length of output in bytes
   */
  void prng_get_bytes(uint8_t *output, uint32_t outlen) {
@@ -423,7 +421,7 @@ index b963673..d0a8c23 100644
  
  /**
   * @brief Initializes a SHAKE256 XOF context with a given seed.
-@@ -54,10 +70,10 @@ void prng_get_bytes(uint8_t *output, uint32_t outlen) {
+@@ -54,10 +69,10 @@ void prng_get_bytes(uint8_t *output, uint32_t outlen) {
   */
  void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size) {
      uint8_t xof_domain = HQC_XOF_DOMAIN;
@@ -438,7 +436,7 @@ index b963673..d0a8c23 100644
  }
  
  /**
-@@ -72,7 +88,14 @@ void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size
+@@ -72,7 +87,14 @@ void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size
   * The context must have been initialized beforehand using `xof_init()`.
   */
  void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_size) {
@@ -454,7 +452,7 @@ index b963673..d0a8c23 100644
  }
  
  /**
-@@ -87,10 +110,11 @@ void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_s
+@@ -87,10 +109,11 @@ void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_s
  void hash_i(uint8_t *output, const uint8_t *seed) {
      sha3_512_ctx i_hash_ctx = {0};
      uint8_t i_domain = HQC_I_FCT_DOMAIN;
@@ -470,7 +468,7 @@ index b963673..d0a8c23 100644
  }
  
  /**
-@@ -102,10 +126,11 @@ void hash_i(uint8_t *output, const uint8_t *seed) {
+@@ -102,10 +125,11 @@ void hash_i(uint8_t *output, const uint8_t *seed) {
  void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES]) {
      sha3_256_ctx h_hash_ctx = {0};
      uint8_t h_domain = HQC_H_FCT_DOMAIN;
@@ -486,22 +484,9 @@ index b963673..d0a8c23 100644
  }
  
  /**
-@@ -118,14 +143,29 @@ void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES]) {
-  */
- void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_t m[PARAM_SECURITY_BYTES],
+@@ -120,12 +144,13 @@ void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
              const uint8_t salt[SALT_BYTES]) {
--    sha3_512_ctx g_hash_ctx = {0};
-+    /* TODO: For liboqs integration, hash_g implementation has been modified
-+     * There are some unexpected dispatch errors under liboqs/src/common/sha3
-+     * that causes intermittent GitHub Action test failures. Due to the
-+     * difficulty of debugging on GitHub action, I chose this shortcut of
-+     * replacing incremental API with a single hash over a continuous strip of
-+     * memory. There might be performance and stack memory usage penalty
-+     * associated with this approach, but I deemed it acceptable.
-+     *
-+     * FIX: we need to eventually figure out what happened with Keccak dispatch
-+     * and restore the usage of incremental API
-+     */
+     sha3_512_ctx g_hash_ctx = {0};
      uint8_t i_domain = HQC_G_FCT_DOMAIN;
 -    sha3_512_inc_init(&g_hash_ctx);
 -    sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
@@ -509,21 +494,17 @@ index b963673..d0a8c23 100644
 -    sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
 -    sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
 -    sha3_512_inc_finalize(output, &g_hash_ctx);
-+    uint8_t input[SEED_BYTES + PARAM_SECURITY_BYTES + SALT_BYTES + 1];
-+    size_t offset = 0;
-+    memcpy(input + offset, hash_ek_kem, SEED_BYTES);
-+    offset += SEED_BYTES;
-+    memcpy(input + offset, m, PARAM_SECURITY_BYTES);
-+    offset += PARAM_SECURITY_BYTES;
-+    memcpy(input + offset, salt, SALT_BYTES);
-+    offset += SALT_BYTES;
-+    memcpy(input + offset, &i_domain, 1);
-+
-+    OQS_SHA3_sha3_512(output, input, sizeof(input));
++    OQS_SHA3_sha3_512_inc_init(&g_hash_ctx);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_SECURITY_BYTES);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
++    OQS_SHA3_sha3_512_inc_finalize(output, &g_hash_ctx);
++    OQS_SHA3_sha3_512_inc_ctx_release(&g_hash_ctx);
  }
  
  /**
-@@ -140,12 +180,13 @@ void hash_j(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
+@@ -140,12 +165,13 @@ void hash_j(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
              const ciphertext_kem_t *c_kem) {
      sha3_256_ctx k_hash_ctx = {0};
      uint8_t k_domain = HQC_J_FCT_DOMAIN;
