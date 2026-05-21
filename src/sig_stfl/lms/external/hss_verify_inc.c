@@ -25,19 +25,18 @@
  *   - LMS pk:           u32(lm_type) || u32(lm_ots) || I || T[1]
  *
  * signature header :
- *   sig[0..3]   = u32(L) || u32(lm_type) || u32(lm_ots) ...
+ *   sig[]   = u32(L-1) || u32(q) || u32(lm_ots) ...
  *                     L = (the HSS level count minus one)
  * Therefore, for an HSS public key, sig[0..3] + 1 must equal pk[0..3] and the
  * resulting level count must be a valid HSS level (1..MAX_HSS_LEVELS). As a
  * cross-check, pk[4..7] is required to be a valid LMS type for HSS 
  * and pk[8..11] is required to be a valid LM-OTS type for LMS;
- * Further, the signature LM and LM-OTS types must those present in the public key.
+ * Further, the signature LM-OTS types must those present in the public key.
  */
 static bool is_hss_public_key(const unsigned char *public_key,
                               const unsigned char *signature) {
 	uint_fast32_t sig_levels =
 	    (uint_fast32_t)get_bigendian(signature, 4) + 1;
-    uint_fast32_t sig_lm_type = (uint_fast32_t)get_bigendian(signature + 4, 4);
     uint_fast32_t sig_lm_ots  = (uint_fast32_t)get_bigendian(signature + 8, 4);
 	uint_fast32_t pk_levels   = (uint_fast32_t)get_bigendian(public_key, 4);
 	uint_fast32_t pk_lm_type  = (uint_fast32_t)get_bigendian(public_key + 4, 4);
@@ -49,7 +48,7 @@ static bool is_hss_public_key(const unsigned char *public_key,
 	if (pk_levels != sig_levels) {
 		return false;
 	}
-    if (pk_lm_type != sig_lm_type || pk_lm_ots != sig_lm_ots) {
+    if (pk_lm_ots != sig_lm_ots) {
         return false;
     }
 	return oqs_lms_type_list_contains(pk_lm_type) && oqs_lmots_type_list_contains(pk_lm_ots);
@@ -59,10 +58,7 @@ static bool is_hss_public_key(const unsigned char *public_key,
  * Parse a public key buffer as a serialized LMS or HSS public key.
  * Returns 0 on failure; 1 for a single-tree LMS public key; or the HSS level
  * count (from the first four bytes) when the buffer matches the HSS layout.
- *
- * The signature pointer is consulted (via is_hss_public_key) to disambiguate
- * the two on-wire layouts since the public-key buffer alone does not carry an
- * explicit type indicator.
+ * Validate by matching the fields in the signature buffer.
  */
 static uint_fast32_t public_key_levels(const unsigned char *public_key,
                                        const unsigned char *signature) {
