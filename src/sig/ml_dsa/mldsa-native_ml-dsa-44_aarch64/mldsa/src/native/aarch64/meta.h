@@ -38,16 +38,16 @@
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_ntt_native(int32_t data[MLDSA_N])
 {
-  mld_ntt_asm(data, mld_aarch64_ntt_zetas_layer123456,
-              mld_aarch64_ntt_zetas_layer78);
+  mld_ntt_aarch64_asm(data, mld_aarch64_ntt_zetas_layer123456,
+                      mld_aarch64_ntt_zetas_layer78);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_intt_native(int32_t data[MLDSA_N])
 {
-  mld_intt_asm(data, mld_aarch64_intt_zetas_layer78,
-               mld_aarch64_intt_zetas_layer123456);
+  mld_intt_aarch64_asm(data, mld_aarch64_intt_zetas_layer78,
+                       mld_aarch64_intt_zetas_layer123456);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 
@@ -63,9 +63,11 @@ static MLD_INLINE int mld_rej_uniform_native(int32_t *r, unsigned len,
   }
 
   /* Safety: outlen is at most MLDSA_N, hence, this cast is safe. */
-  return (int)mld_rej_uniform_asm(r, buf, buflen, mld_rej_uniform_table);
+  return (int)mld_rej_uniform_aarch64_asm(r, buf, buflen,
+                                          mld_rej_uniform_table);
 }
 
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API)
 #if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_ETA == 2
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_rej_uniform_eta2_native(int32_t *r, unsigned len,
@@ -86,7 +88,8 @@ static MLD_INLINE int mld_rej_uniform_eta2_native(int32_t *r, unsigned len,
    * We declassify prior the input data and mark the outputs as secret.
    */
   MLD_CT_TESTING_DECLASSIFY(buf, buflen);
-  outlen = mld_rej_uniform_eta2_asm(r, buf, buflen, mld_rej_uniform_eta_table);
+  outlen = mld_rej_uniform_eta2_aarch64_asm(r, buf, buflen,
+                                            mld_rej_uniform_eta_table);
   MLD_CT_TESTING_SECRET(r, sizeof(int32_t) * outlen);
   /* Safety: outlen is at most MLDSA_N and, hence, this cast is safe. */
   return (int)outlen;
@@ -113,19 +116,22 @@ static MLD_INLINE int mld_rej_uniform_eta4_native(int32_t *r, unsigned len,
    * We declassify prior the input data and mark the outputs as secret.
    */
   MLD_CT_TESTING_DECLASSIFY(buf, buflen);
-  outlen = mld_rej_uniform_eta4_asm(r, buf, buflen, mld_rej_uniform_eta_table);
+  outlen = mld_rej_uniform_eta4_aarch64_asm(r, buf, buflen,
+                                            mld_rej_uniform_eta_table);
   MLD_CT_TESTING_SECRET(r, sizeof(int32_t) * outlen);
   /* Safety: outlen is at most MLDSA_N and, hence, this cast is safe. */
   return (int)outlen;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_ETA == 4 */
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API)
 #if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
     (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_decompose_32_native(int32_t *a1, int32_t *a0)
 {
-  mld_poly_decompose_32_asm(a1, a0);
+  mld_poly_decompose_32_aarch64_asm(a1, a0);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
@@ -135,26 +141,27 @@ static MLD_INLINE int mld_poly_decompose_32_native(int32_t *a1, int32_t *a0)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_decompose_88_native(int32_t *a1, int32_t *a0)
 {
-  mld_poly_decompose_88_asm(a1, a0);
+  mld_poly_decompose_88_aarch64_asm(a1, a0);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44 \
         */
+#endif /* !MLD_CONFIG_NO_SIGN_API */
 
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_caddq_native(int32_t a[MLDSA_N])
 {
-  mld_poly_caddq_asm(a);
+  mld_poly_caddq_aarch64_asm(a);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 
+#if !defined(MLD_CONFIG_NO_VERIFY_API)
 #if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
     (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87)
 MLD_MUST_CHECK_RETURN_VALUE
-static MLD_INLINE int mld_poly_use_hint_32_native(int32_t *b, const int32_t *a,
-                                                  const int32_t *h)
+static MLD_INLINE int mld_poly_use_hint_32_native(int32_t *a, const int32_t *h)
 {
-  mld_poly_use_hint_32_asm(b, a, h);
+  mld_poly_use_hint_32_aarch64_asm(a, h);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
@@ -162,26 +169,27 @@ static MLD_INLINE int mld_poly_use_hint_32_native(int32_t *b, const int32_t *a,
 
 #if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLD_CONFIG_PARAMETER_SET == 44
 MLD_MUST_CHECK_RETURN_VALUE
-static MLD_INLINE int mld_poly_use_hint_88_native(int32_t *b, const int32_t *a,
-                                                  const int32_t *h)
+static MLD_INLINE int mld_poly_use_hint_88_native(int32_t *a, const int32_t *h)
 {
-  mld_poly_use_hint_88_asm(b, a, h);
+  mld_poly_use_hint_88_aarch64_asm(a, h);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44 \
         */
+#endif /* !MLD_CONFIG_NO_VERIFY_API */
 
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_chknorm_native(const int32_t *a, int32_t B)
 {
-  return mld_poly_chknorm_asm(a, B);
+  return mld_poly_chknorm_aarch64_asm(a, B);
 }
 
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API)
 #if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLD_CONFIG_PARAMETER_SET == 44
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyz_unpack_17_native(int32_t *r, const uint8_t *buf)
 {
-  mld_polyz_unpack_17_asm(r, buf, mld_polyz_unpack_17_indices);
+  mld_polyz_unpack_17_aarch64_asm(r, buf, mld_polyz_unpack_17_indices);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44 \
@@ -192,20 +200,24 @@ static MLD_INLINE int mld_polyz_unpack_17_native(int32_t *r, const uint8_t *buf)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyz_unpack_19_native(int32_t *r, const uint8_t *buf)
 {
-  mld_polyz_unpack_19_asm(r, buf, mld_polyz_unpack_19_indices);
+  mld_polyz_unpack_19_aarch64_asm(r, buf, mld_polyz_unpack_19_indices);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
           || MLD_CONFIG_PARAMETER_SET == 87 */
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API) || \
+    defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_pointwise_montgomery_native(
-    int32_t out[MLDSA_N], const int32_t in0[MLDSA_N],
-    const int32_t in1[MLDSA_N])
+    int32_t a[MLDSA_N], const int32_t b[MLDSA_N])
 {
-  mld_poly_pointwise_montgomery_asm(out, in0, in1);
+  mld_poly_pointwise_montgomery_aarch64_asm(a, b);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API || \
+          MLD_CONFIG_REDUCE_RAM || MLD_UNIT_TEST */
 
 #if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_L == 4
 MLD_MUST_CHECK_RETURN_VALUE
@@ -213,8 +225,7 @@ static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l4_native(
     int32_t w[MLDSA_N], const int32_t u[4][MLDSA_N],
     const int32_t v[4][MLDSA_N])
 {
-  mld_polyvecl_pointwise_acc_montgomery_l4_asm(w, (const int32_t *)u,
-                                               (const int32_t *)v);
+  mld_polyvecl_pointwise_acc_montgomery_l4_aarch64_asm(w, u, v);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 4 */
@@ -225,8 +236,7 @@ static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l5_native(
     int32_t w[MLDSA_N], const int32_t u[5][MLDSA_N],
     const int32_t v[5][MLDSA_N])
 {
-  mld_polyvecl_pointwise_acc_montgomery_l5_asm(w, (const int32_t *)u,
-                                               (const int32_t *)v);
+  mld_polyvecl_pointwise_acc_montgomery_l5_aarch64_asm(w, u, v);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 5 */
@@ -237,8 +247,7 @@ static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l7_native(
     int32_t w[MLDSA_N], const int32_t u[7][MLDSA_N],
     const int32_t v[7][MLDSA_N])
 {
-  mld_polyvecl_pointwise_acc_montgomery_l7_asm(w, (const int32_t *)u,
-                                               (const int32_t *)v);
+  mld_polyvecl_pointwise_acc_montgomery_l7_aarch64_asm(w, u, v);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 7 */

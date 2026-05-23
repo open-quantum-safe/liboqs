@@ -143,19 +143,16 @@ __contract__(ensures(return_value == b))
 #pragma CPROVER check disable "conversion"
 #endif
 
-/*************************************************
- * Name:        mld_cast_uint32_to_int32
+/**
+ * Cast uint32 value to int32.
  *
- * Description: Cast uint32 value to int32
+ * @param x Input value.
  *
- * Returns:     For uint32_t x, the unique y in int32_t
- *              so that x == y mod 2^32.
- *
- *              Concretely:
- *              - x <  2^31: returns x
- *              - x >= 2^31: returns x - 2^31
- *
- **************************************************/
+ * @return For uint32_t x, the unique y in int32_t so that x == y mod 2^32.
+ *         Concretely:
+ *         - x <  2^31: returns x
+ *         - x >= 2^31: returns x - 2^31
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_ALWAYS_INLINE int32_t mld_cast_uint32_to_int32(uint32_t x)
 {
@@ -174,47 +171,42 @@ static MLD_ALWAYS_INLINE int32_t mld_cast_uint32_to_int32(uint32_t x)
 #endif
 
 
-/*************************************************
- * Name:        mld_cast_int64_to_uint32
+/**
+ * Cast int64 value to uint32 as per C standard.
  *
- * Description: Cast int64 value to uint32 as per C standard.
+ * @param x Input value.
  *
- * Returns:     For int64_t x, the unique y in uint32_t
- *              so that x == y mod 2^32.
- **************************************************/
+ * @return For int64_t x, the unique y in uint32_t so that x == y mod 2^32.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_ALWAYS_INLINE uint32_t mld_cast_int64_to_uint32(int64_t x)
 {
   return (uint32_t)(x & (int64_t)UINT32_MAX);
 }
 
-/*************************************************
- * Name:        mld_cast_int32_to_uint32
+/**
+ * Cast int32 value to uint32 as per C standard.
  *
- * Description: Cast int32 value to uint32 as per C standard.
+ * @param x Input value.
  *
- * Returns:     For int32_t x, the unique y in uint32_t
- *              so that x == y mod 2^32.
- **************************************************/
+ * @return For int32_t x, the unique y in uint32_t so that x == y mod 2^32.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_ALWAYS_INLINE uint32_t mld_cast_int32_to_uint32(int32_t x)
 {
   return mld_cast_int64_to_uint32((int64_t)x);
 }
 
-/*************************************************
- * Name:        mld_ct_sel_int32
+/**
+ * Functionally equivalent to cond ? a : b, but implemented with guards against
+ * compiler-introduced branches.
  *
- * Description: Functionally equivalent to cond ? a : b,
- *              but implemented with guards against
- *              compiler-introduced branches.
+ * @param a    First alternative.
+ * @param b    Second alternative.
+ * @param cond Condition variable.
  *
- * Arguments:   int32_t a:       First alternative
- *              int32_t b:       Second alternative
- *              uint32_t cond:   Condition variable.
- *
- *
- **************************************************/
+ * @return a if cond is 0xFFFFFFFF, b if cond is 0.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_ct_sel_int32(int32_t a, int32_t b, uint32_t cond)
 __contract__(
@@ -228,14 +220,11 @@ __contract__(
   return mld_cast_uint32_to_int32(res);
 }
 
-/*************************************************
- * Name:        mld_ct_cmask_nonzero_u32
+/**
+ * Return 0 if input is zero, and -1 otherwise.
  *
- * Description: Return 0 if input is zero, and -1 otherwise.
- *
- * Arguments:   uint32_t x: Value to be converted into a mask
- *
- **************************************************/
+ * @param x Value to be converted into a mask.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint32_t mld_ct_cmask_nonzero_u32(uint32_t x)
 __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFFFFFFFF)))
@@ -245,14 +234,11 @@ __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFFFFFFFF)))
   return mld_cast_int64_to_uint32(tmp);
 }
 
-/*************************************************
- * Name:        mld_ct_cmask_nonzero_u8
+/**
+ * Return 0 if input is zero, and -1 otherwise.
  *
- * Description: Return 0 if input is zero, and -1 otherwise.
- *
- * Arguments:   uint8_t x: Value to be converted into a mask
- *
- **************************************************/
+ * @param x Value to be converted into a mask.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint8_t mld_ct_cmask_nonzero_u8(uint8_t x)
 __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFF)))
@@ -261,14 +247,11 @@ __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFF)))
   return (uint8_t)(mask & 0xFF);
 }
 
-/*************************************************
- * Name:        mld_ct_cmask_neg_i32
+/**
+ * Return 0 if input is non-negative, and -1 otherwise.
  *
- * Description: Return 0 if input is non-negative, and -1 otherwise.
- *
- * Arguments:   int32_t x: Value to be converted into a mask
- *
- **************************************************/
+ * @param x Value to be converted into a mask.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint32_t mld_ct_cmask_neg_i32(int32_t x)
 __contract__(
@@ -280,14 +263,11 @@ __contract__(
   return mld_cast_int64_to_uint32(tmp);
 }
 
-/*************************************************
- * Name:        mld_ct_abs_i32
+/**
+ * Return -x if x<0, x otherwise.
  *
- * Description: Return -x if x<0, x otherwise
- *
- * Arguments:   int32_t x: Input value
- *
- **************************************************/
+ * @param x Input value.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_ct_abs_i32(int32_t x)
 __contract__(
@@ -298,19 +278,16 @@ __contract__(
   return mld_ct_sel_int32(-x, x, mld_ct_cmask_neg_i32(x));
 }
 
-/*************************************************
- * Name:        mld_ct_memcmp
+/**
+ * Compare two arrays for equality in constant time.
  *
- * Description: Compare two arrays for equality in constant time.
+ * @param[in] a   Pointer to first byte array.
+ * @param[in] b   Pointer to second byte array.
+ * @param     len Length of the byte arrays, upper-bounded to UINT16_MAX to
+ *                control proof complexity only.
  *
- * Arguments:   const uint8_t *a: pointer to first byte array
- *              const uint8_t *b: pointer to second byte array
- *              size_t len:       length of the byte arrays, upper-bounded
- *                                to UINT16_MAX to control proof complexity
- *                                only.
- *
- * Returns 0 if the byte arrays are equal, 0xFF otherwise.
- **************************************************/
+ * @return 0 if the byte arrays are equal, 0xFF otherwise.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint8_t mld_ct_memcmp(const uint8_t *a, const uint8_t *b,
                                         const size_t len)
@@ -345,16 +322,14 @@ __contract__(
   return (mld_value_barrier_u8(mld_ct_cmask_nonzero_u8(r) ^ s) ^ s);
 }
 
-/*************************************************
- * Name:        mld_zeroize
+/**
+ * Force-zeroize a buffer.
  *
- * Description: Force-zeroize a buffer.
- *              @[FIPS204, Section 3.6.3] Destruction of intermediate
- *              values.
+ * @[FIPS204, Section 3.6.3] Destruction of intermediate values.
  *
- * Arguments:   void *ptr: pointer to buffer to be zeroed
- *              size_t len: Amount of bytes to be zeroed
- **************************************************/
+ * @param[out] ptr Pointer to buffer to be zeroed.
+ * @param      len Amount of bytes to be zeroed.
+ */
 #if !defined(MLD_CONFIG_CUSTOM_ZEROIZE)
 #if defined(MLD_SYS_WINDOWS)
 #include <windows.h>

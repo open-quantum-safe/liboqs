@@ -26,8 +26,12 @@
  * this can be overwritten by the user, e.g. for single-CU builds. */
 #if !defined(MLD_CONFIG_INTERNAL_API_QUALIFIER)
 #define MLD_INTERNAL_API
+#define MLD_INTERNAL_DATA_DECLARATION extern
+#define MLD_INTERNAL_DATA_DEFINITION
 #else
 #define MLD_INTERNAL_API MLD_CONFIG_INTERNAL_API_QUALIFIER
+#define MLD_INTERNAL_DATA_DECLARATION MLD_CONFIG_INTERNAL_API_QUALIFIER
+#define MLD_INTERNAL_DATA_DEFINITION MLD_CONFIG_INTERNAL_API_QUALIFIER
 #endif
 
 #if !defined(MLD_CONFIG_EXTERNAL_API_QUALIFIER)
@@ -126,6 +130,14 @@
 
 #if defined(MLD_CONFIG_NO_RANDOMIZED_API) && defined(MLD_CONFIG_KEYGEN_PCT)
 #error Bad configuration: MLD_CONFIG_NO_RANDOMIZED_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_sign_signature()
+#endif
+
+#if defined(MLD_CONFIG_NO_SIGN_API) && defined(MLD_CONFIG_KEYGEN_PCT)
+#error Bad configuration: MLD_CONFIG_NO_SIGN_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_sign_signature()
+#endif
+
+#if defined(MLD_CONFIG_NO_VERIFY_API) && defined(MLD_CONFIG_KEYGEN_PCT)
+#error Bad configuration: MLD_CONFIG_NO_VERIFY_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_sign_verify()
 #endif
 
 #if defined(MLD_CONFIG_USE_NATIVE_BACKEND_ARITH)
@@ -290,20 +302,6 @@
 
 #endif /* MLD_CONFIG_CUSTOM_ALLOC_FREE */
 
-/*
- * We are facing severe CBMC performance issues when using unions.
- * As a temporary workaround, we use unions only when MLD_CONFIG_REDUCE_RAM is
- * set.
- * TODO: Remove the workaround once
- * https://github.com/diffblue/cbmc/issues/8813
- * is resolved
- */
-#if defined(MLD_CONFIG_REDUCE_RAM)
-#define MLD_UNION_OR_STRUCT union
-#else
-#define MLD_UNION_OR_STRUCT struct
-#endif
-
 /****************************** Error codes ***********************************/
 
 /* Generic failure condition */
@@ -314,6 +312,20 @@
 /* An rng failure occured. Might be due to insufficient entropy or
  * system misconfiguration. */
 #define MLD_ERR_RNG_FAIL -3
+/* The signing rejection-sampling loop exceeded
+ * MLD_CONFIG_MAX_SIGNING_ATTEMPTS iterations without producing a valid
+ * signature. With a FIPS 204 Appendix C compliant bound (>= 814) this
+ * has probability < 2^-256. */
+#define MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED -4
+
+/* Disjunction over the full set of MLD_ERR_XXX failure codes.
+ *
+ * Intended for use in top-level `ensures` clauses that admit every
+ * possible error. Narrower contracts should enumerate only the
+ * specific errors they can actually return. */
+#define MLD_ANY_ERROR(err)                                    \
+  ((err) == MLD_ERR_FAIL || (err) == MLD_ERR_OUT_OF_MEMORY || \
+   (err) == MLD_ERR_RNG_FAIL || (err) == MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED)
 
 
 #endif /* !__ASSEMBLER__ */

@@ -20,21 +20,18 @@
 /* check-magic: 6283009 == (MLD_REDUCE32_DOMAIN_MAX - 255 * MLDSA_Q + 1) */
 #define MLD_REDUCE32_RANGE_MAX 6283009
 
-/*************************************************
- * Name:        mld_montgomery_reduce
+/**
+ * Generic Montgomery reduction; given a 64-bit integer a, computes a 32-bit
+ * integer congruent to a * R^-1 mod MLDSA_Q, where R=2^32.
  *
- * Description: Generic Montgomery reduction; given a 64-bit integer a, computes
- *              32-bit integer congruent to a * R^-1 mod q, where R=2^32
+ * @param a Input integer to be reduced, of absolute value smaller or equal
+ *          to INT64_MAX - 2^31 * MLDSA_Q.
  *
- * Arguments:   - int64_t a: input integer to be reduced, of absolute value
- *                smaller or equal to INT64_MAX - 2^31 * MLDSA_Q.
- *
- * Returns:     Integer congruent to a * R^-1 modulo q, with absolute value
- *                <= |a| / 2^32 + MLDSA_Q / 2
- *
- *              In particular, if |a| < 2^31 * MLDSA_Q, the absolute value
- *              of the return value is < MLDSA_Q.
- **************************************************/
+ * @return Integer congruent to a * R^-1 modulo MLDSA_Q, with absolute value
+ *         <= |a| / 2^32 + MLDSA_Q / 2.
+ *         In particular, if |a| < 2^31 * MLDSA_Q, the absolute value of the
+ *         return value is < MLDSA_Q.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_montgomery_reduce(int64_t a)
 __contract__(
@@ -86,17 +83,15 @@ __contract__(
   return (int32_t)r;
 }
 
-/*************************************************
- * Name:        mld_reduce32
+/**
+ * For finite field element a with a <= 2^{31} - 2^{22} - 1, compute
+ * r congruent to a (mod MLDSA_Q) such that
+ * -MLD_REDUCE32_RANGE_MAX <= r < MLD_REDUCE32_RANGE_MAX.
  *
- * Description: For finite field element a with a <= 2^{31} - 2^{22} - 1,
- *              compute r \equiv a (mod MLDSA_Q) such that
- *              -MLD_REDUCE32_RANGE_MAX <= r < MLD_REDUCE32_RANGE_MAX.
+ * @param a Finite field element.
  *
- * Arguments:   - int32_t: finite field element a
- *
- * Returns r.
- **************************************************/
+ * @return r.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_reduce32(int32_t a)
 __contract__(
@@ -113,15 +108,13 @@ __contract__(
   return t;
 }
 
-/*************************************************
- * Name:        mld_caddq
+/**
+ * Add MLDSA_Q if input coefficient is negative.
  *
- * Description: Add MLDSA_Q if input coefficient is negative.
+ * @param a Finite field element.
  *
- * Arguments:   - int32_t: finite field element a
- *
- * Returns r.
- **************************************************/
+ * @return r.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_caddq(int32_t a)
 __contract__(
