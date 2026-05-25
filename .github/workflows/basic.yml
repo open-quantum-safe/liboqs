@@ -34,6 +34,18 @@ jobs:
       - name: Validate CBOM
         run: scripts/validate_cbom.sh
 
+  markdownlint:
+    name: Check Markdown documentation
+    needs: [workflowcheck]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+      - name: Install rumdl
+        run: python3 -m pip install --user rumdl==0.2.4
+      - name: Ensure Markdown conventions are upheld
+        run: ~/.local/bin/rumdl check --config .rumdl.toml --respect-gitignore --exclude "build,**/build" .
+
   upstreamcheck:
     name: Check upstream code is properly integrated
     needs: [workflowcheck]
