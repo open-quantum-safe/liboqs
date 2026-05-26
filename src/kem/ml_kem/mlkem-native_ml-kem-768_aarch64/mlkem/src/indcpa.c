@@ -39,24 +39,21 @@
   MLK_ADD_PARAM_SET(mlk_polyvec_permute_bitrev_to_custom)
 #define mlk_polymat_permute_bitrev_to_custom \
   MLK_ADD_PARAM_SET(mlk_polymat_permute_bitrev_to_custom)
+#define mlk_keypair_getnoise_eta1 MLK_ADD_PARAM_SET(mlk_keypair_getnoise_eta1)
+#define mlk_enc_getnoise_eta1_eta2 MLK_ADD_PARAM_SET(mlk_enc_getnoise_eta1_eta2)
 /* End of parameter set namespacing */
 
-/*************************************************
- * Name:        mlk_pack_pk
+/**
+ * Serialize the public key as the concatenation of the serialized vector of
+ * polynomials pk and the public seed used to generate the matrix A.
  *
- * Description: Serialize the public key as concatenation of the
- *              serialized vector of polynomials pk
- *              and the public seed used to generate the matrix A.
+ * @spec{Implements @[FIPS203, Algorithm 13 (K-PKE.KeyGen), L19].}
  *
- * Arguments:   uint8_t *r: pointer to the output serialized public key
- *              mlk_polyvec pk: pointer to the input public-key mlk_polyvec.
- *                Must have coefficients within [0,..,q-1].
- *              const uint8_t *seed: pointer to the input public seed
- *
- * Specification:
- * Implements @[FIPS203, Algorithm 13 (K-PKE.KeyGen), L19]
- *
- **************************************************/
+ * @param[out] r    Output serialized public key.
+ * @param[in]  pk   Input public-key polyvec. Must have coefficients within
+ *                  [0,..,MLKEM_Q-1].
+ * @param[in]  seed Input public seed.
+ */
 static void mlk_pack_pk(uint8_t r[MLKEM_INDCPA_PUBLICKEYBYTES],
                         const mlk_polyvec *pk,
                         const uint8_t seed[MLKEM_SYMBYTES])
@@ -66,22 +63,17 @@ static void mlk_pack_pk(uint8_t r[MLKEM_INDCPA_PUBLICKEYBYTES],
   mlk_memcpy(r + MLKEM_POLYVECBYTES, seed, MLKEM_SYMBYTES);
 }
 
-/*************************************************
- * Name:        mlk_unpack_pk
+/**
+ * De-serialize public key from a byte array; approximate inverse of
+ * mlk_pack_pk.
  *
- * Description: De-serialize public key from a byte array;
- *              approximate inverse of mlk_pack_pk
+ * @spec{Implements @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L2-3].}
  *
- * Arguments:   - mlk_polyvec pk: pointer to output public-key polynomial
- *                vector Coefficients will be normalized to [0,..,q-1].
- *              - uint8_t *seed: pointer to output seed to generate matrix A
- *              - const uint8_t *packedpk: pointer to input serialized public
- *                  key.
- *
- * Specification:
- * Implements @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L2-3]
- *
- **************************************************/
+ * @param[out] pk       Output public-key polynomial vector. Coefficients
+ *                      will be normalized to [0,1,..,MLKEM_Q-1].
+ * @param[out] seed     Output seed to generate matrix A.
+ * @param[in]  packedpk Input serialized public key.
+ */
 static void mlk_unpack_pk(mlk_polyvec *pk, uint8_t seed[MLKEM_SYMBYTES],
                           const uint8_t packedpk[MLKEM_INDCPA_PUBLICKEYBYTES])
 {
@@ -94,19 +86,14 @@ static void mlk_unpack_pk(mlk_polyvec *pk, uint8_t seed[MLKEM_SYMBYTES],
    * work with the easily provable bound by MLKEM_UINT12_LIMIT. */
 }
 
-/*************************************************
- * Name:        mlk_pack_sk
+/**
+ * Serialize the secret key.
  *
- * Description: Serialize the secret key
+ * @spec{Implements @[FIPS203, Algorithm 13 (K-PKE.KeyGen), L20].}
  *
- * Arguments:   - uint8_t *r: pointer to output serialized secret key
- *              - mlk_polyvec sk: pointer to input vector of polynomials
- *                (secret key)
- *
- * Specification:
- * Implements @[FIPS203, Algorithm 13 (K-PKE.KeyGen), L20]
- *
- **************************************************/
+ * @param[out] r  Output serialized secret key.
+ * @param[in]  sk Input vector of polynomials (secret key).
+ */
 static void mlk_pack_sk(uint8_t r[MLKEM_INDCPA_SECRETKEYBYTES],
                         const mlk_polyvec *sk)
 {
@@ -114,41 +101,31 @@ static void mlk_pack_sk(uint8_t r[MLKEM_INDCPA_SECRETKEYBYTES],
   mlk_polyvec_tobytes(r, sk);
 }
 
-/*************************************************
- * Name:        mlk_unpack_sk
+/**
+ * De-serialize the secret key; inverse of mlk_pack_sk.
  *
- * Description: De-serialize the secret key; inverse of mlk_pack_sk
+ * @spec{Implements @[FIPS203, Algorithm 15 (K-PKE.Decrypt), L5].}
  *
- * Arguments:   - mlk_polyvec sk: pointer to output vector of polynomials
- *                (secret key)
- *              - const uint8_t *packedsk: pointer to input serialized secret
- *                key
- *
- * Specification:
- * Implements @[FIPS203, Algorithm 15 (K-PKE.Decrypt), L5]
- *
- **************************************************/
+ * @param[out] sk       Output vector of polynomials (secret key).
+ * @param[in]  packedsk Input serialized secret key.
+ */
 static void mlk_unpack_sk(mlk_polyvec *sk,
                           const uint8_t packedsk[MLKEM_INDCPA_SECRETKEYBYTES])
 {
   mlk_polyvec_frombytes(sk, packedsk);
 }
 
-/*************************************************
- * Name:        mlk_pack_ciphertext
+/**
+ * Serialize the ciphertext as the concatenation of the compressed and
+ * serialized vector of polynomials b and the compressed and serialized
+ * polynomial v.
  *
- * Description: Serialize the ciphertext as concatenation of the
- *              compressed and serialized vector of polynomials b
- *              and the compressed and serialized polynomial v
+ * @spec{Implements @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L22-23].}
  *
- * Arguments:   uint8_t *r: pointer to the output serialized ciphertext
- *              mlk_poly *pk: pointer to the input vector of polynomials b
- *              mlk_poly *v: pointer to the input polynomial v
- *
- * Specification:
- * Implements @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L22-23]
- *
- **************************************************/
+ * @param[out] r Output serialized ciphertext.
+ * @param[in]  b Input vector of polynomials b.
+ * @param[in]  v Input polynomial v.
+ */
 static void mlk_pack_ciphertext(uint8_t r[MLKEM_INDCPA_BYTES],
                                 const mlk_polyvec *b, mlk_poly *v)
 {
@@ -156,20 +133,16 @@ static void mlk_pack_ciphertext(uint8_t r[MLKEM_INDCPA_BYTES],
   mlk_poly_compress_dv(r + MLKEM_POLYVECCOMPRESSEDBYTES_DU, v);
 }
 
-/*************************************************
- * Name:        mlk_unpack_ciphertext
+/**
+ * De-serialize and decompress ciphertext from a byte array; approximate
+ * inverse of mlk_pack_ciphertext.
  *
- * Description: De-serialize and decompress ciphertext from a byte array;
- *              approximate inverse of mlk_pack_ciphertext
+ * @spec{Implements @[FIPS203, Algorithm 15 (K-PKE.Decrypt), L1-4].}
  *
- * Arguments:   - mlk_polyvec b: pointer to the output vector of polynomials b
- *              - mlk_poly *v: pointer to the output polynomial v
- *              - const uint8_t *c: pointer to the input serialized ciphertext
- *
- * Specification:
- * Implements @[FIPS203, Algorithm 15 (K-PKE.Decrypt), L1-4]
- *
- **************************************************/
+ * @param[out] b Output vector of polynomials b.
+ * @param[out] v Output polynomial v.
+ * @param[in]  c Input serialized ciphertext.
+ */
 static void mlk_unpack_ciphertext(mlk_polyvec *b, mlk_poly *v,
                                   const uint8_t c[MLKEM_INDCPA_BYTES])
 {
@@ -201,7 +174,8 @@ __contract__(
      assigns(i, memory_slice(v, sizeof(mlk_polyvec)))
      invariant(i <= MLKEM_K)
      invariant(forall(x, 0, MLKEM_K,
-       array_bound(v->vec[x].coeffs, 0, MLKEM_N, 0, MLKEM_Q))))
+       array_bound(v->vec[x].coeffs, 0, MLKEM_N, 0, MLKEM_Q)))
+     decreases(MLKEM_K - i))
   {
     mlk_poly_permute_bitrev_to_custom(v->vec[i].coeffs);
   }
@@ -228,7 +202,8 @@ __contract__(
      assigns(i, memory_slice(a, sizeof(mlk_polymat)))
      invariant(i <= MLKEM_K)
      invariant(forall(x, 0, MLKEM_K, forall(y, 0, MLKEM_K,
-       array_bound(a->vec[x].vec[y].coeffs, 0, MLKEM_N, 0, MLKEM_Q)))))
+       array_bound(a->vec[x].vec[y].coeffs, 0, MLKEM_N, 0, MLKEM_Q))))
+     decreases(MLKEM_K - i))
   {
     mlk_polyvec_permute_bitrev_to_custom(&a->vec[i]);
   }
@@ -323,23 +298,18 @@ void mlk_gen_matrix(mlk_polymat *a, const uint8_t seed[MLKEM_SYMBYTES],
   mlk_zeroize(seed_ext, sizeof(seed_ext));
 }
 
-/*************************************************
- * Name:        mlk_matvec_mul
+/**
+ * Compute matrix-vector product in NTT domain, via Montgomery multiplication.
  *
- * Description: Computes matrix-vector product in NTT domain,
- *              via Montgomery multiplication.
+ * @spec{Implements @[FIPS203, Section 2.4.7, Eq (2.12), (2.13)].}
  *
- * Arguments:   - mlk_polyvec out: Pointer to output polynomial vector
- *              - mlk_polymat a: Input matrix. Must be in NTT domain
- *                  and have coefficients of absolute value < 4096.
- *              - mlk_polyvec v: Input polynomial vector. Must be in NTT
- *                  domain.
- *              - mlk_polyvec vc: Mulcache for v, computed via
- *                  mlk_polyvec_mulcache_compute().
- *
- * Specification: Implements @[FIPS203, Section 2.4.7, Eq (2.12), (2.13)]
- *
- **************************************************/
+ * @param[out] out Output polynomial vector.
+ * @param[in]  a   Input matrix. Must be in NTT domain and have coefficients
+ *                 of absolute value < 4096.
+ * @param[in]  v   Input polynomial vector. Must be in NTT domain.
+ * @param[in]  vc  Mulcache for @p v, computed via
+ *                 mlk_polyvec_mulcache_compute().
+ */
 static void mlk_matvec_mul(mlk_polyvec *out, const mlk_polymat *a,
                            const mlk_polyvec *v, const mlk_polyvec_mulcache *vc)
 __contract__(
@@ -356,15 +326,111 @@ __contract__(
   for (i = 0; i < MLKEM_K; i++)
   __loop__(
     assigns(i, memory_slice(out, sizeof(mlk_polyvec)))
-    invariant(i <= MLKEM_K))
+    invariant(i <= MLKEM_K)
+    decreases(MLKEM_K - i))
   {
     mlk_polyvec_basemul_acc_montgomery_cached(&out->vec[i], &a->vec[i], v, vc);
   }
 }
 
+/**
+ * Compute and fill the pv and e polyvec structures needed by
+ * mlk_keypair_derand(). Uses x4-batched versions of `poly_getnoise` to
+ * leverage batched Keccak-f1600.
+ *
+ * @spec{Implements @[FIPS203, Algorithm 13 (K-PKE.KeyGen)] steps 8-15.}
+ *
+ * @param[out] pv   Output polynomial vector.
+ * @param[out] e    Output polynomial vector.
+ * @param[in]  seed Seed bytes for sampling.
+ */
+static void mlk_keypair_getnoise_eta1(mlk_polyvec *pv, mlk_polyvec *e,
+                                      const uint8_t seed[MLKEM_SYMBYTES])
+__contract__(
+  requires(memory_no_alias(pv, sizeof(mlk_polyvec)))
+  requires(memory_no_alias(e, sizeof(mlk_polyvec)))
+  requires(memory_no_alias(seed, MLKEM_SYMBYTES))
+  assigns(memory_slice(pv, sizeof(mlk_polyvec)))
+  assigns(memory_slice(e, sizeof(mlk_polyvec)))
+  ensures(forall(k0, 0, MLKEM_K, array_abs_bound(pv->vec[k0].coeffs, 0, MLKEM_N, MLKEM_ETA1 + 1)))
+  ensures(forall(k1, 0, MLKEM_K, array_abs_bound(e->vec[k1].coeffs, 0, MLKEM_N, MLKEM_ETA1 + 1)))
+)
+{
+#if MLKEM_K == 2
+  mlk_poly_getnoise_eta1_4x(&pv->vec[0], &pv->vec[1], /* Fill elements of pv */
+                            &e->vec[0], &e->vec[1], /* and two elements of e */
+                            seed, 0, 1, 2, 3);
+#elif MLKEM_K == 3
+  /*
+   * Only the first three output buffers are needed, so we pass NULL as
+   * the fourth parameter, and 0xFF as its dummy nonce.
+   */
+  mlk_poly_getnoise_eta1_4x(&pv->vec[0], &pv->vec[1], &pv->vec[2], NULL, seed,
+                            0, 1, 2, 0xFF);
+  /* Same here */
+  mlk_poly_getnoise_eta1_4x(&e->vec[0], &e->vec[1], &e->vec[2], NULL, seed, 3,
+                            4, 5, 0xFF);
+#elif MLKEM_K == 4
+  mlk_poly_getnoise_eta1_4x(&pv->vec[0], &pv->vec[1], &pv->vec[2], &pv->vec[3],
+                            seed, 0, 1, 2, 3);
+  mlk_poly_getnoise_eta1_4x(&e->vec[0], &e->vec[1], &e->vec[2], &e->vec[3],
+                            seed, 4, 5, 6, 7);
+#endif /* MLKEM_K == 4 */
+}
+
+/**
+ * Compute and fill the sp, ep, and epp polynomial structures needed by
+ * mlk_indcpa_enc(). Uses x4-batched versions of `poly_getnoise` to leverage
+ * batched Keccak-f1600.
+ *
+ * @spec{Implements @[FIPS203, Algorithm 14 (K-PKE.Encrypt)] steps 9-16.}
+ *
+ * @param[out] sp    Output polynomial vector.
+ * @param[out] ep    Output polynomial vector.
+ * @param[out] epp   Output polynomial.
+ * @param[in]  coins Seed bytes for sampling.
+ */
+static void mlk_enc_getnoise_eta1_eta2(mlk_polyvec *sp, mlk_polyvec *ep,
+                                       mlk_poly *epp,
+                                       const uint8_t coins[MLKEM_SYMBYTES])
+__contract__(
+  requires(memory_no_alias(sp, sizeof(mlk_polyvec)))
+  requires(memory_no_alias(ep, sizeof(mlk_polyvec)))
+  requires(memory_no_alias(epp, sizeof(mlk_poly)))
+  requires(memory_no_alias(coins, MLKEM_SYMBYTES))
+  assigns(memory_slice(sp, sizeof(mlk_polyvec)))
+  assigns(memory_slice(ep, sizeof(mlk_polyvec)))
+  assigns(memory_slice(epp, sizeof(mlk_poly)))
+  ensures(forall(k0, 0, MLKEM_K, array_abs_bound(sp->vec[k0].coeffs, 0, MLKEM_N, MLKEM_ETA1 + 1)))
+  ensures(forall(k1, 0, MLKEM_K, array_abs_bound(ep->vec[k1].coeffs, 0, MLKEM_N, MLKEM_ETA2 + 1)))
+  ensures(array_abs_bound(epp->coeffs, 0, MLKEM_N, MLKEM_ETA2 + 1))
+)
+{
+#if MLKEM_K == 2
+  mlk_poly_getnoise_eta1122_4x(&sp->vec[0], &sp->vec[1], &ep->vec[0],
+                               &ep->vec[1], coins, 0, 1, 2, 3);
+  mlk_poly_getnoise_eta2(epp, coins, 4);
+#elif MLKEM_K == 3
+  /*
+   * In this call, only the first three output buffers are needed.
+   * The last parameter is a dummy that's overwritten later.
+   */
+  mlk_poly_getnoise_eta1_4x(&sp->vec[0], &sp->vec[1], &sp->vec[2], NULL, coins,
+                            0, 1, 2, 0xFF /* irrelevant */);
+  /* The fourth output buffer in this call _is_ used. */
+  mlk_poly_getnoise_eta2_4x(&ep->vec[0], &ep->vec[1], &ep->vec[2], epp, coins,
+                            3, 4, 5, 6);
+#elif MLKEM_K == 4
+  mlk_poly_getnoise_eta1_4x(&sp->vec[0], &sp->vec[1], &sp->vec[2], &sp->vec[3],
+                            coins, 0, 1, 2, 3);
+  mlk_poly_getnoise_eta2_4x(&ep->vec[0], &ep->vec[1], &ep->vec[2], &ep->vec[3],
+                            coins, 4, 5, 6, 7);
+  mlk_poly_getnoise_eta2(epp, coins, 8);
+#endif /* MLKEM_K == 4 */
+}
+
+
 /* Reference: `indcpa_keypair_derand()` in the reference implementation @[REF].
- *            - We use x4-batched versions of `poly_getnoise` to leverage
- *              batched x4-batched Keccak-f1600.
  *            - We use a different implementation of `gen_matrix()` which
  *              uses x4-batched Keccak-f1600 (see `mlk_gen_matrix()` above).
  *            - We use a mulcache to speed up matrix-vector multiplication.
@@ -413,25 +479,7 @@ int mlk_indcpa_keypair_derand(uint8_t pk[MLKEM_INDCPA_PUBLICKEYBYTES],
 
   mlk_gen_matrix(a, publicseed, 0 /* no transpose */);
 
-#if MLKEM_K == 2
-  mlk_poly_getnoise_eta1_4x(&skpv->vec[0], &skpv->vec[1], &e->vec[0],
-                            &e->vec[1], noiseseed, 0, 1, 2, 3);
-#elif MLKEM_K == 3
-  /*
-   * Only the first three output buffers are needed.
-   * The laster parameter is a dummy that's overwritten later.
-   */
-  mlk_poly_getnoise_eta1_4x(&skpv->vec[0], &skpv->vec[1], &skpv->vec[2], NULL,
-                            noiseseed, 0, 1, 2, 0xFF /* irrelevant */);
-  /* Same here */
-  mlk_poly_getnoise_eta1_4x(&e->vec[0], &e->vec[1], &e->vec[2], NULL, noiseseed,
-                            3, 4, 5, 0xFF /* irrelevant */);
-#elif MLKEM_K == 4
-  mlk_poly_getnoise_eta1_4x(&skpv->vec[0], &skpv->vec[1], &skpv->vec[2],
-                            &skpv->vec[3], noiseseed, 0, 1, 2, 3);
-  mlk_poly_getnoise_eta1_4x(&e->vec[0], &e->vec[1], &e->vec[2], &e->vec[3],
-                            noiseseed, 4, 5, 6, 7);
-#endif /* MLKEM_K == 4 */
+  mlk_keypair_getnoise_eta1(skpv, e, noiseseed);
 
   mlk_polyvec_ntt(skpv);
   mlk_polyvec_ntt(e);
@@ -507,27 +555,7 @@ int mlk_indcpa_enc(uint8_t c[MLKEM_INDCPA_BYTES],
 
   mlk_gen_matrix(at, seed, 1 /* transpose */);
 
-#if MLKEM_K == 2
-  mlk_poly_getnoise_eta1122_4x(&sp->vec[0], &sp->vec[1], &ep->vec[0],
-                               &ep->vec[1], coins, 0, 1, 2, 3);
-  mlk_poly_getnoise_eta2(epp, coins, 4);
-#elif MLKEM_K == 3
-  /*
-   * In this call, only the first three output buffers are needed.
-   * The last parameter is a dummy that's overwritten later.
-   */
-  mlk_poly_getnoise_eta1_4x(&sp->vec[0], &sp->vec[1], &sp->vec[2], NULL, coins,
-                            0, 1, 2, 0xFF /* irrelevant */);
-  /* The fourth output buffer in this call _is_ used. */
-  mlk_poly_getnoise_eta2_4x(&ep->vec[0], &ep->vec[1], &ep->vec[2], epp, coins,
-                            3, 4, 5, 6);
-#elif MLKEM_K == 4
-  mlk_poly_getnoise_eta1_4x(&sp->vec[0], &sp->vec[1], &sp->vec[2], &sp->vec[3],
-                            coins, 0, 1, 2, 3);
-  mlk_poly_getnoise_eta2_4x(&ep->vec[0], &ep->vec[1], &ep->vec[2], &ep->vec[3],
-                            coins, 4, 5, 6, 7);
-  mlk_poly_getnoise_eta2(epp, coins, 8);
-#endif /* MLKEM_K == 4 */
+  mlk_enc_getnoise_eta1_eta2(sp, ep, epp, coins);
 
   mlk_polyvec_ntt(sp);
 
@@ -620,3 +648,5 @@ cleanup:
 #undef mlk_matvec_mul
 #undef mlk_polyvec_permute_bitrev_to_custom
 #undef mlk_polymat_permute_bitrev_to_custom
+#undef mlk_keypair_getnoise_eta1
+#undef mlk_enc_getnoise_eta1_eta2

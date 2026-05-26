@@ -571,6 +571,12 @@ if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NE
 endif()
 endif()
 
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_PPC64LE_BUILD OR (OQS_USE_POWER8_VECTOR_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_ppc64le "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
+endif()
+endif()
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_USE_CUPQC)
     cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_512_cuda "" ON "OQS_ENABLE_KEM_ml_kem_512" OFF)
@@ -597,6 +603,12 @@ if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NE
 endif()
 endif()
 
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_PPC64LE_BUILD OR (OQS_USE_POWER8_VECTOR_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_ppc64le "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
+endif()
+endif()
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_USE_CUPQC)
     cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_768_cuda "" ON "OQS_ENABLE_KEM_ml_kem_768" OFF)
@@ -620,6 +632,12 @@ if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NE
 
     cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_aarch64 "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
 
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(OQS_DIST_PPC64LE_BUILD OR (OQS_USE_POWER8_VECTOR_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ml_kem_1024_ppc64le "" ON "OQS_ENABLE_KEM_ml_kem_1024" OFF)
 endif()
 endif()
 

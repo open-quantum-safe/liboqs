@@ -3,6 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
  */
 
+/* References
+ * ==========
+ *
+ * - [FIPS203]
+ *   FIPS 203 Module-Lattice-Based Key-Encapsulation Mechanism Standard
+ *   National Institute of Standards and Technology
+ *   https://csrc.nist.gov/pubs/fips/203/final
+ */
+
 #ifndef MLK_NATIVE_API_H
 #define MLK_NATIVE_API_H
 /*
@@ -68,20 +77,20 @@
  */
 
 #if defined(MLK_USE_NATIVE_NTT)
-/*************************************************
- * Name:        mlk_ntt_native
+/**
+ * Compute the negacyclic number-theoretic transform (NTT) of a polynomial
+ * in place.
  *
- * Description: Computes negacyclic number-theoretic transform (NTT) of
- *              a polynomial in place.
+ * The input polynomial is assumed to be in normal order. The output
+ * polynomial is in bitreversed order, or of a custom order if
+ * MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set. See the documentation of
+ * MLK_USE_NATIVE_NTT_CUSTOM_ORDER for more information.
  *
- *              The input polynomial is assumed to be in normal order.
- *              The output polynomial is in bitreversed order, or of a
- *              custom order if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set.
- *              See the documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER
- *              for more information.
+ * @param[in,out] p Input/output polynomial.
  *
- * Arguments:   - int16_t p[MLKEM_N]: pointer to in/output polynomial
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_ntt_native(int16_t p[MLKEM_N])
 __contract__(
@@ -115,18 +124,16 @@ and to/from bytes conversions."
           !MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED || \
           !MLK_USE_NATIVE_POLY_TOBYTES || !MLK_USE_NATIVE_POLY_FROMBYTES */
 
-/*************************************************
- * Name:        mlk_poly_permute_bitrev_to_custom
+/**
+ * When MLK_USE_NATIVE_NTT_CUSTOM_ORDER is defined, convert a polynomial in
+ * NTT domain from bitreversed order to the custom order output by the
+ * native NTT.
  *
- * Description: When MLK_USE_NATIVE_NTT_CUSTOM_ORDER is defined,
- *              convert a polynomial in NTT domain from bitreversed
- *              order to the custom order output by the native NTT.
+ * This must only be defined if there is native code for all of (a) NTT,
+ * (b) invNTT, (c) basemul, (d) mulcache.
  *
- *              This must only be defined if there is native code for
- *              all of (a) NTT, (b) invNTT, (c) basemul, (d) mulcache.
- * Arguments:   - int16_t p[MLKEM_N]: pointer to in/output polynomial
- *
- **************************************************/
+ * @param[in,out] p Input/output polynomial.
+ */
 static MLK_INLINE void mlk_poly_permute_bitrev_to_custom(int16_t p[MLKEM_N])
 __contract__(
   /* We don't specify that this should be a permutation, but only
@@ -138,20 +145,20 @@ __contract__(
 #endif /* MLK_USE_NATIVE_NTT_CUSTOM_ORDER */
 
 #if defined(MLK_USE_NATIVE_INTT)
-/*************************************************
- * Name:        mlk_intt_native
+/**
+ * Compute the inverse negacyclic number-theoretic transform (NTT) of a
+ * polynomial in place.
  *
- * Description: Computes inverse of negacyclic number-theoretic transform (NTT)
- *              of a polynomial in place.
+ * The input polynomial is in bitreversed order, or of a custom order if
+ * MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set. See the documentation of
+ * MLK_USE_NATIVE_NTT_CUSTOM_ORDER for more information. The output
+ * polynomial is assumed to be in normal order.
  *
- *              The input polynomial is in bitreversed order, or of a
- *              custom order if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set.
- *              See the documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER
- *              for more information.
- *              The output polynomial is assumed to be in normal order.
+ * @param[in,out] p Input/output polynomial.
  *
- * Arguments:   - uint16_t *a: pointer to in/output polynomial
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_intt_native(int16_t p[MLKEM_N])
 __contract__(
@@ -164,13 +171,15 @@ __contract__(
 #endif /* MLK_USE_NATIVE_INTT */
 
 #if defined(MLK_USE_NATIVE_POLY_REDUCE)
-/*************************************************
- * Name:        mlk_poly_reduce_native
+/**
+ * Apply modular reduction to all coefficients of a polynomial, mapping them
+ * to unsigned canonical representatives in [0,..,MLKEM_Q-1].
  *
- * Description: Applies modular reduction to all coefficients of a polynomial.
+ * @param[in,out] p Input/output polynomial.
  *
- * Arguments:   - int16_t r[MLKEM_N]: pointer to input/output polynomial
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_reduce_native(int16_t p[MLKEM_N])
 __contract__(
@@ -183,14 +192,15 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_REDUCE */
 
 #if defined(MLK_USE_NATIVE_POLY_TOMONT)
-/*************************************************
- * Name:        mlk_poly_tomont_native
+/**
+ * In-place conversion of all coefficients of a polynomial from the normal
+ * domain to the Montgomery domain.
  *
- * Description: Inplace conversion of all coefficients of a polynomial
- *              from normal domain to Montgomery domain
+ * @param[in,out] p Input/output polynomial.
  *
- * Arguments:   - int16_t r[MLKEM_N]: pointer to input/output polynomial
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_tomont_native(int16_t p[MLKEM_N])
 __contract__(
@@ -203,27 +213,23 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_TOMONT */
 
 #if defined(MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE)
-/*************************************************
- * Name:        mlk_poly_mulcache_compute_native
+/**
+ * Compute multiplication cache for a polynomial in NTT domain.
  *
- * Description: Compute multiplication cache for a polynomial
- *              in NTT domain.
+ * The purpose of the multiplication cache is to cache repeated computations
+ * required during a base multiplication of polynomials in NTT domain. The
+ * structure of the multiplication-cache is implementation defined.
  *
- *              The purpose of the multiplication cache is to
- *              cache repeated computations required during a
- *              base multiplication of polynomials in NTT domain.
- *              The structure of the multiplication-cache is
- *              implementation defined.
+ * @param[out] cache    Multiplication cache.
+ * @param[in]  mlk_poly Input polynomial. Must be in NTT domain and in
+ *                      bitreversed order, or of a custom order if
+ *                      MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set. See the
+ *                      documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER for
+ *                      more information.
  *
- * Arguments:   INPUT:
- *              - mlk_poly: const pointer to input polynomial.
- *                  This must be in NTT domain and inin bitreversed order, or of
- *                  a custom order if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set.
- *                  See the documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER
- *                  for more information.
- *              OUTPUT
- *              - cache: pointer to multiplication cache
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_mulcache_compute_native(
     int16_t cache[MLKEM_N / 2], const int16_t mlk_poly[MLKEM_N])
@@ -238,25 +244,22 @@ __contract__(
 
 #if defined(MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED)
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 2
-/*************************************************
- * Name:        poly_mulcache_compute_k2_native
+/**
+ * Compute scalar product of length-2 polynomial vectors in NTT domain.
  *
- * Description: Compute scalar product of length-2 polynomial vectors in NTT
- *              domain.
+ * @param[out] r       Result of the scalar product. Again in NTT domain, of
+ *                     the same ordering as @p a and @p b.
+ * @param[in]  a       First polynomial vector operand. Must be in NTT
+ *                     domain and in bitreversed order, or of a custom order
+ *                     if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set. See the
+ *                     documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER for
+ *                     more information.
+ * @param[in]  b       Second polynomial vector operand. As for @p a.
+ * @param[in]  b_cache Multiplication-cache for @p b.
  *
- * Arguments:   INPUT:
- *              - a: First polynomial vector operand.
- *                 This must be in NTT domain and in bitreversed order, or of
- *                 a custom order if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set.
- *                 See the documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER
- *                 for more information.
- *              - b: Second polynomial vector operand.
- *                 As for a.
- *              - b_cache: Multiplication-cache for b.
- *              OUTPUT
- *              - r: The result of the scalar product. This is again
- *                   in NTT domain, and of the same ordering as a and b.
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_polyvec_basemul_acc_montgomery_cached_k2_native(
     int16_t r[MLKEM_N], const int16_t a[2 * MLKEM_N],
@@ -273,25 +276,22 @@ __contract__(
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 */
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 3
-/*************************************************
- * Name:        poly_mulcache_compute_k3_native
+/**
+ * Compute scalar product of length-3 polynomial vectors in NTT domain.
  *
- * Description: Compute scalar product of length-3 polynomial vectors in NTT
- *              domain.
+ * @param[out] r       Result of the scalar product. Again in NTT domain, of
+ *                     the same ordering as @p a and @p b.
+ * @param[in]  a       First polynomial vector operand. Must be in NTT
+ *                     domain and in bitreversed order, or of a custom order
+ *                     if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set. See the
+ *                     documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER for
+ *                     more information.
+ * @param[in]  b       Second polynomial vector operand. As for @p a.
+ * @param[in]  b_cache Multiplication-cache for @p b.
  *
- * Arguments:   INPUT:
- *              - a: First polynomial vector operand.
- *                 This must be in NTT domain and in bitreversed order, or of
- *                 a custom order if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set.
- *                 See the documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER
- *                 for more information.
- *              - b: Second polynomial vector operand.
- *                 As for a.
- *              - b_cache: Multiplication-cache for b.
- *              OUTPUT
- *              - r: The result of the scalar product. This is again
- *                   in NTT domain, and of the same ordering as a and b.
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_polyvec_basemul_acc_montgomery_cached_k3_native(
     int16_t r[MLKEM_N], const int16_t a[3 * MLKEM_N],
@@ -308,25 +308,22 @@ __contract__(
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 3 */
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4
-/*************************************************
- * Name:        poly_mulcache_compute_k4_native
+/**
+ * Compute scalar product of length-4 polynomial vectors in NTT domain.
  *
- * Description: Compute scalar product of length-4 polynomial vectors in NTT
- *              domain.
+ * @param[out] r       Result of the scalar product. Again in NTT domain, of
+ *                     the same ordering as @p a and @p b.
+ * @param[in]  a       First polynomial vector operand. Must be in NTT
+ *                     domain and in bitreversed order, or of a custom order
+ *                     if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set. See the
+ *                     documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER for
+ *                     more information.
+ * @param[in]  b       Second polynomial vector operand. As for @p a.
+ * @param[in]  b_cache Multiplication-cache for @p b.
  *
- * Arguments:   INPUT:
- *              - a: First polynomial vector operand.
- *                 This must be in NTT domain and in bitreversed order, or of
- *                 a custom order if MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set.
- *                 See the documentation of MLK_USE_NATIVE_NTT_CUSTOM_ORDER
- *                 for more information.
- *              - b: Second polynomial vector operand.
- *                 As for a.
- *              - b_cache: Multiplication-cache for b.
- *              OUTPUT
- *              - r: The result of the scalar product. This is again
- *                   in NTT domain, and of the same ordering as a and b.
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_polyvec_basemul_acc_montgomery_cached_k4_native(
     int16_t r[MLKEM_N], const int16_t a[4 * MLKEM_N],
@@ -344,20 +341,17 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED */
 
 #if defined(MLK_USE_NATIVE_POLY_TOBYTES)
-/*************************************************
- * Name:        mlk_poly_tobytes_native
+/**
+ * Serialization of a polynomial with unsigned canonical coefficients.
  *
- * Description: Serialization of a polynomial.
- *              Signed coefficients are converted to
- *              unsigned form before serialization.
+ * @spec{Implements ByteEncode_12 from @[FIPS203, Algorithm 5].}
  *
- * Arguments:   INPUT:
- *              - a: const pointer to input polynomial,
- *                with each coefficient in the range 0 .. Q-1
- *              OUTPUT
- *              - r: pointer to output byte array
- *                   (of MLKEM_POLYBYTES bytes)
- **************************************************/
+ * @param[out] r Output byte array (of MLKEM_POLYBYTES bytes).
+ * @param[in]  a Input polynomial, with each coefficient in [0,..,MLKEM_Q-1].
+ *
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_tobytes_native(uint8_t r[MLKEM_POLYBYTES],
                                               const int16_t a[MLKEM_N])
@@ -371,19 +365,17 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_TOBYTES */
 
 #if defined(MLK_USE_NATIVE_POLY_FROMBYTES)
-/*************************************************
- * Name:        mlk_poly_frombytes_native
+/**
+ * Deserialization of a polynomial.
  *
- * Description: Serialization of a polynomial.
- *              Signed coefficients are converted to
- *              unsigned form before serialization.
+ * @spec{Implements ByteDecode_12 from @[FIPS203, Algorithm 6].}
  *
- * Arguments:   INPUT:
- *              - r: pointer to output polynomial in NTT domain
- *              OUTPUT
- *              - a: const pointer to input byte array
- *                   (of MLKEM_POLYBYTES bytes)
- **************************************************/
+ * @param[out] a Output polynomial in NTT domain.
+ * @param[in]  r Input byte array (of MLKEM_POLYBYTES bytes).
+ *
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_frombytes_native(
     int16_t a[MLKEM_N], const uint8_t r[MLKEM_POLYBYTES])
@@ -397,23 +389,20 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_FROMBYTES */
 
 #if defined(MLK_USE_NATIVE_REJ_UNIFORM)
-/*************************************************
- * Name:        mlk_rej_uniform_native
+/**
+ * Run rejection sampling on uniformly random bytes to generate uniformly random
+ * integers mod MLKEM_Q, represented in [0,..,MLKEM_Q-1].
  *
- * Description: Run rejection sampling on uniform random bytes to generate
- *              uniform random integers mod q
+ * @param[out] r      Output buffer.
+ * @param      len    Requested number of 16-bit integers (uniform mod MLKEM_Q).
+ * @param[in]  buf    Input buffer (assumed to be uniform random bytes).
+ * @param      buflen Length of input buffer in bytes.
  *
- * Arguments:   - int16_t *r:          pointer to output buffer
- *              - unsigned len:        requested number of 16-bit integers
- *                                     (uniform mod q).
- *              - const uint8_t *buf:  pointer to input buffer
- *                                     (assumed to be uniform random bytes)
- *              - unsigned buflen:     length of input buffer in bytes.
- *
- * Return -1 if the native implementation does not support the input lengths.
- * Otherwise, returns non-negative number of sampled 16-bit integers (at most
- * len).
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_FALLBACK Native implementation does not support
+ *                                  the input lengths.
+ * @retval other                    Non-negative number of sampled 16-bit
+ *                                  integers (at most @p len).
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_rej_uniform_native(int16_t *r, unsigned len,
                                              const uint8_t *buf,
@@ -432,18 +421,19 @@ __contract__(
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || (MLKEM_K == 2 || MLKEM_K == 3)
 #if defined(MLK_USE_NATIVE_POLY_COMPRESS_D4)
-/*************************************************
- * Name:        mlk_poly_compress_d4_native
+/**
+ * Compression (4 bits) and subsequent serialization of a polynomial.
  *
- * Description: Compression (4 bits) and subsequent serialization of a
- *              polynomial
+ * @spec{Compress_4 from @[FIPS203, Eq (4.7)].}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D4 bytes)
- *              - const int16_t a[MLKEM_N]: pointer to input polynomial
- *                  Coefficients must be unsigned canonical,
- *                  i.e. in [0,1,..,MLKEM_Q-1].
- **************************************************/
+ * @param[out] r Output byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D4
+ *               bytes).
+ * @param[in]  a Input polynomial. Coefficients must be unsigned canonical,
+ *               i.e. in [0,1,..,MLKEM_Q-1].
+ *
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_compress_d4_native(
     uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D4], const int16_t a[MLKEM_N])
@@ -456,18 +446,19 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_COMPRESS_D4 */
 
 #if defined(MLK_USE_NATIVE_POLY_COMPRESS_D10)
-/*************************************************
- * Name:        mlk_poly_compress_d10_native
+/**
+ * Compression (10 bits) and subsequent serialization of a polynomial.
  *
- * Description: Compression (10 bits) and subsequent serialization of a
- *              polynomial
+ * @spec{Compress_10 from @[FIPS203, Eq (4.7)].}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D10 bytes)
- *              - const int16_t a[MLKEM_N]: pointer to input polynomial
- *                  Coefficients must be unsigned canonical,
- *                  i.e. in [0,1,..,MLKEM_Q-1].
- **************************************************/
+ * @param[out] r Output byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D10
+ *               bytes).
+ * @param[in]  a Input polynomial. Coefficients must be unsigned canonical,
+ *               i.e. in [0,1,..,MLKEM_Q-1].
+ *
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_compress_d10_native(
     uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D10], const int16_t a[MLKEM_N])
@@ -480,20 +471,22 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_COMPRESS_D10 */
 
 #if defined(MLK_USE_NATIVE_POLY_DECOMPRESS_D4)
-/*************************************************
- * Name:        mlk_poly_decompress_d4
+/**
+ * De-serialization and subsequent decompression (4 bits) of a polynomial;
+ * approximate inverse of mlk_poly_compress_d4.
  *
- * Description: De-serialization and subsequent decompression (dv bits) of a
- *              polynomial; approximate inverse of poly_compress
+ * @spec{Decompress_4 from @[FIPS203, Eq (4.8)].}
  *
- * Arguments:   - int16_t r[MLKEM_N]: pointer to output polynomial
- *              - const uint8_t *a: pointer to input byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D4 bytes)
+ * Upon return, the coefficients of the output polynomial are
+ * unsigned-canonical (non-negative and smaller than MLKEM_Q).
  *
- * Upon return, the coefficients of the output polynomial are unsigned-canonical
- * (non-negative and smaller than MLKEM_Q).
+ * @param[out] r Output polynomial.
+ * @param[in]  a Input byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D4
+ *               bytes).
  *
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_decompress_d4_native(
     int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D4])
@@ -506,20 +499,22 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_DECOMPRESS_D4 */
 
 #if defined(MLK_USE_NATIVE_POLY_DECOMPRESS_D10)
-/*************************************************
- * Name:        mlk_poly_decompress_d10_native
+/**
+ * De-serialization and subsequent decompression (10 bits) of a polynomial;
+ * approximate inverse of mlk_poly_compress_d10.
  *
- * Description: De-serialization and subsequent decompression (10 bits) of a
- *              polynomial; approximate inverse of mlk_poly_compress_d10
+ * @spec{Decompress_10 from @[FIPS203, Eq (4.8)].}
  *
- * Arguments:   - int16_t r[MLKEM_N]: pointer to output polynomial
- *              - const uint8_t *a: pointer to input byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D10 bytes)
+ * Upon return, the coefficients of the output polynomial are
+ * unsigned-canonical (non-negative and smaller than MLKEM_Q).
  *
- * Upon return, the coefficients of the output polynomial are unsigned-canonical
- * (non-negative and smaller than MLKEM_Q).
+ * @param[out] r Output polynomial.
+ * @param[in]  a Input byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D10
+ *               bytes).
  *
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_decompress_d10_native(
     int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D10])
@@ -534,18 +529,19 @@ __contract__(
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4
 #if defined(MLK_USE_NATIVE_POLY_COMPRESS_D5)
-/*************************************************
- * Name:        mlk_poly_compress_d5_native
+/**
+ * Compression (5 bits) and subsequent serialization of a polynomial.
  *
- * Description: Compression (5 bits) and subsequent serialization of a
- *              polynomial
+ * @spec{Compress_5 from @[FIPS203, Eq (4.7)].}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D5 bytes)
- *              - const int16_t a[MLKEM_N]: pointer to input polynomial
- *                  Coefficients must be unsigned canonical,
- *                  i.e. in [0,1,..,MLKEM_Q-1].
- **************************************************/
+ * @param[out] r Output byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D5
+ *               bytes).
+ * @param[in]  a Input polynomial. Coefficients must be unsigned canonical,
+ *               i.e. in [0,1,..,MLKEM_Q-1].
+ *
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_compress_d5_native(
     uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D5], const int16_t a[MLKEM_N])
@@ -558,18 +554,19 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_COMPRESS_D5 */
 
 #if defined(MLK_USE_NATIVE_POLY_COMPRESS_D11)
-/*************************************************
- * Name:        mlk_poly_compress_d11_native
+/**
+ * Compression (11 bits) and subsequent serialization of a polynomial.
  *
- * Description: Compression (11 bits) and subsequent serialization of a
- *              polynomial
+ * @spec{Compress_11 from @[FIPS203, Eq (4.7)].}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D11 bytes)
- *              - const int16_t a[MLKEM_N]: pointer to input polynomial
- *                  Coefficients must be unsigned canonical,
- *                  i.e. in [0,1,..,MLKEM_Q-1].
- **************************************************/
+ * @param[out] r Output byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D11
+ *               bytes).
+ * @param[in]  a Input polynomial. Coefficients must be unsigned canonical,
+ *               i.e. in [0,1,..,MLKEM_Q-1].
+ *
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_compress_d11_native(
     uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D11], const int16_t a[MLKEM_N])
@@ -582,20 +579,22 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_COMPRESS_D11 */
 
 #if defined(MLK_USE_NATIVE_POLY_DECOMPRESS_D5)
-/*************************************************
- * Name:        mlk_poly_decompress_d5_native
+/**
+ * De-serialization and subsequent decompression (5 bits) of a polynomial;
+ * approximate inverse of mlk_poly_compress_d5.
  *
- * Description: De-serialization and subsequent decompression (dv bits) of a
- *              polynomial; approximate inverse of poly_compress
+ * @spec{Decompress_5 from @[FIPS203, Eq (4.8)].}
  *
- * Arguments:   - int16_t r[MLKEM_N]: pointer to output polynomial
- *              - const uint8_t *a: pointer to input byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D5 bytes)
+ * Upon return, the coefficients of the output polynomial are
+ * unsigned-canonical (non-negative and smaller than MLKEM_Q).
  *
- * Upon return, the coefficients of the output polynomial are unsigned-canonical
- * (non-negative and smaller than MLKEM_Q).
+ * @param[out] r Output polynomial.
+ * @param[in]  a Input byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D5
+ *               bytes).
  *
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_decompress_d5_native(
     int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D5])
@@ -608,20 +607,22 @@ __contract__(
 #endif /* MLK_USE_NATIVE_POLY_DECOMPRESS_D5 */
 
 #if defined(MLK_USE_NATIVE_POLY_DECOMPRESS_D11)
-/*************************************************
- * Name:        mlk_poly_decompress_d11_native
+/**
+ * De-serialization and subsequent decompression (11 bits) of a polynomial;
+ * approximate inverse of mlk_poly_compress_d11.
  *
- * Description: De-serialization and subsequent decompression (11 bits) of a
- *              polynomial; approximate inverse of mlk_poly_compress_d11
+ * @spec{Decompress_11 from @[FIPS203, Eq (4.8)].}
  *
- * Arguments:   - int16_t r[MLKEM_N]: pointer to output polynomial
- *              - const uint8_t *a: pointer to input byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_D11 bytes)
+ * Upon return, the coefficients of the output polynomial are
+ * unsigned-canonical (non-negative and smaller than MLKEM_Q).
  *
- * Upon return, the coefficients of the output polynomial are unsigned-canonical
- * (non-negative and smaller than MLKEM_Q).
+ * @param[out] r Output polynomial.
+ * @param[in]  a Input byte array (of length MLKEM_POLYCOMPRESSEDBYTES_D11
+ *               bytes).
  *
- **************************************************/
+ * @retval MLK_NATIVE_FUNC_SUCCESS  Operation succeeded.
+ * @retval MLK_NATIVE_FUNC_FALLBACK Backend declined; caller should fall back.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_poly_decompress_d11_native(
     int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D11])

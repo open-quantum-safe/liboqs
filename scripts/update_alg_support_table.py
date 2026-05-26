@@ -47,7 +47,8 @@ def format_upstream_source(source: str) -> str:
     # TODO: we might get GitLab or other non-GH link in the future but oh well
     prefix = "https://github.com/"
     if not prefix in source:
-        raise ValueError(f"Non-GitHub source {source}")
+        # Non-GitHub (e.g., local file:// during development); show raw URL.
+        return f"`{source}`"
     url_start = source.find(prefix)
     # NOTE: split with no argument will split with all whitespaces
     url = source[url_start:].split()[0]

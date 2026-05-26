@@ -28,22 +28,18 @@
 #include "symmetric.h"
 #include "verify.h"
 
-/*************************************************
- * Name:        mlk_fqmul
+/**
+ * Montgomery multiplication modulo MLKEM_Q.
  *
- * Description: Montgomery multiplication modulo MLKEM_Q
+ * @reference{`fqmul()` in the reference implementation @[REF].}
  *
- * Arguments:   - int16_t a: first factor
- *                  Can be any int16_t.
- *              - int16_t b: second factor.
- *                  Must be signed canonical (abs value <(MLKEM_Q+1)/2)
+ * @param a First factor. Can be any int16_t.
+ * @param b Second factor. Must be signed canonical
+ *          (abs value < (MLKEM_Q+1)/2).
  *
- * Returns 16-bit integer congruent to a*b*R^{-1} mod MLKEM_Q, and
- * smaller than MLKEM_Q in absolute value.
- *
- **************************************************/
-
-/* Reference: `fqmul()` in the reference implementation @[REF]. */
+ * @return 16-bit integer congruent to a*b*R^{-1} mod MLKEM_Q, and
+ *         smaller than MLKEM_Q in absolute value.
+ */
 static MLK_INLINE int16_t mlk_fqmul(int16_t a, int16_t b)
 __contract__(
   requires(b > -MLKEM_Q_HALF && b < MLKEM_Q_HALF)
@@ -65,20 +61,17 @@ __contract__(
   return res;
 }
 
-/*************************************************
- * Name:        mlk_barrett_reduce
+/**
+ * Barrett reduction; given a 16-bit integer a, computes the centered
+ * representative congruent to a mod MLKEM_Q in [-(MLKEM_Q-1)/2, (MLKEM_Q-1)/2].
  *
- * Description: Barrett reduction; given a 16-bit integer a, computes
- *              centered representative congruent to a mod q in
- *              {-(q-1)/2,...,(q-1)/2}
+ * @reference{`barrett_reduce()` in the reference implementation @[REF].}
  *
- * Arguments:   - int16_t a: input integer to be reduced
+ * @param a Input integer to be reduced.
  *
- * Returns:     integer in {-(q-1)/2,...,(q-1)/2} congruent to a modulo q.
- *
- **************************************************/
-
-/* Reference: `barrett_reduce()` in the reference implementation @[REF]. */
+ * @return Integer in [-(MLKEM_Q-1)/2, (MLKEM_Q-1)/2] congruent to @p a modulo
+ *         MLKEM_Q.
+ */
 static MLK_INLINE int16_t mlk_barrett_reduce(int16_t a)
 __contract__(
   ensures(return_value > -MLKEM_Q_HALF && return_value < MLKEM_Q_HALF)
@@ -125,7 +118,8 @@ __contract__(
   for (i = 0; i < MLKEM_N; i++)
   __loop__(
     invariant(i <= MLKEM_N)
-    invariant(array_abs_bound(r->coeffs, 0, i, MLKEM_Q)))
+    invariant(array_abs_bound(r->coeffs, 0, i, MLKEM_Q))
+    decreases(MLKEM_N - i))
   {
     r->coeffs[i] = mlk_fqmul(r->coeffs[i], f);
   }
@@ -149,21 +143,20 @@ void mlk_poly_tomont(mlk_poly *r)
   mlk_poly_tomont_c(r);
 }
 
-/************************************************************
- * Name: mlk_scalar_signed_to_unsigned_q
+/**
+ * Constant-time conversion of signed representatives modulo MLKEM_Q within
+ * range [-(MLKEM_Q-1), MLKEM_Q-1] into unsigned representatives within
+ * range [0, MLKEM_Q-1].
  *
- * Description: Constant-time conversion of signed representatives
- *              modulo MLKEM_Q within range (-(MLKEM_Q-1) .. (MLKEM_Q-1))
- *              into unsigned representatives within range (0..(MLKEM_Q-1)).
+ * @reference{Not present in the reference implementation @[REF]. Used here
+ * to implement different semantics of `poly_reduce()`; see below. In the
+ * reference implementation @[REF] this logic is part of all compression
+ * functions (see `compress.c`).}
  *
- * Arguments: c: signed coefficient to be converted
+ * @param c Signed coefficient to be converted.
  *
- ************************************************************/
-
-/* Reference: Not present in the reference implementation @[REF].
- *            - Used here to implement different semantics of `poly_reduce()`;
- *              see below. in the reference implementation @[REF], this logic is
- *              part of all compression functions (see `compress.c`). */
+ * @return Unsigned representative in [0, MLKEM_Q).
+ */
 static MLK_INLINE int16_t mlk_scalar_signed_to_unsigned_q(int16_t c)
 __contract__(
   requires(c > -MLKEM_Q && c < MLKEM_Q)
@@ -201,7 +194,8 @@ __contract__(
   for (i = 0; i < MLKEM_N; i++)
   __loop__(
     invariant(i <= MLKEM_N)
-    invariant(array_bound(r->coeffs, 0, i, 0, MLKEM_Q)))
+    invariant(array_bound(r->coeffs, 0, i, 0, MLKEM_Q))
+    decreases(MLKEM_N - i))
   {
     /* Barrett reduction, giving signed canonical representative */
     int16_t t = mlk_barrett_reduce(r->coeffs[i]);
@@ -239,7 +233,8 @@ void mlk_poly_add(mlk_poly *r, const mlk_poly *b)
   __loop__(
     invariant(i <= MLKEM_N)
     invariant(forall(k0, i, MLKEM_N, r->coeffs[k0] == loop_entry(*r).coeffs[k0]))
-    invariant(forall(k1, 0, i, r->coeffs[k1] == loop_entry(*r).coeffs[k1] + b->coeffs[k1])))
+    invariant(forall(k1, 0, i, r->coeffs[k1] == loop_entry(*r).coeffs[k1] + b->coeffs[k1]))
+    decreases(MLKEM_N - i))
   {
     /* The preconditions imply that the addition stays within int16_t. */
     r->coeffs[i] = (int16_t)(r->coeffs[i] + b->coeffs[i]);
@@ -257,7 +252,8 @@ void mlk_poly_sub(mlk_poly *r, const mlk_poly *b)
   __loop__(
     invariant(i <= MLKEM_N)
     invariant(forall(k0, i, MLKEM_N, r->coeffs[k0] == loop_entry(*r).coeffs[k0]))
-    invariant(forall(k1, 0, i, r->coeffs[k1] == loop_entry(*r).coeffs[k1] - b->coeffs[k1])))
+    invariant(forall(k1, 0, i, r->coeffs[k1] == loop_entry(*r).coeffs[k1] - b->coeffs[k1]))
+    decreases(MLKEM_N - i))
   {
     /* The preconditions imply that the subtraction stays within int16_t. */
     r->coeffs[i] = (int16_t)(r->coeffs[i] - b->coeffs[i]);
@@ -282,7 +278,8 @@ __contract__(
   for (i = 0; i < MLKEM_N / 4; i++)
   __loop__(
     invariant(i <= MLKEM_N / 4)
-    invariant(array_abs_bound(x->coeffs, 0, 2 * i, MLKEM_Q)))
+    invariant(array_abs_bound(x->coeffs, 0, 2 * i, MLKEM_Q))
+    decreases(MLKEM_N / 4 - i))
   {
     x->coeffs[2 * i + 0] = mlk_fqmul(a->coeffs[4 * i + 1], mlk_zetas[64 + i]);
     /* The values in zeta table are <= MLKEM_Q in absolute value,
@@ -371,7 +368,8 @@ __contract__(
     invariant(array_abs_bound(r, 0,           j,           bound + MLKEM_Q))
     invariant(array_abs_bound(r, j,           start + len, bound))
     invariant(array_abs_bound(r, start + len, j + len,     bound + MLKEM_Q))
-    invariant(array_abs_bound(r, j + len,     MLKEM_N,     bound)))
+    invariant(array_abs_bound(r, j + len,     MLKEM_N,     bound))
+    decreases(start + len - j))
   {
     int16_t t;
     t = mlk_fqmul(r[j + len], zeta);
@@ -406,7 +404,8 @@ __contract__(
     invariant(start < MLKEM_N + 2 * len)
     invariant(k <= MLKEM_N / 2 && 2 * len * k == start + MLKEM_N)
     invariant(array_abs_bound(r, 0, start, layer * MLKEM_Q + MLKEM_Q))
-    invariant(array_abs_bound(r, start, MLKEM_N, layer * MLKEM_Q)))
+    invariant(array_abs_bound(r, start, MLKEM_N, layer * MLKEM_Q))
+    decreases(MLKEM_N - start))
   {
     int16_t zeta = mlk_zetas[k++];
     mlk_ntt_butterfly_block(r, zeta, start, len, layer * MLKEM_Q);
@@ -443,7 +442,8 @@ __contract__(
   for (layer = 1; layer <= 7; layer++)
   __loop__(
     invariant(1 <= layer && layer <= 8)
-    invariant(array_abs_bound(r, 0, MLKEM_N, layer * MLKEM_Q)))
+    invariant(array_abs_bound(r, 0, MLKEM_N, layer * MLKEM_Q))
+    decreases(8 - layer))
   {
     mlk_ntt_layer(r, layer);
   }
@@ -489,7 +489,8 @@ __contract__(
     invariant(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q))
     invariant(start <= MLKEM_N && k <= 127)
     /* Normalised form of k == MLKEM_N / len - 1 - start / (2 * len) */
-    invariant(2 * len * k + start == 2 * MLKEM_N - 2 * len))
+    invariant(2 * len * k + start == 2 * MLKEM_N - 2 * len)
+    decreases(MLKEM_N - start))
   {
     unsigned j;
     int16_t zeta = mlk_zetas[k--];
@@ -497,7 +498,8 @@ __contract__(
     __loop__(
       invariant(start <= j && j <= start + len)
       invariant(start <= MLKEM_N && k <= 127)
-      invariant(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q)))
+      invariant(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q))
+      decreases(start + len - j))
     {
       int16_t t = r[j];
       /* The preconditions imply that the arithmetic does not overflow. */
@@ -532,7 +534,8 @@ __contract__(
   for (j = 0; j < MLKEM_N; j++)
   __loop__(
     invariant(j <= MLKEM_N)
-    invariant(array_abs_bound(r, 0, j, MLKEM_Q)))
+    invariant(array_abs_bound(r, 0, j, MLKEM_Q))
+    decreases(MLKEM_N - j))
   {
     r[j] = mlk_fqmul(r[j], f);
   }
@@ -541,7 +544,8 @@ __contract__(
   for (layer = 7; layer > 0; layer--)
   __loop__(
     invariant(0 <= layer && layer < 8)
-    invariant(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q)))
+    invariant(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q))
+    decreases(layer))
   {
     mlk_invntt_layer(r, layer);
   }

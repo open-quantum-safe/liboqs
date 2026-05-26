@@ -32,9 +32,9 @@ upstreams:
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
     name: mlkem-native
-    git_url: https://github.com/pq-code-package/mlkem-native.git
-    git_branch: v1.1.0
-    git_commit: d2cae2be522a67bfae26100fdb520576f1b2ef90
+    git_url: file:///Users/bhe/git/liboqs/extern/mlkem-native_dev
+    git_branch: new_main
+    git_commit: ba36f288c1f0640dd506c95c435631d394d5acb1
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: []
