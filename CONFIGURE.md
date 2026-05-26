@@ -20,7 +20,7 @@ The following options can be passed to CMake before the build file generation pr
 - [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
-- [OQS_ENABLE_KEM_FO_CACHE_ORACLE](#OQS_ENABLE_KEM_FO_CACHE_ORACLE)
+- [OQS_ENABLE_KEM_FO_CACHE_ORACLE_DETECTOR](#OQS_ENABLE_KEM_FO_CACHE_ORACLE_DETECTOR)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 - [OQS_MEMOPT_BUILD](#OQS_MEMOPT_BUILD)
@@ -249,7 +249,7 @@ When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT
 
 **Default**: `OFF`.
 
-## OQS_ENABLE_KEM_FO_CACHE_ORACLE
+## OQS_ENABLE_KEM_FO_CACHE_ORACLE_DETECTOR
 Can be `ON` or `OFF`.
 
 When turned on, `tests/kem_fo_cache_oracle` will be built. `kem_fo_cache_oracle`
@@ -268,7 +268,7 @@ cmake -GNinja \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DCMAKE_C_FLAGS="-DOQS_DISABLE_MEM_BLACK_BOX" \
     -DOQS_MINIMAL_BUILD="KEM_frodokem_640_aes" \
-    -DOQS_ENABLE_KEM_FO_CACHE_ORACLE="ON" \
+    -DOQS_ENABLE_KEM_FO_CACHE_ORACLE_DETECTOR="ON" \
     ..
 ninja
 sudo ./tests/kem_fo_cache_oracle FrodoKEM-640-AES 0 1>raw.csv
