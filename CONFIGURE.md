@@ -252,13 +252,17 @@ When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT
 ## OQS_ENABLE_KEM_FO_CACHE_ORACLE
 Can be `ON` or `OFF`.
 
-When turned on, `tests/kem_fo_cache_oracle` will be built.
-`kem_fo_cache_oracle` performs flush-then-reload cache timing measurements and computes a simple statistical test to detect the presence of cache-timing side channels that can be turned into a plaintext-checking oracle.
-This test binary prints raw statistics to stdout and human-readable statistical test results to stderr.
-The raw statistics can be further analyzed using a [Python script](./tests/kem_fo_cache_oracle.py):
+When turned on, `tests/kem_fo_cache_oracle` will be built. `kem_fo_cache_oracle`
+performs flush-then-reload cache timing measurements and computes a simple
+statistical test to detect the presence of cache-timing side channels that can
+be turned into a plaintext-checking oracle. This test binary prints raw
+statistics to stdout and human-readable statistical test results to stderr. The
+raw statistics can be further analyzed using a [Python script](./tests/kem_fo_cache_oracle.py).
+The `kem_fo_cache_oracle` must run on bare metal (not virtual machines) for the
+cache eviction and timing measurements to produce meaningful results.
 
 ```bash
-# quick start tested with matplotlib==3.10.9, scipy==1.17.1, pandas==3.0.3
+# quick start tested with matplotlib==3.10.9 scipy==1.17.1 pandas==3.0.3
 cmake -GNinja \
     -DCMAKE_C_COMPILER="/usr/bin/clang-18" \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
