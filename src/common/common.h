@@ -68,7 +68,7 @@ static inline void oqs_black_box_fallback(volatile void *p,
         size_t sz) IGNORE_UNUSED_FUNC;
 
 static inline void oqs_black_box_fallback(volatile void *p,
-        size_t sz) IGNORE_UNUSED_FUNC {
+        size_t sz) {
 	volatile unsigned char *q = (volatile unsigned char *)p;
 	unsigned char tmp;
 	size_t i;
