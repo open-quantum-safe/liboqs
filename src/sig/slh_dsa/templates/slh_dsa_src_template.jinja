@@ -11,7 +11,7 @@
 #if defined(OQS_ENABLE_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}})
 OQS_SIG *OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_new(void) {
 
-	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_calloc(1, sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}
@@ -119,7 +119,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_{{hashAlg}}_{{paramSet}}_verify_with_ctx
 #if defined(OQS_ENABLE_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}})
 OQS_SIG *OQS_SIG_slh_dsa_{{prehashHashAlg}}_prehash_{{hashAlg}}_{{paramSet}}_new(void) {
 
-	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_calloc(1, sizeof(OQS_SIG));
 	if(sig == NULL) {
 		return NULL;
 	}

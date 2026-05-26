@@ -14,7 +14,7 @@
 extern inline OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_secret_key) {
 
 	// Initialize the secret key in the heap with adequate memory
-	OQS_SIG_STFL_SECRET_KEY *sk = OQS_MEM_malloc(sizeof(OQS_SIG_STFL_SECRET_KEY));
+	OQS_SIG_STFL_SECRET_KEY *sk = OQS_MEM_calloc(1, sizeof(OQS_SIG_STFL_SECRET_KEY));
 	if (sk == NULL) {
 		return NULL;
 	}
