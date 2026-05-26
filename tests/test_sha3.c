@@ -470,7 +470,7 @@ int sha3_512_kat_test(void) {
 	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
 	while (absorbed < 200) {
 		size_t seglen = 200 - absorbed < max_seglen ? 200 - absorbed : max_seglen;
-		OQS_SHA3_sha3_512_inc_absorb(&state, msg1600, seglen);
+		OQS_SHA3_sha3_512_inc_absorb(&state, msg1600 + absorbed, seglen);
 		absorbed += seglen;
 	}
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
