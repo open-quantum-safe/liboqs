@@ -1,0 +1,230 @@
+name: ct-tooling
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+
+jobs:
+  interactive-inputs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Example Interactive Inputs Step
+        id: interactive-inputs
+        uses: boasiHQ/interactive-inputs@v2
+        with:
+          timeout: 300
+          title: Select algorithm(s) Valgrind-Varlat CT Testing'
+          interactive: |
+            fields:
+              - label: runtime-options
+                properties:
+                  description: Choose one or more algorithms to execute valgrind-varlat constant-time testing on
+                  display: Select the algorithm(s) to execute valgrind-varlat constant-time testing on
+                  type: multiselect
+                  choices:
+                    - "BIKE-L1"
+                    - "BIKE-L3"
+                    - "BIKE-L5"
+                    - "Classic-McEliece-348864"
+                    - "Classic-McEliece-348864f"
+                    - "Classic-McEliece-460896"
+                    - "Classic-McEliece-460896f"
+                    - "Classic-McEliece-6688128"
+                    - "Classic-McEliece-6688128f"
+                    - "Classic-McEliece-6960119"
+                    - "Classic-McEliece-6960119f"
+                    - "Classic-McEliece-8192128"
+                    - "Classic-McEliece-8192128f"
+                    - "Kyber512"
+                    - "Kyber768"
+                    - "Kyber1024"
+                    - "ML-KEM-512"
+                    - "ML-KEM-768"
+                    - "ML-KEM-1024"
+                    - "sntrup761"
+                    - "FrodoKEM-640-AES"
+                    - "FrodoKEM-640-SHAKE"
+                    - "FrodoKEM-976-AES"
+                    - "FrodoKEM-976-SHAKE"
+                    - "FrodoKEM-1344-AES"
+                    - "FrodoKEM-1344-SHAKE"
+                    - "ML-DSA-44"
+                    - "ML-DSA-65"
+                    - "ML-DSA-87"
+                    - "Falcon-512"
+                    - "Falcon-1024"
+                    - "Falcon-padded-512"
+                    - "Falcon-padded-1024"
+                    - "SPHINCS+-SHA2-128f-simple"
+                    - "SPHINCS+-SHA2-128s-simple"
+                    - "SPHINCS+-SHA2-192f-simple"
+                    - "SPHINCS+-SHA2-192s-simple"
+                    - "SPHINCS+-SHA2-256f-simple"
+                    - "SPHINCS+-SHA2-256s-simple"
+                    - "SPHINCS+-SHAKE-128f-simple"
+                    - "SPHINCS+-SHAKE-128s-simple"
+                    - "SPHINCS+-SHAKE-192f-simple"
+                    - "SPHINCS+-SHAKE-192s-simple"
+                    - "SPHINCS+-SHAKE-256f-simple"
+                    - "SPHINCS+-SHAKE-256s-simple"
+                    - "MAYO-1"
+                    - "MAYO-2"
+                    - "MAYO-3"
+                    - "MAYO-5"
+                    - "cross-rsdp-128-balanced"
+                    - "cross-rsdp-128-fast"
+                    - "cross-rsdp-128-small"
+                    - "cross-rsdp-192-balanced"
+                    - "cross-rsdp-192-fast"
+                    - "cross-rsdp-192-small"
+                    - "cross-rsdp-256-balanced"
+                    - "cross-rsdp-256-fast"
+                    - "cross-rsdp-256-small"
+                    - "cross-rsdpg-128-balanced"
+                    - "cross-rsdpg-128-fast"
+                    - "cross-rsdpg-128-small"
+                    - "cross-rsdpg-192-balanced"
+                    - "cross-rsdpg-192-fast"
+                    - "cross-rsdpg-192-small"
+                    - "cross-rsdpg-256-balanced"
+                    - "cross-rsdpg-256-fast"
+                    - "cross-rsdpg-256-small"
+                    - "OV-Is"
+                    - "OV-Ip"
+                    - "OV-III"
+                    - "OV-V"
+                    - "OV-Is-pkc"
+                    - "OV-Ip-pkc"
+                    - "OV-III-pkc"
+                    - "OV-V-pkc"
+                    - "OV-Is-pkc-skc"
+                    - "OV-Ip-pkc-skc"
+                    - "OV-III-pkc-skc"
+                    - "OV-V-pkc-skc"
+                  required: true
+          notifier-slack-enabled: "false"
+          notifier-discord-enabled: "false"
+          github-token: ${{ github.token }}
+          ngrok-authtoken: ${{ secrets.NGROK_AUTHTOKEN }}
+    outputs:
+      runtime-options: ${{ steps.interactive-inputs.outputs.runtime-options }}
+
+  valgrind-varlat:
+    needs: [interactive-inputs]
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+        liboqs_build: [generic, auto]
+        opt_flag: [-O0, -O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-tree-vectorize", "-O3 -fno-tree-vectorize"]
+        exclude:
+          - compiler: clang
+            opt_flag: "-O2 -fno-tree-vectorize"
+          - compiler: clang
+            opt_flag: "-O3 -fno-tree-vectorize"
+        include:
+          - compiler: clang
+            liboqs_build: generic
+            opt_flag: "-O2 -fno-vectorize"
+          - compiler: clang
+            liboqs_build: auto
+            opt_flag: "-O2 -fno-vectorize"
+          - compiler: clang
+            liboqs_build: generic
+            opt_flag: "-O3 -fno-vectorize"
+          - compiler: clang
+            liboqs_build: auto
+            opt_flag: "-O3 -fno-vectorize"
+      max-parallel: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Build valgrind_varlat
+        shell: bash
+        run: |
+          set -eu -o pipefail
+          INSTALL_PREFIX="$PWD/valgrind_varlat"
+
+          echo "Cloning Valgrind's source code"
+          git clone git://sourceware.org/git/valgrind.git valgrind_varlat_src> /dev/null 2>&1 || true
+          cd valgrind_varlat_src
+          git checkout 112f1080b7c21e37dfce0a2e589d0dc7aa115afa > /dev/null 2>&1 || true
+
+          echo "Applying Kyberslash patch"
+          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-try-patch-20250805.txt" > /dev/null 2>&1 || true
+          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-patch-20250805.txt" > /dev/null 2>&1 || true
+          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-sup-block.txt" > /dev/null 2>&1 || true
+
+          echo "Building Valgrind-Varlat"
+          ./autogen.sh > /dev/null 2>&1 || true
+          ./configure --prefix="$INSTALL_PREFIX" > /dev/null 2>&1 || true
+          make -j"$(nproc)" > /dev/null 2>&1 || true
+          make install > /dev/null 2>&1 || true
+
+          mv "$INSTALL_PREFIX/bin/valgrind" "$INSTALL_PREFIX/bin/valgrind_varlat"
+          chmod -R u+rwX "$INSTALL_PREFIX"
+          export PATH="$INSTALL_PREFIX/bin:$PATH"
+          echo "PATH: $PATH"
+          command -v valgrind_varlat
+          echo "$INSTALL_PREFIX/bin" >> "$GITHUB_PATH"
+
+      - name: Run valgrind_varlat tests
+        shell: bash
+        run: |
+          set -eu -o pipefail
+          cd "$GITHUB_WORKSPACE/tests/ct_tooling"
+          chmod +x ct_test.sh
+          raw_algs="${{ needs.interactive-inputs.outputs.runtime-options }}"
+          IFS=',' read -r -a algs <<< "$raw_algs"    # convert to array
+          for alg in "${algs[@]}"; do
+            ./ct_test.sh valgrind-varlat ${{ matrix.compiler }} ${{ matrix.liboqs_build }} ${{ matrix.opt_flag }} "$alg"
+          done
+
+      - name: Upload valgrind_varlat logs
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: valgrind_varlat_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
+          path: |
+            tests/ct_tooling/tools/valgrind_varlat/logs/**
+
+  memsan:
+    needs: [interactive-inputs]
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    strategy:
+      matrix:
+        compiler: [clang]
+        liboqs_build: [generic, auto]
+        opt_flag: [-O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-vectorize", "-O3 -fno-vectorize"]
+      max-parallel: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Run memsan tests
+        shell: bash
+        run: |
+          set -eu -o pipefail
+          cd "$GITHUB_WORKSPACE/tests/ct_tooling"
+          chmod +x ct_test.sh
+          raw_algs="${{ needs.interactive-inputs.outputs.runtime-options }}"
+          IFS=',' read -r -a algs <<< "$raw_algs"    # convert to array
+          for alg in "${algs[@]}"; do
+            ./ct_test.sh memsan ${{ matrix.compiler }} ${{ matrix.liboqs_build }} ${{ matrix.opt_flag }} "$alg"
+          done
+
+      - name: Upload memsan logs
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: memsan_${{ matrix.compiler }}_${{matrix.liboqs_build}}_${{ matrix.opt_flag }}_logs
+          path: |
+            tests/ct_tooling/tools/memsan/logs/**

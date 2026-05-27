@@ -1,0 +1,1578 @@
+diff --git a/coregrind/m_commandline.c b/coregrind/m_commandline.c
+index e9fdb9bb4..4e120db0d 100644
+--- a/coregrind/m_commandline.c
++++ b/coregrind/m_commandline.c
+@@ -41,7 +41,7 @@
+ 
+ /* Add a string to an expandable array of strings. */
+ 
+-static void add_string ( XArray* /* of HChar* */xa, HChar* str )
++static void add_string ( XArray* /* of HChar* */xa, const HChar* str )
+ {
+    (void) VG_(addToXA)( xa, (void*)(&str) );
+ }
+@@ -93,8 +93,9 @@ static HChar* read_dot_valgrindrc ( const HChar* dir )
+ 
+ // Add args from a string into VG_(args_for_valgrind), splitting the
+ // string at whitespace and adding each component as a separate arg.
++// If try is set: add --try before each arg.
+ 
+-static void add_args_from_string ( HChar* s )
++static void add_args_from_string ( HChar* s, Bool try )
+ {
+    HChar* tmp;
+    HChar* cp = s;
+@@ -120,6 +121,7 @@ static void add_args_from_string ( HChar* s )
+       }
+       if (out < cp) *out++ = '\0';
+       if ( *cp != 0 ) *cp++ = '\0';       // terminate if not the last
++      if (try) add_string( VG_(args_for_valgrind), "--try" );
+       add_string( VG_(args_for_valgrind), tmp );
+    }
+ }
+@@ -131,6 +133,7 @@ static void add_args_from_string ( HChar* s )
+    The resulting arg list is the concatenation of the following:
+    - contents of ~/.valgrindrc
+    - contents of $VALGRIND_OPTS
++   - contents of $VALGRIND_TRY_OPTS with --try included
+    - contents of ./.valgrindrc
+    - args from the command line
+    in the stated order.
+@@ -157,7 +160,7 @@ static void add_args_from_string ( HChar* s )
+    args-for-v are then copied into tmp_xarray.
+ 
+    if args-for-v does not include --command-line-only=yes:
+-      contents of ~/.valgrindrc, $VALGRIND_OPTS and ./.valgrindrc
++      contents of ~/.valgrindrc, $VALGRIND_OPTS, $VALGRIND_TRY_OPTS and ./.valgrindrc
+       are copied into VG_(args_for_valgrind).
+    else
+       VG_(args_for_valgrind) is made empty.
+@@ -223,7 +226,7 @@ void VG_(split_up_argv)( Int argc, HChar** argv )
+       add_string( VG_(args_for_client), argv[i] );
+    }
+ 
+-   /* Get extra args from ~/.valgrindrc, $VALGRIND_OPTS and
++   /* Get extra args from ~/.valgrindrc, $VALGRIND_OPTS, $VALGRIND_TRY_OPTS and
+       ./.valgrindrc into VG_(args_for_valgrind). */
+    if (augment) {
+       // read_dot_valgrindrc() allocates the return value with
+@@ -233,6 +236,8 @@ void VG_(split_up_argv)( Int argc, HChar** argv )
+       HChar* f1_clo  = home ? read_dot_valgrindrc( home ) : NULL;
+       HChar* env_clo = VG_(strdup)( "commandline.sua.4",
+                                     VG_(getenv)(VALGRIND_OPTS) );
++      HChar* env_try_clo = VG_(strdup)( "commandline.sua.5",
++                                        VG_(getenv)(VALGRIND_TRY_OPTS) );
+       HChar* f2_clo  = NULL;
+ 
+       // Don't read ./.valgrindrc if "." is the same as "$HOME", else its
+@@ -244,9 +249,10 @@ void VG_(split_up_argv)( Int argc, HChar** argv )
+                        ? NULL : read_dot_valgrindrc(".") );
+       }
+ 
+-      if (f1_clo)  add_args_from_string( f1_clo );
+-      if (env_clo) add_args_from_string( env_clo );
+-      if (f2_clo)  add_args_from_string( f2_clo );
++      if (f1_clo)  add_args_from_string( f1_clo, False );
++      if (env_clo) add_args_from_string( env_clo, False );
++      if (env_try_clo) add_args_from_string( env_try_clo, True );
++      if (f2_clo)  add_args_from_string( f2_clo, False );
+    }
+ 
+    /* .. and record how many extras we got. */
+diff --git a/coregrind/m_main.c b/coregrind/m_main.c
+index f7fd20dba..7a35b7b6d 100644
+--- a/coregrind/m_main.c
++++ b/coregrind/m_main.c
+@@ -289,7 +289,8 @@ static void usage_NORETURN ( int need_help )
+ "    --sym-offsets=yes|no      show syms in form 'name+offset'? [no]\n"
+ "    --progress-interval=<number>  report progress every <number>\n"
+ "                                  CPU seconds [0, meaning disabled]\n"
+-"    --command-line-only=no|yes  only use command line options [no]\n\n"
++"    --command-line-only=no|yes  only use command line options [no]\n"
++"    --try                     skip next option if option is unsupported\n\n"
+ "  Vex options for all Valgrind tools:\n"
+ "    --vex-iropt-verbosity=<0..9>           [0]\n"
+ "    --vex-iropt-level=<0..2>               [2]\n"
+@@ -333,7 +334,7 @@ static void usage_NORETURN ( int need_help )
+ 
+    const HChar usage3[] =
+ "\n"
+-"  Extra options read from ~/.valgrindrc, $VALGRIND_OPTS, ./.valgrindrc\n"
++"  Extra options read from ~/.valgrindrc, $VALGRIND_OPTS, $VALGRIND_TRY_OPTS, ./.valgrindrc\n"
+ "\n"
+ "  %s is %s\n"
+ "  Valgrind is Copyright (C) 2000-2024, and GNU GPL'd, by Julian Seward et al.\n"
+@@ -429,6 +430,10 @@ struct process_option_state {
+    VgLogTo xml_to;  // Where is XML output to be sent?
+    Int tmp_log_fd;
+    Int tmp_xml_fd;
++
++   /* For cloP: True if immediately preceding option was --try. */
++   /* For other modes: Irrelevant. */
++   Bool try;
+ };
+ 
+ static void process_option (Clo_Mode mode,
+@@ -438,6 +443,7 @@ static void process_option (Clo_Mode mode,
+    Int   toolname_len = VG_(strlen)(VG_(clo_toolname));
+    HChar* colon = arg;
+    UInt   ix    = 0;
++   Bool prevtry = pos->try;
+ 
+    /* Constants for parsing PX control flags. */
+    const HChar* pxStrings[5]
+@@ -448,6 +454,7 @@ static void process_option (Clo_Mode mode,
+           VexRegUpdAllregsAtMemAccess, VexRegUpdAllregsAtEachInsn, 0/*inval*/ };
+ 
+    VG_(set_Clo_Mode) (mode);
++   pos->try = False;
+ 
+    // Look for a colon in the option name.
+    while (*colon && *colon != ':' && *colon != '=')
+@@ -921,14 +928,17 @@ static void process_option (Clo_Mode mode,
+    else if VG_XACT_CLO(arg, "--resync-filter=verbose",
+                        VG_(clo_resync_filter), 2) {}
+ 
++   else if VG_XACT_CLO(arg, "--try", pos->try, True) {}
+    else if ( VG_(Clo_Mode)() != cloE // tool does not have Early options
+              && !VG_(Clo_Recognised) ()
+              && (! VG_(needs).command_line_options
+                  || ! VG_TDICT_CALL(tool_process_cmd_line_option, arg) )) {
+       if (VG_(Clo_Mode)() == cloH)
+          ;
+-      else if (VG_(Clo_Mode)() == cloP && !VG_(Clo_Recognised) ())
+-         VG_(fmsg_unknown_option)(arg);
++      else if (VG_(Clo_Mode)() == cloP && !VG_(Clo_Recognised) ()) {
++         if (!prevtry)
++            VG_(fmsg_unknown_option)(arg);
++      }
+       else if (VG_(Clo_Mode)() == cloD && !VG_(Clo_Recognised) ())
+          VG_(umsg)("Ignoring dynamic change to unrecognised option %s\n", arg);
+    }
+@@ -962,7 +972,7 @@ static void early_process_cmd_line_options ( /*OUT*/Int* need_help )
+    UInt   i;
+    HChar* str;
+    struct process_option_state pos
+-      = {0, 0, False, False, VgLogTo_Fd, VgLogTo_Fd, 2, -1};
++      = {0, 0, False, False, VgLogTo_Fd, VgLogTo_Fd, 2, -1, False};
+ 
+    vg_assert( VG_(args_for_valgrind) );
+ 
+@@ -1003,7 +1013,7 @@ void main_process_cmd_line_options( void )
+ {
+    Int i;
+    struct process_option_state pos
+-      = {0, 0, False, False, VgLogTo_Fd, VgLogTo_Fd, 2, -1};
++      = {0, 0, False, False, VgLogTo_Fd, VgLogTo_Fd, 2, -1, False};
+ 
+    /* Check for sane path in ./configure --prefix=... */
+    if (VG_LIBDIR[0] != '/')
+diff --git a/coregrind/pub_core_libcproc.h b/coregrind/pub_core_libcproc.h
+index 488aaf0ca..5b580a474 100644
+--- a/coregrind/pub_core_libcproc.h
++++ b/coregrind/pub_core_libcproc.h
+@@ -53,6 +53,9 @@
+    is no quoting mechanism.  */
+ #define VALGRIND_OPTS    "VALGRIND_OPTS"
+ 
++/* Same as VALGRIND_OPTS but puts --try before each option. */
++#define VALGRIND_TRY_OPTS    "VALGRIND_TRY_OPTS"
++
+ /* The full name of Valgrind's stage1 (launcher) executable.  This is
+    set by stage1 and read by stage2, and is used for recursive
+    invocations of Valgrind on child processes. 
+diff --git a/docs/xml/manual-core.xml b/docs/xml/manual-core.xml
+index 9ab09b51b..7d07d93fc 100644
+--- a/docs/xml/manual-core.xml
++++ b/docs/xml/manual-core.xml
+@@ -2839,7 +2839,7 @@ Valgrind itself, then you should use the options
+ <sect2 id="manual-core.defopts" xreflabel="Setting Default Options">
+ <title>Setting Default Options</title>
+ 
+-<para>Note that Valgrind also reads options from three places:</para>
++<para>Note that Valgrind also reads options from four places:</para>
+ 
+   <orderedlist>
+    <listitem>
+@@ -2851,6 +2851,13 @@ Valgrind itself, then you should use the options
+     <computeroutput>$VALGRIND_OPTS</computeroutput></para>
+    </listitem>
+ 
++   <listitem>
++    <para>Starting with Valgrind 3.26: The environment variable
++    <computeroutput>$VALGRIND_TRY_OPTS</computeroutput>
++    (see below for the difference from
++    <computeroutput>$VALGRIND_OPTS</computeroutput>)</para>
++   </listitem>
++
+    <listitem>
+     <para>The file <computeroutput>./.valgrindrc</computeroutput></para>
+    </listitem>
+@@ -2873,7 +2880,8 @@ your user account.
+ </para>
+ 
+ <para>Any tool-specific options put in
+-<computeroutput>$VALGRIND_OPTS</computeroutput> or the
++<computeroutput>$VALGRIND_OPTS</computeroutput> or
++<computeroutput>$VALGRIND_TRY_OPTS</computeroutput> or the
+ <computeroutput>.valgrindrc</computeroutput> files should be
+ prefixed with the tool name and a colon.  For example, if you
+ want Memcheck to always do leak checking, you can put the
+@@ -2888,6 +2896,51 @@ part, this will cause problems if you select other tools that
+ don't understand
+ <option>--leak-check=yes</option>.</para>
+ 
++<para>Starting with Valgrind 3.26,
++<computeroutput>$VALGRIND_TRY_OPTS</computeroutput>
++is handled the same way as
++<computeroutput>$VALGRIND_OPTS</computeroutput>
++except that unsupported options in
++<computeroutput>$VALGRIND_TRY_OPTS</computeroutput>
++are skipped rather than stopping Valgrind.
++This makes
++<computeroutput>$VALGRIND_TRY_OPTS</computeroutput>
++suitable for best-effort
++"please use this option if it is available" scripts.</para>
++
++<para>Starting with Valgrind 3.26, there is also a
++<option>--try</option>
++option that, if it immediately precedes an unsupported option,
++will cause the unsupported option
++to be skipped rather than stopping Valgrind.
++The advantage of
++<option>--try</option>
++over
++<computeroutput>$VALGRIND_TRY_OPTS</computeroutput>
++is that, in situations where the order of options is important,
++<option>--try</option>
++can be inserted at any point in the option list,
++whereas
++<computeroutput>$VALGRIND_TRY_OPTS</computeroutput>
++is always handled after
++<computeroutput>$VALGRIND_OPTS</computeroutput>.
++The disadvantage of
++<option>--try</option>
++is that it will stop Valgrind 3.25 and earlier.</para>
++
++<para>If
++<computeroutput>--command-line-only=yes</computeroutput>
++appears on the command line
++then all of the above default-option mechanisms are ignored.
++Furthermore, the options
++<computeroutput>--command-line-only</computeroutput>,
++<computeroutput>--profile-heap</computeroutput>,
++<computeroutput>--core-redzone-size</computeroutput>,
++<computeroutput>--redzone-size</computeroutput>,
++and
++<computeroutput>--aspace-minaddr</computeroutput>
++are usable only on the command line
++and not via the default-option mechanisms.</para>
+ </sect2>
+ 
+ <sect2 id="manual-core.dynopts" xreflabel="Dynamically Change Options">
+diff --git a/memcheck/tests/Makefile.am b/memcheck/tests/Makefile.am
+index 91d58b48b..633c036c3 100644
+--- a/memcheck/tests/Makefile.am
++++ b/memcheck/tests/Makefile.am
+@@ -472,7 +472,8 @@ EXTRA_DIST = \
+ 	wrapmallocstatic.vgtest wrapmallocstatic.stdout.exp \
+ 	wrapmallocstatic.stderr.exp \
+ 	writev1.stderr.exp writev1.stderr.exp-solaris writev1.vgtest \
+-	xml1.stderr.exp xml1.stdout.exp xml1.vgtest xml1.stderr.exp-s390x-mvc
++	xml1.stderr.exp xml1.stdout.exp xml1.vgtest xml1.stderr.exp-s390x-mvc \
++	xml1_env.stderr.exp xml1_env.stdout.exp xml1_env.vgtest xml1_env.stderr.exp-s390x-mvc
+ 
+ check_PROGRAMS = \
+ 	accounting \
+diff --git a/memcheck/tests/xml1_env.stderr.exp b/memcheck/tests/xml1_env.stderr.exp
+new file mode 100644
+index 000000000..8ff61a531
+--- /dev/null
++++ b/memcheck/tests/xml1_env.stderr.exp
+@@ -0,0 +1,440 @@
++<?xml version="1.0"?>
++
++<valgrindoutput>
++
++<protocolversion>6</protocolversion>
++<protocoltool>memcheck</protocoltool>
++
++<preamble>
++  <line>...</line>
++  <line>...</line>
++  <line>...</line>
++  <line>...</line>
++</preamble>
++
++<pid>...</pid>
++<ppid>...</ppid>
++<tool>memcheck</tool>
++
++<args>
++  <vargv>...</vargv>
++  <argv>
++    <exe>./xml1</exe>
++  </argv>
++</args>
++
++<status>
++  <state>RUNNING</state>
++  <time>...</time>
++</status>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>InvalidRead</kind>
++  <what>Invalid read of size N</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++  <auxwhat>Address 0x........ is 0 bytes after a block of size 40 alloc'd</auxwhat>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>malloc</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>UninitCondition</kind>
++  <what>Conditional jump or move depends on uninitialised value(s)</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>UninitValue</kind>
++  <what>Use of uninitialised value of size N</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>InvalidFree</kind>
++  <what>Invalid free() / delete / delete[] / realloc()</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>free</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++  <auxwhat>Address 0x........ is 0 bytes inside a block of size 40 free'd</auxwhat>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>free</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>InvalidFree</kind>
++  <what>Invalid free() / delete / delete[] / realloc()</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>free</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++  <auxwhat>Address 0x........ is on thread 1's stack</auxwhat>
++  <auxwhat>in frame #1, created by frame3 (xml1.c:7)</auxwhat>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>SyscallParam</kind>
++  <what>Syscall param exit(status) contains uninitialised byte(s)</what>
++</error>
++
++<status>
++  <state>FINISHED</state>
++  <time>...</time>
++</status>
++
++<heap_summary>...</heap_summary>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>Leak_DefinitelyLost</kind>
++  <xwhat>
++    <text>396 bytes in 1 blocks are definitely lost in loss record ... of ...</text>
++    <leakedbytes>396</leakedbytes>
++    <leakedblocks>1</leakedblocks>
++  </xwhat>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>malloc</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<leak_summary>...</leak_summary>
++
++<errorcounts>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++</errorcounts>
++
++<suppcounts>...</suppcounts>
++
++<error_summary>...</error_summary>
++
++</valgrindoutput>
+diff --git a/memcheck/tests/xml1_env.stderr.exp-s390x-mvc b/memcheck/tests/xml1_env.stderr.exp-s390x-mvc
+new file mode 100644
+index 000000000..e1abac28a
+--- /dev/null
++++ b/memcheck/tests/xml1_env.stderr.exp-s390x-mvc
+@@ -0,0 +1,436 @@
++<?xml version="1.0"?>
++
++<valgrindoutput>
++
++<protocolversion>4</protocolversion>
++<protocoltool>memcheck</protocoltool>
++
++<preamble>
++  <line>...</line>
++  <line>...</line>
++  <line>...</line>
++  <line>...</line>
++</preamble>
++
++<pid>...</pid>
++<ppid>...</ppid>
++<tool>memcheck</tool>
++
++<args>
++  <vargv>...</vargv>
++  <argv>
++    <exe>./xml1</exe>
++  </argv>
++</args>
++
++<status>
++  <state>RUNNING</state>
++  <time>...</time>
++</status>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>InvalidRead</kind>
++  <what>Invalid read of size 1</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++  <auxwhat>Address 0x........ is 0 bytes after a block of size 40 alloc'd</auxwhat>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>malloc</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>UninitCondition</kind>
++  <what>Conditional jump or move depends on uninitialised value(s)</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>UninitValue</kind>
++  <what>Use of uninitialised value of size N</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>InvalidFree</kind>
++  <what>Invalid free() / delete / delete[] / realloc()</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>free</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++  <auxwhat>Address 0x........ is 0 bytes inside a block of size 40 free'd</auxwhat>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>free</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>InvalidFree</kind>
++  <what>Invalid free() / delete / delete[] / realloc()</what>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>free</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++  <auxwhat>Address 0x........ is on thread 1's stack</auxwhat>
++  <auxwhat>in frame #1, created by frame3 (xml1.c:7)</auxwhat>
++</error>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>SyscallParam</kind>
++  <what>Syscall param exit(status) contains uninitialised byte(s)</what>
++</error>
++
++
++<status>
++  <state>FINISHED</state>
++  <time>...</time>
++</status>
++
++<error>
++  <unique>0x........</unique>
++  <tid>...</tid>
++  <kind>Leak_DefinitelyLost</kind>
++  <xwhat>
++    <text>396 bytes in 1 blocks are definitely lost in loss record ... of ...</text>
++    <leakedbytes>396</leakedbytes>
++    <leakedblocks>1</leakedblocks>
++  </xwhat>
++  <stack>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>malloc</fn>
++      <dir>...</dir>
++      <file>vg_replace_malloc.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame3</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame2</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>frame1</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++    <frame>
++      <ip>0x........</ip>
++      <obj>...</obj>
++      <fn>main</fn>
++      <dir>...</dir>
++      <file>xml1.c</file>
++      <line>...</line>
++    </frame>
++  </stack>
++</error>
++
++<errorcounts>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++  <pair>
++    <count>...</count>
++    <unique>0x........</unique>
++  </pair>
++</errorcounts>
++
++<suppcounts>...</suppcounts>
++
++</valgrindoutput>
++
+diff --git a/memcheck/tests/xml1_env.stdout.exp b/memcheck/tests/xml1_env.stdout.exp
+new file mode 100644
+index 000000000..9397eece6
+--- /dev/null
++++ b/memcheck/tests/xml1_env.stdout.exp
+@@ -0,0 +1 @@
++hello from frame3().  The answer is not 42.
+diff --git a/memcheck/tests/xml1_env.vgtest b/memcheck/tests/xml1_env.vgtest
+new file mode 100644
+index 000000000..6b6cd8aab
+--- /dev/null
++++ b/memcheck/tests/xml1_env.vgtest
+@@ -0,0 +1,4 @@
++prog: xml1
++vgopts: --command-line-only=no
++env: VALGRIND_TRY_OPTS='--xml=yes --xml-fd=2 --log-file=/dev/null --keep-stacktraces=alloc-then-free'
++stderr_filter: filter_xml
+diff --git a/none/tests/Makefile.am b/none/tests/Makefile.am
+index 716ce000d..9961b80d8 100644
+--- a/none/tests/Makefile.am
++++ b/none/tests/Makefile.am
+@@ -88,6 +88,7 @@ dist_noinst_SCRIPTS = \
+ 	filter_fdleak \
+ 	filter_ioctl_moans \
+ 	filter_none_discards \
++	filter_optlist \
+ 	filter_stderr \
+ 	filter_timestamp \
+ 	filter_xml \
+@@ -134,6 +135,15 @@ EXTRA_DIST = \
+ 	double_close_range_xml.vgtest \
+ 	double_close_range_sup.stderr.exp double_close_range_sup.vgtest \
+ 	empty-exe.vgtest empty-exe.stderr.exp \
++	env1.stderr.exp env1.vgtest try1.stderr.exp try1.vgtest \
++	env2.stderr.exp env2.vgtest try2.stderr.exp try2.vgtest \
++	env3.stderr.exp env3.vgtest try3.stderr.exp try3.vgtest \
++	env4.stderr.exp env4.vgtest try4.stderr.exp try4.vgtest \
++	env5.stderr.exp env5.vgtest \
++	env6.stderr.exp env6.vgtest \
++	trytry.stderr.exp trytry.vgtest \
++	trytry2.stderr.exp trytry2.vgtest \
++	trytry3.stderr.exp trytry3.vgtest \
+ 	exec-sigmask.vgtest exec-sigmask.stdout.exp \
+ 	exec-sigmask.stdout.exp2 exec-sigmask.stdout.exp3 \
+ 	exec-sigmask.stdout.exp-solaris exec-sigmask.stderr.exp \
+@@ -253,6 +263,10 @@ EXTRA_DIST = \
+ 	threadederrno.vgtest \
+ 	timer_delete.vgtest timer_delete.stderr.exp \
+ 	timestamp.stderr.exp timestamp.vgtest \
++	timestamp_env.stderr.exp timestamp_env.vgtest \
++	timestamp_env21.stderr.exp timestamp_env21.vgtest \
++	timestamp_env22.stderr.exp timestamp_env22.vgtest \
++	timestamp_envoverride.stderr.exp timestamp_envoverride.vgtest \
+ 	tls.vgtest tls.stderr.exp tls.stdout.exp  \
+ 	track-fds-exec-children.vgtest track-fds-exec-children.stderr.exp \
+ 	unit_debuglog.stderr.exp unit_debuglog.vgtest \
+diff --git a/none/tests/cmdline1.stdout.exp b/none/tests/cmdline1.stdout.exp
+index 5d3ea0569..3bd3d1afc 100644
+--- a/none/tests/cmdline1.stdout.exp
++++ b/none/tests/cmdline1.stdout.exp
+@@ -169,7 +169,7 @@ usage: valgrind [options] prog-and-args
+   user options for Nulgrind:
+     (none)
+ 
+-  Extra options read from ~/.valgrindrc, $VALGRIND_OPTS, ./.valgrindrc
++  Extra options read from ~/.valgrindrc, $VALGRIND_OPTS, $VALGRIND_TRY_OPTS, ./.valgrindrc
+ 
+   Nulgrind is Copyright (C) 2000, and GNU GPL'd, by Nicholas Nethercote et al.
+   Valgrind is Copyright (C) 2000, and GNU GPL'd, by Julian Seward et al.
+diff --git a/none/tests/cmdline2.stdout.exp b/none/tests/cmdline2.stdout.exp
+index 618c43acb..0ca1ddb34 100644
+--- a/none/tests/cmdline2.stdout.exp
++++ b/none/tests/cmdline2.stdout.exp
+@@ -201,6 +201,7 @@ usage: valgrind [options] prog-and-args
+     --progress-interval=<number>  report progress every <number>
+                                   CPU seconds [0, meaning disabled]
+     --command-line-only=no|yes  only use command line options [no]
++    --try                     skip next option if option is unsupported
+ 
+   Vex options for all Valgrind tools:
+     --vex-iropt-verbosity=<0..9>           [0]
+@@ -245,7 +246,7 @@ usage: valgrind [options] prog-and-args
+   debugging options for Nulgrind:
+     (none)
+ 
+-  Extra options read from ~/.valgrindrc, $VALGRIND_OPTS, ./.valgrindrc
++  Extra options read from ~/.valgrindrc, $VALGRIND_OPTS, $VALGRIND_TRY_OPTS, ./.valgrindrc
+ 
+   Nulgrind is Copyright (C) 2000, and GNU GPL'd, by Nicholas Nethercote et al.
+   Valgrind is Copyright (C) 2000, and GNU GPL'd, by Julian Seward et al.
+diff --git a/none/tests/env1.stderr.exp b/none/tests/env1.stderr.exp
+new file mode 100644
+index 000000000..e69de29bb
+diff --git a/none/tests/env1.vgtest b/none/tests/env1.vgtest
+new file mode 100644
+index 000000000..10925d78d
+--- /dev/null
++++ b/none/tests/env1.vgtest
+@@ -0,0 +1,3 @@
++env: VALGRIND_TRY_OPTS=--bad-bad-option=yes
++vgopts: -q --command-line-only=no
++prog: ../../tests/true
+diff --git a/none/tests/env2.stderr.exp b/none/tests/env2.stderr.exp
+new file mode 100644
+index 000000000..139597f9c
+--- /dev/null
++++ b/none/tests/env2.stderr.exp
+@@ -0,0 +1,2 @@
++
++
+diff --git a/none/tests/env2.vgtest b/none/tests/env2.vgtest
+new file mode 100644
+index 000000000..102d99e67
+--- /dev/null
++++ b/none/tests/env2.vgtest
+@@ -0,0 +1,3 @@
++env: VALGRIND_TRY_OPTS=--trace-children=no
++vgopts: --command-line-only=no
++prog: ../../tests/true
+diff --git a/none/tests/env3.stderr.exp b/none/tests/env3.stderr.exp
+new file mode 100644
+index 000000000..139597f9c
+--- /dev/null
++++ b/none/tests/env3.stderr.exp
+@@ -0,0 +1,2 @@
++
++
+diff --git a/none/tests/env3.vgtest b/none/tests/env3.vgtest
+new file mode 100644
+index 000000000..9a43a3ebd
+--- /dev/null
++++ b/none/tests/env3.vgtest
+@@ -0,0 +1,3 @@
++env: VALGRIND_TRY_OPTS=--trace-children=yes
++vgopts: --command-line-only=no
++prog: ../../tests/true
+diff --git a/none/tests/env4.stderr.exp b/none/tests/env4.stderr.exp
+new file mode 100644
+index 000000000..fb3624035
+--- /dev/null
++++ b/none/tests/env4.stderr.exp
+@@ -0,0 +1,3 @@
++valgrind: Bad option: --trace-children=1
++valgrind: Invalid boolean value '1' (should be 'yes' or 'no')
++valgrind: Use --help for more information or consult the user manual.
+diff --git a/none/tests/env4.vgtest b/none/tests/env4.vgtest
+new file mode 100644
+index 000000000..7794bd74b
+--- /dev/null
++++ b/none/tests/env4.vgtest
+@@ -0,0 +1,3 @@
++env: VALGRIND_TRY_OPTS=--trace-children=1
++vgopts: --command-line-only=no
++prog: ../../tests/true
+diff --git a/none/tests/env5.stderr.exp b/none/tests/env5.stderr.exp
+new file mode 100644
+index 000000000..139597f9c
+--- /dev/null
++++ b/none/tests/env5.stderr.exp
+@@ -0,0 +1,2 @@
++
++
+diff --git a/none/tests/env5.vgtest b/none/tests/env5.vgtest
+new file mode 100644
+index 000000000..5e2ce8a41
+--- /dev/null
++++ b/none/tests/env5.vgtest
+@@ -0,0 +1,3 @@
++env: VALGRIND_TRY_OPTS=--trace-children=1
++vgopts: --command-line-only=yes
++prog: ../../tests/true
+diff --git a/none/tests/env6.stderr.exp b/none/tests/env6.stderr.exp
+new file mode 100644
+index 000000000..59c75a7f5
+--- /dev/null
++++ b/none/tests/env6.stderr.exp
+@@ -0,0 +1,12 @@
++   --try
++   --gen-suppressions=no
++   --try
++   --trace-children=yes
++   --try
++   -q
++   --command-line-only=yes
++   --memcheck:leak-check=no
++   --tool=none
++   --command-line-only=no
++   --verbose
++   --verbose
+diff --git a/none/tests/env6.vgtest b/none/tests/env6.vgtest
+new file mode 100644
+index 000000000..d45479d9f
+--- /dev/null
++++ b/none/tests/env6.vgtest
+@@ -0,0 +1,4 @@
++env: VALGRIND_TRY_OPTS='--gen-suppressions=no --trace-children=yes -q'
++vgopts: --command-line-only=no --verbose --verbose
++prog: ../../tests/true
++stderr_filter: filter_optlist
+diff --git a/none/tests/filter_optlist b/none/tests/filter_optlist
+new file mode 100755
+index 000000000..39639a198
+--- /dev/null
++++ b/none/tests/filter_optlist
+@@ -0,0 +1,11 @@
++#! /bin/sh
++
++dir=`dirname $0`
++
++$dir/filter_stderr |
++awk '
++  BEGIN { printing = 0 }
++  /^Valgrind options:/ { printing = 1; next }
++  /^   / { if (printing) print; next }
++  { printing = 0 }
++'
+diff --git a/none/tests/timestamp_env.stderr.exp b/none/tests/timestamp_env.stderr.exp
+new file mode 100644
+index 000000000..00a5083ae
+--- /dev/null
++++ b/none/tests/timestamp_env.stderr.exp
+@@ -0,0 +1,2 @@
++00:00:00:XX:YYY
++00:00:00:XX:YYY
+diff --git a/none/tests/timestamp_env.vgtest b/none/tests/timestamp_env.vgtest
+new file mode 100644
+index 000000000..fe5b20e3b
+--- /dev/null
++++ b/none/tests/timestamp_env.vgtest
+@@ -0,0 +1,4 @@
++env: VALGRIND_TRY_OPTS=--time-stamp=yes
++vgopts: --command-line-only=no
++prog: timestamp
++stderr_filter: filter_timestamp
+diff --git a/none/tests/timestamp_env21.stderr.exp b/none/tests/timestamp_env21.stderr.exp
+new file mode 100644
+index 000000000..00a5083ae
+--- /dev/null
++++ b/none/tests/timestamp_env21.stderr.exp
+@@ -0,0 +1,2 @@
++00:00:00:XX:YYY
++00:00:00:XX:YYY
+diff --git a/none/tests/timestamp_env21.vgtest b/none/tests/timestamp_env21.vgtest
+new file mode 100644
+index 000000000..aa6e76688
+--- /dev/null
++++ b/none/tests/timestamp_env21.vgtest
+@@ -0,0 +1,4 @@
++env: VALGRIND_TRY_OPTS='--time-stamp=yes --trace-children=yes'
++vgopts: --command-line-only=no
++prog: timestamp
++stderr_filter: filter_timestamp
+diff --git a/none/tests/timestamp_env22.stderr.exp b/none/tests/timestamp_env22.stderr.exp
+new file mode 100644
+index 000000000..00a5083ae
+--- /dev/null
++++ b/none/tests/timestamp_env22.stderr.exp
+@@ -0,0 +1,2 @@
++00:00:00:XX:YYY
++00:00:00:XX:YYY
+diff --git a/none/tests/timestamp_env22.vgtest b/none/tests/timestamp_env22.vgtest
+new file mode 100644
+index 000000000..cb628ac8d
+--- /dev/null
++++ b/none/tests/timestamp_env22.vgtest
+@@ -0,0 +1,4 @@
++env: VALGRIND_TRY_OPTS='--show-below-main=no --time-stamp=yes'
++vgopts: --command-line-only=no
++prog: timestamp
++stderr_filter: filter_timestamp
+diff --git a/none/tests/timestamp_envoverride.stderr.exp b/none/tests/timestamp_envoverride.stderr.exp
+new file mode 100644
+index 000000000..00a5083ae
+--- /dev/null
++++ b/none/tests/timestamp_envoverride.stderr.exp
+@@ -0,0 +1,2 @@
++00:00:00:XX:YYY
++00:00:00:XX:YYY
+diff --git a/none/tests/timestamp_envoverride.vgtest b/none/tests/timestamp_envoverride.vgtest
+new file mode 100644
+index 000000000..c77b52762
+--- /dev/null
++++ b/none/tests/timestamp_envoverride.vgtest
+@@ -0,0 +1,4 @@
++env: VALGRIND_TRY_OPTS=--time-stamp=no
++vgopts: --time-stamp=yes --command-line-only=no
++prog: timestamp
++stderr_filter: filter_timestamp
+diff --git a/none/tests/try1.stderr.exp b/none/tests/try1.stderr.exp
+new file mode 100644
+index 000000000..e69de29bb
+diff --git a/none/tests/try1.vgtest b/none/tests/try1.vgtest
+new file mode 100644
+index 000000000..d00f79dfb
+--- /dev/null
++++ b/none/tests/try1.vgtest
+@@ -0,0 +1,2 @@
++vgopts: -q --try --bad-bad-option=yes
++prog: ../../tests/true
+diff --git a/none/tests/try2.stderr.exp b/none/tests/try2.stderr.exp
+new file mode 100644
+index 000000000..139597f9c
+--- /dev/null
++++ b/none/tests/try2.stderr.exp
+@@ -0,0 +1,2 @@
++
++
+diff --git a/none/tests/try2.vgtest b/none/tests/try2.vgtest
+new file mode 100644
+index 000000000..ce763273c
+--- /dev/null
++++ b/none/tests/try2.vgtest
+@@ -0,0 +1,2 @@
++vgopts: --try --trace-children=no
++prog: ../../tests/true
+diff --git a/none/tests/try3.stderr.exp b/none/tests/try3.stderr.exp
+new file mode 100644
+index 000000000..139597f9c
+--- /dev/null
++++ b/none/tests/try3.stderr.exp
+@@ -0,0 +1,2 @@
++
++
+diff --git a/none/tests/try3.vgtest b/none/tests/try3.vgtest
+new file mode 100644
+index 000000000..ce763273c
+--- /dev/null
++++ b/none/tests/try3.vgtest
+@@ -0,0 +1,2 @@
++vgopts: --try --trace-children=no
++prog: ../../tests/true
+diff --git a/none/tests/try4.stderr.exp b/none/tests/try4.stderr.exp
+new file mode 100644
+index 000000000..fb3624035
+--- /dev/null
++++ b/none/tests/try4.stderr.exp
+@@ -0,0 +1,3 @@
++valgrind: Bad option: --trace-children=1
++valgrind: Invalid boolean value '1' (should be 'yes' or 'no')
++valgrind: Use --help for more information or consult the user manual.
+diff --git a/none/tests/try4.vgtest b/none/tests/try4.vgtest
+new file mode 100644
+index 000000000..21bb392e9
+--- /dev/null
++++ b/none/tests/try4.vgtest
+@@ -0,0 +1,2 @@
++vgopts: --try --trace-children=1
++prog: ../../tests/true
+diff --git a/none/tests/trytry.stderr.exp b/none/tests/trytry.stderr.exp
+new file mode 100644
+index 000000000..e69de29bb
+diff --git a/none/tests/trytry.vgtest b/none/tests/trytry.vgtest
+new file mode 100644
+index 000000000..b638148ed
+--- /dev/null
++++ b/none/tests/trytry.vgtest
+@@ -0,0 +1,2 @@
++vgopts: -q --try --try --bad-bad-option
++prog: ../../tests/true
+diff --git a/none/tests/trytry2.stderr.exp b/none/tests/trytry2.stderr.exp
+new file mode 100644
+index 000000000..879e12a28
+--- /dev/null
++++ b/none/tests/trytry2.stderr.exp
+@@ -0,0 +1,2 @@
++valgrind: Unknown option: --bad-bad-option
++valgrind: Use --help for more information or consult the user manual.
+diff --git a/none/tests/trytry2.vgtest b/none/tests/trytry2.vgtest
+new file mode 100644
+index 000000000..cb5335456
+--- /dev/null
++++ b/none/tests/trytry2.vgtest
+@@ -0,0 +1,2 @@
++vgopts: -q --try --try --bad-bad-option --bad-bad-option
++prog: ../../tests/true
+diff --git a/none/tests/trytry3.stderr.exp b/none/tests/trytry3.stderr.exp
+new file mode 100644
+index 000000000..4dac4a198
+--- /dev/null
++++ b/none/tests/trytry3.stderr.exp
+@@ -0,0 +1,14 @@
++   --command-line-only=yes
++   --memcheck:leak-check=no
++   --tool=none
++   --try
++   --gen-suppressions=no
++   --try
++   --trace-children=yes
++   --try
++   -q
++   --try
++   --try
++   --bad-bad-option
++   --verbose
++   --verbose
+diff --git a/none/tests/trytry3.vgtest b/none/tests/trytry3.vgtest
+new file mode 100644
+index 000000000..b065fd0e9
+--- /dev/null
++++ b/none/tests/trytry3.vgtest
+@@ -0,0 +1,3 @@
++vgopts: --try --gen-suppressions=no --try --trace-children=yes --try -q --try --try --bad-bad-option --verbose --verbose
++prog: ../../tests/true
++stderr_filter: filter_optlist
