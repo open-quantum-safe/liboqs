@@ -32,20 +32,19 @@
 
 #define MLD_2_POW_D (1 << MLDSA_D)
 
-/*************************************************
- * Name:        mld_power2round
+/**
+ * For finite field element a, compute a0, a1 such that
+ * a mod^+ MLDSA_Q = a1*2^MLDSA_D + a0 with
+ * -2^{MLDSA_D-1} < a0 <= 2^{MLDSA_D-1}. Assumes a to be standard
+ * representative.
  *
- * Description: For finite field element a, compute a0, a1 such that
- *              a mod^+ MLDSA_Q = a1*2^MLDSA_D + a0 with -2^{MLDSA_D-1} < a0 <=
- *              2^{MLDSA_D-1}. Assumes a to be standard representative.
+ * @reference{In the reference implementation, a1 is passed as a return value
+ * instead.}
  *
- * Arguments:   - int32_t a: input element
- *              - int32_t *a0: pointer to output element a0
- *              - int32_t *a1: pointer to output element a1
- *
- * Reference: In the reference implementation, a1 is passed as a
- * return value instead.
- **************************************************/
+ * @param[out] a0 Pointer to output element a0.
+ * @param[out] a1 Pointer to output element a1.
+ * @param      a  Input element.
+ */
 static MLD_INLINE void mld_power2round(int32_t *a0, int32_t *a1, int32_t a)
 __contract__(
   requires(memory_no_alias(a0, sizeof(int32_t)))
@@ -62,22 +61,21 @@ __contract__(
   *a0 = a - (*a1 << MLDSA_D);
 }
 
-/*************************************************
- * Name:        mld_decompose
+/**
+ * For finite field element a, compute high and low bits a0, a1 such that
+ * a mod^+ MLDSA_Q = a1 * 2 * MLDSA_GAMMA2 + a0 with
+ * -MLDSA_GAMMA2 < a0 <= MLDSA_GAMMA2 except if
+ * a1 = (MLDSA_Q-1)/(MLDSA_GAMMA2*2) where we set a1 = 0 and
+ * -MLDSA_GAMMA2 <= a0 = a mod^+ MLDSA_Q - MLDSA_Q < 0. Assumes a to be
+ * standard representative.
  *
- * Description: For finite field element a, compute high and low bits a0, a1
- * such that a mod^+ MLDSA_Q = a1* 2 * MLDSA_GAMMA2 + a0 with
- * -MLDSA_GAMMA2 < a0 <= MLDSA_GAMMA2 except
- * if a1 = (MLDSA_Q-1)/(MLDSA_GAMMA2*2) where we set a1 = 0 and
- * -MLDSA_GAMMA2 <= a0 = a mod^+ MLDSA_Q - MLDSA_Q < 0.
- * Assumes a to be standard representative.
+ * @reference{In the reference implementation, a1 is passed as a return value
+ * instead.}
  *
- * Arguments:   - int32_t a: input element
- *              - int32_t *a0: pointer to output element a0
- *              - int32_t *a1: pointer to output element a1
- *
- * Reference: a1 is passed as a return value instead
- **************************************************/
+ * @param[out] a0 Pointer to output element a0.
+ * @param[out] a1 Pointer to output element a1.
+ * @param      a  Input element.
+ */
 static MLD_INLINE void mld_decompose(int32_t *a0, int32_t *a1, int32_t a)
 __contract__(
   requires(memory_no_alias(a0, sizeof(int32_t)))
@@ -172,17 +170,15 @@ __contract__(
                          mld_ct_cmask_neg_i32((MLDSA_Q - 1) / 2 - *a0));
 }
 
-/*************************************************
- * Name:        mld_make_hint
+/**
+ * Compute hint bit indicating whether the low bits of the input element
+ * overflow into the high bits.
  *
- * Description: Compute hint bit indicating whether the low bits of the
- *              input element overflow into the high bits.
+ * @param a0 Low bits of input element.
+ * @param a1 High bits of input element.
  *
- * Arguments:   - int32_t a0: low bits of input element
- *              - int32_t a1: high bits of input element
- *
- * Returns 1 if overflow, 0 otherwise
- **************************************************/
+ * @return 1 if overflow, 0 otherwise.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE unsigned int mld_make_hint(int32_t a0, int32_t a1)
 __contract__(
@@ -198,16 +194,14 @@ __contract__(
   return 0;
 }
 
-/*************************************************
- * Name:        mld_use_hint
+/**
+ * Correct high bits according to hint.
  *
- * Description: Correct high bits according to hint.
+ * @param a    Input element.
+ * @param hint Hint bit.
  *
- * Arguments:   - int32_t a: input element
- *              - int32_t hint: hint bit
- *
- * Returns corrected high bits.
- **************************************************/
+ * @return Corrected high bits.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_use_hint(int32_t a, int32_t hint)
 __contract__(

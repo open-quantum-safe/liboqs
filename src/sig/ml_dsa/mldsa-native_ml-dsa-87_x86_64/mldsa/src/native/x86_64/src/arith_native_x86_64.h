@@ -29,12 +29,12 @@
 #define MLD_AVX2_REJ_UNIFORM_ETA4_BUFLEN (2 * 136)
 
 #define mld_rej_uniform_table MLD_NAMESPACE(mld_rej_uniform_table)
-extern const uint8_t mld_rej_uniform_table[256][8];
+MLD_INTERNAL_DATA_DECLARATION const uint8_t mld_rej_uniform_table[256][8];
 
-#define mld_ntt_avx2 MLD_NAMESPACE(ntt_avx2)
-void mld_ntt_avx2(int32_t *r, const int32_t *qdata)
+#define mld_ntt_avx2_asm MLD_NAMESPACE(ntt_avx2_asm)
+void mld_ntt_avx2_asm(int32_t *r, const int32_t *qdata)
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/x86_64/proofs/mldsa_ntt.ml */
+ * in proofs/hol_light/x86_64/proofs/ntt_avx2_asm.ml */
 __contract__(
   requires(memory_no_alias(r, sizeof(int32_t) * MLDSA_N))
   requires(array_abs_bound(r, 0, MLDSA_N, 8380417))
@@ -45,10 +45,10 @@ __contract__(
   /* check-magic: on */
 );
 
-#define mld_invntt_avx2 MLD_NAMESPACE(invntt_avx2)
-void mld_invntt_avx2(int32_t *r, const int32_t *qdata)
+#define mld_invntt_avx2_asm MLD_NAMESPACE(invntt_avx2_asm)
+void mld_invntt_avx2_asm(int32_t *r, const int32_t *qdata)
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/x86_64/proofs/mldsa_intt.ml */
+ * in proofs/hol_light/x86_64/proofs/intt_avx2_asm.ml */
 __contract__(
   requires(memory_no_alias(r, sizeof(int32_t) * MLDSA_N))
   requires(array_abs_bound(r, 0, MLDSA_N, 8380417))
@@ -59,14 +59,26 @@ __contract__(
   /* check-magic: on */
 );
 
-#define mld_nttunpack_avx2 MLD_NAMESPACE(nttunpack_avx2)
-void mld_nttunpack_avx2(int32_t *r);
+#define mld_nttunpack_avx2_asm MLD_NAMESPACE(nttunpack_avx2_asm)
+void mld_nttunpack_avx2_asm(int32_t *r)
+/* This must be kept in sync with the HOL-Light specification
+ * in proofs/hol_light/x86_64/proofs/nttunpack_avx2_asm.ml */
+__contract__(
+  requires(memory_no_alias(r, sizeof(int32_t) * MLDSA_N))
+  requires(array_abs_bound(r, 0, MLDSA_N, 8380417))
+  assigns(memory_slice(r, sizeof(int32_t) * MLDSA_N))
+  /* Output is a permutation of input: every output coefficient
+   * is some input coefficient */
+  ensures(forall(i, 0, MLDSA_N, exists(j, 0, MLDSA_N,
+    r[i] == old(*(int32_t (*)[MLDSA_N])r)[j])))
+);
 
 #define mld_rej_uniform_avx2 MLD_NAMESPACE(mld_rej_uniform_avx2)
 MLD_MUST_CHECK_RETURN_VALUE
 unsigned mld_rej_uniform_avx2(int32_t *r,
                               const uint8_t buf[MLD_AVX2_REJ_UNIFORM_BUFLEN]);
 
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API)
 #define mld_rej_uniform_eta2_avx2 MLD_NAMESPACE(mld_rej_uniform_eta2_avx2)
 MLD_MUST_CHECK_RETURN_VALUE
 unsigned mld_rej_uniform_eta2_avx2(
@@ -76,49 +88,121 @@ unsigned mld_rej_uniform_eta2_avx2(
 MLD_MUST_CHECK_RETURN_VALUE
 unsigned mld_rej_uniform_eta4_avx2(
     int32_t *r, const uint8_t buf[MLD_AVX2_REJ_UNIFORM_ETA4_BUFLEN]);
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API)
 #define mld_poly_decompose_32_avx2 MLD_NAMESPACE(mld_poly_decompose_32_avx2)
 void mld_poly_decompose_32_avx2(int32_t *a1, int32_t *a0);
 
 #define mld_poly_decompose_88_avx2 MLD_NAMESPACE(mld_poly_decompose_88_avx2)
 void mld_poly_decompose_88_avx2(int32_t *a1, int32_t *a0);
+#endif /* !MLD_CONFIG_NO_SIGN_API */
 
-#define mld_poly_caddq_avx2 MLD_NAMESPACE(poly_caddq_avx2)
-void mld_poly_caddq_avx2(int32_t *r);
+#define mld_poly_caddq_avx2_asm MLD_NAMESPACE(poly_caddq_avx2_asm)
+void mld_poly_caddq_avx2_asm(int32_t *r)
+/* This must be kept in sync with the HOL-Light specification
+ * in proofs/hol_light/x86_64/proofs/poly_caddq_avx2_asm.ml */
+__contract__(
+  requires(memory_no_alias(r, sizeof(int32_t) * MLDSA_N))
+  requires(array_abs_bound(r, 0, MLDSA_N, MLDSA_Q))
+  assigns(memory_slice(r, sizeof(int32_t) * MLDSA_N))
+  ensures(array_bound(r, 0, MLDSA_N, 0, MLDSA_Q))
+);
 
+#if !defined(MLD_CONFIG_NO_VERIFY_API)
 #define mld_poly_use_hint_32_avx2 MLD_NAMESPACE(mld_poly_use_hint_32_avx2)
-void mld_poly_use_hint_32_avx2(int32_t *b, const int32_t *a, const int32_t *h);
+void mld_poly_use_hint_32_avx2(int32_t *a, const int32_t *h);
 
 #define mld_poly_use_hint_88_avx2 MLD_NAMESPACE(mld_poly_use_hint_88_avx2)
-void mld_poly_use_hint_88_avx2(int32_t *b, const int32_t *a, const int32_t *h);
+void mld_poly_use_hint_88_avx2(int32_t *a, const int32_t *h);
+#endif /* !MLD_CONFIG_NO_VERIFY_API */
 
 #define mld_poly_chknorm_avx2 MLD_NAMESPACE(mld_poly_chknorm_avx2)
 MLD_MUST_CHECK_RETURN_VALUE
 int mld_poly_chknorm_avx2(const int32_t *a, int32_t B);
 
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API)
 #define mld_polyz_unpack_17_avx2 MLD_NAMESPACE(mld_polyz_unpack_17_avx2)
 void mld_polyz_unpack_17_avx2(int32_t *r, const uint8_t *a);
 
 #define mld_polyz_unpack_19_avx2 MLD_NAMESPACE(mld_polyz_unpack_19_avx2)
 void mld_polyz_unpack_19_avx2(int32_t *r, const uint8_t *a);
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
-#define mld_pointwise_avx2 MLD_NAMESPACE(pointwise_avx2)
-void mld_pointwise_avx2(int32_t *c, const int32_t *a, const int32_t *b,
-                        const int32_t *qdata);
+#define mld_pointwise_avx2_asm MLD_NAMESPACE(pointwise_avx2_asm)
+void mld_pointwise_avx2_asm(int32_t *a, const int32_t *b, const int32_t *qdata)
+/* This must be kept in sync with the HOL-Light specification
+ * in proofs/hol_light/x86_64/proofs/pointwise_avx2_asm.ml */
+__contract__(
+  requires(memory_no_alias(a, sizeof(int32_t) * MLDSA_N))
+  requires(memory_no_alias(b, sizeof(int32_t) * MLDSA_N))
+  /* check-magic: off */
+  requires(array_abs_bound(a, 0, MLDSA_N, 75423753))
+  requires(array_abs_bound(b, 0, MLDSA_N, 75423753))
+  requires(qdata == mld_qdata)
+  assigns(memory_slice(a, sizeof(int32_t) * MLDSA_N))
+  ensures(array_abs_bound(a, 0, MLDSA_N, 8380417))
+  /* check-magic: on */
+);
 
-#define mld_pointwise_acc_l4_avx2 MLD_NAMESPACE(pointwise_acc_l4_avx2)
-void mld_pointwise_acc_l4_avx2(int32_t c[MLDSA_N], const int32_t a[4][MLDSA_N],
-                               const int32_t b[4][MLDSA_N],
-                               const int32_t *qdata);
+#define mld_pointwise_acc_l4_avx2_asm MLD_NAMESPACE(pointwise_acc_l4_avx2_asm)
+void mld_pointwise_acc_l4_avx2_asm(int32_t c[MLDSA_N],
+                                   const int32_t a[4][MLDSA_N],
+                                   const int32_t b[4][MLDSA_N],
+                                   const int32_t *qdata)
+/* This must be kept in sync with the HOL-Light specification
+ * in proofs/hol_light/x86_64/proofs/pointwise_acc_l4_avx2_asm.ml */
+__contract__(
+  requires(memory_no_alias(c, sizeof(int32_t) * MLDSA_N))
+  requires(memory_no_alias(a, sizeof(int32_t) * 4 * MLDSA_N))
+  requires(memory_no_alias(b, sizeof(int32_t) * 4 * MLDSA_N))
+  /* check-magic: off */
+  requires(forall(l0, 0, 4, array_abs_bound(a[l0], 0, MLDSA_N, 8380417)))
+  requires(forall(l1, 0, 4, array_abs_bound(b[l1], 0, MLDSA_N, 75423753)))
+  requires(qdata == mld_qdata)
+  assigns(memory_slice(c, sizeof(int32_t) * MLDSA_N))
+  ensures(array_abs_bound(c, 0, MLDSA_N, 8380417))
+  /* check-magic: on */
+);
 
-#define mld_pointwise_acc_l5_avx2 MLD_NAMESPACE(pointwise_acc_l5_avx2)
-void mld_pointwise_acc_l5_avx2(int32_t c[MLDSA_N], const int32_t a[5][MLDSA_N],
-                               const int32_t b[5][MLDSA_N],
-                               const int32_t *qdata);
+#define mld_pointwise_acc_l5_avx2_asm MLD_NAMESPACE(pointwise_acc_l5_avx2_asm)
+void mld_pointwise_acc_l5_avx2_asm(int32_t c[MLDSA_N],
+                                   const int32_t a[5][MLDSA_N],
+                                   const int32_t b[5][MLDSA_N],
+                                   const int32_t *qdata)
+/* This must be kept in sync with the HOL-Light specification
+ * in proofs/hol_light/x86_64/proofs/pointwise_acc_l5_avx2_asm.ml */
+__contract__(
+  requires(memory_no_alias(c, sizeof(int32_t) * MLDSA_N))
+  requires(memory_no_alias(a, sizeof(int32_t) * 5 * MLDSA_N))
+  requires(memory_no_alias(b, sizeof(int32_t) * 5 * MLDSA_N))
+  /* check-magic: off */
+  requires(forall(l0, 0, 5, array_abs_bound(a[l0], 0, MLDSA_N, 8380417)))
+  requires(forall(l1, 0, 5, array_abs_bound(b[l1], 0, MLDSA_N, 75423753)))
+  requires(qdata == mld_qdata)
+  assigns(memory_slice(c, sizeof(int32_t) * MLDSA_N))
+  ensures(array_abs_bound(c, 0, MLDSA_N, 8380417))
+  /* check-magic: on */
+);
 
-#define mld_pointwise_acc_l7_avx2 MLD_NAMESPACE(pointwise_acc_l7_avx2)
-void mld_pointwise_acc_l7_avx2(int32_t c[MLDSA_N], const int32_t a[7][MLDSA_N],
-                               const int32_t b[7][MLDSA_N],
-                               const int32_t *qdata);
+#define mld_pointwise_acc_l7_avx2_asm MLD_NAMESPACE(pointwise_acc_l7_avx2_asm)
+void mld_pointwise_acc_l7_avx2_asm(int32_t c[MLDSA_N],
+                                   const int32_t a[7][MLDSA_N],
+                                   const int32_t b[7][MLDSA_N],
+                                   const int32_t *qdata)
+/* This must be kept in sync with the HOL-Light specification
+ * in proofs/hol_light/x86_64/proofs/pointwise_acc_l7_avx2_asm.ml */
+__contract__(
+  requires(memory_no_alias(c, sizeof(int32_t) * MLDSA_N))
+  requires(memory_no_alias(a, sizeof(int32_t) * 7 * MLDSA_N))
+  requires(memory_no_alias(b, sizeof(int32_t) * 7 * MLDSA_N))
+  /* check-magic: off */
+  requires(forall(l0, 0, 7, array_abs_bound(a[l0], 0, MLDSA_N, 8380417)))
+  requires(forall(l1, 0, 7, array_abs_bound(b[l1], 0, MLDSA_N, 75423753)))
+  requires(qdata == mld_qdata)
+  assigns(memory_slice(c, sizeof(int32_t) * MLDSA_N))
+  ensures(array_abs_bound(c, 0, MLDSA_N, 8380417))
+  /* check-magic: on */
+);
 
 #endif /* !MLD_NATIVE_X86_64_SRC_ARITH_NATIVE_X86_64_H */

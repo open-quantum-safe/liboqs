@@ -9,37 +9,30 @@
 
 #if defined(MLDSA_DEBUG)
 
-/*************************************************
- * Name:        mld_assert
+/**
+ * Check debug assertion.
  *
- * Description: Check debug assertion
+ * Prints an error message to stderr and calls exit(1) if not.
  *
- *              Prints an error message to stderr and calls
- *              exit(1) if not.
- *
- * Arguments:   - file: filename
- *              - line: line number
- *              - val: Value asserted to be non-zero
- **************************************************/
+ * @param file Filename.
+ * @param line Line number.
+ * @param val  Value asserted to be non-zero.
+ */
 #define mld_debug_check_assert MLD_NAMESPACE(mldsa_debug_assert)
 void mld_debug_check_assert(const char *file, int line, const int val);
 
-/*************************************************
- * Name:        mld_debug_check_bounds
+/**
+ * Check whether values in an array of int32_t are within specified bounds.
  *
- * Description: Check whether values in an array of int32_t
- *              are within specified bounds.
+ * Prints an error message to stderr and calls exit(1) if not.
  *
- *              Prints an error message to stderr and calls
- *              exit(1) if not.
- *
- * Arguments:   - file: filename
- *              - line: line number
- *              - ptr: Base of array to be checked
- *              - len: Number of int32_t in ptr
- *              - lower_bound_exclusive: Exclusive lower bound
- *              - upper_bound_exclusive: Exclusive upper bound
- **************************************************/
+ * @param     file                  Filename.
+ * @param     line                  Line number.
+ * @param[in] ptr                   Base of array to be checked.
+ * @param     len                   Number of int32_t in ptr.
+ * @param     lower_bound_exclusive Exclusive lower bound.
+ * @param     upper_bound_exclusive Exclusive upper bound.
+ */
 #define mld_debug_check_bounds MLD_NAMESPACE(mldsa_debug_check_bounds)
 void mld_debug_check_bounds(const char *file, int line, const int32_t *ptr,
                             unsigned len, int64_t lower_bound_exclusive,
