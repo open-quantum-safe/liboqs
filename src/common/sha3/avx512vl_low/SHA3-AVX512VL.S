@@ -407,12 +407,19 @@
     cmp     %r12, arg3              # if mlen < capacity then cannot permute yet
     jb      1f                      # skip permute
 
-    movq    arg3, %r10
+    # Partial-fill-and-permute path.
+    # We are about to absorb `capacity` (= rate - s[25]) bytes from the
+    # input into the state, which will exactly fill the rate, then permute.
+    # `keccak_1600_partial_add` reads its length from %r12 (which holds
+    # `capacity` here), advances arg2 by that many bytes, and clobbers %r12.
+    # We must therefore decrement arg3 by `capacity` BEFORE the call, so that
+    # the post-permute path at label `3:` continues with the correct number
+    # of remaining input bytes. Forgetting this (the previous behavior)
+    # caused `capacity` bytes to be double-absorbed into the post-permute
+    # state and read out of bounds past the input buffer.
+    subq    %r12, arg3              # arg3 -= capacity (bytes remaining after fill)
     leaq    (arg1, %r14), %r13      # %r13 = state + s[25]
-    movq    arg2, arg3
-    call    keccak_1600_partial_add
-
-    movq    %r10, arg3
+    call    keccak_1600_partial_add # arg2 updated, %r12 clobbered
 
     call    keccak_1600_load_state
     call    keccak_1600_permute
