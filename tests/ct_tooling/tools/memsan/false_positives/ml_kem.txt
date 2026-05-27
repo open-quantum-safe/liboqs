@@ -1,0 +1,15 @@
+fun:PQCP_MLKEM_NATIVE_MLKEM*_C_poly_decompress_d*
+fun:PQCP_MLKEM_NATIVE_MLKEM*_C_poly_reduce
+fun:PQCP_MLKEM_NATIVE_MLKEM*_X86_64_poly_frommsg
+fun:mlk_ct_memcmp
+fun:mlk_ct_cmov_zero
+fun:mlk_rej_uniform_scalar
+fun:mlk_load32_littleendian
+fun:PQCP_MLKEM_NATIVE_MLKEM*_C_poly_frommsg
+fun:mlk_value_barrier_*
+fun:PQCP_MLKEM_NATIVE_MLKEM*_X86_64_rej_uniform_avx2
+fun:PQCP_MLKEM_NATIVE_MLKEM*_X86_64_enc_derand
+fun:mlk_ct_cmask_neg_i16
+fun:mlk_scalar_signed_to_unsigned_q
+fun:mlk_ct_cmask_nonzero_u*
+fun:mlk_ct_sel_int*
