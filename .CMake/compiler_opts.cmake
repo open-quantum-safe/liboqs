@@ -60,7 +60,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
         elseif(ARCH_ARM64v8)
             set(OQS_OPT_FLAG "-march=armv8-a+crypto")
         elseif(ARCH_PPC64LE OR ARCH_PPC64)
-            set(OQS_OPT_FLAG "-mcpu=power7")
+            set(OQS_OPT_FLAG "-mcpu=power8")
         else()
             # Assume sensible default like -march=x86-64
             set(OQS_OPT_FLAG "")
