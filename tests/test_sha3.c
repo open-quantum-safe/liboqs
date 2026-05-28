@@ -901,6 +901,65 @@ int shake_128_kat_test(void) {
 	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+
+	/* Cross-validate one-shot vs byte-at-a-time absorb of msg896||msg448
+	   (168 bytes) using the incremental API. */
+	uint8_t msg_concat[168];
+	memcpy(msg_concat, msg896, sizeof(msg896));
+	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
+
+	uint8_t hash_oneshot[512];
+	OQS_SHA3_shake128(hash_oneshot, sizeof(hash_oneshot), msg_concat, sizeof(msg_concat));
+
+	/* Cross-validate one-shot vs chunked absorb for every segment size 1..168.
+	   Covers all absorb code paths and their transitions, including the
+	   SHAKE-128 rate boundary at 168 bytes. */
+	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake128_inc_init(&state);
+		size_t off = 0;
+		while (off < sizeof(msg_concat)) {
+			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			OQS_SHA3_shake128_inc_absorb(&state, msg_concat + off, n);
+			off += n;
+		}
+		OQS_SHA3_shake128_inc_finalize(&state);
+		OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
+		OQS_SHA3_shake128_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, 512) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-128 chunked absorb cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
+
+	/* Cross-validate bulk squeeze vs chunked squeeze for every segment size
+	   1..512. Covers all squeeze code paths and their transitions, including
+	   the SHAKE-128 rate boundary at 168 bytes. */
+	OQS_SHA3_shake128_inc_init(&state);
+	OQS_SHA3_shake128_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+	OQS_SHA3_shake128_inc_finalize(&state);
+	OQS_SHA3_shake128_inc_squeeze(hash_oneshot, sizeof(hash_oneshot), &state);
+	OQS_SHA3_shake128_inc_ctx_release(&state);
+
+	for (size_t seg = 1; seg <= sizeof(hash); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake128_inc_init(&state);
+		OQS_SHA3_shake128_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+		OQS_SHA3_shake128_inc_finalize(&state);
+		size_t off = 0;
+		while (off < sizeof(hash)) {
+			size_t n = (seg < sizeof(hash) - off) ? seg : sizeof(hash) - off;
+			OQS_SHA3_shake128_inc_squeeze(hash + off, n, &state);
+			off += n;
+		}
+		OQS_SHA3_shake128_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-128 chunked squeeze cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
 	return status;
 }
 
@@ -1077,6 +1136,65 @@ int shake_256_kat_test(void) {
 	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+
+	/* Cross-validate one-shot vs byte-at-a-time absorb of msg896||msg448
+	   (168 bytes) using the incremental API. */
+	uint8_t msg_concat[168];
+	memcpy(msg_concat, msg896, sizeof(msg896));
+	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
+
+	uint8_t hash_oneshot[512];
+	OQS_SHA3_shake256(hash_oneshot, sizeof(hash_oneshot), msg_concat, sizeof(msg_concat));
+
+	/* Cross-validate one-shot vs chunked absorb for every segment size 1..168.
+	   Covers all absorb code paths and their transitions, including the
+	   SHAKE-256 rate boundary at 136 bytes. */
+	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake256_inc_init(&state);
+		size_t off = 0;
+		while (off < sizeof(msg_concat)) {
+			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			OQS_SHA3_shake256_inc_absorb(&state, msg_concat + off, n);
+			off += n;
+		}
+		OQS_SHA3_shake256_inc_finalize(&state);
+		OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
+		OQS_SHA3_shake256_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, 512) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-256 chunked absorb cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
+
+	/* Cross-validate bulk squeeze vs chunked squeeze for every segment size
+	   1..512. Covers all squeeze code paths and their transitions, including
+	   the SHAKE-256 rate boundary at 136 bytes. */
+	OQS_SHA3_shake256_inc_init(&state);
+	OQS_SHA3_shake256_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+	OQS_SHA3_shake256_inc_finalize(&state);
+	OQS_SHA3_shake256_inc_squeeze(hash_oneshot, sizeof(hash_oneshot), &state);
+	OQS_SHA3_shake256_inc_ctx_release(&state);
+
+	for (size_t seg = 1; seg <= sizeof(hash); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake256_inc_init(&state);
+		OQS_SHA3_shake256_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+		OQS_SHA3_shake256_inc_finalize(&state);
+		size_t off = 0;
+		while (off < sizeof(hash)) {
+			size_t n = (seg < sizeof(hash) - off) ? seg : sizeof(hash) - off;
+			OQS_SHA3_shake256_inc_squeeze(hash + off, n, &state);
+			off += n;
+		}
+		OQS_SHA3_shake256_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-256 chunked squeeze cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
 	return status;
 }
 
@@ -1218,6 +1336,28 @@ int shake_128_x4_kat_test(void) {
 		status = EXIT_FAILURE;
 	}
 
+	/* Verify that distinct non-uniform lane inputs produce distinct, correct
+	   outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
+	   112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
+	   the single-lane one-shot API as the oracle. */
+	uint8_t exp_a[512], exp_b[512];
+	OQS_SHA3_shake128(exp_a, sizeof(exp_a), msg896, sizeof(msg896));
+	OQS_SHA3_shake128(exp_b, sizeof(exp_b), msg1600, sizeof(msg896));
+
+	OQS_SHA3_shake128_x4_inc_init(&state);
+	OQS_SHA3_shake128_x4_inc_absorb(&state, msg896, msg1600, msg896, msg1600, sizeof(msg896));
+	OQS_SHA3_shake128_x4_inc_finalize(&state);
+	OQS_SHA3_shake128_x4_inc_squeeze(output0, output1, output2, output3, sizeof(exp_a), &state);
+	OQS_SHA3_shake128_x4_inc_ctx_release(&state);
+
+	if (are_equal8(output0, exp_a, 512) == EXIT_FAILURE
+	        || are_equal8(output1, exp_b, 512) == EXIT_FAILURE
+	        || are_equal8(output2, exp_a, 512) == EXIT_FAILURE
+	        || are_equal8(output3, exp_b, 512) == EXIT_FAILURE) {
+		printf("ERROR: SHAKE-128 x4 distinct-lane cross-validation failed\n");
+		status = EXIT_FAILURE;
+	}
+
 	return status;
 }
 
@@ -1356,6 +1496,28 @@ int shake_256_x4_kat_test(void) {
 	        || are_equal8(output1, exp1600, 512) == EXIT_FAILURE
 	        || are_equal8(output2, exp1600, 512) == EXIT_FAILURE
 	        || are_equal8(output3, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Verify that distinct non-uniform lane inputs produce distinct, correct
+	   outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
+	   112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
+	   the single-lane one-shot API as the oracle. */
+	uint8_t exp_a[512], exp_b[512];
+	OQS_SHA3_shake256(exp_a, sizeof(exp_a), msg896, sizeof(msg896));
+	OQS_SHA3_shake256(exp_b, sizeof(exp_b), msg1600, sizeof(msg896));
+
+	OQS_SHA3_shake256_x4_inc_init(&state);
+	OQS_SHA3_shake256_x4_inc_absorb(&state, msg896, msg1600, msg896, msg1600, sizeof(msg896));
+	OQS_SHA3_shake256_x4_inc_finalize(&state);
+	OQS_SHA3_shake256_x4_inc_squeeze(output0, output1, output2, output3, sizeof(exp_a), &state);
+	OQS_SHA3_shake256_x4_inc_ctx_release(&state);
+
+	if (are_equal8(output0, exp_a, 512) == EXIT_FAILURE
+	        || are_equal8(output1, exp_b, 512) == EXIT_FAILURE
+	        || are_equal8(output2, exp_a, 512) == EXIT_FAILURE
+	        || are_equal8(output3, exp_b, 512) == EXIT_FAILURE) {
+		printf("ERROR: SHAKE-256 x4 distinct-lane cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
 
