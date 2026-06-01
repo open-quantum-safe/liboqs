@@ -42,12 +42,6 @@ def parse_summary_file(filepath):
         content = f.read()
     
     header_re = re.compile(r'^Testing (?:KEM|SIG): (\S+) \.\.\. (?:PASS|FAIL)', re.MULTILINE)
-    count_re = re.compile(r'(?:→|->)?\s*(?:Found|Reached cap).*?(\d+).*?warnings', re.IGNORECASE)
-
-    matches = list(header_re.finditer(content))
-    for idx, m in enumerate(matches):
-        alg_name = m.group(1)
-
         # Skip SPHINCS and SLH_DSA algorithms
         if 'SPHINCS' in alg_name or 'SLH_DSA' in alg_name:
             continue
@@ -66,14 +60,13 @@ def parse_summary_file(filepath):
     
     return results
 
+# Modify analyze_logs to dynamically process all builds and optimization levels
 def analyze_logs():
-    """
-    Expected layout:
-        <LOG_BASE_DIR>/<BUILD_NAME>/<OPT_LEVEL>/kem/kem_summary_*.txt
-        <LOG_BASE_DIR>/<BUILD_NAME>/<OPT_LEVEL>/sig/sig_summary_*.txt
+    """Walk input log directories and aggregate warning counts dynamically.
+
+=======
     """
 
-    kem_data = defaultdict(lambda: defaultdict(dict))  # {build: {opt: {alg: warnings}}}
     sig_data = defaultdict(lambda: defaultdict(dict))
 
     if not os.path.isdir(LOG_BASE_DIR):

@@ -51,44 +51,19 @@ build() {
                 SUP_FLAGS+=( "-fsanitize-ignorelist=$f" )
             done
 
-            # Create backup files of the original tests files
-            mv "$LIBOQS_DIR/tests/CMakeLists.txt" "$LIBOQS_DIR/tests/CMakeLists.txt.bak"
-            mv "$LIBOQS_DIR/tests/test_kem.c" "$LIBOQS_DIR/tests/test_kem.c.bak"
-            mv "$LIBOQS_DIR/tests/test_sig.c" "$LIBOQS_DIR/tests/test_sig.c.bak"
-
-            # Replace original tests/CMakeLists.txt, test_kem.c, and test_sig.txt for their "MemSan poisoned" version
-            cp "$SCRIPT_DIR/tools/memsan/CMakeLists.txt" "$LIBOQS_DIR/tests/CMakeLists.txt"
-            cp "$SCRIPT_DIR/tools/memsan/test_kem.c" "$LIBOQS_DIR/tests/test_kem.c"
-            cp "$SCRIPT_DIR/tools/memsan/test_sig.c" "$LIBOQS_DIR/tests/test_sig.c"
-            cp "$SCRIPT_DIR/tools/memsan/rng_poison_memsan.c" "$LIBOQS_DIR/tests/rng_poison_memsan.c"
-
             cmake "${CMAKE_ARGS[@]}" \
                 -DBUILD_SHARED_LIBS=ON \
+                -DOQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN=ON \
                 -DCMAKE_C_FLAGS="-fsanitize=memory -fsanitize-recover=all ${SUP_FLAGS[*]} $OPT_FLAG -g" \
                 -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=memory" \
-                -DCMAKE_SHARED_LINKER_FLAGS="-fsanitize=memory" > /dev/null 2>&1
-            cmake --build . -j$(nproc) > /dev/null 2>&1
-
-            # Restore the original test files with the backups
-            mv "$LIBOQS_DIR/tests/CMakeLists.txt.bak" "$LIBOQS_DIR/tests/CMakeLists.txt"
-            mv "$LIBOQS_DIR/tests/test_kem.c.bak" "$LIBOQS_DIR/tests/test_kem.c"
-            mv "$LIBOQS_DIR/tests/test_sig.c.bak" "$LIBOQS_DIR/tests/test_sig.c"
-            rm "$LIBOQS_DIR/tests/rng_poison_memsan.c"
+                -DCMAKE_SHARED_LINKER_FLAGS="-fsanitize=memory"
+            cmake --build . -j$(nproc)
             ;;
         *)
             echo "Unknown tool: $TOOL"; return 1
             ;;
     esac
 }
-
-cleanup() {
-    mv "$LIBOQS_DIR/tests/CMakeLists.txt.bak" "$LIBOQS_DIR/tests/CMakeLists.txt" 2>/dev/null || true
-    mv "$LIBOQS_DIR/tests/test_kem.c.bak" "$LIBOQS_DIR/tests/test_kem.c" 2>/dev/null || true
-    mv "$LIBOQS_DIR/tests/test_sig.c.bak" "$LIBOQS_DIR/tests/test_sig.c" 2>/dev/null || true
-    rm "$LIBOQS_DIR/tests/rng_poison_memsan.c" 2>/dev/null || true
-}
-
-trap cleanup EXIT INT
 
 test() {
     local TOOL=$1
