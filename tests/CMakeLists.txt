@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 option(OQS_ENABLE_TEST_CONSTANT_TIME "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
+option(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN "Build test suite with support for MemorySanitizer-based detection of non-constant time behaviour." OFF)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
@@ -79,7 +80,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
-add_executable(test_kem test_kem.c test_helpers.c)
+add_executable(test_kem test_kem.c test_helpers.c ${TEST_EXTRA_SOURCES})
 target_link_libraries(test_kem PRIVATE ${TEST_DEPS})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
@@ -106,6 +107,13 @@ add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${TEST_DEPS})
 
 set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
+
+# Add the MSan-specific RNG poison helper from the CT tooling directory
+set(TEST_EXTRA_SOURCES "")
+if(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+    list(APPEND TEST_EXTRA_SOURCES ct_tooling/tools/memsan/rng_poison_memsan.c)
+    add_compile_definitions(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+endif()
 
 # SIG API tests
 add_executable(example_sig example_sig.c)
@@ -164,7 +172,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
-add_executable(test_sig test_sig.c test_helpers.c)
+add_executable(test_sig test_sig.c test_helpers.c ${TEST_EXTRA_SOURCES})
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     # workaround for Windows .dll

@@ -23,6 +23,10 @@
 #include "system_info.c"
 #include "test_helpers.h"
 
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#include <sanitizer/msan_interface.h>
+#endif
+
 #ifdef OQS_ENABLE_KEM_ML_KEM
 /* mlkem rejection key testcase */
 static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secret_key) {
@@ -201,6 +205,9 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 			OQS_randombytes(keypair_seed, kem->length_keypair_seed);
 		}
 		rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, keypair_seed);
+	#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+		__msan_unpoison(public_key, kem->length_public_key); // Unpoison the public key so MemSan doesn't warn on its use
+	#endif
 		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (kem->length_keypair_seed == 0) {
 			// If length_keypair_seed is set to 0 for this KEM scheme, a failure is expected
@@ -219,6 +226,9 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		}
 	} else {
 		rc = OQS_KEM_keypair(kem, public_key, secret_key);
+	#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+		__msan_unpoison(public_key, kem->length_public_key); // Unpoison the public key so MemSan doesn't warn on its use
+	#endif
 		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");

@@ -20,6 +20,7 @@ The following options can be passed to CMake before the build file generation pr
 - [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
+- [OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN](#OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 - [OQS_MEMOPT_BUILD](#OQS_MEMOPT_BUILD)
@@ -238,9 +239,11 @@ This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE
 
 **Default**: Unset.
 
-## OQS_ENABLE_TEST_CONSTANT_TIME
+## OQS_ENABLE_TEST_CONSTANT_TIME and OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 
-This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.  
+This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.
+
+Similarly, OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN enables constant-time testing using Clang's MemorySanitizer.
 
 See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more usage information.
 
