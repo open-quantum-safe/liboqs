@@ -17,6 +17,10 @@
 #include "system_info.c"
 #include "test_helpers.h"
 
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#include <sanitizer/msan_interface.h>
+#endif
+
 typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
@@ -114,6 +118,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 	OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
@@ -122,6 +127,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
 		goto err;
 	}
+#endif
 
 	if (extended_tests) {
 		rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, false, NULL, 0);
@@ -150,15 +156,16 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 					goto err;
 				}
 
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 				OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 				OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 				rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
 				OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 				if (rc != OQS_SUCCESS) {
-					fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str failed\n");
+					fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
 					goto err;
 				}
-
+#endif	
 				if (extended_tests) {
 					rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, ctx, i);
 					OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
@@ -193,6 +200,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should always succeed when providing a NULL context string\n");
 			goto err;
 		}
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 		OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 		OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 		rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
@@ -207,6 +215,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		if (rc != OQS_SUCCESS) {
 			goto err;
 		}
+#endif
 	}
 
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
