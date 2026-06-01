@@ -35,13 +35,15 @@ extern "C" {
 #define IGNORE_UNUSED_FUNC
 #endif
 
-/**
- * Value barrier: prevent compiler from optimizing on secret values
- */
 #if defined(OQS_DISABLE_MEM_BLACK_BOX)
 
 #warning "DANGER: OQS_DISABLE_MEM_BLACK_BOX is for internal testing only"
 #warning "disabling memory value barrier may introduce timing side channels"
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief Optimization barrier is disabled explicitly
+ */
 #define OQS_MEM_BLACK_BOX(v) (void)v
 
 #elif defined(__GNUC__) || defined(__clang__)
@@ -58,38 +60,18 @@ extern "C" {
     } while (0)
 
 #else
-/* The fallback implementation: pure C, no inline assembly, portable */
 
-#pragma message("OQS_MEM_BLACK_BOX: unrecognised compiler. "                   \
-                "Falling back to volatile round-trip. "                        \
-                "Verify generated assembly for constant-time correctness.")
-
-static inline void oqs_black_box_fallback(volatile void *p,
-        size_t sz) IGNORE_UNUSED_FUNC;
-
-static inline void oqs_black_box_fallback(volatile void *p,
-        size_t sz) {
-	volatile unsigned char *q = (volatile unsigned char *)p;
-	unsigned char tmp;
-	size_t i;
-	for (i = 0; i < sz; i++) {
-		tmp = q[i];
-		q[i] = tmp;
-	}
-}
-
+#pragma message("WARNING: non-GNUC/Clang toolchain detected. liboqs cannot     \
+                 guarantee optimization barrier on unsupported platforms.      \
+                 Compiler may introduce cache timing side channels. Please     \
+                 verify generated assembly and proceed with caution.")
 /**
  * @def OQS_MEM_BLACK_BOX
  *
- * @brief prevent compiler from optimizing on secret values. Where inline ASM
- * is not supported, use a forced memory round trip.
- *
- * TODO: this is a best effort implementation that provides no guarantee; the
- * forced memory round trip could also incur significant performance penalty if
- * the input array is large.
+ * @brief On non-GNUC/Clang platforms, liboqs does not provide optimization
+ * barrier guarantees
  */
-#define OQS_MEM_BLACK_BOX(v)                                                   \
-    oqs_black_box_fallback((volatile void *)&(v), sizeof(v))
+#define OQS_MEM_BLACK_BOX(v) (void)v
 #endif
 
 /**
