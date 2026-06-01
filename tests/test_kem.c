@@ -23,6 +23,10 @@
 #include "system_info.c"
 #include "test_helpers.h"
 
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#include <sanitizer/msan_interface.h>
+#endif
+
 #ifdef OQS_ENABLE_KEM_ML_KEM
 /* mlkem rejection key testcase */
 static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secret_key) {
