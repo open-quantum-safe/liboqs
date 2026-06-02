@@ -19,8 +19,8 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
 - [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
-- [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
-- [OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN](#OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+- [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME/OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+- [OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN](#OQS_ENABLE_TEST_CONSTANT_TIME/OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 - [OQS_MEMOPT_BUILD](#OQS_MEMOPT_BUILD)
@@ -239,7 +239,7 @@ This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE
 
 **Default**: Unset.
 
-## OQS_ENABLE_TEST_CONSTANT_TIME and OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
+## OQS_ENABLE_TEST_CONSTANT_TIME/OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 
 This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.
 
@@ -250,6 +250,8 @@ See the documentation in [`tests/test_constant_time.py`](https://github.com/open
 When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is made available to control whether liboqs is built using `-O3` optimization, as in a release build, or using the default "Debug" profile. By default, `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is `OFF`.
 
 **Default**: `OFF`.
+
+### OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 
 ## OQS_STRICT_WARNINGS
 
