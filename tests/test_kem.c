@@ -205,9 +205,9 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 			OQS_randombytes(keypair_seed, kem->length_keypair_seed);
 		}
 		rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, keypair_seed);
-	#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 		__msan_unpoison(public_key, kem->length_public_key); // Unpoison the public key so MemSan doesn't warn on its use
-	#endif
+#endif
 		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (kem->length_keypair_seed == 0) {
 			// If length_keypair_seed is set to 0 for this KEM scheme, a failure is expected
@@ -226,9 +226,9 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		}
 	} else {
 		rc = OQS_KEM_keypair(kem, public_key, secret_key);
-	#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 		__msan_unpoison(public_key, kem->length_public_key); // Unpoison the public key so MemSan doesn't warn on its use
-	#endif
+#endif
 		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");

@@ -3,6 +3,13 @@
 option(OQS_ENABLE_TEST_CONSTANT_TIME "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
 option(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN "Build test suite with support for MemorySanitizer-based detection of non-constant time behaviour." OFF)
 
+# Add the MemSan RNG poison file from the CT tooling directory
+set(TEST_EXTRA_SOURCES "")
+if(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+    list(APPEND TEST_EXTRA_SOURCES ct_tooling/tools/memsan/rng_poison_memsan.c)
+    add_compile_definitions(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+endif()
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wbad-function-cast)
@@ -107,13 +114,6 @@ add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${TEST_DEPS})
 
 set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
-
-# Add the MSan-specific RNG poison helper from the CT tooling directory
-set(TEST_EXTRA_SOURCES "")
-if(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
-    list(APPEND TEST_EXTRA_SOURCES ct_tooling/tools/memsan/rng_poison_memsan.c)
-    add_compile_definitions(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
-endif()
 
 # SIG API tests
 add_executable(example_sig example_sig.c)

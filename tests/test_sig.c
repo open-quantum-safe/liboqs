@@ -163,7 +163,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 					fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
 					goto err;
 				}
-#endif	
+#endif
 				if (extended_tests) {
 					rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, ctx, i);
 					OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
