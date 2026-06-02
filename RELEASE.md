@@ -169,6 +169,8 @@ no external effect and is ignored -->
 - Unpined OQS_MINIMAL_BUILD alg list link from specific commit
 [#2326](https://github.com/open-quantum-safe/liboqs/pull/2326)
 
+<!-- TODO: comb through new contributors -->
+
 ### New contributors
 
 - Anthony Plank (report SHA3 AVX512VL comment in #2438)
