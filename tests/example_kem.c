@@ -14,6 +14,8 @@
 
 #include <oqs/oqs.h>
 
+int d;
+
 /* Cleaning up memory etc */
 void cleanup_stack(uint8_t *secret_key, size_t secret_key_len,
                    uint8_t *shared_secret_e, uint8_t *shared_secret_d,
