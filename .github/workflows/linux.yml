@@ -137,6 +137,16 @@ jobs:
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}" -DOQS_ENABLE_SIG_SLH_DSA=OFF
             PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
+            - name: ppc64
+            runner: [self-hosted, ppc64]
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON
+            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+          - name: s390x
+            runner: [self-hosted, s390x]
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON
+            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: noble-no-sha3-avx512vl
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
