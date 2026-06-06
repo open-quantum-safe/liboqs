@@ -15,56 +15,6 @@ on:
 jobs:
   resolve-matrix:
     runs-on: ubuntu-latest
-<<<<<<< HEAD
-    permissions:
-      contents: write
-      actions: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-
-      - name: Install Python deps
-        run: python -m pip install pytest requests
-
-      - name: Generate algorithm list
-        id: set
-        run: |
-          python3 - <<'PY'
-          import os, sys
-          sys.path.insert(0, 'tests')
-          import helpers
-          algs = helpers.available_kems_by_name() + helpers.available_sigs_by_name()
-          interactive_yaml = (
-              "fields:\n"
-              "  - label: runtime-options\n"
-              "    properties:\n"
-              "      description: Choose one or more algorithms to execute constant-time testing on\n"
-              "      display: Select the algorithm(s) to execute constant-time testing on\n"
-              "      type: multiselect\n"
-              "      choices:\n"
-          )
-          for a in algs:
-              interactive_yaml += f"        - {a}\n"
-          interactive_yaml += "      required: true\n"
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as gout:
-              gout.write('interactive<<EOF\n')
-              gout.write(interactive_yaml)
-              gout.write('EOF\n')
-          PY
-
-      - name: Example Interactive Inputs Step
-        id: interactive-inputs
-        uses: boasiHQ/interactive-inputs@v2
-        with:
-          timeout: 300
-          title: Select algorithm(s) for CT Testing
-          interactive: ${{ steps.set.outputs.interactive }}
-          notifier-slack-enabled: "false"
-          notifier-discord-enabled: "false"
-          github-token: ${{ github.token }}
-          ngrok-authtoken: ${{ secrets.NGROK_AUTHTOKEN }}
-=======
->>>>>>> user-chooses
     outputs:
       matrix: ${{ steps.algs.outputs.matrix }}
     steps:
@@ -72,12 +22,14 @@ jobs:
       - run: python -m pip install pytest requests
       - name: Resolve algorithm list
         id: algs
+        env:
+          ALGORITHMS_INPUT: ${{ github.event.inputs.algorithms }}
         run: |
           python3 - <<'PY'
           import os, sys, json
           sys.path.insert(0, 'tests')
           import helpers
-          requested = "${{ github.event.inputs.algorithms }}".strip()
+          requested = os.environ["ALGORITHMS_INPUT"].strip()
           all_algs = helpers.available_kems_by_name() + helpers.available_sigs_by_name()
           requested_set = { a.strip() for a in requested.split(',')}
           invalid_algorithms = requested_set - set(all_algs)
@@ -99,24 +51,15 @@ jobs:
         algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
         compiler: [gcc, clang]
         liboqs_build: [generic, auto]
-        opt_flag: [-O0, -O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-tree-vectorize", "-O3 -fno-tree-vectorize"]
+        opt_flag: [-O0, -O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-tree-vectorize", "-O3 -fno-tree-vectorize", "-O2 -fno-vectorize", "-O3 -fno-vectorize"]
         exclude:
           - compiler: clang
             opt_flag: "-O2 -fno-tree-vectorize"
           - compiler: clang
             opt_flag: "-O3 -fno-tree-vectorize"
-        include:
-          - compiler: clang
-            liboqs_build: generic
+          - compiler: gcc
             opt_flag: "-O2 -fno-vectorize"
-          - compiler: clang
-            liboqs_build: auto
-            opt_flag: "-O2 -fno-vectorize"
-          - compiler: clang
-            liboqs_build: generic
-            opt_flag: "-O3 -fno-vectorize"
-          - compiler: clang
-            liboqs_build: auto
+          - compiler: gcc
             opt_flag: "-O3 -fno-vectorize"
       max-parallel: 5
     steps:
