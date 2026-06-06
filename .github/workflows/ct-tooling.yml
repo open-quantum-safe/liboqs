@@ -5,10 +5,17 @@ permissions:
 
 on:
   workflow_dispatch:
+    inputs:
+      algorithms:
+        description: 'Algorithms to execute CT testing on (comma-separated)'
+        required: true
+        type: string
+        default: 'ML-KEM-512,ML-KEM-768,ML-KEM-1024'
 
 jobs:
-  interactive-inputs:
+  resolve-matrix:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
     permissions:
       contents: write
       actions: write
@@ -56,16 +63,40 @@ jobs:
           notifier-discord-enabled: "false"
           github-token: ${{ github.token }}
           ngrok-authtoken: ${{ secrets.NGROK_AUTHTOKEN }}
+=======
+>>>>>>> user-chooses
     outputs:
-      runtime-options: ${{ steps.interactive-inputs.outputs.runtime-options }}
+      matrix: ${{ steps.algs.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - run: python -m pip install pytest requests
+      - name: Resolve algorithm list
+        id: algs
+        run: |
+          python3 - <<'PY'
+          import os, sys, json
+          sys.path.insert(0, 'tests')
+          import helpers
+          requested = "${{ github.event.inputs.algorithms }}".strip()
+          all_algs = helpers.available_kems_by_name() + helpers.available_sigs_by_name()
+          requested_set = { a.strip() for a in requested.split(',')}
+          invalid_algorithms = requested_set - set(all_algs)
+          if invalid_algorithms:
+            print(f"Invalid algorithms: {invalid_algorithms}", file=sys.stderr)
+            sys.exit(1)
+          selected_algorithms = [a for a in all_algs if a in requested_set]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f"matrix={json.dumps(selected_algorithms)}\n")
+          PY
 
   valgrind-varlat:
-    needs: [interactive-inputs]
+    needs: [resolve-matrix]
     runs-on: ubuntu-latest
     container:
       image: openquantumsafe/ci-ubuntu-latest:latest
     strategy:
       matrix:
+        algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
         compiler: [gcc, clang]
         liboqs_build: [generic, auto]
         opt_flag: [-O0, -O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-tree-vectorize", "-O3 -fno-tree-vectorize"]
@@ -123,15 +154,14 @@ jobs:
 
       - name: Run valgrind_varlat tests
         shell: bash
+        env:
+          OPT_FLAG: ${{ matrix.opt_flag }}
+          ALGORITHM: ${{ matrix.algorithm }}
         run: |
           set -eu -o pipefail
           cd "$GITHUB_WORKSPACE/tests/ct_tooling"
           chmod +x ct_test.sh
-          raw_algs="${{ needs.interactive-inputs.outputs.runtime-options }}"
-          IFS=',' read -r -a algs <<< "$raw_algs"    # convert to array
-          for alg in "${algs[@]}"; do
-            ./ct_test.sh valgrind-varlat ${{ matrix.compiler }} ${{ matrix.liboqs_build }} ${{ matrix.opt_flag }} "$alg"
-          done
+          ./ct_test.sh valgrind-varlat ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$ALGORITHM"
 
       - name: Upload valgrind_varlat logs
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
@@ -141,12 +171,13 @@ jobs:
             tests/ct_tooling/tools/valgrind_varlat/logs/**
 
   memsan:
-    needs: [interactive-inputs]
+    needs: [resolve-matrix]
     runs-on: ubuntu-latest
     container:
       image: openquantumsafe/ci-ubuntu-latest:latest
     strategy:
       matrix:
+        algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
         compiler: [clang]
         liboqs_build: [generic, auto]
         opt_flag: [-O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-vectorize", "-O3 -fno-vectorize"]
@@ -157,15 +188,14 @@ jobs:
 
       - name: Run memsan tests
         shell: bash
+        env:
+          OPT_FLAG: ${{ matrix.opt_flag }}
+          ALGORITHM: ${{ matrix.algorithm }}
         run: |
           set -eu -o pipefail
           cd "$GITHUB_WORKSPACE/tests/ct_tooling"
           chmod +x ct_test.sh
-          raw_algs="${{ needs.interactive-inputs.outputs.runtime-options }}"
-          IFS=',' read -r -a algs <<< "$raw_algs"    # convert to array
-          for alg in "${algs[@]}"; do
-            ./ct_test.sh memsan ${{ matrix.compiler }} ${{ matrix.liboqs_build }} ${{ matrix.opt_flag }} "$alg"
-          done
+          ./ct_test.sh memsan ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$ALGORITHM"
 
       - name: Upload memsan logs
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
