@@ -19,7 +19,7 @@ jobs:
       matrix: ${{ steps.algs.outputs.matrix }}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
-      - run: python -m pip install pytest requests
+      - run: python -m pip install --require-hashes -r .github/workflows/requirements.txt
       - name: Resolve algorithm list
         id: algs
         env:

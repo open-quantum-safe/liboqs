@@ -3,13 +3,6 @@
 option(OQS_ENABLE_TEST_CONSTANT_TIME "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
 option(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN "Build test suite with support for MemorySanitizer-based detection of non-constant time behaviour." OFF)
 
-# Add the MemSan RNG poison file from the CT tooling directory
-set(TEST_EXTRA_SOURCES "")
-if(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
-    list(APPEND TEST_EXTRA_SOURCES ct_tooling/tools/memsan/rng_poison_memsan.c)
-    add_compile_definitions(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
-endif()
-
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wbad-function-cast)
@@ -87,7 +80,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
-add_executable(test_kem test_kem.c test_helpers.c ${TEST_EXTRA_SOURCES})
+add_executable(test_kem test_kem.c test_helpers.c)
 target_link_libraries(test_kem PRIVATE ${TEST_DEPS})
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
@@ -173,7 +166,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
-add_executable(test_sig test_sig.c test_helpers.c ${TEST_EXTRA_SOURCES})
+add_executable(test_sig test_sig.c test_helpers.c)
 target_link_libraries(test_sig PRIVATE ${TEST_DEPS})
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     # workaround for Windows .dll
@@ -237,6 +230,12 @@ endif()
 if(OQS_ENABLE_TEST_CONSTANT_TIME AND NOT OQS_DEBUG_BUILD)
     message(WARNING "OQS_ENABLE_TEST_CONSTANT_TIME is incompatible with CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}.")
     set(OQS_ENABLE_TEST_CONSTANT_TIME OFF)
+endif()
+
+# Enable MemSan-based timing side-channel analysis for test_kem and test_sig
+if(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN AND NOT OQS_DEBUG_BUILD)
+    message(WARNING "OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN is incompatible with CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}.")
+    set(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN OFF)
 endif()
 
 # Record compile options -- from target speed_kem - don't set any options only for speed_kem!

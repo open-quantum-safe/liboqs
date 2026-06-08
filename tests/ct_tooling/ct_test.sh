@@ -56,8 +56,8 @@ build() {
                 -DOQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN=ON \
                 -DCMAKE_C_FLAGS="-fsanitize=memory -fsanitize-recover=all ${SUP_FLAGS[*]} $OPT_FLAG -g" \
                 -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=memory" \
-                -DCMAKE_SHARED_LINKER_FLAGS="-fsanitize=memory"
-            cmake --build . -j$(nproc)
+                -DCMAKE_SHARED_LINKER_FLAGS="-fsanitize=memory" > /dev/null 2>&1
+            cmake --build . -j$(nproc) > /dev/null 2>&1
             ;;
         *)
             echo "Unknown tool: $TOOL"; return 1
