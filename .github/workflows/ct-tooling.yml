@@ -11,6 +11,12 @@ on:
         required: true
         type: string
         default: 'ML-KEM-512,ML-KEM-768,ML-KEM-1024'
+        
+  workflow_call:
+    inputs:
+      algorithms:
+        required: true
+        type: string
 
 jobs:
   resolve-matrix:
@@ -23,7 +29,7 @@ jobs:
       - name: Resolve algorithm list
         id: algs
         env:
-          ALGORITHMS_INPUT: ${{ github.event.inputs.algorithms }}
+          ALGORITHMS_INPUT: ${{ inputs.algorithms }}
         run: |
           python3 - <<'PY'
           import os, sys, json
@@ -73,20 +79,20 @@ jobs:
           INSTALL_PREFIX="$PWD/valgrind_varlat"
 
           echo "Cloning Valgrind's source code"
-          git clone git://sourceware.org/git/valgrind.git valgrind_varlat_src> /dev/null 2>&1
+          git clone git://sourceware.org/git/valgrind.git valgrind_varlat_src
           cd valgrind_varlat_src
-          git checkout 112f1080b7c21e37dfce0a2e589d0dc7aa115afa > /dev/null 2>&1
+          git checkout 112f1080b7c21e37dfce0a2e589d0dc7aa115afa
 
           echo "Applying Kyberslash patch"
-          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-try-patch-20250805.txt" > /dev/null 2>&1
-          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-patch-20250805.txt" > /dev/null 2>&1
-          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-sup-block.txt" > /dev/null 2>&1
+          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-try-patch-20250805.txt"
+          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-patch-20250805.txt"
+          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-sup-block.txt"
 
           echo "Building Valgrind-Varlat"
-          ./autogen.sh > /dev/null 2>&1
-          ./configure --prefix="$INSTALL_PREFIX" > /dev/null 2>&1
-          make -j"$(nproc)" > /dev/null 2>&1
-          make install > /dev/null 2>&1
+          ./autogen.sh
+          ./configure --prefix="$INSTALL_PREFIX"
+          make -j"$(nproc)"
+          make install
 
           mv "$INSTALL_PREFIX/bin/valgrind" "$INSTALL_PREFIX/bin/valgrind_varlat"
           chmod -R u+rwX "$INSTALL_PREFIX"
