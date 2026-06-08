@@ -110,7 +110,8 @@ no external effect and is ignored -->
 
 - Added NIST LMS Signature verify KATs
 [#2435](https://github.com/open-quantum-safe/liboqs/pull/2435)
-- Fixed comments on SHA3-AVX512VL assembly file
+- Fixed comments on SHA3-AVX512VL assembly file. Thank you Anthony Plank for
+reporting the issue
 [#2438](https://github.com/open-quantum-safe/liboqs/pull/2438)
 - Fixed latent warnings exposed by refreshed CI container images
 [#2430](https://github.com/open-quantum-safe/liboqs/pull/2430)
@@ -173,18 +174,14 @@ no external effect and is ignored -->
 
 ### New contributors
 
-- Anthony Plank (report SHA3 AVX512VL comment in #2438)
 - Vishnu Ajith (@Vishnu2707)
-- William Bates
-- Marco Gianvecchio for authoring 25d0a9e
-- Nelonn
-- Abhi S
-- Ryad Benadjila <ryadbenadjila@gmail.com>
-- Billy Brumley <bbb@iki.fi>
-- Tobias Frauenschläger <t.frauenschlaeger@me.com>
-- saanvi ratra <saanvisaanvi358@gmail.com>
-- Harshith Vasireddy <34184577+ode@users.noreply.github.com>
-- Nathaniel Brough <nathaniel.brough@gmail.com>
-- Laugenbraue <36441810+mmarock@users.noreply.github.com>
-- Sam Van de Velde <58397500+samvandevelde@users.noreply.github.com>
-- Emil Lundberg <emil@emlun.se>
+- William Bates (@will-bates11)
+- Nelonn (@Nelonn)
+- Abhi S (@abhi-dev-engg)
+- Ryad Benadjila (@rben-dev)
+- Billy Brumley (@bbbrumley)
+- saanvi ratra (@Anusaa35)
+- Harshith Vasireddy (@ode)
+- Laugenbraue (@mmarock)
+- Sam Van de Velde (@samvandevelde)
+- Emil Lundberg (@emlun)
