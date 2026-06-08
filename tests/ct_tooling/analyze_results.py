@@ -41,7 +41,12 @@ def parse_summary_file(filepath):
     with open(filepath, 'r') as f:
         content = f.read()
     
-    header_re = re.compile(r'^Testing (?:KEM|SIG): (\S+) \.\.\. (?:PASS|FAIL)', re.MULTILINE)
+    header_re = re.compile(r'^Testing (?:KEM:|SIG:|)\s*(\S+) \.\.\. (?:PASS|FAIL)', re.MULTILINE)
+    count_re = re.compile(r'Found (\d+) (?:Valgrind|MemSan|)?\s*warnings')
+
+    matches = list(header_re.finditer(content))
+    for idx, m in enumerate(matches):
+        alg_name = m.group(1)
         # Skip SPHINCS and SLH_DSA algorithms
         if 'SPHINCS' in alg_name or 'SLH_DSA' in alg_name:
             continue
@@ -63,10 +68,8 @@ def parse_summary_file(filepath):
 # Modify analyze_logs to dynamically process all builds and optimization levels
 def analyze_logs():
     """Walk input log directories and aggregate warning counts dynamically.
-
-=======
     """
-
+    kem_data = defaultdict(lambda: defaultdict(dict))
     sig_data = defaultdict(lambda: defaultdict(dict))
 
     if not os.path.isdir(LOG_BASE_DIR):
@@ -82,7 +85,7 @@ def analyze_logs():
                 if not os.path.isdir(test_dir):
                     continue
 
-                for summary_file in glob.glob(os.path.join(test_dir, f'{test_type}_summary_*.txt')):
+                for summary_file in glob.glob(os.path.join(test_dir, f'{test_type}_summary*.txt')):
                     results = parse_summary_file(summary_file)
                     if test_type == 'kem':
                         kem_data[build_name][opt_level].update(results)
@@ -119,7 +122,7 @@ def generate_csv_file(data, alg_type, opt_levels, output_dir):
         for alg in all_algs:
             row = [alg]
             for opt in opt_levels:
-                row.append(data[opt].get(alg, 'N/A'))
+                row.append(data.get(opt, {}).get(alg, 'N/A'))
             writer.writerow(row)
 
 def heatmap_warnings_per_alg_and_opt_level(data, opt_levels, alg_type, tool, output_dir):
@@ -131,7 +134,7 @@ def heatmap_warnings_per_alg_and_opt_level(data, opt_levels, alg_type, tool, out
     all_algs = set()
     for opt in opt_levels:
         all_algs.update(data.get(opt, {}).keys())
-        alg_total = {alg: sum([data.get(opt, {}).get(alg, 0) for opt in opt_levels]) for alg in all_algs}
+    alg_total = {alg: sum([data.get(opt, {}).get(alg, 0) for opt in opt_levels]) for alg in all_algs}
     alg_names = [a for a, _ in sorted(alg_total.items(), key=lambda x: (-x[1], _norm_name(x[0])))]
     
     matrix = np.zeros((len(alg_names), len(opt_levels)), dtype=int)
@@ -179,8 +182,8 @@ def bar_chart_total_warnings_per_opt_level(kem_data, sig_data, opt_levels, tool,
 
     fig, ax = plt.subplots(figsize=(14, 6))
     
-    kem_totals = [sum(kem_data[opt].values()) for opt in opt_levels]
-    sig_totals = [sum(sig_data[opt].values()) for opt in opt_levels]
+    kem_totals = [sum(kem_data.get(opt, {}).values()) for opt in opt_levels]
+    sig_totals = [sum(sig_data.get(opt, {}).values()) for opt in opt_levels]
 
     x = np.arange(len(opt_levels))
     width = 0.35
@@ -217,20 +220,35 @@ def line_chart_avg_warnings_per_opt_level(kem_data, sig_data, opt_levels, tool, 
     plt.close()
 
 def generate_reports(kem_data, sig_data):
-    for build_name in kem_data.keys():
+    all_builds = set(kem_data.keys()).union(sig_data.keys())
+    for build_name in all_builds:
         build_output_dir = os.path.join(OUTPUT_DIR, build_name)
         os.makedirs(build_output_dir, exist_ok=True)
 
-        opt_levels = sort_optimization_levels(kem_data[build_name].keys())
+        opt_levels = set(kem_data.get(build_name, {}).keys()).union(sig_data.get(build_name, {}).keys())
+        opt_levels = sort_optimization_levels(opt_levels)
 
-        generate_csv_file(kem_data[build_name], 'KEM', opt_levels, build_output_dir)
-        generate_csv_file(sig_data[build_name], 'SIG', opt_levels, build_output_dir)
+        if build_name in kem_data and kem_data[build_name]:
+            generate_csv_file(kem_data[build_name], 'KEM', opt_levels, build_output_dir)
+            heatmap_warnings_per_alg_and_opt_level(kem_data[build_name], opt_levels, 'KEM', args.tool, build_output_dir)
+        if build_name in sig_data and sig_data[build_name]:
+            generate_csv_file(sig_data[build_name], 'SIG', opt_levels, build_output_dir)
+            heatmap_warnings_per_alg_and_opt_level(sig_data[build_name], opt_levels, 'SIG', args.tool, build_output_dir)
 
-        heatmap_warnings_per_alg_and_opt_level(kem_data[build_name], opt_levels, 'KEM', args.tool, build_output_dir)
-        heatmap_warnings_per_alg_and_opt_level(sig_data[build_name], opt_levels, 'SIG', args.tool, build_output_dir)
-
-        bar_chart_total_warnings_per_opt_level(kem_data[build_name], sig_data[build_name], opt_levels, args.tool, build_output_dir)
-        line_chart_avg_warnings_per_opt_level(kem_data[build_name], sig_data[build_name], opt_levels, args.tool, build_output_dir)
+        bar_chart_total_warnings_per_opt_level(
+            kem_data.get(build_name, {}), 
+            sig_data.get(build_name, {}), 
+            opt_levels, 
+            args.tool, 
+            build_output_dir
+        )
+        line_chart_avg_warnings_per_opt_level(
+            kem_data.get(build_name, {}), 
+            sig_data.get(build_name, {}), 
+            opt_levels, 
+            args.tool, 
+            build_output_dir
+        )
 
 def main():
     kem_data, sig_data = analyze_logs()
