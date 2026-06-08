@@ -13,7 +13,7 @@
 #include <valgrind/memcheck.h>
 #define OQS_TEST_CT_CLASSIFY(addr, len)    VALGRIND_MAKE_MEM_UNDEFINED(addr, len)
 #define OQS_TEST_CT_DECLASSIFY(addr, len)  VALGRIND_MAKE_MEM_DEFINED(addr, len)
-#elif defined(__SANITIZE_MEMORY__)
+#elif defined(__SANITIZE_MEMORY__) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 #include <sanitizer/msan_interface.h>
 #define OQS_TEST_CT_CLASSIFY(addr, len)    __msan_poison(addr, len)
 #define OQS_TEST_CT_DECLASSIFY(addr, len)  __msan_unpoison(addr, len)
