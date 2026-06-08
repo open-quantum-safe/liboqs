@@ -378,7 +378,7 @@ int main(int argc, char **argv) {
 	}
 #endif
 
-#if OQS_USE_PTHREADS && !defined(OQS_ENABLE_TEST_CONSTANT_TIME) || !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if OQS_USE_PTHREADS && (!defined(OQS_ENABLE_TEST_CONSTANT_TIME) && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN))
 #define MAX_LEN_SIG_NAME_ 64
 	// don't run algorithms with large stack usage in threads
 	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5", "cross-rsdp-128-small", "cross-rsdp-192-small", "cross-rsdp-256-balanced", "cross-rsdp-256-small", "cross-rsdpg-192-small", "cross-rsdpg-256-small", "SNOVA_III_K", "SNOVA_III_K_AES", "SNOVA_III_B", "SNOVA_III_B_AES", "SNOVA_III_S", "SNOVA_III_S_AES", "SNOVA_V_K", "SNOVA_V_K_AES", "SNOVA_V_B", "SNOVA_V_B_AES", "SNOVA_V_S", "SNOVA_V_S_AES", "mqom3_cat1_gf16_fast_ct", "mqom3_cat1_gf16_fast_ot", "mqom3_cat1_gf16_short_ct", "mqom3_cat1_gf16_short_ot", "mqom3_cat1_gf2_shorter_ct", "mqom3_cat1_gf2_shorter_ot", "mqom3_cat3_gf16_fast_ct", "mqom3_cat3_gf16_fast_ot", "mqom3_cat3_gf16_short_ct", "mqom3_cat3_gf16_short_ot", "mqom3_cat3_gf2_shorter_ct", "mqom3_cat3_gf2_shorter_ot", "mqom3_cat5_gf16_fast_ct", "mqom3_cat5_gf16_fast_ot", "mqom3_cat5_gf16_short_ct", "mqom3_cat5_gf16_short_ot", "mqom3_cat5_gf2_shorter_ct", "mqom3_cat5_gf2_shorter_ot"};

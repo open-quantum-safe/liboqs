@@ -1,6 +1,6 @@
 # Constant-Time Tooling
 
-Framework constant-time testing of liboqs across compilers, optimization flags, and `OQS_OPT_TARGET` build modes.
+Framework for constant-time testing of liboqs across compilers, optimization flags, and `OQS_OPT_TARGET` build modes.
 
 ## Repository Structure
 
