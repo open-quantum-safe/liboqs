@@ -7,14 +7,14 @@
 - **Authors' website**: https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/final
 - **Specification version**: ML-DSA.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-code-package/mldsa-native/commit/db65535319d9750d75d34c6d170677415f9d2c46
+  - **Source**: https://github.com/pq-code-package/mldsa-native/commit/9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
   - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
 - **Optimized Implementation sources**:
   - **x86_64**:<a name="x86_64"></a>
-      - **Source**: https://github.com/pq-code-package/mldsa-native/commit/db65535319d9750d75d34c6d170677415f9d2c46
+      - **Source**: https://github.com/pq-code-package/mldsa-native/commit/9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
       - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
   - **aarch64**:<a name="aarch64"></a>
-      - **Source**: https://github.com/pq-code-package/mldsa-native/commit/db65535319d9750d75d34c6d170677415f9d2c46
+      - **Source**: https://github.com/pq-code-package/mldsa-native/commit/9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
       - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
 
 

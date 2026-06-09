@@ -17,6 +17,75 @@
 #include "hss.h"
 
 /*
+ * Classify a serialized public key buffer as HSS or LMS by correlating its
+ * leading fields with the incremental-signature header.
+ *
+ * Public-key layouts (RFC 8554, sec. 5.3 and 6.1):
+ *   - HSS pk: u32(L) || u32(lm_type) || u32(lm_ots) || I || T[1]
+ *   - LMS pk:           u32(lm_type) || u32(lm_ots) || I || T[1]
+ *
+ * signature header :
+ *   sig[]   = u32(L-1) || u32(q) || u32(lm_ots) ...
+ *                     L = (the HSS level count minus one)
+ * Therefore, for an HSS public key, sig[0..3] + 1 must equal pk[0..3] and the
+ * resulting level count must be a valid HSS level (1..MAX_HSS_LEVELS). As a
+ * cross-check, pk[4..7] is required to be a valid LMS type for HSS 
+ * and pk[8..11] is required to be a valid LM-OTS type for LMS;
+ * Further, the signature LM-OTS types must those present in the public key.
+ */
+static bool is_hss_public_key(const unsigned char *public_key,
+                              const unsigned char *signature) {
+	uint_fast32_t sig_levels =
+	    (uint_fast32_t)get_bigendian(signature, 4) + 1;
+    uint_fast32_t sig_lm_ots  = (uint_fast32_t)get_bigendian(signature + 8, 4);
+	uint_fast32_t pk_levels   = (uint_fast32_t)get_bigendian(public_key, 4);
+	uint_fast32_t pk_lm_type  = (uint_fast32_t)get_bigendian(public_key + 4, 4);
+    uint_fast32_t pk_lm_ots   = (uint_fast32_t)get_bigendian(public_key + 8, 4);
+
+	if (sig_levels < MIN_HSS_LEVELS || sig_levels > MAX_HSS_LEVELS) {
+		return false;
+	}
+	if (pk_levels != sig_levels) {
+		return false;
+	}
+    if (pk_lm_ots != sig_lm_ots) {
+        return false;
+    }
+	return oqs_lms_type_list_contains(pk_lm_type) && oqs_lmots_type_list_contains(pk_lm_ots);
+}
+
+/*
+ * Parse a public key buffer as a serialized LMS or HSS public key.
+ * Returns 0 on failure; 1 for a single-tree LMS public key; or the HSS level
+ * count (from the first four bytes) when the buffer matches the HSS layout.
+ * Validate by matching the fields in the signature buffer.
+ */
+static uint_fast32_t public_key_levels(const unsigned char *public_key,
+                                       const unsigned char *signature) {
+	param_set_t w0 = (param_set_t)get_bigendian(public_key, 4);
+	param_set_t w1 = (param_set_t)get_bigendian(public_key + 4, 4);
+	param_set_t w2 = (param_set_t)get_bigendian(public_key + 8, 4);
+
+	if (is_hss_public_key(public_key, signature)) {
+		uint_fast32_t levels = (uint_fast32_t)w0;
+		if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS) {
+			return 0;
+		}
+		if (!oqs_lms_type_list_contains(w1) || !oqs_lmots_type_list_contains(w2)) {
+			return 0;
+		}
+
+		return levels;
+	}
+
+	if (oqs_lms_type_list_contains(w0) && oqs_lmots_type_list_contains(w1)) {
+		return 1;
+	}
+
+	return 0;
+}
+
+/*
  * Start the process of validating an HSS signature incrementally. Parameters:
  * ctx - The state we'll use to track the incremental validation
  * public_key - pointer to the public key
@@ -39,7 +108,7 @@ bool hss_validate_signature_init(
                                        /* we got a failure */
 
     const unsigned char *orig_signature = signature;
-;
+
     /* Get the number of levels the signature claims */
     if (signature_len < 4) {
         ctx->status = info->error_code = hss_error_bad_signature;
@@ -47,21 +116,15 @@ bool hss_validate_signature_init(
     }
     uint_fast32_t levels = (uint_fast32_t)get_bigendian( signature, 4 ) + 1;
         /* +1 because what's in the signature is levels-1 */
+    uint_fast32_t pub_levels = public_key_levels(public_key, orig_signature);
+    if (is_hss_public_key(public_key, orig_signature)) {
+        public_key += 4;
+    }
     signature += 4; signature_len -= 4;
-    uint_fast32_t pub_levels = (uint_fast32_t)get_bigendian( public_key, 4 );
-    public_key += 4;
 
     if (levels < MIN_HSS_LEVELS || levels > MAX_HSS_LEVELS ) {
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
-    }
-
-    /*
-    * The level for public keys for single level trees sometimes have a value of zero.
-    * in this case, bump  public key level to 1.
-    */
-    if ((levels == 1) && (pub_levels == 0)) {
-       pub_levels = 1;
     }
 
     if (levels != pub_levels) {

@@ -58,8 +58,8 @@ upstreams:
   -
     name: mldsa-native
     git_url: https://github.com/pq-code-package/mldsa-native.git
-    git_branch: v1.0.0-beta
-    git_commit: db65535319d9750d75d34c6d170677415f9d2c46
+    git_branch: v1.0.0-beta2
+    git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     preserve_folder_structure: True

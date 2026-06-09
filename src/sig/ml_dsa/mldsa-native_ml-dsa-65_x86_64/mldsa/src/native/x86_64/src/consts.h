@@ -21,7 +21,7 @@
 
 #ifndef __ASSEMBLER__
 #define mld_qdata MLD_NAMESPACE(qdata)
-extern const int32_t mld_qdata[624];
+MLD_INTERNAL_DATA_DECLARATION const int32_t mld_qdata[624];
 #endif
 
 #endif /* !MLD_NATIVE_X86_64_SRC_CONSTS_H */

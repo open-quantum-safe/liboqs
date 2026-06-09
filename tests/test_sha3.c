@@ -458,9 +458,26 @@ int sha3_512_kat_test(void) {
 	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
 	OQS_SHA3_sha3_512_inc_absorb(&state, msg1600, 200);
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
+
+	if (are_equal8(hash, exp1600, 64) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Special test case: absorb chunks of nasty sizes */
+	clear8(hash, 200);
+	size_t absorbed = 0;
+	size_t max_seglen = OQS_SHA3_SHA3_512_RATE - 1;
+	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
+	while (absorbed < 200) {
+		size_t seglen = 200 - absorbed < max_seglen ? 200 - absorbed : max_seglen;
+		OQS_SHA3_sha3_512_inc_absorb(&state, msg1600 + absorbed, seglen);
+		absorbed += seglen;
+	}
+	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
 	OQS_SHA3_sha3_512_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp1600, 64) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-512 non-rate-multiple absorption incorrect output\n");
 		status = EXIT_FAILURE;
 	}
 
