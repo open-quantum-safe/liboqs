@@ -7,14 +7,14 @@
 - **Authors' website**: https://pq-crystals.org/kyber/ and https://csrc.nist.gov/pubs/fips/203
 - **Specification version**: ML-KEM.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: file:///Users/bhe/git/liboqs/extern/mlkem-native/commit/ba36f288c1f0640dd506c95c435631d394d5acb1
+  - **Source**: file:///Users/bhe/git/liboqs/extern/mlkem-native/commit/9d6113bb2bd4e5406af159ee90189b348f8262f7
   - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
 - **Optimized Implementation sources**:
   - **x86_64**:<a name="x86_64"></a>
-      - **Source**: file:///Users/bhe/git/liboqs/extern/mlkem-native/commit/ba36f288c1f0640dd506c95c435631d394d5acb1
+      - **Source**: file:///Users/bhe/git/liboqs/extern/mlkem-native/commit/9d6113bb2bd4e5406af159ee90189b348f8262f7
       - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
   - **aarch64**:<a name="aarch64"></a>
-      - **Source**: file:///Users/bhe/git/liboqs/extern/mlkem-native/commit/ba36f288c1f0640dd506c95c435631d394d5acb1
+      - **Source**: file:///Users/bhe/git/liboqs/extern/mlkem-native/commit/9d6113bb2bd4e5406af159ee90189b348f8262f7
       - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
       - **Source**: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e

@@ -222,14 +222,18 @@
 #if !defined(MLK_CONFIG_CUSTOM_ALLOC_FREE)
 /* Default: stack allocation */
 
+/* This is a declaration macro, not an expression macro: T is a type and v is
+ * a declarator, neither of which can be wrapped in parentheses. The
+ * bugprone-macro-parentheses diagnostic is therefore a false positive here. */
 #define MLK_ALLOC(v, T, N, context) \
   MLK_ALIGN T mlk_alloc_##v[N];     \
-  T *v = mlk_alloc_##v
+  T *v = mlk_alloc_##v /* NOLINT(bugprone-macro-parentheses) */
 
-/* TODO: This leads to a circular dependency between common and verify.h
- * It just works out before we're at the end of the file, but it's still
- * prone to issues in the future. */
-#include "verify.h"
+/* The MLK_FREE macro body references mlk_zeroize(), which is declared in
+ * verify.h. We deliberately do NOT include verify.h here: doing so would
+ * create a circular dependency (verify.h includes common.h), and common.h
+ * itself never calls mlk_zeroize() -- only the macro expansion does. Each
+ * translation unit that uses MLK_FREE therefore includes verify.h directly. */
 #define MLK_FREE(v, T, N, context)                     \
   do                                                   \
   {                                                    \
@@ -265,13 +269,13 @@
 /****************************** Error codes ***********************************/
 
 /* Generic failure condition */
-#define MLK_ERR_FAIL -1
+#define MLK_ERR_FAIL (-1)
 /* An allocation failed. This can only happen if MLK_CONFIG_CUSTOM_ALLOC_FREE
  * is defined and the provided MLK_CUSTOM_ALLOC can fail. */
-#define MLK_ERR_OUT_OF_MEMORY -2
+#define MLK_ERR_OUT_OF_MEMORY (-2)
 /* An rng failure occured. Might be due to insufficient entropy or
  * system misconfiguration. */
-#define MLK_ERR_RNG_FAIL -3
+#define MLK_ERR_RNG_FAIL (-3)
 
 #endif /* !__ASSEMBLER__ */
 

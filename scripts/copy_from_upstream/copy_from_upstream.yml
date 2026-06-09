@@ -33,8 +33,8 @@ upstreams:
   -
     name: mlkem-native
     git_url: file:///Users/bhe/git/liboqs/extern/mlkem-native_dev
-    git_branch: new_main
-    git_commit: ba36f288c1f0640dd506c95c435631d394d5acb1
+    git_branch: bhe-liboqs-ppc
+    git_commit: 9d6113bb2bd4e5406af159ee90189b348f8262f7
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: []

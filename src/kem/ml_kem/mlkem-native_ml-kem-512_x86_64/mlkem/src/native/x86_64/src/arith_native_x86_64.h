@@ -18,7 +18,7 @@
 MLK_INTERNAL_DATA_DECLARATION const uint8_t mlk_rej_uniform_table[4096];
 
 #define mlk_rej_uniform_avx2_asm MLK_NAMESPACE(rej_uniform_avx2_asm)
-MLK_MUST_CHECK_RETURN_VALUE
+MLK_MUST_CHECK_RETURN_VALUE MLK_SYSV_ABI
 uint64_t mlk_rej_uniform_avx2_asm(int16_t *r, const uint8_t *buf,
                                   unsigned buflen, const uint8_t *table)
 /* This must be kept in sync with the HOL-Light specification
@@ -34,6 +34,7 @@ __contract__(
 );
 
 #define mlk_ntt_avx2_asm MLK_NAMESPACE(ntt_avx2_asm)
+MLK_SYSV_ABI
 void mlk_ntt_avx2_asm(int16_t *r, const int16_t *qdata)
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/x86_64/proofs/ntt_avx2_asm.ml */
@@ -48,6 +49,7 @@ __contract__(
 );
 
 #define mlk_invntt_avx2_asm MLK_NAMESPACE(invntt_avx2_asm)
+MLK_SYSV_ABI
 void mlk_invntt_avx2_asm(int16_t *r, const int16_t *qdata)
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/x86_64/proofs/intt_avx2_asm.ml */
@@ -61,6 +63,7 @@ __contract__(
 );
 
 #define mlk_nttunpack_avx2_asm MLK_NAMESPACE(nttunpack_avx2_asm)
+MLK_SYSV_ABI
 void mlk_nttunpack_avx2_asm(int16_t *r)
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/x86_64/proofs/nttunpack_avx2_asm.ml */
@@ -75,6 +78,7 @@ __contract__(
 );
 
 #define mlk_reduce_avx2_asm MLK_NAMESPACE(reduce_avx2_asm)
+MLK_SYSV_ABI
 void mlk_reduce_avx2_asm(int16_t *r)
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/x86_64/proofs/reduce_avx2_asm.ml */
@@ -86,6 +90,7 @@ __contract__(
 
 #define mlk_poly_mulcache_compute_avx2_asm \
   MLK_NAMESPACE(poly_mulcache_compute_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_mulcache_compute_avx2_asm(int16_t *out, const int16_t *in,
                                         const int16_t *qdata)
 /* This must be kept in sync with the HOL-Light specification
@@ -100,6 +105,7 @@ __contract__(
 
 #define mlk_polyvec_basemul_acc_montgomery_cached_k2_avx2_asm \
   MLK_NAMESPACE(polyvec_basemul_acc_montgomery_cached_k2_avx2_asm)
+MLK_SYSV_ABI
 void mlk_polyvec_basemul_acc_montgomery_cached_k2_avx2_asm(
     int16_t *r, const int16_t *a, const int16_t *b, const int16_t *b_cache)
 /* This must be kept in sync with the HOL-Light specification in
@@ -116,6 +122,7 @@ __contract__(
 
 #define mlk_polyvec_basemul_acc_montgomery_cached_k3_avx2_asm \
   MLK_NAMESPACE(polyvec_basemul_acc_montgomery_cached_k3_avx2_asm)
+MLK_SYSV_ABI
 void mlk_polyvec_basemul_acc_montgomery_cached_k3_avx2_asm(
     int16_t *r, const int16_t *a, const int16_t *b, const int16_t *b_cache)
 /* This must be kept in sync with the HOL-Light specification in
@@ -132,6 +139,7 @@ __contract__(
 
 #define mlk_polyvec_basemul_acc_montgomery_cached_k4_avx2_asm \
   MLK_NAMESPACE(polyvec_basemul_acc_montgomery_cached_k4_avx2_asm)
+MLK_SYSV_ABI
 void mlk_polyvec_basemul_acc_montgomery_cached_k4_avx2_asm(
     int16_t *r, const int16_t *a, const int16_t *b, const int16_t *b_cache)
 /* This must be kept in sync with the HOL-Light specification in
@@ -147,6 +155,7 @@ __contract__(
 );
 
 #define mlk_ntttobytes_avx2_asm MLK_NAMESPACE(ntttobytes_avx2_asm)
+MLK_SYSV_ABI
 void mlk_ntttobytes_avx2_asm(uint8_t *r, const int16_t *a)
 /* This must be kept in sync with the HOL-Light specification in
  * proofs/hol_light/x86_64/proofs/ntttobytes_avx2_asm.ml.
@@ -159,6 +168,7 @@ __contract__(
 );
 
 #define mlk_nttfrombytes_avx2_asm MLK_NAMESPACE(nttfrombytes_avx2_asm)
+MLK_SYSV_ABI
 void mlk_nttfrombytes_avx2_asm(int16_t *r, const uint8_t *a)
 /* This must be kept in sync with the HOL-Light specification in
  * proofs/hol_light/x86_64/proofs/nttfrombytes_avx2_asm.ml.
@@ -171,6 +181,7 @@ __contract__(
 );
 
 #define mlk_tomont_avx2_asm MLK_NAMESPACE(tomont_avx2_asm)
+MLK_SYSV_ABI
 void mlk_tomont_avx2_asm(int16_t *r)
 /* This must be kept in sync with the HOL-Light specification in
  * proofs/hol_light/x86_64/proofs/tomont_avx2_asm.ml.
@@ -182,6 +193,7 @@ __contract__(
 );
 
 #define mlk_poly_compress_d4_avx2_asm MLK_NAMESPACE(poly_compress_d4_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_compress_d4_avx2_asm(uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D4],
                                    const int16_t *MLK_RESTRICT a,
                                    const uint8_t *data)
@@ -198,6 +210,7 @@ __contract__(
 
 #define mlk_poly_decompress_d4_avx2_asm \
   MLK_NAMESPACE(poly_decompress_d4_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_decompress_d4_avx2_asm(
     int16_t *MLK_RESTRICT r, const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D4],
     const uint8_t *data)
@@ -213,6 +226,7 @@ __contract__(
 );
 
 #define mlk_poly_compress_d10_avx2_asm MLK_NAMESPACE(poly_compress_d10_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_compress_d10_avx2_asm(uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D10],
                                     const int16_t *MLK_RESTRICT a,
                                     const uint8_t *data)
@@ -229,6 +243,7 @@ __contract__(
 
 #define mlk_poly_decompress_d10_avx2_asm \
   MLK_NAMESPACE(poly_decompress_d10_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_decompress_d10_avx2_asm(
     int16_t *MLK_RESTRICT r, const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D10],
     const uint8_t *data)
@@ -244,6 +259,7 @@ __contract__(
 );
 
 #define mlk_poly_compress_d5_avx2_asm MLK_NAMESPACE(poly_compress_d5_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_compress_d5_avx2_asm(uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D5],
                                    const int16_t *MLK_RESTRICT a,
                                    const uint8_t *data)
@@ -260,6 +276,7 @@ __contract__(
 
 #define mlk_poly_decompress_d5_avx2_asm \
   MLK_NAMESPACE(poly_decompress_d5_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_decompress_d5_avx2_asm(
     int16_t *MLK_RESTRICT r, const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D5],
     const uint8_t *data)
@@ -275,6 +292,7 @@ __contract__(
 );
 
 #define mlk_poly_compress_d11_avx2_asm MLK_NAMESPACE(poly_compress_d11_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_compress_d11_avx2_asm(uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D11],
                                     const int16_t *MLK_RESTRICT a,
                                     const uint8_t *data)
@@ -291,6 +309,7 @@ __contract__(
 
 #define mlk_poly_decompress_d11_avx2_asm \
   MLK_NAMESPACE(poly_decompress_d11_avx2_asm)
+MLK_SYSV_ABI
 void mlk_poly_decompress_d11_avx2_asm(
     int16_t *MLK_RESTRICT r, const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D11],
     const uint8_t *data)

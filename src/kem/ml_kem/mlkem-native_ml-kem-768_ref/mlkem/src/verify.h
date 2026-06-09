@@ -183,7 +183,7 @@ static MLK_ALWAYS_INLINE uint16_t mlk_cast_int32_to_uint16(int32_t x)
  */
 static MLK_ALWAYS_INLINE uint16_t mlk_cast_int16_to_uint16(int32_t x)
 {
-  return mlk_cast_int32_to_uint16((int32_t)x);
+  return mlk_cast_int32_to_uint16(x);
 }
 
 /**
@@ -205,6 +205,12 @@ static MLK_INLINE uint16_t mlk_ct_cmask_neg_i16(int16_t x)
 __contract__(ensures(return_value == ((x < 0) ? 0xFFFF : 0)))
 {
   int32_t tmp = mlk_value_barrier_i32((int32_t)x);
+  /*
+   * PORTABILITY: Right-shift on a signed integer is
+   * implementation-defined for negative left argument.
+   * Here, we assume it's sign-preserving "arithmetic" shift right.
+   * See (C99 6.5.7 (5))
+   */
   tmp >>= 16;
   return mlk_cast_int32_to_uint16(tmp);
 }
@@ -224,6 +230,12 @@ static MLK_INLINE uint16_t mlk_ct_cmask_nonzero_u16(uint16_t x)
 __contract__(ensures(return_value == ((x == 0) ? 0 : 0xFFFF)))
 {
   int32_t tmp = mlk_value_barrier_i32(-((int32_t)x));
+  /*
+   * PORTABILITY: Right-shift on a signed integer is
+   * implementation-defined for negative left argument.
+   * Here, we assume it's sign-preserving "arithmetic" shift right.
+   * See (C99 6.5.7 (5))
+   */
   tmp >>= 16;
   return mlk_cast_int32_to_uint16(tmp);
 }

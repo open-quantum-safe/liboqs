@@ -52,13 +52,12 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         stxvd2x 61, 8, 1
         stxvd2x 62, 9, 1
         li 6, 0
-        li 7, 16
+        li 7, 80
         li 8, 96
         lxvd2x 37, 6, 4
-        lxvd2x 34, 7, 4
-        lxvd2x 32, 8, 4
+        lxvd2x 32, 7, 4
+        lxvd2x 34, 8, 4
         vxor 3, 3, 3
-        vspltish 4, 1
         li 4, -128
         li 5, -112
         li 6, -96
@@ -75,26 +74,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 27, 15, 4
-        vsrah 28, 20, 4
-        vsrah 29, 25, 4
-        vsrah 30, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 27, 14, 5, 13
+        vmladduhm 28, 19, 5, 18
+        vmladduhm 29, 24, 5, 23
+        vmladduhm 30, 8, 5, 7
         lxvd2x 45, 0, 3
         addi 3, 3, 16
         lxvd2x 50, 0, 3
@@ -103,26 +94,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 13, 15, 4
-        vsrah 18, 20, 4
-        vsrah 23, 25, 4
-        vsrah 7, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 13, 14, 5, 13
+        vmladduhm 18, 19, 5, 18
+        vmladduhm 23, 24, 5, 23
+        vmladduhm 7, 8, 5, 7
         stxvd2x 59, 4, 3
         stxvd2x 60, 5, 3
         stxvd2x 61, 6, 3
@@ -139,26 +122,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 27, 15, 4
-        vsrah 28, 20, 4
-        vsrah 29, 25, 4
-        vsrah 30, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 27, 14, 5, 13
+        vmladduhm 28, 19, 5, 18
+        vmladduhm 29, 24, 5, 23
+        vmladduhm 30, 8, 5, 7
         lxvd2x 45, 0, 3
         addi 3, 3, 16
         lxvd2x 50, 0, 3
@@ -167,26 +142,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 13, 15, 4
-        vsrah 18, 20, 4
-        vsrah 23, 25, 4
-        vsrah 7, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 13, 14, 5, 13
+        vmladduhm 18, 19, 5, 18
+        vmladduhm 23, 24, 5, 23
+        vmladduhm 7, 8, 5, 7
         stxvd2x 59, 4, 3
         stxvd2x 60, 5, 3
         stxvd2x 61, 6, 3
@@ -203,26 +170,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 27, 15, 4
-        vsrah 28, 20, 4
-        vsrah 29, 25, 4
-        vsrah 30, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 27, 14, 5, 13
+        vmladduhm 28, 19, 5, 18
+        vmladduhm 29, 24, 5, 23
+        vmladduhm 30, 8, 5, 7
         lxvd2x 45, 0, 3
         addi 3, 3, 16
         lxvd2x 50, 0, 3
@@ -231,26 +190,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 13, 15, 4
-        vsrah 18, 20, 4
-        vsrah 23, 25, 4
-        vsrah 7, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 13, 14, 5, 13
+        vmladduhm 18, 19, 5, 18
+        vmladduhm 23, 24, 5, 23
+        vmladduhm 7, 8, 5, 7
         stxvd2x 59, 4, 3
         stxvd2x 60, 5, 3
         stxvd2x 61, 6, 3
@@ -267,26 +218,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 27, 15, 4
-        vsrah 28, 20, 4
-        vsrah 29, 25, 4
-        vsrah 30, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 27, 14, 5, 13
+        vmladduhm 28, 19, 5, 18
+        vmladduhm 29, 24, 5, 23
+        vmladduhm 30, 8, 5, 7
         lxvd2x 45, 0, 3
         addi 3, 3, 16
         lxvd2x 50, 0, 3
@@ -295,26 +238,18 @@ MLK_ASM_FN_SYMBOL(poly_tomont_ppc_asm)
         addi 3, 3, 16
         lxvd2x 39, 0, 3
         addi 3, 3, 16
-        vmladduhm 15, 13, 0, 3
-        vmladduhm 20, 18, 0, 3
-        vmladduhm 25, 23, 0, 3
-        vmladduhm 9, 7, 0, 3
-        vmhraddshs 14, 13, 0, 3
-        vmhraddshs 19, 18, 0, 3
-        vmhraddshs 24, 23, 0, 3
-        vmhraddshs 8, 7, 0, 3
-        vmladduhm 15, 15, 2, 3
-        vmladduhm 20, 20, 2, 3
-        vmladduhm 25, 25, 2, 3
-        vmladduhm 9, 9, 2, 3
-        vmhraddshs 15, 15, 5, 14
-        vmhraddshs 20, 20, 5, 19
-        vmhraddshs 25, 25, 5, 24
-        vmhraddshs 9, 9, 5, 8
-        vsrah 13, 15, 4
-        vsrah 18, 20, 4
-        vsrah 23, 25, 4
-        vsrah 7, 9, 4
+        vmhraddshs 14, 13, 2, 3
+        vmhraddshs 19, 18, 2, 3
+        vmhraddshs 24, 23, 2, 3
+        vmhraddshs 8, 7, 2, 3
+        vmladduhm 13, 13, 0, 3
+        vmladduhm 18, 18, 0, 3
+        vmladduhm 23, 23, 0, 3
+        vmladduhm 7, 7, 0, 3
+        vmladduhm 13, 14, 5, 13
+        vmladduhm 18, 19, 5, 18
+        vmladduhm 23, 24, 5, 23
+        vmladduhm 7, 8, 5, 7
         stxvd2x 59, 4, 3
         stxvd2x 60, 5, 3
         stxvd2x 61, 6, 3

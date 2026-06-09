@@ -641,7 +641,12 @@ __contract__(
     const uint8_t t0 = a[3 * i + 0];
     const uint8_t t1 = a[3 * i + 1];
     const uint8_t t2 = a[3 * i + 2];
-    r->coeffs[2 * i + 0] = (int16_t)(t0 | ((t1 << 8) & 0xFFF));
+    /* Safety:
+     * - The explicit cast to uint16_t ensures that << 8 does
+     *   not signed-overflow even on a 16-bit system.
+     * - The cast to int16_t is safe due to the explicit 0xFFF truncation.
+     */
+    r->coeffs[2 * i + 0] = (int16_t)(t0 | (((uint16_t)t1 << 8) & 0xFFF));
     r->coeffs[2 * i + 1] = (int16_t)((t1 >> 4) | (t2 << 4));
   }
 
@@ -709,10 +714,10 @@ void mlk_poly_frommsg(mlk_poly *r, const uint8_t msg[MLKEM_INDCPA_MSGBYTES])
  *              in the range [-(MLKEM_Q-1), MLKEM_Q-1].
  */
 MLK_INTERNAL_API
-void mlk_poly_tomsg(uint8_t msg[MLKEM_INDCPA_MSGBYTES], const mlk_poly *a)
+void mlk_poly_tomsg(uint8_t msg[MLKEM_INDCPA_MSGBYTES], const mlk_poly *r)
 {
   unsigned i;
-  mlk_assert_bound(a, MLKEM_N, 0, MLKEM_Q);
+  mlk_assert_bound(r, MLKEM_N, 0, MLKEM_Q);
 
   for (i = 0; i < MLKEM_N / 8; i++)
   __loop__(invariant(i <= MLKEM_N / 8)
@@ -725,7 +730,7 @@ void mlk_poly_tomsg(uint8_t msg[MLKEM_INDCPA_MSGBYTES], const mlk_poly *a)
       invariant(i <= MLKEM_N / 8 && j <= 8)
       decreases(8 - j))
     {
-      uint32_t t = mlk_scalar_compress_d1(a->coeffs[8 * i + j]);
+      uint32_t t = mlk_scalar_compress_d1(r->coeffs[8 * i + j]);
       msg[i] |= (uint8_t)(t << j);
     }
   }

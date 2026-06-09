@@ -35,8 +35,8 @@ MLK_ASM_FN_SYMBOL(reduce_ppc_asm)
         stxvd2x 55, 9, 1
         stxvd2x 56, 10, 1
         vxor 7, 7, 7
-        li 6, 32
-        li 7, 48
+        li 6, 16
+        li 7, 32
         lxvd2x 35, 6, 4
         lxvd2x 32, 7, 4
         vspltisw 2, 13

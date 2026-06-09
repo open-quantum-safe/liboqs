@@ -58,8 +58,8 @@ MLK_ASM_FN_SYMBOL(intt_ppc_asm)
         lxvd2x 0, 0, 4
         xxlxor 35, 35, 35
         xxlor 3, 35, 35
-        li 10, 32
-        li 11, 48
+        li 10, 16
+        li 11, 32
         lxvd2x 6, 10, 4
         lxvd2x 32, 11, 4
         vspltisw 8, 13
@@ -76,9 +76,9 @@ MLK_ASM_FN_SYMBOL(intt_ppc_asm)
         li 16, 80
         li 17, 96
         li 18, 112
-        addi 14, 4, 64
+        addi 14, 4, 48
         lvx 10, 0, 14
-        addi 14, 4, 80
+        addi 14, 4, 64
         lvx 11, 0, 14
         li 8, 4
         mtctr 8

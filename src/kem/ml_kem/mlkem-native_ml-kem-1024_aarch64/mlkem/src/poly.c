@@ -453,20 +453,20 @@ __contract__(
 }
 
 MLK_INTERNAL_API
-void mlk_poly_ntt(mlk_poly *p)
+void mlk_poly_ntt(mlk_poly *r)
 {
 #if defined(MLK_USE_NATIVE_NTT)
   int ret;
-  mlk_assert_abs_bound(p, MLKEM_N, MLKEM_Q);
-  ret = mlk_ntt_native(p->coeffs);
+  mlk_assert_abs_bound(r, MLKEM_N, MLKEM_Q);
+  ret = mlk_ntt_native(r->coeffs);
   if (ret == MLK_NATIVE_FUNC_SUCCESS)
   {
-    mlk_assert_abs_bound(p, MLKEM_N, MLK_NTT_BOUND);
+    mlk_assert_abs_bound(r, MLKEM_N, MLK_NTT_BOUND);
     return;
   }
 #endif /* MLK_USE_NATIVE_NTT */
 
-  mlk_poly_ntt_c(p);
+  mlk_poly_ntt_c(r);
 }
 
 
@@ -554,19 +554,19 @@ __contract__(
 }
 
 MLK_INTERNAL_API
-void mlk_poly_invntt_tomont(mlk_poly *p)
+void mlk_poly_invntt_tomont(mlk_poly *r)
 {
 #if defined(MLK_USE_NATIVE_INTT)
   int ret;
-  ret = mlk_intt_native(p->coeffs);
+  ret = mlk_intt_native(r->coeffs);
   if (ret == MLK_NATIVE_FUNC_SUCCESS)
   {
-    mlk_assert_abs_bound(p, MLKEM_N, MLK_INVNTT_BOUND);
+    mlk_assert_abs_bound(r, MLKEM_N, MLK_INVNTT_BOUND);
     return;
   }
 #endif /* MLK_USE_NATIVE_INTT */
 
-  mlk_poly_invntt_tomont_c(p);
+  mlk_poly_invntt_tomont_c(r);
 }
 
 #else /* !MLK_CONFIG_MULTILEVEL_NO_SHARED */

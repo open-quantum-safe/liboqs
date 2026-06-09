@@ -14,7 +14,8 @@
 #include "aarch64/meta.h"
 #endif
 
-#ifdef MLK_SYS_X86_64_AVX2
+/* The x86_64 backend requires toolchain support for the SysV ABI */
+#if defined(MLK_SYS_X86_64_AVX2) && defined(MLK_SYSV_ABI_SUPPORTED)
 #include "x86_64/meta.h"
 #endif
 

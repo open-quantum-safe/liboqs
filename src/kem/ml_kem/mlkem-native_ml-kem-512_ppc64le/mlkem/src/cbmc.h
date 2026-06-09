@@ -8,16 +8,27 @@
 /***************************************************
  * Basic replacements for __CPROVER_XXX contracts
  ***************************************************/
+/*
+ * The `__contract__` / `__loop__` annotation macros use a
+ * leading-double-underscore spelling in line with other CBMC macros.
+ * clang-tidy flags these as reserved identifiers; we suppress the diagnostic
+ * at each definition site (NOLINT) rather than disabling the check globally,
+ * so it stays active for the rest of the tree.
+ */
 #ifndef CBMC
 
-#define __contract__(x)
-#define __loop__(x)
+/* clang-format off */
+#define __contract__(x) /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+#define __loop__(x) /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+/* clang-format on */
 
 #else /* !CBMC */
 
 
-#define __contract__(x) x
-#define __loop__(x) x
+/* clang-format off */
+#define __contract__(x) x /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+#define __loop__(x) x /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+/* clang-format on */
 
 /* https://diffblue.github.io/cbmc/contracts-assigns.html */
 #define assigns(...) __CPROVER_assigns(__VA_ARGS__)
