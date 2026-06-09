@@ -688,6 +688,10 @@ OQS_API int slh_verify_internal(const uint8_t *m, size_t m_sz, const uint8_t *si
   slh_var_t var;
   uint8_t digest[SLH_MAX_M];
 
+  if (sig_sz != slh_sig_sz(prm))
+  {
+    return 0; /* false */
+  }
   /* use Hmsg directly */
   prm->mk_var(&var, pk, NULL, prm);
   prm->h_msg(&var, digest, sig, m, m_sz, NULL, SLH_CTX_SZ_NO_CONTEXT);
@@ -706,6 +710,11 @@ int slh_verify(const uint8_t *m, size_t m_sz, const uint8_t *sig, size_t sig_sz,
   uint8_t digest[SLH_MAX_M];
 
   if (ctx_sz > 255)
+  {
+    return 0; /* false */
+  }
+
+  if (sig_sz != slh_sig_sz(prm))
   {
     return 0; /* false */
   }
