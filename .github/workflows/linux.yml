@@ -149,8 +149,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
 
-    container:
-      image: ${{ matrix.container }}
+    container: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
