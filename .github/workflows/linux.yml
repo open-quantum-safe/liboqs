@@ -277,6 +277,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Setup Intel SDE
         # TODO: one day we will automate the checksum. For now, just inspect visually
+        #   source: https://www.intel.com/content/www/us/en/download/684897/850782/intel-software-development-emulator.html
         run: |
           wget -O sde-external-9.53.0-2025-03-16-lin.tar.xz "$SDE_URL" && \
             sha256sum sde-external-9.53.0-2025-03-16-lin.tar.xz && \
