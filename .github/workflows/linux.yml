@@ -281,7 +281,7 @@ jobs:
           wget -O sde-external-9.53.0-2025-03-16-lin.tar.xz "$SDE_URL" && \
             sha256sum sde-external-9.53.0-2025-03-16-lin.tar.xz && \
             echo "Expected sha256 checksum: f55138df53378198e8c0a89598351cdb3c5e7f8819e63e472b0bc179afaad34c" && \
-            mkdir sde && tar -xf sde.tar.xz -C sde --strip-components=1 && \
+            mkdir sde && tar -xf sde-external-9.53.0-2025-03-16-lin.tar.xz -C sde --strip-components=1 && \
             echo "$(pwd)/sde" >> $GITHUB_PATH
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
