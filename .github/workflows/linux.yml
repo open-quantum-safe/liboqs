@@ -271,8 +271,7 @@ jobs:
             PYTEST_ARGS: tests/test_hash.py::test_sha3 tests/test_kat.py tests/test_acvp_vectors.py
     env:
       # NOTE: https://downloadmirror.intel.com returns 202 and an empty file
-      # SDE_URL: https://downloadmirror.intel.com/850782/sde-external-9.53.0-2025-03-16-lin.tar.xz
-      SDE_URL: https://raw.githubusercontent.com/open-quantum-safe/ci-containers/refs/heads/main/intel-sde/sde-external-9.53.0-2025-03-16-lin.tar.xz
+      SDE_URL: https://api.github.com/repos/open-quantum-safe/ci-containers/contents/intel-sde/sde-external-9.53.0-2025-03-16-lin.tar.xz
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
@@ -281,7 +280,7 @@ jobs:
       #   https://www.intel.com/content/www/us/en/download/684897/850782/intel-software-development-emulator.html
         run: |
           set -e && \
-          wget -O sde-external-9.53.0-2025-03-16-lin.tar.xz "$SDE_URL" && \
+          wget --header="Accept: application/vnd.github.raw+json" "$SDE_URL" && \
             sha256sum sde-external-9.53.0-2025-03-16-lin.tar.xz > lhs && \
             echo "f55138df53378198e8c0a89598351cdb3c5e7f8819e63e472b0bc179afaad34c  sde-external-9.53.0-2025-03-16-lin.tar.xz" > rhs && \
             diff lhs rhs && \
