@@ -197,9 +197,21 @@ static void set_available_cpu_extensions(void) {
 	}
 }
 #elif defined(OQS_DIST_PPC64LE_BUILD)
+#include <sys/auxv.h>
+#if defined(__has_include)
+#if __has_include(<asm/cputable.h>)
+#include <asm/cputable.h>
+#endif
+#endif
 static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+#if defined(AT_HWCAP2) && defined(PPC_FEATURE2_ARCH_2_07)
+	unsigned long int hwcaps2 = getauxval(AT_HWCAP2);
+	if (hwcaps2 & PPC_FEATURE2_ARCH_2_07) {
+		cpu_ext_data[OQS_CPU_EXT_POWER8_VECTOR] = 1;
+	}
+#endif
 }
 #elif defined(OQS_DIST_S390X_BUILD)
 static void set_available_cpu_extensions(void) {

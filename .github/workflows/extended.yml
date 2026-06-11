@@ -37,33 +37,47 @@ jobs:
         timeout-minutes: 360
         run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
-  nistkat-x64:
-    runs-on: ubuntu-latest
+  nistkat:
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: generic
+          - name: generic-x64
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: generic-libjade
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-          - name: extensions
+          - name: extensions-x64
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions-libjade
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST}}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-    container:
-      image: ${{ matrix.container }}
+          - name: generic-ppc
+            runner: liboqs-ppc
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+          - name: extensions-ppc
+            runner: liboqs-ppc
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+    container: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+      - name: Install Python test deps (containerless runner)
+        if: matrix.container == ''
+        run: pip3 install --break-system-packages -r .github/workflows/requirements.txt
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
