@@ -17,7 +17,7 @@
 
 ## Support
 
-- **Upstream maintenance**: TBD
+- **Upstream maintenance**: Actively maintained ([statement](https://github.com/CROSS-signature/CROSS-lib-oqs/blob/main/docs/oqs-statement.txt))
 - **OQS support tier**: Tier 3
 
 ## Parameter set summary

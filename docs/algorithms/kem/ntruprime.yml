@@ -16,7 +16,7 @@ website: https://ntruprime.cr.yp.to
 nist-round: 3
 spec-version: supercop-20200826
 standardization-status: Not selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/NTRU-Prime-Round3.zip)
-upstream-maintenance: TBD
+upstream-maintenance: Actively maintained
 upstream-statement-url: null
 oqs-support-tier: 3
 upstream-ancestors:

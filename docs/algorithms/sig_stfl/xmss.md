@@ -12,7 +12,7 @@
 
 ## Support
 
-- **Upstream maintenance**: TBD
+- **Upstream maintenance**: Actively maintained
 - **OQS support tier**: Tier 2
 
 ## Parameter set summary

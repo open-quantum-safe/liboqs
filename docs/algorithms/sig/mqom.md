@@ -19,7 +19,7 @@
 
 ## Support
 
-- **Upstream maintenance**: TBD
+- **Upstream maintenance**: Actively maintained ([statement](https://github.com/mqom/mqom-v2/blob/main/integration/liboqs/SUPPORT.md))
 - **OQS support tier**: Tier 3
 
 ## Parameter set summary
