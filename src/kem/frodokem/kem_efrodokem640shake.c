@@ -8,7 +8,7 @@
 
 OQS_KEM *OQS_KEM_efrodokem_640_shake_new(void) {
 
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}

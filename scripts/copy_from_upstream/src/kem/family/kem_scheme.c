@@ -11,7 +11,7 @@
 {% endif %}
 OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}
@@ -46,7 +46,7 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 /** Alias */
 OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}
