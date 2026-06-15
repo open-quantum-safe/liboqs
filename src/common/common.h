@@ -38,7 +38,7 @@ extern "C" {
 #if defined(OQS_DISABLE_MEM_BLACK_BOX)
 
 #warning "DANGER: OQS_DISABLE_MEM_BLACK_BOX is for internal testing only"
-#warning "disabling memory value barrier may introduce timing side channels"
+#warning "disabling optimization barrier may introduce side channels"
 /**
  * @def OQS_MEM_BLACK_BOX
  *
@@ -63,7 +63,7 @@ extern "C" {
 
 #pragma message("WARNING: non-GNUC/Clang toolchain detected. liboqs cannot     \
                  guarantee optimization barrier on unsupported platforms.      \
-                 Compiler may introduce cache timing side channels. Please     \
+                 Compiler may introduce non-constant-time behaviors. Please    \
                  verify generated assembly and proceed with caution.")
 /**
  * @def OQS_MEM_BLACK_BOX
