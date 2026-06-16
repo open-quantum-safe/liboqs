@@ -8,39 +8,31 @@
 #include "common.h"
 
 #if defined(MLDSA_DEBUG)
-#include <stdint.h>
 
-/*************************************************
- * Name:        mld_assert
+/**
+ * Check debug assertion.
  *
- * Description: Check debug assertion
+ * Prints an error message to stderr and calls exit(1) if not.
  *
- *              Prints an error message to stderr and calls
- *              exit(1) if not.
- *
- * Arguments:   - file: filename
- *              - line: line number
- *              - val: Value asserted to be non-zero
- **************************************************/
+ * @param file Filename.
+ * @param line Line number.
+ * @param val  Value asserted to be non-zero.
+ */
 #define mld_debug_check_assert MLD_NAMESPACE(mldsa_debug_assert)
 void mld_debug_check_assert(const char *file, int line, const int val);
 
-/*************************************************
- * Name:        mld_debug_check_bounds
+/**
+ * Check whether values in an array of int32_t are within specified bounds.
  *
- * Description: Check whether values in an array of int32_t
- *              are within specified bounds.
+ * Prints an error message to stderr and calls exit(1) if not.
  *
- *              Prints an error message to stderr and calls
- *              exit(1) if not.
- *
- * Arguments:   - file: filename
- *              - line: line number
- *              - ptr: Base of array to be checked
- *              - len: Number of int32_t in ptr
- *              - lower_bound_exclusive: Exclusive lower bound
- *              - upper_bound_exclusive: Exclusive upper bound
- **************************************************/
+ * @param     file                  Filename.
+ * @param     line                  Line number.
+ * @param[in] ptr                   Base of array to be checked.
+ * @param     len                   Number of int32_t in ptr.
+ * @param     lower_bound_exclusive Exclusive lower bound.
+ * @param     upper_bound_exclusive Exclusive upper bound.
+ */
 #define mld_debug_check_bounds MLD_NAMESPACE(mldsa_debug_check_bounds)
 void mld_debug_check_bounds(const char *file, int line, const int32_t *ptr,
                             unsigned len, int64_t lower_bound_exclusive,
@@ -91,14 +83,14 @@ void mld_debug_check_bounds(const char *file, int line, const int32_t *ptr,
 
 /* Because of https://github.com/diffblue/cbmc/issues/8570, we can't
  * just use a single flattened array_bound(...) here. */
-#define mld_assert_bound_2d(ptr, M, N, value_lb, value_ub)             \
-  cassert(forall(kN, 0, (M),                                           \
-                 array_bound(&((int32_t(*)[(N)])(ptr))[kN][0], 0, (N), \
+#define mld_assert_bound_2d(ptr, M, N, value_lb, value_ub)              \
+  cassert(forall(kN, 0, (M),                                            \
+                 array_bound(&((int32_t (*)[(N)])(ptr))[kN][0], 0, (N), \
                              (value_lb), (value_ub))))
 
-#define mld_assert_abs_bound_2d(ptr, M, N, value_abs_bd)                   \
-  cassert(forall(kN, 0, (M),                                               \
-                 array_abs_bound(&((int32_t(*)[(N)])(ptr))[kN][0], 0, (N), \
+#define mld_assert_abs_bound_2d(ptr, M, N, value_abs_bd)                    \
+  cassert(forall(kN, 0, (M),                                                \
+                 array_abs_bound(&((int32_t (*)[(N)])(ptr))[kN][0], 0, (N), \
                                  (value_abs_bd))))
 
 #else /* !MLDSA_DEBUG && CBMC */

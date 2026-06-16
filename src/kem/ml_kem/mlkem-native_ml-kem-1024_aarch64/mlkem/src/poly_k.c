@@ -22,12 +22,9 @@
  *   https://github.com/pq-crystals/kyber/tree/main/ref
  */
 
-#include <stdint.h>
-#include <string.h>
-
-#include "compress.h"
-#include "debug.h"
 #include "poly_k.h"
+
+#include "debug.h"
 #include "sampling.h"
 #include "symmetric.h"
 
@@ -37,6 +34,8 @@
  * within a single compilation unit. */
 #define mlk_poly_cbd_eta1 MLK_ADD_PARAM_SET(mlk_poly_cbd_eta1)
 #define mlk_poly_cbd_eta2 MLK_ADD_PARAM_SET(mlk_poly_cbd_eta2)
+#define mlk_polyvec_basemul_acc_montgomery_cached_c \
+  MLK_ADD_PARAM_SET(mlk_polyvec_basemul_acc_montgomery_cached_c)
 /* End of parameter set namespacing */
 
 /* Reference: `polyvec_compress()` in the reference implementation @[REF]
@@ -46,29 +45,29 @@
  *              in the range (-MLKEM_Q+1,...,MLKEM_Q-1). */
 MLK_INTERNAL_API
 void mlk_polyvec_compress_du(uint8_t r[MLKEM_POLYVECCOMPRESSEDBYTES_DU],
-                             const mlk_polyvec a)
+                             const mlk_polyvec *a)
 {
   unsigned i;
-  mlk_assert_bound_2d(a, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
+  mlk_assert_bound_2d(a->vec, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
 
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_compress_du(r + i * MLKEM_POLYCOMPRESSEDBYTES_DU, &a[i]);
+    mlk_poly_compress_du(r + i * MLKEM_POLYCOMPRESSEDBYTES_DU, &a->vec[i]);
   }
 }
 
 /* Reference: `polyvec_decompress()` in the reference implementation @[REF]. */
 MLK_INTERNAL_API
-void mlk_polyvec_decompress_du(mlk_polyvec r,
+void mlk_polyvec_decompress_du(mlk_polyvec *r,
                                const uint8_t a[MLKEM_POLYVECCOMPRESSEDBYTES_DU])
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_decompress_du(&r[i], a + i * MLKEM_POLYCOMPRESSEDBYTES_DU);
+    mlk_poly_decompress_du(&r->vec[i], a + i * MLKEM_POLYCOMPRESSEDBYTES_DU);
   }
 
-  mlk_assert_bound_2d(r, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
+  mlk_assert_bound_2d(r->vec, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
 }
 
 /* Reference: `polyvec_tobytes()` in the reference implementation @[REF].
@@ -77,41 +76,45 @@ void mlk_polyvec_decompress_du(mlk_polyvec r,
  *              The reference implementation works with coefficients
  *              in the range (-MLKEM_Q+1,...,MLKEM_Q-1). */
 MLK_INTERNAL_API
-void mlk_polyvec_tobytes(uint8_t r[MLKEM_POLYVECBYTES], const mlk_polyvec a)
+void mlk_polyvec_tobytes(uint8_t r[MLKEM_POLYVECBYTES], const mlk_polyvec *a)
 {
   unsigned i;
-  mlk_assert_bound_2d(a, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
+  mlk_assert_bound_2d(a->vec, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
 
   for (i = 0; i < MLKEM_K; i++)
+  __loop__(
+    assigns(i, memory_slice(r, MLKEM_POLYVECBYTES))
+    invariant(i <= MLKEM_K)
+  )
   {
-    mlk_poly_tobytes(r + i * MLKEM_POLYBYTES, &a[i]);
+    mlk_poly_tobytes(&r[i * MLKEM_POLYBYTES], &a->vec[i]);
   }
 }
 
 /* Reference: `polyvec_frombytes()` in the reference implementation @[REF]. */
 MLK_INTERNAL_API
-void mlk_polyvec_frombytes(mlk_polyvec r, const uint8_t a[MLKEM_POLYVECBYTES])
+void mlk_polyvec_frombytes(mlk_polyvec *r, const uint8_t a[MLKEM_POLYVECBYTES])
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_frombytes(&r[i], a + i * MLKEM_POLYBYTES);
+    mlk_poly_frombytes(&r->vec[i], a + i * MLKEM_POLYBYTES);
   }
 
-  mlk_assert_bound_2d(r, MLKEM_K, MLKEM_N, 0, MLKEM_UINT12_LIMIT);
+  mlk_assert_bound_2d(r->vec, MLKEM_K, MLKEM_N, 0, MLKEM_UINT12_LIMIT);
 }
 
 /* Reference: `polyvec_ntt()` in the reference implementation @[REF]. */
 MLK_INTERNAL_API
-void mlk_polyvec_ntt(mlk_polyvec r)
+void mlk_polyvec_ntt(mlk_polyvec *r)
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_ntt(&r[i]);
+    mlk_poly_ntt(&r->vec[i]);
   }
 
-  mlk_assert_abs_bound_2d(r, MLKEM_K, MLKEM_N, MLK_NTT_BOUND);
+  mlk_assert_abs_bound_2d(r->vec, MLKEM_K, MLKEM_N, MLK_NTT_BOUND);
 }
 
 /* Reference: `polyvec_invntt_tomont()` in the reference implementation @[REF].
@@ -120,18 +123,17 @@ void mlk_polyvec_ntt(mlk_polyvec r)
  *              the end. This allows us to drop a call to `poly_reduce()`
  *              from the base multiplication. */
 MLK_INTERNAL_API
-void mlk_polyvec_invntt_tomont(mlk_polyvec r)
+void mlk_polyvec_invntt_tomont(mlk_polyvec *r)
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_invntt_tomont(&r[i]);
+    mlk_poly_invntt_tomont(&r->vec[i]);
   }
 
-  mlk_assert_abs_bound_2d(r, MLKEM_K, MLKEM_N, MLK_INVNTT_BOUND);
+  mlk_assert_abs_bound_2d(r->vec, MLKEM_K, MLKEM_N, MLK_INVNTT_BOUND);
 }
 
-#if !defined(MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED)
 /* Reference: `polyvec_basemul_acc_montgomery()` in the
  *            reference implementation @[REF].
  *            - We use a multiplication cache ('mulcache') here
@@ -143,13 +145,22 @@ void mlk_polyvec_invntt_tomont(mlk_polyvec r)
  *              at the end. The reference implementation uses 2 * MLKEM_K
  *              more modular reductions since it reduces after every modular
  *              multiplication. */
-MLK_INTERNAL_API
-void mlk_polyvec_basemul_acc_montgomery_cached(
-    mlk_poly *r, const mlk_polyvec a, const mlk_polyvec b,
-    const mlk_polyvec_mulcache b_cache)
+MLK_STATIC_TESTABLE void mlk_polyvec_basemul_acc_montgomery_cached_c(
+    mlk_poly *r, const mlk_polyvec *a, const mlk_polyvec *b,
+    const mlk_polyvec_mulcache *b_cache)
+__contract__(
+  requires(memory_no_alias(r, sizeof(mlk_poly)))
+  requires(memory_no_alias(a, sizeof(mlk_polyvec)))
+  requires(memory_no_alias(b, sizeof(mlk_polyvec)))
+  requires(memory_no_alias(b_cache, sizeof(mlk_polyvec_mulcache)))
+  requires(forall(k1, 0, MLKEM_K,
+     array_bound(a->vec[k1].coeffs, 0, MLKEM_N, 0, MLKEM_UINT12_LIMIT)))
+  assigns(memory_slice(r, sizeof(mlk_poly)))
+)
 {
   unsigned i;
-  mlk_assert_bound_2d(a, MLKEM_K, MLKEM_N, 0, MLKEM_UINT12_LIMIT);
+  mlk_assert_bound_2d(a->vec, MLKEM_K, MLKEM_N, 0, MLKEM_UINT12_LIMIT);
+
   for (i = 0; i < MLKEM_N / 2; i++)
   __loop__(invariant(i <= MLKEM_N / 2))
   {
@@ -163,53 +174,59 @@ void mlk_polyvec_basemul_acc_montgomery_cached(
          t[1] <=   ((int32_t) k * 2 * MLKEM_UINT12_LIMIT * 32768) &&
          t[1] >= - ((int32_t) k * 2 * MLKEM_UINT12_LIMIT * 32768)))
     {
-      t[0] += (int32_t)a[k].coeffs[2 * i + 1] * b_cache[k].coeffs[i];
-      t[0] += (int32_t)a[k].coeffs[2 * i] * b[k].coeffs[2 * i];
-      t[1] += (int32_t)a[k].coeffs[2 * i] * b[k].coeffs[2 * i + 1];
-      t[1] += (int32_t)a[k].coeffs[2 * i + 1] * b[k].coeffs[2 * i];
+      t[0] += (int32_t)a->vec[k].coeffs[2 * i + 1] * b_cache->vec[k].coeffs[i];
+      t[0] += (int32_t)a->vec[k].coeffs[2 * i] * b->vec[k].coeffs[2 * i];
+      t[1] += (int32_t)a->vec[k].coeffs[2 * i] * b->vec[k].coeffs[2 * i + 1];
+      t[1] += (int32_t)a->vec[k].coeffs[2 * i + 1] * b->vec[k].coeffs[2 * i];
     }
     r->coeffs[2 * i + 0] = mlk_montgomery_reduce(t[0]);
     r->coeffs[2 * i + 1] = mlk_montgomery_reduce(t[1]);
   }
 }
 
-#else /* !MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED */
 MLK_INTERNAL_API
 void mlk_polyvec_basemul_acc_montgomery_cached(
-    mlk_poly *r, const mlk_polyvec a, const mlk_polyvec b,
-    const mlk_polyvec_mulcache b_cache)
+    mlk_poly *r, const mlk_polyvec *a, const mlk_polyvec *b,
+    const mlk_polyvec_mulcache *b_cache)
 {
-  mlk_assert_bound_2d(a, MLKEM_K, MLKEM_N, 0, MLKEM_UINT12_LIMIT);
-  /* Omitting bounds assertion for cache since native implementations may
-   * decide not to use a mulcache. Note that the C backend implementation
-   * of poly_basemul_montgomery_cached() does still include the check. */
+#if defined(MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED)
+  {
+    int ret;
+    mlk_assert_bound_2d(a->vec, MLKEM_K, MLKEM_N, 0, MLKEM_UINT12_LIMIT);
 #if MLKEM_K == 2
-  mlk_polyvec_basemul_acc_montgomery_cached_k2_native(
-      r->coeffs, (const int16_t *)a, (const int16_t *)b,
-      (const int16_t *)b_cache);
+    ret = mlk_polyvec_basemul_acc_montgomery_cached_k2_native(
+        r->coeffs, (const int16_t *)a, (const int16_t *)b,
+        (const int16_t *)b_cache);
 #elif MLKEM_K == 3
-  mlk_polyvec_basemul_acc_montgomery_cached_k3_native(
-      r->coeffs, (const int16_t *)a, (const int16_t *)b,
-      (const int16_t *)b_cache);
+    ret = mlk_polyvec_basemul_acc_montgomery_cached_k3_native(
+        r->coeffs, (const int16_t *)a, (const int16_t *)b,
+        (const int16_t *)b_cache);
 #elif MLKEM_K == 4
-  mlk_polyvec_basemul_acc_montgomery_cached_k4_native(
-      r->coeffs, (const int16_t *)a, (const int16_t *)b,
-      (const int16_t *)b_cache);
+    ret = mlk_polyvec_basemul_acc_montgomery_cached_k4_native(
+        r->coeffs, (const int16_t *)a, (const int16_t *)b,
+        (const int16_t *)b_cache);
 #endif
-}
+    if (ret == MLK_NATIVE_FUNC_SUCCESS)
+    {
+      return;
+    }
+  }
 #endif /* MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED */
+
+  mlk_polyvec_basemul_acc_montgomery_cached_c(r, a, b, b_cache);
+}
 
 /* Reference: Does not exist in the reference implementation @[REF].
  *            - The reference implementation does not use a
  *              multiplication cache ('mulcache'). This idea originates
  *              from @[NeonNTT] and is used at the C level here. */
 MLK_INTERNAL_API
-void mlk_polyvec_mulcache_compute(mlk_polyvec_mulcache x, const mlk_polyvec a)
+void mlk_polyvec_mulcache_compute(mlk_polyvec_mulcache *x, const mlk_polyvec *a)
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_mulcache_compute(&x[i], &a[i]);
+    mlk_poly_mulcache_compute(&x->vec[i], &a->vec[i]);
   }
 }
 
@@ -221,41 +238,53 @@ void mlk_polyvec_mulcache_compute(mlk_polyvec_mulcache x, const mlk_polyvec a)
  *              This conditional addition is then dropped from all
  *              polynomial compression functions instead (see `compress.c`). */
 MLK_INTERNAL_API
-void mlk_polyvec_reduce(mlk_polyvec r)
+void mlk_polyvec_reduce(mlk_polyvec *r)
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_reduce(&r[i]);
+    mlk_poly_reduce(&r->vec[i]);
   }
 
-  mlk_assert_bound_2d(r, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
+  mlk_assert_bound_2d(r->vec, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
 }
 
 /* Reference: `polyvec_add()` in the reference implementation @[REF].
  *            - We use destructive version (output=first input) to avoid
  *              reasoning about aliasing in the CBMC specification */
 MLK_INTERNAL_API
-void mlk_polyvec_add(mlk_polyvec r, const mlk_polyvec b)
+void mlk_polyvec_add(mlk_polyvec *r, const mlk_polyvec *b)
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
+  __loop__(
+    assigns(i, memory_slice(r, sizeof(mlk_polyvec)))
+    invariant(i <= MLKEM_K)
+    invariant(forall(j0, i, MLKEM_K,
+                forall(k0, 0, MLKEM_N,
+                       ((int32_t)r->vec[j0].coeffs[k0] + b->vec[j0].coeffs[k0] <= INT16_MAX) &&
+                       ((int32_t)r->vec[j0].coeffs[k0] + b->vec[j0].coeffs[k0] >= INT16_MIN))))
+    invariant(forall(j2, 0, i,
+                forall(k2, 0, MLKEM_N,
+                       (r->vec[j2].coeffs[k2] <= INT16_MAX) &&
+                       (r->vec[j2].coeffs[k2] >= INT16_MIN))))
+  )
   {
-    mlk_poly_add(&r[i], &b[i]);
+    mlk_poly_add(&r->vec[i], &b->vec[i]);
   }
 }
 
 /* Reference: `polyvec_tomont()` in the reference implementation @[REF]. */
 MLK_INTERNAL_API
-void mlk_polyvec_tomont(mlk_polyvec r)
+void mlk_polyvec_tomont(mlk_polyvec *r)
 {
   unsigned i;
   for (i = 0; i < MLKEM_K; i++)
   {
-    mlk_poly_tomont(&r[i]);
+    mlk_poly_tomont(&r->vec[i]);
   }
 
-  mlk_assert_abs_bound_2d(r, MLKEM_K, MLKEM_N, MLKEM_Q);
+  mlk_assert_abs_bound_2d(r->vec, MLKEM_K, MLKEM_N, MLKEM_Q);
 }
 
 
@@ -306,24 +335,41 @@ void mlk_poly_getnoise_eta1_4x(mlk_poly *r0, mlk_poly *r1, mlk_poly *r2,
 {
   MLK_ALIGN uint8_t buf[4][MLK_ALIGN_UP(MLKEM_ETA1 * MLKEM_N / 4)];
   MLK_ALIGN uint8_t extkey[4][MLK_ALIGN_UP(MLKEM_SYMBYTES + 1)];
-  memcpy(extkey[0], seed, MLKEM_SYMBYTES);
-  memcpy(extkey[1], seed, MLKEM_SYMBYTES);
-  memcpy(extkey[2], seed, MLKEM_SYMBYTES);
-  memcpy(extkey[3], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[0], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[1], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[2], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[3], seed, MLKEM_SYMBYTES);
   extkey[0][MLKEM_SYMBYTES] = nonce0;
   extkey[1][MLKEM_SYMBYTES] = nonce1;
   extkey[2][MLKEM_SYMBYTES] = nonce2;
   extkey[3][MLKEM_SYMBYTES] = nonce3;
+
+#if !defined(FIPS202_X4_DEFAULT_IMPLEMENTATION) && \
+    !defined(MLK_CONFIG_SERIAL_FIPS202_ONLY)
   mlk_prf_eta1_x4(buf, extkey);
+#else
+  mlk_prf_eta1(buf[0], extkey[0]);
+  mlk_prf_eta1(buf[1], extkey[1]);
+  mlk_prf_eta1(buf[2], extkey[2]);
+  if (r3 != NULL)
+  {
+    mlk_prf_eta1(buf[3], extkey[3]);
+  }
+#endif /* !(!FIPS202_X4_DEFAULT_IMPLEMENTATION && \
+          !MLK_CONFIG_SERIAL_FIPS202_ONLY) */
+
   mlk_poly_cbd_eta1(r0, buf[0]);
   mlk_poly_cbd_eta1(r1, buf[1]);
   mlk_poly_cbd_eta1(r2, buf[2]);
-  mlk_poly_cbd_eta1(r3, buf[3]);
+  if (r3 != NULL)
+  {
+    mlk_poly_cbd_eta1(r3, buf[3]);
+    mlk_assert_abs_bound(r3, MLKEM_N, MLKEM_ETA1 + 1);
+  }
 
   mlk_assert_abs_bound(r0, MLKEM_N, MLKEM_ETA1 + 1);
   mlk_assert_abs_bound(r1, MLKEM_N, MLKEM_ETA1 + 1);
   mlk_assert_abs_bound(r2, MLKEM_N, MLKEM_ETA1 + 1);
-  mlk_assert_abs_bound(r3, MLKEM_N, MLKEM_ETA1 + 1);
 
   /* Specification: Partially implements
    * @[FIPS203, Section 3.3, Destruction of intermediate values] */
@@ -364,7 +410,7 @@ __contract__(
 #endif
 }
 
-/* Reference: `poly_getnoise_eta1()` in the reference implementation @[REF].
+/* Reference: `poly_getnoise_eta2()` in the reference implementation @[REF].
  *            - We include buffer zeroization. */
 MLK_INTERNAL_API
 void mlk_poly_getnoise_eta2(mlk_poly *r, const uint8_t seed[MLKEM_SYMBYTES],
@@ -373,13 +419,13 @@ void mlk_poly_getnoise_eta2(mlk_poly *r, const uint8_t seed[MLKEM_SYMBYTES],
   MLK_ALIGN uint8_t buf[MLKEM_ETA2 * MLKEM_N / 4];
   MLK_ALIGN uint8_t extkey[MLKEM_SYMBYTES + 1];
 
-  memcpy(extkey, seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey, seed, MLKEM_SYMBYTES);
   extkey[MLKEM_SYMBYTES] = nonce;
   mlk_prf_eta2(buf, extkey);
 
   mlk_poly_cbd_eta2(r, buf);
 
-  mlk_assert_abs_bound(r, MLKEM_N, MLKEM_ETA1 + 1);
+  mlk_assert_abs_bound(r, MLKEM_N, MLKEM_ETA2 + 1);
 
   /* Specification: Partially implements
    * @[FIPS203, Section 3.3, Destruction of intermediate values] */
@@ -391,7 +437,7 @@ void mlk_poly_getnoise_eta2(mlk_poly *r, const uint8_t seed[MLKEM_SYMBYTES],
 #if MLKEM_K == 2
 /* Reference: Does not exist in the reference implementation @[REF].
  *            - This implements a x4-batched version of `poly_getnoise_eta1()`
- *              and `poly_getnoise_eta1()` from the reference implementation,
+ *              and `poly_getnoise_eta2()` from the reference implementation,
  *              leveraging batched Keccak-f1600.
  *            - If a x4-batched Keccak-f1600 is available, we squeeze
  *              more random data than needed for the eta2 calls, to be
@@ -409,10 +455,10 @@ void mlk_poly_getnoise_eta1122_4x(mlk_poly *r0, mlk_poly *r1, mlk_poly *r2,
   MLK_ALIGN uint8_t buf[4][MLK_ALIGN_UP(MLKEM_ETA1 * MLKEM_N / 4)];
   MLK_ALIGN uint8_t extkey[4][MLK_ALIGN_UP(MLKEM_SYMBYTES + 1)];
 
-  memcpy(extkey[0], seed, MLKEM_SYMBYTES);
-  memcpy(extkey[1], seed, MLKEM_SYMBYTES);
-  memcpy(extkey[2], seed, MLKEM_SYMBYTES);
-  memcpy(extkey[3], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[0], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[1], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[2], seed, MLKEM_SYMBYTES);
+  mlk_memcpy(extkey[3], seed, MLKEM_SYMBYTES);
   extkey[0][MLKEM_SYMBYTES] = nonce0;
   extkey[1][MLKEM_SYMBYTES] = nonce1;
   extkey[2][MLKEM_SYMBYTES] = nonce2;
@@ -421,14 +467,16 @@ void mlk_poly_getnoise_eta1122_4x(mlk_poly *r0, mlk_poly *r1, mlk_poly *r2,
   /* On systems with fast batched Keccak, we use 4-fold batched PRF,
    * even though that means generating more random data in buf[2] and buf[3]
    * than necessary. */
-#if !defined(FIPS202_X4_DEFAULT_IMPLEMENTATION)
+#if !defined(FIPS202_X4_DEFAULT_IMPLEMENTATION) && \
+    !defined(MLK_CONFIG_SERIAL_FIPS202_ONLY)
   mlk_prf_eta1_x4(buf, extkey);
 #else
   mlk_prf_eta1(buf[0], extkey[0]);
   mlk_prf_eta1(buf[1], extkey[1]);
   mlk_prf_eta2(buf[2], extkey[2]);
   mlk_prf_eta2(buf[3], extkey[3]);
-#endif /* FIPS202_X4_DEFAULT_IMPLEMENTATION */
+#endif /* !(!FIPS202_X4_DEFAULT_IMPLEMENTATION && \
+          !MLK_CONFIG_SERIAL_FIPS202_ONLY) */
 
   mlk_poly_cbd_eta1(r0, buf[0]);
   mlk_poly_cbd_eta1(r1, buf[1]);
@@ -451,3 +499,4 @@ void mlk_poly_getnoise_eta1122_4x(mlk_poly *r0, mlk_poly *r1, mlk_poly *r2,
  * Don't modify by hand -- this is auto-generated by scripts/autogen. */
 #undef mlk_poly_cbd_eta1
 #undef mlk_poly_cbd_eta2
+#undef mlk_polyvec_basemul_acc_montgomery_cached_c

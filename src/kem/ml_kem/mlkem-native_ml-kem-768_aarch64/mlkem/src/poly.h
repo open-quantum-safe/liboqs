@@ -15,8 +15,7 @@
 #ifndef MLK_POLY_H
 #define MLK_POLY_H
 
-#include <stddef.h>
-#include <stdint.h>
+
 #include "cbmc.h"
 #include "common.h"
 #include "debug.h"
@@ -47,34 +46,6 @@ typedef struct
 } MLK_ALIGN mlk_poly_mulcache;
 
 /*************************************************
- * Name:        mlk_cast_uint16_to_int16
- *
- * Description: Cast uint16 value to int16
- *
- * Returns:
- *   input x in     0 .. 32767: returns value unchanged
- *   input x in 32768 .. 65535: returns (x - 65536)
- **************************************************/
-#ifdef CBMC
-#pragma CPROVER check push
-#pragma CPROVER check disable "conversion"
-#endif
-static MLK_ALWAYS_INLINE int16_t mlk_cast_uint16_to_int16(uint16_t x)
-{
-  /*
-   * PORTABILITY: This relies on uint16_t -> int16_t
-   * being implemented as the inverse of int16_t -> uint16_t,
-   * which is implementation-defined (C99 6.3.1.3 (3))
-   * CBMC (correctly) fails to prove this conversion is OK,
-   * so we have to suppress that check here
-   */
-  return (int16_t)x;
-}
-#ifdef CBMC
-#pragma CPROVER check pop
-#endif
-
-/*************************************************
  * Name:        mlk_montgomery_reduce
  *
  * Description: Generic Montgomery reduction; given a 32-bit integer a, computes
@@ -90,7 +61,7 @@ static MLK_ALWAYS_INLINE int16_t mlk_cast_uint16_to_int16(uint16_t x)
 static MLK_ALWAYS_INLINE int16_t mlk_montgomery_reduce(int32_t a)
 __contract__(
     requires(a < +(INT32_MAX - (((int32_t)1 << 15) * MLKEM_Q)) &&
-	     a > -(INT32_MAX - (((int32_t)1 << 15) * MLKEM_Q)))
+             a > -(INT32_MAX - (((int32_t)1 << 15) * MLKEM_Q)))
     /* We don't attempt to express an input-dependent output bound
      * as the post-condition here. There are two call-sites for this
      * function:
@@ -102,8 +73,8 @@ __contract__(
   /* check-magic: 62209 == unsigned_mod(pow(MLKEM_Q, -1, 2^16), 2^16) */
   const uint32_t QINV = 62209;
 
-  /*  Compute a*q^{-1} mod 2^16 in unsigned representatives */
-  const uint16_t a_reduced = a & UINT16_MAX;
+  /* Compute a*q^{-1} mod 2^16 in unsigned representatives. */
+  const uint16_t a_reduced = mlk_cast_int32_to_uint16(a);
   const uint16_t a_inverted = (a_reduced * QINV) & UINT16_MAX;
 
   /* Lift to signed canonical representative mod 2^16. */
@@ -187,7 +158,7 @@ void mlk_poly_mulcache_compute(mlk_poly_mulcache *x, const mlk_poly *a)
 __contract__(
   requires(memory_no_alias(x, sizeof(mlk_poly_mulcache)))
   requires(memory_no_alias(a, sizeof(mlk_poly)))
-  assigns(object_whole(x))
+  assigns(memory_slice(x, sizeof(mlk_poly_mulcache)))
 );
 
 #define mlk_poly_reduce MLK_NAMESPACE(poly_reduce)
@@ -280,7 +251,7 @@ __contract__(
   requires(forall(k0, 0, MLKEM_N, (int32_t) r->coeffs[k0] - b->coeffs[k0] <= INT16_MAX))
   requires(forall(k1, 0, MLKEM_N, (int32_t) r->coeffs[k1] - b->coeffs[k1] >= INT16_MIN))
   ensures(forall(k, 0, MLKEM_N, r->coeffs[k] == old(*r).coeffs[k] - b->coeffs[k]))
-  assigns(object_whole(r))
+  assigns(memory_slice(r, sizeof(mlk_poly)))
 );
 
 #define mlk_poly_ntt MLK_NAMESPACE(poly_ntt)

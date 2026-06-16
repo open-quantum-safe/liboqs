@@ -13,7 +13,7 @@ standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/p
   consideration
 spec-version: NIST Round 2 (February 2025)
 primary-upstream:
-  source: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807
+  source: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
     with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:

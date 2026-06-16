@@ -5,10 +5,16 @@
 #ifndef MLK_COMMON_H
 #define MLK_COMMON_H
 
+#ifndef __ASSEMBLER__
+#include <stdint.h>
+#endif
+
+#define MLK_BUILD_INTERNAL
+
 #if defined(MLK_CONFIG_FILE)
 #include MLK_CONFIG_FILE
 #else
-#include "config.h"
+#include "mlkem_native_config.h"
 #endif
 
 #include "params.h"
@@ -28,15 +34,11 @@
 #define MLK_EXTERNAL_API MLK_CONFIG_EXTERNAL_API_QUALIFIER
 #endif
 
-#if defined(MLK_CONFIG_MULTILEVEL_NO_SHARED) || \
-    defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED)
-#define MLK_MULTILEVEL_BUILD
-#endif
-
 #define MLK_CONCAT_(x1, x2) x1##x2
 #define MLK_CONCAT(x1, x2) MLK_CONCAT_(x1, x2)
 
-#if defined(MLK_MULTILEVEL_BUILD)
+#if (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || \
+     defined(MLK_CONFIG_MULTILEVEL_NO_SHARED))
 #define MLK_ADD_PARAM_SET(s) MLK_CONCAT(s, MLK_CONFIG_PARAMETER_SET)
 #else
 #define MLK_ADD_PARAM_SET(s) s
@@ -49,7 +51,7 @@
 /* Functions are prefixed by MLK_CONFIG_NAMESPACE_PREFIX.
  *
  * If multiple parameter sets are used, functions depending on the parameter
- * set are additionally prefixed with 512/768/1024. See config.h.
+ * set are additionally prefixed with 512/768/1024. See mlkem_native_config.h.
  *
  * Example: If MLK_CONFIG_NAMESPACE_PREFIX is mlkem, then
  * MLK_NAMESPACE_K(enc) becomes mlkem512_enc/mlkem768_enc/mlkem1024_enc.
@@ -73,8 +75,24 @@
  */
 #if defined(MLK_SYS_X86_64)
 #define MLK_ASM_FN_SYMBOL(sym) MLK_ASM_NAMESPACE(sym) : MLK_CET_ENDBR
-#else
+#elif defined(MLK_SYS_ARMV81M_MVE)
+/* clang-format off */
+#define MLK_ASM_FN_SYMBOL(sym) \
+  .type MLK_ASM_NAMESPACE(sym), %function; \
+  MLK_ASM_NAMESPACE(sym) :
+/* clang-format on */
+#else /* !MLK_SYS_X86_64 && MLK_SYS_ARMV81M_MVE */
 #define MLK_ASM_FN_SYMBOL(sym) MLK_ASM_NAMESPACE(sym) :
+#endif /* !MLK_SYS_X86_64 && !MLK_SYS_ARMV81M_MVE */
+
+/*
+ * Output the size of an assembly function.
+ */
+#if defined(__ELF__)
+#define MLK_ASM_FN_SIZE(sym) \
+  .size MLK_ASM_NAMESPACE(sym), .- MLK_ASM_NAMESPACE(sym)
+#else
+#define MLK_ASM_FN_SIZE(sym)
 #endif
 
 /* We aim to simplify the user's life by supporting builds where
@@ -97,6 +115,10 @@
 #if defined(MLK_CONFIG_USE_NATIVE_BACKEND_FIPS202) && \
     !defined(MLK_CONFIG_FIPS202_BACKEND_FILE)
 #error Bad configuration: MLK_CONFIG_USE_NATIVE_BACKEND_FIPS202 is set, but MLK_CONFIG_FIPS202_BACKEND_FILE is not.
+#endif
+
+#if defined(MLK_CONFIG_NO_RANDOMIZED_API) && defined(MLK_CONFIG_KEYGEN_PCT)
+#error Bad configuration: MLK_CONFIG_NO_RANDOMIZED_API is incompatible with MLK_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_kem_enc()
 #endif
 
 #if defined(MLK_CONFIG_USE_NATIVE_BACKEND_ARITH)
@@ -135,20 +157,118 @@
 #define MLK_FIPS202X4_HEADER_FILE MLK_CONFIG_FIPS202X4_CUSTOM_HEADER
 #endif
 
-/* Just in case we want to include mlkem_native.h, set the configuration
- * for that header in accordance with the configuration used here. */
+/* Standard library function replacements */
+#if !defined(__ASSEMBLER__)
+#if !defined(MLK_CONFIG_CUSTOM_MEMCPY)
+#include <string.h>
+#define mlk_memcpy memcpy
+#endif
 
-/* Double-check that this is not conflicting with pre-existing definitions. */
-#if defined(MLK_CONFIG_API_PARAMETER_SET) ||    \
-    defined(MLK_CONFIG_API_NAMESPACE_PREFIX) || \
-    defined(MLK_CONFIG_API_NO_SUPERCOP) ||      \
-    defined(MLK_CONFIG_API_CONSTANTS_ONLY)
-#error Pre-existing MLK_CONFIG_API_XXX configuration is neither useful nor allowed during an mlkem-native build
-#endif /* MLK_CONFIG_API_PARAMETER_SET || MLK_CONFIG_API_NAMESPACE_PREFIX || \
-          MLK_CONFIG_API_NO_SUPERCOP || MLK_CONFIG_API_CONSTANTS_ONLY */
+#if !defined(MLK_CONFIG_CUSTOM_MEMSET)
+#include <string.h>
+#define mlk_memset memset
+#endif
 
-#define MLK_CONFIG_API_PARAMETER_SET MLK_CONFIG_PARAMETER_SET
-#define MLK_CONFIG_API_NAMESPACE_PREFIX \
-  MLK_ADD_PARAM_SET(MLK_CONFIG_NAMESPACE_PREFIX)
+
+/* Allocation macros for large local structures
+ *
+ * MLK_ALLOC(v, T, N) declares T *v and attempts to point it to an T[N]
+ * MLK_FREE(v, T, N) zeroizes and frees the allocation
+ *
+ * Default implementation uses stack allocation.
+ * Can be overridden by setting the config option MLK_CONFIG_CUSTOM_ALLOC_FREE
+ * and defining MLK_CUSTOM_ALLOC and MLK_CUSTOM_FREE.
+ */
+#if defined(MLK_CONFIG_CUSTOM_ALLOC_FREE) != \
+    (defined(MLK_CUSTOM_ALLOC) && defined(MLK_CUSTOM_FREE))
+#error Bad configuration: MLK_CONFIG_CUSTOM_ALLOC_FREE must be set together with MLK_CUSTOM_ALLOC and MLK_CUSTOM_FREE
+#endif
+
+/*
+ * If the integration wants to provide a context parameter for use in
+ * platform-specific hooks, then it should define this parameter.
+ *
+ * The MLK_CONTEXT_PARAMETERS_n macros are intended to be used with macros
+ * defining the function names and expand to either pass or discard the context
+ * argument as required by the current build.  If there is no context parameter
+ * requested then these are removed from the prototypes and from all calls.
+ */
+#ifdef MLK_CONFIG_CONTEXT_PARAMETER
+#define MLK_CONTEXT_PARAMETERS_0(context) (context)
+#define MLK_CONTEXT_PARAMETERS_1(arg0, context) (arg0, context)
+#define MLK_CONTEXT_PARAMETERS_2(arg0, arg1, context) (arg0, arg1, context)
+#define MLK_CONTEXT_PARAMETERS_3(arg0, arg1, arg2, context) \
+  (arg0, arg1, arg2, context)
+#define MLK_CONTEXT_PARAMETERS_4(arg0, arg1, arg2, arg3, context) \
+  (arg0, arg1, arg2, arg3, context)
+#else /* MLK_CONFIG_CONTEXT_PARAMETER */
+#define MLK_CONTEXT_PARAMETERS_0(context) ()
+#define MLK_CONTEXT_PARAMETERS_1(arg0, context) (arg0)
+#define MLK_CONTEXT_PARAMETERS_2(arg0, arg1, context) (arg0, arg1)
+#define MLK_CONTEXT_PARAMETERS_3(arg0, arg1, arg2, context) (arg0, arg1, arg2)
+#define MLK_CONTEXT_PARAMETERS_4(arg0, arg1, arg2, arg3, context) \
+  (arg0, arg1, arg2, arg3)
+#endif /* !MLK_CONFIG_CONTEXT_PARAMETER */
+
+#if defined(MLK_CONFIG_CONTEXT_PARAMETER_TYPE) != \
+    defined(MLK_CONFIG_CONTEXT_PARAMETER)
+#error MLK_CONFIG_CONTEXT_PARAMETER_TYPE must be defined if and only if MLK_CONFIG_CONTEXT_PARAMETER is defined
+#endif
+
+#if !defined(MLK_CONFIG_CUSTOM_ALLOC_FREE)
+/* Default: stack allocation */
+
+#define MLK_ALLOC(v, T, N, context) \
+  MLK_ALIGN T mlk_alloc_##v[N];     \
+  T *v = mlk_alloc_##v
+
+/* TODO: This leads to a circular dependency between common and verify.h
+ * It just works out before we're at the end of the file, but it's still
+ * prone to issues in the future. */
+#include "verify.h"
+#define MLK_FREE(v, T, N, context)                     \
+  do                                                   \
+  {                                                    \
+    mlk_zeroize(mlk_alloc_##v, sizeof(mlk_alloc_##v)); \
+    (v) = NULL;                                        \
+  } while (0)
+
+#else /* !MLK_CONFIG_CUSTOM_ALLOC_FREE */
+
+/* Custom allocation */
+
+/*
+ * The indirection here is necessary to use MLK_CONTEXT_PARAMETERS_3 here.
+ */
+#define MLK_APPLY(f, args) f args
+
+#define MLK_ALLOC(v, T, N, context) \
+  MLK_APPLY(MLK_CUSTOM_ALLOC, MLK_CONTEXT_PARAMETERS_3(v, T, N, context))
+
+#define MLK_FREE(v, T, N, context)                                            \
+  do                                                                          \
+  {                                                                           \
+    if (v != NULL)                                                            \
+    {                                                                         \
+      mlk_zeroize(v, sizeof(T) * (N));                                        \
+      MLK_APPLY(MLK_CUSTOM_FREE, MLK_CONTEXT_PARAMETERS_3(v, T, N, context)); \
+      v = NULL;                                                               \
+    }                                                                         \
+  } while (0)
+
+#endif /* MLK_CONFIG_CUSTOM_ALLOC_FREE */
+
+/****************************** Error codes ***********************************/
+
+/* Generic failure condition */
+#define MLK_ERR_FAIL -1
+/* An allocation failed. This can only happen if MLK_CONFIG_CUSTOM_ALLOC_FREE
+ * is defined and the provided MLK_CUSTOM_ALLOC can fail. */
+#define MLK_ERR_OUT_OF_MEMORY -2
+/* An rng failure occured. Might be due to insufficient entropy or
+ * system misconfiguration. */
+#define MLK_ERR_RNG_FAIL -3
+
+#endif /* !__ASSEMBLER__ */
 
 #endif /* !MLK_COMMON_H */

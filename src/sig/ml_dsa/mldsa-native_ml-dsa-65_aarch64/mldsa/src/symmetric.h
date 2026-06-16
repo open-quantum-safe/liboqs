@@ -5,7 +5,6 @@
 #ifndef MLD_SYMMETRIC_H
 #define MLD_SYMMETRIC_H
 
-#include <stdint.h>
 #include "cbmc.h"
 #include "common.h"
 

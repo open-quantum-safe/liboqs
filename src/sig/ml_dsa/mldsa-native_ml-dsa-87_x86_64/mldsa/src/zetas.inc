@@ -9,7 +9,6 @@
  *          Do not modify it directly.
  */
 
-#include <stdint.h>
 
 /*
  * Table of zeta values used in the reference NTT and inverse NTT.

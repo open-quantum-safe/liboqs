@@ -5,16 +5,16 @@
 
 /*
  * WARNING: This file is auto-generated from scripts/autogen
+ *          in the mlkem-native repository.
  *          Do not modify it directly.
  */
 
-#include <stdint.h>
 
 /*
  * Table of zeta values used in the reference NTT and inverse NTT.
  * See autogen for details.
  */
-static MLK_ALIGN const int16_t zetas[128] = {
+static MLK_ALIGN const int16_t mlk_zetas[128] = {
     -1044, -758,  -359,  -1517, 1493,  1422,  287,   202,  -171,  622,   1577,
     182,   962,   -1202, -1474, 1468,  573,   -1325, 264,  383,   -829,  1458,
     -1602, -130,  -681,  1017,  732,   608,   -1542, 411,  -205,  -1571, 1223,

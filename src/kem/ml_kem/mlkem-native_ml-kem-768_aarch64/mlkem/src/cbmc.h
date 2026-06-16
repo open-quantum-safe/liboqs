@@ -8,13 +8,13 @@
 /***************************************************
  * Basic replacements for __CPROVER_XXX contracts
  ***************************************************/
-
 #ifndef CBMC
 
 #define __contract__(x)
 #define __loop__(x)
 
 #else /* !CBMC */
+
 
 #define __contract__(x) x
 #define __loop__(x) x
@@ -49,7 +49,6 @@
  */
 #define object_whole(...) __CPROVER_object_whole(__VA_ARGS__)
 #define memory_slice(...) __CPROVER_object_upto(__VA_ARGS__)
-#define same_object(...) __CPROVER_same_object(__VA_ARGS__)
 
 /*
  * Pointer-related predicates
@@ -58,6 +57,17 @@
 #define memory_no_alias(...) __CPROVER_is_fresh(__VA_ARGS__)
 #define readable(...) __CPROVER_r_ok(__VA_ARGS__)
 #define writeable(...) __CPROVER_w_ok(__VA_ARGS__)
+
+/* Maximum supported buffer size
+ *
+ * Larger buffers may be supported, but due to internal modeling constraints
+ * in CBMC, the proofs of memory- and type-safety won't be able to run.
+ *
+ * If you find yourself in need for a buffer size larger than this,
+ * please contact the maintainers, so we can prioritize work to relax
+ * this somewhat artificial bound.
+ */
+#define MLK_MAX_BUFFER_SIZE (SIZE_MAX >> 12)
 
 /*
  * History variables
@@ -83,7 +93,7 @@
     ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==> (predicate)   \
   }
 
-#define EXISTS(qvar, qvar_lb, qvar_ub, predicate)         \
+#define exists(qvar, qvar_lb, qvar_ub, predicate)               \
   __CPROVER_exists                                              \
   {                                                             \
     unsigned qvar;                                              \
@@ -118,13 +128,35 @@
   {                                                                    \
     unsigned qvar;                                                     \
     ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==>                    \
-        (((int)(value_lb) <= ((array_var)[(qvar)])) &&		       \
-         (((array_var)[(qvar)]) < (int)(value_ub)))		       \
+        (((int)(value_lb) <= ((array_var)[(qvar)])) &&                 \
+         (((array_var)[(qvar)]) < (int)(value_ub)))                    \
   }
 
-#define array_bound(array_var, qvar_lb, qvar_ub, value_lb, value_ub) \
-  array_bound_core(CBMC_CONCAT(_cbmc_idx, __LINE__), (qvar_lb),      \
+#define array_bound(array_var, qvar_lb, qvar_ub, value_lb, value_ub)    \
+  array_bound_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), (qvar_lb),      \
       (qvar_ub), (array_var), (value_lb), (value_ub))
+
+#define array_unchanged_core(qvar, qvar_lb, qvar_ub, array_var)        \
+  __CPROVER_forall                                                     \
+  {                                                                    \
+    unsigned qvar;                                                     \
+    ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==>                    \
+    ((array_var)[(qvar)]) == (old(* (int16_t (*)[(qvar_ub)])(array_var)))[(qvar)] \
+  }
+
+#define array_unchanged(array_var, N) \
+    array_unchanged_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), 0, (N), (array_var))
+
+#define array_unchanged_u64_core(qvar, qvar_lb, qvar_ub, array_var)    \
+  __CPROVER_forall                                                     \
+  {                                                                    \
+    unsigned qvar;                                                     \
+    ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==>                    \
+    ((array_var)[(qvar)]) == (old(* (uint64_t (*)[(qvar_ub)])(array_var)))[(qvar)] \
+  }
+
+#define array_unchanged_u64(array_var, N) \
+    array_unchanged_u64_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), 0, (N), (array_var))
 /* clang-format on */
 
 /* Wrapper around array_bound operating on absolute values.

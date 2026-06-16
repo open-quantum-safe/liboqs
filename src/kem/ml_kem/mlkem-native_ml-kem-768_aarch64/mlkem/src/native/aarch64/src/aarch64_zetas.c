@@ -5,6 +5,7 @@
 
 /*
  * WARNING: This file is auto-generated from scripts/autogen
+ *          in the mlkem-native repository.
  *          Do not modify it directly.
  */
 
@@ -13,7 +14,6 @@
 #if defined(MLK_ARITH_BACKEND_AARCH64) && \
     !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED)
 
-#include <stdint.h>
 #include "arith_native_aarch64.h"
 
 /*

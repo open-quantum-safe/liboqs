@@ -8,12 +8,23 @@
  *
  * - [FIPS140_3_IG]
  *   Implementation Guidance for FIPS 140-3 and the Cryptographic Module
- *   Validation Program National Institute of Standards and Technology
+ *   Validation Program
+ *   National Institute of Standards and Technology
  *   https://csrc.nist.gov/projects/cryptographic-module-validation-program/fips-140-3-ig-announcements
  */
 
 #ifndef MLK_INTEGRATION_LIBOQS_CONFIG_C_H
 #define MLK_INTEGRATION_LIBOQS_CONFIG_C_H
+
+/* Enable valgrind-based assertions in mlkem-native through macro
+ * from libOQS. */
+#if !defined(__ASSEMBLER__)
+#include <oqs/common.h>
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME)
+#define MLK_CONFIG_CT_TESTING_ENABLED
+#endif
+#endif /* !__ASSEMBLER__ */
+
 
 /******************************************************************************
  * Name:        MLK_CONFIG_PARAMETER_SET
@@ -134,7 +145,7 @@
  *              consumer.
  *
  *              If this option is not set, mlkem-native expects a function
- *              void randombytes(uint8_t *out, size_t outlen).
+ *              int randombytes(uint8_t *out, size_t outlen).
  *
  *              Set this option and define `mlk_randombytes` if you want to
  *              use a custom method to sample randombytes with a different name
@@ -146,9 +157,10 @@
 #include <oqs/rand.h>
 #include <stdint.h>
 #include "../../mlkem/src/sys.h"
-static MLK_INLINE void mlk_randombytes(uint8_t *ptr, size_t len)
+static MLK_INLINE int mlk_randombytes(uint8_t *ptr, size_t len)
 {
   OQS_randombytes(ptr, len);
+  return 0;
 }
 #endif /* !__ASSEMBLER__ */
 
@@ -211,14 +223,5 @@ static MLK_INLINE void mlk_randombytes(uint8_t *ptr, size_t len)
    }
    #endif
 */
-
-/* Enable valgrind-based assertions in mlkem-native through macro
- * from libOQS. */
-#if !defined(__ASSEMBLER__)
-#include <oqs/common.h>
-#if defined(OQS_ENABLE_TEST_CONSTANT_TIME)
-#define MLK_CONFIG_CT_TESTING_ENABLED
-#endif
-#endif /* !__ASSEMBLER__ */
 
 #endif /* !MLK_INTEGRATION_LIBOQS_CONFIG_C_H */

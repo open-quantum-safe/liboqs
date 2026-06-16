@@ -23,12 +23,13 @@
 
 #include "../../../common.h"
 
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
-    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) &&   \
+    !defined(MLD_CONFIG_NO_SIGN_API) &&            \
+    !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) &&   \
+    (defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
+     MLD_CONFIG_PARAMETER_SET == 44)
 
 #include <immintrin.h>
-#include <stdint.h>
-#include <string.h>
 #include "arith_native_x86_64.h"
 #include "consts.h"
 
@@ -62,7 +63,7 @@ void mld_poly_decompose_88_avx2(int32_t *a1, int32_t *a0)
      * range: 0 <= f <= Q-1 = 88*GAMMA2 = 44*128*B
      */
 
-    /* Compute f1' = ceil(f / 128) as floor((f + 127) >> 7) */
+    /* Compute f1' = ceil(f / 128) as floor((f + 127) / 2^7) */
     f1 = _mm256_add_epi32(f, off);
     f1 = _mm256_srli_epi32(f1, 7);
     /*
@@ -75,8 +76,8 @@ void mld_poly_decompose_88_avx2(int32_t *a1, int32_t *a0)
 
     /*
      * Compute f1 = round-(f1' / B) ≈ round(f1' * 11275 / 2^24). This is exact
-     * for 0 <= f1' < 2^16. Note that half is rounded down since 11275 / 2^24 ≲
-     * 1 / 1488.
+     * for 0 <= f1' < 2^16. See mld_decompose() in mldsa/src/rounding.h for the
+     * proof, and proofs/isabelle/compress for a formalization of the argument.
      *
      * round(f1' * 11275 / 2^24) is in turn computed in 2 steps as
      * round(floor(f1' * 11275 / 2^16) / 2^8). The mulhi computes f1'' =
@@ -88,7 +89,9 @@ void mld_poly_decompose_88_avx2(int32_t *a1, int32_t *a0)
      */
     f1 = _mm256_mulhi_epu16(f1, v);
     /*
-     * range: 0 <= f1'' < floor(2^16 * 11275 / 2^16) = 11275
+     * range: 0 <= f1''  = floor(f1' * 11275 / 2^16)
+     *                  <= f1' * 11275 / 2^16
+     *                   < 2^16 * 11275 / 2^16 = 11275
      *
      * Because 0 <= f1'' < 2^15, the multiplication in mulhrs is unsigned, that
      * is, no erroneous sign-extension occurs.
@@ -141,10 +144,14 @@ void mld_poly_decompose_88_avx2(int32_t *a1, int32_t *a0)
     _mm256_store_si256((__m256i *)&a0[8 * i], f0);
   }
 }
-#else /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
+#else /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_NO_SIGN_API &&        \
+         !MLD_CONFIG_MULTILEVEL_NO_SHARED &&                                   \
+         (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44) \
        */
 
 MLD_EMPTY_CU(avx2_poly_decompose_88)
 
-#endif /* !(MLD_ARITH_BACKEND_X86_64_DEFAULT && \
-          !MLD_CONFIG_MULTILEVEL_NO_SHARED) */
+#endif /* !(MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_NO_SIGN_API &&  \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED &&                               \
+          (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == \
+          44)) */

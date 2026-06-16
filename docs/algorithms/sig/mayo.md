@@ -6,14 +6,14 @@
 - **Authors' website**: https://pqmayo.org
 - **Specification version**: NIST Round 2 (February 2025).
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
+  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 - **Optimized Implementation sources**:
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
+      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106 with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
   - **neon**:<a name="neon"></a>
-      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/4b7cd94c96b9522864efe40c6ad1fa269584a807 with copy_from_upstream patches
+      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106 with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
