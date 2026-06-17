@@ -68,6 +68,10 @@ def shell(command, expect=0):
     subprocess_stdout = None if DEBUG > 0 else subprocess.DEVNULL
     ret = subprocess.run(command, stdout=subprocess_stdout, stderr=subprocess_stdout)
     if ret.returncode != expect:
+        if ret.stdout:
+            print(ret.stdout.decode("utf-8"))
+        if ret.stderr:
+            print(ret.stderr.decode("utf-8"))
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 # Generate template from specified scheme to replace old file in 'copy' mode
@@ -797,6 +801,7 @@ def copy_from_upstream(slh_dsa_inst: dict):
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
@@ -826,6 +831,7 @@ def copy_from_libjade():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
 
