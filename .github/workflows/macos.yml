@@ -47,7 +47,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # pin@v4
       - name: Install dependencies
         run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
       - name: Get system information
