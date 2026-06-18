@@ -3,7 +3,7 @@
 The **Open Quantum Safe (OQS) project** has the goal of developing and
 prototyping quantum-resistant cryptography. More information on OQS can be
 found on our website: <https://openquantumsafe.org/> and on Github at
-<https://github.com/open-quantum-safe/>.  
+<https://github.com/open-quantum-safe/>.
 
 **liboqs** is an open source C library for quantum-resistant cryptographic
 algorithms. Details about liboqs can be found in
@@ -46,6 +46,8 @@ SPHINCS+ was removed in 0.16.0.
 
 ### Security issues
 
+- Fixed uninitialized `encaps_derand` pointer dereference
+[#2460](https://github.com/open-quantum-safe/liboqs/pull/2460)
 - Fixed out-of-bounds read in XMSS/XMSS^MT signature verification
 [077e32a](https://github.com/open-quantum-safe/liboqs/commit/077e32a)
 [#2384](https://github.com/open-quantum-safe/liboqs/pull/2384)
@@ -62,6 +64,8 @@ NOTE: there are three pull requests related to mldsa-native:
     - #2391 update to v1.0.0-beta
     - #3445 update to v1.0.0-beta2
 -->
+- Updated HQC implementation to 20250822 spec from official repository
+[#2407](https://github.com/open-quantum-safe/liboqs/pull/2407)
 - mldsa-native integration
 [#2284](https://github.com/open-quantum-safe/liboqs/pull/2284)
 [#2391](https://github.com/open-quantum-safe/liboqs/pull/2391)
@@ -108,6 +112,12 @@ no external effect and is ignored -->
 
 ### Miscellaneous
 
+- Removed legacy HQC constant-time test
+[#2467](https://github.com/open-quantum-safe/liboqs/pull/2467)
+- Download Intel SDE from alternative source
+[#2463](https://github.com/open-quantum-safe/liboqs/pull/2463)
+- Updated algorithm support information
+[#2441](https://github.com/open-quantum-safe/liboqs/pull/2441)
 - Added NIST LMS Signature verify KATs
 [#2435](https://github.com/open-quantum-safe/liboqs/pull/2435)
 - Fixed comments on SHA3-AVX512VL assembly file. Thank you Anthony Plank for
