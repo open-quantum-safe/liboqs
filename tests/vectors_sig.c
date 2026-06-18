@@ -1197,7 +1197,7 @@ int main(int argc, char **argv) {
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SLH_DSA)
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
 		rc = sig_gen_vector_int(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
 #else
 		rc = EXIT_SUCCESS;
