@@ -11,7 +11,9 @@ import pytest
 import helpers
 from helpers import requests_get, cached_requests_get
 
-WYCHE_ROOT = "https://raw.githubusercontent.com/C2SP/wycheproof/main/testvectors_v1/"
+# TODO: 032b56a is the last good commit with which all test cases pass
+WYCHEPROOF_COMMIT = "032b56abd1368843e4def50b4975032ec1ec7ba4"
+WYCHE_ROOT = f"https://raw.githubusercontent.com/C2SP/wycheproof/{WYCHEPROOF_COMMIT}/testvectors_v1/"
 
 MlKemParam = namedtuple("MlKemParam", ["pk", "ct"])
 # Maps supported ML-KEM algorithms to their respective public key (ek) and ciphertext (c) byte lengths.

@@ -188,8 +188,11 @@ static void SHA3_shake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *state) {
 static void SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *state) {
 	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
-	EVP_DigestSqueeze(s->mdctx, output, outlen);
-#else
+	if (oqs_ossl_can_digest_squeeze()) {
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx, output, outlen));
+		return;
+	}
+#endif
 	EVP_MD_CTX *clone;
 
 	clone = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -206,7 +209,6 @@ static void SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 	}
 	OSSL_FUNC(EVP_MD_CTX_free)(clone);
 	s->n_out += outlen;
-#endif
 }
 
 static void SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
@@ -263,8 +265,11 @@ static void SHA3_shake256_inc_finalize(OQS_SHA3_shake256_inc_ctx *state) {
 static void SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake256_inc_ctx *state) {
 	intrn_shake256_inc_ctx *s = (intrn_shake256_inc_ctx *)state->ctx;
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
-	EVP_DigestSqueeze(s->mdctx, output, outlen);
-#else
+	if (oqs_ossl_can_digest_squeeze()) {
+		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx, output, outlen));
+		return;
+	}
+#endif
 	EVP_MD_CTX *clone;
 
 	clone = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -281,7 +286,6 @@ static void SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_s
 	}
 	OSSL_FUNC(EVP_MD_CTX_free)(clone);
 	s->n_out += outlen;
-#endif
 }
 
 static void SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {

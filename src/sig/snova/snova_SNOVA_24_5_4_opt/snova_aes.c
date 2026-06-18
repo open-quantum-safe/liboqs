@@ -13,6 +13,10 @@
 int AES_128_CTR(unsigned char *output, size_t outputByteLen,
                 const unsigned char *input, size_t inputByteLen) {
 	assert(inputByteLen > 0);
+#ifdef NDEBUG
+    // With -DNDEBUG, `assert` becomes a no-op, so inputByteLen becomes unused
+    (void) inputByteLen;
+#endif
 	const uint8_t iv[16] = {0};
 
 	void *state;

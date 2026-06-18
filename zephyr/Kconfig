@@ -76,4 +76,9 @@ config LIBOQS_ENABLE_SIG_SNOVA
 	default y
 	depends on LIBOQS
 
+config LIBOQS_ENABLE_SIG_MQOM
+	bool "Enable the MQOM signature algorithm"
+	default y
+	depends on LIBOQS
+
 endmenu

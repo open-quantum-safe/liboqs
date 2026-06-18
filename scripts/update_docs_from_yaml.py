@@ -9,6 +9,7 @@ import tabulate
 import yaml
 
 from update_alg_support_table import update_readme
+import generate_algorithms_md
 
 def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
@@ -72,6 +73,16 @@ def do_it(liboqs_root):
                 out_md.write('  - {}\n'.format(kem_yaml['upstream-ancestors'][-1]))
             else:
                 out_md.write('\n')
+
+            out_md.write('\n## Support\n\n')
+            out_md.write('- **Upstream maintenance**: {}{}\n'.format(
+                kem_yaml.get('upstream-maintenance', 'TBD'),
+                ' ([statement]({}))'.format(kem_yaml['upstream-statement-url'])
+                if kem_yaml.get('upstream-statement-url') else '',
+            ))
+            out_md.write('- **OQS support tier**: Tier {}\n'.format(
+                kem_yaml.get('oqs-support-tier', 3),
+            ))
 
             if 'advisories' in kem_yaml:
                 out_md.write('\n## Advisories\n\n')
@@ -211,6 +222,16 @@ def do_it(liboqs_root):
             else:
                 out_md.write('\n')
 
+            out_md.write('\n## Support\n\n')
+            out_md.write('- **Upstream maintenance**: {}{}\n'.format(
+                sig_yaml.get('upstream-maintenance', 'TBD'),
+                ' ([statement]({}))'.format(sig_yaml['upstream-statement-url'])
+                if sig_yaml.get('upstream-statement-url') else '',
+            ))
+            out_md.write('- **OQS support tier**: Tier {}\n'.format(
+                sig_yaml.get('oqs-support-tier', 3),
+            ))
+
             if 'advisories' in sig_yaml:
                 out_md.write('\n## Advisories\n\n')
                 for advisory in sig_yaml['advisories']:
@@ -336,6 +357,16 @@ def do_it(liboqs_root):
             else:
                 out_md.write('\n')
 
+            out_md.write('\n## Support\n\n')
+            out_md.write('- **Upstream maintenance**: {}{}\n'.format(
+                sig_stfl_yaml.get('upstream-maintenance', 'TBD'),
+                ' ([statement]({}))'.format(sig_stfl_yaml['upstream-statement-url'])
+                if sig_stfl_yaml.get('upstream-statement-url') else '',
+            ))
+            out_md.write('- **OQS support tier**: Tier {}\n'.format(
+                sig_stfl_yaml.get('oqs-support-tier', 3),
+            ))
+
             if 'advisories' in sig_stfl_yaml:
                 out_md.write('\n## Advisories\n\n')
                 for advisory in sig_stfl_yaml['advisories']:
@@ -359,6 +390,7 @@ def do_it(liboqs_root):
             out_md.write('\n')
 
     update_readme(liboqs_root)
+    generate_algorithms_md.write(liboqs_root)
 
 
 if __name__ == "__main__":

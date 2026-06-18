@@ -30,7 +30,7 @@
 #define XMSS_ALG(mt, xmss_v, XMSS_V) \
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss##xmss_v##_new(void) { \
 \
-        OQS_SIG_STFL *sig = (OQS_SIG_STFL *)OQS_MEM_malloc(sizeof(OQS_SIG_STFL)); \
+        OQS_SIG_STFL *sig = (OQS_SIG_STFL *)OQS_MEM_calloc(1, sizeof(OQS_SIG_STFL)); \
         if (sig == NULL) { \
                 return NULL; \
         } \
@@ -73,6 +73,21 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_sign(uint8_t *signature, size
 }\
 \
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {\
+        if (signature_len != OQS_SIG_STFL_alg_xmss##xmss_v##_length_signature) {\
+                return OQS_ERROR;\
+        }\
+        if (public_key == NULL) {\
+                return OQS_ERROR;\
+        }\
+        /* Reject pks whose OID disagrees with the variant the caller invoked. */\
+        /* Without this, a mutated OID can steer xmss_sign_open into a parameter */\
+        /* set whose sig_bytes exceeds signature_len, causing an OOB read in */\
+        /* xmss_commons.c (GHSA-2wxh-55qf-c7wg). */\
+        uint32_t pk_oid = ((uint32_t)public_key[0] << 24) | ((uint32_t)public_key[1] << 16)\
+                        | ((uint32_t)public_key[2] <<  8) | ((uint32_t)public_key[3]);\
+        if (pk_oid != (uint32_t)OQS_SIG_STFL_alg_xmss##xmss_v##_oid) {\
+                return OQS_ERROR;\
+        }\
         return OQS_SIG_STFL_alg_xmss##mt##_verify(message, message_len, signature, signature_len, public_key);\
 }\
 \

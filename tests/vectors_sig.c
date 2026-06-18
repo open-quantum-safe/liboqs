@@ -401,7 +401,6 @@ cleanup:
 }
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA) || defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
-
 /* signature verification internal APIs tests */
 static int sig_ver_vector_int(const char *method_name,
                               const uint8_t *sigVer_pk_bytes,
@@ -472,6 +471,7 @@ cleanup:
 	return ret;
 }
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 /* signature verification external APIs with context tests */
 static int sig_ver_vector_ext(const char *method_name,
                               const uint8_t *sigVer_pk_bytes,
@@ -655,6 +655,7 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 }
+#endif
 
 /* signature generation internal API tests */
 static int sig_gen_vector_int(const char *method_name,
@@ -925,7 +926,7 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 }
-
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 /* signature generation pre-hash external APIs with context tests */
 static int sig_gen_prehash_vector_ext(const char *method_name,
                                       uint8_t *prng_output_stream,
@@ -1025,6 +1026,7 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 }
+#endif
 #endif
 
 int main(int argc, char **argv) {

@@ -623,7 +623,7 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 }
 
 OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
-	if (kem == NULL) {
+	if (kem == NULL || kem->keypair_derand == NULL) {
 		return OQS_ERROR;
 	} else {
 		return kem->keypair_derand(public_key, secret_key, seed);
@@ -631,7 +631,7 @@ OQS_API OQS_STATUS OQS_KEM_keypair_derand(const OQS_KEM *kem, uint8_t *public_ke
 }
 
 OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
-	if (kem == NULL) {
+	if (kem == NULL || kem->keypair == NULL) {
 		return OQS_ERROR;
 	} else {
 		return kem->keypair(public_key, secret_key);
@@ -639,7 +639,7 @@ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint
 }
 
 OQS_API OQS_STATUS OQS_KEM_encaps_derand(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
-	if (kem == NULL) {
+	if (kem == NULL || kem->encaps_derand == NULL) {
 		return OQS_ERROR;
 	} else {
 		return kem->encaps_derand(ciphertext, shared_secret, public_key, seed);
@@ -647,7 +647,7 @@ OQS_API OQS_STATUS OQS_KEM_encaps_derand(const OQS_KEM *kem, uint8_t *ciphertext
 }
 
 OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-	if (kem == NULL) {
+	if (kem == NULL || kem->encaps == NULL) {
 		return OQS_ERROR;
 	} else {
 		return kem->encaps(ciphertext, shared_secret, public_key);
@@ -655,7 +655,7 @@ OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8
 }
 
 OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-	if (kem == NULL) {
+	if (kem == NULL || kem->decaps == NULL) {
 		return OQS_ERROR;
 	} else {
 		return kem->decaps(shared_secret, ciphertext, secret_key);

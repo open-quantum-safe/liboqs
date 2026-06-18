@@ -9,6 +9,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <oqs/oqs.h>
 #define MAX_HASH   32 /* Length of the largest hash we support */
 
@@ -67,6 +68,45 @@ typedef uint_fast64_t sequence_t;
 #define LMOTS_SHA256_N32_W2 0x00000002
 #define LMOTS_SHA256_N32_W4 0x00000003
 #define LMOTS_SHA256_N32_W8 0x00000004
+
+/* Supported LMS / LM-OTS parameter-set identifiers (must stay in sync with #defines above) */
+#define OQS_LMS_TYPE_LIST_LEN 5u
+#define OQS_LMOTS_TYPE_LIST_LEN 4u
+
+static const param_set_t OQS_LMS_TYPE_LIST[OQS_LMS_TYPE_LIST_LEN] = {
+	LMS_SHA256_N32_H5,
+	LMS_SHA256_N32_H10,
+	LMS_SHA256_N32_H15,
+	LMS_SHA256_N32_H20,
+	LMS_SHA256_N32_H25,
+};
+
+static const param_set_t OQS_LMOTS_TYPE_LIST[OQS_LMOTS_TYPE_LIST_LEN] = {
+	LMOTS_SHA256_N32_W1,
+	LMOTS_SHA256_N32_W2,
+	LMOTS_SHA256_N32_W4,
+	LMOTS_SHA256_N32_W8,
+};
+
+static inline bool oqs_lms_type_list_contains(param_set_t v) {
+	size_t i;
+	for (i = 0; i < OQS_LMS_TYPE_LIST_LEN; i++) {
+		if (OQS_LMS_TYPE_LIST[i] == v) {
+			return true;
+		}
+	}
+	return false;
+}
+
+static inline bool oqs_lmots_type_list_contains(param_set_t v) {
+	size_t i;
+	for (i = 0; i < OQS_LMOTS_TYPE_LIST_LEN; i++) {
+		if (OQS_LMOTS_TYPE_LIST[i] == v) {
+			return true;
+		}
+	}
+	return false;
+}
 
 /*
  * Internal formats of various hashes

@@ -22,6 +22,11 @@
       - **Implementation license (SPDX-Identifier)**: CC0-1.0 OR Apache-2.0
 
 
+## Support
+
+- **Upstream maintenance**: TBD
+- **OQS support tier**: Tier 3
+
 ## Parameter set summary
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |

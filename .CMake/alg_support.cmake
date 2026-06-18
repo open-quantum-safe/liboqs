@@ -113,11 +113,6 @@ cmake_dependent_option(OQS_ENABLE_KEM_efrodokem_1344_shake "" ON "OQS_ENABLE_KEM
 
 option(OQS_ENABLE_KEM_NTRUPRIME "Enable ntruprime algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 "" ON "OQS_ENABLE_KEM_ntruprime_sntrup761" OFF)
-endif()
-endif()
 
 option(OQS_ENABLE_KEM_NTRU "Enable ntru algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps2048509 "" ON "OQS_ENABLE_KEM_NTRU" OFF)

@@ -24,6 +24,11 @@
       - **Implementation license (SPDX-Identifier)**: MIT
 
 
+## Support
+
+- **Upstream maintenance**: Actively maintained ([statement](https://github.com/pq-code-package/mlkem-native))
+- **OQS support tier**: Tier 1
+
 ## Parameter set summary
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair seed size (bytes) |   Encapsulation seed size (bytes) |

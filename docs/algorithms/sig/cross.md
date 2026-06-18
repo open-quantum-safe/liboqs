@@ -15,6 +15,11 @@
       - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
+## Support
+
+- **Upstream maintenance**: Actively maintained ([statement](https://github.com/CROSS-signature/CROSS-lib-oqs/blob/main/docs/oqs-statement.txt))
+- **OQS support tier**: Tier 3
+
 ## Parameter set summary
 
 |      Parameter set       | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
