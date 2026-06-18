@@ -58,31 +58,60 @@ SPHINCS+ was removed in 0.16.0.
 
 ### Significant change
 
-<!--
-NOTE: there are three pull requests related to mldsa-native:
-    - #2284 is the initial mldsa-native integration
-    - #2391 update to v1.0.0-beta
-    - #3445 update to v1.0.0-beta2
--->
-- Updated HQC implementation to 20250822 spec from official repository
-[#2407](https://github.com/open-quantum-safe/liboqs/pull/2407)
-- mldsa-native integration
-[#2284](https://github.com/open-quantum-safe/liboqs/pull/2284)
-[#2391](https://github.com/open-quantum-safe/liboqs/pull/2391)
-[#2445](https://github.com/open-quantum-safe/liboqs/pull/2445)
-- Fixed erroneous MAYO_OK despite failed sample_solution() attempts in MAYO
-[#2403](https://github.com/open-quantum-safe/liboqs/pull/2403)
-- Update mlkem-native to v1.1.0
-[#2376](https://github.com/open-quantum-safe/liboqs/pull/2376)
-- Added MQOM [#2385](https://github.com/open-quantum-safe/liboqs/pull/2385)
-- Added public domain OpenSSH implementation of sntrup761
-[#2356](https://github.com/open-quantum-safe/liboqs/pull/2356)
-- Added build option `OQS_MEMOPT_BUILD` to enable memory‑optimized builds
-[#2367](https://github.com/open-quantum-safe/liboqs/pull/2367)
-- Added salted variants of FrodoKEM
+#### FrodoKEM algorithm change
+
+[#2192](https://github.com/open-quantum-safe/liboqs/pull/2192),
 [#2342](https://github.com/open-quantum-safe/liboqs/pull/2342)
-- Removed SPHINCS+
-[#2339](https://github.com/open-quantum-safe/liboqs/pull/2339)
+
+Existing FrodoKEM in 0.15.0 was renamed to ephemeral FrodoKEM
+(`KEM_efrodokem_<640|976|1344>_<aes|shake>`), and the salted variant of FrodoKEM
+was added under the prior names (`KEM_frodokem_<640|976|1344>_<aes|shake>`).
+
+Ephemeral FrodoKEM is recommended for applications where each keypair will
+encapsulate only a small number of shared secrets and ciphertexts. Standard
+(salted) FrodoKEM is recommended for applications where each keypair is
+expected to encapsulate large number of ciphertexts. Please consult
+[upstream](https://github.com/microsoft/PQCrypto-LWEKE/#frodokem-learning-with-errors-key-encapsulation)
+for more details.
+
+#### mldsa-native integration
+
+[#2284](https://github.com/open-quantum-safe/liboqs/pull/2284),
+[#2391](https://github.com/open-quantum-safe/liboqs/pull/2391),
+[#3445](https://github.com/open-quantum-safe/liboqs/pull/3445)
+
+mldsa-native is a secure, fast, and portable C90 implementation of the ML-DSA
+post-quantum signature standard. It also includes optimized builds for x86_64
+and aarch64. It is now the default implementation behind
+`SIG_ml_dsa_<44|65|87>`.
+
+#### Updated HQC implementation
+
+[#2407](https://github.com/open-quantum-safe/liboqs/pull/2407)
+
+The HQC implementations in liboqs were updated to 20250822 spec. Its upstream
+switched from PQClean to the [official repo](https://gitlab.com/pqc-hqc/hqc).
+`KEM_hqc_<1|3|5>` is now enabled by default.
+
+#### MQOM integration and memory-optimized build flag
+
+[#2385](https://github.com/open-quantum-safe/liboqs/pull/2385),
+[#2367](https://github.com/open-quantum-safe/liboqs/pull/2367)
+
+MQOM is a third-round candidate in NIST's Additional Digital Signatures for the
+PQC Standardization Process. Portable, x86_64-optimized, and memory-optimized
+implementations were integrate into liboqs under `OQS_ENABLE_SIG_MQOM`.
+
+A new build flag `OQS_MEMOPT_BUILD` can now be used to switch to
+memory-optimized builds for algorithms that have memory-optimized
+implementations.
+
+#### OpenSSH implementation of NTRU Prime
+
+[#2356](https://github.com/open-quantum-safe/liboqs/pull/2356)
+
+A public-domain OpenSSH implementation of NTRUPrime761 replaced the PQClean
+implementation as the default backend for `KEM_ntruprime_sntrup761`.
 
 ### Bug fixes
 
@@ -94,6 +123,8 @@ NOTE: there are three pull requests related to mldsa-native:
 [#2434](https://github.com/open-quantum-safe/liboqs/pull/2434)
 - Fixed missing initialization and indexing bug in LMS
 [#2416](https://github.com/open-quantum-safe/liboqs/pull/2416)
+- Fixed erroneous MAYO_OK despite failed sample_solution() attempts in MAYO
+[#2403](https://github.com/open-quantum-safe/liboqs/pull/2403)
 - Limited pytest parallelism to prevent memory exhaustion in constrained
 environment [#2397](https://github.com/open-quantum-safe/liboqs/pull/2397)
 - Fixed cuPQC ML-KEM derand symbol names and `#if/#elif` chains
@@ -112,6 +143,8 @@ no external effect and is ignored -->
 
 ### Miscellaneous
 
+- Update mlkem-native to v1.1.0
+[#2376](https://github.com/open-quantum-safe/liboqs/pull/2376)
 - Removed legacy HQC constant-time test
 [#2467](https://github.com/open-quantum-safe/liboqs/pull/2467)
 - Download Intel SDE from alternative source
