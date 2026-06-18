@@ -538,6 +538,7 @@ cleanup:
 
 }
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 /* signature verification external-MU APIs tests */
 static int sig_ver_vector_extmu(const char *method_name,
                                 const uint8_t *sigVer_pk_bytes,
@@ -588,6 +589,7 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 }
+#endif
 
 /* signature verification prehash APIs with context tests */
 static int sig_ver_prehash_vector_ext(const char *method_name,
@@ -844,6 +846,7 @@ cleanup:
 	return ret;
 }
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 /* signature generation external-MU APIs tests */
 static int sig_gen_vector_extmu(const char *method_name,
                                 uint8_t *prng_output_stream,
@@ -926,6 +929,8 @@ cleanup:
 	OQS_SIG_free(sig);
 	return ret;
 }
+#endif
+
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 /* signature generation pre-hash external APIs with context tests */
 static int sig_gen_prehash_vector_ext(const char *method_name,
