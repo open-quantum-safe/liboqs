@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:f3c0c7b5-ffbb-456e-9c82-3e634028a4c6",
+  "serialNumber": "urn:uuid:b5161e23-fb3b-41e7-8059-b2bcdd1c506b",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-03-18T20:57:58.977665+00:00",
+    "timestamp": "2026-04-03T15:11:19.798141+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@fa4af5ea999fbf55edb511c0f26da14d87998ec2",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@45b7043723da6ae132e2a96432d1eaa44e1ccda6",
       "name": "liboqs",
-      "version": "fa4af5ea999fbf55edb511c0f26da14d87998ec2"
+      "version": "45b7043723da6ae132e2a96432d1eaa44e1ccda6"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@fa4af5ea999fbf55edb511c0f26da14d87998ec2",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@45b7043723da6ae132e2a96432d1eaa44e1ccda6",
       "name": "liboqs",
-      "version": "fa4af5ea999fbf55edb511c0f26da14d87998ec2"
+      "version": "45b7043723da6ae132e2a96432d1eaa44e1ccda6"
     },
     {
       "type": "cryptographic-asset",
@@ -962,12 +962,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-128:clean:generic",
+      "bom-ref": "alg:HQC-1:ref:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "HQC-128",
+          "parameterSetIdentifier": "HQC-1",
           "primitive": "kem",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -982,12 +982,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-192:clean:generic",
+      "bom-ref": "alg:HQC-3:ref:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "HQC-192",
+          "parameterSetIdentifier": "HQC-3",
           "primitive": "kem",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -1002,12 +1002,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:HQC-256:clean:generic",
+      "bom-ref": "alg:HQC-5:ref:generic",
       "name": "HQC",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "HQC-256",
+          "parameterSetIdentifier": "HQC-5",
           "primitive": "kem",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -8367,7 +8367,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@fa4af5ea999fbf55edb511c0f26da14d87998ec2",
+      "ref": "pkg:github/open-quantum-safe/liboqs@45b7043723da6ae132e2a96432d1eaa44e1ccda6",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -8416,9 +8416,9 @@
         "alg:eFrodoKEM-1344-AES:master:x86_64",
         "alg:eFrodoKEM-1344-SHAKE:master:generic",
         "alg:eFrodoKEM-1344-SHAKE:master:x86_64",
-        "alg:HQC-128:clean:generic",
-        "alg:HQC-192:clean:generic",
-        "alg:HQC-256:clean:generic",
+        "alg:HQC-1:ref:generic",
+        "alg:HQC-3:ref:generic",
+        "alg:HQC-5:ref:generic",
         "alg:Kyber512:ref:generic",
         "alg:Kyber512:avx2:x86_64",
         "alg:Kyber512:aarch64:armv8-a",
@@ -9114,19 +9114,19 @@
       ]
     },
     {
-      "ref": "alg:HQC-128:clean:generic",
+      "ref": "alg:HQC-1:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:HQC-192:clean:generic",
+      "ref": "alg:HQC-3:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:HQC-256:clean:generic",
+      "ref": "alg:HQC-5:ref:generic",
       "dependsOn": [
         "alg:sha3"
       ]
