@@ -55,6 +55,9 @@ SPHINCS+ was removed in 0.16.0.
 [25d0a9e](https://github.com/open-quantum-safe/liboqs/commit/25d0a9e)
 - Fixed incorrect array size when calling `secure_clean`
 [ab0e07c](https://github.com/open-quantum-safe/liboqs/commit/ab0e07c)
+- Implemented optimization barrier `OQS_MEM_BLACK_BOX` and applied to
+`ct_select` in FrodoKEM
+[#2431](https://github.com/open-quantum-safe/liboqs/pull/2431)
 
 ### Significant change
 
@@ -212,8 +215,6 @@ reporting the issue
 [#2323](https://github.com/open-quantum-safe/liboqs/pull/2323)
 - Unpined OQS_MINIMAL_BUILD alg list link from specific commit
 [#2326](https://github.com/open-quantum-safe/liboqs/pull/2326)
-
-<!-- TODO: comb through new contributors -->
 
 ### New contributors
 
