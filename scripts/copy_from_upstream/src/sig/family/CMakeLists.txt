@@ -73,3 +73,4 @@ endif()
 {%- endfor %}
 
 set({{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} PARENT_SCOPE)
+
