@@ -20,7 +20,7 @@
  * Table of zeta values used in the AVX2 NTTs
  * See autogen for details.
  */
-MLK_ALIGN const int16_t mlk_qdata[624] = {
+MLK_ALIGN MLK_INTERNAL_DATA_DEFINITION const int16_t mlk_qdata[624] = {
     3854,   3340,   2826,   2312,   1798,   1284,   770,    256,    3854,
     3340,   2826,   2312,   1798,   1284,   770,    256,    7,      0,
     6,      0,      5,      0,      4,      0,      3,      0,      2,

@@ -1,0 +1,90 @@
+diff --git a/integration/liboqs/ML-KEM-1024_META.yml b/integration/liboqs/ML-KEM-1024_META.yml
+index c603125..7d8e50d 100644
+--- a/integration/liboqs/ML-KEM-1024_META.yml
++++ b/integration/liboqs/ML-KEM-1024_META.yml
+@@ -89,25 +89,3 @@ implementations:
+     - Darwin
+     required_flags:
+     - asimd
+-- name: ppc64le
+-  version: FIPS203
+-  folder_name: .
+-  compile_opts: -DMLK_CONFIG_PARAMETER_SET=1024 -DMLK_CONFIG_FILE="../../integration/liboqs/config_ppc64le.h"
+-  signature_keypair: PQCP_MLKEM_NATIVE_MLKEM1024_PPC64LE_keypair
+-  signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_PPC64LE_keypair_derand
+-  signature_enc: PQCP_MLKEM_NATIVE_MLKEM1024_PPC64LE_enc
+-  signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_PPC64LE_enc_derand
+-  signature_dec: PQCP_MLKEM_NATIVE_MLKEM1024_PPC64LE_dec
+-  sources: integration/liboqs/config_ppc64le.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h
+-    mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h
+-    mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c
+-    mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/params.h
+-    mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h
+-    mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h
+-    mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc mlkem/src/native/ppc64le
+-  supported_platforms:
+-  - architecture: ppc64le
+-    operating_systems:
+-    - Linux
+-    required_flags:
+-    - power8_vector
+diff --git a/integration/liboqs/ML-KEM-512_META.yml b/integration/liboqs/ML-KEM-512_META.yml
+index feb7cc6..aa88537 100644
+--- a/integration/liboqs/ML-KEM-512_META.yml
++++ b/integration/liboqs/ML-KEM-512_META.yml
+@@ -89,25 +89,3 @@ implementations:
+     - Darwin
+     required_flags:
+     - asimd
+-- name: ppc64le
+-  version: FIPS203
+-  folder_name: .
+-  compile_opts: -DMLK_CONFIG_PARAMETER_SET=512 -DMLK_CONFIG_FILE="../../integration/liboqs/config_ppc64le.h"
+-  signature_keypair: PQCP_MLKEM_NATIVE_MLKEM512_PPC64LE_keypair
+-  signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM512_PPC64LE_keypair_derand
+-  signature_enc: PQCP_MLKEM_NATIVE_MLKEM512_PPC64LE_enc
+-  signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM512_PPC64LE_enc_derand
+-  signature_dec: PQCP_MLKEM_NATIVE_MLKEM512_PPC64LE_dec
+-  sources: integration/liboqs/config_ppc64le.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h
+-    mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h
+-    mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c
+-    mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/params.h
+-    mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h
+-    mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h
+-    mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc mlkem/src/native/ppc64le
+-  supported_platforms:
+-  - architecture: ppc64le
+-    operating_systems:
+-    - Linux
+-    required_flags:
+-    - power8_vector
+diff --git a/integration/liboqs/ML-KEM-768_META.yml b/integration/liboqs/ML-KEM-768_META.yml
+index 05f07b4..254d674 100644
+--- a/integration/liboqs/ML-KEM-768_META.yml
++++ b/integration/liboqs/ML-KEM-768_META.yml
+@@ -89,25 +89,3 @@ implementations:
+     - Darwin
+     required_flags:
+     - asimd
+-- name: ppc64le
+-  version: FIPS203
+-  folder_name: .
+-  compile_opts: -DMLK_CONFIG_PARAMETER_SET=768 -DMLK_CONFIG_FILE="../../integration/liboqs/config_ppc64le.h"
+-  signature_keypair: PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_keypair
+-  signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_keypair_derand
+-  signature_enc: PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_enc
+-  signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_enc_derand
+-  signature_dec: PQCP_MLKEM_NATIVE_MLKEM768_PPC64LE_dec
+-  sources: integration/liboqs/config_ppc64le.h integration/liboqs/fips202_glue.h integration/liboqs/fips202x4_glue.h
+-    mlkem/src/cbmc.h mlkem/src/common.h mlkem/src/compress.c mlkem/src/compress.h
+-    mlkem/src/debug.c mlkem/src/debug.h mlkem/src/indcpa.c mlkem/src/indcpa.h mlkem/src/kem.c
+-    mlkem/src/kem.h mlkem/src/native/api.h mlkem/src/native/meta.h mlkem/src/params.h
+-    mlkem/src/poly.c mlkem/src/poly.h mlkem/src/poly_k.c mlkem/src/poly_k.h mlkem/src/randombytes.h
+-    mlkem/src/sampling.c mlkem/src/sampling.h mlkem/src/symmetric.h mlkem/src/sys.h
+-    mlkem/src/verify.c mlkem/src/verify.h mlkem/src/zetas.inc mlkem/src/native/ppc64le
+-  supported_platforms:
+-  - architecture: ppc64le
+-    operating_systems:
+-    - Linux
+-    required_flags:
+-    - power8_vector

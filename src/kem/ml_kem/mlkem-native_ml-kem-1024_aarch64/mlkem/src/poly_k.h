@@ -28,40 +28,37 @@
 #define mlk_polyvec_mulcache MLK_ADD_PARAM_SET(mlk_polyvec_mulcache)
 /* End of parameter set namespacing */
 
+/** Vector of MLKEM_K polynomials. */
 typedef struct
 {
-  mlk_poly vec[MLKEM_K];
+  mlk_poly vec[MLKEM_K]; /**< Component polynomials. */
 } MLK_ALIGN mlk_polyvec;
 
+/** MLKEM_K x MLKEM_K matrix of polynomials. */
 typedef struct
 {
-  mlk_polyvec vec[MLKEM_K];
+  mlk_polyvec vec[MLKEM_K]; /**< Rows of the matrix. */
 } MLK_ALIGN mlk_polymat;
 
+/** Vector of MLKEM_K mlk_poly_mulcache entries. */
 typedef struct
 {
-  mlk_poly_mulcache vec[MLKEM_K];
+  mlk_poly_mulcache vec[MLKEM_K]; /**< Per-component caches. */
 } MLK_ALIGN mlk_polyvec_mulcache;
 
 #define mlk_poly_compress_du MLK_NAMESPACE_K(poly_compress_du)
-/*************************************************
- * Name:        mlk_poly_compress_du
+/**
+ * Compression (du bits) and subsequent serialization of a polynomial.
  *
- * Description: Compression (du bits) and subsequent serialization of a
- *              polynomial
+ * @spec{Implements `ByteEncode_{d_u} (Compress_{d_u} (u))` in @[FIPS203,
+ * Algorithm 14 (K-PKE.Encrypt), L22], with level-specific d_u defined in
+ * @[FIPS203, Table 2], and given by MLKEM_DU here.}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                  (of length MLKEM_POLYCOMPRESSEDBYTES_DU bytes)
- *              - const mlk_poly *a: pointer to input polynomial
- *                  Coefficients must be unsigned canonical,
- *                  i.e. in [0,1,..,MLKEM_Q-1].
- *
- * Specification: Implements `ByteEncode_{d_u} (Compress_{d_u} (u))`
- *                in @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L22],
- *                with level-specific d_u defined in @[FIPS203, Table 2],
- *                and given by MLKEM_DU here.
- *
- **************************************************/
+ * @param[out] r Output byte array (of length MLKEM_POLYCOMPRESSEDBYTES_DU
+ *               bytes).
+ * @param[in]  a Input polynomial. Coefficients must be unsigned canonical,
+ *               i.e. in [0,1,..,MLKEM_Q-1].
+ */
 static MLK_INLINE void mlk_poly_compress_du(
     uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_DU], const mlk_poly *a)
 __contract__(
@@ -80,25 +77,21 @@ __contract__(
 }
 
 #define mlk_poly_decompress_du MLK_NAMESPACE_K(poly_decompress_du)
-/*************************************************
- * Name:        mlk_poly_decompress_du
+/**
+ * De-serialization and subsequent decompression (du bits) of a polynomial;
+ * approximate inverse of mlk_poly_compress_du.
  *
- * Description: De-serialization and subsequent decompression (du bits) of a
- *              polynomial; approximate inverse of mlk_poly_compress_du
+ * Upon return, the coefficients of the output polynomial are
+ * unsigned-canonical (non-negative and smaller than MLKEM_Q).
  *
- * Arguments:   - mlk_poly *r: pointer to output polynomial
- *              - const uint8_t *a: pointer to input byte array
- *                   (of length MLKEM_POLYCOMPRESSEDBYTES_DU bytes)
+ * @spec{Implements `Decompress_{d_u} (ByteDecode_{d_u} (u))` in @[FIPS203,
+ * Algorithm 15 (K-PKE.Decrypt), L3], with level-specific d_u defined in
+ * @[FIPS203, Table 2], and given by MLKEM_DU here.}
  *
- * Upon return, the coefficients of the output polynomial are unsigned-canonical
- * (non-negative and smaller than MLKEM_Q).
- *
- * Specification: Implements `Decompress_{d_u} (ByteDecode_{d_u} (u))`
- *                in @[FIPS203, Algorithm 15 (K-PKE.Decrypt), L3].
- *                with level-specific d_u defined in @[FIPS203, Table 2],
- *                and given by MLKEM_DU here.
- *
- **************************************************/
+ * @param[out] r Output polynomial.
+ * @param[in]  a Input byte array (of length MLKEM_POLYCOMPRESSEDBYTES_DU
+ *               bytes).
+ */
 static MLK_INLINE void mlk_poly_decompress_du(
     mlk_poly *r, const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_DU])
 __contract__(
@@ -117,24 +110,18 @@ __contract__(
 }
 
 #define mlk_poly_compress_dv MLK_NAMESPACE_K(poly_compress_dv)
-/*************************************************
- * Name:        mlk_poly_compress_dv
+/**
+ * Compression (dv bits) and subsequent serialization of a polynomial.
  *
- * Description: Compression (dv bits) and subsequent serialization of a
- *              polynomial
+ * @spec{Implements `ByteEncode_{d_v} (Compress_{d_v} (v))` in @[FIPS203,
+ * Algorithm 14 (K-PKE.Encrypt), L23], with level-specific d_v defined in
+ * @[FIPS203, Table 2], and given by MLKEM_DV here.}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                  (of length MLKEM_POLYCOMPRESSEDBYTES_DV bytes)
- *              - const mlk_poly *a: pointer to input polynomial
- *                  Coefficients must be unsigned canonical,
- *                  i.e. in [0,1,..,MLKEM_Q-1].
- *
- * Specification: Implements `ByteEncode_{d_v} (Compress_{d_v} (v))`
- *                in @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L23].
- *                with level-specific d_v defined in @[FIPS203, Table 2],
- *                and given by MLKEM_DV here.
- *
- **************************************************/
+ * @param[out] r Output byte array (of length MLKEM_POLYCOMPRESSEDBYTES_DV
+ *               bytes).
+ * @param[in]  a Input polynomial. Coefficients must be unsigned canonical,
+ *               i.e. in [0,1,..,MLKEM_Q-1].
+ */
 static MLK_INLINE void mlk_poly_compress_dv(
     uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_DV], const mlk_poly *a)
 __contract__(
@@ -154,25 +141,21 @@ __contract__(
 
 
 #define mlk_poly_decompress_dv MLK_NAMESPACE_K(poly_decompress_dv)
-/*************************************************
- * Name:        mlk_poly_decompress_dv
+/**
+ * De-serialization and subsequent decompression (dv bits) of a polynomial;
+ * approximate inverse of mlk_poly_compress_dv.
  *
- * Description: De-serialization and subsequent decompression (dv bits) of a
- *              polynomial; approximate inverse of poly_compress
+ * Upon return, the coefficients of the output polynomial are
+ * unsigned-canonical (non-negative and smaller than MLKEM_Q).
  *
- * Arguments:   - mlk_poly *r: pointer to output polynomial
- *              - const uint8_t *a: pointer to input byte array
- *                  (of length MLKEM_POLYCOMPRESSEDBYTES_DV bytes)
+ * @spec{Implements `Decompress_{d_v} (ByteDecode_{d_v} (v))` in @[FIPS203,
+ * Algorithm 15 (K-PKE.Decrypt), L4], with level-specific d_v defined in
+ * @[FIPS203, Table 2], and given by MLKEM_DV here.}
  *
- * Upon return, the coefficients of the output polynomial are unsigned-canonical
- * (non-negative and smaller than MLKEM_Q).
- *
- * Specification: Implements `Decompress_{d_v} (ByteDecode_{d_v} (v))`
- *                in @[FIPS203, Algorithm 15 (K-PKE.Decrypt), L4].
- *                with level-specific d_v defined in @[FIPS203, Table 2],
- *                and given by MLKEM_DV here.
- *
- **************************************************/
+ * @param[out] r Output polynomial.
+ * @param[in]  a Input byte array (of length MLKEM_POLYCOMPRESSEDBYTES_DV
+ *               bytes).
+ */
 static MLK_INLINE void mlk_poly_decompress_dv(
     mlk_poly *r, const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_DV])
 __contract__(
@@ -191,23 +174,18 @@ __contract__(
 }
 
 #define mlk_polyvec_compress_du MLK_NAMESPACE_K(polyvec_compress_du)
-/*************************************************
- * Name:        mlk_polyvec_compress_du
+/**
+ * Compress and serialize a vector of polynomials.
  *
- * Description: Compress and serialize vector of polynomials
+ * @spec{Implements `ByteEncode_{d_u} (Compress_{d_u} (u))` in @[FIPS203,
+ * Algorithm 14 (K-PKE.Encrypt), L22], with level-specific d_u defined in
+ * @[FIPS203, Table 2], and given by MLKEM_DU here.}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                            (needs space for MLKEM_POLYVECCOMPRESSEDBYTES_DU)
- *              - const mlk_polyvec a: pointer to input vector of polynomials.
- *                                  Coefficients must be unsigned canonical,
- *                                  i.e. in [0,1,..,MLKEM_Q-1].
- *
- * Specification: Implements `ByteEncode_{d_u} (Compress_{d_u} (u))`
- *                in @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L22].
- *                with level-specific d_u defined in @[FIPS203, Table 2],
- *                and given by MLKEM_DU here.
- *
- **************************************************/
+ * @param[out] r Output byte array (needs space for
+ *               MLKEM_POLYVECCOMPRESSEDBYTES_DU bytes).
+ * @param[in]  a Input vector of polynomials. Coefficients must be unsigned
+ *               canonical, i.e. in [0,1,..,MLKEM_Q-1].
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_compress_du(uint8_t r[MLKEM_POLYVECCOMPRESSEDBYTES_DU],
                              const mlk_polyvec *a)
@@ -220,23 +198,19 @@ __contract__(
 );
 
 #define mlk_polyvec_decompress_du MLK_NAMESPACE_K(polyvec_decompress_du)
-/*************************************************
- * Name:        mlk_polyvec_decompress_du
+/**
+ * De-serialize and decompress a vector of polynomials; approximate inverse
+ * of mlk_polyvec_compress_du.
  *
- * Description: De-serialize and decompress vector of polynomials;
- *              approximate inverse of mlk_polyvec_compress_du
+ * @spec{Implements `Decompress_{d_u} (ByteDecode_{d_u} (u))` in @[FIPS203,
+ * Algorithm 15 (K-PKE.Decrypt), L3], with level-specific d_u defined in
+ * @[FIPS203, Table 2], and given by MLKEM_DU here.}
  *
- * Arguments:   - mlk_polyvec r:       pointer to output vector of polynomials.
- *                Output will have coefficients normalized to [0,..,q-1].
- *              - const uint8_t *a: pointer to input byte array
- *                                  (of length MLKEM_POLYVECCOMPRESSEDBYTES_DU)
- *
- * Specification: Implements `Decompress_{d_u} (ByteDecode_{d_u} (u))`
- *                in @[FIPS203, Algorithm 15 (K-PKE.Decrypt), L3].
- *                with level-specific d_u defined in @[FIPS203, Table 2],
- *                and given by MLKEM_DU here.
- *
- **************************************************/
+ * @param[out] r Output vector of polynomials. Coefficients are normalized
+ *               to [0,1,..,MLKEM_Q-1].
+ * @param[in]  a Input byte array (of length MLKEM_POLYVECCOMPRESSEDBYTES_DU
+ *               bytes).
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_decompress_du(mlk_polyvec *r,
                                const uint8_t a[MLKEM_POLYVECCOMPRESSEDBYTES_DU])
@@ -249,22 +223,17 @@ __contract__(
 );
 
 #define mlk_polyvec_tobytes MLK_NAMESPACE_K(polyvec_tobytes)
-/*************************************************
- * Name:        mlk_polyvec_tobytes
+/**
+ * Serialize a vector of polynomials.
  *
- * Description: Serialize vector of polynomials
+ * @spec{Implements ByteEncode_12 @[FIPS203, Algorithm 5]. Extended to
+ * vectors as per @[FIPS203, 2.4.8 Applying Algorithms to Arrays] and
+ * @[FIPS203, 2.4.6, Matrices and Vectors].}
  *
- * Arguments:   - uint8_t *r: pointer to output byte array
- *                            (needs space for MLKEM_POLYVECBYTES)
- *              - const mlk_polyvec a: pointer to input vector of polynomials
- *                  Each polynomial must have coefficients in [0,..,q-1].
- *
- * Specification: Implements ByteEncode_12 @[FIPS203, Algorithm 5].
- *                Extended to vectors as per
- *                @[FIPS203, 2.4.8 Applying Algorithms to Arrays]
- *                and @[FIPS203, 2.4.6, Matrices and Vectors]
- *
- **************************************************/
+ * @param[out] r Output byte array (needs space for MLKEM_POLYVECBYTES bytes).
+ * @param[in]  a Input vector of polynomials. Each polynomial must have
+ *               coefficients in [0,1,..,MLKEM_Q-1].
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_tobytes(uint8_t r[MLKEM_POLYVECBYTES], const mlk_polyvec *a)
 __contract__(
@@ -276,23 +245,17 @@ __contract__(
 );
 
 #define mlk_polyvec_frombytes MLK_NAMESPACE_K(polyvec_frombytes)
-/*************************************************
- * Name:        mlk_polyvec_frombytes
+/**
+ * De-serialize a vector of polynomials; inverse of mlk_polyvec_tobytes.
  *
- * Description: De-serialize vector of polynomials;
- *              inverse of mlk_polyvec_tobytes
+ * @spec{Implements ByteDecode_12 @[FIPS203, Algorithm 6]. Extended to
+ * vectors as per @[FIPS203, 2.4.8 Applying Algorithms to Arrays] and
+ * @[FIPS203, 2.4.6, Matrices and Vectors].}
  *
- * Arguments:   - const mlk_polyvec a: pointer to output vector of polynomials
- *                 (of length MLKEM_POLYVECBYTES). Output will have coefficients
- *                 normalized in [0..4095].
- *              - uint8_t *r: pointer to input byte array
- *
- * Specification: Implements ByteDecode_12 @[FIPS203, Algorithm 6].
- *                Extended to vectors as per
- *                @[FIPS203, 2.4.8 Applying Algorithms to Arrays]
- *                and @[FIPS203, 2.4.6, Matrices and Vectors]
- *
- **************************************************/
+ * @param[out] r Output vector of polynomials. Coefficients will be
+ *               normalized in [0,1,..,4095].
+ * @param[in]  a Input byte array (of length MLKEM_POLYVECBYTES bytes).
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_frombytes(mlk_polyvec *r, const uint8_t a[MLKEM_POLYVECBYTES])
 __contract__(
@@ -304,24 +267,20 @@ __contract__(
 );
 
 #define mlk_polyvec_ntt MLK_NAMESPACE_K(polyvec_ntt)
-/*************************************************
- * Name:        mlk_polyvec_ntt
+/**
+ * Apply forward NTT to all elements of a vector of polynomials.
  *
- * Description: Apply forward NTT to all elements of a vector of polynomials.
+ * The input is assumed to be in normal order and coefficient-wise bound by
+ * MLKEM_Q in absolute value.
  *
- *              The input is assumed to be in normal order and
- *              coefficient-wise bound by MLKEM_Q in absolute value.
+ * The output polynomial is in bitreversed order, and coefficient-wise bound
+ * by MLK_NTT_BOUND in absolute value.
  *
- *              The output polynomial is in bitreversed order, and
- *              coefficient-wise bound by MLK_NTT_BOUND in absolute value.
+ * @spec{Implements @[FIPS203, Algorithm 9, NTT]. Extended to vectors as per
+ * @[FIPS203, 2.4.6, Matrices and Vectors].}
  *
- * Arguments:   - mlk_polyvec r: pointer to in/output vector of polynomials
- *
- * Specification:
- * - Implements @[FIPS203, Algorithm 9, NTT]
- * - Extended to vectors as per @[FIPS203, 2.4.6, Matrices and Vectors]
- *
- **************************************************/
+ * @param[in,out] r Input/output vector of polynomials.
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_ntt(mlk_polyvec *r)
 __contract__(
@@ -334,25 +293,21 @@ __contract__(
 );
 
 #define mlk_polyvec_invntt_tomont MLK_NAMESPACE_K(polyvec_invntt_tomont)
-/*************************************************
- * Name:        mlk_polyvec_invntt_tomont
+/**
+ * Apply inverse NTT to all elements of a vector of polynomials and multiply
+ * by Montgomery factor 2^16.
  *
- * Description: Apply inverse NTT to all elements of a vector of polynomials
- *              and multiply by Montgomery factor 2^16
+ * The input is assumed to be in bitreversed order, and can have arbitrary
+ * coefficients in int16_t.
  *
- *              The input is assumed to be in bitreversed order, and can
- *              have arbitrary coefficients in int16_t.
+ * The output polynomial is in normal order, and coefficient-wise bound by
+ * MLK_INVNTT_BOUND in absolute value.
  *
- *              The output polynomial is in normal order, and
- *              coefficient-wise bound by MLK_INVNTT_BOUND in absolute value.
+ * @spec{Implements @[FIPS203, Algorithm 10, NTT^{-1}]. Extended to vectors
+ * as per @[FIPS203, 2.4.6, Matrices and Vectors].}
  *
- * Arguments:   - mlk_polyvec r: pointer to in/output vector of polynomials
- *
- * Specification:
- * - Implements @[FIPS203, Algorithm 10, NTT^{-1}]
- * - Extended to vectors as per @[FIPS203, 2.4.6, Matrices and Vectors]
- *
- **************************************************/
+ * @param[in,out] r Input/output vector of polynomials.
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_invntt_tomont(mlk_polyvec *r)
 __contract__(
@@ -364,30 +319,23 @@ __contract__(
 
 #define mlk_polyvec_basemul_acc_montgomery_cached \
   MLK_NAMESPACE_K(polyvec_basemul_acc_montgomery_cached)
-/*************************************************
- * Name:        mlk_polyvec_basemul_acc_montgomery_cached
+/**
+ * Scalar product of two vectors of polynomials in NTT domain, using
+ * mulcache for the second operand.
  *
- * Description: Scalar product of two vectors of polynomials in NTT domain,
- *              using mulcache for second operand.
+ * Bounds: every coefficient of @p a is assumed to be in [0,1,..,4095]. No
+ * bounds guarantees for the coefficients in the result.
  *
- *              Bounds:
- *              - Every coefficient of a is assumed to be in [0..4095]
- *              - No bounds guarantees for the coefficients in the result.
+ * @spec{Implements @[FIPS203, Section 2.4.7, Eq (2.14)], @[FIPS203,
+ * Algorithm 11, MultiplyNTTs], and @[FIPS203, Algorithm 12,
+ * BaseCaseMultiply].}
  *
- * Arguments:   - mlk_poly *r: pointer to output polynomial
- *              - const mlk_polyvec a: pointer to first input polynomial vector
- *              - const mlk_polyvec b: pointer to second input polynomial
- *                vector
- *              - const mlk_polyvec_mulcache b_cache: pointer to mulcache
- *                  for second input polynomial vector. Can be computed
- *                  via mlk_polyvec_mulcache_compute().
- *
- * Specification: Implements
- *                - @[FIPS203, Section 2.4.7, Eq (2.14)]
- *                - @[FIPS203, Algorithm 11, MultiplyNTTs]
- *                - @[FIPS203, Algorithm 12, BaseCaseMultiply]
- *
- **************************************************/
+ * @param[out] r       Output polynomial.
+ * @param[in]  a       First input polynomial vector.
+ * @param[in]  b       Second input polynomial vector.
+ * @param[in]  b_cache Mulcache for the second input polynomial vector. Can
+ *                     be computed via mlk_polyvec_mulcache_compute().
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_basemul_acc_montgomery_cached(
     mlk_poly *r, const mlk_polyvec *a, const mlk_polyvec *b,
@@ -403,30 +351,26 @@ __contract__(
 );
 
 #define mlk_polyvec_mulcache_compute MLK_NAMESPACE_K(polyvec_mulcache_compute)
-/************************************************************
- * Name: mlk_polyvec_mulcache_compute
+/**
+ * Compute the mulcache for a vector of polynomials in NTT domain.
  *
- * Description: Computes the mulcache for a vector of polynomials in NTT domain
+ * The mulcache of a degree-2 polynomial b := b0 + b1*X in Fq[X]/(X^2-zeta)
+ * is the value b1*zeta, needed when computing products of b in
+ * Fq[X]/(X^2-zeta).
  *
- *              The mulcache of a degree-2 polynomial b := b0 + b1*X
- *              in Fq[X]/(X^2-zeta) is the value b1*zeta, needed when
- *              computing products of b in Fq[X]/(X^2-zeta).
+ * The mulcache of a polynomial in NTT domain -- which is a 128-tuple of
+ * degree-2 polynomials in Fq[X]/(X^2-zeta), for varying zeta, is the
+ * 128-tuple of mulcaches of those polynomials.
  *
- *              The mulcache of a polynomial in NTT domain -- which is
- *              a 128-tuple of degree-2 polynomials in Fq[X]/(X^2-zeta),
- *              for varying zeta, is the 128-tuple of mulcaches of those
- *              polynomials.
+ * The mulcache of a vector of polynomials is the vector of mulcaches of
+ * its entries.
  *
- *              The mulcache of a vector of polynomials is the vector
- *              of mulcaches of its entries.
+ * @spec{Caches `b_1 * \gamma` in @[FIPS203, Algorithm 12, BaseCaseMultiply,
+ * L1].}
  *
- * Arguments: - x: Pointer to mulcache to be populated
- *            - a: Pointer to input polynomial vector
- *
- * Specification:
- * - Caches `b_1 * \gamma` in @[FIPS203, Algorithm 12, BaseCaseMultiply, L1]
- *
- ************************************************************/
+ * @param[out] x Mulcache to be populated.
+ * @param[in]  a Input polynomial vector.
+ */
 /*
  * NOTE: The default C implementation of this function populates
  * the mulcache with values in (-q,q), but this is not needed for the
@@ -441,20 +385,16 @@ __contract__(
 );
 
 #define mlk_polyvec_reduce MLK_NAMESPACE_K(polyvec_reduce)
-/*************************************************
- * Name:        mlk_polyvec_reduce
+/**
+ * Apply Barrett reduction to each coefficient of each element of a vector
+ * of polynomials. For details of the Barrett reduction see comments in
+ * poly.c.
  *
- * Description: Applies Barrett reduction to each coefficient
- *              of each element of a vector of polynomials;
- *              for details of the Barrett reduction see comments in poly.c
+ * @spec{Normalizes on unsigned canonical representatives ahead of calling
+ * @[FIPS203, Compress_d, Eq (4.7)]. This is not made explicit in FIPS 203.}
  *
- * Arguments:   - mlk_polyvec r: pointer to input/output polynomial
- *
- * Specification: Normalizes on unsigned canoncial representatives
- *                ahead of calling @[FIPS203, Compress_d, Eq (4.7)].
- *                This is not made explicit in FIPS 203.
- *
- **************************************************/
+ * @param[in,out] r Input/output polynomial vector.
+ */
 /*
  * NOTE: The semantics of mlk_polyvec_reduce() is different in
  *       the reference implementation, which requires
@@ -472,28 +412,22 @@ __contract__(
 );
 
 #define mlk_polyvec_add MLK_NAMESPACE_K(polyvec_add)
-/*************************************************
- * Name:        mlk_polyvec_add
+/**
+ * Add vectors of polynomials.
  *
- * Description: Add vectors of polynomials
- *
- * Arguments: - mlk_polyvec r: pointer to input-output vector of polynomials to
- *              be added to
- *            - const mlk_polyvec b: pointer to second input vector of
- *              polynomials
- *
- * The coefficients of r and b must be so that the addition does
+ * The coefficients of @p r and @p b must be such that the addition does
  * not overflow. Otherwise, the behaviour of this function is undefined.
  *
- * The coefficients returned in *r are in int16_t which is sufficient
- * to prove type-safety of calling units. Therefore, no stronger
- * ensures clause is required on this function.
+ * The coefficients returned in @p *r are in int16_t which is sufficient to
+ * prove type-safety of calling units. Therefore, no stronger ensures clause
+ * is required on this function.
  *
- * Specification:
- * - @[FIPS203, 2.4.5, Arithmetic With Polynomials and NTT Representations]
- * - Used in @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L19]
+ * @spec{@[FIPS203, 2.4.5, Arithmetic With Polynomials and NTT
+ * Representations]. Used in @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L19].}
  *
- **************************************************/
+ * @param[in,out] r Input-output vector of polynomials to be added to.
+ * @param[in]     b Second input vector of polynomials.
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_add(mlk_polyvec *r, const mlk_polyvec *b)
 __contract__(
@@ -509,20 +443,18 @@ __contract__(
 );
 
 #define mlk_polyvec_tomont MLK_NAMESPACE_K(polyvec_tomont)
-/*************************************************
- * Name:        mlk_polyvec_tomont
+/**
+ * In-place conversion of all coefficients of a polynomial vector from the
+ * normal domain to the Montgomery domain.
  *
- * Description: Inplace conversion of all coefficients of a polynomial
- *              vector from normal domain to Montgomery domain
+ * Bounds: output < MLKEM_Q in absolute value.
  *
- *              Bounds: Output < q in absolute value.
+ * @spec{Internal normalization required in `mlk_indcpa_keypair_derand` as
+ * part of matrix-vector multiplication @[FIPS203, Algorithm 13, K-PKE.KeyGen,
+ * L18].}
  *
- *
- * Specification: Internal normalization required in `mlk_indcpa_keypair_derand`
- *                as part of matrix-vector multiplication
- *                @[FIPS203, Algorithm 13, K-PKE.KeyGen, L18].
- *
- **************************************************/
+ * @param[in,out] r Input/output polynomial vector.
+ */
 MLK_INTERNAL_API
 void mlk_polyvec_tomont(mlk_polyvec *r)
 __contract__(
@@ -533,28 +465,27 @@ __contract__(
 );
 
 #define mlk_poly_getnoise_eta1_4x MLK_NAMESPACE_K(poly_getnoise_eta1_4x)
-/*************************************************
- * Name:        mlk_poly_getnoise_eta1_4x
+/**
+ * Batch sample four polynomials deterministically from a seed and nonces,
+ * with output polynomials close to centered binomial distribution with
+ * parameter MLKEM_ETA1.
  *
- * Description: Batch sample four polynomials deterministically from a seed
- *              and nonces, with output polynomials close to centered binomial
- *              distribution with parameter MLKEM_ETA1.
+ * @spec{Implements 4x `SamplePolyCBD_{eta1} (PRF_{eta1} (sigma, N))`:
+ * @[FIPS203, Algorithm 8, SamplePolyCBD_eta] and @[FIPS203, Eq (4.3),
+ * PRF_eta]. `SamplePolyCBD_{eta1} (PRF_{eta1} (sigma, N))` appears in
+ * @[FIPS203, Algorithm 13, K-PKE.KeyGen, L{9, 13}] and @[FIPS203,
+ * Algorithm 14, K-PKE.Encrypt, L10].}
  *
- * Arguments:   - mlk_poly *r{0,1,2,3}: pointer to output polynomial. The last
- *                polynomial pointer may be NULL.
- *              - const uint8_t *seed: pointer to input seed
- *                                     (of length MLKEM_SYMBYTES bytes)
- *              - uint8_t nonce{0,1,2,3}: one-byte input nonce
- *
- * Specification:
- * Implements 4x `SamplePolyCBD_{eta1} (PRF_{eta1} (sigma, N))`:
- * - @[FIPS203, Algorithm 8, SamplePolyCBD_eta]
- * - @[FIPS203, Eq (4.3), PRF_eta]
- * - `SamplePolyCBD_{eta1} (PRF_{eta1} (sigma, N))` appears in
- *   @[FIPS203, Algorithm 13, K-PKE.KeyGen, L{9, 13}]
- *   @[FIPS203, Algorithm 14, K-PKE.Encrypt, L10]
- *
- **************************************************/
+ * @param[out] r0     Output polynomial.
+ * @param[out] r1     Output polynomial.
+ * @param[out] r2     Output polynomial.
+ * @param[out] r3     Output polynomial. May be NULL.
+ * @param[in]  seed   Input seed (of length MLKEM_SYMBYTES bytes).
+ * @param      nonce0 One-byte input nonce.
+ * @param      nonce1 One-byte input nonce.
+ * @param      nonce2 One-byte input nonce.
+ * @param      nonce3 One-byte input nonce.
+ */
 MLK_INTERNAL_API
 void mlk_poly_getnoise_eta1_4x(mlk_poly *r0, mlk_poly *r1, mlk_poly *r2,
                                mlk_poly *r3, const uint8_t seed[MLKEM_SYMBYTES],
@@ -587,26 +518,20 @@ __contract__(
 
 #if MLKEM_K == 2 || MLKEM_K == 4
 #define mlk_poly_getnoise_eta2 MLK_NAMESPACE_K(poly_getnoise_eta2)
-/*************************************************
- * Name:        mlk_poly_getnoise_eta2
+/**
+ * Sample a polynomial deterministically from a seed and a nonce, with
+ * output polynomial close to centered binomial distribution with parameter
+ * MLKEM_ETA2.
  *
- * Description: Sample a polynomial deterministically from a seed and a nonce,
- *              with output polynomial close to centered binomial distribution
- *              with parameter MLKEM_ETA2
+ * @spec{Implements `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))`:
+ * @[FIPS203, Algorithm 8, SamplePolyCBD_eta] and @[FIPS203, Eq (4.3),
+ * PRF_eta]. `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))` appears in
+ * @[FIPS203, Algorithm 14, K-PKE.Encrypt, L14].}
  *
- * Arguments:   - mlk_poly *r: pointer to output polynomial
- *              - const uint8_t *seed: pointer to input seed
- *                                     (of length MLKEM_SYMBYTES bytes)
- *              - uint8_t nonce: one-byte input nonce
- *
- * Specification:
- * Implements `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))`:
- * - @[FIPS203, Algorithm 8, SamplePolyCBD_eta]
- * - @[FIPS203, Eq (4.3), PRF_eta]
- * - `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))` appears in
- *   @[FIPS203, Algorithm 14, K-PKE.Encrypt, L14]
- *
- **************************************************/
+ * @param[out] r     Output polynomial.
+ * @param[in]  seed  Input seed (of length MLKEM_SYMBYTES bytes).
+ * @param      nonce One-byte input nonce.
+ */
 MLK_INTERNAL_API
 void mlk_poly_getnoise_eta2(mlk_poly *r, const uint8_t seed[MLKEM_SYMBYTES],
                             uint8_t nonce)
@@ -620,28 +545,28 @@ __contract__(
 
 #if MLKEM_K == 2
 #define mlk_poly_getnoise_eta1122_4x MLK_NAMESPACE_K(poly_getnoise_eta1122_4x)
-/*************************************************
- * Name:        mlk_poly_getnoise_eta1122_4x
+/**
+ * Batch sample four polynomials deterministically from a seed and nonces,
+ * with output polynomials close to centered binomial distribution with
+ * parameter MLKEM_ETA1 and MLKEM_ETA2.
  *
- * Description: Batch sample four polynomials deterministically from a seed
- * and a nonces, with output polynomials close to centered binomial
- * distribution with parameter MLKEM_ETA1 and MLKEM_ETA2
- *
- * Arguments:   - mlk_poly *r{0,1,2,3}: pointer to output polynomial
- *              - const uint8_t *seed: pointer to input seed
- *                                     (of length MLKEM_SYMBYTES bytes)
- *              - uint8_t nonce{0,1,2,3}: one-byte input nonce
- *
- * Specification:
- * Implements two instances each of
+ * @spec{Implements two instances each of
  * `SamplePolyCBD_{eta1} (PRF_{eta1} (sigma, N))` and
  * `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))`:
- * - @[FIPS203, Algorithm 8, SamplePolyCBD_eta]
- * - @[FIPS203, Eq (4.3), PRF_eta]
- * - `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))` appears in
- *   @[FIPS203, Algorithm 14, K-PKE.Encrypt, L14]
+ * @[FIPS203, Algorithm 8, SamplePolyCBD_eta] and @[FIPS203, Eq (4.3),
+ * PRF_eta]. `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))` appears in
+ * @[FIPS203, Algorithm 14, K-PKE.Encrypt, L14].}
  *
- **************************************************/
+ * @param[out] r0     Output polynomial.
+ * @param[out] r1     Output polynomial.
+ * @param[out] r2     Output polynomial.
+ * @param[out] r3     Output polynomial.
+ * @param[in]  seed   Input seed (of length MLKEM_SYMBYTES bytes).
+ * @param      nonce0 One-byte input nonce.
+ * @param      nonce1 One-byte input nonce.
+ * @param      nonce2 One-byte input nonce.
+ * @param      nonce3 One-byte input nonce.
+ */
 MLK_INTERNAL_API
 void mlk_poly_getnoise_eta1122_4x(mlk_poly *r0, mlk_poly *r1, mlk_poly *r2,
                                   mlk_poly *r3,
