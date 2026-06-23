@@ -25,6 +25,23 @@
 #endif
 #endif /* !__ASSEMBLER__ */
 
+/******************************************************************************
+ * Name:        MLK_CONFIG_EXTERNAL_API_QUALIFIER
+ *
+ * Description: If set, this option provides an additional function
+ *              qualifier to be added to declarations of mlkem-native's
+ *              public API.
+ *
+ *              The primary use case for this option are single-CU builds
+ *              where the public API exposed by mlkem-native is wrapped by
+ *              another API in the consuming application. In this case,
+ *              even mlkem-native's public API can be marked `static`.
+ *
+ *****************************************************************************/
+#if !defined(__ASSEMBLER__)
+#include <oqs/common.h>
+#define MLK_CONFIG_EXTERNAL_API_QUALIFIER OQS_API
+#endif
 
 /******************************************************************************
  * Name:        MLK_CONFIG_PARAMETER_SET
