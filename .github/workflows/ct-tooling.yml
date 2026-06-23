@@ -72,35 +72,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
 
-      - name: Build valgrind_varlat
-        shell: bash
-        run: |
-          set -eu -o pipefail
-          INSTALL_PREFIX="$PWD/valgrind_varlat"
-
-          echo "Cloning Valgrind's source code"
-          git clone git://sourceware.org/git/valgrind.git valgrind_varlat_src
-          cd valgrind_varlat_src
-          git checkout 112f1080b7c21e37dfce0a2e589d0dc7aa115afa
-
-          echo "Applying Kyberslash patch"
-          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-try-patch-20250805.txt"
-          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-patch-20250805.txt"
-          git apply "$GITHUB_WORKSPACE/tests/ct_tooling/tools/valgrind_varlat/valgrind-varlat-sup-block.txt"
-
-          echo "Building Valgrind-Varlat"
-          ./autogen.sh
-          ./configure --prefix="$INSTALL_PREFIX"
-          make -j"$(nproc)"
-          make install
-
-          mv "$INSTALL_PREFIX/bin/valgrind" "$INSTALL_PREFIX/bin/valgrind_varlat"
-          chmod -R u+rwX "$INSTALL_PREFIX"
-          export PATH="$INSTALL_PREFIX/bin:$PATH"
-          echo "PATH: $PATH"
-          command -v valgrind_varlat
-          echo "$INSTALL_PREFIX/bin" >> "$GITHUB_PATH"
-
       - name: Run valgrind_varlat tests
         shell: bash
         env:
