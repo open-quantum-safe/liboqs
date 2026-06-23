@@ -146,8 +146,10 @@ no external effect and is ignored -->
 
 ### Miscellaneous
 
-- Update mlkem-native to v1.1.0
-[#2376](https://github.com/open-quantum-safe/liboqs/pull/2376)
+- Update mlkem-native to v1.2.0
+[#2470](https://github.com/open-quantum-safe/liboqs/pull/2470)
+<!-- - Update mlkem-native to v1.1.0 -->
+<!-- [#2376](https://github.com/open-quantum-safe/liboqs/pull/2376) -->
 - Removed legacy HQC constant-time test
 [#2467](https://github.com/open-quantum-safe/liboqs/pull/2467)
 - Download Intel SDE from alternative source
