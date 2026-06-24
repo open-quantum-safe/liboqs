@@ -98,14 +98,14 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	OQS_TEST_CT_DECLASSIFY(message, message_len);
 
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
 		goto err;
 	}
 
 	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
 		goto err;
@@ -114,7 +114,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
 		goto err;
@@ -122,7 +122,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 
 	if (extended_tests) {
 		rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, false, NULL, 0);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (rc != OQS_SUCCESS) {
 			goto err;
 		}
@@ -139,7 +139,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		for (size_t i = 0; i < 256; ++i) {
 			if (((i % ctx_step == 0) && extended_tests) || i == 255) {
 				rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, i, secret_key);
-				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+				OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 				if (rc != OQS_SUCCESS) {
 					fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str failed\n");
 					goto err;
@@ -148,7 +148,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 				OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 				OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 				rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
-				OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+				OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 				if (rc != OQS_SUCCESS) {
 					fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str failed\n");
 					goto err;
@@ -156,7 +156,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 
 				if (extended_tests) {
 					rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, ctx, i);
-					OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+					OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 					if (rc != OQS_SUCCESS) {
 						goto err;
 					}
@@ -166,7 +166,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 
 		if (extended_tests) {
 			rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 256, secret_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 			if (rc != OQS_ERROR) {
 				fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should only support up to 255 byte contexts\n");
 				goto err;
@@ -182,7 +182,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 
 	if (extended_tests) {
 		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, NULL, 0, secret_key);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should always succeed when providing a NULL context string\n");
 			goto err;
@@ -190,14 +190,14 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 		OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 		rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_SIG_verify_with_ctx_str failed\n");
 			goto err;
 		}
 
 		rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, true, NULL, 0);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (rc != OQS_SUCCESS) {
 			goto err;
 		}

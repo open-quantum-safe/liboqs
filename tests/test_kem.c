@@ -57,7 +57,7 @@ static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secre
 	// Calculate expected secret in case of corrupted cipher: shake256(z || c)
 	OQS_SHA3_shake256(shared_secret_r, MLKEM_SECRET_LEN, buff_z_c, length_z_c);
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_decaps failed for rejection testcase scenario 1\n");
 		goto cleanup;
@@ -82,7 +82,7 @@ static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secre
 	// Calculate expected secret in case of corrupted cipher: shake256(z || c)
 	OQS_SHA3_shake256(shared_secret_r, MLKEM_SECRET_LEN, buff_z_c, length_z_c);
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_decaps failed for rejection testcase scenario 2\n");
 		goto cleanup;
@@ -201,7 +201,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 			OQS_randombytes(keypair_seed, kem->length_keypair_seed);
 		}
 		rc = OQS_KEM_keypair_derand(kem, public_key, secret_key, keypair_seed);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (kem->length_keypair_seed == 0) {
 			// If length_keypair_seed is set to 0 for this KEM scheme, a failure is expected
 			if (rc != OQS_ERROR) {
@@ -219,7 +219,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		}
 	} else {
 		rc = OQS_KEM_keypair(kem, public_key, secret_key);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");
 			goto err;
@@ -233,7 +233,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 			OQS_randombytes(encaps_seed, kem->length_encaps_seed);
 		}
 		rc = OQS_KEM_encaps_derand(kem, ciphertext, shared_secret_e, public_key, encaps_seed);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (kem->length_encaps_seed == 0) {
 			// If length_encaps_seed is set to 0 for this KEM scheme, a failure is expected
 			if (rc != OQS_ERROR) {
@@ -251,7 +251,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		}
 	} else {
 		rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
-		OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_encaps failed\n");
 			goto err;
@@ -260,7 +260,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 
 	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_decaps failed\n");
 		goto err;
@@ -290,7 +290,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 	OQS_TEST_CT_DECLASSIFY(ciphertext, kem->length_ciphertext);
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
 	OQS_TEST_CT_DECLASSIFY(shared_secret_d, kem->length_shared_secret);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc == OQS_SUCCESS && memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret) == 0) {
 		fprintf(stderr, "ERROR: OQS_KEM_decaps succeeded on wrong input\n");
 		goto err;
