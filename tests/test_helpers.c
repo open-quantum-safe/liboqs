@@ -203,7 +203,7 @@ OQS_STATUS test_sig_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_len, 
 			} else {
 				rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
 			}
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 			if (rc != OQS_ERROR) {
 				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
 				return OQS_ERROR;
@@ -243,7 +243,7 @@ OQS_STATUS test_sig_stfl_bitflip(OQS_SIG_STFL *sig, uint8_t *message, size_t mes
 			}
 			/* check that the verification fails */
 			rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
-			OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+			OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 			if (rc != OQS_ERROR) {
 				fprintf(stderr, "ERROR: OQS_SIG_STFL_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
 				return OQS_ERROR;

@@ -199,7 +199,7 @@ OQS_STATUS sig_stfl_keypair_from_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, 
 	OQS_STATUS rc;
 
 	rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		return OQS_ERROR;
 	}
@@ -567,7 +567,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	 * Some keypair generation is fast, so we only read keypair from KATs for slow XMSS parameters
 	 */
 	rc = sig_stfl_KATs_keygen(sig, public_key, secret_key, katfile);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_STFL_keypair failed\n");
 		goto err;
@@ -588,7 +588,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	}
 
 	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_STFL_sign failed\n");
 		goto err;
@@ -597,7 +597,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 	rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_STFL_verify failed\n");
 		goto err;
@@ -609,13 +609,13 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 		goto err;
 	}
 	rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, read_pk_buf);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: 2nd Verify with restored public key OQS_SIG_STFL_verify failed\n");
 	}
 
 	rc = test_sig_stfl_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
@@ -836,7 +836,7 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	printf("================================================================================\n");
 
 	rc = OQS_SIG_STFL_verify(lock_test_sig_obj, message_1, message_len_1, signature_1, signature_len_1, lock_test_public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_verify failed\n");
 		goto err;
@@ -847,7 +847,7 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	printf("================================================================================\n");
 
 	rc = OQS_SIG_STFL_verify(lock_test_sig_obj, message_2, message_len_2, signature_2, signature_len_2, lock_test_public_key);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_verify failed\n");
 		goto err;
@@ -910,7 +910,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	signature_1 = OQS_MEM_malloc(lock_test_sig_obj->length_signature);
 
 	rc = OQS_SIG_STFL_sign(lock_test_sig_obj, signature_1, &signature_len_1, message_1, message_len_1, lock_test_sk);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_sign failed\n");
 		goto err;
@@ -939,7 +939,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	signature_2 = OQS_MEM_malloc(lock_test_sig_obj->length_signature);
 
 	rc = OQS_SIG_STFL_sign(lock_test_sig_obj, signature_2, &signature_len_2, message_2, message_len_2, lock_test_sk);
-	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: lock thread test OQS_SIG_STFL_sign failed\n");
 		goto err;
