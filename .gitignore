@@ -8,6 +8,7 @@ tags
 # CMake & testing
 /build*
 /tmp*
+/CMakeFiles/
 
 # MSVC
 .vs
