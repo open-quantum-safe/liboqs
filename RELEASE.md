@@ -38,7 +38,7 @@ language-specific wrappers:
 
 ## Release notes
 
-liboqs 0.16.0-rc1 was released on Tuesday, June 9, 2026.
+liboqs 0.16.0-rc1 was released on Wednesday, June 24, 2026.
 
 ### Deprecation notice
 
