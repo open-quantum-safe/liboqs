@@ -1,0 +1,54 @@
+suite: liboqs-owned-cbmc
+repo: trailofbits/ptp-liboqs
+commit: d95fc734f5de9bdfc80c8c65d8166b30e9cff5cd
+cbmc:
+  version: "6.9.0"
+  runner: tests/cbmc/run.sh
+  proof_command_template: "cbmc -I tests/cbmc/models --drop-unused-functions --bounds-check --pointer-check --pointer-overflow-check --div-by-zero-check --signed-overflow-check --conversion-check --unwind 5 --unwinding-assertions --trace <sources> <harness>"
+  coverage_command_template: "cbmc -I tests/cbmc/models --drop-unused-functions --cover assertion --unwind 5 <sources> <harness>"
+status_vocabulary:
+  - PROVED_BOUNDED
+  - FAILED_COUNTEREXAMPLE
+  - VACUOUS_OR_OVERCONSTRAINED
+  - UNPROVEN_BOUND
+  - UNPROVEN_MODELING
+  - UNPROVEN_ENVIRONMENT
+  - UNPROVEN_TOOLING
+  - SKIPPED_OUT_OF_SCOPE
+proofs:
+  - id: mem_secure_bcmp
+    source:
+      - src/common/common.c
+    harness: tests/cbmc/harnesses/mem_secure_bcmp_harness.c
+    raw_run: tests/cbmc/raw-runs/mem_secure_bcmp.txt
+    coverage_run: tests/cbmc/raw-runs/mem_secure_bcmp.coverage.txt
+    summary: tests/cbmc/summaries/mem_secure_bcmp.md
+    status: PROVED_BOUNDED
+    property: "OQS_MEM_secure_bcmp returns 0 iff all compared bytes match, returns only 0 or 1, and does not mutate either input for lengths up to four bytes."
+  - id: sig_status_normalization
+    source:
+      - src/sig/sig.c
+    harness: tests/cbmc/harnesses/sig_status_normalization_harness.c
+    raw_run: tests/cbmc/raw-runs/sig_status_normalization.txt
+    coverage_run: tests/cbmc/raw-runs/sig_status_normalization.coverage.txt
+    summary: tests/cbmc/summaries/sig_status_normalization.md
+    status: PROVED_BOUNDED
+    property: "The generic signature dispatchers reject missing objects or callbacks, forward arguments unchanged, invoke at most one callback, and normalize every non-success callback status to OQS_ERROR."
+  - id: sig_stfl_dispatch_contract
+    source:
+      - src/sig_stfl/sig_stfl.c
+    harness: tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c
+    raw_run: tests/cbmc/raw-runs/sig_stfl_dispatch_contract.txt
+    coverage_run: tests/cbmc/raw-runs/sig_stfl_dispatch_contract.coverage.txt
+    summary: tests/cbmc/summaries/sig_stfl_dispatch_contract.md
+    status: PROVED_BOUNDED
+    property: "The stateful-signature operation dispatchers reject missing objects or callbacks, forward arguments unchanged, normalize operation callback statuses, and the serialize/deserialize wrappers reject their owned NULL inputs while preserving callback statuses."
+  - id: sig_stfl_lock_contract
+    source:
+      - src/sig_stfl/sig_stfl.c
+    harness: tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c
+    raw_run: tests/cbmc/raw-runs/sig_stfl_lock_contract.txt
+    coverage_run: tests/cbmc/raw-runs/sig_stfl_lock_contract.coverage.txt
+    summary: tests/cbmc/summaries/sig_stfl_lock_contract.md
+    status: PROVED_BOUNDED
+    property: "The common stateful lock helpers reject a NULL key, treat an unset callback as a no-op, reject a configured callback without a mutex, and otherwise call exactly once with the configured mutex while propagating the callback status."

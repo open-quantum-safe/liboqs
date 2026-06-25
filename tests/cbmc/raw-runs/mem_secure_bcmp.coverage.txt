@@ -1,0 +1,46 @@
+--cover is incompatible with --unwinding-assertions, so unwinding-assertions will be defaulted to false
+**** WARNING: Use --unwinding-assertions to obtain sound verification results
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking common
+Type-checking mem_secure_bcmp_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Rewriting existing assertions as assumptions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+
+** coverage results:
+[OQS_MEM_secure_bcmp.coverage.1] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: pointer NULL in ((const uint8_t *)a)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.2] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: pointer invalid in ((const uint8_t *)a)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.3] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: deallocated dynamic object in ((const uint8_t *)a)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.4] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: dead object in ((const uint8_t *)a)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.5] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: pointer outside object bounds in ((const uint8_t *)a)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.6] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: invalid integer address in ((const uint8_t *)a)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.7] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: pointer NULL in ((const uint8_t *)b)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.8] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: pointer invalid in ((const uint8_t *)b)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.9] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: deallocated dynamic object in ((const uint8_t *)b)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.10] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: dead object in ((const uint8_t *)b)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.11] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: pointer outside object bounds in ((const uint8_t *)b)[(signed long int)i]: SATISFIED
+[OQS_MEM_secure_bcmp.coverage.12] file src/common/common.c line 264 function OQS_MEM_secure_bcmp dereference failure: invalid integer address in ((const uint8_t *)b)[(signed long int)i]: SATISFIED
+[main.coverage.1] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 24 function main array 'a' upper bound in a[(signed long int)i]: SATISFIED
+[main.coverage.2] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 25 function main array 'b' upper bound in b[(signed long int)i]: SATISFIED
+[main.coverage.3] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 26 function main array 'a_before' upper bound in a_before[(signed long int)i]: SATISFIED
+[main.coverage.4] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 27 function main array 'b_before' upper bound in b_before[(signed long int)i]: SATISFIED
+[main.coverage.5] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 31 function main array 'a' upper bound in a[(signed long int)i]: SATISFIED
+[main.coverage.6] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 31 function main array 'b' upper bound in b[(signed long int)i]: SATISFIED
+[main.coverage.7] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 38 function main secure_bcmp returns zero iff all bounded bytes match: SATISFIED
+[main.coverage.8] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 40 function main secure_bcmp result is normalized to one bit: SATISFIED
+[main.coverage.9] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 44 function main array 'a' upper bound in a[(signed long int)i]: SATISFIED
+[main.coverage.10] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 44 function main array 'a_before' upper bound in a_before[(signed long int)i]: SATISFIED
+[main.coverage.11] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 44 function main secure_bcmp does not mutate left input: SATISFIED
+[main.coverage.12] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 46 function main array 'b' upper bound in b[(signed long int)i]: SATISFIED
+[main.coverage.13] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 46 function main array 'b_before' upper bound in b_before[(signed long int)i]: SATISFIED
+[main.coverage.14] file tests/cbmc/harnesses/mem_secure_bcmp_harness.c line 46 function main secure_bcmp does not mutate right input: SATISFIED
+
+** 26 of 26 covered (100.0%)

@@ -1,0 +1,67 @@
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking common
+Type-checking mem_secure_bcmp_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is UNSATISFIABLE
+
+** Results:
+src/common/common.c function OQS_MEM_secure_bcmp
+[OQS_MEM_secure_bcmp.unwind.0] line 263 unwinding assertion loop 0: SUCCESS
+[OQS_MEM_secure_bcmp.overflow.1] line 264 arithmetic overflow on unsigned to signed type conversion in (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.overflow.2] line 264 arithmetic overflow on signed to unsigned type conversion in (uint8_t)((signed int)r | (signed int)((const uint8_t *)a)[(signed long int)i] ^ (signed int)((const uint8_t *)b)[(signed long int)i]): SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.1] line 264 pointer arithmetic: pointer NULL in (const uint8_t *)a + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.2] line 264 pointer arithmetic: pointer invalid in (const uint8_t *)a + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.3] line 264 pointer arithmetic: deallocated dynamic object in (const uint8_t *)a + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.4] line 264 pointer arithmetic: dead object in (const uint8_t *)a + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.5] line 264 pointer arithmetic: pointer outside object bounds in (const uint8_t *)a + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.6] line 264 pointer arithmetic: invalid integer address in (const uint8_t *)a + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.7] line 264 pointer arithmetic: pointer NULL in (const uint8_t *)b + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.8] line 264 pointer arithmetic: pointer invalid in (const uint8_t *)b + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.9] line 264 pointer arithmetic: deallocated dynamic object in (const uint8_t *)b + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.10] line 264 pointer arithmetic: dead object in (const uint8_t *)b + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.11] line 264 pointer arithmetic: pointer outside object bounds in (const uint8_t *)b + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_arithmetic.12] line 264 pointer arithmetic: invalid integer address in (const uint8_t *)b + (signed long int)i: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.1] line 264 dereference failure: pointer NULL in ((const uint8_t *)a)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.2] line 264 dereference failure: pointer invalid in ((const uint8_t *)a)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.3] line 264 dereference failure: deallocated dynamic object in ((const uint8_t *)a)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.4] line 264 dereference failure: dead object in ((const uint8_t *)a)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.5] line 264 dereference failure: pointer outside object bounds in ((const uint8_t *)a)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.6] line 264 dereference failure: invalid integer address in ((const uint8_t *)a)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.7] line 264 dereference failure: pointer NULL in ((const uint8_t *)b)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.8] line 264 dereference failure: pointer invalid in ((const uint8_t *)b)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.9] line 264 dereference failure: deallocated dynamic object in ((const uint8_t *)b)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.10] line 264 dereference failure: dead object in ((const uint8_t *)b)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.11] line 264 dereference failure: pointer outside object bounds in ((const uint8_t *)b)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.pointer_dereference.12] line 264 dereference failure: invalid integer address in ((const uint8_t *)b)[(signed long int)i]: SUCCESS
+[OQS_MEM_secure_bcmp.overflow.3] line 268 arithmetic overflow on unsigned to signed type conversion in (signed int)((unsigned int)1 & -((unsigned int)r) >> 8): SUCCESS
+
+tests/cbmc/harnesses/mem_secure_bcmp_harness.c function main
+[main.array_bounds.1] line 24 array 'a' upper bound in a[(signed long int)i]: SUCCESS
+[main.overflow.1] line 24 arithmetic overflow on unsigned to signed type conversion in (signed long int)i: SUCCESS
+[main.array_bounds.2] line 25 array 'b' upper bound in b[(signed long int)i]: SUCCESS
+[main.array_bounds.3] line 26 array 'a_before' upper bound in a_before[(signed long int)i]: SUCCESS
+[main.array_bounds.4] line 27 array 'b_before' upper bound in b_before[(signed long int)i]: SUCCESS
+[main.unwind.1] line 30 unwinding assertion loop 1: SUCCESS
+[main.array_bounds.5] line 31 array 'a' upper bound in a[(signed long int)i]: SUCCESS
+[main.array_bounds.6] line 31 array 'b' upper bound in b[(signed long int)i]: SUCCESS
+[main.overflow.2] line 31 arithmetic overflow on unsigned to signed type conversion in (signed long int)i: SUCCESS
+[main.assertion.1] line 38 secure_bcmp returns zero iff all bounded bytes match: SUCCESS
+[main.assertion.2] line 40 secure_bcmp result is normalized to one bit: SUCCESS
+[main.array_bounds.7] line 44 array 'a' upper bound in a[(signed long int)i]: SUCCESS
+[main.array_bounds.8] line 44 array 'a_before' upper bound in a_before[(signed long int)i]: SUCCESS
+[main.assertion.3] line 44 secure_bcmp does not mutate left input: SUCCESS
+[main.overflow.3] line 44 arithmetic overflow on unsigned to signed type conversion in (signed long int)i: SUCCESS
+[main.array_bounds.9] line 46 array 'b' upper bound in b[(signed long int)i]: SUCCESS
+[main.array_bounds.10] line 46 array 'b_before' upper bound in b_before[(signed long int)i]: SUCCESS
+[main.assertion.4] line 46 secure_bcmp does not mutate right input: SUCCESS
+
+** 0 of 46 failed (1 iterations)
+VERIFICATION SUCCESSFUL

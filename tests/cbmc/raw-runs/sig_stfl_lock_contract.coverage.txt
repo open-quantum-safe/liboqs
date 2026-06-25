@@ -1,0 +1,140 @@
+--cover is incompatible with --unwinding-assertions, so unwinding-assertions will be defaulted to false
+**** WARNING: Use --unwinding-assertions to obtain sound verification results
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking oqs_memory
+Type-checking sig_stfl
+Type-checking sig_stfl_lock_contract_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Rewriting existing assertions as assumptions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker inconsistent: instance is UNSATISFIABLE
+
+** coverage results:
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.coverage.1] file src/sig_stfl/sig_stfl.c line 1567 function OQS_SIG_STFL_SECRET_KEY_SET_lock dereference failure: pointer NULL in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.coverage.2] file src/sig_stfl/sig_stfl.c line 1567 function OQS_SIG_STFL_SECRET_KEY_SET_lock dereference failure: pointer invalid in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.coverage.3] file src/sig_stfl/sig_stfl.c line 1567 function OQS_SIG_STFL_SECRET_KEY_SET_lock dereference failure: deallocated dynamic object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.coverage.4] file src/sig_stfl/sig_stfl.c line 1567 function OQS_SIG_STFL_SECRET_KEY_SET_lock dereference failure: dead object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.coverage.5] file src/sig_stfl/sig_stfl.c line 1567 function OQS_SIG_STFL_SECRET_KEY_SET_lock dereference failure: pointer outside object bounds in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.coverage.6] file src/sig_stfl/sig_stfl.c line 1567 function OQS_SIG_STFL_SECRET_KEY_SET_lock dereference failure: invalid integer address in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.coverage.1] file src/sig_stfl/sig_stfl.c line 1583 function OQS_SIG_STFL_SECRET_KEY_SET_mutex dereference failure: pointer NULL in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.coverage.2] file src/sig_stfl/sig_stfl.c line 1583 function OQS_SIG_STFL_SECRET_KEY_SET_mutex dereference failure: pointer invalid in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.coverage.3] file src/sig_stfl/sig_stfl.c line 1583 function OQS_SIG_STFL_SECRET_KEY_SET_mutex dereference failure: deallocated dynamic object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.coverage.4] file src/sig_stfl/sig_stfl.c line 1583 function OQS_SIG_STFL_SECRET_KEY_SET_mutex dereference failure: dead object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.coverage.5] file src/sig_stfl/sig_stfl.c line 1583 function OQS_SIG_STFL_SECRET_KEY_SET_mutex dereference failure: pointer outside object bounds in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.coverage.6] file src/sig_stfl/sig_stfl.c line 1583 function OQS_SIG_STFL_SECRET_KEY_SET_mutex dereference failure: invalid integer address in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.coverage.1] file src/sig_stfl/sig_stfl.c line 1575 function OQS_SIG_STFL_SECRET_KEY_SET_unlock dereference failure: pointer NULL in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.coverage.2] file src/sig_stfl/sig_stfl.c line 1575 function OQS_SIG_STFL_SECRET_KEY_SET_unlock dereference failure: pointer invalid in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.coverage.3] file src/sig_stfl/sig_stfl.c line 1575 function OQS_SIG_STFL_SECRET_KEY_SET_unlock dereference failure: deallocated dynamic object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.coverage.4] file src/sig_stfl/sig_stfl.c line 1575 function OQS_SIG_STFL_SECRET_KEY_SET_unlock dereference failure: dead object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.coverage.5] file src/sig_stfl/sig_stfl.c line 1575 function OQS_SIG_STFL_SECRET_KEY_SET_unlock dereference failure: pointer outside object bounds in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.coverage.6] file src/sig_stfl/sig_stfl.c line 1575 function OQS_SIG_STFL_SECRET_KEY_SET_unlock dereference failure: invalid integer address in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.1] file src/sig_stfl/sig_stfl.c line 1591 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer NULL in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.2] file src/sig_stfl/sig_stfl.c line 1591 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer invalid in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.3] file src/sig_stfl/sig_stfl.c line 1591 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: deallocated dynamic object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.4] file src/sig_stfl/sig_stfl.c line 1591 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: dead object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.5] file src/sig_stfl/sig_stfl.c line 1591 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer outside object bounds in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.6] file src/sig_stfl/sig_stfl.c line 1591 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: invalid integer address in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.7] file src/sig_stfl/sig_stfl.c line 1596 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer NULL in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.8] file src/sig_stfl/sig_stfl.c line 1596 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer invalid in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.9] file src/sig_stfl/sig_stfl.c line 1596 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: deallocated dynamic object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.10] file src/sig_stfl/sig_stfl.c line 1596 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: dead object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.11] file src/sig_stfl/sig_stfl.c line 1596 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer outside object bounds in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.12] file src/sig_stfl/sig_stfl.c line 1596 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: invalid integer address in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.13] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer NULL in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.14] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer invalid in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.15] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: deallocated dynamic object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.16] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: dead object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.17] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer outside object bounds in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.18] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: invalid integer address in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.19] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer NULL in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.20] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer invalid in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.21] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: deallocated dynamic object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.22] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: dead object in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.23] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer outside object bounds in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.24] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: invalid integer address in sk->lock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.25] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereferenced function pointer must be one of [model_lock, model_unlock]: FAILED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.26] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer NULL in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.27] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer invalid in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.28] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: deallocated dynamic object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.29] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: dead object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.30] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer outside object bounds in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.31] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: invalid integer address in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.32] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer NULL in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.33] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer invalid in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.34] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: deallocated dynamic object in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.35] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: dead object in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.36] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: pointer outside object bounds in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_lock.coverage.37] file src/sig_stfl/sig_stfl.c line 1600 function OQS_SIG_STFL_SECRET_KEY_lock dereference failure: invalid integer address in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.1] file src/sig_stfl/sig_stfl.c line 1608 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer NULL in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.2] file src/sig_stfl/sig_stfl.c line 1608 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer invalid in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.3] file src/sig_stfl/sig_stfl.c line 1608 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: deallocated dynamic object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.4] file src/sig_stfl/sig_stfl.c line 1608 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: dead object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.5] file src/sig_stfl/sig_stfl.c line 1608 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer outside object bounds in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.6] file src/sig_stfl/sig_stfl.c line 1608 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: invalid integer address in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.7] file src/sig_stfl/sig_stfl.c line 1613 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer NULL in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.8] file src/sig_stfl/sig_stfl.c line 1613 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer invalid in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.9] file src/sig_stfl/sig_stfl.c line 1613 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: deallocated dynamic object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.10] file src/sig_stfl/sig_stfl.c line 1613 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: dead object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.11] file src/sig_stfl/sig_stfl.c line 1613 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer outside object bounds in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.12] file src/sig_stfl/sig_stfl.c line 1613 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: invalid integer address in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.13] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer NULL in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.14] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer invalid in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.15] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: deallocated dynamic object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.16] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: dead object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.17] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer outside object bounds in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.18] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: invalid integer address in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.19] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer NULL in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.20] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer invalid in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.21] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: deallocated dynamic object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.22] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: dead object in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.23] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer outside object bounds in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.24] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: invalid integer address in sk->unlock_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.25] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereferenced function pointer must be one of [model_lock, model_unlock]: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.26] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer NULL in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.27] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer invalid in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.28] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: deallocated dynamic object in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.29] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: dead object in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.30] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer outside object bounds in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.31] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: invalid integer address in sk->mutex: FAILED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.32] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer NULL in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.33] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer invalid in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.34] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: deallocated dynamic object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.35] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: dead object in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.36] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: pointer outside object bounds in sk->mutex: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_unlock.coverage.37] file src/sig_stfl/sig_stfl.c line 1617 function OQS_SIG_STFL_SECRET_KEY_unlock dereference failure: invalid integer address in sk->mutex: SATISFIED
+[main.coverage.1] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 43 function main lock setter stores callback: SATISFIED
+[main.coverage.2] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 45 function main unlock setter stores callback: SATISFIED
+[main.coverage.3] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 47 function main mutex setter stores pointer: SATISFIED
+[main.coverage.4] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 69 function main lock helpers reject null key: SATISFIED
+[main.coverage.5] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 71 function main lock helpers do not call through null key: SATISFIED
+[main.coverage.6] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 74 function main unset lock callback is a no-op: SATISFIED
+[main.coverage.7] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 76 function main unset lock callback is not invoked: SATISFIED
+[main.coverage.8] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 79 function main configured lock callback requires mutex: SATISFIED
+[main.coverage.9] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 81 function main missing mutex short-circuits callback: SATISFIED
+[main.coverage.10] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 84 function main lock helper propagates callback status: SATISFIED
+[main.coverage.11] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 86 function main lock helper invokes callback once: SATISFIED
+[model_lock.coverage.1] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 16 function model_lock lock callback receives configured mutex: SATISFIED
+[model_unlock.coverage.1] file tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c line 23 function model_unlock unlock callback receives configured mutex: SATISFIED
+
+** 91 of 105 covered (86.7%)
