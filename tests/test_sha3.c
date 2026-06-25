@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <oqs/oqsconfig.h>
 #include <oqs/sha3.h>
@@ -19,6 +20,41 @@
 
 static bool sha3_callback_called = false;
 static bool sha3_x4_callback_called = false;
+
+/* KAT input messages shared across all test functions.
+ * Vectors from https://di-mgt.com.au/sha_testvectors.html */
+static const uint8_t msg0[1] = {0x0};
+static const uint8_t msg24[3] = {0x61, 0x62, 0x63};
+static const uint8_t msg448[56] = {
+	0x61, 0x62, 0x63, 0x64, 0x62, 0x63, 0x64, 0x65, 0x63, 0x64, 0x65, 0x66, 0x64, 0x65, 0x66, 0x67,
+	0x65, 0x66, 0x67, 0x68, 0x66, 0x67, 0x68, 0x69, 0x67, 0x68, 0x69, 0x6A, 0x68, 0x69, 0x6A, 0x6B,
+	0x69, 0x6A, 0x6B, 0x6C, 0x6A, 0x6B, 0x6C, 0x6D, 0x6B, 0x6C, 0x6D, 0x6E, 0x6C, 0x6D, 0x6E, 0x6F,
+	0x6D, 0x6E, 0x6F, 0x70, 0x6E, 0x6F, 0x70, 0x71
+};
+static const uint8_t msg896[112] = {
+	0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
+	0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B,
+	0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D,
+	0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
+	0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71,
+	0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73,
+	0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75
+};
+static const uint8_t msg1600[200] = {
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
+	0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
+};
 
 /**
 * \file sha3_test.h
@@ -36,7 +72,7 @@ static bool sha3_x4_callback_called = false;
 * \param b The second byte array for comparison
 * \param length The number of bytes to compare
 *
-* \return Returns zero for failure, one if the arrays match
+* \return Returns EXIT_SUCCESS (zero) if the arrays match, EXIT_FAILURE otherwise
 */
 static int are_equal8(const uint8_t *a, const uint8_t *b, size_t length) {
 	size_t i;
@@ -74,36 +110,12 @@ static void clear8(uint8_t *a, size_t count) {
 * Fips202: <a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3-Standard</a> \n
 * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-256_Msg0.pdf">SHA256(0)</a> \n
 * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-256_1600.pdf">SHA256(1600)</a> \n
-* KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA256(24, 448)</a>
+* KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA256(24, 448, 896)</a>
 */
 int sha3_256_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
 	uint8_t output[32];
-
-	uint8_t msg0[1] = {0x0};
-	uint8_t msg24[3] = {0x61, 0x62, 0x63};
-	uint8_t msg448[56] = {
-		0x61, 0x62, 0x63, 0x64, 0x62, 0x63, 0x64, 0x65, 0x63, 0x64, 0x65, 0x66, 0x64, 0x65, 0x66, 0x67,
-		0x65, 0x66, 0x67, 0x68, 0x66, 0x67, 0x68, 0x69, 0x67, 0x68, 0x69, 0x6A, 0x68, 0x69, 0x6A, 0x6B,
-		0x69, 0x6A, 0x6B, 0x6C, 0x6A, 0x6B, 0x6C, 0x6D, 0x6B, 0x6C, 0x6D, 0x6E, 0x6C, 0x6D, 0x6E, 0x6F,
-		0x6D, 0x6E, 0x6F, 0x70, 0x6E, 0x6F, 0x70, 0x71
-	};
-	uint8_t msg1600[200] = {
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
-	};
 
 	uint8_t exp0[32] = {
 		0xA7, 0xFF, 0xC6, 0xF8, 0xBF, 0x1E, 0xD7, 0x66, 0x51, 0xC1, 0x47, 0x56, 0xA0, 0x61, 0xD6, 0x62,
@@ -121,76 +133,167 @@ int sha3_256_kat_test(void) {
 		0x79, 0xF3, 0x8A, 0xDE, 0xC5, 0xC2, 0x03, 0x07, 0xA9, 0x8E, 0xF7, 0x6E, 0x83, 0x24, 0xAF, 0xBF,
 		0xD4, 0x6C, 0xFD, 0x81, 0xB2, 0x2E, 0x39, 0x73, 0xC6, 0x5F, 0xA1, 0xBD, 0x9D, 0xE3, 0x17, 0x87
 	};
+	uint8_t exp896[32] = {
+		0x91, 0x6F, 0x60, 0x61, 0xFE, 0x87, 0x97, 0x41, 0xCA, 0x64, 0x69, 0xB4, 0x39, 0x71, 0xDF, 0xDB,
+		0x28, 0xB1, 0xA3, 0x2D, 0xC3, 0x6C, 0xB3, 0x25, 0x4E, 0x81, 0x2B, 0xE2, 0x7A, 0xAD, 0x1D, 0x18
+	};
 
 	/* test compact api */
 
-	clear8(output, 32);
+	clear8(output, sizeof(output));
 	OQS_SHA3_sha3_256(output, msg0, 0);
 
-	if (are_equal8(output, exp0, 32) == EXIT_FAILURE) {
+	if (are_equal8(output, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 32);
-	OQS_SHA3_sha3_256(output, msg24, 3);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_256(output, msg24, sizeof(msg24));
 
-	if (are_equal8(output, exp24, 32) == EXIT_FAILURE) {
+	if (are_equal8(output, exp24, sizeof(exp24)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 32);
-	OQS_SHA3_sha3_256(output, msg448, 56);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_256(output, msg448, sizeof(msg448));
 
-	if (are_equal8(output, exp448, 32) == EXIT_FAILURE) {
+	if (are_equal8(output, exp448, sizeof(exp448)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 32);
-	OQS_SHA3_sha3_256(output, msg1600, 200);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_256(output, msg1600, sizeof(msg1600));
 
-	if (are_equal8(output, exp1600, 32) == EXIT_FAILURE) {
+	if (are_equal8(output, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_256(output, msg896, sizeof(msg896));
+
+	if (are_equal8(output, exp896, sizeof(exp896)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	/* test long-form api */
 
 	OQS_SHA3_sha3_256_inc_ctx state;
-	uint8_t hash[200];
+	uint8_t hash[sizeof(output)];
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_256_inc_init(&state);
 	OQS_SHA3_sha3_256_inc_absorb(&state, msg0, 0);
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp0, 32) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_256_inc_absorb(&state, msg24, 3);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg24, sizeof(msg24));
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp24, 32) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp24, sizeof(exp24)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_256_inc_absorb(&state, msg448, 56);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg448, sizeof(msg448));
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp448, 32) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp448, sizeof(exp448)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_256_inc_absorb(&state, msg1600, 200);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
+
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg896, sizeof(msg896));
+	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
+
+	if (are_equal8(hash, exp896, sizeof(exp896)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+	OQS_SHA3_sha3_256_inc_ctx_release(&state);
+
+	/* Cross-validate one-shot vs chunked absorb of msg896||msg448 (168 bytes,
+	   non-uniform) for every segment size 1..168. Covers all absorb code paths
+	   and their transitions, including the SHA3-256 rate boundary at 136 bytes. */
+	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
+	memcpy(msg_concat, msg896, sizeof(msg896));
+	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
+	uint8_t hash_oneshot[sizeof(output)];
+	OQS_SHA3_sha3_256(hash_oneshot, msg_concat, sizeof(msg_concat));
+	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_sha3_256_inc_init(&state);
+		size_t off = 0;
+		while (off < sizeof(msg_concat)) {
+			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			OQS_SHA3_sha3_256_inc_absorb(&state, msg_concat + off, n);
+			off += n;
+		}
+		OQS_SHA3_sha3_256_inc_finalize(hash, &state);
+		OQS_SHA3_sha3_256_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHA3-256 chunked absorb cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
+
+	/* Verify ctx_reset: absorb msg24, finalize, then reset and re-absorb msg24;
+	   result must equal a fresh inc_init hash of msg24. */
+	uint8_t hash_fresh[sizeof(output)];
+	OQS_SHA3_sha3_256_inc_init(&state);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg24, sizeof(msg24));
+	OQS_SHA3_sha3_256_inc_finalize(hash_fresh, &state);
+	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg24, sizeof(msg24));
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
 	OQS_SHA3_sha3_256_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 32) == EXIT_FAILURE) {
+	if (are_equal8(hash, hash_fresh, sizeof(hash_fresh)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-256 ctx_reset did not restore to initial state\n");
+		status = EXIT_FAILURE;
+	}
+
+	/* Cross-validate one-shot vs single-call absorb of exactly RATE and RATE+1
+	   bytes. Complements the sweep above: here the buffer is full (or full+1)
+	   at end of input, so the flush is triggered by squeeze, not a later absorb. */
+	uint8_t hash_ref[sizeof(output)];
+	OQS_SHA3_sha3_256(hash_ref, msg_concat, OQS_SHA3_SHA3_256_RATE);
+	OQS_SHA3_sha3_256_inc_init(&state);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg_concat, OQS_SHA3_SHA3_256_RATE);
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
+	OQS_SHA3_sha3_256_inc_ctx_release(&state);
+
+	if (are_equal8(hash, hash_ref, sizeof(hash_ref)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-256 exact-rate absorb cross-validation failed\n");
+		status = EXIT_FAILURE;
+	}
+
+	OQS_SHA3_sha3_256(hash_ref, msg_concat, OQS_SHA3_SHA3_256_RATE + 1);
+	OQS_SHA3_sha3_256_inc_init(&state);
+	OQS_SHA3_sha3_256_inc_absorb(&state, msg_concat, OQS_SHA3_SHA3_256_RATE + 1);
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
+	OQS_SHA3_sha3_256_inc_ctx_release(&state);
+
+	if (are_equal8(hash, hash_ref, sizeof(hash_ref)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-256 rate+1 absorb cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
 
@@ -201,30 +304,6 @@ int sha3_384_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
 	uint8_t output[48];
-
-	const uint8_t msg0[1] = {0x0};
-	const uint8_t msg24[3] = {0x61, 0x62, 0x63};
-	const uint8_t msg448[56] = {
-		0x61, 0x62, 0x63, 0x64, 0x62, 0x63, 0x64, 0x65, 0x63, 0x64, 0x65, 0x66, 0x64, 0x65, 0x66, 0x67,
-		0x65, 0x66, 0x67, 0x68, 0x66, 0x67, 0x68, 0x69, 0x67, 0x68, 0x69, 0x6A, 0x68, 0x69, 0x6A, 0x6B,
-		0x69, 0x6A, 0x6B, 0x6C, 0x6A, 0x6B, 0x6C, 0x6D, 0x6B, 0x6C, 0x6D, 0x6E, 0x6C, 0x6D, 0x6E, 0x6F,
-		0x6D, 0x6E, 0x6F, 0x70, 0x6E, 0x6F, 0x70, 0x71
-	};
-	const uint8_t msg1600[200] = {
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
-	};
 
 	const uint8_t exp0[48] = {
 		0x0C, 0x63, 0xA7, 0x5B, 0x84, 0x5E, 0x4F, 0x7D, 0x01, 0x10, 0x7D, 0x85, 0x2E, 0x4C, 0x24,
@@ -250,76 +329,168 @@ int sha3_384_kat_test(void) {
 		0xBC, 0xDD, 0x76, 0x19, 0x7A, 0x31, 0xFD, 0x55, 0xEE, 0x98, 0x9F, 0x2D, 0x70, 0x50, 0xDD,
 		0x47, 0x3E, 0x8F
 	};
+	const uint8_t exp896[48] = {
+		0x79, 0x40, 0x7D, 0x3B, 0x59, 0x16, 0xB5, 0x9C, 0x3E, 0x30, 0xB0, 0x98, 0x22, 0x97, 0x47, 0x91,
+		0xC3, 0x13, 0xFB, 0x9E, 0xCC, 0x84, 0x9E, 0x40, 0x6F, 0x23, 0x59, 0x2D, 0x04, 0xF6, 0x25, 0xDC,
+		0x8C, 0x70, 0x9B, 0x98, 0xB4, 0x3B, 0x38, 0x52, 0xB3, 0x37, 0x21, 0x61, 0x79, 0xAA, 0x7F, 0xC7
+	};
 
 	/* test compact api */
 
-	clear8(output, 48);
+	clear8(output, sizeof(output));
 	OQS_SHA3_sha3_384(output, msg0, 0);
 
-	if (are_equal8(output, exp0, 48) == EXIT_FAILURE) {
+	if (are_equal8(output, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 48);
-	OQS_SHA3_sha3_384(output, msg24, 3);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_384(output, msg24, sizeof(msg24));
 
-	if (are_equal8(output, exp24, 48) == EXIT_FAILURE) {
+	if (are_equal8(output, exp24, sizeof(exp24)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 48);
-	OQS_SHA3_sha3_384(output, msg448, 56);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_384(output, msg448, sizeof(msg448));
 
-	if (are_equal8(output, exp448, 48) == EXIT_FAILURE) {
+	if (are_equal8(output, exp448, sizeof(exp448)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 48);
-	OQS_SHA3_sha3_384(output, msg1600, 200);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_384(output, msg1600, sizeof(msg1600));
 
-	if (are_equal8(output, exp1600, 48) == EXIT_FAILURE) {
+	if (are_equal8(output, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_384(output, msg896, sizeof(msg896));
+
+	if (are_equal8(output, exp896, sizeof(exp896)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	/* test long-form api */
 
 	OQS_SHA3_sha3_384_inc_ctx state;
-	uint8_t hash[200];
+	uint8_t hash[sizeof(output)];
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_384_inc_init(&state);
 	OQS_SHA3_sha3_384_inc_absorb(&state, msg0, 0);
 	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp0, 48) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_384_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_384_inc_absorb(&state, msg24, 3);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg24, sizeof(msg24));
 	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp24, 48) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp24, sizeof(exp24)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_384_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_384_inc_absorb(&state, msg448, 56);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg448, sizeof(msg448));
 	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp448, 48) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp448, sizeof(exp448)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_384_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_384_inc_absorb(&state, msg1600, 200);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
+
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_384_inc_ctx_reset(&state);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg896, sizeof(msg896));
+	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
+
+	if (are_equal8(hash, exp896, sizeof(exp896)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+	OQS_SHA3_sha3_384_inc_ctx_release(&state);
+
+	/* Cross-validate one-shot vs chunked absorb of msg896||msg448 (168 bytes,
+	   non-uniform) for every segment size 1..168. Covers all absorb code paths
+	   and their transitions, including the SHA3-384 rate boundary at 104 bytes. */
+	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
+	memcpy(msg_concat, msg896, sizeof(msg896));
+	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
+	uint8_t hash_oneshot[sizeof(output)];
+	OQS_SHA3_sha3_384(hash_oneshot, msg_concat, sizeof(msg_concat));
+	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_sha3_384_inc_init(&state);
+		size_t off = 0;
+		while (off < sizeof(msg_concat)) {
+			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			OQS_SHA3_sha3_384_inc_absorb(&state, msg_concat + off, n);
+			off += n;
+		}
+		OQS_SHA3_sha3_384_inc_finalize(hash, &state);
+		OQS_SHA3_sha3_384_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHA3-384 chunked absorb cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
+
+	/* Verify ctx_reset: absorb msg24, finalize, then reset and re-absorb msg24;
+	   result must equal a fresh inc_init hash of msg24. */
+	uint8_t hash_fresh[sizeof(output)];
+	OQS_SHA3_sha3_384_inc_init(&state);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg24, sizeof(msg24));
+	OQS_SHA3_sha3_384_inc_finalize(hash_fresh, &state);
+	OQS_SHA3_sha3_384_inc_ctx_reset(&state);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg24, sizeof(msg24));
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
 	OQS_SHA3_sha3_384_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 48) == EXIT_FAILURE) {
+	if (are_equal8(hash, hash_fresh, sizeof(hash_fresh)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-384 ctx_reset did not restore to initial state\n");
+		status = EXIT_FAILURE;
+	}
+
+	/* Cross-validate one-shot vs single-call absorb of exactly RATE and RATE+1
+	   bytes. Complements the sweep above: here the buffer is full (or full+1)
+	   at end of input, so the flush is triggered by squeeze, not a later absorb. */
+	uint8_t hash_ref[sizeof(output)];
+	OQS_SHA3_sha3_384(hash_ref, msg_concat, OQS_SHA3_SHA3_384_RATE);
+	OQS_SHA3_sha3_384_inc_init(&state);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg_concat, OQS_SHA3_SHA3_384_RATE);
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
+	OQS_SHA3_sha3_384_inc_ctx_release(&state);
+
+	if (are_equal8(hash, hash_ref, sizeof(hash_ref)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-384 exact-rate absorb cross-validation failed\n");
+		status = EXIT_FAILURE;
+	}
+
+	OQS_SHA3_sha3_384(hash_ref, msg_concat, OQS_SHA3_SHA3_384_RATE + 1);
+	OQS_SHA3_sha3_384_inc_init(&state);
+	OQS_SHA3_sha3_384_inc_absorb(&state, msg_concat, OQS_SHA3_SHA3_384_RATE + 1);
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_384_inc_finalize(hash, &state);
+	OQS_SHA3_sha3_384_inc_ctx_release(&state);
+
+	if (are_equal8(hash, hash_ref, sizeof(hash_ref)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-384 rate+1 absorb cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
 
@@ -336,36 +507,12 @@ int sha3_384_kat_test(void) {
 * Fips202: <a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3-Standard</a> \n
 * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-512_Msg0.pdf">SHA512(0)</a> \n
 * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-512_1600.pdf">SHA512(1600)</a> \n
-* KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA512(24, 448)</a>
+* KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA512(24, 448, 896)</a>
 */
 int sha3_512_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
 	uint8_t output[64];
-
-	uint8_t msg0[1] = {0x0};
-	uint8_t msg24[3] = {0x61, 0x62, 0x63};
-	uint8_t msg448[56] = {
-		0x61, 0x62, 0x63, 0x64, 0x62, 0x63, 0x64, 0x65, 0x63, 0x64, 0x65, 0x66, 0x64, 0x65, 0x66, 0x67,
-		0x65, 0x66, 0x67, 0x68, 0x66, 0x67, 0x68, 0x69, 0x67, 0x68, 0x69, 0x6A, 0x68, 0x69, 0x6A, 0x6B,
-		0x69, 0x6A, 0x6B, 0x6C, 0x6A, 0x6B, 0x6C, 0x6D, 0x6B, 0x6C, 0x6D, 0x6E, 0x6C, 0x6D, 0x6E, 0x6F,
-		0x6D, 0x6E, 0x6F, 0x70, 0x6E, 0x6F, 0x70, 0x71
-	};
-	uint8_t msg1600[200] = {
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
-	};
 
 	uint8_t exp0[64] = {
 		0xA6, 0x9F, 0x73, 0xCC, 0xA2, 0x3A, 0x9A, 0xC5, 0xC8, 0xB5, 0x67, 0xDC, 0x18, 0x5A, 0x75, 0x6E,
@@ -391,93 +538,190 @@ int sha3_512_kat_test(void) {
 		0x1B, 0x7C, 0x13, 0xC3, 0x0A, 0xDF, 0x52, 0xA3, 0x65, 0x95, 0x84, 0x73, 0x9A, 0x2D, 0xF4, 0x6B,
 		0xE5, 0x89, 0xC5, 0x1C, 0xA1, 0xA4, 0xA8, 0x41, 0x6D, 0xF6, 0x54, 0x5A, 0x1C, 0xE8, 0xBA, 0x00
 	};
+	uint8_t exp896[64] = {
+		0xAF, 0xEB, 0xB2, 0xEF, 0x54, 0x2E, 0x65, 0x79, 0xC5, 0x0C, 0xAD, 0x06, 0xD2, 0xE5, 0x78, 0xF9,
+		0xF8, 0xDD, 0x68, 0x81, 0xD7, 0xDC, 0x82, 0x4D, 0x26, 0x36, 0x0F, 0xEE, 0xBF, 0x18, 0xA4, 0xFA,
+		0x73, 0xE3, 0x26, 0x11, 0x22, 0x94, 0x8E, 0xFC, 0xFD, 0x49, 0x2E, 0x74, 0xE8, 0x2E, 0x21, 0x89,
+		0xED, 0x0F, 0xB4, 0x40, 0xD1, 0x87, 0xF3, 0x82, 0x27, 0x0C, 0xB4, 0x55, 0xF2, 0x1D, 0xD1, 0x85
+	};
 
 	/* test compact api */
 
-	clear8(output, 64);
+	clear8(output, sizeof(output));
 	OQS_SHA3_sha3_512(output, msg0, 0);
 
-	if (are_equal8(output, exp0, 64) == EXIT_FAILURE) {
+	if (are_equal8(output, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 64);
-	OQS_SHA3_sha3_512(output, msg24, 3);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_512(output, msg24, sizeof(msg24));
 
-	if (are_equal8(output, exp24, 64) == EXIT_FAILURE) {
+	if (are_equal8(output, exp24, sizeof(exp24)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 64);
-	OQS_SHA3_sha3_512(output, msg448, 56);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_512(output, msg448, sizeof(msg448));
 
-	if (are_equal8(output, exp448, 64) == EXIT_FAILURE) {
+	if (are_equal8(output, exp448, sizeof(exp448)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 64);
-	OQS_SHA3_sha3_512(output, msg1600, 200);
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_512(output, msg1600, sizeof(msg1600));
 
-	if (are_equal8(output, exp1600, 64) == EXIT_FAILURE) {
+	if (are_equal8(output, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	clear8(output, sizeof(output));
+	OQS_SHA3_sha3_512(output, msg896, sizeof(msg896));
+
+	if (are_equal8(output, exp896, sizeof(exp896)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	/* test long-form api */
 
 	OQS_SHA3_sha3_512_inc_ctx state;
-	uint8_t hash[200];
+	uint8_t hash[sizeof(output)];
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_512_inc_init(&state);
 	OQS_SHA3_sha3_512_inc_absorb(&state, msg0, 0);
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp0, 64) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_512_inc_absorb(&state, msg24, 3);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg24, sizeof(msg24));
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp24, 64) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp24, sizeof(exp24)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_512_inc_absorb(&state, msg448, 56);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg448, sizeof(msg448));
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp448, 64) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp448, sizeof(exp448)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(hash, 200);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
-	OQS_SHA3_sha3_512_inc_absorb(&state, msg1600, 200);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg1600, sizeof(msg1600));
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
 
-	if (are_equal8(hash, exp1600, 64) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	/* Special test case: absorb chunks of nasty sizes */
-	clear8(hash, 200);
+	/* Absorb msg1600 in chunks of RATE-1 bytes, forcing every permutation
+	   trigger to occur in the middle of a segment. Validated against the
+	   known exp1600 digest. */
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
 	size_t absorbed = 0;
 	size_t max_seglen = OQS_SHA3_SHA3_512_RATE - 1;
-	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
-	while (absorbed < 200) {
-		size_t seglen = 200 - absorbed < max_seglen ? 200 - absorbed : max_seglen;
+	while (absorbed < sizeof(msg1600)) {
+		size_t seglen = sizeof(msg1600) - absorbed < max_seglen ?
+		                sizeof(msg1600) - absorbed : max_seglen;
 		OQS_SHA3_sha3_512_inc_absorb(&state, msg1600 + absorbed, seglen);
 		absorbed += seglen;
 	}
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
 	OQS_SHA3_sha3_512_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 64) == EXIT_FAILURE) {
-		printf("ERROR: SHA3-512 non-rate-multiple absorption incorrect output\n");
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-512 RATE-1 chunked absorb of msg1600 failed\n");
+		status = EXIT_FAILURE;
+	}
+
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_512_inc_init(&state);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg896, sizeof(msg896));
+	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
+
+	if (are_equal8(hash, exp896, sizeof(exp896)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+	OQS_SHA3_sha3_512_inc_ctx_release(&state);
+
+	/* Cross-validate one-shot vs chunked absorb of msg896||msg448 (168 bytes,
+	   non-uniform) for every segment size 1..168. Covers all absorb code paths
+	   and their transitions, crossing the SHA3-512 rate boundary at 72 bytes. */
+	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
+	memcpy(msg_concat, msg896, sizeof(msg896));
+	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
+	uint8_t hash_oneshot[sizeof(output)];
+	OQS_SHA3_sha3_512(hash_oneshot, msg_concat, sizeof(msg_concat));
+	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_sha3_512_inc_init(&state);
+		size_t off = 0;
+		while (off < sizeof(msg_concat)) {
+			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			OQS_SHA3_sha3_512_inc_absorb(&state, msg_concat + off, n);
+			off += n;
+		}
+		OQS_SHA3_sha3_512_inc_finalize(hash, &state);
+		OQS_SHA3_sha3_512_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHA3-512 chunked absorb cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
+
+	/* Verify ctx_reset: absorb msg24, finalize, then reset and re-absorb msg24;
+	   result must equal a fresh inc_init hash of msg24. */
+	uint8_t hash_fresh[sizeof(output)];
+	OQS_SHA3_sha3_512_inc_init(&state);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg24, sizeof(msg24));
+	OQS_SHA3_sha3_512_inc_finalize(hash_fresh, &state);
+	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg24, sizeof(msg24));
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
+	OQS_SHA3_sha3_512_inc_ctx_release(&state);
+
+	if (are_equal8(hash, hash_fresh, sizeof(hash_fresh)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-512 ctx_reset did not restore to initial state\n");
+		status = EXIT_FAILURE;
+	}
+
+	/* Cross-validate one-shot vs single-call absorb of exactly RATE and RATE+1
+	   bytes. Complements the sweep above: here the buffer is full (or full+1)
+	   at end of input, so the flush is triggered by squeeze, not a later absorb. */
+	uint8_t hash_ref[sizeof(output)];
+	OQS_SHA3_sha3_512(hash_ref, msg_concat, OQS_SHA3_SHA3_512_RATE);
+	OQS_SHA3_sha3_512_inc_init(&state);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg_concat, OQS_SHA3_SHA3_512_RATE);
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
+	OQS_SHA3_sha3_512_inc_ctx_release(&state);
+
+	if (are_equal8(hash, hash_ref, sizeof(hash_ref)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-512 exact-rate absorb cross-validation failed\n");
+		status = EXIT_FAILURE;
+	}
+
+	OQS_SHA3_sha3_512(hash_ref, msg_concat, OQS_SHA3_SHA3_512_RATE + 1);
+	OQS_SHA3_sha3_512_inc_init(&state);
+	OQS_SHA3_sha3_512_inc_absorb(&state, msg_concat, OQS_SHA3_SHA3_512_RATE + 1);
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
+	OQS_SHA3_sha3_512_inc_ctx_release(&state);
+
+	if (are_equal8(hash, hash_ref, sizeof(hash_ref)) == EXIT_FAILURE) {
+		printf("ERROR: SHA3-512 rate+1 absorb cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
 
@@ -499,23 +743,6 @@ int shake_128_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
 	uint8_t output[512];
-
-	uint8_t msg0[1] = {0x0};
-	uint8_t msg1600[200] = {
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
-	};
 
 	uint8_t exp0[512] = {
 		0x7F, 0x9C, 0x2B, 0xA4, 0xE8, 0x8F, 0x82, 0x7D, 0x61, 0x60, 0x45, 0x50, 0x76, 0x05, 0x85, 0x3E,
@@ -588,24 +815,24 @@ int shake_128_kat_test(void) {
 
 	/* test compact api */
 
-	clear8(output, 512);
-	OQS_SHA3_shake128(output, 512, msg0, 0);
+	clear8(output, sizeof(output));
+	OQS_SHA3_shake128(output, sizeof(output), msg0, 0);
 
-	if (are_equal8(output, exp0, 512) == EXIT_FAILURE) {
+	if (are_equal8(output, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 512);
-	OQS_SHA3_shake128(output, 512, msg1600, 200);
+	clear8(output, sizeof(output));
+	OQS_SHA3_shake128(output, sizeof(output), msg1600, sizeof(msg1600));
 
-	if (are_equal8(output, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(output, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	/* test long-form api */
 
 	OQS_SHA3_shake128_inc_ctx state;
-	uint8_t hash[OQS_SHA3_SHAKE128_RATE * 4];
+	uint8_t hash[sizeof(exp1600)];
 
 	clear8(hash, sizeof(hash));
 	OQS_SHA3_shake128_inc_init(&state);
@@ -614,7 +841,7 @@ int shake_128_kat_test(void) {
 	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake128_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -628,7 +855,7 @@ int shake_128_kat_test(void) {
 	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake128_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -642,7 +869,7 @@ int shake_128_kat_test(void) {
 	}
 	OQS_SHA3_shake128_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -659,7 +886,7 @@ int shake_128_kat_test(void) {
 	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state2);
 	OQS_SHA3_shake128_inc_ctx_release(&state2);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -671,8 +898,67 @@ int shake_128_kat_test(void) {
 	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake128_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
+	}
+
+	/* Cross-validate one-shot vs byte-at-a-time absorb of msg896||msg448
+	   (168 bytes) using the incremental API. */
+	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
+	memcpy(msg_concat, msg896, sizeof(msg896));
+	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
+
+	uint8_t hash_oneshot[sizeof(output)];
+	OQS_SHA3_shake128(hash_oneshot, sizeof(hash_oneshot), msg_concat, sizeof(msg_concat));
+
+	/* Cross-validate one-shot vs chunked absorb for every segment size 1..168.
+	   Covers all absorb code paths and their transitions, including the
+	   SHAKE-128 rate boundary at 168 bytes. */
+	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake128_inc_init(&state);
+		size_t off = 0;
+		while (off < sizeof(msg_concat)) {
+			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			OQS_SHA3_shake128_inc_absorb(&state, msg_concat + off, n);
+			off += n;
+		}
+		OQS_SHA3_shake128_inc_finalize(&state);
+		OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
+		OQS_SHA3_shake128_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-128 chunked absorb cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
+
+	/* Cross-validate bulk squeeze vs chunked squeeze for every segment size
+	   1..512. Covers all squeeze code paths and their transitions, including
+	   the SHAKE-128 rate boundary at 168 bytes. */
+	OQS_SHA3_shake128_inc_init(&state);
+	OQS_SHA3_shake128_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+	OQS_SHA3_shake128_inc_finalize(&state);
+	OQS_SHA3_shake128_inc_squeeze(hash_oneshot, sizeof(hash_oneshot), &state);
+	OQS_SHA3_shake128_inc_ctx_release(&state);
+
+	for (size_t seg = 1; seg <= sizeof(hash); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake128_inc_init(&state);
+		OQS_SHA3_shake128_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+		OQS_SHA3_shake128_inc_finalize(&state);
+		size_t off = 0;
+		while (off < sizeof(hash)) {
+			size_t n = (seg < sizeof(hash) - off) ? seg : sizeof(hash) - off;
+			OQS_SHA3_shake128_inc_squeeze(hash + off, n, &state);
+			off += n;
+		}
+		OQS_SHA3_shake128_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-128 chunked squeeze cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
 	}
 	return status;
 }
@@ -692,23 +978,6 @@ int shake_256_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
 	uint8_t output[512];
-
-	uint8_t msg0[1] = {0x0};
-	uint8_t msg1600[200] = {
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
-	};
 
 	uint8_t exp0[512] = {
 		0x46, 0xB9, 0xDD, 0x2B, 0x0B, 0xA8, 0x8D, 0x13, 0x23, 0x3B, 0x3F, 0xEB, 0x74, 0x3E, 0xEB, 0x24,
@@ -781,24 +1050,24 @@ int shake_256_kat_test(void) {
 
 	/* test compact api */
 
-	clear8(output, 512);
-	OQS_SHA3_shake256(output, 512, msg0, 0);
+	clear8(output, sizeof(output));
+	OQS_SHA3_shake256(output, sizeof(output), msg0, 0);
 
-	if (are_equal8(output, exp0, 512) == EXIT_FAILURE) {
+	if (are_equal8(output, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output, 512);
-	OQS_SHA3_shake256(output, 512, msg1600, 200);
+	clear8(output, sizeof(output));
+	OQS_SHA3_shake256(output, sizeof(output), msg1600, sizeof(msg1600));
 
-	if (are_equal8(output, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(output, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	/* test long-form api */
 
 	OQS_SHA3_shake256_inc_ctx state;
-	uint8_t hash[OQS_SHA3_SHAKE256_RATE * 4];
+	uint8_t hash[sizeof(exp1600)];
 
 	clear8(hash, sizeof(hash));
 	OQS_SHA3_shake256_inc_init(&state);
@@ -807,7 +1076,7 @@ int shake_256_kat_test(void) {
 	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake256_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -821,7 +1090,7 @@ int shake_256_kat_test(void) {
 	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake256_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -835,7 +1104,7 @@ int shake_256_kat_test(void) {
 	}
 	OQS_SHA3_shake256_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -852,7 +1121,7 @@ int shake_256_kat_test(void) {
 	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state2);
 	OQS_SHA3_shake256_inc_ctx_release(&state2);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
@@ -864,8 +1133,67 @@ int shake_256_kat_test(void) {
 	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake256_inc_ctx_release(&state);
 
-	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(hash, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
+	}
+
+	/* Cross-validate one-shot vs byte-at-a-time absorb of msg896||msg448
+	   (168 bytes) using the incremental API. */
+	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
+	memcpy(msg_concat, msg896, sizeof(msg896));
+	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
+
+	uint8_t hash_oneshot[sizeof(output)];
+	OQS_SHA3_shake256(hash_oneshot, sizeof(hash_oneshot), msg_concat, sizeof(msg_concat));
+
+	/* Cross-validate one-shot vs chunked absorb for every segment size 1..168.
+	   Covers all absorb code paths and their transitions, including the
+	   SHAKE-256 rate boundary at 136 bytes. */
+	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake256_inc_init(&state);
+		size_t off = 0;
+		while (off < sizeof(msg_concat)) {
+			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			OQS_SHA3_shake256_inc_absorb(&state, msg_concat + off, n);
+			off += n;
+		}
+		OQS_SHA3_shake256_inc_finalize(&state);
+		OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
+		OQS_SHA3_shake256_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-256 chunked absorb cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
+	}
+
+	/* Cross-validate bulk squeeze vs chunked squeeze for every segment size
+	   1..512. Covers all squeeze code paths and their transitions, including
+	   the SHAKE-256 rate boundary at 136 bytes. */
+	OQS_SHA3_shake256_inc_init(&state);
+	OQS_SHA3_shake256_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+	OQS_SHA3_shake256_inc_finalize(&state);
+	OQS_SHA3_shake256_inc_squeeze(hash_oneshot, sizeof(hash_oneshot), &state);
+	OQS_SHA3_shake256_inc_ctx_release(&state);
+
+	for (size_t seg = 1; seg <= sizeof(hash); seg++) {
+		clear8(hash, sizeof(hash));
+		OQS_SHA3_shake256_inc_init(&state);
+		OQS_SHA3_shake256_inc_absorb(&state, msg_concat, sizeof(msg_concat));
+		OQS_SHA3_shake256_inc_finalize(&state);
+		size_t off = 0;
+		while (off < sizeof(hash)) {
+			size_t n = (seg < sizeof(hash) - off) ? seg : sizeof(hash) - off;
+			OQS_SHA3_shake256_inc_squeeze(hash + off, n, &state);
+			off += n;
+		}
+		OQS_SHA3_shake256_inc_ctx_release(&state);
+		if (are_equal8(hash, hash_oneshot, sizeof(hash_oneshot)) == EXIT_FAILURE) {
+			printf("ERROR: SHAKE-256 chunked squeeze cross-validation failed (seg=%zu)\n", seg);
+			status = EXIT_FAILURE;
+			break;
+		}
 	}
 	return status;
 }
@@ -887,23 +1215,6 @@ int shake_128_x4_kat_test(void) {
 	uint8_t output1[512];
 	uint8_t output2[512];
 	uint8_t output3[512];
-
-	uint8_t msg0[1] = {0x0};
-	uint8_t msg1600[200] = {
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
-	};
 
 	uint8_t exp0[512] = {
 		0x7F, 0x9C, 0x2B, 0xA4, 0xE8, 0x8F, 0x82, 0x7D, 0x61, 0x60, 0x45, 0x50, 0x76, 0x05, 0x85, 0x3E,
@@ -976,52 +1287,78 @@ int shake_128_x4_kat_test(void) {
 
 	/* test compact api */
 
-	clear8(output0, 512);
-	clear8(output1, 512);
-	clear8(output2, 512);
-	clear8(output3, 512);
-	OQS_SHA3_shake128_x4(output0, output1, output2, output3, 512,
+	clear8(output0, sizeof(output0));
+	clear8(output1, sizeof(output1));
+	clear8(output2, sizeof(output2));
+	clear8(output3, sizeof(output3));
+	OQS_SHA3_shake128_x4(output0, output1, output2, output3, sizeof(output0),
 	                     msg0, msg0, msg0, msg0, 0);
 
-	if (are_equal8(output0, exp0, 512) == EXIT_FAILURE
-	        || are_equal8(output1, exp0, 512) == EXIT_FAILURE
-	        || are_equal8(output2, exp0, 512) == EXIT_FAILURE
-	        || are_equal8(output3, exp0, 512) == EXIT_FAILURE) {
+	if (are_equal8(output0, exp0, sizeof(exp0)) == EXIT_FAILURE
+	        || are_equal8(output1, exp0, sizeof(exp0)) == EXIT_FAILURE
+	        || are_equal8(output2, exp0, sizeof(exp0)) == EXIT_FAILURE
+	        || are_equal8(output3, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output0, 512);
-	clear8(output1, 512);
-	clear8(output2, 512);
-	clear8(output3, 512);
-	OQS_SHA3_shake128_x4(output0, output1, output2, output3, 512,
-	                     msg1600, msg1600, msg1600, msg1600, 200);
+	clear8(output0, sizeof(output0));
+	clear8(output1, sizeof(output1));
+	clear8(output2, sizeof(output2));
+	clear8(output3, sizeof(output3));
+	OQS_SHA3_shake128_x4(output0, output1, output2, output3, sizeof(output0),
+	                     msg1600, msg1600, msg1600, msg1600, sizeof(msg1600));
 
-	if (are_equal8(output0, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output1, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output2, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output3, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	/* test incremental api */
-	clear8(output0, 512);
-	clear8(output1, 512);
-	clear8(output2, 512);
-	clear8(output3, 512);
+	clear8(output0, sizeof(output0));
+	clear8(output1, sizeof(output1));
+	clear8(output2, sizeof(output2));
+	clear8(output3, sizeof(output3));
 	OQS_SHA3_shake128_x4_inc_ctx state;
 	OQS_SHA3_shake128_x4_inc_init(&state);
-	OQS_SHA3_shake128_x4_inc_absorb(&state, msg1600, msg1600, msg1600, msg1600, 32);
-	OQS_SHA3_shake128_x4_inc_absorb(&state, msg1600 + 32, msg1600 + 32, msg1600 + 32, msg1600 + 32, 168);
+	const size_t offset128 = sizeof(msg1600) - OQS_SHA3_SHAKE128_RATE;
+	const uint8_t *msgOffset128 = msg1600 + offset128;
+	OQS_SHA3_shake128_x4_inc_absorb(&state, msg1600, msg1600, msg1600, msg1600, offset128);
+	OQS_SHA3_shake128_x4_inc_absorb(&state, msgOffset128, msgOffset128, msgOffset128, msgOffset128, OQS_SHA3_SHAKE128_RATE);
 	OQS_SHA3_shake128_x4_inc_finalize(&state);
-	OQS_SHA3_shake128_x4_inc_squeeze(output0, output1, output2, output3, 32, &state);
-	OQS_SHA3_shake128_x4_inc_squeeze(output0 + 32, output1 + 32, output2 + 32, output3 + 32, 480, &state);
+	OQS_SHA3_shake128_x4_inc_squeeze(output0, output1, output2, output3, offset128, &state);
+	OQS_SHA3_shake128_x4_inc_squeeze(output0 + offset128, output1 + offset128,
+	                                 output2 + offset128, output3 + offset128,
+	                                 sizeof(output0) - offset128, &state);
 	OQS_SHA3_shake128_x4_inc_ctx_release(&state);
 
-	if (are_equal8(output0, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output1, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output2, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output3, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Verify that distinct non-uniform lane inputs produce distinct, correct
+	   outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
+	   112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
+	   the single-lane one-shot API as the oracle. */
+	uint8_t exp_a[512], exp_b[512];
+	OQS_SHA3_shake128(exp_a, sizeof(exp_a), msg896, sizeof(msg896));
+	OQS_SHA3_shake128(exp_b, sizeof(exp_b), msg1600, sizeof(msg896));
+
+	OQS_SHA3_shake128_x4_inc_init(&state);
+	OQS_SHA3_shake128_x4_inc_absorb(&state, msg896, msg1600, msg896, msg1600, sizeof(msg896));
+	OQS_SHA3_shake128_x4_inc_finalize(&state);
+	OQS_SHA3_shake128_x4_inc_squeeze(output0, output1, output2, output3, sizeof(exp_a), &state);
+	OQS_SHA3_shake128_x4_inc_ctx_release(&state);
+
+	if (are_equal8(output0, exp_a, sizeof(exp_a)) == EXIT_FAILURE
+	        || are_equal8(output1, exp_b, sizeof(exp_b)) == EXIT_FAILURE
+	        || are_equal8(output2, exp_a, sizeof(exp_a)) == EXIT_FAILURE
+	        || are_equal8(output3, exp_b, sizeof(exp_b)) == EXIT_FAILURE) {
+		printf("ERROR: SHAKE-128 x4 distinct-lane cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
 
@@ -1046,23 +1383,6 @@ int shake_256_x4_kat_test(void) {
 	uint8_t output2[512];
 	uint8_t output3[512];
 
-	uint8_t msg0[1] = {0x0};
-	uint8_t msg1600[200] = {
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3,
-		0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3, 0xA3
-	};
-
 	uint8_t exp0[512] = {
 		0x46, 0xB9, 0xDD, 0x2B, 0x0B, 0xA8, 0x8D, 0x13, 0x23, 0x3B, 0x3F, 0xEB, 0x74, 0x3E, 0xEB, 0x24,
 		0x3F, 0xCD, 0x52, 0xEA, 0x62, 0xB8, 0x1B, 0x82, 0xB5, 0x0C, 0x27, 0x64, 0x6E, 0xD5, 0x76, 0x2F,
@@ -1134,52 +1454,78 @@ int shake_256_x4_kat_test(void) {
 
 	/* test compact api */
 
-	clear8(output0, 512);
-	clear8(output1, 512);
-	clear8(output2, 512);
-	clear8(output3, 512);
-	OQS_SHA3_shake256_x4(output0, output1, output2, output3, 512,
+	clear8(output0, sizeof(output0));
+	clear8(output1, sizeof(output1));
+	clear8(output2, sizeof(output2));
+	clear8(output3, sizeof(output3));
+	OQS_SHA3_shake256_x4(output0, output1, output2, output3, sizeof(output0),
 	                     msg0, msg0, msg0, msg0, 0);
 
-	if (are_equal8(output0, exp0, 512) == EXIT_FAILURE
-	        || are_equal8(output1, exp0, 512) == EXIT_FAILURE
-	        || are_equal8(output2, exp0, 512) == EXIT_FAILURE
-	        || are_equal8(output3, exp0, 512) == EXIT_FAILURE) {
+	if (are_equal8(output0, exp0, sizeof(exp0)) == EXIT_FAILURE
+	        || are_equal8(output1, exp0, sizeof(exp0)) == EXIT_FAILURE
+	        || are_equal8(output2, exp0, sizeof(exp0)) == EXIT_FAILURE
+	        || are_equal8(output3, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
-	clear8(output0, 512);
-	clear8(output1, 512);
-	clear8(output2, 512);
-	clear8(output3, 512);
-	OQS_SHA3_shake256_x4(output0, output1, output2, output3, 512,
-	                     msg1600, msg1600, msg1600, msg1600, 200);
+	clear8(output0, sizeof(output0));
+	clear8(output1, sizeof(output1));
+	clear8(output2, sizeof(output2));
+	clear8(output3, sizeof(output3));
+	OQS_SHA3_shake256_x4(output0, output1, output2, output3, sizeof(output0),
+	                     msg1600, msg1600, msg1600, msg1600, sizeof(msg1600));
 
-	if (are_equal8(output0, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output1, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output2, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output3, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	/* test incremental api */
-	clear8(output0, 512);
-	clear8(output1, 512);
-	clear8(output2, 512);
-	clear8(output3, 512);
+	clear8(output0, sizeof(output0));
+	clear8(output1, sizeof(output1));
+	clear8(output2, sizeof(output2));
+	clear8(output3, sizeof(output3));
 	OQS_SHA3_shake256_x4_inc_ctx state;
 	OQS_SHA3_shake256_x4_inc_init(&state);
-	OQS_SHA3_shake256_x4_inc_absorb(&state, msg1600, msg1600, msg1600, msg1600, 64);
-	OQS_SHA3_shake256_x4_inc_absorb(&state, msg1600 + 64, msg1600 + 64, msg1600 + 64, msg1600 + 64, 136);
+	const size_t offset256 = sizeof(msg1600) - OQS_SHA3_SHAKE256_RATE;
+	const uint8_t *msgOffset256 = msg1600 + offset256;
+	OQS_SHA3_shake256_x4_inc_absorb(&state, msg1600, msg1600, msg1600, msg1600, offset256);
+	OQS_SHA3_shake256_x4_inc_absorb(&state, msgOffset256, msgOffset256, msgOffset256, msgOffset256, OQS_SHA3_SHAKE256_RATE);
 	OQS_SHA3_shake256_x4_inc_finalize(&state);
-	OQS_SHA3_shake256_x4_inc_squeeze(output0, output1, output2, output3, 64, &state);
-	OQS_SHA3_shake256_x4_inc_squeeze(output0 + 64, output1 + 64, output2 + 64, output3 + 64, 448, &state);
+	OQS_SHA3_shake256_x4_inc_squeeze(output0, output1, output2, output3, offset256, &state);
+	OQS_SHA3_shake256_x4_inc_squeeze(output0 + offset256, output1 + offset256,
+	                                 output2 + offset256, output3 + offset256,
+	                                 sizeof(output0) - offset256, &state);
 	OQS_SHA3_shake256_x4_inc_ctx_release(&state);
 
-	if (are_equal8(output0, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output1, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output2, exp1600, 512) == EXIT_FAILURE
-	        || are_equal8(output3, exp1600, 512) == EXIT_FAILURE) {
+	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
+	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Verify that distinct non-uniform lane inputs produce distinct, correct
+	   outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
+	   112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
+	   the single-lane one-shot API as the oracle. */
+	uint8_t exp_a[512], exp_b[512];
+	OQS_SHA3_shake256(exp_a, sizeof(exp_a), msg896, sizeof(msg896));
+	OQS_SHA3_shake256(exp_b, sizeof(exp_b), msg1600, sizeof(msg896));
+
+	OQS_SHA3_shake256_x4_inc_init(&state);
+	OQS_SHA3_shake256_x4_inc_absorb(&state, msg896, msg1600, msg896, msg1600, sizeof(msg896));
+	OQS_SHA3_shake256_x4_inc_finalize(&state);
+	OQS_SHA3_shake256_x4_inc_squeeze(output0, output1, output2, output3, sizeof(exp_a), &state);
+	OQS_SHA3_shake256_x4_inc_ctx_release(&state);
+
+	if (are_equal8(output0, exp_a, sizeof(exp_a)) == EXIT_FAILURE
+	        || are_equal8(output1, exp_b, sizeof(exp_b)) == EXIT_FAILURE
+	        || are_equal8(output2, exp_a, sizeof(exp_a)) == EXIT_FAILURE
+	        || are_equal8(output3, exp_b, sizeof(exp_b)) == EXIT_FAILURE) {
+		printf("ERROR: SHAKE-256 x4 distinct-lane cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
 
