@@ -708,7 +708,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	printf("================================================================================\n");
 
 	rc = sig_stfl_KATs_keygen(sig_obj, public_key, sk, katfile);
-
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key gen failed.\n");
 		goto err;
@@ -718,12 +718,14 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	 * Get max num signature and the amount remaining
 	 */
 	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
@@ -769,7 +771,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 
 	context_2 = strdup(file_store_name);
 	rc = OQS_SIG_STFL_SECRET_KEY_deserialize(sk_from_file, from_file_sk_buf, from_file_sk_len, (void *)context_2);
-
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS restore %s from file failed.\n", method_name);
 		goto err;
@@ -892,12 +894,14 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	 */
 	unsigned long long num_sig_left = 0, max_num_sigs = 0;
 	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
@@ -921,12 +925,14 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	 */
 	num_sig_left = 0, max_num_sigs = 0;
 	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
@@ -954,12 +960,14 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	 */
 	num_sig_left = 0, max_num_sigs = 0;
 	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
 	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
 		goto err;
@@ -1019,7 +1027,7 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 	printf("================================================================================\n");
 
 	rc = sig_stfl_KATs_keygen(lock_test_sig_obj, lock_test_public_key, lock_test_sk, katfile);
-
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key gen failed.\n");
 		goto err;
