@@ -31,3 +31,11 @@ jobs:
       contents: read
       id-token: write
       security-events: write
+
+  codeql:
+    needs: basic-checks
+    uses: ./.github/workflows/codeql.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      security-events: write
