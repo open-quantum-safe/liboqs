@@ -44,6 +44,9 @@ if(CONFIG_LIBOQS)
 
         set(CMAKE_CROSSCOMPILING ON)
 
+        # Activate the "memopt" variants of the algorithms if they exist
+        set(OQS_MEMOPT_BUILD ON)
+
         # Disable features by hand, as CMake won't find them properly with Zephyr
         set(CMAKE_HAVE_GETENTROPY OFF)
         set(CMAKE_HAVE_ALIGNED_ALLOC OFF)
@@ -145,6 +148,12 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_snova_SNOVA_29_6_5 OFF)
         else()
                 set(OQS_ENABLE_SIG_SNOVA OFF)
+        endif()
+
+        if(CONFIG_LIBOQS_ENABLE_SIG_MQOM)
+                set(OQS_ENABLE_SIG_MQOM ON)
+        else()
+                set(OQS_ENABLE_SIG_MQOM OFF)
         endif()
 
         # Add the actual liboqs targets

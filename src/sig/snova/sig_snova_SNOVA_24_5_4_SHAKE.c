@@ -7,7 +7,7 @@
 #if defined(OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE)
 OQS_SIG *OQS_SIG_snova_SNOVA_24_5_4_SHAKE_new(void) {
 
-	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_calloc(1, sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
 	}

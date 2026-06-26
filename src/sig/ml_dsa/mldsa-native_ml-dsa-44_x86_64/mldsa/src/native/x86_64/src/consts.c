@@ -20,7 +20,7 @@
  * Table of zeta values used in the AVX2 forward and inverse NTT
  * See autogen for details.
  */
-MLD_ALIGN const int32_t mld_qdata[624] = {
+MLD_ALIGN MLD_INTERNAL_DATA_DEFINITION const int32_t mld_qdata[624] = {
     8380417,     8380417,     8380417,     8380417,     8380417,
     8380417,     8380417,     8380417,     58728449,    58728449,
     58728449,    58728449,    58728449,    58728449,    58728449,

@@ -68,6 +68,10 @@ def shell(command, expect=0):
     subprocess_stdout = None if DEBUG > 0 else subprocess.DEVNULL
     ret = subprocess.run(command, stdout=subprocess_stdout, stderr=subprocess_stdout)
     if ret.returncode != expect:
+        if ret.stdout:
+            print(ret.stdout.decode("utf-8"))
+        if ret.stderr:
+            print(ret.stderr.decode("utf-8"))
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 # Generate template from specified scheme to replace old file in 'copy' mode
@@ -226,6 +230,7 @@ def load_instructions(file='copy_from_upstream.yml'):
             for common_dep in common_deps['commons']:
                 if not 'folder_name' in common_dep or not 'sources' in common_dep:
                     raise Exception("folder_name and sources required in common dependencies.")
+                common_dep['include_only'] = common_dep.get('include_only', False)
                 common_dep['sources'] = common_dep['sources'].split(" ")
                 if 'supported_platforms' in common_dep:
                     for i in range(len(common_dep['supported_platforms'])):
@@ -332,10 +337,10 @@ def load_instructions(file='copy_from_upstream.yml'):
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
-                    cdeps_names = impl['common_dep'].split(" ")
+                    impl['common_dep'] = impl['common_dep'].split()
                     sname = scheme['pretty_name_full']
                     uloc = scheme['upstream_location']
-                    for cdep_name in cdeps_names:
+                    for cdep_name in impl['common_dep']:
                         cdep = upstreams[uloc]['commons'][cdep_name]
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
@@ -443,10 +448,10 @@ def load_instructions(file='copy_from_upstream.yml'):
             scheme['default_implementation'] = family['default_implementation']
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
-                    cdeps_names = impl['common_dep'].split(" ")
+                    impl['common_dep'] = impl['common_dep'].split()
                     sname = scheme['pretty_name_full']
                     uloc = scheme['upstream_location']
-                    for cdep_name in cdeps_names:
+                    for cdep_name in impl['common_dep']:
                         cdep = upstreams[uloc]['commons'][cdep_name]
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
@@ -470,7 +475,6 @@ def handle_common_deps(common_dep, family, dst_basedir):
     # if 'upstream_location' in scheme and os.environ.get(scheme['upstream_location']):
     if DEBUG > 3:
         print("Obtain files for common dependency %s" % (common_dep))
-        print("Obtain files for %s" % (scheme))
 
     cdep_folder_name = '{}_{}'.format(family['upstream_location'], common_dep['name'])
     shutil.rmtree(os.path.join(dst_basedir, 'src', family['type'], family['name'],
@@ -493,13 +497,14 @@ def handle_common_deps(common_dep, family, dst_basedir):
     # We checked before that 'sources' are available in the common dependency
     srcs = common_dep['sources']
     for s in srcs:
-        # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
+        # Copy with flat directory structure (no subfolders)
         if os.path.isfile(os.path.join(origfolder, s)):
-            os.makedirs(os.path.join(srcfolder, os.path.dirname(s)), exist_ok=True)
-            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, s)])
+            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
         else:
-            subprocess.run(
-                ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+            # For directories, copy contents flat
+            for root, _, files in os.walk(os.path.join(origfolder, s)):
+                for f in files:
+                    subprocess.run(['cp', os.path.join(root, f), os.path.join(srcfolder, f)])
 
 
     extensions = ['.c', '.s']
@@ -796,6 +801,7 @@ def copy_from_upstream(slh_dsa_inst: dict):
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
@@ -825,6 +831,7 @@ def copy_from_libjade():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
 

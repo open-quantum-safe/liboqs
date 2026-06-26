@@ -18,6 +18,14 @@ FUNC(int, EVP_DigestInit_ex,
      (EVP_MD_CTX *ctx, const EVP_MD *type, ENGINE *impl), (ctx, type, impl))
 FUNC(int, EVP_DigestUpdate, (EVP_MD_CTX *ctx, const void *d, size_t cnt),
      (ctx, d, cnt))
+#if OPENSSL_VERSION_NUMBER >= 0x30300000L
+/* Optional: may be absent from the libcrypto loaded at runtime, or rejected by
+ * the active provider (e.g. a FIPS 3.0 provider under libcrypto 3.3). Callers
+ * must check OSSL_FUNC_AVAILABLE and the return value. */
+OPTIONAL_FUNC(int, EVP_DigestSqueeze,
+              (EVP_MD_CTX *ctx, unsigned char *out, size_t outlen),
+              (ctx, out, outlen))
+#endif
 FUNC(int, EVP_EncryptFinal_ex,
      (EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl), (ctx, out, outl))
 FUNC(int, EVP_EncryptInit_ex,

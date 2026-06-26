@@ -6,7 +6,7 @@
 
 #ifdef OQS_ENABLE_KEM_bike_l1
 OQS_KEM *OQS_KEM_bike_l1_new(void) {
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}
@@ -35,7 +35,7 @@ OQS_KEM *OQS_KEM_bike_l1_new(void) {
 
 #ifdef OQS_ENABLE_KEM_bike_l3
 OQS_KEM *OQS_KEM_bike_l3_new(void) {
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}
@@ -64,7 +64,7 @@ OQS_KEM *OQS_KEM_bike_l3_new(void) {
 
 #ifdef OQS_ENABLE_KEM_bike_l5
 OQS_KEM *OQS_KEM_bike_l5_new(void) {
-	OQS_KEM *kem = OQS_MEM_malloc(sizeof(OQS_KEM));
+	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}

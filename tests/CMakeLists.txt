@@ -16,7 +16,7 @@ if (MINGW OR MSYS OR CYGWIN)
     add_compile_options(-Wno-unknown-pragmas)
     add_compile_options(-Wno-unused-parameter)
 endif()
-if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
+if(MSVC)
     # ignore warning for test apps
     add_compile_options(/wd4996 /wd4244)
 endif()
@@ -111,7 +111,7 @@ set(KEM_TESTS example_kem kat_kem test_kem test_kem_mem speed_kem vectors_kem)
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${TEST_DEPS})
 
-if(OQS_BUILD_FUZZ_TESTS AND '${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
+if(OQS_BUILD_FUZZ_TESTS AND CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_executable(fuzz_test_sig fuzz_test_sig.c)
     target_link_libraries(fuzz_test_sig PRIVATE ${TEST_DEPS})
     set_target_properties(fuzz_test_sig PROPERTIES
@@ -121,6 +121,18 @@ if(OQS_BUILD_FUZZ_TESTS AND '${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
     add_executable(fuzz_test_kem fuzz_test_kem.c)
     target_link_libraries(fuzz_test_kem PRIVATE ${TEST_DEPS})
     set_target_properties(fuzz_test_kem PROPERTIES
+        COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
+        LINK_FLAGS "${FUZZING_LINK_FLAGS}"
+    )
+    add_executable(fuzz_test_sig_stfl_xmss fuzz_test_sig_stfl_xmss.c)
+    target_link_libraries(fuzz_test_sig_stfl_xmss PRIVATE ${TEST_DEPS})
+    set_target_properties(fuzz_test_sig_stfl_xmss PROPERTIES
+        COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
+        LINK_FLAGS "${FUZZING_LINK_FLAGS}"
+    )
+    add_executable(fuzz_test_sig_stfl_lms fuzz_test_sig_stfl_lms.c)
+    target_link_libraries(fuzz_test_sig_stfl_lms PRIVATE ${TEST_DEPS})
+    set_target_properties(fuzz_test_sig_stfl_lms PROPERTIES
         COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
         LINK_FLAGS "${FUZZING_LINK_FLAGS}"
     )
@@ -240,7 +252,7 @@ endif()
 add_custom_target(
     run_tests
     # skip long KAT tests
-    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
+    COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=${OQS_PYTEST_NUMPROCESSES} --ignore=scripts/copy_from_upstream/repos --ignore=tests/test_kat_all.py
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS} ${UNIX_TESTS}
     USES_TERMINAL)

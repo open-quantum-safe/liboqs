@@ -11,7 +11,7 @@
 #if defined(OQS_ENABLE_SIG_slh_dsa_sha2_512_224_prehash_sha2_192f)
 OQS_SIG *OQS_SIG_slh_dsa_sha2_512_224_prehash_sha2_192f_new(void) {
 
-	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
+	OQS_SIG *sig = OQS_MEM_calloc(1, sizeof(OQS_SIG));
 	if(sig == NULL) {
 		return NULL;
 	}

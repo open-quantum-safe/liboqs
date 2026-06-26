@@ -16,7 +16,6 @@
 #define MLD_SIGN_H
 
 #include <stddef.h>
-#include <stdint.h>
 #include "cbmc.h"
 #include "common.h"
 #include "poly.h"
@@ -72,9 +71,7 @@
 #define mld_sign_pk_from_sk \
   MLD_NAMESPACE_KL(pk_from_sk) MLD_CONTEXT_PARAMETERS_2
 
-/*************************************************
- * Hash algorithm constants for domain separation
- **************************************************/
+/* Hash algorithm constants for domain separation */
 #define MLD_PREHASH_NONE 0
 #define MLD_PREHASH_SHA2_224 1
 #define MLD_PREHASH_SHA2_256 2
@@ -89,27 +86,35 @@
 #define MLD_PREHASH_SHAKE_128 11
 #define MLD_PREHASH_SHAKE_256 12
 
-/*************************************************
- * Name:        mld_sign_keypair_internal
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API)
+/**
+ * Generate a public-private key pair from a seed.
  *
- * Description: Generates public and private key. Internal API.
- *              When MLD_CONFIG_KEYGEN_PCT is set, performs a Pairwise
- *              Consistency Test (PCT) as required by FIPS 140-3 IG.
+ * When MLD_CONFIG_KEYGEN_PCT is set, performs a Pairwise Consistency Test
+ * (PCT) as required by FIPS 140-3 IG.
  *
- * Arguments:   - uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]:   output public key
- *              - uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]:   output private key
- *              - const uint8_t seed[MLDSA_SEEDBYTES]: input random seed
+ * @spec{Implements @[FIPS204 Algorithm 6 (ML-DSA.KeyGen_internal)].}
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_RNG_FAIL: Random number generation failed.
- *              - MLD_ERR_FAIL: Other kinds of failure, incl. PCT failure
- *                  if MLD_CONFIG_KEYGEN_PCT is enabled.
+ * @param[out] pk      Output public key.
+ * @param[out] sk      Output private key.
+ * @param[in]  seed    Input random seed.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Specification: Implements @[FIPS204 Algorithm 6 (ML-DSA.KeyGen_internal)]
- *
- **************************************************/
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_RNG_FAIL                Random number generation failed.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The PCT's signing step exhausted
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations. Only possible when
+ *                                         MLD_CONFIG_KEYGEN_PCT is enabled.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure, including
+ *                                         PCT failure if
+ *                                         MLD_CONFIG_KEYGEN_PCT is enabled.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_keypair_internal(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
@@ -122,30 +127,37 @@ __contract__(
   requires(memory_no_alias(seed, MLDSA_SEEDBYTES))
   assigns(object_whole(pk))
   assigns(object_whole(sk))
-  ensures(return_value == 0 || return_value == MLD_ERR_FAIL ||
-          return_value == MLD_ERR_OUT_OF_MEMORY || return_value == MLD_ERR_RNG_FAIL)
+  ensures(return_value == 0 || MLD_ANY_ERROR(return_value))
 );
 
-/*************************************************
- * Name:        mld_sign_keypair
+#if !defined(MLD_CONFIG_CORE_API_ONLY)
+/**
+ * Generate a public-private key pair.
  *
- * Description: Generates public and private key.
- *              When MLD_CONFIG_KEYGEN_PCT is set, performs a Pairwise
- *              Consistency Test (PCT) as required by FIPS 140-3 IG.
+ * When MLD_CONFIG_KEYGEN_PCT is set, performs a Pairwise Consistency Test
+ * (PCT) as required by FIPS 140-3 IG.
  *
- * Arguments:   - uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]: output public key
- *              - uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]: output private key
+ * @spec{Implements @[FIPS204 Algorithm 1 (ML-DSA.KeyGen)].}
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_RNG_FAIL: Random number generation failed.
- *              - MLD_ERR_FAIL: Other kinds of failure, incl. PCT failure
- *                  if MLD_CONFIG_KEYGEN_PCT is enabled.
+ * @param[out] pk      Output public key.
+ * @param[out] sk      Output private key.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Specification: Implements @[FIPS204 Algorithm 1 (ML-DSA.KeyGen)]
- *
- **************************************************/
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_RNG_FAIL                Random number generation failed.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The PCT's signing step exhausted
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations. Only possible when
+ *                                         MLD_CONFIG_KEYGEN_PCT is enabled.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure, including
+ *                                         PCT failure if
+ *                                         MLD_CONFIG_KEYGEN_PCT is enabled.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_keypair(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
@@ -156,41 +168,48 @@ __contract__(
   requires(memory_no_alias(sk, MLDSA_CRYPTO_SECRETKEYBYTES))
   assigns(object_whole(pk))
   assigns(object_whole(sk))
-  ensures(return_value == 0 || return_value == MLD_ERR_FAIL ||
-          return_value == MLD_ERR_OUT_OF_MEMORY || return_value == MLD_ERR_RNG_FAIL)
+  ensures(return_value == 0 || MLD_ANY_ERROR(return_value))
 );
+#endif /* !MLD_CONFIG_CORE_API_ONLY */
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API */
 
-/*************************************************
- * Name:        mld_sign_signature_internal
+#if !defined(MLD_CONFIG_NO_SIGN_API)
+/**
+ * Compute signature using internal randomness.
  *
- * Description: Computes signature. Internal API.
+ * If the returned value is non-zero, then the values of *sig and *siglen
+ * should not be referenced.
  *
- * Arguments:   - uint8_t sig[MLDSA_CRYPTO_BYTES]: output signature
- *              - size_t *siglen:            pointer to output length of
- *                                           signature
- *              - const uint8_t *m:          pointer to message to be signed
- *              - size_t mlen:               length of message
- *              - const uint8_t *pre:        pointer to prefix string
- *              - size_t prelen:             length of prefix string
- *              - const uint8_t rnd[MLDSA_RNDBYTES]:
- *                                           random seed
- *              - const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]:
- *                                           bit-packed secret key
- *              - int externalmu:            indicates input message m is
- *                                           processed as mu
+ * @param[out] sig        Output signature.
+ * @param[out] siglen     Pointer to output length of signature.
+ * @param[in]  m          Pointer to message to be signed (when
+ *                        externalmu == 0), or to a precomputed
+ *                        message representative mu (when externalmu != 0).
+ * @param      mlen       Length of m. Must equal MLDSA_CRHBYTES when
+ *                        externalmu != 0.
+ * @param[in]  pre        Pointer to prefix string. Ignored when
+ *                        externalmu != 0.
+ * @param      prelen     Length of prefix string. Ignored when
+ *                        externalmu != 0.
+ * @param[in]  rnd        Random seed.
+ * @param[in]  sk         Bit-packed secret key.
+ * @param      externalmu 0: m/mlen is the raw message; mu = H(tr, pre, m) is
+ *                        computed internally.
+ *                        non-zero: m points to a precomputed mu of
+ *                        MLDSA_CRHBYTES bytes; pre/prelen unused.
+ * @param      context    Application context. Only present when
+ *                        MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                        MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Other kinds of failure
- *
- * If the returned value is non-zero, then the values of *sig and
- * *siglen should not be referenced.
- *
- * Reference: This code differs from the reference implementation
- *            in that it adds an explicit check for nonce exhaustion
- *            and can return MLD_ERR_FAIL in that case.
- **************************************************/
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_signature_internal(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
@@ -208,44 +227,46 @@ __contract__(
   requires(memory_no_alias(m, mlen))
   requires(memory_no_alias(rnd, MLDSA_RNDBYTES))
   requires(memory_no_alias(sk, MLDSA_CRYPTO_SECRETKEYBYTES))
-  requires((externalmu == 0 && (prelen == 0 || memory_no_alias(pre, prelen))) ||
-           (externalmu == 1 && mlen == MLDSA_CRHBYTES))
+  requires((externalmu == 0) ==> ((prelen == 0) || memory_no_alias(pre, prelen)))
+  requires((externalmu != 0) ==> (mlen == MLDSA_CRHBYTES))
   assigns(memory_slice(sig, MLDSA_CRYPTO_BYTES))
   assigns(object_whole(siglen))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL ||
-          return_value == MLD_ERR_OUT_OF_MEMORY)
+          return_value == MLD_ERR_OUT_OF_MEMORY ||
+          return_value == MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED)
   ensures(return_value == 0 ==> *siglen == MLDSA_CRYPTO_BYTES)
   ensures(return_value != 0 ==> *siglen == 0)
 );
 
-/*************************************************
- * Name:        mld_sign_signature
+#if !defined(MLD_CONFIG_CORE_API_ONLY)
+/**
+ * Compute signature. This function implements the randomized variant of
+ * ML-DSA. If you require the deterministic variant, use
+ * mld_sign_signature_internal directly.
  *
- * Description: Computes signature. This function implements the randomized
- *              variant of ML-DSA. If you require the deterministic variant,
- *              use mld_sign_signature_internal directly.
+ * @spec{Implements @[FIPS204 Algorithm 2 (ML-DSA.Sign)].}
  *
- * Arguments:   - uint8_t sig[MLDSA_CRYPTO_BYTES]: output signature
- *              - size_t *siglen:            pointer to output length of
- *                                           signature
- *              - const uint8_t *m:          pointer to message to be signed
- *              - size_t mlen:               length of message
- *              - uint8_t *ctx:              pointer to context string.
- *                                           May be NULL if ctxlen == 0.
- *              - size_t ctxlen:             length of context string.
- *                                           Should be <= 255.
- *              - const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]:
- *                                           bit-packed secret key
+ * @param[out] sig     Output signature.
+ * @param[out] siglen  Pointer to output length of signature.
+ * @param[in]  m       Pointer to message to be signed.
+ * @param      mlen    Length of message.
+ * @param[in]  ctx     Pointer to context string. May be NULL if ctxlen == 0.
+ * @param      ctxlen  Length of context string. Should be <= 255.
+ * @param[in]  sk      Bit-packed secret key.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_RNG_FAIL: Random number generation failed.
- *              - MLD_ERR_FAIL: Other kinds of failure.
- *
- * Specification: Implements @[FIPS204 Algorithm 2 (ML-DSA.Sign)].
- *
- **************************************************/
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_RNG_FAIL                Random number generation failed.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_signature(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
@@ -264,34 +285,37 @@ __contract__(
   assigns(memory_slice(sig, MLDSA_CRYPTO_BYTES))
   assigns(object_whole(siglen))
   ensures((return_value == 0 && *siglen == MLDSA_CRYPTO_BYTES) ||
-          ((return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY || return_value == MLD_ERR_RNG_FAIL) && *siglen == 0))
+          (MLD_ANY_ERROR(return_value) && *siglen == 0))
 );
 
-/*************************************************
- * Name:        mld_sign_signature_extmu
+/**
+ * Compute signature in "external mu" mode: the caller has already computed
+ * the message representative mu = SHAKE256(tr || M', 64), where
+ * tr = SHAKE256(pk, 64) and M' is the FIPS 204 formatted message (e.g.
+ * 0x00 || ctxlen || ctx || msg for pure ML-DSA). This is the randomized
+ * variant; for the deterministic variant, use mld_sign_signature_internal
+ * directly with externalmu set to non-zero and an all-zero rnd.
  *
- * Description: Computes signature. This function implements the randomized
- *              variant of ML-DSA. If you require the deterministic variant,
- *              use mld_sign_signature_internal directly.
+ * @spec{Implements @[FIPS204 Algorithm 2 (ML-DSA.Sign external mu variant)].}
  *
- * Arguments:   - uint8_t sig[MLDSA_CRYPTO_BYTES]: output signature
- *              - size_t *siglen:            pointer to output length of
- *                                           signature
- *              - const uint8_t mu[MLDSA_CRHBYTES]:
- *                                           input mu to be signed
- *              - const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]:
- *                                           bit-packed secret key
+ * @param[out] sig     Output signature.
+ * @param[out] siglen  Pointer to output length of signature.
+ * @param[in]  mu      Precomputed message representative.
+ * @param[in]  sk      Bit-packed secret key.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_RNG_FAIL: Random number generation failed.
- *              - MLD_ERR_FAIL: Other kinds of failure.
- *
- * Specification: Implements @[FIPS204 Algorithm 2 (ML-DSA.Sign external mu
- *                variant)]
- *
- **************************************************/
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_RNG_FAIL                Random number generation failed.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_signature_extmu(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
@@ -306,31 +330,33 @@ __contract__(
   assigns(memory_slice(sig, MLDSA_CRYPTO_BYTES))
   assigns(object_whole(siglen))
   ensures((return_value == 0 && *siglen == MLDSA_CRYPTO_BYTES) ||
-          ((return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY || return_value == MLD_ERR_RNG_FAIL) && *siglen == 0))
+          (MLD_ANY_ERROR(return_value) && *siglen == 0))
 );
 
-/*************************************************
- * Name:        mld_sign
+/**
+ * Compute signed message.
  *
- * Description: Compute signed message.
+ * @param[out] sm      Pointer to output signed message (allocated array with
+ *                     MLDSA_CRYPTO_BYTES + mlen bytes); can be equal to m.
+ * @param[out] smlen   Pointer to output length of signed message.
+ * @param[in]  m       Pointer to message to be signed.
+ * @param      mlen    Length of message.
+ * @param[in]  ctx     Pointer to context string.
+ * @param      ctxlen  Length of context string.
+ * @param[in]  sk      Bit-packed secret key.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Arguments:   - uint8_t *sm:        pointer to output signed message
- *                                    (allocated array with MLDSA_CRYPTO_BYTES +
- *mlen bytes), can be equal to m
- *              - size_t *smlen:      pointer to output length of signed message
- *              - const uint8_t *m:   pointer to message to be signed
- *              - size_t mlen:        length of message
- *              - const uint8_t *ctx: pointer to context string
- *              - size_t ctxlen:      length of context string
- *              - const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]:
- *                                    bit-packed secret key
- *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Other kinds of failure
- *
- **************************************************/
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen,
@@ -348,35 +374,40 @@ __contract__(
   assigns(memory_slice(sm, MLDSA_CRYPTO_BYTES + mlen))
   assigns(object_whole(smlen))
   ensures((return_value == 0 && *smlen == MLDSA_CRYPTO_BYTES + mlen) ||
-          (return_value == MLD_ERR_FAIL
-           || return_value == MLD_ERR_OUT_OF_MEMORY
-           || return_value == MLD_ERR_RNG_FAIL))
+          (MLD_ANY_ERROR(return_value) && *smlen == 0))
 );
+#endif /* !MLD_CONFIG_CORE_API_ONLY */
+#endif /* !MLD_CONFIG_NO_SIGN_API */
 
-/*************************************************
- * Name:        mld_sign_verify_internal
+#if !defined(MLD_CONFIG_NO_VERIFY_API)
+/**
+ * Verify signature.
  *
- * Description: Verifies signature. Internal API.
+ * @spec{Implements @[FIPS204 Algorithm 8 (ML-DSA.Verify_internal)].}
  *
- * Arguments:   - const uint8_t *sig: pointer to input signature
- *              - size_t siglen:      length of signature
- *              - const uint8_t *m:   pointer to message
- *              - size_t mlen:        length of message
- *              - const uint8_t *pre: pointer to prefix string
- *              - size_t prelen:      length of prefix string
- *              - const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]:
- *                                    bit-packed public key
- *              - int externalmu:     indicates input message m is processed as
- *                                    mu
+ * @param[in] sig        Pointer to input signature.
+ * @param     siglen     Length of signature.
+ * @param[in] m          Pointer to message (when externalmu == 0), or to a
+ *                       precomputed message representative mu (when
+ *                       externalmu != 0).
+ * @param     mlen       Length of m. Must equal MLDSA_CRHBYTES when
+ *                       externalmu != 0.
+ * @param[in] pre        Pointer to prefix string. Ignored when externalmu != 0.
+ * @param     prelen     Length of prefix string. Ignored when externalmu != 0.
+ * @param[in] pk         Bit-packed public key.
+ * @param     externalmu 0: m/mlen is the raw message; mu = H(H(pk), pre, m) is
+ *                       computed internally.
+ *                       non-zero: m points to a precomputed mu of
+ *                       MLDSA_CRHBYTES bytes; pre/prelen unused.
+ * @param     context    Application context. Only present when
+ *                       MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                       MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Signature verification failed
- *
- * Specification: Implements @[FIPS204 Algorithm 8 (ML-DSA.Verify_internal)]
- *
- **************************************************/
+ * @retval 0                    Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                               allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_FAIL          Signature verification failed.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_verify_internal(const uint8_t *sig, size_t siglen,
@@ -391,35 +422,34 @@ __contract__(
   requires(siglen <= MLD_MAX_BUFFER_SIZE)
   requires(memory_no_alias(sig, siglen))
   requires(memory_no_alias(m, mlen))
-  requires(externalmu == 0 || (externalmu == 1 && mlen == MLDSA_CRHBYTES))
-  requires(externalmu == 1 || prelen == 0 || memory_no_alias(pre, prelen))
+  requires((externalmu == 0) ==> ((prelen == 0) || memory_no_alias(pre, prelen)))
+  requires((externalmu != 0) ==> (mlen == MLDSA_CRHBYTES))
   requires(memory_no_alias(pk, MLDSA_CRYPTO_PUBLICKEYBYTES))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY)
 );
 
-/*************************************************
- * Name:        mld_sign_verify
+#if !defined(MLD_CONFIG_CORE_API_ONLY)
+/**
+ * Verify signature.
  *
- * Description: Verifies signature.
+ * @spec{Implements @[FIPS204 Algorithm 3 (ML-DSA.Verify)].}
  *
- * Arguments:   - const uint8_t *sig: pointer to input signature
- *              - size_t siglen:      length of signature
- *              - const uint8_t *m:   pointer to message
- *              - size_t mlen:        length of message
- *              - const uint8_t *ctx: pointer to context string.
- *                                    May be NULL if ctxlen == 0.
- *              - size_t ctxlen:      length of context string
- *              - const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]:
- *                                    bit-packed public key
+ * @param[in] sig     Pointer to input signature.
+ * @param     siglen  Length of signature.
+ * @param[in] m       Pointer to message.
+ * @param     mlen    Length of message.
+ * @param[in] ctx     Pointer to context string. May be NULL if ctxlen == 0.
+ * @param     ctxlen  Length of context string.
+ * @param[in] pk      Bit-packed public key.
+ * @param     context Application context. Only present when
+ *                    MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                    MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Signature verification failed
- *
- * Specification: Implements @[FIPS204 Algorithm 3 (ML-DSA.Verify)]
- *
- **************************************************/
+ * @retval 0                    Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                               allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_FAIL          Signature verification failed.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m,
@@ -437,27 +467,28 @@ __contract__(
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY)
 );
 
-/*************************************************
- * Name:        mld_sign_verify_extmu
+/**
+ * Verify signature in "external mu" mode: the caller has already computed
+ * the message representative mu = SHAKE256(tr || M', 64), where
+ * tr = SHAKE256(pk, 64) and M' is the FIPS 204 formatted message (e.g.
+ * 0x00 || ctxlen || ctx || msg for pure ML-DSA). The same mu must have been
+ * used at signing time.
  *
- * Description: Verifies signature.
+ * @spec{Implements @[FIPS204 Algorithm 3 (ML-DSA.Verify external mu variant)].}
  *
- * Arguments:   - const uint8_t *sig: pointer to input signature
- *              - size_t siglen:      length of signature
- *              - const uint8_t mu[MLDSA_CRHBYTES]:
- *                                    input mu
- *              - const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]:
- *                                    bit-packed public key
+ * @param[in] sig     Pointer to input signature.
+ * @param     siglen  Length of signature.
+ * @param[in] mu      Precomputed message representative.
+ * @param[in] pk      Bit-packed public key.
+ * @param     context Application context. Only present when
+ *                    MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                    MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Signature verification failed
- *
- * Specification: Implements @[FIPS204 Algorithm 3 (ML-DSA.Verify external mu
- *                variant)]
- *
- **************************************************/
+ * @retval 0                    Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                               allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_FAIL          Signature verification failed.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_verify_extmu(const uint8_t *sig, size_t siglen,
@@ -472,27 +503,26 @@ __contract__(
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY)
 );
 
-/*************************************************
- * Name:        mld_sign_open
+/**
+ * Verify signed message.
  *
- * Description: Verify signed message.
+ * @param[out] m       Pointer to output message (allocated array with smlen
+ *                     bytes); can be equal to sm.
+ * @param[out] mlen    Pointer to output length of message.
+ * @param[in]  sm      Pointer to signed message.
+ * @param      smlen   Length of signed message.
+ * @param[in]  ctx     Pointer to context string.
+ * @param      ctxlen  Length of context string.
+ * @param[in]  pk      Bit-packed public key.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Arguments:   - uint8_t *m:         pointer to output message (allocated array
- *                                    with smlen bytes), can be equal to sm
- *              - size_t *mlen:       pointer to output length of message
- *              - const uint8_t *sm:  pointer to signed message
- *              - size_t smlen:       length of signed message
- *              - const uint8_t *ctx: pointer to context tring
- *              - size_t ctxlen:      length of context string
- *              - const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]:
- *                                    bit-packed public key
- *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Signature verification failed
- *
- **************************************************/
+ * @retval 0                    Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                               allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_FAIL          Signature verification failed.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_open(uint8_t *m, size_t *mlen, const uint8_t *sm, size_t smlen,
@@ -511,41 +541,46 @@ __contract__(
   assigns(memory_slice(mlen, sizeof(size_t)))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY)
 );
+#endif /* !MLD_CONFIG_CORE_API_ONLY */
+#endif /* !MLD_CONFIG_NO_VERIFY_API */
 
-/*************************************************
- * Name:        mld_sign_signature_pre_hash_internal
- *
- * Description: FIPS 204: Algorithm 4 HashML-DSA.Sign.
- *              Computes signature with pre-hashed message.
- *
- * Arguments:   - uint8_t sig[MLDSA_CRYPTO_BYTES]:
- *                                        output signature
- *              - size_t *siglen:         pointer to output length of signature
- *              - const uint8_t *ph:      pointer to pre-hashed message
- *              - size_t phlen:           length of pre-hashed message
- *              - const uint8_t *ctx:     pointer to context string
- *              - size_t ctxlen:          length of context string
- *              - const uint8_t rnd[MLDSA_RNDBYTES]:
- *                                        random seed
- *              - const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]:
- *                                        bit-packed secret key
- *              - int hashalg:            hash algorithm constant (one of
- *                                        MLD_PREHASH_*)
- *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Other kinds of failure
+#if !defined(MLD_CONFIG_CORE_API_ONLY)
+#if !defined(MLD_CONFIG_NO_SIGN_API)
+/**
+ * FIPS 204: Algorithm 4 HashML-DSA.Sign. Compute signature with pre-hashed
+ * message.
  *
  * Supported hash algorithm constants:
  *   MLD_PREHASH_SHA2_224, MLD_PREHASH_SHA2_256, MLD_PREHASH_SHA2_384,
  *   MLD_PREHASH_SHA2_512, MLD_PREHASH_SHA2_512_224, MLD_PREHASH_SHA2_512_256,
  *   MLD_PREHASH_SHA3_224, MLD_PREHASH_SHA3_256, MLD_PREHASH_SHA3_384,
- *   MLD_PREHASH_SHA3_512, MLD_PREHASH_SHAKE_128, MLD_PREHASH_SHAKE_256
+ *   MLD_PREHASH_SHA3_512, MLD_PREHASH_SHAKE_128, MLD_PREHASH_SHAKE_256.
  *
- * Warning: This is an unstable API that may change in the future. If you need
+ * @warning This is an unstable API that may change in the future. If you need
  * a stable API use mld_sign_signature_pre_hash_shake256.
- **************************************************/
+ *
+ * @param[out] sig     Output signature.
+ * @param[out] siglen  Pointer to output length of signature.
+ * @param[in]  ph      Pointer to pre-hashed message.
+ * @param      phlen   Length of pre-hashed message.
+ * @param[in]  ctx     Pointer to context string.
+ * @param      ctxlen  Length of context string.
+ * @param[in]  rnd     Random seed.
+ * @param[in]  sk      Bit-packed secret key.
+ * @param      hashalg Hash algorithm constant (one of MLD_PREHASH_*).
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
+ *
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_signature_pre_hash_internal(
@@ -566,40 +601,41 @@ __contract__(
   assigns(memory_slice(sig, MLDSA_CRYPTO_BYTES))
   assigns(object_whole(siglen))
   ensures((return_value == 0 && *siglen == MLDSA_CRYPTO_BYTES) ||
-          ((return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY) && *siglen == 0))
+          ((return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY || return_value == MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED) && *siglen == 0))
 );
+#endif /* !MLD_CONFIG_NO_SIGN_API */
 
-/*************************************************
- * Name:        mld_sign_verify_pre_hash_internal
- *
- * Description: FIPS 204: Algorithm 5 HashML-DSA.Verify.
- *              Verifies signature with pre-hashed message.
- *
- * Arguments:   - const uint8_t *sig:     pointer to input signature
- *              - size_t siglen:          length of signature
- *              - const uint8_t *ph:      pointer to pre-hashed message
- *              - size_t phlen:           length of pre-hashed message
- *              - const uint8_t *ctx:     pointer to context string
- *              - size_t ctxlen:          length of context string
- *              - const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]:
- *                                        bit-packed public key
- *              - int hashalg:            hash algorithm constant (one of
- *                                        MLD_PREHASH_*)
- *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Signature verification failed
+#if !defined(MLD_CONFIG_NO_VERIFY_API)
+/**
+ * FIPS 204: Algorithm 5 HashML-DSA.Verify. Verify signature with pre-hashed
+ * message.
  *
  * Supported hash algorithm constants:
  *   MLD_PREHASH_SHA2_224, MLD_PREHASH_SHA2_256, MLD_PREHASH_SHA2_384,
  *   MLD_PREHASH_SHA2_512, MLD_PREHASH_SHA2_512_224, MLD_PREHASH_SHA2_512_256,
  *   MLD_PREHASH_SHA3_224, MLD_PREHASH_SHA3_256, MLD_PREHASH_SHA3_384,
- *   MLD_PREHASH_SHA3_512, MLD_PREHASH_SHAKE_128, MLD_PREHASH_SHAKE_256
+ *   MLD_PREHASH_SHA3_512, MLD_PREHASH_SHAKE_128, MLD_PREHASH_SHAKE_256.
  *
- * Warning: This is an unstable API that may change in the future. If you need
+ * @warning This is an unstable API that may change in the future. If you need
  * a stable API use mld_sign_verify_pre_hash_shake256.
- **************************************************/
+ *
+ * @param[in] sig     Pointer to input signature.
+ * @param     siglen  Length of signature.
+ * @param[in] ph      Pointer to pre-hashed message.
+ * @param     phlen   Length of pre-hashed message.
+ * @param[in] ctx     Pointer to context string.
+ * @param     ctxlen  Length of context string.
+ * @param[in] pk      Bit-packed public key.
+ * @param     hashalg Hash algorithm constant (one of MLD_PREHASH_*).
+ * @param     context Application context. Only present when
+ *                    MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                    MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
+ *
+ * @retval 0                    Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                               allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_FAIL          Signature verification failed.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_verify_pre_hash_internal(
@@ -617,33 +653,36 @@ __contract__(
   requires(memory_no_alias(pk, MLDSA_CRYPTO_PUBLICKEYBYTES))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY)
 );
+#endif /* !MLD_CONFIG_NO_VERIFY_API */
 
-/*************************************************
- * Name:        mld_sign_signature_pre_hash_shake256
+#if !defined(MLD_CONFIG_NO_SIGN_API)
+/**
+ * FIPS 204: Algorithm 4 HashML-DSA.Sign with SHAKE256.
  *
- * Description: FIPS 204: Algorithm 4 HashML-DSA.Sign with SHAKE256.
- *              Computes signature with pre-hashed message using SHAKE256.
- *              This function computes the SHAKE256 hash of the message
- *internally.
+ * Compute signature with pre-hashed message using SHAKE256. This function
+ * computes the SHAKE256 hash of the message internally.
  *
- * Arguments:   - uint8_t sig[MLDSA_CRYPTO_BYTES]:
- *                                    output signature
- *              - size_t *siglen:     pointer to output length of signature
- *              - const uint8_t *m:   pointer to message to be hashed and signed
- *              - size_t mlen:        length of message
- *              - const uint8_t *ctx: pointer to context string
- *              - size_t ctxlen:      length of context string
- *              - const uint8_t rnd[MLDSA_RNDBYTES]:
- *                                    random seed
- *              - const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]:
- *                                    bit-packed secret key
+ * @param[out] sig     Output signature.
+ * @param[out] siglen  Pointer to output length of signature.
+ * @param[in]  m       Pointer to message to be hashed and signed.
+ * @param      mlen    Length of message.
+ * @param[in]  ctx     Pointer to context string.
+ * @param      ctxlen  Length of context string.
+ * @param[in]  rnd     Random seed.
+ * @param[in]  sk      Bit-packed secret key.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Other kinds of failure
- *
- **************************************************/
+ * @retval 0                               Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY           MLD_CONFIG_CUSTOM_ALLOC_FREE was
+ *                                         used and an allocation via
+ *                                         MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
+ *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+ *                                         iterations.
+ * @retval MLD_ERR_FAIL                    Other kinds of failure.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_signature_pre_hash_shake256(
@@ -664,33 +703,33 @@ __contract__(
   assigns(memory_slice(sig, MLDSA_CRYPTO_BYTES))
   assigns(object_whole(siglen))
   ensures((return_value == 0 && *siglen == MLDSA_CRYPTO_BYTES) ||
-          ((return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY) && *siglen == 0))
+          ((return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY || return_value == MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED) && *siglen == 0))
 );
+#endif /* !MLD_CONFIG_NO_SIGN_API */
 
-/*************************************************
- * Name:        mld_sign_verify_pre_hash_shake256
+#if !defined(MLD_CONFIG_NO_VERIFY_API)
+/**
+ * FIPS 204: Algorithm 5 HashML-DSA.Verify with SHAKE256.
  *
- * Description: FIPS 204: Algorithm 5 HashML-DSA.Verify with SHAKE256.
- *              Verifies signature with pre-hashed message using SHAKE256.
- *              This function computes the SHAKE256 hash of the message
- *              internally.
+ * Verify signature with pre-hashed message using SHAKE256. This function
+ * computes the SHAKE256 hash of the message internally.
  *
- * Arguments:   - const uint8_t *sig: pointer to input signature
- *              - size_t siglen:      length of signature
- *              - const uint8_t *m:   pointer to message to be hashed and
- *                                    verified
- *              - size_t mlen:        length of message
- *              - const uint8_t *ctx: pointer to context string
- *              - size_t ctxlen:      length of context string
- *              - const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]:
- *                                    bit-packed public key
+ * @param[in] sig     Pointer to input signature.
+ * @param     siglen  Length of signature.
+ * @param[in] m       Pointer to message to be hashed and verified.
+ * @param     mlen    Length of message.
+ * @param[in] ctx     Pointer to context string.
+ * @param     ctxlen  Length of context string.
+ * @param[in] pk      Bit-packed public key.
+ * @param     context Application context. Only present when
+ *                    MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                    MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Signature verification failed
- *
- **************************************************/
+ * @retval 0                    Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                               allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_FAIL          Signature verification failed.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_verify_pre_hash_shake256(
@@ -708,50 +747,47 @@ __contract__(
   requires(memory_no_alias(pk, MLDSA_CRYPTO_PUBLICKEYBYTES))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY)
 );
+#endif /* !MLD_CONFIG_NO_VERIFY_API */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API)
 /* Maximum formatted domain separation message length:
  * - Pure ML-DSA: 0x00 || ctxlen || ctx (max 255)
  * - HashML-DSA: 0x01 || ctxlen || ctx (max 255) || oid (11) || ph (max 64) */
 #define MLD_DOMAIN_SEPARATION_MAX_BYTES (2 + 255 + 11 + 64)
 
-/*************************************************
- * Name:        mld_prepare_domain_separation_prefix
+/**
+ * Prepare domain separation prefix for ML-DSA signing.
  *
- * Description: Prepares domain separation prefix for ML-DSA signing.
- *              For pure ML-DSA (hashalg == MLD_PREHASH_NONE):
- *                Format: 0x00 || ctxlen (1 byte) || ctx
- *              For HashML-DSA (hashalg != MLD_PREHASH_NONE):
- *                Format: 0x01 || ctxlen (1 byte) || ctx || oid (11 bytes) || ph
+ * For pure ML-DSA (hashalg == MLD_PREHASH_NONE):
+ *   Format: 0x00 || ctxlen (1 byte) || ctx.
  *
- * Arguments:   - uint8_t prefix[MLD_DOMAIN_SEPARATION_MAX_BYTES]:
- *                output domain separation prefix buffer
- *              - const uint8_t *ph: pointer to pre-hashed message
- *                (ignored for pure ML-DSA)
- *              - size_t phlen: length of pre-hashed message
- *                (ignored for pure ML-DSA)
- *              - const uint8_t *ctx: pointer to context string (may be NULL)
- *              - size_t ctxlen: length of context string
- *              - int hashalg: hash algorithm constant
- *                (MLD_PREHASH_NONE for pure ML-DSA, or MLD_PREHASH_* for
- *                 HashML-DSA)
- *
- * Returns the total length of the formatted prefix, or 0 on error.
+ * For HashML-DSA (hashalg != MLD_PREHASH_NONE):
+ *   Format: 0x01 || ctxlen (1 byte) || ctx || oid (11 bytes) || ph.
  *
  * This function is useful for building incremental signing APIs.
  *
- * Specification:
- * - For HashML-DSA (hashalg != MLD_PREHASH_NONE), implements
- *   @[FIPS204, Algorithm 4, L23]
- * - For Pure ML-DSA (hashalg == MLD_PREHASH_NONE), implements
- *    ```
- *       M' <- BytesToBits(IntegerToBytes(0, 1)
- *              || IntegerToBytes(|ctx|, 1)
- *              || ctx
- *    ```
- *    which is part of @[FIPS204, Algorithm 2 (ML-DSA.Sign), L10] and
- *    @[FIPS204, Algorithm 3 (ML-DSA.Verify), L5].
+ * @spec{For HashML-DSA (hashalg != MLD_PREHASH_NONE), implements
+ * @[FIPS204, Algorithm 4, L23]. For Pure ML-DSA (hashalg == MLD_PREHASH_NONE),
+ * implements
+ * ```
+ *    M' <- BytesToBits(IntegerToBytes(0, 1)
+ *           || IntegerToBytes(|ctx|, 1)
+ *           || ctx
+ * ```
+ * which is part of @[FIPS204, Algorithm 2 (ML-DSA.Sign), L10] and
+ * @[FIPS204, Algorithm 3 (ML-DSA.Verify), L5].}
  *
- **************************************************/
+ * @param[out] prefix  Output domain separation prefix buffer.
+ * @param[in]  ph      Pointer to pre-hashed message (ignored for pure
+ *                     ML-DSA).
+ * @param      phlen   Length of pre-hashed message (ignored for pure ML-DSA).
+ * @param[in]  ctx     Pointer to context string (may be NULL).
+ * @param      ctxlen  Length of context string.
+ * @param      hashalg Hash algorithm constant (MLD_PREHASH_NONE for pure
+ *                     ML-DSA, or MLD_PREHASH_* for HashML-DSA).
+ *
+ * @return The total length of the formatted prefix, or 0 on error.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 size_t mld_prepare_domain_separation_prefix(
@@ -766,33 +802,32 @@ __contract__(
   assigns(memory_slice(prefix, MLD_DOMAIN_SEPARATION_MAX_BYTES))
   ensures(return_value <= MLD_DOMAIN_SEPARATION_MAX_BYTES)
 );
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
-/*************************************************
- * Name:        mld_sign_pk_from_sk
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API)
+/**
+ * Perform basic validity checks on secret key, and derive public key.
  *
- * Description: Performs basic validity checks on secret key, and derives
- *              public key.
+ * Referring to the decoding of the secret key `sk=(rho, K, tr, s1, s2, t0)`
+ * (cf. @[FIPS204, Algorithm 25 skDecode]), the following checks are
+ * performed:
+ *   - Check that s1 and s2 have coefficients in [-MLDSA_ETA, MLDSA_ETA].
+ *   - Check that t0 and tr stored in sk match recomputed values.
  *
- *              Referring to the decoding of the secret key
- *              `sk=(rho, K, tr, s1, s2, t0)`
- *              (cf. [@FIPS204, Algorithm 25 skDecode]),
- *              the following checks are performed:
- *                - Check that s1 and s2 have coefficients in
- *                  [-MLDSA_ETA, MLDSA_ETA]
- *                - Check that t0 and tr stored in sk match recomputed values.
+ * @note This function leaks whether the secret key is valid or invalid
+ * through its return value and timing.
  *
- * Arguments:   - uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES]: output public key
- *              - const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES]: input secret
- *                key
+ * @param[out] pk      Output public key.
+ * @param[in]  sk      Input secret key.
+ * @param      context Application context. Only present when
+ *                     MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: Success
- *              - MLD_ERR_OUT_OF_MEMORY: If MLD_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLD_CUSTOM_ALLOC returned NULL.
- *              - MLD_ERR_FAIL: Secret key validation failed
- *
- * Note: This function leaks whether the secret key is valid or invalid
- *       through its return value and timing.
- **************************************************/
+ * @retval 0                    Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                               allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_FAIL          Secret key validation failed.
+ */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_pk_from_sk(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
@@ -804,4 +839,7 @@ __contract__(
   assigns(memory_slice(pk, MLDSA_CRYPTO_PUBLICKEYBYTES))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL || return_value == MLD_ERR_OUT_OF_MEMORY)
 );
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API */
+#endif /* !MLD_CONFIG_CORE_API_ONLY */
+
 #endif /* !MLD_SIGN_H */

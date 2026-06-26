@@ -67,7 +67,19 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_snova_SNOVA_37_8_4,
 		OQS_SIG_alg_snova_SNOVA_24_5_5,
 		OQS_SIG_alg_snova_SNOVA_60_10_4,
-		OQS_SIG_alg_snova_SNOVA_29_6_5,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
+		OQS_SIG_alg_snova_SNOVA_29_6_5,
+		OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r3,
+		OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r5,
+		OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r3,
+		OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r5,
+		OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r3,
+		OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r5,
+		OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r3,
+		OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r5,
+		OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r3,
+		OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r5,
+		OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r3,
+		OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r5,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 		OQS_SIG_alg_slh_dsa_pure_sha2_128s,
 		OQS_SIG_alg_slh_dsa_pure_sha2_128f,
@@ -610,6 +622,90 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_29_6_5)) {
 #ifdef OQS_ENABLE_SIG_snova_SNOVA_29_6_5
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5
 		return 1;
 #else
 		return 0;
@@ -1934,6 +2030,90 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3
+		return OQS_SIG_mqom_mqom2_cat1_gf16_fast_r3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
+		return OQS_SIG_mqom_mqom2_cat1_gf16_fast_r5_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3
+		return OQS_SIG_mqom_mqom2_cat1_gf16_short_r3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5
+		return OQS_SIG_mqom_mqom2_cat1_gf16_short_r5_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3
+		return OQS_SIG_mqom_mqom2_cat3_gf16_fast_r3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5
+		return OQS_SIG_mqom_mqom2_cat3_gf16_fast_r5_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3
+		return OQS_SIG_mqom_mqom2_cat3_gf16_short_r3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5
+		return OQS_SIG_mqom_mqom2_cat3_gf16_short_r5_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3
+		return OQS_SIG_mqom_mqom2_cat5_gf16_fast_r3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5
+		return OQS_SIG_mqom_mqom2_cat5_gf16_fast_r5_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r3)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3
+		return OQS_SIG_mqom_mqom2_cat5_gf16_short_r3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r5)) {
+#ifdef OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5
+		return OQS_SIG_mqom_mqom2_cat5_gf16_short_r5_new();
+#else
+		return NULL;
+#endif
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_SIGNEW_START
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_slh_dsa_pure_sha2_128s)) {
@@ -2880,7 +3060,7 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 }
 
 OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key) {
-	if (sig == NULL || sig->keypair(public_key, secret_key) != OQS_SUCCESS) {
+	if (sig == NULL || sig->keypair == NULL || sig->keypair(public_key, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -2888,7 +3068,7 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
 }
 
 OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	if (sig == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != OQS_SUCCESS) {
+	if (sig == NULL || sig->sign == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -2896,7 +3076,7 @@ OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *
 }
 
 OQS_API OQS_STATUS OQS_SIG_sign_with_ctx_str(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
-	if (sig == NULL || sig->sign_with_ctx_str(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key) != OQS_SUCCESS) {
+	if (sig == NULL || sig->sign_with_ctx_str == NULL || sig->sign_with_ctx_str(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -2904,7 +3084,7 @@ OQS_API OQS_STATUS OQS_SIG_sign_with_ctx_str(const OQS_SIG *sig, uint8_t *signat
 }
 
 OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-	if (sig == NULL || sig->verify(message, message_len, signature, signature_len, public_key) != OQS_SUCCESS) {
+	if (sig == NULL || sig->verify == NULL || sig->verify(message, message_len, signature, signature_len, public_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -2912,7 +3092,7 @@ OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, si
 }
 
 OQS_API OQS_STATUS OQS_SIG_verify_with_ctx_str(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
-	if (sig == NULL || sig->verify_with_ctx_str(message, message_len, signature, signature_len, ctx_str, ctx_str_len, public_key) != OQS_SUCCESS) {
+	if (sig == NULL || sig->verify_with_ctx_str == NULL || sig->verify_with_ctx_str(message, message_len, signature, signature_len, ctx_str, ctx_str_len, public_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;

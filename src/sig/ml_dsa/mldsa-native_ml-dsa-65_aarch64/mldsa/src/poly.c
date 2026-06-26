@@ -18,13 +18,11 @@
  *   https://github.com/pq-crystals/dilithium/tree/master/ref
  */
 
-#include <stdint.h>
-#include <string.h>
+#include "poly.h"
 
 #include "common.h"
 #include "ct.h"
 #include "debug.h"
-#include "poly.h"
 #include "reduce.h"
 #include "rounding.h"
 #include "symmetric.h"
@@ -42,7 +40,8 @@ void mld_poly_reduce(mld_poly *a)
   __loop__(
     invariant(i <= MLDSA_N)
     invariant(forall(k0, i, MLDSA_N, a->coeffs[k0] == loop_entry(*a).coeffs[k0]))
-    invariant(array_bound(a->coeffs, 0, i, -MLD_REDUCE32_RANGE_MAX, MLD_REDUCE32_RANGE_MAX)))
+    invariant(array_bound(a->coeffs, 0, i, -MLD_REDUCE32_RANGE_MAX, MLD_REDUCE32_RANGE_MAX))
+    decreases(MLDSA_N - i))
   {
     a->coeffs[i] = mld_reduce32(a->coeffs[i]);
   }
@@ -67,6 +66,7 @@ __contract__(
     invariant(i <= MLDSA_N)
     invariant(forall(k0, i, MLDSA_N, a->coeffs[k0] == loop_entry(*a).coeffs[k0]))
     invariant(array_bound(a->coeffs, 0, i, 0, MLDSA_Q))
+    decreases(MLDSA_N - i)
     )
   {
     a->coeffs[i] = mld_caddq(a->coeffs[i]);
@@ -91,6 +91,8 @@ void mld_poly_caddq(mld_poly *a)
   mld_poly_caddq_c(a);
 }
 
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API) || !defined(MLD_CONFIG_NO_SIGN_API) || \
+    defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST)
 /* Reference: We use destructive version (output=first input) to avoid
  *            reasoning about aliasing in the CBMC specification */
 MLD_INTERNAL_API
@@ -105,12 +107,16 @@ void mld_poly_add(mld_poly *r, const mld_poly *b)
     invariant(forall(k1, 0, i, r->coeffs[k1] == loop_entry(*r).coeffs[k1] + b->coeffs[k1]))
     invariant(forall(k2, 0, i, r->coeffs[k2] < MLD_REDUCE32_DOMAIN_MAX))
     invariant(forall(k2, 0, i, r->coeffs[k2] >= INT32_MIN))
+    decreases(MLDSA_N - i)
   )
   {
     r->coeffs[i] = r->coeffs[i] + b->coeffs[i];
   }
 }
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API || !MLD_CONFIG_NO_SIGN_API || \
+          MLD_CONFIG_REDUCE_RAM || MLD_UNIT_TEST */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API)
 /* Reference: We use destructive version (output=first input) to avoid
  *            reasoning about aliasing in the CBMC specification */
 MLD_INTERNAL_API
@@ -125,6 +131,7 @@ void mld_poly_sub(mld_poly *r, const mld_poly *b)
     invariant(i <= MLDSA_N)
     invariant(array_bound(r->coeffs, 0, i, INT32_MIN, MLD_REDUCE32_DOMAIN_MAX))
     invariant(forall(k0, i, MLDSA_N, r->coeffs[k0] == loop_entry(*r).coeffs[k0]))
+    decreases(MLDSA_N - i)
   )
   {
     r->coeffs[i] = r->coeffs[i] - b->coeffs[i];
@@ -132,7 +139,9 @@ void mld_poly_sub(mld_poly *r, const mld_poly *b)
 
   mld_assert_bound(r->coeffs, MLDSA_N, INT32_MIN, MLD_REDUCE32_DOMAIN_MAX);
 }
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
+#if !defined(MLD_CONFIG_NO_VERIFY_API)
 MLD_INTERNAL_API
 void mld_poly_shiftl(mld_poly *a)
 {
@@ -143,7 +152,8 @@ void mld_poly_shiftl(mld_poly *a)
   __loop__(
     invariant(i <= MLDSA_N)
     invariant(array_bound(a->coeffs, 0, i, 0, MLDSA_Q))
-    invariant(forall(k0, i, MLDSA_N, a->coeffs[k0] == loop_entry(*a).coeffs[k0])))
+    invariant(forall(k0, i, MLDSA_N, a->coeffs[k0] == loop_entry(*a).coeffs[k0]))
+    decreases(MLDSA_N - i))
   {
     /* Reference: uses a left shift by MLDSA_D which is undefined behaviour in
      * C90/C99
@@ -152,7 +162,7 @@ void mld_poly_shiftl(mld_poly *a)
   }
   mld_assert_bound(a->coeffs, MLDSA_N, 0, MLDSA_Q);
 }
-
+#endif /* !MLD_CONFIG_NO_VERIFY_API */
 
 static MLD_INLINE int32_t mld_fqmul(int32_t a, int32_t b)
 __contract__(
@@ -231,7 +241,8 @@ __contract__(
     invariant(array_abs_bound(r, 0,           j,           bound + MLDSA_Q))
     invariant(array_abs_bound(r, j,           start + len, bound))
     invariant(array_abs_bound(r, start + len, j + len,     bound + MLDSA_Q))
-    invariant(array_abs_bound(r, j + len,     MLDSA_N,     bound)))
+    invariant(array_abs_bound(r, j + len,     MLDSA_N,     bound))
+    decreases(start + len - j))
   {
     int32_t t;
     t = mld_fqmul(r[j + len], zeta);
@@ -268,7 +279,8 @@ __contract__(
     invariant(k <= MLDSA_N)
     invariant(2 * len * k == start + MLDSA_N)
     invariant(array_abs_bound(r, 0, start, layer * MLDSA_Q + MLDSA_Q))
-    invariant(array_abs_bound(r, start, MLDSA_N, layer * MLDSA_Q)))
+    invariant(array_abs_bound(r, start, MLDSA_N, layer * MLDSA_Q))
+    decreases(MLDSA_N - start))
   {
     int32_t zeta = mld_zetas[k++];
     mld_ntt_butterfly_block(r, zeta, start, len, layer * MLDSA_Q);
@@ -294,6 +306,7 @@ __contract__(
   __loop__(
     invariant(1 <= layer && layer <= 9)
     invariant(array_abs_bound(r, 0, MLDSA_N, layer * MLDSA_Q))
+    decreases(9 - layer)
   )
   {
     mld_ntt_layer(r, layer);
@@ -318,17 +331,15 @@ void mld_poly_ntt(mld_poly *a)
   mld_poly_ntt_c(a);
 }
 
-/*************************************************
- * Name:        mld_fqscale
+/**
+ * Scale a field element by mont/256, i.e., perform Montgomery multiplication
+ * by mont^2/256.
  *
- * Description: Scales a field element by mont/256 , i.e., performs Montgomery
- *              multiplication by mont^2/256.
- *              Input is expected to have absolute value smaller than
- *              256 * MLDSA_Q.
- *              Output has absolute value smaller than MLD_INTT_BOUND.
+ * Input is expected to have absolute value smaller than 256 * MLDSA_Q. Output
+ * has absolute value smaller than MLD_INTT_BOUND.
  *
- * Arguments:   - int32_t a: Field element to be scaled.
- **************************************************/
+ * @param a Field element to be scaled.
+ */
 static MLD_INLINE int32_t mld_fqscale(int32_t a)
 __contract__(
   requires(a > -256*MLDSA_Q && a < 256*MLDSA_Q)
@@ -360,7 +371,8 @@ __contract__(
     invariant(start <= MLDSA_N && k <= 255)
     invariant(2 * len * k + start == 2 * MLDSA_N - 2 * len)
     invariant(array_abs_bound(r, 0, start, (MLDSA_N >> (layer - 1)) * MLDSA_Q))
-    invariant(array_abs_bound(r, start, MLDSA_N, (MLDSA_N >> layer) * MLDSA_Q)))
+    invariant(array_abs_bound(r, start, MLDSA_N, (MLDSA_N >> layer) * MLDSA_Q))
+    decreases(MLDSA_N - start))
   {
     unsigned j;
     int32_t zeta = -mld_zetas[k--];
@@ -371,7 +383,8 @@ __contract__(
       invariant(array_abs_bound(r, 0, start, (MLDSA_N >> (layer - 1)) * MLDSA_Q))
       invariant(array_abs_bound(r, start, j, (MLDSA_N >> (layer - 1)) * MLDSA_Q))
       invariant(array_abs_bound(r, j, start + len, (MLDSA_N >> layer) * MLDSA_Q))
-      invariant(array_abs_bound(r, start + len, MLDSA_N, (MLDSA_N >> layer) * MLDSA_Q)))
+      invariant(array_abs_bound(r, start + len, MLDSA_N, (MLDSA_N >> layer) * MLDSA_Q))
+      decreases(start + len - j))
     {
       int32_t t = r[j];
       r[j] = t + r[j + len];
@@ -400,7 +413,8 @@ __contract__(
     invariant(layer <= 8)
     /* Absolute bounds increase from 1Q before layer 8 */
     /* up to 256Q after layer 1                        */
-    invariant(array_abs_bound(r, 0, MLDSA_N, (MLDSA_N >> layer) * MLDSA_Q)))
+    invariant(array_abs_bound(r, 0, MLDSA_N, (MLDSA_N >> layer) * MLDSA_Q))
+    decreases(layer))
   {
     mld_invntt_layer(r, layer);
   }
@@ -416,6 +430,7 @@ __contract__(
     invariant(j <= MLDSA_N)
     invariant(array_abs_bound(r, 0, j, MLD_INTT_BOUND))
     invariant(array_abs_bound(r, j, MLDSA_N, MLDSA_N * MLDSA_Q))
+    decreases(MLDSA_N - j)
   )
   {
     r[j] = mld_fqscale(r[j]);
@@ -441,17 +456,17 @@ void mld_poly_invntt_tomont(mld_poly *a)
   mld_poly_invntt_tomont_c(a);
 }
 
-MLD_STATIC_TESTABLE void mld_poly_pointwise_montgomery_c(mld_poly *c,
-                                                         const mld_poly *a,
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API) || \
+    defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST)
+MLD_STATIC_TESTABLE void mld_poly_pointwise_montgomery_c(mld_poly *a,
                                                          const mld_poly *b)
 __contract__(
   requires(memory_no_alias(a, sizeof(mld_poly)))
   requires(memory_no_alias(b, sizeof(mld_poly)))
-  requires(memory_no_alias(c, sizeof(mld_poly)))
   requires(array_abs_bound(a->coeffs, 0, MLDSA_N, MLD_NTT_BOUND))
   requires(array_abs_bound(b->coeffs, 0, MLDSA_N, MLD_NTT_BOUND))
-  assigns(memory_slice(c, sizeof(mld_poly)))
-  ensures(array_abs_bound(c->coeffs, 0, MLDSA_N, MLDSA_Q))
+  assigns(memory_slice(a, sizeof(mld_poly)))
+  ensures(array_abs_bound(a->coeffs, 0, MLDSA_N, MLDSA_Q))
 )
 {
   unsigned int i;
@@ -461,32 +476,36 @@ __contract__(
   for (i = 0; i < MLDSA_N; ++i)
   __loop__(
     invariant(i <= MLDSA_N)
-    invariant(array_abs_bound(c->coeffs, 0, i, MLDSA_Q))
+    invariant(array_abs_bound(a->coeffs, 0, i, MLDSA_Q))
+    invariant(array_abs_bound(a->coeffs, i, MLDSA_N, MLD_NTT_BOUND))
+    decreases(MLDSA_N - i)
   )
   {
-    c->coeffs[i] = mld_montgomery_reduce((int64_t)a->coeffs[i] * b->coeffs[i]);
+    a->coeffs[i] = mld_montgomery_reduce((int64_t)a->coeffs[i] * b->coeffs[i]);
   }
-  mld_assert_abs_bound(c->coeffs, MLDSA_N, MLDSA_Q);
+  mld_assert_abs_bound(a->coeffs, MLDSA_N, MLDSA_Q);
 }
 
 MLD_INTERNAL_API
-void mld_poly_pointwise_montgomery(mld_poly *c, const mld_poly *a,
-                                   const mld_poly *b)
+void mld_poly_pointwise_montgomery(mld_poly *a, const mld_poly *b)
 {
 #if defined(MLD_USE_NATIVE_POINTWISE_MONTGOMERY)
   int ret;
   mld_assert_abs_bound(a->coeffs, MLDSA_N, MLD_NTT_BOUND);
   mld_assert_abs_bound(b->coeffs, MLDSA_N, MLD_NTT_BOUND);
-  ret = mld_poly_pointwise_montgomery_native(c->coeffs, a->coeffs, b->coeffs);
+  ret = mld_poly_pointwise_montgomery_native(a->coeffs, b->coeffs);
   if (ret == MLD_NATIVE_FUNC_SUCCESS)
   {
-    mld_assert_abs_bound(c->coeffs, MLDSA_N, MLDSA_Q);
+    mld_assert_abs_bound(a->coeffs, MLDSA_N, MLDSA_Q);
     return;
   }
 #endif /* MLD_USE_NATIVE_POINTWISE_MONTGOMERY */
-  mld_poly_pointwise_montgomery_c(c, a, b);
+  mld_poly_pointwise_montgomery_c(a, b);
 }
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API || \
+          MLD_CONFIG_REDUCE_RAM || MLD_UNIT_TEST */
 
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API)
 MLD_INTERNAL_API
 void mld_poly_power2round(mld_poly *a1, mld_poly *a0, const mld_poly *a)
 {
@@ -497,8 +516,10 @@ void mld_poly_power2round(mld_poly *a1, mld_poly *a0, const mld_poly *a)
   __loop__(
     assigns(i, memory_slice(a0, sizeof(mld_poly)), memory_slice(a1, sizeof(mld_poly)))
     invariant(i <= MLDSA_N)
+    invariant(forall(k0, i, MLDSA_N, a->coeffs[k0] == loop_entry(*a).coeffs[k0]))
     invariant(array_bound(a0->coeffs, 0, i, -(MLD_2_POW_D/2)+1, (MLD_2_POW_D/2)+1))
     invariant(array_bound(a1->coeffs, 0, i, 0, ((MLDSA_Q - 1) / MLD_2_POW_D) + 1))
+    decreases(MLDSA_N - i)
   )
   {
     mld_power2round(&a0->coeffs[i], &a1->coeffs[i], a->coeffs[i]);
@@ -508,6 +529,7 @@ void mld_poly_power2round(mld_poly *a1, mld_poly *a0, const mld_poly *a)
                    (MLD_2_POW_D / 2) + 1);
   mld_assert_bound(a1->coeffs, MLDSA_N, 0, ((MLDSA_Q - 1) / MLD_2_POW_D) + 1);
 }
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API */
 
 #ifndef MLD_POLY_UNIFORM_NBLOCKS
 #define MLD_POLY_UNIFORM_NBLOCKS \
@@ -545,7 +567,8 @@ __contract__(
   while (ctr < target && pos + 3 <= buflen)
   __loop__(
     invariant(offset <= ctr && ctr <= target && pos <= buflen)
-    invariant(array_bound(a, 0, ctr, 0, MLDSA_Q)))
+    invariant(array_bound(a, 0, ctr, 0, MLDSA_Q))
+    decreases(buflen - pos))
   {
     t = buf[pos++];
     t |= (uint32_t)buf[pos++] << 8;
@@ -562,23 +585,19 @@ __contract__(
 
   return ctr;
 }
-/*************************************************
- * Name:        mld_rej_uniform
+/**
+ * Sample uniformly random coefficients in [0, MLDSA_Q-1] by performing
+ * rejection sampling on an array of random bytes.
  *
- * Description: Sample uniformly random coefficients in [0, MLDSA_Q-1] by
- *              performing rejection sampling on array of random bytes.
+ * @param[out] a      Pointer to output array (allocated).
+ * @param      target Requested number of coefficients to sample.
+ * @param      offset Number of coefficients already sampled.
+ * @param[in]  buf    Array of random bytes to sample from.
+ * @param      buflen Length of array of random bytes (must be multiple of 3).
  *
- * Arguments:   - int32_t *a: pointer to output array (allocated)
- *              - unsigned int target:  requested number of coefficients to
- *sample
- *              - unsigned int offset:  number of coefficients already sampled
- *              - const uint8_t *buf: array of random bytes to sample from
- *              - unsigned int buflen: length of array of random bytes (must be
- *                multiple of 3)
- *
- * Returns number of sampled coefficients. Can be smaller than len if not enough
- * random bytes were given.
- **************************************************/
+ * @return Number of sampled coefficients. Can be smaller than len if not
+ *         enough random bytes were given.
+ */
 
 /* Reference: `mld_rej_uniform()` in the reference implementation @[REF].
  *            - Our signature differs from the reference implementation
@@ -657,7 +676,8 @@ void mld_poly_uniform(mld_poly *a, const uint8_t seed[MLDSA_SEEDBYTES + 2])
   mld_zeroize(buf, sizeof(buf));
 }
 
-#if !defined(MLD_CONFIG_SERIAL_FIPS202_ONLY) && !defined(MLD_CONFIG_REDUCE_RAM)
+#if !defined(MLD_CONFIG_SERIAL_FIPS202_ONLY) && \
+    (!defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST))
 MLD_INTERNAL_API
 void mld_poly_uniform_4x(mld_poly *vec0, mld_poly *vec1, mld_poly *vec2,
                          mld_poly *vec3,
@@ -722,8 +742,10 @@ void mld_poly_uniform_4x(mld_poly *vec0, mld_poly *vec1, mld_poly *vec2,
   mld_zeroize(buf, sizeof(buf));
 }
 
-#endif /* !MLD_CONFIG_SERIAL_FIPS202_ONLY && !MLD_CONFIG_REDUCE_RAM */
+#endif /* !MLD_CONFIG_SERIAL_FIPS202_ONLY && (!MLD_CONFIG_REDUCE_RAM || \
+          MLD_UNIT_TEST) */
 
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API)
 MLD_INTERNAL_API
 void mld_polyt1_pack(uint8_t r[MLDSA_POLYT1_PACKEDBYTES], const mld_poly *a)
 {
@@ -732,7 +754,8 @@ void mld_polyt1_pack(uint8_t r[MLDSA_POLYT1_PACKEDBYTES], const mld_poly *a)
 
   for (i = 0; i < MLDSA_N / 4; ++i)
   __loop__(
-    invariant(i <= MLDSA_N/4))
+    invariant(i <= MLDSA_N/4)
+    decreases(MLDSA_N / 4 - i))
   {
     r[5 * i + 0] = (uint8_t)((a->coeffs[4 * i + 0] >> 0) & 0xFF);
     r[5 * i + 1] =
@@ -747,7 +770,9 @@ void mld_polyt1_pack(uint8_t r[MLDSA_POLYT1_PACKEDBYTES], const mld_poly *a)
     r[5 * i + 4] = (uint8_t)((a->coeffs[4 * i + 3] >> 2) & 0xFF);
   }
 }
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API */
 
+#if !defined(MLD_CONFIG_NO_VERIFY_API)
 MLD_INTERNAL_API
 void mld_polyt1_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYT1_PACKEDBYTES])
 {
@@ -756,7 +781,8 @@ void mld_polyt1_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYT1_PACKEDBYTES])
   for (i = 0; i < MLDSA_N / 4; ++i)
   __loop__(
     invariant(i <= MLDSA_N/4)
-    invariant(array_bound(r->coeffs, 0, i*4, 0, 1 << 10)))
+    invariant(array_bound(r->coeffs, 0, i*4, 0, 1 << 10))
+    decreases(MLDSA_N / 4 - i))
   {
     r->coeffs[4 * i + 0] =
         ((a[5 * i + 0] >> 0) | ((int32_t)a[5 * i + 1] << 8)) & 0x3FF;
@@ -770,7 +796,9 @@ void mld_polyt1_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYT1_PACKEDBYTES])
 
   mld_assert_bound(r->coeffs, MLDSA_N, 0, 1 << 10);
 }
+#endif /* !MLD_CONFIG_NO_VERIFY_API */
 
+#if !defined(MLD_CONFIG_NO_KEYPAIR_API)
 MLD_INTERNAL_API
 void mld_polyt0_pack(uint8_t r[MLDSA_POLYT0_PACKEDBYTES], const mld_poly *a)
 {
@@ -782,7 +810,8 @@ void mld_polyt0_pack(uint8_t r[MLDSA_POLYT0_PACKEDBYTES], const mld_poly *a)
 
   for (i = 0; i < MLDSA_N / 8; ++i)
   __loop__(
-    invariant(i <= MLDSA_N/8))
+    invariant(i <= MLDSA_N/8)
+    decreases(MLDSA_N / 8 - i))
   {
     /* Safety: a->coeffs[i] <= (1 << (MLDSA_D - 1) as they are output of
      * power2round, hence, these casts are safe. */
@@ -817,7 +846,9 @@ void mld_polyt0_pack(uint8_t r[MLDSA_POLYT0_PACKEDBYTES], const mld_poly *a)
     r[13 * i + 12] = (uint8_t)((t[7] >> 5) & 0xFF);
   }
 }
+#endif /* !MLD_CONFIG_NO_KEYPAIR_API */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API) || defined(MLD_UNIT_TEST)
 MLD_INTERNAL_API
 void mld_polyt0_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYT0_PACKEDBYTES])
 {
@@ -826,7 +857,8 @@ void mld_polyt0_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYT0_PACKEDBYTES])
   for (i = 0; i < MLDSA_N / 8; ++i)
   __loop__(
     invariant(i <= MLDSA_N/8)
-    invariant(array_bound(r->coeffs, 0, i*8, -(1<<(MLDSA_D-1)) + 1, (1<<(MLDSA_D-1)) + 1)))
+    invariant(array_bound(r->coeffs, 0, i*8, -(1<<(MLDSA_D-1)) + 1, (1<<(MLDSA_D-1)) + 1))
+    decreases(MLDSA_N / 8 - i))
   {
     r->coeffs[8 * i + 0] = a[13 * i + 0];
     r->coeffs[8 * i + 0] |= (int32_t)a[13 * i + 1] << 8;
@@ -877,6 +909,7 @@ void mld_polyt0_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYT0_PACKEDBYTES])
   mld_assert_bound(r->coeffs, MLDSA_N, -(1 << (MLDSA_D - 1)) + 1,
                    (1 << (MLDSA_D - 1)) + 1);
 }
+#endif /* !MLD_CONFIG_NO_SIGN_API || MLD_UNIT_TEST */
 
 MLD_STATIC_TESTABLE uint32_t mld_poly_chknorm_c(const mld_poly *a, int32_t B)
 __contract__(
@@ -896,6 +929,7 @@ __contract__(
     invariant(i <= MLDSA_N)
     invariant(t == 0 || t == 0xFFFFFFFF)
     invariant((t == 0) == array_abs_bound(a->coeffs, 0, i, B))
+    decreases(MLDSA_N - i)
   )
   {
     /*
@@ -958,7 +992,7 @@ uint32_t mld_poly_chknorm(const mld_poly *a, int32_t B)
   if (success)
   {
     /* Convert 0 / 1 to 0 / 0xFFFFFFFF here */
-    return 0U - (uint32_t)ret;
+    return mld_ct_cmask_nonzero_u32((uint32_t)ret);
   }
 #endif /* MLD_USE_NATIVE_POLY_CHKNORM */
   return mld_poly_chknorm_c(a, B);

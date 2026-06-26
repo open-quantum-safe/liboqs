@@ -1,5 +1,13 @@
 upstreams:
   -
+    name: pqc-hqc
+    git_url: https://gitlab.com/pqc-hqc/hqc.git
+    git_branch: next-release
+    git_commit: 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
+    kem_meta_path: "integrations/{pretty_name_full}_META.yml"
+    kem_scheme_path: .
+    patches: [pqchqc-liboqs-integration.patch]
+  -
     name: oldpqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
@@ -33,11 +41,11 @@ upstreams:
   -
     name: mlkem-native
     git_url: https://github.com/pq-code-package/mlkem-native.git
-    git_branch: v1.1.0
-    git_commit: d2cae2be522a67bfae26100fdb520576f1b2ef90
+    git_branch: v1.2.0
+    git_commit: 0ba906cb14b1c241476134d7403a811b382ca498
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [mlkem-native-ext-api-qualifier.patch]
+    patches: [mlkem-native-exclude-ppc64le.patch]
     preserve_folder_structure: True
   -
     name: cupqc
@@ -58,8 +66,8 @@ upstreams:
   -
     name: mldsa-native
     git_url: https://github.com/pq-code-package/mldsa-native.git
-    git_branch: v1.0.0-alpha2
-    git_commit: f48f164cefb07f4ffa519ddda7cee670b8ee3517
+    git_branch: v1.0.0-beta2
+    git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     preserve_folder_structure: True
@@ -67,7 +75,7 @@ upstreams:
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
     git_branch: main
-    git_commit: 4b7cd94c96b9522864efe40c6ad1fa269584a807
+    git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
     sig_meta_path: 'META/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
@@ -75,7 +83,7 @@ upstreams:
     name: upcross
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_branch: master
-    git_commit: a21ebc314e06b0972a9bbcf2813a185ecb2917f1
+    git_commit: 179d61b8b59e524fba86954f7fa269495650030a
     sig_meta_path: 'generate/crypto_sign/{pqclean_scheme}/META.yml'
     sig_scheme_path: 'generate/crypto_sign/{pqclean_scheme}'
   -
@@ -92,6 +100,15 @@ upstreams:
     git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
     sig_scheme_path: '.'
     sig_meta_path: 'liboqs/META/{pretty_name_full}_META.yml'
+    patches: [snova-unused-param.patch]
+  -
+    name: mqom
+    git_url: https://github.com/mqom/mqom-v2.git
+    git_branch: main
+    git_commit: ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7
+    sig_scheme_path: '.'
+    sig_meta_path: 'integration/liboqs/META_{pretty_name_full}.yml'
+    common_meta_path: 'integration/liboqs/META_Common.yml'
 kems:
   -
     name: classic_mceliece
@@ -140,22 +157,21 @@ kems:
         pretty_name_full: Classic-McEliece-8192128f
   -
     name: hqc
-    default_implementation: clean
-    upstream_location: pqclean
-    disable_by_default: True
+    default_implementation: ref
+    upstream_location: pqc-hqc
     schemes:
       -
-        scheme: "128"
-        pqclean_scheme: hqc-128
-        pretty_name_full: HQC-128
+        scheme: "1"
+        pqclean_scheme: hqc-1
+        pretty_name_full: HQC-1
       -
-        scheme: "192"
-        pqclean_scheme: hqc-192
-        pretty_name_full: HQC-192
+        scheme: "3"
+        pqclean_scheme: hqc-3
+        pretty_name_full: HQC-3
       -
-        scheme: "256"
-        pqclean_scheme: hqc-256
-        pretty_name_full: HQC-256
+        scheme: "5"
+        pqclean_scheme: hqc-5
+        pretty_name_full: HQC-5
   -
     name: kyber
     default_implementation: ref
@@ -508,3 +524,68 @@ sigs:
         pqclean_scheme: SNOVA_29_6_5
         pretty_name_full: SNOVA_29_6_5
         signed_msg_order: sig_then_msg
+  -
+    name: mqom
+    default_implementation: default
+    upstream_location: mqom
+    schemes:
+      -
+        scheme: "mqom2_cat1_gf16_fast_r3"
+        pqclean_scheme: mqom2_cat1_gf16_fast_r3
+        pretty_name_full: mqom2_cat1_gf16_fast_r3
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat1_gf16_fast_r5"
+        pqclean_scheme: mqom2_cat1_gf16_fast_r5
+        pretty_name_full: mqom2_cat1_gf16_fast_r5
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat1_gf16_short_r3"
+        pqclean_scheme: mqom2_cat1_gf16_short_r3
+        pretty_name_full: mqom2_cat1_gf16_short_r3
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat1_gf16_short_r5"
+        pqclean_scheme: mqom2_cat1_gf16_short_r5
+        pretty_name_full: mqom2_cat1_gf16_short_r5
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat3_gf16_fast_r3"
+        pqclean_scheme: mqom2_cat3_gf16_fast_r3
+        pretty_name_full: mqom2_cat3_gf16_fast_r3
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat3_gf16_fast_r5"
+        pqclean_scheme: mqom2_cat3_gf16_fast_r5
+        pretty_name_full: mqom2_cat3_gf16_fast_r5
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat3_gf16_short_r3"
+        pqclean_scheme: mqom2_cat3_gf16_short_r3
+        pretty_name_full: mqom2_cat3_gf16_short_r3
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat3_gf16_short_r5"
+        pqclean_scheme: mqom2_cat3_gf16_short_r5
+        pretty_name_full: mqom2_cat3_gf16_short_r5
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat5_gf16_fast_r3"
+        pqclean_scheme: mqom2_cat5_gf16_fast_r3
+        pretty_name_full: mqom2_cat5_gf16_fast_r3
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat5_gf16_fast_r5"
+        pqclean_scheme: mqom2_cat5_gf16_fast_r5
+        pretty_name_full: mqom2_cat5_gf16_fast_r5
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat5_gf16_short_r3"
+        pqclean_scheme: mqom2_cat5_gf16_short_r3
+        pretty_name_full: mqom2_cat5_gf16_short_r3
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom2_cat5_gf16_short_r5"
+        pqclean_scheme: mqom2_cat5_gf16_short_r5
+        pretty_name_full: mqom2_cat5_gf16_short_r5
+        signed_msg_order: msg_then_sig

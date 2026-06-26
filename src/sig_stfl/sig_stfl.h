@@ -255,6 +255,22 @@ OQS_API int OQS_SIG_STFL_alg_count(void);
  */
 OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
+/**
+ * Returns 1 if liboqs was built with
+ * OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN, meaning
+ * OQS_SIG_STFL_new returns the full stateful-signature struct and
+ * OQS_SIG_STFL_keypair / OQS_SIG_STFL_sign are functional.
+ * Returns 0 otherwise, in which case only verification is supported.
+ *
+ * This is the supported way for FFI consumers to detect the build mode at
+ * runtime. When this returns 0, the typedef `OQS_SIG_STFL` resolves to
+ * `OQS_SIG`, which has a different in-memory layout — callers must not
+ * dereference fields specific to the stateful struct.
+ *
+ * @return 1 if stateful key generation and signing are supported, 0 otherwise.
+ */
+OQS_API int OQS_SIG_STFL_keygen_and_sign_supported(void);
+
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
 
 /** Signature schemes object */

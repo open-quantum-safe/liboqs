@@ -8,16 +8,27 @@
 /***************************************************
  * Basic replacements for __CPROVER_XXX contracts
  ***************************************************/
+/*
+ * The `__contract__` / `__loop__` annotation macros use a
+ * leading-double-underscore spelling in line with other CBMC macros.
+ * clang-tidy flags these as reserved identifiers; we suppress the diagnostic
+ * at each definition site (NOLINT) rather than disabling the check globally,
+ * so it stays active for the rest of the tree.
+ */
 #ifndef CBMC
 
-#define __contract__(x)
-#define __loop__(x)
+/* clang-format off */
+#define __contract__(x) /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+#define __loop__(x) /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+/* clang-format on */
 
 #else /* !CBMC */
 
 
-#define __contract__(x) x
-#define __loop__(x) x
+/* clang-format off */
+#define __contract__(x) x /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+#define __loop__(x) x /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+/* clang-format on */
 
 /* https://diffblue.github.io/cbmc/contracts-assigns.html */
 #define assigns(...) __CPROVER_assigns(__VA_ARGS__)
@@ -80,24 +91,36 @@
  * Quantifiers
  * Note that the range on qvar is _exclusive_ between qvar_lb .. qvar_ub
  * https://diffblue.github.io/cbmc/contracts-quantifiers.html
+ *
+ * The quantified variable is declared as uint32_t, so these macros
+ * quantify only over indices in [0, UINT32_MAX). Bounds larger than
+ * UINT32_MAX (4 GiB) are NOT supported: the explicit (uint32_t) casts
+ * on the bounds will trigger CBMC's conversion check if a wider bound
+ * (e.g. a size_t > UINT32_MAX) is passed.
+ *
+ * Quantifying over size_t (64-bit) was found to blow up SMT proof
+ * times, so we deliberately keep the index width at 32 bits. Callers
+ * dealing with size_t-typed buffers must add an explicit
+ *   requires(len <= UINT32_MAX)
+ * precondition.
  */
 
 /*
  * Prevent clang-format from corrupting CBMC's special ==> operator
  */
 /* clang-format off */
-#define forall(qvar, qvar_lb, qvar_ub, predicate)                 \
-  __CPROVER_forall                                                \
-  {                                                               \
-    unsigned qvar;                                                \
-    ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==> (predicate)   \
+#define forall(qvar, qvar_lb, qvar_ub, predicate)                              \
+  __CPROVER_forall                                                             \
+  {                                                                            \
+    uint32_t qvar;                                                             \
+    ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) ==> (predicate) \
   }
 
-#define exists(qvar, qvar_lb, qvar_ub, predicate)               \
-  __CPROVER_exists                                              \
-  {                                                             \
-    unsigned qvar;                                              \
-    ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) && (predicate)  \
+#define exists(qvar, qvar_lb, qvar_ub, predicate)                              \
+  __CPROVER_exists                                                             \
+  {                                                                            \
+    uint32_t qvar;                                                             \
+    ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) && (predicate) \
   }
 /* clang-format on */
 
@@ -126,8 +149,8 @@
                          value_lb, value_ub)                           \
   __CPROVER_forall                                                     \
   {                                                                    \
-    unsigned qvar;                                                     \
-    ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==>                    \
+    uint32_t qvar;                                                     \
+    ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) ==> \
         (((int)(value_lb) <= ((array_var)[(qvar)])) &&                 \
          (((array_var)[(qvar)]) < (int)(value_ub)))                    \
   }
@@ -139,8 +162,8 @@
 #define array_unchanged_core(qvar, qvar_lb, qvar_ub, array_var)        \
   __CPROVER_forall                                                     \
   {                                                                    \
-    unsigned qvar;                                                     \
-    ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==>                    \
+    uint32_t qvar;                                                     \
+    ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) ==> \
     ((array_var)[(qvar)]) == (old(* (int16_t (*)[(qvar_ub)])(array_var)))[(qvar)] \
   }
 
@@ -150,8 +173,8 @@
 #define array_unchanged_u64_core(qvar, qvar_lb, qvar_ub, array_var)    \
   __CPROVER_forall                                                     \
   {                                                                    \
-    unsigned qvar;                                                     \
-    ((qvar_lb) <= (qvar) && (qvar) < (qvar_ub)) ==>                    \
+    uint32_t qvar;                                                     \
+    ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) ==> \
     ((array_var)[(qvar)]) == (old(* (uint64_t (*)[(qvar_ub)])(array_var)))[(qvar)] \
   }
 

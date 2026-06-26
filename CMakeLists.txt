@@ -30,6 +30,9 @@ option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a 
 option(OQS_MEMOPT_BUILD "Build with memory-optimized implementations where available." OFF)
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
 option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
+# --- Test Configuration ---
+set(OQS_PYTEST_NUMPROCESSES "auto" CACHE STRING "Number of parallel processes for pytest (e.g., 'auto', '1', '2'). Useful for limiting memory usage on constrained CI/CD systems.")
+message(STATUS "OQS Testing: Pytest parallel workers set to '${OQS_PYTEST_NUMPROCESSES}'")
 
 # Libfuzzer isn't supported on gcc
 if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
@@ -44,9 +47,9 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(OQS_VERSION_MAJOR 0)
-set(OQS_VERSION_MINOR 15)
+set(OQS_VERSION_MINOR 16)
 set(OQS_VERSION_PATCH 0)
-set(OQS_VERSION_PRE_RELEASE "")
+set(OQS_VERSION_PRE_RELEASE "-rc1")
 set(OQS_VERSION_TEXT "${OQS_VERSION_MAJOR}.${OQS_VERSION_MINOR}.${OQS_VERSION_PATCH}${OQS_VERSION_PRE_RELEASE}")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 set(OQS_MINIMAL_GCC_VERSION "7.1.0")
@@ -176,6 +179,11 @@ if(OQS_PORTABLE_BUILD)
     message(FATAL_ERROR "OQS_PORTABLE_BUILD is deprecated")
 endif()
 
+get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(NOT _isMultiConfig AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+message(STATUS "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     set(OQS_DEBUG_BUILD ON)
 else()
@@ -184,7 +192,7 @@ endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 
-if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
+if(MSVC)
     set(CMAKE_GENERATOR_CC cl)
 endif()
 
@@ -278,6 +286,9 @@ endif()
 if(OQS_ENABLE_SIG_SNOVA)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/snova/sig_snova.h)
 endif()
+if(OQS_ENABLE_SIG_MQOM)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/mqom/sig_mqom.h)
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_END
 if(OQS_ENABLE_SIG_SLH_DSA)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/slh_dsa/sig_slh_dsa.h)
@@ -343,4 +354,3 @@ if(NOT TARGET uninstall)
   add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
-
