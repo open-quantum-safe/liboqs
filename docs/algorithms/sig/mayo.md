@@ -24,12 +24,12 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1420 |                        24 |                      454 |
-|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      4912 |                        24 |                      186 |
-|     MAYO-3      | NA                    | EUF-CMA          |                    3 |                      2986 |                        32 |                      681 |
-|     MAYO-5      | NA                    | EUF-CMA          |                    5 |                      5554 |                        40 |                      964 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) | Keypair seed size (bytes)   |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|:----------------------------|
+|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1420 |                        24 |                      454 | NA                          |
+|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      4912 |                        24 |                      186 | NA                          |
+|     MAYO-3      | NA                    | EUF-CMA          |                    3 |                      2986 |                        32 |                      681 | NA                          |
+|     MAYO-5      | NA                    | EUF-CMA          |                    5 |                      5554 |                        40 |                      964 | NA                          |
 
 ## MAYO-1 implementation characteristics
 

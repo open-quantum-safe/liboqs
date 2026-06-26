@@ -233,6 +233,7 @@ sigs:
     name: ml_dsa
     default_implementation: ref
     upstream_location: mldsa-native
+    derandomized_keypair: true
     schemes:
       -
         scheme: "44"

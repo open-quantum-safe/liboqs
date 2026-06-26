@@ -552,6 +552,26 @@ typedef struct OQS_SIG {
 	size_t length_secret_key;
 	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
 	size_t length_signature;
+	/** The length, in bytes, of seeds for derandomized keypair generation for this signature scheme, or 0 if derandomized keypair generation is not supported. */
+	size_t length_keypair_seed;
+
+	/**
+	 * Derandomized keypair generation algorithm.
+	 *
+	 * If this signature scheme does not support derandomized keypair generation,
+	 * this function pointer is `NULL`, and `OQS_SIG_keypair_derand` returns
+	 * `OQS_ERROR`.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `public_key` and
+	 * `secret_key`, based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_SIG_*_length_*`.
+	 *
+	 * @param[out] public_key The public key represented as a byte string.
+	 * @param[out] secret_key The secret key represented as a byte string.
+	 * @param[in] seed The input randomness represented as a byte string of length `length_keypair_seed`.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*keypair_derand)(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 
 	/**
 	 * Keypair generation algorithm.
@@ -639,6 +659,24 @@ typedef struct OQS_SIG {
  * @return An OQS_SIG for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
 OQS_API OQS_SIG *OQS_SIG_new(const char *method_name);
+
+/**
+ * Derandomized keypair generation algorithm.
+ *
+ * Caller is responsible for allocating sufficient memory for `public_key` and
+ * `secret_key`, based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * Returns `OQS_ERROR` if the signature scheme does not support derandomized
+ * keypair generation (i.e., if `sig->keypair_derand` is `NULL`).
+ *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
+ * @param[out] public_key The public key represented as a byte string.
+ * @param[out] secret_key The secret key represented as a byte string.
+ * @param[in] seed The input randomness represented as a byte string of length `sig->length_keypair_seed`.
+ * @return OQS_SUCCESS or OQS_ERROR
+ */
+OQS_API OQS_STATUS OQS_SIG_keypair_derand(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
 
 /**
  * Keypair generation algorithm.

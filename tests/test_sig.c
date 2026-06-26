@@ -21,6 +21,129 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
+/* Tests derandomized (seed-based) keypair generation, if supported by the scheme.
+ *
+ * - If sig->keypair_derand is NULL, length_keypair_seed must be 0 and
+ *   OQS_SIG_keypair_derand must return OQS_ERROR.
+ * - Otherwise, the same seed must reproduce byte-identical (pk, sk), and the
+ *   derived keypair must be functional (sign/verify round-trip).
+ */
+static OQS_STATUS sig_test_derand(OQS_SIG *sig) {
+	OQS_STATUS ret = OQS_ERROR;
+	OQS_STATUS rc;
+	uint8_t *seed = NULL, *seed2 = NULL;
+	uint8_t *pk1 = NULL, *sk1 = NULL, *pk2 = NULL, *sk2 = NULL, *pk3 = NULL, *sk3 = NULL;
+	uint8_t *sigbuf = NULL;
+	size_t sig_len = 0;
+	const uint8_t msg[] = "derand keypair functional test";
+
+	if (sig->keypair_derand == NULL) {
+		if (sig->length_keypair_seed != 0) {
+			fprintf(stderr, "ERROR: keypair_derand is NULL but length_keypair_seed (%zu) != 0\n", sig->length_keypair_seed);
+			return OQS_ERROR;
+		}
+		rc = OQS_SIG_keypair_derand(sig, NULL, NULL, NULL);
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_keypair_derand succeeded but a failure was expected (unsupported)\n");
+			return OQS_ERROR;
+		}
+		printf("OQS_SIG_keypair_derand failed, as expected (derandomized keygen not supported)\n");
+		return OQS_SUCCESS;
+	}
+
+	if (sig->length_keypair_seed == 0) {
+		fprintf(stderr, "ERROR: keypair_derand is set but length_keypair_seed == 0\n");
+		return OQS_ERROR;
+	}
+
+	seed = OQS_MEM_malloc(sig->length_keypair_seed);
+	seed2 = OQS_MEM_malloc(sig->length_keypair_seed);
+	pk1 = OQS_MEM_malloc(sig->length_public_key);
+	sk1 = OQS_MEM_malloc(sig->length_secret_key);
+	pk2 = OQS_MEM_malloc(sig->length_public_key);
+	sk2 = OQS_MEM_malloc(sig->length_secret_key);
+	pk3 = OQS_MEM_malloc(sig->length_public_key);
+	sk3 = OQS_MEM_malloc(sig->length_secret_key);
+	sigbuf = OQS_MEM_malloc(sig->length_signature);
+	if (seed == NULL || seed2 == NULL || pk1 == NULL || sk1 == NULL || pk2 == NULL || sk2 == NULL || pk3 == NULL || sk3 == NULL || sigbuf == NULL) {
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed in sig_test_derand\n");
+		goto cleanup;
+	}
+
+	OQS_randombytes(seed, sig->length_keypair_seed);
+	OQS_TEST_CT_DECLASSIFY(seed, sig->length_keypair_seed);
+
+	rc = OQS_SIG_keypair_derand(sig, pk1, sk1, seed);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_keypair_derand failed (first call)\n");
+		goto cleanup;
+	}
+	rc = OQS_SIG_keypair_derand(sig, pk2, sk2, seed);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_keypair_derand failed (second call)\n");
+		goto cleanup;
+	}
+
+	OQS_TEST_CT_DECLASSIFY(pk1, sig->length_public_key);
+	OQS_TEST_CT_DECLASSIFY(pk2, sig->length_public_key);
+	OQS_TEST_CT_DECLASSIFY(sk1, sig->length_secret_key);
+	OQS_TEST_CT_DECLASSIFY(sk2, sig->length_secret_key);
+
+	if (memcmp(pk1, pk2, sig->length_public_key) != 0) {
+		fprintf(stderr, "ERROR: OQS_SIG_keypair_derand is not deterministic (public keys differ)\n");
+		goto cleanup;
+	}
+	if (memcmp(sk1, sk2, sig->length_secret_key) != 0) {
+		fprintf(stderr, "ERROR: OQS_SIG_keypair_derand is not deterministic (secret keys differ)\n");
+		goto cleanup;
+	}
+
+	/* A different seed must produce a different keypair: this proves the output
+	 * actually depends on the seed, ruling out an implementation that returns a
+	 * fixed/constant keypair (which would still pass the determinism check above). */
+	memcpy(seed2, seed, sig->length_keypair_seed);
+	seed2[0] ^= 0x01;
+	OQS_TEST_CT_DECLASSIFY(seed2, sig->length_keypair_seed);
+	rc = OQS_SIG_keypair_derand(sig, pk3, sk3, seed2);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_keypair_derand failed (different seed)\n");
+		goto cleanup;
+	}
+	OQS_TEST_CT_DECLASSIFY(pk3, sig->length_public_key);
+	if (memcmp(pk1, pk3, sig->length_public_key) == 0) {
+		fprintf(stderr, "ERROR: OQS_SIG_keypair_derand produced an identical public key for a different seed\n");
+		goto cleanup;
+	}
+
+	/* The derived keypair must be usable. */
+	rc = OQS_SIG_sign(sig, sigbuf, &sig_len, msg, sizeof(msg), sk1);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_sign failed on a derand-generated secret key\n");
+		goto cleanup;
+	}
+	OQS_TEST_CT_DECLASSIFY(sigbuf, sig_len);
+	rc = OQS_SIG_verify(sig, msg, sizeof(msg), sigbuf, sig_len, pk1);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_verify failed on a derand-generated public key\n");
+		goto cleanup;
+	}
+
+	printf("OQS_SIG_keypair_derand is deterministic and produces a functional keypair\n");
+	ret = OQS_SUCCESS;
+
+cleanup:
+	OQS_MEM_insecure_free(pk1);
+	OQS_MEM_insecure_free(pk2);
+	OQS_MEM_insecure_free(pk3);
+	OQS_MEM_insecure_free(sigbuf);
+	OQS_MEM_secure_free(sk1, sig->length_secret_key);
+	OQS_MEM_secure_free(sk2, sig->length_secret_key);
+	OQS_MEM_secure_free(sk3, sig->length_secret_key);
+	OQS_MEM_secure_free(seed, sig->length_keypair_seed);
+	OQS_MEM_secure_free(seed2, sig->length_keypair_seed);
+	return ret;
+}
+
 static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2], bool extended_tests) {
 
 	OQS_SIG *sig = NULL;
@@ -101,6 +224,10 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
+		goto err;
+	}
+
+	if (sig_test_derand(sig) != OQS_SUCCESS) {
 		goto err;
 	}
 

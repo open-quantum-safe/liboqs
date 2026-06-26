@@ -31,7 +31,13 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 	sig->length_public_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_public_key;
 	sig->length_secret_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_secret_key;
 	sig->length_signature = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature;
+	{%- if scheme.get('derandomized_keypair') %}
+	sig->length_keypair_seed = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_keypair_seed;
+	{%- endif %}
 
+	{%- if scheme.get('derandomized_keypair') %}
+	sig->keypair_derand = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
+	{%- endif %}
 	sig->keypair = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair;
 	sig->sign = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign;
 	sig->verify = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify;
@@ -64,7 +70,13 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
 	sig->length_public_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_public_key;
 	sig->length_secret_key = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_secret_key;
 	sig->length_signature = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature;
+	{%- if scheme.get('derandomized_keypair') %}
+	sig->length_keypair_seed = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_keypair_seed;
+	{%- endif %}
 
+	{%- if scheme.get('derandomized_keypair') %}
+	sig->keypair_derand = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_derand;
+	{%- endif %}
 	sig->keypair = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair;
 	sig->sign = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign;
 	sig->verify = OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify;
@@ -90,6 +102,11 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_new(void) {
         {%- endif %}
 
 extern int {{ scheme['metadata']['default_keypair_signature'] }}(uint8_t *pk, uint8_t *sk);
+
+        {%- if impl.get('signature_keypair_derand') %}
+           {%- set cleankeypairderand = scheme['metadata'].update({'default_keypair_derand_signature': impl['signature_keypair_derand']}) %}
+extern int {{ scheme['metadata']['default_keypair_derand_signature'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+        {%- endif %}
 
         {%- if impl['signature_signature'] %}
            {%- set cleansignature = scheme['metadata'].update({'default_signature_signature': impl['signature_signature']}) -%}
@@ -124,6 +141,10 @@ extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
 extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
         {%- endif %}
 
+        {%- if impl.get('signature_keypair_derand') %}
+extern int {{ impl['signature_keypair_derand'] }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+        {%- endif %}
+
         {%- if impl['signature_signature'] %}
 {%- if 'api-with-context-string' in impl and impl['api-with-context-string'] %}
 extern int {{ impl['signature_signature'] }}(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *sk);
@@ -145,7 +166,37 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper 
         {%- endif %}
 #endif
     {%- endfor %}
-
+{% if scheme.get('derandomized_keypair') %}
+OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] and impl.get('signature_keypair_derand') %}
+    {%- if loop.first %}
+#if defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- else %}
+#elif defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}) {%- if 'alias_scheme' in scheme %} || defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}_{{ impl['name'] }}){%- endif %}
+    {%- endif %}
+    {%- if impl.get('required_flags', false) %}
+#if defined(OQS_DIST_BUILD)
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+#endif /* OQS_DIST_BUILD */
+    {%- endif %}
+	{% if impl.get('required_flags', false) %}	{% endif %}return (OQS_STATUS) {{ impl['signature_keypair_derand'] }}(public_key, secret_key, seed);
+    {%- if impl.get('required_flags', false) %}
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, seed);
+	}
+#endif /* OQS_DIST_BUILD */
+    {%- endif %}
+    {%- endfor %}
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|selectattr('signature_keypair_derand')|list %}
+#else
+    {%- endif %}
+	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, seed);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|selectattr('signature_keypair_derand')|list %}
+#endif
+    {%- endif %}
+}
+{% endif %}
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
     {%- if loop.first %}

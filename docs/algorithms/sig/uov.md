@@ -24,20 +24,20 @@
 
 ## Parameter set summary
 
-|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|      OV-Is      | NA                    | EUF-CMA          |                    1 |                    412160 |                    348704 |                       96 |
-|      OV-Ip      | NA                    | EUF-CMA          |                    1 |                    278432 |                    237896 |                      128 |
-|     OV-III      | NA                    | EUF-CMA          |                    3 |                   1225440 |                   1044320 |                      200 |
-|      OV-V       | NA                    | EUF-CMA          |                    5 |                   2869440 |                   2436704 |                      260 |
-|    OV-Is-pkc    | NA                    | EUF-CMA          |                    1 |                     66576 |                    348704 |                       96 |
-|    OV-Ip-pkc    | NA                    | EUF-CMA          |                    1 |                     43576 |                    237896 |                      128 |
-|   OV-III-pkc    | NA                    | EUF-CMA          |                    3 |                    189232 |                   1044320 |                      200 |
-|    OV-V-pkc     | NA                    | EUF-CMA          |                    5 |                    446992 |                   2436704 |                      260 |
-|  OV-Is-pkc-skc  | NA                    | EUF-CMA          |                    1 |                     66576 |                        32 |                       96 |
-|  OV-Ip-pkc-skc  | NA                    | EUF-CMA          |                    1 |                     43576 |                        32 |                      128 |
-| OV-III-pkc-skc  | NA                    | EUF-CMA          |                    3 |                    189232 |                        32 |                      200 |
-|  OV-V-pkc-skc   | NA                    | EUF-CMA          |                    5 |                    446992 |                        32 |                      260 |
+|  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) | Keypair seed size (bytes)   |
+|:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|:----------------------------|
+|      OV-Is      | NA                    | EUF-CMA          |                    1 |                    412160 |                    348704 |                       96 | NA                          |
+|      OV-Ip      | NA                    | EUF-CMA          |                    1 |                    278432 |                    237896 |                      128 | NA                          |
+|     OV-III      | NA                    | EUF-CMA          |                    3 |                   1225440 |                   1044320 |                      200 | NA                          |
+|      OV-V       | NA                    | EUF-CMA          |                    5 |                   2869440 |                   2436704 |                      260 | NA                          |
+|    OV-Is-pkc    | NA                    | EUF-CMA          |                    1 |                     66576 |                    348704 |                       96 | NA                          |
+|    OV-Ip-pkc    | NA                    | EUF-CMA          |                    1 |                     43576 |                    237896 |                      128 | NA                          |
+|   OV-III-pkc    | NA                    | EUF-CMA          |                    3 |                    189232 |                   1044320 |                      200 | NA                          |
+|    OV-V-pkc     | NA                    | EUF-CMA          |                    5 |                    446992 |                   2436704 |                      260 | NA                          |
+|  OV-Is-pkc-skc  | NA                    | EUF-CMA          |                    1 |                     66576 |                        32 |                       96 | NA                          |
+|  OV-Ip-pkc-skc  | NA                    | EUF-CMA          |                    1 |                     43576 |                        32 |                      128 | NA                          |
+| OV-III-pkc-skc  | NA                    | EUF-CMA          |                    3 |                    189232 |                        32 |                      200 | NA                          |
+|  OV-V-pkc-skc   | NA                    | EUF-CMA          |                    5 |                    446992 |                        32 |                      260 | NA                          |
 
 ## OV-Is implementation characteristics
 
