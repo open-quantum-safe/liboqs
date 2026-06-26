@@ -1330,6 +1330,12 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h10_w8 "" ON "OQS_E
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h15_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_lms_sha256_h20_w8_h20_w8 "" ON "OQS_ENABLE_SIG_STFL_LMS" OFF)
 
+# The main minimal-build filter runs before STFL options exist. Run it again
+# now so unrequested STFL variants are disabled as well.
+if(NOT ((OQS_MINIMAL_BUILD STREQUAL "") OR (OQS_MINIMAL_BUILD STREQUAL "OFF")))
+    filter_algs("${OQS_MINIMAL_BUILD}")
+endif()
+
 option(OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN "Enable stateful key and signature generation for research and experimentation" OFF)
 cmake_dependent_option(OQS_ALLOW_STFL_KEY_AND_SIG_GEN "" ON "OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN" OFF)
 
