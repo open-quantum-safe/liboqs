@@ -315,6 +315,8 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
+	uint8_t *derand_public_key = NULL;
+	uint8_t *derand_secret_key = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
 	void (*randombytes_init)(const uint8_t *, const uint8_t *) = NULL;
@@ -370,6 +372,34 @@ static OQS_STATUS sig_kg_vector(const char *method_name,
 	} else {
 		ret = OQS_ERROR;
 		fprintf(stderr, "[vectors_sig] %s ERROR: public key or private key doesn't match!\n", method_name);
+		goto cleanup;
+	}
+
+	/* For schemes exposing derandomized keygen (ML-DSA), the ACVP keyGen seed is
+	 * exactly FIPS-204's xi. Feed it straight to OQS_SIG_keypair_derand and require
+	 * the result to match the same known-answer pk/sk, proving the public API really
+	 * computes ML-DSA.KeyGen_internal(xi). */
+	if (sig->keypair_derand != NULL) {
+		if (sig->length_keypair_seed != MLDSA_RNDBYTES) {
+			fprintf(stderr, "[vectors_sig] %s ERROR: unexpected length_keypair_seed %zu for derand keyGen vector!\n", method_name, sig->length_keypair_seed);
+			goto err;
+		}
+		derand_public_key = OQS_MEM_malloc(sig->length_public_key);
+		derand_secret_key = OQS_MEM_malloc(sig->length_secret_key);
+		if ((derand_public_key == NULL) || (derand_secret_key == NULL)) {
+			fprintf(stderr, "[vectors_sig] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
+			goto err;
+		}
+		rc = OQS_SIG_keypair_derand(sig, derand_public_key, derand_secret_key, prng_output_stream);
+		if (rc) {
+			fprintf(stderr, "[vectors_sig] %s ERROR: OQS_SIG_keypair_derand failed!\n", method_name);
+			goto err;
+		}
+		if (memcmp(derand_public_key, kg_pk, sig->length_public_key) || memcmp(derand_secret_key, kg_sk, sig->length_secret_key)) {
+			ret = OQS_ERROR;
+			fprintf(stderr, "[vectors_sig] %s ERROR: derandomized public key or private key doesn't match!\n", method_name);
+			goto cleanup;
+		}
 	}
 	goto cleanup;
 
@@ -383,11 +413,13 @@ algo_not_enabled:
 cleanup:
 	if (sig != NULL) {
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
+		OQS_MEM_secure_free(derand_secret_key, sig->length_secret_key);
 	}
 	if (randombytes_free != NULL) {
 		randombytes_free();
 	}
 	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(derand_public_key);
 	OQS_SIG_free(sig);
 	return ret;
 }
