@@ -22,7 +22,7 @@ for sig in helpers.available_sigs_by_name():
 # NOTE: these are not made into fixture because each is used once or twice, so
 # the (probably non-existent) performance gain is not worth the loss of
 # debuggability
-URLROOT = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.41/gen-val/json-files/"
+URLROOT = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.42/gen-val/json-files/"
 ml_kem_encdec = urljoin(URLROOT, "ML-KEM-encapDecap-FIPS203/internalProjection.json")
 ml_kem_kg = urljoin(URLROOT, "ML-KEM-keyGen-FIPS203/internalProjection.json")
 
