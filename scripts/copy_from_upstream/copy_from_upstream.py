@@ -362,6 +362,8 @@ def load_instructions(file='copy_from_upstream.yml'):
         for scheme in family['schemes']:
             if not 'upstream_location' in scheme:
                 scheme['upstream_location'] = family['upstream_location']
+            if (not 'derandomized_keypair' in scheme) and 'derandomized_keypair' in family:
+                scheme['derandomized_keypair'] = family['derandomized_keypair']
             if not 'git_commit' in scheme:
                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
             if not 'git_branch' in scheme:
@@ -417,6 +419,13 @@ def load_instructions(file='copy_from_upstream.yml'):
                 scheme['metadata']['implementations'],
                 key=lambda imp: (0 if imp.get('memory_optimized', False) else 1)
             )
+            # Families marking derandomized_keypair expose seed-based keygen via the
+            # upstream <signature_keypair>_internal symbol. The upstream META does not
+            # carry a separate derand symbol, so derive it from signature_keypair here.
+            if scheme.get('derandomized_keypair'):
+                for imp in scheme['metadata']['implementations']:
+                    if 'signature_keypair_derand' not in imp and 'signature_keypair' in imp:
+                        imp['signature_keypair_derand'] = imp['signature_keypair'] + '_internal'
             if not 'scheme_paths' in scheme:
                 scheme['scheme_paths'] = {}
                 for imp in scheme['metadata']['implementations']:

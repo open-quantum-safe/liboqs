@@ -24,20 +24,20 @@
 
 ## Parameter set summary
 
-|        Parameter set        | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:---------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|       SNOVA\_24\_5\_4       | NA                    | EUF-CMA          |                    1 |                      1016 |                        48 |                      248 |
-|   SNOVA\_24\_5\_4\_SHAKE    | NA                    | EUF-CMA          |                    1 |                      1016 |                        48 |                      248 |
-|    SNOVA\_24\_5\_4\_esk     | NA                    | EUF-CMA          |                    1 |                      1016 |                     36848 |                      248 |
-| SNOVA\_24\_5\_4\_SHAKE\_esk | NA                    | EUF-CMA          |                    1 |                      1016 |                     36848 |                      248 |
-|      SNOVA\_37\_17\_2       | NA                    | EUF-CMA          |                    1 |                      9842 |                        48 |                      124 |
-|       SNOVA\_25\_8\_3       | NA                    | EUF-CMA          |                    1 |                      2320 |                        48 |                      165 |
-|      SNOVA\_56\_25\_2       | NA                    | EUF-CMA          |                    3 |                     31266 |                        48 |                      178 |
-|      SNOVA\_49\_11\_3       | NA                    | EUF-CMA          |                    3 |                      6006 |                        48 |                      286 |
-|       SNOVA\_37\_8\_4       | NA                    | EUF-CMA          |                    3 |                      4112 |                        48 |                      376 |
-|       SNOVA\_24\_5\_5       | NA                    | EUF-CMA          |                    3 |                      1579 |                        48 |                      379 |
-|      SNOVA\_60\_10\_4       | NA                    | EUF-CMA          |                    5 |                      8016 |                        48 |                      576 |
-|       SNOVA\_29\_6\_5       | NA                    | EUF-CMA          |                    5 |                      2716 |                        48 |                      454 |
+|        Parameter set        | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) | Keypair seed size (bytes)   |
+|:---------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|:----------------------------|
+|       SNOVA\_24\_5\_4       | NA                    | EUF-CMA          |                    1 |                      1016 |                        48 |                      248 | NA                          |
+|   SNOVA\_24\_5\_4\_SHAKE    | NA                    | EUF-CMA          |                    1 |                      1016 |                        48 |                      248 | NA                          |
+|    SNOVA\_24\_5\_4\_esk     | NA                    | EUF-CMA          |                    1 |                      1016 |                     36848 |                      248 | NA                          |
+| SNOVA\_24\_5\_4\_SHAKE\_esk | NA                    | EUF-CMA          |                    1 |                      1016 |                     36848 |                      248 | NA                          |
+|      SNOVA\_37\_17\_2       | NA                    | EUF-CMA          |                    1 |                      9842 |                        48 |                      124 | NA                          |
+|       SNOVA\_25\_8\_3       | NA                    | EUF-CMA          |                    1 |                      2320 |                        48 |                      165 | NA                          |
+|      SNOVA\_56\_25\_2       | NA                    | EUF-CMA          |                    3 |                     31266 |                        48 |                      178 | NA                          |
+|      SNOVA\_49\_11\_3       | NA                    | EUF-CMA          |                    3 |                      6006 |                        48 |                      286 | NA                          |
+|       SNOVA\_37\_8\_4       | NA                    | EUF-CMA          |                    3 |                      4112 |                        48 |                      376 | NA                          |
+|       SNOVA\_24\_5\_5       | NA                    | EUF-CMA          |                    3 |                      1579 |                        48 |                      379 | NA                          |
+|      SNOVA\_60\_10\_4       | NA                    | EUF-CMA          |                    5 |                      8016 |                        48 |                      576 | NA                          |
+|       SNOVA\_29\_6\_5       | NA                    | EUF-CMA          |                    5 |                      2716 |                        48 |                      454 | NA                          |
 
 ## SNOVA\_24\_5\_4 implementation characteristics
 
