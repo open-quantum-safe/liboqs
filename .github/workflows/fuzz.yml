@@ -1,0 +1,115 @@
+name: Public-input fuzzing
+
+permissions:
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      profile:
+        description: Fuzzing profile to run
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Fuzzing profile to run
+        required: true
+        default: smoke
+        type: choice
+        options:
+          - smoke
+          - full
+
+jobs:
+  fuzz:
+    name: ${{ inputs.profile }} public-input fuzzing
+    runs-on: ubuntu-latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
+    env:
+      CC: clang
+      CXX: clang++
+      CFLAGS: -fsanitize=fuzzer-no-link,address
+      LDFLAGS: -fsanitize=address
+    steps:
+      - name: Create random build folder
+        run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> "$GITHUB_ENV"
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+      - name: Validate corpus
+        run: python3 tests/fuzz/generate_corpus.py --check
+      - name: Configure smoke profile
+        if: ${{ inputs.profile == 'smoke' }}
+        run: |
+          echo "FUZZ_TIMEOUT=30" >> "$GITHUB_ENV"
+          echo "FUZZ_INPUT_TIMEOUT=10" >> "$GITHUB_ENV"
+          cmake \
+            -B "${{ env.RANDOM_BUILD_DIR }}" \
+            -GNinja \
+            -DOQS_STRICT_WARNINGS=ON \
+            -DOQS_BUILD_FUZZ_TESTS=ON \
+            -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON \
+            -DOQS_ENABLE_SIG_STFL_XMSS=ON \
+            -DOQS_ENABLE_SIG_STFL_LMS=ON \
+            -DOQS_MINIMAL_BUILD="KEM_ml_kem_768;KEM_bike_l1;SIG_ml_dsa_44;SIG_falcon_512;SIG_STFL_xmss_shake128_h10;SIG_STFL_lms_sha256_h5_w2" \
+            --warn-uninitialized . > config.log 2>&1
+          cat config.log
+          cmake -LA -N "${{ env.RANDOM_BUILD_DIR }}"
+          ! grep -i "uninitialized variable" config.log
+      - name: Configure full profile
+        if: ${{ inputs.profile == 'full' }}
+        run: |
+          echo "FUZZ_TIMEOUT=600" >> "$GITHUB_ENV"
+          echo "FUZZ_INPUT_TIMEOUT=60" >> "$GITHUB_ENV"
+          cmake \
+            -B "${{ env.RANDOM_BUILD_DIR }}" \
+            -GNinja \
+            -DOQS_STRICT_WARNINGS=ON \
+            -DOQS_BUILD_FUZZ_TESTS=ON \
+            -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON \
+            -DOQS_ENABLE_SIG_STFL_XMSS=ON \
+            -DOQS_ENABLE_SIG_STFL_LMS=ON \
+            --warn-uninitialized . > config.log 2>&1
+          cat config.log
+          cmake -LA -N "${{ env.RANDOM_BUILD_DIR }}"
+          ! grep -i "uninitialized variable" config.log
+      - name: Reject unknown profile
+        if: ${{ inputs.profile != 'smoke' && inputs.profile != 'full' }}
+        run: |
+          echo "unknown fuzzing profile: ${{ inputs.profile }}" >&2
+          exit 1
+      - name: Build fuzz targets
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
+        run: |
+          ninja \
+            fuzz_test_kem_encaps \
+            fuzz_test_kem_decaps \
+            fuzz_test_sig_verify \
+            fuzz_test_sig_stfl_verify \
+            fuzz_test_sig_stfl_deserialize
+      - name: Run fuzz targets
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/fuzz-artifacts"
+          for target in \
+            fuzz_test_kem_encaps \
+            fuzz_test_kem_decaps \
+            fuzz_test_sig_verify \
+            fuzz_test_sig_stfl_verify \
+            fuzz_test_sig_stfl_deserialize; do
+            "${{ env.RANDOM_BUILD_DIR }}/tests/$target" \
+              "$GITHUB_WORKSPACE/tests/fuzz/corpus/$target" \
+              -artifact_prefix="$GITHUB_WORKSPACE/fuzz-artifacts/$target-" \
+              -max_total_time="$FUZZ_TIMEOUT" \
+              -timeout="$FUZZ_INPUT_TIMEOUT" \
+              -max_len=65536 \
+              -keep_seed=1 \
+              -verbosity=0 \
+              -print_final_stats=1
+          done
+      - name: Upload crash artifacts
+        if: failure()
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: fuzz-artifacts-${{ inputs.profile }}
+          path: fuzz-artifacts/
+          if-no-files-found: ignore
