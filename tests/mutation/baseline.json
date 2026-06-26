@@ -1,0 +1,15 @@
+{
+  "campaign": "public-input-api-dispatch-2026-06-25",
+  "minimum_score": 40.12,
+  "unique_mutants": 805,
+  "overall_statuses": {
+    "Killed": 323,
+    "Survived": 482
+  },
+  "scope": [
+    "src/kem/kem.c",
+    "src/sig/sig.c",
+    "src/sig_stfl/sig_stfl.c"
+  ],
+  "notes": "Baseline from the initial focused Mull 0.34.0 campaign over representative KEM, SIG, and STFL public API tests. The workflow reports against this floor by default and only enforces it when explicitly requested."
+}
