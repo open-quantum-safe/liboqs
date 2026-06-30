@@ -1,0 +1,25 @@
+[global]
+# Keep the initial lint configuration focused on Markdown rules that match the
+# existing documentation style and do not require unrelated documentation churn.
+enable = [
+  "MD001", # heading-increment
+  "MD004", # ul-style
+  "MD011", # no-reversed-links
+  "MD014", # commands-show-output
+  "MD018", # no-missing-space-atx
+  "MD019", # no-multiple-space-atx
+  "MD020", # no-missing-space-closed-atx
+  "MD021", # no-multiple-space-closed-atx
+  "MD023", # heading-start-left
+  "MD026", # no-trailing-punctuation
+  "MD027", # no-multiple-space-blockquote
+  "MD028", # no-blanks-blockquote
+  "MD035", # hr-style
+  "MD037", # no-space-in-emphasis
+  "MD039", # no-space-in-links
+  "MD042", # no-empty-links
+  "MD043", # required-headings
+  "MD044", # proper-names
+  "MD045", # no-alt-text
+  "MD048", # code-fence-style
+]
