@@ -19,6 +19,7 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 			- [Support limitations](#support-limitations)
 	- [Quickstart](#quickstart)
 		- [Linux and Mac](#linux-and-mac)
+		- [Using the build script](#using-the-build-script)
 		- [Windows](#windows)
 		- [Cross compilation](#cross-compilation)
 	- [Documentation](#documentation)
@@ -113,70 +114,6 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 ### Linux and Mac
 
-#### Automated Build Script
-
-For a simplified build process on Linux or Mac, you can use the provided build script that automatically installs dependencies and builds liboqs:
-
-```bash
-git clone -b main https://github.com/open-quantum-safe/liboqs.git
-cd liboqs
-./build_liboqs.sh
-```
-
-**Dependency Management:**
-
-By default, the script automatically detects your OS and installs all required dependencies before building. If you prefer to manage dependencies yourself:
-
-```bash
-# Check dependencies and build only (exits with error if dependencies are missing)
-./build_liboqs.sh --build-only
-```
-
-**Python Testing Dependencies:**
-
-Python testing dependencies are listed in `requirements.txt` and can be installed separately:
-
-```bash
-pip3 install -r requirements.txt
-```
-
-**Build Configuration Options:**
-
-The script supports various build options. View all available options with:
-
-```bash
-./build_liboqs.sh --help
-```
-
-Common examples:
-
-```bash
-# Default: Install dependencies and build
-./build_liboqs.sh
-
-# Build only (check dependencies, don't install)
-./build_liboqs.sh --build-only
-
-# Build shared library with debug symbols
-./build_liboqs.sh --shared --build-type Debug
-
-# Minimal build with only ML-KEM-768 and ML-DSA-44
-./build_liboqs.sh --minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"
-
-# Build without OpenSSL
-./build_liboqs.sh --no-openssl
-
-# Build for distribution
-./build_liboqs.sh --dist-build
-
-# Build only mode with custom options
-./build_liboqs.sh --build-only --build-type Release --shared
-```
-
-The script supports Ubuntu, macOS (via Homebrew), and NixOS systems.
-
-#### Manual Installation
-
 1. Install dependencies:
 
 	On Ubuntu:
@@ -242,6 +179,69 @@ The following instructions assume we are in `build`.
 
 5. `ninja uninstall` can be run to remove all installation files.
 
+
+### Using the build script
+
+`build_liboqs.sh` is a convenience wrapper around the standard CMake + Ninja build that handles OS detection, dependency installation, and exposes the most common [CMake options](CONFIGURE.md) as named flags.
+
+#### Basic usage
+
+```sh
+# Default build (installs deps, static library, all algorithms, Release mode)
+./build_liboqs.sh
+
+# Shared library, Debug build
+./build_liboqs.sh --shared --build-type Debug
+
+# Minimal build — only the algorithms you need (quote the list to protect `;`)
+./build_liboqs.sh --minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"
+
+# Skip OpenSSL dependency
+./build_liboqs.sh --no-openssl
+
+# Show all available flags
+./build_liboqs.sh --help
+```
+
+#### What the script does, step by step
+
+1. **Detects the OS** (macOS, Ubuntu/Debian, NixOS) and installs missing build dependencies automatically — Homebrew on macOS, `apt` on Debian/Ubuntu, `nix develop` on NixOS.
+2. **Checks for build-directory conflicts** — if an existing `build/` was created with a different CMake generator it is removed before proceeding.
+3. **Runs `cmake -GNinja`** inside `./build/` with any flags you provided, plus these defaults when none are given:
+   - `CMAKE_BUILD_TYPE=Release`
+   - `OQS_DIST_BUILD=ON` (portable across CPUs)
+   - `OQS_USE_OPENSSL=ON`
+   - `OQS_ALGS_ENABLED=All`
+4. **Runs `ninja`** to compile the library and (unless `--build-only-lib`) the test harnesses under `build/tests/`.
+5. **Prints next-step hints** — how to run `ninja install`, `ninja run_tests`, and install Python test dependencies.
+
+#### Dependency-check-only mode
+
+Pass `--build-only` to verify all required tools are present without installing or building anything:
+
+```sh
+./build_liboqs.sh --build-only
+```
+
+#### Key flags reference
+
+| Flag | CMake equivalent | Description |
+|------|-----------------|-------------|
+| `--shared` | `-DBUILD_SHARED_LIBS=ON` | Build a shared library instead of static |
+| `--build-type TYPE` | `-DCMAKE_BUILD_TYPE=TYPE` | `Debug`, `Release`, `RelWithDebInfo`, `MinSizeRel` |
+| `--minimal-build "A;B"` | `-DOQS_MINIMAL_BUILD="A;B"` | Build only the listed algorithms |
+| `--algs-enabled SET` | `-DOQS_ALGS_ENABLED=SET` | `STD`, `NIST_R4`, `NIST_SIG_ONRAMP`, `All` |
+| `--no-openssl` | `-DOQS_USE_OPENSSL=OFF` | Disable OpenSSL dependency |
+| `--build-only-lib` | `-DOQS_BUILD_ONLY_LIB=ON` | Skip tests and docs |
+| `--no-dist-build` | `-DOQS_DIST_BUILD=OFF` | Optimise for the current machine only |
+| `--install-prefix PATH` | `-DCMAKE_INSTALL_PREFIX=PATH` | Where `ninja install` puts files |
+| `-D KEY=VALUE` | `-DKEY=VALUE` | Pass any CMake option directly |
+
+Any CMake option not listed above can still be passed with `-D`, e.g.:
+
+```sh
+./build_liboqs.sh -DOQS_SPEED_USE_ARM_PMU=ON
+```
 
 ### Windows
 
