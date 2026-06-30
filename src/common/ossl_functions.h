@@ -6,6 +6,7 @@
 // code by defining the FUNC macro, so no header guard should be
 // added here.
 
+VOID_FUNC(void, ERR_clear_error, (void), ())
 VOID_FUNC(void, ERR_print_errors_fp, (FILE *fp), (fp))
 VOID_FUNC(void, EVP_CIPHER_CTX_free, (EVP_CIPHER_CTX *c), (c))
 FUNC(EVP_CIPHER_CTX *, EVP_CIPHER_CTX_new, (void), ())
