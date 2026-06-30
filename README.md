@@ -184,7 +184,7 @@ The following instructions assume we are in `build`.
 
 `build_liboqs.sh` is a convenience wrapper around the standard CMake + Ninja build that handles OS detection, dependency installation, and exposes the most common [CMake options](CONFIGURE.md) as named flags.
 
-#### Basic usage
+**Basic usage**
 
 ```sh
 # Default build (installs deps, static library, all algorithms, Release mode)
@@ -203,7 +203,7 @@ The following instructions assume we are in `build`.
 ./build_liboqs.sh --help
 ```
 
-#### How the script works, step by step
+**Script internals, step by step**
 
 1. **Detects the OS** (macOS, Ubuntu/Debian, NixOS) and installs missing build dependencies automatically — Homebrew on macOS, `apt` on Debian/Ubuntu, `nix develop` on NixOS.
 2. **Checks for build-directory conflicts** — if an existing `build/` was created with a different CMake generator it is removed before proceeding.
@@ -215,7 +215,7 @@ The following instructions assume we are in `build`.
 4. **Runs `ninja`** to compile the library and (unless `--build-only-lib`) the test harnesses under `build/tests/`.
 5. **Prints next-step hints** — how to run `ninja install`, `ninja run_tests`, and install Python test dependencies.
 
-#### Dependency-check-only mode
+**Dependency-check-only mode**
 
 Pass `--build-only` to verify all required tools are present without installing or building anything:
 
@@ -223,7 +223,7 @@ Pass `--build-only` to verify all required tools are present without installing 
 ./build_liboqs.sh --build-only
 ```
 
-#### Key flags reference
+**Key flags reference**
 
 | Flag | CMake equivalent | Description |
 |------|-----------------|-------------|
