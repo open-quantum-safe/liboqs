@@ -118,6 +118,8 @@ implementation as the default backend for `KEM_ntruprime_sntrup761`.
 
 ### Bug fixes
 
+- Route ERR_clear_error through dlsym wrapper in DLOPEN builds
+[#2484](https://github.com/open-quantum-safe/liboqs/pull/2484)
 - Fixed incremental absorption bug in AVX512VL SHA3-512
 [#2442](https://github.com/open-quantum-safe/liboqs/pull/2442)
 - Implemented fallback for when `EVP_DigestSqueeze` is unavailable
