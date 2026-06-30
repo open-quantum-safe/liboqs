@@ -203,7 +203,7 @@ The following instructions assume we are in `build`.
 ./build_liboqs.sh --help
 ```
 
-#### What the script does, step by step
+#### How the script works, step by step
 
 1. **Detects the OS** (macOS, Ubuntu/Debian, NixOS) and installs missing build dependencies automatically — Homebrew on macOS, `apt` on Debian/Ubuntu, `nix develop` on NixOS.
 2. **Checks for build-directory conflicts** — if an existing `build/` was created with a different CMake generator it is removed before proceeding.
