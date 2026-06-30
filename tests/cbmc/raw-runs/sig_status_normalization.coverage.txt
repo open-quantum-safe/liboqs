@@ -1,0 +1,178 @@
+--cover is incompatible with --unwinding-assertions, so unwinding-assertions will be defaulted to false
+**** WARNING: Use --unwinding-assertions to obtain sound verification results
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking oqs_memory
+Type-checking sig
+Type-checking sig_status_normalization_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Rewriting existing assertions as assumptions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is UNSATISFIABLE
+
+** coverage results:
+[OQS_SIG_keypair.coverage.1] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer NULL in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.2] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer invalid in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.3] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: deallocated dynamic object in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.4] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: dead object in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.5] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer outside object bounds in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.6] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: invalid integer address in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.7] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer NULL in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.8] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer invalid in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.9] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: deallocated dynamic object in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.10] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: dead object in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.11] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer outside object bounds in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.12] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: invalid integer address in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.13] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer NULL in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.14] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer invalid in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.15] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: deallocated dynamic object in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.16] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: dead object in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.17] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: pointer outside object bounds in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.18] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereference failure: invalid integer address in sig->keypair: SATISFIED
+[OQS_SIG_keypair.coverage.19] file src/sig/sig.c line 3063 function OQS_SIG_keypair dereferenced function pointer must be model_keypair: FAILED
+[OQS_SIG_sign.coverage.1] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer NULL in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.2] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer invalid in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.3] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: deallocated dynamic object in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.4] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: dead object in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.5] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer outside object bounds in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.6] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: invalid integer address in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.7] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer NULL in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.8] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer invalid in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.9] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: deallocated dynamic object in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.10] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: dead object in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.11] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer outside object bounds in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.12] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: invalid integer address in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.13] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer NULL in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.14] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer invalid in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.15] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: deallocated dynamic object in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.16] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: dead object in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.17] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: pointer outside object bounds in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.18] file src/sig/sig.c line 3071 function OQS_SIG_sign dereference failure: invalid integer address in sig->sign: SATISFIED
+[OQS_SIG_sign.coverage.19] file src/sig/sig.c line 3071 function OQS_SIG_sign dereferenced function pointer must be one of [model_sign, model_verify]: FAILED
+[OQS_SIG_sign_with_ctx_str.coverage.1] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer NULL in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.2] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer invalid in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.3] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: deallocated dynamic object in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.4] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: dead object in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.5] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer outside object bounds in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.6] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: invalid integer address in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.7] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer NULL in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.8] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer invalid in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.9] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: deallocated dynamic object in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.10] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: dead object in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.11] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer outside object bounds in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.12] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: invalid integer address in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.13] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer NULL in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.14] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer invalid in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.15] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: deallocated dynamic object in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.16] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: dead object in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.17] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: pointer outside object bounds in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.18] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereference failure: invalid integer address in sig->sign_with_ctx_str: SATISFIED
+[OQS_SIG_sign_with_ctx_str.coverage.19] file src/sig/sig.c line 3079 function OQS_SIG_sign_with_ctx_str dereferenced function pointer must be one of [model_sign_with_ctx, model_verify_with_ctx]: FAILED
+[OQS_SIG_verify.coverage.1] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer NULL in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.2] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer invalid in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.3] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: deallocated dynamic object in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.4] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: dead object in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.5] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer outside object bounds in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.6] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: invalid integer address in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.7] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer NULL in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.8] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer invalid in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.9] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: deallocated dynamic object in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.10] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: dead object in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.11] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer outside object bounds in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.12] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: invalid integer address in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.13] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer NULL in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.14] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer invalid in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.15] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: deallocated dynamic object in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.16] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: dead object in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.17] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: pointer outside object bounds in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.18] file src/sig/sig.c line 3087 function OQS_SIG_verify dereference failure: invalid integer address in sig->verify: SATISFIED
+[OQS_SIG_verify.coverage.19] file src/sig/sig.c line 3087 function OQS_SIG_verify dereferenced function pointer must be one of [model_sign, model_verify]: FAILED
+[OQS_SIG_verify_with_ctx_str.coverage.1] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer NULL in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.2] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer invalid in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.3] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: deallocated dynamic object in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.4] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: dead object in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.5] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer outside object bounds in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.6] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: invalid integer address in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.7] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer NULL in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.8] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer invalid in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.9] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: deallocated dynamic object in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.10] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: dead object in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.11] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer outside object bounds in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.12] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: invalid integer address in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.13] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer NULL in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.14] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer invalid in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.15] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: deallocated dynamic object in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.16] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: dead object in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.17] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: pointer outside object bounds in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.18] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereference failure: invalid integer address in sig->verify_with_ctx_str: SATISFIED
+[OQS_SIG_verify_with_ctx_str.coverage.19] file src/sig/sig.c line 3095 function OQS_SIG_verify_with_ctx_str dereferenced function pointer must be one of [model_sign_with_ctx, model_verify_with_ctx]: FAILED
+[main.coverage.1] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 187 function main signature dispatch rejects missing object or callback: SATISFIED
+[main.coverage.2] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 189 function main signature dispatch short-circuits before callback: SATISFIED
+[main.coverage.3] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 194 function main signature dispatch normalizes callback status: SATISFIED
+[main.coverage.4] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 196 function main signature dispatch invokes callback once: SATISFIED
+[model_keypair.coverage.1] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 27 function model_keypair keypair forwards public key pointer: SATISFIED
+[model_keypair.coverage.2] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 29 function model_keypair keypair forwards secret key pointer: SATISFIED
+[model_sign.coverage.1] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 38 function model_sign sign forwards signature pointer: SATISFIED
+[model_sign.coverage.2] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 40 function model_sign sign forwards signature length pointer: SATISFIED
+[model_sign.coverage.3] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 42 function model_sign sign forwards message pointer: SATISFIED
+[model_sign.coverage.4] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 44 function model_sign sign forwards message length: SATISFIED
+[model_sign.coverage.5] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 46 function model_sign sign forwards secret key pointer: SATISFIED
+[model_sign_with_ctx.coverage.1] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 56 function model_sign_with_ctx sign_with_ctx forwards signature pointer: SATISFIED
+[model_sign_with_ctx.coverage.2] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 58 function model_sign_with_ctx sign_with_ctx forwards signature length pointer: SATISFIED
+[model_sign_with_ctx.coverage.3] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 60 function model_sign_with_ctx sign_with_ctx forwards message pointer: SATISFIED
+[model_sign_with_ctx.coverage.4] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 62 function model_sign_with_ctx sign_with_ctx forwards message length: SATISFIED
+[model_sign_with_ctx.coverage.5] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 64 function model_sign_with_ctx sign_with_ctx forwards context pointer: SATISFIED
+[model_sign_with_ctx.coverage.6] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 66 function model_sign_with_ctx sign_with_ctx forwards context length: SATISFIED
+[model_sign_with_ctx.coverage.7] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 68 function model_sign_with_ctx sign_with_ctx forwards secret key pointer: SATISFIED
+[model_verify.coverage.1] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 77 function model_verify verify forwards message pointer: SATISFIED
+[model_verify.coverage.2] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 79 function model_verify verify forwards message length: SATISFIED
+[model_verify.coverage.3] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 81 function model_verify verify forwards signature pointer: SATISFIED
+[model_verify.coverage.4] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 83 function model_verify dereference failure: pointer NULL in *expected_signature_len: SATISFIED
+[model_verify.coverage.5] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 83 function model_verify dereference failure: pointer invalid in *expected_signature_len: SATISFIED
+[model_verify.coverage.6] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 83 function model_verify dereference failure: deallocated dynamic object in *expected_signature_len: SATISFIED
+[model_verify.coverage.7] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 83 function model_verify dereference failure: dead object in *expected_signature_len: SATISFIED
+[model_verify.coverage.8] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 83 function model_verify dereference failure: pointer outside object bounds in *expected_signature_len: SATISFIED
+[model_verify.coverage.9] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 83 function model_verify dereference failure: invalid integer address in *expected_signature_len: SATISFIED
+[model_verify.coverage.10] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 83 function model_verify verify forwards signature length: SATISFIED
+[model_verify.coverage.11] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 85 function model_verify verify forwards public key pointer: SATISFIED
+[model_verify_with_ctx.coverage.1] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 97 function model_verify_with_ctx verify_with_ctx forwards message pointer: SATISFIED
+[model_verify_with_ctx.coverage.2] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 99 function model_verify_with_ctx verify_with_ctx forwards message length: SATISFIED
+[model_verify_with_ctx.coverage.3] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 101 function model_verify_with_ctx verify_with_ctx forwards signature pointer: SATISFIED
+[model_verify_with_ctx.coverage.4] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 103 function model_verify_with_ctx dereference failure: pointer NULL in *expected_signature_len: SATISFIED
+[model_verify_with_ctx.coverage.5] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 103 function model_verify_with_ctx dereference failure: pointer invalid in *expected_signature_len: SATISFIED
+[model_verify_with_ctx.coverage.6] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 103 function model_verify_with_ctx dereference failure: deallocated dynamic object in *expected_signature_len: SATISFIED
+[model_verify_with_ctx.coverage.7] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 103 function model_verify_with_ctx dereference failure: dead object in *expected_signature_len: SATISFIED
+[model_verify_with_ctx.coverage.8] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 103 function model_verify_with_ctx dereference failure: pointer outside object bounds in *expected_signature_len: SATISFIED
+[model_verify_with_ctx.coverage.9] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 103 function model_verify_with_ctx dereference failure: invalid integer address in *expected_signature_len: SATISFIED
+[model_verify_with_ctx.coverage.10] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 103 function model_verify_with_ctx verify_with_ctx forwards signature length: SATISFIED
+[model_verify_with_ctx.coverage.11] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 105 function model_verify_with_ctx verify_with_ctx forwards context pointer: SATISFIED
+[model_verify_with_ctx.coverage.12] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 107 function model_verify_with_ctx verify_with_ctx forwards context length: SATISFIED
+[model_verify_with_ctx.coverage.13] file tests/cbmc/harnesses/sig_status_normalization_harness.c line 109 function model_verify_with_ctx verify_with_ctx forwards public key pointer: SATISFIED
+
+** 132 of 137 covered (96.4%)

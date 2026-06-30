@@ -1,0 +1,177 @@
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking oqs_memory
+Type-checking sig
+Type-checking sig_status_normalization_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is UNSATISFIABLE
+
+** Results:
+src/sig/sig.c function OQS_SIG_keypair
+[OQS_SIG_keypair.pointer_dereference.1] line 3063 dereference failure: pointer NULL in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.2] line 3063 dereference failure: pointer invalid in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.3] line 3063 dereference failure: deallocated dynamic object in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.4] line 3063 dereference failure: dead object in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.5] line 3063 dereference failure: pointer outside object bounds in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.6] line 3063 dereference failure: invalid integer address in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.7] line 3063 dereference failure: pointer NULL in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.8] line 3063 dereference failure: pointer invalid in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.9] line 3063 dereference failure: deallocated dynamic object in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.10] line 3063 dereference failure: dead object in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.11] line 3063 dereference failure: pointer outside object bounds in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.12] line 3063 dereference failure: invalid integer address in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.13] line 3063 dereference failure: pointer NULL in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.14] line 3063 dereference failure: pointer invalid in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.15] line 3063 dereference failure: deallocated dynamic object in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.16] line 3063 dereference failure: dead object in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.17] line 3063 dereference failure: pointer outside object bounds in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.18] line 3063 dereference failure: invalid integer address in sig->keypair: SUCCESS
+[OQS_SIG_keypair.pointer_dereference.19] line 3063 dereferenced function pointer must be model_keypair: SUCCESS
+
+src/sig/sig.c function OQS_SIG_sign
+[OQS_SIG_sign.pointer_dereference.1] line 3071 dereference failure: pointer NULL in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.2] line 3071 dereference failure: pointer invalid in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.3] line 3071 dereference failure: deallocated dynamic object in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.4] line 3071 dereference failure: dead object in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.5] line 3071 dereference failure: pointer outside object bounds in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.6] line 3071 dereference failure: invalid integer address in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.7] line 3071 dereference failure: pointer NULL in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.8] line 3071 dereference failure: pointer invalid in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.9] line 3071 dereference failure: deallocated dynamic object in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.10] line 3071 dereference failure: dead object in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.11] line 3071 dereference failure: pointer outside object bounds in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.12] line 3071 dereference failure: invalid integer address in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.13] line 3071 dereference failure: pointer NULL in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.14] line 3071 dereference failure: pointer invalid in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.15] line 3071 dereference failure: deallocated dynamic object in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.16] line 3071 dereference failure: dead object in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.17] line 3071 dereference failure: pointer outside object bounds in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.18] line 3071 dereference failure: invalid integer address in sig->sign: SUCCESS
+[OQS_SIG_sign.pointer_dereference.19] line 3071 dereferenced function pointer must be one of [model_sign, model_verify]: SUCCESS
+
+src/sig/sig.c function OQS_SIG_sign_with_ctx_str
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.1] line 3079 dereference failure: pointer NULL in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.2] line 3079 dereference failure: pointer invalid in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.3] line 3079 dereference failure: deallocated dynamic object in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.4] line 3079 dereference failure: dead object in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.5] line 3079 dereference failure: pointer outside object bounds in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.6] line 3079 dereference failure: invalid integer address in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.7] line 3079 dereference failure: pointer NULL in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.8] line 3079 dereference failure: pointer invalid in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.9] line 3079 dereference failure: deallocated dynamic object in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.10] line 3079 dereference failure: dead object in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.11] line 3079 dereference failure: pointer outside object bounds in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.12] line 3079 dereference failure: invalid integer address in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.13] line 3079 dereference failure: pointer NULL in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.14] line 3079 dereference failure: pointer invalid in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.15] line 3079 dereference failure: deallocated dynamic object in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.16] line 3079 dereference failure: dead object in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.17] line 3079 dereference failure: pointer outside object bounds in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.18] line 3079 dereference failure: invalid integer address in sig->sign_with_ctx_str: SUCCESS
+[OQS_SIG_sign_with_ctx_str.pointer_dereference.19] line 3079 dereferenced function pointer must be one of [model_sign_with_ctx, model_verify_with_ctx]: SUCCESS
+
+src/sig/sig.c function OQS_SIG_verify
+[OQS_SIG_verify.pointer_dereference.1] line 3087 dereference failure: pointer NULL in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.2] line 3087 dereference failure: pointer invalid in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.3] line 3087 dereference failure: deallocated dynamic object in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.4] line 3087 dereference failure: dead object in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.5] line 3087 dereference failure: pointer outside object bounds in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.6] line 3087 dereference failure: invalid integer address in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.7] line 3087 dereference failure: pointer NULL in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.8] line 3087 dereference failure: pointer invalid in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.9] line 3087 dereference failure: deallocated dynamic object in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.10] line 3087 dereference failure: dead object in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.11] line 3087 dereference failure: pointer outside object bounds in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.12] line 3087 dereference failure: invalid integer address in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.13] line 3087 dereference failure: pointer NULL in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.14] line 3087 dereference failure: pointer invalid in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.15] line 3087 dereference failure: deallocated dynamic object in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.16] line 3087 dereference failure: dead object in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.17] line 3087 dereference failure: pointer outside object bounds in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.18] line 3087 dereference failure: invalid integer address in sig->verify: SUCCESS
+[OQS_SIG_verify.pointer_dereference.19] line 3087 dereferenced function pointer must be one of [model_sign, model_verify]: SUCCESS
+
+src/sig/sig.c function OQS_SIG_verify_with_ctx_str
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.1] line 3095 dereference failure: pointer NULL in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.2] line 3095 dereference failure: pointer invalid in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.3] line 3095 dereference failure: deallocated dynamic object in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.4] line 3095 dereference failure: dead object in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.5] line 3095 dereference failure: pointer outside object bounds in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.6] line 3095 dereference failure: invalid integer address in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.7] line 3095 dereference failure: pointer NULL in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.8] line 3095 dereference failure: pointer invalid in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.9] line 3095 dereference failure: deallocated dynamic object in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.10] line 3095 dereference failure: dead object in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.11] line 3095 dereference failure: pointer outside object bounds in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.12] line 3095 dereference failure: invalid integer address in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.13] line 3095 dereference failure: pointer NULL in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.14] line 3095 dereference failure: pointer invalid in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.15] line 3095 dereference failure: deallocated dynamic object in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.16] line 3095 dereference failure: dead object in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.17] line 3095 dereference failure: pointer outside object bounds in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.18] line 3095 dereference failure: invalid integer address in sig->verify_with_ctx_str: SUCCESS
+[OQS_SIG_verify_with_ctx_str.pointer_dereference.19] line 3095 dereferenced function pointer must be one of [model_sign_with_ctx, model_verify_with_ctx]: SUCCESS
+
+tests/cbmc/harnesses/sig_status_normalization_harness.c function main
+[main.assertion.1] line 187 signature dispatch rejects missing object or callback: SUCCESS
+[main.assertion.2] line 189 signature dispatch short-circuits before callback: SUCCESS
+[main.assertion.3] line 194 signature dispatch normalizes callback status: SUCCESS
+[main.assertion.4] line 196 signature dispatch invokes callback once: SUCCESS
+
+tests/cbmc/harnesses/sig_status_normalization_harness.c function model_keypair
+[model_keypair.assertion.1] line 27 keypair forwards public key pointer: SUCCESS
+[model_keypair.assertion.2] line 29 keypair forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_status_normalization_harness.c function model_sign
+[model_sign.assertion.1] line 38 sign forwards signature pointer: SUCCESS
+[model_sign.assertion.2] line 40 sign forwards signature length pointer: SUCCESS
+[model_sign.assertion.3] line 42 sign forwards message pointer: SUCCESS
+[model_sign.assertion.4] line 44 sign forwards message length: SUCCESS
+[model_sign.assertion.5] line 46 sign forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_status_normalization_harness.c function model_sign_with_ctx
+[model_sign_with_ctx.assertion.1] line 56 sign_with_ctx forwards signature pointer: SUCCESS
+[model_sign_with_ctx.assertion.2] line 58 sign_with_ctx forwards signature length pointer: SUCCESS
+[model_sign_with_ctx.assertion.3] line 60 sign_with_ctx forwards message pointer: SUCCESS
+[model_sign_with_ctx.assertion.4] line 62 sign_with_ctx forwards message length: SUCCESS
+[model_sign_with_ctx.assertion.5] line 64 sign_with_ctx forwards context pointer: SUCCESS
+[model_sign_with_ctx.assertion.6] line 66 sign_with_ctx forwards context length: SUCCESS
+[model_sign_with_ctx.assertion.7] line 68 sign_with_ctx forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_status_normalization_harness.c function model_verify
+[model_verify.assertion.1] line 77 verify forwards message pointer: SUCCESS
+[model_verify.assertion.2] line 79 verify forwards message length: SUCCESS
+[model_verify.assertion.3] line 81 verify forwards signature pointer: SUCCESS
+[model_verify.assertion.4] line 83 verify forwards signature length: SUCCESS
+[model_verify.pointer_dereference.1] line 83 dereference failure: pointer NULL in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.2] line 83 dereference failure: pointer invalid in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.3] line 83 dereference failure: deallocated dynamic object in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.4] line 83 dereference failure: dead object in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.5] line 83 dereference failure: pointer outside object bounds in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.6] line 83 dereference failure: invalid integer address in *expected_signature_len: SUCCESS
+[model_verify.assertion.5] line 85 verify forwards public key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_status_normalization_harness.c function model_verify_with_ctx
+[model_verify_with_ctx.assertion.1] line 97 verify_with_ctx forwards message pointer: SUCCESS
+[model_verify_with_ctx.assertion.2] line 99 verify_with_ctx forwards message length: SUCCESS
+[model_verify_with_ctx.assertion.3] line 101 verify_with_ctx forwards signature pointer: SUCCESS
+[model_verify_with_ctx.assertion.4] line 103 verify_with_ctx forwards signature length: SUCCESS
+[model_verify_with_ctx.pointer_dereference.1] line 103 dereference failure: pointer NULL in *expected_signature_len: SUCCESS
+[model_verify_with_ctx.pointer_dereference.2] line 103 dereference failure: pointer invalid in *expected_signature_len: SUCCESS
+[model_verify_with_ctx.pointer_dereference.3] line 103 dereference failure: deallocated dynamic object in *expected_signature_len: SUCCESS
+[model_verify_with_ctx.pointer_dereference.4] line 103 dereference failure: dead object in *expected_signature_len: SUCCESS
+[model_verify_with_ctx.pointer_dereference.5] line 103 dereference failure: pointer outside object bounds in *expected_signature_len: SUCCESS
+[model_verify_with_ctx.pointer_dereference.6] line 103 dereference failure: invalid integer address in *expected_signature_len: SUCCESS
+[model_verify_with_ctx.assertion.5] line 105 verify_with_ctx forwards context pointer: SUCCESS
+[model_verify_with_ctx.assertion.6] line 107 verify_with_ctx forwards context length: SUCCESS
+[model_verify_with_ctx.assertion.7] line 109 verify_with_ctx forwards public key pointer: SUCCESS
+
+** 0 of 137 failed (1 iterations)
+VERIFICATION SUCCESSFUL

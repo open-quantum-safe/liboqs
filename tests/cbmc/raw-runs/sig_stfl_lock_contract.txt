@@ -1,0 +1,139 @@
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking oqs_memory
+Type-checking sig_stfl
+Type-checking sig_stfl_lock_contract_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is UNSATISFIABLE
+
+** Results:
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_SECRET_KEY_SET_lock
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.pointer_dereference.1] line 1567 dereference failure: pointer NULL in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.pointer_dereference.2] line 1567 dereference failure: pointer invalid in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.pointer_dereference.3] line 1567 dereference failure: deallocated dynamic object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.pointer_dereference.4] line 1567 dereference failure: dead object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.pointer_dereference.5] line 1567 dereference failure: pointer outside object bounds in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_lock.pointer_dereference.6] line 1567 dereference failure: invalid integer address in sk->lock_key: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_SECRET_KEY_SET_mutex
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.pointer_dereference.1] line 1583 dereference failure: pointer NULL in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.pointer_dereference.2] line 1583 dereference failure: pointer invalid in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.pointer_dereference.3] line 1583 dereference failure: deallocated dynamic object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.pointer_dereference.4] line 1583 dereference failure: dead object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.pointer_dereference.5] line 1583 dereference failure: pointer outside object bounds in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_mutex.pointer_dereference.6] line 1583 dereference failure: invalid integer address in sk->mutex: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_SECRET_KEY_SET_unlock
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.pointer_dereference.1] line 1575 dereference failure: pointer NULL in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.pointer_dereference.2] line 1575 dereference failure: pointer invalid in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.pointer_dereference.3] line 1575 dereference failure: deallocated dynamic object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.pointer_dereference.4] line 1575 dereference failure: dead object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.pointer_dereference.5] line 1575 dereference failure: pointer outside object bounds in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_SET_unlock.pointer_dereference.6] line 1575 dereference failure: invalid integer address in sk->unlock_key: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_SECRET_KEY_lock
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.1] line 1591 dereference failure: pointer NULL in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.2] line 1591 dereference failure: pointer invalid in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.3] line 1591 dereference failure: deallocated dynamic object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.4] line 1591 dereference failure: dead object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.5] line 1591 dereference failure: pointer outside object bounds in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.6] line 1591 dereference failure: invalid integer address in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.7] line 1596 dereference failure: pointer NULL in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.8] line 1596 dereference failure: pointer invalid in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.9] line 1596 dereference failure: deallocated dynamic object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.10] line 1596 dereference failure: dead object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.11] line 1596 dereference failure: pointer outside object bounds in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.12] line 1596 dereference failure: invalid integer address in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.13] line 1600 dereference failure: pointer NULL in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.14] line 1600 dereference failure: pointer invalid in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.15] line 1600 dereference failure: deallocated dynamic object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.16] line 1600 dereference failure: dead object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.17] line 1600 dereference failure: pointer outside object bounds in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.18] line 1600 dereference failure: invalid integer address in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.19] line 1600 dereference failure: pointer NULL in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.20] line 1600 dereference failure: pointer invalid in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.21] line 1600 dereference failure: deallocated dynamic object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.22] line 1600 dereference failure: dead object in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.23] line 1600 dereference failure: pointer outside object bounds in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.24] line 1600 dereference failure: invalid integer address in sk->lock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.25] line 1600 dereferenced function pointer must be one of [model_lock, model_unlock]: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.26] line 1600 dereference failure: pointer NULL in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.27] line 1600 dereference failure: pointer invalid in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.28] line 1600 dereference failure: deallocated dynamic object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.29] line 1600 dereference failure: dead object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.30] line 1600 dereference failure: pointer outside object bounds in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.31] line 1600 dereference failure: invalid integer address in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.32] line 1600 dereference failure: pointer NULL in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.33] line 1600 dereference failure: pointer invalid in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.34] line 1600 dereference failure: deallocated dynamic object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.35] line 1600 dereference failure: dead object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.36] line 1600 dereference failure: pointer outside object bounds in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_lock.pointer_dereference.37] line 1600 dereference failure: invalid integer address in sk->mutex: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_SECRET_KEY_unlock
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.1] line 1608 dereference failure: pointer NULL in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.2] line 1608 dereference failure: pointer invalid in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.3] line 1608 dereference failure: deallocated dynamic object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.4] line 1608 dereference failure: dead object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.5] line 1608 dereference failure: pointer outside object bounds in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.6] line 1608 dereference failure: invalid integer address in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.7] line 1613 dereference failure: pointer NULL in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.8] line 1613 dereference failure: pointer invalid in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.9] line 1613 dereference failure: deallocated dynamic object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.10] line 1613 dereference failure: dead object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.11] line 1613 dereference failure: pointer outside object bounds in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.12] line 1613 dereference failure: invalid integer address in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.13] line 1617 dereference failure: pointer NULL in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.14] line 1617 dereference failure: pointer invalid in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.15] line 1617 dereference failure: deallocated dynamic object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.16] line 1617 dereference failure: dead object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.17] line 1617 dereference failure: pointer outside object bounds in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.18] line 1617 dereference failure: invalid integer address in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.19] line 1617 dereference failure: pointer NULL in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.20] line 1617 dereference failure: pointer invalid in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.21] line 1617 dereference failure: deallocated dynamic object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.22] line 1617 dereference failure: dead object in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.23] line 1617 dereference failure: pointer outside object bounds in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.24] line 1617 dereference failure: invalid integer address in sk->unlock_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.25] line 1617 dereferenced function pointer must be one of [model_lock, model_unlock]: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.26] line 1617 dereference failure: pointer NULL in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.27] line 1617 dereference failure: pointer invalid in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.28] line 1617 dereference failure: deallocated dynamic object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.29] line 1617 dereference failure: dead object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.30] line 1617 dereference failure: pointer outside object bounds in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.31] line 1617 dereference failure: invalid integer address in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.32] line 1617 dereference failure: pointer NULL in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.33] line 1617 dereference failure: pointer invalid in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.34] line 1617 dereference failure: deallocated dynamic object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.35] line 1617 dereference failure: dead object in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.36] line 1617 dereference failure: pointer outside object bounds in sk->mutex: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_unlock.pointer_dereference.37] line 1617 dereference failure: invalid integer address in sk->mutex: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c function main
+[main.assertion.1] line 43 lock setter stores callback: SUCCESS
+[main.assertion.2] line 45 unlock setter stores callback: SUCCESS
+[main.assertion.3] line 47 mutex setter stores pointer: SUCCESS
+[main.assertion.4] line 69 lock helpers reject null key: SUCCESS
+[main.assertion.5] line 71 lock helpers do not call through null key: SUCCESS
+[main.assertion.6] line 74 unset lock callback is a no-op: SUCCESS
+[main.assertion.7] line 76 unset lock callback is not invoked: SUCCESS
+[main.assertion.8] line 79 configured lock callback requires mutex: SUCCESS
+[main.assertion.9] line 81 missing mutex short-circuits callback: SUCCESS
+[main.assertion.10] line 84 lock helper propagates callback status: SUCCESS
+[main.assertion.11] line 86 lock helper invokes callback once: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c function model_lock
+[model_lock.assertion.1] line 16 lock callback receives configured mutex: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_lock_contract_harness.c function model_unlock
+[model_unlock.assertion.1] line 23 unlock callback receives configured mutex: SUCCESS
+
+** 0 of 105 failed (1 iterations)
+VERIFICATION SUCCESSFUL

@@ -1,0 +1,217 @@
+--cover is incompatible with --unwinding-assertions, so unwinding-assertions will be defaulted to false
+**** WARNING: Use --unwinding-assertions to obtain sound verification results
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking oqs_memory
+Type-checking sig_stfl
+Type-checking sig_stfl_dispatch_contract_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Rewriting existing assertions as assumptions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker: instance is SATISFIABLE
+Running propositional reduction
+SAT checker inconsistent: instance is UNSATISFIABLE
+
+** coverage results:
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.1] file src/sig_stfl/sig_stfl.c line 1555 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer NULL in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.2] file src/sig_stfl/sig_stfl.c line 1555 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer invalid in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.3] file src/sig_stfl/sig_stfl.c line 1555 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: deallocated dynamic object in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.4] file src/sig_stfl/sig_stfl.c line 1555 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: dead object in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.5] file src/sig_stfl/sig_stfl.c line 1555 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer outside object bounds in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.6] file src/sig_stfl/sig_stfl.c line 1555 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: invalid integer address in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.7] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer NULL in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.8] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer invalid in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.9] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: deallocated dynamic object in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.10] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: dead object in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.11] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer outside object bounds in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.12] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: invalid integer address in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.13] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer NULL in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.14] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer invalid in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.15] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: deallocated dynamic object in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.16] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: dead object in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.17] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: pointer outside object bounds in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.18] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereference failure: invalid integer address in sk->deserialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_deserialize.coverage.19] file src/sig_stfl/sig_stfl.c line 1559 function OQS_SIG_STFL_SECRET_KEY_deserialize dereferenced function pointer must be model_deserialize: FAILED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.1] file src/sig_stfl/sig_stfl.c line 1546 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer NULL in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.2] file src/sig_stfl/sig_stfl.c line 1546 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer invalid in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.3] file src/sig_stfl/sig_stfl.c line 1546 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: deallocated dynamic object in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.4] file src/sig_stfl/sig_stfl.c line 1546 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: dead object in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.5] file src/sig_stfl/sig_stfl.c line 1546 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer outside object bounds in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.6] file src/sig_stfl/sig_stfl.c line 1546 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: invalid integer address in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.7] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer NULL in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.8] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer invalid in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.9] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: deallocated dynamic object in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.10] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: dead object in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.11] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer outside object bounds in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.12] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: invalid integer address in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.13] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer NULL in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.14] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer invalid in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.15] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: deallocated dynamic object in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.16] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: dead object in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.17] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: pointer outside object bounds in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.18] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereference failure: invalid integer address in sk->serialize_key: SATISFIED
+[OQS_SIG_STFL_SECRET_KEY_serialize.coverage.19] file src/sig_stfl/sig_stfl.c line 1550 function OQS_SIG_STFL_SECRET_KEY_serialize dereferenced function pointer must be model_serialize: FAILED
+[OQS_SIG_STFL_keypair.coverage.1] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer NULL in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.2] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer invalid in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.3] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: deallocated dynamic object in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.4] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: dead object in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.5] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer outside object bounds in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.6] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: invalid integer address in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.7] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer NULL in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.8] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer invalid in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.9] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: deallocated dynamic object in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.10] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: dead object in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.11] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer outside object bounds in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.12] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: invalid integer address in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.13] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer NULL in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.14] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer invalid in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.15] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: deallocated dynamic object in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.16] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: dead object in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.17] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: pointer outside object bounds in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.18] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereference failure: invalid integer address in sig->keypair: SATISFIED
+[OQS_SIG_STFL_keypair.coverage.19] file src/sig_stfl/sig_stfl.c line 1014 function OQS_SIG_STFL_keypair dereferenced function pointer must be one of [model_keypair, model_sigs_remaining, model_sigs_total]: FAILED
+[OQS_SIG_STFL_sign.coverage.1] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer NULL in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.2] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer invalid in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.3] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: deallocated dynamic object in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.4] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: dead object in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.5] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer outside object bounds in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.6] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: invalid integer address in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.7] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer NULL in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.8] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer invalid in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.9] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: deallocated dynamic object in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.10] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: dead object in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.11] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer outside object bounds in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.12] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: invalid integer address in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.13] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer NULL in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.14] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer invalid in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.15] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: deallocated dynamic object in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.16] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: dead object in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.17] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: pointer outside object bounds in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.18] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereference failure: invalid integer address in sig->sign: SATISFIED
+[OQS_SIG_STFL_sign.coverage.19] file src/sig_stfl/sig_stfl.c line 1035 function OQS_SIG_STFL_sign dereferenced function pointer must be one of [model_sign, model_verify]: FAILED
+[OQS_SIG_STFL_sigs_remaining.coverage.1] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer NULL in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.2] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer invalid in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.3] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: deallocated dynamic object in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.4] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: dead object in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.5] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer outside object bounds in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.6] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: invalid integer address in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.7] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer NULL in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.8] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer invalid in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.9] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: deallocated dynamic object in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.10] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: dead object in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.11] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer outside object bounds in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.12] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: invalid integer address in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.13] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer NULL in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.14] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer invalid in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.15] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: deallocated dynamic object in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.16] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: dead object in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.17] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: pointer outside object bounds in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.18] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereference failure: invalid integer address in sig->sigs_remaining: SATISFIED
+[OQS_SIG_STFL_sigs_remaining.coverage.19] file src/sig_stfl/sig_stfl.c line 1059 function OQS_SIG_STFL_sigs_remaining dereferenced function pointer must be one of [model_keypair, model_sigs_remaining, model_sigs_total]: FAILED
+[OQS_SIG_STFL_sigs_total.coverage.1] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer NULL in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.2] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer invalid in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.3] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: deallocated dynamic object in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.4] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: dead object in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.5] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer outside object bounds in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.6] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: invalid integer address in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.7] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer NULL in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.8] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer invalid in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.9] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: deallocated dynamic object in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.10] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: dead object in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.11] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer outside object bounds in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.12] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: invalid integer address in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.13] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer NULL in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.14] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer invalid in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.15] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: deallocated dynamic object in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.16] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: dead object in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.17] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: pointer outside object bounds in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.18] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereference failure: invalid integer address in sig->sigs_total: SATISFIED
+[OQS_SIG_STFL_sigs_total.coverage.19] file src/sig_stfl/sig_stfl.c line 1075 function OQS_SIG_STFL_sigs_total dereferenced function pointer must be one of [model_keypair, model_sigs_remaining, model_sigs_total]: FAILED
+[OQS_SIG_STFL_verify.coverage.1] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer NULL in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.2] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer invalid in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.3] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: deallocated dynamic object in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.4] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: dead object in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.5] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer outside object bounds in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.6] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: invalid integer address in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.7] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer NULL in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.8] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer invalid in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.9] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: deallocated dynamic object in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.10] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: dead object in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.11] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer outside object bounds in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.12] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: invalid integer address in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.13] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer NULL in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.14] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer invalid in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.15] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: deallocated dynamic object in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.16] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: dead object in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.17] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: pointer outside object bounds in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.18] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereference failure: invalid integer address in sig->verify: SATISFIED
+[OQS_SIG_STFL_verify.coverage.19] file src/sig_stfl/sig_stfl.c line 1044 function OQS_SIG_STFL_verify dereferenced function pointer must be one of [model_sign, model_verify]: FAILED
+[main.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 228 function main stfl dispatch rejects missing wrapper input: SATISFIED
+[main.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 230 function main stfl dispatch short-circuits before callback: SATISFIED
+[main.coverage.3] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 235 function main stfl operation dispatch normalizes callback status: SATISFIED
+[main.coverage.4] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 237 function main stfl operation dispatch invokes callback once: SATISFIED
+[main.coverage.5] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 240 function main stfl key serialization dispatch preserves callback status: SATISFIED
+[main.coverage.6] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 242 function main stfl key serialization dispatch invokes callback once: SATISFIED
+[model_deserialize.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 110 function model_deserialize stfl deserialize forwards secret key pointer: SATISFIED
+[model_deserialize.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 112 function model_deserialize stfl deserialize forwards input pointer: SATISFIED
+[model_deserialize.coverage.3] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 114 function model_deserialize stfl deserialize forwards input length: SATISFIED
+[model_deserialize.coverage.4] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 116 function model_deserialize stfl deserialize forwards context pointer: SATISFIED
+[model_keypair.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 32 function model_keypair stfl keypair forwards public key pointer: SATISFIED
+[model_keypair.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 34 function model_keypair stfl keypair forwards secret key pointer: SATISFIED
+[model_serialize.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 96 function model_serialize stfl serialize forwards output pointer: SATISFIED
+[model_serialize.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 98 function model_serialize stfl serialize forwards output length pointer: SATISFIED
+[model_serialize.coverage.3] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 100 function model_serialize stfl serialize forwards secret key pointer: SATISFIED
+[model_sign.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 43 function model_sign stfl sign forwards signature pointer: SATISFIED
+[model_sign.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 45 function model_sign stfl sign forwards signature length pointer: SATISFIED
+[model_sign.coverage.3] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 47 function model_sign stfl sign forwards message pointer: SATISFIED
+[model_sign.coverage.4] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 49 function model_sign stfl sign forwards message length: SATISFIED
+[model_sign.coverage.5] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 51 function model_sign stfl sign forwards secret key pointer: SATISFIED
+[model_sigs_remaining.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 76 function model_sigs_remaining stfl sigs_remaining forwards counter pointer: SATISFIED
+[model_sigs_remaining.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 78 function model_sigs_remaining stfl sigs_remaining forwards secret key pointer: SATISFIED
+[model_sigs_total.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 86 function model_sigs_total stfl sigs_total forwards counter pointer: SATISFIED
+[model_sigs_total.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 88 function model_sigs_total stfl sigs_total forwards secret key pointer: SATISFIED
+[model_verify.coverage.1] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 60 function model_verify stfl verify forwards message pointer: SATISFIED
+[model_verify.coverage.2] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 62 function model_verify stfl verify forwards message length: SATISFIED
+[model_verify.coverage.3] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 64 function model_verify stfl verify forwards signature pointer: SATISFIED
+[model_verify.coverage.4] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 66 function model_verify dereference failure: pointer NULL in *expected_signature_len: SATISFIED
+[model_verify.coverage.5] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 66 function model_verify dereference failure: pointer invalid in *expected_signature_len: SATISFIED
+[model_verify.coverage.6] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 66 function model_verify dereference failure: deallocated dynamic object in *expected_signature_len: SATISFIED
+[model_verify.coverage.7] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 66 function model_verify dereference failure: dead object in *expected_signature_len: SATISFIED
+[model_verify.coverage.8] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 66 function model_verify dereference failure: pointer outside object bounds in *expected_signature_len: SATISFIED
+[model_verify.coverage.9] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 66 function model_verify dereference failure: invalid integer address in *expected_signature_len: SATISFIED
+[model_verify.coverage.10] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 66 function model_verify stfl verify forwards signature length: SATISFIED
+[model_verify.coverage.11] file tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c line 68 function model_verify stfl verify forwards public key pointer: SATISFIED
+
+** 161 of 168 covered (95.8%)

@@ -1,0 +1,216 @@
+CBMC version 6.9.0 (cbmc-6.9.0) 64-bit arm64 macos
+Type-checking oqs_memory
+Type-checking sig_stfl
+Type-checking sig_stfl_dispatch_contract_harness
+Generating GOTO Program
+Adding CPROVER library (arm64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Removing unused functions
+Starting Bounded Model Checking
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+SAT checker: instance is UNSATISFIABLE
+
+** Results:
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_SECRET_KEY_deserialize
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.1] line 1555 dereference failure: pointer NULL in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.2] line 1555 dereference failure: pointer invalid in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.3] line 1555 dereference failure: deallocated dynamic object in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.4] line 1555 dereference failure: dead object in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.5] line 1555 dereference failure: pointer outside object bounds in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.6] line 1555 dereference failure: invalid integer address in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.7] line 1559 dereference failure: pointer NULL in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.8] line 1559 dereference failure: pointer invalid in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.9] line 1559 dereference failure: deallocated dynamic object in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.10] line 1559 dereference failure: dead object in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.11] line 1559 dereference failure: pointer outside object bounds in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.12] line 1559 dereference failure: invalid integer address in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.13] line 1559 dereference failure: pointer NULL in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.14] line 1559 dereference failure: pointer invalid in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.15] line 1559 dereference failure: deallocated dynamic object in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.16] line 1559 dereference failure: dead object in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.17] line 1559 dereference failure: pointer outside object bounds in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.18] line 1559 dereference failure: invalid integer address in sk->deserialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_deserialize.pointer_dereference.19] line 1559 dereferenced function pointer must be model_deserialize: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_SECRET_KEY_serialize
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.1] line 1546 dereference failure: pointer NULL in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.2] line 1546 dereference failure: pointer invalid in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.3] line 1546 dereference failure: deallocated dynamic object in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.4] line 1546 dereference failure: dead object in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.5] line 1546 dereference failure: pointer outside object bounds in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.6] line 1546 dereference failure: invalid integer address in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.7] line 1550 dereference failure: pointer NULL in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.8] line 1550 dereference failure: pointer invalid in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.9] line 1550 dereference failure: deallocated dynamic object in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.10] line 1550 dereference failure: dead object in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.11] line 1550 dereference failure: pointer outside object bounds in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.12] line 1550 dereference failure: invalid integer address in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.13] line 1550 dereference failure: pointer NULL in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.14] line 1550 dereference failure: pointer invalid in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.15] line 1550 dereference failure: deallocated dynamic object in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.16] line 1550 dereference failure: dead object in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.17] line 1550 dereference failure: pointer outside object bounds in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.18] line 1550 dereference failure: invalid integer address in sk->serialize_key: SUCCESS
+[OQS_SIG_STFL_SECRET_KEY_serialize.pointer_dereference.19] line 1550 dereferenced function pointer must be model_serialize: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_keypair
+[OQS_SIG_STFL_keypair.pointer_dereference.1] line 1014 dereference failure: pointer NULL in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.2] line 1014 dereference failure: pointer invalid in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.3] line 1014 dereference failure: deallocated dynamic object in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.4] line 1014 dereference failure: dead object in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.5] line 1014 dereference failure: pointer outside object bounds in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.6] line 1014 dereference failure: invalid integer address in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.7] line 1014 dereference failure: pointer NULL in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.8] line 1014 dereference failure: pointer invalid in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.9] line 1014 dereference failure: deallocated dynamic object in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.10] line 1014 dereference failure: dead object in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.11] line 1014 dereference failure: pointer outside object bounds in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.12] line 1014 dereference failure: invalid integer address in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.13] line 1014 dereference failure: pointer NULL in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.14] line 1014 dereference failure: pointer invalid in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.15] line 1014 dereference failure: deallocated dynamic object in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.16] line 1014 dereference failure: dead object in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.17] line 1014 dereference failure: pointer outside object bounds in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.18] line 1014 dereference failure: invalid integer address in sig->keypair: SUCCESS
+[OQS_SIG_STFL_keypair.pointer_dereference.19] line 1014 dereferenced function pointer must be one of [model_keypair, model_sigs_remaining, model_sigs_total]: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_sign
+[OQS_SIG_STFL_sign.pointer_dereference.1] line 1035 dereference failure: pointer NULL in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.2] line 1035 dereference failure: pointer invalid in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.3] line 1035 dereference failure: deallocated dynamic object in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.4] line 1035 dereference failure: dead object in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.5] line 1035 dereference failure: pointer outside object bounds in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.6] line 1035 dereference failure: invalid integer address in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.7] line 1035 dereference failure: pointer NULL in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.8] line 1035 dereference failure: pointer invalid in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.9] line 1035 dereference failure: deallocated dynamic object in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.10] line 1035 dereference failure: dead object in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.11] line 1035 dereference failure: pointer outside object bounds in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.12] line 1035 dereference failure: invalid integer address in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.13] line 1035 dereference failure: pointer NULL in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.14] line 1035 dereference failure: pointer invalid in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.15] line 1035 dereference failure: deallocated dynamic object in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.16] line 1035 dereference failure: dead object in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.17] line 1035 dereference failure: pointer outside object bounds in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.18] line 1035 dereference failure: invalid integer address in sig->sign: SUCCESS
+[OQS_SIG_STFL_sign.pointer_dereference.19] line 1035 dereferenced function pointer must be one of [model_sign, model_verify]: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_sigs_remaining
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.1] line 1059 dereference failure: pointer NULL in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.2] line 1059 dereference failure: pointer invalid in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.3] line 1059 dereference failure: deallocated dynamic object in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.4] line 1059 dereference failure: dead object in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.5] line 1059 dereference failure: pointer outside object bounds in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.6] line 1059 dereference failure: invalid integer address in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.7] line 1059 dereference failure: pointer NULL in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.8] line 1059 dereference failure: pointer invalid in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.9] line 1059 dereference failure: deallocated dynamic object in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.10] line 1059 dereference failure: dead object in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.11] line 1059 dereference failure: pointer outside object bounds in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.12] line 1059 dereference failure: invalid integer address in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.13] line 1059 dereference failure: pointer NULL in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.14] line 1059 dereference failure: pointer invalid in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.15] line 1059 dereference failure: deallocated dynamic object in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.16] line 1059 dereference failure: dead object in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.17] line 1059 dereference failure: pointer outside object bounds in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.18] line 1059 dereference failure: invalid integer address in sig->sigs_remaining: SUCCESS
+[OQS_SIG_STFL_sigs_remaining.pointer_dereference.19] line 1059 dereferenced function pointer must be one of [model_keypair, model_sigs_remaining, model_sigs_total]: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_sigs_total
+[OQS_SIG_STFL_sigs_total.pointer_dereference.1] line 1075 dereference failure: pointer NULL in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.2] line 1075 dereference failure: pointer invalid in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.3] line 1075 dereference failure: deallocated dynamic object in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.4] line 1075 dereference failure: dead object in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.5] line 1075 dereference failure: pointer outside object bounds in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.6] line 1075 dereference failure: invalid integer address in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.7] line 1075 dereference failure: pointer NULL in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.8] line 1075 dereference failure: pointer invalid in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.9] line 1075 dereference failure: deallocated dynamic object in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.10] line 1075 dereference failure: dead object in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.11] line 1075 dereference failure: pointer outside object bounds in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.12] line 1075 dereference failure: invalid integer address in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.13] line 1075 dereference failure: pointer NULL in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.14] line 1075 dereference failure: pointer invalid in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.15] line 1075 dereference failure: deallocated dynamic object in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.16] line 1075 dereference failure: dead object in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.17] line 1075 dereference failure: pointer outside object bounds in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.18] line 1075 dereference failure: invalid integer address in sig->sigs_total: SUCCESS
+[OQS_SIG_STFL_sigs_total.pointer_dereference.19] line 1075 dereferenced function pointer must be one of [model_keypair, model_sigs_remaining, model_sigs_total]: SUCCESS
+
+src/sig_stfl/sig_stfl.c function OQS_SIG_STFL_verify
+[OQS_SIG_STFL_verify.pointer_dereference.1] line 1044 dereference failure: pointer NULL in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.2] line 1044 dereference failure: pointer invalid in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.3] line 1044 dereference failure: deallocated dynamic object in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.4] line 1044 dereference failure: dead object in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.5] line 1044 dereference failure: pointer outside object bounds in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.6] line 1044 dereference failure: invalid integer address in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.7] line 1044 dereference failure: pointer NULL in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.8] line 1044 dereference failure: pointer invalid in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.9] line 1044 dereference failure: deallocated dynamic object in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.10] line 1044 dereference failure: dead object in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.11] line 1044 dereference failure: pointer outside object bounds in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.12] line 1044 dereference failure: invalid integer address in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.13] line 1044 dereference failure: pointer NULL in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.14] line 1044 dereference failure: pointer invalid in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.15] line 1044 dereference failure: deallocated dynamic object in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.16] line 1044 dereference failure: dead object in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.17] line 1044 dereference failure: pointer outside object bounds in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.18] line 1044 dereference failure: invalid integer address in sig->verify: SUCCESS
+[OQS_SIG_STFL_verify.pointer_dereference.19] line 1044 dereferenced function pointer must be one of [model_sign, model_verify]: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function main
+[main.assertion.1] line 228 stfl dispatch rejects missing wrapper input: SUCCESS
+[main.assertion.2] line 230 stfl dispatch short-circuits before callback: SUCCESS
+[main.assertion.3] line 235 stfl operation dispatch normalizes callback status: SUCCESS
+[main.assertion.4] line 237 stfl operation dispatch invokes callback once: SUCCESS
+[main.assertion.5] line 240 stfl key serialization dispatch preserves callback status: SUCCESS
+[main.assertion.6] line 242 stfl key serialization dispatch invokes callback once: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function model_deserialize
+[model_deserialize.assertion.1] line 110 stfl deserialize forwards secret key pointer: SUCCESS
+[model_deserialize.assertion.2] line 112 stfl deserialize forwards input pointer: SUCCESS
+[model_deserialize.assertion.3] line 114 stfl deserialize forwards input length: SUCCESS
+[model_deserialize.assertion.4] line 116 stfl deserialize forwards context pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function model_keypair
+[model_keypair.assertion.1] line 32 stfl keypair forwards public key pointer: SUCCESS
+[model_keypair.assertion.2] line 34 stfl keypair forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function model_serialize
+[model_serialize.assertion.1] line 96 stfl serialize forwards output pointer: SUCCESS
+[model_serialize.assertion.2] line 98 stfl serialize forwards output length pointer: SUCCESS
+[model_serialize.assertion.3] line 100 stfl serialize forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function model_sign
+[model_sign.assertion.1] line 43 stfl sign forwards signature pointer: SUCCESS
+[model_sign.assertion.2] line 45 stfl sign forwards signature length pointer: SUCCESS
+[model_sign.assertion.3] line 47 stfl sign forwards message pointer: SUCCESS
+[model_sign.assertion.4] line 49 stfl sign forwards message length: SUCCESS
+[model_sign.assertion.5] line 51 stfl sign forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function model_sigs_remaining
+[model_sigs_remaining.assertion.1] line 76 stfl sigs_remaining forwards counter pointer: SUCCESS
+[model_sigs_remaining.assertion.2] line 78 stfl sigs_remaining forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function model_sigs_total
+[model_sigs_total.assertion.1] line 86 stfl sigs_total forwards counter pointer: SUCCESS
+[model_sigs_total.assertion.2] line 88 stfl sigs_total forwards secret key pointer: SUCCESS
+
+tests/cbmc/harnesses/sig_stfl_dispatch_contract_harness.c function model_verify
+[model_verify.assertion.1] line 60 stfl verify forwards message pointer: SUCCESS
+[model_verify.assertion.2] line 62 stfl verify forwards message length: SUCCESS
+[model_verify.assertion.3] line 64 stfl verify forwards signature pointer: SUCCESS
+[model_verify.assertion.4] line 66 stfl verify forwards signature length: SUCCESS
+[model_verify.pointer_dereference.1] line 66 dereference failure: pointer NULL in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.2] line 66 dereference failure: pointer invalid in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.3] line 66 dereference failure: deallocated dynamic object in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.4] line 66 dereference failure: dead object in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.5] line 66 dereference failure: pointer outside object bounds in *expected_signature_len: SUCCESS
+[model_verify.pointer_dereference.6] line 66 dereference failure: invalid integer address in *expected_signature_len: SUCCESS
+[model_verify.assertion.5] line 68 stfl verify forwards public key pointer: SUCCESS
+
+** 0 of 168 failed (1 iterations)
+VERIFICATION SUCCESSFUL
