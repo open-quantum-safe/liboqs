@@ -22,7 +22,7 @@ for sig in helpers.available_sigs_by_name():
 # NOTE: these are not made into fixture because each is used once or twice, so
 # the (probably non-existent) performance gain is not worth the loss of
 # debuggability
-URLROOT = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.41/gen-val/json-files/"
+URLROOT = "https://raw.githubusercontent.com/usnistgov/ACVP-Server/refs/tags/v1.1.0.42/gen-val/json-files/"
 ml_kem_encdec = urljoin(URLROOT, "ML-KEM-encapDecap-FIPS203/internalProjection.json")
 ml_kem_kg = urljoin(URLROOT, "ML-KEM-keyGen-FIPS203/internalProjection.json")
 
@@ -193,6 +193,44 @@ def test_acvp_vec_kem_encdec_val(kem_name):
 
     assert variantFound == True
 
+@helpers.filtered_test
+@pytest.mark.parametrize("kem_name", helpers.available_kems_by_name())
+def test_acvp_vec_kem_key_check(kem_name):
+    if not (helpers.is_kem_enabled_by_name(kem_name)):
+        pytest.skip("Not enabled")
+    if not (kem_name in ml_kem):
+        pytest.skip("Not supported")
+
+    resp = cached_requests_get(ml_kem_encdec) 
+    assert resp.status_code == 200
+    acvp_data = json.loads(resp.content)
+
+    variantFound = False
+    for variant in acvp_data["testGroups"]:
+        if variant["parameterSet"] == kem_name:
+            func = variant["function"]
+            if func not in ["encapsulationKeyCheck", "decapsulationKeyCheck"]:
+                continue
+                
+            variantFound = True
+            key_attr = "ek" if func == "encapsulationKeyCheck" else "dk"
+            
+            for testCase in variant["tests"]:
+                key = testCase[key_attr]
+                expected = "true" if testCase["testPassed"] else "false"
+
+                build_dir = helpers.get_current_build_dir_name()
+                helpers.run_subprocess(
+                    [
+                        f"{build_dir}/tests/vectors_kem",
+                        kem_name,
+                        func,
+                        key,
+                        expected,
+                    ]
+                )
+
+    assert variantFound == True
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
