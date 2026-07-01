@@ -19,6 +19,7 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 			- [Support limitations](#support-limitations)
 	- [Quickstart](#quickstart)
 		- [Linux and Mac](#linux-and-mac)
+		- [Using the build script](#using-the-build-script)
 		- [Windows](#windows)
 		- [Cross compilation](#cross-compilation)
 	- [Documentation](#documentation)
@@ -44,9 +45,15 @@ OQS is running a survey to better understand our community. We would like to hea
 
 ### Supported Algorithms
 
-The table below summarizes every algorithm family currently integrated into liboqs. For per-variant detail (including NIST level, constant-time status, formal verification, and available optimizations), see [ALGORITHMS.md](https://github.com/open-quantum-safe/liboqs/blob/main/ALGORITHMS.md); for upstream sources and advisories, see the per-algorithm pages under [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms).
+Details on each supported algorithm can be found in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
 
-Names of algorithms standardized by NIST — [`ML-KEM`](https://csrc.nist.gov/pubs/fips/203/final), [`ML-DSA`](https://csrc.nist.gov/pubs/fips/204/final), and [`SLH-DSA`](https://csrc.nist.gov/pubs/fips/205/final) — are stable; if NIST changes the implementation details, `liboqs` will adjust so that users are protected from such changes. All other names are subject to change. Which algorithms are built can be controlled via [`OQS_ALGS_ENABLED`](CONFIGURE.md#oQS_ALGS_ENABLED); by default, `liboqs` is built supporting every algorithm in the table, including experimental ones.
+The list below indicates all algorithms currently supported by liboqs, including experimental algorithms and already excluding algorithm variants pruned during the NIST competition, such as Kyber-90s or Dilithium-AES.
+
+The only algorithms in `liboqs` that implement NIST standards are the [`ML-KEM`](https://csrc.nist.gov/pubs/fips/203/final) (final standard) and [`ML-DSA`](https://csrc.nist.gov/pubs/fips/204/final) (final standard) variants with their respective different bit strengths. `liboqs` will retain these algorithm names selected by NIST throughout the finishing stages of the standardization process, so users can rely on their presence going forward. If NIST changes the implementation details of these algorithms, `liboqs` will adjust the implementation so that users are protected from such potential changes.
+
+Falcon has also been [selected for standardization](https://csrc.nist.gov/Projects/post-quantum-cryptography/selected-algorithms-2022), but the `liboqs` implementations of these algorithms are currently tracking Round 3 submissions and not NIST standards drafts.
+
+All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes available a [selection mechanism for algorithms on the NIST standards track, continued NIST competition, or purely experimental nature by way of the configuration variable OQS_ALGS_ENABLED](CONFIGURE.md#oQS_ALGS_ENABLED). By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
 
 <!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START -->
 #### Key encapsulation mechanisms
@@ -172,6 +179,69 @@ The following instructions assume we are in `build`.
 
 5. `ninja uninstall` can be run to remove all installation files.
 
+
+### Using the build script
+
+`build_liboqs.sh` is a convenience wrapper around the standard CMake + Ninja build that handles OS detection, dependency installation, and exposes the most common [CMake options](CONFIGURE.md) as named flags.
+
+**Basic usage**
+
+```sh
+# Default build (installs deps, static library, all algorithms, Release mode)
+./build_liboqs.sh
+
+# Shared library, Debug build
+./build_liboqs.sh --shared --build-type Debug
+
+# Minimal build — only the algorithms you need (quote the list to protect `;`)
+./build_liboqs.sh --minimal-build "KEM_ml_kem_768;SIG_ml_dsa_44"
+
+# Skip OpenSSL dependency
+./build_liboqs.sh --no-openssl
+
+# Show all available flags
+./build_liboqs.sh --help
+```
+
+**Script internals, step by step**
+
+1. **Detects the OS** (macOS, Ubuntu/Debian, NixOS) and installs missing build dependencies automatically — Homebrew on macOS, `apt` on Debian/Ubuntu, `nix develop` on NixOS.
+2. **Checks for build-directory conflicts** — if an existing `build/` was created with a different CMake generator it is removed before proceeding.
+3. **Runs `cmake -GNinja`** inside `./build/` with any flags you provided, plus these defaults when none are given:
+   - `CMAKE_BUILD_TYPE=Release`
+   - `OQS_DIST_BUILD=ON` (portable across CPUs)
+   - `OQS_USE_OPENSSL=ON`
+   - `OQS_ALGS_ENABLED=All`
+4. **Runs `ninja`** to compile the library and (unless `--build-only-lib`) the test harnesses under `build/tests/`.
+5. **Prints next-step hints** — how to run `ninja install`, `ninja run_tests`, and install Python test dependencies.
+
+**Dependency-check-only mode**
+
+Pass `--build-only` to verify all required tools are present without installing or building anything:
+
+```sh
+./build_liboqs.sh --build-only
+```
+
+**Key flags reference**
+
+| Flag | CMake equivalent | Description |
+|------|-----------------|-------------|
+| `--shared` | `-DBUILD_SHARED_LIBS=ON` | Build a shared library instead of static |
+| `--build-type TYPE` | `-DCMAKE_BUILD_TYPE=TYPE` | `Debug`, `Release`, `RelWithDebInfo`, `MinSizeRel` |
+| `--minimal-build "A;B"` | `-DOQS_MINIMAL_BUILD="A;B"` | Build only the listed algorithms |
+| `--algs-enabled SET` | `-DOQS_ALGS_ENABLED=SET` | `STD`, `NIST_R4`, `NIST_SIG_ONRAMP`, `All` |
+| `--no-openssl` | `-DOQS_USE_OPENSSL=OFF` | Disable OpenSSL dependency |
+| `--build-only-lib` | `-DOQS_BUILD_ONLY_LIB=ON` | Skip tests and docs |
+| `--no-dist-build` | `-DOQS_DIST_BUILD=OFF` | Optimise for the current machine only |
+| `--install-prefix PATH` | `-DCMAKE_INSTALL_PREFIX=PATH` | Where `ninja install` puts files |
+| `-D KEY=VALUE` | `-DKEY=VALUE` | Pass any CMake option directly |
+
+Any CMake option not listed above can still be passed with `-D`, e.g.:
+
+```sh
+./build_liboqs.sh -DOQS_SPEED_USE_ARM_PMU=ON
+```
 
 ### Windows
 
