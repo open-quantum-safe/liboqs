@@ -4,6 +4,8 @@
 
 #include <oqs/kem_ml_kem.h>
 
+#include "kem_ml_kem_internal.h"
+
 #if defined(OQS_ENABLE_KEM_ml_kem_512)
 
 OQS_KEM *OQS_KEM_ml_kem_512_new(void) {
@@ -78,24 +80,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_keypair_derand(uint8_t *public_key, uint8_
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair_derand(public_key, secret_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair_derand(public_key, secret_key, seed));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand(public_key, secret_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand(public_key, secret_key, seed));
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_512_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair_derand(public_key, secret_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair_derand(public_key, secret_key, seed));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand(public_key, secret_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand(public_key, secret_key, seed));
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand(public_key, secret_key, seed);
+	return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand(public_key, secret_key, seed));
 #endif
 }
 
@@ -108,24 +110,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_keypair(uint8_t *public_key, uint8_t *secr
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair(public_key, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair(public_key, secret_key));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_keypair(public_key, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_keypair(public_key, secret_key));
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_512_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair(public_key, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair(public_key, secret_key));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_keypair(public_key, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_keypair(public_key, secret_key));
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_keypair(public_key, secret_key);
+	return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_keypair(public_key, secret_key));
 #endif
 }
 
@@ -134,26 +136,26 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_encaps_derand(uint8_t *ciphertext, uint8_t
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc_derand(ciphertext, shared_secret, public_key, seed));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand(ciphertext, shared_secret, public_key, seed));
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_512_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc_derand(ciphertext, shared_secret, public_key, seed));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand(ciphertext, shared_secret, public_key, seed));
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_512_icicle_cuda)
 	return (OQS_STATUS) icicle_ml_kem_512_enc_derand(ciphertext, shared_secret, public_key, seed);
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand(ciphertext, shared_secret, public_key, seed);
+	return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand(ciphertext, shared_secret, public_key, seed));
 #endif
 }
 
@@ -166,24 +168,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_encaps(uint8_t *ciphertext, uint8_t *share
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc(ciphertext, shared_secret, public_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc(ciphertext, shared_secret, public_key));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_enc(ciphertext, shared_secret, public_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_enc(ciphertext, shared_secret, public_key));
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_512_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc(ciphertext, shared_secret, public_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc(ciphertext, shared_secret, public_key));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_enc(ciphertext, shared_secret, public_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_enc(ciphertext, shared_secret, public_key));
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_enc(ciphertext, shared_secret, public_key);
+	return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_enc(ciphertext, shared_secret, public_key));
 #endif
 }
 
@@ -196,24 +198,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_512_decaps(uint8_t *shared_secret, const uint8
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_X86_64_dec(shared_secret, ciphertext, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_X86_64_dec(shared_secret, ciphertext, secret_key));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_dec(shared_secret, ciphertext, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_dec(shared_secret, ciphertext, secret_key));
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_512_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_dec(shared_secret, ciphertext, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_dec(shared_secret, ciphertext, secret_key));
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_dec(shared_secret, ciphertext, secret_key);
+		return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_dec(shared_secret, ciphertext, secret_key));
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM512_C_dec(shared_secret, ciphertext, secret_key);
+	return oqs_ml_kem_native_status_to_oqs(PQCP_MLKEM_NATIVE_MLKEM512_C_dec(shared_secret, ciphertext, secret_key));
 #endif
 }
 
