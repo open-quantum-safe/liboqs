@@ -125,7 +125,7 @@ static void probe_digest_squeeze(void) {
 		if (OSSL_FUNC(EVP_DigestSqueeze)(probe, scratch, sizeof(scratch)) == 1) {
 			oqs_ossl_squeeze_works = 1;
 		} else {
-			ERR_clear_error();
+			OSSL_FUNC(ERR_clear_error)();
 		}
 	}
 	OSSL_FUNC(EVP_MD_CTX_free)(probe);
