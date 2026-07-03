@@ -1,9 +1,7 @@
 # Constant-Time Tooling
-
 Framework for constant-time testing of liboqs across compilers, optimization flags, and `OQS_OPT_TARGET` build modes.
 
 ## Repository Structure
-
 ```
 tests/ct_tooling/
 ├── README.md
@@ -12,22 +10,16 @@ tests/ct_tooling/
 ├── analyze_results.py          # Parse log output and generate summary CSVs and graphs
 └── tools/
     ├── memsan/
-    │   ├── CMakeLists.txt          # MemSan-specific CMake configuration for liboqs/tests
-    │   ├── rng_poison_memsan.c     # RNG poisoning for MemSan testing
-    │   ├── test_kem.c              # MemSan-specific KEM test
-    │   ├── test_sig.c              # MemSan-specific SIG test
+    │   ├── false_positives/        # Directory containing false-positives suppression files
+    │   ├── issues/                 # Directory containing possible constant-time isues detected with Valgrind-Varlat
     │   └── README.md
     └── valgrind_varlat/
         ├── false_positives/        # Directory containing false-positives suppression files
-        │   └── *.supp
-        ├── valgrind-try-patch-20250805.txt     # Valgrind patch file
-        ├── valgrind-varlat-patch-20250805.txt  # Valgrind variable-latency patch
-        ├── valgrind-varlat-sup-block.txt       # Valgrind suppression block
+        ├── issues/                 # Directory containing possible constant-time isues detected with MemSan
         └── README.md
 ```
 
 ## Tools
-
 ### 1. Valgrind-Varlat (`valgrind_varlat/`)
 - **Purpose**: Uninitialized memory error detection for constant-time analysis using Kyberslash patch for Valgrind
 - **Output**: Directory containing all unique suppression blocks for each warning output
@@ -150,11 +142,12 @@ tests/ct_tooling/tools/<tool>/logs/
 
 The summary file for each run includes the compiler path, compiler version, target architecture, and compilation flags used, followed by a pass/fail line for each algorithm tested.
 
-### Simultaneous testing
-Since MemSan requires to replace several files within liboqs/tests, it is not recommended to run both tests at the same time. This would cause Valgrind_Varlat tests to fail because of using MemSan-oriented files.
+### Cathegorizing warnings and false positive handling
+This framework does not directly differentiate between false positives and issues directly. It must be manually maintained by contributors, who carefully analyze the framework's output and label them.  The label is for auditors. We assign "false positive" to a warning that is known not to be a security threat, and we store its suppression file in the corresponding file and subdirectory. We "raise an issue" about any other error, and we store the corresponding suppression file in the "issues" subdirectory. These can be found in `liboqs/tests/ct_tooling/tools/{valgrind_varlat, memsan}/{false_positives, issues}`. If you are unsure where your suppression file belongs, then save it to the "issues" subdirectory.
+
+The handling of false positives slightly differs between tools, with both using the output returned by the tool during execution to generate the final suppression files. This process is outlined in the READMEs within each tool's subdirectory.
 
 ### Analyzing Results
-
 Use `analyze_results.py` to parse the warnings data from the log files and generate graphs describing the results.
 
 ```bash
@@ -168,3 +161,11 @@ python3 analyze_results.py \
 - `KEM_warnings_per_opt_level.csv` - Warning counts per algorithm per optimization
 - `SIG_warnings_per_opt_level.csv` - Same for signature schemes
 - `*.png` - 4 visualization graphs regarding the total and average number of warnings per KEM and signature
+
+### Credits
+The observation that Valgrind can be used to identify non-constant time behaviour is due to Adam Langley [1, 2]. Mortiz Neikes' TIMECOP project applies Langley's idea to the SUPERCOP benchmarking suite [3]. Versions of SUPERCOP starting with 20200816 include TIMECOP and apply Langley's idea to randombytes calls in particular [4]. We have borrowed the idea of instrumenting randombytes calls from SUPERCOP.
+
+[1] https://github.com/agl/ctgrind
+[2] https://boringssl.googlesource.com/boringssl/+/a6a049a6fb51a052347611d41583a0622bc89d60
+[2] https://post-apocalyptic-crypto.org/timecop/index.html
+[3] http://bench.cr.yp.to/tips.html#timecop
