@@ -46,7 +46,7 @@ build() {
             # Generate suppression flags for all suppression files containing false positives
             SUP_DIR="$SCRIPT_DIR/tools/memsan/false_positives"
             SUP_FLAGS=()
-            for f in "$SUP_DIR"/*.txt; do
+            for f in "$SUP_DIR"/*; do
                 [ -f "$f" ] || continue
                 SUP_FLAGS+=( "-fsanitize-ignorelist=$f" )
             done
