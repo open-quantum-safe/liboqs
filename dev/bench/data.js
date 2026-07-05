@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1783214911317,
+  "lastUpdate": 1783214972878,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -132414,6 +132414,46 @@ window.BENCHMARK_DATA = {
             "value": 1337201,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.17.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0-rc1 (major: 0, minor: 16, patch: 0, pre-release: -rc1) | Git commit: aa294f56bd3bb902c8986202ce37a42e9f0f18cf | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "Douglas Stebila",
+            "username": "dstebila",
+            "email": "dstebila@users.noreply.github.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "b5df1810314b69ac6a2e59712701be73c5081f9d",
+          "message": "Route ERR_clear_error through dlsym wrapper in DLOPEN builds (#2484)\n\nThe EVP_DigestSqueeze probe added in #2433 calls ERR_clear_error()\ndirectly instead of through the OSSL_FUNC() dlsym wrapper, and\nERR_clear_error was never added to ossl_functions.h. In a build with\nOQS_DLOPEN_OPENSSL=ON, liboqs is not linked against libcrypto, so this\nleaves an undefined ERR_clear_error symbol in liboqs.so. With BIND_NOW\n(the default on most modern Linux distros) the symbol is resolved at\ndlopen() time, so loading the library fails:\n\n  OSError: liboqs.so.9: undefined symbol: ERR_clear_error\n\nAdd ERR_clear_error to the dlsym function table and call it via\nOSSL_FUNC() like every other OpenSSL function.\n\nFixes open-quantum-safe/liboqs-python#122\n\nSigned-off-by: Douglas Stebila <dstebila@uwaterloo.ca>\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-06-30T16:10:59Z",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/b5df1810314b69ac6a2e59712701be73c5081f9d"
+        },
+        "date": 1783214971572,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cross-rsdp-128-balanced keypair",
+            "value": 47716,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.17.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0-rc1 (major: 0, minor: 16, patch: 0, pre-release: -rc1) | Git commit: b5df1810314b69ac6a2e59712701be73c5081f9d | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "cross-rsdp-128-balanced sign",
+            "value": 2016616,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.17.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0-rc1 (major: 0, minor: 16, patch: 0, pre-release: -rc1) | Git commit: b5df1810314b69ac6a2e59712701be73c5081f9d | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "cross-rsdp-128-balanced verify",
+            "value": 1343215,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.17.0-1018-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0-rc1 (major: 0, minor: 16, patch: 0, pre-release: -rc1) | Git commit: b5df1810314b69ac6a2e59712701be73c5081f9d | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
