@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-option(OQS_ENABLE_TEST_CONSTANT_TIME "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
+option(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
 option(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN "Build test suite with support for MemorySanitizer-based detection of non-constant time behaviour." OFF)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
@@ -227,9 +227,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
 endif()
 
 # Enable Valgrind-based timing side-channel analysis for test_kem and test_sig
-if(OQS_ENABLE_TEST_CONSTANT_TIME AND NOT OQS_DEBUG_BUILD)
-    message(WARNING "OQS_ENABLE_TEST_CONSTANT_TIME is incompatible with CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}.")
-    set(OQS_ENABLE_TEST_CONSTANT_TIME OFF)
+if(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND AND NOT OQS_DEBUG_BUILD)
+    message(WARNING "OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND is incompatible with CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}.")
+    set(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND OFF)
 endif()
 
 # Enable MemSan-based timing side-channel analysis for test_kem and test_sig
