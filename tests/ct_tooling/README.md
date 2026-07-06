@@ -28,7 +28,7 @@ tests/ct_tooling/
 - **Purpose**: LLVM-based uninitialized memory error detection for constant-time analysis using MemorySanitizer
 - **Output**: Unique `SUMMARY: MemorySanitizer` lines for each warning output
 
-Both tools are driven by the single unified `ct_test.sh` script located at the root of `tests/ct_tooling/`. The tool to execute is selected via the first argument:
+Both tools are driven by the single unified `ct_test.sh` script located at the root of `tests/ct_tooling/` and enforce a warning cap of 100,000 unique warnings per algorithm run. Once the cap is reached, further warnings are suppressed. All SLH-DSA signature variants are currently skipped during SIG tests due to the excessive time they require to execute. The tool used for testing is selected via the first argument:
 
 ```bash
 ./ct_test.sh <tool> <compiler_version> <liboqs_build> <opt_flags...> <input>
@@ -37,7 +37,7 @@ Both tools are driven by the single unified `ct_test.sh` script located at the r
 - `tool`: `valgrind-varlat` or `memsan`
 - `compiler_version`: clang, clang-20, gcc, gcc-14, ...
 - `liboqs_build`: `generic` or `auto`
-- `input`: `all`, `kems`, `sigs`, or a specific enabled algorithm variant
+- `input`: `all`, `kems`, `sigs`, or a specific enabled algorithm variant (`all` excludes SLH-DSA variants for the aforementioned reason).  
 - `opt_flags`: All arguments from position 4 up to position N-1 are treated as compiler optimization flags (including multi-flag combinations such as `-O3 -fno-tree-vectorize`).
 
 Examples:
@@ -118,8 +118,6 @@ Once the script builds each configuration into a build folder, it calls the test
 
 2. **Test execution**
 Then, `test()` is tasked with executing the tool's test on selected liboqs algorithms. Each tool has a different process through which it parses the tool's output to keep unique instances of the warnings, which are further detailed in their respective README files: [Valgrind-Varlat's README](tools/valgrind_varlat/README.md) and [MemSan's README](tools/memsan/README.md).
-
-Both tools enforce a warning cap of 100,000 unique warnings per algorithm run. Once the cap is reached, further warnings are suppressed. All SPHINCS and SLH-DSA signature variants are currently skipped during SIG tests due to the excessive time they require to execute.
 
 ### Output Structure
 The workflow organizes test outputs into log files that capture unique warnings for each algorithm. These logs are written inside `tests/ct_tooling/tools/<tool>/logs/`, categorized into concrete subdirectories based on the compiler and build configuration (`gcc_14_auto`, `clang_generic`, ...), which then contain further subdivisions by optimization levels (`O0`, `O1`, ...) and algorithm types (`kem` or `sig`). The structure is as follows:
