@@ -82,8 +82,8 @@ test() {
         UPPER_TYPE="SIG"
     fi
 
-    # Skip SPHINCS and SLH-DSA for SIG tests
-    if [[ "$ALGORITHM" == *SPHINCS* || "$ALGORITHM" == *SLH_DSA* ]]; then
+    # Skip SLH-DSA for SIG tests
+    if [[ "$ALGORITHM" == *SLH_DSA* ]]; then
         echo "Skipping ${UPPER_TYPE} ${ALGORITHM}"
         return 0
     fi
