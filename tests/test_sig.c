@@ -118,7 +118,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
-#if !defined(OQS_ENABLE_TEST_CONSTANT_TIME) && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if !defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 	OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
@@ -156,7 +156,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 					goto err;
 				}
 
-#if !defined(OQS_ENABLE_TEST_CONSTANT_TIME) && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if !defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 				OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 				OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 				rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, ctx, i, public_key);
@@ -201,7 +201,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should always succeed when providing a NULL context string\n");
 			goto err;
 		}
-#if !defined(OQS_ENABLE_TEST_CONSTANT_TIME) && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if !defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 		OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 		OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 		rc = OQS_SIG_verify_with_ctx_str(sig, message, message_len, signature, signature_len, NULL, 0, public_key);
@@ -219,7 +219,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 #endif
 	}
 
-#if defined(OQS_ENABLE_TEST_CONSTANT_TIME) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 	/* check magic values */
 	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
@@ -260,7 +260,7 @@ cleanup:
 	return ret;
 }
 
-#if defined(OQS_ENABLE_TEST_CONSTANT_TIME) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
 	// so we have to swap out the OQS_randombytes provider.
@@ -296,7 +296,7 @@ void *test_wrapper(void *arg) {
 int main(int argc, char **argv) {
 	OQS_STATUS rc;
 	OQS_init();
-#if defined(OQS_ENABLE_TEST_CONSTANT_TIME) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN) || defined(USE_SANITIZER)
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN) || defined(USE_SANITIZER)
 	long int extended_tests = 0;
 #else
 	long int extended_tests = 1;
@@ -367,7 +367,7 @@ int main(int argc, char **argv) {
 		ctx_step_override = (size_t)v;
 	}
 
-#if defined(OQS_ENABLE_TEST_CONSTANT_TIME) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 	OQS_randombytes_custom_algorithm(&TEST_SIG_randombytes);
 #else
 	rc = OQS_randombytes_switch_algorithm("system");
@@ -378,7 +378,7 @@ int main(int argc, char **argv) {
 	}
 #endif
 
-#if OQS_USE_PTHREADS && !defined(OQS_ENABLE_TEST_CONSTANT_TIME)
+#if OQS_USE_PTHREADS && !defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND)
 #define MAX_LEN_SIG_NAME_ 64
 	// don't run algorithms with large stack usage in threads
 	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5", "cross-rsdp-128-small", "cross-rsdp-192-small", "cross-rsdp-256-balanced", "cross-rsdp-256-small", "cross-rsdpg-192-small", "cross-rsdpg-256-small", "SNOVA_37_17_2", "SNOVA_56_25_2", "SNOVA_49_11_3", "SNOVA_37_8_4", "SNOVA_24_5_5", "SNOVA_60_10_4", "SNOVA_29_6_5", "mqom2_cat1_gf16_fast_r3", "mqom2_cat1_gf16_fast_r5", "mqom2_cat1_gf16_short_r3", "mqom2_cat1_gf16_short_r5", "mqom2_cat3_gf16_fast_r3", "mqom2_cat3_gf16_fast_r5", "mqom2_cat3_gf16_short_r3", "mqom2_cat3_gf16_short_r5", "mqom2_cat5_gf16_fast_r3", "mqom2_cat5_gf16_fast_r5", "mqom2_cat5_gf16_short_r3", "mqom2_cat5_gf16_short_r5"};

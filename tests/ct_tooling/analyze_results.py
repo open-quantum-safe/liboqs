@@ -47,8 +47,8 @@ def parse_summary_file(filepath):
     matches = list(header_re.finditer(content))
     for idx, m in enumerate(matches):
         alg_name = m.group(1)
-        # Skip SPHINCS and SLH_DSA algorithms
-        if 'SPHINCS' in alg_name or 'SLH_DSA' in alg_name:
+        # Skip SLH_DSA variants
+        if 'SLH_DSA' in alg_name:
             continue
 
         start = m.end()

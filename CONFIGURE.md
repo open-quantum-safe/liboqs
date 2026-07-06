@@ -19,7 +19,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
 - [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
-- [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
+- [OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND](#OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND)
 - [OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN](#OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
@@ -239,7 +239,7 @@ This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE
 
 **Default**: Unset.
 
-## OQS_ENABLE_TEST_CONSTANT_TIME
+## OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND
 
 This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.
 
@@ -249,7 +249,7 @@ When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT
 
 ## OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 
-Similar to [`OQS_ENABLE_TEST_CONSTANT_TIME`](#OQS_ENABLE_TEST_CONSTANT_TIME), this option enables constant-time testing using Clang's MemorySanitizer.
+Similar to [`OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND`](#OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND), this option enables constant-time testing using Clang's MemorySanitizer.
 
 **Default**: `OFF`.
 

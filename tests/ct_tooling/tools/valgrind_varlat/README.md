@@ -1,5 +1,5 @@
 # Valgrind-Varlat
-This directory contains the necessary files to execute Valgrind's memcheck tool on liboqs with [Daniel Bernstein's Kyberslash patches](https://kyberslash.cr.yp.to/papers.html) (valgrind-try-patch-20250805.txt and valgrind-varlat-patch-20250805.txt) and another patch including variable latency warnings in the suppression block (valgrind_varlat_sup_block.txt).
+This directory uses [Daniel Bernstein's Kyberslash patches](https://kyberslash.cr.yp.to/papers.html) (valgrind-try-patch-20250805.txt and valgrind-varlat-patch-20250805.txt) and another patch including variable latency warnings in the suppression block (valgrind_varlat_sup_block.txt). These patches can also be found under the [ubuntu-latest directory of the ci-containers](https://github.com/open-quantum-safe/ci-containers/tree/main/ubuntu-latest) repository.
 
 Valgrind-Varlat handles false-positive warnings by storing their suppression block into `.txt` files within the `false_positives/` directory. These files are passed during the tools execution, successfully disregarding those warnings that are cathegorized as not constant-time issues after review.
 
@@ -87,8 +87,6 @@ To check whether the installation was successful, you can use the varlat tests p
 Valgrind-Varlat produces numerous warnings, making complete storage impractical in terms of memory and runtime. The test script therefore processes output as follows:
 - It captures each unique suppression block (the {...} content with full warning details) and logs it to a file.
 - Only these unique blocks are counted as warnings, avoiding duplication from repeated occurrences during execution.
-
-The testing framework currently skips all SPHINCS and SLH-DSA tests due to the execessive length of time they require to execute.
 
 ## False positive handling
 Here is an example of a suppression file of a known false-positive for the Kyber algorithm:
