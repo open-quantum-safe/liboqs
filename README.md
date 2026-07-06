@@ -45,15 +45,9 @@ OQS is running a survey to better understand our community. We would like to hea
 
 ### Supported Algorithms
 
-Details on each supported algorithm can be found in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
+The table below summarizes every algorithm family currently integrated into liboqs. For per-variant detail (including NIST level, constant-time status, formal verification, and available optimizations), see [ALGORITHMS.md](https://github.com/open-quantum-safe/liboqs/blob/main/ALGORITHMS.md); for upstream sources and advisories, see the per-algorithm pages under [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms).
 
-The list below indicates all algorithms currently supported by liboqs, including experimental algorithms and already excluding algorithm variants pruned during the NIST competition, such as Kyber-90s or Dilithium-AES.
-
-The only algorithms in `liboqs` that implement NIST standards are the [`ML-KEM`](https://csrc.nist.gov/pubs/fips/203/final) (final standard) and [`ML-DSA`](https://csrc.nist.gov/pubs/fips/204/final) (final standard) variants with their respective different bit strengths. `liboqs` will retain these algorithm names selected by NIST throughout the finishing stages of the standardization process, so users can rely on their presence going forward. If NIST changes the implementation details of these algorithms, `liboqs` will adjust the implementation so that users are protected from such potential changes.
-
-Falcon has also been [selected for standardization](https://csrc.nist.gov/Projects/post-quantum-cryptography/selected-algorithms-2022), but the `liboqs` implementations of these algorithms are currently tracking Round 3 submissions and not NIST standards drafts.
-
-All names other than `ML-KEM` and `ML-DSA` are subject to change. `liboqs` makes available a [selection mechanism for algorithms on the NIST standards track, continued NIST competition, or purely experimental nature by way of the configuration variable OQS_ALGS_ENABLED](CONFIGURE.md#oQS_ALGS_ENABLED). By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
+Names of algorithms standardized by NIST — [`ML-KEM`](https://csrc.nist.gov/pubs/fips/203/final), [`ML-DSA`](https://csrc.nist.gov/pubs/fips/204/final), and [`SLH-DSA`](https://csrc.nist.gov/pubs/fips/205/final) — are stable; if NIST changes the implementation details, `liboqs` will adjust so that users are protected from such changes. All other names are subject to change. Which algorithms are built can be controlled via [`OQS_ALGS_ENABLED`](CONFIGURE.md#oQS_ALGS_ENABLED); by default, `liboqs` is built supporting every algorithm in the table, including experimental ones.
 
 <!-- OQS_TEMPLATE_FRAGMENT_ALG_SUPPORT_START -->
 #### Key encapsulation mechanisms
