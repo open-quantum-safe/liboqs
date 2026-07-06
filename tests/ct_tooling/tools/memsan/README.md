@@ -17,8 +17,6 @@ Because of how many warnings are output, it is not feasible to store all the war
 - It captures the first SUMMARY line of each warning, which contains key details (file, line, issue type), and stores these in log files.
 - Only unique SUMMARY lines are retained, avoiding duplication from repeated warnings during execution.
 
-The testing framework currently skips all SPHINCS and SLH-DSA tests due to the execessive length of time they require to execute.
-
 ## False positive handling
 MemSan follows a similar suppression mechanism to that of Valgrind-Varlat. Users can specify entities to ignore during testing by listing them in a suppression file, using a prefix that defines the entity's type. For this framework, the `fun:` prefix is used (although there are others too), since the observed false-positives originate from specific functions. The suppression file is then passed to clang at compile-time using the `-fsanitize-ignorelist` flag.
 
