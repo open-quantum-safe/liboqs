@@ -9,117 +9,55 @@ jobs:
 
   trigger-downstream-ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      # One failing downstream must not stop the checks for the others
+      # (replaces the old per-step `if: ${{ !cancelled() }}`).
+      fail-fast: false
+      matrix:
+        include:
+          - name: boringssl
+            repo: open-quantum-safe/boringssl
+            trigger: repository_dispatch
+          - name: openssh
+            repo: open-quantum-safe/openssh
+            trigger: workflow_dispatch
+            workflow: ubuntu.yaml
+            ref: OQS-v9
+          - name: liboqs-cpp
+            repo: open-quantum-safe/liboqs-cpp
+            trigger: repository_dispatch
+          - name: liboqs-go
+            repo: open-quantum-safe/liboqs-go
+            trigger: repository_dispatch
+          - name: liboqs-python
+            repo: open-quantum-safe/liboqs-python
+            trigger: repository_dispatch
+          - name: liboqs-java
+            repo: open-quantum-safe/liboqs-java
+            trigger: repository_dispatch
+          - name: liboqs-rust
+            repo: open-quantum-safe/liboqs-rust
+            trigger: repository_dispatch
+          # oqs-provider no longer uses CircleCI, and none of its CI
+          # workflows currently expose a repository_dispatch or
+          # workflow_dispatch trigger (only release.yml listens, for
+          # "liboqs-release"). Re-enable this entry once such a trigger
+          # is added to oqs-provider:
+          # - name: oqs-provider
+          #   repo: open-quantum-safe/oqs-provider
+          #   trigger: repository_dispatch
+    name: ${{ matrix.name }}
     steps:
-      - name: Trigger OQS-BoringSSL CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+      - name: Trigger ${{ matrix.name }} CI and wait for its result
+        env:
+          OQSBOT_GITHUB_ACTIONS: ${{ secrets.OQSBOT_GITHUB_ACTIONS }}
         run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --request POST \
-               --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-               --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"event_type":"liboqs-upstream-trigger"}' \
-               https://api.github.com/repos/open-quantum-safe/boringssl/dispatches)
-          cat response_body
-          test "$response_code" = "204"
-      - name: Trigger OQS-OpenSSH CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
-        run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --request POST \
-               --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-               --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"ref":"OQS-v9"}' \
-               https://api.github.com/repos/open-quantum-safe/openssh/actions/workflows/ubuntu.yaml/dispatches)
-          cat response_body
-          test "$response_code" = "204"
-      - name: Trigger oqs-provider CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
-        run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
-               --request POST \
-               --header "Content-Type: application/json" \
-               --data '{ "branch": "main" }' \
-               https://circleci.com/api/v2/project/gh/open-quantum-safe/oqs-provider/pipeline)
-          cat response_body
-          test "$response_code" = "201"
-          pipeline_state=$(jq -r '.state' response_body)
-          test "$pipeline_state" != "errored"
-      - name: Trigger liboqs-cpp CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
-        run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --request POST \
-               --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-               --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"event_type":"liboqs-upstream-trigger"}' \
-               https://api.github.com/repos/open-quantum-safe/liboqs-cpp/dispatches)
-          cat response_body
-          test "$response_code" = "204"
-      - name: Trigger liboqs-go CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
-        run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --request POST \
-               --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-               --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"event_type":"liboqs-upstream-trigger"}' \
-               https://api.github.com/repos/open-quantum-safe/liboqs-go/dispatches)
-          cat response_body
-          test "$response_code" = "204"
-      - name: Trigger liboqs-python CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
-        run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --request POST \
-               --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-               --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"event_type":"liboqs-upstream-trigger"}' \
-               https://api.github.com/repos/open-quantum-safe/liboqs-python/dispatches)
-          cat response_body
-          test "$response_code" = "204"
-      - name: Trigger liboqs-java CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
-        run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --request POST \
-               --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-               --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"event_type":"liboqs-upstream-trigger"}' \
-               https://api.github.com/repos/open-quantum-safe/liboqs-java/dispatches)
-          cat response_body
-          test "$response_code" = "204"
-      - name: Trigger liboqs-rust CI
-        if: ${{ !cancelled() }} # run all steps independent of failures
-        run: |
-          response_code=$(curl --silent --show-error \
-               --output response_body \
-               --write-out "%{response_code}" \
-               --request POST \
-               --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-               --header "X-GitHub-Api-Version: 2022-11-28" \
-               --data '{"event_type":"liboqs-upstream-trigger"}' \
-               https://api.github.com/repos/open-quantum-safe/liboqs-rust/dispatches)
-          cat response_body
-          test "$response_code" = "204"
+          python3 scripts/trigger_downstream_ci.py \
+            --repo "${{ matrix.repo }}" \
+            --trigger-type "${{ matrix.trigger }}" \
+            --event-type "liboqs-upstream-trigger" \
+            --workflow "${{ matrix.workflow || '' }}" \
+            --ref "${{ matrix.ref || 'main' }}" \
+            --timeout 2700
