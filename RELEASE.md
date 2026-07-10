@@ -1,4 +1,4 @@
-# liboqs version 0.16.0-rc1
+# liboqs version 0.16.0
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and
 prototyping quantum-resistant cryptography. More information on OQS can be
@@ -38,7 +38,7 @@ language-specific wrappers:
 
 ## Release notes
 
-liboqs 0.16.0-rc1 was released on Wednesday, June 24, 2026.
+liboqs 0.16.0 was released on Thursday, July 9, 2026.
 
 ### Deprecation notice
 
