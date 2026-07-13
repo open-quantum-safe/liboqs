@@ -18,6 +18,8 @@
 #define UNUSED
 #endif
 
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+
 static bool sha3_callback_called = false;
 static bool sha3_x4_callback_called = false;
 
@@ -227,8 +229,8 @@ int sha3_256_kat_test(void) {
 	OQS_SHA3_sha3_256_inc_ctx_release(&state);
 
 	/* Cross-validate one-shot vs chunked absorb of msg896||msg448 (168 bytes,
-	   non-uniform) for every segment size 1..168. Covers all absorb code paths
-	   and their transitions, including the SHA3-256 rate boundary at 136 bytes. */
+	 * non-uniform) for every segment size 1..168. Covers all absorb code paths
+	 * and their transitions, including the SHA3-256 rate boundary at 136 bytes. */
 	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
 	memcpy(msg_concat, msg896, sizeof(msg896));
 	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
@@ -239,7 +241,7 @@ int sha3_256_kat_test(void) {
 		OQS_SHA3_sha3_256_inc_init(&state);
 		size_t off = 0;
 		while (off < sizeof(msg_concat)) {
-			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			size_t n = MIN(seg, sizeof(msg_concat) - off);
 			OQS_SHA3_sha3_256_inc_absorb(&state, msg_concat + off, n);
 			off += n;
 		}
@@ -253,7 +255,7 @@ int sha3_256_kat_test(void) {
 	}
 
 	/* Verify ctx_reset: absorb msg24, finalize, then reset and re-absorb msg24;
-	   result must equal a fresh inc_init hash of msg24. */
+	 * result must equal a fresh inc_init hash of msg24. */
 	uint8_t hash_fresh[sizeof(output)];
 	OQS_SHA3_sha3_256_inc_init(&state);
 	OQS_SHA3_sha3_256_inc_absorb(&state, msg24, sizeof(msg24));
@@ -270,8 +272,8 @@ int sha3_256_kat_test(void) {
 	}
 
 	/* Cross-validate one-shot vs single-call absorb of exactly RATE and RATE+1
-	   bytes. Complements the sweep above: here the buffer is full (or full+1)
-	   at end of input, so the flush is triggered by squeeze, not a later absorb. */
+	 * bytes. Complements the sweep above: here the buffer is full (or full+1)
+	 * at end of input, so the flush is triggered by squeeze, not a later absorb. */
 	uint8_t hash_ref[sizeof(output)];
 	OQS_SHA3_sha3_256(hash_ref, msg_concat, OQS_SHA3_SHA3_256_RATE);
 	OQS_SHA3_sha3_256_inc_init(&state);
@@ -424,8 +426,8 @@ int sha3_384_kat_test(void) {
 	OQS_SHA3_sha3_384_inc_ctx_release(&state);
 
 	/* Cross-validate one-shot vs chunked absorb of msg896||msg448 (168 bytes,
-	   non-uniform) for every segment size 1..168. Covers all absorb code paths
-	   and their transitions, including the SHA3-384 rate boundary at 104 bytes. */
+	 * non-uniform) for every segment size 1..168. Covers all absorb code paths
+	 * and their transitions, including the SHA3-384 rate boundary at 104 bytes. */
 	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
 	memcpy(msg_concat, msg896, sizeof(msg896));
 	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
@@ -436,7 +438,7 @@ int sha3_384_kat_test(void) {
 		OQS_SHA3_sha3_384_inc_init(&state);
 		size_t off = 0;
 		while (off < sizeof(msg_concat)) {
-			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			size_t n = MIN(seg, sizeof(msg_concat) - off);
 			OQS_SHA3_sha3_384_inc_absorb(&state, msg_concat + off, n);
 			off += n;
 		}
@@ -450,7 +452,7 @@ int sha3_384_kat_test(void) {
 	}
 
 	/* Verify ctx_reset: absorb msg24, finalize, then reset and re-absorb msg24;
-	   result must equal a fresh inc_init hash of msg24. */
+	 * result must equal a fresh inc_init hash of msg24. */
 	uint8_t hash_fresh[sizeof(output)];
 	OQS_SHA3_sha3_384_inc_init(&state);
 	OQS_SHA3_sha3_384_inc_absorb(&state, msg24, sizeof(msg24));
@@ -467,8 +469,8 @@ int sha3_384_kat_test(void) {
 	}
 
 	/* Cross-validate one-shot vs single-call absorb of exactly RATE and RATE+1
-	   bytes. Complements the sweep above: here the buffer is full (or full+1)
-	   at end of input, so the flush is triggered by squeeze, not a later absorb. */
+	 * bytes. Complements the sweep above: here the buffer is full (or full+1)
+	 * at end of input, so the flush is triggered by squeeze, not a later absorb. */
 	uint8_t hash_ref[sizeof(output)];
 	OQS_SHA3_sha3_384(hash_ref, msg_concat, OQS_SHA3_SHA3_384_RATE);
 	OQS_SHA3_sha3_384_inc_init(&state);
@@ -624,8 +626,8 @@ int sha3_512_kat_test(void) {
 	}
 
 	/* Absorb msg1600 in chunks of RATE-1 bytes, forcing every permutation
-	   trigger to occur in the middle of a segment. Validated against the
-	   known exp1600 digest. */
+	 * trigger to occur in the middle of a segment. Validated against the
+	 * known exp1600 digest. */
 	clear8(hash, sizeof(hash));
 	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
 	size_t absorbed = 0;
@@ -655,8 +657,8 @@ int sha3_512_kat_test(void) {
 	OQS_SHA3_sha3_512_inc_ctx_release(&state);
 
 	/* Cross-validate one-shot vs chunked absorb of msg896||msg448 (168 bytes,
-	   non-uniform) for every segment size 1..168. Covers all absorb code paths
-	   and their transitions, crossing the SHA3-512 rate boundary at 72 bytes. */
+	 * non-uniform) for every segment size 1..168. Covers all absorb code paths
+	 * and their transitions, crossing the SHA3-512 rate boundary at 72 bytes. */
 	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
 	memcpy(msg_concat, msg896, sizeof(msg896));
 	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
@@ -667,7 +669,7 @@ int sha3_512_kat_test(void) {
 		OQS_SHA3_sha3_512_inc_init(&state);
 		size_t off = 0;
 		while (off < sizeof(msg_concat)) {
-			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			size_t n = MIN(seg, sizeof(msg_concat) - off);
 			OQS_SHA3_sha3_512_inc_absorb(&state, msg_concat + off, n);
 			off += n;
 		}
@@ -681,7 +683,7 @@ int sha3_512_kat_test(void) {
 	}
 
 	/* Verify ctx_reset: absorb msg24, finalize, then reset and re-absorb msg24;
-	   result must equal a fresh inc_init hash of msg24. */
+	 * result must equal a fresh inc_init hash of msg24. */
 	uint8_t hash_fresh[sizeof(output)];
 	OQS_SHA3_sha3_512_inc_init(&state);
 	OQS_SHA3_sha3_512_inc_absorb(&state, msg24, sizeof(msg24));
@@ -698,8 +700,8 @@ int sha3_512_kat_test(void) {
 	}
 
 	/* Cross-validate one-shot vs single-call absorb of exactly RATE and RATE+1
-	   bytes. Complements the sweep above: here the buffer is full (or full+1)
-	   at end of input, so the flush is triggered by squeeze, not a later absorb. */
+	 * bytes. Complements the sweep above: here the buffer is full (or full+1)
+	 * at end of input, so the flush is triggered by squeeze, not a later absorb. */
 	uint8_t hash_ref[sizeof(output)];
 	OQS_SHA3_sha3_512(hash_ref, msg_concat, OQS_SHA3_SHA3_512_RATE);
 	OQS_SHA3_sha3_512_inc_init(&state);
@@ -903,7 +905,7 @@ int shake_128_kat_test(void) {
 	}
 
 	/* Cross-validate one-shot vs byte-at-a-time absorb of msg896||msg448
-	   (168 bytes) using the incremental API. */
+	 * (168 bytes) using the incremental API. */
 	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
 	memcpy(msg_concat, msg896, sizeof(msg896));
 	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
@@ -912,14 +914,14 @@ int shake_128_kat_test(void) {
 	OQS_SHA3_shake128(hash_oneshot, sizeof(hash_oneshot), msg_concat, sizeof(msg_concat));
 
 	/* Cross-validate one-shot vs chunked absorb for every segment size 1..168.
-	   Covers all absorb code paths and their transitions, including the
-	   SHAKE-128 rate boundary at 168 bytes. */
+	 * Covers all absorb code paths and their transitions, including the
+	 * SHAKE-128 rate boundary at 168 bytes. */
 	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
 		clear8(hash, sizeof(hash));
 		OQS_SHA3_shake128_inc_init(&state);
 		size_t off = 0;
 		while (off < sizeof(msg_concat)) {
-			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			size_t n = MIN(seg, sizeof(msg_concat) - off);
 			OQS_SHA3_shake128_inc_absorb(&state, msg_concat + off, n);
 			off += n;
 		}
@@ -934,8 +936,8 @@ int shake_128_kat_test(void) {
 	}
 
 	/* Cross-validate bulk squeeze vs chunked squeeze for every segment size
-	   1..512. Covers all squeeze code paths and their transitions, including
-	   the SHAKE-128 rate boundary at 168 bytes. */
+	 * 1..512. Covers all squeeze code paths and their transitions, including
+	 * the SHAKE-128 rate boundary at 168 bytes. */
 	OQS_SHA3_shake128_inc_init(&state);
 	OQS_SHA3_shake128_inc_absorb(&state, msg_concat, sizeof(msg_concat));
 	OQS_SHA3_shake128_inc_finalize(&state);
@@ -949,7 +951,7 @@ int shake_128_kat_test(void) {
 		OQS_SHA3_shake128_inc_finalize(&state);
 		size_t off = 0;
 		while (off < sizeof(hash)) {
-			size_t n = (seg < sizeof(hash) - off) ? seg : sizeof(hash) - off;
+			size_t n = MIN(seg, sizeof(hash) - off);
 			OQS_SHA3_shake128_inc_squeeze(hash + off, n, &state);
 			off += n;
 		}
@@ -1138,7 +1140,7 @@ int shake_256_kat_test(void) {
 	}
 
 	/* Cross-validate one-shot vs byte-at-a-time absorb of msg896||msg448
-	   (168 bytes) using the incremental API. */
+	 * (168 bytes) using the incremental API. */
 	uint8_t msg_concat[sizeof(msg896) + sizeof(msg448)];
 	memcpy(msg_concat, msg896, sizeof(msg896));
 	memcpy(msg_concat + sizeof(msg896), msg448, sizeof(msg448));
@@ -1147,14 +1149,14 @@ int shake_256_kat_test(void) {
 	OQS_SHA3_shake256(hash_oneshot, sizeof(hash_oneshot), msg_concat, sizeof(msg_concat));
 
 	/* Cross-validate one-shot vs chunked absorb for every segment size 1..168.
-	   Covers all absorb code paths and their transitions, including the
-	   SHAKE-256 rate boundary at 136 bytes. */
+	 * Covers all absorb code paths and their transitions, including the
+	 * SHAKE-256 rate boundary at 136 bytes. */
 	for (size_t seg = 1; seg <= sizeof(msg_concat); seg++) {
 		clear8(hash, sizeof(hash));
 		OQS_SHA3_shake256_inc_init(&state);
 		size_t off = 0;
 		while (off < sizeof(msg_concat)) {
-			size_t n = (seg < sizeof(msg_concat) - off) ? seg : sizeof(msg_concat) - off;
+			size_t n = MIN(seg, sizeof(msg_concat) - off);
 			OQS_SHA3_shake256_inc_absorb(&state, msg_concat + off, n);
 			off += n;
 		}
@@ -1169,8 +1171,8 @@ int shake_256_kat_test(void) {
 	}
 
 	/* Cross-validate bulk squeeze vs chunked squeeze for every segment size
-	   1..512. Covers all squeeze code paths and their transitions, including
-	   the SHAKE-256 rate boundary at 136 bytes. */
+	 * 1..512. Covers all squeeze code paths and their transitions, including
+	 * the SHAKE-256 rate boundary at 136 bytes. */
 	OQS_SHA3_shake256_inc_init(&state);
 	OQS_SHA3_shake256_inc_absorb(&state, msg_concat, sizeof(msg_concat));
 	OQS_SHA3_shake256_inc_finalize(&state);
@@ -1184,7 +1186,7 @@ int shake_256_kat_test(void) {
 		OQS_SHA3_shake256_inc_finalize(&state);
 		size_t off = 0;
 		while (off < sizeof(hash)) {
-			size_t n = (seg < sizeof(hash) - off) ? seg : sizeof(hash) - off;
+			size_t n = MIN(seg, sizeof(hash) - off);
 			OQS_SHA3_shake256_inc_squeeze(hash + off, n, &state);
 			off += n;
 		}
@@ -1341,9 +1343,9 @@ int shake_128_x4_kat_test(void) {
 	}
 
 	/* Verify that distinct non-uniform lane inputs produce distinct, correct
-	   outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
-	   112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
-	   the single-lane one-shot API as the oracle. */
+	 * outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
+	 * 112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
+	 * the single-lane one-shot API as the oracle. */
 	uint8_t exp_a[512], exp_b[512];
 	OQS_SHA3_shake128(exp_a, sizeof(exp_a), msg896, sizeof(msg896));
 	OQS_SHA3_shake128(exp_b, sizeof(exp_b), msg1600, sizeof(msg896));
@@ -1508,9 +1510,9 @@ int shake_256_x4_kat_test(void) {
 	}
 
 	/* Verify that distinct non-uniform lane inputs produce distinct, correct
-	   outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
-	   112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
-	   the single-lane one-shot API as the oracle. */
+	 * outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
+	 * 112 bytes of msg1600 (all 0xA3). Expected outputs are computed using
+	 * the single-lane one-shot API as the oracle. */
 	uint8_t exp_a[512], exp_b[512];
 	OQS_SHA3_shake256(exp_a, sizeof(exp_a), msg896, sizeof(msg896));
 	OQS_SHA3_shake256(exp_b, sizeof(exp_b), msg1600, sizeof(msg896));
