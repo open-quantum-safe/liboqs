@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: MIT
 """
 ci_family_report.py
 
@@ -235,7 +234,17 @@ def cmd_measure_family(args):
     runtime_strings = fam_def["runtime_strings"]
     algo_count = len(fam_def["minimal_build_ids"])
 
-    skip_tests = args.skip_tests or is_stfl  # STFL needs KAT infra for real tests, see README
+    is_dedicated = args.name in DEDICATED_FAMILY_PATTERNS.values()
+    # Families with real dedicated CI jobs (see DEDICATED_FAMILY_PATTERNS,
+    # shared with fetch-ci-data/report) have their report contribution
+    # taken directly from real CI data, not from this local measurement --
+    # generate-report explicitly excludes them from the weighted model.
+    # Their local build+test measurement therefore only feeds algo_count
+    # for display, so running the (potentially very expensive, e.g.
+    # SLH-DSA's 156-variant) test suite locally buys nothing and is
+    # skipped, same as for STFL families (which need external KAT
+    # infrastructure for a real test run anyway, see README).
+    skip_tests = args.skip_tests or is_stfl or is_dedicated
 
     repo = Path(args.repo).resolve()
     build_dir = Path(args.build_dir) if args.build_dir else Path(f"/tmp/liboqs_measure_{args.type}_{args.name}")
