@@ -20,4 +20,6 @@ jobs:
   downstream-releases:
     needs: [extended-tests, downstream-release-tests]
     uses: ./.github/workflows/downstream-release.yml
+    with:
+      version: ${{ github.ref_name }}  # tag name (release: published)
     secrets: inherit

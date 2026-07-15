@@ -3,27 +3,53 @@ name: Downstream release triggers
 permissions:
   contents: read
 
-on: [workflow_call, workflow_dispatch]
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Release tag to publish downstream wrappers for (e.g. 0.16.0)'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release tag to publish downstream wrappers for (e.g. 0.16.0)'
+        required: true
+        type: string
 
 # Triggers version-matched releases of downstream language wrappers when a liboqs
 # release is published. Each wrapper's own CI gates the actual release on tests.
 jobs:
   trigger-downstream-releases:
+    # Release token only exists upstream; skip in forks.
+    if: github.repository == 'open-quantum-safe/liboqs'
     runs-on: ubuntu-latest
     steps:
+      # Reject non-release refs (e.g. a manual dispatch on a branch).
+      - name: Validate release version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if ! printf '%s' "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-rc[0-9]+)?$'; then
+            echo "::error::Refusing to trigger downstream releases for non-release version '$VERSION'"
+            exit 1
+          fi
+
       - name: Trigger liboqs-go release
         env:
-          VERSION: ${{ github.ref_name }}
+          DISPATCH_TOKEN: ${{ secrets.OQSBOT_GITHUB_ACTIONS }}
+          VERSION: ${{ inputs.version }}
         run: |
-          curl --silent \
-               --write-out "\n%{response_code}\n" \
+          response_code=$(curl --silent --output /dev/null \
+               --write-out '%{response_code}' \
                --request POST \
                --header "Accept: application/vnd.github+json" \
-               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "Authorization: Bearer $DISPATCH_TOKEN" \
                --header "X-GitHub-Api-Version: 2022-11-28" \
                --data "{\"event_type\":\"liboqs-go-release\",\"client_payload\":{\"version\":\"${VERSION}\"}}" \
-               https://api.github.com/repos/open-quantum-safe/liboqs-go/dispatches | tee curl_out \
-          && grep -q "204" curl_out
+               https://api.github.com/repos/open-quantum-safe/liboqs-go/dispatches)
+          echo "Dispatch response code: $response_code"
+          test "$response_code" = "204"
 
       # Add other language wrappers (liboqs-cpp, -java, -python, -rust) here as
       # they gain release-dispatch receivers.

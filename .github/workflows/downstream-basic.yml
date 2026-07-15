@@ -8,6 +8,8 @@ on: [workflow_call, workflow_dispatch]
 jobs:
 
   trigger-downstream-ci:
+    # Dispatch secrets only exist upstream; skip in forks.
+    if: github.repository == 'open-quantum-safe/liboqs'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger OQS-BoringSSL CI

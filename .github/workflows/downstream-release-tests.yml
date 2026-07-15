@@ -12,19 +12,25 @@ on: [workflow_call, workflow_dispatch]
 
 jobs:
   oqs-provider-release-test:
+    # Release token only exists upstream; skip in forks.
+    if: github.repository == 'open-quantum-safe/liboqs'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout release tests script
+      - name: Checkout release trigger script
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
         with:
+          # Pin script to a trusted ref, not the caller branch.
+          ref: main
           sparse-checkout: |
             scripts/provider-test-trigger.sh
           sparse-checkout-cone-mode: false
       - name: Trigger oqs-provider release tests
+        # Ref via env, not interpolated into the shell line (injection).
+        env:
+          ACCESS_TOKEN: ${{ secrets.OQSBOT_GITHUB_ACTIONS }}
+          LIBOQS_REF: ${{ github.ref_name }}
+          PROVIDER_REF: ${{ github.ref_name }}-tracker
         run: |
           CURL_FLAGS="--silent --write-out \n%{response_code}\n" \
-          ACCESS_TOKEN="${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
-          LIBOQS_REF="${{ github.ref_name }}" \
-          PROVIDER_REF="${{ github.ref_name }}-tracker" \
           ./scripts/provider-test-trigger.sh | tee curl_out \
-          && grep -q "204" curl_out
+          && grep -qx "204" curl_out
