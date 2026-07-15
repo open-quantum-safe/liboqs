@@ -18,7 +18,7 @@ This workflow is triggered by pushes to non-`main` branches.
 It calls only [basic checks](#basic.yml) unless one of the following strings is included in the commit message:
 - "[full tests]": calls [all platform tests](#platforms.yml).
 - "[extended tests]": calls the [extended tests](#extended.yml).
-- "[trigger downstream]": calls the [downstream release tests](#downstream-release.yml).
+- "[trigger downstream]": calls the [downstream release tests](#downstream-release-tests.yml).
 
 To trigger multiple test suites, include multiple trigger strings in the commit message.
 For example, "[full tests] [trigger downstream]" will trigger both the platform tests and the downstream release tests.
@@ -41,7 +41,7 @@ It calls [extended tests](#extended.yml), [scorecard analysis](#scorecard.yml), 
 #### <a name="release.yml"></a> Release workflow (`release.yml`)
 
 This workflow is triggered when a release (including a pre-release) is published on GitHub.
-It calls [extended tests](#extended) and [downstream release tests](#downstream-release.yml).
+It calls [extended tests](#extended) and [downstream release tests](#downstream-release-tests.yml), and triggers [downstream releases](#downstream-release.yml) once release readiness has been verified.
 
 ### Callable workflows
 
@@ -93,10 +93,16 @@ Currently, these include
 
 Callers must include `secrets: inherit` in order for the appropriate access tokens to be passed to this workflow.
 
+#### <a name="downstream-release-tests.yml"></a> Downstream release tests (`downstream-release-tests.yml`)
+
+This workflow triggers release-readiness tests for a selection of projects that depend on `liboqs`.
+Currently, this is only the [`OQS OpenSSL3 provider`](https://github.com/open-quantum-safe/oqs-provider).
+Callers must include `secrets: inherit` in order for the appropriate access tokens to be passed to this workflow.
+
 #### <a name="downstream-release.yml"></a> Downstream release trigger (`downstream-release.yml`)
 
-This workflow triggers release tests for a selection of projects that depend on `liboqs`.
-Currently, this is only the [`OQS OpenSSL3 provider`](https://github.com/open-quantum-safe/oqs-provider).
+This workflow triggers version-matched releases of downstream language wrappers that depend on `liboqs`.
+Currently, this is only [`liboqs-go`](https://github.com/open-quantum-safe/liboqs-go); each wrapper's own CI gates the release on its tests.
 Callers must include `secrets: inherit` in order for the appropriate access tokens to be passed to this workflow.
 
 #### <a name="scorecard.yml"></a> OpenSSF scorecard analysis (`scorecard.yml`)
