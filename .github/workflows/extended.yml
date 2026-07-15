@@ -27,7 +27,7 @@ jobs:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # pin@v7.0.0
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -63,7 +63,7 @@ jobs:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -93,7 +93,7 @@ jobs:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -111,7 +111,7 @@ jobs:
       image: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_MINIMAL_BUILD=SIG_slh_dsa .. && cmake -LA -N ..
       - name: Build
