@@ -32,8 +32,10 @@ pipeline stage:
 
 The workflow chains these across three jobs (`generate-family-matrix` ->
 `profile-family` matrix -> `aggregate-and-report`) and publishes the
-result as a job summary, an artifact, and optionally a commit to
-`reports/`.
+result as a job summary, an artifact (90-day retention), and -- on
+scheduled runs -- as a comment on a single tracking issue ("CI family
+usage reports (automated)", auto-created on first run), providing a
+browsable report history without committing generated files to the repo.
 
 ## Estimation methodology
 

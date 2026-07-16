@@ -86,7 +86,9 @@ jobs:
     needs: profile-family
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # needed for the optional "commit report" step below
+      contents: read    # for actions/checkout
+      actions: read     # for the fetch-ci-data step (GitHub Actions API)
+      issues: write     # for the "publish report to tracking issue" step below
     steps:
       - uses: actions/checkout@v4
 
@@ -128,19 +130,37 @@ jobs:
             ci_job_data.json
           retention-days: 90
 
-      # Optional: persist the report in the repo (e.g. for a history view
-      # over time). Only on scheduled runs, not manual test runs, so we
-      # don't clutter the repo with test commits. Requires 'contents: write'
-      # permission for this job.
-      - name: Commit report to repo
+      # Persist the report history as comments on a single pinned tracking
+      # issue (created on first run) instead of committing files into the
+      # repo, so the repo tree and history stay clean. Only on scheduled
+      # runs, not manual test runs, so test runs don't clutter the issue.
+      # Requires 'issues: write' permission for this job.
+      - name: Publish report to tracking issue
         if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          ISSUE_TITLE: "CI family usage reports (automated)"
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          mkdir -p reports
-          cp report.md "reports/ci-usage-$(date +%F).md"
-          cp report.md reports/latest.md
-          cp report.csv reports/latest.csv
-          git add reports/
-          git diff --staged --quiet || git commit -m "chore: update CI family usage report [skip ci]"
-          git push || echo "Push failed (possibly missing permission) -- report is still available as an artifact."
+          issue=$(gh issue list --state open --search "in:title \"$ISSUE_TITLE\"" \
+                    --json number,title \
+                    --jq ".[] | select(.title == \"$ISSUE_TITLE\") | .number" | head -n1)
+          if [ -z "$issue" ]; then
+            issue=$(gh issue create --title "$ISSUE_TITLE" \
+              --body "Weekly CI compute-time reports per algorithm family are posted as comments below (see .github/workflows/ci-family-usage-report.yml). Full CSV data is attached to each workflow run as an artifact (90-day retention)." \
+              | grep -oE '[0-9]+$')
+          fi
+          {
+            echo "## CI family usage report -- $(date +%F)"
+            echo
+            # Issue comments are capped at 65536 characters; keep headroom.
+            head -c 60000 report.md
+            if [ "$(wc -c < report.md)" -gt 60000 ]; then
+              echo
+              echo "_(truncated -- full report in this run's artifacts)_"
+            fi
+            echo
+            echo "_Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}_"
+          } > comment.md
+          gh issue comment "$issue" --body-file comment.md \
+            || echo "Posting comment failed -- report is still available as an artifact."
