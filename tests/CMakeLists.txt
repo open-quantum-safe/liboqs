@@ -238,7 +238,7 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
     # With Visual studio the output of tests go into a folder with the configuration option. Force it to the same folder as if
     # generating with Ninja
     set_target_properties(
-        dump_alg_info example_sig_stfl ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS} 
+        dump_alg_info example_sig_stfl ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS}
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY_DEBUG          "${CMAKE_BINARY_DIR}/tests"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE        "${CMAKE_BINARY_DIR}/tests"
