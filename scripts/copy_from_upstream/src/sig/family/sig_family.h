@@ -11,10 +11,12 @@
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_public_key {{ scheme['metadata']['length-public-key'] }}
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_secret_key {{ scheme['metadata']['length-secret-key'] }}
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature {{ scheme['metadata']['length-signature'] }}
+{%- if scheme.is_extmu and 'length-mu' in scheme['metadata'] %}
+#define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu {{ scheme['metadata']['length-mu'] }}
+{%- endif %}
 {%- if scheme.get('derandomized_keypair') %}
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_keypair_seed {{ scheme['metadata']['length-keypair-seed'] }}
 {%- endif %}
-
 OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void);
 {%- if scheme.get('derandomized_keypair') %}
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
