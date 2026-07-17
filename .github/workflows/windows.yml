@@ -18,7 +18,7 @@ jobs:
       - name: Generate Project
         run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
       - name: Build Project
-        run: cmake --build build
+        run: cmake --build build --config Release
 
   windows-arm64-slhdsa:
     strategy:
@@ -31,7 +31,7 @@ jobs:
       - name: Generate Project
         run: cmake -B build --toolchain .CMake/toolchain_windows_arm64.cmake -DOQS_MINIMAL_BUILD=SIG_slh_dsa .
       - name: Build Project  
-        run: cmake --build build
+        run: cmake --build build --config Release
 
   windows-x86:
     strategy:
@@ -51,7 +51,7 @@ jobs:
       - name: Generate Project
         run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.stfl_opt }} .
       - name: Build Project
-        run: cmake --build build
+        run: cmake --build build --config Release
       - name: Test dependencies
         run: pip.exe install --require-hashes -r .github\workflows\requirements.txt
       - name: Run tests
@@ -75,7 +75,7 @@ jobs:
       - name: Generate Project
         run: cmake -B build --toolchain ${{ matrix.toolchain }} -DOQS_MINIMAL_BUILD=SIG_slh_dsa .
       - name: Build Project
-        run: cmake --build build
+        run: cmake --build build --config Release
       - name: Test dependencies
         run: pip.exe install --require-hashes -r .github\workflows\requirements.txt
       - name: Run tests
