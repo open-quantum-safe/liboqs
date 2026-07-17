@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 #!/usr/bin/env python3
 """
 ci_family_report.py
