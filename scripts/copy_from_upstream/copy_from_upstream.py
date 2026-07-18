@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import concurrent.futures
 import copy
 import glob
 import jinja2
@@ -183,11 +184,19 @@ def load_instructions(file='copy_from_upstream.yml'):
     instructions = yaml.safe_load(instructions)
     upstreams = {}
     for upstream in instructions['upstreams']:
+        upstreams[upstream['name']] = upstream
+
+    def _fetch_and_process_upstream(upstream):
+        # Each upstream is fetched into its own independent 'repos/<name>'
+        # directory and does not read or write any other upstream's state,
+        # so these can safely run concurrently. This loop's git fetches
+        # (network I/O) previously ran fully sequentially and dominated
+        # this script's runtime (~13 upstreams x several git subprocess
+        # calls each).
         upstream_name = upstream['name']
         upstream_git_url = upstream['git_url']
         upstream_git_commit = upstream['git_commit']
         upstream_git_branch = upstream['git_branch']
-        upstreams[upstream_name] = upstream
 
         work_dir = os.path.join('repos', upstream_name)
         work_dotgit = os.path.join(work_dir, '.git')
@@ -237,6 +246,17 @@ def load_instructions(file='copy_from_upstream.yml'):
                         req = common_dep['supported_platforms'][i]
                         common_dep['required_flags'] = req['required_flags']
             upstream['commons'] = dict(map(lambda x: (x['name'], x), common_deps['commons'] ))
+
+    # Fan out across upstreams: this step is I/O-bound (git network fetches),
+    # so a thread pool is used rather than multiprocessing. Any exception in
+    # a worker is re-raised here (via future.result()) so failures are not
+    # silently swallowed.
+    max_workers = min(8, len(instructions['upstreams'])) or 1
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(_fetch_and_process_upstream, upstream)
+                   for upstream in instructions['upstreams']]
+        for future in concurrent.futures.as_completed(futures):
+            future.result()
 
     for family in instructions['kems']:
         family['type'] = 'kem'
