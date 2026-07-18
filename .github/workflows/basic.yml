@@ -207,6 +207,16 @@ jobs:
     steps:
       - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
       - uses: DeterminateSystems/magic-nix-cache-action@908b263ff629f4cc17666315b7fd3ec127c6244d # pin@v14
+        with:
+          # Store paths already available from the public nixpkgs binary
+          # cache (the vast majority of the toolchain closure: gcc, cmake,
+          # ninja, doxygen, openssl, glibc, ...) do not need to be
+          # duplicated into the GitHub Actions cache -- only genuinely
+          # locally-built derivations (our own liboqs build) benefit from
+          # being cached there. Without this, the automatic post-job
+          # upload step re-uploads the full closure on every run.
+          upstream-cache: '''https://cache.nixos.org'''
+
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Check devShell
