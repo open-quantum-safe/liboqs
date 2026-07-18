@@ -91,7 +91,7 @@ jobs:
 
   buildcheck:
     name: Check that code passes a basic build
-    needs: [workflowcheck, stylecheck]
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     env:
@@ -163,7 +163,7 @@ jobs:
 
   fuzzbuildcheck:
     name: Check that code passes a basic fuzzing build
-    needs: [workflowcheck, stylecheck]
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     env:
