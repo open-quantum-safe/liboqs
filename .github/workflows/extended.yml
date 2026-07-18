@@ -14,12 +14,12 @@ jobs:
       matrix:
         include:
           - name: generic
-            container: openquantumsafe/ci-ubuntu-latest:latest
+            container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
           - name: extensions
-            container: openquantumsafe/ci-ubuntu-latest:latest
+            container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
@@ -44,19 +44,19 @@ jobs:
       matrix:
         include:
           - name: generic
-            container: openquantumsafe/ci-ubuntu-latest:latest
+            container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: generic-libjade
-            container: openquantumsafe/ci-ubuntu-latest:latest
+            container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions
-            container: openquantumsafe/ci-ubuntu-latest:latest
+            container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions-libjade
-            container: openquantumsafe/ci-ubuntu-latest:latest
+            container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST}}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
     container:
@@ -80,7 +80,7 @@ jobs:
         include:
           - name: arm64-slhdsa
             runner: ubuntu-24.04-arm
-            container: openquantumsafe/ci-ubuntu-latest:latest
+            container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
             PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
             CMAKE_ARGS: -DOQS_MINIMAL_BUILD=SIG_slh_dsa
           - name: alpine-slhdsa
@@ -108,7 +108,7 @@ jobs:
       fail-fast: false
     runs-on: ubuntu-latest
     container:
-      image: openquantumsafe/ci-ubuntu-latest:latest
+      image: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4

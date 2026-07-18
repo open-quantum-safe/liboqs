@@ -23,7 +23,7 @@ jobs:
     name: Check code formatting
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
@@ -38,7 +38,7 @@ jobs:
     name: Check upstream code is properly integrated
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
@@ -65,7 +65,7 @@ jobs:
     name: Check that code passes a basic build
     needs: [workflowcheck, stylecheck, upstreamcheck]
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     env:
       KEM_NAME: ml_kem_768
       SIG_NAME: ml_dsa_65
@@ -96,7 +96,7 @@ jobs:
     name: Check C++ linking with example program
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     env:
       SIG_NAME: ml_dsa_44
     steps:
@@ -129,7 +129,7 @@ jobs:
     name: Check that code passes a basic fuzzing build
     needs: [workflowcheck, stylecheck, upstreamcheck]
     runs-on: ubuntu-latest
-    container: openquantumsafe/ci-ubuntu-latest:latest
+    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     env:
       SIG_NAME: ml_dsa_44
       CC: clang
