@@ -16,6 +16,7 @@ jobs:
     permissions:
       contents: read
       id-token: write  # required by nixflakecheck's magic-nix-cache-action
+      actions: write   # required to cancel the run on fail-fast (see basic.yml)
 
   platform-tests:
     needs: basic-checks

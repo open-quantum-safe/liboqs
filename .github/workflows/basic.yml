@@ -24,6 +24,9 @@ jobs:
     needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    permissions:
+      contents: read
+      actions: write  # required to cancel the run on failure (fail-fast)
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
@@ -33,12 +36,20 @@ jobs:
         run: mkdir build && ./scripts/run_doxygen.sh $(which doxygen) ./docs/.Doxyfile ./build
       - name: Validate CBOM
         run: scripts/validate_cbom.sh
+      - name: Cancel run on failure (fail-fast across jobs)
+        if: failure()
+        run: gh run cancel ${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   upstreamcheck:
     name: Check upstream code is properly integrated
     needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    permissions:
+      contents: read
+      actions: write  # required to cancel the run on failure (fail-fast)
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
@@ -72,10 +83,15 @@ jobs:
           python3 copy_from_upstream.py -d libjade && \
           git status --porcelain && \
           test -z "$(git status --porcelain)"
+      - name: Cancel run on failure (fail-fast across jobs)
+        if: failure()
+        run: gh run cancel ${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   buildcheck:
     name: Check that code passes a basic build
-    needs: [workflowcheck, stylecheck, upstreamcheck]
+    needs: [workflowcheck, stylecheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     env:
@@ -109,6 +125,9 @@ jobs:
     needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    permissions:
+      contents: read
+      actions: write  # required to cancel the run on failure (fail-fast)
     env:
       SIG_NAME: ml_dsa_44
     steps:
@@ -136,10 +155,15 @@ jobs:
           -I./include -L./lib -loqs -lcrypto -std=c++11 -o example_sig && \
           ./example_sig
         working-directory: ${{ env.RANDOM_BUILD_DIR }}
+      - name: Cancel run on failure (fail-fast across jobs)
+        if: failure()
+        run: gh run cancel ${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   fuzzbuildcheck:
     name: Check that code passes a basic fuzzing build
-    needs: [workflowcheck, stylecheck, upstreamcheck]
+    needs: [workflowcheck, stylecheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
     env:
@@ -190,4 +214,11 @@ jobs:
       - name: Check flake syntax
         run: nix flake check --no-build # check for accurate syntax
       - name: Check that the flake builds
-        run: nix build # check that the build runs
+        # Uses the lightweight .#ci package (OQS_MINIMAL_BUILD, 1 KEM + 1
+        # SIG) instead of the default (OQS_DIST_BUILD=ON, all ~330+
+        # algorithms). This only needs to validate that the flake
+        # mechanism itself builds correctly -- and since the derivation's
+        # src input is the full, ever-changing repo, Nix caching can never
+        # avoid recompiling on every commit regardless of scope, so
+        # keeping that scope small is what actually saves time here.
+        run: nix build .#ci # check that the build runs
