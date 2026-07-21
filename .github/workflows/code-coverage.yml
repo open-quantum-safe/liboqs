@@ -35,6 +35,8 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
+        env:
+          OQS_TEST_SIG_CTX_STEP: "255"
         run: |
           python3 -m pytest --verbose --numprocesses=auto \
           tests/test_acvp_vectors.py \

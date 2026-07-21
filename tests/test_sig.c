@@ -21,7 +21,7 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
-static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2], bool extended_tests) {
+static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2], bool extended_tests, size_t ctx_step_override) {
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -136,7 +136,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	if (sig->sig_with_ctx_support) {
 		size_t ctx_step = 1;
 		// Only do a small fraction of the context sizes for SLH_DSA for efficiency purposes
-		if (!strncmp(sig->method_name, "SLH_DSA", 7)) {
+		if (ctx_step_override > 0) {
+			ctx_step = ctx_step_override;
+		} else if (!strncmp(sig->method_name, "SLH_DSA", 7)) {
 			ctx_step = 61; // using a prime slightly smaller than a power of 2 to avoid only testing word/block aligned values
 		}
 		for (size_t i = 0; i < 256; ++i) {
@@ -269,12 +271,13 @@ struct thread_data {
 	bool *bitflips_all;
 	size_t *bitflips;
 	bool extended_tests;
+	size_t ctx_step_override;
 	OQS_STATUS rc;
 };
 
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
-	td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips, td->extended_tests);
+	td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips, td->extended_tests, td->ctx_step_override);
 	OQS_thread_stop();
 	return NULL;
 }
@@ -303,6 +306,7 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "  extended_tests: run extended correctness tests (with bitflips, full context-string tests)\n");
 		fprintf(stderr, "  bitflips_msg: the number of random bitflips to perform for each EUF-CMA signature (\"all\" to flip every bit)\n");
 		fprintf(stderr, "  bitflips_sig: the number of random bitflips to perform for each SUF-CMA signature (\"all\" to flip every bit)\n");
+		fprintf(stderr, "  OQS_TEST_SIG_CTX_STEP: env var, step size for context-string iteration (1..255; overrides per-algorithm default)\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
@@ -333,13 +337,24 @@ int main(int argc, char **argv) {
 			bitflips[1] = (size_t)strtol(argv[3], NULL, 10);
 		}
 	}
-	if (argc == 5) {
+	if (argc >= 5) {
 		extended_tests = strtol(argv[4], NULL, 10);
 		if (extended_tests != 0 && extended_tests != 1) {
 			fprintf(stderr, "ERROR: invalid value for extended_tests (must be 0 or 1)\n");
 			OQS_destroy();
 			return EXIT_FAILURE;
 		}
+	}
+	size_t ctx_step_override = 0;
+	const char *ctx_step_env = getenv("OQS_TEST_SIG_CTX_STEP");
+	if (ctx_step_env) {
+		long int v = strtol(ctx_step_env, NULL, 10);
+		if (v < 1 || v > 255) {
+			fprintf(stderr, "ERROR: invalid value for OQS_TEST_SIG_CTX_STEP (must be 1..255)\n");
+			OQS_destroy();
+			return EXIT_FAILURE;
+		}
+		ctx_step_override = (size_t)v;
 	}
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -366,7 +381,7 @@ int main(int argc, char **argv) {
 	}
 	if (test_in_thread) {
 		pthread_t thread;
-		struct thread_data td = {.alg_name = alg_name, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .extended_tests = (bool)extended_tests};
+		struct thread_data td = {.alg_name = alg_name, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .extended_tests = (bool)extended_tests, .ctx_step_override = ctx_step_override};
 		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 		if (trc) {
 			fprintf(stderr, "ERROR: Creating pthread\n");
@@ -376,7 +391,7 @@ int main(int argc, char **argv) {
 		pthread_join(thread, NULL);
 		rc = td.rc;
 	} else {
-		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests);
+		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests, ctx_step_override);
 	}
 #else
 	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests);
