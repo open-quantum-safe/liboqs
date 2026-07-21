@@ -44,7 +44,6 @@ jobs:
 
   upstreamcheck:
     name: Check default upstream code is properly integrated
-      # libjade testing moved to extended testing
     needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
@@ -193,13 +192,9 @@ jobs:
       - name: Check devShell
         run: nix develop --command echo
       - name: Check flake syntax
-        run: nix flake check --no-build # check for accurate syntax
-      - name: Check that the flake builds
+        run: nix flake check --no-build
+      - name: Check that the flake builds (2 algs)
         # Uses the lightweight .#ci package (OQS_MINIMAL_BUILD, 1 KEM + 1
-        # SIG) instead of the default (OQS_DIST_BUILD=ON, all ~330+
-        # algorithms). This only needs to validate that the flake
-        # mechanism itself builds correctly -- and since the derivation's
-        # src input is the full, ever-changing repo, Nix caching can never
-        # avoid recompiling on every commit regardless of scope, so
-        # keeping that scope small is what actually saves time here.
-        run: nix build .#ci # check that the build runs
+        # SIG = 2 algorithms) instead of the default (OQS_DIST_BUILD=ON, all ~330+
+        # algorithms).
+        run: nix build .#ci
