@@ -394,7 +394,7 @@ int main(int argc, char **argv) {
 		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests, ctx_step_override);
 	}
 #else
-	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests);
+	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests, ctx_step_override);
 #endif
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();
