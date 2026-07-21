@@ -44,6 +44,9 @@ jobs:
   basic-checks:
     needs: check-push-result
     if: needs.check-push-result.outputs.skip_basic == 'false'
+    concurrency:
+      group: basic-checks-${{ github.sha }}
+      cancel-in-progress: true
     uses: ./.github/workflows/basic.yml
     permissions:
       contents: read
