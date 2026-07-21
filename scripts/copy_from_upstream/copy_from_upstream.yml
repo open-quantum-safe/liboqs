@@ -70,6 +70,7 @@ upstreams:
     git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
+    patches: [mldsa-native-derandomized-keypair.patch]
     preserve_folder_structure: True
   -
     name: pqmayo
@@ -233,7 +234,6 @@ sigs:
     name: ml_dsa
     default_implementation: ref
     upstream_location: mldsa-native
-    derandomized_keypair: true
     schemes:
       -
         scheme: "44"
