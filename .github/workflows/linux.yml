@@ -163,7 +163,21 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
+        run: |
+          mkdir -p tmp
+          python3 -m pytest \
+            --ignore=tests/test_code_conventions.py \
+            --numprocesses=auto \
+            ${{ matrix.PYTEST_ARGS }} \
+            --junit-xml=tmp/pytest.xml \
+            --capture=tee-sys \
+            --tb=short
+      - name: Upload Pytest JUnit XML
+        if: always()
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: "pytest-results"
+          path: tmp/pytest.xml
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'
         run: cpack
