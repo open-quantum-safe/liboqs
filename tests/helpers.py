@@ -171,13 +171,22 @@ def filtered_test(func):
             return func(*args, **kwargs)
     return wrapper
 
-# So far, build dir name has been hard coded to "build".
-# This function makes it dependent on the availability of the environment variable OQS_BUILD_DIR:
-# If OQS_BUILD_DIR is not set, behave as before, returning hard-coded build name set as per README
 def get_current_build_dir_name():
-    if 'OQS_BUILD_DIR' in os.environ:
-        return os.environ['OQS_BUILD_DIR']
-    return 'build'
+    """Use environment variable OQS_BUILD_DIR is specified. If OQS_BUILD_DIR is
+    not specified, use LIBOQS_DIR/build. If neither is specified, use
+    <cwd>/build. The existence of this directory is always checked.
+
+    :raises FileNotFoundError: if chosen build_dir is not found
+    """
+    # TODO: Consider adding additional checks for robustness. For example, check
+    #       that $BUILD_DIR/compile_commands.json also exists
+    build_dir = os.getenv("OQS_BUILD_DIR") or os.path.join(
+        os.getenv("LIBOQS_DIR", os.getcwd()), "build"
+    )
+    if not os.path.isdir(build_dir):
+        raise FileNotFoundError(f"{build_dir} is not a valid directory")
+    return build_dir
+
 
 def path_to_executable(program_name):
     path = "."
