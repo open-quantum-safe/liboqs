@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: MIT
 
 import functools
+import json
 import os
 import os.path
-import pytest
 import re
 import subprocess
-import sys
-import json
 import unittest.mock
+
+import pytest
 import requests
 
 kats = {}
