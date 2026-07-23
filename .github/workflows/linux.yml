@@ -165,7 +165,7 @@ jobs:
         timeout-minutes: 60
         run: |
           mkdir -p tmp
-          python3 -m pytest \
+          python3 -m pytest -q \
             --ignore=tests/test_code_conventions.py \
             --numprocesses=auto \
             ${{ matrix.PYTEST_ARGS }} \
