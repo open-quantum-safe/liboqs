@@ -410,6 +410,19 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 #define TEST_XMSS_OID_SHA2_10_256 0x01U
 #endif
 
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+/* test_invalid_sig_lms: HSS pk layout (RFC 8554): u32(levels) || u32(lm_type) || u32(lm_ots) || I[16] || T[32]. */
+#define TEST_INVALID_SIG_LMS_PK_LEN 60
+/* Signature header: u32(levels-1) || u32(q) || u32(lm_ots). Real LMS signatures are kilobytes. */
+#define TEST_INVALID_SIG_LMS_HEADER_LEN 12
+/* Offsets of the type fields within the pk and the signature header. */
+#define TEST_LMS_LEVELS_OFFSET 3
+#define TEST_LMS_TYPE_OFFSET 7
+#define TEST_LMS_OTS_TYPE_OFFSET 11
+#define TEST_LMS_TYPE_SHA256_H5 5U
+#define TEST_LMOTS_TYPE_SHA256_N32_W2 2U
+#endif
+
 /*
  * This function is used to test the invalid signature verification.
  * @param method_name: The name of the signature algorithm to test.
@@ -461,6 +474,64 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 	if (status == OQS_SUCCESS) {
 		return OQS_ERROR;
 	}
+	return OQS_SUCCESS;
+#endif
+}
+
+/*
+ * This function tests verification of LMS signatures that are shorter than the
+ * header the parser reads. The signature buffers are allocated at exactly the
+ * length passed to verify so that a sanitizer build observes any over-read.
+ * @param method_name: The name of the signature algorithm to test.
+ * @return OQS_SUCCESS if both truncated signatures are rejected, OQS_ERROR otherwise.
+ */
+static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
+	if (method_name == NULL) {
+		return OQS_ERROR;
+	}
+#ifndef OQS_ENABLE_SIG_STFL_LMS
+	(void)method_name;
+	return OQS_SUCCESS;
+#else
+	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
+	if (sig == NULL) {
+		return OQS_ERROR;
+	}
+
+	/* hss_validate_signature_init derives every parameter from the pk and
+	 * signature bytes, so one well-formed single-level pk covers all variants. */
+	uint8_t pk[TEST_INVALID_SIG_LMS_PK_LEN] = {0};
+	pk[TEST_LMS_LEVELS_OFFSET] = 1;
+	pk[TEST_LMS_TYPE_OFFSET] = TEST_LMS_TYPE_SHA256_H5;
+	pk[TEST_LMS_OTS_TYPE_OFFSET] = TEST_LMOTS_TYPE_SHA256_N32_W2;
+
+	uint8_t message[] = "test";
+	/* Sub-case 1: long enough for the level count, but stops before the LM-OTS
+	 * type at offset 8 that the pk/signature agreement check reads.
+	 * Sub-case 2: full header, but stops before the n-byte LM-OTS randomizer C
+	 * that the bottom level reads at offset 8 of the remaining signature. */
+	const size_t trunc_lens[2] = {4, TEST_INVALID_SIG_LMS_HEADER_LEN};
+
+	for (size_t i = 0; i < 2; i++) {
+		uint8_t *malicious_sig = OQS_MEM_malloc(trunc_lens[i]);
+		if (malicious_sig == NULL) {
+			OQS_SIG_STFL_free(sig);
+			return OQS_ERROR;
+		}
+		memset(malicious_sig, 0, trunc_lens[i]);
+		if (trunc_lens[i] > TEST_LMS_OTS_TYPE_OFFSET) {
+			malicious_sig[TEST_LMS_OTS_TYPE_OFFSET] = TEST_LMOTS_TYPE_SHA256_N32_W2;
+		}
+
+		OQS_STATUS status = OQS_SIG_STFL_verify(sig, message, sizeof(message) - 1, malicious_sig, trunc_lens[i], pk);
+		OQS_MEM_insecure_free(malicious_sig);
+		if (status == OQS_SUCCESS) {
+			OQS_SIG_STFL_free(sig);
+			return OQS_ERROR;
+		}
+	}
+
+	OQS_SIG_STFL_free(sig);
 	return OQS_SUCCESS;
 #endif
 }
@@ -1097,6 +1168,8 @@ void *test_correctness_wrapper(void *arg) {
 	td->rc = sig_stfl_test_correctness(td->alg_name, td->katfile, td->bitflips_all, td->bitflips);
 	if (strstr(td->alg_name, "XMSS") != NULL) {
 		td->rc2 = test_invalid_sig(td->alg_name);
+	} else if (strstr(td->alg_name, "LMS") != NULL) {
+		td->rc2 = test_invalid_sig_lms(td->alg_name);
 	}
 	OQS_thread_stop();
 	return NULL;
@@ -1369,6 +1442,8 @@ err:
 	rc1 = sig_stfl_test_secret_key(alg_name, katfile);
 	if (is_xmss) {
 		rc2 = test_invalid_sig(alg_name);
+	} else if (strstr(alg_name, "LMS") != NULL) {
+		rc2 = test_invalid_sig_lms(alg_name);
 	}
 
 	OQS_destroy();
