@@ -31,3 +31,8 @@ jobs:
     uses: ./.github/workflows/sig-bench.yml
     permissions:
       contents: write
+
+  fuzz-full:
+    uses: ./.github/workflows/fuzz.yml
+    with:
+      profile: full
