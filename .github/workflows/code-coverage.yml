@@ -22,7 +22,7 @@ jobs:
             runner: ubuntu-24.04-arm
             CMAKE_ARGS: -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF
     runs-on: ${{ matrix.runner }}
-    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4

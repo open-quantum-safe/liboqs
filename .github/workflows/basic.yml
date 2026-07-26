@@ -23,7 +23,7 @@ jobs:
     name: Check code formatting
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
     permissions:
       contents: read
       actions: write  # required to cancel the run on failure (fail-fast)
@@ -46,7 +46,7 @@ jobs:
     name: Check default upstream code is properly integrated
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
     permissions:
       contents: read
       actions: write  # required to cancel the run on failure (fail-fast)
@@ -75,7 +75,7 @@ jobs:
     name: Check that code passes a basic build
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
     env:
       KEM_NAME: ml_kem_768
       SIG_NAME: ml_dsa_65
@@ -106,7 +106,7 @@ jobs:
     name: Check C++ linking with example program
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
     permissions:
       contents: read
       actions: write  # required to cancel the run on failure (fail-fast)
@@ -147,7 +147,7 @@ jobs:
     name: Check that code passes a basic fuzzing build
     needs: [workflowcheck]
     runs-on: ubuntu-latest
-    container: ghcr.io/baentsch/oqs-ci-ubuntu-latest-slim:latest
+    container: openquantumsafe/ci-ubuntu-latest:latest
     env:
       SIG_NAME: ml_dsa_44
       CC: clang
