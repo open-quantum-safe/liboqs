@@ -109,8 +109,10 @@ bool hss_validate_signature_init(
 
     const unsigned char *orig_signature = signature;
 
-    /* Get the number of levels the signature claims */
-    if (signature_len < 4) {
+    /* Get the number of levels the signature claims.  The header parsed here
+     * is u32(levels-1) || u32(q) || u32(lm_ots), and is_hss_public_key()
+     * below reads the LM-OTS type at offset 8, so 12 bytes must be present */
+    if (signature_len < 12) {
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
     }
@@ -202,6 +204,12 @@ bool hss_validate_signature_init(
     if (!lm_ots_look_up_parameter_set(ots_type, &h, &n, NULL, NULL, NULL)) {
         /* Because we're checking in parallel, this may be caused by */
         /* a bad signature */
+        ctx->status = info->error_code = hss_error_bad_signature;
+        return false;
+    }
+    /* The bottom level signature starts with u32(q), and the LM-OTS
+     * randomizer C sits at offset 8 and is n bytes wide; both are read below */
+    if (signature_len < 8 + (size_t)n) {
         ctx->status = info->error_code = hss_error_bad_signature;
         return false;
     }
