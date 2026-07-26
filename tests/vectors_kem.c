@@ -26,6 +26,21 @@
 #define SHA3_256_OP_LEN         32
 #endif //OQS_ENABLE_KEM_ML_KEM
 
+#ifdef OQS_ENABLE_KEM_ml_kem_512
+extern int PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(const uint8_t *sk);
+#endif
+
+#ifdef OQS_ENABLE_KEM_ml_kem_768
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(const uint8_t *sk);
+#endif
+
+#ifdef OQS_ENABLE_KEM_ml_kem_1024
+extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(const uint8_t *sk);
+#endif
+
 /* MLKEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
@@ -465,51 +480,53 @@ cleanup:
 	return rc;
 }
 
-static OQS_STATUS kem_modOverflow_vector(const char *method_name, const uint8_t *ek) {
-	OQS_KEM *kem = NULL;
-	OQS_STATUS ret = OQS_ERROR;
-
-	kem = OQS_KEM_new(method_name);
-	if (kem == NULL) {
-		printf("[vectors_kem] %s was not enabled at compile-time.\n", method_name);
-		goto algo_not_enabled;
-	}
-
-	if (ek == NULL) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL!\n", method_name);
-		goto err;
-	}
-
 #ifdef OQS_ENABLE_KEM_ML_KEM
-	if (true == sanityCheckPK(ek, kem->length_public_key, method_name)) {
-		fprintf(stderr, "[vectors_kem] %s ERROR: Modulus flow not detected !\n", method_name);
-		goto err;
+static OQS_STATUS kem_keyCheck_vector(const char *method_name,
+                                      const uint8_t *key,
+                                      bool expected_pass,
+                                      bool is_pk) {
+
+	if ((method_name == NULL) || (key == NULL)) {
+		fprintf(stderr, "[vectors_kem] ERROR: method-name or key NULL!\n");
+		return OQS_ERROR;
 	}
-	ret = 0;
-#endif //OQS_ENABLE_KEM_ML_KEM
 
-	goto cleanup;
+	int result = 0;
 
-err:
-	ret = OQS_ERROR;
-	goto cleanup;
-
-algo_not_enabled:
-	ret = OQS_SUCCESS;
-
-cleanup:
-	if (kem != NULL) {
-		OQS_KEM_free(kem);
+#ifdef OQS_ENABLE_KEM_ml_kem_512
+	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_512)) {
+		result = is_pk ?
+		         PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(key) :
+		         PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(key);
 	}
-	return ret;
+#endif
+
+#ifdef OQS_ENABLE_KEM_ml_kem_768
+	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_768)) {
+		result = is_pk ?
+		         PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(key) :
+		         PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(key);
+	}
+#endif
+
+#ifdef OQS_ENABLE_KEM_ml_kem_1024
+	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_1024)) {
+		result = is_pk ?
+		         PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(key) :
+		         PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(key);
+	}
+#endif
+
+	return ((result == 0) == expected_pass) ? OQS_SUCCESS : OQS_ERROR;
 }
+#endif
 
 int main(int argc, char **argv) {
 	OQS_STATUS rc = OQS_SUCCESS;
 
 	OQS_init();
 
-	if (argc != 4 && argc != 6 && argc != 7) {
+	if (argc != 4 && argc != 5 && argc != 6 && argc != 7) {
 		fprintf(stderr, "Usage: vectors_kem algname testname [testargs]\n");
 		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
 			if (i > 0) {
@@ -544,6 +561,7 @@ int main(int argc, char **argv) {
 	char *strcmp_k;
 
 	char *modOverflow_ek;
+	uint8_t *key_bytes = NULL;
 
 	uint8_t *prng_output_stream_bytes = NULL;
 	uint8_t *kg_pk_bytes = NULL;
@@ -692,7 +710,7 @@ int main(int argc, char **argv) {
 
 		rc = kem_strcmp_vector(alg_name, strcmp_seed_bytes, strcmp_ek_bytes, strcmp_c_bytes, strcmp_k_bytes);
 	} else if (!strcmp(test_name, "modOverflow")) {
-		modOverflow_ek = argv[3]; // d || z : both should be 32 bytes each as per FIPS-203
+		modOverflow_ek = argv[3];
 
 		if (strlen(modOverflow_ek) != 2 * kem->length_public_key) {
 			rc = OQS_ERROR;
@@ -709,12 +727,41 @@ int main(int argc, char **argv) {
 
 		hexStringToByteArray(modOverflow_ek,  modOverflow_ek_bytes);
 
-
-		rc = kem_modOverflow_vector(alg_name, modOverflow_ek_bytes);
+#ifdef OQS_ENABLE_KEM_ML_KEM
+		/* For modOverflow tests, we expect the key to be corrupted (expected_pass = false) */
+		rc = kem_keyCheck_vector(alg_name, modOverflow_ek_bytes, false, true);
+#endif
+	} else if (!strcmp(test_name, "encapsulationKeyCheck") || !strcmp(test_name, "decapsulationKeyCheck")) {
+		char *key_input = argv[3];
+		bool expected_pass = (strcmp(argv[4], "true") == 0);
+		// result will be 0 if key is valid, 1 if corrupted/invalid size
+		int result = 1;
+		size_t key_len = (!strcmp(test_name, "encapsulationKeyCheck")) ? kem->length_public_key : kem->length_secret_key;
+		// Step 1: Check Length
+		if (strlen(key_input) == 2 * key_len) {
+			key_bytes = OQS_MEM_malloc(key_len);
+			if (key_bytes == NULL) {
+				fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
+				rc = OQS_ERROR;
+				goto err;
+			}
+			hexStringToByteArray(key_input, key_bytes);
+			// Step 2: If length is OK, perform sanity check
+#ifdef OQS_ENABLE_KEM_ML_KEM
+			result = kem_keyCheck_vector(alg_name, key_bytes, true, !strcmp(test_name, "encapsulationKeyCheck"));
+#endif
+		} else {
+			// Length is wrong, so the key is automatically invalid (result = 1)
+			result = 1;
+		}
+		// Step 3: Compare our result with NIST's expectation
+		// If we found it invalid (1) and NIST expected false -> Test Passed (OQS_SUCCESS)
+		// If we found it valid (0) and NIST expected true -> Test Passed (OQS_SUCCESS)
+		bool actual_pass = (result == 0);
+		rc = (actual_pass == expected_pass) ? OQS_SUCCESS : OQS_ERROR;
 	} else {
-		printf("[vectors_kem] %s only keyGen supported!\n", alg_name);
+		printf("[vectors_kem] %s only keyGen/encDecAFT/encDecVAL/encapsulationKeyCheck/decapsulationKeyCheck/modOverflow/strcmp supported!\n", alg_name);
 	}
-
 err:
 	OQS_MEM_insecure_free(prng_output_stream_bytes);
 	OQS_MEM_insecure_free(kg_pk_bytes);
@@ -738,7 +785,7 @@ err:
 	OQS_MEM_insecure_free(strcmp_k_bytes);
 
 	OQS_MEM_insecure_free(modOverflow_ek_bytes);
-
+	OQS_MEM_insecure_free(key_bytes);
 	OQS_KEM_free(kem);
 
 	OQS_destroy();

@@ -312,7 +312,15 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	if (!size) {
 		return NULL;
 	}
+	// Check alignment (power of 2, and >= sizeof(void*)) and size (multiple of alignment)
+	if (alignment & (alignment - 1) || size & (alignment - 1) || alignment < sizeof(void *)) {
+		errno = EINVAL;
+		return NULL;
+	}
 	const size_t offset = alignment - 1 + sizeof(uint8_t);
+	if (offset > SIZE_MAX - size) {
+		return NULL;
+	}
 	uint8_t *buffer = OSSL_FUNC(CRYPTO_malloc)(size + offset, OPENSSL_FILE, OPENSSL_LINE);
 	if (!buffer) {
 		return NULL;
@@ -367,6 +375,9 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	//            |
 	//       diff = ptr - buffer
 	const size_t offset = alignment - 1 + sizeof(uint8_t);
+	if (offset > SIZE_MAX - size) {
+		return NULL;
+	}
 	uint8_t *buffer = malloc(size + offset); // IGNORE memory-check
 	if (!buffer) {
 		return NULL;
