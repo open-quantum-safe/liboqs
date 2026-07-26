@@ -107,6 +107,16 @@ static OQS_STATUS fuzz_sig(const uint8_t *data, size_t data_len) {
 		exit(1);
 	}
 
+	/* Exercise derandomized keypair generation under the fuzzer/ASAN, where supported. */
+	if (sig->keypair_derand != NULL && ctx.data_len >= sig->length_keypair_seed) {
+		rc = OQS_SIG_keypair_derand(sig, public_key, secret_key, ctx.data);
+		if (rc != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: OQS_SIG_keypair_derand failed!\n");
+			cleanup_heap(public_key, secret_key, signature, sig);
+			return OQS_ERROR;
+		}
+	}
+
 	cleanup_heap(public_key, secret_key, signature, sig);
 	return OQS_SUCCESS; // success
 }

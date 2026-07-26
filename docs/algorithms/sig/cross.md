@@ -22,26 +22,26 @@
 
 ## Parameter set summary
 
-|      Parameter set       | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-| cross-rsdp-128-balanced  | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    13152 |
-|   cross-rsdp-128-fast    | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    18432 |
-|   cross-rsdp-128-small   | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    12432 |
-| cross-rsdp-192-balanced  | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    29853 |
-|   cross-rsdp-192-fast    | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    41406 |
-|   cross-rsdp-192-small   | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    28391 |
-| cross-rsdp-256-balanced  | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    53527 |
-|   cross-rsdp-256-fast    | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    74590 |
-|   cross-rsdp-256-small   | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    50818 |
-| cross-rsdpg-128-balanced | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                     9120 |
-|   cross-rsdpg-128-fast   | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                    11980 |
-|  cross-rsdpg-128-small   | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                     8960 |
-| cross-rsdpg-192-balanced | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    22464 |
-|   cross-rsdpg-192-fast   | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    26772 |
-|  cross-rsdpg-192-small   | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    20452 |
-| cross-rsdpg-256-balanced | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    40100 |
-|   cross-rsdpg-256-fast   | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    48102 |
-|  cross-rsdpg-256-small   | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    36454 |
+|      Parameter set       | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) | Keypair seed size (bytes)   |
+|:------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|:----------------------------|
+| cross-rsdp-128-balanced  | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    13152 | NA                          |
+|   cross-rsdp-128-fast    | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    18432 | NA                          |
+|   cross-rsdp-128-small   | NA                    | EUF-CMA          |                    1 |                        77 |                        32 |                    12432 | NA                          |
+| cross-rsdp-192-balanced  | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    29853 | NA                          |
+|   cross-rsdp-192-fast    | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    41406 | NA                          |
+|   cross-rsdp-192-small   | NA                    | EUF-CMA          |                    3 |                       115 |                        48 |                    28391 | NA                          |
+| cross-rsdp-256-balanced  | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    53527 | NA                          |
+|   cross-rsdp-256-fast    | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    74590 | NA                          |
+|   cross-rsdp-256-small   | NA                    | EUF-CMA          |                    5 |                       153 |                        64 |                    50818 | NA                          |
+| cross-rsdpg-128-balanced | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                     9120 | NA                          |
+|   cross-rsdpg-128-fast   | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                    11980 | NA                          |
+|  cross-rsdpg-128-small   | NA                    | EUF-CMA          |                    1 |                        54 |                        32 |                     8960 | NA                          |
+| cross-rsdpg-192-balanced | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    22464 | NA                          |
+|   cross-rsdpg-192-fast   | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    26772 | NA                          |
+|  cross-rsdpg-192-small   | NA                    | EUF-CMA          |                    3 |                        83 |                        48 |                    20452 | NA                          |
+| cross-rsdpg-256-balanced | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    40100 | NA                          |
+|   cross-rsdpg-256-fast   | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    48102 | NA                          |
+|  cross-rsdpg-256-small   | NA                    | EUF-CMA          |                    5 |                       106 |                        64 |                    36454 | NA                          |
 
 ## cross-rsdp-128-balanced implementation characteristics
 

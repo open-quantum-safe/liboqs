@@ -25,12 +25,12 @@
 
 ## Parameter set summary
 
-|   Parameter set    | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|     Falcon-512     | NA                    | EUF-CMA          |                    1 |                       897 |                      1281 |                      752 |
-|    Falcon-1024     | NA                    | EUF-CMA          |                    5 |                      1793 |                      2305 |                     1462 |
-| Falcon-padded-512  | NA                    | EUF-CMA          |                    1 |                       897 |                      1281 |                      666 |
-| Falcon-padded-1024 | NA                    | EUF-CMA          |                    5 |                      1793 |                      2305 |                     1280 |
+|   Parameter set    | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) | Keypair seed size (bytes)   |
+|:------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|:----------------------------|
+|     Falcon-512     | NA                    | EUF-CMA          |                    1 |                       897 |                      1281 |                      752 | NA                          |
+|    Falcon-1024     | NA                    | EUF-CMA          |                    5 |                      1793 |                      2305 |                     1462 | NA                          |
+| Falcon-padded-512  | NA                    | EUF-CMA          |                    1 |                       897 |                      1281 |                      666 | NA                          |
+| Falcon-padded-1024 | NA                    | EUF-CMA          |                    5 |                      1793 |                      2305 |                     1280 | NA                          |
 
 ## Falcon-512 implementation characteristics
 

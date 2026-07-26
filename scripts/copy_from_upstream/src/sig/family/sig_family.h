@@ -14,8 +14,13 @@
 {%- if scheme.is_extmu and 'length-mu' in scheme['metadata'] %}
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu {{ scheme['metadata']['length-mu'] }}
 {%- endif %}
-
+{%- if scheme.get('derandomized_keypair') %}
+#define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_keypair_seed {{ scheme['metadata']['length-keypair-seed'] }}
+{%- endif %}
 OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void);
+{%- if scheme.get('derandomized_keypair') %}
+OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed);
+{%- endif %}
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);

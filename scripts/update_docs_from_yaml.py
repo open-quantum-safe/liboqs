@@ -244,7 +244,8 @@ def do_it(liboqs_root):
                       'Claimed NIST Level',
                       'Public key size (bytes)',
                       'Secret key size (bytes)',
-                      'Signature size (bytes)']]
+                      'Signature size (bytes)',
+                      'Keypair seed size (bytes)']]
             for parameter_set in sig_yaml['parameter-sets']:
                 table.append([parameter_set['name'].replace('_', '\\_'),
                               parameter_set['alias'] if 'alias' in parameter_set else "NA",
@@ -252,7 +253,8 @@ def do_it(liboqs_root):
                               parameter_set['claimed-nist-level'],
                               parameter_set['length-public-key'],
                               parameter_set['length-secret-key'],
-                              parameter_set['length-signature']])
+                              parameter_set['length-signature'],
+                              parameter_set['length-keypair-seed'] if 'length-keypair-seed' in parameter_set else "NA"])
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
 

@@ -392,6 +392,9 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
                 oqs_scheme_yaml['length-signature'] = rhs_if_not_equal(oqs_scheme_yaml['length-signature'], upstream_yaml['length-signature'], "length-signature")
 
+                if "length-keypair-seed" in oqs_scheme_yaml and "length-keypair-seed" in upstream_yaml:
+                    oqs_scheme_yaml['length-keypair-seed'] = rhs_if_not_equal(oqs_scheme_yaml['length-keypair-seed'], upstream_yaml['length-keypair-seed'], "length-keypair-seed")
+
                 _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
                     upstream_yaml = _upstream_yaml

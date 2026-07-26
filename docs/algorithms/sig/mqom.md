@@ -24,20 +24,20 @@
 
 ## Parameter set summary
 
-|        Parameter set         | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:----------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-| mqom2\_cat1\_gf16\_fast\_r5  | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     3280 |
-| mqom2\_cat1\_gf16\_fast\_r3  | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     3484 |
-| mqom2\_cat1\_gf16\_short\_r5 | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     2916 |
-| mqom2\_cat1\_gf16\_short\_r3 | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     3060 |
-| mqom2\_cat3\_gf16\_fast\_r5  | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     7738 |
-| mqom2\_cat3\_gf16\_fast\_r3  | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     8224 |
-| mqom2\_cat3\_gf16\_short\_r5 | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     6496 |
-| mqom2\_cat3\_gf16\_short\_r3 | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     6820 |
-| mqom2\_cat5\_gf16\_fast\_r5  | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    13772 |
-| mqom2\_cat5\_gf16\_fast\_r3  | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    14708 |
-| mqom2\_cat5\_gf16\_short\_r5 | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    12014 |
-| mqom2\_cat5\_gf16\_short\_r3 | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    12664 |
+|        Parameter set         | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) | Keypair seed size (bytes)   |
+|:----------------------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|:----------------------------|
+| mqom2\_cat1\_gf16\_fast\_r5  | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     3280 | NA                          |
+| mqom2\_cat1\_gf16\_fast\_r3  | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     3484 | NA                          |
+| mqom2\_cat1\_gf16\_short\_r5 | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     2916 | NA                          |
+| mqom2\_cat1\_gf16\_short\_r3 | NA                    | EUF-CMA          |                    1 |                        60 |                        88 |                     3060 | NA                          |
+| mqom2\_cat3\_gf16\_fast\_r5  | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     7738 | NA                          |
+| mqom2\_cat3\_gf16\_fast\_r3  | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     8224 | NA                          |
+| mqom2\_cat3\_gf16\_short\_r5 | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     6496 | NA                          |
+| mqom2\_cat3\_gf16\_short\_r3 | NA                    | EUF-CMA          |                    3 |                        90 |                       132 |                     6820 | NA                          |
+| mqom2\_cat5\_gf16\_fast\_r5  | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    13772 | NA                          |
+| mqom2\_cat5\_gf16\_fast\_r3  | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    14708 | NA                          |
+| mqom2\_cat5\_gf16\_short\_r5 | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    12014 | NA                          |
+| mqom2\_cat5\_gf16\_short\_r3 | NA                    | EUF-CMA          |                    5 |                       122 |                       180 |                    12664 | NA                          |
 
 ## mqom2\_cat1\_gf16\_fast\_r5 implementation characteristics
 

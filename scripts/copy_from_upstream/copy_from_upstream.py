@@ -417,6 +417,16 @@ def load_instructions(file='copy_from_upstream.yml'):
                 scheme['metadata']['implementations'],
                 key=lambda imp: (0 if imp.get('memory_optimized', False) else 1)
             )
+            if metadata.get('derandomized_keypair'):
+                scheme['derandomized_keypair'] = metadata['derandomized_keypair']
+            elif (not 'derandomized_keypair' in scheme) and 'derandomized_keypair' in family:
+                scheme['derandomized_keypair'] = family['derandomized_keypair']
+            if scheme.get('derandomized_keypair'):
+                for imp in scheme['metadata']['implementations']:
+                    if 'signature_keypair_derand' not in imp:
+                        raise RuntimeError(
+                            "Scheme {} implementation {} marks derandomized_keypair but is missing signature_keypair_derand in META".format(
+                                scheme['pretty_name_full'], imp['name']))
             if not 'scheme_paths' in scheme:
                 scheme['scheme_paths'] = {}
                 for imp in scheme['metadata']['implementations']:

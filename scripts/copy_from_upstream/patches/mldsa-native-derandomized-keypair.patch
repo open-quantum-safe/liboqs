@@ -1,0 +1,111 @@
+diff --git a/integration/liboqs/ML-DSA-44_META.yml b/integration/liboqs/ML-DSA-44_META.yml
+index 31f9507..bfa51e5 100644
+--- a/integration/liboqs/ML-DSA-44_META.yml
++++ b/integration/liboqs/ML-DSA-44_META.yml
+@@ -7,6 +7,8 @@ claimed-security: SUF-CMA
+ length-public-key: 1312
+ length-secret-key: 2560
+ length-signature: 2420
++length-keypair-seed: 32
++derandomized_keypair: true
+ length-mu: 64
+ nistkat-sha256: 9a196e7fb32fbc93757dc2d8dc1924460eab66303c0c08aeb8b798fb8d8f8cf3
+ testvectors-sha256: 5f0d135c0f7fd43f3fb9727265fcd6ec3651eb8c67c04ea5f3d8dfa1d99740d2
+@@ -26,6 +28,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_C_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA44_C_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_C_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_C_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA44_C_signature_extmu
+@@ -43,6 +46,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature_extmu
+@@ -70,6 +74,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature_extmu
+diff --git a/integration/liboqs/ML-DSA-65_META.yml b/integration/liboqs/ML-DSA-65_META.yml
+index 5c58b47..d4d36c9 100644
+--- a/integration/liboqs/ML-DSA-65_META.yml
++++ b/integration/liboqs/ML-DSA-65_META.yml
+@@ -7,6 +7,8 @@ claimed-security: SUF-CMA
+ length-public-key: 1952
+ length-secret-key: 4032
+ length-signature: 3309
++length-keypair-seed: 32
++derandomized_keypair: true
+ length-mu: 64
+ nistkat-sha256: 7cb96242eac9907a55b5c84c202f0ebd552419c50b2e986dc2e28f07ecebf072
+ testvectors-sha256: 14bf84918ee90e7afbd580191d3eb890d4557e0900b1145e39a8399ef7dd3fba
+@@ -26,6 +28,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_C_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA65_C_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_C_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_C_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu
+@@ -43,6 +46,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu
+@@ -70,6 +74,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature_extmu
+diff --git a/integration/liboqs/ML-DSA-87_META.yml b/integration/liboqs/ML-DSA-87_META.yml
+index e676330..3ab0246 100644
+--- a/integration/liboqs/ML-DSA-87_META.yml
++++ b/integration/liboqs/ML-DSA-87_META.yml
+@@ -7,6 +7,8 @@ claimed-security: SUF-CMA
+ length-public-key: 2592
+ length-secret-key: 4896
+ length-signature: 4627
++length-keypair-seed: 32
++derandomized_keypair: true
+ length-mu: 64
+ nistkat-sha256: 4537905d2aabcf302fab2f242baed293459ecda7c230e6a67063b02c7e2840ed
+ testvectors-sha256: 759a3ba35210c7e27ff90a7ce5e399295533b82ef125e6ec98af158e00268e44
+@@ -26,6 +28,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_C_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA87_C_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_C_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_C_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA87_C_signature_extmu
+@@ -43,6 +46,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_signature_extmu
+@@ -70,6 +74,7 @@ implementations:
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_keypair
++  signature_keypair_derand: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_keypair_internal
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_signature
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_verify
+   signature_signature_extmu: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_signature_extmu
