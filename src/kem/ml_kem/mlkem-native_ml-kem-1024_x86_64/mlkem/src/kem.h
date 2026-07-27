@@ -55,26 +55,25 @@
 #define mlk_kem_check_pk MLK_NAMESPACE_K(check_pk) MLK_CONTEXT_PARAMETERS_1
 #define mlk_kem_check_sk MLK_NAMESPACE_K(check_sk) MLK_CONTEXT_PARAMETERS_1
 
-/*************************************************
- * Name:        mlk_kem_check_pk
+/**
+ * Implements modulus check mandated by FIPS 203, i.e., ensures that
+ * coefficients are in [0,q-1].
  *
- * Description: Implements modulus check mandated by FIPS 203,
- *              i.e., ensures that coefficients are in [0,q-1].
+ * @spec{Implements @[FIPS203, Section 7.2, 'modulus check'].}
  *
- * Arguments:   - const uint8_t *pk: pointer to input public key
- *                (an already allocated array of MLKEM_INDCCA_PUBLICKEYBYTES
- *                 bytes)
+ * @reference{Not implemented in the reference implementation @[REF].}
  *
- * Returns: - 0 on success
- *          - MLK_ERR_FAIL: If the modulus check failed.
- *          - MLK_ERR_OUT_OF_MEMORY: If MLK_CONFIG_CUSTOM_ALLOC_FREE is
- *              used and an allocation via MLK_CUSTOM_ALLOC returned NULL.
+ * @param[in] pk      Input public key (an already allocated array of
+ *                    MLKEM_INDCCA_PUBLICKEYBYTES bytes).
+ * @param     context Application context. Only present when
+ *                    MLK_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                    MLK_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Specification: Implements @[FIPS203, Section 7.2, 'modulus check']
- *
- **************************************************/
-
-/* Reference: Not implemented in the reference implementation @[REF]. */
+ * @retval 0                     Success.
+ * @retval MLK_ERR_FAIL          Modulus check failed.
+ * @retval MLK_ERR_OUT_OF_MEMORY MLK_CONFIG_CUSTOM_ALLOC_FREE was used and
+ *                               MLK_CUSTOM_ALLOC returned NULL.
+ */
 MLK_EXTERNAL_API
 MLK_MUST_CHECK_RETURN_VALUE
 int mlk_kem_check_pk(const uint8_t pk[MLKEM_INDCCA_PUBLICKEYBYTES],
@@ -86,27 +85,25 @@ __contract__(
 );
 
 
-/*************************************************
- * Name:        mlk_kem_check_sk
+/**
+ * Implements public key hash check mandated by FIPS 203, i.e., ensures that
+ * sk[768𝑘+32 ∶ 768𝑘+64] = H(pk) = H(sk[384𝑘 : 768𝑘+32]).
  *
- * Description: Implements public key hash check mandated by FIPS 203,
- *              i.e., ensures that
- *              sk[768𝑘+32 ∶ 768𝑘+64] = H(pk)= H(sk[384𝑘 : 768𝑘+32])
+ * @spec{Implements @[FIPS203, Section 7.3, 'hash check'].}
  *
- * Arguments:   - const uint8_t *sk: pointer to input private key
- *                (an already allocated array of MLKEM_INDCCA_SECRETKEYBYTES
- *                 bytes)
+ * @reference{Not implemented in the reference implementation @[REF].}
  *
- * Returns: - 0 on success
- *          - MLK_ERR_FAIL: If the public key hash check failed.
- *          - MLK_ERR_OUT_OF_MEMORY: If MLK_CONFIG_CUSTOM_ALLOC_FREE is
- *              used and an allocation via MLK_CUSTOM_ALLOC returned NULL.
+ * @param[in] sk      Input private key (an already allocated array of
+ *                    MLKEM_INDCCA_SECRETKEYBYTES bytes).
+ * @param     context Application context. Only present when
+ *                    MLK_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                    MLK_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Specification: Implements @[FIPS203, Section 7.3, 'hash check']
- *
- **************************************************/
-
-/* Reference: Not implemented in the reference implementation @[REF]. */
+ * @retval 0                     Success.
+ * @retval MLK_ERR_FAIL          Public key hash check failed.
+ * @retval MLK_ERR_OUT_OF_MEMORY MLK_CONFIG_CUSTOM_ALLOC_FREE was used and
+ *                               MLK_CUSTOM_ALLOC returned NULL.
+ */
 MLK_EXTERNAL_API
 MLK_MUST_CHECK_RETURN_VALUE
 int mlk_kem_check_sk(const uint8_t sk[MLKEM_INDCCA_SECRETKEYBYTES],
@@ -117,31 +114,26 @@ __contract__(
           return_value == MLK_ERR_OUT_OF_MEMORY)
 );
 
-/*************************************************
- * Name:        mlk_kem_keypair_derand
+/**
+ * Generate a public/private keypair for the ML-KEM key encapsulation mechanism.
  *
- * Description: Generates public and private key
- *              for CCA-secure ML-KEM key encapsulation mechanism
+ * @spec{Implements @[FIPS203, Algorithm 16, ML-KEM.KeyGen_Internal].}
  *
- * Arguments:   - uint8_t *pk: pointer to output public key
- *                (an already allocated array of MLKEM_INDCCA_PUBLICKEYBYTES
- *                 bytes)
- *              - uint8_t *sk: pointer to output private key
- *                (an already allocated array of MLKEM_INDCCA_SECRETKEYBYTES
- *                 bytes)
- *              - uint8_t *coins: pointer to input randomness
- *                (an already allocated array filled with 2*MLKEM_SYMBYTES
- *                 random bytes)
+ * @param[out] pk      Output public key (an already allocated array of
+ *                     MLKEM_INDCCA_PUBLICKEYBYTES bytes).
+ * @param[out] sk      Output private key (an already allocated array of
+ *                     MLKEM_INDCCA_SECRETKEYBYTES bytes).
+ * @param[in]  coins   Input randomness (an already allocated array filled
+ *                     with 2*MLKEM_SYMBYTES random bytes).
+ * @param      context Application context. Only present when
+ *                     MLK_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLK_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: On success
- *              - MLK_ERR_FAIL: If MLK_CONFIG_KEYGEN_PCT is enabled and the
- *                  PCT failed.
- *              - MLK_ERR_OUT_OF_MEMORY: If MLK_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLK_CUSTOM_ALLOC returned NULL.
- *
- * Specification: Implements @[FIPS203, Algorithm 16, ML-KEM.KeyGen_Internal]
- *
- **************************************************/
+ * @retval 0                     Success.
+ * @retval MLK_ERR_FAIL          MLK_CONFIG_KEYGEN_PCT enabled and PCT failed.
+ * @retval MLK_ERR_OUT_OF_MEMORY MLK_CONFIG_CUSTOM_ALLOC_FREE was used and
+ *                               MLK_CUSTOM_ALLOC returned NULL.
+ */
 MLK_EXTERNAL_API
 MLK_MUST_CHECK_RETURN_VALUE
 int mlk_kem_keypair_derand(uint8_t pk[MLKEM_INDCCA_PUBLICKEYBYTES],
@@ -159,29 +151,25 @@ __contract__(
           return_value == MLK_ERR_RNG_FAIL)
 );
 
-/*************************************************
- * Name:        mlk_kem_keypair
+/**
+ * Generate a public/private keypair for the ML-KEM key encapsulation mechanism.
  *
- * Description: Generates public and private key
- *              for CCA-secure ML-KEM key encapsulation mechanism
+ * @spec{Implements @[FIPS203, Algorithm 19, ML-KEM.KeyGen].}
  *
- * Arguments:   - uint8_t *pk: pointer to output public key
- *                (an already allocated array of MLKEM_INDCCA_PUBLICKEYBYTES
- *                 bytes)
- *              - uint8_t *sk: pointer to output private key
- *                (an already allocated array of MLKEM_INDCCA_SECRETKEYBYTES
- *                 bytes)
+ * @param[out] pk      Output public key (an already allocated array of
+ *                     MLKEM_INDCCA_PUBLICKEYBYTES bytes).
+ * @param[out] sk      Output private key (an already allocated array of
+ *                     MLKEM_INDCCA_SECRETKEYBYTES bytes).
+ * @param      context Application context. Only present when
+ *                     MLK_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLK_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns:     - 0: On success
- *              - MLK_ERR_OUT_OF_MEMORY: If MLK_CONFIG_CUSTOM_ALLOC_FREE is
- *                  used and an allocation via MLK_CUSTOM_ALLOC returned NULL.
- *              - MLK_ERR_RNG_FAIL: Random number generation failed.
- *              - MLK_ERR_FAIL: If MLK_CONFIG_KEYGEN_PCT is enabled and the
- *                  PCT failed.
- *
- * Specification: Implements @[FIPS203, Algorithm 19, ML-KEM.KeyGen]
- *
- **************************************************/
+ * @retval 0                     Success.
+ * @retval MLK_ERR_OUT_OF_MEMORY MLK_CONFIG_CUSTOM_ALLOC_FREE was used and
+ *                               MLK_CUSTOM_ALLOC returned NULL.
+ * @retval MLK_ERR_RNG_FAIL      Random number generation failed.
+ * @retval MLK_ERR_FAIL          MLK_CONFIG_KEYGEN_PCT enabled and PCT failed.
+ */
 MLK_EXTERNAL_API
 MLK_MUST_CHECK_RETURN_VALUE
 int mlk_kem_keypair(uint8_t pk[MLKEM_INDCCA_PUBLICKEYBYTES],
@@ -197,33 +185,29 @@ __contract__(
           return_value == MLK_ERR_RNG_FAIL)
 );
 
-/*************************************************
- * Name:        mlk_kem_enc_derand
+/**
+ * Generate ciphertext and shared secret for a given public key.
  *
- * Description: Generates cipher text and shared
- *              secret for given public key
+ * @spec{Implements @[FIPS203, Algorithm 17, ML-KEM.Encaps_Internal].}
  *
- * Arguments:   - uint8_t *ct: pointer to output cipher text
- *                (an already allocated array of MLKEM_INDCCA_CIPHERTEXTBYTES
- *                 bytes)
- *              - uint8_t *ss: pointer to output shared secret
- *                (an already allocated array of MLKEM_SSBYTES bytes)
- *              - const uint8_t *pk: pointer to input public key
- *                (an already allocated array of MLKEM_INDCCA_PUBLICKEYBYTES
- *                 bytes)
- *              - const uint8_t *coins: pointer to input randomness
- *                (an already allocated array filled with MLKEM_SYMBYTES random
- *                 bytes)
+ * @param[out] ct      Output ciphertext (an already allocated array of
+ *                     MLKEM_INDCCA_CIPHERTEXTBYTES bytes).
+ * @param[out] ss      Output shared secret (an already allocated array of
+ *                     MLKEM_SSBYTES bytes).
+ * @param[in]  pk      Input public key (an already allocated array of
+ *                     MLKEM_INDCCA_PUBLICKEYBYTES bytes).
+ * @param[in]  coins   Input randomness (an already allocated array filled
+ *                     with MLKEM_SYMBYTES random bytes).
+ * @param      context Application context. Only present when
+ *                     MLK_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLK_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns: - 0 on success
- *          - MLK_ERR_FAIL: If the 'modulus check' @[FIPS203, Section 7.2]
- *              for the public key fails.
- *          - MLK_ERR_OUT_OF_MEMORY: If MLK_CONFIG_CUSTOM_ALLOC_FREE is
- *              used and an allocation via MLK_CUSTOM_ALLOC returned NULL.
- *
- * Specification: Implements @[FIPS203, Algorithm 17, ML-KEM.Encaps_Internal]
- *
- **************************************************/
+ * @retval 0                     Success.
+ * @retval MLK_ERR_FAIL          The 'modulus check' @[FIPS203, Section 7.2]
+ *                               for the public key failed.
+ * @retval MLK_ERR_OUT_OF_MEMORY MLK_CONFIG_CUSTOM_ALLOC_FREE was used and
+ *                               MLK_CUSTOM_ALLOC returned NULL.
+ */
 MLK_EXTERNAL_API
 MLK_MUST_CHECK_RETURN_VALUE
 int mlk_kem_enc_derand(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
@@ -242,31 +226,28 @@ __contract__(
           return_value == MLK_ERR_OUT_OF_MEMORY)
 );
 
-/*************************************************
- * Name:        mlk_kem_enc
+/**
+ * Generate ciphertext and shared secret for a given public key.
  *
- * Description: Generates cipher text and shared
- *              secret for given public key
+ * @spec{Implements @[FIPS203, Algorithm 20, ML-KEM.Encaps].}
  *
- * Arguments:   - uint8_t *ct: pointer to output cipher text
- *                (an already allocated array of MLKEM_INDCCA_CIPHERTEXTBYTES
- *                 bytes)
- *              - uint8_t *ss: pointer to output shared secret
- *                (an already allocated array of MLKEM_SSBYTES bytes)
- *              - const uint8_t *pk: pointer to input public key
- *                (an already allocated array of MLKEM_INDCCA_PUBLICKEYBYTES
- *                 bytes)
+ * @param[out] ct      Output ciphertext (an already allocated array of
+ *                     MLKEM_INDCCA_CIPHERTEXTBYTES bytes).
+ * @param[out] ss      Output shared secret (an already allocated array of
+ *                     MLKEM_SSBYTES bytes).
+ * @param[in]  pk      Input public key (an already allocated array of
+ *                     MLKEM_INDCCA_PUBLICKEYBYTES bytes).
+ * @param      context Application context. Only present when
+ *                     MLK_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLK_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns: - 0 on success
- *          - MLK_ERR_OUT_OF_MEMORY: If MLK_CONFIG_CUSTOM_ALLOC_FREE is
- *              used and an allocation via MLK_CUSTOM_ALLOC returned NULL.
- *          - MLK_ERR_RNG_FAIL: Random number generation failed.
- *          - MLK_ERR_FAIL: If the 'modulus check' @[FIPS203, Section 7.2]
- *              for the public key fails.
- *
- * Specification: Implements @[FIPS203, Algorithm 20, ML-KEM.Encaps]
- *
- **************************************************/
+ * @retval 0                     Success.
+ * @retval MLK_ERR_OUT_OF_MEMORY MLK_CONFIG_CUSTOM_ALLOC_FREE was used and
+ *                               MLK_CUSTOM_ALLOC returned NULL.
+ * @retval MLK_ERR_RNG_FAIL      Random number generation failed.
+ * @retval MLK_ERR_FAIL          The 'modulus check' @[FIPS203, Section 7.2]
+ *                               for the public key failed.
+ */
 MLK_EXTERNAL_API
 MLK_MUST_CHECK_RETURN_VALUE
 int mlk_kem_enc(uint8_t ct[MLKEM_INDCCA_CIPHERTEXTBYTES],
@@ -284,30 +265,27 @@ __contract__(
           return_value == MLK_ERR_RNG_FAIL)
 );
 
-/*************************************************
- * Name:        mlk_kem_dec
+/**
+ * Generate shared secret for a given ciphertext and private key.
  *
- * Description: Generates shared secret for given
- *              cipher text and private key
+ * @spec{Implements @[FIPS203, Algorithm 21, ML-KEM.Decaps].}
  *
- * Arguments:   - uint8_t *ss: pointer to output shared secret
- *                (an already allocated array of MLKEM_SSBYTES bytes)
- *              - const uint8_t *ct: pointer to input cipher text
- *                (an already allocated array of MLKEM_INDCCA_CIPHERTEXTBYTES
- *                 bytes)
- *              - const uint8_t *sk: pointer to input private key
- *                (an already allocated array of MLKEM_INDCCA_SECRETKEYBYTES
- *                 bytes)
+ * @param[out] ss      Output shared secret (an already allocated array of
+ *                     MLKEM_SSBYTES bytes).
+ * @param[in]  ct      Input ciphertext (an already allocated array of
+ *                     MLKEM_INDCCA_CIPHERTEXTBYTES bytes).
+ * @param[in]  sk      Input private key (an already allocated array of
+ *                     MLKEM_INDCCA_SECRETKEYBYTES bytes).
+ * @param      context Application context. Only present when
+ *                     MLK_CONFIG_CONTEXT_PARAMETER is defined; type set by
+ *                     MLK_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * Returns: - 0 on success
- *          - MLK_ERR_FAIL: If the 'hash check' @[FIPS203, Section 7.3]
- *              for the secret key fails.
- *          - MLK_ERR_OUT_OF_MEMORY: If MLK_CONFIG_CUSTOM_ALLOC_FREE is
- *              used and an allocation via MLK_CUSTOM_ALLOC returned NULL.
- *
- * Specification: Implements @[FIPS203, Algorithm 21, ML-KEM.Decaps]
- *
- **************************************************/
+ * @retval 0                     Success.
+ * @retval MLK_ERR_FAIL          The 'hash check' @[FIPS203, Section 7.3]
+ *                               for the secret key failed.
+ * @retval MLK_ERR_OUT_OF_MEMORY MLK_CONFIG_CUSTOM_ALLOC_FREE was used and
+ *                               MLK_CUSTOM_ALLOC returned NULL.
+ */
 MLK_EXTERNAL_API
 MLK_MUST_CHECK_RETURN_VALUE
 int mlk_kem_dec(uint8_t ss[MLKEM_SSBYTES],

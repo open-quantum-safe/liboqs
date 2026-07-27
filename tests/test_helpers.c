@@ -10,6 +10,12 @@
 #include "test_helpers.h"
 
 /* HQC PRNG implementation */
+/* https://gitlab.com/pqc-hqc/hqc/-/blame/next-release/src/common/symmetric.h?ref_type=heads#L44
+ *
+ * liboqs's output actually matches pqc-hqc's output:
+ * https://gitlab.com/pqc-hqc/hqc/-/blob/161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d/kats/ref/hqc-1/PQCkemKAT_2321.rsp
+ */
+#define HQC_PRNG_DOMAIN 0
 
 // State for HQC PRNG. Analogue of DRBG_ctx in rand/rand_nist.c
 static OQS_SHA3_shake256_inc_ctx hqc_prng_state = { NULL };
@@ -22,7 +28,7 @@ static void hqc_prng_new(void) {
 // entropy_input must have length 48.
 // If personalization_string is non-null, its length must also be 48.
 static void hqc_prng_seed(const uint8_t *entropy_input, const uint8_t *personalization_string) {
-	uint8_t domain = 1;
+	uint8_t domain = HQC_PRNG_DOMAIN;
 	// reset state
 	OQS_SHA3_shake256_inc_ctx_reset(&hqc_prng_state);
 	OQS_SHA3_shake256_inc_absorb(&hqc_prng_state, entropy_input, 48);
@@ -71,9 +77,9 @@ static int is_mceliece(const char *method_name) {
 }
 
 static int is_hqc(const char *method_name) {
-	return (0 == strcmp(method_name, OQS_KEM_alg_hqc_128))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_192))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_256));
+	return (0 == strcmp(method_name, OQS_KEM_alg_hqc_1))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_3))
+	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_5));
 }
 
 /* OQS_KAT_PRNG interface implementation */

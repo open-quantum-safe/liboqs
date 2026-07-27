@@ -1,25 +1,46 @@
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
-   src:pk_gen.c:35
-   # fun:extract_01_masks
+   fun:to_bitslicing_2x
    fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   fun:to_bitslicing_2x
+   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   fun:vec256_cswap
+   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+   fun:PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair
+}
+
+{
+   This implementation of Classic McEliece may not be constant time.
+   Memcheck:Cond
+   src:vec256_mul_asm.S
+   fun:PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair
 }
 
 {
    This implementation of Classic McEliece may not be constant time.
    Memcheck:Value8
-   src:pk_gen.c:43
-   # fun:extract_mask256
-   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
-}
-
-{
-   This implementation of Classic McEliece may not be constant time.
-   Memcheck:Value8
-   src:pk_gen.c:162
-   # fun:to_bitslicing_2x
-   fun:PQCLEAN_MCELIECE460896_AVX2_pk_gen
+   src:vec256_mul_asm.S
+   fun:PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair
 }
 
 {

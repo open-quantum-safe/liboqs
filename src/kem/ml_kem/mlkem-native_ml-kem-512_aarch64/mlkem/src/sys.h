@@ -47,12 +47,13 @@
 #define MLK_SYS_ARMV81M_MVE
 #endif
 
-#if defined(__x86_64__)
+/* Check if we're running on an x86_64 system. */
+#if defined(__x86_64__) || defined(_M_X64) || defined(_M_AMD64)
 #define MLK_SYS_X86_64
 #if defined(__AVX2__)
 #define MLK_SYS_X86_64_AVX2
 #endif
-#endif /* __x86_64__ */
+#endif /* __x86_64__ || _M_X64 || _M_AMD64 */
 
 #if defined(MLK_SYS_LITTLE_ENDIAN) && defined(__powerpc64__)
 #define MLK_SYS_PPC64LE
@@ -146,6 +147,22 @@
 #endif
 #endif /* !MLK_ALWAYS_INLINE */
 
+/*
+ * MLK_NOINLINE: Prevent inlining.
+ * - MSVC: __declspec(noinline)
+ * - GCC/Clang: __attribute__((noinline))
+ * - Other: empty
+ */
+#if !defined(MLK_NOINLINE)
+#if defined(_MSC_VER)
+#define MLK_NOINLINE __declspec(noinline)
+#elif defined(__GNUC__) || defined(__clang__)
+#define MLK_NOINLINE __attribute__((noinline))
+#else
+#define MLK_NOINLINE
+#endif
+#endif /* !MLK_NOINLINE */
+
 #ifndef MLK_STATIC_TESTABLE
 #define MLK_STATIC_TESTABLE static
 #endif
@@ -225,6 +242,31 @@
 #else
 #define MLK_MUST_CHECK_RETURN_VALUE
 #endif
+
+/* The x86_64 assembly backend uses the SysV calling convention. On Windows,
+ * where the Microsoft x64 calling convention is the default, it can still be
+ * used with compilers that allow choosing the calling convention per
+ * function: GCC and Clang support __attribute__((sysv_abi)), which makes
+ * calls to the annotated function follow the SysV calling convention.
+ *
+ * MLK_SYSV_ABI_SUPPORTED signals that the toolchain can call SysV assembly
+ * routines; the x86_64 assembly backend is only enabled if it is defined.
+ * MLK_SYSV_ABI is the attribute carried by declarations of x86_64 assembly
+ * routines. Both macros can be set externally for toolchains offering an
+ * equivalent mechanism that is not recognized here. */
+#if defined(MLK_SYS_X86_64) && !defined(MLK_SYSV_ABI_SUPPORTED)
+#if !defined(MLK_SYS_WINDOWS) || defined(__GNUC__) || defined(__clang__)
+#define MLK_SYSV_ABI_SUPPORTED
+#endif
+#endif
+
+#if !defined(MLK_SYSV_ABI)
+#if defined(MLK_SYS_WINDOWS) && defined(MLK_SYSV_ABI_SUPPORTED)
+#define MLK_SYSV_ABI __attribute__((sysv_abi))
+#else
+#define MLK_SYSV_ABI
+#endif
+#endif /* !MLK_SYSV_ABI */
 
 #if !defined(__ASSEMBLER__)
 /* System capability enumeration */

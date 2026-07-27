@@ -27,37 +27,34 @@
 /* Absolute exclusive upper bound for the output of the forward NTT */
 #define MLK_NTT_BOUND (8 * MLKEM_Q)
 
-/*
- * Elements of R_q = Z_q[X]/(X^n + 1). Represents polynomial
- * coeffs[0] + X*coeffs[1] + X^2*coeffs[2] + ... + X^{n-1}*coeffs[n-1]
+/**
+ * Element of R_q = Z_q[X]/(X^n + 1). Represents polynomial
+ * coeffs[0] + X*coeffs[1] + X^2*coeffs[2] + ... + X^{n-1}*coeffs[n-1].
  */
 typedef struct
 {
-  int16_t coeffs[MLKEM_N];
+  int16_t coeffs[MLKEM_N]; /**< Polynomial coefficients. */
 } MLK_ALIGN mlk_poly;
 
-/*
- * INTERNAL presentation of precomputed data speeding up
+/**
+ * INTERNAL representation of precomputed data speeding up
  * the base multiplication of two polynomials in NTT domain.
  */
 typedef struct
 {
-  int16_t coeffs[MLKEM_N >> 1];
+  int16_t coeffs[MLKEM_N >> 1]; /**< Cached coefficients. */
 } MLK_ALIGN mlk_poly_mulcache;
 
-/*************************************************
- * Name:        mlk_montgomery_reduce
+/**
+ * Generic Montgomery reduction; given a 32-bit integer a, computes a 16-bit
+ * integer congruent to a * R^-1 mod MLKEM_Q, where R=2^16.
  *
- * Description: Generic Montgomery reduction; given a 32-bit integer a, computes
- *              16-bit integer congruent to a * R^-1 mod q, where R=2^16
+ * @param a Input integer to be reduced, of absolute value smaller or equal
+ *          to INT32_MAX - 2^15 * MLKEM_Q.
  *
- * Arguments:   - int32_t a: input integer to be reduced, of absolute value
- *                smaller or equal to INT32_MAX - 2^15 * MLKEM_Q.
- *
- * Returns:     integer congruent to a * R^-1 modulo q, with absolute value
- *                <= ceil(|a| / 2^16) + (MLKEM_Q + 1)/2
- *
- **************************************************/
+ * @return Integer congruent to a * R^-1 modulo MLKEM_Q, with absolute value
+ *         <= ceil(|a| / 2^16) + (MLKEM_Q + 1)/2.
+ */
 static MLK_ALWAYS_INLINE int16_t mlk_montgomery_reduce(int32_t a)
 __contract__(
     requires(a < +(INT32_MAX - (((int32_t)1 << 15) * MLKEM_Q)) &&
@@ -103,21 +100,18 @@ __contract__(
 }
 
 #define mlk_poly_tomont MLK_NAMESPACE(poly_tomont)
-/*************************************************
- * Name:        mlk_poly_tomont
+/**
+ * In-place conversion of all coefficients of a polynomial from the normal
+ * domain to the Montgomery domain.
  *
- * Description: Inplace conversion of all coefficients of a polynomial
- *              from normal domain to Montgomery domain
+ * Bounds: output < MLKEM_Q in absolute value.
  *
- *              Bounds: Output < q in absolute value.
+ * @spec{Internal normalization required in `mlk_indcpa_keypair_derand` as
+ * part of matrix-vector multiplication @[FIPS203, Algorithm 13, K-PKE.KeyGen,
+ * L18].}
  *
- * Arguments:   - mlk_poly *r: pointer to input/output polynomial
- *
- * Specification: Internal normalization required in `mlk_indcpa_keypair_derand`
- *                as part of matrix-vector multiplication
- *                @[FIPS203, Algorithm 13, K-PKE.KeyGen, L18].
- *
- **************************************************/
+ * @param[in,out] r Input/output polynomial.
+ */
 MLK_INTERNAL_API
 void mlk_poly_tomont(mlk_poly *r)
 __contract__(
@@ -127,27 +121,23 @@ __contract__(
 );
 
 #define mlk_poly_mulcache_compute MLK_NAMESPACE(poly_mulcache_compute)
-/************************************************************
- * Name: mlk_poly_mulcache_compute
+/**
+ * Compute the mulcache for a polynomial in NTT domain.
  *
- * Description: Computes the mulcache for a polynomial in NTT domain
+ * The mulcache of a degree-2 polynomial b := b0 + b1*X in Fq[X]/(X^2-zeta)
+ * is the value b1*zeta, needed when computing products of b in
+ * Fq[X]/(X^2-zeta).
  *
- *              The mulcache of a degree-2 polynomial b := b0 + b1*X
- *              in Fq[X]/(X^2-zeta) is the value b1*zeta, needed when
- *              computing products of b in Fq[X]/(X^2-zeta).
+ * The mulcache of a polynomial in NTT domain -- which is a 128-tuple of
+ * degree-2 polynomials in Fq[X]/(X^2-zeta), for varying zeta, is the
+ * 128-tuple of mulcaches of those polynomials.
  *
- *              The mulcache of a polynomial in NTT domain -- which is
- *              a 128-tuple of degree-2 polynomials in Fq[X]/(X^2-zeta),
- *              for varying zeta, is the 128-tuple of mulcaches of those
- *              polynomials.
+ * @spec{Caches `b_1 * \gamma` in @[FIPS203, Algorithm 12, BaseCaseMultiply,
+ * L1].}
  *
- * Arguments: - x: Pointer to mulcache to be populated
- *            - a: Pointer to input polynomial
- *
- * Specification:
- * - Caches `b_1 * \gamma` in @[FIPS203, Algorithm 12, BaseCaseMultiply, L1]
- *
- ************************************************************/
+ * @param[out] x Mulcache to be populated.
+ * @param[in]  a Input polynomial.
+ */
 /*
  * NOTE: The default C implementation of this function populates
  * the mulcache with values in (-q,q), but this is not needed for the
@@ -162,21 +152,17 @@ __contract__(
 );
 
 #define mlk_poly_reduce MLK_NAMESPACE(poly_reduce)
-/*************************************************
- * Name:        mlk_poly_reduce
+/**
+ * Convert a polynomial to unsigned canonical representatives.
  *
- * Description: Converts polynomial to _unsigned canonical_ representatives.
+ * The input coefficients can be arbitrary integers in int16_t. The output
+ * coefficients are in [0,1,..,MLKEM_Q-1].
  *
- *              The input coefficients can be arbitrary integers in int16_t.
- *              The output coefficients are in [0,1,...,MLKEM_Q-1].
+ * @spec{Normalizes on unsigned canonical representatives ahead of calling
+ * @[FIPS203, Compress_d, Eq (4.7)]. This is not made explicit in FIPS 203.}
  *
- * Arguments:   - mlk_poly *r: pointer to input/output polynomial
- *
- * Specification: Normalizes on unsigned canoncial representatives
- *                ahead of calling @[FIPS203, Compress_d, Eq (4.7)].
- *                This is not made explicit in FIPS 203.
- *
- **************************************************/
+ * @param[in,out] r Input/output polynomial.
+ */
 /*
  * NOTE: The semantics of mlk_poly_reduce() is different in
  * the reference implementation, which requires
@@ -193,23 +179,19 @@ __contract__(
 );
 
 #define mlk_poly_add MLK_NAMESPACE(poly_add)
-/************************************************************
- * Name: mlk_poly_add
+/**
+ * Add two polynomials in place.
  *
- * Description: Adds two polynomials in place
+ * The coefficients of @p r and @p b must be such that the addition does not
+ * overflow. Otherwise, the behaviour of this function is undefined.
  *
- * Arguments: - r: Pointer to input-output polynomial to be added to.
- *            - b: Pointer to input polynomial that should be added
- *                 to r. Must be disjoint from r.
+ * @spec{@[FIPS203, 2.4.5, Arithmetic With Polynomials and NTT
+ * Representations]. Used in @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L21].}
  *
- * The coefficients of r and b must be so that the addition does
- * not overflow. Otherwise, the behaviour of this function is undefined.
- *
- * Specification:
- * - @[FIPS203, 2.4.5, Arithmetic With Polynomials and NTT Representations]
- * - Used in @[FIPS203, Algorithm 14 (K-PKE.Encrypt), L21]
- *
- ************************************************************/
+ * @param[in,out] r Input-output polynomial to be added to.
+ * @param[in]     b Input polynomial that should be added to @p r. Must be
+ *                  disjoint from @p r.
+ */
 /*
  * NOTE: The reference implementation uses a 3-argument mlk_poly_add.
  * We specialize to the accumulator form to avoid reasoning about aliasing.
@@ -226,19 +208,15 @@ __contract__(
 );
 
 #define mlk_poly_sub MLK_NAMESPACE(poly_sub)
-/*************************************************
- * Name:        mlk_poly_sub
+/**
+ * Subtract two polynomials; no modular reduction is performed.
  *
- * Description: Subtract two polynomials; no modular reduction is performed
+ * @spec{@[FIPS203, 2.4.5, Arithmetic With Polynomials and NTT
+ * Representations]. Used in @[FIPS203, Algorithm 15, K-PKE.Decrypt, L6].}
  *
- * Arguments: - mlk_poly *r: Pointer to input-output polynomial to be added to.
- *            - const mlk_poly *b: Pointer to second input polynomial
- *
- * Specification:
- * - @[FIPS203, 2.4.5, Arithmetic With Polynomials and NTT Representations]
- * - Used in @[FIPS203, Algorithm 15, K-PKE.Decrypt, L6]
- *
- **************************************************/
+ * @param[in,out] r Input-output polynomial to be subtracted from.
+ * @param[in]     b Second input polynomial.
+ */
 /*
  * NOTE: The reference implementation uses a 3-argument mlk_poly_sub.
  * We specialize to the accumulator form to avoid reasoning about aliasing.
@@ -255,26 +233,24 @@ __contract__(
 );
 
 #define mlk_poly_ntt MLK_NAMESPACE(poly_ntt)
-/*************************************************
- * Name:        mlk_poly_ntt
+/**
+ * Compute the negacyclic number-theoretic transform (NTT) of a polynomial
+ * in place.
  *
- * Description: Computes negacyclic number-theoretic transform (NTT) of
- *              a polynomial in place.
+ * The input is assumed to be in normal order and coefficient-wise bound by
+ * MLKEM_Q in absolute value.
  *
- *              The input is assumed to be in normal order and
- *              coefficient-wise bound by MLKEM_Q in absolute value.
+ * The output polynomial is in bitreversed order, or of a custom order if
+ * MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set, and coefficient-wise bound
+ * by MLK_NTT_BOUND in absolute value.
  *
- *              The output polynomial is in bitreversed order, and
- *              coefficient-wise bound by MLK_NTT_BOUND in absolute value.
+ * (NOTE: Sometimes the input to the NTT is actually smaller, which gives
+ * better bounds.)
  *
- *              (NOTE: Sometimes the input to the NTT is actually smaller,
- *               which gives better bounds.)
+ * @spec{Implements @[FIPS203, Algorithm 9, NTT].}
  *
- * Arguments:   - mlk_poly *p: pointer to in/output polynomial
- *
- * Specification: Implements @[FIPS203, Algorithm 9, NTT]
- *
- **************************************************/
+ * @param[in,out] r Input/output polynomial.
+ */
 MLK_INTERNAL_API
 void mlk_poly_ntt(mlk_poly *r)
 __contract__(
@@ -285,27 +261,24 @@ __contract__(
 );
 
 #define mlk_poly_invntt_tomont MLK_NAMESPACE(poly_invntt_tomont)
-/*************************************************
- * Name:        mlk_poly_invntt_tomont
+/**
+ * Compute the inverse negacyclic number-theoretic transform (NTT) of a
+ * polynomial in place; input assumed to be in bitreversed order, output in
+ * normal order.
  *
- * Description: Computes inverse of negacyclic number-theoretic transform (NTT)
- *              of a polynomial in place;
- *              inputs assumed to be in bitreversed order, output in normal
- *              order
+ * The input is assumed to be in bitreversed order, or of a custom order if
+ * MLK_USE_NATIVE_NTT_CUSTOM_ORDER is set, and can have arbitrary
+ * coefficients in int16_t.
  *
- *              The input is assumed to be in bitreversed order, and can
- *              have arbitrary coefficients in int16_t.
+ * The output polynomial is in normal order, and coefficient-wise bound by
+ * MLK_INVNTT_BOUND in absolute value.
  *
- *              The output polynomial is in normal order, and
- *              coefficient-wise bound by MLK_INVNTT_BOUND in absolute value.
+ * @spec{Implements composition of @[FIPS203, Algorithm 10, NTT^{-1}] and
+ * elementwise modular multiplication with a suitable Montgomery factor
+ * introduced during the base multiplication.}
  *
- * Arguments:   - uint16_t *a: pointer to in/output polynomial
- *
- * Specification: Implements composition of @[FIPS203, Algorithm 10, NTT^{-1}]
- *                and elementwise modular multiplication with a suitable
- *                Montgomery factor introduced during the base multiplication.
- *
- **************************************************/
+ * @param[in,out] r Input/output polynomial.
+ */
 MLK_INTERNAL_API
 void mlk_poly_invntt_tomont(mlk_poly *r)
 __contract__(

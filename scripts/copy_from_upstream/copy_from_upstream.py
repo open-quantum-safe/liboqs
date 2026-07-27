@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import concurrent.futures
 import copy
 import glob
 import jinja2
@@ -68,6 +69,10 @@ def shell(command, expect=0):
     subprocess_stdout = None if DEBUG > 0 else subprocess.DEVNULL
     ret = subprocess.run(command, stdout=subprocess_stdout, stderr=subprocess_stdout)
     if ret.returncode != expect:
+        if ret.stdout:
+            print(ret.stdout.decode("utf-8"))
+        if ret.stderr:
+            print(ret.stderr.decode("utf-8"))
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 # Generate template from specified scheme to replace old file in 'copy' mode
@@ -179,11 +184,19 @@ def load_instructions(file='copy_from_upstream.yml'):
     instructions = yaml.safe_load(instructions)
     upstreams = {}
     for upstream in instructions['upstreams']:
+        upstreams[upstream['name']] = upstream
+
+    def _fetch_and_process_upstream(upstream):
+        # Each upstream is fetched into its own independent 'repos/<name>'
+        # directory and does not read or write any other upstream's state,
+        # so these can safely run concurrently. This loop's git fetches
+        # (network I/O) previously ran fully sequentially and dominated
+        # this script's runtime (~13 upstreams x several git subprocess
+        # calls each).
         upstream_name = upstream['name']
         upstream_git_url = upstream['git_url']
         upstream_git_commit = upstream['git_commit']
         upstream_git_branch = upstream['git_branch']
-        upstreams[upstream_name] = upstream
 
         work_dir = os.path.join('repos', upstream_name)
         work_dotgit = os.path.join(work_dir, '.git')
@@ -233,6 +246,17 @@ def load_instructions(file='copy_from_upstream.yml'):
                         req = common_dep['supported_platforms'][i]
                         common_dep['required_flags'] = req['required_flags']
             upstream['commons'] = dict(map(lambda x: (x['name'], x), common_deps['commons'] ))
+
+    # Fan out across upstreams: this step is I/O-bound (git network fetches),
+    # so a thread pool is used rather than multiprocessing. Any exception in
+    # a worker is re-raised here (via future.result()) so failures are not
+    # silently swallowed.
+    max_workers = min(8, len(instructions['upstreams'])) or 1
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(_fetch_and_process_upstream, upstream)
+                   for upstream in instructions['upstreams']]
+        for future in concurrent.futures.as_completed(futures):
+            future.result()
 
     for family in instructions['kems']:
         family['type'] = 'kem'
@@ -624,6 +648,23 @@ def handle_implementation(impl, family, scheme, dst_basedir):
 
 def process_families(instructions, basedir, with_kat, with_generator, with_libjade=False):
     for family in instructions['kems'] + instructions['sigs']:
+        extmu_variants = []
+        for s in family['schemes']:
+            if 'metadata' in s and any('signature_signature_extmu' in imp for imp in s['metadata']['implementations']):
+                ext_s = copy.deepcopy(s)
+                ext_s['scheme'] += "_extmu"
+                ext_s['scheme_c'] += "_extmu"
+                ext_s['pretty_name_full'] += "-extmu"
+                ext_s['is_extmu'] = True
+                for imp in ext_s['metadata']['implementations']:
+                    if 'signature_signature_extmu' in imp:
+                        imp['signature_signature'] = imp['signature_signature_extmu']
+                    if 'signature_verify_extmu' in imp:
+                        imp['signature_verify'] = imp['signature_verify_extmu']
+                    imp['api-with-context-string'] = False
+                extmu_variants.append(ext_s)
+        family['schemes'].extend(extmu_variants)
+
         try:
             os.makedirs(os.path.join(basedir, 'src', family['type'], family['name']))
         except:
@@ -695,8 +736,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
 
-
-            if with_kat:
+            if with_kat and not scheme.get('is_extmu', False):
                 if family in instructions['kems']:
                     try:
                         if kats['kem'][scheme['pretty_name_full']]['single'] != scheme['metadata']['nistkat-sha256']:
@@ -797,6 +837,7 @@ def copy_from_upstream(slh_dsa_inst: dict):
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
@@ -826,6 +867,7 @@ def copy_from_libjade():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
+            f.write("\n")
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
 

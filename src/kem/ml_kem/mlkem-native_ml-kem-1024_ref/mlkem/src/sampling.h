@@ -20,59 +20,52 @@
 #include "poly.h"
 
 #define mlk_poly_cbd2 MLK_NAMESPACE(poly_cbd2)
-/*************************************************
- * Name:        mlk_poly_cbd2
+/**
+ * Given an array of uniformly random bytes, compute a polynomial with
+ * coefficients distributed according to a centered binomial distribution
+ * with parameter eta=2.
  *
- * Description: Given an array of uniformly random bytes, compute
- *              polynomial with coefficients distributed according to
- *              a centered binomial distribution with parameter eta=2
+ * @spec{Implements @[FIPS203, Algorithm 8, SamplePolyCBD_2].}
  *
- * Arguments:   - mlk_poly *r: pointer to output polynomial
- *              - const uint8_t *buf: pointer to input byte array
- *
- * Specification: Implements @[FIPS203, Algorithm 8, SamplePolyCBD_2]
- *
- **************************************************/
+ * @param[out] r   Output polynomial.
+ * @param[in]  buf Input byte array.
+ */
 MLK_INTERNAL_API
 void mlk_poly_cbd2(mlk_poly *r, const uint8_t buf[2 * MLKEM_N / 4]);
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_ETA1 == 3
 #define mlk_poly_cbd3 MLK_NAMESPACE(poly_cbd3)
-/*************************************************
- * Name:        mlk_poly_cbd3
+/**
+ * Given an array of uniformly random bytes, compute a polynomial with
+ * coefficients distributed according to a centered binomial distribution
+ * with parameter eta=3.
  *
- * Description: Given an array of uniformly random bytes, compute
- *              polynomial with coefficients distributed according to
- *              a centered binomial distribution with parameter eta=3.
- *              This function is only needed for ML-KEM-512
+ * This function is only needed for ML-KEM-512.
  *
- * Arguments:   - mlk_poly *r: pointer to output polynomial
- *              - const uint8_t *buf: pointer to input byte array
+ * @spec{Implements @[FIPS203, Algorithm 8, SamplePolyCBD_3].}
  *
- * Specification: Implements @[FIPS203, Algorithm 8, SamplePolyCBD_3]
- *
- **************************************************/
+ * @param[out] r   Output polynomial.
+ * @param[in]  buf Input byte array.
+ */
 MLK_INTERNAL_API
 void mlk_poly_cbd3(mlk_poly *r, const uint8_t buf[3 * MLKEM_N / 4]);
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_ETA1 == 3 */
 
 #if !defined(MLK_CONFIG_SERIAL_FIPS202_ONLY)
 #define mlk_poly_rej_uniform_x4 MLK_NAMESPACE(poly_rej_uniform_x4)
-/*************************************************
- * Name:        mlk_poly_rej_uniform_x4
+/**
+ * Generate four polynomials using rejection sampling on (pseudo-)uniformly
+ * random bytes sampled from a seed.
  *
- * Description: Generate four polynomials using rejection sampling
- *              on (pseudo-)uniformly random bytes sampled from a seed.
+ * @spec{Implements @[FIPS203, Algorithm 7, SampleNTT].}
  *
- * Arguments:   - mlk_poly *vec0, *vec1, *vec2, *vec3:
- *                Pointers to 4 polynomials to be sampled.
- *              - uint8_t seed[4][MLK_ALIGN_UP(MLKEM_SYMBYTES + 2)]:
- *                Pointer consecutive array of seed buffers of size
- *                MLKEM_SYMBYTES + 2 each, plus padding for alignment.
- *
- * Specification: Implements @[FIPS203, Algorithm 7, SampleNTT]
- *
- **************************************************/
+ * @param[out] vec0 Polynomial to be sampled.
+ * @param[out] vec1 Polynomial to be sampled.
+ * @param[out] vec2 Polynomial to be sampled.
+ * @param[out] vec3 Polynomial to be sampled.
+ * @param[in]  seed Consecutive array of 4 seed buffers of size
+ *                  MLKEM_SYMBYTES + 2 each, plus padding for alignment.
+ */
 MLK_INTERNAL_API
 void mlk_poly_rej_uniform_x4(mlk_poly *vec0, mlk_poly *vec1, mlk_poly *vec2,
                              mlk_poly *vec3,
@@ -94,19 +87,15 @@ __contract__(
 #endif /* !MLK_CONFIG_SERIAL_FIPS202_ONLY */
 
 #define mlk_poly_rej_uniform MLK_NAMESPACE(poly_rej_uniform)
-/*************************************************
- * Name:        mlk_poly_rej_uniform
+/**
+ * Generate a polynomial using rejection sampling on (pseudo-)uniformly
+ * random bytes sampled from a seed.
  *
- * Description: Generate polynomial using rejection sampling
- *              on (pseudo-)uniformly random bytes sampled from a seed.
+ * @spec{Implements @[FIPS203, Algorithm 7, SampleNTT].}
  *
- * Arguments:   - mlk_poly *vec:           Pointer to polynomial to be sampled.
- *              - uint8_t *seed:       Pointer to seed buffer of size
- *                                     MLKEM_SYMBYTES + 2 each.
- *
- * Specification: Implements @[FIPS203, Algorithm 7, SampleNTT]
- *
- **************************************************/
+ * @param[out] entry Polynomial to be sampled.
+ * @param[in]  seed  Seed buffer of size MLKEM_SYMBYTES + 2.
+ */
 MLK_INTERNAL_API
 void mlk_poly_rej_uniform(mlk_poly *entry, uint8_t seed[MLKEM_SYMBYTES + 2])
 __contract__(

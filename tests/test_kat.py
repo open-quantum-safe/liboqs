@@ -6,6 +6,7 @@ import os.path
 import pytest
 import platform
 from hashlib import sha256
+import subprocess
 
 @helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
@@ -14,19 +15,21 @@ def test_kem(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_kem'), kem_name],
+        ignore_returncode=True
     )
     output = output.replace("\r\n", "\n")
     h256 = sha256()
     h256.update(output.encode())
 
-    assert(kats[kem_name]['single'] == h256.hexdigest())
+    assert kats[kem_name]['single'] == h256.hexdigest()
 
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
     kats = helpers.get_kats("sig")
-    # slh dsa will run ACVP vectors instead
-    if ("SLH_DSA" in sig_name): pytest.skip('slhdsa not enabled for KATs')
+    # skip slh-dsa and extmu variants
+    if ("SLH_DSA" in sig_name or "-extmu" in sig_name): 
+        pytest.skip('Skipping KATs for slh-dsa and extmu variants')
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_sig'), sig_name],

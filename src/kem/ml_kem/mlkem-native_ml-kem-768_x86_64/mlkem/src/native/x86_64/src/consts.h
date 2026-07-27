@@ -19,7 +19,7 @@
 
 #ifndef __ASSEMBLER__
 #define mlk_qdata MLK_NAMESPACE(qdata)
-extern const int16_t mlk_qdata[624];
+MLK_INTERNAL_DATA_DECLARATION const int16_t mlk_qdata[624];
 #endif
 
 #endif /* !MLK_NATIVE_X86_64_SRC_CONSTS_H */

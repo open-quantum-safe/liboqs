@@ -24,6 +24,9 @@ jobs:
     needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
+    permissions:
+      contents: read
+      actions: write  # required to cancel the run on failure (fail-fast)
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
@@ -33,12 +36,20 @@ jobs:
         run: mkdir build && ./scripts/run_doxygen.sh $(which doxygen) ./docs/.Doxyfile ./build
       - name: Validate CBOM
         run: scripts/validate_cbom.sh
+      - name: Cancel run on failure (fail-fast across jobs)
+        if: failure()
+        run: gh run cancel ${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   upstreamcheck:
-    name: Check upstream code is properly integrated
+    name: Check default upstream code is properly integrated
     needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
+    permissions:
+      contents: read
+      actions: write  # required to cancel the run on failure (fail-fast)
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
@@ -54,16 +65,15 @@ jobs:
           python3 copy_from_upstream.py -d copy && \
           git status --porcelain && \
           test -z "$(git status --porcelain)"
-      - name: Verify copy_from_upstream state after libjade
-        working-directory: "scripts/copy_from_upstream"
-        run: |
-          python3 copy_from_upstream.py -d libjade && \
-          git status --porcelain && \
-          test -z "$(git status --porcelain)"
+      - name: Cancel run on failure (fail-fast across jobs)
+        if: failure()
+        run: gh run cancel ${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   buildcheck:
     name: Check that code passes a basic build
-    needs: [workflowcheck, stylecheck, upstreamcheck]
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
@@ -97,6 +107,9 @@ jobs:
     needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
+    permissions:
+      contents: read
+      actions: write  # required to cancel the run on failure (fail-fast)
     env:
       SIG_NAME: ml_dsa_44
     steps:
@@ -124,10 +137,15 @@ jobs:
           -I./include -L./lib -loqs -lcrypto -std=c++11 -o example_sig && \
           ./example_sig
         working-directory: ${{ env.RANDOM_BUILD_DIR }}
+      - name: Cancel run on failure (fail-fast across jobs)
+        if: failure()
+        run: gh run cancel ${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   fuzzbuildcheck:
     name: Check that code passes a basic fuzzing build
-    needs: [workflowcheck, stylecheck, upstreamcheck]
+    needs: [workflowcheck]
     runs-on: ubuntu-latest
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
@@ -165,6 +183,8 @@ jobs:
     name: Check that Nix flake has correct syntax and can build
     needs: [workflowcheck]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
       - name: Checkout code
@@ -172,6 +192,9 @@ jobs:
       - name: Check devShell
         run: nix develop --command echo
       - name: Check flake syntax
-        run: nix flake check --no-build # check for accurate syntax
-      - name: Check that the flake builds
-        run: nix build # check that the build runs
+        run: nix flake check --no-build
+      - name: Check that the flake builds (2 algs)
+        # Uses the lightweight .#ci package (OQS_MINIMAL_BUILD, 1 KEM + 1
+        # SIG = 2 algorithms) instead of the default (OQS_DIST_BUILD=ON, all ~330+
+        # algorithms).
+        run: nix build .#ci

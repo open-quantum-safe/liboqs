@@ -21,18 +21,21 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
-static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2], bool extended_tests) {
+static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_all[2], size_t bitflips[2], bool extended_tests, size_t ctx_step_override) {
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
 	uint8_t *secret_key = NULL;
 	uint8_t *message = NULL;
-	size_t message_len = 100;
+	size_t message_len = 64;
 	uint8_t ctx[257] = { 0 };
 	uint8_t *signature = NULL;
 	size_t signature_len;
 	OQS_STATUS rc, ret = OQS_ERROR;
-
+	// if it is not an extmu variant, use the standard test length of 100
+	if (strstr(method_name, "-extmu") == NULL) {
+		message_len = 100;
+	}
 	//The magic numbers are random values.
 	//The length of the magic number was chosen to be 31 to break alignment
 	magic_t magic;
@@ -133,7 +136,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 	if (sig->sig_with_ctx_support) {
 		size_t ctx_step = 1;
 		// Only do a small fraction of the context sizes for SLH_DSA for efficiency purposes
-		if (!strncmp(sig->method_name, "SLH_DSA", 7)) {
+		if (ctx_step_override > 0) {
+			ctx_step = ctx_step_override;
+		} else if (!strncmp(sig->method_name, "SLH_DSA", 7)) {
 			ctx_step = 61; // using a prime slightly smaller than a power of 2 to avoid only testing word/block aligned values
 		}
 		for (size_t i = 0; i < 256; ++i) {
@@ -174,6 +179,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		}
 	} else if (extended_tests) {
 		rc = OQS_SIG_sign_with_ctx_str(sig, signature, &signature_len, message, message_len, ctx, 1, secret_key);
+		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 		if (rc != OQS_ERROR) {
 			fprintf(stderr, "ERROR: OQS_SIG_sign_with_ctx_str should fail without support for context strings\n");
 			goto err;
@@ -265,12 +271,13 @@ struct thread_data {
 	bool *bitflips_all;
 	size_t *bitflips;
 	bool extended_tests;
+	size_t ctx_step_override;
 	OQS_STATUS rc;
 };
 
 void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
-	td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips, td->extended_tests);
+	td->rc = sig_test_correctness(td->alg_name, td->bitflips_all, td->bitflips, td->extended_tests, td->ctx_step_override);
 	OQS_thread_stop();
 	return NULL;
 }
@@ -299,6 +306,7 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "  extended_tests: run extended correctness tests (with bitflips, full context-string tests)\n");
 		fprintf(stderr, "  bitflips_msg: the number of random bitflips to perform for each EUF-CMA signature (\"all\" to flip every bit)\n");
 		fprintf(stderr, "  bitflips_sig: the number of random bitflips to perform for each SUF-CMA signature (\"all\" to flip every bit)\n");
+		fprintf(stderr, "  OQS_TEST_SIG_CTX_STEP: env var, step size for context-string iteration (1..255; overrides per-algorithm default)\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
@@ -329,13 +337,24 @@ int main(int argc, char **argv) {
 			bitflips[1] = (size_t)strtol(argv[3], NULL, 10);
 		}
 	}
-	if (argc == 5) {
+	if (argc >= 5) {
 		extended_tests = strtol(argv[4], NULL, 10);
 		if (extended_tests != 0 && extended_tests != 1) {
 			fprintf(stderr, "ERROR: invalid value for extended_tests (must be 0 or 1)\n");
 			OQS_destroy();
 			return EXIT_FAILURE;
 		}
+	}
+	size_t ctx_step_override = 0;
+	const char *ctx_step_env = getenv("OQS_TEST_SIG_CTX_STEP");
+	if (ctx_step_env) {
+		long int v = strtol(ctx_step_env, NULL, 10);
+		if (v < 1 || v > 255) {
+			fprintf(stderr, "ERROR: invalid value for OQS_TEST_SIG_CTX_STEP (must be 1..255)\n");
+			OQS_destroy();
+			return EXIT_FAILURE;
+		}
+		ctx_step_override = (size_t)v;
 	}
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -355,14 +374,14 @@ int main(int argc, char **argv) {
 	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5", "cross-rsdp-128-small", "cross-rsdp-192-small", "cross-rsdp-256-balanced", "cross-rsdp-256-small", "cross-rsdpg-192-small", "cross-rsdpg-256-small", "SNOVA_37_17_2", "SNOVA_56_25_2", "SNOVA_49_11_3", "SNOVA_37_8_4", "SNOVA_24_5_5", "SNOVA_60_10_4", "SNOVA_29_6_5", "mqom2_cat1_gf16_fast_r3", "mqom2_cat1_gf16_fast_r5", "mqom2_cat1_gf16_short_r3", "mqom2_cat1_gf16_short_r5", "mqom2_cat3_gf16_fast_r3", "mqom2_cat3_gf16_fast_r5", "mqom2_cat3_gf16_short_r3", "mqom2_cat3_gf16_short_r5", "mqom2_cat5_gf16_fast_r3", "mqom2_cat5_gf16_fast_r5", "mqom2_cat5_gf16_short_r3", "mqom2_cat5_gf16_short_r5"};
 	int test_in_thread = 1;
 	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
-		if ( (strncmp(alg_name, "SLH_DSA", 7) == 0) || (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) ) {
+		if ((strncmp(alg_name, "SLH_DSA", 7) == 0) || (strstr(alg_name, no_thread_sig_patterns[i]) != NULL)) {
 			test_in_thread = 0;
 			break;
 		}
 	}
 	if (test_in_thread) {
 		pthread_t thread;
-		struct thread_data td = {.alg_name = alg_name, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .extended_tests = (bool)extended_tests};
+		struct thread_data td = {.alg_name = alg_name, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .extended_tests = (bool)extended_tests, .ctx_step_override = ctx_step_override};
 		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 		if (trc) {
 			fprintf(stderr, "ERROR: Creating pthread\n");
@@ -372,10 +391,10 @@ int main(int argc, char **argv) {
 		pthread_join(thread, NULL);
 		rc = td.rc;
 	} else {
-		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests);
+		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests, ctx_step_override);
 	}
 #else
-	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests);
+	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests, ctx_step_override);
 #endif
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();

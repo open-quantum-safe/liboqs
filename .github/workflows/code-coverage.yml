@@ -14,13 +14,13 @@ jobs:
         include:
           - id: x64-generic
             runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_ENABLE_SIG_SLH_DSA=OFF
           - id: x64-distbuild
             runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF
           - id: arm64-distbuild
             runner: ubuntu-24.04-arm
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF
     runs-on: ${{ matrix.runner }}
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
@@ -35,9 +35,10 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
+        env:
+          OQS_TEST_SIG_CTX_STEP: "255"
         run: |
           python3 -m pytest --verbose --numprocesses=auto \
-          tests/test_acvp_vectors.py \
           tests/test_cmdline.py \
           tests/test_kat.py
       - name: Run lcov

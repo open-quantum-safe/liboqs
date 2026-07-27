@@ -19,6 +19,61 @@
 extern "C" {
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+/**
+ * @def IGNORE_UNUSED_FUNC
+ *
+ * @brief suppress compiler warning for unused functions
+ */
+#define IGNORE_UNUSED_FUNC __attribute__((unused))
+#else
+/**
+ * @def IGNORE_UNUSED_FUNC
+ *
+ * @brief __attribute__((unused)) is unique to GNU C and/or Clang ecosystem,
+ */
+#define IGNORE_UNUSED_FUNC
+#endif
+
+#if defined(OQS_DISABLE_MEM_BLACK_BOX)
+
+#warning "DANGER: OQS_DISABLE_MEM_BLACK_BOX is for internal testing only"
+#warning "disabling optimization barrier may introduce side channels"
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief Optimization barrier is disabled explicitly
+ */
+#define OQS_MEM_BLACK_BOX(v) (void)v
+
+#elif defined(__GNUC__) || defined(__clang__)
+
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief prevent compiler from optimizing on secret values. Within GNU C and
+ * Clang ecosystem, inline ASM is the preferred method.
+ */
+#define OQS_MEM_BLACK_BOX(v)                                                   \
+    do {                                                                       \
+        __asm__ volatile("" : "+r"(v) :);                                      \
+    } while (0)
+
+#else
+
+#pragma message("WARNING: non-GNUC/Clang toolchain detected. liboqs cannot     \
+                 guarantee optimization barrier on unsupported platforms.      \
+                 Compiler may introduce non-constant-time behaviors. Please    \
+                 verify generated assembly and proceed with caution.")
+/**
+ * @def OQS_MEM_BLACK_BOX
+ *
+ * @brief On non-GNUC/Clang platforms, liboqs does not provide optimization
+ * barrier guarantees
+ */
+#define OQS_MEM_BLACK_BOX(v) (void)v
+#endif
+
 /**
  * Macro for terminating the program if x is
  * a null pointer.

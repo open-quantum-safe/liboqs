@@ -39,7 +39,7 @@ static MLK_INLINE void mlk_poly_permute_bitrev_to_custom(int16_t data[MLKEM_N])
 {
   if (mlk_sys_check_capability(MLK_SYS_CAP_AVX2))
   {
-    mlk_nttunpack_avx2(data);
+    mlk_nttunpack_avx2_asm(data);
   }
 }
 
@@ -53,7 +53,7 @@ static MLK_INLINE int mlk_rej_uniform_native(int16_t *r, unsigned len,
   {
     return MLK_NATIVE_FUNC_FALLBACK;
   }
-  return (int)mlk_rej_uniform_asm(r, buf, buflen, mlk_rej_uniform_table);
+  return (int)mlk_rej_uniform_avx2_asm(r, buf, buflen, mlk_rej_uniform_table);
 }
 
 MLK_MUST_CHECK_RETURN_VALUE
@@ -64,7 +64,7 @@ static MLK_INLINE int mlk_ntt_native(int16_t data[MLKEM_N])
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_ntt_avx2(data, mlk_qdata);
+  mlk_ntt_avx2_asm(data, mlk_qdata);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -76,7 +76,7 @@ static MLK_INLINE int mlk_intt_native(int16_t data[MLKEM_N])
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_invntt_avx2(data, mlk_qdata);
+  mlk_invntt_avx2_asm(data, mlk_qdata);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -88,7 +88,7 @@ static MLK_INLINE int mlk_poly_reduce_native(int16_t data[MLKEM_N])
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_reduce_avx2(data);
+  mlk_reduce_avx2_asm(data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -100,7 +100,7 @@ static MLK_INLINE int mlk_poly_tomont_native(int16_t data[MLKEM_N])
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_tomont_avx2(data);
+  mlk_tomont_avx2_asm(data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -113,7 +113,7 @@ static MLK_INLINE int mlk_poly_mulcache_compute_native(int16_t x[MLKEM_N / 2],
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_mulcache_compute_avx2(x, y, mlk_qdata);
+  mlk_poly_mulcache_compute_avx2_asm(x, y, mlk_qdata);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -128,7 +128,7 @@ static MLK_INLINE int mlk_polyvec_basemul_acc_montgomery_cached_k2_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_polyvec_basemul_acc_montgomery_cached_asm_k2(r, a, b, b_cache);
+  mlk_polyvec_basemul_acc_montgomery_cached_k2_avx2_asm(r, a, b, b_cache);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 */
@@ -144,7 +144,7 @@ static MLK_INLINE int mlk_polyvec_basemul_acc_montgomery_cached_k3_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_polyvec_basemul_acc_montgomery_cached_asm_k3(r, a, b, b_cache);
+  mlk_polyvec_basemul_acc_montgomery_cached_k3_avx2_asm(r, a, b, b_cache);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 3 */
@@ -160,7 +160,7 @@ static MLK_INLINE int mlk_polyvec_basemul_acc_montgomery_cached_k4_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_polyvec_basemul_acc_montgomery_cached_asm_k4(r, a, b, b_cache);
+  mlk_polyvec_basemul_acc_montgomery_cached_k4_avx2_asm(r, a, b, b_cache);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4 */
@@ -174,7 +174,7 @@ static MLK_INLINE int mlk_poly_tobytes_native(uint8_t r[MLKEM_POLYBYTES],
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_ntttobytes_avx2(r, a);
+  mlk_ntttobytes_avx2_asm(r, a);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -187,7 +187,7 @@ static MLK_INLINE int mlk_poly_frombytes_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_nttfrombytes_avx2(r, a);
+  mlk_nttfrombytes_avx2_asm(r, a);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -201,7 +201,7 @@ static MLK_INLINE int mlk_poly_compress_d4_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_compress_d4_avx2(r, a, mlk_compress_d4_data);
+  mlk_poly_compress_d4_avx2_asm(r, a, mlk_compress_d4_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -214,7 +214,7 @@ static MLK_INLINE int mlk_poly_compress_d10_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_compress_d10_avx2(r, a, mlk_compress_d10_data);
+  mlk_poly_compress_d10_avx2_asm(r, a, mlk_compress_d10_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -227,7 +227,7 @@ static MLK_INLINE int mlk_poly_decompress_d4_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_decompress_d4_avx2(r, a, mlk_decompress_d4_data);
+  mlk_poly_decompress_d4_avx2_asm(r, a, mlk_decompress_d4_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -240,7 +240,7 @@ static MLK_INLINE int mlk_poly_decompress_d10_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_decompress_d10_avx2(r, a, mlk_decompress_d10_data);
+  mlk_poly_decompress_d10_avx2_asm(r, a, mlk_decompress_d10_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 || MLKEM_K == 3 */
@@ -255,7 +255,7 @@ static MLK_INLINE int mlk_poly_compress_d5_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_compress_d5_avx2(r, a, mlk_compress_d5_data);
+  mlk_poly_compress_d5_avx2_asm(r, a, mlk_compress_d5_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -268,7 +268,7 @@ static MLK_INLINE int mlk_poly_compress_d11_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_compress_d11_avx2(r, a, mlk_compress_d11_data);
+  mlk_poly_compress_d11_avx2_asm(r, a, mlk_compress_d11_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -281,7 +281,7 @@ static MLK_INLINE int mlk_poly_decompress_d5_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_decompress_d5_avx2(r, a, mlk_decompress_d5_data);
+  mlk_poly_decompress_d5_avx2_asm(r, a, mlk_decompress_d5_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 
@@ -294,7 +294,7 @@ static MLK_INLINE int mlk_poly_decompress_d11_native(
     return MLK_NATIVE_FUNC_FALLBACK;
   }
 
-  mlk_poly_decompress_d11_avx2(r, a, mlk_decompress_d11_data);
+  mlk_poly_decompress_d11_avx2_asm(r, a, mlk_decompress_d11_data);
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4 */

@@ -11,6 +11,9 @@
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_public_key {{ scheme['metadata']['length-public-key'] }}
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_secret_key {{ scheme['metadata']['length-secret-key'] }}
 #define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_signature {{ scheme['metadata']['length-signature'] }}
+{%- if scheme.is_extmu and 'length-mu' in scheme['metadata'] %}
+#define OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_length_mu {{ scheme['metadata']['length-mu'] }}
+{%- endif %}
 
 OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void);
 OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key);

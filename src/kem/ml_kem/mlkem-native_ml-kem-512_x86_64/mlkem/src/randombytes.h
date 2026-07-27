@@ -11,45 +11,37 @@
 
 #if !defined(MLK_CONFIG_NO_RANDOMIZED_API)
 #if !defined(MLK_CONFIG_CUSTOM_RANDOMBYTES)
-/*************************************************
- * Name:        randombytes
+/**
+ * Fill a buffer with cryptographically secure random bytes.
  *
- * Description: Fill a buffer with cryptographically secure random bytes.
+ * mlkem-native does not provide an implementation of this function.
+ * It must be provided by the consumer.
  *
- *              mlkem-native does not provide an implementation of this
- *              function. It must be provided by the consumer.
+ * To use a custom random byte source with a different name or signature,
+ * set MLK_CONFIG_CUSTOM_RANDOMBYTES and define mlk_randombytes directly.
  *
- *              To use a custom random byte source with a different name
- *              or signature, set MLK_CONFIG_CUSTOM_RANDOMBYTES and define
- *              mlk_randombytes directly.
+ * @param[out] out    Output buffer.
+ * @param      outlen Number of random bytes to write.
  *
- * Arguments:   - uint8_t *out: pointer to output buffer
- *              - size_t outlen: number of random bytes to write
- *
- * Returns:     0 on success, non-zero on failure.
- *              On failure, top-level APIs return MLK_ERR_RNG_FAIL.
- *
- **************************************************/
+ * @retval 0     Success.
+ * @retval other Failure; top-level APIs propagate this as MLK_ERR_RNG_FAIL.
+ */
 int randombytes(uint8_t *out, size_t outlen);
 
-/*************************************************
- * Name:        mlk_randombytes
+/**
+ * Internal wrapper around randombytes().
  *
- * Description: Internal wrapper around randombytes().
+ * Fills a buffer with cryptographically secure random bytes.
  *
- *              Fill a buffer with cryptographically secure random bytes.
+ * This function can be replaced by setting MLK_CONFIG_CUSTOM_RANDOMBYTES
+ * and defining mlk_randombytes directly.
  *
- *              This function can be replaced by setting
- *              MLK_CONFIG_CUSTOM_RANDOMBYTES and defining mlk_randombytes
- *              directly.
+ * @param[out] out    Output buffer.
+ * @param      outlen Number of random bytes to write.
  *
- * Arguments:   - uint8_t *out: pointer to output buffer
- *              - size_t outlen: number of random bytes to write
- *
- * Returns:     0 on success, non-zero on failure.
- *              On failure, top-level APIs return MLK_ERR_RNG_FAIL.
- *
- **************************************************/
+ * @retval 0     Success.
+ * @retval other Failure; top-level APIs propagate this as MLK_ERR_RNG_FAIL.
+ */
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_randombytes(uint8_t *out, size_t outlen)
 __contract__(

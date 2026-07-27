@@ -21,7 +21,7 @@ upstream-statement-url: https://github.com/pq-code-package/mlkem-native
 oqs-support-tier: 1
 spec-version: ML-KEM
 primary-upstream:
-  source: https://github.com/pq-code-package/mlkem-native/commit/d2cae2be522a67bfae26100fdb520576f1b2ef90
+  source: https://github.com/pq-code-package/mlkem-native/commit/0ba906cb14b1c241476134d7403a811b382ca498
   spdx-license-identifier: MIT or Apache-2.0 or ISC
 optimized-upstreams:
   cupqc-cuda:
