@@ -1302,7 +1302,7 @@ int main(int argc, char **argv) {
 		msgLen = strlen(sigGen_msg) / 2;
 
 		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
-        sigGen_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
+		sigGen_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
 
@@ -1313,9 +1313,9 @@ int main(int argc, char **argv) {
 
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
-        if (msgLen) {
-            hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
-        }
+		if (msgLen) {
+			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		}
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_gen_vector_extmu(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
@@ -1352,7 +1352,7 @@ int main(int argc, char **argv) {
 		ctxlen = strlen(sigGen_ctx) / 2;
 
 		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
-		sigVer_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
+		sigGen_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
 		/* allocate memory if required */
@@ -1367,9 +1367,9 @@ int main(int argc, char **argv) {
 
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
-        if (msgLen) {
-            hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
-        }
+		if (msgLen) {
+			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		}
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 		if (ctxlen) {
 			hexStringToByteArray(sigGen_ctx, sigGen_ctx_bytes);
@@ -1587,9 +1587,9 @@ int main(int argc, char **argv) {
 		}
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
-        if (msgLen) {
-            hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
-        }
+		if (msgLen) {
+			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		}
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 		if (ctxlen) {
 			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
