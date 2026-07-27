@@ -4,7 +4,7 @@ iniconfig==2.3.0
 jinja2==3.1.6
 packaging==26.2
 pluggy==1.6.0
-pytest==9.0.3
+pytest==9.1.1
 pytest-xdist==3.8.0
 pyyaml==6.0.3
 requests==2.34.2
