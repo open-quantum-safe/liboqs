@@ -1302,18 +1302,20 @@ int main(int argc, char **argv) {
 		msgLen = strlen(sigGen_msg) / 2;
 
 		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
-		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigGen_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
 
-		if ((sigGen_sk_bytes == NULL) || (sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
+		if ((sigGen_sk_bytes == NULL) || (msgLen && sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
 
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
-		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		}
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_gen_vector_extmu(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
@@ -1350,7 +1352,7 @@ int main(int argc, char **argv) {
 		ctxlen = strlen(sigGen_ctx) / 2;
 
 		sigGen_sk_bytes = OQS_MEM_malloc(sig->length_secret_key);
-		sigGen_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigGen_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigGen_sig_bytes = OQS_MEM_malloc(sig->length_signature);
 		prng_output_stream_bytes = OQS_MEM_malloc(strlen(prng_output_stream) / 2);
 		/* allocate memory if required */
@@ -1358,14 +1360,16 @@ int main(int argc, char **argv) {
 			sigGen_ctx_bytes = OQS_MEM_malloc(ctxlen);
 		}
 
-		if ((sigGen_sk_bytes == NULL) || (sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (ctxlen && sigGen_ctx_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
+		if ((sigGen_sk_bytes == NULL) || (msgLen && sigGen_msg_bytes == NULL) || (sigGen_sig_bytes == NULL) || (ctxlen && sigGen_ctx_bytes == NULL) || (prng_output_stream_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
 
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
-		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		}
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 		if (ctxlen) {
 			hexStringToByteArray(sigGen_ctx, sigGen_ctx_bytes);
@@ -1521,17 +1525,19 @@ int main(int argc, char **argv) {
 
 		msgLen = strlen(sigVer_msg) / 2;
 		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
-		sigVer_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigVer_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigVer_sig_bytes = OQS_MEM_malloc(strlen(sigVer_sig) / 2);
 
-		if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
+		if ((sigVer_pk_bytes == NULL) || (msgLen && sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
-		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_ver_vector_extmu(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVerPassed);
@@ -1568,20 +1574,22 @@ int main(int argc, char **argv) {
 		ctxlen = strlen(sigVer_ctx) / 2;
 
 		sigVer_pk_bytes = OQS_MEM_malloc(sig->length_public_key);
-		sigVer_msg_bytes = OQS_MEM_malloc(msgLen);
+		sigVer_msg_bytes = (msgLen > 0) ? OQS_MEM_malloc(msgLen) : NULL;
 		sigVer_sig_bytes = OQS_MEM_malloc(strlen(sigVer_sig) / 2);
 		/* allocate memory if required */
 		if (ctxlen) {
 			sigVer_ctx_bytes = OQS_MEM_malloc(ctxlen);
 		}
 
-		if ((sigVer_pk_bytes == NULL) || (sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL) || (ctxlen && sigVer_ctx_bytes == NULL)) {
+		if ((sigVer_pk_bytes == NULL) || (msgLen && sigVer_msg_bytes == NULL) || (sigVer_sig_bytes == NULL) || (ctxlen && sigVer_ctx_bytes == NULL)) {
 			fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
 			goto err;
 		}
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
-		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		}
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
 		if (ctxlen) {
 			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
