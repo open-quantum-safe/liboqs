@@ -1313,10 +1313,22 @@ int main(int argc, char **argv) {
 
 		hexStringToByteArray(prng_output_stream, prng_output_stream_bytes);
 		hexStringToByteArray(sigGen_sk, sigGen_sk_bytes);
-		hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
 		hexStringToByteArray(sigGen_sig, sigGen_sig_bytes);
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_gen_vector_extmu(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_sig_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigGen_msg, sigGen_msg_bytes);
+		}
+		if (ctxlen) {
+			hexStringToByteArray(sigGen_ctx, sigGen_ctx_bytes);
+		}
+#else
+		rc = EXIT_SUCCESS;
+		goto cleanup;
+#endif
+
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
+		rc = sig_gen_vector_ext(alg_name, prng_output_stream_bytes, sigGen_sk_bytes, sigGen_msg_bytes, msgLen, sigGen_ctx_bytes, ctxlen, sigGen_sig_bytes);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;
@@ -1530,8 +1542,13 @@ int main(int argc, char **argv) {
 		}
 
 		hexStringToByteArray(sigVer_pk, sigVer_pk_bytes);
-		hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
 		hexStringToByteArray(sigVer_sig, sigVer_sig_bytes);
+		if (msgLen) {
+			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
+		}
+		if (ctxlen) {
+			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
+		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_ver_vector_extmu(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVerPassed);

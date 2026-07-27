@@ -247,6 +247,7 @@ def test_wycheproof_vec_kem_decaps(kem_name):
 
     build_dir = helpers.get_current_build_dir_name()
     c_len = ML_KEM_PARAMS[kem_name].ct
+    pk_len = ML_KEM_PARAMS[kem_name].pk
     
     for suffix in ["test", "semi_expanded_decaps_test"]:
         test_cases = fetch_wycheproof_kem_test_cases(kem_name, suffix, ["MLKEMDecapsValidationTest", "MLKEMTest"])
@@ -255,11 +256,14 @@ def test_wycheproof_vec_kem_decaps(kem_name):
             expected_k = tc.get("K") or "00" * 32
             c = tc.get("c") or "00" * c_len
 
-            if "seed" in tc and "ek" in tc:
+            if "seed" in tc:
+                # Provide dummy 'ek' if the JSON omits it (e.g., for invalid seed length tests)
+                ek = tc.get("ek") or "00" * pk_len
+                seed = tc.get("seed") or ""
                 cmd = [
                     f"{build_dir}/tests/vectors_kem",
                     kem_name, "strcmp",
-                    tc["seed"], tc["ek"], c, expected_k
+                    seed, ek, c, expected_k
                 ]
             elif "dk" in tc:
                 cmd = [
@@ -342,7 +346,6 @@ def test_wycheproof_vec_sig_sign(sig_name):
                     continue
                 else:
                     pytest.fail(f"TC {tc['tcId']} FAILED: Seed expansion failed for valid input.") 
-
             msg = tc.get("msg", "")
             sig = tc.get("sig", "")
             ctx = tc.get("ctx", "")
