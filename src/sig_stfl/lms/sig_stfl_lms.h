@@ -317,6 +317,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_new(void);
 int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uint32_t oid);
 
 int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk, uint8_t *sm, size_t *smlen,
+                          size_t sm_capacity, uint32_t expected_oid,
                           const uint8_t *m, size_t mlen);
 
 int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen, const uint8_t *sm, size_t smlen,
@@ -325,7 +326,7 @@ int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen, const uint8_t *sm, si
 void oqs_secret_lms_key_free(OQS_SIG_STFL_SECRET_KEY *sk);
 
 OQS_STATUS oqs_serialize_lms_key(uint8_t **sk_key, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
-OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context);
+OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context, uint32_t expected_oid);
 void oqs_lms_key_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
 // ---------------------------- FUNCTIONS INDEPENDENT OF VARIANT -----------------------------------------
@@ -333,6 +334,10 @@ void oqs_lms_key_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+OQS_STATUS oqs_sig_stfl_lms_sign_with_oid(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key, uint32_t expected_oid, size_t signature_capacity);
+
+OQS_STATUS oqs_sig_stfl_lms_verify_with_oid(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key, uint32_t expected_oid, size_t expected_signature_len);
 
 // --------------------------------------------------------------------------------------------------------
 
