@@ -7,67 +7,25 @@ on: [workflow_call, workflow_dispatch]
 
 jobs:
 
-  zephyr3_test:
+  zephyr_test:
     runs-on: oqs-x64
-    container: ghcr.io/zephyrproject-rtos/ci:v0.26-branch
+    container: ${{ matrix.container }}
     env:
         CMAKE_PREFIX_PATH: /opt/toolchains
     strategy:
         fail-fast: false
         matrix:
-          config:
+          zephyr-ref:
+            - v3.7.0
+            - v4.3.0
+          suite:
+            - Signatures
+            - KEMs
+          include:
             - zephyr-ref: v3.7.0
-
-    steps:
-        - name: Init Zephyr workspace
-          run: |
-            mkdir -p zephyr/manifest && cd zephyr/manifest
-            echo "manifest:" > west.yml
-            echo "  remotes:" >> west.yml
-            echo "    - name: zephyr" >> west.yml
-            echo "      url-base: https://github.com/zephyrproject-rtos" >> west.yml
-            echo "    - name: liboqs" >> west.yml
-            echo "      url-base: https://github.com/${{ github.repository_owner }}" >> west.yml
-            echo "  projects:" >> west.yml
-            echo "    - name: zephyr" >> west.yml
-            echo "      remote: zephyr" >> west.yml
-            echo "      repo-path: zephyr" >> west.yml
-            echo "      revision: ${{ matrix.config.zephyr-ref }}" >> west.yml
-            echo "      import:" >> west.yml
-            echo "        name-allowlist:" >> west.yml
-            echo "          - picolibc" >> west.yml
-            echo "    - name: liboqs" >> west.yml
-            echo "      remote: liboqs" >> west.yml
-            echo "      revision: $(echo '${{ github.ref }}' | sed -e 's/refs\/heads\///')" >> west.yml
-            echo "      path: modules/crypto/liboqs" >> west.yml
-            west init -l --mf west.yml .
-
-        - name: Update west workspace
-          working-directory: zephyr
-          run: |
-            west update -n -o=--depth=1
-            west zephyr-export
-
-        - name: Run Signature test
-          working-directory: zephyr
-          run: |
-            west twister --integration -T modules/crypto/liboqs/zephyr/samples/Signatures -vvv
-
-        - name: Run KEM test
-          working-directory: zephyr
-          run: |
-            west twister --integration -T modules/crypto/liboqs/zephyr/samples/KEMs -vvv
-
-  zephyr4_test:
-    runs-on: oqs-x64
-    container: ghcr.io/zephyrproject-rtos/ci:v0.28.7
-    env:
-        CMAKE_PREFIX_PATH: /opt/toolchains
-    strategy:
-        fail-fast: false
-        matrix:
-          config:
+              container: ghcr.io/zephyrproject-rtos/ci:v0.26-branch
             - zephyr-ref: v4.3.0
+              container: ghcr.io/zephyrproject-rtos/ci:v0.28.7
 
     steps:
         - name: Init Zephyr workspace
@@ -83,7 +41,7 @@ jobs:
             echo "    - name: zephyr" >> west.yml
             echo "      remote: zephyr" >> west.yml
             echo "      repo-path: zephyr" >> west.yml
-            echo "      revision: ${{ matrix.config.zephyr-ref }}" >> west.yml
+            echo "      revision: ${{ matrix.zephyr-ref }}" >> west.yml
             echo "      import:" >> west.yml
             echo "        name-allowlist:" >> west.yml
             echo "          - picolibc" >> west.yml
@@ -99,12 +57,7 @@ jobs:
             west update -n -o=--depth=1
             west zephyr-export
 
-        - name: Run Signature test
+        - name: Run ${{ matrix.suite }} test
           working-directory: zephyr
           run: |
-            west twister --integration -T modules/crypto/liboqs/zephyr/samples/Signatures -vvv
-
-        - name: Run KEM test
-          working-directory: zephyr
-          run: |
-            west twister --integration -T modules/crypto/liboqs/zephyr/samples/KEMs -vvv
+            west twister --integration -T modules/crypto/liboqs/zephyr/samples/${{ matrix.suite }} -vvv

@@ -11,20 +11,76 @@ concurrency:
 
 jobs:
 
+  check-push-result:
+    name: Check if push CI passed for this commit
+    runs-on: ubuntu-latest
+    outputs:
+      skip_basic: ${{ steps.set_output.outputs.skip_basic }}
+    steps:
+      - name: Determine skip status
+        id: set_output
+        run: |
+          if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
+            echo "Fork PR - basic-checks cannot be skipped"
+            echo "skip_basic=false" >> $GITHUB_OUTPUT
+          else
+            SHA="${{ github.event.pull_request.head.sha }}"
+            RESPONSE=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=5")
+
+            # Pruefe ob "Push tests" Workflow mit conclusion=success existiert
+            if echo "$RESPONSE" | grep -q '"name": "Push tests"' && \
+               echo "$RESPONSE" | grep -q '"conclusion": "success"'; then
+              echo "Found successful Push tests for SHA $SHA - skipping basic-checks"
+              echo "skip_basic=true" >> $GITHUB_OUTPUT
+            else
+              echo "No successful Push tests found for SHA $SHA"
+              echo "skip_basic=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   basic-checks:
+    needs: check-push-result
+    if: needs.check-push-result.outputs.skip_basic == 'false'
+    concurrency:
+      group: basic-checks-${{ github.sha }}
+      cancel-in-progress: true
     uses: ./.github/workflows/basic.yml
+    permissions:
+      contents: read
+      actions: write   # required to cancel the run on fail-fast (see basic.yml)
 
   platform-tests:
-    needs: basic-checks
+    needs: check-push-result
     uses: ./.github/workflows/platforms.yml
 
   code-coverage:
-    needs: basic-checks
+    needs: check-push-result
+    if: needs.check-push-result.outputs.skip_basic == 'false'
     uses: ./.github/workflows/code-coverage.yml
     secrets: inherit
 
+  nix-full-build:
+    needs: check-push-result
+    if: needs.check-push-result.outputs.skip_basic == 'false' && (contains( github.event.pull_request.title, '[full tests]' ) || contains( github.event.pull_request.body, '[full tests]' ))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+      - name: Check devShell
+        run: nix develop --command echo
+      - name: Check flake syntax
+        run: nix flake check --no-build
+      - name: Full flake build
+        run: nix build
+
   scorecard:
-    needs: basic-checks
+    needs: check-push-result
     uses: ./.github/workflows/supplychain.yml
     secrets: inherit
     permissions:
