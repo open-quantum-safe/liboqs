@@ -1538,9 +1538,6 @@ int main(int argc, char **argv) {
 		if (msgLen) {
 			hexStringToByteArray(sigVer_msg, sigVer_msg_bytes);
 		}
-		if (ctxlen) {
-			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
-		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		rc = sig_ver_vector_extmu(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVerPassed);
