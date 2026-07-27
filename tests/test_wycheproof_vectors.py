@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 
 import json
-import os
 import subprocess
 import sys
 from urllib.parse import urljoin
@@ -9,7 +8,6 @@ from collections import namedtuple
 
 import pytest
 import helpers
-from helpers import requests_get, cached_requests_get
 
 WYCHEPROOF_COMMIT = "45d916899992c5e42dba75106104ca8ce7ff8370"
 WYCHE_ROOT = f"https://raw.githubusercontent.com/C2SP/wycheproof/{WYCHEPROOF_COMMIT}/testvectors_v1/"
