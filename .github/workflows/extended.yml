@@ -162,6 +162,38 @@ jobs:
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
 
+  stfl-tests:
+    name: STFL key generation tests
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: alpine-stfl
+            container: openquantumsafe/ci-alpine-amd64:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+          - name: alpine-openssl-all-stfl
+            container: openquantumsafe/ci-alpine-amd64:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+          - name: alpine-noopenssl-stfl
+            container: openquantumsafe/ci-alpine-amd64:latest
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.container }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 90
+        env:
+          OQS_TEST_SIG_CTX_STEP: "255"
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+
   slhdsa-openssl330-test:
     name: SLH-DSA with OpenSSL 3.3.0
     runs-on: ubuntu-latest
