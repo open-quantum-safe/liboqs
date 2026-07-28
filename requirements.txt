@@ -1,0 +1,9 @@
+# Python dependencies for liboqs
+# Install with: pip3 install -r requirements.txt
+#
+# These are required for running the test suite and build tooling.
+# See README.md (Quickstart section) for full platform-specific setup instructions.
+
+pytest
+pytest-xdist
+pyyaml

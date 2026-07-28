@@ -111,12 +111,13 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 	On Ubuntu:
 
-		 sudo apt install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
+		sudo apt install astyle cmake gcc ninja-build libssl-dev unzip xsltproc doxygen graphviz valgrind
+		pip3 install -r requirements.txt
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
 		brew install cmake ninja openssl@3 wget doxygen graphviz astyle valgrind
-		pip3 install pytest pytest-xdist pyyaml
+		pip3 install -r requirements.txt
 
 	Using Nix:
 
