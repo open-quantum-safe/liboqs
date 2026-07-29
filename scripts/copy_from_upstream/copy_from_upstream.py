@@ -223,10 +223,6 @@ def load_instructions(filepath: str):
     def _fetch_and_process_upstream(upstream):
         # TODO: write proper docstring, not comments
 
-        if upstream["name"] == "libjade" and not JASMIN_VER:
-            warnings.warn(f"upstream libjade will not be fetched")
-            return
-
         # Each upstream is fetched into its own independent 'repos/<name>'
         # directory and does not read or write any other upstream's state,
         # so these can safely run concurrently. This loop's git fetches
@@ -248,7 +244,10 @@ def load_instructions(filepath: str):
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
         if upstream_name == "libjade":
-            shell(['make', '-C', os.path.join(work_dir, 'src')])
+            if not JASMIN_VER:
+                warnings.warn(f"libjade will not be built. libjade source files will be ignored")
+            else:
+                shell(['make', '-C', os.path.join(work_dir, 'src')])
         for patch in upstream.get("patches", []):
             patch_file = os.path.join('patches', patch)
             shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
@@ -613,27 +612,31 @@ def handle_implementation(impl_name, family, scheme, dst_basedir, libjade = Fals
         upstream_location = impl_meta['upstream']['name']
         srcfolder = os.path.join(dst_basedir, 'src', family['type'], family['name'],
                              '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl_name))
-        shutil.rmtree(srcfolder, ignore_errors=True)
+        if libjade and not JASMIN_VER:
+            warnings.warn(f"{srcfolder} will not be refreshed")
+        else:
+            shutil.rmtree(srcfolder, ignore_errors=True)
         # Don't copy from PQClean straight but check for origfile list
         try:
-            os.mkdir(srcfolder)
+            os.makedirs(srcfolder, exist_ok=True)
         except FileExistsError as fee:
             print(fee)
             pass
         if upstream_location == 'libjade':
-            # Flatten directory structure while copying relevant files from libjade repo
-            for root, _, files in os.walk(origfolder):
-                for file in files:
-                    if os.path.splitext(file)[1] in ['.c', '.h']:
-                        source_path = os.path.join(root, file)
-                        dest_path = os.path.join(srcfolder, file)
-                        subprocess.run(['cp', source_path, dest_path])
-                    if os.path.splitext(file)[1] in ['.s']:
-                        file_name, file_ext = os.path.splitext(file)
-                        new_file = ''.join([file_name, file_ext.upper()])
-                        source_path = os.path.join(root, file)
-                        dest_path = os.path.join(srcfolder, new_file)
-                        subprocess.run(['cp', source_path, dest_path])
+            if JASMIN_VER:
+                # Flatten directory structure while copying relevant files from libjade repo
+                for root, _, files in os.walk(origfolder):
+                    for file in files:
+                        if os.path.splitext(file)[1] in ['.c', '.h']:
+                            source_path = os.path.join(root, file)
+                            dest_path = os.path.join(srcfolder, file)
+                            subprocess.run(['cp', source_path, dest_path])
+                        if os.path.splitext(file)[1] in ['.s']:
+                            file_name, file_ext = os.path.splitext(file)
+                            new_file = ''.join([file_name, file_ext.upper()])
+                            source_path = os.path.join(root, file)
+                            dest_path = os.path.join(srcfolder, new_file)
+                            subprocess.run(['cp', source_path, dest_path])
         else:
             # determine list of files to copy:
             if 'sources' in impl_meta:
@@ -868,7 +871,6 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
             #       recorded, so replacer_contextual will produce incorrect
             #       result. In other words, if JASMIN_VER is not found, then
             #       this whole block should be ignored
-            import pprint; pprint.pprint(family)
             if not JASMIN_VER:
                 warnings.warn(f"Skipping rendering {target} for {family["name"]}")
             else:
