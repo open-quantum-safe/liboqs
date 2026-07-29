@@ -6,18 +6,18 @@ import argparse
 import concurrent.futures
 import copy
 import glob
-import jinja2
+import json
 import os
 import shutil
 import subprocess
-import yaml
-from pathlib import Path
 import sys
-import json
-import platform
-import update_upstream_alg_docs
+import warnings
+
+import jinja2
+import yaml
+
 import copy_from_slh_dsa_c
-from copy import deepcopy
+import update_upstream_alg_docs
 
 # kats of all algs
 kats = {}
@@ -814,7 +814,7 @@ def copy_from_upstream(slh_dsa_inst: dict):
             kats[t] = json.load(fp)
 
     instructions = load_instructions('copy_from_upstream.yml')
-    patched_inst: dict = deepcopy(instructions)
+    patched_inst: dict = copy.deepcopy(instructions)
     patched_inst["sigs"].append(slh_dsa_inst["sigs"][0])
     process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####')
@@ -855,6 +855,8 @@ def copy_from_upstream(slh_dsa_inst: dict):
 # When adding an algorithm to copy_from_libjade.yml, the boolean 
 # 'libjade_implementation' and list of implementation 'libjade_implementations' 
 # must updated for the relevant algorithm in copy_from_upstream.yml
+@warnings.deprecated("copy_from_libjade will be deprecated in favor of "
+                     "copy_from_upstream")
 def copy_from_libjade():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
