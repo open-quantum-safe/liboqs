@@ -1,4 +1,13 @@
+jasmin_version: "2023.06.3"
 upstreams:
+  -
+    name: libjade
+    git_url: https://github.com/formosa-crypto/libjade.git
+    git_branch: release/2023.05-2
+    git_commit: 4e15c1d221d025deca40edef2c762be9e3d346b7
+    kem_meta_path: 'src/crypto_kem/{family}/{pqclean_scheme}/META.yml'
+    kem_scheme_path: 'src/crypto_kem/{family}/{pqclean_scheme}'
+    patches: [libjade-kyber-api.patch, libjade-kyber-meta.patch]
   -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git
