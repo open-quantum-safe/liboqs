@@ -202,11 +202,21 @@ def load_instructions(filepath: str):
     """Read copy_from_upstream.yml and fetch upstreams"""
     with open(filepath) as f:
         instructions = yaml.safe_load(f)
+    if JASMIN_VER and instructions["jasmin_version"] != JASMIN_VER:
+        raise RuntimeError(
+            f"Expected jasmin version {instructions["jasmin_version"]}, "
+            f"found {JASMIN_VER}")
     upstreams = {}
     for upstream in instructions['upstreams']:
         upstreams[upstream['name']] = upstream
 
     def _fetch_and_process_upstream(upstream):
+        # TODO: write proper docstring, not comments
+
+        if upstream["name"] == "libjade" and not JASMIN_VER:
+            warnings.warn(f"upstream libjade will not be fetched")
+            return
+
         # Each upstream is fetched into its own independent 'repos/<name>'
         # directory and does not read or write any other upstream's state,
         # so these can safely run concurrently. This loop's git fetches
@@ -216,7 +226,6 @@ def load_instructions(filepath: str):
         upstream_name = upstream['name']
         upstream_git_url = upstream['git_url']
         upstream_git_commit = upstream['git_commit']
-        upstream_git_branch = upstream['git_branch']
 
         work_dir = os.path.join('repos', upstream_name)
         work_dotgit = os.path.join(work_dir, '.git')
@@ -227,30 +236,17 @@ def load_instructions(filepath: str):
             shell(['git', 'init', work_dir])
             shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
-        if upstream_name == "libjade":
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_branch])
-        else:
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
         if upstream_name == "libjade":
-            try:
-                version = subprocess.run(['jasminc', '-version'], capture_output=True).stdout.decode('utf-8').strip().split(' ')[-1]
-                if version != instructions['jasmin_version']:
-                    print('Expected Jasmin compiler version {}; got version {}.'.format(instructions['jasmin_version'], version))
-                    print('Must use Jasmin complier version {} or update copy_from_libjade.yml.'.format(instructions['jasmin_version']))
-                    exit(1)
-            except FileNotFoundError:
-                print('Jasmin compiler not found; must add `jasminc` to PATH.')
-                exit(1)
             shell(['make', '-C', os.path.join(work_dir, 'src')])
-        if 'patches' in upstream:
-            for patch in upstream['patches']:
-                patch_file = os.path.join('patches', patch)
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
-                # Make a commit in the temporary repo for each of our patches.
-                # Helpful when upstream changes and one of our patches cannot be applied.
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'add', '.'])
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'commit', '-m', 'Applied {}'.format(patch_file)])
+        for patch in upstream.get("patches", []):
+            patch_file = os.path.join('patches', patch)
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
+            # Make a commit in the temporary repo for each of our patches.
+            # Helpful when upstream changes and one of our patches cannot be applied.
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'add', '.'])
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'commit', '-m', 'Applied {}'.format(patch_file)])
 
         if 'common_meta_path' in upstream:
             common_meta_path_full = os.path.join(work_dir, upstream['common_meta_path'])
