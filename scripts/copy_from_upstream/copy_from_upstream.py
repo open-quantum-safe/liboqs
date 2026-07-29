@@ -806,15 +806,19 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     scheme,
                 )
         
-        if with_libjade:
-            replacer_contextual(
-                os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
-                os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade'),
-                '#####',
-                family,
-                None,
-                libjade=True
-            )
+        if family.get("libjade_implementation", False):
+            target = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt')
+            template = os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade')
+            # NOTE: if JASMIN_VER is None, then upstream libjade will not be
+            #       fetched, and libjade's metadata will not be read. Without
+            #       libjade metadata, libjade implementations will not be
+            #       recorded, so replacer_contextual will produce incorrect
+            #       result. In other words, if JASMIN_VER is not found, then
+            #       this whole block should be ignored
+            if not JASMIN_VER:
+                warnings.warn(f"Skipping rendering {target} for {family["name"]}")
+            else:
+                replacer_contextual(target, template, '#####', family, None, True)
 
 
 def copy_from_upstream(slh_dsa_inst: dict):
