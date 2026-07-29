@@ -387,6 +387,13 @@ def load_instructions(filepath: str):
                             raise RuntimeError("Found duplicate arch {} in scheme {}".format(arch, scheme))
                         scheme['scheme_paths'][arch] = (os.path.join('repos', location,
                                                                     upstreams[location]['kem_scheme_path'].format_map(scheme)))
+            if scheme.get("libjade_implementation", False):
+                scheme["libjade_scheme_paths"] = {}
+                for imp in scheme["metadata"]["libjade_implementations"]:
+                    imp_name = imp["name"]
+                    location = imp["upstream"]["kem_scheme_path"]
+                    scheme["libjade_scheme_paths"][imp_name] = os.path.join(
+                        "repos", imp["upstream"]["name"], location.format_map(scheme))
             scheme['metadata']['ind_cca'] = 'true' if (
                     scheme['metadata']['claimed-security'] == "IND-CCA2") else 'false'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
@@ -580,28 +587,32 @@ def handle_common_deps(common_dep, family, dst_basedir):
 
 # Copy over all files for a given impl in a family using scheme
 # Returns list of all relative source files
-def handle_implementation(impl, family, scheme, dst_basedir):
+def handle_implementation(impl_name, family, scheme, dst_basedir, libjade = False):
     # Obtain current implementation array in i
-    for imp in scheme['metadata']['implementations']:
-        if imp['name'] == impl:
-            i = imp
+    impl_meta: dict | None = None
+    for imp in scheme['metadata']['libjade_implementations' if libjade else "implementations"]:
+        if imp['name'] == impl_name:
+            impl_meta = imp
+    if not impl_meta:
+        raise KeyError(f"implementation {impl_name} not found")
+
     if DEBUG > 2:
-        print("IMP = %s" % (i))
+        print("IMP = %s" % (impl_meta))
     # if 'upstream_location' in scheme and os.environ.get(scheme['upstream_location']):
     if DEBUG > 3:
-        print("Obtain files for implementation %s" % (impl))
+        print("Obtain files for implementation %s" % (impl_name))
         print("Obtain files for %s" % (scheme))
 
     if 'upstream_location' in scheme:
         # determine origin folder of (may be renamed via 'folder_name'):
-        if 'folder_name' in i:
-            of = i['folder_name']
+        if 'folder_name' in impl_meta:
+            of = impl_meta['folder_name']
         else:
-            of = impl
-        origfolder = os.path.join(scheme['scheme_paths'][impl], of)
-        upstream_location = i['upstream']['name']
+            of = impl_name
+        origfolder = os.path.join(scheme["libjade_scheme_paths" if libjade else 'scheme_paths'][impl_name], of)
+        upstream_location = impl_meta['upstream']['name']
         srcfolder = os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl))
+                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl_name))
         shutil.rmtree(srcfolder, ignore_errors=True)
         # Don't copy from PQClean straight but check for origfile list
         try:
@@ -625,10 +636,10 @@ def handle_implementation(impl, family, scheme, dst_basedir):
                         subprocess.run(['cp', source_path, dest_path])
         else:
             # determine list of files to copy:
-            if 'sources' in i:
-                if i['sources']:
-                    preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
-                    srcs = i['sources'].split(" ")
+            if 'sources' in impl_meta:
+                if impl_meta['sources']:
+                    preserve_folder_structure = impl_meta["upstream"].get("preserve_folder_structure", False)
+                    srcs = impl_meta['sources'].split(" ")
                     for s in srcs:
                         # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
                         if os.path.isfile(os.path.join(origfolder, s)):
@@ -655,16 +666,16 @@ def handle_implementation(impl, family, scheme, dst_basedir):
 
     try:
         ul = scheme['upstream_location']
-        if 'arch_specific_upstream_locations' in family and impl in family['arch_specific_upstream_locations']:
-            ul = family['arch_specific_upstream_locations'][impl]
-        elif 'arch_specific_upstream_locations' in scheme and impl in scheme['arch_specific_upstream_locations']:
-            ul = scheme['arch_specific_upstream_locations'][impl]
+        if 'arch_specific_upstream_locations' in family and impl_name in family['arch_specific_upstream_locations']:
+            ul = family['arch_specific_upstream_locations'][impl_name]
+        elif 'arch_specific_upstream_locations' in scheme and impl_name in scheme['arch_specific_upstream_locations']:
+            ul = scheme['arch_specific_upstream_locations'][impl_name]
         
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
+                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl_name),
                                'Makefile'))
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
+                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl_name),
                                'Makefile.Microsoft_nmake'))
     except FileNotFoundError:
         pass
@@ -672,8 +683,8 @@ def handle_implementation(impl, family, scheme, dst_basedir):
     ffs = []
     for subdir, dirs, files in os.walk(srcfolder):
         for x in files:
-            for i in extensions:
-                if x.lower().endswith(i):
+            for ext in extensions:
+                if x.lower().endswith(ext):
                     fname = subdir + os.sep + x
                     if DEBUG > 2:
                         print("srcfolder: %s - File: %s" % (srcfolder, fname))
@@ -743,7 +754,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                                          imp['name'] == impl]
                 scheme['metadata']['implementations'][0]['sources'] = srcs
             else:
-                for impl in scheme['metadata']['implementations']:
+                for impl in scheme["metadata"]["implementations"]:
                     srcs = handle_implementation(impl['name'], family, scheme, basedir)
                     if DEBUG > 2:
                         print("SRCs found: %s" % (srcs))
@@ -772,6 +783,26 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                             print("No required flags found for %s (KeyError %s on impl %s)" % (
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
+                # TODO: this is a duplicate of the line above, but implementing
+                #       this into a separate function is too cursed
+                for impl in scheme["metadata"].get("libjade_implementations", []):
+                    srcs = handle_implementation(impl['name'], family, scheme, basedir, True)
+                    impl['sources'] = srcs
+                    for i in range(len(impl['supported_platforms'])):
+                        req = impl['supported_platforms'][i]
+                        # if compiling for ARM64_V8, asimd/neon is implied and will cause errors
+                        # when provided to the compiler; OQS uses the term ARM_NEON
+                        if req['architecture'] == 'arm_8':
+                            req['architecture'] = 'ARM64_V8'
+                        if 'required_flags' in req:
+                            if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
+                                req['required_flags'].remove('asimd')
+                                req['required_flags'].append('arm_neon')
+                            if req['architecture'] == 'ARM64_V8' and 'sha3' in req['required_flags']:
+                                req['required_flags'].remove('sha3')
+                                req['required_flags'].append('arm_sha3')
+                            impl['required_flags'] = req['required_flags']
+                            family['all_required_flags'].update(req['required_flags'])
 
             if with_kat and not scheme.get('is_extmu', False):
                 if family in instructions['kems']:
