@@ -230,9 +230,8 @@ def load_instructions(filepath: str):
         work_dir = os.path.join('repos', upstream_name)
         work_dotgit = os.path.join(work_dir, '.git')
 
-        if not os.path.exists(work_dir):
-          os.makedirs(work_dir)
-          if not os.path.exists(work_dotgit):
+        os.makedirs(work_dir, exist_ok=True)
+        if not os.path.exists(work_dotgit):
             shell(['git', 'init', work_dir])
             shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
