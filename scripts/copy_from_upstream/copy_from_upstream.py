@@ -312,6 +312,13 @@ def load_instructions(filepath: str):
                 scheme['kem_meta_paths']['default'] = os.path.join('repos', scheme['upstream_location'],
                                                        upstreams[scheme['upstream_location']][
                                                            'kem_meta_path'].format_map(scheme))
+                if scheme.get("libjade_implementation", False):
+                    # NOTE: here we assume that one scheme will have exactly one
+                    #       libjade metadata sheet
+                    scheme["kem_meta_paths"]["libjade"] = os.path.join(
+                        "repos", "libjade",
+                        upstreams["libjade"]["kem_meta_path"].format_map(scheme)
+                    )
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['kem_meta_paths']['extras'] = {}
@@ -335,7 +342,12 @@ def load_instructions(filepath: str):
                         if metadata['implementations'][i]['name'] == imp_name:
                             del metadata['implementations'][i]
                             break
-
+                if libjade_meta_path := scheme["kem_meta_paths"].get("libjade", None):
+                    with open(libjade_meta_path) as f:
+                        libjade_meta = yaml.safe_load(f)
+                    for impl_meta in libjade_meta.get("implementations", []):
+                        impl_meta["upstream"] = upstreams["libjade"]
+                        metadata["libjade_implementations"] = metadata.get("libjade_implementations", []) + [impl_meta]
                 if 'extras' in scheme['kem_meta_paths']:
                     for arch in scheme['kem_meta_paths']['extras']:
                         implementations = yaml.safe_load(file_get_contents(scheme['kem_meta_paths']['extras'][arch]))['implementations']
@@ -825,6 +837,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
             #       recorded, so replacer_contextual will produce incorrect
             #       result. In other words, if JASMIN_VER is not found, then
             #       this whole block should be ignored
+            import pprint; pprint.pprint(family)
             if not JASMIN_VER:
                 warnings.warn(f"Skipping rendering {target} for {family["name"]}")
             else:

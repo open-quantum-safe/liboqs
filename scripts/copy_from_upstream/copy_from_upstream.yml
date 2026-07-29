@@ -196,6 +196,7 @@ kems:
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
         libjade_implementation: True
+        libjade_default_implementation: ref
         libjade_implementations:
           - ref
           - avx2
