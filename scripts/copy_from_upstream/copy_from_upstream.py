@@ -63,6 +63,16 @@ def get_jasmin_ver() -> str | None:
     except:
         return None
 
+# NOTE: Now that `copy_from_upstream -d copy` will run libjade integration, to
+#       work on libjade integration, you will need jasminc. One way to get it is
+#       through OPAM. OPAM works like a virtual environment:
+#       >>> opam switch create jasmin.2023.06.3 5.4.1
+#       >>> opam switch jasmin.2023.06.3
+#       >>> opam install jasmin.2023.06.3
+#       >>> jasminc -version
+#
+#       With libjade integration, `copy_from_upstream` will be a bit slower
+#       because we need to compile libjade with jasminc
 JASMIN_VER = get_jasmin_ver()
 
 # scours the documentation for non-upstream KEMs
