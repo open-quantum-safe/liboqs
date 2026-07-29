@@ -40,9 +40,30 @@ keepdata = True if args.keep_data else False
 
 delete = True if args.delete else False
 
-if 'LIBOQS_DIR' not in os.environ:
-    print("Must set environment variable LIBOQS_DIR")
-    exit(1)
+_liboqs_dir = os.getenv("LIBOQS_DIR")
+if not _liboqs_dir:
+    raise KeyError("LIBOQS_DIR is not found")
+LIBOQS_DIR = _liboqs_dir
+LIBOQS_SCRIPTS_DIR = os.path.join(LIBOQS_DIR, "scripts")
+LIBOQS_COPYFROMUPSTREAM_DIR = os.path.join(LIBOQS_SCRIPTS_DIR,
+                                           "copy_from_upstream")
+LIBOQS_COPYFROMUPSTREAMYAML_PATH = os.path.join(LIBOQS_COPYFROMUPSTREAM_DIR,
+                                                "copy_from_upstream.yml")
+LIBOQS_COPYFROMLIBJADEYAML_PATH = os.path.join(LIBOQS_COPYFROMUPSTREAM_DIR,
+                                               "copy_from_libjade.yml")
+
+def get_jasmin_ver() -> str | None:
+    """Return the version of jasminc, or None if jasminc is not found in this
+    environment
+    """
+    try:
+        ret = subprocess.run(['jasminc', '-version'], capture_output=True)
+        ver = ret.stdout.decode('utf-8').strip().split(' ')[-1]
+        return ver
+    except:
+        return None
+
+JASMIN_VER = get_jasmin_ver()
 
 # scours the documentation for non-upstream KEMs
 # returns the number of documented ones
@@ -177,11 +198,10 @@ def replacer_contextual(destination_file_path, template_file_path, delimiter, fa
     contents = preamble + identifier_start + jinja2.Template(template).render(f) + postamble
     file_put_contents(destination_file_path, contents)
 
-def load_instructions(file='copy_from_upstream.yml'):
-    instructions = file_get_contents(
-        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', file),
-        encoding='utf-8')
-    instructions = yaml.safe_load(instructions)
+def load_instructions(filepath: str):
+    """Read copy_from_upstream.yml and fetch upstreams"""
+    with open(filepath) as f:
+        instructions = yaml.safe_load(f)
     upstreams = {}
     for upstream in instructions['upstreams']:
         upstreams[upstream['name']] = upstream
@@ -207,12 +227,12 @@ def load_instructions(file='copy_from_upstream.yml'):
             shell(['git', 'init', work_dir])
             shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
-        if file == 'copy_from_libjade.yml':
+        if upstream_name == "libjade":
             shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_branch])
         else:
             shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
-        if file == 'copy_from_libjade.yml':
+        if upstream_name == "libjade":
             try:
                 version = subprocess.run(['jasminc', '-version'], capture_output=True).stdout.decode('utf-8').strip().split(' ')[-1]
                 if version != instructions['jasmin_version']:
@@ -813,7 +833,7 @@ def copy_from_upstream(slh_dsa_inst: dict):
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
-    instructions = load_instructions('copy_from_upstream.yml')
+    instructions = load_instructions(LIBOQS_COPYFROMUPSTREAMYAML_PATH)
     patched_inst: dict = copy.deepcopy(instructions)
     patched_inst["sigs"].append(slh_dsa_inst["sigs"][0])
     process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
@@ -862,7 +882,7 @@ def copy_from_libjade():
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
-    instructions = load_instructions('copy_from_libjade.yml')
+    instructions = load_instructions(LIBOQS_COPYFROMLIBJADEYAML_PATH)
     process_families(instructions, os.environ['LIBOQS_DIR'], True, False, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####', libjade=True)
     replacer('src/oqsconfig.h.cmake', instructions, '/////', libjade=True)
@@ -883,7 +903,7 @@ def copy_from_libjade():
 
 
 def verify_from_upstream():
-    instructions = load_instructions()
+    instructions = load_instructions(LIBOQS_COPYFROMUPSTREAMYAML_PATH)
     basedir = "verify_from_upstream"
 
     process_families(instructions, basedir, False, False)
