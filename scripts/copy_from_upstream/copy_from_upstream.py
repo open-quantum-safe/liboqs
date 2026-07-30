@@ -6,18 +6,18 @@ import argparse
 import concurrent.futures
 import copy
 import glob
-import jinja2
+import json
 import os
 import shutil
 import subprocess
-import yaml
-from pathlib import Path
 import sys
-import json
-import platform
-import update_upstream_alg_docs
+import warnings
+
+import jinja2
+import yaml
+
 import copy_from_slh_dsa_c
-from copy import deepcopy
+import update_upstream_alg_docs
 
 # kats of all algs
 kats = {}
@@ -40,9 +40,40 @@ keepdata = True if args.keep_data else False
 
 delete = True if args.delete else False
 
-if 'LIBOQS_DIR' not in os.environ:
-    print("Must set environment variable LIBOQS_DIR")
-    exit(1)
+_liboqs_dir = os.getenv("LIBOQS_DIR")
+if not _liboqs_dir:
+    raise KeyError("LIBOQS_DIR is not found")
+LIBOQS_DIR = _liboqs_dir
+LIBOQS_SCRIPTS_DIR = os.path.join(LIBOQS_DIR, "scripts")
+LIBOQS_COPYFROMUPSTREAM_DIR = os.path.join(LIBOQS_SCRIPTS_DIR,
+                                           "copy_from_upstream")
+LIBOQS_COPYFROMUPSTREAMYAML_PATH = os.path.join(LIBOQS_COPYFROMUPSTREAM_DIR,
+                                                "copy_from_upstream.yml")
+LIBOQS_COPYFROMLIBJADEYAML_PATH = os.path.join(LIBOQS_COPYFROMUPSTREAM_DIR,
+                                               "copy_from_libjade.yml")
+
+def get_jasmin_ver() -> str | None:
+    """Return the version of jasminc, or None if jasminc is not found in this
+    environment
+    """
+    try:
+        ret = subprocess.run(['jasminc', '-version'], capture_output=True)
+        ver = ret.stdout.decode('utf-8').strip().split(' ')[-1]
+        return ver
+    except:
+        return None
+
+# NOTE: Now that `copy_from_upstream -d copy` will run libjade integration, to
+#       work on libjade integration, you will need jasminc. One way to get it is
+#       through OPAM. OPAM works like a virtual environment:
+#       >>> opam switch create jasmin.2023.06.3 5.4.1
+#       >>> opam switch jasmin.2023.06.3
+#       >>> opam install jasmin.2023.06.3
+#       >>> jasminc -version
+#
+#       With libjade integration, `copy_from_upstream` will be a bit slower
+#       because we need to compile libjade with jasminc
+JASMIN_VER = get_jasmin_ver()
 
 # scours the documentation for non-upstream KEMs
 # returns the number of documented ones
@@ -177,16 +208,21 @@ def replacer_contextual(destination_file_path, template_file_path, delimiter, fa
     contents = preamble + identifier_start + jinja2.Template(template).render(f) + postamble
     file_put_contents(destination_file_path, contents)
 
-def load_instructions(file='copy_from_upstream.yml'):
-    instructions = file_get_contents(
-        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', file),
-        encoding='utf-8')
-    instructions = yaml.safe_load(instructions)
+def load_instructions(filepath: str):
+    """Read copy_from_upstream.yml and fetch upstreams"""
+    with open(filepath) as f:
+        instructions = yaml.safe_load(f)
+    if JASMIN_VER and instructions["jasmin_version"] != JASMIN_VER:
+        raise RuntimeError(
+            f"Expected jasmin version {instructions["jasmin_version"]}, "
+            f"found {JASMIN_VER}")
     upstreams = {}
     for upstream in instructions['upstreams']:
         upstreams[upstream['name']] = upstream
 
     def _fetch_and_process_upstream(upstream):
+        # TODO: write proper docstring, not comments
+
         # Each upstream is fetched into its own independent 'repos/<name>'
         # directory and does not read or write any other upstream's state,
         # so these can safely run concurrently. This loop's git fetches
@@ -196,41 +232,29 @@ def load_instructions(file='copy_from_upstream.yml'):
         upstream_name = upstream['name']
         upstream_git_url = upstream['git_url']
         upstream_git_commit = upstream['git_commit']
-        upstream_git_branch = upstream['git_branch']
 
         work_dir = os.path.join('repos', upstream_name)
         work_dotgit = os.path.join(work_dir, '.git')
 
-        if not os.path.exists(work_dir):
-          os.makedirs(work_dir)
-          if not os.path.exists(work_dotgit):
+        os.makedirs(work_dir, exist_ok=True)
+        if not os.path.exists(work_dotgit):
             shell(['git', 'init', work_dir])
             shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
-        if file == 'copy_from_libjade.yml':
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_branch])
-        else:
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
-        if file == 'copy_from_libjade.yml':
-            try:
-                version = subprocess.run(['jasminc', '-version'], capture_output=True).stdout.decode('utf-8').strip().split(' ')[-1]
-                if version != instructions['jasmin_version']:
-                    print('Expected Jasmin compiler version {}; got version {}.'.format(instructions['jasmin_version'], version))
-                    print('Must use Jasmin complier version {} or update copy_from_libjade.yml.'.format(instructions['jasmin_version']))
-                    exit(1)
-            except FileNotFoundError:
-                print('Jasmin compiler not found; must add `jasminc` to PATH.')
-                exit(1)
-            shell(['make', '-C', os.path.join(work_dir, 'src')])
-        if 'patches' in upstream:
-            for patch in upstream['patches']:
-                patch_file = os.path.join('patches', patch)
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
-                # Make a commit in the temporary repo for each of our patches.
-                # Helpful when upstream changes and one of our patches cannot be applied.
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'add', '.'])
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'commit', '-m', 'Applied {}'.format(patch_file)])
+        if upstream_name == "libjade":
+            if not JASMIN_VER:
+                warnings.warn(f"libjade will not be built. libjade source files will be ignored")
+            else:
+                shell(['make', '-C', os.path.join(work_dir, 'src')])
+        for patch in upstream.get("patches", []):
+            patch_file = os.path.join('patches', patch)
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
+            # Make a commit in the temporary repo for each of our patches.
+            # Helpful when upstream changes and one of our patches cannot be applied.
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'add', '.'])
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'commit', '-m', 'Applied {}'.format(patch_file)])
 
         if 'common_meta_path' in upstream:
             common_meta_path_full = os.path.join(work_dir, upstream['common_meta_path'])
@@ -287,6 +311,13 @@ def load_instructions(file='copy_from_upstream.yml'):
                 scheme['kem_meta_paths']['default'] = os.path.join('repos', scheme['upstream_location'],
                                                        upstreams[scheme['upstream_location']][
                                                            'kem_meta_path'].format_map(scheme))
+                if scheme.get("libjade_implementation", False):
+                    # NOTE: here we assume that one scheme will have exactly one
+                    #       libjade metadata sheet
+                    scheme["kem_meta_paths"]["libjade"] = os.path.join(
+                        "repos", "libjade",
+                        upstreams["libjade"]["kem_meta_path"].format_map(scheme)
+                    )
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['kem_meta_paths']['extras'] = {}
@@ -310,7 +341,12 @@ def load_instructions(file='copy_from_upstream.yml'):
                         if metadata['implementations'][i]['name'] == imp_name:
                             del metadata['implementations'][i]
                             break
-
+                if libjade_meta_path := scheme["kem_meta_paths"].get("libjade", None):
+                    with open(libjade_meta_path) as f:
+                        libjade_meta = yaml.safe_load(f)
+                    for impl_meta in libjade_meta.get("implementations", []):
+                        impl_meta["upstream"] = upstreams["libjade"]
+                        metadata["libjade_implementations"] = metadata.get("libjade_implementations", []) + [impl_meta]
                 if 'extras' in scheme['kem_meta_paths']:
                     for arch in scheme['kem_meta_paths']['extras']:
                         implementations = yaml.safe_load(file_get_contents(scheme['kem_meta_paths']['extras'][arch]))['implementations']
@@ -350,6 +386,13 @@ def load_instructions(file='copy_from_upstream.yml'):
                             raise RuntimeError("Found duplicate arch {} in scheme {}".format(arch, scheme))
                         scheme['scheme_paths'][arch] = (os.path.join('repos', location,
                                                                     upstreams[location]['kem_scheme_path'].format_map(scheme)))
+            if scheme.get("libjade_implementation", False):
+                scheme["libjade_scheme_paths"] = {}
+                for imp in scheme["metadata"]["libjade_implementations"]:
+                    imp_name = imp["name"]
+                    location = imp["upstream"]["kem_scheme_path"]
+                    scheme["libjade_scheme_paths"][imp_name] = os.path.join(
+                        "repos", imp["upstream"]["name"], location.format_map(scheme))
             scheme['metadata']['ind_cca'] = 'true' if (
                     scheme['metadata']['claimed-security'] == "IND-CCA2") else 'false'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
@@ -543,55 +586,63 @@ def handle_common_deps(common_dep, family, dst_basedir):
 
 # Copy over all files for a given impl in a family using scheme
 # Returns list of all relative source files
-def handle_implementation(impl, family, scheme, dst_basedir):
+def handle_implementation(impl_name, family, scheme, dst_basedir, libjade = False):
     # Obtain current implementation array in i
-    for imp in scheme['metadata']['implementations']:
-        if imp['name'] == impl:
-            i = imp
+    impl_meta: dict | None = None
+    for imp in scheme['metadata']['libjade_implementations' if libjade else "implementations"]:
+        if imp['name'] == impl_name:
+            impl_meta = imp
+    if not impl_meta:
+        raise KeyError(f"implementation {impl_name} not found")
+
     if DEBUG > 2:
-        print("IMP = %s" % (i))
+        print("IMP = %s" % (impl_meta))
     # if 'upstream_location' in scheme and os.environ.get(scheme['upstream_location']):
     if DEBUG > 3:
-        print("Obtain files for implementation %s" % (impl))
+        print("Obtain files for implementation %s" % (impl_name))
         print("Obtain files for %s" % (scheme))
 
     if 'upstream_location' in scheme:
         # determine origin folder of (may be renamed via 'folder_name'):
-        if 'folder_name' in i:
-            of = i['folder_name']
+        if 'folder_name' in impl_meta:
+            of = impl_meta['folder_name']
         else:
-            of = impl
-        origfolder = os.path.join(scheme['scheme_paths'][impl], of)
-        upstream_location = i['upstream']['name']
+            of = impl_name
+        origfolder = os.path.join(scheme["libjade_scheme_paths" if libjade else 'scheme_paths'][impl_name], of)
+        upstream_location = impl_meta['upstream']['name']
         srcfolder = os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl))
-        shutil.rmtree(srcfolder, ignore_errors=True)
+                             '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl_name))
+        if libjade and not JASMIN_VER:
+            warnings.warn(f"{srcfolder} will not be refreshed")
+        else:
+            shutil.rmtree(srcfolder, ignore_errors=True)
         # Don't copy from PQClean straight but check for origfile list
         try:
-            os.mkdir(srcfolder)
+            os.makedirs(srcfolder, exist_ok=True)
         except FileExistsError as fee:
             print(fee)
             pass
         if upstream_location == 'libjade':
-            # Flatten directory structure while copying relevant files from libjade repo
-            for root, _, files in os.walk(origfolder):
-                for file in files:
-                    if os.path.splitext(file)[1] in ['.c', '.h']:
-                        source_path = os.path.join(root, file)
-                        dest_path = os.path.join(srcfolder, file)
-                        subprocess.run(['cp', source_path, dest_path])
-                    if os.path.splitext(file)[1] in ['.s']:
-                        file_name, file_ext = os.path.splitext(file)
-                        new_file = ''.join([file_name, file_ext.upper()])
-                        source_path = os.path.join(root, file)
-                        dest_path = os.path.join(srcfolder, new_file)
-                        subprocess.run(['cp', source_path, dest_path])
+            if JASMIN_VER:
+                # Flatten directory structure while copying relevant files from libjade repo
+                for root, _, files in os.walk(origfolder):
+                    for file in files:
+                        if os.path.splitext(file)[1] in ['.c', '.h']:
+                            source_path = os.path.join(root, file)
+                            dest_path = os.path.join(srcfolder, file)
+                            subprocess.run(['cp', source_path, dest_path])
+                        if os.path.splitext(file)[1] in ['.s']:
+                            file_name, file_ext = os.path.splitext(file)
+                            new_file = ''.join([file_name, file_ext.upper()])
+                            source_path = os.path.join(root, file)
+                            dest_path = os.path.join(srcfolder, new_file)
+                            subprocess.run(['cp', source_path, dest_path])
         else:
             # determine list of files to copy:
-            if 'sources' in i:
-                if i['sources']:
-                    preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
-                    srcs = i['sources'].split(" ")
+            if 'sources' in impl_meta:
+                if impl_meta['sources']:
+                    preserve_folder_structure = impl_meta["upstream"].get("preserve_folder_structure", False)
+                    srcs = impl_meta['sources'].split(" ")
                     for s in srcs:
                         # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
                         if os.path.isfile(os.path.join(origfolder, s)):
@@ -618,16 +669,16 @@ def handle_implementation(impl, family, scheme, dst_basedir):
 
     try:
         ul = scheme['upstream_location']
-        if 'arch_specific_upstream_locations' in family and impl in family['arch_specific_upstream_locations']:
-            ul = family['arch_specific_upstream_locations'][impl]
-        elif 'arch_specific_upstream_locations' in scheme and impl in scheme['arch_specific_upstream_locations']:
-            ul = scheme['arch_specific_upstream_locations'][impl]
+        if 'arch_specific_upstream_locations' in family and impl_name in family['arch_specific_upstream_locations']:
+            ul = family['arch_specific_upstream_locations'][impl_name]
+        elif 'arch_specific_upstream_locations' in scheme and impl_name in scheme['arch_specific_upstream_locations']:
+            ul = scheme['arch_specific_upstream_locations'][impl_name]
         
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
+                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl_name),
                                'Makefile'))
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
-                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
+                               '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl_name),
                                'Makefile.Microsoft_nmake'))
     except FileNotFoundError:
         pass
@@ -635,8 +686,8 @@ def handle_implementation(impl, family, scheme, dst_basedir):
     ffs = []
     for subdir, dirs, files in os.walk(srcfolder):
         for x in files:
-            for i in extensions:
-                if x.lower().endswith(i):
+            for ext in extensions:
+                if x.lower().endswith(ext):
                     fname = subdir + os.sep + x
                     if DEBUG > 2:
                         print("srcfolder: %s - File: %s" % (srcfolder, fname))
@@ -706,7 +757,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                                                          imp['name'] == impl]
                 scheme['metadata']['implementations'][0]['sources'] = srcs
             else:
-                for impl in scheme['metadata']['implementations']:
+                for impl in scheme["metadata"]["implementations"]:
                     srcs = handle_implementation(impl['name'], family, scheme, basedir)
                     if DEBUG > 2:
                         print("SRCs found: %s" % (srcs))
@@ -735,6 +786,26 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                             print("No required flags found for %s (KeyError %s on impl %s)" % (
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
+                # TODO: this is a duplicate of the line above, but implementing
+                #       this into a separate function is too cursed
+                for impl in scheme["metadata"].get("libjade_implementations", []):
+                    srcs = handle_implementation(impl['name'], family, scheme, basedir, True)
+                    impl['sources'] = srcs
+                    for i in range(len(impl['supported_platforms'])):
+                        req = impl['supported_platforms'][i]
+                        # if compiling for ARM64_V8, asimd/neon is implied and will cause errors
+                        # when provided to the compiler; OQS uses the term ARM_NEON
+                        if req['architecture'] == 'arm_8':
+                            req['architecture'] = 'ARM64_V8'
+                        if 'required_flags' in req:
+                            if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
+                                req['required_flags'].remove('asimd')
+                                req['required_flags'].append('arm_neon')
+                            if req['architecture'] == 'ARM64_V8' and 'sha3' in req['required_flags']:
+                                req['required_flags'].remove('sha3')
+                                req['required_flags'].append('arm_sha3')
+                            impl['required_flags'] = req['required_flags']
+                            family['all_required_flags'].update(req['required_flags'])
 
             if with_kat and not scheme.get('is_extmu', False):
                 if family in instructions['kems']:
@@ -791,15 +862,19 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     scheme,
                 )
         
-        if with_libjade:
-            replacer_contextual(
-                os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
-                os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade'),
-                '#####',
-                family,
-                None,
-                libjade=True
-            )
+        if family.get("libjade_implementation", False):
+            target = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt')
+            template = os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade')
+            # NOTE: if JASMIN_VER is None, then upstream libjade will not be
+            #       fetched, and libjade's metadata will not be read. Without
+            #       libjade metadata, libjade implementations will not be
+            #       recorded, so replacer_contextual will produce incorrect
+            #       result. In other words, if JASMIN_VER is not found, then
+            #       this whole block should be ignored
+            if not JASMIN_VER:
+                warnings.warn(f"Skipping rendering {target} for {family["name"]}")
+            else:
+                replacer_contextual(target, template, '#####', family, None, True)
 
 
 def copy_from_upstream(slh_dsa_inst: dict):
@@ -813,8 +888,8 @@ def copy_from_upstream(slh_dsa_inst: dict):
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
-    instructions = load_instructions('copy_from_upstream.yml')
-    patched_inst: dict = deepcopy(instructions)
+    instructions = load_instructions(LIBOQS_COPYFROMUPSTREAMYAML_PATH)
+    patched_inst: dict = copy.deepcopy(instructions)
     patched_inst["sigs"].append(slh_dsa_inst["sigs"][0])
     process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####')
@@ -855,12 +930,14 @@ def copy_from_upstream(slh_dsa_inst: dict):
 # When adding an algorithm to copy_from_libjade.yml, the boolean 
 # 'libjade_implementation' and list of implementation 'libjade_implementations' 
 # must updated for the relevant algorithm in copy_from_upstream.yml
+@warnings.deprecated("copy_from_libjade will be deprecated in favor of "
+                     "copy_from_upstream")
 def copy_from_libjade():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
-    instructions = load_instructions('copy_from_libjade.yml')
+    instructions = load_instructions(LIBOQS_COPYFROMLIBJADEYAML_PATH)
     process_families(instructions, os.environ['LIBOQS_DIR'], True, False, True)
     replacer('.CMake/alg_support.cmake', instructions, '#####', libjade=True)
     replacer('src/oqsconfig.h.cmake', instructions, '/////', libjade=True)
@@ -881,7 +958,7 @@ def copy_from_libjade():
 
 
 def verify_from_upstream():
-    instructions = load_instructions()
+    instructions = load_instructions(LIBOQS_COPYFROMUPSTREAMYAML_PATH)
     basedir = "verify_from_upstream"
 
     process_families(instructions, basedir, False, False)
