@@ -1032,11 +1032,18 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature
 	fprintf(stderr, "OQS_SIG_STFL_sign: stateful signing is not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
-	if (sig == NULL || sig->sign == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != 0) {
+	size_t sig_capacity;
+
+	if (sig == NULL || sig->sign == NULL || signature == NULL || signature_len == NULL) {
 		return OQS_ERROR;
-	} else {
-		return OQS_SUCCESS;
 	}
+
+	sig_capacity = sig->length_signature;
+	if (sig->sign(signature, &sig_capacity, message, message_len, secret_key) != 0) {
+		return OQS_ERROR;
+	}
+	*signature_len = sig_capacity;
+	return OQS_SUCCESS;
 #endif
 }
 

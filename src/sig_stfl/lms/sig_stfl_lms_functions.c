@@ -582,6 +582,11 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 		return 0;
 	}
 
+	if (sig_len != *signature_len) {
+		hss_free_working_key(w);
+		return -1;
+	}
+
 	sig = OQS_MEM_malloc(sig_len);
 	if (!sig) {
 		hss_free_working_key(w);
