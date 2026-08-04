@@ -1,0 +1,123 @@
+# TOML works better when there are deeply nested tables
+version = 2
+
+[upstreams.pqc-hqc]
+git_url = https://gitlab.com/pqc-hqc/hqc.git
+# TODO: some git server might prohibit checking out arbitrary commit. In
+#       these cases we might still need to checkout by branch.
+git_commit = 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
+patches = [pqchqc-liboqs-integration.patch]
+
+[upstreams.oldpqclean]
+git_url = https://github.com/PQClean/PQClean.git
+git_commit = 8e220a87308154d48fdfac40abbb191ac7fce06a
+patches = [
+    pqclean-kyber-armneon-shake-fixes.patch,
+    pqclean-kyber-armneon-768-1024-fixes.patch,
+    pqclean-kyber-armneon-variable-timing-fix.patch,
+    pqclean-kyber-armneon-asan.patch,
+]
+
+[upstreams.pqclean]
+git_url = https://github.com/PQClean/PQClean.git
+git_commit = 1eacfdafc15ddc5d5759d0b85b4cef26627df181
+patches = [classic-mceliece_memset.patch]
+
+[upstreams.pqcrystals-kyber]
+git_url = https://github.com/pq-crystals/kyber.git
+git_commit = 441c0519a07e8b86c8d079954a6b10bd31d29efc
+patches = [
+    pqcrystals-kyber-yml.patch,
+    pqcrystals-kyber-ref-shake-aes.patch,
+    pqcrystals-kyber-avx2-shake-aes.patch,
+]
+
+[upstreams.mlkem-native]
+git_url = https://github.com/pq-code-package/mlkem-native.git
+git_commit = 0ba906cb14b1c241476134d7403a811b382ca498
+patches = [mlkem-native-exclude-ppc64le.patch]
+
+[upstreams.cupqc]
+git_url = https://github.com/open-quantum-safe/liboqs-cupqc-meta.git
+git_commit = b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
+
+[upstreams.icicle]
+git_url = https://github.com/ingonyama-zk/icicle-liboqs.git
+git_commit = 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
+
+[upstreams.mldsa-native]
+git_url = https://github.com/pq-code-package/mldsa-native.git
+git_commit = 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
+
+[upstreams.pqmayo]
+git_url = https://github.com/PQCMayo/MAYO-C.git
+git_commit = 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
+patches = [pqmayo-aes.patch, pqmayo-mem.patch]
+
+[upstreams.upcross]
+git_url = https://github.com/CROSS-signature/CROSS-lib-oqs.git
+git_commit = 179d61b8b59e524fba86954f7fa269495650030a
+
+[upstreams.pqov]
+git_url = https://github.com/pqov/pqov.git
+git_commit = 33fa5278754a32064c55901c3a17d48b06cc2351
+
+[upstreams.snova]
+git_url = https://github.com/vacuas/SNOVA-OQS
+git_commit = 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+patches = [snova-unused-param.patch]
+
+[upstreams.mqom]
+git_url = https://github.com/mqom/mqom-v2.git
+git_commit = ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7
+
+[algfamilies.classic_mceliece]
+display_name = Classic McEliece
+algtype = kem
+principal-submitters = [
+    Daniel J. Bernstein,
+    Tung Chou,
+    Tanja Lange,
+    Ingo von Maurich,
+    Rafael Misoczki,
+    Ruben Niederhagen,
+    Edoardo Persichetti,
+    Christiane Peters,
+    Peter Schwabe,
+    Nicolas Sendrier,
+    Jakub Szefer,
+    Wen Wang,
+]
+crypto-assumption = """
+Niederreiter's dual version of McEliece's public key encryption using binary \
+Goppa codes"""
+website = https://classic.mceliece.org
+# TODO: nist-round really should fold into standardization-status
+nist-round = 3
+spec-version = SUPERCOP-20221025
+standardization-status =
+  "Under [ISO](https://classic.mceliece.org/iso.html) consideration"
+upstream-maintenance = No active maintenance
+upstream-statement-url =
+  https://github.com/PQClean/PQClean/blob/dca1ee2/README.md
+# NOTE: primary-upstream uses an upstream_key
+primary-upstream = pqclean
+# TODO: default-upstream-id does not make sense
+# default-upstream-id: clean
+oqs-support-tier = 3
+# TODO: upstream-ancestors also does not make sense
+upstream-ancestors = [
+  "SUPERCOP-20221025 \"clean\" and \"avx2\" implementations",
+]
+advisories =
+  - >
+    Classic-McEliece-460896, Classic-McEliece-460896f,
+    Classic-McEliece-6960119, and Classic-McEliece-6960119f parameter sets
+    fail memory leak testing on x86-64 when building with ``clang`` using
+    optimization level ``-O2`` and ``-O3``. Care is advised when using the
+    algorithm at higher optimization levels, and any other compiler and
+    architecture.
+  - >
+    Current implementation of the algorithm may not be constant-time.
+    Additionally, environment specific constant-time leaks may not be
+    documented; please report potential constant-time leaks when found.
