@@ -415,6 +415,10 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 #define TEST_INVALID_SIG_LMS_PK_LEN 60
 /* Signature header: u32(levels-1) || u32(q) || u32(lm_ots). Real LMS signatures are kilobytes. */
 #define TEST_INVALID_SIG_LMS_HEADER_LEN 12
+/* The bottom level parse needs u32(q) and the n-byte LM-OTS randomizer C, i.e. 8 + n bytes
+ * beyond the four the header consumes: 44 for the SHA-256/n=32 parameter sets liboqs supports.
+ * This is the shortest signature that clears every length bound in the parser. */
+#define TEST_INVALID_SIG_LMS_MIN_BOUNDED_LEN 44
 /* Offsets of the type fields within the pk and the signature header. */
 #define TEST_LMS_LEVELS_OFFSET 3
 #define TEST_LMS_TYPE_OFFSET 7
@@ -483,7 +487,7 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
  * header the parser reads. The signature buffers are allocated at exactly the
  * length passed to verify so that a sanitizer build observes any over-read.
  * @param method_name: The name of the signature algorithm to test.
- * @return OQS_SUCCESS if both truncated signatures are rejected, OQS_ERROR otherwise.
+ * @return OQS_SUCCESS if every truncated signature is rejected, OQS_ERROR otherwise.
  */
 static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
 	if (method_name == NULL) {
@@ -506,13 +510,22 @@ static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
 	pk[TEST_LMS_OTS_TYPE_OFFSET] = TEST_LMOTS_TYPE_SHA256_N32_W2;
 
 	uint8_t message[] = "test";
-	/* Sub-case 1: long enough for the level count, but stops before the LM-OTS
-	 * type at offset 8 that the pk/signature agreement check reads.
-	 * Sub-case 2: full header, but stops before the n-byte LM-OTS randomizer C
-	 * that the bottom level reads at offset 8 of the remaining signature. */
-	const size_t trunc_lens[2] = {4, TEST_INVALID_SIG_LMS_HEADER_LEN};
+	/* Every length here must be rejected without reading past the buffer:
+	 *   4, 11          shorter than the 12-byte header, which is_hss_public_key()
+	 *                  reads to offset 8 for the LM-OTS type;
+	 *   12, 39, 40, 43 header present, but fewer than 8 + n bytes remain for q and
+	 *                  the LM-OTS randomizer C that the bottom level copies -- 43
+	 *                  is the largest such length;
+	 *   44             clears both of those bounds, so it reaches
+	 *                  lm_validate_signature() and must be rejected on length
+	 *                  there, still without an over-read. */
+	const size_t trunc_lens[] = {
+		4, 11,
+		TEST_INVALID_SIG_LMS_HEADER_LEN, 39, 40, 43,
+		TEST_INVALID_SIG_LMS_MIN_BOUNDED_LEN
+	};
 
-	for (size_t i = 0; i < 2; i++) {
+	for (size_t i = 0; i < sizeof(trunc_lens) / sizeof(trunc_lens[0]); i++) {
 		uint8_t *malicious_sig = OQS_MEM_malloc(trunc_lens[i]);
 		if (malicious_sig == NULL) {
 			OQS_SIG_STFL_free(sig);
