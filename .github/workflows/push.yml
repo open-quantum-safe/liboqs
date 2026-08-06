@@ -14,7 +14,13 @@ concurrency:
 jobs:
 
   basic-checks:
+    concurrency:
+      group: basic-checks-${{ github.sha }}
+      cancel-in-progress: true
     uses: ./.github/workflows/basic.yml
+    permissions:
+      contents: read
+      actions: write   # required to cancel the run on fail-fast (see basic.yml)
 
   full-tests:
     needs: basic-checks
@@ -25,6 +31,11 @@ jobs:
     needs: basic-checks
     if: contains( github.event.head_commit.message, '[extended tests]' )
     uses: ./.github/workflows/extended.yml
+
+  code-coverage-tests:
+    needs: basic-checks
+    if: contains( github.event.head_commit.message, '[code coverage]' )
+    uses: ./.github/workflows/code-coverage.yml
 
   downstream-release-tests:
     needs: basic-checks

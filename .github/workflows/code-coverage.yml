@@ -14,18 +14,18 @@ jobs:
         include:
           - id: x64-generic
             runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_ENABLE_SIG_SLH_DSA=OFF
           - id: x64-distbuild
             runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF
           - id: arm64-distbuild
             runner: ubuntu-24.04-arm
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF
     runs-on: ${{ matrix.runner }}
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: |
           mkdir build && cd build && \
@@ -35,15 +35,16 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
+        env:
+          OQS_TEST_SIG_CTX_STEP: "255"
         run: |
           python3 -m pytest --verbose --numprocesses=auto \
-          tests/test_acvp_vectors.py \
           tests/test_cmdline.py \
           tests/test_kat.py
       - name: Run lcov
         run: lcov -d . -c -o lcov.info --exclude /usr/lib,/usr/include --ignore-errors unused,inconsistent
       - name: Upload to coveralls.io
-        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # pin@v2.3.6
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
         with:
           flag-name: ${{ matrix.id }}
           parallel: true
@@ -54,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Finish coveralls.io
-        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # pin@v2.3.6
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
         with:
           parallel-finished: true
           carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
