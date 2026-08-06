@@ -51,39 +51,77 @@ def test_spdx():
         print(result)
         assert False
 
+# Regular expression matching the parts of C source code that must be
+# blanked out before searching for memory functions: comments (both styles)
+# and string/character literals. Literals have to be recognized as well:
+# a string such as "/*" would otherwise be mistaken for the start of a
+# comment, and function names inside literals are not calls.
+C_COMMENTS_AND_LITERALS = re.compile(
+    r'/\*.*?\*/'              # multi-line comment
+    r'|//[^\n]*'              # single-line comment
+    r'|"(?:\\.|[^"\\\n])*"'   # string literal
+    r"|'(?:\\.|[^'\\\n])*'",  # character literal
+    re.DOTALL)
+
+MEMORY_FUNCTIONS = re.compile(r'\b(free|malloc|calloc|realloc|strdup)\s*\(')
+
+def blank_out(match):
+    # Replace the matched text with spaces, keeping newlines so that line
+    # numbers remain valid in the blanked source.
+    return '\n'.join(' ' * len(part) for part in match.group(0).split('\n'))
+
+# Returns a list of (line number, function name) tuples, one for each call
+# to a standard memory function in the given C source code. Calls inside
+# comments and string/character literals are excluded, as are lines
+# annotated with 'IGNORE memory-check'.
+def find_memory_functions(content):
+    ignored_lines = {no for no, line in enumerate(content.splitlines(), 1)
+                     if 'IGNORE memory-check' in line}
+    code = C_COMMENTS_AND_LITERALS.sub(blank_out, content)
+    findings = []
+    for match in MEMORY_FUNCTIONS.finditer(code):
+        no = code.count('\n', 0, match.start()) + 1
+        if no not in ignored_lines:
+            findings.append((no, match.group(1)))
+    return findings
+
+# Ensure the checker itself parses C constructs correctly.
+@pytest.mark.parametrize('content,expected', [
+    # A plain call is found; prefixed identifiers such as OQS_MEM_malloc are not.
+    ('void *p = malloc(4);\nq = OQS_MEM_malloc(4);\n', [(1, 'malloc')]),
+    # Whitespace or a comment between the name and the parenthesis.
+    ('free (p);\nfree/* ! */(q);\n', [(1, 'free'), (2, 'free')]),
+    # Calls inside comments are not findings.
+    ('// free(p)\n/* malloc(4) */\n', []),
+    # Code sharing a line with a comment is still checked.
+    ('void *p = malloc(4); /* four bytes */\n', [(1, 'malloc')]),
+    ('/* cleanup: */ free(p);\n', [(1, 'free')]),
+    ('free(p); /* comment continues\nhere */ free(q);\n', [(1, 'free'), (2, 'free')]),
+    # Comment markers inside string literals do not start a comment...
+    ('const char *s = "/*";\nfree(p);\n', [(2, 'free')]),
+    # ...and function names inside literals are not calls.
+    ('puts("malloc(4) failed");\nchar c = \'(\';\n', []),
+    # Escaped quotes do not terminate a literal early.
+    ('puts("\\" free(p)");\n', []),
+    # 'IGNORE memory-check' suppresses findings on its line only.
+    ('free(p); // IGNORE memory-check\nfree(q);\n', [(2, 'free')]),
+])
+def test_memory_functions_checker(content, expected):
+    assert find_memory_functions(content) == expected
+
 def test_memory_functions():
     c_h_files = []
     for path, _, files in os.walk('src'):
         c_h_files += [os.path.join(path, f) for f in files if f.endswith(('.c', '.h', '.fragment'))]
 
-    memory_functions = ['free', 'malloc', 'calloc', 'realloc', 'strdup']
     okay = True
-
     for fn in c_h_files:
         with open(fn) as f:
             content = f.read()
-            lines = content.splitlines()
-            in_multiline_comment = False
-            for no, line in enumerate(lines, 1):
-                # Skip single-line comments
-                if line.strip().startswith('//'):
-                    continue
-                # Check for start of multi-line comment
-                if '/*' in line and not in_multiline_comment:
-                    in_multiline_comment = True
-                # Check for end of multi-line comment
-                if '*/' in line and in_multiline_comment:
-                    in_multiline_comment = False
-                    continue
-                # Skip lines inside multi-line comments
-                if in_multiline_comment:
-                    continue
-                for func in memory_functions:
-                    if re.search(r'\b{}\('.format(func), line) and not re.search(r'\b_{}\('.format(func), line):
-                        if 'IGNORE memory-check' in line:
-                            continue
-                        okay = False
-                        print(f"Suspicious `{func}` in {fn}:{no}:{line.strip()}")
+        lines = content.splitlines()
+        for no, func in find_memory_functions(content):
+            okay = False
+            print(f"Suspicious `{func}` in {fn}:{no}:{lines[no - 1].strip()}")
 
     assert okay, ("Standard memory functions are used in some files. "
                   "These should be changed to OQS_MEM_* equivalents as appropriate. "
