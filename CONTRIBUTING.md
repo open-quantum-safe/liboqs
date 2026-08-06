@@ -106,3 +106,11 @@ If you feel like contributing but don't know what specific topic to work on,
 please check the [open issues tagged "good first issue" or "help wanted"](https://github.com/open-quantum-safe/liboqs/issues).
 
 You can also take a look at the [contribution wishlist](https://github.com/open-quantum-safe/liboqs/wiki/Contribution-wishlist) for more substantial contributions we are interested in.
+
+## Verifying the CodeQL OpenSSL return-check query
+The query detects EVP_* calls not wrapped in OQS_OPENSSL_GUARD.
+A deliberately bad example lives in
+.github/codeql/test/openssl-return-check-bad.c.
+When CodeQL runs, any match against this file confirms the query
+is scanning correctly. CI will flag new violations automatically
+on every PR.
