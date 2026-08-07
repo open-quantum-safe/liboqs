@@ -260,8 +260,6 @@ class TestGenkatSha256:
 # --------------------------------------------------------------------------
 # scripts/update_docs_from_yaml.py
 # --------------------------------------------------------------------------
-@pytest.mark.skipif(sys.platform.startswith("win"),
-                    reason="generate_algorithms_md.py uses Unicode chars unsupported by Windows cp1252")
 class TestUpdateDocsFromYaml:
     """Test the update_docs_from_yaml.py script that generates .md from .yml."""
 
@@ -362,11 +360,11 @@ class TestUpdateDocsFromYaml:
 # --------------------------------------------------------------------------
 # scripts/update_cbom.py
 # --------------------------------------------------------------------------
-@pytest.mark.skipif(sys.platform.startswith("win"),
-                    reason="update_cbom.py requires gitpython which may not be available on Windows CI")
 class TestUpdateCbom:
     """Test the update_cbom.py script that generates a Cryptography BOM."""
 
+    @pytest.mark.skipif(sys.platform.startswith("win"),
+                        reason="update_cbom.py requires gitpython which may not be available on Windows CI")
     def test_generates_valid_json(self, tmp_path):
         """CBOM output should be valid JSON with expected top-level keys."""
         fake_root = tmp_path / "liboqs"
@@ -394,6 +392,8 @@ class TestUpdateCbom:
         assert 'metadata' in cbom
         assert len(cbom['components']) > 0, "CBOM should contain algorithm components"
 
+    @pytest.mark.skipif(sys.platform.startswith("win"),
+                        reason="update_cbom.py requires gitpython which may not be available on Windows CI")
     def test_contains_algorithm_components(self, tmp_path):
         """CBOM components should include cryptographic-asset entries."""
         fake_root = tmp_path / "liboqs"
@@ -415,6 +415,8 @@ class TestUpdateCbom:
                          if c.get('type') == 'cryptographic-asset']
         assert len(crypto_assets) > 0, "Should have cryptographic-asset components"
 
+    @pytest.mark.skipif(sys.platform.startswith("win"),
+                        reason="update_cbom.py requires gitpython which may not be available on Windows CI")
     def test_idempotent_on_unchanged_algorithms(self, tmp_path):
         """Running twice with same input should not change algorithm content."""
         fake_root = tmp_path / "liboqs"
