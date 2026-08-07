@@ -76,6 +76,17 @@ static int test_aes128ctr_correctness(void) {
 	return EXIT_SUCCESS;
 }
 
+// OQS_AES128_CTR_inc_iv() stores the IV inside the key schedule; this entry
+// point had no coverage, so an undersized schedule went unnoticed under ASan.
+static int test_aes128ctr_inc_iv(void) {
+	void *schedule = NULL;
+	OQS_AES128_CTR_inc_init(test_aes128ctr_key, &schedule);
+	OQS_AES128_CTR_inc_iv(test_aes128ctr_iv, 12, schedule);
+	OQS_AES128_CTR_inc_iv(test_aes128ctr_iv, sizeof(test_aes128ctr_iv), schedule);
+	OQS_AES128_free_schedule(schedule);
+	return EXIT_SUCCESS;
+}
+
 static int test_aes256_correctness(void) {
 	uint8_t derived_ciphertext[16];
 	void *schedule = NULL;
@@ -184,6 +195,10 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 	if (test_aes128ctr_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+	if (test_aes128ctr_inc_iv() != EXIT_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
