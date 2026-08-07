@@ -5,8 +5,7 @@ version: 2
 upstreams:
   libjade:
     git_url: https://github.com/formosa-crypto/libjade.git
-    # git_branch: release/2023.05-2
-    # https://github.com/formosa-crypto/libjade/blob/4e15c1d/src/crypto_kem/kyber
+    git_branch: release/2023.05-2
     git_commit: 4e15c1d221d025deca40edef2c762be9e3d346b7
     patches: [libjade-kyber-api.patch, libjade-kyber-meta.patch]
     jasminc: 2023.06.3
@@ -14,20 +13,12 @@ upstreams:
       make -C src
 
   pqc-hqc:
-    # NOTE: sources type: files
     git_url: https://gitlab.com/pqc-hqc/hqc.git
-    # TODO: some git server might prohibit checking out arbitrary commit. In
-    #       these cases we might still need to checkout by branch.
     git_commit: 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
-    # NOTE:
-    # - use square brackets iff it can fit in one line
-    # - patch paths are relative to some PATCH_DIR
-    # - `patches` is optional
     patches: [pqchqc-liboqs-integration.patch]
 
   oldpqclean:
     git_url: https://github.com/PQClean/PQClean.git
-    # https://github.com/PQClean/PQClean/tree/8e220a87308154d48fdfac40abbb191ac7fce06a
     git_commit: 8e220a87308154d48fdfac40abbb191ac7fce06a
     patches:
       - pqclean-kyber-armneon-shake-fixes.patch
@@ -36,14 +27,12 @@ upstreams:
       - pqclean-kyber-armneon-asan.patch
 
   pqclean:
-    # NOTE: sources type: directory
     git_url: https://github.com/PQClean/PQClean.git
     git_commit: 1eacfdafc15ddc5d5759d0b85b4cef26627df181
     patches: [classic-mceliece_memset.patch]
 
   pqcrystals-kyber:
     git_url: https://github.com/pq-crystals/kyber.git
-    # https://github.com/pq-crystals/kyber/tree/441c0519a07e8b86c8d079954a6b10bd31d29efc
     git_commit: 441c0519a07e8b86c8d079954a6b10bd31d29efc
     patches: 
       - pqcrystals-kyber-yml.patch
@@ -51,57 +40,47 @@ upstreams:
       - pqcrystals-kyber-avx2-shake-aes.patch
 
   mlkem-native:
-    # NOTE: sources type: recursive
     git_url: https://github.com/pq-code-package/mlkem-native.git
     git_commit: 0ba906cb14b1c241476134d7403a811b382ca498
     patches: [mlkem-native-exclude-ppc64le.patch]
 
   cupqc:
-    # NOTE: sources type: files
     git_url: https://github.com/open-quantum-safe/liboqs-cupqc-meta.git
     git_commit: b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
 
   icicle:
-    # NOTE: sources type: files
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
     git_commit: 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
 
   mldsa-native:
-    # NOTE: sources type: recursive
     git_url: https://github.com/pq-code-package/mldsa-native.git
     git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
 
   pqmayo:
-    # NOTE: sources type: files
     git_url: https://github.com/PQCMayo/MAYO-C.git
     git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
     patches: [pqmayo-aes.patch, pqmayo-mem.patch]
 
   upcross:
-    # NOTE: sources type: files
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
     git_commit: 179d61b8b59e524fba86954f7fa269495650030a
 
   pqov:
-    # NOTE: sources type: files
     git_url: https://github.com/pqov/pqov.git
     git_commit: 33fa5278754a32064c55901c3a17d48b06cc2351
 
   snova:
-    # NOTE: sources type: files
     git_url: https://github.com/vacuas/SNOVA-OQS
     git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
     patches: [snova-unused-param.patch]
 
   mqom:
-    # NOTE: sources type: files with common
     git_url: https://github.com/mqom/mqom-v2.git
     git_commit: ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7
 
 # @summary    A map from family key to algorithm family metadata. Family key
 #             must follow snake casing because it serves as default dir
 algfamilies:
-
   demo_kem:
     displayname: Required
     algtype: kem, sig, or stfl_sig
@@ -167,10 +146,16 @@ algfamilies:
     implementations:
       impl1:  # local, kem
         version: Some string
-        enable-by: C/CMake macro
+        enable_by: C/CMake macro
         subdirname: defaults to impl_key
         parameter: param_key
         uarch: portable, x86_64, arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
         os: Defaults to []
         cpufeatures: Defaults to []
         sources:
@@ -207,7 +192,6 @@ algfamilies:
         remote_meta_path: must be explicit, no templating
         remote_impl_key: the impl_key under remote meta's implementations
 
-
   classic_mceliece:
     display_name: Classic McEliece
     algtype: kem
@@ -224,7 +208,6 @@ algfamilies:
       - Nicolas Sendrier
       - Jakub Szefer
       - Wen Wang
-    # @summary    A list of auxiliary submitters. Defaults to empty list.
     auxiliary-submitters: null
     crypto-assumption: >-
       Niederreiter's dual version of McEliece's public key encryption using
@@ -253,6 +236,7 @@ algfamilies:
         Current implementation of the algorithm may not be constant-time.
         Additionally, environment specific constant-time leaks may not be
         documented; please report potential constant-time leaks when found.
+
     parameter-sets:
       mceliece348864:
         claimed-nist-level: 1
@@ -265,116 +249,695 @@ algfamilies:
         length-encaps-seed: null
         nistkat-sha256:
           6f0f50626df15ce403c0c1d5f91648245282afebcac90e5db3595ce9b20b1817
-        # TODO: This field is only false for CROSS, MQOM, and NTRUPrime
         implementations-switch-on-runtime-cpu-features: true
-        # @summary  The C pre-processing macro and CMake flag that controls
-        #           whether this parameter set is compiled into liboqs. The
-        #           parameter-set macro will overwrite the implementation-level
-        #           "enable_by" for the default impl of this parameter set.
         enable_by: OQS_ENABLE_KEM_classic_mceliece_348864
-        # @summary  The key of the default implementation. Default
-        #           implementation is always enabled and compiled into the
-        #           library if the parameter set is enabled.
         default-implementation: pqclean_mceliece348864_clean
-      # mceliece348864f: null
-      # mceliece460896: null
-      # mceliece460896f: null
-      # mceliece6688128: null
-      # mceliece6688128f: null
-      # mceliece6960119: null
-      # mceliece6960119f: null
-      # mceliece8192128: null
-      # mceliece8192128f: null
+
+      mceliece348864f:
+        claimed-nist-level: 1
+        claimed-security: IND-CCA2
+        length-public-key: 261120
+        length-ciphertext: 96
+        length-secret-key: 6492
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          9b17b21becc1d3acf9df0a6d87875790259c075abeb50f97ea254c8d29395a41
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_348864f
+        default-implementation: pqclean_mceliece348864f_clean
+
+      mceliece460896:
+        claimed-nist-level: 3
+        claimed-security: IND-CCA2
+        length-public-key: 524160
+        length-ciphertext: 156
+        length-secret-key: 13608
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          03124a66e44aea18a3c1fcd63be22f2217ec5514b7d84166b1da71094c251769
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_460896
+        default-implementation: pqclean_mceliece460896_clean
+
+      mceliece460896f:
+        claimed-nist-level: 3
+        claimed-security: IND-CCA2
+        length-public-key: 524160
+        length-ciphertext: 156
+        length-secret-key: 13608
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          a027478ab01849de3d492176ea95c071110bcb8f7e4e6afa136a30cd1a1f6074
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_460896f
+        default-implementation: pqclean_mceliece460896f_clean
+
+      mceliece6688128:
+        claimed-nist-level: 5
+        claimed-security: IND-CCA2
+        length-public-key: 1044992
+        length-ciphertext: 208
+        length-secret-key: 13932
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          4c825bf86378d76b197caca6f957942c0cc98b50ce4a6b26cad6efa25d1d20c6
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128
+        default-implementation: pqclean_mceliece6688128_clean
+
+      mceliece6688128f:
+        claimed-nist-level: 5
+        claimed-security: IND-CCA2
+        length-public-key: 1044992
+        length-ciphertext: 208
+        length-secret-key: 13932
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          1fa84d1abd8ef104cdcf75277ca4399475945e97087dde3183a09415e1d61987
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128f
+        default-implementation: pqclean_mceliece6688128f_clean
+
+      mceliece6960119:
+        claimed-nist-level: 5
+        claimed-security: IND-CCA2
+        length-public-key: 1047319
+        length-ciphertext: 194
+        length-secret-key: 13948
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          8feea532732502134b7965fd495e6618b09f0b4747c2d94b29a85a90a0b6cc8a
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119
+        default-implementation: pqclean_mceliece6960119_clean
+
+      mceliece6960119f:
+        claimed-nist-level: 5
+        claimed-security: IND-CCA2
+        length-public-key: 1047319
+        length-ciphertext: 194
+        length-secret-key: 13948
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          9a586a40d1af4819efb3f7343a05c260bd27d7e5d450945fee0ace5593761c3b
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119f
+        default-implementation: pqclean_mceliece6960119f_clean
+
+      mceliece8192128:
+        claimed-nist-level: 5
+        claimed-security: IND-CCA2
+        length-public-key: 1357824
+        length-ciphertext: 208
+        length-secret-key: 14120
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          cbe9b802465df7a7b3a59a08d3bd3ea603b6277532c15f89418b8d0d6508ee24
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128
+        default-implementation: pqclean_mceliece8192128_clean
+
+      mceliece8192128f:
+        claimed-nist-level: 5
+        claimed-security: IND-CCA2
+        length-public-key: 1357824
+        length-ciphertext: 208
+        length-secret-key: 14120
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          f497b217022465568f0ed6c7987c462b74ba2d3e39f963ac357436c727ed9bdb
+        implementations-switch-on-runtime-cpu-features: true
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128f
+        default-implementation: pqclean_mceliece8192128f_clean
+
     implementations:  # classic_mceliece
-      pqclean_mceliece348864_avx2:
+      pqclean_mceliece348864_clean:
         version: SUPERCOP-20221025
-        # @summary  The C pre-processing macro and CMake flag that controls
-        #           whether this implementation is compiled into liboqs. If this
-        #           impl is the default imple of some parameter set, than the
-        #           parameter-level `enable_by` will overwrite this `enable_by`.
-        #           Because of the overwrite, `enable_by` is optional if
-        #           this implementation is some parameter's default impl.
-        #           Missing `enable_by` in non-default impl is invalid.
-        enable_by: OQS_ENABLE_KEM_classic_mceliece_348864_avx2
-        # @summary  The subdirectory into which source files are copied.
-        #           Defaults to {{ impl_key }}
-        dirname: null
-        # @summary  The parameter set this implementation implements. It must be
-        #           a valid parameter key under the same family.
-        parameter-set: mceliece348864
-        # @summary  The microarchitecture of the implementation. Must be one of
-        #           "x86_64", "aarch64", or "portable". Defaults to "portable".
-        uarch: x86_64
-        # TODO: What does operating_systems do?
-        operating_systems: ["Linux", "Darwin"]
-        # @summary  A list of CPU features required by this implementation.
-        required_flags: [avx2, popcnt]
-        # @summary  An upstream key matching the upstream repository from which
-        #           source files are copied.
-        upstream: pqclean
+        enable_by: null  # default of mceliece348864
+        parameter: mceliece348864
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
         sources:
-          from_upstream:
-            # @summary  The base directory onto which file paths are appended.
-            #           Defaults to root directory of the upstream.
-            base_dir: null
-            # @summary  list files to be copied from upstream repository to
-            #           src/{{ algtype }}/{{ family_key}}/{{ impl_key }} subdir.
-            #           End an entry with a slash to indicate copying content 
-            #           rather than the directory itself. Wildcard matching
-            #           is also supported
-            files: ["crypto_kem/mceliece348864/avx2/"]
-          # @summary  Specify the source files of this implementation that are
-          #           shared across many implementations within the same family.
-          #           For now we don't have source files shared across many
-          #           families. Instead, common dependencies like symmetric
-          #           primitives are compiled into a separate object to be
-          #           linked against in src/CMakeLists.txt:91. See `mqom` for
-          #           a non-empty example.
-          from_family_common: null
-        # @summary each item corresponds to one call to target_include_directories
-        #          scope must be one of private, public, or interface. dir will be
-        #          treated as literal and copied directly
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece348864/clean/"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864_clean"
           - scope: private
             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-        # @summary  If true, add target_compile_definitions(old_gas_syntax) if
-        #           CMAKE_SYSTEM_NAME is Darwin. Defaults to false.
         old_gas_syntax_if_darwin: true
-        # @summary  Each item corresponds to one target_compile_options call
-        # @type     list of (scope, opts) pair. The `opts` field is treated as
-        #           a string literal and can contain multiple flags
+        signature_keypair: PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE348864_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece348864_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_348864_avx2
+        parameter: mceliece348864
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece348864/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
         compile_opts:
           - scope: private
-            # TODO: Not always in sync with `required_flags`
-            opts: "-mavx2 -mpopcnt"
+            opts: "-mavx2  -mpopcnt"
           - scope: private
             opts: "-Wno-language-extension-token -O1"
         signature_keypair: PQCLEAN_MCELIECE348864_AVX2_crypto_kem_keypair
         signature_enc: PQCLEAN_MCELIECE348864_AVX2_crypto_kem_enc
         signature_dec: PQCLEAN_MCELIECE348864_AVX2_crypto_kem_dec
-        signature_keypair_derand: null
-        signature_enc_derand: null
-      # pqclean_mceliece348864_clean: null
-      # pqclean_mceliece348864f_avx2: null
-      # pqclean_mceliece348864f_clean: null
-      # pqclean_mceliece460896_avx2: null
-      # pqclean_mceliece460896_clean: null
-      # pqclean_mceliece460896f_avx2: null
-      # pqclean_mceliece460896f_clean: null
-      # pqclean_mceliece6688128_avx2: null
-      # pqclean_mceliece6688128_clean: null
-      # pqclean_mceliece6688128f_avx2: null
-      # pqclean_mceliece6688128f_clean: null
-      # pqclean_mceliece6960119_avx2: null
-      # pqclean_mceliece6960119_clean: null
-      # pqclean_mceliece6960119f_avx2: null
-      # pqclean_mceliece6960119f_clean: null
-      # pqclean_mceliece8192128_avx2: null
-      # pqclean_mceliece8192128_clean: null
-      # pqclean_mceliece8192128f_avx2: null
-      # pqclean_mceliece8192128f_clean: null
+
+      pqclean_mceliece348864f_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece348864f
+        parameter: mceliece348864f
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece348864f/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864f_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE348864F_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece348864f_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_348864f_avx2
+        parameter: mceliece348864f
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece348864f/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864f_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE348864F_AVX2_crypto_kem_dec
+
+      pqclean_mceliece460896_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece460896
+        parameter: mceliece460896
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece460896/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE460896_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece460896_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_460896_avx2
+        parameter: mceliece460896
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece460896/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE460896_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE460896_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE460896_AVX2_crypto_kem_dec
+
+      pqclean_mceliece460896f_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece460896f
+        parameter: mceliece460896f
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece460896f/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896f_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE460896F_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece460896f_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_460896f_avx2
+        parameter: mceliece460896f
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece460896f/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896f_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE460896F_AVX2_crypto_kem_dec
+
+      pqclean_mceliece6688128_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece6688128
+        parameter: mceliece6688128
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6688128/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6688128_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece6688128_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128_avx2
+        parameter: mceliece6688128
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6688128/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6688128_AVX2_crypto_kem_dec
+
+      pqclean_mceliece6688128f_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece6688128f
+        parameter: mceliece6688128f
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6688128f/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128f_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6688128F_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece6688128f_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128f_avx2
+        parameter: mceliece6688128f
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6688128f/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128f_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6688128F_AVX2_crypto_kem_dec
+
+      pqclean_mceliece6960119_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece6960119
+        parameter: mceliece6960119
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6960119/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6960119_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece6960119_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119_avx2
+        parameter: mceliece6960119
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6960119/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6960119_AVX2_crypto_kem_dec
+
+      pqclean_mceliece6960119f_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece6960119f
+        parameter: mceliece6960119f
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6960119f/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119f_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6960119F_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece6960119f_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119f_avx2
+        parameter: mceliece6960119f
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece6960119f/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119f_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE6960119F_AVX2_crypto_kem_dec
+
+      pqclean_mceliece8192128_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece8192128
+        parameter: mceliece8192128
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece8192128/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece8192128_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128_avx2
+        parameter: mceliece8192128
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece8192128/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE8192128_AVX2_crypto_kem_dec
+
+      pqclean_mceliece8192128f_clean:
+        version: SUPERCOP-20221025
+        enable_by: null  # default of mceliece8192128f
+        parameter: mceliece8192128f
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece8192128f/clean/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128f_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE8192128F_CLEAN_crypto_kem_dec
+
+      pqclean_mceliece8192128f_avx2:
+        version: SUPERCOP-20221025
+        enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128f_avx2
+        parameter: mceliece8192128f
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, popcnt]
+        sources:
+          - upstream: pqclean
+            files: ["crypto_kem/mceliece8192128f/avx2/"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128f_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mpopcnt"
+          - scope: private
+            opts: "-Wno-language-extension-token -O1"
+        signature_keypair: PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_keypair
+        signature_enc: PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_enc
+        signature_dec: PQCLEAN_MCELIECE8192128F_AVX2_crypto_kem_dec
 
   hqc:
     display_name: HQC
