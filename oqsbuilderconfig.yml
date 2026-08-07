@@ -3,6 +3,10 @@
 version: 2
 
 upstreams:
+  awslabs/bike-kem:
+    git_url: https://github.com/awslabs/bike-kem
+    git_commit: f150a1c50105dabcb8be2ce9dca26c37937a5c13
+
   libjade:
     git_url: https://github.com/formosa-crypto/libjade.git
     git_branch: release/2023.05-2
@@ -117,8 +121,8 @@ algfamilies:
         length-encaps-seed: null
         nistkat-sha256:
           6f0f50626df15ce403c0c1d5f91648245282afebcac90e5db3595ce9b20b1817
-        enable-by: C/CMake macro
-        default-implementation: impl_key, must be portable
+        enable_by: C/CMake macro
+        default-implementation: optional, impl_key, must be portable
         memopt-implementation: null
       param2: # for sig
         claimed-nist-level: 1
@@ -129,7 +133,7 @@ algfamilies:
         length-mu: 64
         nistkat-sha256:
           6f0f50626df15ce403c0c1d5f91648245282afebcac90e5db3595ce9b20b1817
-        enable-by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
         default-implementation: mqom2_cat1_gf16_fast_r5_default
         memopt-implementation: mqom2_cat1_gf16_fast_r5_memopt
     common_src:
@@ -192,7 +196,79 @@ algfamilies:
         remote_meta_path: must be explicit, no templating
         remote_impl_key: the impl_key under remote meta's implementations
 
-  bike: null
+  bike:
+    displayname: BIKE
+    algtype: kem
+    principal-submitters:
+      - Nicolas Aragon
+      - Paulo Barreto
+      - Slim Bettaieb
+      - Loic Bidoux
+      - Olivier Blazy
+      - Jean-Christophe Deneuville
+      - Phillipe Gaborit
+      - Santosh Gosh
+      - Shay Gueron
+      - Tim Güneysu
+      - Carlos Aguilar Melchor
+      - Rafael Misoczki
+      - Edoardo Persichetti
+      - Nicolas Sendrier
+      - Jean-Pierre Tillich
+      - Valentin Vasseur
+      - Gilles Zémor
+    crypto-assumption: >-
+      QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check)
+    website: http://bikesuite.org/
+    nist-round: 4
+    spec-version: 5.1
+    standardization-status: >-
+      Not selected by [NIST](https://bikesuite.org/files/v5.1/BIKE_Spec.2022.10.10.1.pdf)
+    upstream-maintenance: TBD
+    upstream-statement-url: null
+    primary-upstream: awslabs/bike-kem
+    # TODO: What does default-upstream-id do?
+    # default-upstream-id: clean
+    oqs-support-tier: 3
+    # TODO: What does upstream-ancestors do?
+    upstream-ancestors:
+      - https://bikesuite.org/files/v5.0/Reference_Implementation.2022.10.04.1.zip
+    advisories: null
+
+    parameters:
+      bike-l1:
+        nist_level: 1
+        security: IND-CCA2
+        length-public-key: 1541
+        length-ciphertext: 1573
+        length-secret-key: 5223
+        length-shared-secret: 32
+        nistkat-sha256: null
+        enable_by: OQS_ENABLE_KEM_bike_l1
+
+      bike-l3:
+        nist_level: 3
+        security: IND-CCA2
+        length-ciphertext: 3115
+        length-public-key: 3083
+        length-secret-key: 10105
+        length-shared-secret: 32
+        nistkat-sha256: null
+        enable_by: OQS_ENABLE_KEM_bike_l3
+
+      bike-l5:
+        nist_level: 5
+        security: IND-CCA2
+        length-ciphertext: 5154
+        length-public-key: 5122
+        length-secret-key: 16494
+        length-shared-secret: 32
+        nistkat-sha256: null
+        enable_by: OQS_ENABLE_KEM_bike_l5
+
+    implementations-switch-on-runtime-cpu-features: true
+    # FIX: we can do better and actually take inventory of manual integrations
+    implementations: null
 
   classic_mceliece:
     display_name: Classic McEliece
@@ -980,7 +1056,7 @@ algfamilies:
         # head -701 kats/ref/hqc-1/PQCkemKAT_2321.rsp | tail -699 | sha256sum
         nistkat-sha256:
           0f1f4fd014b32492ec6490d2ad9e9f75ccc0c2b27d72f34918c7f73f9698c2e4
-        enable-by: OQS_ENABLE_KEM_hqc_1
+        enable_by: OQS_ENABLE_KEM_hqc_1
         default-implementation: pqc-hqc_hqc-1_ref
         memopt-implementation: null
 
@@ -997,7 +1073,7 @@ algfamilies:
         # head -701 kats/ref/hqc-3/PQCkemKAT_4602.rsp | tail -699 | sha256sum
         nistkat-sha256:
           b88d4cfe517446854b5d3c85e6602518a526c5eb95571348ce4ab5915faa05b6
-        enable-by: OQS_ENABLE_KEM_hqc_3
+        enable_by: OQS_ENABLE_KEM_hqc_3
         default-implementation: pqc-hqc_hqc-3_ref
         memopt-implementation: null
 
@@ -1014,7 +1090,7 @@ algfamilies:
         # head -701 kats/ref/hqc-3/PQCkemKAT_4602.rsp | tail -699 | sha256sum
         nistkat-sha256:
           b88d4cfe517446854b5d3c85e6602518a526c5eb95571348ce4ab5915faa05b6
-        enable-by: OQS_ENABLE_KEM_hqc_3
+        enable_by: OQS_ENABLE_KEM_hqc_3
         default-implementation: pqc-hqc_hqc-3_ref
         memopt-implementation: null
 
@@ -1137,7 +1213,6 @@ algfamilies:
 
   kyber: null
   ml_kem: null
-  bike: null
   ntru: null
   ntruprime: null
   frodokem: null
