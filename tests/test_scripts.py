@@ -260,6 +260,8 @@ class TestGenkatSha256:
 # --------------------------------------------------------------------------
 # scripts/update_docs_from_yaml.py
 # --------------------------------------------------------------------------
+@pytest.mark.skipif(sys.platform.startswith("win"),
+                    reason="generate_algorithms_md.py uses Unicode chars unsupported by Windows cp1252")
 class TestUpdateDocsFromYaml:
     """Test the update_docs_from_yaml.py script that generates .md from .yml."""
 
@@ -360,6 +362,8 @@ class TestUpdateDocsFromYaml:
 # --------------------------------------------------------------------------
 # scripts/update_cbom.py
 # --------------------------------------------------------------------------
+@pytest.mark.skipif(sys.platform.startswith("win"),
+                    reason="update_cbom.py requires gitpython which may not be available on Windows CI")
 class TestUpdateCbom:
     """Test the update_cbom.py script that generates a Cryptography BOM."""
 
