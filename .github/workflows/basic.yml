@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Install actionlint
         run: |
           bash <(curl -sSL https://raw.githubusercontent.com/rhysd/actionlint/2ab3a12c7848f6c15faca9a92612ef4261d0e370/scripts/download-actionlint.bash)
@@ -29,7 +29,7 @@ jobs:
       actions: write  # required to cancel the run on failure (fail-fast)
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Ensure code conventions are upheld
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
@@ -52,7 +52,7 @@ jobs:
       actions: write  # required to cancel the run on failure (fail-fast)
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: |
           git config --global user.name "ciuser" && \
@@ -83,7 +83,7 @@ jobs:
       - name: Create random build folder
         run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: |
           cmake \
@@ -116,7 +116,7 @@ jobs:
       - name: Create random build folder
         run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: |
           cmake \
@@ -158,7 +158,7 @@ jobs:
       - name: Create random build folder
         run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: |
           cmake \
@@ -188,7 +188,7 @@ jobs:
     steps:
       - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Check devShell
         run: nix develop --command echo
       - name: Check flake syntax
