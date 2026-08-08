@@ -161,5 +161,5 @@ def write(liboqs_root: str) -> None:
             os.path.join(liboqs_root, "docs", "algorithms", cat)
         )
         doc = _splice(doc, tag, table)
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         f.write(doc)
