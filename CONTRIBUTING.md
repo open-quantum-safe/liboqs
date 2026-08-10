@@ -45,6 +45,19 @@ LIBOQS_DIR=<liboqs directory> ./scripts/format_code.sh
 ```
 This script has been tested on x86\_64 Ubuntu and arm64 macOS. Contributions for other platforms are welcome and appreciated!
 
+### Git hooks
+
+This project uses git hooks to automatically run linters and formatters. Git
+hooks are stored under `.githooks/`. After cloning this repository, you can
+point git to use these hooks by setting `core.hooksPath`:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+> `core.hooksPath` is available in git 2.9 or newer; for older versions of git,
+> please manually set up symlinks or copy the hooks into `.git/hooks`.
+
 ### Public and internal APIs
 
 Public API functions are marked with the `OQS_API` keyword. These functions are made available to users of the library.
