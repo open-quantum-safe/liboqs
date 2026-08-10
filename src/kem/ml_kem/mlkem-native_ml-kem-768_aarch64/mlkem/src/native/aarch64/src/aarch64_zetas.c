@@ -79,6 +79,7 @@ MLK_ALIGN MLK_INTERNAL_DATA_DEFINITION const int16_t
         10129,  10129,  -3878,  -3878,  -11566, -11566,
 };
 
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 MLK_ALIGN MLK_INTERNAL_DATA_DEFINITION const int16_t
     mlk_aarch64_invntt_zetas_layer12345[80] = {
         1583,  15582, -821,   -8081,  1355,  13338, 0,      0,     -569,
@@ -138,6 +139,7 @@ MLK_ALIGN MLK_INTERNAL_DATA_DEFINITION const int16_t
         1041,   -1637,  -1637,  -583,   -583,   -17,    -17,    10247,  10247,
         -16113, -16113, -5739,  -5739,  -167,   -167,
 };
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 MLK_ALIGN MLK_INTERNAL_DATA_DEFINITION const int16_t
     mlk_aarch64_zetas_mulcache_native[128] = {
