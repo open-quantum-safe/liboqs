@@ -32,20 +32,20 @@ OQS_SIG *OQS_SIG_ml_dsa_65_extmu_new(void) {
 	return sig;
 }
 
-extern int PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu(uint8_t *sig, size_t *siglen, const uint8_t *m, const uint8_t *sk);
-extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_C_keypair_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu_oqs(uint8_t *sig, size_t *siglen, const uint8_t *m, const uint8_t *sk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu_oqs(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_x86_64)
-extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu(uint8_t *sig, size_t *siglen, const uint8_t *m, const uint8_t *sk);
-extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_extmu(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu_oqs(uint8_t *sig, size_t *siglen, const uint8_t *m, const uint8_t *sk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_extmu_oqs(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
 #endif
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
-extern int PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature_extmu(uint8_t *sig, size_t *siglen, const uint8_t *m, const uint8_t *sk);
-extern int PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify_extmu(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature_extmu_oqs(uint8_t *sig, size_t *siglen, const uint8_t *m, const uint8_t *sk);
+extern int PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify_extmu_oqs(const uint8_t *sig, size_t siglen, const uint8_t *m, const uint8_t *pk);
 #endif
 
 OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -53,24 +53,24 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_keypair(uint8_t *public_key, uint8_t 
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair_oqs(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair_oqs(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair_oqs(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair_oqs(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair(public_key, secret_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_keypair_oqs(public_key, secret_key);
 #endif
 }
 
@@ -82,24 +82,24 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_sign(uint8_t *signature, size_t *sign
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu(signature, signature_len, message, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_extmu_oqs(signature, signature_len, message, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu(signature, signature_len, message, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu_oqs(signature, signature_len, message, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature_extmu(signature, signature_len, message, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature_extmu_oqs(signature, signature_len, message, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu(signature, signature_len, message, secret_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu_oqs(signature, signature_len, message, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu(signature, signature_len, message, secret_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_signature_extmu_oqs(signature, signature_len, message, secret_key);
 #endif
 }
 
@@ -111,24 +111,24 @@ OQS_API OQS_STATUS OQS_SIG_ml_dsa_65_extmu_verify(const uint8_t *message, size_t
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_extmu(signature, signature_len, message, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_extmu_oqs(signature, signature_len, message, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(signature, signature_len, message, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu_oqs(signature, signature_len, message, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_ml_dsa_65_extmu_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify_extmu(signature, signature_len, message, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify_extmu_oqs(signature, signature_len, message, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(signature, signature_len, message, public_key);
+		return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu_oqs(signature, signature_len, message, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu(signature, signature_len, message, public_key);
+	return (OQS_STATUS) PQCP_MLDSA_NATIVE_MLDSA65_C_verify_extmu_oqs(signature, signature_len, message, public_key);
 #endif
 }
 
