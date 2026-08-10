@@ -180,7 +180,32 @@
 
 #define array_unchanged_u64(array_var, N) \
     array_unchanged_u64_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), 0, (N), (array_var))
+
+#define array_unchanged_u8_core(qvar, array_var, N)                     \
+  forall(qvar, 0, (N),                                                  \
+    ((array_var)[(qvar)]) == (old(* (uint8_t (*)[(N)])(array_var)))[(qvar)])
+
+#define array_unchanged_u8(array_var, N) \
+    array_unchanged_u8_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), (array_var), (N))
+
+#define array_zeroized_u8_core(qvar, array_var, N) \
+    forall(qvar, 0, (N), ((array_var)[(qvar)]) == 0)
+
+#define array_zeroized_u8(array_var, N) \
+    array_zeroized_u8_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), (array_var), (N))
 /* clang-format on */
+
+/*
+ * Output-buffer discipline on failure, as documented in API-CONVENTIONS.md:
+ * when a function fails, each caller-owned output buffer is left either
+ * fully unchanged or fully zeroized -- never holding partially computed or
+ * stale data that could be mistaken for a valid result.
+ *
+ * Note the disjunction is over the buffer as a whole: it is not enough for
+ * each byte to be individually either unchanged or zero.
+ */
+#define array_unchanged_or_zeroized_u8(array_var, N) \
+  (array_unchanged_u8((array_var), (N)) || array_zeroized_u8((array_var), (N)))
 
 /* Wrapper around array_bound operating on absolute values.
  *
