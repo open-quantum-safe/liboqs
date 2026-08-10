@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
       - name: Install rumdl
         run: |
-          python3 -m pip install --user -r requirements-dev.txt
+          python3 -m pip install --user -r requirements.txt
       - name: Ensure Markdown conventions are upheld
         run: ~/.local/bin/rumdl check --config .rumdl.toml --respect-gitignore --exclude "build,**/build" .
 
