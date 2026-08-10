@@ -127,11 +127,11 @@ typedef struct
   mld_polyvecl vec; /**< Masking vector y. */
 } mld_yvec_eager;
 
-/** Lazy yvec: store seed and nonce, regenerate y[i] on demand. */
+/** Lazy yvec: store seed and base counter kappa, regenerate y[i] on demand. */
 typedef struct
 {
   const uint8_t *rhoprime; /**< Pointer to seed used to derive y. */
-  uint16_t nonce; /**< Base nonce; component i uses MLDSA_L*nonce + i. */
+  uint16_t kappa;          /**< Base counter; component i uses kappa + i. */
 } mld_yvec_lazy;
 
 #if !defined(MLD_CONFIG_NO_KEYPAIR_API) || !defined(MLD_CONFIG_NO_SIGN_API)
@@ -341,17 +341,17 @@ __contract__(
 #if !defined(MLD_CONFIG_NO_SIGN_API) && \
     (!defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST))
 static MLD_INLINE void mld_yvec_init_eager(
-    mld_yvec_eager *y, const uint8_t rhoprime[MLDSA_CRHBYTES], uint16_t nonce)
+    mld_yvec_eager *y, const uint8_t rhoprime[MLDSA_CRHBYTES], uint16_t kappa)
 __contract__(
   requires(memory_no_alias(y, sizeof(mld_yvec_eager)))
   requires(memory_no_alias(rhoprime, MLDSA_CRHBYTES))
-  requires(nonce <= (UINT16_MAX - MLDSA_L) / MLDSA_L)
+  requires(kappa <= MLD_MAX_KAPPA)
   assigns(memory_slice(y, sizeof(mld_yvec_eager)))
   ensures(forall(k1, 0, MLDSA_L,
     array_bound(y->vec.vec[k1].coeffs, 0, MLDSA_N, -(MLDSA_GAMMA1 - 1), MLDSA_GAMMA1 + 1)))
 )
 {
-  mld_polyvecl_uniform_gamma1(&y->vec, rhoprime, nonce);
+  mld_polyvecl_uniform_gamma1(&y->vec, rhoprime, kappa);
 }
 
 static MLD_INLINE void mld_yvec_get_poly_eager(mld_poly *buf,
@@ -370,16 +370,16 @@ __contract__(
 #if !defined(MLD_CONFIG_NO_SIGN_API) && \
     (defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST))
 static MLD_INLINE void mld_yvec_init_lazy(
-    mld_yvec_lazy *y, const uint8_t rhoprime[MLDSA_CRHBYTES], uint16_t nonce)
+    mld_yvec_lazy *y, const uint8_t rhoprime[MLDSA_CRHBYTES], uint16_t kappa)
 __contract__(
   requires(memory_no_alias(y, sizeof(mld_yvec_lazy)))
   assigns(memory_slice(y, sizeof(mld_yvec_lazy)))
   ensures(y->rhoprime == old(rhoprime))
-  ensures(y->nonce == old(nonce))
+  ensures(y->kappa == old(kappa))
 )
 {
   y->rhoprime = rhoprime;
-  y->nonce = nonce;
+  y->kappa = kappa;
 }
 
 static MLD_INLINE void mld_yvec_get_poly_lazy(mld_poly *buf,
@@ -390,16 +390,14 @@ __contract__(
   requires(memory_no_alias(y, sizeof(mld_yvec_lazy)))
   requires(i < MLDSA_L)
   requires(memory_no_alias(y->rhoprime, MLDSA_CRHBYTES))
-  requires(y->nonce <= ((UINT16_MAX - MLDSA_L) / MLDSA_L))
+  requires(y->kappa <= MLD_MAX_KAPPA)
   assigns(memory_slice(buf, sizeof(mld_poly)))
   ensures(array_bound(buf->coeffs, 0, MLDSA_N, -(MLDSA_GAMMA1 - 1), MLDSA_GAMMA1 + 1))
 )
 {
-  /* Safety: y->nonce is at most ((UINT16_MAX - MLDSA_L) / MLDSA_L) and
-   * i < MLDSA_L, so MLDSA_L * y->nonce + i fits in uint16_t. See
-   * MLD_NONCE_UB comment in sign.c. */
-  mld_poly_uniform_gamma1(buf, y->rhoprime,
-                          (uint16_t)(MLDSA_L * y->nonce + (int)i));
+  /* Safety: y->kappa <= MLD_MAX_KAPPA and i < MLDSA_L, so y->kappa + i
+   * fits in uint16_t. See MLD_MAX_KAPPA comment in params.h. */
+  mld_poly_uniform_gamma1(buf, y->rhoprime, (uint16_t)(y->kappa + i));
 }
 #endif /* !MLD_CONFIG_NO_SIGN_API && (MLD_CONFIG_REDUCE_RAM || MLD_UNIT_TEST) \
         */
@@ -441,9 +439,10 @@ __contract__(
 
 #if !defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST)
 /**
- * Implementation of ExpandA. Generates matrix A with uniformly random
- * coefficients a_{i,j} by performing rejection sampling on the output stream
- * of SHAKE128(rho|j|i).
+ * Generates matrix A with uniformly random coefficients a_{i,j} by performing
+ * rejection sampling on the output stream of SHAKE128(rho|j|i).
+ *
+ * @spec{Implements @[FIPS204, Algorithm 32, ExpandA].}
  *
  * @param[out] mat Pointer to output matrix.
  * @param[in]  rho Byte array containing seed rho.
@@ -579,7 +578,7 @@ __contract__(
  *
  * @param[out]    w       Pointer to output vector.
  * @param[in,out] mat     Pointer to input matrix.
- * @param[in]     y       Pointer to y seed/nonce.
+ * @param[in]     y       Pointer to y seed/kappa.
  * @param[out]    scratch Scratch (only &scratch->vec[0] used).
  */
 MLD_INTERNAL_API
@@ -593,7 +592,7 @@ __contract__(
   requires(memory_no_alias(y, sizeof(mld_yvec_lazy)))
   requires(memory_no_alias(scratch, sizeof(mld_polyvecl)))
   requires(memory_no_alias(y->rhoprime, MLDSA_CRHBYTES))
-  requires(y->nonce <= ((UINT16_MAX - MLDSA_L) / MLDSA_L))
+  requires(y->kappa <= MLD_MAX_KAPPA)
   assigns(memory_slice(w, sizeof(mld_polyveck)))
   assigns(memory_slice(mat, sizeof(mld_polymat_lazy)))
   assigns(memory_slice(scratch, sizeof(mld_polyvecl)))
