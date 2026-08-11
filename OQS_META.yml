@@ -172,7 +172,7 @@ algfamilies:
         cpufeatures: Defaults to []
         sources:
           - upstream: upstream_key
-            base_dir: null
+            base_dir: null  # defaults to root
             preserve_subdirs: false  # defaults to false
             # TODO: this only specifies the files to copy, but it is not an
             #       exact list of source files. For example, "LICENSE" should be
@@ -1774,7 +1774,6 @@ algfamilies:
         large-stack-usage: false
         sources:
           - upstream: mlkem-native
-            base_dir: null
             preserve_subdirs: true
             files: [integration/liboqs/config_c.h,
                     integration/liboqs/fips202_glue.h,
@@ -1819,7 +1818,6 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: mlkem-native
-            base_dir: null
             preserve_subdirs: true
             files: [integration/liboqs/config_aarch64.h,
                     integration/liboqs/fips202_glue.h,
@@ -1867,7 +1865,6 @@ algfamilies:
         cpufeatures: [avx2, bmi2, popcnt]
         sources:
           - upstream: mlkem-native
-            base_dir: null
             preserve_subdirs: true  # defaults to false
             files: [integration/liboqs/config_x86_64.h,
                     integration/liboqs/fips202_glue.h,
@@ -1937,7 +1934,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: icicle
-            files: [./ml-kem-512/icicle_ml-kem.cpp]
+            files: [ml-kem-512/icicle_ml-kem.cpp]
         link_libs: [icicle::icicle_pqc_package]
         signature_keypair: icicle_ml_kem_512_keypair
         signature_enc: icicle_ml_kem_512_enc
@@ -1945,18 +1942,365 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: icicle_ml_kem_512_enc_derand
 
-      # mlkem-native_ml-kem-768_ref
-      # mlkem-native_ml-kem-768_aarch64
-      # mlkem-native_ml-kem-768_x86_64
-      # cupqc_ml-kem-768_cuda
-      # icicle_ml-kem-768_icicle_cuda
-      #
-      # mlkem-native_ml-kem-1024_ref
-      # mlkem-native_ml-kem-1024_aarch64
-      # mlkem-native_ml-kem-1024_x86_64
-      # cupqc_ml-kem-1024_cuda
-      # icicle_ml-kem-1024_icicle_cuda
+      mlkem-native_ml-kem-768_ref:
+        version: FIPS203
+        enable_by: null  # default impl of ml-kem-768
+        parameter: ml-kem-768
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mlkem-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_c.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    integration/liboqs/kem_glue.c, mlkem/mlkem_native.h,
+                    mlkem/src/cbmc.h, mlkem/src/common.h, mlkem/src/compress.c,
+                    mlkem/src/compress.h, mlkem/src/context.h,
+                    mlkem/src/debug.c, mlkem/src/debug.h, mlkem/src/indcpa.c,
+                    mlkem/src/indcpa.h, mlkem/src/kem.c, mlkem/src/kem.h,
+                    mlkem/src/native/api.h, mlkem/src/native/meta.h,
+                    mlkem/src/params.h, mlkem/src/poly.c, mlkem/src/poly.h,
+                    mlkem/src/poly_k.c, mlkem/src/poly_k.h, mlkem/src/zetas.inc,
+                    mlkem/src/randombytes.h, mlkem/src/sampling.c,
+                    mlkem/src/sampling.h, mlkem/src/symmetric.h,
+                    mlkem/src/sys.h, mlkem/src/verify.c, mlkem/src/verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-768_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLK_CONFIG_PARAMETER_SET=768
+              -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
+        signature_keypair: PQCP_MLKEM_NATIVE_MLKEM768_C_keypair
+        signature_enc: PQCP_MLKEM_NATIVE_MLKEM768_C_enc
+        signature_dec: PQCP_MLKEM_NATIVE_MLKEM768_C_dec
+        signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand
+        signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand
 
+      mlkem-native_ml-kem-768_aarch64:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_768_aarch64
+        parameter: ml-kem-768
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: mlkem-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_aarch64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    integration/liboqs/kem_glue.c,
+                    mlkem/mlkem_native.h, mlkem/src/cbmc.h,
+                    mlkem/src/common.h, mlkem/src/compress.c,
+                    mlkem/src/compress.h, mlkem/src/context.h,
+                    mlkem/src/debug.c, mlkem/src/debug.h, mlkem/src/indcpa.c,
+                    mlkem/src/indcpa.h, mlkem/src/kem.c, mlkem/src/kem.h,
+                    mlkem/src/native/api.h, mlkem/src/native/meta.h,
+                    mlkem/src/params.h, mlkem/src/poly.c, mlkem/src/poly.h,
+                    mlkem/src/poly_k.c, mlkem/src/poly_k.h,
+                    mlkem/src/randombytes.h, mlkem/src/sampling.c,
+                    mlkem/src/sampling.h, mlkem/src/symmetric.h,
+                    mlkem/src/sys.h, mlkem/src/verify.c, mlkem/src/verify.h,
+                    mlkem/src/zetas.inc, mlkem/src/native/aarch64]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-768_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLK_CONFIG_PARAMETER_SET=768
+              -DMLK_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+        signature_keypair: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair
+        signature_enc: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc
+        signature_dec: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec
+        signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand
+        signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand
+
+      mlkem-native_ml-kem-768_x86_64:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
+        parameter: ml-kem-768
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: mlkem-native
+            preserve_subdirs: true  # defaults to false
+            files: [integration/liboqs/config_x86_64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    integration/liboqs/kem_glue.c, mlkem/mlkem_native.h,
+                    mlkem/src/cbmc.h, mlkem/src/common.h, mlkem/src/compress.c,
+                    mlkem/src/compress.h, mlkem/src/context.h,
+                    mlkem/src/debug.c, mlkem/src/debug.h, mlkem/src/indcpa.c,
+                    mlkem/src/indcpa.h, mlkem/src/kem.c, mlkem/src/kem.h,
+                    mlkem/src/native/api.h, mlkem/src/native/meta.h,
+                    mlkem/src/params.h, mlkem/src/poly.c, mlkem/src/poly.h,
+                    mlkem/src/poly_k.c, mlkem/src/poly_k.h,
+                    mlkem/src/randombytes.h, mlkem/src/sampling.c,
+                    mlkem/src/sampling.h, mlkem/src/symmetric.h,
+                    mlkem/src/sys.h, mlkem/src/verify.c, mlkem/src/verify.h,
+                    mlkem/src/zetas.inc, mlkem/src/native/x86_64]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-768_x86_64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+          - scope: public
+            opts: >-
+              -DMLK_CONFIG_PARAMETER_SET=768
+              -DMLK_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+        signature_keypair: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair
+        signature_enc: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc
+        signature_dec: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec
+        signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand
+        signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand
+
+      cupqc_ml-kem-768_cuda:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_768_cuda
+        parameter: ml-kem-768
+        uarch: cuda
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: cupqc
+            files: [ml-kem-768/cupqc_ml-kem.cu]
+        compile_opts:
+          - scope: private
+            opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
+        link_libs: [cupqc]
+        set_properties:
+          - scope: target
+            name: CUDA_ARCHITECTURES
+            value: OFF
+        signature_keypair: cupqc_ml_kem_768_keypair
+        signature_enc: cupqc_ml_kem_768_enc
+        signature_dec: cupqc_ml_kem_768_dec
+
+      icicle_ml-kem-768_icicle_cuda:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_768_icicle_cuda
+        parameter: ml-kem-768
+        uarch: icicle
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: icicle
+            files: [ml-kem-768/icicle_ml-kem.cpp]
+        link_libs: [icicle::icicle_pqc_package]
+        signature_keypair: icicle_ml_kem_768_keypair
+        signature_enc: icicle_ml_kem_768_enc
+        signature_dec: icicle_ml_kem_768_dec
+        signature_keypair_derand: null
+        signature_enc_derand: icicle_ml_kem_768_enc_derand
+
+      mlkem-native_ml-kem-1024_ref:
+        version: FIPS203
+        enable_by: null  # default impl of ml-kem-1024
+        parameter: ml-kem-1024
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mlkem-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_c.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    integration/liboqs/kem_glue.c, mlkem/mlkem_native.h,
+                    mlkem/src/cbmc.h, mlkem/src/common.h, mlkem/src/compress.c,
+                    mlkem/src/compress.h, mlkem/src/context.h,
+                    mlkem/src/debug.c, mlkem/src/debug.h, mlkem/src/indcpa.c,
+                    mlkem/src/indcpa.h, mlkem/src/kem.c, mlkem/src/kem.h,
+                    mlkem/src/native/api.h, mlkem/src/native/meta.h,
+                    mlkem/src/params.h, mlkem/src/poly.c, mlkem/src/poly.h,
+                    mlkem/src/poly_k.c, mlkem/src/poly_k.h, mlkem/src/zetas.inc,
+                    mlkem/src/randombytes.h, mlkem/src/sampling.c,
+                    mlkem/src/sampling.h, mlkem/src/symmetric.h,
+                    mlkem/src/sys.h, mlkem/src/verify.c, mlkem/src/verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-1024_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLK_CONFIG_PARAMETER_SET=1024
+              -DMLK_CONFIG_FILE="../../integration/liboqs/config_c.h"
+        signature_keypair: PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair
+        signature_enc: PQCP_MLKEM_NATIVE_MLKEM1024_C_enc
+        signature_dec: PQCP_MLKEM_NATIVE_MLKEM1024_C_dec
+        signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand
+        signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_C_enc_derand
+
+      mlkem-native_ml-kem-1024_aarch64:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_1024_aarch64
+        parameter: ml-kem-1024
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: mlkem-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_aarch64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    integration/liboqs/kem_glue.c,
+                    mlkem/mlkem_native.h, mlkem/src/cbmc.h,
+                    mlkem/src/common.h, mlkem/src/compress.c,
+                    mlkem/src/compress.h, mlkem/src/context.h,
+                    mlkem/src/debug.c, mlkem/src/debug.h, mlkem/src/indcpa.c,
+                    mlkem/src/indcpa.h, mlkem/src/kem.c, mlkem/src/kem.h,
+                    mlkem/src/native/api.h, mlkem/src/native/meta.h,
+                    mlkem/src/params.h, mlkem/src/poly.c, mlkem/src/poly.h,
+                    mlkem/src/poly_k.c, mlkem/src/poly_k.h,
+                    mlkem/src/randombytes.h, mlkem/src/sampling.c,
+                    mlkem/src/sampling.h, mlkem/src/symmetric.h,
+                    mlkem/src/sys.h, mlkem/src/verify.c, mlkem/src/verify.h,
+                    mlkem/src/zetas.inc, mlkem/src/native/aarch64]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-1024_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLK_CONFIG_PARAMETER_SET=1024
+              -DMLK_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+        signature_keypair: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair
+        signature_enc: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc
+        signature_dec: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_dec
+        signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand
+        signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc_derand
+
+      mlkem-native_ml-kem-1024_x86_64:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
+        parameter: ml-kem-1024
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: mlkem-native
+            preserve_subdirs: true  # defaults to false
+            files: [integration/liboqs/config_x86_64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    integration/liboqs/kem_glue.c, mlkem/mlkem_native.h,
+                    mlkem/src/cbmc.h, mlkem/src/common.h, mlkem/src/compress.c,
+                    mlkem/src/compress.h, mlkem/src/context.h,
+                    mlkem/src/debug.c, mlkem/src/debug.h, mlkem/src/indcpa.c,
+                    mlkem/src/indcpa.h, mlkem/src/kem.c, mlkem/src/kem.h,
+                    mlkem/src/native/api.h, mlkem/src/native/meta.h,
+                    mlkem/src/params.h, mlkem/src/poly.c, mlkem/src/poly.h,
+                    mlkem/src/poly_k.c, mlkem/src/poly_k.h,
+                    mlkem/src/randombytes.h, mlkem/src/sampling.c,
+                    mlkem/src/sampling.h, mlkem/src/symmetric.h,
+                    mlkem/src/sys.h, mlkem/src/verify.c, mlkem/src/verify.h,
+                    mlkem/src/zetas.inc, mlkem/src/native/x86_64]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mlkem-native_ml-kem-1024_x86_64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+          - scope: public
+            opts: >-
+              -DMLK_CONFIG_PARAMETER_SET=1024
+              -DMLK_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+        signature_keypair: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair
+        signature_enc: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc
+        signature_dec: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_dec
+        signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand
+        signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc_derand
+
+      cupqc_ml-kem-1024_cuda:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_1024_cuda
+        parameter: ml-kem-1024
+        uarch: cuda
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: cupqc
+            files: [ml-kem-1024/cupqc_ml-kem.cu]
+        compile_opts:
+          - scope: private
+            opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
+        link_libs: [cupqc]
+        set_properties:
+          - scope: target
+            name: CUDA_ARCHITECTURES
+            value: OFF
+        signature_keypair: cupqc_ml_kem_1024_keypair
+        signature_enc: cupqc_ml_kem_1024_enc
+        signature_dec: cupqc_ml_kem_1024_dec
+
+      icicle_ml-kem-1024_icicle_cuda:
+        version: FIPS203
+        enable_by: OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda
+        parameter: ml-kem-1024
+        uarch: icicle
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: icicle
+            files: [ml-kem-1024/icicle_ml-kem.cpp]
+        link_libs: [icicle::icicle_pqc_package]
+        signature_keypair: icicle_ml_kem_1024_keypair
+        signature_enc: icicle_ml_kem_1024_enc
+        signature_dec: icicle_ml_kem_1024_dec
+        signature_keypair_derand: null
+        signature_enc_derand: icicle_ml_kem_1024_enc_derand
 
   ntru: null
   ntruprime: null
