@@ -28,6 +28,10 @@ upstreams:
     git_commit: 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
     patches: [pqchqc-liboqs-integration.patch]
 
+  pqclean20220303:
+    git_url: https://github.com/PQClean/PQClean.git
+    git_commit: 6cd3167b397e1150289a383baef52bc6cfc9eadf
+
   oldpqclean:
     git_url: https://github.com/PQClean/PQClean.git
     git_commit: 8e220a87308154d48fdfac40abbb191ac7fce06a
@@ -2302,7 +2306,58 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: icicle_ml_kem_1024_enc_derand
 
-  ntru: null
+  ntru:
+    displayname: NTRU
+    algtype: kem
+    principal-submitters:
+      - John M. Schanck
+    auxiliary-submitters:
+      - Cong Chen
+      - Oussama Danba
+      - Jeffrey Hoffstein
+      - Andreas Hülsing
+      - Joost Rijneveld
+      - Tsunekazu Saito
+      - Peter Schwabe
+      - William Whyte
+      - Keita Xagawa
+      - Takashi Yamakawa
+      - Zhenfei Zhang
+    crypto-assumption: >-
+      NTRU in Z[x]/(q, x^n-1) with prime n and power-of-two q
+    website: https://ntru.org/
+    nist-round: 3
+    spec-version: NIST Round 3 submission
+    standardization-status: >-
+      Not selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/NTRU-Round3.zip),
+      under standardization consideration by [NTT](https://info.isl.ntt.co.jp/crypt/ntru/index.html)
+    upstream-maintenance: Actively maintained
+    upstream-statement-url: null
+    primary-upstream: pqclean20220303
+    oqs-support-tier: 3
+    upstream-ancestors:
+      - https://github.com/jschanck/ntru/tree/a43a4457
+    parameters:
+      hps2048509:
+        security-strength: 1
+        security-model: IND-CCA2
+        length-public-key: 699
+        length-ciphertext: 699
+        length-secret-key: 935
+        length-shared-secret: 32
+        nistkat-sha256:
+          fc314366fbe795e2db6d29abb9f5b2ff43f0f608d0bd66161f9450364f0d271b
+        enable_by: OQS_ENABLE_KEM_ntru_hps2048509
+        default-implementation: pqclean_ntruhps2048509_clean
+      # hps2048677:
+      # hps40961229:
+      # hps4096821:
+      # hrss1373:
+      # hrss701:
+
+    implementations-switch-on-runtime-cpu-features: true  # defaults to true
+    implementations: null  # FIX: sourced from pqclean20220303
+
   ntruprime: null
   frodokem: null
   cross: null
