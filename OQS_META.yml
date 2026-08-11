@@ -8,6 +8,13 @@ upstreams:
     git_commit: f150a1c50105dabcb8be2ce9dca26c37937a5c13
 
   libjade:
+    # NOTE: some notes for building libjade:
+    # > git clone git@github.com:formosa-crypto/libjade.git
+    # > git checkout 4e15c1d221d025deca40edef2c762be9e3d346b7
+    # > git apply $LIBOQS_DIR/scripts/copy_from_upstream/patches/libjade-kyber-api \
+    #             $LIBOQS_DIR/scripts/copy_from_upstream/patches/libjade-kyber-meta.patch
+    # > make -C src
+    #
     git_url: https://github.com/formosa-crypto/libjade.git
     git_branch: release/2023.05-2
     git_commit: 4e15c1d221d025deca40edef2c762be9e3d346b7
@@ -166,7 +173,7 @@ algfamilies:
         sources:
           - upstream: upstream_key
             base_dir: null
-            preserve_subdirs: false
+            preserve_subdirs: false  # defaults to false
             # TODO: this only specifies the files to copy, but it is not an
             #       exact list of source files. For example, "LICENSE" should be
             #       excluded from compilation sources
@@ -271,8 +278,7 @@ algfamilies:
         nistkat-sha256: null
         enable_by: OQS_ENABLE_KEM_bike_l5
 
-    implementations-switch-on-runtime-cpu-features: true
-    # FIX: we can do better and actually take inventory of manual integrations
+    # TODO: we can do better and actually take inventory of manual integrations
     implementations: null
 
   classic_mceliece:
@@ -441,12 +447,11 @@ algfamilies:
         enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128f
         default-implementation: pqclean_mceliece8192128f_clean
 
-    implementations-switch-on-runtime-cpu-features: true
     implementations:  # classic_mceliece
 
       pqclean_mceliece348864_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece348864
+        enable_by: null  # default impl of mceliece348864
         parameter: mceliece348864
         uarch: portable
         common-crypto:
@@ -501,7 +506,7 @@ algfamilies:
 
       pqclean_mceliece348864f_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece348864f
+        enable_by: null  # default impl of mceliece348864f
         parameter: mceliece348864f
         uarch: portable
         common-crypto:
@@ -556,7 +561,7 @@ algfamilies:
 
       pqclean_mceliece460896_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece460896
+        enable_by: null  # default impl of mceliece460896
         parameter: mceliece460896
         uarch: portable
         common-crypto:
@@ -611,7 +616,7 @@ algfamilies:
 
       pqclean_mceliece460896f_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece460896f
+        enable_by: null  # default impl of mceliece460896f
         parameter: mceliece460896f
         uarch: portable
         common-crypto:
@@ -666,7 +671,7 @@ algfamilies:
 
       pqclean_mceliece6688128_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece6688128
+        enable_by: null  # default impl of mceliece6688128
         parameter: mceliece6688128
         uarch: portable
         common-crypto:
@@ -721,7 +726,7 @@ algfamilies:
 
       pqclean_mceliece6688128f_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece6688128f
+        enable_by: null  # default impl of mceliece6688128f
         parameter: mceliece6688128f
         uarch: portable
         common-crypto:
@@ -776,7 +781,7 @@ algfamilies:
 
       pqclean_mceliece6960119_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece6960119
+        enable_by: null  # default impl of mceliece6960119
         parameter: mceliece6960119
         uarch: portable
         common-crypto:
@@ -831,7 +836,7 @@ algfamilies:
 
       pqclean_mceliece6960119f_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece6960119f
+        enable_by: null  # default impl of mceliece6960119f
         parameter: mceliece6960119f
         uarch: portable
         common-crypto:
@@ -886,7 +891,7 @@ algfamilies:
 
       pqclean_mceliece8192128_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece8192128
+        enable_by: null  # default impl of mceliece8192128
         parameter: mceliece8192128
         uarch: portable
         common-crypto:
@@ -941,7 +946,7 @@ algfamilies:
 
       pqclean_mceliece8192128f_clean:
         version: SUPERCOP-20221025
-        enable_by: null  # default of mceliece8192128f
+        enable_by: null  # default impl of mceliece8192128f
         parameter: mceliece8192128f
         uarch: portable
         common-crypto:
@@ -1091,8 +1096,6 @@ algfamilies:
         default-implementation: pqc-hqc_hqc-3_ref
         memopt-implementation: null
 
-    common_src: null
-    implementations-switch-on-runtime-cpu-features: true
     implementations:
       pqc-hqc_hqc-1_ref:
         version: https://gitlab.com/pqc-hqc/hqc@161cd4f
@@ -1122,7 +1125,6 @@ algfamilies:
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqc-hqc_hqc-1_ref"
           - scope: private  # TODO: this might not be necessary
             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-        old_gas_syntax_if_darwin: false
         compile_opts:
           - scope: private
             opts: >-
@@ -1160,7 +1162,6 @@ algfamilies:
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqc-hqc_hqc-3_ref"
           - scope: private  # TODO: this might not be necessary
             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-        old_gas_syntax_if_darwin: false
         compile_opts:
           - scope: private
             opts: >-
@@ -1198,7 +1199,6 @@ algfamilies:
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqc-hqc_hqc-5_ref"
           - scope: private  # TODO: this might not be necessary
             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-        old_gas_syntax_if_darwin: false
         compile_opts:
           - scope: private
             opts: >-
@@ -1289,7 +1289,7 @@ algfamilies:
 
       pqcrystals-kyber_kyber512_ref:
         version: https://github.com/pq-crystals/kyber/commit/28413df
-        enable_by: null  # default of kyber512
+        enable_by: null  # default impl of kyber512
         parameter: kyber512
         uarch: portable
         common-crypto:
@@ -1300,7 +1300,6 @@ algfamilies:
         sources:
           - upstream: pqcrystals-kyber
             base_dir: ref
-            preserve_subdirs: false
             files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, reduce.c,
                     ntt.c, cbd.c, verify.c, kem.h, params.h, api.h, indcpa.h,
                     polyvec.h, poly.h, reduce.h, ntt.h, cbd.h, verify.h,
@@ -1313,9 +1312,9 @@ algfamilies:
         compile_opts:
           - scope: public
             opts: "-DKYBER_K=2"
-        signature_keypair: pqcrystals_kyber1024_ref_keypair
-        signature_enc: pqcrystals_kyber1024_ref_enc
-        signature_dec: pqcrystals_kyber1024_ref_dec
+        signature_keypair: pqcrystals_kyber512_ref_keypair
+        signature_enc: pqcrystals_kyber512_ref_enc
+        signature_dec: pqcrystals_kyber512_ref_dec
         signature_keypair_derand: null
         signature_enc_derand: null
 
@@ -1334,7 +1333,6 @@ algfamilies:
         sources:
           - upstream: pqcrystals-kyber
             base_dir: avx2
-            preserve_subdirs: false
             files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, fq.S,
                     shuffle.S, ntt.S, invntt.S, basemul.S, consts.c,
                     rejsample.c, cbd.c, verify.c, align.h, kem.h, params.h,
@@ -1346,10 +1344,9 @@ algfamilies:
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber512_avx2"
           - scope: private
             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-        old_gas_syntax_if_darwin: false
         compile_opts:
           - scope: private
-            opts: "-mavx2  -mbmi2  -mpopcnt"
+            opts: "-mavx2 -mbmi2 -mpopcnt"
           - scope: public
             opts: "-DKYBER_K=2"
         signature_keypair: pqcrystals_kyber768_avx2_keypair
@@ -1372,7 +1369,6 @@ algfamilies:
         sources:
           - upstream: oldpqclean
             base_dir: crypto_kem/kyber512/aarch64
-            preserve_subdirs: false
             files: [*]
         includes:
           - scope: private
@@ -1386,53 +1382,307 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: null
 
-      jasmin_kyber_512_ref:  # FIX: fill in
-        version: Some string
-        enable_by: C/CMake macro
-        subdirname: defaults to impl_key
-        parameter: param_key
-        uarch: portable, x86_64, arm_8
-        common-crypto:
-          AES: liboqs
-          SHA3: liboqs
-        no-secret-dependent-branching-claimed: false
+      jasmin_kyber_512_ref:
+        version: NIST Round 3 submission
+        enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_512
+        parameter: kyber512
+        uarch: x86_64
+        no-secret-dependent-branching-claimed: true
         no-secret-dependent-branching-checked-by-valgrind: false
-        large-stack-usage: true
-        os: Defaults to []
-        cpufeatures: Defaults to []
+        large-stack-usage: false
+        os: [Linux, Darwin]
         sources:
-          - upstream: upstream_key
-            base_dir: null
-            preserve_subdirs: false
-            # TODO: this only specifies the files to copy, but it is not an
-            #       exact list of source files. For example, "LICENSE" should be
-            #       excluded from compilation sources
-            files: [
-              "*.c",         # can match wildcard
-              "some/dir",    # copy the entire directory
-              "other/dir/",  # copy the content
-            ]
-          - family_common: family_common_key
+          - upstream: libjade
+            base_dir: "src/crypto_kem/kyber/kyber512/amd64/ref"
+            files:
+              - "api.c"  # Patched
+              - "kem.s"  # Built
         includes:
-          - scope: private, public, or interface
-            dir: "literal string, directly copied into target_include_directories "
-        old_gas_syntax_if_darwin: false  # defaults to false
-        compile_opts:
-          - scope: private, public, or interface
-            opts: "literal string directly copied into target_compile_options"
-        # kem API
-        signature_keypair: null
-        signature_enc: null
-        signature_dec: null
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/libjade_kyber512_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/libjade_shims"
+        signature_keypair: libjade_kyber512_ref_keypair
+        signature_enc: libjade_kyber512_ref_enc
+        signature_dec: libjade_kyber512_ref_dec
         signature_keypair_derand: null
         signature_enc_derand: null
-        # sig API
-        signature_keypair: null
-        signature_signature: null
-        signature_verify: null
-        signature_signature_extmu: null
-        signature_verify_extmu: null
 
+      jasmin_kyber_512_avx2:
+        version: NIST Round 3 submission
+        enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2
+        parameter: kyber512
+        uarch: x86_64
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: libjade
+            base_dir: "src/crypto_kem/kyber/kyber512/amd64/avx2"
+            files:
+              - "api.c"  # patched
+              - "kem.s"  # built
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/libjade_kyber512_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/libjade_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+        signature_keypair: libjade_kyber512_avx2_keypair
+        signature_enc: libjade_kyber512_avx2_enc
+        signature_dec: libjade_kyber512_avx2_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      pqcrystals-kyber_kyber768_ref:
+        version: https://github.com/pq-crystals/kyber/commit/28413df
+        enable_by: null  # default impl of kyber768
+        parameter: kyber768
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: pqcrystals-kyber
+            base_dir: ref
+            files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, reduce.c,
+                    ntt.c, cbd.c, verify.c, kem.h, params.h, api.h, indcpa.h,
+                    polyvec.h, poly.h, reduce.h, ntt.h, cbd.h, verify.h,
+                    symmetric.h, fips202.h, symmetric-shake.c]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber768_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-DKYBER_K=3"
+        signature_keypair: pqcrystals_kyber768_ref_keypair
+        signature_enc: pqcrystals_kyber768_ref_enc
+        signature_dec: pqcrystals_kyber768_ref_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      pqcrystals-kyber_kyber768_avx2:
+        version: https://github.com/pq-crystals/kyber/commit/28413df
+        enable_by: OQS_ENABLE_KEM_kyber_768_avx2
+        parameter: kyber768
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: pqcrystals-kyber
+            base_dir: avx2
+            files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, fq.S,
+                    shuffle.S, ntt.S, invntt.S, basemul.S, consts.c,
+                    rejsample.c, cbd.c, verify.c, align.h, kem.h, params.h,
+                    api.h, indcpa.h, polyvec.h, poly.h, reduce.h, fq.inc,
+                    shuffle.inc, ntt.h, consts.h, rejsample.h, cbd.h, verify.h,
+                    symmetric.h, fips202.h, fips202x4.h, symmetric-shake.c]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber768_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+          - scope: public
+            opts: "-DKYBER_K=3"
+        signature_keypair: pqcrystals_kyber768_avx2_keypair
+        signature_enc: pqcrystals_kyber768_avx2_enc
+        signature_dec: pqcrystals_kyber768_avx2_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      oldpqclean_kyber768_aarch64:
+        version: https://github.com/neon-ntt/neon-ntt/tree/c6ffbcd
+        enable_by: OQS_ENABLE_KEM_kyber_768_aarch64
+        parameter: kyber768
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: oldpqclean
+            base_dir: crypto_kem/kyber768/aarch64
+            files: [*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/oldpqclean_kyber768_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_KYBER768_AARCH64_crypto_kem_keypair
+        signature_enc: PQCLEAN_KYBER768_AARCH64_crypto_kem_enc
+        signature_dec: PQCLEAN_KYBER768_AARCH64_crypto_kem_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      jasmin_kyber_768_ref:
+        version: NIST Round 3 submission
+        enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_768
+        parameter: kyber768
+        uarch: x86_64
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: libjade
+            base_dir: "src/crypto_kem/kyber/kyber768/amd64/ref"
+            files:
+              - "api.c"  # Patched
+              - "kem.s"  # Built
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/libjade_kyber768_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/libjade_shims"
+        signature_keypair: libjade_kyber768_ref_keypair
+        signature_enc: libjade_kyber768_ref_enc
+        signature_dec: libjade_kyber768_ref_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      jasmin_kyber_768_avx2:
+        version: NIST Round 3 submission
+        enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2
+        parameter: kyber768
+        uarch: x86_64
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: libjade
+            base_dir: "src/crypto_kem/kyber/kyber768/amd64/avx2"
+            files:
+              - "api.c"  # patched
+              - "kem.s"  # built
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/libjade_kyber768_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/libjade_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+        signature_keypair: libjade_kyber768_avx2_keypair
+        signature_enc: libjade_kyber768_avx2_enc
+        signature_dec: libjade_kyber768_avx2_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      pqcrystals-kyber_kyber1024_ref:
+        version: https://github.com/pq-crystals/kyber/commit/28413df
+        enable_by: null  # default impl of kyber1024
+        parameter: kyber1024
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: pqcrystals-kyber
+            base_dir: ref
+            files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, reduce.c,
+                    ntt.c, cbd.c, verify.c, kem.h, params.h, api.h, indcpa.h,
+                    polyvec.h, poly.h, reduce.h, ntt.h, cbd.h, verify.h,
+                    symmetric.h, fips202.h, symmetric-shake.c]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber1024_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-DKYBER_K=4"
+        signature_keypair: pqcrystals_kyber1024_ref_keypair
+        signature_enc: pqcrystals_kyber1024_ref_enc
+        signature_dec: pqcrystals_kyber1024_ref_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      pqcrystals-kyber_kyber1024_avx2:
+        version: https://github.com/pq-crystals/kyber/commit/28413df
+        enable_by: OQS_ENABLE_KEM_kyber_1024_avx2
+        parameter: kyber1024
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: pqcrystals-kyber
+            base_dir: avx2
+            files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, fq.S,
+                    shuffle.S, ntt.S, invntt.S, basemul.S, consts.c,
+                    rejsample.c, cbd.c, verify.c, align.h, kem.h, params.h,
+                    api.h, indcpa.h, polyvec.h, poly.h, reduce.h, fq.inc,
+                    shuffle.inc, ntt.h, consts.h, rejsample.h, cbd.h, verify.h,
+                    symmetric.h, fips202.h, fips202x4.h, symmetric-shake.c]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber1024_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+          - scope: public
+            opts: "-DKYBER_K=4"
+        signature_keypair: pqcrystals_kyber1024_avx2_keypair
+        signature_enc: pqcrystals_kyber1024_avx2_enc
+        signature_dec: pqcrystals_kyber1024_avx2_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      oldpqclean_kyber1024_aarch64:
+        version: https://github.com/neon-ntt/neon-ntt/tree/c6ffbcd
+        enable_by: OQS_ENABLE_KEM_kyber_1024_aarch64
+        parameter: kyber1024
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: oldpqclean
+            base_dir: crypto_kem/kyber1024/aarch64
+            files: [*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/oldpqclean_kyber1024_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_KYBER1024_AARCH64_crypto_kem_keypair
+        signature_enc: PQCLEAN_KYBER1024_AARCH64_crypto_kem_enc
+        signature_dec: PQCLEAN_KYBER1024_AARCH64_crypto_kem_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
 
   ml_kem: null
   ntru: null
