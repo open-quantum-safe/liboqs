@@ -18,7 +18,7 @@ nist-round: 3
 standardization-status: Selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
   as basis for ML-KEM (FIPS 203)
 upstream-maintenance: Actively maintained
-upstream-statement-url: null
+upstream-statement-url: https://github.com/cyberstormdotmu/liboqs_statement/blob/main/README.md
 oqs-support-tier: 3
 spec-version: NIST Round 3 submission
 primary-upstream:
