@@ -111,8 +111,8 @@ algfamilies:
     advisories: null
     parameters:
       param1: # for kem
-        nist_level: 1, 2, 3, 4, or 5
-        security: IND-CCA2
+        security-strength: 1, 2, 3, 4, or 5
+        security-model: IND-CCA2
         length-public-key: 261120
         length-ciphertext: 96
         length-secret-key: 6492
@@ -125,8 +125,8 @@ algfamilies:
         default-implementation: optional, impl_key, must be portable
         memopt-implementation: null
       param2: # for sig
-        claimed-nist-level: 1
-        claimed-security: EUF-CMA
+        security-strength: 1
+        security-model: EUF-CMA
         length-public-key: 60
         length-secret-key: 88
         length-signature: 3280
@@ -136,7 +136,7 @@ algfamilies:
         enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
         default-implementation: mqom2_cat1_gf16_fast_r5_default
         memopt-implementation: mqom2_cat1_gf16_fast_r5_memopt
-    common_src:
+    common_src:  # defaults to null
       common_key:
         upstream: upstream_key
         destdir: defaults to common_key
@@ -146,9 +146,10 @@ algfamilies:
           "some/dir",    # copy the entire directory
           "other/dir/",  # copy the content
         ]
-    implementations-switch-on-runtime-cpu-features: true
+    implementations-switch-on-runtime-cpu-features: true  # defaults to true
     implementations:
-      impl1:  # local, kem
+
+      demo_impl_local:
         version: Some string
         enable_by: C/CMake macro
         subdirname: defaults to impl_key
@@ -166,6 +167,9 @@ algfamilies:
           - upstream: upstream_key
             base_dir: null
             preserve_subdirs: false
+            # TODO: this only specifies the files to copy, but it is not an
+            #       exact list of source files. For example, "LICENSE" should be
+            #       excluded from compilation sources
             files: [
               "*.c",         # can match wildcard
               "some/dir",    # copy the entire directory
@@ -175,7 +179,7 @@ algfamilies:
         includes:
           - scope: private, public, or interface
             dir: "literal string, directly copied into target_include_directories "
-        old_gas_syntax_if_darwin: false
+        old_gas_syntax_if_darwin: false  # defaults to false
         compile_opts:
           - scope: private, public, or interface
             opts: "literal string directly copied into target_compile_options"
@@ -191,7 +195,8 @@ algfamilies:
         signature_verify: null
         signature_signature_extmu: null
         signature_verify_extmu: null
-      impl_remote:  # remote, could be kem or sig
+
+      demo_impl_remote:  # remote, could be kem or sig
         upstream: upstream_key
         remote_meta_path: must be explicit, no templating
         remote_impl_key: the impl_key under remote meta's implementations
@@ -237,8 +242,8 @@ algfamilies:
 
     parameters:
       bike-l1:
-        nist_level: 1
-        security: IND-CCA2
+        security-strength: 1
+        security-model: IND-CCA2
         length-public-key: 1541
         length-ciphertext: 1573
         length-secret-key: 5223
@@ -247,8 +252,8 @@ algfamilies:
         enable_by: OQS_ENABLE_KEM_bike_l1
 
       bike-l3:
-        nist_level: 3
-        security: IND-CCA2
+        security-strength: 3
+        security-model: IND-CCA2
         length-ciphertext: 3115
         length-public-key: 3083
         length-secret-key: 10105
@@ -257,8 +262,8 @@ algfamilies:
         enable_by: OQS_ENABLE_KEM_bike_l3
 
       bike-l5:
-        nist_level: 5
-        security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-ciphertext: 5154
         length-public-key: 5122
         length-secret-key: 16494
@@ -317,136 +322,128 @@ algfamilies:
 
     parameter-sets:
       mceliece348864:
-        claimed-nist-level: 1
-        claimed-security: IND-CCA2
+        security-strength: 1
+        security-model: IND-CCA2
         length-public-key: 261120
         length-ciphertext: 96
         length-secret-key: 6492
         length-shared-secret: 32
         nistkat-sha256:
           6f0f50626df15ce403c0c1d5f91648245282afebcac90e5db3595ce9b20b1817
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_348864
         default-implementation: pqclean_mceliece348864_clean
 
       mceliece348864f:
-        claimed-nist-level: 1
-        claimed-security: IND-CCA2
+        security-strength: 1
+        security-model: IND-CCA2
         length-public-key: 261120
         length-ciphertext: 96
         length-secret-key: 6492
         length-shared-secret: 32
         nistkat-sha256:
           9b17b21becc1d3acf9df0a6d87875790259c075abeb50f97ea254c8d29395a41
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_348864f
         default-implementation: pqclean_mceliece348864f_clean
 
       mceliece460896:
-        claimed-nist-level: 3
-        claimed-security: IND-CCA2
+        security-strength: 3
+        security-model: IND-CCA2
         length-public-key: 524160
         length-ciphertext: 156
         length-secret-key: 13608
         length-shared-secret: 32
         nistkat-sha256:
           03124a66e44aea18a3c1fcd63be22f2217ec5514b7d84166b1da71094c251769
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_460896
         default-implementation: pqclean_mceliece460896_clean
 
       mceliece460896f:
-        claimed-nist-level: 3
-        claimed-security: IND-CCA2
+        security-strength: 3
+        security-model: IND-CCA2
         length-public-key: 524160
         length-ciphertext: 156
         length-secret-key: 13608
         length-shared-secret: 32
         nistkat-sha256:
           a027478ab01849de3d492176ea95c071110bcb8f7e4e6afa136a30cd1a1f6074
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_460896f
         default-implementation: pqclean_mceliece460896f_clean
 
       mceliece6688128:
-        claimed-nist-level: 5
-        claimed-security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-public-key: 1044992
         length-ciphertext: 208
         length-secret-key: 13932
         length-shared-secret: 32
         nistkat-sha256:
           4c825bf86378d76b197caca6f957942c0cc98b50ce4a6b26cad6efa25d1d20c6
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128
         default-implementation: pqclean_mceliece6688128_clean
 
       mceliece6688128f:
-        claimed-nist-level: 5
-        claimed-security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-public-key: 1044992
         length-ciphertext: 208
         length-secret-key: 13932
         length-shared-secret: 32
         nistkat-sha256:
           1fa84d1abd8ef104cdcf75277ca4399475945e97087dde3183a09415e1d61987
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_6688128f
         default-implementation: pqclean_mceliece6688128f_clean
 
       mceliece6960119:
-        claimed-nist-level: 5
-        claimed-security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-public-key: 1047319
         length-ciphertext: 194
         length-secret-key: 13948
         length-shared-secret: 32
         nistkat-sha256:
           8feea532732502134b7965fd495e6618b09f0b4747c2d94b29a85a90a0b6cc8a
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119
         default-implementation: pqclean_mceliece6960119_clean
 
       mceliece6960119f:
-        claimed-nist-level: 5
-        claimed-security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-public-key: 1047319
         length-ciphertext: 194
         length-secret-key: 13948
         length-shared-secret: 32
         nistkat-sha256:
           9a586a40d1af4819efb3f7343a05c260bd27d7e5d450945fee0ace5593761c3b
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_6960119f
         default-implementation: pqclean_mceliece6960119f_clean
 
       mceliece8192128:
-        claimed-nist-level: 5
-        claimed-security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-public-key: 1357824
         length-ciphertext: 208
         length-secret-key: 14120
         length-shared-secret: 32
         nistkat-sha256:
           cbe9b802465df7a7b3a59a08d3bd3ea603b6277532c15f89418b8d0d6508ee24
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128
         default-implementation: pqclean_mceliece8192128_clean
 
       mceliece8192128f:
-        claimed-nist-level: 5
-        claimed-security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-public-key: 1357824
         length-ciphertext: 208
         length-secret-key: 14120
         length-shared-secret: 32
         nistkat-sha256:
           f497b217022465568f0ed6c7987c462b74ba2d3e39f963ac357436c727ed9bdb
-        implementations-switch-on-runtime-cpu-features: true
         enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128f
         default-implementation: pqclean_mceliece8192128f_clean
 
+    implementations-switch-on-runtime-cpu-features: true
     implementations:  # classic_mceliece
+
       pqclean_mceliece348864_clean:
         version: SUPERCOP-20221025
         enable_by: null  # default of mceliece348864
@@ -1044,8 +1041,8 @@ algfamilies:
 
     parameters:
       hqc-1:
-        nist_level: 1
-        security: IND-CCA2
+        security-strength: 1
+        security-model: IND-CCA2
         length-public-key: 2241
         length-ciphertext: 4433
         length-secret-key: 2321
@@ -1061,8 +1058,8 @@ algfamilies:
         memopt-implementation: null
 
       hqc-3:
-        nist_level: 3
-        security: IND-CCA2
+        security-strength: 3
+        security-model: IND-CCA2
         length-ciphertext: 8978
         length-public-key: 4514
         length-secret-key: 4602
@@ -1078,8 +1075,8 @@ algfamilies:
         memopt-implementation: null
 
       hqc-5:
-        nist_level: 5
-        security: IND-CCA2
+        security-strength: 5
+        security-model: IND-CCA2
         length-ciphertext: 14421
         length-public-key: 7237
         length-secret-key: 7333
@@ -1211,7 +1208,232 @@ algfamilies:
         signature_enc: PQCHQC_HQC5_C_crypto_kem_enc
         signature_dec: PQCHQC_HQC5_C_crypto_kem_dec
 
-  kyber: null
+  kyber:
+    displayname: Kyber
+    algtype: kem
+    principal-submitters:
+      - Peter Schwabe
+    auxiliary-submitters:
+      - Roberto Avanzi
+      - Joppe Bos
+      - Léo Ducas
+      - Eike Kiltz
+      - Tancrède Lepoint
+      - Vadim Lyubashevsky
+      - John M. Schanck
+      - Gregor Seiler
+      - Damien Stehlé
+    crypto-assumption: >-
+      Module LWE+R with base ring Z[x]/(3329, x^256+1)
+    website: https://pq-crystals.org/
+    # TODO: what are the possible values
+    nist-round: 3
+    spec-version: NIST Round 3 submission
+    standardization-status: >-
+      Selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
+      as basis for ML-KEM (FIPS 203)
+    upstream-maintenance: TBC
+    upstream-statement-url: null
+    primary-upstream: pqcrystals-kyber
+    # TODO: What does default-upstream-id do?
+    # default-upstream-id: clean
+    oqs-support-tier: 3
+    # TODO: What does upstream-ancestors do?
+    upstream-ancestors: null
+    advisories: null
+    parameters:
+
+      kyber512:
+        security-strength: 1
+        security-model: IND-CCA2
+        length-public-key: 800
+        length-ciphertext: 768
+        length-secret-key: 1632
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          bb0481d3325d828817900b709d23917cefbc10026fc857f098979451f67bb0ca
+        enable_by: OQS_ENABLE_KEM_kyber_512
+        default-implementation: pqcrystals-kyber_kyber512_ref
+
+      kyber768:
+        security-strength: 3
+        security-model: IND-CCA2
+        length-public-key: 1184
+        length-ciphertext: 1088
+        length-secret-key: 2400
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          89e82a5bf2d4ddb2c6444e10409e6d9ca65dafbca67d1a0db2c9b54920a29172
+        enable_by: OQS_ENABLE_KEM_kyber_768
+        default-implementation: pqcrystals-kyber_kyber768_ref
+
+      kyber1024:
+        security-strength: 5
+        security-model: IND-CCA2
+        length-public-key: 1568
+        length-ciphertext: 1568
+        length-secret-key: 3168
+        length-shared-secret: 32
+        length-keypair-seed: null
+        length-encaps-seed: null
+        nistkat-sha256:
+          5afcf2a568ad32d49b55105b032af1850f03f3888ff9e2a72f4059c58e968f60
+        enable_by: OQS_ENABLE_KEM_kyber_1024
+        default-implementation: pqcrystals-kyber_kyber1024_ref
+
+    implementations:
+
+      pqcrystals-kyber_kyber512_ref:
+        version: https://github.com/pq-crystals/kyber/commit/28413df
+        enable_by: null  # default of kyber512
+        parameter: kyber512
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: pqcrystals-kyber
+            base_dir: ref
+            preserve_subdirs: false
+            files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, reduce.c,
+                    ntt.c, cbd.c, verify.c, kem.h, params.h, api.h, indcpa.h,
+                    polyvec.h, poly.h, reduce.h, ntt.h, cbd.h, verify.h,
+                    symmetric.h, fips202.h, symmetric-shake.c]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber512_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-DKYBER_K=2"
+        signature_keypair: pqcrystals_kyber1024_ref_keypair
+        signature_enc: pqcrystals_kyber1024_ref_enc
+        signature_dec: pqcrystals_kyber1024_ref_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      pqcrystals-kyber_kyber512_avx2:
+        version: https://github.com/pq-crystals/kyber/commit/28413df
+        enable_by: OQS_ENABLE_KEM_kyber_512_avx2
+        parameter: kyber512
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: pqcrystals-kyber
+            base_dir: avx2
+            preserve_subdirs: false
+            files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, fq.S,
+                    shuffle.S, ntt.S, invntt.S, basemul.S, consts.c,
+                    rejsample.c, cbd.c, verify.c, align.h, kem.h, params.h,
+                    api.h, indcpa.h, polyvec.h, poly.h, reduce.h, fq.inc,
+                    shuffle.inc, ntt.h, consts.h, rejsample.h, cbd.h, verify.h,
+                    symmetric.h, fips202.h, fips202x4.h, symmetric-shake.c]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber512_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: false
+        compile_opts:
+          - scope: private
+            opts: "-mavx2  -mbmi2  -mpopcnt"
+          - scope: public
+            opts: "-DKYBER_K=2"
+        signature_keypair: pqcrystals_kyber768_avx2_keypair
+        signature_enc: pqcrystals_kyber768_avx2_enc
+        signature_dec: pqcrystals_kyber768_avx2_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      oldpqclean_kyber512_aarch64:
+        version: https://github.com/neon-ntt/neon-ntt/tree/c6ffbcd
+        enable_by: OQS_ENABLE_KEM_kyber_512_aarch64
+        parameter: kyber512
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: oldpqclean
+            base_dir: crypto_kem/kyber512/aarch64
+            preserve_subdirs: false
+            files: [*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/oldpqclean_kyber512_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        old_gas_syntax_if_darwin: true
+        signature_keypair: PQCLEAN_KYBER512_AARCH64_crypto_kem_keypair
+        signature_enc: PQCLEAN_KYBER512_AARCH64_crypto_kem_enc
+        signature_dec: PQCLEAN_KYBER512_AARCH64_crypto_kem_dec
+        signature_keypair_derand: null
+        signature_enc_derand: null
+
+      jasmin_kyber_512_ref:  # FIX: fill in
+        version: Some string
+        enable_by: C/CMake macro
+        subdirname: defaults to impl_key
+        parameter: param_key
+        uarch: portable, x86_64, arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: false
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: true
+        os: Defaults to []
+        cpufeatures: Defaults to []
+        sources:
+          - upstream: upstream_key
+            base_dir: null
+            preserve_subdirs: false
+            # TODO: this only specifies the files to copy, but it is not an
+            #       exact list of source files. For example, "LICENSE" should be
+            #       excluded from compilation sources
+            files: [
+              "*.c",         # can match wildcard
+              "some/dir",    # copy the entire directory
+              "other/dir/",  # copy the content
+            ]
+          - family_common: family_common_key
+        includes:
+          - scope: private, public, or interface
+            dir: "literal string, directly copied into target_include_directories "
+        old_gas_syntax_if_darwin: false  # defaults to false
+        compile_opts:
+          - scope: private, public, or interface
+            opts: "literal string directly copied into target_compile_options"
+        # kem API
+        signature_keypair: null
+        signature_enc: null
+        signature_dec: null
+        signature_keypair_derand: null
+        signature_enc_derand: null
+        # sig API
+        signature_keypair: null
+        signature_signature: null
+        signature_verify: null
+        signature_signature_extmu: null
+        signature_verify_extmu: null
+
+
   ml_kem: null
   ntru: null
   ntruprime: null
