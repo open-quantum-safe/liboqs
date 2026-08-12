@@ -1,6 +1,6 @@
 # v2 of copy_from_upstream.yml
 
-version: 2
+schema_version: 2
 
 upstreams:
   awslabs/bike-kem:
@@ -121,6 +121,7 @@ algfamilies:
     upstream-ancestors: null
     advisories: null
     parameters:
+
       param1: # for kem
         security-strength: 1, 2, 3, 4, or 5
         security-model: IND-CCA2
@@ -135,6 +136,7 @@ algfamilies:
         enable_by: C/CMake macro
         default-implementation: optional, impl_key, must be portable
         memopt-implementation: null
+
       param2: # for sig
         security-strength: 1
         security-model: EUF-CMA
@@ -150,8 +152,8 @@ algfamilies:
     common_src:  # defaults to null
       common_key:
         upstream: upstream_key
-        destdir: defaults to common_key
-        upstream_base_dir: null
+        destdir: null # defaults to common_key
+        upstream_base_dir: null  # defaults to root directory
         files: [
           "*.c",         # can match wildcard
           "some/dir",    # copy the entire directory
@@ -335,7 +337,7 @@ algfamilies:
         Additionally, environment specific constant-time leaks may not be
         documented; please report potential constant-time leaks when found.
 
-    parameter-sets:
+    parameters:
       mceliece348864:
         security-strength: 1
         security-model: IND-CCA2
