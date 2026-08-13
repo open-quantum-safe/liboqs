@@ -17,7 +17,7 @@ import yaml
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s: %(message)s"))
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 logger.addHandler(handler)
 
 _liboqs_dir = os.getenv("LIBOQS_DIR")
@@ -433,9 +433,15 @@ class RelationalChecks:
         raise NotImplementedError()
 
 
-def run_subprocess(cmd: list[str], cwd: str | None = None, expected_ret=0):
+def run_subprocess(
+    cmd: list[str], cwd: str | None = None, expected_ret=0, dryrun=False
+):
     """Run a command in a sub-process, pipe stdout and stderr to logger."""
-    logger.debug("Subprocess call: `%s`", " ".join(cmd))
+    if dryrun:
+        logger.info("Subprocess call: `%s`", " ".join(cmd))
+        return
+    else:
+        logger.debug("Subprocess call: `%s`", " ".join(cmd))
 
     proc = subprocess.Popen(
         cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
@@ -457,13 +463,13 @@ class Upstream:
         git_url: str,
         git_commit: str,
         patch_full_paths: list[str],
-        post_patch: str | None,
+        post_patches: str | None,
     ):
         self.upstream_key = upstream_key
         self.git_url = git_url
         self.git_commit = git_commit
         self.patch_full_paths = patch_full_paths
-        self.post_patch = post_patch
+        self.post_patches = post_patches
 
         self._dir = None
         self._patched = False
@@ -483,14 +489,14 @@ class Upstream:
             meta["git_url"],
             meta["git_commit"],
             patch_full_paths,
-            meta.get("post_patch", None),
+            meta.get("post_patches", None),
         )
 
-    def clone(self, parent_dir: str):
+    def clone_and_patch(self, upstreams_dir: str):
         """Clone the specified commit into {{ parent_dir }}/{{ upstream_key }},
         then set self._dir to this path, indicating successful cloning
         """
-        upstream_dir = os.path.join(parent_dir, self.upstream_key)
+        upstream_dir = os.path.join(upstreams_dir, self.upstream_key)
         os.mkdir(upstream_dir)
 
         run_subprocess(["git", "init"], upstream_dir)
@@ -502,21 +508,23 @@ class Upstream:
 
         self._dir = upstream_dir
 
-    def patch(self):
         if self.patch_full_paths:
-            print(self.patch_full_paths)
             run_subprocess(
                 ["git", "apply", "--whitespace=fix"] + self.patch_full_paths, self._dir
             )
+
+        if not self.post_patches:
+            return
+        cmd_lines = self.post_patches.strip().splitlines()
+        for cmd_line in cmd_lines:
+            run_subprocess(cmd_line.split(), self._dir)
 
 
 def clone_upstreams(upstreams_dir: str, patch_dir: str, upstreams_meta: dict):
     for upstream_key, upstream_meta in upstreams_meta.items():
         logger.info("Cloning %s", upstream_key)
         upstream = Upstream.from_dict(patch_dir, upstream_key, upstream_meta)
-        upstream.clone(upstreams_dir)
-        upstream.patch()
-        # upstream.post()
+        upstream.clone_and_patch(upstreams_dir)
 
 
 if __name__ == "__main__":
