@@ -2,7 +2,26 @@
 
 import abc
 from enum import Enum, EnumType
+import os
+import pprint
 from typing import Any, Mapping
+import warnings
+
+import yaml
+
+_liboqs_dir = os.getenv("LIBOQS_DIR")
+if not _liboqs_dir:
+    _liboqs_dir = os.getcwd()
+    warnings.warn("LIBOQS_DIR not set; defaulting to cwd")
+LIBOQS_DIR = _liboqs_dir
+
+
+class OQSBuilderConfig:
+    def __init__(self, oqs_meta_path: str | None = None):
+        self.oqs_meta_path = oqs_meta_path or os.path.join(LIBOQS_DIR,
+                                                           "OQS_META.yml")
+        self.demo_algfamilies = ["demo_alg"]
+
 
 class FieldValidator(abc.ABC):
     @abc.abstractmethod
@@ -45,8 +64,6 @@ class Fields:
             self.enum = enum
 
         def validate(self, value: Any) -> bool:
-            if not isinstance(value, str):
-                return False
             return value in self.enum
 
     class Array(FieldValidator):
@@ -79,21 +96,18 @@ class Fields:
             self.allowextrakeys = allowextrakeys
 
         def validate(self, value: Any) -> bool:
-            """"""
             if not isinstance(value, dict):
                 return False
             for key in value.keys():
                 if (not self.allowextrakeys) and (key not in self.validators.keys()):
-                    print(f"ERROR: found extra key {key}")
                     return False
-            for key, (required, validator) in self.validators.items():
-                if required and (key not in value):
+            for key, (required, dator) in self.validators.items():
+                subtarget = value.get(key, None)
+                if (subtarget is not None) and (not dator.validate(subtarget)):
+                    print(f"ERROR: failed to validate {key}")
+                    return False
+                if (subtarget is None) and required:
                     print(f"ERROR: missing key {key}")
-                    return False
-                if required and (value.get(key) is None):
-                    print(f"ERROR: required field {key} cannot be null")
-                    return False
-                if not validator.validate(value[key]):
                     return False
             return True
 
@@ -118,6 +132,8 @@ class UArch(Enum):
     Portable = "portable"
     X86_64 = "x86_64"
     ArmV8 = "arm_8"
+    Cuda = "cuda"
+    Icicle = "icicle"
 
 class SupportedOS(Enum):
     Linux = "Linux"
@@ -146,7 +162,7 @@ UPSTREAM_DATOR = Fields.Mapping({
     "git_url": (Fields.REQUIRED, Fields.Text()),
     "git_commit": (Fields.REQUIRED, Fields.Text()),
     "git_branch": (Fields.OPTIONAL, Fields.Text()),
-    "patches": (Fields.REQUIRED, Fields.Array(Fields.Text())),
+    "patches": (Fields.OPTIONAL, Fields.Array(Fields.Text())),
     "jasminc": (Fields.OPTIONAL, Fields.Text()),
     "post_patches": (Fields.OPTIONAL, Fields.Text()),
 })
@@ -160,9 +176,13 @@ KEM_PARAM_DATOR = Fields.Mapping({
     "length-shared-secret": (Fields.REQUIRED, Fields.Integer()), 
     "length-keypair-seed": (Fields.OPTIONAL, Fields.Integer()), 
     "length-encaps-seed": (Fields.OPTIONAL, Fields.Integer()), 
-    "nistkat-sha256": (Fields.REQUIRED, Fields.Text()), 
+    "nistkat-sha256": (Fields.OPTIONAL, Fields.Text()), 
     "enable_by": (Fields.REQUIRED, Fields.Text()), 
-    "default-implementation": (Fields.REQUIRED, Fields.Text()), 
+    # FIX: BIKE's implementations do not fit into the model of implementations
+    #      so we cannot require default-implementation from parameter sets.
+    #      Instead, we will need to check default-implementation in relational
+    #      checks.
+    "default-implementation": (Fields.OPTIONAL, Fields.Text()), 
     "memopt-implementation": (Fields.OPTIONAL, Fields.Text()), 
 })
 
@@ -189,7 +209,7 @@ UPSTREAMSRC_OR_COMMONSRC_DATOR = Fields.Union({
         "preserve_subdirs": (Fields.OPTIONAL, Fields.Boolean()),
         "files": (
             Fields.REQUIRED,
-            Fields.Text(),
+            Fields.Array(Fields.Text()),
         ),
     }),
     # Family common sources
@@ -282,11 +302,11 @@ ALGFAMILY_DATOR = Fields.Mapping({
     "algtype": (Fields.REQUIRED, Fields.Enumerated(AlgTypes)),
     "principal-submitters": (Fields.REQUIRED,
                              Fields.Array(Fields.Text(), False)),
-    "auxiliary-submitters": (Fields.REQUIRED,
+    "auxiliary-submitters": (Fields.OPTIONAL,
                              Fields.Array(Fields.Text())),
     "crypto-assumption": (Fields.REQUIRED, Fields.Text()),
     "website": (Fields.REQUIRED, Fields.Text()),
-    "nist-rounds": (Fields.REQUIRED, Fields.Text()),
+    "nist-round": (Fields.REQUIRED, Fields.Text()),
     "spec-version": (Fields.REQUIRED, Fields.Text()),
     "standardization-status": (Fields.REQUIRED, Fields.Text()),
     "upstream-maintenance": (Fields.REQUIRED, Fields.Text()),
@@ -305,7 +325,7 @@ ALGFAMILY_DATOR = Fields.Mapping({
                    Fields.KeyedArray(COMMON_SRC_DATOR)),
     "implementations-switch-on-runtime-cpu-features": (Fields.OPTIONAL,
                                                        Fields.Boolean()),
-    "implementations": (Fields.REQUIRED,
+    "implementations": (Fields.OPTIONAL,
                         Fields.KeyedArray(KEM_OR_SIG_IMPL_DATOR)),
 })
 
@@ -318,7 +338,12 @@ OQS_META_DATOR = Fields.Mapping({
 
 
 if __name__ == "__main__":
-    # TODO: read config
-    # TODO: read metadata
-    # TODO: build liboqs
-    print("你好，🌍")
+    builderconfig = OQSBuilderConfig()
+    with open(builderconfig.oqs_meta_path) as f:
+        oqs_meta = yaml.safe_load(f)
+    for demo_algfamily in builderconfig.demo_algfamilies:
+        demo_algfamily_meta = oqs_meta["algfamilies"].pop(demo_algfamily)
+        if demo_algfamily_meta:
+            print(f"DEBUG: removed demo alg {demo_algfamily}")
+
+    assert OQS_META_DATOR.validate(oqs_meta), "Error"

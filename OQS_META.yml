@@ -243,8 +243,8 @@ algfamilies:
     crypto-assumption: >-
       QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check)
     website: http://bikesuite.org/
-    nist-round: 4
-    spec-version: 5.1
+    nist-round: "4"
+    spec-version: "5.1"
     standardization-status: >-
       Not selected by [NIST](https://bikesuite.org/files/v5.1/BIKE_Spec.2022.10.10.1.pdf)
     upstream-maintenance: TBD
@@ -293,7 +293,7 @@ algfamilies:
     implementations: null
 
   classic_mceliece:
-    display_name: Classic McEliece
+    displayname: Classic McEliece
     algtype: kem
     principal-submitters:
       - Daniel J. Bernstein
@@ -313,8 +313,8 @@ algfamilies:
       Niederreiter's dual version of McEliece's public key encryption using
       binary Goppa codes
     website: https://classic.mceliece.org
-    nist-round: 3
-    spec-version: SUPERCOP-20221025
+    nist-round: "3"
+    spec-version: "SUPERCOP-20221025"
     standardization-status:
       Under [ISO](https://classic.mceliece.org/iso.html) consideration
     upstream-maintenance: No active maintenance
@@ -1041,8 +1041,8 @@ algfamilies:
     crypto-assumption: >-
       Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
     website: https://pqc-hqc.org/
-    nist-round: 4
-    spec-version: 2025-08-22
+    nist-round: "4"
+    spec-version: "2025-08-22"
     standardization-status: >-
       Selected by [NIST](https://pqc-hqc.org/doc/hqc_specifications_2025_08_22.pdf)
       for upcoming standardization
@@ -1238,7 +1238,7 @@ algfamilies:
       Module LWE+R with base ring Z[x]/(3329, x^256+1)
     website: https://pq-crystals.org/
     # TODO: what are the possible values
-    nist-round: 3
+    nist-round: "3"
     spec-version: NIST Round 3 submission
     standardization-status: >-
       Selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Kyber-Round3.zip)
@@ -1379,8 +1379,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: oldpqclean
-            base_dir: crypto_kem/kyber512/aarch64
-            files: [*]
+            files: ["crypto_kem/kyber512/aarch64/"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/oldpqclean_kyber512_aarch64"
@@ -1530,8 +1529,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: oldpqclean
-            base_dir: crypto_kem/kyber768/aarch64
-            files: [*]
+            files: ["crypto_kem/kyber768/aarch64"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/oldpqclean_kyber768_aarch64"
@@ -1681,8 +1679,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: oldpqclean
-            base_dir: crypto_kem/kyber1024/aarch64
-            files: [*]
+            files: ["crypto_kem/kyber1024/aarch64"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/oldpqclean_kyber1024_aarch64"
@@ -1924,7 +1921,7 @@ algfamilies:
         set_properties:
           - scope: target
             name: CUDA_ARCHITECTURES
-            value: OFF
+            value: "OFF"
         signature_keypair: cupqc_ml_kem_512_keypair
         signature_enc: cupqc_ml_kem_512_enc
         signature_dec: cupqc_ml_kem_512_dec
@@ -2104,7 +2101,7 @@ algfamilies:
         set_properties:
           - scope: target
             name: CUDA_ARCHITECTURES
-            value: OFF
+            value: "OFF"
         signature_keypair: cupqc_ml_kem_768_keypair
         signature_enc: cupqc_ml_kem_768_enc
         signature_dec: cupqc_ml_kem_768_dec
@@ -2284,7 +2281,7 @@ algfamilies:
         set_properties:
           - scope: target
             name: CUDA_ARCHITECTURES
-            value: OFF
+            value: "OFF"
         signature_keypair: cupqc_ml_kem_1024_keypair
         signature_enc: cupqc_ml_kem_1024_enc
         signature_dec: cupqc_ml_kem_1024_dec
@@ -2328,7 +2325,7 @@ algfamilies:
     crypto-assumption: >-
       NTRU in Z[x]/(q, x^n-1) with prime n and power-of-two q
     website: https://ntru.org/
-    nist-round: 3
+    nist-round: "3"
     spec-version: NIST Round 3 submission
     standardization-status: >-
       Not selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/NTRU-Round3.zip),
@@ -2360,13 +2357,13 @@ algfamilies:
     implementations-switch-on-runtime-cpu-features: true  # defaults to true
     implementations: null  # FIX: sourced from pqclean20220303
 
-  ntruprime: null
-  frodokem: null
-  cross: null
-  falcon: null
-  mayo: null
-  ml_dsa: null
-  mqom: null
-  slh_dsa: null
-  snova: null
-  uov: null
+  # ntruprime: null
+  # frodokem: null
+  # cross: null
+  # falcon: null
+  # mayo: null
+  # ml_dsa: null
+  # mqom: null
+  # slh_dsa: null
+  # snova: null
+  # uov: null
