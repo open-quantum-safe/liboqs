@@ -1,6 +1,7 @@
 # v2 of copy_from_upstream.yml
 
 schema_version: 2
+jasminc: "2023.06.3"
 
 # NOTE: upstream key is used for subdirectory name
 upstreams:
@@ -20,7 +21,6 @@ upstreams:
     git_branch: release/2023.05-2
     git_commit: 4e15c1d221d025deca40edef2c762be9e3d346b7
     patches: [libjade-kyber-api.patch, libjade-kyber-meta.patch]
-    jasminc: 2023.06.3
     post_patches: |
       make -C src
 

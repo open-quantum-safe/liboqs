@@ -35,22 +35,27 @@ class OQSBuilderConfig:
         oqs_meta_path: str | None = None,
         upstreams_dir: str | None = None,
         patch_dir: str | None = None,
+        fail_on_jasminc: bool = False,
     ):
         """
         :param upstreams_dir: Specify a directory to clone upstream repositories
             into. Defaults to $LIBOQS_DIR
         :param patch_dir: Specify the directory that hosts all the patch files.
             Defaults to LIBOQS_DIR/scripts/copy_from_upstream/patches
+        :param fail_on_jasminc: If True, do a hard fail for when jasminc is
+            not present or the version is incorrect. If False, do not clone
+            libjade, do not refresh libjade implementations
         """
         self.oqs_meta_path = oqs_meta_path or DEFAULT_OQS_META_PATH
         self.upstreams_dir = upstreams_dir or LIBOQS_DIR
         self.patch_dir = patch_dir or DEFAULT_PATCH_DIR
         self.delete_upstreams = True
         self.demo_algfamilies = ["demo_alg"]
+        self.fail_on_jasminc = fail_on_jasminc
 
 
 class FieldValidator(abc.ABC):
-    # FIX: this method should return (ok, errmsg_or_none)
+    # TODO: this method should return (ok, errmsg_or_none)
     @abc.abstractmethod
     def validate(self, value: Any) -> bool:
         """Return true if value satisfies all requirements of a field"""
@@ -203,7 +208,6 @@ UPSTREAM_DATOR = Fields.Mapping(
         "git_commit": (Fields.REQUIRED, Fields.Text()),
         "git_branch": (Fields.OPTIONAL, Fields.Text()),
         "patches": (Fields.OPTIONAL, Fields.Array(Fields.Text())),
-        "jasminc": (Fields.OPTIONAL, Fields.Text()),
         "post_patches": (Fields.OPTIONAL, Fields.Text()),
     }
 )
@@ -220,10 +224,10 @@ KEM_PARAM_DATOR = Fields.Mapping(
         "length-encaps-seed": (Fields.OPTIONAL, Fields.Integer()),
         "nistkat-sha256": (Fields.OPTIONAL, Fields.Text()),
         "enable_by": (Fields.REQUIRED, Fields.Text()),
-        # FIX: BIKE's implementations do not fit into the model of implementations
-        #      so we cannot require default-implementation from parameter sets.
-        #      Instead, we will need to check default-implementation in relational
-        #      checks.
+        # TODO: BIKE's implementations do not fit into the model of implementations
+        #   so we cannot require default-implementation from parameter sets.
+        #   Instead, we will need to check default-implementation in relational
+        #   checks.
         "default-implementation": (Fields.OPTIONAL, Fields.Text()),
         "memopt-implementation": (Fields.OPTIONAL, Fields.Text()),
     }
@@ -397,6 +401,7 @@ ALGFAMILY_DATOR = Fields.Mapping(
 OQS_META_DATOR = Fields.Mapping(
     {
         "schema_version": (Fields.REQUIRED, Fields.Integer()),
+        "jasminc": (Fields.REQUIRED, Fields.Text()),
         "upstreams": (Fields.REQUIRED, Fields.KeyedArray(UPSTREAM_DATOR)),
         "algfamilies": (Fields.REQUIRED, Fields.KeyedArray(ALGFAMILY_DATOR)),
     }
@@ -454,6 +459,23 @@ def run_subprocess(
     ret = proc.wait()
     if ret != expected_ret:
         raise subprocess.CalledProcessError(ret, cmd)
+
+
+def check_jasminc(requirement: str) -> bool:
+    try:
+        proc = subprocess.run(
+            ["jasminc", "-version"], capture_output=True, text=True, check=True
+        )
+        return requirement == proc.stdout.strip().split()[-1]
+    except FileNotFoundError:
+        logger.warning("jasminc not found")
+        return False
+    except subprocess.CalledProcessError as e:
+        logger.error("jasminc failed with exit code %s", e.returncode)
+        raise e
+    except Exception as e:
+        logger.error(e)
+        raise e
 
 
 class Upstream:
@@ -520,11 +542,25 @@ class Upstream:
             run_subprocess(cmd_line.split(), self._dir)
 
 
-def clone_upstreams(upstreams_dir: str, patch_dir: str, upstreams_meta: dict):
+def clone_upstreams(
+    upstreams_dir: str, patch_dir: str, upstreams_meta: dict, has_jasmin: bool
+):
+    """
+    :param has_jasmin: if False, do not clone libjade. Note that if builder is
+        configured to hard fail without jasminc, the hard fail would have
+        happened before cloning upstreams, so it is safe to assume "ignore"
+        instead of hard failing
+    """
+    upstreams: dict[str, Upstream] = {}
     for upstream_key, upstream_meta in upstreams_meta.items():
+        if (not has_jasmin) and upstream_key == "libjade":
+            logger.info("libjade is not cloned because jasminc is not present")
+            continue
         logger.info("Cloning %s", upstream_key)
         upstream = Upstream.from_dict(patch_dir, upstream_key, upstream_meta)
         upstream.clone_and_patch(upstreams_dir)
+        upstreams[upstream_key] = upstream
+    return upstreams
 
 
 if __name__ == "__main__":
@@ -539,8 +575,13 @@ if __name__ == "__main__":
 
     if not OQS_META_DATOR.validate(oqs_meta):
         logger.error("%s failed schema validation", builderconfig.oqs_meta_path)
+    # TODO: implement relational check
     # if not RelationalChecks.run_all(oqs_meta):
     #     logger.error("%s failed relational checks", builderconfig.oqs_meta_path)
+
+    has_jasmin = check_jasminc(oqs_meta["jasminc"])
+    if (not has_jasmin) and builderconfig.fail_on_jasminc:
+        logger.error("jasminc not found, exiting")
 
     with TemporaryDirectory(
         dir=builderconfig.upstreams_dir,
@@ -549,7 +590,10 @@ if __name__ == "__main__":
     ) as upstreams_dir:
         logger.info("Cloning repositories into %s", upstreams_dir)
         upstreams = clone_upstreams(
-            upstreams_dir, builderconfig.patch_dir, oqs_meta["upstreams"]
+            upstreams_dir,
+            builderconfig.patch_dir,
+            oqs_meta["upstreams"],
+            has_jasmin=has_jasmin,
         )
         # TODO: fill in remote metadata
-        # TODO: copy files
+        # FIX: copy files
