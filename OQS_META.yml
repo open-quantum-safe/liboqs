@@ -2,8 +2,9 @@
 
 schema_version: 2
 
+# NOTE: upstream key is used for subdirectory name
 upstreams:
-  awslabs/bike-kem:
+  awslabs-bike-kem:
     git_url: https://github.com/awslabs/bike-kem
     git_commit: f150a1c50105dabcb8be2ce9dca26c37937a5c13
 
@@ -44,7 +45,7 @@ upstreams:
   pqclean:
     git_url: https://github.com/PQClean/PQClean.git
     git_commit: 1eacfdafc15ddc5d5759d0b85b4cef26627df181
-    patches: [classic-mceliece_memset.patch]
+    patches: [classic_mceliece_memset.patch]
 
   pqcrystals-kyber:
     git_url: https://github.com/pq-crystals/kyber.git
