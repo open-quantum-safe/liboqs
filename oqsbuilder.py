@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 
+# TODO: support remote config
+
 import abc
 from enum import Enum, EnumType
+import logging
 import os
+import sys
 from typing import Any, Mapping
 import warnings
 
 import yaml
+
+logger = logging.getLogger(__name__)
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s: %(message)s"))
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 _liboqs_dir = os.getenv("LIBOQS_DIR")
 if not _liboqs_dir:
@@ -22,6 +32,7 @@ class OQSBuilderConfig:
 
 
 class FieldValidator(abc.ABC):
+    # FIX: this method should return (ok, errmsg_or_none)
     @abc.abstractmethod
     def validate(self, value: Any) -> bool:
         """Return true if value satisfies all requirements of a field"""
@@ -106,10 +117,10 @@ class Fields:
             for key, (required, dator) in self.validators.items():
                 subtarget = value.get(key, None)
                 if (subtarget is not None) and (not dator.validate(subtarget)):
-                    print(f"ERROR: failed to validate {key}")
+                    logger.error(f"failed to validate {key}")
                     return False
                 if (subtarget is None) and required:
-                    print(f"ERROR: missing key {key}")
+                    logger.error(f"missing key {key}")
                     return False
             return True
 
@@ -381,7 +392,7 @@ class RelationalChecks:
         for param_key, param_meta in family_meta.get("parameters", {}):
             default_impl_key = param_meta.get("default-implementation", None)
             if default_impl_key and (default_impl_key not in impl_keys):
-                print(f"ERROR: {param_key} default impl {default_impl_key} invalid")
+                logger.error(f"{param_key} default impl {default_impl_key} invalid")
                 return False
         return True
 
@@ -406,11 +417,12 @@ class RelationalChecks:
 
 if __name__ == "__main__":
     builderconfig = OQSBuilderConfig()
+
     with open(builderconfig.oqs_meta_path) as f:
         oqs_meta = yaml.safe_load(f)
     for demo_algfamily in builderconfig.demo_algfamilies:
         demo_algfamily_meta = oqs_meta["algfamilies"].pop(demo_algfamily)
         if demo_algfamily_meta:
-            print(f"DEBUG: removed demo alg {demo_algfamily}")
+            logger.info(f"Removed demo alg {demo_algfamily}")
 
     assert OQS_META_DATOR.validate(oqs_meta), "Error"
