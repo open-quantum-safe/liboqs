@@ -1,7 +1,7 @@
 # v2 of copy_from_upstream.yml
 
 schema_version: 2
-jasminc: "2023.06.3"
+jasminc_version: "2023.06.3"
 
 # NOTE: upstream key is used for subdirectory name
 upstreams:
@@ -150,6 +150,7 @@ algfamilies:
         enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
         default-implementation: mqom2_cat1_gf16_fast_r5_default
         memopt-implementation: mqom2_cat1_gf16_fast_r5_memopt
+
     common_src:  # defaults to null
       common_key:
         upstream: upstream_key
@@ -291,7 +292,7 @@ algfamilies:
         enable_by: OQS_ENABLE_KEM_bike_l5
 
     # TODO: we can do better and actually take inventory of manual integrations
-    implementations: null
+    # implementations: null
 
   classic_mceliece:
     displayname: Classic McEliece
@@ -2356,7 +2357,7 @@ algfamilies:
       # hrss701:
 
     implementations-switch-on-runtime-cpu-features: true  # defaults to true
-    implementations: null  # FIX: sourced from pqclean20220303
+    # implementations: null  # FIX: sourced from pqclean20220303
 
   # ntruprime: null
   # frodokem: null

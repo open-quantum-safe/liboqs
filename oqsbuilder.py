@@ -187,7 +187,7 @@ class CpuFeatures(Enum):
     NEON = "asimd"
 
 
-class CmakeInterfaces(Enum):
+class CmakeScopes(Enum):
     Public = "public"
     Private = "private"
     Interface = "interface"
@@ -243,7 +243,7 @@ SIG_PARAM_DATOR = Fields.Mapping(
         "length-mu": (Fields.OPTIONAL, Fields.Integer()),
         "nistkat-sha256": (Fields.REQUIRED, Fields.Text()),
         "enable_by": (Fields.REQUIRED, Fields.Text()),
-        "default-implementation": (Fields.REQUIRED, Fields.Text()),
+        "default-implementation": (Fields.OPTIONAL, Fields.Text()),
         "memopt-implementation": (Fields.OPTIONAL, Fields.Text()),
     }
 )
@@ -302,7 +302,7 @@ COMMON_IMPL_MAPPING = {
         Fields.Array(
             Fields.Mapping(
                 {
-                    "scope": (Fields.REQUIRED, Fields.Enumerated(CmakeInterfaces)),
+                    "scope": (Fields.REQUIRED, Fields.Enumerated(CmakeScopes)),
                     "dir": (Fields.REQUIRED, Fields.Text()),
                 }
             )
@@ -314,7 +314,7 @@ COMMON_IMPL_MAPPING = {
         Fields.Array(
             Fields.Mapping(
                 {
-                    "scope": (Fields.REQUIRED, Fields.Enumerated(CmakeInterfaces)),
+                    "scope": (Fields.REQUIRED, Fields.Enumerated(CmakeScopes)),
                     "opts": (Fields.REQUIRED, Fields.Text()),
                 }
             )
@@ -326,7 +326,7 @@ COMMON_IMPL_MAPPING = {
         Fields.Array(
             Fields.Mapping(
                 {
-                    "scope": (Fields.REQUIRED, Fields.Enumerated(CmakeInterfaces)),
+                    "scope": (Fields.REQUIRED, Fields.Enumerated(CmakeScopes)),
                     "name": (Fields.REQUIRED, Fields.Text()),
                     "value": (Fields.REQUIRED, Fields.Text()),
                 }
@@ -401,7 +401,7 @@ ALGFAMILY_DATOR = Fields.Mapping(
 OQS_META_DATOR = Fields.Mapping(
     {
         "schema_version": (Fields.REQUIRED, Fields.Integer()),
-        "jasminc": (Fields.REQUIRED, Fields.Text()),
+        "jasminc_version": (Fields.REQUIRED, Fields.Text()),
         "upstreams": (Fields.REQUIRED, Fields.KeyedArray(UPSTREAM_DATOR)),
         "algfamilies": (Fields.REQUIRED, Fields.KeyedArray(ALGFAMILY_DATOR)),
     }
@@ -478,16 +478,14 @@ def check_jasminc(requirement: str) -> bool:
         raise e
 
 
-class Upstream:
+class UpstreamMeta:
     def __init__(
         self,
-        upstream_key: str,
         git_url: str,
         git_commit: str,
         patch_full_paths: list[str],
         post_patches: str | None,
     ):
-        self.upstream_key = upstream_key
         self.git_url = git_url
         self.git_commit = git_commit
         self.patch_full_paths = patch_full_paths
@@ -498,7 +496,7 @@ class Upstream:
         self._posted = False
 
     @staticmethod
-    def from_dict(patch_dir: str, key: str, meta: dict):
+    def from_dict(patch_dir: str, meta: dict):
         patch_full_paths = []
         for patch_name in meta.get("patches", []):
             patch_path = os.path.join(patch_dir, patch_name)
@@ -506,19 +504,18 @@ class Upstream:
                 raise FileNotFoundError(f"Cannot find patch {patch_path}")
             patch_full_paths.append(patch_path)
 
-        return Upstream(
-            key,
+        return UpstreamMeta(
             meta["git_url"],
             meta["git_commit"],
             patch_full_paths,
             meta.get("post_patches", None),
         )
 
-    def clone_and_patch(self, upstreams_dir: str):
+    def clone_and_patch(self, key: str, upstreams_dir: str):
         """Clone the specified commit into {{ parent_dir }}/{{ upstream_key }},
         then set self._dir to this path, indicating successful cloning
         """
-        upstream_dir = os.path.join(upstreams_dir, self.upstream_key)
+        upstream_dir = os.path.join(upstreams_dir, key)
         os.mkdir(upstream_dir)
 
         run_subprocess(["git", "init"], upstream_dir)
@@ -542,8 +539,507 @@ class Upstream:
             run_subprocess(cmd_line.split(), self._dir)
 
 
+class KemParameterMeta:
+    def __init__(
+        self,
+        strength: SecStrength,
+        model: str,
+        length_publickey: int,
+        length_ciphertext: int,
+        length_secretkey: int,
+        length_sharedsecret: int,
+        length_keypair_seed: int | None,
+        length_encaps_seed: int | None,
+        nistkat_sha256: str | None,
+        enable_by: str,
+        default_impl: str | None,
+        memopt_impl: str | None,
+    ):
+        self.strength = strength
+        self.model = model
+        self.length_publickey = length_publickey
+        self.length_ciphertext = length_ciphertext
+        self.length_secretkey = length_secretkey
+        self.length_sharedsecret = length_sharedsecret
+        self.length_keypair_seed = length_keypair_seed
+        self.length_encaps_seed = length_encaps_seed
+        self.nistkat_sha256 = nistkat_sha256
+        self.enable_by = enable_by
+        self.default_impl = default_impl
+        self.memopt_impl = memopt_impl
+
+    @staticmethod
+    def from_dict(meta: dict):
+        strength = SecStrength(meta["security-strength"])
+        model = meta["security-model"]
+        pubkeylen = meta["length-public-key"]
+        ciphertextlen = meta["length-ciphertext"]
+        privkeylen = meta["length-secret-key"]
+        secretlen = meta["length-shared-secret"]
+        keypair_seed = meta.get("length-keypair-seed", None)
+        encaps_seed = meta.get("length-encaps-seed", None)
+        nistkat = meta.get("nistkat-sha256", None)
+        enable_by = meta["enable_by"]
+        default_impl = meta.get("default-implementation", None)
+        memopt_impl = meta.get("memopt-implementation", None)
+        return KemParameterMeta(
+            strength,
+            model,
+            pubkeylen,
+            ciphertextlen,
+            privkeylen,
+            secretlen,
+            keypair_seed,
+            encaps_seed,
+            nistkat,
+            enable_by,
+            default_impl,
+            memopt_impl,
+        )
+
+
+class SigParameterMeta:
+    def __init__(
+        self,
+        strength: SecStrength,
+        model: str,
+        length_publickey: int,
+        length_secretkey: int,
+        length_signature: int,
+        length_mu: int | None,
+        nistkat_sha256: str | None,
+        enable_by: str,
+        default_impl: str | None,
+        memopt_impl: str | None,
+    ):
+        self.strength = strength
+        self.model = model
+        self.length_publickey = length_publickey
+        self.length_secretkey = length_secretkey
+        self.length_signature = length_signature
+        self.length_mu = length_mu
+        self.nistkat_sha256 = nistkat_sha256
+        self.enable_by = enable_by
+        self.default_impl = default_impl
+        self.memopt_impl = memopt_impl
+
+    @staticmethod
+    def from_dict(meta: dict):
+        strength = SecStrength(meta["security-strength"])
+        model = meta["security-model"]
+        pubkeylen = meta["length-public-key"]
+        privkeylen = meta["length-secret-key"]
+        siglen = meta["length-signature"]
+        mulen = meta["length-mu"]
+        nistkat = meta.get("nistkat-sha256", None)
+        enable_by = meta["enable_by"]
+        default_impl = meta.get("default-implementation", None)
+        memopt_impl = meta.get("memopt-implementation", None)
+        return SigParameterMeta(
+            strength,
+            model,
+            pubkeylen,
+            privkeylen,
+            siglen,
+            mulen,
+            nistkat,
+            enable_by,
+            default_impl,
+            memopt_impl,
+        )
+
+
+class CommonSrcMeta:
+    def __init__(
+        self,
+        upstream_key: str,
+        destdir: str | None,
+        upstream_base_dir: str | None,
+        files: list[str],
+    ):
+        self.upstream_key = upstream_key
+        self.destdir = destdir
+        self.upstream_base_dir = upstream_base_dir
+        self.files = files
+
+    @staticmethod
+    def from_dict(meta: dict):
+        upstream_key = meta["upstream"]
+        destdir = meta.get("destdir", None)
+        upstream_base_dir = meta.get("upstream_base_dir", None)
+        files = meta["files"]
+        return CommonSrcMeta(upstream_key, destdir, upstream_base_dir, files)
+
+
+class ImplSrcMeta:
+    def __init__(
+        self,
+        upstream_key: str,
+        base_dir: str | None,
+        preserve_subdirs: bool,
+        files: list[str],
+    ):
+        self.upstream_key = upstream_key
+        self.base_dir = base_dir
+        self.preserve_subdirs = preserve_subdirs
+        self.files = files
+
+    @staticmethod
+    def from_dict(meta: dict):
+        upstream = meta["upstream"]
+        base_dir = meta.get("base_dir", None)
+        preserve_subdirs = meta.get("preserve_subdirs", False)
+        files = meta["files"]
+        return ImplSrcMeta(upstream, base_dir, preserve_subdirs, files)
+
+
+class KemApiMeta:
+    def __init__(
+        self,
+        signature_keypair: str,
+        signature_enc: str,
+        signature_dec: str,
+        signature_keypair_derand: str | None,
+        signature_enc_derand: str | None,
+    ):
+        self.signature_keypair = signature_keypair
+        self.signature_enc = signature_enc
+        self.signature_dec = signature_dec
+        self.signature_keypair_derand = signature_keypair_derand
+        self.signature_enc_derand = signature_enc_derand
+
+
+class SigApiMeta:
+    def __init__(
+        self,
+        signature_keypair: str,
+        signature_signature: str,
+        signature_verify: str,
+        signature_signature_extmu: str | None,
+        signature_verify_extmu: str | None,
+    ):
+        self.signature_keypair = signature_keypair
+        self.signature_signature = signature_signature
+        self.signature_verify = signature_verify
+        self.signature_signature_extmu = signature_signature_extmu
+        self.signature_verify_extmu = signature_verify_extmu
+
+
+class CMakeIncludeMeta:
+    def __init__(
+        self,
+        scope: CmakeScopes,
+        dir: str,
+    ):
+        self.scope = scope
+        self.dir = dir
+
+    @staticmethod
+    def from_dict(meta: dict):
+        scope = CmakeScopes(meta["scope"])
+        dir = meta["dir"]
+        return CMakeIncludeMeta(scope, dir)
+
+
+class CMakeCompileOptMeta:
+    def __init__(
+        self,
+        scope: CmakeScopes,
+        opts: str,
+    ):
+        self.scope = scope
+        self.opts = opts
+
+    @staticmethod
+    def from_dict(meta: dict):
+        scope = CmakeScopes(meta["scope"])
+        opts = meta["opts"]
+        return CMakeCompileOptMeta(scope, opts)
+
+
+class CMakeSetPropMeta:
+    def __init__(
+        self,
+        scope: CmakeScopes,
+        name: str,
+        value: str,
+    ):
+        self.scope = scope
+        self.name = name
+        self.value = value
+
+    @staticmethod
+    def from_dict(meta: dict):
+        scope = CmakeScopes(meta["scope"])
+        name = meta["name"]
+        value = meta["name"]
+        return CMakeSetPropMeta(scope, name, value)
+
+
+class CommonSrcRef:
+    def __init__(self, common_src_key: str):
+        self.common_src_key = common_src_key
+
+
+class ImplementationMeta:
+    def __init__(
+        self,
+        version: str,
+        enable_by: str | None,
+        subdirname: str | None,
+        parameter: str,
+        uarch: UArch,
+        common_crypto: dict[str, str],
+        no_secret_dep_branching_claimed: bool,
+        no_secret_dep_branching_valgrind: bool,
+        large_stack: bool,
+        supported_os: list[SupportedOS],
+        cpufeatures: list[CpuFeatures],
+        sources: list[ImplSrcMeta | CommonSrcRef],
+        includes: list[CMakeIncludeMeta],
+        old_gas_if_darwin: bool,
+        compile_opts: list[CMakeCompileOptMeta],
+        link_libs: list[str],
+        set_properties: list[CMakeSetPropMeta],
+        api: KemApiMeta | SigApiMeta,
+    ):
+        self.version = version
+        self.enable_by = enable_by
+        self.subdirname = subdirname
+        self.parameter = parameter
+        self.uarch = uarch
+        self.common_crypto = common_crypto
+        self.no_secret_dep_branching_claimed = no_secret_dep_branching_claimed
+        self.no_secret_dep_branching_valgrind = no_secret_dep_branching_valgrind
+        self.large_stack = large_stack
+        self.supported_os = supported_os
+        self.cpufeatures = cpufeatures
+        self.sources = sources
+        self.includes = includes
+        self.old_gas_if_darwin = old_gas_if_darwin
+        self.compile_opts = compile_opts
+        self.link_libs = link_libs
+        self.set_properties = set_properties
+        self.api = api
+
+    @staticmethod
+    def parse_src_meta(src_meta: dict):
+        if "upstream" in src_meta:
+            return ImplSrcMeta.from_dict(src_meta)
+        if "family_common" in src_meta:
+            return CommonSrcRef(src_meta["family_common"])
+        raise KeyError("Invalid entry in implementation source list")
+
+    @staticmethod
+    def parse_api(algtype: AlgTypes, impl_meta: dict):
+        if algtype == AlgTypes.Kem:
+            return KemApiMeta(
+                impl_meta["signature_keypair"],
+                impl_meta["signature_enc"],
+                impl_meta["signature_dec"],
+                impl_meta.get("signature_keypair_derand", None),
+                impl_meta.get("signature_enc_derand", None),
+            )
+        if algtype == AlgTypes.Sig:
+            return SigApiMeta(
+                impl_meta["signature_keypair"],
+                impl_meta["signature_signature"],
+                impl_meta["signature_verify"],
+                impl_meta.get("signature_signature_extmu", None),
+                impl_meta.get("signature_verify_extmu", None),
+            )
+        raise ValueError(f"Invalid algtype {algtype}")
+
+    @staticmethod
+    def from_dict(algtype: AlgTypes, meta: dict):
+        version = meta["version"]
+        enable_by = meta.get("enable_by", None)
+        subdirname = meta.get("subdirname", None)
+        param_key = meta["parameter"]
+        uarch = UArch(meta["uarch"])
+        common_crypto = meta.get("common-crypto", {})
+        no_secret_dep_branching_claimed = meta["no-secret-dependent-branching-claimed"]
+        no_secret_dep_branching_valgrind = meta[
+            "no-secret-dependent-branching-checked-by-valgrind"
+        ]
+        large_stack = meta["large-stack-usage"]
+        supported_os = [SupportedOS(os) for os in meta.get("os", [])]
+        cpufeatures = [CpuFeatures(feat) for feat in meta.get("cpufeatures", [])]
+        sources = [
+            ImplementationMeta.parse_src_meta(src_meta)
+            for src_meta in meta.get("sources", [])
+        ]
+        includes = [
+            CMakeIncludeMeta.from_dict(include) for include in meta.get("includes", [])
+        ]
+        old_gas = meta.get("old_gas_syntax_if_darwin", False)
+        compile_opts = [
+            CMakeCompileOptMeta.from_dict(compile_opt)
+            for compile_opt in meta.get("compile_opts", [])
+        ]
+        libs = meta.get("link_libs", [])
+        props = [
+            CMakeSetPropMeta.from_dict(propmeta)
+            for propmeta in meta.get("set_properties", [])
+        ]
+        api = ImplementationMeta.parse_api(algtype, meta)
+        return ImplementationMeta(
+            version,
+            enable_by,
+            subdirname,
+            param_key,
+            uarch,
+            common_crypto,
+            no_secret_dep_branching_claimed,
+            no_secret_dep_branching_valgrind,
+            large_stack,
+            supported_os,
+            cpufeatures,
+            sources,
+            includes,
+            old_gas,
+            compile_opts,
+            libs,
+            props,
+            api,
+        )
+
+
+class AlgFamilyMeta:
+    """A direct translation of algorithm family metadata"""
+
+    def __init__(
+        self,
+        displayname: str,
+        algtype: AlgTypes,
+        principal_submitters: list[str],
+        auxiliary_submitters: list[str],
+        crypto_assumptions: str,
+        website: str,
+        nist_round: str,
+        spec_version: str,
+        standardization_status: str,
+        upstream_maintenance: str,
+        upstream_statement_url: str | None,
+        primary_upstream: str,
+        oqs_support_tier: OQSSupportTiers,
+        upstream_ancestors: list[str],
+        advisories: list[str],
+        parameters: dict[str, KemParameterMeta | SigParameterMeta],
+        switch_on_runtime_cpu_features: bool,
+        common_src: dict[str, CommonSrcMeta],
+        implementations: dict[str, ImplementationMeta],
+    ):
+        self.displayname = displayname
+        self.algtype = algtype
+        self.principal_submitters = principal_submitters
+        self.auxiliary_submitters = auxiliary_submitters
+        self.crypto_assumptions = crypto_assumptions
+        self.website = website
+        self.nist_round = nist_round
+        self.spec_version = spec_version
+        self.standardization_status = standardization_status
+        self.upstream_maintenance = upstream_maintenance
+        self.upstream_statement_url = upstream_statement_url
+        self.primary_upstream = primary_upstream
+        self.oqs_support_tier = oqs_support_tier
+        self.upstream_ancestors = upstream_ancestors
+        self.advisories = advisories
+        self.parameters = parameters
+        self.switch_on_runtime_cpu_features = switch_on_runtime_cpu_features
+        self.common_src = common_src
+        self.implementations = implementations
+
+    @staticmethod
+    def from_dict(family_meta: dict):
+        displayname = family_meta["displayname"]
+        algtype = AlgTypes(family_meta["algtype"])
+        principal = family_meta["principal-submitters"]
+        aux = family_meta.get("auxiliary-submitters", [])
+        assume = family_meta["crypto-assumption"]
+        website = family_meta["website"]
+        nist_round = family_meta["nist-round"]
+        spec_version = family_meta["spec-version"]
+        standardization_status = family_meta["standardization-status"]
+        upstream_maintenance = family_meta["upstream-maintenance"]
+        upstream_statement_url = family_meta.get("upstream-statement-url", None)
+        primary_upstream = family_meta["primary-upstream"]
+        oqs_support_tier = OQSSupportTiers(family_meta["oqs-support-tier"])
+        upstream_ancestors = family_meta.get("upstream-ancestors", [])
+        advisories = family_meta.get("advisories", [])
+        parameters = {
+            key: (
+                KemParameterMeta.from_dict(param_meta)
+                if algtype == AlgTypes.Kem
+                else SigParameterMeta.from_dict(param_meta)
+            )
+            for key, param_meta in family_meta["parameters"].items()
+        }
+        switch_on_runtime_cpu_features = family_meta.get(
+            "implementations-switch-on-runtime-cpu-features", True
+        )
+        common_src = {
+            key: CommonSrcMeta.from_dict(common_src_meta)
+            for key, common_src_meta in family_meta.get("common_src", {}).items()
+        }
+        implementations = {
+            key: ImplementationMeta.from_dict(algtype, impl_meta)
+            for key, impl_meta in family_meta.get("implementations", {}).items()
+        }
+
+        return AlgFamilyMeta(
+            displayname,
+            algtype,
+            principal,
+            aux,
+            assume,
+            website,
+            nist_round,
+            spec_version,
+            standardization_status,
+            upstream_maintenance,
+            upstream_statement_url,
+            primary_upstream,
+            oqs_support_tier,
+            upstream_ancestors,
+            advisories,
+            parameters,
+            switch_on_runtime_cpu_features,
+            common_src,
+            implementations,
+        )
+
+
+class OqsMeta:
+    def __init__(
+        self,
+        schema_version: int,
+        jasminc_version: str,
+        upstreams: dict[str, UpstreamMeta],
+        algfamilies: dict[str, AlgFamilyMeta],
+    ):
+        self.schema_version = schema_version
+        self.jasminc_version = jasminc_version
+        self.upstreams = upstreams
+        self.algfamilies = algfamilies
+
+    @staticmethod
+    def from_dict(builderconfig: OQSBuilderConfig, meta: dict):
+        schema_version = meta["schema_version"]
+        jasminc_version = meta["jasminc_version"]
+        upstreams = {
+            key: UpstreamMeta.from_dict(builderconfig.patch_dir, upstream_meta)
+            for key, upstream_meta in meta["upstreams"].items()
+        }
+        algfamilies = {
+            key: AlgFamilyMeta.from_dict(family_meta)
+            for key, family_meta in meta["algfamilies"].items()
+        }
+        return OqsMeta(schema_version, jasminc_version, upstreams, algfamilies)
+
+
 def clone_upstreams(
-    upstreams_dir: str, patch_dir: str, upstreams_meta: dict, has_jasmin: bool
+    upstreams_dir: str, upstreams: dict[str, UpstreamMeta], has_jasmin: bool
 ):
     """
     :param has_jasmin: if False, do not clone libjade. Note that if builder is
@@ -551,16 +1047,29 @@ def clone_upstreams(
         happened before cloning upstreams, so it is safe to assume "ignore"
         instead of hard failing
     """
-    upstreams: dict[str, Upstream] = {}
-    for upstream_key, upstream_meta in upstreams_meta.items():
+    for upstream_key, upstream in upstreams.items():
         if (not has_jasmin) and upstream_key == "libjade":
             logger.info("libjade is not cloned because jasminc is not present")
             continue
         logger.info("Cloning %s", upstream_key)
-        upstream = Upstream.from_dict(patch_dir, upstream_key, upstream_meta)
-        upstream.clone_and_patch(upstreams_dir)
-        upstreams[upstream_key] = upstream
-    return upstreams
+        upstream.clone_and_patch(upstream_key, upstreams_dir)
+
+
+# def copy_sources(
+#     upstreams: dict[str, UpstreamMeta], families: dict[str, AlgFamilyMeta]
+# ):
+#     """Copy files from upstreams into appropriate destinations.
+#
+#     There are two categories of copies. Family-level common source files are
+#     declared as {{ common_src_key }}:{{ common_src_meta }} pairs under each
+#     family meta. Implementation-level source files are declared as unnamed
+#     {{ impl_src_meta }} under {{ impl_meta.sources }}. Family-level common
+#     sources will be copied into
+#     src/{{ algtype }}/{{ family_key }}/{{ common_src_key }}. Impl-level sources
+#     will be copied into
+#     src/{{ algtype }}/{{ family_key }}/{{ impl_key }}.
+#     """
+#     raise NotImplementedError()
 
 
 if __name__ == "__main__":
@@ -579,7 +1088,10 @@ if __name__ == "__main__":
     # if not RelationalChecks.run_all(oqs_meta):
     #     logger.error("%s failed relational checks", builderconfig.oqs_meta_path)
 
-    has_jasmin = check_jasminc(oqs_meta["jasminc"])
+    oqs_meta = OqsMeta.from_dict(builderconfig, oqs_meta)
+
+    # TODO: where to issue warnings and errors? The delegation is not clear.
+    has_jasmin = check_jasminc(oqs_meta.jasminc_version)
     if (not has_jasmin) and builderconfig.fail_on_jasminc:
         logger.error("jasminc not found, exiting")
 
@@ -591,9 +1103,9 @@ if __name__ == "__main__":
         logger.info("Cloning repositories into %s", upstreams_dir)
         upstreams = clone_upstreams(
             upstreams_dir,
-            builderconfig.patch_dir,
-            oqs_meta["upstreams"],
-            has_jasmin=has_jasmin,
+            oqs_meta.upstreams,
+            has_jasmin,
         )
         # TODO: fill in remote metadata
-        # FIX: copy files
+
+        # copy_sources()
