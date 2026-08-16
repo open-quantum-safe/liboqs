@@ -182,13 +182,10 @@ algfamilies:
           - upstream: upstream_key
             base_dir: null  # defaults to root
             preserve_subdirs: false  # defaults to false
-            # TODO: this only specifies the files to copy, but it is not an
-            #       exact list of source files. For example, "LICENSE" should be
-            #       excluded from compilation sources
+            # NOTE: globs are supported. Here are a few useful patterns:
             files: [
-              "*.c",         # can match wildcard
-              "some/dir",    # copy the entire directory
-              "other/dir/",  # copy the content
+              # Copy everything in a directory; subdirectories are copied recursively
+              "crypto_kem/param/clean/*",
             ]
           - family_common: family_common_key
         includes:
@@ -475,7 +472,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece348864/clean/"]
+            files: ["crypto_kem/mceliece348864/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864_clean"
@@ -501,7 +498,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece348864/avx2/"]
+            files: ["crypto_kem/mceliece348864/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864_avx2"
@@ -530,7 +527,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece348864f/clean/"]
+            files: ["crypto_kem/mceliece348864f/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864f_clean"
@@ -556,7 +553,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece348864f/avx2/"]
+            files: ["crypto_kem/mceliece348864f/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece348864f_avx2"
@@ -585,7 +582,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece460896/clean/"]
+            files: ["crypto_kem/mceliece460896/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896_clean"
@@ -611,7 +608,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece460896/avx2/"]
+            files: ["crypto_kem/mceliece460896/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896_avx2"
@@ -640,7 +637,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece460896f/clean/"]
+            files: ["crypto_kem/mceliece460896f/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896f_clean"
@@ -666,7 +663,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece460896f/avx2/"]
+            files: ["crypto_kem/mceliece460896f/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece460896f_avx2"
@@ -695,7 +692,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6688128/clean/"]
+            files: ["crypto_kem/mceliece6688128/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128_clean"
@@ -721,7 +718,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6688128/avx2/"]
+            files: ["crypto_kem/mceliece6688128/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128_avx2"
@@ -750,7 +747,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6688128f/clean/"]
+            files: ["crypto_kem/mceliece6688128f/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128f_clean"
@@ -776,7 +773,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6688128f/avx2/"]
+            files: ["crypto_kem/mceliece6688128f/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6688128f_avx2"
@@ -805,7 +802,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6960119/clean/"]
+            files: ["crypto_kem/mceliece6960119/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119_clean"
@@ -831,7 +828,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6960119/avx2/"]
+            files: ["crypto_kem/mceliece6960119/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119_avx2"
@@ -860,7 +857,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6960119f/clean/"]
+            files: ["crypto_kem/mceliece6960119f/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119f_clean"
@@ -886,7 +883,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece6960119f/avx2/"]
+            files: ["crypto_kem/mceliece6960119f/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece6960119f_avx2"
@@ -915,7 +912,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece8192128/clean/"]
+            files: ["crypto_kem/mceliece8192128/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128_clean"
@@ -941,7 +938,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece8192128/avx2/"]
+            files: ["crypto_kem/mceliece8192128/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128_avx2"
@@ -970,7 +967,7 @@ algfamilies:
         large-stack-usage: true
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece8192128f/clean/"]
+            files: ["crypto_kem/mceliece8192128f/clean/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128f_clean"
@@ -996,7 +993,7 @@ algfamilies:
         cpufeatures: [avx2, popcnt]
         sources:
           - upstream: pqclean
-            files: ["crypto_kem/mceliece8192128f/avx2/"]
+            files: ["crypto_kem/mceliece8192128f/avx2/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_mceliece8192128f_avx2"

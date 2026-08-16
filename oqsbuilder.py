@@ -6,6 +6,7 @@ import abc
 from enum import Enum, EnumType
 import logging
 import os
+import pathlib
 import subprocess
 import sys
 from typing import Any, Mapping
@@ -27,6 +28,9 @@ if not _liboqs_dir:
 LIBOQS_DIR = _liboqs_dir
 DEFAULT_OQS_META_PATH = os.path.join(LIBOQS_DIR, "OQS_META.yml")
 DEFAULT_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
+DEFAULT_NEVER_COPY = [
+    "Makefile.Microsoft_nmake",
+]
 
 
 class OQSBuilderConfig:
@@ -36,6 +40,7 @@ class OQSBuilderConfig:
         upstreams_dir: str | None = None,
         patch_dir: str | None = None,
         fail_on_jasminc: bool = False,
+        never_copy: list[str] = DEFAULT_NEVER_COPY,
     ):
         """
         :param upstreams_dir: Specify a directory to clone upstream repositories
@@ -45,6 +50,8 @@ class OQSBuilderConfig:
         :param fail_on_jasminc: If True, do a hard fail for when jasminc is
             not present or the version is incorrect. If False, do not clone
             libjade, do not refresh libjade implementations
+        :param never_copy: a list of glob patterns to exclude upstream files
+            from being copied
         """
         self.oqs_meta_path = oqs_meta_path or DEFAULT_OQS_META_PATH
         self.upstreams_dir = upstreams_dir or LIBOQS_DIR
@@ -52,6 +59,7 @@ class OQSBuilderConfig:
         self.delete_upstreams = True
         self.demo_algfamilies = ["demo_alg"]
         self.fail_on_jasminc = fail_on_jasminc
+        self.never_copy = never_copy
 
 
 class FieldValidator(abc.ABC):
@@ -491,9 +499,45 @@ class UpstreamMeta:
         self.patch_full_paths = patch_full_paths
         self.post_patches = post_patches
 
-        self._dir = None
+        self._dir: str | None = None
         self._patched = False
         self._posted = False
+
+    def match_path_patterns(
+        self,
+        upstream_key: str,
+        patterns: list[str],
+        base_dir: str | None,
+        excludes: list[str],
+    ) -> list[str]:
+        """Return a list of paths relative to <self._dir>/<base_dir> that match
+        any of the input patterns
+        """
+        # FIX: not quite correct yet
+        assert self._dir is not None, f"Upstream {upstream_key} did not clone"
+        full_base_dir = (
+            pathlib.Path(self._dir) / base_dir if base_dir else pathlib.Path(self._dir)
+        )
+        matches = []
+        full_excludes: list[pathlib.Path] = []
+        for exclude in excludes:
+            full_excludes += list(full_base_dir.glob(exclude))
+        for pattern in patterns:
+            pattern_matches = [
+                path
+                for path in list(full_base_dir.glob(pattern))
+                if path not in full_excludes
+            ]
+            logger.info(
+                "%d matches %s in %s",
+                len(pattern_matches),
+                pattern,
+                str(full_base_dir),
+            )
+            for match in list(pattern_matches):
+                matches.append(str(match.relative_to(full_base_dir)))
+
+        return matches
 
     @staticmethod
     def from_dict(patch_dir: str, meta: dict):
@@ -512,7 +556,7 @@ class UpstreamMeta:
         )
 
     def clone_and_patch(self, key: str, upstreams_dir: str):
-        """Clone the specified commit into {{ parent_dir }}/{{ upstream_key }},
+        """Clone the specified commit into <parent_dir>/<upstream_key>,
         then set self._dir to this path, indicating successful cloning
         """
         upstream_dir = os.path.join(upstreams_dir, key)
@@ -655,20 +699,42 @@ class CommonSrcMeta:
         upstream_key: str,
         destdir: str | None,
         upstream_base_dir: str | None,
-        files: list[str],
+        patterns: list[str],
     ):
+        """
+        :param patterns: a list of file patterns (support wildcards) to match
+            against upstream repository
+        """
         self.upstream_key = upstream_key
         self.destdir = destdir
         self.upstream_base_dir = upstream_base_dir
-        self.files = files
+        self.patterns = patterns
+
+        self._paths: list[str] | None = None
+
+    def set_paths(
+        self, algtype: AlgTypes, algfamily_key: str, common_key: str, paths: list[str]
+    ):
+        """Set self._files to the precise list of files in this set of
+        family-level common source files. The paths are relative to
+        $LIBOQS_DIR/src/<algtype>/<algfamily>/<common_key>
+        """
+        base_dir = os.path.join(
+            LIBOQS_DIR, "src", algtype.value, algfamily_key, common_key
+        )
+        for path in paths:
+            fullpath = os.path.join(base_dir, path)
+            if not os.path.isfile(fullpath):
+                raise FileNotFoundError(f"{fullpath} not found")
+        self._paths = paths
 
     @staticmethod
     def from_dict(meta: dict):
         upstream_key = meta["upstream"]
         destdir = meta.get("destdir", None)
         upstream_base_dir = meta.get("upstream_base_dir", None)
-        files = meta["files"]
-        return CommonSrcMeta(upstream_key, destdir, upstream_base_dir, files)
+        patterns = meta["files"]
+        return CommonSrcMeta(upstream_key, destdir, upstream_base_dir, patterns)
 
 
 class ImplSrcMeta:
@@ -677,20 +743,56 @@ class ImplSrcMeta:
         upstream_key: str,
         base_dir: str | None,
         preserve_subdirs: bool,
-        files: list[str],
+        patterns: list[str],
     ):
         self.upstream_key = upstream_key
         self.base_dir = base_dir
         self.preserve_subdirs = preserve_subdirs
-        self.files = files
+        self.patterns = patterns
+
+        self._paths: list[str] | None = None
+
+    def copy_files(
+        self,
+        algtype: AlgTypes,
+        algfamily_key: str,
+        dest_dirname: str,
+        upstream: UpstreamMeta,
+        excludes: list[str],
+    ):
+        """Copy one set of source files from upstream to destination directory
+
+        :param dest_dirname: directory name under src/algtype/family
+        """
+        source_full_paths = upstream.match_path_patterns(
+            self.upstream_key, self.patterns, self.base_dir, excludes
+        )
+        print(source_full_paths)
+        raise NotImplementedError()
+
+    def set_paths(
+        self, algtype: AlgTypes, algfamily_key: str, impl_key: str, paths: list[str]
+    ):
+        """
+        :param paths: a list of paths relative to
+        $LIBOQS_DIR/src/<algtype>/<algfamily>/<impl>
+        """
+        base_dir = os.path.join(
+            LIBOQS_DIR, "src", algtype.value, algfamily_key, impl_key
+        )
+        for path in paths:
+            fullpath = os.path.join(base_dir, path)
+            if not os.path.isfile(fullpath):
+                raise FileNotFoundError(f"{fullpath} not found")
+        self._paths = paths
 
     @staticmethod
     def from_dict(meta: dict):
         upstream = meta["upstream"]
         base_dir = meta.get("base_dir", None)
         preserve_subdirs = meta.get("preserve_subdirs", False)
-        files = meta["files"]
-        return ImplSrcMeta(upstream, base_dir, preserve_subdirs, files)
+        patterns = meta["files"]
+        return ImplSrcMeta(upstream, base_dir, preserve_subdirs, patterns)
 
 
 class KemApiMeta:
@@ -821,6 +923,23 @@ class ImplementationMeta:
         self.link_libs = link_libs
         self.set_properties = set_properties
         self.api = api
+
+    def copy_sources_sets(
+        self,
+        algtype: AlgTypes,
+        algfamily_key: str,
+        impl_key: str,
+        upstreams: dict[str, UpstreamMeta],
+        excludes: list[str],
+    ):
+        """Copy this implementation's source files"""
+        for impl_src in self.sources:
+            if isinstance(impl_src, CommonSrcRef):
+                continue
+            upstream = upstreams[impl_src.upstream_key]
+            impl_src.copy_files(
+                algtype, algfamily_key, self.subdirname or impl_key, upstream, excludes
+            )
 
     @staticmethod
     def parse_src_meta(src_meta: dict):
@@ -1009,6 +1128,35 @@ class AlgFamilyMeta:
             implementations,
         )
 
+    def copy_common_src(
+        self,
+        algfamily_key: str,
+        upstreams: dict[str, UpstreamMeta],
+        excludes: list[str],
+    ):
+        """Iterate through the set of family-level common sources. For each set
+        re-create the subdirectory, then copy the files. Modify self.common_src
+        to take precise inventory of the files copied.
+        """
+        if self.common_src:
+            raise NotImplementedError("TODO: will implement when MQOM is filled in")
+
+    def copy_implementations_src(
+        self,
+        algfamily_key: str,
+        upstreams: dict[str, UpstreamMeta],
+        excludes: list[str],
+    ):
+        """Iterate through implementations of this algfamily. For each impl,
+        copy the implementation-specific set of source files. Modify
+        self.implementations[impl_key].sources to take precise inventory of
+        source files.
+        """
+        for impl_key, impl_meta in self.implementations.items():
+            impl_meta.copy_sources_sets(
+                self.algtype, algfamily_key, impl_key, upstreams, excludes
+            )
+
 
 class OqsMeta:
     def __init__(
@@ -1055,21 +1203,26 @@ def clone_upstreams(
         upstream.clone_and_patch(upstream_key, upstreams_dir)
 
 
-# def copy_sources(
-#     upstreams: dict[str, UpstreamMeta], families: dict[str, AlgFamilyMeta]
-# ):
-#     """Copy files from upstreams into appropriate destinations.
-#
-#     There are two categories of copies. Family-level common source files are
-#     declared as {{ common_src_key }}:{{ common_src_meta }} pairs under each
-#     family meta. Implementation-level source files are declared as unnamed
-#     {{ impl_src_meta }} under {{ impl_meta.sources }}. Family-level common
-#     sources will be copied into
-#     src/{{ algtype }}/{{ family_key }}/{{ common_src_key }}. Impl-level sources
-#     will be copied into
-#     src/{{ algtype }}/{{ family_key }}/{{ impl_key }}.
-#     """
-#     raise NotImplementedError()
+def copy_sources(
+    upstreams: dict[str, UpstreamMeta],
+    families: dict[str, AlgFamilyMeta],
+    excludes: list[str],
+):
+    """Copy files from upstreams into appropriate destinations.
+
+    There are two categories of copies. Family-level common source files are
+    declared as <common_src_key>:<common_src_meta> pairs under each
+    family meta. Implementation-level source files are declared as unnamed
+    <impl_src_meta> under <impl_meta.sources>. Family-level common
+    sources will be copied into
+    src/<algtype>/<family_key>/<common_src_key>. Impl-level sources
+    will be copied into
+    src/<algtype>/<family_key>/<impl_key>.
+    """
+
+    for algfamily_key, algfamily_meta in families.items():
+        algfamily_meta.copy_common_src(algfamily_key, upstreams, excludes)
+        algfamily_meta.copy_implementations_src(algfamily_key, upstreams, excludes)
 
 
 if __name__ == "__main__":
@@ -1101,11 +1254,11 @@ if __name__ == "__main__":
         delete=builderconfig.delete_upstreams,
     ) as upstreams_dir:
         logger.info("Cloning repositories into %s", upstreams_dir)
-        upstreams = clone_upstreams(
+        clone_upstreams(
             upstreams_dir,
             oqs_meta.upstreams,
             has_jasmin,
         )
         # TODO: fill in remote metadata
 
-        # copy_sources()
+        copy_sources(oqs_meta.upstreams, oqs_meta.algfamilies, builderconfig.never_copy)
