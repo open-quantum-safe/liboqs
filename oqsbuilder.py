@@ -991,6 +991,8 @@ class ImplementationMeta:
         for impl_src in self.sources:
             if isinstance(impl_src, CommonSrcRef):
                 continue
+            if impl_src.upstream_key == "mlkem-native":
+                raise NotImplementedError("Something about mlkem-native doesn't work quite yet")
             upstream = upstreams[impl_src.upstream_key]
             impl_src.copy_files(
                 algtype, algfamily_key, self.subdirname or impl_key, upstream, excludes
