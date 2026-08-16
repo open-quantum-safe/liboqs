@@ -5,25 +5,25 @@ jasminc_version: "2023.06.3"
 
 # NOTE: upstream key is used for subdirectory name
 upstreams:
-  awslabs-bike-kem:
-    git_url: https://github.com/awslabs/bike-kem
-    git_commit: f150a1c50105dabcb8be2ce9dca26c37937a5c13
-
-  libjade:
-    # NOTE: some notes for building libjade:
-    # > git clone git@github.com:formosa-crypto/libjade.git
-    # > git checkout 4e15c1d221d025deca40edef2c762be9e3d346b7
-    # > git apply $LIBOQS_DIR/scripts/copy_from_upstream/patches/libjade-kyber-api \
-    #             $LIBOQS_DIR/scripts/copy_from_upstream/patches/libjade-kyber-meta.patch
-    # > make -C src
-    #
-    git_url: https://github.com/formosa-crypto/libjade.git
-    git_branch: release/2023.05-2
-    git_commit: 4e15c1d221d025deca40edef2c762be9e3d346b7
-    patches: [libjade-kyber-api.patch, libjade-kyber-meta.patch]
-    post_patches: |
-      make -C src
-
+  # awslabs-bike-kem:
+  #   git_url: https://github.com/awslabs/bike-kem
+  #   git_commit: f150a1c50105dabcb8be2ce9dca26c37937a5c13
+  #
+  # libjade:
+  #   # NOTE: some notes for building libjade:
+  #   # > git clone git@github.com:formosa-crypto/libjade.git
+  #   # > git checkout 4e15c1d221d025deca40edef2c762be9e3d346b7
+  #   # > git apply $LIBOQS_DIR/scripts/copy_from_upstream/patches/libjade-kyber-api \
+  #   #             $LIBOQS_DIR/scripts/copy_from_upstream/patches/libjade-kyber-meta.patch
+  #   # > make -C src
+  #   #
+  #   git_url: https://github.com/formosa-crypto/libjade.git
+  #   git_branch: release/2023.05-2
+  #   git_commit: 4e15c1d221d025deca40edef2c762be9e3d346b7
+  #   patches: [libjade-kyber-api.patch, libjade-kyber-meta.patch]
+  #   post_patches: |
+  #     make -C src
+  #
   pqc-hqc:
     git_url: https://gitlab.com/pqc-hqc/hqc.git
     git_commit: 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
@@ -68,32 +68,32 @@ upstreams:
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
     git_commit: 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
 
-  mldsa-native:
-    git_url: https://github.com/pq-code-package/mldsa-native.git
-    git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
-
-  pqmayo:
-    git_url: https://github.com/PQCMayo/MAYO-C.git
-    git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
-    patches: [pqmayo-aes.patch, pqmayo-mem.patch]
-
-  upcross:
-    git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
-    git_commit: 179d61b8b59e524fba86954f7fa269495650030a
-
-  pqov:
-    git_url: https://github.com/pqov/pqov.git
-    git_commit: 33fa5278754a32064c55901c3a17d48b06cc2351
-
-  snova:
-    git_url: https://github.com/vacuas/SNOVA-OQS
-    git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
-    patches: [snova-unused-param.patch]
-
-  mqom:
-    git_url: https://github.com/mqom/mqom-v2.git
-    git_commit: ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7
-
+  # mldsa-native:
+  #   git_url: https://github.com/pq-code-package/mldsa-native.git
+  #   git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
+  #
+  # pqmayo:
+  #   git_url: https://github.com/PQCMayo/MAYO-C.git
+  #   git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
+  #   patches: [pqmayo-aes.patch, pqmayo-mem.patch]
+  #
+  # upcross:
+  #   git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git
+  #   git_commit: 179d61b8b59e524fba86954f7fa269495650030a
+  #
+  # pqov:
+  #   git_url: https://github.com/pqov/pqov.git
+  #   git_commit: 33fa5278754a32064c55901c3a17d48b06cc2351
+  #
+  # snova:
+  #   git_url: https://github.com/vacuas/SNOVA-OQS
+  #   git_commit: 1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
+  #   patches: [snova-unused-param.patch]
+  #
+  # mqom:
+  #   git_url: https://github.com/mqom/mqom-v2.git
+  #   git_commit: ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7
+  #
 # @summary    A map from family key to algorithm family metadata. Family key
 #             must follow snake casing because it serves as default dir
 algfamilies:

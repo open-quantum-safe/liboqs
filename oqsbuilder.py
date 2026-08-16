@@ -7,6 +7,7 @@ from enum import Enum, EnumType
 import logging
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 from typing import Any, Mapping
@@ -503,6 +504,11 @@ class UpstreamMeta:
         self._patched = False
         self._posted = False
 
+    def dir(self, upstream_key: str) -> str:
+        if not self._dir:
+            raise ValueError(f"Upstream {upstream_key} was not cloned")
+        return self._dir
+
     def match_path_patterns(
         self,
         upstream_key: str,
@@ -513,20 +519,15 @@ class UpstreamMeta:
         """Return a list of paths relative to <self._dir>/<base_dir> that match
         any of the input patterns
         """
-        # FIX: not quite correct yet
-        assert self._dir is not None, f"Upstream {upstream_key} did not clone"
         full_base_dir = (
-            pathlib.Path(self._dir) / base_dir if base_dir else pathlib.Path(self._dir)
+            pathlib.Path(self.dir(upstream_key)) / base_dir if base_dir else pathlib.Path(self.dir(upstream_key))
         )
         matches = []
-        full_excludes: list[pathlib.Path] = []
-        for exclude in excludes:
-            full_excludes += list(full_base_dir.glob(exclude))
         for pattern in patterns:
             pattern_matches = [
                 path
                 for path in list(full_base_dir.glob(pattern))
-                if path not in full_excludes
+                if not any([path.match(exclude) for exclude in excludes])
             ]
             logger.info(
                 "%d matches %s in %s",
@@ -764,21 +765,39 @@ class ImplSrcMeta:
 
         :param dest_dirname: directory name under src/algtype/family
         """
-        source_full_paths = upstream.match_path_patterns(
+        # source_paths are relative to <upstream._dir>/<self.base_dir> and may
+        # contain subdirectories
+        source_paths = upstream.match_path_patterns(
             self.upstream_key, self.patterns, self.base_dir, excludes
         )
-        print(source_full_paths)
-        raise NotImplementedError()
+
+        destdir = os.path.join(LIBOQS_DIR, "src", algtype.value, algfamily_key, dest_dirname)
+        destpaths: list[str] = []
+        for source_path in source_paths:
+            source_full_path = os.path.join(upstream.dir(self.upstream_key), self.base_dir or "", source_path)
+            if os.path.isfile(source_full_path):
+                logger.info("%s is a file", source_full_path)
+                _, filename = os.path.split(source_full_path)
+                destpath = os.path.join(destdir, filename)
+                logger.info("Copy file %s into %s", source_full_path, destpath)
+                shutil.copy2(source_full_path, destpath)
+                destpaths.append(destpath)
+            elif os.path.isdir(source_full_path):
+                logger.info("%s is a directory", source_full_path)
+                raise NotImplementedError()
+            else:
+                raise ValueError(f"{source_full_path} is invalid")
+        self.set_paths(algtype, algfamily_key, dest_dirname, destpaths)
 
     def set_paths(
-        self, algtype: AlgTypes, algfamily_key: str, impl_key: str, paths: list[str]
+        self, algtype: AlgTypes, algfamily_key: str, impl_destdirname: str, paths: list[str]
     ):
         """
         :param paths: a list of paths relative to
-        $LIBOQS_DIR/src/<algtype>/<algfamily>/<impl>
+        $LIBOQS_DIR/src/<algtype>/<algfamily>/<impl_destdirname>
         """
         base_dir = os.path.join(
-            LIBOQS_DIR, "src", algtype.value, algfamily_key, impl_key
+            LIBOQS_DIR, "src", algtype.value, algfamily_key, impl_destdirname
         )
         for path in paths:
             fullpath = os.path.join(base_dir, path)
