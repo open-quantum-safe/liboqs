@@ -777,6 +777,8 @@ class ImplSrcMeta:
         destdir = os.path.join(
             LIBOQS_DIR, "src", algtype.value, algfamily_key, dest_dirname
         )
+        # destpaths should be relative to:
+        # $LIBOQS_DIR/src/<algtype>/<algfamily>/<dest_dirname>
         destpaths: list[str] = []
         for source_path in source_paths:
             source_full_path = os.path.join(
@@ -784,10 +786,17 @@ class ImplSrcMeta:
             )
             if os.path.isfile(source_full_path):
                 _, filename = os.path.split(source_full_path)
-                destpath = os.path.join(destdir, filename)
-                logger.info("Copy file %s into %s", source_full_path, destpath)
+                destpath = os.path.join(destdir, source_path) if self.preserve_subdirs else os.path.join(destdir, filename)
+                destpath_dir, _ = os.path.split(destpath)
+                if not os.path.isdir(destpath_dir):
+                    os.makedirs(destpath_dir)
+                logger.info(
+                    "Copy file %s into %s",
+                    pathlib.Path(source_full_path).relative_to(pathlib.Path(LIBOQS_DIR)),
+                    pathlib.Path(destpath).relative_to(pathlib.Path(LIBOQS_DIR)),
+                )
                 shutil.copy2(source_full_path, destpath)
-                destpaths.append(destpath)
+                destpaths.append(source_path if self.preserve_subdirs else filename)
             elif os.path.isdir(source_full_path):
                 raise NotImplementedError("""OQSBuilder currently does not
                 support recursively copying directories from upstream. Use
