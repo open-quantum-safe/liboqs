@@ -521,7 +521,9 @@ class UpstreamMeta:
         any of the input patterns
         """
         full_base_dir = (
-            pathlib.Path(self.dir(upstream_key)) / base_dir if base_dir else pathlib.Path(self.dir(upstream_key))
+            pathlib.Path(self.dir(upstream_key)) / base_dir
+            if base_dir
+            else pathlib.Path(self.dir(upstream_key))
         )
         matches = []
         for pattern in patterns:
@@ -530,7 +532,7 @@ class UpstreamMeta:
                 for path in list(full_base_dir.glob(pattern))
                 if not any([path.match(exclude) for exclude in excludes])
             ]
-            logger.info(
+            logger.debug(
                 "%d matches %s in %s",
                 len(pattern_matches),
                 pattern,
@@ -772,26 +774,34 @@ class ImplSrcMeta:
             self.upstream_key, self.patterns, self.base_dir, excludes
         )
 
-        destdir = os.path.join(LIBOQS_DIR, "src", algtype.value, algfamily_key, dest_dirname)
+        destdir = os.path.join(
+            LIBOQS_DIR, "src", algtype.value, algfamily_key, dest_dirname
+        )
         destpaths: list[str] = []
         for source_path in source_paths:
-            source_full_path = os.path.join(upstream.dir(self.upstream_key), self.base_dir or "", source_path)
+            source_full_path = os.path.join(
+                upstream.dir(self.upstream_key), self.base_dir or "", source_path
+            )
             if os.path.isfile(source_full_path):
-                logger.info("%s is a file", source_full_path)
                 _, filename = os.path.split(source_full_path)
                 destpath = os.path.join(destdir, filename)
                 logger.info("Copy file %s into %s", source_full_path, destpath)
                 shutil.copy2(source_full_path, destpath)
                 destpaths.append(destpath)
             elif os.path.isdir(source_full_path):
-                logger.info("%s is a directory", source_full_path)
-                raise NotImplementedError()
+                raise NotImplementedError("""OQSBuilder currently does not
+                support recursively copying directories from upstream. Use
+                explicit set of files instead.""")
             else:
                 raise ValueError(f"{source_full_path} is invalid")
         self.set_paths(algtype, algfamily_key, dest_dirname, destpaths)
 
     def set_paths(
-        self, algtype: AlgTypes, algfamily_key: str, impl_destdirname: str, paths: list[str]
+        self,
+        algtype: AlgTypes,
+        algfamily_key: str,
+        impl_destdirname: str,
+        paths: list[str],
     ):
         """
         :param paths: a list of paths relative to

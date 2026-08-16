@@ -1313,7 +1313,7 @@ algfamilies:
             files: [../LICENSE, kem.c, indcpa.c, polyvec.c, poly.c, reduce.c,
                     ntt.c, cbd.c, verify.c, kem.h, params.h, api.h, indcpa.h,
                     polyvec.h, poly.h, reduce.h, ntt.h, cbd.h, verify.h,
-                    symmetric.h, fips202.h, symmetric-shake.c]
+                    symmetric.h, symmetric-shake.c]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber512_ref"
@@ -1348,7 +1348,7 @@ algfamilies:
                     rejsample.c, cbd.c, verify.c, align.h, kem.h, params.h,
                     api.h, indcpa.h, polyvec.h, poly.h, reduce.h, fq.inc,
                     shuffle.inc, ntt.h, consts.h, rejsample.h, cbd.h, verify.h,
-                    symmetric.h, fips202.h, fips202x4.h, symmetric-shake.c]
+                    symmetric.h, symmetric-shake.c]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_kyber512_avx2"
@@ -1378,7 +1378,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: oldpqclean
-            files: ["crypto_kem/kyber512/aarch64/"]
+            files: ["crypto_kem/kyber512/aarch64/*"]
         includes:
           - scope: private
             dir: "${CMAKE_CURRENT_LIST_DIR}/oldpqclean_kyber512_aarch64"
