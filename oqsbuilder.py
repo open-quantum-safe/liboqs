@@ -31,6 +31,7 @@ DEFAULT_OQS_META_PATH = os.path.join(LIBOQS_DIR, "OQS_META.yml")
 DEFAULT_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
 DEFAULT_NEVER_COPY = [
     "Makefile.Microsoft_nmake",
+    "Makefile",
 ]
 
 
