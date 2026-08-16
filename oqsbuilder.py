@@ -786,13 +786,19 @@ class ImplSrcMeta:
             )
             if os.path.isfile(source_full_path):
                 _, filename = os.path.split(source_full_path)
-                destpath = os.path.join(destdir, source_path) if self.preserve_subdirs else os.path.join(destdir, filename)
+                destpath = (
+                    os.path.join(destdir, source_path)
+                    if self.preserve_subdirs
+                    else os.path.join(destdir, filename)
+                )
                 destpath_dir, _ = os.path.split(destpath)
                 if not os.path.isdir(destpath_dir):
                     os.makedirs(destpath_dir)
                 logger.info(
                     "Copy file %s into %s",
-                    pathlib.Path(source_full_path).relative_to(pathlib.Path(LIBOQS_DIR)),
+                    pathlib.Path(source_full_path).relative_to(
+                        pathlib.Path(LIBOQS_DIR)
+                    ),
                     pathlib.Path(destpath).relative_to(pathlib.Path(LIBOQS_DIR)),
                 )
                 shutil.copy2(source_full_path, destpath)
@@ -970,8 +976,18 @@ class ImplementationMeta:
         impl_key: str,
         upstreams: dict[str, UpstreamMeta],
         excludes: list[str],
+        has_jasmin: bool,
     ):
         """Copy this implementation's source files"""
+        is_libjade_impl = any(
+            [
+                isinstance(impl_src, ImplSrcMeta) and impl_src.upstream_key == "libjade"
+                for impl_src in self.sources
+            ]
+        )
+        if is_libjade_impl and (not has_jasmin):
+            logger.warning("Impl %s is skipped due to missing jasminc", impl_key)
+            return
         for impl_src in self.sources:
             if isinstance(impl_src, CommonSrcRef):
                 continue
@@ -1185,6 +1201,7 @@ class AlgFamilyMeta:
         algfamily_key: str,
         upstreams: dict[str, UpstreamMeta],
         excludes: list[str],
+        has_jasmin: bool,
     ):
         """Iterate through implementations of this algfamily. For each impl,
         copy the implementation-specific set of source files. Modify
@@ -1193,7 +1210,7 @@ class AlgFamilyMeta:
         """
         for impl_key, impl_meta in self.implementations.items():
             impl_meta.copy_sources_sets(
-                self.algtype, algfamily_key, impl_key, upstreams, excludes
+                self.algtype, algfamily_key, impl_key, upstreams, excludes, has_jasmin
             )
 
 
@@ -1246,6 +1263,7 @@ def copy_sources(
     upstreams: dict[str, UpstreamMeta],
     families: dict[str, AlgFamilyMeta],
     excludes: list[str],
+    has_jasmin: bool,
 ):
     """Copy files from upstreams into appropriate destinations.
 
@@ -1261,7 +1279,9 @@ def copy_sources(
 
     for algfamily_key, algfamily_meta in families.items():
         algfamily_meta.copy_common_src(algfamily_key, upstreams, excludes)
-        algfamily_meta.copy_implementations_src(algfamily_key, upstreams, excludes)
+        algfamily_meta.copy_implementations_src(
+            algfamily_key, upstreams, excludes, has_jasmin
+        )
 
 
 if __name__ == "__main__":
@@ -1300,4 +1320,9 @@ if __name__ == "__main__":
         )
         # TODO: fill in remote metadata
 
-        copy_sources(oqs_meta.upstreams, oqs_meta.algfamilies, builderconfig.never_copy)
+        copy_sources(
+            oqs_meta.upstreams,
+            oqs_meta.algfamilies,
+            builderconfig.never_copy,
+            has_jasmin,
+        )
