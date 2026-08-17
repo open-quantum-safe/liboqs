@@ -2376,7 +2376,1163 @@ algfamilies:
 
   # ntruprime: null
   # frodokem: null
-  # cross: null
+
+  cross:
+    displayname: CROSS
+    algtype: sig
+    principal-submitters:
+      - Marco Baldi
+      - Alessandro Barenghi
+      - Michele Battagliola
+      - Sebastian Bitzer
+      - Patrick Karl
+      - Felice Manganiello
+      - Alessio Pavoni
+      - Gerardo Pelosi
+      - Federico Pintore
+      - Paolo Santini
+      - Jonas Schupp
+      - Edoardo Signorini
+      - Freeman Slaughter
+      - Antonia Wachter-Zeh
+      - Violetta Weger
+    auxiliary-submitters:
+      - Marco Gianvecchio
+    crypto-assumption: >-
+      hardness of the restricted syndrome decoding problem for random linear
+      codes on a finite field
+    website: >-
+      https://www.cross-crypto.com
+    nist-round: "2"
+    spec-version: "2.2 + PQClean and OQS patches"
+    standardization-status: >-
+      Under [NIST](https://www.cross-crypto.com/CROSS_Specification_v2.2.pdf)
+      consideration
+    upstream-maintenance: Actively maintained
+    upstream-statement-url:
+      https://github.com/CROSS-signature/CROSS-lib-oqs/blob/main/docs/oqs-statement.txt
+    primary-upstream: upcross
+    oqs-support-tier: 3
+    parameters:
+
+      cross-rsdp-128-balanced:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 77
+        length-secret-key: 32
+        length-signature: 13152
+        nistkat-sha256:
+          1261083807232119c1f0a5b0d9f958fb8cf8e5a7b897cc4b7c30336cf12da989
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_128_balanced
+        default-implementation: upcross_cross-rsdp-128-balanced_clean
+
+      cross-rsdp-128-fast:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 77
+        length-secret-key: 32
+        length-signature: 18432
+        nistkat-sha256:
+          0e4818ec4a37211a00b475583d3b3104db68ad59f4434811ce99fdb5aa72a865
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_128_fast
+        default-implementation: upcross_cross-rsdp-128-fast_clean
+
+      cross-rsdp-128-small:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 77
+        length-secret-key: 32
+        length-signature: 12432
+        nistkat-sha256:
+          03f9dbb00d53f17d0c4bb02b3dbb0494f187f506cb3ca9535c76713be544f3ff
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_128_small
+        default-implementation: upcross_cross-rsdp-128-small_clean
+
+      cross-rsdp-192-balanced:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 115
+        length-secret-key: 48
+        length-signature: 29853
+        nistkat-sha256:
+          1448df5fe764c2acb3e91a119d0618a8a84fd3526f80e4f824f8f19fdf448782
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_192_balanced
+        default-implementation: upcross_cross-rsdp-192-balanced_clean
+
+      cross-rsdp-192-fast:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 115
+        length-secret-key: 48
+        length-signature: 41406
+        nistkat-sha256:
+          0915191f5226bda897c52cc60dde8781bbc0a80a6c9e244d1c203879b529ef10
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_192_fast
+        default-implementation: upcross_cross-rsdp-192-fast_clean
+
+      cross-rsdp-192-small:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 115
+        length-secret-key: 48
+        length-signature: 28391
+        nistkat-sha256:
+          b32ef5358952748175be84dd079a73e9dca94de05f601cea49faf52f82510c94
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_192_small
+        default-implementation: upcross_cross-rsdp-192-small_clean
+
+      cross-rsdp-256-balanced:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 153
+        length-secret-key: 64
+        length-signature: 53527
+        nistkat-sha256:
+          92e32af22fe24d56b8f5685896894607ea4e23b690aecd5d9a08bc21be8555ec
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_256_balanced
+        default-implementation: upcross_cross-rsdp-256-balanced_clean
+
+      cross-rsdp-256-fast:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 153
+        length-secret-key: 64
+        length-signature: 74590
+        nistkat-sha256:
+          7143d97f4684a50768655e3f228750eb1c263ec5b6417e3670e43fcfa4d900a7
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_256_fast
+        default-implementation: upcross_cross-rsdp-256-fast_clean
+
+      cross-rsdp-256-small:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 153
+        length-secret-key: 64
+        length-signature: 50818
+        nistkat-sha256:
+          dc20577319512a0063a26c5efd2f45aa11975c9b6e096e629de206a8530868ef
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_256_small
+        default-implementation: upcross_cross-rsdp-256-small_clean
+
+      cross-rsdpg-128-balanced:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 54
+        length-secret-key: 32
+        length-signature: 9120
+        nistkat-sha256:
+          97be93b48229095f49d8a70eecd68903dd9c2088c0a723bc576751abf98e319e
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_128_balanced
+        default-implementation: upcross_cross-rsdpg-128-balanced_clean
+
+      cross-rsdpg-128-fast:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 54
+        length-secret-key: 32
+        length-signature: 11980
+        nistkat-sha256:
+          6307d2f5b7744e07d05c8b98b200083df028e3861db89a0b6f5db8252c264560
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_128_fast
+        default-implementation: upcross_cross-rsdpg-128-fast_clean
+
+      cross-rsdpg-128-small:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 54
+        length-secret-key: 32
+        length-signature: 8960
+        nistkat-sha256:
+          e185f0e65cf0872ecf0e40da2495c4d8788517da85a373ae79a5bde1f6591a6d
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_128_small
+        default-implementation: upcross_cross-rsdpg-128-small_clean
+
+      cross-rsdpg-192-balanced:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 83
+        length-secret-key: 48
+        length-signature: 22464
+        nistkat-sha256:
+          19854388a5e75f0253d08ea62283705ea22cd7c27088c66669dfb642a66e958f
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_192_balanced
+        default-implementation: upcross_cross-rsdpg-192-balanced_clean
+
+      cross-rsdpg-192-fast:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 83
+        length-secret-key: 48
+        length-signature: 26772
+        nistkat-sha256:
+          881bd9fc1071bab7069af9870e1549740fda667c562f698f4989725f5a1b2044
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_192_fast
+        default-implementation: upcross_cross-rsdpg-192-fast_clean
+
+      cross-rsdpg-192-small:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 83
+        length-secret-key: 48
+        length-signature: 20452
+        nistkat-sha256:
+          82d2e517bf1a932b5b9a215cffbb18897235244e48f9eca6aeb4362f4c6db9d6
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_192_small
+        default-implementation: upcross_cross-rsdpg-192-small_clean
+
+      cross-rsdpg-256-balanced:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 106
+        length-secret-key: 64
+        length-signature: 40100
+        nistkat-sha256:
+          28a2ba0cf39555b392a770d34f7645b8b17c3e7f18b3ea59bd7ec0beb41b48d6
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_256_balanced
+        default-implementation: upcross_cross-rsdpg-256-balanced_clean
+
+      cross-rsdpg-256-fast:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 106
+        length-secret-key: 64
+        length-signature: 48102
+        nistkat-sha256:
+          ce480adf4d0afa394edc7fb319217c980bef7d6d8425890c165b7971619aa6f5
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_256_fast
+        default-implementation: upcross_cross-rsdpg-256-fast_clean
+
+      cross-rsdpg-256-small:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 106
+        length-secret-key: 64
+        length-signature: 36454
+        nistkat-sha256:
+          f4fc8719a1bf18bc016ea7b2d172110cf82bc464d595014d9f4a72b6eb196470
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_256_small
+        default-implementation: upcross_cross-rsdpg-256-small_clean
+
+    implementations:
+
+      upcross_cross-rsdp-128-balanced_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-128-balanced
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-128-balanced/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-balanced_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP128BALANCED_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP128BALANCED_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP128BALANCED_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-128-balanced_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_128_balanced_avx2
+        parameter: cross-rsdp-128-balanced
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-128-balanced/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-balanced_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP128BALANCED_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP128BALANCED_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP128BALANCED_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-128-fast_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-128-fast
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-128-fast/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-fast_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP128FAST_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP128FAST_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP128FAST_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-128-fast_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_128_fast_avx2
+        parameter: cross-rsdp-128-fast
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-128-fast/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-fast_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP128FAST_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP128FAST_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP128FAST_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-128-small_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-128-small
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-128-small/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-small_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP128SMALL_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP128SMALL_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP128SMALL_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-128-small_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_128_small_avx2
+        parameter: cross-rsdp-128-small
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-128-small/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-128-small_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP128SMALL_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP128SMALL_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP128SMALL_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-192-balanced_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-192-balanced
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-192-balanced/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-balanced_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP192BALANCED_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP192BALANCED_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP192BALANCED_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-192-balanced_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_192_balanced_avx2
+        parameter: cross-rsdp-192-balanced
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-192-balanced/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-balanced_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP192BALANCED_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP192BALANCED_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP192BALANCED_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-192-fast_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-192-fast
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-192-fast/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-fast_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP192FAST_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP192FAST_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP192FAST_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-192-fast_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_192_fast_avx2
+        parameter: cross-rsdp-192-fast
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-192-fast/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-fast_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP192FAST_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP192FAST_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP192FAST_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-192-small_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-192-small
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-192-small/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-small_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP192SMALL_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-192-small_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_192_small_avx2
+        parameter: cross-rsdp-192-small
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-192-small/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-192-small_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP192SMALL_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP192SMALL_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP192SMALL_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-256-balanced_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-256-balanced
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-256-balanced/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-balanced_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP256BALANCED_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP256BALANCED_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP256BALANCED_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-256-balanced_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_256_balanced_avx2
+        parameter: cross-rsdp-256-balanced
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-256-balanced/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-balanced_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP256BALANCED_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP256BALANCED_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP256BALANCED_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-256-fast_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-256-fast
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-256-fast/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-fast_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP256FAST_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-256-fast_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_256_fast_avx2
+        parameter: cross-rsdp-256-fast
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-256-fast/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-fast_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP256FAST_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdp-256-small_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdp-256-small
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-256-small/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-small_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDP256SMALL_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP256SMALL_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP256SMALL_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdp-256-small_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdp_256_small_avx2
+        parameter: cross-rsdp-256-small
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdp-256-small/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdp-256-small_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDP256SMALL_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDP256SMALL_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDP256SMALL_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-128-balanced_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-128-balanced
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-128-balanced/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-balanced_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG128BALANCED_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG128BALANCED_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG128BALANCED_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-128-balanced_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_128_balanced_avx2
+        parameter: cross-rsdpg-128-balanced
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-128-balanced/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-balanced_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG128BALANCED_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG128BALANCED_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG128BALANCED_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-128-fast_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-128-fast
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-128-fast/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-fast_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG128FAST_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG128FAST_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG128FAST_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-128-fast_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_128_fast_avx2
+        parameter: cross-rsdpg-128-fast
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-128-fast/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-fast_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG128FAST_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG128FAST_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG128FAST_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-128-small_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-128-small
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-128-small/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-small_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG128SMALL_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG128SMALL_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG128SMALL_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-128-small_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_128_small_avx2
+        parameter: cross-rsdpg-128-small
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-128-small/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-128-small_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG128SMALL_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG128SMALL_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG128SMALL_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-192-balanced_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-192-balanced
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-192-balanced/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-balanced_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG192BALANCED_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG192BALANCED_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG192BALANCED_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-192-balanced_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_192_balanced_avx2
+        parameter: cross-rsdpg-192-balanced
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-192-balanced/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-balanced_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG192BALANCED_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG192BALANCED_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG192BALANCED_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-192-fast_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-192-fast
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-192-fast/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-fast_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG192FAST_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG192FAST_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG192FAST_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-192-fast_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_192_fast_avx2
+        parameter: cross-rsdpg-192-fast
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-192-fast/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-fast_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG192FAST_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG192FAST_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG192FAST_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-192-small_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-192-small
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-192-small/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-small_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG192SMALL_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG192SMALL_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG192SMALL_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-192-small_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_192_small_avx2
+        parameter: cross-rsdpg-192-small
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-192-small/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-192-small_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG192SMALL_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG192SMALL_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG192SMALL_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-256-balanced_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-256-balanced
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-256-balanced/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-balanced_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG256BALANCED_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG256BALANCED_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG256BALANCED_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-256-balanced_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_256_balanced_avx2
+        parameter: cross-rsdpg-256-balanced
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-256-balanced/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-balanced_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG256BALANCED_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG256BALANCED_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG256BALANCED_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-256-fast_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-256-fast
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-256-fast/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-fast_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG256FAST_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG256FAST_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG256FAST_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-256-fast_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_256_fast_avx2
+        parameter: cross-rsdpg-256-fast
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-256-fast/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-fast_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG256FAST_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG256FAST_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG256FAST_AVX2_crypto_sign_verify
+
+      upcross_cross-rsdpg-256-small_clean:
+        version: "2.2 + PQClean and OQS patches"
+        parameter: cross-rsdpg-256-small
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-256-small/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-small_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_CROSSRSDPG256SMALL_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG256SMALL_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG256SMALL_CLEAN_crypto_sign_verify
+
+      upcross_cross-rsdpg-256-small_avx2:
+        version: "2.2 + PQClean and OQS patches"
+        enable_by: OQS_ENABLE_SIG_cross_rsdpg_256_small_avx2
+        parameter: cross-rsdpg-256-small
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: upcross
+            files: [
+              "generate/crypto_sign/cross-rsdpg-256-small/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/upcross_cross-rsdpg-256-small_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_CROSSRSDPG256SMALL_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_CROSSRSDPG256SMALL_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_CROSSRSDPG256SMALL_AVX2_crypto_sign_verify
+
   # falcon: null
   # mayo: null
   # ml_dsa: null

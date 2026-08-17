@@ -678,7 +678,7 @@ class SigParameterMeta:
         pubkeylen = meta["length-public-key"]
         privkeylen = meta["length-secret-key"]
         siglen = meta["length-signature"]
-        mulen = meta["length-mu"]
+        mulen = meta.get("length-mu", None)
         nistkat = meta.get("nistkat-sha256", None)
         enable_by = meta["enable_by"]
         default_impl = meta.get("default-implementation", None)
@@ -794,7 +794,7 @@ class ImplSrcMeta:
                 destpath_dir, _ = os.path.split(destpath)
                 if not os.path.isdir(destpath_dir):
                     os.makedirs(destpath_dir)
-                logger.info(
+                logger.debug(
                     "Copy file %s into %s",
                     pathlib.Path(source_full_path).relative_to(
                         pathlib.Path(LIBOQS_DIR)
@@ -969,6 +969,15 @@ class ImplementationMeta:
         self.set_properties = set_properties
         self.api = api
 
+    def is_libjade_impl(self) -> bool:
+        """Return True iff any source comes from libjade"""
+        return any(
+            [
+                isinstance(src, ImplSrcMeta) and src.upstream_key == "libjade"
+                for src in self.sources
+            ]
+        )
+
     def copy_sources_sets(
         self,
         algtype: AlgTypes,
@@ -979,13 +988,7 @@ class ImplementationMeta:
         has_jasmin: bool,
     ):
         """Copy this implementation's source files"""
-        is_libjade_impl = any(
-            [
-                isinstance(impl_src, ImplSrcMeta) and impl_src.upstream_key == "libjade"
-                for impl_src in self.sources
-            ]
-        )
-        if is_libjade_impl and (not has_jasmin):
+        if self.is_libjade_impl() and (not has_jasmin):
             logger.warning("Impl %s is skipped due to missing jasminc", impl_key)
             return
         for impl_src in self.sources:

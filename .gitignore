@@ -29,6 +29,7 @@ tags
 # and update_pqclean_alg_docs.py
 scripts/copy_from_upstream/repos
 scripts/copy_from_upstream/verify_from_upstream
+_upstreams/
 
 # Misc
 __pycache__
