@@ -3533,7 +3533,393 @@ algfamilies:
         signature_signature: PQCLEAN_CROSSRSDPG256SMALL_AVX2_crypto_sign_signature
         signature_verify: PQCLEAN_CROSSRSDPG256SMALL_AVX2_crypto_sign_verify
 
-  # falcon: null
+  falcon:
+    displayname: Falcon
+    algtype: sig
+    principal-submitters:
+      - Thomas Prest
+    auxiliary-submitters:
+      - Pierre-Alain Fouque
+      - Jeffrey Hoffstein
+      - Paul Kirchner
+      - Vadim Lyubashevsky
+      - Thomas Pornin
+      - Thomas Prest
+      - Thomas Ricosset
+      - Gregor Seiler
+      - William Whyte
+      - Zhenfei Zhang
+    crypto-assumption: >-
+      hardness of NTRU lattice problems
+    website: >-
+      https://falcon-sign.info
+    nist-round: "3"
+    spec-version: "20211101"
+    standardization-status: >-
+      Selected by
+      [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/Falcon-Round3.zip)
+      for upcoming standardization
+    upstream-maintenance: TBD
+    upstream-statement-url: null
+    primary-upstream: pqclean
+    oqs-support-tier: 3
+    parameters:
+
+      falcon-512:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 897
+        length-secret-key: 1281
+        length-signature: 752
+        nistkat-sha256:
+          da27fe8a462de7307ddf1f9b00072a457d9c5b14e838c148fbe2662094b9a2ca
+        enable_by: OQS_ENABLE_SIG_falcon_512
+        default-implementation: pqclean_falcon-512_clean
+
+      falcon-1024:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 1793
+        length-secret-key: 2305
+        length-signature: 1462
+        nistkat-sha256:
+          e699d88eb214fef30597385f40814baeb84ac505d5f05f5c257b0726fc4530b8
+        enable_by: OQS_ENABLE_SIG_falcon_1024
+        default-implementation: pqclean_falcon-1024_clean
+
+      falcon-padded-512:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 897
+        length-secret-key: 1281
+        length-signature: 666
+        nistkat-sha256:
+          91842d41138e7cfaf6e2e8f12a03c3b3411302255121e4d07d02f91a003c0395
+        enable_by: OQS_ENABLE_SIG_falcon_padded_512
+        default-implementation: pqclean_falcon-padded-512_clean
+
+      falcon-padded-1024:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 1793
+        length-secret-key: 2305
+        length-signature: 1462
+        nistkat-sha256:
+          ddcc5683293388249e6fe85e992ea19d0986d34e060a44f82bc3db524a8c8390
+        enable_by: OQS_ENABLE_SIG_falcon_padded_1024
+        default-implementation: pqclean_falcon-padded-1024_clean
+
+    implementations-switch-on-runtime-cpu-features: true
+    implementations:
+
+      pqclean_falcon-512_clean:
+        version: "20211101 with PQClean patches"
+        parameter: falcon-512
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-512/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCON512_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCON512_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCON512_CLEAN_crypto_sign_verify
+
+      pqclean_falcon-512_avx2:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_512_avx2
+        parameter: falcon-512
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-512/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_FALCON512_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCON512_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCON512_AVX2_crypto_sign_verify
+
+      pqclean_falcon-512_aarch64:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_512_aarch64
+        parameter: falcon-512
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-512/aarch64/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCON512_AARCH64_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCON512_AARCH64_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCON512_AARCH64_crypto_sign_verify
+
+      pqclean_falcon-padded-512_clean:
+        version: "20211101 with PQClean patches"
+        parameter: falcon-padded-512
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-padded-512/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-512_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCONPADDED512_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCONPADDED512_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCONPADDED512_CLEAN_crypto_sign_verify
+
+      pqclean_falcon-padded-512_avx2:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_padded_512_avx2
+        parameter: falcon-padded-512
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-padded-512/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-512_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_FALCONPADDED512_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCONPADDED512_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCONPADDED512_AVX2_crypto_sign_verify
+
+      pqclean_falcon-padded-512_aarch64:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_padded_512_aarch64
+        parameter: falcon-padded-512
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-padded-512/aarch64/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-512_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCONPADDED512_AARCH64_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCONPADDED512_AARCH64_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCONPADDED512_AARCH64_crypto_sign_verify
+
+      pqclean_falcon-1024_clean:
+        version: "20211101 with PQClean patches"
+        parameter: falcon-1024
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-1024/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCON1024_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCON1024_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCON1024_CLEAN_crypto_sign_verify
+
+      pqclean_falcon-1024_avx2:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_1024_avx2
+        parameter: falcon-1024
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-1024/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_FALCON1024_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCON1024_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCON1024_AVX2_crypto_sign_verify
+
+      pqclean_falcon-1024_aarch64:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_1024_aarch64
+        parameter: falcon-1024
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-1024/aarch64/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCON1024_AARCH64_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCON1024_AARCH64_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCON1024_AARCH64_crypto_sign_verify
+
+      pqclean_falcon-padded-1024_clean:
+        version: "20211101 with PQClean patches"
+        parameter: falcon-padded-1024
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-padded-1024/clean/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-1024_clean"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCONPADDED1024_CLEAN_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCONPADDED1024_CLEAN_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCONPADDED1024_CLEAN_crypto_sign_verify
+
+      pqclean_falcon-padded-1024_avx2:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_padded_1024_avx2
+        parameter: falcon-padded-1024
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-padded-1024/avx2/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-1024_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: PQCLEAN_FALCONPADDED1024_AVX2_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCONPADDED1024_AVX2_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCONPADDED1024_AVX2_crypto_sign_verify
+
+      pqclean_falcon-padded-1024_aarch64:
+        version: "20211101 with PQClean patches"
+        enable_by: OQS_ENABLE_SIG_falcon_padded_1024_aarch64
+        parameter: falcon-padded-1024
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqclean
+            files: [
+              "crypto_sign/falcon-padded-1024/aarch64/*",
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-padded-1024_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        signature_keypair: PQCLEAN_FALCONPADDED1024_AARCH64_crypto_sign_keypair
+        signature_signature: PQCLEAN_FALCONPADDED1024_AARCH64_crypto_sign_signature
+        signature_verify: PQCLEAN_FALCONPADDED1024_AARCH64_crypto_sign_verify
+
   # mayo: null
   # ml_dsa: null
   # mqom: null
