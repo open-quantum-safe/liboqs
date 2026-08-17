@@ -559,11 +559,11 @@ class UpstreamMeta:
             meta.get("post_patches", None),
         )
 
-    def clone_and_patch(self, key: str, upstreams_dir: str):
+    def clone_and_patch(self, upstream_key: str, upstreams_dir: str):
         """Clone the specified commit into <parent_dir>/<upstream_key>,
         then set self._dir to this path, indicating successful cloning
         """
-        upstream_dir = os.path.join(upstreams_dir, key)
+        upstream_dir = os.path.join(upstreams_dir, upstream_key)
         os.mkdir(upstream_dir)
 
         run_subprocess(["git", "init"], upstream_dir)
@@ -991,8 +991,6 @@ class ImplementationMeta:
         for impl_src in self.sources:
             if isinstance(impl_src, CommonSrcRef):
                 continue
-            if impl_src.upstream_key == "mlkem-native":
-                raise NotImplementedError("Something about mlkem-native doesn't work quite yet")
             upstream = upstreams[impl_src.upstream_key]
             impl_src.copy_files(
                 algtype, algfamily_key, self.subdirname or impl_key, upstream, excludes
