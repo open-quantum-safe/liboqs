@@ -5000,7 +5000,7 @@ algfamilies:
         no-secret-dependent-branching-checked-by-valgrind: true
         large-stack-usage: false
         os: [Linux, Darwin]
-        cpuFeatures: [asimd]
+        cpufeatures: [asimd]
         sources:
           - upstream: snova
             files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h,
@@ -5366,38 +5366,669 @@ LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src
         signature_signature: _snova_24_5_4_shake_esk_opt_sign
         signature_verify: _snova_24_5_4_shake_esk_opt_verify
 
-
       snova_SNOVA_24_5_5_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_5_avx2
+        parameter: SNOVA_24_5_5
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=5
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_24_5_5_aes_ssk_avx2_keypair
+        signature_signature: _snova_24_5_5_aes_ssk_avx2_sign
+        signature_verify: _snova_24_5_5_aes_ssk_avx2_verify
+
       snova_SNOVA_24_5_5_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_5_neon
+        parameter: SNOVA_24_5_5
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_5_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=5
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_24_5_5_aes_ssk_neon_keypair
+        signature_signature: _snova_24_5_5_aes_ssk_neon_sign
+        signature_verify: _snova_24_5_5_aes_ssk_neon_verify
+
       snova_SNOVA_24_5_5_opt:
+        version: round2
+        parameter: SNOVA_24_5_5
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_5_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=5
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_24_5_5_aes_ssk_opt_keypair
+        signature_signature: _snova_24_5_5_aes_ssk_opt_sign
+        signature_verify: _snova_24_5_5_aes_ssk_opt_verify
 
       snova_SNOVA_25_8_3_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_25_8_3_avx2
+        parameter: SNOVA_25_8_3
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_25_8_3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=25 -Do_SNOVA=8 -Dl_SNOVA=3
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_25_8_3_aes_ssk_avx2_keypair
+        signature_signature: _snova_25_8_3_aes_ssk_avx2_sign
+        signature_verify: _snova_25_8_3_aes_ssk_avx2_verify
+
       snova_SNOVA_25_8_3_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_25_8_3_neon
+        parameter: SNOVA_25_8_3
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_25_8_3_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=25 -Do_SNOVA=8 -Dl_SNOVA=3
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_25_8_3_aes_ssk_neon_keypair
+        signature_signature: _snova_25_8_3_aes_ssk_neon_sign
+        signature_verify: _snova_25_8_3_aes_ssk_neon_verify
+
       snova_SNOVA_25_8_3_opt:
+        version: round2
+        parameter: SNOVA_25_8_3
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_25_8_3_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=25 -Do_SNOVA=8 -Dl_SNOVA=3
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_25_8_3_aes_ssk_opt_keypair
+        signature_signature: _snova_25_8_3_aes_ssk_opt_sign
+        signature_verify: _snova_25_8_3_aes_ssk_opt_verify
 
       snova_SNOVA_29_6_5_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_29_6_5_avx2
+        parameter: SNOVA_29_6_5
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_29_6_5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=29 -Do_SNOVA=6 -Dl_SNOVA=5
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_29_6_5_aes_ssk_avx2_keypair
+        signature_signature: _snova_29_6_5_aes_ssk_avx2_sign
+        signature_verify: _snova_29_6_5_aes_ssk_avx2_verify
+
       snova_SNOVA_29_6_5_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_29_6_5_neon
+        parameter: SNOVA_29_6_5
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_29_6_5_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=29 -Do_SNOVA=6 -Dl_SNOVA=5
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_29_6_5_aes_ssk_neon_keypair
+        signature_signature: _snova_29_6_5_aes_ssk_neon_sign
+        signature_verify: _snova_29_6_5_aes_ssk_neon_verify
+
       snova_SNOVA_29_6_5_opt:
+        version: round2
+        parameter: SNOVA_29_6_5
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_29_6_5_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=29 -Do_SNOVA=6 -Dl_SNOVA=5
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_29_6_5_aes_ssk_opt_keypair
+        signature_signature: _snova_29_6_5_aes_ssk_opt_sign
+        signature_verify: _snova_29_6_5_aes_ssk_opt_verify
 
       snova_SNOVA_37_17_2_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_37_17_2_avx2
+        parameter: SNOVA_37_17_2
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_17_2_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=37 -Do_SNOVA=17 -Dl_SNOVA=2
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_37_17_2_aes_ssk_avx2_keypair
+        signature_signature: _snova_37_17_2_aes_ssk_avx2_sign
+        signature_verify: _snova_37_17_2_aes_ssk_avx2_verify
+
       snova_SNOVA_37_17_2_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_37_17_2_neon
+        parameter: SNOVA_37_17_2
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_17_2_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=17 -Dl_SNOVA=2
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_37_17_2_aes_ssk_neon_keypair
+        signature_signature: _snova_37_17_2_aes_ssk_neon_sign
+        signature_verify: _snova_37_17_2_aes_ssk_neon_verify
+
       snova_SNOVA_37_17_2_opt:
+        version: round2
+        parameter: SNOVA_37_17_2
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_17_2_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=17 -Dl_SNOVA=2
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_37_17_2_aes_ssk_opt_keypair
+        signature_signature: _snova_37_17_2_aes_ssk_opt_sign
+        signature_verify: _snova_37_17_2_aes_ssk_opt_verify
 
       snova_SNOVA_37_8_4_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_37_8_4_avx2
+        parameter: SNOVA_37_8_4
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_8_4_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=37 -Do_SNOVA=8 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_37_8_4_aes_ssk_avx2_keypair
+        signature_signature: _snova_37_8_4_aes_ssk_avx2_sign
+        signature_verify: _snova_37_8_4_aes_ssk_avx2_verify
+
       snova_SNOVA_37_8_4_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_37_8_4_neon
+        parameter: SNOVA_37_8_4
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_8_4_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=8 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_37_8_4_aes_ssk_neon_keypair
+        signature_signature: _snova_37_8_4_aes_ssk_neon_sign
+        signature_verify: _snova_37_8_4_aes_ssk_neon_verify
+
       snova_SNOVA_37_8_4_opt:
+        version: round2
+        parameter: SNOVA_37_8_4
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_37_8_4_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=37 -Do_SNOVA=8 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_37_8_4_aes_ssk_opt_keypair
+        signature_signature: _snova_37_8_4_aes_ssk_opt_sign
+        signature_verify: _snova_37_8_4_aes_ssk_opt_verify
 
       snova_SNOVA_49_11_3_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_49_11_3_avx2
+        parameter: SNOVA_49_11_3
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_49_11_3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=49 -Do_SNOVA=11 -Dl_SNOVA=3
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_49_11_3_aes_ssk_avx2_keypair
+        signature_signature: _snova_49_11_3_aes_ssk_avx2_sign
+        signature_verify: _snova_49_11_3_aes_ssk_avx2_verify
+
       snova_SNOVA_49_11_3_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_49_11_3_neon
+        parameter: SNOVA_49_11_3
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_49_11_3_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=49 -Do_SNOVA=11 -Dl_SNOVA=3
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_49_11_3_aes_ssk_neon_keypair
+        signature_signature: _snova_49_11_3_aes_ssk_neon_sign
+        signature_verify: _snova_49_11_3_aes_ssk_neon_verify
+
       snova_SNOVA_49_11_3_opt:
+        version: round2
+        parameter: SNOVA_49_11_3
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_49_11_3_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=49 -Do_SNOVA=11 -Dl_SNOVA=3
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_49_11_3_aes_ssk_opt_keypair
+        signature_signature: _snova_49_11_3_aes_ssk_opt_sign
+        signature_verify: _snova_49_11_3_aes_ssk_opt_verify
 
       snova_SNOVA_56_25_2_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_56_25_2_avx2
+        parameter: SNOVA_56_25_2
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_56_25_2_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=56 -Do_SNOVA=25 -Dl_SNOVA=2
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_56_25_2_aes_ssk_avx2_keypair
+        signature_signature: _snova_56_25_2_aes_ssk_avx2_sign
+        signature_verify: _snova_56_25_2_aes_ssk_avx2_verify
+
       snova_SNOVA_56_25_2_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_56_25_2_neon
+        parameter: SNOVA_56_25_2
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_56_25_2_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=56 -Do_SNOVA=25 -Dl_SNOVA=2
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_56_25_2_aes_ssk_neon_keypair
+        signature_signature: _snova_56_25_2_aes_ssk_neon_sign
+        signature_verify: _snova_56_25_2_aes_ssk_neon_verify
+
       snova_SNOVA_56_25_2_opt:
+        version: round2
+        parameter: SNOVA_56_25_2
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_56_25_2_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=56 -Do_SNOVA=25 -Dl_SNOVA=2
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_56_25_2_aes_ssk_opt_keypair
+        signature_signature: _snova_56_25_2_aes_ssk_opt_sign
+        signature_verify: _snova_56_25_2_aes_ssk_opt_verify
 
       snova_SNOVA_60_10_4_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_60_10_4_avx2
+        parameter: SNOVA_60_10_4
+        uarch: x86_64
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_60_10_4_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=60 -Do_SNOVA=10 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_60_10_4_aes_ssk_avx2_keypair
+        signature_signature: _snova_60_10_4_aes_ssk_avx2_sign
+        signature_verify: _snova_60_10_4_aes_ssk_avx2_verify
+
       snova_SNOVA_60_10_4_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_60_10_4_neon
+        parameter: SNOVA_60_10_4
+        uarch: arm_8
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_60_10_4_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=60 -Do_SNOVA=10 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_60_10_4_aes_ssk_neon_keypair
+        signature_signature: _snova_60_10_4_aes_ssk_neon_sign
+        signature_verify: _snova_60_10_4_aes_ssk_neon_verify
+
       snova_SNOVA_60_10_4_opt:
+        version: round2
+        parameter: SNOVA_60_10_4
+        uarch: portable
+        common-crypto: {AES: liboqs, SHA3: liboqs}
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h, liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h, src/snova_plasma/snova_shake.c, src/params.h, src/snova.h, src/snova_aes.c, src/snova_common.h, src/snova_common.c, src/snova_plasma/snova_opt.h, src/snova_plasma/snova_plasma_vec.h, src/snova_plasma/snova_plasma_option.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h, src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_60_10_4_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=60 -Do_SNOVA=10 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_60_10_4_aes_ssk_opt_keypair
+        signature_signature: _snova_60_10_4_aes_ssk_opt_sign
+        signature_verify: _snova_60_10_4_aes_ssk_opt_verify
 
   # uov:
   #   displayname: UOV
