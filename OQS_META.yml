@@ -6030,394 +6030,1187 @@ LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src
         signature_signature: _snova_60_10_4_aes_ssk_opt_sign
         signature_verify: _snova_60_10_4_aes_ssk_opt_verify
 
-  # uov:
-  #   displayname: UOV
-  #   algtype: sig
-  #   principal-submitters:
-  #     - Ward Beullens
-  #     - Ming-Shing Chen
-  #     - Jintai Ding
-  #     - Boru Gong
-  #     - Matthias J. Kannwischer
-  #     - Jacques Patarin
-  #     - Bo-Yuan Peng
-  #     - Dieter Schmidt
-  #     - Cheng-Jhih Shih
-  #     - Chengdong Tao
-  #     - Bo-Yin Yang
-  #   crypto-assumption: multivariable quadratic equations, oil and vinegar
-  #   website: https://www.uovsig.org/
-  #   nist-round: 2
-  #   spec-version: NIST Round 2 (February 2025)
-  #   standardization-status: >-
-  #     Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/uov-spec-round2-web.pdf)
-  #     consideration
-  #   upstream-maintenance: Best effort
-  #   upstream-statement-url: null
-  #   primary-upstream: pqov
-  #   oqs-support-tier: 3
-  #   parameters:
-  # 
-  #     OV-Is:
-  #       security-strength: 1
-  #       security-model: EUF-CMA
-  #       length-public-key: 412160
-  #       length-secret-key: 348704
-  #       length-signature: 96
-  #       nistkat-sha256: dced6dd2c556663d48f579d5ea78e918c4eb46ecdbfcf418d83fbc9d2e6b5273
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_Is
-  #       default-implementation: uov_ov_Is_ref
-  # 
-  #     OV-Ip:
-  #       security-strength: 1
-  #       security-model: EUF-CMA
-  #       length-public-key: 278432
-  #       length-secret-key: 237896
-  #       length-signature: 128
-  #       nistkat-sha256: 2a24530e2dca2d4d4a7b9bf72f987ec6e85915194629c4673b892bdba5f42152
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_Ip
-  #       default-implementation: uov_ov_Ip_ref
-  # 
-  #     OV-III:
-  #       security-strength: 3
-  #       security-model: EUF-CMA
-  #       length-public-key: 1225440
-  #       length-secret-key: 1044320
-  #       length-signature: 200
-  #       nistkat-sha256: f8101912d1d2c2eb0a5903b74b4e4c98bd5008be9666dcaaa6f7912918005e5e
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_III
-  #       default-implementation: uov_ov_III_ref
-  # 
-  #     OV-V:
-  #       security-strength: 5
-  #       security-model: EUF-CMA
-  #       length-public-key: 2869440
-  #       length-secret-key: 2436704
-  #       length-signature: 260
-  #       nistkat-sha256: ae0a9a466a203b98ad8016f7280b099205ff4d4f7eda671df8c1ddf4908a7fc7
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_V
-  #       default-implementation: uov_ov_V_ref
-  # 
-  #     OV-Is-pkc:
-  #       security-strength: 1
-  #       security-model: EUF-CMA
-  #       length-public-key: 66576
-  #       length-secret-key: 348704
-  #       length-signature: 96
-  #       nistkat-sha256: fdbbb8d6b726061f53e101cc88e4f3073def852724c7b7a01ea686599132ccea
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc
-  #       default-implementation: uov_ov_Is_pkc_ref
-  # 
-  #     OV-Ip-pkc:
-  #       security-strength: 1
-  #       security-model: EUF-CMA
-  #       length-public-key: 43576
-  #       length-secret-key: 237896
-  #       length-signature: 128
-  #       nistkat-sha256: 1131d0bbb6932258c40b833cbf61db6fec58088c702037e855c73b0d3e7ef297
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc
-  #       default-implementation: uov_ov_Ip_pkc_ref
-  # 
-  #     OV-III-pkc:
-  #       security-strength: 3
-  #       security-model: EUF-CMA
-  #       length-public-key: 189232
-  #       length-secret-key: 1044320
-  #       length-signature: 200
-  #       nistkat-sha256: 1d4ac6e4ed7238c6cb735db5a1e411fe46e4d2f44f3131ec0ddfb6b7d166b2e2
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc
-  #       default-implementation: uov_ov_III_pkc_ref
-  # 
-  #     OV-V-pkc:
-  #       security-strength: 5
-  #       security-model: EUF-CMA
-  #       length-public-key: 446992
-  #       length-secret-key: 2436704
-  #       length-signature: 260
-  #       nistkat-sha256: fde989e4a8e2276a989975a2553f363cd3d3c23eccb7de421bcf885baad845e2
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc
-  #       default-implementation: uov_ov_V_pkc_ref
-  # 
-  #     OV-Is-pkc-skc:
-  #       security-strength: 1
-  #       security-model: EUF-CMA
-  #       length-public-key: 66576
-  #       length-secret-key: 32
-  #       length-signature: 96
-  #       nistkat-sha256: 6fe28b2d1a7186c9d826a33f770eea02976b429219a21f812e5db599f5b71a80
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_skc
-  #       default-implementation: uov_ov_Is_pkc_skc_ref
-  # 
-  #     OV-Ip-pkc-skc:
-  #       security-strength: 1
-  #       security-model: EUF-CMA
-  #       length-public-key: 43576
-  #       length-secret-key: 32
-  #       length-signature: 128
-  #       nistkat-sha256: a8fde119b67a50134d0b71560ead36b6ce00909962d6f5532d4797959d9977b0
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc
-  #       default-implementation: uov_ov_Ip_pkc_skc_ref
-  # 
-  #     OV-III-pkc-skc:
-  #       security-strength: 3
-  #       security-model: EUF-CMA
-  #       length-public-key: 189232
-  #       length-secret-key: 32
-  #       length-signature: 200
-  #       nistkat-sha256: 952e8afc6a6a2437afd0ae2d8a3a964cdbfdf69da74c99288b299b6cc56f672e
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_skc
-  #       default-implementation: uov_ov_III_pkc_skc_ref
-  # 
-  #     OV-V-pkc-skc:
-  #       security-strength: 5
-  #       security-model: EUF-CMA
-  #       length-public-key: 446992
-  #       length-secret-key: 32
-  #       length-signature: 260
-  #       nistkat-sha256: 88ed517012434037b5dc0b5120020a0cb3cfff9991e3391cd3067a6251b4e724
-  #       enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_skc
-  #       default-implementation: uov_ov_V_pkc_skc_ref
-  # 
-  #   implementations:
-  #     uov_ov_Is_ref:
-  #       version: Round 2
-  #       parameter: OV-Is
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_Is_ref_keypair
-  #       signature_signature: pqov_uov_Is_ref_signature
-  #       signature_verify: pqov_uov_Is_ref_verify
-  # 
-  #     uov_ov_Ip_ref:
-  #       version: Round 2
-  #       parameter: OV-Ip
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_Ip_ref_keypair
-  #       signature_signature: pqov_uov_Ip_ref_signature
-  #       signature_verify: pqov_uov_Ip_ref_verify
-  # 
-  #     uov_ov_III_ref:
-  #       version: Round 2
-  #       parameter: OV-III
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_III_ref_keypair
-  #       signature_signature: pqov_uov_III_ref_signature
-  #       signature_verify: pqov_uov_III_ref_verify
-  # 
-  #     uov_ov_V_ref:
-  #       version: Round 2
-  #       parameter: OV-V
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_V_ref_keypair
-  #       signature_signature: pqov_uov_V_ref_signature
-  #       signature_verify: pqov_uov_V_ref_verify
-  # 
-  #     uov_ov_Is_pkc_ref:
-  #       version: Round 2
-  #       parameter: OV-Is-pkc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_Is_pkc_ref_keypair
-  #       signature_signature: pqov_uov_Is_pkc_ref_signature
-  #       signature_verify: pqov_uov_Is_pkc_ref_verify
-  # 
-  #     uov_ov_Ip_pkc_ref:
-  #       version: Round 2
-  #       parameter: OV-Ip-pkc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_Ip_pkc_ref_keypair
-  #       signature_signature: pqov_uov_Ip_pkc_ref_signature
-  #       signature_verify: pqov_uov_Ip_pkc_ref_verify
-  # 
-  #     uov_ov_III_pkc_ref:
-  #       version: Round 2
-  #       parameter: OV-III-pkc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_III_pkc_ref_keypair
-  #       signature_signature: pqov_uov_III_pkc_ref_signature
-  #       signature_verify: pqov_uov_III_pkc_ref_verify
-  # 
-  #     uov_ov_V_pkc_ref:
-  #       version: Round 2
-  #       parameter: OV-V-pkc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_V_pkc_ref_keypair
-  #       signature_signature: pqov_uov_V_pkc_ref_signature
-  #       signature_verify: pqov_uov_V_pkc_ref_verify
-  # 
-  #     uov_ov_Is_pkc_skc_ref:
-  #       version: Round 2
-  #       parameter: OV-Is-pkc-skc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_Is_pkc_skc_ref_keypair
-  #       signature_signature: pqov_uov_Is_pkc_skc_ref_signature
-  #       signature_verify: pqov_uov_Is_pkc_skc_ref_verify
-  # 
-  #     uov_ov_Ip_pkc_skc_ref:
-  #       version: Round 2
-  #       parameter: OV-Ip-pkc-skc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_Ip_pkc_skc_ref_keypair
-  #       signature_signature: pqov_uov_Ip_pkc_skc_ref_signature
-  #       signature_verify: pqov_uov_Ip_pkc_skc_ref_verify
-  # 
-  #     uov_ov_III_pkc_skc_ref:
-  #       version: Round 2
-  #       parameter: OV-III-pkc-skc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_III_pkc_skc_ref_keypair
-  #       signature_signature: pqov_uov_III_pkc_skc_ref_signature
-  #       signature_verify: pqov_uov_III_pkc_skc_ref_verify
-  # 
-  #     uov_ov_V_pkc_skc_ref:
-  #       version: Round 2
-  #       parameter: OV-V-pkc-skc
-  #       uarch: portable
-  #       common-crypto:
-  #         AES: liboqs
-  #         SHA3: liboqs
-  #       no-secret-dependent-branching-claimed: true
-  #       no-secret-dependent-branching-checked-by-valgrind: true
-  #       large-stack-usage: false
-  #       sources:
-  #       - upstream: pqov
-  #         files:
-  #         - src/*
-  #         - utils/*
-  #         - integration/liboqs/utils_malloc.h
-  #       signature_keypair: pqov_uov_V_pkc_skc_ref_keypair
-  #       signature_signature: pqov_uov_V_pkc_skc_ref_signature
-  #       signature_verify: pqov_uov_V_pkc_skc_ref_verify
-  
+  uov:
+    displayname: UOV
+    algtype: sig
+    principal-submitters:
+      - Ward Beullens
+      - Ming-Shing Chen
+      - Jintai Ding
+      - Boru Gong
+      - Matthias J. Kannwischer
+      - Jacques Patarin
+      - Bo-Yuan Peng
+      - Dieter Schmidt
+      - Cheng-Jhih Shih
+      - Chengdong Tao
+      - Bo-Yin Yang
+    crypto-assumption: multivariable quadratic equations, oil and vinegar
+    website: https://www.uovsig.org/
+    nist-round: "2"
+    spec-version: NIST Round 2 (February 2025)
+    standardization-status: >-
+      Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/uov-spec-round2-web.pdf)
+      consideration
+    upstream-maintenance: Best effort
+    upstream-statement-url: null
+    primary-upstream: pqov
+    oqs-support-tier: 3
+    parameters:
+
+      OV-Is:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 412160
+        length-secret-key: 348704
+        length-signature: 96
+        nistkat-sha256: dced6dd2c556663d48f579d5ea78e918c4eb46ecdbfcf418d83fbc9d2e6b5273
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is
+        default-implementation: uov_ov_Is_ref
+
+      OV-Ip:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 278432
+        length-secret-key: 237896
+        length-signature: 128
+        nistkat-sha256: 2a24530e2dca2d4d4a7b9bf72f987ec6e85915194629c4673b892bdba5f42152
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip
+        default-implementation: uov_ov_Ip_ref
+
+      OV-III:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 1225440
+        length-secret-key: 1044320
+        length-signature: 200
+        nistkat-sha256: f8101912d1d2c2eb0a5903b74b4e4c98bd5008be9666dcaaa6f7912918005e5e
+        enable_by: OQS_ENABLE_SIG_uov_ov_III
+        default-implementation: uov_ov_III_ref
+
+      OV-V:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 2869440
+        length-secret-key: 2436704
+        length-signature: 260
+        nistkat-sha256: ae0a9a466a203b98ad8016f7280b099205ff4d4f7eda671df8c1ddf4908a7fc7
+        enable_by: OQS_ENABLE_SIG_uov_ov_V
+        default-implementation: uov_ov_V_ref
+
+      OV-Is-pkc:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 66576
+        length-secret-key: 348704
+        length-signature: 96
+        nistkat-sha256: fdbbb8d6b726061f53e101cc88e4f3073def852724c7b7a01ea686599132ccea
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc
+        default-implementation: uov_ov_Is_pkc_ref
+
+      OV-Ip-pkc:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 43576
+        length-secret-key: 237896
+        length-signature: 128
+        nistkat-sha256: 1131d0bbb6932258c40b833cbf61db6fec58088c702037e855c73b0d3e7ef297
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc
+        default-implementation: uov_ov_Ip_pkc_ref
+
+      OV-III-pkc:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 189232
+        length-secret-key: 1044320
+        length-signature: 200
+        nistkat-sha256: 1d4ac6e4ed7238c6cb735db5a1e411fe46e4d2f44f3131ec0ddfb6b7d166b2e2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc
+        default-implementation: uov_ov_III_pkc_ref
+
+      OV-V-pkc:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 446992
+        length-secret-key: 2436704
+        length-signature: 260
+        nistkat-sha256: fde989e4a8e2276a989975a2553f363cd3d3c23eccb7de421bcf885baad845e2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc
+        default-implementation: uov_ov_V_pkc_ref
+
+      OV-Is-pkc-skc:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 66576
+        length-secret-key: 32
+        length-signature: 96
+        nistkat-sha256: 6fe28b2d1a7186c9d826a33f770eea02976b429219a21f812e5db599f5b71a80
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_skc
+        default-implementation: uov_ov_Is_pkc_skc_ref
+
+      OV-Ip-pkc-skc:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 43576
+        length-secret-key: 32
+        length-signature: 128
+        nistkat-sha256: a8fde119b67a50134d0b71560ead36b6ce00909962d6f5532d4797959d9977b0
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc
+        default-implementation: uov_ov_Ip_pkc_skc_ref
+
+      OV-III-pkc-skc:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 189232
+        length-secret-key: 32
+        length-signature: 200
+        nistkat-sha256: 952e8afc6a6a2437afd0ae2d8a3a964cdbfdf69da74c99288b299b6cc56f672e
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_skc
+        default-implementation: uov_ov_III_pkc_skc_ref
+
+      OV-V-pkc-skc:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 446992
+        length-secret-key: 32
+        length-signature: 260
+        nistkat-sha256: 88ed517012434037b5dc0b5120020a0cb3cfff9991e3391cd3067a6251b4e724
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_skc
+        default-implementation: uov_ov_V_pkc_skc_ref
+
+    implementations:
+
+      pqov_ov_III_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_avx2
+        parameter: OV-III
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_III_avx2_keypair
+        signature_signature: pqov_uov_III_avx2_signature
+        signature_verify: pqov_uov_III_avx2_verify
+
+      pqov_ov_III_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_neon
+        parameter: OV-III
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_III_neon_keypair
+        signature_signature: pqov_uov_III_neon_signature
+        signature_verify: pqov_uov_III_neon_verify
+
+      pqov_ov_III_pkc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_avx2
+        parameter: OV-III
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_III_pkc_avx2_keypair
+        signature_signature: pqov_uov_III_pkc_avx2_signature
+        signature_verify: pqov_uov_III_pkc_avx2_verify
+
+      pqov_ov_III_pkc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_neon
+        parameter: OV-III
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_III_pkc_neon_keypair
+        signature_signature: pqov_uov_III_pkc_neon_signature
+        signature_verify: pqov_uov_III_pkc_neon_verify
+
+      pqov_ov_III_pkc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_ref
+        parameter: OV-III
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_PKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_III_pkc_ref_keypair
+        signature_signature: pqov_uov_III_pkc_ref_signature
+        signature_verify: pqov_uov_III_pkc_ref_verify
+
+      pqov_ov_III_pkc_skc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_skc_avx2
+        parameter: OV-III
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_skc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_III_pkc_skc_avx2_keypair
+        signature_signature: pqov_uov_III_pkc_skc_avx2_signature
+        signature_verify: pqov_uov_III_pkc_skc_avx2_verify
+
+      pqov_ov_III_pkc_skc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_skc_neon
+        parameter: OV-III
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_skc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_III_pkc_skc_neon_keypair
+        signature_signature: pqov_uov_III_pkc_skc_neon_signature
+        signature_verify: pqov_uov_III_pkc_skc_neon_verify
+
+      pqov_ov_III_pkc_skc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_skc_ref
+        parameter: OV-III
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_pkc_skc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_PKC_SKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_III_pkc_skc_ref_keypair
+        signature_signature: pqov_uov_III_pkc_skc_ref_signature
+        signature_verify: pqov_uov_III_pkc_skc_ref_verify
+
+      pqov_ov_III_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_III_ref
+        parameter: OV-III
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_III_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_184_72 -D_OV_CLASSIC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_III_ref_keypair
+        signature_signature: pqov_uov_III_ref_signature
+        signature_verify: pqov_uov_III_ref_verify
+
+      pqov_ov_Ip_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_avx2
+        parameter: OV-Ip
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_Ip_avx2_keypair
+        signature_signature: pqov_uov_Ip_avx2_signature
+        signature_verify: pqov_uov_Ip_avx2_verify
+
+      pqov_ov_Ip_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_neon
+        parameter: OV-Ip
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_Ip_neon_keypair
+        signature_signature: pqov_uov_Ip_neon_signature
+        signature_verify: pqov_uov_Ip_neon_verify
+
+      pqov_ov_Ip_pkc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_avx2
+        parameter: OV-Ip
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_Ip_pkc_avx2_keypair
+        signature_signature: pqov_uov_Ip_pkc_avx2_signature
+        signature_verify: pqov_uov_Ip_pkc_avx2_verify
+
+      pqov_ov_Ip_pkc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_neon
+        parameter: OV-Ip
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_Ip_pkc_neon_keypair
+        signature_signature: pqov_uov_Ip_pkc_neon_signature
+        signature_verify: pqov_uov_Ip_pkc_neon_verify
+
+      pqov_ov_Ip_pkc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_ref
+        parameter: OV-Ip
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_PKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_Ip_pkc_ref_keypair
+        signature_signature: pqov_uov_Ip_pkc_ref_signature
+        signature_verify: pqov_uov_Ip_pkc_ref_verify
+
+      pqov_ov_Ip_pkc_skc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_avx2
+        parameter: OV-Ip
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_skc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_Ip_pkc_skc_avx2_keypair
+        signature_signature: pqov_uov_Ip_pkc_skc_avx2_signature
+        signature_verify: pqov_uov_Ip_pkc_skc_avx2_verify
+
+      pqov_ov_Ip_pkc_skc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_neon
+        parameter: OV-Ip
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_skc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_Ip_pkc_skc_neon_keypair
+        signature_signature: pqov_uov_Ip_pkc_skc_neon_signature
+        signature_verify: pqov_uov_Ip_pkc_skc_neon_verify
+
+      pqov_ov_Ip_pkc_skc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc_ref
+        parameter: OV-Ip
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_pkc_skc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_PKC_SKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_Ip_pkc_skc_ref_keypair
+        signature_signature: pqov_uov_Ip_pkc_skc_ref_signature
+        signature_verify: pqov_uov_Ip_pkc_skc_ref_verify
+
+      pqov_ov_Ip_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Ip_ref
+        parameter: OV-Ip
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Ip_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_112_44 -D_OV_CLASSIC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_Ip_ref_keypair
+        signature_signature: pqov_uov_Ip_ref_signature
+        signature_verify: pqov_uov_Ip_ref_verify
+
+      pqov_ov_Is_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_avx2
+        parameter: OV-Is
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/ref/blas_matrix_ref.h", "src/ref/blas_matrix_ref.c", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_Is_avx2_keypair
+        signature_signature: pqov_uov_Is_avx2_signature
+        signature_verify: pqov_uov_Is_avx2_verify
+
+      pqov_ov_Is_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_neon
+        parameter: OV-Is
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_Is_neon_keypair
+        signature_signature: pqov_uov_Is_neon_signature
+        signature_verify: pqov_uov_Is_neon_verify
+
+      pqov_ov_Is_pkc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_avx2
+        parameter: OV-Is
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/ref/blas_matrix_ref.h", "src/ref/blas_matrix_ref.c", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_Is_pkc_avx2_keypair
+        signature_signature: pqov_uov_Is_pkc_avx2_signature
+        signature_verify: pqov_uov_Is_pkc_avx2_verify
+
+      pqov_ov_Is_pkc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_neon
+        parameter: OV-Is
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_Is_pkc_neon_keypair
+        signature_signature: pqov_uov_Is_pkc_neon_signature
+        signature_verify: pqov_uov_Is_pkc_neon_verify
+
+      pqov_ov_Is_pkc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_ref
+        parameter: OV-Is
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_PKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_Is_pkc_ref_keypair
+        signature_signature: pqov_uov_Is_pkc_ref_signature
+        signature_verify: pqov_uov_Is_pkc_ref_verify
+
+      pqov_ov_Is_pkc_skc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_avx2
+        parameter: OV-Is
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/ref/blas_matrix_ref.h", "src/ref/blas_matrix_ref.c", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_skc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_Is_pkc_skc_avx2_keypair
+        signature_signature: pqov_uov_Is_pkc_skc_avx2_signature
+        signature_verify: pqov_uov_Is_pkc_skc_avx2_verify
+
+      pqov_ov_Is_pkc_skc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_neon
+        parameter: OV-Is
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_skc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_Is_pkc_skc_neon_keypair
+        signature_signature: pqov_uov_Is_pkc_skc_neon_signature
+        signature_verify: pqov_uov_Is_pkc_skc_neon_verify
+
+      pqov_ov_Is_pkc_skc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_skc_ref
+        parameter: OV-Is
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_pkc_skc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_PKC_SKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_Is_pkc_skc_ref_keypair
+        signature_signature: pqov_uov_Is_pkc_skc_ref_signature
+        signature_verify: pqov_uov_Is_pkc_skc_ref_verify
+
+      pqov_ov_Is_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_Is_ref
+        parameter: OV-Is
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_Is_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV16_160_64 -D_OV_CLASSIC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_Is_ref_keypair
+        signature_signature: pqov_uov_Is_ref_signature
+        signature_verify: pqov_uov_Is_ref_verify
+
+      pqov_ov_V_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_avx2
+        parameter: OV-V
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_V_avx2_keypair
+        signature_signature: pqov_uov_V_avx2_signature
+        signature_verify: pqov_uov_V_avx2_verify
+
+      pqov_ov_V_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_neon
+        parameter: OV-V
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_CLASSIC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_V_neon_keypair
+        signature_signature: pqov_uov_V_neon_signature
+        signature_verify: pqov_uov_V_neon_verify
+
+      pqov_ov_V_pkc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_avx2
+        parameter: OV-V
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_V_pkc_avx2_keypair
+        signature_signature: pqov_uov_V_pkc_avx2_signature
+        signature_verify: pqov_uov_V_pkc_avx2_verify
+
+      pqov_ov_V_pkc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_neon
+        parameter: OV-V
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_PKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_V_pkc_neon_keypair
+        signature_signature: pqov_uov_V_pkc_neon_signature
+        signature_verify: pqov_uov_V_pkc_neon_verify
+
+      pqov_ov_V_pkc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_ref
+        parameter: OV-V
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_PKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_V_pkc_ref_keypair
+        signature_signature: pqov_uov_V_pkc_ref_signature
+        signature_verify: pqov_uov_V_pkc_ref_verify
+
+      pqov_ov_V_pkc_skc_avx2:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_skc_avx2
+        parameter: OV-V
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/avx2/blas_avx2.h", "src/avx2/blas_matrix_avx2.h", "src/avx2/blas_matrix_avx2.c", "src/avx2/gf16_avx2.h", "src/avx2/gf256_tabs.c", "src/avx2/gf256_tabs.h", "src/ssse3/gf16_sse.h", "src/ssse3/gf16_tabs.h", "src/ssse3/gf16_tabs.c", "src/ssse3/blas_sse.h", "src/ssse3/blas_matrix_sse.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_skc_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_AVX2_ -D_MUL_WITH_MULTAB_"
+          - scope: private
+            opts: "-mavx2"
+        signature_keypair: pqov_uov_V_pkc_skc_avx2_keypair
+        signature_signature: pqov_uov_V_pkc_skc_avx2_signature
+        signature_verify: pqov_uov_V_pkc_skc_avx2_verify
+
+      pqov_ov_V_pkc_skc_neon:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_skc_neon
+        parameter: OV-V
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [asimd]
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_u32.h", "src/neon/blas_matrix_neon.c", "src/neon/blas_matrix_neon.h", "src/neon/blas_neon.h", "src/neon/gf16_neon.h", "src/neon/gf16_tabs_neon.c", "src/neon/gf16_tabs_neon.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_skc_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_PKC_SKC -D_UTILS_OQS_ -D_BLAS_NEON_"
+        signature_keypair: pqov_uov_V_pkc_skc_neon_keypair
+        signature_signature: pqov_uov_V_pkc_skc_neon_signature
+        signature_verify: pqov_uov_V_pkc_skc_neon_verify
+
+      pqov_ov_V_pkc_skc_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_skc_ref
+        parameter: OV-V
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_pkc_skc_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_PKC_SKC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_V_pkc_skc_ref_keypair
+        signature_signature: pqov_uov_V_pkc_skc_ref_signature
+        signature_verify: pqov_uov_V_pkc_skc_ref_verify
+
+      pqov_ov_V_ref:
+        version: Round 2
+        enable_by: OQS_ENABLE_SIG_uov_ov_V_ref
+        parameter: OV-V
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: []
+        sources:
+          - upstream: pqov
+            files: ["src/api.h", "src/blas.h", "src/blas_comm.h", "src/blas_matrix.c", "src/blas_matrix.h", "src/config.h", "src/gf16.h", "src/ov.c", "src/ov.h", "src/ov_blas.h", "src/ov_keypair.c", "src/ov_keypair.h", "src/ov_keypair_computation.c", "src/ov_keypair_computation.h", "src/ov_publicmap.c", "src/parallel_matrix_op.c", "src/parallel_matrix_op.h", "src/params.h", "src/sign.c", "src/ref/blas_matrix_ref.c", "src/ref/blas_matrix_ref.h", "src/ref/blas_u32.h", "utils/utils_hash.c", "utils/utils_hash.h", "utils/utils_prng.c", "utils/utils_prng.h", "utils/utils_randombytes.c", "utils/utils_randombytes.h", "integration/liboqs/utils_malloc.h"]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/pqov_ov_V_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: "-D_OV256_244_96 -D_OV_CLASSIC -D_UTILS_OQS_"
+        signature_keypair: pqov_uov_V_ref_keypair
+        signature_signature: pqov_uov_V_ref_signature
+        signature_verify: pqov_uov_V_ref_verify
+
   # mqom: null
   # slh_dsa: null

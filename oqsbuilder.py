@@ -804,9 +804,9 @@ class ImplSrcMeta:
                 shutil.copy2(source_full_path, destpath)
                 destpaths.append(source_path if self.preserve_subdirs else filename)
             elif os.path.isdir(source_full_path):
-                raise NotImplementedError("""OQSBuilder currently does not
-                support recursively copying directories from upstream. Use
-                explicit set of files instead.""")
+                raise NotImplementedError(f"{source_full_path} OQSBuilder "
+                "currently does not support recursively copying directories "
+                "from upstream. Use explicit set of files instead.")
             else:
                 raise ValueError(f"{source_full_path} is invalid")
         self.set_paths(algtype, algfamily_key, dest_dirname, destpaths)
