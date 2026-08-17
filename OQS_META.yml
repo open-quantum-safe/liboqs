@@ -1918,7 +1918,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: cupqc
-            files: [ml-kem-512/cupqc_ml-kem.cu]
+            files: [cuda/ml-kem-512/cupqc_ml-kem.cu]
         compile_opts:
           - scope: private
             opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
@@ -1942,7 +1942,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: icicle
-            files: [ml-kem-512/icicle_ml-kem.cpp]
+            files: [icicle_cuda/ml-kem-512/icicle_ml-kem.cpp]
         link_libs: [icicle::icicle_pqc_package]
         signature_keypair: icicle_ml_kem_512_keypair
         signature_enc: icicle_ml_kem_512_enc
@@ -2104,7 +2104,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: cupqc
-            files: [ml-kem-768/cupqc_ml-kem.cu]
+            files: [cuda/ml-kem-768/cupqc_ml-kem.cu]
         compile_opts:
           - scope: private
             opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
@@ -2128,7 +2128,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: icicle
-            files: [ml-kem-768/icicle_ml-kem.cpp]
+            files: [icicle_cuda/ml-kem-768/icicle_ml-kem.cpp]
         link_libs: [icicle::icicle_pqc_package]
         signature_keypair: icicle_ml_kem_768_keypair
         signature_enc: icicle_ml_kem_768_enc
@@ -2290,7 +2290,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: cupqc
-            files: [ml-kem-1024/cupqc_ml-kem.cu]
+            files: [cuda/ml-kem-1024/cupqc_ml-kem.cu]
         compile_opts:
           - scope: private
             opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
@@ -2314,7 +2314,7 @@ algfamilies:
         os: [Linux, Darwin]
         sources:
           - upstream: icicle
-            files: [ml-kem-1024/icicle_ml-kem.cpp]
+            files: [icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp]
         link_libs: [icicle::icicle_pqc_package]
         signature_keypair: icicle_ml_kem_1024_keypair
         signature_enc: icicle_ml_kem_1024_enc

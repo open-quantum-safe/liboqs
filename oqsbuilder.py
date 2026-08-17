@@ -804,12 +804,19 @@ class ImplSrcMeta:
                 shutil.copy2(source_full_path, destpath)
                 destpaths.append(source_path if self.preserve_subdirs else filename)
             elif os.path.isdir(source_full_path):
-                raise NotImplementedError(f"{source_full_path} OQSBuilder "
-                "currently does not support recursively copying directories "
-                "from upstream. Use explicit set of files instead.")
+                raise NotImplementedError(
+                    f"{source_full_path} OQSBuilder "
+                    "currently does not support recursively copying directories "
+                    "from upstream. Use explicit set of files instead."
+                )
             else:
                 raise ValueError(f"{source_full_path} is invalid")
         self.set_paths(algtype, algfamily_key, dest_dirname, destpaths)
+
+    def get_paths(self) -> list[str]:
+        if not self._paths:
+            raise ValueError("Paths not set")
+        return self._paths
 
     def set_paths(
         self,
@@ -995,9 +1002,17 @@ class ImplementationMeta:
             if isinstance(impl_src, CommonSrcRef):
                 continue
             upstream = upstreams[impl_src.upstream_key]
-            impl_src.copy_files(
-                algtype, algfamily_key, self.subdirname or impl_key, upstream, excludes
+            dest_dirname = self.subdirname or impl_key
+            destdir = os.path.join(
+                LIBOQS_DIR, "src", algtype.value, algfamily_key, dest_dirname
             )
+            if os.path.isdir(destdir):
+                logger.info("Refreshing %s", dest_dirname)
+                shutil.rmtree(destdir)
+            impl_src.copy_files(
+                algtype, algfamily_key, dest_dirname, upstream, excludes
+            )
+            logger.info("Put %d files in %s", len(impl_src.get_paths()), dest_dirname)
 
     @staticmethod
     def parse_src_meta(src_meta: dict):
