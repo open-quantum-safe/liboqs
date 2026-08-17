@@ -4795,7 +4795,714 @@ algfamilies:
         signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_signature
         signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_verify
 
+  snova:
+    displayname: SNOVA
+    algtype: sig
+    principal-submitters:
+      - Lih-Chung Wang
+      - Chun-Yen Chou
+      - Jintai Ding
+      - Yen-Liang Kuan
+      - Jan Adriaan Leegwater
+      - Ming-Siou Li
+      - Bo-Shu Tseng
+      - Po-En Tseng
+      - Chia-Chun Wang
+    crypto-assumption: multivariable quadratic equations, oil and vinegar
+    website: https://snova.pqclab.org/
+    nist-round: "2"
+    spec-version: Round 2
+    standardization-status: >-
+      Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/snova-spec-round2-web.pdf)
+      consideration
+    upstream-maintenance: Best effort
+    upstream-statement-url: null
+    primary-upstream: snova
+    oqs-support-tier: 3
+    parameters:
+
+      SNOVA_24_5_4:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 1016
+        length-secret-key: 48
+        length-signature: 248
+        nistkat-sha256: 2759723cf44a3122df1d243132474255302edd2c7eb492986a4150c0099fa6fa
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_4
+        default-implementation: snova_SNOVA_24_5_4_opt
+
+      SNOVA_24_5_4_SHAKE:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 1016
+        length-secret-key: 48
+        length-signature: 248
+        nistkat-sha256: 40f943cbf34a57ebb3b5113f94c15c93a4e2d9b7deca02aef88a6ab2554da303
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE
+        default-implementation: snova_SNOVA_24_5_4_SHAKE_opt
+
+      SNOVA_24_5_4_esk:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 1016
+        length-secret-key: 36848
+        length-signature: 248
+        nistkat-sha256: a971a22090bcf3f1146f334980bec96b95046eea30c43bc5a8e3e656e339348a
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_4_esk
+        default-implementation: snova_SNOVA_24_5_4_esk_opt
+
+      SNOVA_24_5_4_SHAKE_esk:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 1016
+        length-secret-key: 36848
+        length-signature: 248
+        nistkat-sha256: 5b7cb908641e564f41f27fd69d53fb8eff263d038afd2964fad57af82b291eba
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_4_SHAKE_esk
+        default-implementation: snova_SNOVA_24_5_4_SHAKE_esk_opt
+
+      SNOVA_37_17_2:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 9842
+        length-secret-key: 48
+        length-signature: 124
+        nistkat-sha256: c4e94ffb5675d9d29671f935862b4823244f9a1287564bda53c9af3e443eb40b
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_37_17_2
+        default-implementation: snova_SNOVA_37_17_2_opt
+
+      SNOVA_25_8_3:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 2320
+        length-secret-key: 48
+        length-signature: 165
+        nistkat-sha256: 6642f897a52e9e64942320023a857362cb4d7f8fcb590161f6997d05901012c4
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_25_8_3
+        default-implementation: snova_SNOVA_25_8_3_opt
+
+      SNOVA_56_25_2:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 31266
+        length-secret-key: 48
+        length-signature: 178
+        nistkat-sha256: 4bf1e2dc8a80d60e21f5586ba20f977d48c5f6ae223d778548b5d4064679c3bf
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_56_25_2
+        default-implementation: snova_SNOVA_56_25_2_opt
+
+      SNOVA_49_11_3:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 6006
+        length-secret-key: 48
+        length-signature: 286
+        nistkat-sha256: b4c07075d58221d431bfcdae390353af21edbbc64f2250b0e5ec9e7fc6c5609d
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_49_11_3
+        default-implementation: snova_SNOVA_49_11_3_opt
+
+      SNOVA_37_8_4:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 4112
+        length-secret-key: 48
+        length-signature: 376
+        nistkat-sha256: dc719f691b8e814850714ec23fcdd7103c30236bb22f7667f3ad1746871b5eaa
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_37_8_4
+        default-implementation: snova_SNOVA_37_8_4_opt
+
+      SNOVA_24_5_5:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 1579
+        length-secret-key: 48
+        length-signature: 379
+        nistkat-sha256: 162aa14ebb328cdfb2cc82a4803826045fffae5d4f9e3fb60059982be9920786
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_5
+        default-implementation: snova_SNOVA_24_5_5_opt
+
+      SNOVA_60_10_4:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 8016
+        length-secret-key: 48
+        length-signature: 576
+        nistkat-sha256: af9205c33972a94081067f3c84f83c1779d57860158e49418cfbec733a111798
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_60_10_4
+        default-implementation: snova_SNOVA_60_10_4_opt
+
+      SNOVA_29_6_5:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 2716
+        length-secret-key: 48
+        length-signature: 454
+        nistkat-sha256: cc2503dd8fdec3b0e78c669167f3a54322faf161a5cf9fd13a6eb95966def462
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_29_6_5
+        default-implementation: snova_SNOVA_29_6_5_opt
+
+    implementations:
+
+      snova_SNOVA_24_5_4_avx2:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_4_avx2
+        parameter: SNOVA_24_5_4
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux]
+        cpufeatures: [avx2]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h,
+                    src/gf16_matrix.h, src/gf16_matrix_inline.h,
+                    src/namespace.h, liboqs/oqs_snova.c, src/snova.c,
+                    src/snova_kernel.h, src/snova_plasma/snova_shake.c,
+                    src/deriv_params.h, src/gf16_matrix.h, src/params.h,
+                    src/snova.h, src/snova_aes.c, src/snova_common.h,
+                    src/snova_common.c, src/snova_kernel.h,
+                    src/snova_plasma/snova_shake.c,
+                    src/snova_plasma/snova_opt.h,
+                    src/snova_plasma/snova_plasma_vec.h,
+                    src/snova_plasma/snova_plasma_option.h,
+                    src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h,
+                    src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_4_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2"
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_24_5_4_aes_ssk_avx2_keypair
+        signature_signature: _snova_24_5_4_aes_ssk_avx2_signature
+        signature_verify: _snova_24_5_4_aes_ssk_avx2_verify
+
+      snova_SNOVA_24_5_4_neon:
+        version: round2
+        enable_by: OQS_ENABLE_SIG_snova_SNOVA_24_5_4_neon
+        parameter: SNOVA_24_5_4
+        uarch: arm_8
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpuFeatures: [asimd]
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h,
+                    src/gf16_matrix.h, src/gf16_matrix_inline.h, src/namespace.h,
+                    liboqs/oqs_snova.c, src/snova.c, src/snova_kernel.h,
+                    src/snova_plasma/snova_shake.c, src/deriv_params.h,
+                    src/gf16_matrix.h, src/params.h, src/snova.h,
+                    src/snova_aes.c, src/snova_common.h, src/snova_common.c,
+                    src/snova_kernel.h, src/snova_plasma/snova_shake.c,
+                    src/snova_plasma/snova_opt.h,
+                    src/snova_plasma/snova_plasma_vec.h,
+                    src/snova_plasma/snova_plasma_option.h,
+                    src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h,
+                    src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_4_neon"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_24_5_4_aes_ssk_neon_keypair
+        signature_signature: _snova_24_5_4_aes_ssk_neon_signature
+        signature_verify: _snova_24_5_4_aes_ssk_neon_verify
+
+      snova_SNOVA_24_5_4_opt:
+        version: round2
+        parameter: SNOVA_24_5_4
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: snova
+            files: [LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h,
+                    src/gf16_matrix.h, src/gf16_matrix_inline.h,
+                    src/namespace.h, liboqs/oqs_snova.c, src/snova.c,
+                    src/snova_kernel.h, src/snova_plasma/snova_shake.c,
+                    src/deriv_params.h, src/gf16_matrix.h, src/params.h,
+                    src/snova.h, src/snova_aes.c, src/snova_common.h,
+                    src/snova_common.c, src/snova_kernel.h,
+                    src/snova_plasma/snova_shake.c,
+                    src/snova_plasma/snova_opt.h,
+                    src/snova_plasma/snova_plasma_vec.h,
+                    src/snova_plasma/snova_plasma_option.h,
+                    src/snova_plasma/plasma_general/snova_plasma_vec_gnl_sign.h,
+                    src/snova_plasma/plasma_general/snova_plasma_vec_gnl_verify.h
+            ]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/snova_SNOVA_24_5_4_opt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4
+              -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
+        signature_keypair: _snova_24_5_4_aes_ssk_opt_keypair
+        signature_signature: _snova_24_5_4_aes_ssk_opt_sign
+        signature_verify: _snova_24_5_4_aes_ssk_opt_verify
+
+
+      snova_SNOVA_24_5_4_esk_avx2:
+      snova_SNOVA_24_5_4_esk_neon:
+      snova_SNOVA_24_5_4_esk_opt:
+
+      snova_SNOVA_24_5_4_SHAKE_avx2:
+      snova_SNOVA_24_5_4_SHAKE_neon:
+      snova_SNOVA_24_5_4_SHAKE_opt:
+
+      snova_SNOVA_24_5_4_SHAKE_esk_avx2:
+      snova_SNOVA_24_5_4_SHAKE_esk_neon:
+      snova_SNOVA_24_5_4_SHAKE_esk_opt:
+
+      snova_SNOVA_24_5_5_avx2:
+      snova_SNOVA_24_5_5_neon:
+      snova_SNOVA_24_5_5_opt:
+
+      snova_SNOVA_25_8_3_avx2:
+      snova_SNOVA_25_8_3_neon:
+      snova_SNOVA_25_8_3_opt:
+
+      snova_SNOVA_29_6_5_avx2:
+      snova_SNOVA_29_6_5_neon:
+      snova_SNOVA_29_6_5_opt:
+
+      snova_SNOVA_37_17_2_avx2:
+      snova_SNOVA_37_17_2_neon:
+      snova_SNOVA_37_17_2_opt:
+
+      snova_SNOVA_37_8_4_avx2:
+      snova_SNOVA_37_8_4_neon:
+      snova_SNOVA_37_8_4_opt:
+
+      snova_SNOVA_49_11_3_avx2:
+      snova_SNOVA_49_11_3_neon:
+      snova_SNOVA_49_11_3_opt:
+
+      snova_SNOVA_56_25_2_avx2:
+      snova_SNOVA_56_25_2_neon:
+      snova_SNOVA_56_25_2_opt:
+
+      snova_SNOVA_60_10_4_avx2:
+      snova_SNOVA_60_10_4_neon:
+      snova_SNOVA_60_10_4_opt:
+
+  # uov:
+  #   displayname: UOV
+  #   algtype: sig
+  #   principal-submitters:
+  #     - Ward Beullens
+  #     - Ming-Shing Chen
+  #     - Jintai Ding
+  #     - Boru Gong
+  #     - Matthias J. Kannwischer
+  #     - Jacques Patarin
+  #     - Bo-Yuan Peng
+  #     - Dieter Schmidt
+  #     - Cheng-Jhih Shih
+  #     - Chengdong Tao
+  #     - Bo-Yin Yang
+  #   crypto-assumption: multivariable quadratic equations, oil and vinegar
+  #   website: https://www.uovsig.org/
+  #   nist-round: 2
+  #   spec-version: NIST Round 2 (February 2025)
+  #   standardization-status: >-
+  #     Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/uov-spec-round2-web.pdf)
+  #     consideration
+  #   upstream-maintenance: Best effort
+  #   upstream-statement-url: null
+  #   primary-upstream: pqov
+  #   oqs-support-tier: 3
+  #   parameters:
+  # 
+  #     OV-Is:
+  #       security-strength: 1
+  #       security-model: EUF-CMA
+  #       length-public-key: 412160
+  #       length-secret-key: 348704
+  #       length-signature: 96
+  #       nistkat-sha256: dced6dd2c556663d48f579d5ea78e918c4eb46ecdbfcf418d83fbc9d2e6b5273
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_Is
+  #       default-implementation: uov_ov_Is_ref
+  # 
+  #     OV-Ip:
+  #       security-strength: 1
+  #       security-model: EUF-CMA
+  #       length-public-key: 278432
+  #       length-secret-key: 237896
+  #       length-signature: 128
+  #       nistkat-sha256: 2a24530e2dca2d4d4a7b9bf72f987ec6e85915194629c4673b892bdba5f42152
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_Ip
+  #       default-implementation: uov_ov_Ip_ref
+  # 
+  #     OV-III:
+  #       security-strength: 3
+  #       security-model: EUF-CMA
+  #       length-public-key: 1225440
+  #       length-secret-key: 1044320
+  #       length-signature: 200
+  #       nistkat-sha256: f8101912d1d2c2eb0a5903b74b4e4c98bd5008be9666dcaaa6f7912918005e5e
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_III
+  #       default-implementation: uov_ov_III_ref
+  # 
+  #     OV-V:
+  #       security-strength: 5
+  #       security-model: EUF-CMA
+  #       length-public-key: 2869440
+  #       length-secret-key: 2436704
+  #       length-signature: 260
+  #       nistkat-sha256: ae0a9a466a203b98ad8016f7280b099205ff4d4f7eda671df8c1ddf4908a7fc7
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_V
+  #       default-implementation: uov_ov_V_ref
+  # 
+  #     OV-Is-pkc:
+  #       security-strength: 1
+  #       security-model: EUF-CMA
+  #       length-public-key: 66576
+  #       length-secret-key: 348704
+  #       length-signature: 96
+  #       nistkat-sha256: fdbbb8d6b726061f53e101cc88e4f3073def852724c7b7a01ea686599132ccea
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc
+  #       default-implementation: uov_ov_Is_pkc_ref
+  # 
+  #     OV-Ip-pkc:
+  #       security-strength: 1
+  #       security-model: EUF-CMA
+  #       length-public-key: 43576
+  #       length-secret-key: 237896
+  #       length-signature: 128
+  #       nistkat-sha256: 1131d0bbb6932258c40b833cbf61db6fec58088c702037e855c73b0d3e7ef297
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc
+  #       default-implementation: uov_ov_Ip_pkc_ref
+  # 
+  #     OV-III-pkc:
+  #       security-strength: 3
+  #       security-model: EUF-CMA
+  #       length-public-key: 189232
+  #       length-secret-key: 1044320
+  #       length-signature: 200
+  #       nistkat-sha256: 1d4ac6e4ed7238c6cb735db5a1e411fe46e4d2f44f3131ec0ddfb6b7d166b2e2
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc
+  #       default-implementation: uov_ov_III_pkc_ref
+  # 
+  #     OV-V-pkc:
+  #       security-strength: 5
+  #       security-model: EUF-CMA
+  #       length-public-key: 446992
+  #       length-secret-key: 2436704
+  #       length-signature: 260
+  #       nistkat-sha256: fde989e4a8e2276a989975a2553f363cd3d3c23eccb7de421bcf885baad845e2
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc
+  #       default-implementation: uov_ov_V_pkc_ref
+  # 
+  #     OV-Is-pkc-skc:
+  #       security-strength: 1
+  #       security-model: EUF-CMA
+  #       length-public-key: 66576
+  #       length-secret-key: 32
+  #       length-signature: 96
+  #       nistkat-sha256: 6fe28b2d1a7186c9d826a33f770eea02976b429219a21f812e5db599f5b71a80
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_Is_pkc_skc
+  #       default-implementation: uov_ov_Is_pkc_skc_ref
+  # 
+  #     OV-Ip-pkc-skc:
+  #       security-strength: 1
+  #       security-model: EUF-CMA
+  #       length-public-key: 43576
+  #       length-secret-key: 32
+  #       length-signature: 128
+  #       nistkat-sha256: a8fde119b67a50134d0b71560ead36b6ce00909962d6f5532d4797959d9977b0
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc
+  #       default-implementation: uov_ov_Ip_pkc_skc_ref
+  # 
+  #     OV-III-pkc-skc:
+  #       security-strength: 3
+  #       security-model: EUF-CMA
+  #       length-public-key: 189232
+  #       length-secret-key: 32
+  #       length-signature: 200
+  #       nistkat-sha256: 952e8afc6a6a2437afd0ae2d8a3a964cdbfdf69da74c99288b299b6cc56f672e
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_III_pkc_skc
+  #       default-implementation: uov_ov_III_pkc_skc_ref
+  # 
+  #     OV-V-pkc-skc:
+  #       security-strength: 5
+  #       security-model: EUF-CMA
+  #       length-public-key: 446992
+  #       length-secret-key: 32
+  #       length-signature: 260
+  #       nistkat-sha256: 88ed517012434037b5dc0b5120020a0cb3cfff9991e3391cd3067a6251b4e724
+  #       enable_by: OQS_ENABLE_SIG_uov_ov_V_pkc_skc
+  #       default-implementation: uov_ov_V_pkc_skc_ref
+  # 
+  #   implementations:
+  #     uov_ov_Is_ref:
+  #       version: Round 2
+  #       parameter: OV-Is
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_Is_ref_keypair
+  #       signature_signature: pqov_uov_Is_ref_signature
+  #       signature_verify: pqov_uov_Is_ref_verify
+  # 
+  #     uov_ov_Ip_ref:
+  #       version: Round 2
+  #       parameter: OV-Ip
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_Ip_ref_keypair
+  #       signature_signature: pqov_uov_Ip_ref_signature
+  #       signature_verify: pqov_uov_Ip_ref_verify
+  # 
+  #     uov_ov_III_ref:
+  #       version: Round 2
+  #       parameter: OV-III
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_III_ref_keypair
+  #       signature_signature: pqov_uov_III_ref_signature
+  #       signature_verify: pqov_uov_III_ref_verify
+  # 
+  #     uov_ov_V_ref:
+  #       version: Round 2
+  #       parameter: OV-V
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_V_ref_keypair
+  #       signature_signature: pqov_uov_V_ref_signature
+  #       signature_verify: pqov_uov_V_ref_verify
+  # 
+  #     uov_ov_Is_pkc_ref:
+  #       version: Round 2
+  #       parameter: OV-Is-pkc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_Is_pkc_ref_keypair
+  #       signature_signature: pqov_uov_Is_pkc_ref_signature
+  #       signature_verify: pqov_uov_Is_pkc_ref_verify
+  # 
+  #     uov_ov_Ip_pkc_ref:
+  #       version: Round 2
+  #       parameter: OV-Ip-pkc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_Ip_pkc_ref_keypair
+  #       signature_signature: pqov_uov_Ip_pkc_ref_signature
+  #       signature_verify: pqov_uov_Ip_pkc_ref_verify
+  # 
+  #     uov_ov_III_pkc_ref:
+  #       version: Round 2
+  #       parameter: OV-III-pkc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_III_pkc_ref_keypair
+  #       signature_signature: pqov_uov_III_pkc_ref_signature
+  #       signature_verify: pqov_uov_III_pkc_ref_verify
+  # 
+  #     uov_ov_V_pkc_ref:
+  #       version: Round 2
+  #       parameter: OV-V-pkc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_V_pkc_ref_keypair
+  #       signature_signature: pqov_uov_V_pkc_ref_signature
+  #       signature_verify: pqov_uov_V_pkc_ref_verify
+  # 
+  #     uov_ov_Is_pkc_skc_ref:
+  #       version: Round 2
+  #       parameter: OV-Is-pkc-skc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_Is_pkc_skc_ref_keypair
+  #       signature_signature: pqov_uov_Is_pkc_skc_ref_signature
+  #       signature_verify: pqov_uov_Is_pkc_skc_ref_verify
+  # 
+  #     uov_ov_Ip_pkc_skc_ref:
+  #       version: Round 2
+  #       parameter: OV-Ip-pkc-skc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_Ip_pkc_skc_ref_keypair
+  #       signature_signature: pqov_uov_Ip_pkc_skc_ref_signature
+  #       signature_verify: pqov_uov_Ip_pkc_skc_ref_verify
+  # 
+  #     uov_ov_III_pkc_skc_ref:
+  #       version: Round 2
+  #       parameter: OV-III-pkc-skc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_III_pkc_skc_ref_keypair
+  #       signature_signature: pqov_uov_III_pkc_skc_ref_signature
+  #       signature_verify: pqov_uov_III_pkc_skc_ref_verify
+  # 
+  #     uov_ov_V_pkc_skc_ref:
+  #       version: Round 2
+  #       parameter: OV-V-pkc-skc
+  #       uarch: portable
+  #       common-crypto:
+  #         AES: liboqs
+  #         SHA3: liboqs
+  #       no-secret-dependent-branching-claimed: true
+  #       no-secret-dependent-branching-checked-by-valgrind: true
+  #       large-stack-usage: false
+  #       sources:
+  #       - upstream: pqov
+  #         files:
+  #         - src/*
+  #         - utils/*
+  #         - integration/liboqs/utils_malloc.h
+  #       signature_keypair: pqov_uov_V_pkc_skc_ref_keypair
+  #       signature_signature: pqov_uov_V_pkc_skc_ref_signature
+  #       signature_verify: pqov_uov_V_pkc_skc_ref_verify
+  
   # mqom: null
   # slh_dsa: null
-  # snova: null
-  # uov: null
