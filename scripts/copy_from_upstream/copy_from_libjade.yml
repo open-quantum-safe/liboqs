@@ -1,0 +1,30 @@
+# When adding an algorithm to copy_from_libjade.yml, the boolean 
+# 'libjade_implementation' and list of implementation 'libjade_implementations' 
+# must updated for the relevant algorithm in copy_from_upstream.yml
+# Additionaly, the algorithm name must be appended to the GitHub repository
+# environment variable LIBJADE_ALG_LIST.
+jasmin_version: '2023.06.3'
+upstreams:
+  -
+    name: libjade
+    git_url: https://github.com/formosa-crypto/libjade.git
+    git_branch: release/2023.05-2
+    git_commit: 4e15c1d221d025deca40edef2c762be9e3d346b7
+    kem_meta_path: 'src/crypto_kem/{family}/{pqclean_scheme}/META.yml'
+    kem_scheme_path: 'src/crypto_kem/{family}/{pqclean_scheme}'
+    patches: ['libjade-kyber-api.patch', 'libjade-kyber-meta.patch']
+kems:
+  -
+    name: kyber
+    default_implementation: ref
+    upstream_location: libjade
+    schemes:
+      -
+        scheme: "512"
+        pqclean_scheme: kyber512
+        pretty_name_full: Kyber512
+      -
+        scheme: "768"
+        pqclean_scheme: kyber768
+        pretty_name_full: Kyber768
+sigs: []

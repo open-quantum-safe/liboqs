@@ -1,0 +1,18 @@
+sample:
+  description: liboqs KEM example
+  name: liboqs_kem_example
+common:
+  harness: console
+  harness_config:
+    type: one_line
+    regex:
+      - "Test done"
+
+tests:
+  sample.crypto.liboqs_kem_example:
+    timeout: 300
+    integration_platforms:
+      - qemu_x86
+      - qemu_cortex_a53
+      - qemu_riscv32
+      - qemu_riscv64

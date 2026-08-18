@@ -1,0 +1,33 @@
+name: Weekly tests
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    - cron: "5 0 * * 0"
+
+jobs:
+
+  # To guarantee Maintained check is occasionally updated. See
+  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
+  scorecard:
+    uses: ./.github/workflows/supplychain.yml
+    secrets: inherit
+    permissions:
+      id-token: write
+      security-events: write
+      contents: read
+
+  extended-tests:
+    uses: ./.github/workflows/extended.yml
+
+  kem-continuous-benchmarking:
+    uses: ./.github/workflows/kem-bench.yml
+    permissions:
+      contents: write
+    
+  sig-continuous-benchmarking:
+    uses: ./.github/workflows/sig-bench.yml
+    permissions:
+      contents: write

@@ -1,0 +1,69 @@
+diff --git a/Kyber1024_META.yml b/Kyber1024_META.yml
+index baa5ca3..fec9249 100644
+--- a/Kyber1024_META.yml
++++ b/Kyber1024_META.yml
+@@ -28,16 +28,14 @@ implementations:
+     signature_keypair: pqcrystals_kyber1024_ref_keypair
+     signature_enc: pqcrystals_kyber1024_ref_enc
+     signature_dec: pqcrystals_kyber1024_ref_dec
+-    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
+     compile_opts: -DKYBER_K=4
+     signature_keypair: pqcrystals_kyber1024_avx2_keypair
+     signature_enc: pqcrystals_kyber1024_avx2_enc
+     signature_dec: pqcrystals_kyber1024_avx2_dec
+-    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2 common_keccak4x_avx2
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:
+diff --git a/Kyber512_META.yml b/Kyber512_META.yml
+index b251701..a744ccf 100644
+--- a/Kyber512_META.yml
++++ b/Kyber512_META.yml
+@@ -28,16 +28,14 @@ implementations:
+     signature_keypair: pqcrystals_kyber512_ref_keypair
+     signature_enc: pqcrystals_kyber512_ref_enc
+     signature_dec: pqcrystals_kyber512_ref_dec
+-    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/kyber/commit/36414d64fc1890ed58d1ca8b1e0cab23635d1ac2
+     compile_opts: -DKYBER_K=2 
+     signature_keypair: pqcrystals_kyber512_avx2_keypair
+     signature_enc: pqcrystals_kyber512_avx2_enc
+     signature_dec: pqcrystals_kyber512_avx2_dec
+-    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2 common_keccak4x_avx2
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:
+diff --git a/Kyber768_META.yml b/Kyber768_META.yml
+index 7a0cc3d..397a524 100644
+--- a/Kyber768_META.yml
++++ b/Kyber768_META.yml
+@@ -28,16 +28,14 @@ implementations:
+     signature_keypair: pqcrystals_kyber768_ref_keypair
+     signature_enc: pqcrystals_kyber768_ref_enc
+     signature_dec: pqcrystals_kyber768_ref_dec
+-    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h fips202.h symmetric-shake.c
+-    common_dep: common_ref
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c reduce.c ntt.c cbd.c verify.c kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h ntt.h cbd.h verify.h symmetric.h symmetric-shake.c
+   - name: avx2
+     version: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
+     compile_opts: -DKYBER_K=3
+     signature_keypair: pqcrystals_kyber768_avx2_keypair
+     signature_enc: pqcrystals_kyber768_avx2_enc
+     signature_dec: pqcrystals_kyber768_avx2_dec
+-    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h symmetric-shake.c
+-    common_dep: common_avx2 common_keccak4x_avx2
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h symmetric-shake.c
+     supported_platforms:
+       - architecture: x86_64
+         operating_systems:

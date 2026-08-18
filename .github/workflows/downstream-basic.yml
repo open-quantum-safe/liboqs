@@ -1,0 +1,107 @@
+name: Trigger basic downstream CI
+
+permissions:
+  contents: read
+
+on: [workflow_call, workflow_dispatch]
+
+jobs:
+
+  trigger-downstream-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger OQS-BoringSSL CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --request POST \
+               --header "Accept: application/vnd.github+json" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "X-GitHub-Api-Version: 2022-11-28" \
+               --data '{"event_type":"liboqs-upstream-trigger"}' \
+               https://api.github.com/repos/open-quantum-safe/boringssl/dispatches | tee curl_out \
+          && grep -q "204" curl_out
+      - name: Trigger OQS-OpenSSH CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --request POST \
+               --header "Accept: application/vnd.github+json" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "X-GitHub-Api-Version: 2022-11-28" \
+               --data '{"ref":"OQS-v9"}' \
+               https://api.github.com/repos/open-quantum-safe/openssh/actions/workflows/ubuntu.yaml/dispatches | tee curl_out \
+          && grep -q "204" curl_out
+      - name: Trigger oqs-provider CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --user ${{ secrets.BUILD_TRIGGER_TOKEN }}: \
+               --request POST \
+               --header "Content-Type: application/json" \
+               --data '{ "branch": "main" }' \
+               https://circleci.com/api/v2/project/gh/open-quantum-safe/oqs-provider/pipeline | tee curl_out \
+          && grep -q "201" curl_out
+      - name: Trigger liboqs-cpp CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --request POST \
+               --header "Accept: application/vnd.github+json" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "X-GitHub-Api-Version: 2022-11-28" \
+               --data '{"event_type":"liboqs-upstream-trigger"}' \
+               https://api.github.com/repos/open-quantum-safe/liboqs-cpp/dispatches | tee curl_out \
+          && grep -q "204" curl_out
+      - name: Trigger liboqs-go CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --request POST \
+               --header "Accept: application/vnd.github+json" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "X-GitHub-Api-Version: 2022-11-28" \
+               --data '{"event_type":"liboqs-upstream-trigger"}' \
+               https://api.github.com/repos/open-quantum-safe/liboqs-go/dispatches | tee curl_out \
+          && grep -q "204" curl_out
+      - name: Trigger liboqs-python CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --request POST \
+               --header "Accept: application/vnd.github+json" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "X-GitHub-Api-Version: 2022-11-28" \
+               --data '{"event_type":"liboqs-upstream-trigger"}' \
+               https://api.github.com/repos/open-quantum-safe/liboqs-python/dispatches | tee curl_out \
+          && grep -q "204" curl_out
+      - name: Trigger liboqs-java CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --request POST \
+               --header "Accept: application/vnd.github+json" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "X-GitHub-Api-Version: 2022-11-28" \
+               --data '{"event_type":"liboqs-upstream-trigger"}' \
+               https://api.github.com/repos/open-quantum-safe/liboqs-java/dispatches | tee curl_out \
+          && grep -q "204" curl_out
+      - name: Trigger liboqs-rust CI
+        if: ${{ !cancelled() }} # run all steps independent of failures
+        run: |
+          curl --silent \
+               --write-out "\n%{response_code}\n" \
+               --request POST \
+               --header "Accept: application/vnd.github+json" \
+               --header "Authorization: Bearer ${{ secrets.OQSBOT_GITHUB_ACTIONS }}" \
+               --header "X-GitHub-Api-Version: 2022-11-28" \
+               --data '{"event_type":"liboqs-upstream-trigger"}' \
+               https://api.github.com/repos/open-quantum-safe/liboqs-rust/dispatches | tee curl_out \
+          && grep -q "204" curl_out

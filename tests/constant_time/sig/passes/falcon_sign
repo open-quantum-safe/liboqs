@@ -1,0 +1,79 @@
+# Suppressions that work for both CLEAN and AVX2 implementations
+
+{
+   Exception while reading secret key. No signature is produced.
+   Memcheck:Cond
+   fun:PQCLEAN_FALCON*_*_trim_i8_decode
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+{
+   Exception while re-computing private basis (non-invertible f). No signature is produced.
+   Memcheck:Cond
+   src:vrfy.c:726 # fun:PQCLEAN_FALCON*_*_complete_private
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+{
+   Exception while re-computing private basis (large G coefficients). No signature is produced.
+   Memcheck:Cond
+   src:vrfy.c:739 # fun:PQCLEAN_FALCON*_*_complete_private
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+{
+   Rejection sampling on encoded signature size
+   Memcheck:Cond
+   fun:PQCLEAN_FALCON*_*_comp_encode
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+
+
+# CLEAN implementation of sign.c 
+
+{
+   Rejection sampling to re-center discrete Gaussian distribution
+   Memcheck:Cond
+   # Wildcard to catch the while loop in fun:BerExp as well as line the if on src:sign.c:1155
+   ...
+   src:sign.c:1155 # fun:PQCLEAN_FALCON*_CLEAN_sampler
+   ...
+   fun:PQCLEAN_FALCON*_CLEAN_crypto_sign_signature
+}
+{
+   Rejection sampling on signature length
+   Memcheck:Cond
+   src:sign.c:946 # fun:do_sign_dyn
+   fun:PQCLEAN_FALCON*_CLEAN_sign_dyn
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_CLEAN_crypto_sign_signature
+}
+{
+   Rejection sampling on encoded signature size
+   Memcheck:Cond
+   fun:PQCLEAN_FALCON*_CLEAN_comp_encode
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_CLEAN_crypto_sign_signature
+}
+
+
+# AVX2 implementation of sign.c 
+
+{
+   Rejection sampling to re-center discrete Gaussian distribution
+   Memcheck:Cond
+   # Wildcard to catch the while loop in fun:BerExp as well as line the if on src:sign.c:1153
+   ...
+   src:sign.c:1213 # fun:PQCLEAN_FALCON*_AVX2_sampler
+   ...
+   fun:PQCLEAN_FALCON*_AVX2_crypto_sign_signature
+}
+{
+   Rejection sampling on signature length
+   Memcheck:Cond
+   src:sign.c:939 # fun:do_sign_dyn
+   fun:PQCLEAN_FALCON*_AVX2_sign_dyn
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_AVX2_crypto_sign_signature
+}

@@ -1,0 +1,28 @@
+{% for family in instructions['kems'] %}
+{%- if 'disable_by_default' in family and family['disable_by_default'] %}
+option(OQS_ENABLE_KEM_{{ family['name']|upper }} "Enable {{ family['name'] }} algorithm family" OFF)
+{%- else %}
+option(OQS_ENABLE_KEM_{{ family['name']|upper }} "Enable {{ family['name'] }} algorithm family" ON)
+{%- endif %}
+    {%- for scheme in family['schemes'] %}
+cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_KEM_{{ family['name']|upper }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }} "" ON "OQS_ENABLE_KEM_{{ family['name']|upper }}" OFF)
+{%- endif -%}
+    {%- endfor %}
+{% endfor -%}
+
+{% for family in instructions['sigs'] %}
+{%- if 'disable_by_default' in family and family['disable_by_default'] %}
+option(OQS_ENABLE_SIG_{{ family['name']|upper }} "Enable {{ family['name'] }} algorithm family" OFF)
+{%- else %}
+option(OQS_ENABLE_SIG_{{ family['name']|upper }} "Enable {{ family['name'] }} algorithm family" ON)
+{%- endif %}
+    {%- for scheme in family['schemes'] %}
+cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_SIG_{{ family['name']|upper }}" OFF)
+{%- if 'alias_scheme' in scheme %}
+cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }} "" ON "OQS_ENABLE_SIG_{{ family['name']|upper }}" OFF)
+{%- endif -%}
+    {%- endfor %}
+{% endfor -%}
+

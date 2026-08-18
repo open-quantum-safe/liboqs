@@ -1,0 +1,285 @@
+diff --git b/crypto_kem/kyber1024/aarch64/fips202x2.h a/crypto_kem/kyber1024/aarch64/fips202x2.h
+index a9f8f7c4..a1eacdf9 100644
+--- b/crypto_kem/kyber1024/aarch64/fips202x2.h
++++ a/crypto_kem/kyber1024/aarch64/fips202x2.h
+@@ -12,15 +12,10 @@
+ #include "params.h"
+ #include <arm_neon.h>
+ #include <stddef.h>
++#include "fips202.h"
+ 
+ typedef uint64x2_t v128;
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
+-
+-
+ typedef struct {
+     v128 s[25];
+ } keccakx2_state;
+diff --git b/crypto_kem/kyber1024/aarch64/neon_poly.c a/crypto_kem/kyber1024/aarch64/neon_poly.c
+index 0de98583..6d787dde 100644
+--- b/crypto_kem/kyber1024/aarch64/neon_poly.c
++++ a/crypto_kem/kyber1024/aarch64/neon_poly.c
+@@ -131,14 +131,14 @@ void neon_poly_invntt_tomont(int16_t r[KYBER_N]) {
+ *            - const poly *a: pointer to first input polynomial
+ *            - const poly *b: pointer to second input polynomial
+ **************************************************/
+-extern void PQCLEAN_KYBER1024_AARCH64_asm_add_reduce(int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER1024_AARCH64__asm_add_reduce(int16_t *, const int16_t *);
+ void neon_poly_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N]) {
+-    PQCLEAN_KYBER1024_AARCH64_asm_add_reduce(c, a);
++    PQCLEAN_KYBER1024_AARCH64__asm_add_reduce(c, a);
+ }
+ 
+-extern void PQCLEAN_KYBER1024_AARCH64_asm_add_add_reduce(int16_t *, const int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER1024_AARCH64__asm_add_add_reduce(int16_t *, const int16_t *, const int16_t *);
+ void neon_poly_add_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N], const int16_t b[KYBER_N]) {
+-    PQCLEAN_KYBER1024_AARCH64_asm_add_add_reduce(c, a, b);
++    PQCLEAN_KYBER1024_AARCH64__asm_add_add_reduce(c, a, b);
+ }
+ 
+ /*************************************************
+@@ -152,7 +152,7 @@ void neon_poly_add_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N], cons
+ *            - const poly *a: pointer to first input polynomial
+ *            - const poly *b: pointer to second input polynomial
+ **************************************************/
+-extern void PQCLEAN_KYBER1024_AARCH64_asm_sub_reduce(int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER1024_AARCH64__asm_sub_reduce(int16_t *, const int16_t *);
+ void neon_poly_sub_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N]) {
+-    PQCLEAN_KYBER1024_AARCH64_asm_sub_reduce(c, a);
++    PQCLEAN_KYBER1024_AARCH64__asm_sub_reduce(c, a);
+ }
+diff --git b/crypto_kem/kyber1024/aarch64/symmetric-shake.c a/crypto_kem/kyber1024/aarch64/symmetric-shake.c
+index bbc0f2c6..e7e7e874 100644
+--- b/crypto_kem/kyber1024/aarch64/symmetric-shake.c
++++ a/crypto_kem/kyber1024/aarch64/symmetric-shake.c
+@@ -22,7 +22,7 @@
+ *              - uint8_t i: additional byte of input
+ *              - uint8_t j: additional byte of input
+ **************************************************/
+-void kyber_shake128_absorb(shake128ctx *state,
++void kyber_shake128_absorb(shake128incctx *state,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y) {
+@@ -32,7 +32,7 @@ void kyber_shake128_absorb(shake128ctx *state,
+     extseed[KYBER_SYMBYTES + 0] = x;
+     extseed[KYBER_SYMBYTES + 1] = y;
+ 
+-    shake128_absorb(state, extseed, sizeof(extseed));
++    shake128_absorb_once(state, extseed, sizeof(extseed));
+ }
+ 
+ /*************************************************
+diff --git b/crypto_kem/kyber1024/aarch64/symmetric.h a/crypto_kem/kyber1024/aarch64/symmetric.h
+index d4973b8b..12f6a5cf 100644
+--- b/crypto_kem/kyber1024/aarch64/symmetric.h
++++ a/crypto_kem/kyber1024/aarch64/symmetric.h
+@@ -16,12 +16,12 @@
+ 
+ #include "fips202.h"
+ 
+-typedef shake128ctx xof_state;
++typedef shake128incctx xof_state;
+ 
+ 
+ 
+ #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
+-void kyber_shake128_absorb(shake128ctx *s,
++void kyber_shake128_absorb(shake128incctx *s,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y);
+diff --git b/crypto_kem/kyber512/aarch64/fips202x2.h a/crypto_kem/kyber512/aarch64/fips202x2.h
+index a9f8f7c4..a1eacdf9 100644
+--- b/crypto_kem/kyber512/aarch64/fips202x2.h
++++ a/crypto_kem/kyber512/aarch64/fips202x2.h
+@@ -12,15 +12,10 @@
+ #include "params.h"
+ #include <arm_neon.h>
+ #include <stddef.h>
++#include "fips202.h"
+ 
+ typedef uint64x2_t v128;
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
+-
+-
+ typedef struct {
+     v128 s[25];
+ } keccakx2_state;
+diff --git b/crypto_kem/kyber512/aarch64/neon_poly.c a/crypto_kem/kyber512/aarch64/neon_poly.c
+index 8ea6ba4f..fdb37f9d 100644
+--- b/crypto_kem/kyber512/aarch64/neon_poly.c
++++ a/crypto_kem/kyber512/aarch64/neon_poly.c
+@@ -131,14 +131,14 @@ void neon_poly_invntt_tomont(int16_t r[KYBER_N]) {
+ *            - const poly *a: pointer to first input polynomial
+ *            - const poly *b: pointer to second input polynomial
+ **************************************************/
+-extern void PQCLEAN_KYBER512_AARCH64_asm_add_reduce(int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER512_AARCH64__asm_add_reduce(int16_t *, const int16_t *);
+ void neon_poly_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N]) {
+-    PQCLEAN_KYBER512_AARCH64_asm_add_reduce(c, a);
++    PQCLEAN_KYBER512_AARCH64__asm_add_reduce(c, a);
+ }
+ 
+-extern void PQCLEAN_KYBER512_AARCH64_asm_add_add_reduce(int16_t *, const int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER512_AARCH64__asm_add_add_reduce(int16_t *, const int16_t *, const int16_t *);
+ void neon_poly_add_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N], const int16_t b[KYBER_N]) {
+-    PQCLEAN_KYBER512_AARCH64_asm_add_add_reduce(c, a, b);
++    PQCLEAN_KYBER512_AARCH64__asm_add_add_reduce(c, a, b);
+ }
+ 
+ /*************************************************
+@@ -152,7 +152,7 @@ void neon_poly_add_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N], cons
+ *            - const poly *a: pointer to first input polynomial
+ *            - const poly *b: pointer to second input polynomial
+ **************************************************/
+-extern void PQCLEAN_KYBER512_AARCH64_asm_sub_reduce(int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER512_AARCH64__asm_sub_reduce(int16_t *, const int16_t *);
+ void neon_poly_sub_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N]) {
+-    PQCLEAN_KYBER512_AARCH64_asm_sub_reduce(c, a);
++    PQCLEAN_KYBER512_AARCH64__asm_sub_reduce(c, a);
+ }
+diff --git b/crypto_kem/kyber512/aarch64/symmetric-shake.c a/crypto_kem/kyber512/aarch64/symmetric-shake.c
+index bbc0f2c6..e7e7e874 100644
+--- b/crypto_kem/kyber512/aarch64/symmetric-shake.c
++++ a/crypto_kem/kyber512/aarch64/symmetric-shake.c
+@@ -22,7 +22,7 @@
+ *              - uint8_t i: additional byte of input
+ *              - uint8_t j: additional byte of input
+ **************************************************/
+-void kyber_shake128_absorb(shake128ctx *state,
++void kyber_shake128_absorb(shake128incctx *state,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y) {
+@@ -32,7 +32,7 @@ void kyber_shake128_absorb(shake128ctx *state,
+     extseed[KYBER_SYMBYTES + 0] = x;
+     extseed[KYBER_SYMBYTES + 1] = y;
+ 
+-    shake128_absorb(state, extseed, sizeof(extseed));
++    shake128_absorb_once(state, extseed, sizeof(extseed));
+ }
+ 
+ /*************************************************
+diff --git b/crypto_kem/kyber512/aarch64/symmetric.h a/crypto_kem/kyber512/aarch64/symmetric.h
+index d4973b8b..12f6a5cf 100644
+--- b/crypto_kem/kyber512/aarch64/symmetric.h
++++ a/crypto_kem/kyber512/aarch64/symmetric.h
+@@ -16,12 +16,12 @@
+ 
+ #include "fips202.h"
+ 
+-typedef shake128ctx xof_state;
++typedef shake128incctx xof_state;
+ 
+ 
+ 
+ #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
+-void kyber_shake128_absorb(shake128ctx *s,
++void kyber_shake128_absorb(shake128incctx *s,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y);
+diff --git b/crypto_kem/kyber768/aarch64/fips202x2.h a/crypto_kem/kyber768/aarch64/fips202x2.h
+index a9f8f7c4..a1eacdf9 100644
+--- b/crypto_kem/kyber768/aarch64/fips202x2.h
++++ a/crypto_kem/kyber768/aarch64/fips202x2.h
+@@ -12,15 +12,10 @@
+ #include "params.h"
+ #include <arm_neon.h>
+ #include <stddef.h>
++#include "fips202.h"
+ 
+ typedef uint64x2_t v128;
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
+-
+-
+ typedef struct {
+     v128 s[25];
+ } keccakx2_state;
+diff --git b/crypto_kem/kyber768/aarch64/neon_poly.c a/crypto_kem/kyber768/aarch64/neon_poly.c
+index 70d31c3c..cd6ce6e9 100644
+--- b/crypto_kem/kyber768/aarch64/neon_poly.c
++++ a/crypto_kem/kyber768/aarch64/neon_poly.c
+@@ -131,14 +131,14 @@ void neon_poly_invntt_tomont(int16_t r[KYBER_N]) {
+ *            - const poly *a: pointer to first input polynomial
+ *            - const poly *b: pointer to second input polynomial
+ **************************************************/
+-extern void PQCLEAN_KYBER768_AARCH64_asm_add_reduce(int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER768_AARCH64__asm_add_reduce(int16_t *, const int16_t *);
+ void neon_poly_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N]) {
+-    PQCLEAN_KYBER768_AARCH64_asm_add_reduce(c, a);
++    PQCLEAN_KYBER768_AARCH64__asm_add_reduce(c, a);
+ }
+ 
+-extern void PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce(int16_t *, const int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER768_AARCH64__asm_add_add_reduce(int16_t *, const int16_t *, const int16_t *);
+ void neon_poly_add_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N], const int16_t b[KYBER_N]) {
+-    PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce(c, a, b);
++    PQCLEAN_KYBER768_AARCH64__asm_add_add_reduce(c, a, b);
+ }
+ 
+ /*************************************************
+@@ -152,7 +152,7 @@ void neon_poly_add_add_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N], cons
+ *            - const poly *a: pointer to first input polynomial
+ *            - const poly *b: pointer to second input polynomial
+ **************************************************/
+-extern void PQCLEAN_KYBER768_AARCH64_asm_sub_reduce(int16_t *, const int16_t *);
++extern void PQCLEAN_KYBER768_AARCH64__asm_sub_reduce(int16_t *, const int16_t *);
+ void neon_poly_sub_reduce(int16_t c[KYBER_N], const int16_t a[KYBER_N]) {
+-    PQCLEAN_KYBER768_AARCH64_asm_sub_reduce(c, a);
++    PQCLEAN_KYBER768_AARCH64__asm_sub_reduce(c, a);
+ }
+diff --git b/crypto_kem/kyber768/aarch64/symmetric-shake.c a/crypto_kem/kyber768/aarch64/symmetric-shake.c
+index bbc0f2c6..e7e7e874 100644
+--- b/crypto_kem/kyber768/aarch64/symmetric-shake.c
++++ a/crypto_kem/kyber768/aarch64/symmetric-shake.c
+@@ -22,7 +22,7 @@
+ *              - uint8_t i: additional byte of input
+ *              - uint8_t j: additional byte of input
+ **************************************************/
+-void kyber_shake128_absorb(shake128ctx *state,
++void kyber_shake128_absorb(shake128incctx *state,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y) {
+@@ -32,7 +32,7 @@ void kyber_shake128_absorb(shake128ctx *state,
+     extseed[KYBER_SYMBYTES + 0] = x;
+     extseed[KYBER_SYMBYTES + 1] = y;
+ 
+-    shake128_absorb(state, extseed, sizeof(extseed));
++    shake128_absorb_once(state, extseed, sizeof(extseed));
+ }
+ 
+ /*************************************************
+diff --git b/crypto_kem/kyber768/aarch64/symmetric.h a/crypto_kem/kyber768/aarch64/symmetric.h
+index d4973b8b..12f6a5cf 100644
+--- b/crypto_kem/kyber768/aarch64/symmetric.h
++++ a/crypto_kem/kyber768/aarch64/symmetric.h
+@@ -16,12 +16,12 @@
+ 
+ #include "fips202.h"
+ 
+-typedef shake128ctx xof_state;
++typedef shake128incctx xof_state;
+ 
+ 
+ 
+ #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
+-void kyber_shake128_absorb(shake128ctx *s,
++void kyber_shake128_absorb(shake128incctx *s,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y);

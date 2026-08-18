@@ -1,0 +1,5 @@
+{% set unary %}{% for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}1{% endfor %}{% endfor %}{% endset %}
+{% set unary_alias %}{% for family in instructions['sigs'] %}{% for scheme in family['schemes'] if 'alias_scheme' in scheme %}2{% endfor %}{% endfor %}{% endset %}
+/** Number of algorithm identifiers above. */
+#define OQS_SIG_algs_length {{ unary|length + unary_alias|length }} + OQS_SIG_SLH_DSA_algs_length
+

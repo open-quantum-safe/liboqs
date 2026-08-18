@@ -1,0 +1,16 @@
+# find src tests .CMake -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
+--style=google
+--indent=tab
+#--indent-preproc-define
+#--indent-preproc-cond
+--pad-oper
+--pad-comma
+--pad-header
+#--unpad-paren
+--align-pointer=name
+--add-braces
+--convert-tabs
+--mode=c
+# disable backup files
+--suffix=none
+--lineend=linux

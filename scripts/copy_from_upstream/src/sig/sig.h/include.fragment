@@ -1,0 +1,5 @@
+{% for family in instructions['sigs'] %}
+#ifdef OQS_ENABLE_SIG_{{ family['name']|upper }}
+#include <oqs/sig_{{ family['name'] }}.h>
+#endif /* OQS_ENABLE_SIG_{{ family['name']|upper }} */{% endfor %}
+

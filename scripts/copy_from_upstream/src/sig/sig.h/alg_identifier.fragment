@@ -1,0 +1,9 @@
+{% for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}
+/** Algorithm identifier for {{ scheme['pretty_name_full'] }} */
+#define OQS_SIG_alg_{{ family['name'] }}_{{ scheme['scheme'] }} "{{ scheme['pretty_name_full'] }}"
+{%- if 'alias_scheme' in scheme %}
+/** Algorithm identifier for {{ scheme['alias_pretty_name_full'] }} SIG. */
+#define OQS_SIG_alg_{{ family['name'] }}_{{ scheme['alias_scheme'] }} "{{ scheme['alias_pretty_name_full'] }}"
+{%- endif -%}
+{% endfor %}{% endfor %}
+

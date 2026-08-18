@@ -1,0 +1,10 @@
+# Configuration variables in array of strings defined in your repository or organization
+# From https://github.com/rhysd/actionlint/blob/v1.7.7/docs/config.md:
+# "When an array is set, actionlint will check vars properties strictly. An empty array means no variable is allowed."
+config-variables:
+  # - DEFAULT_RUNNER
+  # - JOB_NAME
+  # - ENVIRONMENT_STAGE
+self-hosted-runner:
+  labels:
+    - oqs-x64

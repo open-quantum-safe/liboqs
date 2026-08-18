@@ -1,0 +1,13 @@
+attrs
+GitPython
+importlib-metadata
+Jinja2
+markdown-it-py
+MarkupSafe
+mdit-py-plugins
+PyYAML
+tabulate
+typing-extensions
+wget
+zipp
+requests

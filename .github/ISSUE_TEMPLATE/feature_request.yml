@@ -1,0 +1,29 @@
+# This template was generated with [Issue Forms Creator](https://issue-forms-creator.netlify.app)
+name: Feature request
+description: 'Suggest a new feature '
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: A clear and concise description of the problem or missing capability
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the solution you'd like
+      description: If you have a solution in mind, please describe it.
+  - type: textarea
+    attributes:
+      label: Describe alternatives you've considered
+      description: Have you considered any alternative solutions or workarounds?
+  - type: textarea
+    attributes:
+      label: Are you willing to help develop the solution?
+  - type: textarea
+    attributes:
+      label: Use of generative AI
+      description: >-
+        If this contribution (code, documentation, descriptive text) was
+        produced with the help of generative AI, please describe the nature of
+        the use. Contributors are expected to have verified and affirm such contributions
+        themselves before submission.

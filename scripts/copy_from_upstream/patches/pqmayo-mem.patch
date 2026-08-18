@@ -1,0 +1,33 @@
+diff --git a/include/mem.h b/include/mem.h
+index 87324b8..b84405c 100644
+--- a/include/mem.h
++++ b/include/mem.h
+@@ -5,21 +5,24 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ 
++#include <oqs/common.h>
+ /**
+  * Clears and frees allocated memory.
+  * 
+  * @param[out] mem Memory to be cleared and freed.
+  * @param size Size of memory to be cleared and freed.
+  */
+-void mayo_secure_free(void *mem, size_t size);
+-
++static inline void mayo_secure_free(void *mem, size_t size) {
++    OQS_MEM_secure_free(mem, size);
++}
+ /**
+  * Clears memory.
+  * 
+  * @param[out] mem Memory to be cleared.
+  * @param size Size of memory to be cleared.
+  */
+-void mayo_secure_clear(void *mem, size_t size);
+-
++static inline void mayo_secure_clear(void *mem, size_t size) {
++    OQS_MEM_cleanse(mem, size);
++}
+ #endif
+ 

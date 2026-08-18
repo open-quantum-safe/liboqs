@@ -1,0 +1,17 @@
+name: Release tests
+
+permissions:
+  contents: read
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+
+  extended-tests:
+    uses: ./.github/workflows/extended.yml
+
+  downstream-release-tests:
+    uses: ./.github/workflows/downstream-release.yml
+    secrets: inherit

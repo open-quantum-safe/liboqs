@@ -1,0 +1,9 @@
+{%- for family in instructions['kems'] %}
+if(OQS_ENABLE_KEM_{{ family['name']|upper }})
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/{{ family['name'] }}/kem_{{ family['name'] }}.h)
+endif(){% endfor %}
+{%- for family in instructions['sigs'] %}
+if(OQS_ENABLE_SIG_{{ family['name']|upper }})
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/{{ family['name'] }}/sig_{{ family['name'] }}.h)
+endif(){% endfor %}
+

@@ -1,0 +1,47 @@
+name: NTRU-Prime
+type: kem
+principal-submitters:
+- Daniel J. Bernstein
+- Billy Bob Brumley
+- Ming-Shing Chen
+- Chitchanok Chuengsatiansup
+- Tanja Lange
+- Adrian Marotzke
+- Bo-Yuan Peng
+- Nicola Tuveri
+- Christine van Vredendaal
+- Bo-Yin Yang
+crypto-assumption: NTRU
+website: https://ntruprime.cr.yp.to
+nist-round: 3
+spec-version: supercop-20200826
+standardization-status: Not selected by [NIST](https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/NTRU-Prime-Round3.zip)
+upstream-maintenance: Actively maintained
+upstream-statement-url: null
+oqs-support-tier: 3
+upstream-ancestors:
+- https://github.com/jedisct1/supercop/releases/tag/20240808
+- supercop-20240808
+parameter-sets:
+- name: sntrup761
+  claimed-nist-level: 2
+  claimed-security: IND-CCA2
+  length-ciphertext: 1039
+  length-public-key: 1158
+  length-secret-key: 1763
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA2: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
+    default: true
+primary-upstream:
+  spdx-license-identifier: Public domain
+  source: https://github.com/openssh/openssh-portable/blob/1cc936b2fabffeac7fff14ca1070d7d7a317ab7b/sntrup761.c

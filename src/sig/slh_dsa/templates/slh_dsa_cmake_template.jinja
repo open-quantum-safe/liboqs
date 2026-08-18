@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: MIT
+
+set(_SLH_DSA_OBJS "")
+
+if (OQS_ENABLE_SIG_SLH_DSA)
+	add_library(slh_dsa_c OBJECT
+	            {% for file in sources -%}
+	            {{ file }}
+	            {% endfor -%}
+	           )
+    target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/slh_dsa_c)
+    target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/pure)
+    {% for prehashHashAlg in prehashHashAlgs -%}
+    target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/prehash_{{prehashHashAlg}})
+    {% endfor %}
+    set(_SLH_DSA_OBJS ${_SLH_DSA_OBJS} $<TARGET_OBJECTS:slh_dsa_c>)
+endif()
+
+set(SLH_DSA_OBJS ${_SLH_DSA_OBJS} PARENT_SCOPE)

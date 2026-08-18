@@ -1,0 +1,24 @@
+{
+    Setting bits in a secret error vector
+    Memcheck:Value1
+    fun:_mm256_slli_epi64
+    fun:OQS_KEM_bike_*_secure_set_bits_avx2
+}
+{
+    Rotate the syndrome vector part 1
+    Memcheck:Value1
+    fun:_mm256_slli_epi64
+    fun:OQS_KEM_bike_*_rotate256_small
+}
+{
+    Rotate the syndrome vector part 2
+    Memcheck:Value1
+    fun:_mm256_srli_epi64
+    fun:OQS_KEM_bike_*_rotate256_small
+}
+
+{
+   Setting bits in a secret error vector
+   Memcheck:Cond
+   src:sampling_portable.c:44 # fun:OQS_KEM_bike_*_secure_set_bits_port
+}

@@ -1,0 +1,21 @@
+diff --git a/src/common/aes_ctr.h b/src/common/aes_ctr.h
+index fdec519..8d2f429 100644
+--- a/src/common/aes_ctr.h
++++ b/src/common/aes_ctr.h
+@@ -23,8 +23,14 @@ int AES_128_CTR_4R_NI(unsigned char *output, size_t outputByteLen,
+                       const unsigned char *input, size_t inputByteLen);
+ #define AES_128_CTR AES_128_CTR_NEON
+ #else
+-int AES_128_CTR(unsigned char *output, size_t outputByteLen,
+-                const unsigned char *input, size_t inputByteLen);
++#include <aes.h>
++static inline int AES_128_CTR(unsigned char *output, size_t outputByteLen,
++                const unsigned char *input, size_t inputByteLen) {
++    (void) inputByteLen;
++    uint8_t iv[12] = { 0 };
++    aes128ctr_prf(output, outputByteLen, input, iv);
++    return (int) outputByteLen;
++}
+ #endif
+ #endif
+ 

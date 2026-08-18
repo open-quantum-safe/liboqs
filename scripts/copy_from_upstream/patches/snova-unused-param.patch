@@ -1,0 +1,15 @@
+diff --git a/src/snova_aes.c b/src/snova_aes.c
+index 1da0bb7..8d2ef18 100644
+--- a/src/snova_aes.c
++++ b/src/snova_aes.c
+@@ -13,6 +13,10 @@
+ int AES_128_CTR(unsigned char *output, size_t outputByteLen,
+                 const unsigned char *input, size_t inputByteLen) {
+ 	assert(inputByteLen > 0);
++#ifdef NDEBUG
++    // With -DNDEBUG, `assert` becomes a no-op, so inputByteLen becomes unused
++    (void) inputByteLen;
++#endif
+ 	const uint8_t iv[16] = {0};
+ 
+ 	void *state;

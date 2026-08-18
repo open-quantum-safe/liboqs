@@ -1,0 +1,274 @@
+8f8d63fd708e00cc941ade03f405de21fdf17410
+diff --git a/crypto_kem/kyber1024/aarch64/poly.c b/crypto_kem/kyber1024/aarch64/poly.c
+index 1dfa52c..3115d1c 100644
+--- a/crypto_kem/kyber1024/aarch64/poly.c
++++ b/crypto_kem/kyber1024/aarch64/poly.c
+@@ -51,6 +51,7 @@
+ void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t a[KYBER_N]) {
+     unsigned int i, j;
+     int16_t u;
++    uint32_t d0;
+     uint8_t t[8];
+ 
+     for (i = 0; i < KYBER_N / 8; i++) {
+@@ -58,7 +59,12 @@ void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t a[KYBER_N
+             // map to positive standard representatives
+             u  = a[8 * i + j];
+             u += (u >> 15) & KYBER_Q;
+-            t[j] = ((((uint32_t)u << 5) + KYBER_Q / 2) / KYBER_Q) & 31;
++            // t[j] = ((((uint32_t)u << 5) + KYBER_Q / 2) / KYBER_Q) & 31;
++            d0 = u << 5;
++            d0 += 1664;
++            d0 *= 40318;
++            d0 >>= 27;
++            t[j] = d0 & 0x1f;
+         }
+ 
+         r[0] = (t[0] >> 0) | (t[1] << 5);
+@@ -207,14 +213,19 @@ void poly_frommsg(int16_t r[KYBER_N], const uint8_t msg[KYBER_INDCPA_MSGBYTES])
+ **************************************************/
+ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const int16_t a[KYBER_N]) {
+     unsigned int i, j;
+-    uint16_t t;
++    uint32_t t;
+ 
+     for (i = 0; i < KYBER_N / 8; i++) {
+         msg[i] = 0;
+         for (j = 0; j < 8; j++) {
+             t  = a[8 * i + j];
+-            t += ((int16_t)t >> 15) & KYBER_Q;
+-            t  = (((t << 1) + KYBER_Q / 2) / KYBER_Q) & 1;
++            // t += ((int16_t)t >> 15) & KYBER_Q;
++            // t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
++            t <<= 1;
++            t += 1665;
++            t *= 80635;
++            t >>= 28;
++            t &= 1;
+             msg[i] |= t << j;
+         }
+     }
+diff --git a/crypto_kem/kyber1024/aarch64/polyvec.c b/crypto_kem/kyber1024/aarch64/polyvec.c
+index d400348..f9a1ebf 100644
+--- a/crypto_kem/kyber1024/aarch64/polyvec.c
++++ b/crypto_kem/kyber1024/aarch64/polyvec.c
+@@ -21,6 +21,7 @@
+ **************************************************/
+ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K][KYBER_N]) {
+     unsigned int i, j, k;
++    uint64_t d0;
+ 
+     #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352))
+     uint16_t t[8];
+@@ -29,7 +30,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
+             for (k = 0; k < 8; k++) {
+                 t[k]  = a[i][8 * j + k];
+                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
+-                t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
++                // t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
++                d0 = t[k];
++                d0 <<= 11;
++                d0 += 1664;
++                d0 *= 645084;
++                d0 >>= 31;
++                t[k] = d0 & 0x7ff;
+             }
+ 
+             r[ 0] = (t[0] >>  0);
+@@ -53,7 +60,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
+             for (k = 0; k < 4; k++) {
+                 t[k]  = a[i][4 * j + k];
+                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
+-                t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
++                // t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
++                d0 = t[k];
++                d0 <<= 10;
++                d0 += 1665;
++                d0 *= 1290167;
++                d0 >>= 32;
++                t[k] = d0 & 0x3ff;
+             }
+ 
+             r[0] = (t[0] >> 0);
+diff --git a/crypto_kem/kyber512/aarch64/poly.c b/crypto_kem/kyber512/aarch64/poly.c
+index dffc655..361ce89 100644
+--- a/crypto_kem/kyber512/aarch64/poly.c
++++ b/crypto_kem/kyber512/aarch64/poly.c
+@@ -51,6 +51,7 @@
+ void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t a[KYBER_N]) {
+     unsigned int i, j;
+     int16_t u;
++    uint32_t d0;
+     uint8_t t[8];
+ 
+     for (i = 0; i < KYBER_N / 8; i++) {
+@@ -58,7 +59,12 @@ void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t a[KYBER_N
+             // map to positive standard representatives
+             u  = a[8 * i + j];
+             u += (u >> 15) & KYBER_Q;
+-            t[j] = ((((uint16_t)u << 4) + KYBER_Q / 2) / KYBER_Q) & 15;
++            // t[j] = ((((uint16_t)u << 4) + KYBER_Q / 2) / KYBER_Q) & 15;
++            d0 = u << 4;
++            d0 += 1665;
++            d0 *= 80635;
++            d0 >>= 28;
++            t[j] = d0 & 0xf;
+         }
+ 
+         r[0] = t[0] | (t[1] << 4);
+@@ -194,14 +200,19 @@ void poly_frommsg(int16_t r[KYBER_N], const uint8_t msg[KYBER_INDCPA_MSGBYTES])
+ **************************************************/
+ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const int16_t a[KYBER_N]) {
+     unsigned int i, j;
+-    uint16_t t;
++    uint32_t t;
+ 
+     for (i = 0; i < KYBER_N / 8; i++) {
+         msg[i] = 0;
+         for (j = 0; j < 8; j++) {
+             t  = a[8 * i + j];
+-            t += ((int16_t)t >> 15) & KYBER_Q;
+-            t  = (((t << 1) + KYBER_Q / 2) / KYBER_Q) & 1;
++            // t += ((int16_t)t >> 15) & KYBER_Q;
++            // t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
++            t <<= 1;
++            t += 1665;
++            t *= 80635;
++            t >>= 28;
++            t &= 1;
+             msg[i] |= t << j;
+         }
+     }
+diff --git a/crypto_kem/kyber512/aarch64/polyvec.c b/crypto_kem/kyber512/aarch64/polyvec.c
+index d400348..f9a1ebf 100644
+--- a/crypto_kem/kyber512/aarch64/polyvec.c
++++ b/crypto_kem/kyber512/aarch64/polyvec.c
+@@ -21,6 +21,7 @@
+ **************************************************/
+ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K][KYBER_N]) {
+     unsigned int i, j, k;
++    uint64_t d0;
+ 
+     #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352))
+     uint16_t t[8];
+@@ -29,7 +30,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
+             for (k = 0; k < 8; k++) {
+                 t[k]  = a[i][8 * j + k];
+                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
+-                t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
++                // t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
++                d0 = t[k];
++                d0 <<= 11;
++                d0 += 1664;
++                d0 *= 645084;
++                d0 >>= 31;
++                t[k] = d0 & 0x7ff;
+             }
+ 
+             r[ 0] = (t[0] >>  0);
+@@ -53,7 +60,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
+             for (k = 0; k < 4; k++) {
+                 t[k]  = a[i][4 * j + k];
+                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
+-                t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
++                // t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
++                d0 = t[k];
++                d0 <<= 10;
++                d0 += 1665;
++                d0 *= 1290167;
++                d0 >>= 32;
++                t[k] = d0 & 0x3ff;
+             }
+ 
+             r[0] = (t[0] >> 0);
+diff --git a/crypto_kem/kyber768/aarch64/poly.c b/crypto_kem/kyber768/aarch64/poly.c
+index dffc655..361ce89 100644
+--- a/crypto_kem/kyber768/aarch64/poly.c
++++ b/crypto_kem/kyber768/aarch64/poly.c
+@@ -51,6 +51,7 @@
+ void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t a[KYBER_N]) {
+     unsigned int i, j;
+     int16_t u;
++    uint32_t d0;
+     uint8_t t[8];
+ 
+     for (i = 0; i < KYBER_N / 8; i++) {
+@@ -58,7 +59,12 @@ void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t a[KYBER_N
+             // map to positive standard representatives
+             u  = a[8 * i + j];
+             u += (u >> 15) & KYBER_Q;
+-            t[j] = ((((uint16_t)u << 4) + KYBER_Q / 2) / KYBER_Q) & 15;
++            // t[j] = ((((uint16_t)u << 4) + KYBER_Q / 2) / KYBER_Q) & 15;
++            d0 = u << 4;
++            d0 += 1665;
++            d0 *= 80635;
++            d0 >>= 28;
++            t[j] = d0 & 0xf;
+         }
+ 
+         r[0] = t[0] | (t[1] << 4);
+@@ -194,14 +200,19 @@ void poly_frommsg(int16_t r[KYBER_N], const uint8_t msg[KYBER_INDCPA_MSGBYTES])
+ **************************************************/
+ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const int16_t a[KYBER_N]) {
+     unsigned int i, j;
+-    uint16_t t;
++    uint32_t t;
+ 
+     for (i = 0; i < KYBER_N / 8; i++) {
+         msg[i] = 0;
+         for (j = 0; j < 8; j++) {
+             t  = a[8 * i + j];
+-            t += ((int16_t)t >> 15) & KYBER_Q;
+-            t  = (((t << 1) + KYBER_Q / 2) / KYBER_Q) & 1;
++            // t += ((int16_t)t >> 15) & KYBER_Q;
++            // t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
++            t <<= 1;
++            t += 1665;
++            t *= 80635;
++            t >>= 28;
++            t &= 1;
+             msg[i] |= t << j;
+         }
+     }
+diff --git a/crypto_kem/kyber768/aarch64/polyvec.c b/crypto_kem/kyber768/aarch64/polyvec.c
+index d400348..f9a1ebf 100644
+--- a/crypto_kem/kyber768/aarch64/polyvec.c
++++ b/crypto_kem/kyber768/aarch64/polyvec.c
+@@ -21,6 +21,7 @@
+ **************************************************/
+ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K][KYBER_N]) {
+     unsigned int i, j, k;
++    uint64_t d0;
+ 
+     #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352))
+     uint16_t t[8];
+@@ -29,7 +30,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
+             for (k = 0; k < 8; k++) {
+                 t[k]  = a[i][8 * j + k];
+                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
+-                t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
++                // t[k]  = ((((uint32_t)t[k] << 11) + KYBER_Q / 2) / KYBER_Q) & 0x7ff;
++                d0 = t[k];
++                d0 <<= 11;
++                d0 += 1664;
++                d0 *= 645084;
++                d0 >>= 31;
++                t[k] = d0 & 0x7ff;
+             }
+ 
+             r[ 0] = (t[0] >>  0);
+@@ -53,7 +60,13 @@ void polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBYTES], int16_t a[KYBER_K
+             for (k = 0; k < 4; k++) {
+                 t[k]  = a[i][4 * j + k];
+                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
+-                t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
++                // t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q / 2) / KYBER_Q) & 0x3ff;
++                d0 = t[k];
++                d0 <<= 10;
++                d0 += 1665;
++                d0 *= 1290167;
++                d0 >>= 32;
++                t[k] = d0 & 0x3ff;
+             }
+ 
+             r[0] = (t[0] >> 0);

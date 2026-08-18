@@ -1,0 +1,24 @@
+Usage
+-----
+From liboqs/scripts/copy_from_xkcp run
+$ ./package.sh
+This will output liboqs-xkcp-todaysdate.tar.gz
+
+From the top level liboqs directory:
+$ rm -rf src/common/sha3/xkcp_low
+$ tar xzf scripts/copy_from_xkcp/liboqs-xkcp-todaysdate.tar.gz
+
+Patching
+--------
+From liboqs/scripts/copy_from_xkcp run
+$ ./checkout.sh
+This will create `upstream` and `upstream-patched` directories.
+The `upstream-patched` directory is `upstream` with the patches
+from the `patches` directory applied.
+
+Make any necessary changes in the `upstream-patched` directory,
+then run
+$ ./update-patches.sh
+
+Your new patches will be included in the next run of ./package.sh.
+

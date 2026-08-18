@@ -1,0 +1,17 @@
+{% for family in instructions['kems'] %}{% for scheme in family['schemes'] %}
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_{{ family['name'] }}_{{ scheme['scheme'] }})) {
+#ifdef OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}
+		return 1;
+#else
+		return 0;
+#endif
+{% if 'alias_scheme' in scheme %}
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_{{ family['name'] }}_{{ scheme['alias_scheme'] }})) {
+#ifdef OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}
+		return 1;
+#else
+		return 0;
+#endif
+{% endif -%}
+{% endfor %}{% endfor %}
+		

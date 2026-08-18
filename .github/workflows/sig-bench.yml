@@ -1,0 +1,136 @@
+name: sig benchmark
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+        with:
+          fetch-depth: 0
+
+      # Set up dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build gcc g++ python3 python3-pip
+          sudo apt-get install -y python3-cpuinfo
+
+      # Build the speed_sig binary only
+      - name: Build speed_sig binary
+        run: |
+          mkdir -p build
+          cd build
+          cmake -GNinja .. -DBUILD_SHARED_LIBS=OFF
+          ninja speed_sig
+
+      # Copy the parse_liboqs_speed.py script
+      - name: Copy parse_liboqs_speed.py
+        run: |
+          cp scripts/parse_liboqs_speed.py build/tests/
+
+      # Upload the built binary and script as an artifact
+      - name: Upload artifacts
+        uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47
+        with:
+          name: built-sig-binary
+          path: build/tests/
+
+  benchmark:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        algorithm: [ # List of available signatures to perform the benchmarking on
+          "ML-DSA-44",
+          "ML-DSA-65",
+          "ML-DSA-87",
+          "Falcon-512",
+          "Falcon-1024",
+          "Falcon-padded-512",
+          "Falcon-padded-1024",
+          "MAYO-1",
+          "MAYO-2",
+          "MAYO-3",
+          "MAYO-5",
+          "cross-rsdp-128-balanced",
+          "cross-rsdp-128-fast",
+          "cross-rsdp-128-small",
+          "cross-rsdp-192-balanced",
+          "cross-rsdp-192-fast",
+          "cross-rsdp-192-small",
+          "cross-rsdp-256-balanced",
+          "cross-rsdp-256-fast",
+          "cross-rsdp-256-small",
+          "cross-rsdpg-128-balanced",
+          "cross-rsdpg-128-fast",
+          "cross-rsdpg-128-small",
+          "cross-rsdpg-192-balanced",
+          "cross-rsdpg-192-fast",
+          "cross-rsdpg-192-small",
+          "cross-rsdpg-256-balanced",
+          "cross-rsdpg-256-fast",
+          "cross-rsdpg-256-small",
+          "OV-Is",
+          "OV-Ip",
+          "OV-III",
+          "OV-V",
+          "OV-Is-pkc",
+          "OV-Ip-pkc",
+          "OV-III-pkc",
+          "OV-V-pkc",
+          "OV-Is-pkc-skc",
+          "OV-Ip-pkc-skc",
+          "OV-III-pkc-skc",
+          "OV-V-pkc-skc"
+        ]
+      max-parallel: 1 # No parallel jobs to not compromise the pull-push operations of the benchmarking actions below
+
+    steps:
+      # Ensure the repository is checked out
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+        with:
+          fetch-depth: 0
+
+      # Download the built binary and script
+      - name: Download artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # pin@v8.0.1
+        with:
+          name: built-sig-binary
+          path: build/tests/
+
+      # Set execute permissions for the binary
+      - name: Set execute permissions
+        run: chmod +x build/tests/speed_sig
+
+      # Run speed_sig tests for each algorithm
+      - name: Run speed_sig tests
+        run: |
+          cd build/tests
+          ./speed_sig "${{matrix.algorithm}}" > ${{matrix.algorithm}}_output.txt
+          python3 parse_liboqs_speed.py ${{matrix.algorithm}}_output.txt --algorithm ${{matrix.algorithm}}
+
+      # Push to GitHub pages using continuous-benchmark
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@52576c92bccf6ac60c8223ec7eb2565637cae9ba
+        with:
+          name: ${{matrix.algorithm}}
+          tool: "customSmallerIsBetter"
+          output-file-path: build/tests/${{matrix.algorithm}}_formatted.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          comment-on-alert: true
+          summary-always: true
+          alert-threshold: 105%
+          comment-always: false

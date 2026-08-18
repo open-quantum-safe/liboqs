@@ -1,0 +1,556 @@
+name: CROSS
+type: signature
+principal-submitters:
+- Marco Baldi
+- Alessandro Barenghi
+- Michele Battagliola
+- Sebastian Bitzer
+- Patrick Karl
+- Felice Manganiello
+- Alessio Pavoni
+- Gerardo Pelosi
+- Federico Pintore
+- Paolo Santini
+- Jonas Schupp
+- Edoardo Signorini
+- Freeman Slaughter
+- Antonia Wachter-Zeh
+- Violetta Weger
+auxiliary-submitters:
+- Marco Gianvecchio
+crypto-assumption: hardness of the restricted syndrome decoding problem for random
+  linear codes on a finite field
+website: https://www.cross-crypto.com/
+nist-round: 2
+standardization-status: Under [NIST](https://www.cross-crypto.com/CROSS_Specification_v2.2.pdf)
+  consideration
+upstream-maintenance: Actively maintained
+upstream-statement-url: https://github.com/CROSS-signature/CROSS-lib-oqs/blob/main/docs/oqs-statement.txt
+oqs-support-tier: 3
+spec-version: 2.2 + PQClean and OQS patches
+primary-upstream:
+  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/179d61b8b59e524fba86954f7fa269495650030a
+  spdx-license-identifier: CC0-1.0
+parameter-sets:
+- name: cross-rsdp-128-balanced
+  oqs_alg: OQS_SIG_alg_cross_rsdp_128_balanced
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 77
+  length-secret-key: 32
+  length-signature: 13152
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdp-128-fast
+  oqs_alg: OQS_SIG_alg_cross_rsdp_128_fast
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 77
+  length-secret-key: 32
+  length-signature: 18432
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdp-128-small
+  oqs_alg: OQS_SIG_alg_cross_rsdp_128_small
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 77
+  length-secret-key: 32
+  length-signature: 12432
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: cross-rsdp-192-balanced
+  oqs_alg: OQS_SIG_alg_cross_rsdp_192_balanced
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 115
+  length-secret-key: 48
+  length-signature: 29853
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdp-192-fast
+  oqs_alg: OQS_SIG_alg_cross_rsdp_192_fast
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 115
+  length-secret-key: 48
+  length-signature: 41406
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdp-192-small
+  oqs_alg: OQS_SIG_alg_cross_rsdp_192_small
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 115
+  length-secret-key: 48
+  length-signature: 28391
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: cross-rsdp-256-balanced
+  oqs_alg: OQS_SIG_alg_cross_rsdp_256_balanced
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 153
+  length-secret-key: 64
+  length-signature: 53527
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: cross-rsdp-256-fast
+  oqs_alg: OQS_SIG_alg_cross_rsdp_256_fast
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 153
+  length-secret-key: 64
+  length-signature: 74590
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdp-256-small
+  oqs_alg: OQS_SIG_alg_cross_rsdp_256_small
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 153
+  length-secret-key: 64
+  length-signature: 50818
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: cross-rsdpg-128-balanced
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_128_balanced
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 54
+  length-secret-key: 32
+  length-signature: 9120
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdpg-128-fast
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_128_fast
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 54
+  length-secret-key: 32
+  length-signature: 11980
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdpg-128-small
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_128_small
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 54
+  length-secret-key: 32
+  length-signature: 8960
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdpg-192-balanced
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_192_balanced
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 83
+  length-secret-key: 48
+  length-signature: 22464
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdpg-192-fast
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_192_fast
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 83
+  length-secret-key: 48
+  length-signature: 26772
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdpg-192-small
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_192_small
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 83
+  length-secret-key: 48
+  length-signature: 20452
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: cross-rsdpg-256-balanced
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_256_balanced
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 106
+  length-secret-key: 64
+  length-signature: 40100
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdpg-256-fast
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_256_fast
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 106
+  length-secret-key: 64
+  length-signature: 48102
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: cross-rsdpg-256-small
+  oqs_alg: OQS_SIG_alg_cross_rsdpg_256_small
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 106
+  length-secret-key: 64
+  length-signature: 36454
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true

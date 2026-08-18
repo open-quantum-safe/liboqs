@@ -1,0 +1,15 @@
+
+	filter_algs("
+{%- for family in instructions['kems'] if family['name'] in ['ml_kem'] -%}
+    {%- for scheme in family['schemes'] -%}
+        {%- if 'alias_scheme' in scheme -%}KEM_{{ family['name'] }}_{{ scheme['alias_scheme'] }}{%- else -%}KEM_{{ family['name'] }}_{{ scheme['scheme'] }}{%- endif -%};
+    {%- endfor -%}
+{%- endfor -%}
+{%- for family in instructions['sigs'] if family['name'] in ['ml_dsa', 'falcon', 'slh_dsa'] -%}
+    {%- set outer_loop = loop -%}
+    {%- for scheme in family['schemes'] -%}
+        {%- if 'alias_scheme' in scheme -%}SIG_{{ family['name'] }}_{{ scheme['alias_scheme'] }}{%- else -%}SIG_{{ family['name'] }}_{{ scheme['scheme'] }}{%- endif -%}{%- if not (outer_loop.last and loop.last) -%};{%- endif -%}
+    {%- endfor -%}
+{%- endfor -%}
+")
+

@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: @PROJECT_NAME@
+Description: Library for quantum-safe cryptographic algorithms
+Version: @OQS_VERSION_TEXT@
+Requires.private: @_oqs_pkgconfig_requires_private@
+Cflags: -I${includedir}
+Libs: -L${libdir} -loqs

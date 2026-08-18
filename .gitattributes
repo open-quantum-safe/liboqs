@@ -1,0 +1,6 @@
+# see https://mirrors.edge.kernel.org/pub/software/scm/git/docs/gitattributes.html
+
+* text=auto whitespace=trailing-space
+
+*.png binary
+*.jpe?g binary

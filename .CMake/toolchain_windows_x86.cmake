@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: MIT
+
+set(CMAKE_SYSTEM_NAME Windows)
+
+set(CMAKE_SYSTEM_PROCESSOR x86)
+
+set(CMAKE_CROSSCOMPILING OFF)
+
+set(CMAKE_GENERATOR_PLATFORM
+    Win32
+    CACHE STRING "Platform" FORCE
+)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=1234")
+message(STATUS "Setting little endianness explicity for windows x86")

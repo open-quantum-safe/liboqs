@@ -1,0 +1,29 @@
+name: Main branch tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+
+  platform-tests:
+    uses: ./.github/workflows/platforms.yml
+
+  code-coverage:
+    uses: ./.github/workflows/code-coverage.yml
+    secrets: inherit
+
+  scorecard:
+    uses: ./.github/workflows/supplychain.yml
+    secrets: inherit
+    permissions:
+      id-token: write
+      security-events: write
+      contents: read
+
+  basic-downstream:
+    uses: ./.github/workflows/downstream-basic.yml
+    secrets: inherit

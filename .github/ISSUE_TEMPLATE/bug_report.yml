@@ -1,0 +1,56 @@
+# This template was generated with [Issue Forms Creator](https://issue-forms-creator.netlify.app)
+name: Bug report
+description: Template for bug reports
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thank you for submitting a bug report to liboqs. Before submitting, we
+        encourage you to search through the following resources:
+
+        - [issues](https://github.com/open-quantum-safe/liboqs/issues) 
+
+        - [pull requests](https://github.com/open-quantum-safe/liboqs/pulls)
+
+
+        If this is a question regarding usage rather than a bug in the software,
+        the best place for that is our Github [discussion
+        forum](https://github.com/orgs/open-quantum-safe/discussions).
+  - type: textarea
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behaviour
+      description: What did you expect to happen?
+  - type: input
+    attributes:
+      label: liboqs version
+      description: Which version of liboqs are you using?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: Please describe the environment in which you are running liboqs
+      value: |-
+        - Architecture: [e.g., x86_64]
+        - OS: [e.g. Ubuntu 24.04 LTS]
+        - OpenSSL version [e.g., 3.0.2]
+        - Compiler version used [e.g., clang 9.0.0]
+        - Build variables used [e.g., "-DOQS_ALGS_ENABLED=STD"]
+  - type: textarea
+    attributes:
+      label: Use of generative AI
+      description: >-
+        If this contribution (code, documentation, descriptive text) was
+        produced with the help of generative AI, please describe the nature of
+        the use. Contributors are expected to have verified and affirm such contributions
+        themselves before submission.
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: Add any other context about the problem here.

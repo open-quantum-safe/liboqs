@@ -1,0 +1,23 @@
+{
+   This constant time error has not been studied/analysed.
+   Memcheck:Cond
+   src:sign.c:1226
+   # fun:PQCLEAN_FALCON*_AVX2_sampler
+   fun:ffSampling_fft_dyntree
+}
+
+{
+   This constant time error has not been studied/analysed.
+   Memcheck:Cond
+   src:sign.c:1140
+   # fun:BerExp
+   fun:PQCLEAN_FALCON*_AVX2_sampler
+}
+
+{
+   This constant time error has not been studied/analysed.
+   Memcheck:Cond
+   src:fpr.h:352
+   # fun:fpr_floor
+   fun:PQCLEAN_FALCON*_CLEAN_sampler
+}

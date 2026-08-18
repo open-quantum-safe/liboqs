@@ -1,0 +1,253 @@
+c6a44a0dbb6735caf40ad4856063282feab56d98
+diff --git a/avx2/indcpa.c b/avx2/indcpa.c
+index 926f6e87..b8840863 100644
+--- a/avx2/indcpa.c
++++ b/avx2/indcpa.c
+@@ -178,7 +178,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*AES256CTR_BLOCKBYTES) buf;
+   aes256ctr_ctx state;
+ 
+-  aes256ctr_init(&state, seed, 0);
++  aes256ctr_init_key(&state, seed);
+ 
+   for(i=0;i<KYBER_K;i++) {
+     for(j=0;j<KYBER_K;j++) {
+@@ -187,7 +187,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+       else
+         nonce = (i << 8) | j;
+ 
+-      state.n = _mm_loadl_epi64((__m128i *)&nonce);
++      aes256ctr_init_iv_u64(&state, nonce);
+       aes256ctr_squeezeblocks(buf.coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
+       buflen = REJ_UNIFORM_AVX_NBLOCKS*AES256CTR_BLOCKBYTES;
+       ctr = rej_uniform_avx(a[i].vec[j].coeffs, buf.coeffs);
+@@ -204,6 +204,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+       poly_nttunpack(&a[i].vec[j]);
+     }
+   }
++  aes256_ctx_release(&state);
+ }
+ #else
+ #if KYBER_K == 2
+@@ -212,7 +213,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+   unsigned int ctr0, ctr1, ctr2, ctr3;
+   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*SHAKE128_RATE) buf[4];
+   __m256i f;
+-  keccakx4_state state;
++  shake128x4incctx state;
+ 
+   f = _mm256_loadu_si256((__m256i *)seed);
+   _mm256_store_si256(buf[0].vec, f);
+@@ -241,6 +242,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+     buf[3].coeffs[33] = 1;
+   }
+ 
++  shake128x4_inc_init(&state);
+   shake128x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 34);
+   shake128x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
+ 
+@@ -262,6 +264,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+   poly_nttunpack(&a[0].vec[1]);
+   poly_nttunpack(&a[1].vec[0]);
+   poly_nttunpack(&a[1].vec[1]);
++  shake128x4_inc_ctx_release(&state);
+ }
+ #elif KYBER_K == 3
+ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+@@ -269,8 +272,8 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+   unsigned int ctr0, ctr1, ctr2, ctr3;
+   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*SHAKE128_RATE) buf[4];
+   __m256i f;
+-  keccakx4_state state;
+-  keccak_state state1x;
++  shake128x4incctx state;
++  shake128incctx state1x;
+ 
+   f = _mm256_loadu_si256((__m256i *)seed);
+   _mm256_store_si256(buf[0].vec, f);
+@@ -299,6 +302,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+     buf[3].coeffs[33] = 1;
+   }
+ 
++  shake128x4_inc_init(&state);
+   shake128x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 34);
+   shake128x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
+ 
+@@ -364,6 +368,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+     ctr2 += rej_uniform(a[2].vec[0].coeffs + ctr2, KYBER_N - ctr2, buf[2].coeffs, SHAKE128_RATE);
+     ctr3 += rej_uniform(a[2].vec[1].coeffs + ctr3, KYBER_N - ctr3, buf[3].coeffs, SHAKE128_RATE);
+   }
++  shake128x4_inc_ctx_release(&state);
+ 
+   poly_nttunpack(&a[1].vec[1]);
+   poly_nttunpack(&a[1].vec[2]);
+@@ -374,6 +379,8 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+   _mm256_store_si256(buf[0].vec, f);
+   buf[0].coeffs[32] = 2;
+   buf[0].coeffs[33] = 2;
++
++  shake128_inc_init(&state1x);
+   shake128_absorb_once(&state1x, buf[0].coeffs, 34);
+   shake128_squeezeblocks(buf[0].coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state1x);
+   ctr0 = rej_uniform_avx(a[2].vec[2].coeffs, buf[0].coeffs);
+@@ -381,6 +388,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+     shake128_squeezeblocks(buf[0].coeffs, 1, &state1x);
+     ctr0 += rej_uniform(a[2].vec[2].coeffs + ctr0, KYBER_N - ctr0, buf[0].coeffs, SHAKE128_RATE);
+   }
++  shake128_inc_ctx_release(&state1x);
+ 
+   poly_nttunpack(&a[2].vec[2]);
+ }
+@@ -390,7 +398,8 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+   unsigned int i, ctr0, ctr1, ctr2, ctr3;
+   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*SHAKE128_RATE) buf[4];
+   __m256i f;
+-  keccakx4_state state;
++  shake128x4incctx state;
++  shake128x4_inc_init(&state);
+ 
+   for(i=0;i<4;i++) {
+     f = _mm256_loadu_si256((__m256i *)seed);
+@@ -442,6 +451,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
+     poly_nttunpack(&a[i].vec[2]);
+     poly_nttunpack(&a[i].vec[3]);
+   }
++  shake128x4_inc_ctx_release(&state);
+ }
+ #endif
+ #endif
+@@ -476,19 +486,20 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
+   uint64_t nonce = 0;
+   ALIGNED_UINT8(NOISE_NBLOCKS*AES256CTR_BLOCKBYTES+32) coins; // +32 bytes as required by poly_cbd_eta1
+   aes256ctr_ctx state;
+-  aes256ctr_init(&state, noiseseed, nonce++);
++  aes256ctr_init_u64(&state, noiseseed, nonce++);
+   for(i=0;i<KYBER_K;i++) {
+     aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
+-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
++    aes256ctr_init_iv_u64(&state, nonce);
+     nonce += 1;
+     poly_cbd_eta1(&skpv.vec[i], coins.vec);
+   }
+   for(i=0;i<KYBER_K;i++) {
+     aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
+-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
++    aes256ctr_init_iv_u64(&state, nonce);
+     nonce += 1;
+     poly_cbd_eta1(&e.vec[i], coins.vec);
+   }
++  aes256_ctx_release(&state);
+ #else
+ #if KYBER_K == 2
+   poly_getnoise_eta1_4x(skpv.vec+0, skpv.vec+1, e.vec+0, e.vec+1, noiseseed, 0, 1, 2, 3);
+@@ -554,20 +565,22 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
+   uint64_t nonce = 0;
+   ALIGNED_UINT8(NOISE_NBLOCKS*AES256CTR_BLOCKBYTES+32) buf; /* +32 bytes as required by poly_cbd_eta1 */
+   aes256ctr_ctx state;
+-  aes256ctr_init(&state, coins, nonce++);
++  aes256ctr_init_u64(&state, coins, nonce++);
+   for(i=0;i<KYBER_K;i++) {
+     aes256ctr_squeezeblocks(buf.coeffs, NOISE_NBLOCKS, &state);
+-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
++    aes256ctr_init_iv_u64(&state, nonce);
+     nonce += 1;
+     poly_cbd_eta1(&sp.vec[i], buf.vec);
+   }
+   for(i=0;i<KYBER_K;i++) {
+     aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
+-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
++    aes256ctr_init_iv_u64(&state, nonce);
+     nonce += 1;
+     poly_cbd_eta2(&ep.vec[i], buf.vec);
+   }
+   aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
++  aes256_ctx_release(&state);
++
+   poly_cbd_eta2(&epp, buf.vec);
+ #else
+ #if KYBER_K == 2
+diff --git a/avx2/poly.c b/avx2/poly.c
+index ab148a2..96bad86 100644
+--- a/avx2/poly.c
++++ b/avx2/poly.c
+@@ -2,6 +2,7 @@
+ #include <immintrin.h>
+ #include <string.h>
+ #include "align.h"
++#include "fips202x4.h"
+ #include "params.h"
+ #include "poly.h"
+ #include "ntt.h"
+@@ -360,6 +361,7 @@ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const poly * restrict a)
+   }
+ }
+ 
++#ifndef KYBER_90S
+ /*************************************************
+ * Name:        poly_getnoise_eta1
+ *
+@@ -397,6 +399,7 @@ void poly_getnoise_eta2(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t non
+   prf(buf.coeffs, KYBER_ETA2*KYBER_N/4, seed, nonce);
+   poly_cbd_eta2(r, buf.vec);
+ }
++#endif
+ 
+ #ifndef KYBER_90S
+ #define NOISE_NBLOCKS ((KYBER_ETA1*KYBER_N/4+SHAKE256_RATE-1)/SHAKE256_RATE)
+@@ -412,7 +415,7 @@ void poly_getnoise_eta1_4x(poly *r0,
+ {
+   ALIGNED_UINT8(NOISE_NBLOCKS*SHAKE256_RATE) buf[4];
+   __m256i f;
+-  keccakx4_state state;
++  shake256x4incctx state;
+ 
+   f = _mm256_loadu_si256((__m256i *)seed);
+   _mm256_store_si256(buf[0].vec, f);
+@@ -425,8 +428,10 @@ void poly_getnoise_eta1_4x(poly *r0,
+   buf[2].coeffs[32] = nonce2;
+   buf[3].coeffs[32] = nonce3;
+ 
++  shake256x4_inc_init(&state);
+   shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 33);
+   shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, NOISE_NBLOCKS, &state);
++  shake256x4_inc_ctx_release(&state);
+ 
+   poly_cbd_eta1(r0, buf[0].vec);
+   poly_cbd_eta1(r1, buf[1].vec);
+@@ -447,7 +452,7 @@ void poly_getnoise_eta1122_4x(poly *r0,
+ {
+   ALIGNED_UINT8(NOISE_NBLOCKS*SHAKE256_RATE) buf[4];
+   __m256i f;
+-  keccakx4_state state;
++  shake256x4incctx state;
+ 
+   f = _mm256_loadu_si256((__m256i *)seed);
+   _mm256_store_si256(buf[0].vec, f);
+@@ -460,8 +465,10 @@ void poly_getnoise_eta1122_4x(poly *r0,
+   buf[2].coeffs[32] = nonce2;
+   buf[3].coeffs[32] = nonce3;
+ 
++  shake256x4_inc_init(&state);
+   shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 33);
+   shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, NOISE_NBLOCKS, &state);
++  shake256x4_inc_ctx_release(&state);
+ 
+   poly_cbd_eta1(r0, buf[0].vec);
+   poly_cbd_eta1(r1, buf[1].vec);
+diff --git a/avx2/symmetric.h b/avx2/symmetric.h
+index b99fe91..483eabc 100644
+--- a/avx2/symmetric.h
++++ b/avx2/symmetric.h
+@@ -33,10 +33,10 @@ typedef aes256ctr_ctx xof_state;
+ #include "fips202.h"
+ #include "fips202x4.h"
+ 
+-typedef keccak_state xof_state;
++typedef shake128incctx xof_state;
+ 
+ #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
+-void kyber_shake128_absorb(keccak_state *s,
++void kyber_shake128_absorb(shake128incctx *s,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y);

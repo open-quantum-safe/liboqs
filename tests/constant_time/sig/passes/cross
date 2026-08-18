@@ -1,0 +1,110 @@
+# Keygen
+
+{
+   Rejection sampling for matrix "V"
+   Memcheck:Cond
+   fun:csprng_fp_mat
+   fun:expand_pk
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+{
+   Rejection sampling for matrix "W" (RSDPG variant)
+   Memcheck:Cond
+   fun:csprng_fz_mat
+   fun:expand_pk
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+{
+   Rejection sampling for vector "e_bar"
+   Memcheck:Cond
+   fun:csprng_fz_vec
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+{
+   Rejection sampling for vector "e_G_bar" (RSDPG variant)
+   Memcheck:Cond
+   fun:csprng_fz_inf_w
+   fun:PQCLEAN_CROSSRSDP*_CROSS_keygen
+}
+
+# Sign
+
+{
+   Rejection sampling for matrix "V"
+   Memcheck:Cond
+   fun:csprng_fp_mat
+   fun:expand_pk
+   fun:expand_sk
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for matrix "W" (RSDPG variant)
+   Memcheck:Cond
+   fun:csprng_fz_mat
+   fun:expand_pk
+   fun:expand_sk
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+
+{
+   Rejection sampling for vector "e_bar"
+   Memcheck:Cond
+   fun:csprng_fz_vec
+   fun:expand_sk
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "e_G_bar" (RSDPG variant)
+   Memcheck:Cond
+   fun:csprng_fz_inf_w
+   fun:expand_sk
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "e_bar_prime"
+   Memcheck:Cond
+   fun:csprng_fz_vec
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "e_G_bar_prime" (RSDPG variant)
+   Memcheck:Cond
+   fun:csprng_fz_inf_w
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "u_prime"
+   Memcheck:Cond
+   fun:csprng_fp_vec
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for vector "chall_1"
+   Memcheck:Cond
+   fun:csprng_fp_vec_chall_1
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for Fisher-Yates shuffle of vector "chall_2"
+   Memcheck:Cond
+   fun:PQCLEAN_CROSSRSDP*_expand_digest_to_fixed_weight
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
+
+{
+   Rejection sampling for Fisher-Yates shuffle of vector "chall_2"
+   Memcheck:Value8
+   fun:PQCLEAN_CROSSRSDP*_expand_digest_to_fixed_weight
+   fun:PQCLEAN_CROSSRSDP*_CROSS_sign
+}
