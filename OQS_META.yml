@@ -457,7 +457,7 @@ algfamilies:
         enable_by: OQS_ENABLE_KEM_classic_mceliece_8192128f
         default-implementation: pqclean_mceliece8192128f_clean
 
-    implementations:  # classic_mceliece
+    implementations:
 
       pqclean_mceliece348864_clean:
         version: SUPERCOP-20221025
@@ -2372,9 +2372,6 @@ algfamilies:
 
     implementations-switch-on-runtime-cpu-features: true  # defaults to true
     # implementations: null  # FIX: sourced from pqclean20220303
-
-  # ntruprime: null
-  # frodokem: null
 
   cross:
     displayname: CROSS
@@ -7373,6 +7370,7 @@ LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src
     common_src:
       mqom_common:
         upstream: mqom
+        destdir: mqom_mqom_common
         files: [api.h, common.h, benchmark.h, enc.h, enc_local.h, enc_mupq.h, enc_liboqs.h,
                 expand_mq.c, expand_mq.h, fields.h, ggm_tree.c, ggm_tree.h, keygen.c, keygen.h,
                 mqom2_parameters.h, prg.h, prg.c, prg_cache.h, sign.c, sign_memopt.c, sign.h,
@@ -8510,4 +8508,6 @@ LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src
         signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_avx2_crypto_sign_signature
         signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_avx2_crypto_sign_verify
 
+  # ntruprime: null
+  # frodokem: null
   # slh_dsa: null

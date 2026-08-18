@@ -27,6 +27,7 @@ if not _liboqs_dir:
     _liboqs_dir = os.getcwd()
     warnings.warn("LIBOQS_DIR not set; defaulting to cwd")
 LIBOQS_DIR = _liboqs_dir
+LIBOQS_SRC_DIR = os.path.join(LIBOQS_DIR, "src")
 DEFAULT_OQS_META_PATH = os.path.join(LIBOQS_DIR, "OQS_META.yml")
 DEFAULT_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
 DEFAULT_NEVER_COPY = [
@@ -169,6 +170,14 @@ class AlgTypes(Enum):
     Kem = "kem"
     Sig = "sig"
     StflSig = "stfl_sig"
+
+    @property
+    def dir(self):
+        """Return <liboqs_dir>/src/<kem|sig|stfl_sig> according to variant"""
+        path = os.path.join(LIBOQS_SRC_DIR, self.value)
+        if not os.path.isdir(path):
+            raise FileNotFoundError(f"{path} not found")
+        return path
 
 
 class OQSSupportTiers(Enum):
@@ -417,36 +426,6 @@ OQS_META_DATOR = Fields.Mapping(
         "algfamilies": (Fields.REQUIRED, Fields.KeyedArray(ALGFAMILY_DATOR)),
     }
 )
-
-
-class RelationalChecks:
-    @staticmethod
-    def impl_key_exists(family_meta: dict) -> bool:
-        impl_keys = family_meta.get("implementations", {}).keys()
-        for param_key, param_meta in family_meta.get("parameters", {}):
-            default_impl_key = param_meta.get("default-implementation", None)
-            if default_impl_key and (default_impl_key not in impl_keys):
-                logger.error("%s default impl %s invalid", param_key, default_impl_key)
-                return False
-        return True
-
-    @staticmethod
-    def param_key_exists(family_meta: dict) -> bool:
-        """The "param" field in an implementation must match a param key in the same
-        family
-        """
-        raise NotImplementedError()
-
-    @staticmethod
-    def common_src_key_exists(family_meta: dict) -> bool:
-        """If an implementation uses a set of common source files, the reference
-        must match a common_src_key in the same family
-        """
-        raise NotImplementedError()
-
-    @staticmethod
-    def run_all(oqs_meta: dict) -> bool:
-        raise NotImplementedError()
 
 
 def run_subprocess(
@@ -699,6 +678,9 @@ class SigParameterMeta:
 
 
 class CommonSrcMeta:
+    # TODO: common source files current do not support preserving subdirectories
+    #       in the same way implementation source files can. I don't plan to
+    #       support it unless there is a strong case
     def __init__(
         self,
         upstream_key: str,
@@ -718,20 +700,47 @@ class CommonSrcMeta:
         self._paths: list[str] | None = None
 
     def set_paths(
-        self, algtype: AlgTypes, algfamily_key: str, common_key: str, paths: list[str]
+        self,
+        algtype: AlgTypes,
+        algfamily_key: str,
+        common_src_dirname: str,
+        paths: list[str],
     ):
         """Set self._files to the precise list of files in this set of
         family-level common source files. The paths are relative to
         $LIBOQS_DIR/src/<algtype>/<algfamily>/<common_key>
         """
         base_dir = os.path.join(
-            LIBOQS_DIR, "src", algtype.value, algfamily_key, common_key
+            LIBOQS_DIR, "src", algtype.value, algfamily_key, common_src_dirname
         )
         for path in paths:
             fullpath = os.path.join(base_dir, path)
             if not os.path.isfile(fullpath):
                 raise FileNotFoundError(f"{fullpath} not found")
         self._paths = paths
+
+    def get_rel_paths(self) -> list[str]:
+        """Return the list of paths to source files under this set of family-level
+        common source files. Each path is relative to
+        <liboqs_dir>/src/<algtype>/<family>/<common_src_dirname>
+        """
+        if not self._paths:
+            raise ValueError("Common source files not copied")
+        return self._paths
+
+    def get_full_paths(
+        self, algtype: AlgTypes, algfamily_key: str, common_src_key: str
+    ) -> list[str]:
+        """Return the list of paths to source files. Each path is absolute"""
+        full_paths = []
+        for rel_path in self.get_rel_paths():
+            full_path = os.path.join(
+                algtype.dir, algfamily_key, self.destdir or common_src_key, rel_path
+            )
+            if not os.path.isfile(full_path):
+                raise FileNotFoundError(f"{full_path} not found")
+            full_paths.append(full_path)
+        return full_paths
 
     @staticmethod
     def from_dict(meta: dict):
@@ -757,87 +766,44 @@ class ImplSrcMeta:
 
         self._paths: list[str] | None = None
 
-    def copy_files(
-        self,
-        algtype: AlgTypes,
-        algfamily_key: str,
-        dest_dirname: str,
-        upstream: UpstreamMeta,
-        excludes: list[str],
-    ):
-        """Copy one set of source files from upstream to destination directory
-
-        :param dest_dirname: directory name under src/algtype/family
-        """
-        # source_paths are relative to <upstream._dir>/<self.base_dir> and may
-        # contain subdirectories
-        source_paths = upstream.match_path_patterns(
-            self.upstream_key, self.patterns, self.base_dir, excludes
-        )
-
-        destdir = os.path.join(
-            LIBOQS_DIR, "src", algtype.value, algfamily_key, dest_dirname
-        )
-        # destpaths should be relative to:
-        # $LIBOQS_DIR/src/<algtype>/<algfamily>/<dest_dirname>
-        destpaths: list[str] = []
-        for source_path in source_paths:
-            source_full_path = os.path.join(
-                upstream.dir(self.upstream_key), self.base_dir or "", source_path
-            )
-            if os.path.isfile(source_full_path):
-                _, filename = os.path.split(source_full_path)
-                destpath = (
-                    os.path.join(destdir, source_path)
-                    if self.preserve_subdirs
-                    else os.path.join(destdir, filename)
-                )
-                destpath_dir, _ = os.path.split(destpath)
-                if not os.path.isdir(destpath_dir):
-                    os.makedirs(destpath_dir)
-                logger.debug(
-                    "Copy file %s into %s",
-                    pathlib.Path(source_full_path).relative_to(
-                        pathlib.Path(LIBOQS_DIR)
-                    ),
-                    pathlib.Path(destpath).relative_to(pathlib.Path(LIBOQS_DIR)),
-                )
-                shutil.copy2(source_full_path, destpath)
-                destpaths.append(source_path if self.preserve_subdirs else filename)
-            elif os.path.isdir(source_full_path):
-                raise NotImplementedError(
-                    f"{source_full_path} OQSBuilder "
-                    "currently does not support recursively copying directories "
-                    "from upstream. Use explicit set of files instead."
-                )
-            else:
-                raise ValueError(f"{source_full_path} is invalid")
-        self.set_paths(algtype, algfamily_key, dest_dirname, destpaths)
-
-    def get_paths(self) -> list[str]:
+    def get_rel_paths(self) -> list[str]:
         if not self._paths:
             raise ValueError("Paths not set")
         return self._paths
+
+    def get_full_paths(
+        self, algtype: AlgTypes, algfamily_key: str, impl_src_dirname: str
+    ) -> list[str]:
+        """Return the list of paths to source files. Each path is absolute"""
+        full_paths = []
+        for rel_path in self.get_rel_paths():
+            full_path = os.path.join(
+                algtype.dir, algfamily_key, impl_src_dirname, rel_path
+            )
+            if not os.path.isfile(full_path):
+                raise FileNotFoundError(f"{full_path} not found")
+            full_paths.append(full_path)
+        return full_paths
 
     def set_paths(
         self,
         algtype: AlgTypes,
         algfamily_key: str,
-        impl_destdirname: str,
-        paths: list[str],
+        impl_src_dirname: str,
+        impl_src_rel_paths: list[str],
     ):
         """
         :param paths: a list of paths relative to
-        $LIBOQS_DIR/src/<algtype>/<algfamily>/<impl_destdirname>
+        $LIBOQS_DIR/src/<algtype>/<algfamily>/<impl_src_dirname>
         """
         base_dir = os.path.join(
-            LIBOQS_DIR, "src", algtype.value, algfamily_key, impl_destdirname
+            LIBOQS_DIR, "src", algtype.value, algfamily_key, impl_src_dirname
         )
-        for path in paths:
+        for path in impl_src_rel_paths:
             fullpath = os.path.join(base_dir, path)
             if not os.path.isfile(fullpath):
                 raise FileNotFoundError(f"{fullpath} not found")
-        self._paths = paths
+        self._paths = impl_src_rel_paths
 
     @staticmethod
     def from_dict(meta: dict):
@@ -1002,18 +968,63 @@ class ImplementationMeta:
         for impl_src in self.sources:
             if isinstance(impl_src, CommonSrcRef):
                 continue
-            upstream = upstreams[impl_src.upstream_key]
-            dest_dirname = self.subdirname or impl_key
-            destdir = os.path.join(
-                LIBOQS_DIR, "src", algtype.value, algfamily_key, dest_dirname
+            upstream_meta = upstreams[impl_src.upstream_key]
+            impl_src_dirname = self.subdirname or impl_key
+            impl_src_dirpath = os.path.join(
+                algtype.dir, algfamily_key, impl_src_dirname
             )
-            if os.path.isdir(destdir):
-                logger.info("Refreshing %s", dest_dirname)
-                shutil.rmtree(destdir)
-            impl_src.copy_files(
-                algtype, algfamily_key, dest_dirname, upstream, excludes
+            if os.path.isdir(impl_src_dirpath):
+                logger.warning("Destructively refreshing %s", impl_src_dirpath)
+                shutil.rmtree(impl_src_dirpath)
+            os.makedirs(impl_src_dirpath)
+            upstream_rel_paths = upstream_meta.match_path_patterns(
+                impl_src.upstream_key,
+                impl_src.patterns,
+                impl_src.base_dir,
+                excludes,
             )
-            logger.info("Put %d files in %s", len(impl_src.get_paths()), dest_dirname)
+            impl_src_rel_paths = []
+            for upstream_rel_path in upstream_rel_paths:
+                upstream_full_path = os.path.join(
+                    upstream_meta.dir(impl_src.upstream_key),
+                    impl_src.base_dir or "",
+                    upstream_rel_path,
+                )
+                if os.path.isdir(upstream_full_path):
+                    raise NotImplementedError(
+                        f"{upstream_full_path} is a directory. OQSBuilder "
+                        "currently does not support recursively copying "
+                        "subdirectories from upstream. Use explicit set of "
+                        f"files or glob pattern {upstream_full_path}/* instead."
+                    )
+                if not os.path.isfile(upstream_full_path):
+                    raise ValueError(f"{upstream_full_path} is invalid path")
+                _, filename = os.path.split(upstream_full_path)
+                impl_src_rel_path = (
+                    upstream_rel_path if impl_src.preserve_subdirs else filename
+                )
+                impl_src_full_path = os.path.join(impl_src_dirpath, impl_src_rel_path)
+                # Because of preserve_subdirs, impl_src_full_path may contain
+                # intermediate subdirectories that don't exist yet
+                impl_src_inter_dir, _ = os.path.split(impl_src_full_path)
+                if not os.path.isdir(impl_src_inter_dir):
+                    logger.warning(
+                        "Creating intermediate directories %s", impl_src_inter_dir
+                    )
+                    os.makedirs(impl_src_inter_dir)
+                shutil.copy2(upstream_full_path, impl_src_full_path)
+                logger.debug(
+                    "Copied from %s to %s", upstream_full_path, impl_src_full_path
+                )
+                impl_src_rel_paths.append(impl_src_rel_path)
+            impl_src.set_paths(
+                algtype, algfamily_key, impl_src_dirname, impl_src_rel_paths
+            )
+            logger.info(
+                "Copied %d files into %s",
+                len(impl_src.get_rel_paths()),
+                impl_src_dirname,
+            )
 
     @staticmethod
     def parse_src_meta(src_meta: dict):
@@ -1212,8 +1223,53 @@ class AlgFamilyMeta:
         re-create the subdirectory, then copy the files. Modify self.common_src
         to take precise inventory of the files copied.
         """
-        if self.common_src:
-            raise NotImplementedError("TODO: will implement when MQOM is filled in")
+        if not self.common_src:
+            return
+        for common_src_key, common_src_meta in self.common_src.items():
+            upstream_meta = upstreams[common_src_meta.upstream_key]
+            common_src_dirname = common_src_meta.destdir or common_src_key
+            common_src_dirpath = os.path.join(
+                self.algtype.dir, algfamily_key, common_src_dirname
+            )
+            if os.path.isdir(common_src_dirpath):
+                logger.warning("Destructively refreshing %s", common_src_dirpath)
+                shutil.rmtree(common_src_dirpath)
+            os.makedirs(common_src_dirpath)
+            # upstream_rel_paths are relative to <upstream>/<base_dir>
+            upstream_rel_paths = upstream_meta.match_path_patterns(
+                common_src_meta.upstream_key,
+                common_src_meta.patterns,
+                common_src_meta.upstream_base_dir,
+                excludes,
+            )
+            common_src_rel_paths = []
+            for upstream_rel_path in upstream_rel_paths:
+                _, filename = os.path.split(upstream_rel_path)
+                upstream_full_path = os.path.join(
+                    upstream_meta.dir(common_src_meta.upstream_key),
+                    common_src_meta.upstream_base_dir or "",
+                    upstream_rel_path,
+                )
+                # I did this roundabout assignment in case we need to implement
+                # preserve_subdirectory for common_src, in which case
+                # common_src_rel_path is more than just filename
+                common_src_rel_path = filename
+                common_src_full_path = os.path.join(
+                    common_src_dirpath, common_src_rel_path
+                )
+                shutil.copy2(upstream_full_path, common_src_full_path)
+                logger.debug(
+                    "Copied from %s to %s", upstream_full_path, common_src_full_path
+                )
+                common_src_rel_paths.append(common_src_rel_path)
+            common_src_meta.set_paths(
+                self.algtype, algfamily_key, common_src_dirname, common_src_rel_paths
+            )
+            logger.debug(
+                "Copied %d files into %s",
+                len(common_src_meta.get_rel_paths()),
+                common_src_dirpath,
+            )
 
     def copy_implementations_src(
         self,
@@ -1246,19 +1302,27 @@ class OqsMeta:
         self.upstreams = upstreams
         self.algfamilies = algfamilies
 
+    def check_foreign_keys(self):
+        """Raise exception if foreign keys are invalid"""
+        warnings.warn("Foreign key checks not yet implemented")
+
     @staticmethod
-    def from_dict(builderconfig: OQSBuilderConfig, meta: dict):
-        schema_version = meta["schema_version"]
-        jasminc_version = meta["jasminc_version"]
+    def from_dict(builderconfig: OQSBuilderConfig, raw_oqs_meta: dict):
+        if not OQS_META_DATOR.validate(raw_oqs_meta):
+            raise ValueError(f"{builderconfig.oqs_meta_path} failed schema validation")
+        schema_version = raw_oqs_meta["schema_version"]
+        jasminc_version = raw_oqs_meta["jasminc_version"]
         upstreams = {
             key: UpstreamMeta.from_dict(builderconfig.patch_dir, upstream_meta)
-            for key, upstream_meta in meta["upstreams"].items()
+            for key, upstream_meta in raw_oqs_meta["upstreams"].items()
         }
         algfamilies = {
             key: AlgFamilyMeta.from_dict(family_meta)
-            for key, family_meta in meta["algfamilies"].items()
+            for key, family_meta in raw_oqs_meta["algfamilies"].items()
         }
-        return OqsMeta(schema_version, jasminc_version, upstreams, algfamilies)
+        oqs_meta = OqsMeta(schema_version, jasminc_version, upstreams, algfamilies)
+        oqs_meta.check_foreign_keys()
+        return oqs_meta
 
 
 def clone_upstreams(
@@ -1272,7 +1336,7 @@ def clone_upstreams(
     """
     for upstream_key, upstream in upstreams.items():
         if (not has_jasmin) and upstream_key == "libjade":
-            logger.info("libjade is not cloned because jasminc is not present")
+            logger.warning("libjade is not cloned because jasminc is not present")
             continue
         logger.info("Cloning %s", upstream_key)
         upstream.clone_and_patch(upstream_key, upstreams_dir)
@@ -1311,13 +1375,7 @@ if __name__ == "__main__":
     for demo_algfamily in builderconfig.demo_algfamilies:
         demo_algfamily_meta = oqs_meta["algfamilies"].pop(demo_algfamily)
         if demo_algfamily_meta:
-            logger.info("Removed demo alg %s", demo_algfamily)
-
-    if not OQS_META_DATOR.validate(oqs_meta):
-        logger.error("%s failed schema validation", builderconfig.oqs_meta_path)
-    # TODO: implement relational check
-    # if not RelationalChecks.run_all(oqs_meta):
-    #     logger.error("%s failed relational checks", builderconfig.oqs_meta_path)
+            logger.info("Removed demo alg family %s", demo_algfamily)
 
     oqs_meta = OqsMeta.from_dict(builderconfig, oqs_meta)
 
