@@ -2,6 +2,16 @@
  * Copyright (c) The mldsa-native project authors
  * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
  */
+
+/* References
+ * ==========
+ *
+ * - [FIPS204]
+ *   FIPS 204 Module-Lattice-Based Digital Signature Standard
+ *   National Institute of Standards and Technology
+ *   https://csrc.nist.gov/pubs/fips/204/final
+ */
+
 #ifndef MLD_POLYVEC_H
 #define MLD_POLYVEC_H
 
@@ -31,20 +41,22 @@ typedef struct
 /**
  * Sample vector of polynomials with uniformly random coefficients in
  * [-(MLDSA_GAMMA1 - 1), MLDSA_GAMMA1] by unpacking output stream of
- * SHAKE256(seed|nonce).
+ * SHAKE256(seed|kappa+i) for component i.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 34, ExpandMask].}
  *
  * @param[out] v     Pointer to output vector.
  * @param[in]  seed  Byte array with seed of length MLDSA_CRHBYTES.
- * @param      nonce 16-bit nonce.
+ * @param      kappa Base counter; component i uses kappa + i.
  */
 MLD_INTERNAL_API
 void mld_polyvecl_uniform_gamma1(mld_polyvecl *v,
                                  const uint8_t seed[MLDSA_CRHBYTES],
-                                 uint16_t nonce)
+                                 uint16_t kappa)
 __contract__(
   requires(memory_no_alias(v, sizeof(mld_polyvecl)))
   requires(memory_no_alias(seed, MLDSA_CRHBYTES))
-  requires(nonce <= (UINT16_MAX - MLDSA_L) / MLDSA_L)
+  requires(kappa <= MLD_MAX_KAPPA)
   assigns(memory_slice(v, sizeof(mld_polyvecl)))
   ensures(forall(k0, 0, MLDSA_L,
     array_bound(v->vec[k0].coeffs, 0, MLDSA_N, -(MLDSA_GAMMA1 - 1), MLDSA_GAMMA1 + 1)))
@@ -58,8 +70,8 @@ __contract__(
      (!defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST)))
 #define mld_polyvecl_ntt MLD_NAMESPACE_KL(polyvecl_ntt)
 /**
- * Forward NTT of all polynomials in vector of length MLDSA_L. Coefficients
- * can grow by 8*MLDSA_Q in absolute value.
+ * Forward NTT of all polynomials in vector of length MLDSA_L. Output
+ * coefficients are bounded by MLD_NTT_BOUND in absolute value.
  *
  * @param[in,out] v Pointer to input/output vector.
  */
@@ -87,7 +99,10 @@ __contract__(
  * have coefficients in [0, MLDSA_Q-1] inclusive.
  *
  * The second input "v" is assumed to be output of an NTT, and hence must have
- * coefficients bounded by [-(9*MLDSA_Q-1), 9*MLDSA_Q-1] inclusive.
+ * coefficients bounded by [-(MLD_NTT_BOUND-1), MLD_NTT_BOUND-1] inclusive.
+ *
+ * @spec{Partially implements @[FIPS204, Algorithm 48, MatrixVectorNTT]
+ * (one output polynomial; multiply-accumulate of two NTT-domain vectors).}
  *
  * @param[out] w Output polynomial.
  * @param[in]  u Pointer to first input vector.
@@ -186,8 +201,8 @@ __contract__(
     (!defined(MLD_CONFIG_REDUCE_RAM) || defined(MLD_UNIT_TEST))
 #define mld_polyveck_ntt MLD_NAMESPACE_KL(polyveck_ntt)
 /**
- * Forward NTT of all polynomials in vector of length MLDSA_K. Coefficients
- * can grow by 8*MLDSA_Q in absolute value.
+ * Forward NTT of all polynomials in vector of length MLDSA_K. Output
+ * coefficients are bounded by MLD_NTT_BOUND in absolute value.
  *
  * @param[in,out] v Pointer to input/output vector.
  */
@@ -289,6 +304,8 @@ __contract__(
 /**
  * Bit-pack polynomial vector w1 with coefficients in [0, 15] or [0, 43]. Input
  * coefficients are assumed to be standard representatives.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 28, w1Encode].}
  *
  * @param[out] r  Pointer to output byte array with at least
  *                MLDSA_K * MLDSA_POLYW1_PACKEDBYTES bytes.

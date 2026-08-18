@@ -22,7 +22,7 @@ void mld_unpack_pk_t1(mld_poly *t1,
                       const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
                       unsigned int i)
 {
-  mld_polyt1_unpack(t1, pk + MLDSA_SEEDBYTES + i * MLDSA_POLYT1_PACKEDBYTES);
+  mld_polyt1_unpack(t1, pk + MLDSA_PK_T1_OFFSET + i * MLDSA_POLYT1_PACKEDBYTES);
 }
 #endif /* !MLD_CONFIG_NO_VERIFY_API */
 
@@ -31,7 +31,7 @@ MLD_INTERNAL_API
 void mld_pack_sk_s1(uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
                     const mld_polyvecl *s1)
 {
-  mld_polyvecl_pack_eta(sk + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES, s1);
+  mld_polyvecl_pack_eta(sk + MLDSA_SK_S1_OFFSET, s1);
 }
 
 MLD_INTERNAL_API
@@ -41,19 +41,11 @@ void mld_pack_sk_rho_key_tr_s2(uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
                                const uint8_t key[MLDSA_SEEDBYTES],
                                const mld_polyveck *s2)
 {
-  mld_memcpy(sk, rho, MLDSA_SEEDBYTES);
-  sk += MLDSA_SEEDBYTES;
-
-  mld_memcpy(sk, key, MLDSA_SEEDBYTES);
-  sk += MLDSA_SEEDBYTES;
-
-  mld_memcpy(sk, tr, MLDSA_TRBYTES);
-  sk += MLDSA_TRBYTES;
-
+  mld_memcpy(sk + MLDSA_SK_RHO_OFFSET, rho, MLDSA_SEEDBYTES);
+  mld_memcpy(sk + MLDSA_SK_KEY_OFFSET, key, MLDSA_SEEDBYTES);
+  mld_memcpy(sk + MLDSA_SK_TR_OFFSET, tr, MLDSA_TRBYTES);
   /* s1 already packed via mld_pack_sk_s1 */
-  sk += MLDSA_L * MLDSA_POLYETA_PACKEDBYTES;
-
-  mld_polyveck_pack_eta(sk, s2);
+  mld_polyveck_pack_eta(sk + MLDSA_SK_S2_OFFSET, s2);
   /* t0 already packed via mld_compute_pack_t0_t1 */
 }
 #endif /* !MLD_CONFIG_NO_KEYPAIR_API */
@@ -65,22 +57,12 @@ void mld_unpack_sk(uint8_t rho[MLDSA_SEEDBYTES], uint8_t tr[MLDSA_TRBYTES],
                    mld_sk_s1hat *s1, mld_sk_s2hat *s2,
                    const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES])
 {
-  mld_memcpy(rho, sk, MLDSA_SEEDBYTES);
-  sk += MLDSA_SEEDBYTES;
-
-  mld_memcpy(key, sk, MLDSA_SEEDBYTES);
-  sk += MLDSA_SEEDBYTES;
-
-  mld_memcpy(tr, sk, MLDSA_TRBYTES);
-  sk += MLDSA_TRBYTES;
-
-  mld_unpack_sk_s1hat(s1, sk);
-  sk += MLDSA_L * MLDSA_POLYETA_PACKEDBYTES;
-
-  mld_unpack_sk_s2hat(s2, sk);
-  sk += MLDSA_K * MLDSA_POLYETA_PACKEDBYTES;
-
-  mld_unpack_sk_t0hat(t0, sk);
+  mld_memcpy(rho, sk + MLDSA_SK_RHO_OFFSET, MLDSA_SEEDBYTES);
+  mld_memcpy(key, sk + MLDSA_SK_KEY_OFFSET, MLDSA_SEEDBYTES);
+  mld_memcpy(tr, sk + MLDSA_SK_TR_OFFSET, MLDSA_TRBYTES);
+  mld_unpack_sk_s1hat(s1, sk + MLDSA_SK_S1_OFFSET);
+  mld_unpack_sk_s2hat(s2, sk + MLDSA_SK_S2_OFFSET);
+  mld_unpack_sk_t0hat(t0, sk + MLDSA_SK_T0_OFFSET);
 }
 
 MLD_INTERNAL_API
@@ -104,7 +86,7 @@ int mld_pack_sig_h(uint8_t sig[MLDSA_CRYPTO_BYTES], const mld_polyveck *w0,
    *
    * The final K bytes record a running tally of the number of hints
    * coming from each of the K polynomials. */
-  uint8_t *sig_h = sig + MLDSA_CTILDEBYTES + MLDSA_L * MLDSA_POLYZ_PACKEDBYTES;
+  uint8_t *sig_h = sig + MLDSA_SIG_H_OFFSET;
 
   mld_memset(sig_h, 0, MLDSA_POLYVECH_PACKEDBYTES);
   n = 0;
@@ -157,9 +139,7 @@ MLD_INTERNAL_API
 void mld_pack_sig_z(uint8_t sig[MLDSA_CRYPTO_BYTES], const mld_poly *zi,
                     unsigned i)
 {
-  sig += MLDSA_CTILDEBYTES;
-  sig += i * MLDSA_POLYZ_PACKEDBYTES;
-  mld_polyz_pack(sig, zi);
+  mld_polyz_pack(sig + MLDSA_SIG_Z_OFFSET + i * MLDSA_POLYZ_PACKEDBYTES, zi);
 }
 #endif /* !MLD_CONFIG_NO_SIGN_API */
 
@@ -168,8 +148,7 @@ MLD_INTERNAL_API
 int mld_sig_unpack_hints(mld_poly *h, const uint8_t sig[MLDSA_CRYPTO_BYTES],
                          unsigned int i)
 {
-  const uint8_t *packed_hints =
-      sig + MLDSA_CTILDEBYTES + MLDSA_L * MLDSA_POLYZ_PACKEDBYTES;
+  const uint8_t *packed_hints = sig + MLDSA_SIG_H_OFFSET;
   const unsigned int old_hint_count =
       (i == 0) ? 0 : packed_hints[MLDSA_OMEGA + i - 1];
   const unsigned int new_hint_count = packed_hints[MLDSA_OMEGA + i];
@@ -187,6 +166,9 @@ int mld_sig_unpack_hints(mld_poly *h, const uint8_t sig[MLDSA_CRYPTO_BYTES],
     invariant(j >= old_hint_count && j <= new_hint_count &&
               new_hint_count <= MLDSA_OMEGA)
     invariant(array_bound(h->coeffs, 0, MLDSA_N, 0, 2))
+    invariant(forall(p, 0, MLDSA_N,
+      (h->coeffs[p] == 1) ==
+      exists(hj, old_hint_count, j, packed_hints[hj] == p)))
     decreases(new_hint_count - j)
   )
   {
@@ -213,6 +195,15 @@ int mld_sig_unpack_hints(mld_poly *h, const uint8_t sig[MLDSA_CRYPTO_BYTES],
       }
     }
   }
+
+  /* On success, h->coeffs[p] is 1 exactly for the hint indices decoded for this
+   * row, i.e. packed_hints[old_hint_count, new_hint_count). Asserted here
+   * rather than posted as a contract to not unnecessarily increase proof
+   * complexity at callers that do not need the functional description. */
+  cassert(forall(
+      p, 0, MLDSA_N,
+      (h->coeffs[p] == 1) ==
+          exists(hj, old_hint_count, new_hint_count, packed_hints[hj] == p)));
 
   return 0;
 }

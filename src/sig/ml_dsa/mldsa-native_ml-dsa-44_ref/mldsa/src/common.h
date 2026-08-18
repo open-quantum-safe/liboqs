@@ -71,7 +71,7 @@
 #define MLD_NAMESPACE_KL(s) MLD_CONCAT(MLD_NAMESPACE_PREFIX_KL, s)
 
 /* On Apple platforms, we need to emit leading underscore
- * in front of assembly symbols. We thus introducee a separate
+ * in front of assembly symbols. We thus introduce a separate
  * namespace wrapper for ASM symbols. */
 #if !defined(__APPLE__)
 #define MLD_ASM_NAMESPACE(sym) MLD_NAMESPACE(sym)
@@ -129,15 +129,19 @@
 #endif
 
 #if defined(MLD_CONFIG_NO_RANDOMIZED_API) && defined(MLD_CONFIG_KEYGEN_PCT)
-#error Bad configuration: MLD_CONFIG_NO_RANDOMIZED_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_sign_signature()
+#error Bad configuration: MLD_CONFIG_NO_RANDOMIZED_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires signature()
 #endif
 
 #if defined(MLD_CONFIG_NO_SIGN_API) && defined(MLD_CONFIG_KEYGEN_PCT)
-#error Bad configuration: MLD_CONFIG_NO_SIGN_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_sign_signature()
+#error Bad configuration: MLD_CONFIG_NO_SIGN_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires signature()
 #endif
 
 #if defined(MLD_CONFIG_NO_VERIFY_API) && defined(MLD_CONFIG_KEYGEN_PCT)
-#error Bad configuration: MLD_CONFIG_NO_VERIFY_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_sign_verify()
+#error Bad configuration: MLD_CONFIG_NO_VERIFY_API is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires verify()
+#endif
+
+#if defined(MLD_CONFIG_CORE_API_ONLY) && defined(MLD_CONFIG_KEYGEN_PCT)
+#error Bad configuration: MLD_CONFIG_CORE_API_ONLY is incompatible with MLD_CONFIG_KEYGEN_PCT as the current PCT implementation requires signature() and verify()
 #endif
 
 #if defined(MLD_CONFIG_USE_NATIVE_BACKEND_ARITH)
@@ -202,77 +206,31 @@
 #error Bad configuration: MLD_CONFIG_CUSTOM_ALLOC_FREE must be set together with MLD_CUSTOM_ALLOC and MLD_CUSTOM_FREE
 #endif
 
-/*
- * If the integration wants to provide a context parameter for use in
- * platform-specific hooks, then it should define this parameter.
- *
- * The MLD_CONTEXT_PARAMETERS_n macros are intended to be used with macros
- * defining the function names and expand to either pass or discard the context
- * argument as required by the current build.  If there is no context parameter
- * requested then these are removed from the prototypes and from all calls.
- */
-#ifdef MLD_CONFIG_CONTEXT_PARAMETER
-#define MLD_CONTEXT_PARAMETERS_0(context) (context)
-#define MLD_CONTEXT_PARAMETERS_1(arg0, context) (arg0, context)
-#define MLD_CONTEXT_PARAMETERS_2(arg0, arg1, context) (arg0, arg1, context)
-#define MLD_CONTEXT_PARAMETERS_3(arg0, arg1, arg2, context) \
-  (arg0, arg1, arg2, context)
-#define MLD_CONTEXT_PARAMETERS_4(arg0, arg1, arg2, arg3, context) \
-  (arg0, arg1, arg2, arg3, context)
-#define MLD_CONTEXT_PARAMETERS_5(arg0, arg1, arg2, arg3, arg4, context) \
-  (arg0, arg1, arg2, arg3, arg4, context)
-#define MLD_CONTEXT_PARAMETERS_6(arg0, arg1, arg2, arg3, arg4, arg5, context) \
-  (arg0, arg1, arg2, arg3, arg4, arg5, context)
-#define MLD_CONTEXT_PARAMETERS_7(arg0, arg1, arg2, arg3, arg4, arg5, arg6, \
-                                 context)                                  \
-  (arg0, arg1, arg2, arg3, arg4, arg5, arg6, context)
-#define MLD_CONTEXT_PARAMETERS_8(arg0, arg1, arg2, arg3, arg4, arg5, arg6, \
-                                 arg7, context)                            \
-  (arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, context)
-#define MLD_CONTEXT_PARAMETERS_9(arg0, arg1, arg2, arg3, arg4, arg5, arg6, \
-                                 arg7, arg8, context)                      \
-  (arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, context)
-#else /* MLD_CONFIG_CONTEXT_PARAMETER */
-#define MLD_CONTEXT_PARAMETERS_0(context) ()
-#define MLD_CONTEXT_PARAMETERS_1(arg0, context) (arg0)
-#define MLD_CONTEXT_PARAMETERS_2(arg0, arg1, context) (arg0, arg1)
-#define MLD_CONTEXT_PARAMETERS_3(arg0, arg1, arg2, context) (arg0, arg1, arg2)
-#define MLD_CONTEXT_PARAMETERS_4(arg0, arg1, arg2, arg3, context) \
-  (arg0, arg1, arg2, arg3)
-#define MLD_CONTEXT_PARAMETERS_5(arg0, arg1, arg2, arg3, arg4, context) \
-  (arg0, arg1, arg2, arg3, arg4)
-#define MLD_CONTEXT_PARAMETERS_6(arg0, arg1, arg2, arg3, arg4, arg5, context) \
-  (arg0, arg1, arg2, arg3, arg4, arg5)
-#define MLD_CONTEXT_PARAMETERS_7(arg0, arg1, arg2, arg3, arg4, arg5, arg6, \
-                                 context)                                  \
-  (arg0, arg1, arg2, arg3, arg4, arg5, arg6)
-#define MLD_CONTEXT_PARAMETERS_8(arg0, arg1, arg2, arg3, arg4, arg5, arg6, \
-                                 arg7, context)                            \
-  (arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-#define MLD_CONTEXT_PARAMETERS_9(arg0, arg1, arg2, arg3, arg4, arg5, arg6, \
-                                 arg7, arg8, context)                      \
-  (arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
-#endif /* !MLD_CONFIG_CONTEXT_PARAMETER */
-
-#if defined(MLD_CONFIG_CONTEXT_PARAMETER_TYPE) != \
-    defined(MLD_CONFIG_CONTEXT_PARAMETER)
-#error MLD_CONFIG_CONTEXT_PARAMETER_TYPE must be defined if and only if MLD_CONFIG_CONTEXT_PARAMETER is defined
-#endif
+/* Context-parameter machinery (MLD_CONTEXT_PARAMETERS_n and related config
+ * checks). Kept in a separate, level-generic header for readability; included
+ * here so it is available to the allocation macros below and to all consumers
+ * of common.h. */
+#include "context.h"
 
 #if !defined(MLD_CONFIG_CUSTOM_ALLOC_FREE)
 /* Default: stack allocation */
 
+/* This is a declaration macro, not an expression macro: T is a type and v is
+ * a declarator, neither of which can be wrapped in parentheses. The
+ * bugprone-macro-parentheses diagnostic is therefore a false positive here. */
 #define MLD_ALLOC(v, T, N, context) \
   MLD_ALIGN T mld_alloc_##v[N];     \
-  T *v = mld_alloc_##v
+  T *v = mld_alloc_##v /* NOLINT(bugprone-macro-parentheses) */
 
-/* TODO: This leads to a circular dependency between common and ct.h
- * It just works out before we're at the end of the file, but it's still
- * prone to issues in the future. */
-#include "ct.h"
+/* The MLD_FREE macro body references mld_zeroize(), which is declared in
+ * ct.h. We deliberately do NOT include ct.h here: doing so would create a
+ * circular dependency (ct.h includes common.h), and common.h itself never
+ * calls mld_zeroize() -- only the macro expansion does. Each translation
+ * unit that uses MLD_FREE therefore includes ct.h directly. */
 #define MLD_FREE(v, T, N, context)                     \
   do                                                   \
   {                                                    \
+    MLD_CONTEXT_UNUSED(context);                       \
     mld_zeroize(mld_alloc_##v, sizeof(mld_alloc_##v)); \
     (v) = NULL;                                        \
   } while (0)
@@ -304,28 +262,38 @@
 
 /****************************** Error codes ***********************************/
 
-/* Generic failure condition */
-#define MLD_ERR_FAIL -1
+/* Generic failure condition, reserved for failures not covered by a more
+ * specific error code. */
+#define MLD_ERR_FAIL (-1)
 /* An allocation failed. This can only happen if MLD_CONFIG_CUSTOM_ALLOC_FREE
  * is defined and the provided MLD_CUSTOM_ALLOC can fail. */
-#define MLD_ERR_OUT_OF_MEMORY -2
-/* An rng failure occured. Might be due to insufficient entropy or
+#define MLD_ERR_OUT_OF_MEMORY (-2)
+/* An RNG failure occurred. Might be due to insufficient entropy or
  * system misconfiguration. */
-#define MLD_ERR_RNG_FAIL -3
+#define MLD_ERR_RNG_FAIL (-3)
 /* The signing rejection-sampling loop exceeded
  * MLD_CONFIG_MAX_SIGNING_ATTEMPTS iterations without producing a valid
- * signature. With a FIPS 204 Appendix C compliant bound (>= 814) this
+ * signature. With a FIPS 204 Appendix C compliant bound (>= 821) this
  * has probability < 2^-256. */
-#define MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED -4
-
-/* Disjunction over the full set of MLD_ERR_XXX failure codes.
- *
- * Intended for use in top-level `ensures` clauses that admit every
- * possible error. Narrower contracts should enumerate only the
- * specific errors they can actually return. */
-#define MLD_ANY_ERROR(err)                                    \
-  ((err) == MLD_ERR_FAIL || (err) == MLD_ERR_OUT_OF_MEMORY || \
-   (err) == MLD_ERR_RNG_FAIL || (err) == MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED)
+#define MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED (-4)
+/* Signing was paused before completing, at the request of a caller-provided
+ * MLD_CONFIG_SIGN_HOOK_ATTEMPT hook (see mldsa_native_config.h). The caller
+ * resumes by re-invoking signing with the same inputs; the attempt hook,
+ * together with MLD_CONFIG_SIGN_HOOK_RESUME, decides where to continue. */
+#define MLD_ERR_SIGNING_PAUSED (-5)
+/* Signature verification failed: the signature is not valid for the given
+ * message and public key. Returned by the verification API. */
+#define MLD_ERR_INVALID_SIGNATURE (-6)
+/* Secret key validation failed: the secret key is malformed or internally
+ * inconsistent. Returned by pk_from_sk. */
+#define MLD_ERR_INVALID_KEY (-7)
+/* The Pairwise Consistency Test failed. Only possible when
+ * MLD_CONFIG_KEYGEN_PCT is enabled; signals that the freshly generated key
+ * pair failed its sign/verify self-test. */
+#define MLD_ERR_PCT_FAIL (-8)
+/* An argument was invalid, e.g. an unsupported pre-hash algorithm or a context
+ * string longer than 255 bytes. */
+#define MLD_ERR_INVALID_ARG (-9)
 
 
 #endif /* !__ASSEMBLER__ */
