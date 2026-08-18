@@ -1405,6 +1405,7 @@ algfamilies:
             base_dir: "src/crypto_kem/kyber/kyber512/amd64/ref"
             files:
               - "api.c"  # Patched
+              - "include/api.h"  # Patched
               - "kem.s"  # Built
         includes:
           - scope: private
@@ -1432,6 +1433,7 @@ algfamilies:
             base_dir: "src/crypto_kem/kyber/kyber512/amd64/avx2"
             files:
               - "api.c"  # patched
+              - "include/api.h"  # patched
               - "kem.s"  # built
         includes:
           - scope: private
@@ -1555,6 +1557,7 @@ algfamilies:
             base_dir: "src/crypto_kem/kyber/kyber768/amd64/ref"
             files:
               - "api.c"  # Patched
+              - "include/api.h"  # Patched
               - "kem.s"  # Built
         includes:
           - scope: private
@@ -1582,6 +1585,7 @@ algfamilies:
             base_dir: "src/crypto_kem/kyber/kyber768/amd64/avx2"
             files:
               - "api.c"  # patched
+              - "include/api.h"  # patched
               - "kem.s"  # built
         includes:
           - scope: private
