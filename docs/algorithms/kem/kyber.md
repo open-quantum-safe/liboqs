@@ -24,7 +24,7 @@
 
 ## Support
 
-- **Upstream maintenance**: TBD
+- **Upstream maintenance**: Actively maintained ([statement](https://github.com/cyberstormdotmu/liboqs_statement/blob/main/README.md))
 - **OQS support tier**: Tier 3
 
 ## Parameter set summary
