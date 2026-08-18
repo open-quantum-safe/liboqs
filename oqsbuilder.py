@@ -195,6 +195,7 @@ class CpuFeatures(Enum):
     BMI2 = "bmi2"
     POPCNT = "popcnt"
     NEON = "asimd"
+    AES = "aes"
 
 
 class CmakeScopes(Enum):

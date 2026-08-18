@@ -50,7 +50,7 @@ upstreams:
   pqcrystals-kyber:
     git_url: https://github.com/pq-crystals/kyber.git
     git_commit: 441c0519a07e8b86c8d079954a6b10bd31d29efc
-    patches: 
+    patches:
       - pqcrystals-kyber-yml.patch
       - pqcrystals-kyber-ref-shake-aes.patch
       - pqcrystals-kyber-avx2-shake-aes.patch
@@ -1763,7 +1763,6 @@ algfamilies:
         default-implementation: mlkem-native_ml-kem-1024_ref
 
     implementations:
-      
       mlkem-native_ml-kem-512_ref:
         version: FIPS203
         enable_by: null  # default impl of ml-kem-512
@@ -5024,7 +5023,7 @@ algfamilies:
         compile_opts:
           - scope: public
             opts: >-
-              -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 
+              -DOPTIMISATION=2 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4
               -Dsk_is_seed=1 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
         signature_keypair: _snova_24_5_4_aes_ssk_neon_keypair
         signature_signature: _snova_24_5_4_aes_ssk_neon_signature
@@ -5170,7 +5169,7 @@ LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src
         compile_opts:
           - scope: public
             opts: >-
-              -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4 
+              -DOPTIMISATION=1 -Dv_SNOVA=24 -Do_SNOVA=5 -Dl_SNOVA=4
               -Dsk_is_seed=0 -DPK_EXPAND_SHAKE=0 -DSNOVA_LIBOQS
         signature_keypair: _snova_24_5_4_aes_esk_opt_keypair
         signature_signature: _snova_24_5_4_aes_esk_opt_sign
@@ -7212,5 +7211,1303 @@ LICENSE, src/deriv_params.h, src/gf16.h, src/gf16_init.h, src/gf16_matrix.h, src
         signature_signature: pqov_uov_V_ref_signature
         signature_verify: pqov_uov_V_ref_verify
 
-  # mqom: null
+  mqom:
+    displayname: MQOM
+    algtype: sig
+    principal-submitters:
+      - Ryad Benadjila
+      - Charles Bouillaguet
+      - Thibauld Feneuil
+      - Matthieu Rivain
+    crypto-assumption: >-
+      Computing the solution of a Multivariate Quadratic problem.
+    website: >-
+      https://mqom.org
+    nist-round: "2"
+    spec-version: "NIST Round 2"
+    standardization-status: >-
+      Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mqom-spec-round2-web.pdf) consideration
+    upstream-maintenance: Actively maintained
+    upstream-statement-url: https://github.com/mqom/mqom-v2/blob/main/integration/liboqs/SUPPORT.md
+    primary-upstream: mqom
+    oqs-support-tier: 3
+    parameters:
+
+      mqom2_cat1_gf16_fast_r3:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 60
+        length-secret-key: 88
+        length-signature: 3484
+        nistkat-sha256:
+          7ea1036840e5a867c2b83ace1d02f1a8782bc75ea91b81aa60315f47abd95abc
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3
+        default-implementation: mqom_mqom2_cat1_gf16_fast_r3_default
+        memopt-implementation: mqom_mqom2_cat1_gf16_fast_r3_memopt
+
+      mqom2_cat1_gf16_fast_r5:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 60
+        length-secret-key: 88
+        length-signature: 3280
+        nistkat-sha256:
+          8ff666360144cfe4c398564db1a08e4021e8531e5e97337108561ad6d31d6b55
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
+        default-implementation: mqom_mqom2_cat1_gf16_fast_r5_default
+        memopt-implementation: mqom_mqom2_cat1_gf16_fast_r5_memopt
+
+      mqom2_cat1_gf16_short_r3:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 60
+        length-secret-key: 88
+        length-signature: 3060
+        nistkat-sha256:
+          073f7c5bf82aff26c5287cca5782e65f9e8dbf415fcb6509c4b2c37e3d66226a
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3
+        default-implementation: mqom_mqom2_cat1_gf16_short_r3_default
+        memopt-implementation: mqom_mqom2_cat1_gf16_short_r3_memopt
+
+      mqom2_cat1_gf16_short_r5:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 60
+        length-secret-key: 88
+        length-signature: 2916
+        nistkat-sha256:
+          073f7c5bf82aff26c5287cca5782e65f9e8dbf415fcb6509c4b2c37e3d66226a
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5
+        default-implementation: mqom_mqom2_cat1_gf16_short_r5_default
+        memopt-implementation: mqom_mqom2_cat1_gf16_short_r5_memopt
+
+      mqom2_cat3_gf16_fast_r3:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 90
+        length-secret-key: 132
+        length-signature: 8224
+        nistkat-sha256:
+          2f53db529a4345d609cf4fd9e5c9abfdf6f3752c60802dbbf293af0681ba54b5
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3
+        default-implementation: mqom_mqom2_cat3_gf16_fast_r3_default
+        memopt-implementation: mqom_mqom2_cat3_gf16_fast_r3_memopt
+
+      mqom2_cat3_gf16_fast_r5:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 90
+        length-secret-key: 132
+        length-signature: 7738
+        nistkat-sha256: 491ba3d0d53c056503920cd4835fe25aa52de18231040fa3bea835e7c6db3220
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5
+        default-implementation: mqom_mqom2_cat3_gf16_fast_r5_default
+        memopt-implementation: mqom_mqom2_cat3_gf16_fast_r5_memopt
+
+      mqom2_cat3_gf16_short_r3:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 90
+        length-secret-key: 132
+        length-signature: 6820
+        nistkat-sha256: 5eea5230f9fb42d606a2bd06927aeac7f79c21f449a5b40e2cfa88ebf9ce760e
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3
+        default-implementation: mqom_mqom2_cat3_gf16_short_r3_default
+        memopt-implementation: mqom_mqom2_cat3_gf16_short_r3_memopt
+
+      mqom2_cat3_gf16_short_r5:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 90
+        length-secret-key: 132
+        length-signature: 6496
+        nistkat-sha256: e7215a9e5c459620d861ad94712e9ec51c888f72d0eb1f6a431661713759f25c
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5
+        default-implementation: mqom_mqom2_cat3_gf16_short_r5_default
+        memopt-implementation: mqom_mqom2_cat3_gf16_short_r5_memopt
+
+      mqom2_cat5_gf16_fast_r3:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 122
+        length-secret-key: 180
+        length-signature: 14708
+        nistkat-sha256: 4d9a6390ed07afbeb7f6d9ee32851a2d1072223e9ec92f989052beb8d6fcf059
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3
+        default-implementation: mqom_mqom2_cat5_gf16_fast_r3_default
+        memopt-implementation: mqom_mqom2_cat5_gf16_fast_r3_memopt
+
+      mqom2_cat5_gf16_fast_r5:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 122
+        length-secret-key: 180
+        length-signature: 13772
+        nistkat-sha256: 4514e356610613d02afd88bec00d39eb9f2352f05464c4b4a01bea015bebe144
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5
+        default-implementation: mqom_mqom2_cat5_gf16_fast_r5_default
+        memopt-implementation: mqom_mqom2_cat5_gf16_fast_r5_memopt
+
+      mqom2_cat5_gf16_short_r3:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 122
+        length-secret-key: 180
+        length-signature: 12664
+        nistkat-sha256: 848d26f05c944b4e240084d8e0314e6bb496eeefc5af521056ea7e31e86cf57f
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3
+        default-implementation: mqom_mqom2_cat5_gf16_short_r3_default
+        memopt-implementation: mqom_mqom2_cat5_gf16_short_r3_memopt
+
+      mqom2_cat5_gf16_short_r5:
+        security-strength: 1
+        security-model: EUF-CMA
+        length-public-key: 122
+        length-secret-key: 180
+        length-signature: 12014
+        nistkat-sha256: 58a1fd38d5bb7bdbe59ba896827784239397fee0117b52d631f317d912caac06
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5
+        default-implementation: mqom_mqom2_cat5_gf16_short_r5_default
+        memopt-implementation: mqom_mqom2_cat5_gf16_short_r5_memopt
+
+    common_src:
+      mqom_common:
+        upstream: mqom
+        files: [api.h, common.h, benchmark.h, enc.h, enc_local.h, enc_mupq.h, enc_liboqs.h,
+                expand_mq.c, expand_mq.h, fields.h, ggm_tree.c, ggm_tree.h, keygen.c, keygen.h,
+                mqom2_parameters.h, prg.h, prg.c, prg_cache.h, sign.c, sign_memopt.c, sign.h,
+                crypto_sign.c, xof.c, xof.h, blc/*, fields/*, fields_bitsliced.h, fields_bitsliced/*,
+                piop/*, LICENSE,
+                # rijndael also had some *.s that we don't want to copy
+                rijndael/*.c, rijndael/*.h]
+
+    implementations:
+      mqom_mqom2_cat1_gf16_fast_r3_default:
+        version: "2.1"
+        parameter: mqom2_cat1_gf16_fast_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_fast_r3_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS
+              -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_default_
+              -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_fast_r3_default_
+              -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0
+              -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE
+              -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_default_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_fast_r3_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3_memopt
+        parameter: mqom2_cat1_gf16_fast_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_fast_r3_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_memopt_
+              -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_fast_r3_memopt_ -DMQOM2_PARAM_SECURITY=128
+              -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3
+              -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC
+              -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_fast_r3_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r3_avx2
+        parameter: mqom2_cat1_gf16_fast_r3
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_fast_r3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_avx2_
+              -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_fast_r3_avx2_ -DMQOM2_PARAM_SECURITY=128
+              -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3
+              -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r3_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_fast_r5_default:
+        version: "2.1"
+        parameter: mqom2_cat1_gf16_fast_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_fast_r5_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_fast_r5_default_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_default_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_fast_r5_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5_memopt
+        parameter: mqom2_cat1_gf16_fast_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_fast_r5_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_fast_r5_memopt_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_fast_r5_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5_avx2
+        parameter: mqom2_cat1_gf16_fast_r5
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_fast_r5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_fast_r5_avx2_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_fast_r5_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_short_r3_default:
+        version: "2.1"
+        parameter: mqom2_cat1_gf16_short_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_short_r3_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_short_r3_default_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_default_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_short_r3_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3_memopt
+        parameter: mqom2_cat1_gf16_short_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_short_r3_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_short_r3_memopt_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_short_r3_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r3_avx2
+        parameter: mqom2_cat1_gf16_short_r3
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_short_r3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_short_r3_avx2_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_short_r3_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_short_r5_default:
+        version: "2.1"
+        parameter: mqom2_cat1_gf16_short_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_short_r5_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_short_r5_default_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_default_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_short_r5_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5_memopt
+        parameter: mqom2_cat1_gf16_short_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_short_r5_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_short_r5_memopt_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat1_gf16_short_r5_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_short_r5_avx2
+        parameter: mqom2_cat1_gf16_short_r5
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat1-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat1_gf16_short_r5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat1_gf16_short_r5_avx2_ -DMQOM2_PARAM_SECURITY=128 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2
+        signature_keypair: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat1_gf16_short_r5_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_fast_r3_default:
+        version: "2.1"
+        parameter: mqom2_cat3_gf16_fast_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_fast_r3_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_fast_r3_default_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_default_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_fast_r3_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3_memopt
+        parameter: mqom2_cat3_gf16_fast_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_fast_r3_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_fast_r3_memopt_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_fast_r3_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r3_avx2
+        parameter: mqom2_cat3_gf16_fast_r3
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_fast_r3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_fast_r3_avx2_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r3_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_fast_r5_default:
+        version: "2.1"
+        parameter: mqom2_cat3_gf16_fast_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_fast_r5_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_fast_r5_default_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_default_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_fast_r5_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5_memopt
+        parameter: mqom2_cat3_gf16_fast_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_fast_r5_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_fast_r5_memopt_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_fast_r5_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_fast_r5_avx2
+        parameter: mqom2_cat3_gf16_fast_r5
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_fast_r5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_fast_r5_avx2_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_fast_r5_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_short_r3_default:
+        version: "2.1"
+        parameter: mqom2_cat3_gf16_short_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_short_r3_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_short_r3_default_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_default_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_short_r3_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3_memopt
+        parameter: mqom2_cat3_gf16_short_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_short_r3_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_short_r3_memopt_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_short_r3_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r3_avx2
+        parameter: mqom2_cat3_gf16_short_r3
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_short_r3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_short_r3_avx2_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_short_r3_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_short_r5_default:
+        version: "2.1"
+        parameter: mqom2_cat3_gf16_short_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_short_r5_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_short_r5_default_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_default_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_short_r5_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5_memopt
+        parameter: mqom2_cat3_gf16_short_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_short_r5_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_short_r5_memopt_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat3_gf16_short_r5_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat3_gf16_short_r5_avx2
+        parameter: mqom2_cat3_gf16_short_r5
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat3-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat3_gf16_short_r5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat3_gf16_short_r5_avx2_ -DMQOM2_PARAM_SECURITY=192 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat3_gf16_short_r5_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_fast_r3_default:
+        version: "2.1"
+        parameter: mqom2_cat5_gf16_fast_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_fast_r3_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_fast_r3_default_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_default_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_fast_r3_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3_memopt
+        parameter: mqom2_cat5_gf16_fast_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_fast_r3_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_fast_r3_memopt_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_fast_r3_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r3_avx2
+        parameter: mqom2_cat5_gf16_fast_r3
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-fast-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_fast_r3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_fast_r3_avx2_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r3_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_fast_r5_default:
+        version: "2.1"
+        parameter: mqom2_cat5_gf16_fast_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_fast_r5_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_fast_r5_default_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_default_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_fast_r5_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5_memopt
+        parameter: mqom2_cat5_gf16_fast_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_fast_r5_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_fast_r5_memopt_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_fast_r5_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_fast_r5_avx2
+        parameter: mqom2_cat5_gf16_fast_r5
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-fast-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_fast_r5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_fast_r5_avx2_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=0 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_fast_r5_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_short_r3_default:
+        version: "2.1"
+        parameter: mqom2_cat5_gf16_short_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_short_r3_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_short_r3_default_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_default_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_short_r3_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3_memopt
+        parameter: mqom2_cat5_gf16_short_r3
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_short_r3_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_short_r3_memopt_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_short_r3_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r3_avx2
+        parameter: mqom2_cat5_gf16_short_r3
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-short-r3.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_short_r3_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_short_r3_avx2_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=3 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_short_r3_avx2_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_short_r5_default:
+        version: "2.1"
+        parameter: mqom2_cat5_gf16_short_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_short_r5_default"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_default_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_short_r5_default_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DPIOP_BITSLICE -DUSE_XOF_X4 -DUSE_ENC_X8
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_default_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_default_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_default_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_short_r5_memopt:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5_memopt
+        parameter: mqom2_cat5_gf16_short_r5
+        uarch: portable
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_short_r5_memopt"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_memopt_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_short_r5_memopt_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DNO_EXPANDMQ_PRG_CACHE -DMEMORY_EFFICIENT_BLC -DPIOP_BITSLICE -DMEMORY_EFFICIENT_KEYGEN -DUSE_XOF_X4
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_memopt_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_memopt_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_memopt_crypto_sign_verify
+
+      mqom_mqom2_cat5_gf16_short_r5_avx2:
+        version: "2.1"
+        enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat5_gf16_short_r5_avx2
+        parameter: mqom2_cat5_gf16_short_r5
+        uarch: x86_64
+        common-crypto:
+          AES: liboqs
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, aes]
+        sources:
+          - upstream: mqom
+            files: ["parameters/mqom2_parameters_cat5-gf16-short-r5.h"]
+          - family_common: mqom_common
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom2_cat5_gf16_short_r5_avx2"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mqom_mqom_common"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -maes"
+          - scope: public
+            opts: >-
+              -DMQOM2_FOR_LIBOQS -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_avx2_ -DAPPLY_NAMESPACE=oqs_sig_private_mqom2_cat5_gf16_short_r5_avx2_ -DMQOM2_PARAM_SECURITY=256 -DMQOM2_PARAM_BASE_FIELD=4 -DMQOM2_PARAM_TRADEOFF=1 -DMQOM2_PARAM_NBROUNDS=5 -DNO_EMBEDDED_SRAM_SECTION -DUSE_PRG_CACHE -DUSE_PIOP_CACHE -DUSE_XOF_X4 -DUSE_ENC_X8 -DFIELDS_AVX2 -DRIJNDAEL_AES_NI
+        signature_keypair: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_avx2_crypto_sign_keypair
+        signature_signature: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_avx2_crypto_sign_signature
+        signature_verify: oqs_sig_pubapi_mqom2_cat5_gf16_short_r5_avx2_crypto_sign_verify
+
   # slh_dsa: null
