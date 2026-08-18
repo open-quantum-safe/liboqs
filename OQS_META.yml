@@ -1391,7 +1391,7 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: null
 
-      jasmin_kyber_512_ref:
+      libjade_kyber512_ref:
         version: NIST Round 3 submission
         enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_512
         parameter: kyber512
@@ -1417,7 +1417,7 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: null
 
-      jasmin_kyber_512_avx2:
+      libjade_kyber512_avx2:
         version: NIST Round 3 submission
         enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2
         parameter: kyber512
@@ -1541,7 +1541,7 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: null
 
-      jasmin_kyber_768_ref:
+      libjade_kyber768_ref:
         version: NIST Round 3 submission
         enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_768
         parameter: kyber768
@@ -1567,7 +1567,7 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: null
 
-      jasmin_kyber_768_avx2:
+      libjade_kyber768_avx2:
         version: NIST Round 3 submission
         enable_by: OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2
         parameter: kyber768
