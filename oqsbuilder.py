@@ -32,6 +32,8 @@ LIBOQS_SRC_DIR = os.path.join(LIBOQS_DIR, "src")
 DEFAULT_OQS_META_PATH = os.path.join(LIBOQS_DIR, "OQS_META.yml")
 DEFAULT_KEM_SRC_TEMPLATE_FILENAME = "kem.c.jinja"
 DEFAULT_SIG_SRC_TEMPLATE_FILENAME = "sig.c.jinja"
+DEFAULT_KEM_HEADER_TEMPLATE_FILENAME = "kem.h.jinja"
+DEFAULT_SIG_HEADER_TEMPLATE_FILENAME = "sig.h.jinja"
 DEFAULT_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
 DEFAULT_OQS_TEMPLATES_DIR = os.path.join(LIBOQS_DIR, "templates")
 DEFAULT_NEVER_COPY = [
@@ -49,6 +51,8 @@ class OQSBuilderConfig:
         templates_dir: str = DEFAULT_OQS_TEMPLATES_DIR,
         kem_src_template_filename: str = DEFAULT_KEM_SRC_TEMPLATE_FILENAME,
         sig_src_template_filename: str = DEFAULT_SIG_SRC_TEMPLATE_FILENAME,
+        kem_header_template_filename: str = DEFAULT_KEM_HEADER_TEMPLATE_FILENAME,
+        sig_header_template_filename: str = DEFAULT_SIG_HEADER_TEMPLATE_FILENAME,
         fail_on_jasminc: bool = False,
         never_copy: list[str] = DEFAULT_NEVER_COPY,
     ):
@@ -69,6 +73,8 @@ class OQSBuilderConfig:
         self.templates_dir = templates_dir
         self.kem_src_template_filename = kem_src_template_filename
         self.sig_src_template_filename = sig_src_template_filename
+        self.kem_header_template_filename = kem_header_template_filename
+        self.sig_header_template_filename = sig_header_template_filename
         self.delete_upstreams = True
         self.demo_algfamilies = ["demo_alg"]
         self.fail_on_jasminc = fail_on_jasminc
@@ -236,6 +242,7 @@ class CpuFeatures(Enum):
                 return "OQS_CPU_EXT_ARM_NEON"
             case CpuFeatures.AES:
                 return "OQS_CPU_EXT_AES"
+
 
 class CmakeScopes(Enum):
     Public = "public"
@@ -976,7 +983,12 @@ class ImplementationMeta:
     def render_runtime_cpu_feature_gate(self) -> str | None:
         if not self.cpufeatures:
             return None
-        return " && ".join([f"OQS_CPU_has_extension({feat.to_oqs_macro()})" for feat in self.cpufeatures])
+        return " && ".join(
+            [
+                f"OQS_CPU_has_extension({feat.to_oqs_macro()})"
+                for feat in self.cpufeatures
+            ]
+        )
 
     def is_libjade_impl(self) -> bool:
         """Return True iff any source comes from libjade"""
@@ -1415,6 +1427,12 @@ def render_sources(
     :param dryrun: if True, print the rendered source file to stdout instead of
     writing to the actual file
     """
+    if not algfamily_meta.implementations:
+        logger.warning(
+            "%s is not an upstream integration. Skiping render_sources", algfamily_meta
+        )
+        return
+
     for param_key, param_meta in algfamily_meta.parameters.items():
         oqsapi_src_filename = f"{algfamily_meta.algtype.value}_{param_key}.c"
         oqsapi_src_full_path = os.path.join(
@@ -1473,8 +1491,45 @@ def render_sources(
         # FIX: take inventory of OQS API source files
 
 
-def render_header():
-    raise NotImplementedError()
+def render_header(
+    algfamily_key: str,
+    algfamily_meta: AlgFamilyMeta,
+    builderconfig: OQSBuilderConfig,
+    dryrun: bool = False,
+):
+    """The header file lists cryptographic parameters and declares public API's"""
+    if not algfamily_meta.implementations:
+        logger.warning(
+            "%s is not an upstream integration. Skiping render_header", algfamily_meta
+        )
+        return
+
+    oqsapi_header_filename = f"kem_{algfamily_key}.h"
+    oqsapi_header_path = os.path.join(
+        algfamily_meta.algtype.dir, algfamily_key, oqsapi_header_filename
+    )
+    if algfamily_meta.algtype == AlgTypes.Kem:
+        template_filename = builderconfig.kem_header_template_filename
+    elif algfamily_meta.algtype == AlgTypes.Sig:
+        template_filename = builderconfig.sig_header_template_filename
+    else:
+        raise ValueError(f"Invalid alg type {algfamily_meta.algtype}")
+
+    template_path = os.path.join(builderconfig.templates_dir, template_filename)
+    with open(template_path, "r") as template_f:
+        template = jinja2.Template(template_f.read())
+    rendered = template.render(
+        {
+            "algfamily_key": algfamily_key,
+            "algfamily_meta": algfamily_meta,
+        }
+    )
+    if dryrun:
+        print(rendered)
+        return
+    with open(oqsapi_header_path, "w") as f:
+        f.write(rendered)
+        # FIX: take inventory of OQS API header files
 
 
 def render_oqs_api(
@@ -1485,7 +1540,7 @@ def render_oqs_api(
     """Generate source and header files that implement OQS public API"""
     for algfamily_key, algfamily_meta in algfamilies.items():
         render_sources(algfamily_key, algfamily_meta, builderconfig, dryrun)
-        render_header()
+        render_header(algfamily_key, algfamily_meta, builderconfig, dryrun)
 
 
 def render_build_files():
