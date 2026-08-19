@@ -203,6 +203,14 @@ class UArch(Enum):
     Cuda = "cuda"
     Icicle = "icicle"
 
+    def compile_time_guard(self) -> str | None:
+        match self:
+            case UArch.Cuda:
+                return "OQS_USE_CUPQC"
+            case UArch.Icicle:
+                return "OQS_USE_ICICLE"
+        return None
+
 
 class SupportedOS(Enum):
     Linux = "Linux"

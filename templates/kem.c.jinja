@@ -33,6 +33,7 @@ OQS_KEM *OQS_KEM_{{ param_key }}_new(void) {
 	return kem;
 }
 
+{# Declare default implementation API #}
 extern int {{ default_impl_meta.api.signature_keypair }}(uint8_t *pk, uint8_t *sk);
 {% if default_impl_meta.api.signature_keypair_derand -%}
 extern int {{ default_impl_meta.api.signature_keypair_derand }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
@@ -43,7 +44,11 @@ extern int {{ default_impl_meta.api.signature_enc_derand }}(uint8_t *ct, uint8_t
 {%- endif %}
 extern int {{ default_impl_meta.api.signature_dec }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
+{# Declare additional implementations API #}
 {% for addtl_impl_key, addtl_impl_meta in addtl_impls.items() %}
+{% if addtl_impl_meta.uarch.compile_time_guard() %}
+#if defined({{ addtl_impl_meta.uarch.compile_time_guard() }})
+{% endif %}
 #if defined({{ addtl_impl_meta.enable_by }})
 extern int {{ addtl_impl_meta.api.signature_keypair }}(uint8_t *pk, uint8_t *sk);
 {% if addtl_impl_meta.api.signature_keypair_derand -%}
@@ -54,7 +59,10 @@ extern int {{ addtl_impl_meta.api.signature_enc }}(uint8_t *ct, uint8_t *ss, con
 extern int {{ addtl_impl_meta.api.signature_enc_derand }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 {%- endif %}
 extern int {{ addtl_impl_meta.api.signature_dec }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
-#endif  /* {{ addtl_impl_meta.enable_by }} */
+#endif /* {{ addtl_impl_meta.enable_by }} */
+{% if addtl_impl_meta.uarch.compile_time_guard() %}
+#endif /* {{ addtl_impl_meta.uarch.compile_time_guard() }} */
+{% endif %}
 {% endfor %}
 
 #endif  /* {{ param_meta.enable_by }} */
