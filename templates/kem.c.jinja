@@ -103,5 +103,37 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, u
 {% endif %}
 }
 
+OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
+{% if not addtl_impls %}
+    return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair }}(public_key, secret_key);
+{% else %}
+    {% for addtl_impl_key, addtl_impl_meta in addtl_impls.items() %}
+        {% if loop.first %}
+#if defined({{ addtl_impl_meta.enable_by }})
+            {%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
+        {% else %}
+#elif defined({{ addtl_impl_meta.enable_by }})
+            {%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
+        {% endif %}
+        {% if addtl_impl_meta.render_runtime_cpu_feature_gate() %}{# Only when addtl_impl has cpu feature gate does OQS_DIST_BUILD make a difference #}
+#if defined(OQS_DIST_BUILD)
+    if ( {{ addtl_impl_meta.render_runtime_cpu_feature_gate() }} ) {
+        return (OQS_STATUS) {{ addtl_impl_meta.api.signature_keypair }}(public_key, secret_key);
+    } else {
+        return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair }}(public_key, secret_key);
+    }
+#else
+    return (OQS_STATUS) {{ addtl_impl_meta.api.signature_keypair }}(public_key, secret_key);
+#endif /* OQS_DIST_BUILD */
+        {% else %}{# If addlt_impl has no CPU feature gate, then always go to addtl_impl's API call #}
+    return (OQS_STATUS) {{ addtl_impl_meta.api.signature_keypair }}(public_key, secret_key);
+        {% endif %}
+    {% endfor %}
+#else
+    return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair }}(public_key, secret_key);
+#endif
+{% endif %}
+}
+
 #endif  /* {{ param_meta.enable_by }} */
 
