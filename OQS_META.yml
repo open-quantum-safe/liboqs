@@ -121,7 +121,7 @@ algfamilies:
     # TODO: What does upstream-ancestors do?
     upstream-ancestors: null
     advisories: null
-    parameters:
+    parameters: # parameter key is used for function signature and must follow snake casing
 
       param1: # for kem
         security-strength: 1, 2, 3, 4, or 5
@@ -1722,7 +1722,7 @@ algfamilies:
     oqs-support-tier: 1
     parameters:
 
-      ml-kem-512:
+      ml_kem_512:
         security-strength: 1
         security-model: IND-CCA2
         length-public-key: 800
@@ -1736,7 +1736,7 @@ algfamilies:
         enable_by: OQS_ENABLE_KEM_ml_kem_512
         default-implementation: mlkem-native_ml-kem-512_ref
 
-      ml-kem-768:
+      ml_kem_768:
         security-strength: 3
         security-model: IND-CCA2
         length-public-key: 1184
@@ -1750,7 +1750,7 @@ algfamilies:
         enable_by: OQS_ENABLE_KEM_ml_kem_768
         default-implementation: mlkem-native_ml-kem-768_ref
 
-      ml-kem-1024:
+      ml_kem_1024:
         security-strength: 5
         security-model: IND-CCA2
         length-public-key: 1568

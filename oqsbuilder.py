@@ -1532,6 +1532,6 @@ if __name__ == "__main__":
             has_jasmin,
         )
 
-    render_oqs_api(oqs_meta.algfamilies, builderconfig, True)
+    render_oqs_api(oqs_meta.algfamilies, builderconfig, False)
     render_build_files()
     render_docs()
