@@ -15,6 +15,7 @@ from tempfile import TemporaryDirectory
 import warnings
 
 import yaml
+import jinja2
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)
@@ -29,7 +30,10 @@ if not _liboqs_dir:
 LIBOQS_DIR = _liboqs_dir
 LIBOQS_SRC_DIR = os.path.join(LIBOQS_DIR, "src")
 DEFAULT_OQS_META_PATH = os.path.join(LIBOQS_DIR, "OQS_META.yml")
+DEFAULT_KEM_SRC_TEMPLATE_FILENAME = "kem.c.jinja"
+DEFAULT_SIG_SRC_TEMPLATE_FILENAME = "sig.c.jinja"
 DEFAULT_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
+DEFAULT_OQS_TEMPLATES_DIR = os.path.join(LIBOQS_DIR, "templates")
 DEFAULT_NEVER_COPY = [
     "Makefile.Microsoft_nmake",
     "Makefile",
@@ -39,9 +43,12 @@ DEFAULT_NEVER_COPY = [
 class OQSBuilderConfig:
     def __init__(
         self,
-        oqs_meta_path: str | None = None,
-        upstreams_dir: str | None = None,
-        patch_dir: str | None = None,
+        oqs_meta_path: str = DEFAULT_OQS_META_PATH,
+        upstreams_dir: str = LIBOQS_DIR,
+        patch_dir: str = DEFAULT_PATCH_DIR,
+        templates_dir: str = DEFAULT_OQS_TEMPLATES_DIR,
+        kem_src_template_filename: str = DEFAULT_KEM_SRC_TEMPLATE_FILENAME,
+        sig_src_template_filename: str = DEFAULT_SIG_SRC_TEMPLATE_FILENAME,
         fail_on_jasminc: bool = False,
         never_copy: list[str] = DEFAULT_NEVER_COPY,
     ):
@@ -56,9 +63,12 @@ class OQSBuilderConfig:
         :param never_copy: a list of glob patterns to exclude upstream files
             from being copied
         """
-        self.oqs_meta_path = oqs_meta_path or DEFAULT_OQS_META_PATH
-        self.upstreams_dir = upstreams_dir or LIBOQS_DIR
-        self.patch_dir = patch_dir or DEFAULT_PATCH_DIR
+        self.oqs_meta_path = oqs_meta_path
+        self.upstreams_dir = upstreams_dir
+        self.patch_dir = patch_dir
+        self.templates_dir = templates_dir
+        self.kem_src_template_filename = kem_src_template_filename
+        self.sig_src_template_filename = sig_src_template_filename
         self.delete_upstreams = True
         self.demo_algfamilies = ["demo_alg"]
         self.fail_on_jasminc = fail_on_jasminc
@@ -1367,6 +1377,87 @@ def copy_sources(
         )
 
 
+def render_sources(
+    algfamily_key: str,
+    algfamily_meta: AlgFamilyMeta,
+    builderconfig: OQSBuilderConfig,
+    dryrun: bool = False,
+):
+    """For each parameter set, generate one source file implementing OQS public
+    API for this parameter set. The source file will be placed at:
+    <liboqs_dir>/src/<algtype>/<family_key>/<algtype>_<parameter_key>.c
+
+    :param dryrun: if True, print the rendered source file to stdout instead of
+    writing to the actual file
+    """
+    for param_key, param_meta in algfamily_meta.parameters.items():
+        oqsapi_src_filename = f"{algfamily_meta.algtype.value}_{param_key}.c"
+        oqsapi_src_full_path = os.path.join(
+            algfamily_meta.algtype.dir, algfamily_key, oqsapi_src_filename
+        )
+        if algfamily_meta.algtype == AlgTypes.Kem:
+            template_path = os.path.join(
+                builderconfig.templates_dir, builderconfig.kem_src_template_filename
+            )
+        elif algfamily_meta.algtype == AlgTypes.Sig:
+            template_path = os.path.join(
+                builderconfig.templates_dir, builderconfig.sig_src_template_filename
+            )
+        else:
+            raise ValueError(f"Invalid alg type {algfamily_meta.algtype}")
+        impls = {
+            impl_key: impl_meta
+            for impl_key, impl_meta in algfamily_meta.implementations.items()
+            if impl_meta.parameter == param_key
+        }
+
+        with open(template_path, "r") as template_f, open(
+            oqsapi_src_full_path, "w"
+        ) as oqsapi_src_f:
+            template = jinja2.Template(template_f.read())
+            target = sys.stdout
+            if not dryrun:
+                logger.warning("Destructively refreshing %s", oqsapi_src_full_path)
+                target = oqsapi_src_f
+            target.write(
+                template.render(
+                    {
+                        "algfamily_key": algfamily_key,
+                        "algfamily_meta": algfamily_meta,
+                        "param_key": param_key,
+                        "param_meta": param_meta,
+                        "impls": impls,
+                    }
+                )
+            )
+
+        # FIX: take inventory of OQS API source files
+
+
+def render_header():
+    raise NotImplementedError()
+
+
+def render_oqs_api(
+    algfamilies: dict[str, AlgFamilyMeta], builderconfig: OQSBuilderConfig,
+    dryrun: bool = False
+):
+    """Generate source and header files that implement OQS public API"""
+    for algfamily_key, algfamily_meta in algfamilies.items():
+        render_sources(algfamily_key, algfamily_meta, builderconfig, dryrun)
+        render_header()
+
+
+def render_build_files():
+    """"""
+    raise NotImplementedError()
+
+
+def render_docs():
+    """"""
+    raise NotImplementedError()
+
+
 if __name__ == "__main__":
     builderconfig = OQSBuilderConfig()
 
@@ -1379,7 +1470,6 @@ if __name__ == "__main__":
 
     oqs_meta = OqsMeta.from_dict(builderconfig, oqs_meta)
 
-    # TODO: where to issue warnings and errors? The delegation is not clear.
     has_jasmin = check_jasminc(oqs_meta.jasminc_version)
     if (not has_jasmin) and builderconfig.fail_on_jasminc:
         logger.error("jasminc not found, exiting")
@@ -1395,11 +1485,13 @@ if __name__ == "__main__":
             oqs_meta.upstreams,
             has_jasmin,
         )
-        # TODO: fill in remote metadata
-
         copy_sources(
             oqs_meta.upstreams,
             oqs_meta.algfamilies,
             builderconfig.never_copy,
             has_jasmin,
         )
+
+    render_oqs_api(oqs_meta.algfamilies, builderconfig, True)
+    render_build_files()
+    render_docs()
