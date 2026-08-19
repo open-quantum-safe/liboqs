@@ -1411,16 +1411,9 @@ def render_sources(
             if impl_meta.parameter == param_key
         }
 
-        with open(template_path, "r") as template_f, open(
-            oqsapi_src_full_path, "w"
-        ) as oqsapi_src_f:
+        with open(template_path, "r") as template_f:
             template = jinja2.Template(template_f.read())
-            target = sys.stdout
-            if not dryrun:
-                logger.warning("Destructively refreshing %s", oqsapi_src_full_path)
-                target = oqsapi_src_f
-            target.write(
-                template.render(
+        rendered = template.render(
                     {
                         "algfamily_key": algfamily_key,
                         "algfamily_meta": algfamily_meta,
@@ -1429,8 +1422,11 @@ def render_sources(
                         "impls": impls,
                     }
                 )
-            )
-
+        if dryrun:
+            print(rendered)
+            continue
+        with open(oqsapi_src_full_path, "w") as f:
+            f.write(rendered)
         # FIX: take inventory of OQS API source files
 
 
