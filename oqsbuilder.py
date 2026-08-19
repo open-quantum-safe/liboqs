@@ -224,6 +224,18 @@ class CpuFeatures(Enum):
     NEON = "asimd"
     AES = "aes"
 
+    def to_oqs_macro(self) -> str:
+        match self:
+            case CpuFeatures.AVX2:
+                return "OQS_CPU_EXT_AVX2"
+            case CpuFeatures.BMI2:
+                return "OQS_CPU_EXT_BMI2"
+            case CpuFeatures.POPCNT:
+                return "OQS_CPU_EXT_POPCNT"
+            case CpuFeatures.NEON:
+                return "OQS_CPU_EXT_ARM_NEON"
+            case CpuFeatures.AES:
+                return "OQS_CPU_EXT_AES"
 
 class CmakeScopes(Enum):
     Public = "public"
@@ -961,6 +973,11 @@ class ImplementationMeta:
         self.set_properties = set_properties
         self.api = api
 
+    def render_runtime_cpu_feature_gate(self) -> str | None:
+        if not self.cpufeatures:
+            return None
+        return " && ".join([f"OQS_CPU_has_extension({feat.to_oqs_macro()})" for feat in self.cpufeatures])
+
     def is_libjade_impl(self) -> bool:
         """Return True iff any source comes from libjade"""
         return any(
@@ -1413,12 +1430,25 @@ def render_sources(
             )
         else:
             raise ValueError(f"Invalid alg type {algfamily_meta.algtype}")
+
         impls = {
             impl_key: impl_meta
             for impl_key, impl_meta in algfamily_meta.implementations.items()
             if impl_meta.parameter == param_key
         }
         assert param_meta.default_impl
+        default_impl_meta = impls[param_meta.default_impl]
+        addtl_impls = {k: m for k, m in impls.items() if k != param_meta.default_impl}
+        addtl_impls_w_keypair_derand = {
+            k: m
+            for k, m in addtl_impls.items()
+            if (isinstance(m.api, KemApiMeta) and m.api.signature_keypair_derand)
+        }
+        addtl_impls_w_enc_derand = {
+            k: m
+            for k, m in addtl_impls.items()
+            if (isinstance(m.api, KemApiMeta) and m.api.signature_enc_derand)
+        }
 
         with open(template_path, "r") as template_f:
             template = jinja2.Template(template_f.read())
@@ -1429,12 +1459,10 @@ def render_sources(
                 "param_key": param_key,
                 "param_meta": param_meta,
                 "impls": impls,
-                "default_impl_meta": impls[param_meta.default_impl],
-                "addtl_impls": {
-                    key: meta
-                    for key, meta in impls.items()
-                    if key != param_meta.default_impl
-                },
+                "default_impl_meta": default_impl_meta,
+                "addtl_impls": addtl_impls,
+                "addtl_impls_w_keypair_derand": addtl_impls_w_keypair_derand,
+                "addtl_impls_w_enc_derand": addtl_impls_w_enc_derand,
             }
         )
         if dryrun:

@@ -1819,6 +1819,7 @@ algfamilies:
         no-secret-dependent-branching-checked-by-valgrind: true
         large-stack-usage: false
         os: [Linux, Darwin]
+        cpufeatures: [asimd]
         sources:
           - upstream: mlkem-native
             preserve_subdirs: true
@@ -2005,6 +2006,7 @@ algfamilies:
         no-secret-dependent-branching-checked-by-valgrind: true
         large-stack-usage: false
         os: [Linux, Darwin]
+        cpufeatures: [asimd]
         sources:
           - upstream: mlkem-native
             preserve_subdirs: true
@@ -2191,6 +2193,7 @@ algfamilies:
         no-secret-dependent-branching-checked-by-valgrind: true
         large-stack-usage: false
         os: [Linux, Darwin]
+        cpufeatures: [asimd]
         sources:
           - upstream: mlkem-native
             preserve_subdirs: true

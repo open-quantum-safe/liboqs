@@ -65,5 +65,43 @@ extern int {{ addtl_impl_meta.api.signature_dec }}(uint8_t *ss, const uint8_t *c
 {% endif %}
 {% endfor %}
 
+
+OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
+{% if not default_impl_meta.api.signature_keypair_derand %}
+	(void)public_key;
+	(void)secret_key;
+	(void)seed;
+	return OQS_ERROR;
+{% else %}
+    {% if addtl_impls_w_keypair_derand %}
+        {% for impl_key, impl_meta in addtl_impls_w_keypair_derand.items() %}
+            {% if loop.first %}
+#if defined({{ impl_meta.enable_by }})
+            {% else %}
+#elif defined({{ impl_meta.enable_by }})
+            {% endif %}
+#if defined(OQS_DIST_BUILD)
+            {% if impl_meta.render_runtime_cpu_feature_gate() %}
+    if ( {{ impl_meta.render_runtime_cpu_feature_gate() }} ) {
+        return (OQS_STATUS) {{ impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
+    } else {
+        return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
+    }
+            {% else %} {# this addtl_impl has no CPU feature gate, so no need to fall back #}
+    return (OQS_STATUS) {{ impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
+            {% endif %}
+#else
+    return (OQS_STATUS) {{ impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
+#endif /* OQS_DIST_BUILD */
+        {% endfor %}
+#else
+    return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
+#endif
+    {% else %}
+    return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
+    {% endif %}
+{% endif %}
+}
+
 #endif  /* {{ param_meta.enable_by }} */
 
