@@ -1410,18 +1410,25 @@ def render_sources(
             for impl_key, impl_meta in algfamily_meta.implementations.items()
             if impl_meta.parameter == param_key
         }
+        assert param_meta.default_impl
 
         with open(template_path, "r") as template_f:
             template = jinja2.Template(template_f.read())
         rendered = template.render(
-                    {
-                        "algfamily_key": algfamily_key,
-                        "algfamily_meta": algfamily_meta,
-                        "param_key": param_key,
-                        "param_meta": param_meta,
-                        "impls": impls,
-                    }
-                )
+            {
+                "algfamily_key": algfamily_key,
+                "algfamily_meta": algfamily_meta,
+                "param_key": param_key,
+                "param_meta": param_meta,
+                "impls": impls,
+                "default_impl_meta": impls[param_meta.default_impl],
+                "addtl_impls": {
+                    key: meta
+                    for key, meta in impls.items()
+                    if key != param_meta.default_impl
+                },
+            }
+        )
         if dryrun:
             print(rendered)
             continue
@@ -1435,8 +1442,9 @@ def render_header():
 
 
 def render_oqs_api(
-    algfamilies: dict[str, AlgFamilyMeta], builderconfig: OQSBuilderConfig,
-    dryrun: bool = False
+    algfamilies: dict[str, AlgFamilyMeta],
+    builderconfig: OQSBuilderConfig,
+    dryrun: bool = False,
 ):
     """Generate source and header files that implement OQS public API"""
     for algfamily_key, algfamily_meta in algfamilies.items():

@@ -4,9 +4,7 @@
 
 #include <oqs/kem_{{ algfamily_key }}.h>
 
-{% set default_impl_meta = impls[param_meta.default_impl] %}
-
-#if defined(OQS_ENABLE_KEM_{{ param_key }})
+#if defined({{ param_meta.enable_by }})
 OQS_KEM *OQS_KEM_{{ param_key }}_new(void) {
 
 	OQS_KEM *kem = OQS_MEM_calloc(1, sizeof(OQS_KEM));
@@ -45,5 +43,19 @@ extern int {{ default_impl_meta.api.signature_enc_derand }}(uint8_t *ct, uint8_t
 {%- endif %}
 extern int {{ default_impl_meta.api.signature_dec }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
-#endif
+{% for addtl_impl_key, addtl_impl_meta in addtl_impls.items() %}
+#if defined({{ addtl_impl_meta.enable_by }})
+extern int {{ addtl_impl_meta.api.signature_keypair }}(uint8_t *pk, uint8_t *sk);
+{% if addtl_impl_meta.api.signature_keypair_derand -%}
+extern int {{ addtl_impl_meta.api.signature_keypair_derand }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+{%- endif %}
+extern int {{ addtl_impl_meta.api.signature_enc }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+{% if addtl_impl_meta.api.signature_enc_derand -%}
+extern int {{ addtl_impl_meta.api.signature_enc_derand }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+{%- endif %}
+extern int {{ addtl_impl_meta.api.signature_dec }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#endif  /* {{ addtl_impl_meta.enable_by }} */
+{% endfor %}
+
+#endif  /* {{ param_meta.enable_by }} */
 
