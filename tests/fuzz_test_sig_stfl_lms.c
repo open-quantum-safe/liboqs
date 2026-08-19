@@ -204,6 +204,13 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 	size_t pk_len = sig->length_public_key;
 	size_t sig_len = kp->signature_len;
 	size_t msg_len = kp->message_len;
+	/* Vary the signature length from the fuzz input so truncated and oversized signatures are reached. */
+    size_t verify_sig_len = sig_len;
+    if (fuzz_len >= 2) {
+        verify_sig_len = (((size_t)fuzz_data[0] << 8) | fuzz_data[1]) % (sig_len + 65);
+    	fuzz_data += 2;
+    	fuzz_len -= 2;
+    }
 
 	uint8_t *mutated_pk = OQS_MEM_malloc(pk_len);
 	uint8_t *mutated_sig = OQS_MEM_malloc(sig_len);
@@ -268,8 +275,18 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 	 * Call OQS_SIG_STFL_verify with mutated inputs.
 	 * We expect OQS_ERROR for invalid inputs — a crash here is a bug.
 	 */
-	OQS_SIG_STFL_verify(sig, mutated_msg, msg_len, mutated_sig, sig_len,
-	                    mutated_pk);
+	/* Verify against a buffer sized to exactly verify_sig_len so the sanitizer catches length-driven out-of-bounds reads. */
+	uint8_t *verify_sig = OQS_MEM_malloc(verify_sig_len ? verify_sig_len : 1);
+	if (verify_sig != NULL) {
+		size_t copy = verify_sig_len < sig_len ? verify_sig_len : sig_len;
+		memcpy(verify_sig, mutated_sig, copy);
+		if (verify_sig_len > sig_len) {
+			memset(verify_sig + sig_len, 0xAB, verify_sig_len - sig_len);
+		}
+		OQS_SIG_STFL_verify(sig, mutated_msg, msg_len, verify_sig,
+		                    verify_sig_len, mutated_pk);
+		OQS_MEM_insecure_free(verify_sig);
+	}
 
 	OQS_MEM_insecure_free(mutated_pk);
 	OQS_MEM_insecure_free(mutated_sig);
