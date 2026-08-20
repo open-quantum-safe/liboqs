@@ -34,6 +34,7 @@ DEFAULT_KEM_SRC_TEMPLATE_FILENAME = "kem.c.jinja"
 DEFAULT_SIG_SRC_TEMPLATE_FILENAME = "sig.c.jinja"
 DEFAULT_KEM_HEADER_TEMPLATE_FILENAME = "kem.h.jinja"
 DEFAULT_SIG_HEADER_TEMPLATE_FILENAME = "sig.h.jinja"
+DEFAULT_LISTFILE_TEMPLATE_FILENAME = "CMakeLists.txt.jinja"
 DEFAULT_PATCH_DIR = os.path.join(LIBOQS_DIR, "scripts", "copy_from_upstream", "patches")
 DEFAULT_OQS_TEMPLATES_DIR = os.path.join(LIBOQS_DIR, "templates")
 DEFAULT_NEVER_COPY = [
@@ -53,6 +54,7 @@ class OQSBuilderConfig:
         sig_src_template_filename: str = DEFAULT_SIG_SRC_TEMPLATE_FILENAME,
         kem_header_template_filename: str = DEFAULT_KEM_HEADER_TEMPLATE_FILENAME,
         sig_header_template_filename: str = DEFAULT_SIG_HEADER_TEMPLATE_FILENAME,
+        listfile_template_filename: str = DEFAULT_LISTFILE_TEMPLATE_FILENAME,
         fail_on_jasminc: bool = False,
         never_copy: list[str] = DEFAULT_NEVER_COPY,
     ):
@@ -75,6 +77,7 @@ class OQSBuilderConfig:
         self.sig_src_template_filename = sig_src_template_filename
         self.kem_header_template_filename = kem_header_template_filename
         self.sig_header_template_filename = sig_header_template_filename
+        self.listfile_template_filename = listfile_template_filename
         self.delete_upstreams = True
         self.demo_algfamilies = ["demo_alg"]
         self.fail_on_jasminc = fail_on_jasminc
@@ -1260,6 +1263,37 @@ class AlgFamilyMeta:
             implementations,
         )
 
+    def list_source_files(self, impl_key: str) -> list[str]:
+        """Return the paths of source files to be compiled into the specified
+        implementation
+        """
+        algfamily_rel_paths = []
+        impl_meta = self.implementations[impl_key]
+        for src_meta in impl_meta.sources:
+            if isinstance(src_meta, CommonSrcRef):
+                common_src_meta = self.common_src[src_meta.common_src_key]
+                common_src_dirname = common_src_meta.destdir or src_meta.common_src_key
+                for common_src_rel_path in common_src_meta.get_rel_paths():
+                    algfamily_rel_paths.append(os.path.join(common_src_dirname, common_src_rel_path))
+            elif isinstance(src_meta, ImplSrcMeta):
+                impl_dirname = impl_meta.subdirname or impl_key
+                for impl_rel_path in src_meta.get_rel_paths():
+                    algfamily_rel_paths.append(os.path.join(impl_dirname, impl_rel_path))
+            else:
+                raise ValueError(f"Invalid source meta under {impl_key}")
+        return algfamily_rel_paths
+
+    def list_params_impls(
+        self, param_key: str, exclude_default: bool
+    ) -> dict[str, ImplementationMeta]:
+        """Return the subset of the implementations matching the input param_key"""
+        return {
+            k: m
+            for k, m in self.implementations.items()
+            if m.parameter == param_key
+            and ((not exclude_default) or k != self.parameters[param_key].default_impl)
+        }
+
     def copy_common_src(
         self,
         algfamily_key: str,
@@ -1532,7 +1566,47 @@ def render_header(
         # FIX: take inventory of OQS API header files
 
 
-def render_oqs_api(
+def render_build_file(
+    algfamily_key: str,
+    algfamily_meta: AlgFamilyMeta,
+    builderconfig: OQSBuilderConfig,
+    dryrun: bool = False,
+):
+    """Generate the cmake list file for one algorithm family"""
+    if not algfamily_meta.implementations:
+        logger.warning(
+            "%s is not copied from upstream. CMake list file will not be refreshed",
+            algfamily_key,
+        )
+        return
+
+    listfile_path = os.path.join(
+        algfamily_meta.algtype.dir, algfamily_key, "CMakeLists.txt"
+    )
+    template_path = os.path.join(
+        builderconfig.templates_dir, builderconfig.listfile_template_filename
+    )
+    with open(template_path) as f:
+        template = jinja2.Template(f.read())
+    rendered = template.render(
+        {
+            "algfamily_key": algfamily_key,
+            "algfamily_meta": algfamily_meta,
+        }
+    )
+
+    if dryrun:
+        print(rendered)
+        return
+    with open(listfile_path, "w") as f:
+        f.write(rendered)
+
+
+def render_documentation():
+    raise NotImplementedError()
+
+
+def render_source_build_docs(
     algfamilies: dict[str, AlgFamilyMeta],
     builderconfig: OQSBuilderConfig,
     dryrun: bool = False,
@@ -1541,16 +1615,8 @@ def render_oqs_api(
     for algfamily_key, algfamily_meta in algfamilies.items():
         render_sources(algfamily_key, algfamily_meta, builderconfig, dryrun)
         render_header(algfamily_key, algfamily_meta, builderconfig, dryrun)
-
-
-def render_build_files():
-    """"""
-    raise NotImplementedError()
-
-
-def render_docs():
-    """"""
-    raise NotImplementedError()
+        render_build_file(algfamily_key, algfamily_meta, builderconfig, dryrun)
+        render_documentation()
 
 
 if __name__ == "__main__":
@@ -1587,6 +1653,4 @@ if __name__ == "__main__":
             has_jasmin,
         )
 
-    render_oqs_api(oqs_meta.algfamilies, builderconfig, False)
-    render_build_files()
-    render_docs()
+    render_source_build_docs(oqs_meta.algfamilies, builderconfig, False)
