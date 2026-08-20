@@ -311,6 +311,7 @@ SIG_PARAM_DATOR = Fields.Mapping(
         "length-mu": (Fields.OPTIONAL, Fields.Integer()),
         "nistkat-sha256": (Fields.REQUIRED, Fields.Text()),
         "enable_by": (Fields.REQUIRED, Fields.Text()),
+        "sign-with-ctx": (Fields.REQUIRED, Fields.Boolean()),
         "default-implementation": (Fields.OPTIONAL, Fields.Text()),
         "memopt-implementation": (Fields.OPTIONAL, Fields.Text()),
     }
@@ -695,6 +696,7 @@ class SigParameterMeta:
         length_mu: int | None,
         nistkat_sha256: str | None,
         enable_by: str,
+        sign_with_ctx: bool,
         default_impl: str | None,
         memopt_impl: str | None,
     ):
@@ -706,8 +708,20 @@ class SigParameterMeta:
         self.length_mu = length_mu
         self.nistkat_sha256 = nistkat_sha256
         self.enable_by = enable_by
+        self.sign_with_ctx = sign_with_ctx
         self.default_impl = default_impl
         self.memopt_impl = memopt_impl
+
+    def is_euf_cma(self) -> bool:
+        # We will probably never get a scheme that is not even EUF-CMA
+        return True
+
+    def is_suf_cma(self) -> bool:
+        """SUF-CMA is strictly stronger than EUF-CMA"""
+        return self.model == "SUF-CMA"
+
+    def supports_ctx(self):
+        return self.sign_with_ctx
 
     @staticmethod
     def from_dict(meta: dict):
@@ -719,6 +733,7 @@ class SigParameterMeta:
         mulen = meta.get("length-mu", None)
         nistkat = meta.get("nistkat-sha256", None)
         enable_by = meta["enable_by"]
+        sign_with_ctx = meta["sign-with-ctx"]
         default_impl = meta.get("default-implementation", None)
         memopt_impl = meta.get("memopt-implementation", None)
         return SigParameterMeta(
@@ -730,6 +745,7 @@ class SigParameterMeta:
             mulen,
             nistkat,
             enable_by,
+            sign_with_ctx,
             default_impl,
             memopt_impl,
         )
@@ -1585,7 +1601,7 @@ def render_header(
         )
         return
 
-    oqsapi_header_filename = f"kem_{algfamily_key}.h"
+    oqsapi_header_filename = f"{algfamily_meta.algtype.value}_{algfamily_key}.h"
     oqsapi_header_path = os.path.join(
         algfamily_meta.algtype.dir, algfamily_key, oqsapi_header_filename
     )

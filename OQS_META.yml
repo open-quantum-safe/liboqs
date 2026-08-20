@@ -148,6 +148,7 @@ algfamilies:
         nistkat-sha256:
           6f0f50626df15ce403c0c1d5f91648245282afebcac90e5db3595ce9b20b1817
         enable_by: OQS_ENABLE_SIG_mqom_mqom2_cat1_gf16_fast_r5
+        sign-with-ctx: true
         default-implementation: mqom2_cat1_gf16_fast_r5_default
         memopt-implementation: mqom2_cat1_gf16_fast_r5_memopt
 
@@ -4481,7 +4482,7 @@ algfamilies:
     oqs-support-tier: 2
     parameters:
 
-      ml-dsa-44:
+      ml_dsa_44:
         security-strength: 2
         security-model: EUF-CMA
         length-public-key: 1312
@@ -4490,9 +4491,10 @@ algfamilies:
         nistkat-sha256:
           33e7eb7e3b4965fc8b8274ebf8a222c519008ec242b3f753d1bc240f1ee3cb1f
         enable_by: OQS_ENABLE_SIG_ml_dsa_44
+        sign-with-ctx: true
         default-implementation: ml_dsa_44_ref
 
-      ml-dsa-65:
+      ml_dsa_65:
         security-strength: 3
         security-model: EUF-CMA
         length-public-key: 1952
@@ -4501,9 +4503,10 @@ algfamilies:
         nistkat-sha256:
           2ff0ddcd0dc08b746aa04853d6f84c82c6c8ac38783c9061aed78e29c1698ae5
         enable_by: OQS_ENABLE_SIG_ml_dsa_65
+        sign-with-ctx: true
         default-implementation: ml_dsa_65_ref
 
-      ml-dsa-87:
+      ml_dsa_87:
         security-strength: 5
         security-model: EUF-CMA
         length-public-key: 2592
@@ -4512,13 +4515,14 @@ algfamilies:
         nistkat-sha256:
           1bfb25b29f6f2bc89057e3bddee055a8f7df563b0e747004b2968159f7739afa
         enable_by: OQS_ENABLE_SIG_ml_dsa_87
+        sign-with-ctx: true
         default-implementation: ml_dsa_87_ref
 
     implementations:
 
       ml_dsa_44_ref:
         version: FIPS204
-        parameter: ml-dsa-44
+        parameter: ml_dsa_44
         subdirname: mldsa-native_ml-dsa-44_ref
         uarch: portable
         common-crypto:
@@ -4550,7 +4554,7 @@ algfamilies:
       ml_dsa_44_x86_64:
         version: FIPS204
         enable_by: OQS_ENABLE_SIG_ml_dsa_44_x86_64
-        parameter: ml-dsa-44
+        parameter: ml_dsa_44
         subdirname: mldsa-native_ml-dsa-44_x86_64
         uarch: x86_64
         common-crypto:
@@ -4589,7 +4593,7 @@ algfamilies:
       ml_dsa_44_aarch64:
         version: FIPS204
         enable_by: OQS_ENABLE_SIG_ml_dsa_44_aarch64
-        parameter: ml-dsa-44
+        parameter: ml_dsa_44
         subdirname: mldsa-native_ml-dsa-44_aarch64
         uarch: arm_8
         common-crypto:
@@ -4598,6 +4602,7 @@ algfamilies:
         no-secret-dependent-branching-checked-by-valgrind: false
         large-stack-usage: false
         os: [Linux, Darwin]
+        cpufeatures: [asimd]
         sources:
           - upstream: mldsa-native
             preserve_subdirs: true
@@ -4624,7 +4629,7 @@ algfamilies:
 
       ml_dsa_65_ref:
         version: FIPS204
-        parameter: ml-dsa-65
+        parameter: ml_dsa_65
         subdirname: mldsa-native_ml-dsa-65_ref
         uarch: portable
         common-crypto:
@@ -4656,7 +4661,7 @@ algfamilies:
       ml_dsa_65_x86_64:
         version: FIPS204
         enable_by: OQS_ENABLE_SIG_ml_dsa_65_x86_64
-        parameter: ml-dsa-65
+        parameter: ml_dsa_65
         subdirname: mldsa-native_ml-dsa-65_x86_64
         uarch: x86_64
         common-crypto:
@@ -4695,7 +4700,7 @@ algfamilies:
       ml_dsa_65_aarch64:
         version: FIPS204
         enable_by: OQS_ENABLE_SIG_ml_dsa_65_aarch64
-        parameter: ml-dsa-65
+        parameter: ml_dsa_65
         subdirname: mldsa-native_ml-dsa-65_aarch64
         uarch: arm_8
         common-crypto:
@@ -4704,6 +4709,7 @@ algfamilies:
         no-secret-dependent-branching-checked-by-valgrind: false
         large-stack-usage: false
         os: [Linux, Darwin]
+        cpufeatures: [asimd]
         sources:
           - upstream: mldsa-native
             preserve_subdirs: true
@@ -4730,7 +4736,7 @@ algfamilies:
 
       ml_dsa_87_ref:
         version: FIPS204
-        parameter: ml-dsa-87
+        parameter: ml_dsa_87
         subdirname: mldsa-native_ml-dsa-87_ref
         uarch: portable
         common-crypto:
@@ -4762,7 +4768,7 @@ algfamilies:
       ml_dsa_87_x86_64:
         version: FIPS204
         enable_by: OQS_ENABLE_SIG_ml_dsa_87_x86_64
-        parameter: ml-dsa-87
+        parameter: ml_dsa_87
         subdirname: mldsa-native_ml-dsa-87_x86_64
         uarch: x86_64
         common-crypto:
@@ -4801,7 +4807,7 @@ algfamilies:
       ml_dsa_87_aarch64:
         version: FIPS204
         enable_by: OQS_ENABLE_SIG_ml_dsa_87_aarch64
-        parameter: ml-dsa-87
+        parameter: ml_dsa_87
         subdirname: mldsa-native_ml-dsa-87_aarch64
         uarch: arm_8
         common-crypto:
@@ -4810,6 +4816,7 @@ algfamilies:
         no-secret-dependent-branching-checked-by-valgrind: false
         large-stack-usage: false
         os: [Linux, Darwin]
+        cpufeatures: [asimd]
         sources:
           - upstream: mldsa-native
             preserve_subdirs: true
