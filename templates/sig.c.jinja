@@ -48,9 +48,7 @@ extern int {{ addtl_impl_meta.api.signature_verify }}(const uint8_t *sig, size_t
 
 
 OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
-{% if not addtl_impls %}
-    return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair }}(public_key, secret_key);
-{% else %}
+{% if addtl_impls %}
     {% for addtl_impl_key, addtl_impl_meta  in addtl_impls.items() %}
         {% if loop.first %}
 #if defined({{ addtl_impl_meta.enable_by }}){%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
@@ -74,6 +72,38 @@ OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_keypair(uint8_t *public_key, uint8_t 
 #else
     return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair }}(public_key, secret_key);
 #endif
+{% else %}
+    return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair }}(public_key, secret_key);
+{% endif %}
+}
+
+OQS_API OQS_STATUS OQS_SIG_{{ param_key }}_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+{% if addtl_impls %}
+    {% for addtl_impl_key, addtl_impl_meta in addtl_impls.items() %}
+        {% if loop.first %}
+#if defined({{ addtl_impl_meta.enable_by }}){%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
+        {% else %}
+#elif defined({{ addtl_impl_meta.enable_by }}){%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
+        {% endif %}
+        {% if addtl_impl_meta.render_runtime_cpu_feature_gate() %}
+#if defined(OQS_DIST_BUILD)
+    if ( {{ addtl_impl_meta.render_runtime_cpu_feature_gate() }} ) {
+        return (OQS_STATUS) {{ addtl_impl_meta.api.signature_signature }}(signature, signature_len, message, message_len, {% if param_meta.supports_ctx() %}NULL, 0, {% endif %}secret_key);
+    } else {
+        return (OQS_STATUS) {{ default_impl_meta.api.signature_signature }}(signature, signature_len, message, message_len, {% if param_meta.supports_ctx() %}NULL, 0, {% endif %}secret_key);
+    }
+#else
+    return (OQS_STATUS) {{ addtl_impl_meta.api.signature_signature }}(signature, signature_len, message, message_len, {% if param_meta.supports_ctx() %}NULL, 0, {% endif %}secret_key);
+#endif /* OQS_DIST_BUILD */
+        {% else %}
+    return (OQS_STATUS) {{ addtl_impl_meta.api.signature_signature }}(signature, signature_len, message, message_len, {% if param_meta.supports_ctx() %}NULL, 0, {% endif %}secret_key);
+        {% endif %}
+    {% endfor %}
+#else
+    return (OQS_STATUS) {{ default_impl_meta.api.signature_signature }}(signature, signature_len, message, message_len, {% if param_meta.supports_ctx() %}NULL, 0, {% endif %}secret_key);
+#endif
+{% else %}
+    return (OQS_STATUS) {{ default_impl_meta.api.signature_signature }}(signature, signature_len, message, message_len, {% if param_meta.supports_ctx() %}NULL, 0, {% endif %}secret_key);
 {% endif %}
 }
 #endif /* {{  param_meta.enable_by }} */
