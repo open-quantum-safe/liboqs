@@ -7,7 +7,7 @@ set(_{{ algfamily_key | upper }}_OBJS "")
 {% for param_key, param_meta in algfamily_meta.parameters.items() %}
     {% set default_impl_meta = algfamily_meta.implementations[param_meta.default_impl] %}
 if({{ param_meta.enable_by }})
-    add_library({{ param_meta.default_impl }} OBJECT kem_{{ param_key }}.c {{ " ".join(algfamily_meta.list_source_files(param_meta.default_impl)) }})
+    add_library({{ param_meta.default_impl }} OBJECT {{ algfamily_meta.algtype.value }}_{{ param_key }}.c {{ " ".join(algfamily_meta.list_source_files(param_meta.default_impl)) }})
     {% for compile_opt_meta in default_impl_meta.compile_opts %}
     target_compile_options({{ param_meta.default_impl }} {{ compile_opt_meta.scope.value | upper }} {{ compile_opt_meta.opts }})
     {% endfor %}

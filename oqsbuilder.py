@@ -1120,7 +1120,7 @@ class ImplementationMeta:
             impl_src.set_paths(
                 algtype, algfamily_key, impl_src_dirname, impl_src_rel_paths
             )
-            logger.info(
+            logger.debug(
                 "Copied %d files into %s",
                 len(impl_src.get_rel_paths()),
                 impl_src_dirname,
@@ -1543,6 +1543,7 @@ def render_sources(
             template_path = os.path.join(
                 builderconfig.templates_dir, builderconfig.sig_src_template_filename
             )
+            warnings.warn("External Mu omitted for now")
         else:
             raise ValueError(f"Invalid alg type {algfamily_meta.algtype}")
 

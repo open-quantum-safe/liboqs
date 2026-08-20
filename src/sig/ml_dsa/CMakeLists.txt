@@ -7,7 +7,7 @@ set(_ML_DSA_OBJS "")
 
     
 if(OQS_ENABLE_SIG_ml_dsa_44)
-    add_library(ml_dsa_44_ref OBJECT kem_ml_dsa_44.c mldsa-native_ml-dsa-44_ref/mldsa/src/ct.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec_lazy.c mldsa-native_ml-dsa-44_ref/mldsa/src/sign.c mldsa-native_ml-dsa-44_ref/mldsa/src/debug.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-44_ref/mldsa/src/packing.c)
+    add_library(ml_dsa_44_ref OBJECT sig_ml_dsa_44.c mldsa-native_ml-dsa-44_ref/mldsa/src/ct.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec_lazy.c mldsa-native_ml-dsa-44_ref/mldsa/src/sign.c mldsa-native_ml-dsa-44_ref/mldsa/src/debug.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-44_ref/mldsa/src/packing.c)
     
     target_compile_options(ml_dsa_44_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     
@@ -58,7 +58,7 @@ endif()
 
     
 if(OQS_ENABLE_SIG_ml_dsa_65)
-    add_library(ml_dsa_65_ref OBJECT kem_ml_dsa_65.c mldsa-native_ml-dsa-65_ref/mldsa/src/ct.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly.c mldsa-native_ml-dsa-65_ref/mldsa/src/polyvec_lazy.c mldsa-native_ml-dsa-65_ref/mldsa/src/sign.c mldsa-native_ml-dsa-65_ref/mldsa/src/debug.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-65_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-65_ref/mldsa/src/packing.c)
+    add_library(ml_dsa_65_ref OBJECT sig_ml_dsa_65.c mldsa-native_ml-dsa-65_ref/mldsa/src/ct.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly.c mldsa-native_ml-dsa-65_ref/mldsa/src/polyvec_lazy.c mldsa-native_ml-dsa-65_ref/mldsa/src/sign.c mldsa-native_ml-dsa-65_ref/mldsa/src/debug.c mldsa-native_ml-dsa-65_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-65_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-65_ref/mldsa/src/packing.c)
     
     target_compile_options(ml_dsa_65_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     
@@ -109,7 +109,7 @@ endif()
 
     
 if(OQS_ENABLE_SIG_ml_dsa_87)
-    add_library(ml_dsa_87_ref OBJECT kem_ml_dsa_87.c mldsa-native_ml-dsa-87_ref/mldsa/src/ct.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly.c mldsa-native_ml-dsa-87_ref/mldsa/src/polyvec_lazy.c mldsa-native_ml-dsa-87_ref/mldsa/src/sign.c mldsa-native_ml-dsa-87_ref/mldsa/src/debug.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-87_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-87_ref/mldsa/src/packing.c)
+    add_library(ml_dsa_87_ref OBJECT sig_ml_dsa_87.c mldsa-native_ml-dsa-87_ref/mldsa/src/ct.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly.c mldsa-native_ml-dsa-87_ref/mldsa/src/polyvec_lazy.c mldsa-native_ml-dsa-87_ref/mldsa/src/sign.c mldsa-native_ml-dsa-87_ref/mldsa/src/debug.c mldsa-native_ml-dsa-87_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-87_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-87_ref/mldsa/src/packing.c)
     
     target_compile_options(ml_dsa_87_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h")
     
