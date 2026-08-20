@@ -42,6 +42,8 @@ DEFAULT_NEVER_COPY = [
     "Makefile",
 ]
 
+SOURCE_FILE_EXTENSIONS = [".c", ".s", ".S", ".cu", ".cpp",]
+
 
 class OQSBuilderConfig:
     def __init__(
@@ -933,7 +935,7 @@ class CMakeSetPropMeta:
     def from_dict(meta: dict):
         scope = CmakeScopes(meta["scope"])
         name = meta["name"]
-        value = meta["name"]
+        value = meta["value"]
         return CMakeSetPropMeta(scope, name, value)
 
 
@@ -1274,13 +1276,23 @@ class AlgFamilyMeta:
                 common_src_meta = self.common_src[src_meta.common_src_key]
                 common_src_dirname = common_src_meta.destdir or src_meta.common_src_key
                 for common_src_rel_path in common_src_meta.get_rel_paths():
-                    algfamily_rel_paths.append(os.path.join(common_src_dirname, common_src_rel_path))
+                    algfamily_rel_paths.append(
+                        os.path.join(common_src_dirname, common_src_rel_path)
+                    )
             elif isinstance(src_meta, ImplSrcMeta):
                 impl_dirname = impl_meta.subdirname or impl_key
                 for impl_rel_path in src_meta.get_rel_paths():
-                    algfamily_rel_paths.append(os.path.join(impl_dirname, impl_rel_path))
+                    algfamily_rel_paths.append(
+                        os.path.join(impl_dirname, impl_rel_path)
+                    )
             else:
                 raise ValueError(f"Invalid source meta under {impl_key}")
+
+        algfamily_rel_paths = [
+            f
+            for f in algfamily_rel_paths
+            if any([f.endswith(ext) for ext in SOURCE_FILE_EXTENSIONS])
+        ]
         return algfamily_rel_paths
 
     def list_params_impls(

@@ -20,11 +20,12 @@ if({{ param_meta.enable_by }})
     {% for setprop_meta in default_impl_meta.set_properties %}
     set_property({{ setprop_meta.scope.value | upper }} {{ param_meta.default_impl }} PROPERTY {{ setprop_meta.name }} {{ setprop_meta.value }})
     {% endfor %}
+    set(_{{ algfamily_key | upper }}_OBJS ${_{{ algfamily_key | upper }}_OBJS} $<TARGET_OBJECTS:{{ param_meta.default_impl }}>)
 endif()
 
     {% for addtl_impl_key, addtl_impl_meta in algfamily_meta.list_params_impls(param_key, True).items() %}
 if({{ addtl_impl_meta.enable_by }})
-    add_library({{ addtl_impl_key }} OBJECT kem_{{ param_key }}.c {{ " ".join(algfamily_meta.list_source_files(addtl_impl_key)) }})
+    add_library({{ addtl_impl_key }} OBJECT {{ " ".join(algfamily_meta.list_source_files(addtl_impl_key)) }})
         {% for compile_opt_meta in addtl_impl_meta.compile_opts %}
     target_compile_options({{ addtl_impl_key }} {{ compile_opt_meta.scope.value | upper }} {{ compile_opt_meta.opts }})
         {% endfor %}
@@ -44,3 +45,4 @@ endif()
 {% endfor %}
 
 set({{ algfamily_key | upper }}_OBJS ${_{{ algfamily_key | upper }}_OBJS} PARENT_SCOPE)
+
