@@ -1650,7 +1650,7 @@ def render_build_file(
 
 
 def render_documentation():
-    raise NotImplementedError()
+    warnings.warn("docs/algorithms rendering not implemented yet")
 
 
 def render_source_build_docs(

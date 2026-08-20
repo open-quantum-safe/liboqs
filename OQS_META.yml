@@ -68,10 +68,10 @@ upstreams:
     git_url: https://github.com/ingonyama-zk/icicle-liboqs.git
     git_commit: 4ea3e612ff26e3e72b5e5bcfff4cf3dda45dc0a8
 
-  # mldsa-native:
-  #   git_url: https://github.com/pq-code-package/mldsa-native.git
-  #   git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
-  #
+  mldsa-native:
+    git_url: https://github.com/pq-code-package/mldsa-native.git
+    git_commit: 9b0ee84f4cf399043eca59eca4e5f8531ca1d61b
+
   # pqmayo:
   #   git_url: https://github.com/PQCMayo/MAYO-C.git
   #   git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
@@ -1736,7 +1736,7 @@ algfamilies:
         nistkat-sha256:
           c70041a761e01cd6426fa60e9fd6a4412c2be817386c8d0f3334898082512782
         enable_by: OQS_ENABLE_KEM_ml_kem_512
-        default-implementation: mlkem-native_ml-kem-512_ref
+        default-implementation: ml_kem_512_ref
 
       ml_kem_768:
         security-strength: 3
@@ -1750,7 +1750,7 @@ algfamilies:
         nistkat-sha256:
           5352539586b6c3df58be6158a6250aeff402bd73060b0a3de68850ac074c17c3
         enable_by: OQS_ENABLE_KEM_ml_kem_768
-        default-implementation: mlkem-native_ml-kem-768_ref
+        default-implementation: ml_kem_768_ref
 
       ml_kem_1024:
         security-strength: 5
@@ -1764,12 +1764,13 @@ algfamilies:
         nistkat-sha256:
           f580d851e5fb27e6876e5e203fa18be4cdbfd49e05d48fec3d3992c8f43a13e6
         enable_by: OQS_ENABLE_KEM_ml_kem_1024
-        default-implementation: mlkem-native_ml-kem-1024_ref
+        default-implementation: ml_kem_1024_ref
 
     implementations:
-      mlkem-native_ml-kem-512_ref:
+      ml_kem_512_ref:
         version: FIPS203
         enable_by: null  # default impl of ml-kem-512
+        subdirname: mlkem-native_ml-kem-512_ref
         parameter: ml_kem_512
         uarch: portable
         common-crypto:
@@ -1810,10 +1811,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM512_C_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM512_C_enc_derand
 
-      mlkem-native_ml-kem-512_aarch64:
+      ml_kem_512_aarch64:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_512_aarch64
         parameter: ml_kem_512
+        subdirname: mlkem-native_ml-kem-512_aarch64
         uarch: arm_8
         common-crypto:
           SHA3: liboqs
@@ -1861,10 +1863,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM512_AARCH64_enc_derand
 
-      mlkem-native_ml-kem-512_x86_64:
+      ml_kem_512_x86_64:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_512_x86_64
         parameter: ml_kem_512
+        subdirname: mlkem-native_ml-kem-512_x86_64
         uarch: x86_64
         common-crypto:
           SHA3: liboqs
@@ -1911,10 +1914,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM512_X86_64_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM512_X86_64_enc_derand
 
-      cupqc_ml-kem-512_cuda:
+      ml_kem_512_cuda:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_512_cuda
         parameter: ml_kem_512
+        subdirname: cupqc_ml-kem-512_cuda
         uarch: cuda
         no-secret-dependent-branching-claimed: false
         no-secret-dependent-branching-checked-by-valgrind: false
@@ -1937,10 +1941,11 @@ algfamilies:
         signature_enc: cupqc_ml_kem_512_enc
         signature_dec: cupqc_ml_kem_512_dec
 
-      icicle_ml-kem-512_icicle_cuda:
+      ml_kem_512_icicle_cuda:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_512_icicle_cuda
         parameter: ml_kem_512
+        subdirname: icicle_ml-kem-512_icicle_cuda
         uarch: icicle
         no-secret-dependent-branching-claimed: false
         no-secret-dependent-branching-checked-by-valgrind: false
@@ -1958,10 +1963,11 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: icicle_ml_kem_512_enc_derand
 
-      mlkem-native_ml-kem-768_ref:
+      ml_kem_768_ref:
         version: FIPS203
         enable_by: null  # default impl of ml-kem-768
         parameter: ml_kem_768
+        subdirname: mlkem-native_ml-kem-768_ref
         uarch: portable
         common-crypto:
           SHA3: liboqs
@@ -2001,10 +2007,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand
 
-      mlkem-native_ml-kem-768_aarch64:
+      ml_kem_768_aarch64:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_768_aarch64
         parameter: ml_kem_768
+        subdirname: mlkem-native_ml-kem-768_aarch64
         uarch: arm_8
         common-crypto:
           SHA3: liboqs
@@ -2052,10 +2059,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand
 
-      mlkem-native_ml-kem-768_x86_64:
+      ml_kem_768_x86_64:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_768_x86_64
         parameter: ml_kem_768
+        subdirname: mlkem-native_ml-kem-768_x86_64
         uarch: x86_64
         common-crypto:
           SHA3: liboqs
@@ -2102,10 +2110,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand
 
-      cupqc_ml-kem-768_cuda:
+      ml_kem_768_cuda:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_768_cuda
         parameter: ml_kem_768
+        subdirname: cupqc_ml-kem-768_cuda
         uarch: cuda
         no-secret-dependent-branching-claimed: false
         no-secret-dependent-branching-checked-by-valgrind: false
@@ -2128,10 +2137,11 @@ algfamilies:
         signature_enc: cupqc_ml_kem_768_enc
         signature_dec: cupqc_ml_kem_768_dec
 
-      icicle_ml-kem-768_icicle_cuda:
+      ml_kem_768_icicle_cuda:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_768_icicle_cuda
         parameter: ml_kem_768
+        subdirname: icicle_ml-kem-768_icicle_cuda
         uarch: icicle
         no-secret-dependent-branching-claimed: false
         no-secret-dependent-branching-checked-by-valgrind: false
@@ -2149,11 +2159,12 @@ algfamilies:
         signature_keypair_derand: null
         signature_enc_derand: icicle_ml_kem_768_enc_derand
 
-      mlkem-native_ml-kem-1024_ref:
+      ml_kem_1024_ref:
         version: FIPS203
         enable_by: null  # default impl of ml-kem-1024
         parameter: ml_kem_1024
         uarch: portable
+        subdirname: mlkem-native_ml-kem-1024_ref
         common-crypto:
           SHA3: liboqs
         no-secret-dependent-branching-claimed: true
@@ -2192,10 +2203,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_C_enc_derand
 
-      mlkem-native_ml-kem-1024_aarch64:
+      ml_kem_1024_aarch64:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_1024_aarch64
         parameter: ml_kem_1024
+        subdirname: mlkem-native_ml-kem-1024_aarch64
         uarch: arm_8
         common-crypto:
           SHA3: liboqs
@@ -2243,9 +2255,10 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_enc_derand
 
-      mlkem-native_ml-kem-1024_x86_64:
+      ml_kem_1024_x86_64:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_1024_x86_64
+        subdirname: mlkem-native_ml-kem-1024_x86_64
         parameter: ml_kem_1024
         uarch: x86_64
         common-crypto:
@@ -2293,10 +2306,11 @@ algfamilies:
         signature_keypair_derand: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand
         signature_enc_derand: PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_enc_derand
 
-      cupqc_ml-kem-1024_cuda:
+      ml_kem_1024_cuda:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_1024_cuda
         parameter: ml_kem_1024
+        subdirname: cupqc_ml-kem-1024_cuda
         uarch: cuda
         no-secret-dependent-branching-claimed: false
         no-secret-dependent-branching-checked-by-valgrind: false
@@ -2319,10 +2333,11 @@ algfamilies:
         signature_enc: cupqc_ml_kem_1024_enc
         signature_dec: cupqc_ml_kem_1024_dec
 
-      icicle_ml-kem-1024_icicle_cuda:
+      ml_kem_1024_icicle_cuda:
         version: FIPS203
         enable_by: OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda
         parameter: ml_kem_1024
+        subdirname: icicle_ml-kem-1024_icicle_cuda
         uarch: icicle
         no-secret-dependent-branching-claimed: false
         no-secret-dependent-branching-checked-by-valgrind: false
@@ -4438,378 +4453,387 @@ algfamilies:
 #         signature_keypair: pqmayo_MAYO_5_neon_crypto_sign_keypair
 #         signature_signature: pqmayo_MAYO_5_neon_crypto_sign_signature
 #         signature_verify: pqmayo_MAYO_5_neon_crypto_sign_verify
-#
-#   ml_dsa:
-#     displayname: ML-DSA
-#     algtype: sig
-#     principal-submitters:
-#       - Vadim Lyubashevsky
-#     auxiliary-submitters:
-#       - Shi Bai
-#       - Léo Ducas
-#       - Eike Kiltz
-#       - Tancrède Lepoint
-#       - Peter Schwabe
-#       - Gregor Seiler
-#       - Damien Stehlé
-#     crypto-assumption: >-
-#       hardness of lattice problems over module lattices
-#     website: >-
-#       https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/final
-#     nist-round: FIPS204
-#     spec-version: ML-DSA
-#     standardization-status: >-
-#       Standardized by [NIST](https://csrc.nist.gov/pubs/fips/204/final)
-#     upstream-maintenance: Actively maintained
-#     upstream-statement-url: https://github.com/pq-code-package/mldsa-native
-#     primary-upstream: mldsa-native
-#     oqs-support-tier: 2
-#     parameters:
-#
-#       ml-dsa-44:
-#         security-strength: 2
-#         security-model: EUF-CMA
-#         length-public-key: 1312
-#         length-secret-key: 2560
-#         length-signature: 2420
-#         nistkat-sha256:
-#           33e7eb7e3b4965fc8b8274ebf8a222c519008ec242b3f753d1bc240f1ee3cb1f
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_44
-#         default-implementation: mldsa-native_ml-dsa-44_ref
-#
-#       ml-dsa-65:
-#         security-strength: 3
-#         security-model: EUF-CMA
-#         length-public-key: 1952
-#         length-secret-key: 4032
-#         length-signature: 3309
-#         nistkat-sha256:
-#           2ff0ddcd0dc08b746aa04853d6f84c82c6c8ac38783c9061aed78e29c1698ae5
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_65
-#         default-implementation: mldsa-native_ml-dsa-65_ref
-#
-#       ml-dsa-87:
-#         security-strength: 5
-#         security-model: EUF-CMA
-#         length-public-key: 2592
-#         length-secret-key: 4896
-#         length-signature: 4627
-#         nistkat-sha256:
-#           1bfb25b29f6f2bc89057e3bddee055a8f7df563b0e747004b2968159f7739afa
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_87
-#         default-implementation: mldsa-native_ml-dsa-87_ref
-#
-#     implementations:
-#
-#       mldsa-native_ml-dsa-44_ref:
-#         version: FIPS204
-#         parameter: ml-dsa-44
-#         uarch: portable
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: true
-#         large-stack-usage: false
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_c.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=44
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_C_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_C_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_C_verify
-#
-#       mldsa-native_ml-dsa-44_x86_64:
-#         version: FIPS204
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_44_x86_64
-#         parameter: ml-dsa-44
-#         uarch: x86_64
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: true
-#         large-stack-usage: false
-#         os: [Linux, Darwin]
-#         cpufeatures: [avx2, bmi2, popcnt]
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_x86_64.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
-#                     mldsa/src/native/meta.h,
-#                     mldsa/src/native/x86_64/meta.h,
-#                     mldsa/src/native/x86_64/src/*]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_x86_64"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: private
-#             opts: "-mavx2 -mbmi2 -mpopcnt"
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=44
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify
-#
-#       mldsa-native_ml-dsa-44_aarch64:
-#         version: FIPS204
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_44_aarch64
-#         parameter: ml-dsa-44
-#         uarch: arm_8
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: false
-#         large-stack-usage: false
-#         os: [Linux, Darwin]
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_aarch64.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
-#                     mldsa/src/native/meta.h,
-#                     mldsa/src/native/aarch64/meta.h,
-#                     mldsa/src/native/aarch64/src/*]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_aarch64"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=44
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify
-#
-#       mldsa-native_ml-dsa-65_ref:
-#         version: FIPS204
-#         parameter: ml-dsa-65
-#         uarch: portable
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: true
-#         large-stack-usage: false
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_c.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=65
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_C_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_C_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_C_verify
-#
-#       mldsa-native_ml-dsa-65_x86_64:
-#         version: FIPS204
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_65_x86_64
-#         parameter: ml-dsa-65
-#         uarch: x86_64
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: true
-#         large-stack-usage: false
-#         os: [Linux, Darwin]
-#         cpufeatures: [avx2, bmi2, popcnt]
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_x86_64.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
-#                     mldsa/src/native/meta.h,
-#                     mldsa/src/native/x86_64/meta.h,
-#                     mldsa/src/native/x86_64/src/*]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_x86_64"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: private
-#             opts: "-mavx2 -mbmi2 -mpopcnt"
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=65
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify
-#
-#       mldsa-native_ml-dsa-65_aarch64:
-#         version: FIPS204
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_65_aarch64
-#         parameter: ml-dsa-65
-#         uarch: arm_8
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: false
-#         large-stack-usage: false
-#         os: [Linux, Darwin]
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_aarch64.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
-#                     mldsa/src/native/meta.h,
-#                     mldsa/src/native/aarch64/meta.h,
-#                     mldsa/src/native/aarch64/src/*]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_aarch64"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=65
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify
-#
-#       mldsa-native_ml-dsa-87_ref:
-#         version: FIPS204
-#         parameter: ml-dsa-87
-#         uarch: portable
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: true
-#         large-stack-usage: false
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_c.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=87
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_C_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_C_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_C_verify
-#
-#       mldsa-native_ml-dsa-87_x86_64:
-#         version: FIPS204
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_87_x86_64
-#         parameter: ml-dsa-87
-#         uarch: x86_64
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: true
-#         large-stack-usage: false
-#         os: [Linux, Darwin]
-#         cpufeatures: [avx2, bmi2, popcnt]
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_x86_64.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
-#                     mldsa/src/native/meta.h,
-#                     mldsa/src/native/x86_64/meta.h,
-#                     mldsa/src/native/x86_64/src/*]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_x86_64"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: private
-#             opts: "-mavx2 -mbmi2 -mpopcnt"
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=87
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_verify
-#
-#       mldsa-native_ml-dsa-87_aarch64:
-#         version: FIPS204
-#         enable_by: OQS_ENABLE_SIG_ml_dsa_87_aarch64
-#         parameter: ml-dsa-87
-#         uarch: arm_8
-#         common-crypto:
-#           SHA3: liboqs
-#         no-secret-dependent-branching-claimed: true
-#         no-secret-dependent-branching-checked-by-valgrind: false
-#         large-stack-usage: false
-#         os: [Linux, Darwin]
-#         sources:
-#           - upstream: mldsa-native
-#             preserve_subdirs: true
-#             files: [integration/liboqs/config_aarch64.h,
-#                     integration/liboqs/fips202_glue.h,
-#                     integration/liboqs/fips202x4_glue.h,
-#                     mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
-#                     mldsa/src/native/meta.h,
-#                     mldsa/src/native/aarch64/meta.h,
-#                     mldsa/src/native/aarch64/src/*]
-#         includes:
-#           - scope: private
-#             dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_aarch64"
-#           - scope: private
-#             dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
-#         compile_opts:
-#           - scope: public
-#             opts: >-
-#               -DMLD_CONFIG_PARAMETER_SET=87
-#               -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
-#         signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_keypair
-#         signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_signature
-#         signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_verify
-#
+
+  ml_dsa:
+    displayname: ML-DSA
+    algtype: sig
+    principal-submitters:
+      - Vadim Lyubashevsky
+    auxiliary-submitters:
+      - Shi Bai
+      - Léo Ducas
+      - Eike Kiltz
+      - Tancrède Lepoint
+      - Peter Schwabe
+      - Gregor Seiler
+      - Damien Stehlé
+    crypto-assumption: >-
+      hardness of lattice problems over module lattices
+    website: >-
+      https://pq-crystals.org/dilithium/ and https://csrc.nist.gov/pubs/fips/204/final
+    nist-round: FIPS204
+    spec-version: ML-DSA
+    standardization-status: >-
+      Standardized by [NIST](https://csrc.nist.gov/pubs/fips/204/final)
+    upstream-maintenance: Actively maintained
+    upstream-statement-url: https://github.com/pq-code-package/mldsa-native
+    primary-upstream: mldsa-native
+    oqs-support-tier: 2
+    parameters:
+
+      ml-dsa-44:
+        security-strength: 2
+        security-model: EUF-CMA
+        length-public-key: 1312
+        length-secret-key: 2560
+        length-signature: 2420
+        nistkat-sha256:
+          33e7eb7e3b4965fc8b8274ebf8a222c519008ec242b3f753d1bc240f1ee3cb1f
+        enable_by: OQS_ENABLE_SIG_ml_dsa_44
+        default-implementation: ml_dsa_44_ref
+
+      ml-dsa-65:
+        security-strength: 3
+        security-model: EUF-CMA
+        length-public-key: 1952
+        length-secret-key: 4032
+        length-signature: 3309
+        nistkat-sha256:
+          2ff0ddcd0dc08b746aa04853d6f84c82c6c8ac38783c9061aed78e29c1698ae5
+        enable_by: OQS_ENABLE_SIG_ml_dsa_65
+        default-implementation: ml_dsa_65_ref
+
+      ml-dsa-87:
+        security-strength: 5
+        security-model: EUF-CMA
+        length-public-key: 2592
+        length-secret-key: 4896
+        length-signature: 4627
+        nistkat-sha256:
+          1bfb25b29f6f2bc89057e3bddee055a8f7df563b0e747004b2968159f7739afa
+        enable_by: OQS_ENABLE_SIG_ml_dsa_87
+        default-implementation: ml_dsa_87_ref
+
+    implementations:
+
+      ml_dsa_44_ref:
+        version: FIPS204
+        parameter: ml-dsa-44
+        subdirname: mldsa-native_ml-dsa-44_ref
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_c.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=44
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_C_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_C_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_C_verify
+
+      ml_dsa_44_x86_64:
+        version: FIPS204
+        enable_by: OQS_ENABLE_SIG_ml_dsa_44_x86_64
+        parameter: ml-dsa-44
+        subdirname: mldsa-native_ml-dsa-44_x86_64
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_x86_64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
+                    mldsa/src/native/meta.h,
+                    mldsa/src/native/x86_64/meta.h,
+                    mldsa/src/native/x86_64/src/*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_x86_64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=44
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify
+
+      ml_dsa_44_aarch64:
+        version: FIPS204
+        enable_by: OQS_ENABLE_SIG_ml_dsa_44_aarch64
+        parameter: ml-dsa-44
+        subdirname: mldsa-native_ml-dsa-44_aarch64
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_aarch64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
+                    mldsa/src/native/meta.h,
+                    mldsa/src/native/aarch64/meta.h,
+                    mldsa/src/native/aarch64/src/*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-44_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=44
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify
+
+      ml_dsa_65_ref:
+        version: FIPS204
+        parameter: ml-dsa-65
+        subdirname: mldsa-native_ml-dsa-65_ref
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_c.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=65
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_C_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_C_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_C_verify
+
+      ml_dsa_65_x86_64:
+        version: FIPS204
+        enable_by: OQS_ENABLE_SIG_ml_dsa_65_x86_64
+        parameter: ml-dsa-65
+        subdirname: mldsa-native_ml-dsa-65_x86_64
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_x86_64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
+                    mldsa/src/native/meta.h,
+                    mldsa/src/native/x86_64/meta.h,
+                    mldsa/src/native/x86_64/src/*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_x86_64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=65
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify
+
+      ml_dsa_65_aarch64:
+        version: FIPS204
+        enable_by: OQS_ENABLE_SIG_ml_dsa_65_aarch64
+        parameter: ml-dsa-65
+        subdirname: mldsa-native_ml-dsa-65_aarch64
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_aarch64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
+                    mldsa/src/native/meta.h,
+                    mldsa/src/native/aarch64/meta.h,
+                    mldsa/src/native/aarch64/src/*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-65_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=65
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify
+
+      ml_dsa_87_ref:
+        version: FIPS204
+        parameter: ml-dsa-87
+        subdirname: mldsa-native_ml-dsa-87_ref
+        uarch: portable
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_c.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_ref"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=87
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_c.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_C_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_C_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_C_verify
+
+      ml_dsa_87_x86_64:
+        version: FIPS204
+        enable_by: OQS_ENABLE_SIG_ml_dsa_87_x86_64
+        parameter: ml-dsa-87
+        subdirname: mldsa-native_ml-dsa-87_x86_64
+        uarch: x86_64
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        cpufeatures: [avx2, bmi2, popcnt]
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_x86_64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
+                    mldsa/src/native/meta.h,
+                    mldsa/src/native/x86_64/meta.h,
+                    mldsa/src/native/x86_64/src/*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_x86_64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: private
+            opts: "-mavx2 -mbmi2 -mpopcnt"
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=87
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_x86_64.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_verify
+
+      ml_dsa_87_aarch64:
+        version: FIPS204
+        enable_by: OQS_ENABLE_SIG_ml_dsa_87_aarch64
+        parameter: ml-dsa-87
+        subdirname: mldsa-native_ml-dsa-87_aarch64
+        uarch: arm_8
+        common-crypto:
+          SHA3: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: false
+        large-stack-usage: false
+        os: [Linux, Darwin]
+        sources:
+          - upstream: mldsa-native
+            preserve_subdirs: true
+            files: [integration/liboqs/config_aarch64.h,
+                    integration/liboqs/fips202_glue.h,
+                    integration/liboqs/fips202x4_glue.h,
+                    mldsa/src/*.c, mldsa/src/*.h, mldsa/src/*.inc, mldsa/src/native/api.h,
+                    mldsa/src/native/meta.h,
+                    mldsa/src/native/aarch64/meta.h,
+                    mldsa/src/native/aarch64/src/*]
+        includes:
+          - scope: private
+            dir: "${CMAKE_CURRENT_LIST_DIR}/mldsa-native_ml-dsa-87_aarch64"
+          - scope: private
+            dir: "${PROJECT_SOURCE_DIR}/src/common/pqclean_shims"
+        compile_opts:
+          - scope: public
+            opts: >-
+              -DMLD_CONFIG_PARAMETER_SET=87
+              -DMLD_CONFIG_FILE="../../integration/liboqs/config_aarch64.h"
+        signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_keypair
+        signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_signature
+        signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_verify
+
 #   snova:
 #     displayname: SNOVA
 #     algtype: sig
