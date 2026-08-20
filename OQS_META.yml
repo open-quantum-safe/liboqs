@@ -195,7 +195,9 @@ algfamilies:
         compile_opts:
           - scope: private, public, or interface
             opts: "literal string directly copied into target_compile_options"
-        link_libs: [libname]
+        link_libs:
+          - scope: private|public|interface
+            libs: "string literals"
         set_properties:  # https://cmake.org/cmake/help/latest/command/set_property.html
           - scope: target
             name: CUDA_ARCHITECTURES
@@ -1924,7 +1926,9 @@ algfamilies:
         compile_opts:
           - scope: private
             opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
-        link_libs: [cupqc]
+        link_libs:
+          - scope: public
+            libs: "cupqc"
         set_properties:
           - scope: target
             name: CUDA_ARCHITECTURES
@@ -1945,7 +1949,9 @@ algfamilies:
         sources:
           - upstream: icicle
             files: [icicle_cuda/ml-kem-512/icicle_ml-kem.cpp]
-        link_libs: [icicle::icicle_pqc_package]
+        link_libs:
+          - scope: private
+            libs: "icicle::icicle_pqc_package"
         signature_keypair: icicle_ml_kem_512_keypair
         signature_enc: icicle_ml_kem_512_enc
         signature_dec: icicle_ml_kem_512_dec
@@ -2111,7 +2117,9 @@ algfamilies:
         compile_opts:
           - scope: private
             opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
-        link_libs: [cupqc]
+        link_libs:
+          - scope: public
+            libs: "cupqc"
         set_properties:
           - scope: target
             name: CUDA_ARCHITECTURES
@@ -2132,7 +2140,9 @@ algfamilies:
         sources:
           - upstream: icicle
             files: [icicle_cuda/ml-kem-768/icicle_ml-kem.cpp]
-        link_libs: [icicle::icicle_pqc_package]
+        link_libs:
+          - scope: private
+            libs: "icicle::icicle_pqc_package"
         signature_keypair: icicle_ml_kem_768_keypair
         signature_enc: icicle_ml_kem_768_enc
         signature_dec: icicle_ml_kem_768_dec
@@ -2298,7 +2308,9 @@ algfamilies:
         compile_opts:
           - scope: private
             opts: "$<$<COMPILE_LANGUAGE:CUDA>:-rdc=true -dlto -arch=compute_70>"
-        link_libs: [cupqc]
+        link_libs:
+          - scope: public
+            libs: "cupqc"
         set_properties:
           - scope: target
             name: CUDA_ARCHITECTURES
@@ -2319,7 +2331,9 @@ algfamilies:
         sources:
           - upstream: icicle
             files: [icicle_cuda/ml-kem-1024/icicle_ml-kem.cpp]
-        link_libs: [icicle::icicle_pqc_package]
+        link_libs:
+          - scope: private
+            libs: "icicle::icicle_pqc_package"
         signature_keypair: icicle_ml_kem_1024_keypair
         signature_enc: icicle_ml_kem_1024_enc
         signature_dec: icicle_ml_kem_1024_dec

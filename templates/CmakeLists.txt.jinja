@@ -32,9 +32,9 @@ if({{ addtl_impl_meta.enable_by }})
         {% for include_dir_meta in addtl_impl_meta.includes %}
     target_include_directories({{ addtl_impl_key }} {{ include_dir_meta.scope.value | upper }} {{ include_dir_meta.dir }})
         {% endfor %}
-        {% if addtl_impl_meta.link_libs %}
-    target_link_libraries({{ addtl_impl_key }} {{ "".join(addtl_impl_meta.link_libs) }})
-        {% endif %}
+        {% for link_libs_meta in addtl_impl_meta.link_libs %}
+    target_link_libraries({{ addtl_impl_key }} {{ link_libs_meta.scope.value | upper }} {{ link_libs_meta.libs }})
+        {% endfor %}
         {% for setprop_meta in addtl_impl_meta.set_properties %}
     set_property({{ setprop_meta.scope.value | upper }} {{ addtl_impl_key }} PROPERTY {{ setprop_meta.name }} {{ setprop_meta.value }})
         {% endfor %}

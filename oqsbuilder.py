@@ -42,7 +42,13 @@ DEFAULT_NEVER_COPY = [
     "Makefile",
 ]
 
-SOURCE_FILE_EXTENSIONS = [".c", ".s", ".S", ".cu", ".cpp",]
+SOURCE_FILE_EXTENSIONS = [
+    ".c",
+    ".s",
+    ".S",
+    ".cu",
+    ".cpp",
+]
 
 
 class OQSBuilderConfig:
@@ -382,7 +388,17 @@ COMMON_IMPL_MAPPING = {
             )
         ),
     ),
-    "link_libs": (Fields.OPTIONAL, Fields.Array(Fields.Text(), allowempty=False)),
+    "link_libs": (
+        Fields.OPTIONAL,
+        Fields.Array(
+            Fields.Mapping(
+                {
+                    "scope": (Fields.REQUIRED, Fields.Enumerated(CmakeScopes)),
+                    "libs": (Fields.REQUIRED, Fields.Text()),
+                }
+            )
+        ),
+    ),
     "set_properties": (
         Fields.OPTIONAL,
         Fields.Array(
@@ -920,6 +936,22 @@ class CMakeCompileOptMeta:
         return CMakeCompileOptMeta(scope, opts)
 
 
+class CMakeLinkLibsMeta:
+    def __init__(
+        self,
+        scope: CmakeScopes,
+        libs: str,
+    ):
+        self.scope = scope
+        self.libs = libs
+
+    @staticmethod
+    def from_dict(meta: dict):
+        scope = CmakeScopes(meta["scope"])
+        libs = meta["libs"]
+        return CMakeLinkLibsMeta(scope, libs)
+
+
 class CMakeSetPropMeta:
     def __init__(
         self,
@@ -962,7 +994,7 @@ class ImplementationMeta:
         includes: list[CMakeIncludeMeta],
         old_gas_if_darwin: bool,
         compile_opts: list[CMakeCompileOptMeta],
-        link_libs: list[str],
+        link_libs: list[CMakeLinkLibsMeta],
         set_properties: list[CMakeSetPropMeta],
         api: KemApiMeta | SigApiMeta,
     ):
@@ -1133,7 +1165,10 @@ class ImplementationMeta:
             CMakeCompileOptMeta.from_dict(compile_opt)
             for compile_opt in meta.get("compile_opts", [])
         ]
-        libs = meta.get("link_libs", [])
+        link_libs = [
+            CMakeLinkLibsMeta.from_dict(link_libs_meta)
+            for link_libs_meta in meta.get("link_libs", [])
+        ]
         props = [
             CMakeSetPropMeta.from_dict(propmeta)
             for propmeta in meta.get("set_properties", [])
@@ -1155,7 +1190,7 @@ class ImplementationMeta:
             includes,
             old_gas,
             compile_opts,
-            libs,
+            link_libs,
             props,
             api,
         )
