@@ -33,14 +33,11 @@ OQS_KEM *OQS_KEM_ml_kem_1024_new(void) {
 	return kem;
 }
 
-
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair(uint8_t *pk, uint8_t *sk);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
-
-
 
 #if defined(OQS_ENABLE_KEM_ml_kem_1024_aarch64)
 extern int PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair(uint8_t *pk, uint8_t *sk);
@@ -60,32 +57,23 @@ extern int PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_dec(uint8_t *ss, const uint8_t *ct
 
 #if defined(OQS_ENABLE_KEM_ml_kem_1024_cuda) && defined(OQS_USE_CUPQC)
 extern int cupqc_ml_kem_1024_keypair(uint8_t *pk, uint8_t *sk);
-
 extern int cupqc_ml_kem_1024_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-
 extern int cupqc_ml_kem_1024_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif /* OQS_ENABLE_KEM_ml_kem_1024_cuda && OQS_USE_CUPQC */
 
 #if defined(OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda) && defined(OQS_USE_ICICLE)
 extern int icicle_ml_kem_1024_keypair(uint8_t *pk, uint8_t *sk);
-
 extern int icicle_ml_kem_1024_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int icicle_ml_kem_1024_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 extern int icicle_ml_kem_1024_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif /* OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda && OQS_USE_ICICLE */
 
 
-
 OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
-
-    
-        
-            
 #if defined(OQS_ENABLE_KEM_ml_kem_1024_aarch64)
             
-            
 #if defined(OQS_DIST_BUILD)
-    if ( OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON) ) {
+    if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
         return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand(public_key, secret_key, seed);
     } else {
         return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand(public_key, secret_key, seed);
@@ -94,13 +82,10 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_keypair_derand(uint8_t *public_key, uint8
     return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_AARCH64_keypair_derand(public_key, secret_key, seed);
 #endif /* OQS_DIST_BUILD */
             
-        
-            
 #elif defined(OQS_ENABLE_KEM_ml_kem_1024_x86_64)
             
-            
 #if defined(OQS_DIST_BUILD)
-    if ( OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT) ) {
+    if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
         return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand(public_key, secret_key, seed);
     } else {
         return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand(public_key, secret_key, seed);
@@ -109,12 +94,10 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_keypair_derand(uint8_t *public_key, uint8
     return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_X86_64_keypair_derand(public_key, secret_key, seed);
 #endif /* OQS_DIST_BUILD */
             
-        
 #else
     return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM1024_C_keypair_derand(public_key, secret_key, seed);
 #endif
     
-
 }
 
 OQS_API OQS_STATUS OQS_KEM_ml_kem_1024_keypair(uint8_t *public_key, uint8_t *secret_key) {

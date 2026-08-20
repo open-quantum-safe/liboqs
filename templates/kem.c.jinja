@@ -33,50 +33,41 @@ OQS_KEM *OQS_KEM_{{ param_key }}_new(void) {
 	return kem;
 }
 
-{# Declare default implementation API #}
 extern int {{ default_impl_meta.api.signature_keypair }}(uint8_t *pk, uint8_t *sk);
 {% if default_impl_meta.api.signature_keypair_derand -%}
 extern int {{ default_impl_meta.api.signature_keypair_derand }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
-{%- endif %}
+{% endif -%}
 extern int {{ default_impl_meta.api.signature_enc }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 {% if default_impl_meta.api.signature_enc_derand -%}
 extern int {{ default_impl_meta.api.signature_enc_derand }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
-{%- endif %}
+{% endif -%}
 extern int {{ default_impl_meta.api.signature_dec }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
-
-{# Declare additional implementations API #}
 {% for addtl_impl_key, addtl_impl_meta in addtl_impls.items() %}
 #if defined({{ addtl_impl_meta.enable_by }}){%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
 extern int {{ addtl_impl_meta.api.signature_keypair }}(uint8_t *pk, uint8_t *sk);
 {% if addtl_impl_meta.api.signature_keypair_derand -%}
 extern int {{ addtl_impl_meta.api.signature_keypair_derand }}(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
-{%- endif %}
+{% endif -%}
 extern int {{ addtl_impl_meta.api.signature_enc }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 {% if addtl_impl_meta.api.signature_enc_derand -%}
 extern int {{ addtl_impl_meta.api.signature_enc_derand }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
-{%- endif %}
+{% endif -%}
 extern int {{ addtl_impl_meta.api.signature_dec }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif /* {{ addtl_impl_meta.enable_by }}{%- if addtl_impl_meta.uarch.compile_time_guard() %} && {{ addtl_impl_meta.uarch.compile_time_guard() }}{% endif %} */
 {% endfor %}
 
-
 OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
-{% if not default_impl_meta.api.signature_keypair_derand %}
-	(void)public_key;
-	(void)secret_key;
-	(void)seed;
-	return OQS_ERROR;
-{% else %}
-    {% if addtl_impls_w_keypair_derand %}
-        {% for addtl_impl_key, addtl_impl_meta in addtl_impls_w_keypair_derand.items() %}
-            {% if loop.first %}
+{% if default_impl_meta.api.signature_keypair_derand -%}
+    {% if addtl_impls_w_keypair_derand -%}
+        {% for addtl_impl_key, addtl_impl_meta in addtl_impls_w_keypair_derand.items() -%}
+            {% if loop.first -%}
 #if defined({{ addtl_impl_meta.enable_by }}){%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
             {% else %}
 #elif defined({{ addtl_impl_meta.enable_by }}){%- if addtl_impl_meta.uarch.compile_time_guard() %} && defined({{ addtl_impl_meta.uarch.compile_time_guard() }}){% endif %}
-            {% endif %}
+            {% endif -%}
             {% if addtl_impl_meta.render_runtime_cpu_feature_gate() %}
 #if defined(OQS_DIST_BUILD)
-    if ( {{ addtl_impl_meta.render_runtime_cpu_feature_gate() }} ) {
+    if ({{ addtl_impl_meta.render_runtime_cpu_feature_gate() }}) {
         return (OQS_STATUS) {{ addtl_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
     } else {
         return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
@@ -84,16 +75,21 @@ OQS_API OQS_STATUS OQS_KEM_{{ param_key }}_keypair_derand(uint8_t *public_key, u
 #else
     return (OQS_STATUS) {{ addtl_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
 #endif /* OQS_DIST_BUILD */
-            {% else %}
+            {% else -%}
     return (OQS_STATUS) {{ addtl_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
-            {% endif %}
+            {% endif -%}
         {% endfor %}
 #else
     return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
 #endif
-    {% else %}
+    {% else -%}
     return (OQS_STATUS) {{ default_impl_meta.api.signature_keypair_derand }}(public_key, secret_key, seed);
-    {% endif %}
+    {% endif -%}
+{% else %}
+	(void)public_key;
+	(void)secret_key;
+	(void)seed;
+	return OQS_ERROR;
 {% endif %}
 }
 
