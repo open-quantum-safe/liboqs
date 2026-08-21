@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import abc
+import argparse
 from enum import Enum, EnumType
 import logging
 import os
@@ -28,6 +29,7 @@ if not _liboqs_dir:
 LIBOQS_DIR = _liboqs_dir
 LIBOQS_SRC_DIR = os.path.join(LIBOQS_DIR, "src")
 DEFAULT_OQS_META_PATH = os.path.join(LIBOQS_DIR, "OQS_META.yml")
+DEFAULT_UPSTREAMS_DIR = os.path.join(LIBOQS_DIR)
 DEFAULT_KEM_SRC_TEMPLATE_FILENAME = "kem.c.jinja"
 DEFAULT_SIG_SRC_TEMPLATE_FILENAME = "sig.c.jinja"
 DEFAULT_KEM_HEADER_TEMPLATE_FILENAME = "kem.h.jinja"
@@ -53,7 +55,7 @@ class OQSBuilderConfig:
     def __init__(
         self,
         oqs_meta_path: str = DEFAULT_OQS_META_PATH,
-        upstreams_dir: str = LIBOQS_DIR,
+        upstreams_dir: str = DEFAULT_UPSTREAMS_DIR,
         patch_dir: str = DEFAULT_PATCH_DIR,
         templates_dir: str = DEFAULT_OQS_TEMPLATES_DIR,
         kem_src_template_filename: str = DEFAULT_KEM_SRC_TEMPLATE_FILENAME,
@@ -77,6 +79,7 @@ class OQSBuilderConfig:
         """
         self.oqs_meta_path = oqs_meta_path
         self.upstreams_dir = upstreams_dir
+        self.upstreams_cached = False
         self.patch_dir = patch_dir
         self.templates_dir = templates_dir
         self.kem_src_template_filename = kem_src_template_filename
@@ -88,6 +91,12 @@ class OQSBuilderConfig:
         self.demo_algfamilies = ["demo_alg"]
         self.fail_on_jasminc = fail_on_jasminc
         self.never_copy = never_copy
+
+    def overwrite_with_args(self, args: argparse.Namespace):
+        if args.upstreams_dir:
+            self.upstreams_dir = args.upstreams_dir
+            self.upstreams_cached = True
+        self.delete_upstreams = not args.keep_upstreams
 
 
 class FieldValidator(abc.ABC):
@@ -601,6 +610,10 @@ class UpstreamMeta:
         then set self._dir to this path, indicating successful cloning
         """
         upstream_dir = os.path.join(upstreams_dir, upstream_key)
+        self._dir = upstream_dir
+        if os.path.isdir(upstream_dir):
+            logger.info("Using cached upstream %s at %s", upstream_key, upstream_dir)
+            return
         os.mkdir(upstream_dir)
 
         run_subprocess(["git", "init"], upstream_dir)
@@ -610,18 +623,15 @@ class UpstreamMeta:
         )
         run_subprocess(["git", "checkout", "--detach", "FETCH_HEAD"], upstream_dir)
 
-        self._dir = upstream_dir
-
         if self.patch_full_paths:
             run_subprocess(
                 ["git", "apply", "--whitespace=fix"] + self.patch_full_paths, self._dir
             )
 
-        if not self.post_patches:
-            return
-        cmd_lines = self.post_patches.strip().splitlines()
-        for cmd_line in cmd_lines:
-            run_subprocess(cmd_line.split(), self._dir)
+        if self.post_patches:
+            cmd_lines = self.post_patches.strip().splitlines()
+            for cmd_line in cmd_lines:
+                run_subprocess(cmd_line.split(), self._dir)
 
 
 class KemParameterMeta:
@@ -1681,8 +1691,35 @@ def render_source_build_docs(
         render_documentation()
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--keep-upstreams",
+        action="store_true",
+        help="Do not delete upstream repositories",
+    )
+    parser.add_argument(
+        "--upstreams-dir",
+        type=str,
+        help="Clone upstream repository to the specified directory. If the \
+        upstream repository is already cloned, then do nothing. If this \
+        argument is used, cloned repositories will not be deleted. If not \
+        specified, upstream repositories will be cloned into a temporary \
+        subdirectory under $LIBOQS_DIR",
+    )
+    args = parser.parse_args()
+    if args.upstreams_dir and not os.path.isdir(args.upstreams_dir):
+        raise FileNotFoundError(f"Cannot find directory {args.upstreams_dir}")
+    return args
+
+
 if __name__ == "__main__":
+    # CLI arguments take precedence over default config. Merge CLI arguments
+    # into builder config, then only use builderconfig, since it has a proper
+    # data structure
+    args = parse_args()
     builderconfig = OQSBuilderConfig()
+    builderconfig.overwrite_with_args(args)
 
     with open(builderconfig.oqs_meta_path) as f:
         oqs_meta = yaml.safe_load(f)
@@ -1697,23 +1734,31 @@ if __name__ == "__main__":
     if (not has_jasmin) and builderconfig.fail_on_jasminc:
         logger.error("jasminc not found, exiting")
 
-    with TemporaryDirectory(
-        dir=builderconfig.upstreams_dir,
-        prefix="_upstreams_",
-        delete=builderconfig.delete_upstreams,
-    ) as upstreams_dir:
-        logger.info("Cloning repositories into %s", upstreams_dir)
-        clone_upstreams(
-            upstreams_dir,
-            oqs_meta.upstreams,
-            has_jasmin,
-        )
-        logger.warning("Remote OQS_META is not yet supported")
+    if builderconfig.upstreams_cached:
+        clone_upstreams(builderconfig.upstreams_dir, oqs_meta.upstreams, has_jasmin)
         copy_sources(
             oqs_meta.upstreams,
             oqs_meta.algfamilies,
             builderconfig.never_copy,
             has_jasmin,
         )
+    else:
+        with TemporaryDirectory(
+            dir=builderconfig.upstreams_dir,
+            prefix="_upstreams_",
+            delete=builderconfig.delete_upstreams,
+        ) as upstreams_dir:
+            logger.info("Cloning repositories into %s", upstreams_dir)
+            clone_upstreams(
+                upstreams_dir,
+                oqs_meta.upstreams,
+                has_jasmin,
+            )
+            copy_sources(
+                oqs_meta.upstreams,
+                oqs_meta.algfamilies,
+                builderconfig.never_copy,
+                has_jasmin,
+            )
 
     render_source_build_docs(oqs_meta.algfamilies, builderconfig, False)
