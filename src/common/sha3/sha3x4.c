@@ -12,8 +12,8 @@ extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
 
 static const struct OQS_SHA3_x4_callbacks *callbacks = &sha3_x4_default_callbacks;
 
-/* See sha3.c for the rationale: select the backend once, with a single
- * atomic pointer swap, before any SHA3-x4 entry point can dispatch. */
+/* Select the top-level SHA3-x4 backend once before dispatching any entry
+ * point; see sha3.c for the initialization rationale. */
 #if OQS_USE_PTHREADS
 static pthread_once_t callbacks_init_once = PTHREAD_ONCE_INIT;
 #else

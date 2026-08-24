@@ -12,11 +12,9 @@ extern struct OQS_SHA3_callbacks sha3_default_callbacks;
 
 static const struct OQS_SHA3_callbacks *callbacks = &sha3_default_callbacks;
 
-/* The top-level SHA3 backend is selected once, before any SHA3 entry point
- * is allowed to dispatch. We swap the `callbacks` pointer atomically (a
- * single aligned-pointer store) rather than overwriting the contents of the
- * default callbacks struct, so concurrent readers never observe a torn
- * vtable, and a single in-flight call cannot be split across two backends.
+/* Select the top-level SHA3 backend once before dispatching any entry point.
+ * pthread_once synchronizes concurrent first-use callers; the callback table
+ * is not modified while an operation is in progress.
  */
 #if OQS_USE_PTHREADS
 static pthread_once_t callbacks_init_once = PTHREAD_ONCE_INIT;
@@ -50,8 +48,7 @@ static inline const struct OQS_SHA3_callbacks *get_cb(void) {
 }
 
 OQS_API void OQS_SHA3_set_callbacks(struct OQS_SHA3_callbacks *new_callbacks) {
-	/* Ensure the one-time auto-detection has run first, so a later SHA3
-	 * call cannot clobber the user's choice. */
+	/* Complete automatic initialization before accepting a custom table. */
 	ensure_callbacks_initialized();
 	callbacks = new_callbacks;
 }
