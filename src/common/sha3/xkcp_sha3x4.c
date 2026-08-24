@@ -31,14 +31,11 @@ static KeccakX4AddBytesFn *Keccak_X4_AddBytes_ptr = NULL;
 static KeccakX4PermuteFn *Keccak_X4_Permute_ptr = NULL;
 static KeccakX4ExtractBytesFn *Keccak_X4_ExtractBytes_ptr = NULL;
 
-extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
-
 static void Keccak_X4_Dispatch(void) {
 // TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
 //
-// See the equivalent comment in xkcp_sha3.c::Keccak_Dispatch: the top-level
-// callbacks-table swap is intentionally not performed here. It is handled
-// once, before any SHA3-x4 entry point can run, in sha3x4.c.
+// Top-level callback-table selection is handled once in sha3x4.c before any
+// SHA3-x4 entry point can run. This function only selects XKCP's implementation.
 #if defined(OQS_DIST_X86_64_BUILD)
 #if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
