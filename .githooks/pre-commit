@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if ! command -v rumdl >/dev/null 2>&1; then
+  echo "Error: rumdl not found. Please install using requirements-dev.txt" >&2
+  exit 1
+fi
+
+rumdl check --config .rumdl.toml --respect-gitignore --exclude "build,**/build" .
