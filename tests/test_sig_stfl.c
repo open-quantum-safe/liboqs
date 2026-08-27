@@ -479,13 +479,11 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 	}
 
 #ifdef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
-	// Sub-case 3: secret key blob of exactly the declared algorithm's length, but with OID
-	// bytes naming a different parameter set. The OID is part of the key material and
-	// xmss_sign re-parses it, so sk_bytes, sig_bytes and wots_sig_bytes all come from the
-	// mutated value. Pre-fix, xmss_core_sign walked the deserialized key with the geometry of
-	// the foreign parameter set and read past the end of secret_key_data (see
-	// xmss_deserialize_state). Post-fix, the wrapper rejects the mismatch before any offset
-	// is derived from it.
+	// Sub-case 3: a secret key buffer sized for this algorithm, but with OID bytes that
+	// identify a different XMSS/XMSSMT variant. Sign, sigs_remaining, and sigs_total all
+	// read the OID from the key to decide field sizes and offsets. If that OID names a
+	// larger variant, those functions can read beyond secret_key_data (see
+	// xmss_deserialize_state). The per-algorithm wrappers must reject the mismatch first.
 	uint32_t foreign_oid;
 	if (strstr(method_name, "XMSSMT") != NULL) {
 		foreign_oid = (sig->oid == TEST_XMSSMT_OID_LARGEST_SK) ? TEST_XMSSMT_OID_LARGEST_SK_ALT : TEST_XMSSMT_OID_LARGEST_SK;
@@ -507,9 +505,18 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 
 	status = OQS_SIG_STFL_SECRET_KEY_deserialize(foreign_sk, sk_buf, sig->length_secret_key, NULL);
 	if (status == OQS_SUCCESS) {
-		size_t foreign_sig_len = 0;
-		OQS_SIG_STFL_SECRET_KEY_SET_store_cb(foreign_sk, discard_secret_key, NULL);
-		status = OQS_SIG_STFL_sign(sig, full_sig, &foreign_sig_len, message, sizeof(message) - 1, foreign_sk);
+		unsigned long long dummy = 0;
+
+		/* Acceptance by any of the three consumers is the failure being tested for, so it
+		 * must leave status == OQS_SUCCESS for the check below to flag. */
+		if (OQS_SIG_STFL_sigs_remaining(sig, &dummy, foreign_sk) == OQS_SUCCESS ||
+		        OQS_SIG_STFL_sigs_total(sig, &dummy, foreign_sk) == OQS_SUCCESS) {
+			status = OQS_SUCCESS;
+		} else {
+			size_t foreign_sig_len = 0;
+			OQS_SIG_STFL_SECRET_KEY_SET_store_cb(foreign_sk, discard_secret_key, NULL);
+			status = OQS_SIG_STFL_sign(sig, full_sig, &foreign_sig_len, message, sizeof(message) - 1, foreign_sk);
+		}
 	}
 	OQS_MEM_insecure_free(sk_buf);
 	OQS_SIG_STFL_SECRET_KEY_free(foreign_sk);
