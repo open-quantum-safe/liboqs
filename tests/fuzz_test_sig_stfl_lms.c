@@ -205,12 +205,12 @@ static OQS_STATUS fuzz_sig_stfl_lms(const uint8_t *data, size_t data_len) {
 	size_t sig_len = kp->signature_len;
 	size_t msg_len = kp->message_len;
 	/* Vary the signature length from the fuzz input so truncated and oversized signatures are reached. */
-    size_t verify_sig_len = sig_len;
-    if (fuzz_len >= 2) {
-        verify_sig_len = (((size_t)fuzz_data[0] << 8) | fuzz_data[1]) % (sig_len + 65);
-    	fuzz_data += 2;
-    	fuzz_len -= 2;
-    }
+	size_t verify_sig_len = sig_len;
+	if (fuzz_len >= 2) {
+		verify_sig_len = (((size_t)fuzz_data[0] << 8) | fuzz_data[1]) % (sig_len + 65);
+		fuzz_data += 2;
+		fuzz_len -= 2;
+	}
 
 	uint8_t *mutated_pk = OQS_MEM_malloc(pk_len);
 	uint8_t *mutated_sig = OQS_MEM_malloc(sig_len);
