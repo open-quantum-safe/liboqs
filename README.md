@@ -193,6 +193,8 @@ You can cross compile liboqs for various platforms. Detailed information is avai
 
 More detailed information on building, optional build parameters, example applications, coding conventions and more can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
 
+Independent reproducibility study using liboqs 0.16.0 against pinned public NIST ML-KEM ACVP vectors: [arXiv:2608.13784](https://arxiv.org/abs/2608.13784), [artifact](https://doi.org/10.5281/zenodo.21910571).
+
 ## Contributing
 
 Contributions that meet the acceptance criteria are gratefully welcomed. See our [Contributing Guide](https://github.com/open-quantum-safe/liboqs/wiki/Contributing-Guide) for more details.
