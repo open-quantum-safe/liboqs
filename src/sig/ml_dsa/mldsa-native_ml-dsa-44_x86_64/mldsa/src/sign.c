@@ -17,6 +17,11 @@
  *   National Institute of Standards and Technology
  *   https://csrc.nist.gov/pubs/fips/204/final
  *
+ * - [FIPS204_UPDATES]
+ *   FIPS 204 Potential Updates (Errata)
+ *   National Institute of Standards and Technology
+ *   https://csrc.nist.gov/files/pubs/fips/204/final/docs/fips-204-potential-updates.xlsx
+ *
  * - [Round3_Spec]
  *   CRYSTALS-Dilithium Algorithm Specifications and Supporting Documentation
  *   (Version 3.1)
@@ -60,7 +65,10 @@ static int mld_check_pct(uint8_t const pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
 __contract__(
   requires(memory_no_alias(pk, MLDSA_CRYPTO_PUBLICKEYBYTES))
   requires(memory_no_alias(sk, MLDSA_CRYPTO_SECRETKEYBYTES))
-  ensures(return_value == 0 || MLD_ANY_ERROR(return_value))
+  ensures(return_value == 0 || return_value == MLD_ERR_OUT_OF_MEMORY ||
+          return_value == MLD_ERR_RNG_FAIL ||
+          return_value == MLD_ERR_SIGNING_PAUSED ||
+          return_value == MLD_ERR_PCT_FAIL)
 );
 
 #if defined(MLD_CONFIG_KEYGEN_PCT)
@@ -83,14 +91,19 @@ __contract__(
  *                    MLD_CONFIG_CONTEXT_PARAMETER is defined; type set by
  *                    MLD_CONFIG_CONTEXT_PARAMETER_TYPE.
  *
- * @return 0 if the signature was successfully verified, non-zero otherwise.
+ * @retval 0                      Success.
+ * @retval MLD_ERR_OUT_OF_MEMORY  MLD_CONFIG_CUSTOM_ALLOC_FREE was used and an
+ *                                allocation via MLD_CUSTOM_ALLOC returned NULL.
+ * @retval MLD_ERR_RNG_FAIL       Random number generation failed.
+ * @retval MLD_ERR_SIGNING_PAUSED The PCT's signing step was paused by a
+ *                                MLD_CONFIG_SIGN_HOOK_ATTEMPT hook.
+ * @retval MLD_ERR_PCT_FAIL       The consistency check failed.
  */
 static int mld_check_pct(uint8_t const pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
                          uint8_t const sk[MLDSA_CRYPTO_SECRETKEYBYTES],
                          MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
 {
   MLD_ALIGN uint8_t message[1] = {0};
-  size_t siglen;
   int ret;
   MLD_ALLOC(signature, uint8_t, MLDSA_CRYPTO_BYTES, context);
   MLD_ALLOC(pk_test, uint8_t, MLDSA_CRYPTO_PUBLICKEYBYTES, context);
@@ -105,8 +118,8 @@ static int mld_check_pct(uint8_t const pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   mld_memcpy(pk_test, pk, MLDSA_CRYPTO_PUBLICKEYBYTES);
 
   /* Sign a test message using the original secret key */
-  ret = mld_sign_signature(signature, &siglen, message, sizeof(message), NULL,
-                           0, sk, context);
+  ret = mld_sign_signature(signature, message, sizeof(message), NULL, 0, sk,
+                           context);
   if (ret != 0)
   {
     goto cleanup;
@@ -120,18 +133,33 @@ static int mld_check_pct(uint8_t const pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   }
 #endif /* MLD_CONFIG_KEYGEN_PCT_BREAKAGE_TEST */
 
-  /* Verify the signature using the (potentially corrupted) public key */
-  ret = mld_sign_verify(signature, siglen, message, sizeof(message), NULL, 0,
-                        pk_test, context);
+  /* Verify the signature using the (potentially corrupted) public key. */
+  ret = mld_sign_verify(signature, message, sizeof(message), NULL, 0, pk_test,
+                        context);
+  if (ret != 0)
+  {
+    goto cleanup;
+  }
 
 cleanup:
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
   MLD_FREE(pk_test, uint8_t, MLDSA_CRYPTO_PUBLICKEYBYTES, context);
   MLD_FREE(signature, uint8_t, MLDSA_CRYPTO_BYTES, context);
 
+  /* A failed signing operation or an invalid signature hint at a faulty
+   * implementation and map to a dedicated error code for PCT failure. */
+  if (ret == MLD_ERR_INVALID_SIGNATURE ||
+      ret == MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED)
+  {
+    ret = MLD_ERR_PCT_FAIL;
+  }
+
+  /* Other error codes, e.g. platform failures like out of memory or
+   * randomness failure, are passed on unmodified. */
+
   return ret;
 }
-#else /* MLD_CONFIG_KEYGEN_PCT */
+#else  /* MLD_CONFIG_KEYGEN_PCT */
 static int mld_check_pct(uint8_t const pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
                          uint8_t const sk[MLDSA_CRYPTO_SECRETKEYBYTES],
                          MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
@@ -139,13 +167,21 @@ static int mld_check_pct(uint8_t const pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   /* Skip PCT */
   ((void)pk);
   ((void)sk);
-#if defined(MLD_CONFIG_CONTEXT_PARAMETER)
-  ((void)context);
-#endif
+  MLD_CONTEXT_UNUSED(context);
   return 0;
 }
 #endif /* !MLD_CONFIG_KEYGEN_PCT */
 
+/**
+ * Sample the short secret vectors s1 (length MLDSA_L) and s2 (length MLDSA_K)
+ * with coefficients in [-MLDSA_ETA, MLDSA_ETA] from the seed.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 33, ExpandS].}
+ *
+ * @param[out] s1   Output vector s1.
+ * @param[out] s2   Output vector s2.
+ * @param[in]  seed Byte array with seed of length MLDSA_CRHBYTES.
+ */
 static void mld_sample_s1_s2(mld_polyvecl *s1, mld_polyveck *s2,
                              const uint8_t seed[MLDSA_CRHBYTES])
 __contract__(
@@ -203,6 +239,9 @@ __contract__(
  * Compute t = A*s1hat + s2 row by row, decompose each row into t0[k] and
  * t1[k] via power2round, and bit-pack t1[k] into pk_t1 and t0[k] into the
  * t0_packed buffer. Used by both keygen and pk_from_sk.
+ *
+ * @spec{Partially implements @[FIPS204, Algorithm 22, pkEncode] (t1) and
+ * @[FIPS204, Algorithm 24, skEncode] (t0).}
  *
  * @param[out] pk_t1     Output buffer for packed t1 (size
  *                       MLDSA_K * MLDSA_POLYT1_PACKEDBYTES; i.e. the t1
@@ -353,14 +392,11 @@ int mld_sign_keypair_internal(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   mld_polyvecl_ntt(s1);
 
   /* Pack rho into pk */
-  mld_memcpy(pk, rho, MLDSA_SEEDBYTES);
+  mld_memcpy(pk + MLDSA_PK_RHO_OFFSET, rho, MLDSA_SEEDBYTES);
 
   /* Compute t = A*s1hat + s2 row by row, decompose into t1/t0, and pack
    * t1 into pk and t0 directly into the t0 region of sk. */
-  ret = mld_compute_pack_t0_t1(pk + MLDSA_SEEDBYTES,
-                               sk + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES +
-                                   MLDSA_L * MLDSA_POLYETA_PACKEDBYTES +
-                                   MLDSA_K * MLDSA_POLYETA_PACKEDBYTES,
+  ret = mld_compute_pack_t0_t1(pk + MLDSA_PK_T1_OFFSET, sk + MLDSA_SK_T0_OFFSET,
                                s1, s2, rho, context);
   if (ret != 0)
   {
@@ -384,14 +420,21 @@ cleanup:
   MLD_FREE(inbuf, uint8_t, MLDSA_SEEDBYTES + 2, context);
   MLD_FREE(seedbuf, uint8_t, 2 * MLDSA_SEEDBYTES + MLDSA_CRHBYTES, context);
 
-  if (ret != 0)
-  {
-    return ret;
-  }
-
   /* Pairwise Consistency Test (PCT) @[FIPS140_3_IG, p.87] */
   /* Do this after freeing all temporaries. */
-  return mld_check_pct(pk, sk, context);
+  if (ret == 0)
+  {
+    ret = mld_check_pct(pk, sk, context);
+  }
+
+  if (ret != 0)
+  {
+    /* Clear caller outputs on failure. */
+    mld_zeroize(pk, MLDSA_CRYPTO_PUBLICKEYBYTES);
+    mld_zeroize(sk, MLDSA_CRYPTO_SECRETKEYBYTES);
+  }
+
+  return ret;
 }
 
 #if !defined(MLD_CONFIG_CORE_API_ONLY)
@@ -480,13 +523,8 @@ __contract__(
 #endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
 #if !defined(MLD_CONFIG_NO_SIGN_API)
-/* Reference: The reference implementation does not explicitly check the
- * maximum nonce value, but instead loops indefinitely (even when the nonce
- * would overflow). Internally, sampling of y uses
- * (nonce*L), (nonce*L+1), ..., (nonce*L + L - 1).
- * Hence, there are no overflows if nonce < (UINT16_MAX - L)/L.
- * Explicitly checking for this explicitly allows us to prove type-safety. */
-#define MLD_NONCE_UB ((UINT16_MAX - MLDSA_L) / MLDSA_L)
+/* MLD_MAX_KAPPA (see params.h) bounds the rejection-sampling counter kappa;
+ * MLD_MAX_SIGNING_ATTEMPTS below turns that into a bound on attempts. */
 
 /**
  * Compute z = y + s1*c, check that z has coefficients smaller than
@@ -528,7 +566,7 @@ __contract__(
   MLD_IF_REDUCE_RAM(
     requires(memory_no_alias(s1hat->packed, MLDSA_L * MLDSA_POLYETA_PACKEDBYTES))
     requires(memory_no_alias(y->rhoprime, MLDSA_CRHBYTES))
-    requires(y->nonce <= MLD_NONCE_UB)
+    requires(y->kappa <= MLD_MAX_KAPPA)
   )
   assigns(memory_slice(sig, MLDSA_CRYPTO_BYTES))
   assigns(memory_slice(z, sizeof(mld_poly)))
@@ -580,41 +618,54 @@ __contract__(
   return 0;
 }
 
-/* User-facing bound on signing attempts. See MLD_CONFIG_MAX_SIGNING_ATTEMPTS
- * in mldsa_native_config.h. Default is chosen so that failure probability
- * is < 2^{-256}, that is, signatures will practically always succeed. */
-#ifndef MLD_CONFIG_MAX_SIGNING_ATTEMPTS
-#define MLD_CONFIG_MAX_SIGNING_ATTEMPTS MLD_NONCE_UB
-#endif
+/* Effective bound on signing attempts: the configured bound
+ * MLD_CONFIG_MAX_SIGNING_ATTEMPTS (see mldsa_native_config.h) if set, otherwise
+ * the hard type-safety bound MLD_MAX_KAPPA / MLDSA_L (see MLD_MAX_KAPPA in
+ * params.h). */
+#if defined(MLD_CONFIG_MAX_SIGNING_ATTEMPTS)
 
 #if !defined(MLD_ALLOW_NONCOMPLIANT_SIGNING_BOUND) && \
-    MLD_CONFIG_MAX_SIGNING_ATTEMPTS < 814
-#error Bad configuration: MLD_CONFIG_MAX_SIGNING_ATTEMPTS must be >= 814 for FIPS 204 compliance @[FIPS204, Appendix C]
+    MLD_CONFIG_MAX_SIGNING_ATTEMPTS < 821
+#error Bad configuration: MLD_CONFIG_MAX_SIGNING_ATTEMPTS must be >= 821 for FIPS 204 compliance @[FIPS204, Appendix C] @[FIPS204_UPDATES]
 #endif
 
 #if MLD_CONFIG_MAX_SIGNING_ATTEMPTS < 1
 #error Bad configuration: MLD_CONFIG_MAX_SIGNING_ATTEMPTS must be >= 1
 #endif
 
-#if MLD_CONFIG_MAX_SIGNING_ATTEMPTS > MLD_NONCE_UB
+#if MLD_CONFIG_MAX_SIGNING_ATTEMPTS > MLD_MAX_KAPPA / MLDSA_L
 #error Bad configuration: MLD_CONFIG_MAX_SIGNING_ATTEMPTS exceeds the maximum allowed value.
 #endif
+
+#define MLD_MAX_SIGNING_ATTEMPTS MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+#else /* MLD_CONFIG_MAX_SIGNING_ATTEMPTS */
+#define MLD_MAX_SIGNING_ATTEMPTS (MLD_MAX_KAPPA / MLDSA_L)
+#endif /* !MLD_CONFIG_MAX_SIGNING_ATTEMPTS */
 
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE uint16_t mld_get_max_signing_attempts(void)
 __contract__(
   ensures(return_value >= 1)
-  ensures(return_value <= MLD_NONCE_UB)
+  ensures(return_value <= MLD_MAX_KAPPA / MLDSA_L)
 )
 {
   /* cassert(0) ensures CBMC uses the contract rather than inlining the body,
    * keeping proofs agnostic of the configured value. */
   cassert(0);
-  return MLD_CONFIG_MAX_SIGNING_ATTEMPTS;
+  return MLD_MAX_SIGNING_ATTEMPTS;
 }
 
 /**
- * Attempt to generate a single signature.
+ * Attempt to generate a single signature: one iteration of the
+ * ML-DSA.Sign_internal rejection-sampling loop.
+ *
+ * @spec{Implements one iteration of the rejection-sampling loop body of
+ * @[FIPS204, Algorithm 7, ML-DSA.Sign_internal] (lines 11-30) plus, on success,
+ * the sigEncode step (line 33). The per-signature setup (Algorithm 7 lines 1-7:
+ * skDecode, NTT of s1/s2/t0, ExpandA, and computation of mu and rhoprime) and
+ * the loop itself (lines 8-10, 31-32) live in the caller
+ * mld_sign_signature_internal; kappa is this iteration's counter, used to
+ * sample y.}
  *
  * @reference{This code differs from the reference implementation in that it
  * factors out the core signature generation step into a distinct function
@@ -624,7 +675,7 @@ __contract__(
  * @param[in]  mu       Pointer to message or hash of exactly MLDSA_CRHBYTES
  *                      bytes.
  * @param[in]  rhoprime Pointer to randomness seed.
- * @param      nonce    Current nonce value.
+ * @param      kappa    Counter for this iteration (= attempt*MLDSA_L).
  * @param[in]  mat      Expanded matrix.
  * @param[in]  s1hat    Secret vector s1 in NTT domain.
  * @param[in]  s2hat    Secret vector s2 in NTT domain.
@@ -639,9 +690,10 @@ __contract__(
  *           an allocation via MLD_CUSTOM_ALLOC returned NULL.
  */
 MLD_MUST_CHECK_RETURN_VALUE
+/* NOLINTNEXTLINE(readability-function-cognitive-complexity) */
 static int mld_attempt_signature_generation(
     uint8_t sig[MLDSA_CRYPTO_BYTES], const uint8_t *mu,
-    const uint8_t rhoprime[MLDSA_CRHBYTES], uint16_t nonce, mld_polymat *mat,
+    const uint8_t rhoprime[MLDSA_CRHBYTES], uint16_t kappa, mld_polymat *mat,
     const mld_sk_s1hat *s1hat, const mld_sk_s2hat *s2hat,
     const mld_sk_t0hat *t0hat, MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
 __contract__(
@@ -652,7 +704,7 @@ __contract__(
   requires(memory_no_alias(s1hat, sizeof(mld_sk_s1hat)))
   requires(memory_no_alias(s2hat, sizeof(mld_sk_s2hat)))
   requires(memory_no_alias(t0hat, sizeof(mld_sk_t0hat)))
-  requires(nonce <= MLD_NONCE_UB)
+  requires(kappa <= MLD_MAX_KAPPA)
   MLD_IF_NOT_REDUCE_RAM(
     requires(forall(k1, 0, MLDSA_K, forall(l1, 0, MLDSA_L,
                                            array_bound(mat->vec[k1].vec[l1].coeffs, 0, MLDSA_N, 0, MLDSA_Q))))
@@ -702,15 +754,24 @@ __contract__(
   w1 = &w1tmp->w1;
   tmp = &w1tmp->tmp;
 
-  /* Sample/initialize intermediate vector y */
-  mld_yvec_init(y, rhoprime, nonce);
+  /* @[FIPS204, Algorithm 7, line 11] y <- ExpandMask(rhoprime, kappa). */
+  mld_yvec_init(y, rhoprime, kappa);
 
-  /* Matrix-vector multiplication, fused with y sampling in REDUCE_RAM mode */
+  /* @[FIPS204, Algorithm 7, line 12] w <- invNTT(A_hat o NTT(y)). This call
+   * performs the whole line: it NTTs y, accumulates the pointwise product with
+   * A_hat, and applies the inverse NTT. In REDUCE_RAM mode the y sampling is
+   * fused into the same pass. */
   mld_polyvec_matrix_pointwise_montgomery_yvec(w0, mat, y, tmp);
 
-  /* Decompose w and call the random oracle */
+  /* @[FIPS204, Algorithm 7, line 13] w1 <- HighBits(w), here together with the
+   * low part: Decompose yields w = 2*GAMMA2*w1 + w0, keeping both w1 and w0
+   * (w0 is reused below in the line-21/26 alternative, see further down). */
   mld_polyveck_caddq(w0);
   mld_polyveck_decompose(w1, w0);
+
+  /* @[FIPS204, Algorithm 7, line 15] ctilde <- H(mu || w1Encode(w1), lambda/4).
+   * w1Encode(w1) is packed into the w1 region of sig (mld_polyveck_pack_w1),
+   * then absorbed by H together with mu. */
   mld_polyveck_pack_w1(sig, w1);
 
   mld_H(challenge_bytes, MLDSA_CTILDEBYTES, mu, MLDSA_CRHBYTES, sig,
@@ -720,18 +781,56 @@ __contract__(
    * This also applies to challenges for rejected signatures.
    * See Section 5.5 of @[Round3_Spec]. */
   MLD_CT_TESTING_DECLASSIFY(challenge_bytes, MLDSA_CTILDEBYTES);
+  /* @[FIPS204, Algorithm 7, line 16] c <- SampleInBall(ctilde) and
+   * @[FIPS204, Algorithm 7, line 17] c_hat <- NTT(c). */
   mld_poly_challenge(cp, challenge_bytes);
   mld_poly_ntt(cp);
 
-  /* Compute z, reject if it reveals secret */
+  /* @[FIPS204, Algorithm 7, lines 18+20] cs1 <- invNTT(c_hat o s1_hat) and
+   * z <- y + cs1, followed by the line-23 norm check ||z||_inf >= GAMMA1 -
+   * BETA. mld_compute_pack_z fuses all three per polynomial and, on success,
+   * packs z into sig; it returns MLD_ERR_FAIL if the norm check rejects z. */
   ret = mld_compute_pack_z(sig, cp, s1hat, y, t, z);
   if (ret != 0)
   {
     goto cleanup;
   }
 
-  /* Compute w0 - cs2 + ct0 per-component, checking norms incrementally.
-   * This avoids allocating a full polyveck for h. */
+  /* The remaining steps realize @[FIPS204, Algorithm 7, lines 21-28] (the
+   * low-bits norm check and the hint h) via the faster alternative formulation
+   * of @[Round3_Spec, Section 5.1]. @[FIPS204] explicitly permits this: the
+   * note accompanying Algorithm 7 states that the validity checks on z and the
+   * computation of h may instead be implemented "as described in Section 5.1 of
+   * [6]", and that reference is @[Round3_Spec, Section 5.1].
+   *
+   * The loop below builds w0 - cs2 + ct0 in place in w0; w1 is unmodified, and
+   * is HighBits(w) from line 13. Those are the inputs to the streamlined
+   * computation of MakeHint explained below.
+   *
+   * Low-bits norm check:
+   *   @[FIPS204, Algorithm 7, line 21] computes r0 = LowBits(w - cs2) and line
+   *   23 rejects when ||r0||_inf >= GAMMA2 - BETA. By @[Round3_Spec, Section
+   *   5.1] (Lemma 3), this line-23 check on r0 = LowBits(w - cs2) is implied by
+   *   ||w0 - cs2||_inf < GAMMA2 - BETA, where w0 is the low part of w. In our
+   *   context, w0 already holds the low part of w from the line-13 Decompose;
+   *   after subtracting cs2 from it in place, the mld_poly_chknorm(w0, GAMMA2 -
+   *   BETA) call below is exactly that check.
+   *
+   * Hint:
+   *   @[FIPS204, Algorithm 7, line 26] sets h = MakeHint(-ct0, w - cs2 + ct0),
+   *   and line 28 rejects when ||ct0||_inf >= GAMMA2 or h has more than OMEGA
+   *   nonzero coefficients. @[Round3_Spec, Section 5.1] provides the following
+   *   alternative description for MakeHint(-ct0, w - cs2 + ct0): a hint bit is
+   *   zero exactly when the coefficient of w0 - cs2 + ct0 lies in
+   *   (-GAMMA2, GAMMA2], or equals -GAMMA2 while the matching w1 coefficient is
+   *   zero (the Decompose border case), and is set otherwise. This equivalence
+   *   is precisely what mld_pack_sig_h -> mld_make_hint compute from w0
+   *   (= w0 - cs2 + ct0) and w1. The line-28 ||ct0||_inf >= GAMMA2 check is the
+   *   mld_poly_chknorm(z, GAMMA2) call on ct0 below; the weight bound is
+   *   enforced by mld_pack_sig_h.
+   *
+   * Building w0 per-component and checking norms incrementally also avoids
+   * allocating a full polyveck for h. */
   for (k = 0; k < MLDSA_K; k++)
   __loop__(
     assigns(k,
@@ -743,7 +842,8 @@ __contract__(
     decreases(MLDSA_K - k)
   )
   {
-    /* Compute cs2[k] and subtract from w0[k] */
+    /* @[FIPS204, Algorithm 7, line 19] cs2[k] <- invNTT(c_hat o s2_hat)[k],
+     * then subtract from w0[k] to form (w0 - cs2)[k]. */
     mld_sk_s2hat_get_poly(z, s2hat, k);
     mld_poly_pointwise_montgomery(z, cp);
     mld_poly_invntt_tomont(z);
@@ -751,8 +851,8 @@ __contract__(
     mld_poly_sub(&w0->vec[k], z);
     mld_poly_reduce(&w0->vec[k]);
 
-    /* Check that subtracting cs2 does not change high bits of w and low bits
-     * do not reveal secret information */
+    /* Low-bits norm check (see block comment above): the line-23 check on
+     * r0 = LowBits(w - cs2) holds via ||w0 - cs2||_inf < GAMMA2 - BETA. */
     w0_invalid = mld_poly_chknorm(&w0->vec[k], MLDSA_GAMMA2 - MLDSA_BETA);
     /* Constant time: w0_invalid may be leaked - see comment for z_invalid. */
     MLD_CT_TESTING_DECLASSIFY(&w0_invalid, sizeof(uint32_t));
@@ -762,12 +862,14 @@ __contract__(
       goto cleanup;
     }
 
-    /* Compute ct0[k], check norm, and add to w0[k] */
+    /* @[FIPS204, Algorithm 7, line 25] ct0[k] <- invNTT(c_hat o t0_hat)[k]. */
     mld_sk_t0hat_get_poly(z, t0hat, k);
     mld_poly_pointwise_montgomery(z, cp);
     mld_poly_invntt_tomont(z);
     mld_poly_reduce(z);
 
+    /* @[FIPS204, Algorithm 7, line 28] reject when ||ct0||_inf >= GAMMA2 (the
+     * second part, the OMEGA weight bound, is enforced by mld_pack_sig_h). */
     h_invalid = mld_poly_chknorm(z, MLDSA_GAMMA2);
     /* Constant time: h_invalid may be leaked - see comment for z_invalid. */
     MLD_CT_TESTING_DECLASSIFY(&h_invalid, sizeof(uint32_t));
@@ -777,6 +879,8 @@ __contract__(
       goto cleanup;
     }
 
+    /* Add ct0[k] to (w0 - cs2)[k], leaving (w0 - cs2 + ct0)[k] in w0[k] -- the
+     * MakeHint input prepared for mld_pack_sig_h (see block comment above). */
     mld_poly_add(&w0->vec[k], z);
   }
 
@@ -793,9 +897,16 @@ __contract__(
   MLD_CT_TESTING_DECLASSIFY(w0, sizeof(*w0));
   MLD_CT_TESTING_DECLASSIFY(w1, sizeof(*w1));
 
-  /* Pack challenge bytes and hints. */
+  /* @[FIPS204, Algorithm 7, line 33] sigEncode(ctilde, z mod+/- q, h) is split
+   * across three calls: z was already packed by mld_compute_pack_z, this call
+   * packs ctilde, and mld_pack_sig_h below packs the hint h. */
   mld_pack_sig_c(sig, challenge_bytes);
 
+  /* @[FIPS204, Algorithm 7, line 26] h <- MakeHint(-ct0, w - cs2 + ct0),
+   * computed from (w0 = w0 - cs2 + ct0, w1) as described in the block comment
+   * above, and packed as the h component of the line-33 sigEncode. Returns
+   * MLD_ERR_FAIL if h would exceed OMEGA nonzero coefficients (the remaining
+   * part of the line-28 check), in which case we reject. */
   ret = mld_pack_sig_h(sig, w0, w1);
   if (ret != 0)
   {
@@ -821,7 +932,7 @@ cleanup:
 }
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
-int mld_sign_signature_internal(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
+int mld_sign_signature_internal(uint8_t sig[MLDSA_CRYPTO_BYTES],
                                 const uint8_t *m, size_t mlen,
                                 const uint8_t *pre, size_t prelen,
                                 const uint8_t rnd[MLDSA_RNDBYTES],
@@ -831,8 +942,8 @@ int mld_sign_signature_internal(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
 {
   int ret;
   uint8_t *rho, *tr, *key, *mu, *rhoprime;
-  uint16_t nonce = 0;
-  const uint16_t nonce_limit = mld_get_max_signing_attempts();
+  uint16_t attempt;
+  const uint16_t max_signing_attempts = mld_get_max_signing_attempts();
   MLD_ALLOC(seedbuf, uint8_t,
             2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES + 2 * MLDSA_CRHBYTES, context);
   MLD_ALLOC(mat, mld_polymat, 1, context);
@@ -847,46 +958,67 @@ int mld_sign_signature_internal(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
     goto cleanup;
   }
 
+  /* If a resume hook is configured via MLD_CONFIG_SIGN_HOOK_RESUME, it provides
+   * the attempt to resume from after an earlier pause. Otherwise, we start at
+   * 0. Clamp to max_signing_attempts. */
+  attempt = mld_sign_resume(context);
+  if (attempt > max_signing_attempts)
+  {
+    attempt = max_signing_attempts;
+  }
+
   rho = seedbuf;
   tr = rho + MLDSA_SEEDBYTES;
   key = tr + MLDSA_TRBYTES;
   mu = key + MLDSA_SEEDBYTES;
   rhoprime = mu + MLDSA_CRHBYTES;
+  /* @[FIPS204, Algorithm 7, line 1] (rho, K, tr, s1, s2, t0) <- skDecode(sk)
+   * and @[FIPS204, Algorithm 7, lines 2-4] s1_hat/s2_hat/t0_hat <- NTT(...):
+   * mld_unpack_sk returns s1hat, s2hat, t0hat already in NTT domain. The spec's
+   * private random seed K is held in the local variable key. */
   mld_unpack_sk(rho, tr, key, t0hat, s1hat, s2hat, sk);
 
   if (!externalmu)
   {
-    /* Compute mu = CRH(tr, pre, msg) */
+    /* @[FIPS204, Algorithm 7, line 6] mu <- H(BytesToBits(tr) || M', 64). */
     mld_H(mu, MLDSA_CRHBYTES, tr, MLDSA_TRBYTES, pre, prelen, m, mlen);
   }
   else
   {
-    /* mu has been provided directly */
+    /* mu has been provided directly (external-mu variant; line 6 done by the
+     * caller in a separate cryptographic module). */
     mld_memcpy(mu, m, MLDSA_CRHBYTES);
   }
 
-  /* Compute rhoprime = CRH(key, rnd, mu) */
+  /* @[FIPS204, Algorithm 7, line 7] rhoprime <- H(K || rnd || mu, 64). */
   mld_H(rhoprime, MLDSA_CRHBYTES, key, MLDSA_SEEDBYTES, rnd, MLDSA_RNDBYTES, mu,
         MLDSA_CRHBYTES);
 
   /* Constant time: rho is part of the public key and, hence, public. */
   MLD_CT_TESTING_DECLASSIFY(rho, MLDSA_SEEDBYTES);
-  /* Expand matrix and transform vectors */
+  /* @[FIPS204, Algorithm 7, line 5] A_hat <- ExpandA(rho). */
   mld_polyvec_matrix_expand(mat, rho);
 
-  /* Reference: This code is re-structured using a while(1),  */
-  /* with explicit "continue" statements (rather than "goto") */
-  /* to implement rejection of invalid signatures.            */
-  while (1)
+  /* @[FIPS204, Algorithm 7, lines 8-10 and 31-32] the rejection-sampling loop,
+   * tracked by attempt (kappa = attempt*MLDSA_L). Each iteration's body (lines
+   * 11-30) plus, on success, the line-33 sigEncode are performed by
+   * mld_attempt_signature_generation. */
+
+  /* Reference: the reference loops unboundedly; we instead iterate over the
+   * bounded range [0, max_signing_attempts) for predictable termination.
+   * A success or fatal error exits via goto cleanup; running to completion
+   * means every attempt was rejected; with a FIPS compliant choice of
+   * MLD_CONFIG_MAX_SIGNING_ATTEMPTS, this should never happen. */
+  for (; attempt < max_signing_attempts; attempt++)
   __loop__(
     MLD_IF_NOT_REDUCE_RAM(
-      assigns(nonce, ret, object_whole(siglen), memory_slice(sig, MLDSA_CRYPTO_BYTES))
+      assigns(attempt, ret, memory_slice(sig, MLDSA_CRYPTO_BYTES))
     )
     MLD_IF_REDUCE_RAM(
-      assigns(nonce, ret, object_whole(siglen), memory_slice(sig, MLDSA_CRYPTO_BYTES),
+      assigns(attempt, ret, memory_slice(sig, MLDSA_CRYPTO_BYTES),
               memory_slice(mat, sizeof(mld_polymat)))
     )
-    invariant(nonce <= nonce_limit)
+    invariant(attempt <= max_signing_attempts)
 
     /* t0, s1, s2, and mat are initialized above and are NOT changed by this */
     /* loop. We can therefore re-assert their bounds here as part of the     */
@@ -898,43 +1030,56 @@ int mld_sign_signature_internal(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
       invariant(forall(k3, 0, MLDSA_L, array_abs_bound(s1hat->vec.vec[k3].coeffs, 0, MLDSA_N, MLD_NTT_BOUND)))
       invariant(forall(k4, 0, MLDSA_K, array_abs_bound(s2hat->vec.vec[k4].coeffs, 0, MLDSA_N, MLD_NTT_BOUND)))
     )
-    decreases(nonce_limit - nonce)
+    decreases(max_signing_attempts - attempt)
   )
   {
-    /* Reference: this code explicitly checks for exhaustion of signing */
-    /* attempts to provide predictable termination and results in that  */
-    /* case. Checking here also means that incrementing nonce below can */
-    /* be proven to be type-safe.                                       */
-    if (nonce == nonce_limit)
+    /* Safety: attempt < max_signing_attempts <= MLD_MAX_KAPPA / MLDSA_L, so
+     * kappa <= MLD_MAX_KAPPA and the cast is safe. */
+    const uint16_t kappa = (uint16_t)(attempt * MLDSA_L);
+
+    /* Query configurable signing hook whether signing should be paused.
+     * This is skipped by default and only used if the user sets the
+     * configuration option MLD_CONFIG_SIGN_HOOK_ATTEMPT. */
+    if (mld_sign_attempt(attempt, context) != 0)
     {
-      ret = MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED;
-      break;
+      ret = MLD_ERR_SIGNING_PAUSED;
+      goto cleanup;
     }
 
-    ret = mld_attempt_signature_generation(sig, mu, rhoprime, nonce, mat, s1hat,
+    ret = mld_attempt_signature_generation(sig, mu, rhoprime, kappa, mat, s1hat,
                                            s2hat, t0hat, context);
-    nonce++;
+
+    /* Decide whether to keep trying based on the return value:
+     *  - ret == 0: a valid signature was produced; we are done.
+     *  - ret == MLD_ERR_FAIL: this candidate was rejected by one of the norm
+     *    or hint checks. We continue the loop and try again with the next
+     *    nonce.
+     *  - any other value (e.g. MLD_ERR_OUT_OF_MEMORY): an unrecoverable error
+     *    occurred, so we propagate it to the caller. */
     if (ret == 0)
     {
-      *siglen = MLDSA_CRYPTO_BYTES;
-      break;
+      /* Signing succeeded: record the attempt that succeeded. No-op in the
+       * default build. */
+      mld_sign_finish(attempt, context);
+      goto cleanup;
     }
-    else if (ret != MLD_ERR_FAIL)
+    if (ret != MLD_ERR_FAIL)
     {
-      /* For failures such as out-of-memory, propagate and exit immediately. */
-      break;
+      goto cleanup;
     }
-
-    /* Otherwise, try again. */
   }
+
+  /* Loop ran to completion: all attempts rejected, budget exhausted.
+   * This should never happen with a FIPS compliant choice of
+   * MLD_CONFIG_MAX_SIGNING_ATTEMPTS. */
+  ret = MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED;
 
 cleanup:
 
   if (ret != 0)
   {
     /* To be on the safe-side, we zeroize the signature buffer. */
-    *siglen = 0;
-    mld_memset(sig, 0, MLDSA_CRYPTO_BYTES);
+    mld_zeroize(sig, MLDSA_CRYPTO_BYTES);
   }
 
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
@@ -951,9 +1096,8 @@ cleanup:
 #if !defined(MLD_CONFIG_NO_RANDOMIZED_API)
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
-int mld_sign_signature(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
-                       const uint8_t *m, size_t mlen, const uint8_t *ctx,
-                       size_t ctxlen,
+int mld_sign_signature(uint8_t sig[MLDSA_CRYPTO_BYTES], const uint8_t *m,
+                       size_t mlen, const uint8_t *ctx, size_t ctxlen,
                        const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
                        MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
 {
@@ -973,7 +1117,7 @@ int mld_sign_signature(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
                                                  MLD_PREHASH_NONE);
   if (pre_len == 0)
   {
-    ret = MLD_ERR_FAIL;
+    ret = MLD_ERR_INVALID_ARG;
     goto cleanup;
   }
 
@@ -986,20 +1130,19 @@ int mld_sign_signature(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
   }
   MLD_CT_TESTING_SECRET(rnd, MLDSA_RNDBYTES);
 
-  ret = mld_sign_signature_internal(sig, siglen, m, mlen, pre, pre_len, rnd, sk,
-                                    0, context);
+  ret = mld_sign_signature_internal(sig, m, mlen, pre, pre_len, rnd, sk, 0,
+                                    context);
 
 cleanup:
   if (ret != 0)
   {
-    /* To be on the safe-side, make sure *siglen and sig have a well-defined
-     * value, even in the case of error.
+    /* To be on the safe-side, make sure sig has a well-defined value, even in
+     * the case of error.
      *
-     * If we come from mld_sign_signature_internal, both are redundant,
-     * but the error case should not be the norm, and the added cost of the
-     * memset insignificant. */
-    *siglen = 0;
-    mld_memset(sig, 0, MLDSA_CRYPTO_BYTES);
+     * If we come from mld_sign_signature_internal, this is redundant, but the
+     * error case should not be the norm, and the added cost of the zeroization
+     * insignificant. */
+    mld_zeroize(sig, MLDSA_CRYPTO_BYTES);
   }
 
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
@@ -1013,7 +1156,7 @@ cleanup:
 #if !defined(MLD_CONFIG_NO_RANDOMIZED_API)
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
-int mld_sign_signature_extmu(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
+int mld_sign_signature_extmu(uint8_t sig[MLDSA_CRYPTO_BYTES],
                              const uint8_t mu[MLDSA_CRHBYTES],
                              const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
                              MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
@@ -1023,7 +1166,6 @@ int mld_sign_signature_extmu(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
 
   if (rnd == NULL)
   {
-    *siglen = 0;
     ret = MLD_ERR_OUT_OF_MEMORY;
     goto cleanup;
   }
@@ -1032,49 +1174,18 @@ int mld_sign_signature_extmu(uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen,
    * call mld_sign_signature_internal directly with all-zero rnd. */
   if (mld_randombytes(rnd, MLDSA_RNDBYTES) != 0)
   {
-    *siglen = 0;
     ret = MLD_ERR_RNG_FAIL;
     goto cleanup;
   }
   MLD_CT_TESTING_SECRET(rnd, MLDSA_RNDBYTES);
 
-  ret = mld_sign_signature_internal(sig, siglen, mu, MLDSA_CRHBYTES, NULL, 0,
-                                    rnd, sk, 1, context);
+  ret = mld_sign_signature_internal(sig, mu, MLDSA_CRHBYTES, NULL, 0, rnd, sk,
+                                    1, context);
 
 cleanup:
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
   MLD_FREE(rnd, uint8_t, MLDSA_RNDBYTES, context);
 
-  return ret;
-}
-#endif /* !MLD_CONFIG_NO_RANDOMIZED_API */
-
-#if !defined(MLD_CONFIG_NO_RANDOMIZED_API)
-MLD_MUST_CHECK_RETURN_VALUE
-MLD_EXTERNAL_API
-int mld_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen,
-             const uint8_t *ctx, size_t ctxlen,
-             const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
-             MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
-{
-  int ret;
-  size_t i;
-
-  for (i = 0; i < mlen; ++i)
-  __loop__(
-    assigns(i, object_whole(sm))
-    invariant(i <= mlen)
-    decreases(mlen - i)
-  )
-  {
-    sm[MLDSA_CRYPTO_BYTES + mlen - 1 - i] = m[mlen - 1 - i];
-  }
-  ret = mld_sign_signature(sm, smlen, sm + MLDSA_CRYPTO_BYTES, mlen, ctx,
-                           ctxlen, sk, context);
-  if (ret == 0)
-  {
-    *smlen += mlen;
-  }
   return ret;
 }
 #endif /* !MLD_CONFIG_NO_RANDOMIZED_API */
@@ -1084,7 +1195,7 @@ int mld_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen,
 #if !defined(MLD_CONFIG_NO_VERIFY_API)
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
-int mld_sign_verify_internal(const uint8_t *sig, size_t siglen,
+int mld_sign_verify_internal(const uint8_t sig[MLDSA_CRYPTO_BYTES],
                              const uint8_t *m, size_t mlen, const uint8_t *pre,
                              size_t prelen,
                              const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
@@ -1111,20 +1222,15 @@ int mld_sign_verify_internal(const uint8_t *sig, size_t siglen,
     goto cleanup;
   }
 
-  if (siglen != MLDSA_CRYPTO_BYTES)
-  {
-    ret = MLD_ERR_FAIL;
-    goto cleanup;
-  }
-
   mld_memcpy(c, sig, MLDSA_CTILDEBYTES);
-  mld_polyvecl_unpack_z(z, sig + MLDSA_CTILDEBYTES);
+  mld_polyvecl_unpack_z(z, sig + MLDSA_SIG_Z_OFFSET);
 
   /* mld_polyvecl_chknorm signals failure through a single non-zero error code
-   * that's not yet aligned with MLD_ERR_XXX. Map it to MLD_ERR_FAIL. */
+   * that's not yet aligned with MLD_ERR_XXX. A norm-check failure here means
+   * the signature is invalid, so map it to MLD_ERR_INVALID_SIGNATURE. */
   if (mld_polyvecl_chknorm(z, MLDSA_GAMMA1 - MLDSA_BETA))
   {
-    ret = MLD_ERR_FAIL;
+    ret = MLD_ERR_INVALID_SIGNATURE;
     goto cleanup;
   }
 
@@ -1178,10 +1284,11 @@ int mld_sign_verify_internal(const uint8_t *sig, size_t siglen,
     mld_poly_invntt_tomont(w1);
     mld_poly_caddq(w1);
 
-    /* tmp = h_i (decoded and validated from signature) */
-    ret = mld_sig_unpack_hints(tmp, sig, i);
-    if (ret != 0)
+    /* tmp = h_i (decoded and validated from signature). A non-zero return
+     * means the hint encoding is malformed, i.e. the signature is invalid. */
+    if (mld_sig_unpack_hints(tmp, sig, i) != 0)
     {
+      ret = MLD_ERR_INVALID_SIGNATURE;
       goto cleanup;
     }
 
@@ -1199,7 +1306,7 @@ int mld_sign_verify_internal(const uint8_t *sig, size_t siglen,
   /* Declassify the result of the verification. */
   MLD_CT_TESTING_DECLASSIFY(&cmp, sizeof(cmp));
 
-  ret = cmp == 0 ? 0 : MLD_ERR_FAIL;
+  ret = cmp == 0 ? 0 : MLD_ERR_INVALID_SIGNATURE;
 
 cleanup:
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
@@ -1218,7 +1325,7 @@ cleanup:
 #if !defined(MLD_CONFIG_CORE_API_ONLY)
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
-int mld_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m,
+int mld_sign_verify(const uint8_t sig[MLDSA_CRYPTO_BYTES], const uint8_t *m,
                     size_t mlen, const uint8_t *ctx, size_t ctxlen,
                     const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
                     MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
@@ -1231,12 +1338,11 @@ int mld_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m,
                                                  MLD_PREHASH_NONE);
   if (pre_len == 0)
   {
-    ret = MLD_ERR_FAIL;
+    ret = MLD_ERR_INVALID_ARG;
     goto cleanup;
   }
 
-  ret = mld_sign_verify_internal(sig, siglen, m, mlen, pre, pre_len, pk, 0,
-                                 context);
+  ret = mld_sign_verify_internal(sig, m, mlen, pre, pre_len, pk, 0, context);
 
 cleanup:
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
@@ -1247,58 +1353,13 @@ cleanup:
 
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
-int mld_sign_verify_extmu(const uint8_t *sig, size_t siglen,
+int mld_sign_verify_extmu(const uint8_t sig[MLDSA_CRYPTO_BYTES],
                           const uint8_t mu[MLDSA_CRHBYTES],
                           const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
                           MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
 {
-  return mld_sign_verify_internal(sig, siglen, mu, MLDSA_CRHBYTES, NULL, 0, pk,
-                                  1, context);
-}
-
-MLD_MUST_CHECK_RETURN_VALUE
-MLD_EXTERNAL_API
-int mld_sign_open(uint8_t *m, size_t *mlen, const uint8_t *sm, size_t smlen,
-                  const uint8_t *ctx, size_t ctxlen,
-                  const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
-                  MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
-{
-  int ret;
-  size_t i;
-
-  if (smlen < MLDSA_CRYPTO_BYTES)
-  {
-    ret = MLD_ERR_FAIL;
-    goto cleanup;
-  }
-
-  *mlen = smlen - MLDSA_CRYPTO_BYTES;
-  ret = mld_sign_verify(sm, MLDSA_CRYPTO_BYTES, sm + MLDSA_CRYPTO_BYTES, *mlen,
-                        ctx, ctxlen, pk, context);
-  if (ret == 0)
-  {
-    /* All good, copy msg, return 0 */
-    for (i = 0; i < *mlen; ++i)
-    __loop__(
-      assigns(i, memory_slice(m, *mlen))
-      invariant(i <= *mlen)
-      decreases(*mlen - i)
-    )
-    {
-      m[i] = sm[MLDSA_CRYPTO_BYTES + i];
-    }
-  }
-
-cleanup:
-
-  if (ret != 0)
-  {
-    /* To be on the safe-side, we zeroize the message buffer. */
-    *mlen = 0;
-    mld_memset(m, 0, smlen);
-  }
-
-  return ret;
+  return mld_sign_verify_internal(sig, mu, MLDSA_CRHBYTES, NULL, 0, pk, 1,
+                                  context);
 }
 #endif /* !MLD_CONFIG_CORE_API_ONLY */
 #endif /* !MLD_CONFIG_NO_VERIFY_API */
@@ -1308,9 +1369,8 @@ cleanup:
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_signature_pre_hash_internal(
-    uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen, const uint8_t *ph,
-    size_t phlen, const uint8_t *ctx, size_t ctxlen,
-    const uint8_t rnd[MLDSA_RNDBYTES],
+    uint8_t sig[MLDSA_CRYPTO_BYTES], const uint8_t *ph, size_t phlen,
+    const uint8_t *ctx, size_t ctxlen, const uint8_t rnd[MLDSA_RNDBYTES],
     const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES], int hashalg,
     MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
 {
@@ -1318,27 +1378,32 @@ int mld_sign_signature_pre_hash_internal(
   size_t pre_len;
   int ret;
 
+  if (hashalg == MLD_PREHASH_NONE)
+  {
+    ret = MLD_ERR_INVALID_ARG;
+    goto cleanup;
+  }
+
   pre_len = mld_prepare_domain_separation_prefix(pre, ph, phlen, ctx, ctxlen,
                                                  hashalg);
   if (pre_len == 0)
   {
-    ret = MLD_ERR_FAIL;
+    ret = MLD_ERR_INVALID_ARG;
     goto cleanup;
   }
 
-  ret = mld_sign_signature_internal(sig, siglen, pre, pre_len, NULL, 0, rnd, sk,
-                                    0, context);
+  ret = mld_sign_signature_internal(sig, pre, pre_len, NULL, 0, rnd, sk, 0,
+                                    context);
 cleanup:
   if (ret != 0)
   {
-    /* To be on the safe-side, make sure *siglen and sig have a well-defined
-     * value, even in the case of error.
+    /* To be on the safe-side, make sure sig has a well-defined value, even in
+     * the case of error.
      *
-     * If we come from mld_sign_signature_internal, both are redundant,
-     * but the error case should not be the norm, and the added cost of the
-     * memset insignificant. */
-    *siglen = 0;
-    mld_memset(sig, 0, MLDSA_CRYPTO_BYTES);
+     * If we come from mld_sign_signature_internal, this is redundant, but the
+     * error case should not be the norm, and the added cost of the zeroization
+     * insignificant. */
+    mld_zeroize(sig, MLDSA_CRYPTO_BYTES);
   }
 
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
@@ -1351,7 +1416,7 @@ cleanup:
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_verify_pre_hash_internal(
-    const uint8_t *sig, size_t siglen, const uint8_t *ph, size_t phlen,
+    const uint8_t sig[MLDSA_CRYPTO_BYTES], const uint8_t *ph, size_t phlen,
     const uint8_t *ctx, size_t ctxlen,
     const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES], int hashalg,
     MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
@@ -1360,16 +1425,21 @@ int mld_sign_verify_pre_hash_internal(
   size_t pre_len;
   int ret;
 
+  if (hashalg == MLD_PREHASH_NONE)
+  {
+    ret = MLD_ERR_INVALID_ARG;
+    goto cleanup;
+  }
+
   pre_len = mld_prepare_domain_separation_prefix(pre, ph, phlen, ctx, ctxlen,
                                                  hashalg);
   if (pre_len == 0)
   {
-    ret = MLD_ERR_FAIL;
+    ret = MLD_ERR_INVALID_ARG;
     goto cleanup;
   }
 
-  ret = mld_sign_verify_internal(sig, siglen, pre, pre_len, NULL, 0, pk, 0,
-                                 context);
+  ret = mld_sign_verify_internal(sig, pre, pre_len, NULL, 0, pk, 0, context);
 
 cleanup:
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
@@ -1382,18 +1452,17 @@ cleanup:
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_signature_pre_hash_shake256(
-    uint8_t sig[MLDSA_CRYPTO_BYTES], size_t *siglen, const uint8_t *m,
-    size_t mlen, const uint8_t *ctx, size_t ctxlen,
-    const uint8_t rnd[MLDSA_RNDBYTES],
+    uint8_t sig[MLDSA_CRYPTO_BYTES], const uint8_t *m, size_t mlen,
+    const uint8_t *ctx, size_t ctxlen, const uint8_t rnd[MLDSA_RNDBYTES],
     const uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
     MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
 {
   MLD_ALIGN uint8_t ph[64];
   int ret;
   mld_shake256(ph, sizeof(ph), m, mlen);
-  ret = mld_sign_signature_pre_hash_internal(sig, siglen, ph, sizeof(ph), ctx,
-                                             ctxlen, rnd, sk,
-                                             MLD_PREHASH_SHAKE_256, context);
+  ret = mld_sign_signature_pre_hash_internal(sig, ph, sizeof(ph), ctx, ctxlen,
+                                             rnd, sk, MLD_PREHASH_SHAKE_256,
+                                             context);
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
   mld_zeroize(ph, sizeof(ph));
   return ret;
@@ -1404,7 +1473,7 @@ int mld_sign_signature_pre_hash_shake256(
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
 int mld_sign_verify_pre_hash_shake256(
-    const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen,
+    const uint8_t sig[MLDSA_CRYPTO_BYTES], const uint8_t *m, size_t mlen,
     const uint8_t *ctx, size_t ctxlen,
     const uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
     MLD_CONFIG_CONTEXT_PARAMETER_TYPE context)
@@ -1412,9 +1481,8 @@ int mld_sign_verify_pre_hash_shake256(
   MLD_ALIGN uint8_t ph[64];
   int ret;
   mld_shake256(ph, sizeof(ph), m, mlen);
-  ret = mld_sign_verify_pre_hash_internal(sig, siglen, ph, sizeof(ph), ctx,
-                                          ctxlen, pk, MLD_PREHASH_SHAKE_256,
-                                          context);
+  ret = mld_sign_verify_pre_hash_internal(sig, ph, sizeof(ph), ctx, ctxlen, pk,
+                                          MLD_PREHASH_SHAKE_256, context);
   /* @[FIPS204, Section 3.6.3] Destruction of intermediate values. */
   mld_zeroize(ph, sizeof(ph));
   return ret;
@@ -1505,10 +1573,12 @@ static int mld_validate_hash_length(int hashalg, size_t len)
       return (len == 256 / 8) ? 0 : -1;
     case MLD_PREHASH_SHAKE_256:
       return (len == 512 / 8) ? 0 : -1;
+    default:
+      return -1;
   }
-  return -1;
 }
 
+MLD_EXTERNAL_API
 size_t mld_prepare_domain_separation_prefix(
     uint8_t prefix[MLD_DOMAIN_SEPARATION_MAX_BYTES], const uint8_t *ph,
     size_t phlen, const uint8_t *ctx, size_t ctxlen, int hashalg)
@@ -1572,12 +1642,11 @@ int mld_sign_pk_from_sk(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   /* Inline unpack_sk: mld_unpack_sk uses lazy types for s1/s2/t0 which
    * we cannot use here. t0 stays in packed form -- we compare it against
    * the recomputed value below. */
-  mld_memcpy(rho, sk, MLDSA_SEEDBYTES);
-  mld_memcpy(key, sk + MLDSA_SEEDBYTES, MLDSA_SEEDBYTES);
-  mld_memcpy(tr, sk + 2 * MLDSA_SEEDBYTES, MLDSA_TRBYTES);
-  mld_polyvecl_unpack_eta(s1, sk + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES);
-  mld_polyveck_unpack_eta(s2, sk + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES +
-                                  MLDSA_L * MLDSA_POLYETA_PACKEDBYTES);
+  mld_memcpy(rho, sk + MLDSA_SK_RHO_OFFSET, MLDSA_SEEDBYTES);
+  mld_memcpy(key, sk + MLDSA_SK_KEY_OFFSET, MLDSA_SEEDBYTES);
+  mld_memcpy(tr, sk + MLDSA_SK_TR_OFFSET, MLDSA_TRBYTES);
+  mld_polyvecl_unpack_eta(s1, sk + MLDSA_SK_S1_OFFSET);
+  mld_polyveck_unpack_eta(s2, sk + MLDSA_SK_S2_OFFSET);
 
   /* Validate s1 and s2 coefficients are within [-MLDSA_ETA, MLDSA_ETA] */
   chk1 = mld_polyvecl_chknorm(s1, MLDSA_ETA + 1) & 0xFF;
@@ -1587,11 +1656,11 @@ int mld_sign_pk_from_sk(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   mld_polyvecl_ntt(s1);
 
   /* Pack rho into pk */
-  mld_memcpy(pk, rho, MLDSA_SEEDBYTES);
+  mld_memcpy(pk + MLDSA_PK_RHO_OFFSET, rho, MLDSA_SEEDBYTES);
 
   /* Recompute t row by row, decompose, and pack t1 into pk and t0 into
    * t0_packed. */
-  ret = mld_compute_pack_t0_t1(pk + MLDSA_SEEDBYTES, t0_packed, s1, s2, rho,
+  ret = mld_compute_pack_t0_t1(pk + MLDSA_PK_T1_OFFSET, t0_packed, s1, s2, rho,
                                context);
   if (ret != 0)
   {
@@ -1599,10 +1668,7 @@ int mld_sign_pk_from_sk(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
   }
 
   /* Compare recomputed packed t0 against the t0 region of sk. */
-  cmp0 = mld_ct_memcmp(t0_packed,
-                       sk + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES +
-                           MLDSA_L * MLDSA_POLYETA_PACKEDBYTES +
-                           MLDSA_K * MLDSA_POLYETA_PACKEDBYTES,
+  cmp0 = mld_ct_memcmp(t0_packed, sk + MLDSA_SK_T0_OFFSET,
                        MLDSA_K * MLDSA_POLYT0_PACKEDBYTES);
 
   /* Compute tr_computed = H(pk) and compare to the stored tr */
@@ -1613,7 +1679,7 @@ int mld_sign_pk_from_sk(uint8_t pk[MLDSA_CRYPTO_PUBLICKEYBYTES],
 
   /* Declassify the final result of the validity check. */
   MLD_CT_TESTING_DECLASSIFY(&check, sizeof(check));
-  ret = (check != 0) ? MLD_ERR_FAIL : 0;
+  ret = (check != 0) ? MLD_ERR_INVALID_KEY : 0;
 
 cleanup:
 
@@ -1650,6 +1716,5 @@ cleanup:
 #undef mld_attempt_signature_generation
 #undef mld_compute_pack_t0_t1
 #undef mld_get_max_signing_attempts
-#undef MLD_NONCE_UB
-#undef MLD_CONFIG_MAX_SIGNING_ATTEMPTS
+#undef MLD_MAX_SIGNING_ATTEMPTS
 #undef MLD_PRE_HASH_OID_LEN

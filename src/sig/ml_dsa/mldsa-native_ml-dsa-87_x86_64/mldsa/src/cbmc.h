@@ -9,17 +9,28 @@
 /***************************************************
  * Basic replacements for __CPROVER_XXX contracts
  ***************************************************/
+/*
+ * The `__contract__` / `__loop__` annotation macros use a
+ * leading-double-underscore spelling in line with other CBMC macros.
+ * clang-tidy flags these as reserved identifiers; we suppress the diagnostic
+ * at each definition site (NOLINT) rather than disabling the check globally,
+ * so it stays active for the rest of the tree.
+ */
 #ifndef CBMC
 
-#define __contract__(x)
-#define __loop__(x)
+/* clang-format off */
+#define __contract__(x) /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+#define __loop__(x) /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+/* clang-format on */
 #define cassert(x)
 
 #else /* !CBMC */
 
 
-#define __contract__(x) x
-#define __loop__(x) x
+/* clang-format off */
+#define __contract__(x) x /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+#define __loop__(x) x /* NOLINT(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp) */
+/* clang-format on */
 
 /* Conditionally expand to __VA_ARGS__ depending on MLD_CONFIG_REDUCE_RAM. */
 #if defined(MLD_CONFIG_REDUCE_RAM)
@@ -171,7 +182,41 @@
 
 #define array_unchanged_u64(array_var, N) \
     array_unchanged_u64_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), 0, (N), (array_var))
+
+#define array_unchanged_u8_core(qvar, qvar_lb, qvar_ub, array_var)                \
+  __CPROVER_forall                                                                \
+  {                                                                               \
+    uint32_t qvar;                                                                \
+    ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) ==>         \
+    ((array_var)[(qvar)]) == (old(* (uint8_t (*)[(qvar_ub)])(array_var)))[(qvar)] \
+  }
+
+#define array_unchanged_u8(array_var, N) \
+    array_unchanged_u8_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), 0, (N), (array_var))
+
+#define array_zeroized_u8_core(qvar, qvar_lb, qvar_ub, array_var)              \
+  __CPROVER_forall                                                            \
+  {                                                                           \
+    uint32_t qvar;                                                            \
+    ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) ==>     \
+    ((array_var)[(qvar)]) == 0                                                \
+  }
+
+#define array_zeroized_u8(array_var, N) \
+    array_zeroized_u8_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), 0, (N), (array_var))
 /* clang-format on */
+
+/*
+ * Output-buffer discipline on failure, as documented in API-CONVENTIONS.md:
+ * when a function fails, each caller-owned output buffer is left either
+ * fully unchanged or fully zeroized -- never holding partially computed or
+ * stale data that could be mistaken for a valid result.
+ *
+ * Note the disjunction is over the buffer as a whole: it is not enough for
+ * each byte to be individually either unchanged or zero.
+ */
+#define array_unchanged_or_zeroized_u8(array_var, N) \
+  (array_unchanged_u8((array_var), (N)) || array_zeroized_u8((array_var), (N)))
 
 /* Wrapper around array_bound operating on absolute values.
  *

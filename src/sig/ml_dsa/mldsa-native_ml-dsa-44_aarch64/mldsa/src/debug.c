@@ -19,6 +19,7 @@
 
 #define MLD_DEBUG_ERROR_HEADER "[ERROR:%s:%04d] "
 
+MLD_INTERNAL_API
 void mld_debug_check_assert(const char *file, int line, const int val)
 {
   if (val == 0)
@@ -29,6 +30,7 @@ void mld_debug_check_assert(const char *file, int line, const int val)
   }
 }
 
+MLD_INTERNAL_API
 void mld_debug_check_bounds(const char *file, int line, const int32_t *ptr,
                             unsigned len, int64_t lower_bound_exclusive,
                             int64_t upper_bound_exclusive)

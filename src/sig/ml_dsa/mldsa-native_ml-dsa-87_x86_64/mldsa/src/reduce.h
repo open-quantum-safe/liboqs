@@ -2,6 +2,16 @@
  * Copyright (c) The mldsa-native project authors
  * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
  */
+
+/* References
+ * ==========
+ *
+ * - [FIPS204]
+ *   FIPS 204 Module-Lattice-Based Digital Signature Standard
+ *   National Institute of Standards and Technology
+ *   https://csrc.nist.gov/pubs/fips/204/final
+ */
+
 #ifndef MLD_REDUCE_H
 #define MLD_REDUCE_H
 
@@ -11,10 +21,10 @@
 #include "debug.h"
 
 /* check-magic: -4186625 == pow(2,32,MLDSA_Q) */
-#define MLD_MONT -4186625
+#define MLD_MONT (-4186625)
 
 /* Upper bound for domain of mld_reduce32() */
-#define MLD_REDUCE32_DOMAIN_MAX (INT32_MAX - (1 << 22))
+#define MLD_REDUCE32_DOMAIN_MAX (INT32_MAX - ((int32_t)1 << 22))
 
 /* Absolute bound for range of mld_reduce32() */
 /* check-magic: 6283009 == (MLD_REDUCE32_DOMAIN_MAX - 255 * MLDSA_Q + 1) */
@@ -23,6 +33,8 @@
 /**
  * Generic Montgomery reduction; given a 64-bit integer a, computes a 32-bit
  * integer congruent to a * R^-1 mod MLDSA_Q, where R=2^32.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 49, MontgomeryReduce].}
  *
  * @param a Input integer to be reduced, of absolute value smaller or equal
  *          to INT64_MAX - 2^31 * MLDSA_Q.
@@ -102,7 +114,7 @@ __contract__(
 {
   int32_t t;
 
-  t = (a + (1 << 22)) >> 23;
+  t = (a + ((int32_t)1 << 22)) >> 23;
   t = a - t * MLDSA_Q;
   mld_assert((t - a) % MLDSA_Q == 0);
   return t;
