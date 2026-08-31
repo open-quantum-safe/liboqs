@@ -47,21 +47,24 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu)
 		message_len = OQS_SIG_ml_dsa_44_extmu_length_mu;
 #else
-        return ret;
+		fprintf(stderr, "ERROR: %s was not enabled\n", method_name);
+		return ret;
 #endif /* OQS_ENABLE_SIG_ml_dsa_44_extmu */
 	}
 	if (strcmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu) == 0) {
 #if defined(OQS_ENABLE_SIG_ml_dsa_65_extmu)
 		message_len = OQS_SIG_ml_dsa_65_extmu_length_mu;
 #else
-        return ret;
+		fprintf(stderr, "ERROR: %s was not enabled\n", method_name);
+		return ret;
 #endif /* OQS_ENABLE_SIG_ml_dsa_65_extmu */
 	}
 	if (strcmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu) == 0) {
 #if defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 		message_len = OQS_SIG_ml_dsa_87_extmu_length_mu;
 #else
-        return ret;
+		fprintf(stderr, "ERROR: %s was not enabled\n", method_name);
+		return ret;
 #endif /* OQS_ENABLE_SIG_ml_dsa_87_extmu */
 	}
 
