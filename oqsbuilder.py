@@ -92,7 +92,7 @@ class OQSBuilderConfig:
         self.fail_on_jasminc = fail_on_jasminc
         self.never_copy = never_copy
 
-    def overwrite_with_args(self, args: argparse.Namespace):
+    def overwrite_with_cli_args(self, args: argparse.Namespace):
         if args.upstreams_dir:
             self.upstreams_dir = args.upstreams_dir
             self.upstreams_cached = True
@@ -515,23 +515,6 @@ def run_subprocess(
     ret = proc.wait()
     if ret != expected_ret:
         raise subprocess.CalledProcessError(ret, cmd)
-
-
-def check_jasminc(requirement: str) -> bool:
-    try:
-        proc = subprocess.run(
-            ["jasminc", "-version"], capture_output=True, text=True, check=True
-        )
-        return requirement == proc.stdout.strip().split()[-1]
-    except FileNotFoundError:
-        logger.warning("jasminc not found")
-        return False
-    except subprocess.CalledProcessError as e:
-        logger.error("jasminc failed with exit code %s", e.returncode)
-        raise e
-    except Exception as e:
-        logger.error(e)
-        raise e
 
 
 class UpstreamMeta:
@@ -1441,7 +1424,7 @@ class AlgFamilyMeta:
             )
 
 
-class OqsMeta:
+class OQSMeta:
     def __init__(
         self,
         schema_version: int,
@@ -1453,6 +1436,26 @@ class OqsMeta:
         self.jasminc_version = jasminc_version
         self.upstreams = upstreams
         self.algfamilies = algfamilies
+
+    def has_jasmin(self):
+        """Return True iff calling `jasminc -version` returns the version
+        specified in self.jasminc_version
+        """
+        try:
+            proc = subprocess.run(
+                ["jasminc", "-version"], capture_output=True, text=True, check=True
+            )
+            # Expected: "Jasmin Compiler 2023.06.3"
+            return self.jasminc_version == proc.stdout.strip().split()[-1]
+        except FileNotFoundError:
+            logger.warning("jasminc not found")
+            return False
+        except subprocess.CalledProcessError as e:
+            logger.error("jasminc failed with exit code %s", e.returncode)
+            raise e
+        except Exception as e:
+            logger.error(e)
+            raise e
 
     def check_foreign_keys(self):
         """Raise exception if foreign keys are invalid"""
@@ -1472,7 +1475,7 @@ class OqsMeta:
             key: AlgFamilyMeta.from_dict(family_meta)
             for key, family_meta in raw_oqs_meta["algfamilies"].items()
         }
-        oqs_meta = OqsMeta(schema_version, jasminc_version, upstreams, algfamilies)
+        oqs_meta = OQSMeta(schema_version, jasminc_version, upstreams, algfamilies)
         oqs_meta.check_foreign_keys()
         return oqs_meta
 
@@ -1691,35 +1694,71 @@ def render_source_build_docs(
         render_documentation()
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
+def make_parser():
+    parser = argparse.ArgumentParser(
+        "oqsbuilder", description="Utilities for building liboqs"
+    )
+    subparsers = parser.add_subparsers(title="subcommand", required=True)
+    copy_subparser = subparsers.add_parser("copy")
+    copy_subparser.add_argument(
         "--keep-upstreams",
         action="store_true",
         help="Do not delete upstream repositories",
     )
-    parser.add_argument(
+    copy_subparser.add_argument(
         "--upstreams-dir",
         type=str,
-        help="Clone upstream repository to the specified directory. If the \
-        upstream repository is already cloned, then do nothing. If this \
-        argument is used, cloned repositories will not be deleted. If not \
-        specified, upstream repositories will be cloned into a temporary \
-        subdirectory under $LIBOQS_DIR",
+        help=(
+            "Clone the upstream repository to the specified directory. "
+            "If the repository is already cloned, do nothing. "
+            "Repositories cloned into this directory will not be deleted. "
+            "If not specified, upstream repos are cloned into a temporary "
+            "subdirectory under $LIBOQS_DIR."
+        ),
     )
-    args = parser.parse_args()
-    if args.upstreams_dir and not os.path.isdir(args.upstreams_dir):
-        raise FileNotFoundError(f"Cannot find directory {args.upstreams_dir}")
-    return args
+    copy_subparser.set_defaults(func=copy_from_upstreams)
+    return parser
 
 
-if __name__ == "__main__":
-    # CLI arguments take precedence over default config. Merge CLI arguments
-    # into builder config, then only use builderconfig, since it has a proper
-    # data structure
-    args = parse_args()
+def copy_from_upstreams(builderconfig: OQSBuilderConfig, oqs_meta: OQSMeta):
+    """The main executable for the copy subcommand"""
+    if builderconfig.upstreams_cached:
+        # if upstreams are cached, then builderconfig.upstreams_dir must have been
+        # overwritten from the command line argument --upstreams-dir
+        clone_upstreams(
+            builderconfig.upstreams_dir, oqs_meta.upstreams, oqs_meta.has_jasmin()
+        )
+        copy_sources(
+            oqs_meta.upstreams,
+            oqs_meta.algfamilies,
+            builderconfig.never_copy,
+            oqs_meta.has_jasmin(),
+        )
+        return
+
+    with TemporaryDirectory(
+        dir=builderconfig.upstreams_dir,
+        prefix="_upstreams_",
+        delete=builderconfig.delete_upstreams,
+    ) as upstreams_dir:
+        logger.info("Cloning repositories into %s", upstreams_dir)
+        clone_upstreams(
+            upstreams_dir,
+            oqs_meta.upstreams,
+            oqs_meta.has_jasmin(),
+        )
+        copy_sources(
+            oqs_meta.upstreams,
+            oqs_meta.algfamilies,
+            builderconfig.never_copy,
+            oqs_meta.has_jasmin(),
+        )
+
+
+def main():
+    cli_args = make_parser().parse_args()
     builderconfig = OQSBuilderConfig()
-    builderconfig.overwrite_with_args(args)
+    builderconfig.overwrite_with_cli_args(cli_args)
 
     with open(builderconfig.oqs_meta_path) as f:
         oqs_meta = yaml.safe_load(f)
@@ -1728,37 +1767,13 @@ if __name__ == "__main__":
         if demo_algfamily_meta:
             logger.info("Removed demo alg family %s", demo_algfamily)
 
-    oqs_meta = OqsMeta.from_dict(builderconfig, oqs_meta)
+    oqs_meta = OQSMeta.from_dict(builderconfig, oqs_meta)
 
-    has_jasmin = check_jasminc(oqs_meta.jasminc_version)
-    if (not has_jasmin) and builderconfig.fail_on_jasminc:
-        logger.error("jasminc not found, exiting")
+    if (not oqs_meta.has_jasmin()) and builderconfig.fail_on_jasminc:
+        raise FileNotFoundError("jasminc not found, exiting")
 
-    if builderconfig.upstreams_cached:
-        clone_upstreams(builderconfig.upstreams_dir, oqs_meta.upstreams, has_jasmin)
-        copy_sources(
-            oqs_meta.upstreams,
-            oqs_meta.algfamilies,
-            builderconfig.never_copy,
-            has_jasmin,
-        )
-    else:
-        with TemporaryDirectory(
-            dir=builderconfig.upstreams_dir,
-            prefix="_upstreams_",
-            delete=builderconfig.delete_upstreams,
-        ) as upstreams_dir:
-            logger.info("Cloning repositories into %s", upstreams_dir)
-            clone_upstreams(
-                upstreams_dir,
-                oqs_meta.upstreams,
-                has_jasmin,
-            )
-            copy_sources(
-                oqs_meta.upstreams,
-                oqs_meta.algfamilies,
-                builderconfig.never_copy,
-                has_jasmin,
-            )
+    cli_args.func(builderconfig, oqs_meta)
 
-    render_source_build_docs(oqs_meta.algfamilies, builderconfig, False)
+
+if __name__ == "__main__":
+    main()
