@@ -41,7 +41,6 @@ DEFAULT_NEVER_COPY = [
     "Makefile.Microsoft_nmake",
     "Makefile",
 ]
-
 SOURCE_FILE_EXTENSIONS = [
     ".c",
     ".s",
@@ -49,6 +48,20 @@ SOURCE_FILE_EXTENSIONS = [
     ".cu",
     ".cpp",
 ]
+CLI_ARGS_LOGLEVEL_COICES = ["debug", "info", "warning", "error"]
+
+def cli_loglevel_choices_to_loglevel(choice: str):
+    assert choice in CLI_ARGS_LOGLEVEL_COICES, f"Invalid log level {choice}"
+    match choice:
+        case "debug":
+            return logging.DEBUG
+        case "info":
+            return logging.INFO
+        case "warning":
+            return logging.WARNING
+        case "error":
+            return logging.ERROR
+    raise KeyError(f"Invalid log level {choice}")
 
 
 class OQSBuilderConfig:
@@ -96,6 +109,10 @@ class OQSBuilderConfig:
         if args.upstreams_dir:
             self.upstreams_dir = args.upstreams_dir
             self.upstreams_cached = True
+        if args.oqs_meta:
+            if not os.path.isfile(args.oqs_meta):
+                raise FileNotFoundError(f"{args.oqs_meta} not found")
+            self.oqs_meta_path = args.oqs_meta
         self.delete_upstreams = not args.keep_upstreams
 
 
@@ -1698,6 +1715,13 @@ def make_parser():
     parser = argparse.ArgumentParser(
         "oqsbuilder", description="Utilities for building liboqs"
     )
+    parser.add_argument("--oqs-meta", type=str, help="Path to OQS_META.yml")
+    parser.add_argument(
+        "--log-level",
+        choices=CLI_ARGS_LOGLEVEL_COICES,
+        default="info",
+        help="Only record log messages at or above the specified level",
+    )
     subparsers = parser.add_subparsers(title="subcommand", required=True)
     copy_subparser = subparsers.add_parser("copy")
     copy_subparser.add_argument(
@@ -1757,6 +1781,7 @@ def copy_from_upstreams(builderconfig: OQSBuilderConfig, oqs_meta: OQSMeta):
 
 def main():
     cli_args = make_parser().parse_args()
+    logger.setLevel(cli_loglevel_choices_to_loglevel(cli_args.log_level))
     builderconfig = OQSBuilderConfig()
     builderconfig.overwrite_with_cli_args(cli_args)
 
