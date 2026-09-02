@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ! command -v rumdl >/dev/null 2>&1; then
-  echo "Error: rumdl not found. Please install using requirements-dev.txt" >&2
+  echo "Error: rumdl not found. Please install using requirements-linter.txt" >&2
   exit 1
 fi
 
