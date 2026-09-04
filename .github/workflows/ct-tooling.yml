@@ -1,0 +1,125 @@
+name: ct-tooling
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      algorithms:
+        description: 'Algorithms to execute CT testing on (comma-separated)'
+        required: true
+        type: string
+        default: 'ML-KEM-512,ML-KEM-768,ML-KEM-1024'
+        
+  workflow_call:
+    inputs:
+      algorithms:
+        required: true
+        type: string
+
+jobs:
+  resolve-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.algs.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - run: python -m pip install --require-hashes -r .github/workflows/requirements.txt
+      - name: Resolve algorithm list
+        id: algs
+        env:
+          ALGORITHMS_INPUT: ${{ inputs.algorithms }}
+        run: |
+          python3 - <<'PY'
+          import os, sys, json
+          sys.path.insert(0, 'tests')
+          import helpers
+          requested = os.environ["ALGORITHMS_INPUT"].strip()
+          all_algs = helpers.available_kems_by_name() + helpers.available_sigs_by_name()
+          requested_set = { a.strip() for a in requested.split(',')}
+          invalid_algorithms = requested_set - set(all_algs)
+          if invalid_algorithms:
+            print(f"Invalid algorithms: {invalid_algorithms}", file=sys.stderr)
+            sys.exit(1)
+          selected_algorithms = [a for a in all_algs if a in requested_set]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f"matrix={json.dumps(selected_algorithms)}\n")
+          PY
+
+  valgrind-varlat:
+    needs: [resolve-matrix]
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    strategy:
+      matrix:
+        algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
+        compiler: [gcc, clang]
+        liboqs_build: [generic, auto]
+        opt_flag: [-O0, -O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-tree-vectorize", "-O3 -fno-tree-vectorize", "-O2 -fno-vectorize", "-O3 -fno-vectorize"]
+        exclude:
+          - compiler: clang
+            opt_flag: "-O2 -fno-tree-vectorize"
+          - compiler: clang
+            opt_flag: "-O3 -fno-tree-vectorize"
+          - compiler: gcc
+            opt_flag: "-O2 -fno-vectorize"
+          - compiler: gcc
+            opt_flag: "-O3 -fno-vectorize"
+      max-parallel: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Run valgrind_varlat tests
+        shell: bash
+        env:
+          OPT_FLAG: ${{ matrix.opt_flag }}
+          ALGORITHM: ${{ matrix.algorithm }}
+        run: |
+          set -eu -o pipefail
+          cd "$GITHUB_WORKSPACE/tests/ct_tooling"
+          chmod +x ct_test.sh
+          ./ct_test.sh valgrind-varlat ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$ALGORITHM"
+
+      - name: Upload valgrind_varlat logs
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: valgrind_varlat_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
+          path: |
+            tests/ct_tooling/tools/valgrind_varlat/logs/**
+
+  memsan:
+    needs: [resolve-matrix]
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    strategy:
+      matrix:
+        algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
+        compiler: [clang]
+        liboqs_build: [generic, auto]
+        opt_flag: [-O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-vectorize", "-O3 -fno-vectorize"]
+      max-parallel: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+
+      - name: Run memsan tests
+        shell: bash
+        env:
+          OPT_FLAG: ${{ matrix.opt_flag }}
+          ALGORITHM: ${{ matrix.algorithm }}
+        run: |
+          set -eu -o pipefail
+          cd "$GITHUB_WORKSPACE/tests/ct_tooling"
+          chmod +x ct_test.sh
+          ./ct_test.sh memsan ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$ALGORITHM"
+
+      - name: Upload memsan logs
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: memsan_${{ matrix.compiler }}_${{matrix.liboqs_build}}_${{ matrix.opt_flag }}_logs
+          path: |
+            tests/ct_tooling/tools/memsan/logs/**
