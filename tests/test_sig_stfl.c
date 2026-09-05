@@ -408,6 +408,22 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 #define TEST_INVALID_SIG_MALICIOUS_SIG_LEN 10
 /* XMSS-SHA2_10_256 OID; stored so low byte is at pk[TEST_XMSS_OID_LEN - 1] (see xmss.c). */
 #define TEST_XMSS_OID_SHA2_10_256 0x01U
+#ifdef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
+/* Largest sk_bytes in each OID namespace, two per namespace so the variant under test can
+ * always name a parameter set other than its own. */
+#define TEST_XMSS_OID_LARGEST_SK 0x06U       /* XMSS-SHA2_20_512 */
+#define TEST_XMSS_OID_LARGEST_SK_ALT 0x0cU   /* XMSS-SHAKE_20_512 */
+#define TEST_XMSSMT_OID_LARGEST_SK 0x08U     /* XMSSMT-SHA2_60/12_256 */
+#define TEST_XMSSMT_OID_LARGEST_SK_ALT 0x18U /* XMSSMT-SHAKE_60/12_256 */
+
+/* Store callback for keys that must never reach signing; discards instead of writing a file. */
+static OQS_STATUS discard_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
+	(void)key_buf;
+	(void)buf_len;
+	(void)context;
+	return OQS_SUCCESS;
+}
+#endif
 #endif
 
 /*
@@ -456,11 +472,63 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 	memset(full_sig, 0, sig->length_signature);
 	pk[TEST_XMSS_OID_LEN - 1] = 0x02; // mirrors the GHSA-2wxh-55qf-c7wg PoC for XMSS-SHA2_10_256
 	status = OQS_SIG_STFL_verify(sig, message, sizeof(message) - 1, full_sig, sig->length_signature, pk);
-	OQS_MEM_insecure_free(full_sig);
-	OQS_SIG_STFL_free(sig);
 	if (status == OQS_SUCCESS) {
+		OQS_MEM_insecure_free(full_sig);
+		OQS_SIG_STFL_free(sig);
 		return OQS_ERROR;
 	}
+
+#ifdef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
+	// Sub-case 3: a secret key buffer sized for this algorithm, but with OID bytes that
+	// identify a different XMSS/XMSSMT variant. Sign, sigs_remaining, and sigs_total all
+	// read the OID from the key to decide field sizes and offsets. If that OID names a
+	// larger variant, those functions can read beyond secret_key_data (see
+	// xmss_deserialize_state). The per-algorithm wrappers must reject the mismatch first.
+	uint32_t foreign_oid;
+	if (strstr(method_name, "XMSSMT") != NULL) {
+		foreign_oid = (sig->oid == TEST_XMSSMT_OID_LARGEST_SK) ? TEST_XMSSMT_OID_LARGEST_SK_ALT : TEST_XMSSMT_OID_LARGEST_SK;
+	} else {
+		foreign_oid = (sig->oid == TEST_XMSS_OID_LARGEST_SK) ? TEST_XMSS_OID_LARGEST_SK_ALT : TEST_XMSS_OID_LARGEST_SK;
+	}
+
+	OQS_SIG_STFL_SECRET_KEY *foreign_sk = OQS_SIG_STFL_SECRET_KEY_new(method_name);
+	uint8_t *sk_buf = OQS_MEM_malloc(sig->length_secret_key);
+	if (foreign_sk == NULL || sk_buf == NULL) {
+		OQS_MEM_insecure_free(sk_buf);
+		OQS_SIG_STFL_SECRET_KEY_free(foreign_sk);
+		OQS_MEM_insecure_free(full_sig);
+		OQS_SIG_STFL_free(sig);
+		return OQS_ERROR;
+	}
+	memset(sk_buf, 0, sig->length_secret_key);
+	sk_buf[TEST_XMSS_OID_LEN - 1] = (uint8_t)foreign_oid;
+
+	status = OQS_SIG_STFL_SECRET_KEY_deserialize(foreign_sk, sk_buf, sig->length_secret_key, NULL);
+	if (status == OQS_SUCCESS) {
+		unsigned long long dummy = 0;
+
+		/* Acceptance by any of the three consumers is the failure being tested for, so it
+		 * must leave status == OQS_SUCCESS for the check below to flag. */
+		if (OQS_SIG_STFL_sigs_remaining(sig, &dummy, foreign_sk) == OQS_SUCCESS ||
+		        OQS_SIG_STFL_sigs_total(sig, &dummy, foreign_sk) == OQS_SUCCESS) {
+			status = OQS_SUCCESS;
+		} else {
+			size_t foreign_sig_len = 0;
+			OQS_SIG_STFL_SECRET_KEY_SET_store_cb(foreign_sk, discard_secret_key, NULL);
+			status = OQS_SIG_STFL_sign(sig, full_sig, &foreign_sig_len, message, sizeof(message) - 1, foreign_sk);
+		}
+	}
+	OQS_MEM_insecure_free(sk_buf);
+	OQS_SIG_STFL_SECRET_KEY_free(foreign_sk);
+	if (status == OQS_SUCCESS) {
+		OQS_MEM_insecure_free(full_sig);
+		OQS_SIG_STFL_free(sig);
+		return OQS_ERROR;
+	}
+#endif
+
+	OQS_MEM_insecure_free(full_sig);
+	OQS_SIG_STFL_free(sig);
 	return OQS_SUCCESS;
 #endif
 }
