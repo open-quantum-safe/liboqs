@@ -54,6 +54,11 @@ typedef struct {
 } aes256ctx;
 
 typedef struct {
+	uint32_t sk_exp[44];
+	uint8_t iv[16];
+} aes128ctx_nobitslice;
+
+typedef struct {
 	uint32_t sk_exp[60];
 	uint8_t iv[16];
 } aes256ctx_nobitslice;
@@ -752,9 +757,9 @@ void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
 }
 
 void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
-	*_schedule = OQS_MEM_malloc(44 * sizeof(int));
+	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx_nobitslice));
 	assert(*_schedule != NULL);
-	uint32_t *schedule = (uint32_t *) *_schedule;
+	uint32_t *schedule = ((aes128ctx_nobitslice *) *_schedule)->sk_exp;
 	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 16);
 }
 
@@ -838,6 +843,6 @@ void oqs_aes256_free_schedule_no_bitslice(void *schedule) {
 
 void oqs_aes128_free_schedule_no_bitslice(void *schedule) {
 	if (schedule != NULL) {
-		OQS_MEM_secure_free(schedule, 44 * sizeof(int));
+		OQS_MEM_secure_free(schedule, sizeof(aes128ctx_nobitslice));
 	}
 }
