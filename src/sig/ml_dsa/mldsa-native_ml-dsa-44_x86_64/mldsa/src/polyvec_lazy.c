@@ -29,6 +29,9 @@
  * of seed_ext. This function writes the domain-separation bytes
  * seed_ext[SEEDBYTES..+2] = {l, k} before sampling.
  *
+ * @spec{Partially implements @[FIPS204, Algorithm 32, ExpandA] (samples one
+ * matrix entry via @[FIPS204, Algorithm 30, RejNTTPoly]).}
+ *
  * @param[out]    p        Pointer to output polynomial.
  * @param[in,out] seed_ext Seed buffer pre-filled with rho in the first
  *                         MLDSA_SEEDBYTES; the final two bytes are

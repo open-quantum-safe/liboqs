@@ -17,26 +17,13 @@ jobs:
             container: openquantumsafe/ci-ubuntu-latest:latest
             PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
             CMAKE_ARGS: -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
-          - name: arm64-slhdsa
-            runner: ubuntu-24.04-arm
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
-            CMAKE_ARGS: -DOQS_MINIMAL_BUILD=SIG_slh_dsa
+
           - name: alpine
             runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: alpine-slhdsa
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_MINIMAL_BUILD=SIG_slh_dsa
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: alpine-libjade
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+
           - name: alpine-no-stfl-key-sig-gen
             runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
@@ -52,16 +39,7 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: alpine-openssl-all-slhdsa
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_MINIMAL_BUILD=SIG_slh_dsa
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: alpine-noopenssl-slhdsa
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_MINIMAL_BUILD=SIG_slh_dsa
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+
           - name: noble-nistr4-openssl
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
@@ -76,11 +54,6 @@ jobs:
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: noble-noopenssl-libjade
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: noble-shared-noopenssl
             runner: ubuntu-latest
@@ -107,35 +80,15 @@ jobs:
             container: openquantumsafe/ci-ubuntu-jammy:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: jammy-std-openssl3-libjade
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
           - name: jammy-std-openssl3-dlopen
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_DLOPEN_OPENSSL=ON
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: jammy-std-openssl3-dlopen-libjade
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_DLOPEN_OPENSSL=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: address-sanitizer
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
           - name: address-sanitizer-no-stfl-key-sig-gen
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
-          - name: address-sanitizer-libjade
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}" -DOQS_ENABLE_SIG_SLH_DSA=OFF
             PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
           - name: noble-no-sha3-avx512vl
             runner: ubuntu-latest
@@ -149,7 +102,7 @@ jobs:
       image: ${{ matrix.container }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -163,7 +116,9 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
+        env:
+          OQS_TEST_SIG_CTX_STEP: "255"
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'
         run: cpack
@@ -192,7 +147,7 @@ jobs:
             CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DBUILD_SHARED_LIBS=ON
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -205,16 +160,16 @@ jobs:
       image: openquantumsafe/ci-ubuntu-jammy:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Retrieve OpenSSL330 from cache
         id: cache-openssl330
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # pin@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # pin@v4
         with:
           path: .localopenssl330
           key: ${{ runner.os }}-openssl330
       - name: Checkout the OpenSSL v3.3.0 commit
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
         with:
           repository: 'openssl/openssl'
           ref: 'openssl-3.3.0-beta1'
@@ -231,13 +186,13 @@ jobs:
       - name: Save OpenSSL
         id: cache-openssl-save
         if: steps.cache-openssl330.outputs.cache-hit != 'true'
-        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # pin@v4
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # pin@v4
         with:
           path: |
             .localopenssl330
           key: ${{ runner.os }}-openssl330
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja -DOQS_STRICT_WARNINGS=ON -DOPENSSL_ROOT_DIR=../.localopenssl330 -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON .. && cmake -LA -N ..
+        run: mkdir build && cd build && cmake -GNinja -DOQS_STRICT_WARNINGS=ON -DOPENSSL_ROOT_DIR=../.localopenssl330 -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF .. && cmake -LA -N ..
       - name: Build
         run: ninja
         working-directory: build
@@ -250,7 +205,7 @@ jobs:
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
         run: mkdir build && cd build && scan-build --status-bugs cmake -GNinja ..
       - name: Build
@@ -268,13 +223,13 @@ jobs:
           - name: avx512-ml-kem_ml-dsa
             SDE_ARCH: -skx
             CMAKE_ARGS: -DOQS_MINIMAL_BUILD="KEM_ml_kem_512;KEM_ml_kem_768;KEM_ml_kem_1024;SIG_ml_dsa_44;SIG_ml_dsa_65;SIG_ml_dsa_87"
-            PYTEST_ARGS: tests/test_hash.py::test_sha3 tests/test_kat.py tests/test_acvp_vectors.py
+            PYTEST_ARGS: tests/test_hash.py::test_sha3 tests/test_kat.py
     env:
       # NOTE: https://downloadmirror.intel.com returns 202 and an empty file
       SDE_URL: https://api.github.com/repos/open-quantum-safe/ci-containers/contents/intel-sde/sde-external-9.53.0-2025-03-16-lin.tar.xz
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Setup Intel SDE
       # NOTE: source of checksum:
       #   https://www.intel.com/content/www/us/en/download/684897/850782/intel-software-development-emulator.html

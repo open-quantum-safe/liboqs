@@ -27,7 +27,7 @@ typedef struct {
 static inline uint32_t xgetbv_eax(uint32_t xcr) {
 #if defined(__GNUC__) || defined(__clang__)
 	uint32_t eax;
-	__asm__ ( ".byte 0x0f, 0x01, 0xd0" : "=a"(eax) : "c"(xcr));
+	__asm__ ( ".byte 0x0f, 0x01, 0xd0" : "=a"(eax) : "c"(xcr) : "edx");
 	return eax;
 #elif defined(_MSC_VER)
 	return _xgetbv(xcr) & 0xFFFF;

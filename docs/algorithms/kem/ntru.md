@@ -18,7 +18,7 @@
 
 ## Support
 
-- **Upstream maintenance**: Actively maintained
+- **Upstream maintenance**: Actively maintained ([statement](https://info.isl.ntt.co.jp/crypt/ntru/#/about))
 - **OQS support tier**: Tier 3
 
 ## Parameter set summary

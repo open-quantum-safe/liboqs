@@ -38,7 +38,7 @@ MLK_INTERNAL_DATA_DECLARATION const uint8_t mlk_rej_uniform_table[4096];
 void mlk_ntt_aarch64_asm(int16_t p[256], const int16_t twiddles12345[80],
                          const int16_t twiddles56[384])
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/aarch64/proofs/ntt_aarch64_asm.ml */
+ * in proofs/hol_light/aarch64/proofs/mlkem_ntt_aarch64_asm.ml */
 __contract__(
   requires(memory_no_alias(p, sizeof(int16_t) * MLKEM_N))
   requires(array_abs_bound(p, 0, MLKEM_N, 8192))
@@ -54,7 +54,7 @@ __contract__(
 void mlk_intt_aarch64_asm(int16_t p[256], const int16_t twiddles12345[80],
                           const int16_t twiddles56[384])
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/aarch64/proofs/intt_aarch64_asm.ml */
+ * in proofs/hol_light/aarch64/proofs/mlkem_intt_aarch64_asm.ml */
 __contract__(
   requires(memory_no_alias(p, sizeof(int16_t) * MLKEM_N))
   requires(twiddles12345 == mlk_aarch64_invntt_zetas_layer12345)
@@ -68,7 +68,7 @@ __contract__(
 #define mlk_poly_reduce_aarch64_asm MLK_NAMESPACE(poly_reduce_aarch64_asm)
 void mlk_poly_reduce_aarch64_asm(int16_t p[256])
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/aarch64/proofs/poly_reduce_aarch64_asm.ml */
+ * in proofs/hol_light/aarch64/proofs/mlkem_poly_reduce_aarch64_asm.ml */
 __contract__(
   requires(memory_no_alias(p, sizeof(int16_t) * MLKEM_N))
   assigns(memory_slice(p, sizeof(int16_t) * MLKEM_N))
@@ -78,7 +78,7 @@ __contract__(
 #define mlk_poly_tomont_aarch64_asm MLK_NAMESPACE(poly_tomont_aarch64_asm)
 void mlk_poly_tomont_aarch64_asm(int16_t p[256])
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/aarch64/proofs/poly_tomont_aarch64_asm.ml */
+ * in proofs/hol_light/aarch64/proofs/mlkem_poly_tomont_aarch64_asm.ml */
 __contract__(
   requires(memory_no_alias(p, sizeof(int16_t) * MLKEM_N))
   assigns(memory_slice(p, sizeof(int16_t) * MLKEM_N))
@@ -92,7 +92,8 @@ void mlk_poly_mulcache_compute_aarch64_asm(int16_t cache[128],
                                            const int16_t zetas[128],
                                            const int16_t zetas_twisted[128])
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/aarch64/proofs/poly_mulcache_compute_aarch64_asm.ml */
+ * in proofs/hol_light/aarch64/proofs/mlkem_poly_mulcache_compute_aarch64_asm.ml
+ */
 __contract__(
   requires(memory_no_alias(cache, sizeof(int16_t) * (MLKEM_N / 2)))
   requires(memory_no_alias(mlk_poly, sizeof(int16_t) * MLKEM_N))
@@ -105,7 +106,7 @@ __contract__(
 #define mlk_poly_tobytes_aarch64_asm MLK_NAMESPACE(poly_tobytes_aarch64_asm)
 void mlk_poly_tobytes_aarch64_asm(uint8_t r[384], const int16_t a[256])
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/aarch64/proofs/poly_tobytes_aarch64_asm.ml */
+ * in proofs/hol_light/aarch64/proofs/mlkem_poly_tobytes_aarch64_asm.ml */
 __contract__(
   requires(memory_no_alias(r, MLKEM_POLYBYTES))
   requires(memory_no_alias(a, sizeof(int16_t) * MLKEM_N))
@@ -119,7 +120,7 @@ void mlk_polyvec_basemul_acc_montgomery_cached_k2_aarch64_asm(
     int16_t r[256], const int16_t a[512], const int16_t b[512],
     const int16_t b_cache[256])
 /* This must be kept in sync with the HOL-Light specification in
- * proofs/hol_light/aarch64/proofs/polyvec_basemul_acc_montgomery_cached_k2_aarch64_asm.ml.
+ * proofs/hol_light/aarch64/proofs/mlkem_polyvec_basemul_acc_montgomery_cached_k2_aarch64_asm.ml.
  */
 __contract__(
     requires(memory_no_alias(r, sizeof(int16_t) * MLKEM_N))
@@ -136,7 +137,7 @@ void mlk_polyvec_basemul_acc_montgomery_cached_k3_aarch64_asm(
     int16_t r[256], const int16_t a[768], const int16_t b[768],
     const int16_t b_cache[384])
 /* This must be kept in sync with the HOL-Light specification in
- * proofs/hol_light/aarch64/proofs/polyvec_basemul_acc_montgomery_cached_k3_aarch64_asm.ml.
+ * proofs/hol_light/aarch64/proofs/mlkem_polyvec_basemul_acc_montgomery_cached_k3_aarch64_asm.ml.
  */
 __contract__(
     requires(memory_no_alias(r, sizeof(int16_t) * MLKEM_N))
@@ -153,7 +154,7 @@ void mlk_polyvec_basemul_acc_montgomery_cached_k4_aarch64_asm(
     int16_t r[256], const int16_t a[1024], const int16_t b[1024],
     const int16_t b_cache[512])
 /* This must be kept in sync with the HOL-Light specification in
- * proofs/hol_light/aarch64/proofs/polyvec_basemul_acc_montgomery_cached_k4_aarch64_asm.ml.
+ * proofs/hol_light/aarch64/proofs/mlkem_polyvec_basemul_acc_montgomery_cached_k4_aarch64_asm.ml.
  */
 __contract__(
     requires(memory_no_alias(r, sizeof(int16_t) * MLKEM_N))
@@ -169,7 +170,7 @@ MLK_MUST_CHECK_RETURN_VALUE
 uint64_t mlk_rej_uniform_aarch64_asm(int16_t r[256], const uint8_t *buf,
                                      unsigned buflen, const uint8_t table[4096])
 /* This must be kept in sync with the HOL-Light specification
- * in proofs/hol_light/aarch64/proofs/rej_uniform_aarch64_asm.ml. */
+ * in proofs/hol_light/aarch64/proofs/mlkem_rej_uniform_aarch64_asm.ml. */
 __contract__(
     requires(buflen % 24 == 0)
     requires(memory_no_alias(buf, buflen))
