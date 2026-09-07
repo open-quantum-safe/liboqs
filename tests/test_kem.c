@@ -23,6 +23,10 @@
 #include "system_info.c"
 #include "test_helpers.h"
 
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+#include <sanitizer/msan_interface.h>
+#endif
+
 #ifdef OQS_ENABLE_KEM_ML_KEM
 /* mlkem rejection key testcase */
 static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secret_key) {
@@ -296,7 +300,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		goto err;
 	}
 
-#ifndef OQS_ENABLE_TEST_CONSTANT_TIME
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 	rv = memcmp(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key + kem->length_secret_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
@@ -352,7 +356,7 @@ cleanup:
 	return ret;
 }
 
-#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 static void TEST_KEM_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
 	// so we have to swap out the OQS_randombytes provider.
@@ -414,7 +418,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
+#if defined(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND) || defined(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 	OQS_randombytes_custom_algorithm(&TEST_KEM_randombytes);
 #else
 	rc = OQS_randombytes_switch_algorithm("system");
