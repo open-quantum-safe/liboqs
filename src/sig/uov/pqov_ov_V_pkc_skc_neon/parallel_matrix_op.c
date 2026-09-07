@@ -12,6 +12,45 @@
 
 #include "parallel_matrix_op.h"
 
+//  The scratch buffers below are sized for a parameter set rather than for the
+//  one being compiled, so that this file stays independent of params.h and the
+//  same object can serve several parameter sets.  Under _SAVE_MEMORY_ they are
+//  sized for the set being compiled instead, which matters on targets that ship
+//  one parameter set and are short of stack.
+
+#ifdef _USE_GF16
+// uov-Is (16,160,64) is the only GF(16) parameter set.
+#define MAX_O       64
+#define MAX_O_BYTE  32
+#ifdef _SAVE_MEMORY_
+#define MAX_V       _V
+#else
+#define MAX_V       96
+#endif
+#define MAX_V_BYTE  (MAX_V/2)
+
+#else
+// uov-V (256,259,96) is the largest GF(256) parameter set.
+#define MAX_O       96
+#define MAX_O_BYTE  96
+#ifdef _SAVE_MEMORY_
+#define MAX_V       _V
+#else
+#define MAX_V       163
+#endif
+#endif
+
+#if _V > MAX_V
+#error "_V exceeds MAX_V in parallel_matrix_op.c"
+#endif
+#if _O > MAX_O
+#error "_O exceeds MAX_O in parallel_matrix_op.c"
+#endif
+#if _O_BYTE > MAX_O_BYTE
+#error "_O_BYTE exceeds MAX_O_BYTE in parallel_matrix_op.c"
+#endif
+
+
 
 
 #ifdef _USE_GF16
@@ -19,12 +58,8 @@
 
 void batch_trimat_madd_gf16( unsigned char *bC, const unsigned char *btriA,
                              const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_V       (96)
-#define MAX_O_BYTE  (32)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t B2[MAX_V * MAX_O_BYTE];
-#undef MAX_V
-#undef MAX_O_BYTE
 
     for (unsigned i = 0; i < Bwidth; i++) {
         for (unsigned j = 0; j < size_Bcolvec - 1; j++) {
@@ -54,12 +89,8 @@ void batch_trimat_madd_gf16( unsigned char *bC, const unsigned char *btriA,
 // This function is only used in calssic mode.
 void batch_trimatTr_madd_gf16( unsigned char *bC, const unsigned char *btriA,
                                const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (32)
-#define MAX_V      (96)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
@@ -81,12 +112,8 @@ void batch_trimatTr_madd_gf16( unsigned char *bC, const unsigned char *btriA,
 
 void batch_2trimat_madd_gf16( unsigned char *bC, const unsigned char *btriA,
                               const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (32)
-#define MAX_V      (96)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
@@ -114,11 +141,7 @@ void batch_2trimat_madd_gf16( unsigned char *bC, const unsigned char *btriA,
 
 void batch_upper_matTr_x_mat_gf16( unsigned char *bC, const unsigned char *A_to_tr, unsigned Aheight, unsigned size_Acolvec, unsigned Awidth,
                                    const unsigned char *bB, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O  (64)
-#define MAX_O_BYTE  (32)
     PQOV_ALIGN uint8_t row[MAX_O * MAX_O_BYTE]; /// XXX: buffer for maximum row
-#undef MAX_O_BYTE
-#undef MAX_O
     unsigned Atr_height = Awidth;
     unsigned Atr_width  = Aheight;
     for (unsigned i = 0; i < Atr_height; i++) {
@@ -139,9 +162,7 @@ void batch_upper_matTr_x_mat_gf16( unsigned char *bC, const unsigned char *A_to_
 static void batch_quad_trimat_eval_multab_gf16( unsigned char *y, const unsigned char *trimat, const unsigned char *multabs_x, unsigned dim, unsigned size_batch );
 
 void batch_quad_trimat_eval_gf16( unsigned char *y, const unsigned char *trimat, const unsigned char *x, unsigned dim, unsigned size_batch ) {
-    #define MAX_V      (96)
     PQOV_ALIGN uint8_t multabs[(MAX_V) * 32];
-    #undef MAX_V
     gf16v_generate_multabs( multabs, x, dim );
     batch_quad_trimat_eval_multab_gf16( y , trimat , multabs , dim , size_batch );
 }
@@ -149,12 +170,8 @@ void batch_quad_trimat_eval_gf16( unsigned char *y, const unsigned char *trimat,
 #else
 
 void batch_quad_trimat_eval_gf16( unsigned char *y, const unsigned char *trimat, const unsigned char *x, unsigned dim, unsigned size_batch ) {
-#define MAX_O_BYTE      (64/2)
-#define MAX_V_BYTE      (96/2)
     PQOV_ALIGN uint8_t x2[MAX_V_BYTE];
     PQOV_ALIGN uint8_t tmp[MAX_O_BYTE];
-#undef  MAX_O_BYTE
-#undef  MAX_V_BYTE
     for (unsigned j = 0; j < (dim / 2) - 1; j++) {
         x2[j] = (x[j] >> 4) | (x[j + 1] << 4);
     }
@@ -186,9 +203,7 @@ void batch_trimat_madd_multab_gf16( unsigned char *bC, const unsigned char *btri
     const unsigned w_multab = 5;
     #endif
 
-#define MAX_O_BYTE  (32)
     uint8_t tmp_c[MAX_O_BYTE];
-#undef MAX_O_BYTE
 
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
@@ -212,12 +227,8 @@ void batch_trimatTr_madd_multab_gf16( unsigned char *bC, const unsigned char *bt
     const unsigned w_multab = 5;
     #endif
 
-#define MAX_O_BYTE  (32)
-#define MAX_V      (96)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
@@ -247,12 +258,8 @@ void batch_2trimat_madd_multab_gf16( unsigned char *bC, const unsigned char *btr
     const unsigned w_multab = 5;
     #endif
 
-#define MAX_O_BYTE  (32)
-#define MAX_V      (96)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
@@ -279,11 +286,7 @@ void batch_2trimat_madd_multab_gf16( unsigned char *bC, const unsigned char *btr
 
 void batch_upper_matTr_x_mat_multab_gf16( unsigned char *bC, const unsigned char *A_to_tr, unsigned Aheight, unsigned size_Acolvec, unsigned Awidth,
         const unsigned char *bB, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O  (64)
-#define MAX_O_BYTE  (32)
     PQOV_ALIGN uint8_t row[MAX_O * MAX_O_BYTE]; /// XXX: buffer for maximum row
-#undef MAX_O_BYTE
-#undef MAX_O
     (void)size_Acolvec; // un-used variable
     #if defined(_BLAS_NEON_)
     const unsigned w_multab = 4;
@@ -333,9 +336,7 @@ void batch_quad_trimat_eval_multab_gf16( unsigned char *y, const unsigned char *
 /////////////////  Section: matrix multiplications  ///////////////////////////////
 void batch_trimat_madd_gf256( unsigned char *bC, const unsigned char *btriA,
                               const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (96)
     uint8_t tmp_c[MAX_O_BYTE];
-#undef MAX_O_BYTE
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
     for (unsigned i = 0; i < Aheight; i++) {
@@ -351,12 +352,8 @@ void batch_trimat_madd_gf256( unsigned char *bC, const unsigned char *btriA,
 // This function is only used in calssic mode.
 void batch_trimatTr_madd_gf256( unsigned char *bC, const unsigned char *btriA,
                                 const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (96)
-#define MAX_V      (148)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
@@ -380,12 +377,8 @@ void batch_trimatTr_madd_gf256( unsigned char *bC, const unsigned char *btriA,
 
 void batch_2trimat_madd_gf256( unsigned char *bC, const unsigned char *btriA,
                                const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (96)
-#define MAX_V      (148)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     unsigned Aheight = Bheight;
@@ -413,9 +406,7 @@ void batch_2trimat_madd_gf256( unsigned char *bC, const unsigned char *btriA,
 
 void batch_upper_matTr_x_mat_gf256( unsigned char *bC, const unsigned char *A_to_tr, unsigned Aheight, unsigned size_Acolvec, unsigned Awidth,
                                     const unsigned char *bB, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O  (96)
     PQOV_ALIGN uint8_t row[MAX_O * MAX_O]; /// XXX: buffer for maximum row
-#undef MAX_O
 
     unsigned Atr_height = Awidth;
     unsigned Atr_width  = Aheight;
@@ -437,9 +428,7 @@ void batch_upper_matTr_x_mat_gf256( unsigned char *bC, const unsigned char *A_to
 static void batch_quad_trimat_eval_multab_gf256( unsigned char *y, const unsigned char *trimat, const unsigned char *multab_x, unsigned dim, unsigned size_batch );
 
 void batch_quad_trimat_eval_gf256( unsigned char *y, const unsigned char *trimat, const unsigned char *x, unsigned dim, unsigned size_batch ) {
-    #define MAX_V      (148)
     PQOV_ALIGN uint8_t multabs[(MAX_V) * 32];
-    #undef MAX_V
     gf256v_generate_multabs( multabs, x, dim );
     batch_quad_trimat_eval_multab_gf256( y , trimat , multabs , dim , size_batch );
 }
@@ -473,9 +462,7 @@ void batch_quad_trimat_eval_gf256( unsigned char *y, const unsigned char *trimat
 
 void batch_trimat_madd_multab_gf256( unsigned char *bC, const unsigned char *btriA,
                                      const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (96)
     uint8_t tmp_c[MAX_O_BYTE];
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     (void)size_Bcolvec; // un-used variable
@@ -494,12 +481,8 @@ void batch_trimat_madd_multab_gf256( unsigned char *bC, const unsigned char *btr
 // This function is only used in calssic mode.
 void batch_trimatTr_madd_multab_gf256( unsigned char *bC, const unsigned char *btriA,
                                        const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (96)
-#define MAX_V      (148)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     (void)size_Bcolvec; // un-used variable
@@ -522,12 +505,8 @@ void batch_trimatTr_madd_multab_gf256( unsigned char *bC, const unsigned char *b
 
 void batch_2trimat_madd_multab_gf256( unsigned char *bC, const unsigned char *btriA,
                                       const unsigned char *B, unsigned Bheight, unsigned size_Bcolvec, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O_BYTE  (96)
-#define MAX_V      (148)
     uint8_t tmp_c[MAX_O_BYTE];
     uint8_t tmp_Arow[MAX_V * MAX_O_BYTE];
-#undef MAX_O_BYTE
-#undef MAX_V
 
 // access fixed positions of destination matrix C
     (void)size_Bcolvec; // un-used variable
@@ -556,9 +535,7 @@ void batch_2trimat_madd_multab_gf256( unsigned char *bC, const unsigned char *bt
 
 void batch_upper_matTr_x_mat_multab_gf256( unsigned char *bC, const unsigned char *A_to_tr, unsigned Aheight, unsigned size_Acolvec, unsigned Awidth,
         const unsigned char *bB, unsigned Bwidth, unsigned size_batch ) {
-#define MAX_O  (96)
     PQOV_ALIGN uint8_t row[MAX_O * MAX_O]; /// XXX: buffer for maximum row
-#undef MAX_O
     (void)size_Acolvec; // un-used variable
     const unsigned w_multab = 5;
     unsigned Atr_height = Awidth;

@@ -4,14 +4,15 @@
 #include "ov.h"
 #include "ov_blas.h"
 
+#include "utils_malloc.h"   /// for the macro: PQOV_ALIGN
 
 
 
-#define _MAX_N 256
 
-#if _PUB_N > _MAX_N
-error. _PUB_N > _MAX_N
-#endif
+// Bounds _xixj[] and _x[] below, which hold _PUB_N field elements.  The
+// gfv_mul_scalar() calls start at a blas-unit boundary and write whole units,
+// so round the length up to one.
+#define _MAX_N (((_PUB_N + _BLAS_UNIT_LEN_ - 1) / _BLAS_UNIT_LEN_) * _BLAS_UNIT_LEN_)
 
 
 
@@ -37,7 +38,7 @@ static
 void accu_eval_quad_gf16( unsigned char *accu_res, const unsigned char *trimat, const unsigned char *x_in_byte,
                           unsigned num_gfele_x, unsigned num_vinegar, unsigned vec_len ) {
     const unsigned char *_x = x_in_byte;
-    unsigned char _xixj[_MAX_N] = {0};
+    PQOV_ALIGN unsigned char _xixj[_MAX_N] = {0};
     unsigned v = num_vinegar;
     unsigned o = num_gfele_x - num_vinegar;
 
@@ -170,7 +171,7 @@ void accu_eval_quad_gf256( unsigned char *accu_low, unsigned char *accu_high, co
     unsigned vec_len = _PUB_M_BYTE;
 
     const unsigned char *_x = x_in_byte;
-    unsigned char _xixj[_MAX_N];
+    PQOV_ALIGN unsigned char _xixj[_MAX_N];
     unsigned v = _V;
     unsigned o = _PUB_N - _V;
     unsigned n = _PUB_N;
@@ -276,7 +277,7 @@ void accu_eval_quad_gf256( unsigned char *accu_low, unsigned char *accu_high, co
     unsigned vec_len = _PUB_M_BYTE;
 
     const unsigned char *_x = x_in_byte;
-    unsigned char _xixj[_MAX_N];
+    PQOV_ALIGN unsigned char _xixj[_MAX_N];
     unsigned v = _V;
     unsigned o = _PUB_N - _V;
     unsigned n = _PUB_N;
@@ -389,7 +390,7 @@ void madd_reduce_gf256( unsigned char *y, unsigned char *tmp_low, unsigned char 
     #else
     unsigned tmpvec_len = ((vec_len + 3) >> 2) << 2;
     #endif
-    unsigned char tmp_y[TMPVEC_LEN * 4];
+    PQOV_ALIGN unsigned char tmp_y[TMPVEC_LEN * 4];
 
     for (int i = 15; i > 8; i--) {
         gf256v_add( tmp_low + TMPVEC_LEN * 8, tmp_low + TMPVEC_LEN * i, tmpvec_len );
@@ -437,21 +438,21 @@ void madd_reduce_gf256( unsigned char *y, unsigned char *tmp_low, unsigned char 
 
 
 void ov_publicmap( unsigned char *y, const unsigned char *trimat, const unsigned char *x ) {
-    unsigned char _x[_MAX_N];
+    PQOV_ALIGN unsigned char _x[_MAX_N];
     for (unsigned i = 0; i < _PUB_N; i++) {
         _x[i] = gfv_get_ele( x, i );
     }
 
     #if 16 == _GFSIZE
 
-    unsigned char tmp[TMPVEC_LEN * _GFSIZE] = {0};
+    PQOV_ALIGN unsigned char tmp[TMPVEC_LEN * _GFSIZE] = {0};
     accu_eval_quad_gf16( tmp, trimat, _x, _PUB_N, _V, _PUB_M_BYTE );
     madd_reduce_gf16( y, tmp, _PUB_M_BYTE );
 
     #elif 256 == _GFSIZE
 
-    unsigned char tmp_l[TMPVEC_LEN * 16] = {0};
-    unsigned char tmp_h[TMPVEC_LEN * 16] = {0};
+    PQOV_ALIGN unsigned char tmp_l[TMPVEC_LEN * 16] = {0};
+    PQOV_ALIGN unsigned char tmp_h[TMPVEC_LEN * 16] = {0};
     accu_eval_quad_gf256( tmp_l, tmp_h, trimat, _x );
     madd_reduce_gf256( y, tmp_l, tmp_h, _PUB_M_BYTE );
 

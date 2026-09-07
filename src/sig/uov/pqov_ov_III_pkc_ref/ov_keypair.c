@@ -107,7 +107,10 @@ int expand_pk_predicate( pk_t *rpk, const cpk_t *cpk, const unsigned char *predi
 }
 
 
-int expand_sk( sk_t *sk, const unsigned char *sk_seed ) {
+// Derive O, P1 and P2 from the seed.  P2 lands in sk->S, where calculate_F2()
+// overwrites it with S in place.
+static
+void derive_sk_from_seed( sk_t *sk, const unsigned char *sk_seed ) {
     memcpy( sk->sk_seed, sk_seed, LEN_SKSEED );
 
     // pk_seed || O
@@ -136,6 +139,17 @@ int expand_sk( sk_t *sk, const unsigned char *sk_seed ) {
     prng_gen_publicinputs(&prng1, sk->S, sizeof(sk->S) );
 
     prng_release_publicinputs(&prng1);
+}
+
+
+#if defined(_OV_PKC_SKC)
+int expand_sk_implicit_s( sk_t *sk, const unsigned char *sk_seed ) {
+    derive_sk_from_seed( sk, sk_seed );
+    return 0;
+}
+#else
+int expand_sk( sk_t *sk, const unsigned char *sk_seed ) {
+    derive_sk_from_seed( sk, sk_seed );
     // calcuate the parts of sk according to pk.
     #if defined(_BLAS_M4F_)
     ov_pkc_calculate_F_from_Q( sk );
@@ -144,6 +158,7 @@ int expand_sk( sk_t *sk, const unsigned char *sk_seed ) {
     #endif
     return 0;
 }
+#endif
 
 
 
