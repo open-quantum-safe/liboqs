@@ -75,7 +75,7 @@ upstreams:
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
     git_branch: bhe-liboqs-round3
-    git_commit: f23456c0dcd4e5601f5e7d8952827f0ea25927c3
+    git_commit: 74de637a7c4a7f9fafa888183bc05f5cf920cd2d
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqmayo-mem.patch]

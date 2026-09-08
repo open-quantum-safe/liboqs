@@ -264,6 +264,7 @@ static void unpack_m_vecs(const unsigned char *in, uint64_t *out, int vecs, int 
 
 static void derive_lambda(const mayo_params_t *p, const unsigned char *seed,
                           uint64_t *lambda) {
+    (void) p;
     const int param_n = PARAM_n(p);
     const int param_m = PARAM_m(p);
     const size_t nbytes = (size_t) param_n * (size_t) param_m / 2;

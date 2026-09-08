@@ -16,7 +16,7 @@ upstream-statement-url: https://github.com/PQCMayo/MAYO-C
 oqs-support-tier: 3
 spec-version: NIST Round 3 (September 2026)
 primary-upstream:
-  source: https://github.com/PQCMayo/MAYO-C/commit/f23456c0dcd4e5601f5e7d8952827f0ea25927c3
+  source: https://github.com/PQCMayo/MAYO-C/commit/74de637a7c4a7f9fafa888183bc05f5cf920cd2d
     with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:
