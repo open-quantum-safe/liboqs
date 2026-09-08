@@ -8,24 +8,24 @@ principal-submitters:
 - Matthias J. Kannwischer
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://pqmayo.org
-nist-round: 2
-standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mayo-spec-round2-web.pdf)
+nist-round: 3
+standardization-status: Under [NIST](https://csrc.nist.gov/Projects/pqc-dig-sig/round-3-additional-signatures)
   consideration
 upstream-maintenance: Actively maintained
 upstream-statement-url: https://github.com/PQCMayo/MAYO-C
 oqs-support-tier: 3
-spec-version: NIST Round 2 (February 2025)
+spec-version: NIST Round 3 (September 2026)
 primary-upstream:
-  source: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
+  source: https://github.com/PQCMayo/MAYO-C/commit/f23456c0dcd4e5601f5e7d8952827f0ea25927c3
     with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: MAYO-1
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 1420
+  length-public-key: 1456
   length-secret-key: 24
-  length-signature: 454
+  length-signature: 464
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -69,9 +69,9 @@ parameter-sets:
 - name: MAYO-2
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 4912
+  length-public-key: 2928
   length-secret-key: 24
-  length-signature: 186
+  length-signature: 239
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream

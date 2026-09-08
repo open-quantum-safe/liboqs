@@ -74,11 +74,11 @@ upstreams:
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
-    git_branch: main
-    git_commit: 64e15c622dec1f59aa5bbaf7f7c8f4f20af75106
-    sig_meta_path: 'META/{pretty_name_full}_META.yml'
+    git_branch: bhe-liboqs-round3
+    git_commit: f23456c0dcd4e5601f5e7d8952827f0ea25927c3
+    sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
-    patches: [pqmayo-aes.patch, pqmayo-mem.patch]
+    patches: [pqmayo-mem.patch]
   -
     name: upcross
     git_url: https://github.com/CROSS-signature/CROSS-lib-oqs.git

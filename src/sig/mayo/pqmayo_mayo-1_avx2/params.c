@@ -4,9 +4,15 @@
 
 #ifdef ENABLE_PARAMS_DYNAMIC
 static const unsigned char f_tail_64[] = F_TAIL_64;
-static const unsigned char f_tail_78[] = F_TAIL_78;
+static const unsigned char f_tail_80[] = F_TAIL_80;
 static const unsigned char f_tail_108[] = F_TAIL_108;
 static const unsigned char f_tail_142[] = F_TAIL_142;
+
+// the whipping schedule for this k
+static const unsigned char whip_pos_5[] = MAYO_2_whip_pos;
+static const unsigned char whip_pos_10[] = MAYO_1_whip_pos;
+static const unsigned char whip_pos_11[] = MAYO_3_whip_pos;
+static const unsigned char whip_pos_12[] = MAYO_5_whip_pos;
 
 #define MAYO_GEN_PARAMS(nm) \
   const mayo_params_t nm = { \
@@ -16,6 +22,7 @@ static const unsigned char f_tail_142[] = F_TAIL_142;
     .k = PARAM_JOIN2(nm, k), \
     .q = PARAM_JOIN2(nm, q), \
     .f_tail = PARAM_JOIN2(nm, f_tail_arr), \
+    .whip_pos = PARAM_JOIN2(nm, whip_pos_arr), \
     .m_bytes = PARAM_JOIN2(nm, m_bytes), \
     .O_bytes = PARAM_JOIN2(nm, O_bytes), \
     .v_bytes = PARAM_JOIN2(nm, v_bytes), \
