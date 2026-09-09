@@ -91,53 +91,85 @@
     "all": "31aebc803483ef47be9e0249e9105a08a8f1660bf0d6eca5051221fc04477e05",
     "single": "38c8e18ffe94cdc331294cb05b0e28b8b0cc7903db5331cee4c88cb84e61450a"
   },
-  "SNOVA_24_5_4": {
-    "all": "0958f4433311079eb8192fc65fddc3ca0b5f79dc22f7a2b34690741d182ccdd1",
-    "single": "2759723cf44a3122df1d243132474255302edd2c7eb492986a4150c0099fa6fa"
+  "SNOVA_III_B": {
+    "all": "e8d7d7facc29e50333a88bb34b027c502b3ac4fd26ac6dbd5d95712bdb8d9d91",
+    "single": "7175ce45fbd3e6b7eca08de8df339a8bb24116531478d1afa2f1e8cf7e59ace9"
   },
-  "SNOVA_24_5_4_SHAKE": {
-    "all": "e7342f429eeee11a6c692b0631f9341f50257ebbdf1615a306c94fed756f2845",
-    "single": "40f943cbf34a57ebb3b5113f94c15c93a4e2d9b7deca02aef88a6ab2554da303"
+  "SNOVA_III_B_AES": {
+    "all": "319e4959da4d746e75faaf7e7d025329dc557c2ef7a0f5f016a3e87c87aeee62",
+    "single": "f14fdcae1608c387043f5534937d6f39f61926fd18694be79c0039d12649847f"
   },
-  "SNOVA_24_5_4_SHAKE_esk": {
-    "all": "b6c92573a1bc0bb96cf46feb222fe8bb0d4f5004a6a1c3786bcbe48381fdc310",
-    "single": "5b7cb908641e564f41f27fd69d53fb8eff263d038afd2964fad57af82b291eba"
+  "SNOVA_III_K": {
+    "all": "b9c33a15a90f0a67ec4f3bf17794c7b4ad175973765f10ade98fc5b568998cbd",
+    "single": "ed125aa4bfa4bf2618b5f3313222e953431d3a1ccf6c6e318588a4b8b8247957"
   },
-  "SNOVA_24_5_4_esk": {
-    "all": "aa30341fa91f6db83ba9f782c603f1cd4c925e47ac0bc6d6f488e4a9393213e2",
-    "single": "a971a22090bcf3f1146f334980bec96b95046eea30c43bc5a8e3e656e339348a"
+  "SNOVA_III_K_AES": {
+    "all": "47e45e5f2ec7cdcd139889ffe21b88c4dd912ca704266937926315948ce2164d",
+    "single": "9649484bad37939f25ac6e1efe8379d0a1f6530391d6310425af099462e5052c"
   },
-  "SNOVA_24_5_5": {
-    "all": "5d4402e52819165f701d25f58fc2d40ec98cd2dc6ffeef80059adf21c66231a8",
-    "single": "162aa14ebb328cdfb2cc82a4803826045fffae5d4f9e3fb60059982be9920786"
+  "SNOVA_III_S": {
+    "all": "d30327dc668ca051b0751021426c6c76a68467217569e6550bd1553f879b02c5",
+    "single": "aaa7107a2c89487ce0fa1467339dd34c381a6256623abef21a14519ca99b3840"
   },
-  "SNOVA_25_8_3": {
-    "all": "2a0f055d4903d5b8392ffe3c6cdd2700ce3bfbad84db9fe80946974c04840530",
-    "single": "6642f897a52e9e64942320023a857362cb4d7f8fcb590161f6997d05901012c4"
+  "SNOVA_III_S_AES": {
+    "all": "7319a96d4b0bd4c762b021489b2e993651ace5cfca971e6041b5979dd409a67f",
+    "single": "866b1ffdb5ab9d947a3efe620b74f9b7b9ca367a253ddacb9e677ed4e6753321"
   },
-  "SNOVA_29_6_5": {
-    "all": "f739594b4b945a6796adc21c6163fc57929e1886c40ac955c4d3d2979291df37",
-    "single": "cc2503dd8fdec3b0e78c669167f3a54322faf161a5cf9fd13a6eb95966def462"
+  "SNOVA_III_X_AES": {
+    "all": "027b4e2950a8c180ccb353003b290c67563af2583627b92f1722cd6057f1450b",
+    "single": "a5f81db635abdade85c99a9176ce582e5dedcb67f541f291c3d0517aca34863e"
   },
-  "SNOVA_37_17_2": {
-    "all": "65c38c90423b5876c6124ba3a7d430bd5b7a84dfd8e522c57574cccde4ed6faa",
-    "single": "c4e94ffb5675d9d29671f935862b4823244f9a1287564bda53c9af3e443eb40b"
+  "SNOVA_I_B": {
+    "all": "70a922c794eb7e67886e5a884bb578c7d3ad0b2228cd1050eaf9c07b1f89798b",
+    "single": "8811d4215b528a740fbbd53b175bb55a68eb2cbf4c3753723dc08c79404095c3"
   },
-  "SNOVA_37_8_4": {
-    "all": "dce9fb246004297a2f8906a6a2478b050138c4cfc9f8381a7cfe78d58e5ba108",
-    "single": "dc719f691b8e814850714ec23fcdd7103c30236bb22f7667f3ad1746871b5eaa"
+  "SNOVA_I_B_AES": {
+    "all": "d550a182a0e281fcfad15eb8a83e2efb4367018d573da239e5b301402e0ae4a1",
+    "single": "5b5bcdae396b2c5f99f27d73700bf971e3249869149e55a826f32b89bd999974"
   },
-  "SNOVA_49_11_3": {
-    "all": "44b0909821acec6b41beea86c04b1679da2af034d03fcb1325b8964175a3f9ff",
-    "single": "b4c07075d58221d431bfcdae390353af21edbbc64f2250b0e5ec9e7fc6c5609d"
+  "SNOVA_I_K": {
+    "all": "6fdcd74a77ec77c3cb3ca42fe1a85603a27f385308e357556c26d002b967fce6",
+    "single": "316b8ec31efe59c9b83ba4ed3b746322f8a8ad6ec9a246de228fbe5e8fd7d9b4"
   },
-  "SNOVA_56_25_2": {
-    "all": "9b73c4e03752e92aca391e69bda9673b590ca6dfee2ff151c7e48d630ddbbe2e",
-    "single": "4bf1e2dc8a80d60e21f5586ba20f977d48c5f6ae223d778548b5d4064679c3bf"
+  "SNOVA_I_K_AES": {
+    "all": "50ef1c37844836e0017e19cd777850fb7ca47942ee8afa8f57eb630fc82f0490",
+    "single": "1a01385d56329bf0977b12d2d5a11004254b02a91c596bc3f4edb21a2a422137"
   },
-  "SNOVA_60_10_4": {
-    "all": "b7c22da35287015006831c94ae96266de893a7ce9a221c69737ec4b4fba86aa3",
-    "single": "af9205c33972a94081067f3c84f83c1779d57860158e49418cfbec733a111798"
+  "SNOVA_I_S": {
+    "all": "19cecccec492efe33eb7325fea26742d75efcacf4e721b4e699c0f954d96f6c5",
+    "single": "cf24c9531a7bcd91782963cbeb6d2629dc009f51d08836513ef2e94f0ffd17ff"
+  },
+  "SNOVA_I_S_AES": {
+    "all": "28e35c86ad7394f5eb4ba89c3609ba0b9eb47d16172609fdaa46389dafee955d",
+    "single": "5b72fa17637db16f7c0d8f83e775736dbb0d6bbf86ebd685e8c02acff91c7f4c"
+  },
+  "SNOVA_I_X_AES": {
+    "all": "c47e199f3d60965854e64696426f6fc453b13ce9cd6cc022c7ff02d6a5dfa8f0",
+    "single": "080a72b127d60da338ae0fef5cd09977c906a03fdba9201ae9897fd82f3c1e49"
+  },
+  "SNOVA_V_B": {
+    "all": "3d823a1918f968f82138d0984a565fa59f3309166bb42fc238a9a49fd04f3093",
+    "single": "e5c57530317bc71346139cdf75600a544cbd4154a297a6b81920d4068fa1deb0"
+  },
+  "SNOVA_V_B_AES": {
+    "all": "cec1fb61a8ea0fac898da0466eda79823ae1caebd117af50e35c790afdd6ab74",
+    "single": "8f2db84efe07d66394c00672d3d0cb818d500a270c2389a182de6c40d2e652f2"
+  },
+  "SNOVA_V_K": {
+    "all": "e6a88b15c70511a6100445f623918e57bf3b66c37200aa12cb3d29acadf1d7ef",
+    "single": "c950111bf45fff0d6d23ad737ac37f5bf67e4dd0557153d677c4941a4a337566"
+  },
+  "SNOVA_V_K_AES": {
+    "all": "855ea0fea6a9c6d5736899fab49b3b16b9a95c65eb5632f541806d4d12d0a5e0",
+    "single": "06c03a2e7ef69f1c2a035796d6eba12b34da16faedebbe31ea9df4f14b23bc63"
+  },
+  "SNOVA_V_S": {
+    "all": "d60233389810d41164021c376c853cea8cba53c31061b0220a24dcf20daac3f2",
+    "single": "faf74fd2bd819d7b3d1d0698a4566be33cdc2f56abb300e79c4d8e67bff4175d"
+  },
+  "SNOVA_V_S_AES": {
+    "all": "7b38a7646319bc4e19e1f23ed51fc7c5aaa7d55ea644a8ef2644618d7a5e35b7",
+    "single": "4210e5701cce2dae12f7a6d9764fff71644884b26f796bcf386a5b05ff079469"
   },
   "cross-rsdp-128-balanced": {
     "all": "7b12a6f71166cde8289c732b3107eaa21edf59c2f336b0921a62faa93980de77",
