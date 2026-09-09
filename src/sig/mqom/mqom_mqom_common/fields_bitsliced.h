@@ -1,7 +1,7 @@
 #ifndef __FIELDS_BITSLICED_H__
 #define __FIELDS_BITSLICED_H__
 
-#include "mqom2_parameters.h"
+#include "mqom3_parameters.h"
 #include "fields.h"
 typedef uint32_t felt_ext_elt_bitsliced_t;
 #define BITSLICED_PACKING(n, s) (n*((s+31)>>5)*FIELD_EXT_LOG2_CARD)

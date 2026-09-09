@@ -1,29 +1,26 @@
 #ifndef __BLC_MEMOPT_H__
 #define __BLC_MEMOPT_H__
 
-/* MQOM2 parameters */
-#include "mqom2_parameters.h"
-#include "enc.h"
-#include "prg.h"
-#include "xof.h"
-#include "fields.h"
+/* Slow folding accumulates each leaf's contribution into x0/u0 directly (see
+ * blc_memopt_folding.h). Batching several leaves' worth of SeedExpand output
+ * together (BLC_NB_LEAF_SEEDS_IN_PARALLEL > 1) is supported there via a
+ * per-leaf-in-batch snapshot (leaf_snapshot[]) that isolates each leaf's own
+ * contribution before it is scaled and folded in - so, unlike before, N > 1
+ * is no longer rejected here. Default (when unset) stays 1, matching the
+ * original minimal-footprint behavior exactly - this is purely additive, not
+ * a default change. */
+#ifdef BLC_NO_FAST_FOLDING
+#ifndef BLC_NB_LEAF_SEEDS_IN_PARALLEL
+#define BLC_NB_LEAF_SEEDS_IN_PARALLEL (1)
+#endif
+#else
+#ifndef BLC_NB_LEAF_SEEDS_IN_PARALLEL
+#define BLC_NB_LEAF_SEEDS_IN_PARALLEL (8)
+#endif
+#endif
 
-/* Deal with namespacing */
-#define BLC_Commit_memopt MQOM_NAMESPACE(BLC_Commit_memopt)
-#define BLC_Open_memopt MQOM_NAMESPACE(BLC_Open_memopt)
-#define BLC_Eval_memopt MQOM_NAMESPACE(BLC_Eval_memopt)
-
-typedef struct blc_key_memopt_t {
-	uint8_t salt[MQOM2_PARAM_SALT_SIZE];
-	uint8_t delta[MQOM2_PARAM_SEED_SIZE];
-	uint8_t rseed[MQOM2_PARAM_TAU][MQOM2_PARAM_SEED_SIZE];
-	uint8_t partial_delta_x[MQOM2_PARAM_TAU][BYTE_SIZE_FIELD_BASE(MQOM2_PARAM_MQ_N) - MQOM2_PARAM_SEED_SIZE];
-} blc_key_memopt_t;
-
-int BLC_Commit_memopt(const uint8_t mseed[MQOM2_PARAM_SEED_SIZE], const uint8_t salt[MQOM2_PARAM_SALT_SIZE], const field_base_elt x[FIELD_BASE_PACKING(MQOM2_PARAM_MQ_N)], uint8_t com1[MQOM2_PARAM_DIGEST_SIZE], blc_key_memopt_t* key, field_ext_elt x0[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_MQ_N)], field_ext_elt u0[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_ETA)], field_ext_elt u1[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_ETA)]);
-
-int BLC_Open_memopt(const blc_key_memopt_t* key, const uint16_t i_star[MQOM2_PARAM_TAU], uint8_t opening[MQOM2_PARAM_OPENING_SIZE]);
-
-int BLC_Eval_memopt(const uint8_t salt[MQOM2_PARAM_SALT_SIZE], const uint8_t com1[MQOM2_PARAM_DIGEST_SIZE], const uint8_t opening[MQOM2_PARAM_OPENING_SIZE], const uint16_t i_star[MQOM2_PARAM_TAU], field_ext_elt x_eval[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_MQ_N)], field_ext_elt u_eval[MQOM2_PARAM_TAU][FIELD_EXT_PACKING(MQOM2_PARAM_ETA)]);
+#if MQOM3_PARAM_NB_EVALS % BLC_NB_LEAF_SEEDS_IN_PARALLEL != 0
+#error BLC_NB_LEAF_SEEDS_IN_PARALLEL should divide MQOM3_PARAM_NB_EVALS.
+#endif
 
 #endif /* __BLC_MEMOPT_H__ */

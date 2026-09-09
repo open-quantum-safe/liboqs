@@ -12,17 +12,20 @@
  */
 typedef struct {
 	uint8_t active;
-	field_ext_elt t1[FIELD_EXT_PACKING(MQOM2_PARAM_MQ_N)];
+	field_ext_elt t1[FIELD_EXT_PACKING(MQOM3_PARAM_MQ_N)];
 	/* Size in bytes of the cache (tracked for free) */
 	uint32_t size;
 } piop_cache;
 
-static inline void get_entry_piop_cache(const piop_cache *cache, uint32_t i, field_ext_elt t1[FIELD_EXT_PACKING(MQOM2_PARAM_MQ_N)]) {
-	memcpy(t1, cache[i].t1, FIELD_EXT_PACKING(MQOM2_PARAM_MQ_N) * sizeof(field_ext_elt));
+static inline void get_entry_piop_cache(const piop_cache *cache, uint32_t i, field_ext_elt t1[FIELD_EXT_PACKING(MQOM3_PARAM_MQ_N)]) {
+	if (cache == NULL) {
+		return;
+	}
+	memcpy(t1, cache[i].t1, FIELD_EXT_PACKING(MQOM3_PARAM_MQ_N) * sizeof(field_ext_elt));
 }
-static inline void set_entry_piop_cache(piop_cache *cache, uint32_t i, const field_ext_elt t1[FIELD_EXT_PACKING(MQOM2_PARAM_MQ_N)]) {
+static inline void set_entry_piop_cache(piop_cache *cache, uint32_t i, const field_ext_elt t1[FIELD_EXT_PACKING(MQOM3_PARAM_MQ_N)]) {
 	if (cache != NULL) {
-		memcpy(cache[i].t1, t1, FIELD_EXT_PACKING(MQOM2_PARAM_MQ_N) * sizeof(field_ext_elt));
+		memcpy(cache[i].t1, t1, FIELD_EXT_PACKING(MQOM3_PARAM_MQ_N) * sizeof(field_ext_elt));
 		cache[i].active = 1;
 	}
 }
@@ -30,7 +33,10 @@ static inline void set_entry_piop_cache(piop_cache *cache, uint32_t i, const fie
 /* Function that deals with the PIOP cache */
 static inline void destroy_piop_cache(piop_cache *cache) {
 	if (cache != NULL) {
-		mqom_free(cache, cache->size);
+		/* The t1 entries are sensitive, so cleanse them */
+		uint32_t size = cache->size;
+		mqom_cleanse(cache, size);
+		mqom_free(cache, size);
 	}
 }
 
