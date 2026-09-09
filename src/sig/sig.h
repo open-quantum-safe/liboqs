@@ -120,30 +120,46 @@ extern "C" {
 #define OQS_SIG_alg_uov_ov_III_pkc_skc "OV-III-pkc-skc"
 /** Algorithm identifier for OV-V-pkc-skc */
 #define OQS_SIG_alg_uov_ov_V_pkc_skc "OV-V-pkc-skc"
-/** Algorithm identifier for SNOVA_24_5_4 */
-#define OQS_SIG_alg_snova_SNOVA_24_5_4 "SNOVA_24_5_4"
-/** Algorithm identifier for SNOVA_24_5_4_SHAKE */
-#define OQS_SIG_alg_snova_SNOVA_24_5_4_SHAKE "SNOVA_24_5_4_SHAKE"
-/** Algorithm identifier for SNOVA_24_5_4_esk */
-#define OQS_SIG_alg_snova_SNOVA_24_5_4_esk "SNOVA_24_5_4_esk"
-/** Algorithm identifier for SNOVA_24_5_4_SHAKE_esk */
-#define OQS_SIG_alg_snova_SNOVA_24_5_4_SHAKE_esk "SNOVA_24_5_4_SHAKE_esk"
-/** Algorithm identifier for SNOVA_37_17_2 */
-#define OQS_SIG_alg_snova_SNOVA_37_17_2 "SNOVA_37_17_2"
-/** Algorithm identifier for SNOVA_25_8_3 */
-#define OQS_SIG_alg_snova_SNOVA_25_8_3 "SNOVA_25_8_3"
-/** Algorithm identifier for SNOVA_56_25_2 */
-#define OQS_SIG_alg_snova_SNOVA_56_25_2 "SNOVA_56_25_2"
-/** Algorithm identifier for SNOVA_49_11_3 */
-#define OQS_SIG_alg_snova_SNOVA_49_11_3 "SNOVA_49_11_3"
-/** Algorithm identifier for SNOVA_37_8_4 */
-#define OQS_SIG_alg_snova_SNOVA_37_8_4 "SNOVA_37_8_4"
-/** Algorithm identifier for SNOVA_24_5_5 */
-#define OQS_SIG_alg_snova_SNOVA_24_5_5 "SNOVA_24_5_5"
-/** Algorithm identifier for SNOVA_60_10_4 */
-#define OQS_SIG_alg_snova_SNOVA_60_10_4 "SNOVA_60_10_4"
-/** Algorithm identifier for SNOVA_29_6_5 */
-#define OQS_SIG_alg_snova_SNOVA_29_6_5 "SNOVA_29_6_5"
+/** Algorithm identifier for SNOVA_I_K */
+#define OQS_SIG_alg_snova_SNOVA_I_K "SNOVA_I_K"
+/** Algorithm identifier for SNOVA_I_K_AES */
+#define OQS_SIG_alg_snova_SNOVA_I_K_AES "SNOVA_I_K_AES"
+/** Algorithm identifier for SNOVA_I_B */
+#define OQS_SIG_alg_snova_SNOVA_I_B "SNOVA_I_B"
+/** Algorithm identifier for SNOVA_I_B_AES */
+#define OQS_SIG_alg_snova_SNOVA_I_B_AES "SNOVA_I_B_AES"
+/** Algorithm identifier for SNOVA_I_S */
+#define OQS_SIG_alg_snova_SNOVA_I_S "SNOVA_I_S"
+/** Algorithm identifier for SNOVA_I_S_AES */
+#define OQS_SIG_alg_snova_SNOVA_I_S_AES "SNOVA_I_S_AES"
+/** Algorithm identifier for SNOVA_I_X_AES */
+#define OQS_SIG_alg_snova_SNOVA_I_X_AES "SNOVA_I_X_AES"
+/** Algorithm identifier for SNOVA_III_K */
+#define OQS_SIG_alg_snova_SNOVA_III_K "SNOVA_III_K"
+/** Algorithm identifier for SNOVA_III_K_AES */
+#define OQS_SIG_alg_snova_SNOVA_III_K_AES "SNOVA_III_K_AES"
+/** Algorithm identifier for SNOVA_III_B */
+#define OQS_SIG_alg_snova_SNOVA_III_B "SNOVA_III_B"
+/** Algorithm identifier for SNOVA_III_B_AES */
+#define OQS_SIG_alg_snova_SNOVA_III_B_AES "SNOVA_III_B_AES"
+/** Algorithm identifier for SNOVA_III_S */
+#define OQS_SIG_alg_snova_SNOVA_III_S "SNOVA_III_S"
+/** Algorithm identifier for SNOVA_III_S_AES */
+#define OQS_SIG_alg_snova_SNOVA_III_S_AES "SNOVA_III_S_AES"
+/** Algorithm identifier for SNOVA_III_X_AES */
+#define OQS_SIG_alg_snova_SNOVA_III_X_AES "SNOVA_III_X_AES"
+/** Algorithm identifier for SNOVA_V_K */
+#define OQS_SIG_alg_snova_SNOVA_V_K "SNOVA_V_K"
+/** Algorithm identifier for SNOVA_V_K_AES */
+#define OQS_SIG_alg_snova_SNOVA_V_K_AES "SNOVA_V_K_AES"
+/** Algorithm identifier for SNOVA_V_B */
+#define OQS_SIG_alg_snova_SNOVA_V_B "SNOVA_V_B"
+/** Algorithm identifier for SNOVA_V_B_AES */
+#define OQS_SIG_alg_snova_SNOVA_V_B_AES "SNOVA_V_B_AES"
+/** Algorithm identifier for SNOVA_V_S */
+#define OQS_SIG_alg_snova_SNOVA_V_S "SNOVA_V_S"
+/** Algorithm identifier for SNOVA_V_S_AES */
+#define OQS_SIG_alg_snova_SNOVA_V_S_AES "SNOVA_V_S_AES"
 /** Algorithm identifier for mqom3_cat1_gf16_fast_ct */
 #define OQS_SIG_alg_mqom_mqom3_cat1_gf16_fast_ct "mqom3_cat1_gf16_fast_ct"
 /** Algorithm identifier for mqom3_cat1_gf16_fast_ot */
@@ -504,7 +520,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 74 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 82 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
