@@ -9,6 +9,20 @@
 /* XXX: NOTE: the following implementations are "weak" placeholders for
  * external implementations provided by the user */
 
+/* CONTRACT ON INPUT/OUTPUT ALIASING
+ *
+ * By default MQOM3 assumes an external backend SUPPORTS in-place encryption:
+ * the *_enc* routines below may be called with data_in == data_out, and are
+ * then expected to read their whole input group before writing any output.
+ * Every in-tree backend satisfies this, and the callers rely on it to drop one
+ * scratch buffer (see enc_local.h and prg.c).
+ *
+ * If your backend cannot honour that, build with RIJNDAEL_NO_INPUTS_ALIASING=1:
+ * the callers then stage through separate buffers and never alias the two
+ * pointers. This is an opt-out, not an opt-in - nothing detects a backend that
+ * writes before it has finished reading, so an implementation that needs the
+ * flag and is built without it produces wrong ciphertexts silently. */
+
 #ifdef PANIC
 #undef PANIC
 #endif
@@ -260,9 +274,13 @@ MAKE_GENERIC_FUNCS_XX_IMPL(aes128, external, 16, 16)
 MAKE_GENERIC_FUNCS_XX_IMPL(aes256, external, 32, 16)
 MAKE_GENERIC_FUNCS_XX_IMPL(rijndael256, external, 32, 32)
 
-#else /* */
+MAKE_GENERIC_FUNCS_ECB_IMPL(aes128, external, 16, 16)
+MAKE_GENERIC_FUNCS_ECB_IMPL(aes256, external, 32, 16)
+MAKE_GENERIC_FUNCS_ECB_IMPL(rijndael256, external, 32, 32)
+
+#else /* !RIJNDAEL_EXTERNAL */
 /*
  * Dummy definition to avoid the empty translation unit ISO C warning
  */
 typedef int dummy;
-#endif
+#endif /* RIJNDAEL_EXTERNAL */

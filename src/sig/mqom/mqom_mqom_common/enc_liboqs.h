@@ -27,6 +27,7 @@ typedef struct {
 	enc_ctx_x4 ctx1;
 	enc_ctx_x4 ctx2;
 } enc_ctx_x8;
+typedef enc_ctx enc_ctx_ecb;
 
 static inline int enc_key_sched(enc_ctx *ctx, const uint8_t key[16]) {
 	if ((ctx != NULL) && (ctx->magic == ENC_CTX_INIT_MAGIC) && (ctx->sched_keys != NULL)) {
@@ -34,9 +35,14 @@ static inline int enc_key_sched(enc_ctx *ctx, const uint8_t key[16]) {
 		OQS_AES128_free_schedule(ctx->sched_keys);
 		ctx->magic = 0;
 	}
-	OQS_AES128_ECB_load_schedule(key, &ctx->sched_keys);
-	ctx->magic = ENC_CTX_INIT_MAGIC;
+	if(ctx != NULL){
+		OQS_AES128_ECB_load_schedule(key, &ctx->sched_keys);
+		ctx->magic = ENC_CTX_INIT_MAGIC;
+	}
 	return 0;
+}
+static inline int enc_key_sched_ecb(enc_ctx_ecb *ctx, const uint8_t key[16]) {
+	return enc_key_sched(ctx, key);
 }
 static inline int enc_key_sched_x2(enc_ctx_x2 *ctx, const uint8_t key1[16], const uint8_t key2[16]) {
 	int ret;
@@ -64,7 +70,13 @@ static inline int enc_encrypt(const enc_ctx *ctx, const uint8_t pt[16], uint8_t 
 	OQS_AES128_ECB_enc_sch(pt, 16, ctx->sched_keys, ct);
 	return 0;
 }
-
+static inline int enc_encrypt_ecb(const enc_ctx_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	if ((ctx == NULL) || (ctx->magic != ENC_CTX_INIT_MAGIC)) {
+		return -1;
+	}
+	OQS_AES128_ECB_enc_sch(in, 16 * nblocks, ctx->sched_keys, out);
+	return 0;
+}
 static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const uint8_t pt1[16], const uint8_t pt2[16], uint8_t ct1[16], uint8_t ct2[16]) {
 	int ret = 0;
 
@@ -181,11 +193,14 @@ static inline void enc_uninit_ctx_x8(enc_ctx_x8 *ctx) {
 #define enc_ctx_pub_x2 enc_ctx_x2
 #define enc_ctx_pub_x4 enc_ctx_x4
 #define enc_ctx_pub_x8 enc_ctx_x8
+#define enc_ctx_pub_ecb enc_ctx_ecb
 /**/
 #define enc_key_sched_pub enc_key_sched
 #define enc_key_sched_pub_x2 enc_key_sched_x2
 #define enc_key_sched_pub_x4 enc_key_sched_x4
 #define enc_key_sched_pub_x8 enc_key_sched_x8
+#define enc_key_sched_ecb enc_key_sched
+#define enc_key_sched_pub_ecb enc_key_sched_ecb
 /**/
 #define enc_encrypt_pub enc_encrypt
 #define enc_encrypt_x2_pub enc_encrypt_x2
@@ -194,9 +209,14 @@ static inline void enc_uninit_ctx_x8(enc_ctx_x8 *ctx) {
 #define enc_encrypt_x2_pub_x2 enc_encrypt_x2_x2
 #define enc_encrypt_x4_pub_x4 enc_encrypt_x4_x4
 #define enc_encrypt_x8_pub_x8 enc_encrypt_x8_x8
+#define enc_encrypt_pub_ecb enc_encrypt_ecb
 /**/
 #define enc_clean_ctx_pub enc_clean_ctx
+#define enc_clean_ctx_ecb enc_clean_ctx
+#define enc_clean_ctx_pub_ecb enc_clean_ctx_ecb
 #define enc_uninit_ctx_pub enc_uninit_ctx
+#define enc_uninit_ctx_ecb enc_uninit_ctx
+#define enc_uninit_ctx_pub_ecb enc_uninit_ctx_ecb
 #define enc_clean_ctx_pub_x2 enc_clean_ctx_x2
 #define enc_uninit_ctx_pub_x2 enc_uninit_ctx_x2
 #define enc_clean_ctx_pub_x4 enc_clean_ctx_x4

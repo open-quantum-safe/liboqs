@@ -12,11 +12,13 @@ static inline void gf256_bitslice32_vect_unpack_pre_default(uint32_t x_bitsliced
 }
 
 static inline void gf256_bitslice32_vect_pack_gf2_default(uint8_t x, uint32_t x_bitsliced[8], uint32_t index32) {
-	x_bitsliced[0] |= (x << index32);
+	/* Cast before shifting: x is a uint8_t, so it would promote to int and
+	 * x << 31 would set the sign bit of a signed 32-bit type (UB). */
+	x_bitsliced[0] |= ((uint32_t) x << index32);
 }
 
 static inline void gf256_bitslice32_vect_pack_gf16_default(uint8_t x, uint32_t x_bitsliced[8], uint32_t index32) {
-	uint8_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
+	uint32_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
 	x_bitsliced[0] |= ((b0 ^ b2) << index32);
 	//x_bitsliced[1] |= ((0) << index32);
 	x_bitsliced[2] |= ((b2) << index32);
@@ -138,10 +140,6 @@ static inline void gf256_bitslice32_mult_hybrid_gf16_default(uint32_t res[8], ui
 	gf256_bitslice32_mult_hybrid_default(res, x, y);
 }
 
-static inline void gf256_bitslice32_mult_hybrid_gf256_default(uint32_t res[8], uint8_t x, const uint32_t y[8]) {
-	gf256_bitslice32_mult_hybrid_default(res, x, y);
-}
-
 #if defined(FIELDS_BITSLICE_PUBLIC_JUMP)
 static inline void gf256_bitslice32_mult_hybrid_public_default(uint32_t res[8], uint8_t x, const uint32_t y[8]) {
 	uint32_t y0 = y[0], y1 = y[1], y2 = y[2], y3 = y[3];
@@ -210,11 +208,13 @@ static inline void gf256to2_bitslice32_vect_unpack_pre_default(uint32_t x_bitsli
 }
 
 static inline void gf256to2_bitslice32_vect_pack_gf2_default(uint8_t x, uint32_t x_bitsliced[16], uint32_t index32) {
-	x_bitsliced[0] |= (x << index32);
+	/* Cast before shifting: x is a uint8_t, so it would promote to int and
+	 * x << 31 would set the sign bit of a signed 32-bit type (UB). */
+	x_bitsliced[0] |= ((uint32_t) x << index32);
 }
 
 static inline void gf256to2_bitslice32_vect_pack_gf16_default(uint8_t x, uint32_t x_bitsliced[16], uint32_t index32) {
-	uint8_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
+	uint32_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
 	x_bitsliced[0] |= ((b0 ^ b2) << index32);
 	//x_bitsliced[1] |= ((0) << index32);
 	x_bitsliced[2] |= ((b2) << index32);
@@ -223,13 +223,6 @@ static inline void gf256to2_bitslice32_vect_pack_gf16_default(uint8_t x, uint32_
 	x_bitsliced[5] |= ((b1 ^ b3) << index32);
 	x_bitsliced[6] |= ((b1 ^ b2) << index32);
 	x_bitsliced[7] |= ((b1 ^ b3) << index32);
-}
-
-static inline void gf256to2_bitslice32_vect_pack_gf256_default(uint8_t x, uint32_t x_bitsliced[16], uint32_t index32) {
-	for (uint32_t k = 0; k < 8; k++) {
-		uint32_t b = (x >> k) & 0x01;
-		x_bitsliced[k] |= (b << index32);
-	}
 }
 
 static inline void gf256to2_bitslice32_vect_pack_gf256to2_default(uint16_t x, uint32_t x_bitsliced[16], uint32_t index32) {
@@ -291,10 +284,6 @@ static inline void gf256to2_bitslice32_mult_hybrid_gf2_default(uint32_t res[16],
 
 static inline void gf256to2_bitslice32_mult_hybrid_gf16_default(uint32_t res[16], uint8_t x, const uint32_t y[16]) {
 	x = (x & 1) ^ (-((x >> 1) & 1) & 0xE0) ^ (-((x >> 2) & 1) & 0x5D) ^ (-(x >> 3) & 0xB0);
-	gf256to2_bitslice32_mult_hybrid_default(res, (uint16_t) x, y);
-}
-
-static inline void gf256to2_bitslice32_mult_hybrid_gf256_default(uint32_t res[16], uint8_t x, const uint32_t y[16]) {
 	gf256to2_bitslice32_mult_hybrid_default(res, (uint16_t) x, y);
 }
 

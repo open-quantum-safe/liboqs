@@ -61,15 +61,12 @@
 
 #endif
 
-typedef union {
-	uint32_t u;
-	unsigned char b[sizeof(uint32_t)];
-} br_union_u32;
-
 static inline uint32_t
 br_dec32le(const void *src) {
 #if BR_LE_UNALIGNED
-	return ((const br_union_u32 *)src)->u;
+	uint32_t u;
+	memcpy(&u, src, sizeof(u));
+	return u;
 #else
 	const unsigned char *buf;
 
@@ -84,7 +81,7 @@ br_dec32le(const void *src) {
 static inline void
 br_enc32le(void *dst, uint32_t x) {
 #if BR_LE_UNALIGNED
-	((br_union_u32 *)dst)->u = x;
+	memcpy(dst, &x, sizeof(x));
 #else
 	unsigned char *buf;
 
@@ -531,12 +528,13 @@ do {                                                            \
 
 #define BR_AES_CT64_KEYSCHED_NON_CT(ctx, key, rtype_) do { \
     uint32_t i;\
-    /* Get the round keys pointer as uint32_t (NOTE: buffer should be 4 bytes aligned) */\
-    uint32_t *RK = (uint32_t*)(ctx->rk);\
+    uint32_t *RK;\
 \
     if((ctx == NULL) || (key == NULL)){\
         goto err;\
     }\
+    /* Get the round keys pointer as uint32_t (NOTE: buffer should be 4 bytes aligned) */\
+    RK = (uint32_t*)(ctx->rk);\
     switch(rtype_){\
         case AES128:{\
             ctx->Nr = 10;\
@@ -717,17 +715,39 @@ do {                                                            \
                         br_aes_ct64_interleave_in(q1_, q5_, w2_);\
                         br_aes_ct64_interleave_in(q3_, q7_, w3_);\
             }\
+            else{\
+                /* comp_skey is not zero initialized, and br_aes_ct64_ortho()\
+                 * below transposes all eight words unconditionally: leaving a\
+                 * lane unfed would read indeterminate stack. */\
+                *q1_ = 0;\
+                *q5_ = 0;\
+                *q3_ = 0;\
+                *q7_ = 0;\
+            }\
         }\
         else{\
             br_aes_ct64_interleave_in(q0_, q4_, &ctx1->rk[i]);\
             if(ctx2 != NULL){\
                         br_aes_ct64_interleave_in(q1_, q5_, &ctx2->rk[i]);\
             }\
+            else{\
+                /* See above: every lane must be defined before the transpose. */\
+                *q1_ = 0;\
+                *q5_ = 0;\
+            }\
             if(ctx3 != NULL){\
                         br_aes_ct64_interleave_in(q2_, q6_, &ctx3->rk[i]);\
             }\
+            else{\
+                *q2_ = 0;\
+                *q6_ = 0;\
+            }\
             if(ctx4 != NULL){\
                         br_aes_ct64_interleave_in(q3_, q7_, &ctx4->rk[i]);\
+            }\
+            else{\
+                *q3_ = 0;\
+                *q7_ = 0;\
             }\
         }\
         /* Transpose */\

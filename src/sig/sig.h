@@ -144,30 +144,42 @@ extern "C" {
 #define OQS_SIG_alg_snova_SNOVA_60_10_4 "SNOVA_60_10_4"
 /** Algorithm identifier for SNOVA_29_6_5 */
 #define OQS_SIG_alg_snova_SNOVA_29_6_5 "SNOVA_29_6_5"
-/** Algorithm identifier for mqom2_cat1_gf16_fast_r3 */
-#define OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r3 "mqom2_cat1_gf16_fast_r3"
-/** Algorithm identifier for mqom2_cat1_gf16_fast_r5 */
-#define OQS_SIG_alg_mqom_mqom2_cat1_gf16_fast_r5 "mqom2_cat1_gf16_fast_r5"
-/** Algorithm identifier for mqom2_cat1_gf16_short_r3 */
-#define OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r3 "mqom2_cat1_gf16_short_r3"
-/** Algorithm identifier for mqom2_cat1_gf16_short_r5 */
-#define OQS_SIG_alg_mqom_mqom2_cat1_gf16_short_r5 "mqom2_cat1_gf16_short_r5"
-/** Algorithm identifier for mqom2_cat3_gf16_fast_r3 */
-#define OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r3 "mqom2_cat3_gf16_fast_r3"
-/** Algorithm identifier for mqom2_cat3_gf16_fast_r5 */
-#define OQS_SIG_alg_mqom_mqom2_cat3_gf16_fast_r5 "mqom2_cat3_gf16_fast_r5"
-/** Algorithm identifier for mqom2_cat3_gf16_short_r3 */
-#define OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r3 "mqom2_cat3_gf16_short_r3"
-/** Algorithm identifier for mqom2_cat3_gf16_short_r5 */
-#define OQS_SIG_alg_mqom_mqom2_cat3_gf16_short_r5 "mqom2_cat3_gf16_short_r5"
-/** Algorithm identifier for mqom2_cat5_gf16_fast_r3 */
-#define OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r3 "mqom2_cat5_gf16_fast_r3"
-/** Algorithm identifier for mqom2_cat5_gf16_fast_r5 */
-#define OQS_SIG_alg_mqom_mqom2_cat5_gf16_fast_r5 "mqom2_cat5_gf16_fast_r5"
-/** Algorithm identifier for mqom2_cat5_gf16_short_r3 */
-#define OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r3 "mqom2_cat5_gf16_short_r3"
-/** Algorithm identifier for mqom2_cat5_gf16_short_r5 */
-#define OQS_SIG_alg_mqom_mqom2_cat5_gf16_short_r5 "mqom2_cat5_gf16_short_r5"
+/** Algorithm identifier for mqom3_cat1_gf16_fast_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat1_gf16_fast_ct "mqom3_cat1_gf16_fast_ct"
+/** Algorithm identifier for mqom3_cat1_gf16_fast_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat1_gf16_fast_ot "mqom3_cat1_gf16_fast_ot"
+/** Algorithm identifier for mqom3_cat1_gf16_short_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat1_gf16_short_ct "mqom3_cat1_gf16_short_ct"
+/** Algorithm identifier for mqom3_cat1_gf16_short_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat1_gf16_short_ot "mqom3_cat1_gf16_short_ot"
+/** Algorithm identifier for mqom3_cat1_gf2_shorter_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat1_gf2_shorter_ct "mqom3_cat1_gf2_shorter_ct"
+/** Algorithm identifier for mqom3_cat1_gf2_shorter_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat1_gf2_shorter_ot "mqom3_cat1_gf2_shorter_ot"
+/** Algorithm identifier for mqom3_cat3_gf16_fast_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat3_gf16_fast_ct "mqom3_cat3_gf16_fast_ct"
+/** Algorithm identifier for mqom3_cat3_gf16_fast_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat3_gf16_fast_ot "mqom3_cat3_gf16_fast_ot"
+/** Algorithm identifier for mqom3_cat3_gf16_short_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat3_gf16_short_ct "mqom3_cat3_gf16_short_ct"
+/** Algorithm identifier for mqom3_cat3_gf16_short_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat3_gf16_short_ot "mqom3_cat3_gf16_short_ot"
+/** Algorithm identifier for mqom3_cat3_gf2_shorter_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat3_gf2_shorter_ct "mqom3_cat3_gf2_shorter_ct"
+/** Algorithm identifier for mqom3_cat3_gf2_shorter_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat3_gf2_shorter_ot "mqom3_cat3_gf2_shorter_ot"
+/** Algorithm identifier for mqom3_cat5_gf16_fast_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat5_gf16_fast_ct "mqom3_cat5_gf16_fast_ct"
+/** Algorithm identifier for mqom3_cat5_gf16_fast_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat5_gf16_fast_ot "mqom3_cat5_gf16_fast_ot"
+/** Algorithm identifier for mqom3_cat5_gf16_short_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat5_gf16_short_ct "mqom3_cat5_gf16_short_ct"
+/** Algorithm identifier for mqom3_cat5_gf16_short_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat5_gf16_short_ot "mqom3_cat5_gf16_short_ot"
+/** Algorithm identifier for mqom3_cat5_gf2_shorter_ct */
+#define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ct "mqom3_cat5_gf2_shorter_ct"
+/** Algorithm identifier for mqom3_cat5_gf2_shorter_ot */
+#define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot "mqom3_cat5_gf2_shorter_ot"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 /** Algorithm identifier for slh_dsa_pure_sha2_128s */
@@ -492,7 +504,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 68 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 74 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

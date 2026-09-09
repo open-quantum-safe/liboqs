@@ -10,11 +10,6 @@ static inline void field_gf2_vect_pack(uint8_t elt, uint8_t *packed_elt, uint32_
 	packed_elt[index / 8] |= (elt << (index % 8));
 	return;
 }
-static inline void field_gf4_vect_pack(uint8_t elt, uint8_t *packed_elt, uint32_t index) {
-	packed_elt[index / 4] &= ~(0x03 << (2 * (index % 4)));
-	packed_elt[index / 4] |= (elt << (2 * (index % 4)));
-	return;
-}
 static inline void field_gf16_vect_pack(uint8_t elt, uint8_t *packed_elt, uint32_t index) {
 	packed_elt[index / 2] &= ~(0x0F << (4 * (index % 2)));
 	packed_elt[index / 2] |= (elt << (4 * (index % 2)));
@@ -33,9 +28,6 @@ static inline void field_gf256to2_vect_pack(uint16_t elt, uint16_t *packed_elt, 
 static inline uint8_t field_gf2_vect_unpack(const uint8_t *packed_elt, uint32_t index) {
 	return (packed_elt[index / 8] >> (index % 8)) & 1;
 }
-static inline uint8_t field_gf4_vect_unpack(const uint8_t *packed_elt, uint32_t index) {
-	return (packed_elt[index / 4] >> (2 * (index % 4))) & 0x03;
-}
 static inline uint8_t field_gf16_vect_unpack(const uint8_t *packed_elt, uint32_t index) {
 	return (packed_elt[index / 2] >> (4 * (index % 2))) & 0x0F;
 }
@@ -50,19 +42,6 @@ static inline uint16_t field_gf256to2_vect_unpack(const uint16_t *packed_elt, ui
 static inline void field_gf2_parse(const uint8_t *in_string, uint32_t num_bits, uint8_t *elements) {
 	uint32_t num_bytes = num_bits / 8;
 	uint8_t leftover = (uint8_t)(num_bits % 8);
-
-	/* Memcpy as much elements as we can */
-	memcpy(elements, in_string, num_bytes);
-	/* Deal with the possible last left over bits */
-	if (leftover) {
-		uint8_t mask = ((1 << leftover) - 1);
-		elements[num_bytes] = in_string[num_bytes] & mask;
-	}
-	return;
-}
-static inline void field_gf4_parse(const uint8_t *in_string, uint32_t num, uint8_t *elements) {
-	uint32_t num_bytes = num / 4;
-	uint8_t leftover = 2 * ((uint8_t)(num % 4));
 
 	/* Memcpy as much elements as we can */
 	memcpy(elements, in_string, num_bytes);
@@ -112,13 +91,6 @@ static inline void field_gf2_serialize(const uint8_t *elements, uint32_t num, ui
 	     * NOTE: in the serialization cases, we only deal with number of bits multiple of bytes
 	 * */
 	memcpy(out_string, elements, (num / 8));
-	return;
-}
-static inline void field_gf4_serialize(const uint8_t *elements, uint32_t num, uint8_t *out_string) {
-	/* This is simply a memcpy
-	     * NOTE: in the serialization cases, we only deal with number of bits multiple of bytes
-	 * */
-	memcpy(out_string, elements, (num / 4));
 	return;
 }
 static inline void field_gf16_serialize(const uint8_t *elements, uint32_t num, uint8_t *out_string) {

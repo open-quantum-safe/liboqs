@@ -665,78 +665,6 @@
         ENC_256_BLOCK_LAST_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[28], k2[28], k3[28], k4[28], k1[29], k2[29], k3[29], k4[29], mblend, mshuff); \
     }while(0)
 
-
-/* X8 variant */
-#define DO_ENC_BLOCK_256_256_x8(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k1, k2, k3, k4, k5, k6, k7, k8) \
-    do{\
-        /* ShiftRows compensation constants */      \
-        const __m128i mblend = _mm_set_epi32(0x80000000, 0x80800000, 0x80800000, 0x80808000); \
-        const __m128i mshuff = _mm_set_epi32(0x03020d0c, 0x0f0e0908, 0x0b0a0504, 0x07060100); \
-        /**/                        \
-        ml1 = _mm_xor_si128       (ml1, k1[ 0]);        \
-        ml2 = _mm_xor_si128       (ml2, k2[ 0]);        \
-        mr1 = _mm_xor_si128       (mr1, k1[ 1]);        \
-        mr2 = _mm_xor_si128       (mr2, k2[ 1]);        \
-        \
-        ml3 = _mm_xor_si128       (ml3, k3[ 0]);        \
-        ml4 = _mm_xor_si128       (ml4, k4[ 0]);        \
-        mr3 = _mm_xor_si128       (mr3, k3[ 1]);        \
-        mr4 = _mm_xor_si128       (mr4, k4[ 1]);        \
-        \
-        ml5 = _mm_xor_si128       (ml5, k5[ 0]);        \
-        ml6 = _mm_xor_si128       (ml6, k6[ 0]);        \
-        mr5 = _mm_xor_si128       (mr5, k5[ 1]);        \
-        mr6 = _mm_xor_si128       (mr6, k6[ 1]);        \
-        \
-        ml7 = _mm_xor_si128       (ml7, k7[ 0]);        \
-        ml8 = _mm_xor_si128       (ml8, k8[ 0]);        \
-        mr7 = _mm_xor_si128       (mr7, k7[ 1]);        \
-        mr8 = _mm_xor_si128       (mr8, k8[ 1]);        \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[2], k2[2], k3[2], k4[2], k1[3], k2[3], k3[3], k4[3], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[2], k6[2], k7[2], k8[2], k5[3], k6[3], k7[3], k8[3], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[4], k2[4], k3[4], k4[4], k1[5], k2[5], k3[5], k4[5], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[4], k6[4], k7[4], k8[4], k5[5], k6[5], k7[5], k8[5], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[6], k2[6], k3[6], k4[6], k1[7], k2[7], k3[7], k4[7], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[6], k6[6], k7[6], k8[6], k5[7], k6[7], k7[7], k8[7], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[8], k2[8], k3[8], k4[8], k1[9], k2[9], k3[9], k4[9], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[8], k6[8], k7[8], k8[8], k5[9], k6[9], k7[9], k8[9], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[10], k2[10], k3[10], k4[10], k1[11], k2[11], k3[11], k4[11], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[10], k6[10], k7[10], k8[10], k5[11], k6[11], k7[11], k8[11], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[12], k2[12], k3[12], k4[12], k1[13], k2[13], k3[13], k4[13], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[12], k6[12], k7[12], k8[12], k5[13], k6[13], k7[13], k8[13], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[14], k2[14], k3[14], k4[14], k1[15], k2[15], k3[15], k4[15], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[14], k6[14], k7[14], k8[14], k5[15], k6[15], k7[15], k8[15], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[16], k2[16], k3[16], k4[16], k1[17], k2[17], k3[17], k4[17], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[16], k6[16], k7[16], k8[16], k5[17], k6[17], k7[17], k8[17], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[18], k2[18], k3[18], k4[18], k1[19], k2[19], k3[19], k4[19], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[18], k6[18], k7[18], k8[18], k5[19], k6[19], k7[19], k8[19], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[20], k2[20], k3[20], k4[20], k1[21], k2[21], k3[21], k4[21], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[20], k6[20], k7[20], k8[20], k5[21], k6[21], k7[21], k8[21], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[22], k2[22], k3[22], k4[22], k1[23], k2[23], k3[23], k4[23], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[22], k6[22], k7[22], k8[22], k5[23], k6[23], k7[23], k8[23], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[24], k2[24], k3[24], k4[24], k1[25], k2[25], k3[25], k4[25], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[24], k6[24], k7[24], k8[24], k5[25], k6[25], k7[25], k8[25], mblend, mshuff); \
-        \
-        ENC_256_BLOCK_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[26], k2[26], k3[26], k4[26], k1[27], k2[27], k3[27], k4[27], mblend, mshuff); \
-        ENC_256_BLOCK_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[26], k6[26], k7[26], k8[26], k5[27], k6[27], k7[27], k8[27], mblend, mshuff); \
-        \
-        /**/                        \
-        ENC_256_BLOCK_LAST_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, k1[28], k2[28], k3[28], k4[28], k1[29], k2[29], k3[29], k4[29], mblend, mshuff); \
-        ENC_256_BLOCK_LAST_x4(ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8, k5[28], k6[28], k7[28], k8[28], k5[29], k6[29], k7[29], k8[29], mblend, mshuff); \
-    }while(0)
-
 #define AES_128_key_exp(k, rcon) aes_128_key_expansion(k, _mm_aeskeygenassist_si128(k, rcon))
 
 static inline __m128i aes_128_key_expansion(__m128i key, __m128i keygened) {
@@ -774,7 +702,12 @@ static inline void KEY_256_ASSIST_2(__m128i* temp1, __m128i * temp3) {
 /* ==== Public APIs ===== */
 
 WEAK int aes128_aes_ni_setkey_enc(rijndael_aes_ni_ctx_aes128 *ctx, const uint8_t enc_key[16]) {
-	__m128i *Key_Schedule = (__m128i*)ctx->rk;
+	__m128i *Key_Schedule;
+
+	if ((ctx == NULL) || (enc_key == NULL)) {
+		return -1;
+	}
+	Key_Schedule = (__m128i*)ctx->rk;
 	/**/
 	ctx->rtype = AES128;
 	/**/
@@ -796,7 +729,12 @@ WEAK int aes128_aes_ni_setkey_enc(rijndael_aes_ni_ctx_aes128 *ctx, const uint8_t
 
 WEAK int aes256_aes_ni_setkey_enc(rijndael_aes_ni_ctx_aes256 *ctx, const uint8_t enc_key[32]) {
 	__m128i temp1, temp2, temp3;
-	__m128i *Key_Schedule = (__m128i*)ctx->rk;
+	__m128i *Key_Schedule;
+
+	if ((ctx == NULL) || (enc_key == NULL)) {
+		return -1;
+	}
+	Key_Schedule = (__m128i*)ctx->rk;
 	/**/
 	ctx->rtype = AES256;
 	/**/
@@ -843,7 +781,12 @@ WEAK int aes256_aes_ni_setkey_enc(rijndael_aes_ni_ctx_aes256 *ctx, const uint8_t
 
 WEAK int rijndael256_aes_ni_setkey_enc(rijndael_aes_ni_ctx_rijndael256 *ctx, const uint8_t enc_key[32]) {
 	__m128i temp1, temp2, temp3;
-	__m128i *Key_Schedule = (__m128i*)ctx->rk;
+	__m128i *Key_Schedule;
+
+	if ((ctx == NULL) || (enc_key == NULL)) {
+		return -1;
+	}
+	Key_Schedule = (__m128i*)ctx->rk;
 	/**/
 	ctx->rtype = RIJNDAEL_256_256;
 	/**/
@@ -1305,7 +1248,6 @@ WEAK int rijndael256_aes_ni_enc_x8(const rijndael_aes_ni_ctx_rijndael256 *ctx1, 
                                    const uint8_t plainText5[32], const uint8_t plainText6[32], const uint8_t plainText7[32], const uint8_t plainText8[32],
                                    uint8_t cipherText1[32], uint8_t cipherText2[32], uint8_t cipherText3[32], uint8_t cipherText4[32],
                                    uint8_t cipherText5[32], uint8_t cipherText6[32], uint8_t cipherText7[32], uint8_t cipherText8[32]) {
-	__m128i ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8;
 	int ret = -1;
 
 	if ((ctx1 == NULL) || (ctx1->rtype != RIJNDAEL_256_256)) {
@@ -1333,55 +1275,258 @@ WEAK int rijndael256_aes_ni_enc_x8(const rijndael_aes_ni_ctx_rijndael256 *ctx1, 
 		goto err;
 	}
 
-	ml1 = _mm_loadu_si128((__m128i *) &plainText1[0]);
-	mr1 = _mm_loadu_si128((__m128i *) &plainText1[16]);
-	ml2 = _mm_loadu_si128((__m128i *) &plainText2[0]);
-	mr2 = _mm_loadu_si128((__m128i *) &plainText2[16]);
-	ml3 = _mm_loadu_si128((__m128i *) &plainText3[0]);
-	mr3 = _mm_loadu_si128((__m128i *) &plainText3[16]);
-	ml4 = _mm_loadu_si128((__m128i *) &plainText4[0]);
-	mr4 = _mm_loadu_si128((__m128i *) &plainText4[16]);
-	ml5 = _mm_loadu_si128((__m128i *) &plainText5[0]);
-	mr5 = _mm_loadu_si128((__m128i *) &plainText5[16]);
-	ml6 = _mm_loadu_si128((__m128i *) &plainText6[0]);
-	mr6 = _mm_loadu_si128((__m128i *) &plainText6[16]);
-	ml7 = _mm_loadu_si128((__m128i *) &plainText7[0]);
-	mr7 = _mm_loadu_si128((__m128i *) &plainText7[16]);
-	ml8 = _mm_loadu_si128((__m128i *) &plainText8[0]);
-	mr8 = _mm_loadu_si128((__m128i *) &plainText8[16]);
+	ret = rijndael256_aes_ni_enc_x4(ctx1, ctx2, ctx3, ctx4,
+		plainText1, plainText2, plainText3, plainText4,
+		cipherText1, cipherText2, cipherText3, cipherText4);
+	if (ret) {
+		return ret;
+	}
 
-	DO_ENC_BLOCK_256_256_x8(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, ml5, mr5, ml6, mr6, ml7, mr7, ml8, mr8,
-	                        ctx1->rk, ctx2->rk, ctx3->rk, ctx4->rk, ctx5->rk, ctx6->rk, ctx7->rk, ctx8->rk);
-
-	_mm_storeu_si128((__m128i *) &cipherText1[0], ml1);
-	_mm_storeu_si128((__m128i *) &cipherText1[16], mr1);
-	_mm_storeu_si128((__m128i *) &cipherText2[0], ml2);
-	_mm_storeu_si128((__m128i *) &cipherText2[16], mr2);
-	_mm_storeu_si128((__m128i *) &cipherText3[0], ml3);
-	_mm_storeu_si128((__m128i *) &cipherText3[16], mr3);
-	_mm_storeu_si128((__m128i *) &cipherText4[0], ml4);
-	_mm_storeu_si128((__m128i *) &cipherText4[16], mr4);
-	_mm_storeu_si128((__m128i *) &cipherText5[0], ml5);
-	_mm_storeu_si128((__m128i *) &cipherText5[16], mr5);
-	_mm_storeu_si128((__m128i *) &cipherText6[0], ml6);
-	_mm_storeu_si128((__m128i *) &cipherText6[16], mr6);
-	_mm_storeu_si128((__m128i *) &cipherText7[0], ml7);
-	_mm_storeu_si128((__m128i *) &cipherText7[16], mr7);
-	_mm_storeu_si128((__m128i *) &cipherText8[0], ml8);
-	_mm_storeu_si128((__m128i *) &cipherText8[16], mr8);
-
-	ret = 0;
+	return rijndael256_aes_ni_enc_x4(ctx5, ctx6, ctx7, ctx8,
+		plainText5, plainText6, plainText7, plainText8,
+		cipherText5, cipherText6, cipherText7, cipherText8);
 err:
 	return ret;
 }
 
-MAKE_GENERIC_FUNCS_XX_IMPL(aes128, aes_ni, 16, 16)
-MAKE_GENERIC_FUNCS_XX_IMPL(aes256, aes_ni, 32, 16)
-MAKE_GENERIC_FUNCS_XX_IMPL(rijndael256, aes_ni, 32, 32)
+
+MAKE_GENERIC_SETKEY_XX_IMPL(aes128, aes_ni, 16, 16)
+MAKE_GENERIC_SETKEY_XX_IMPL(aes256, aes_ni, 32, 16)
+MAKE_GENERIC_SETKEY_XX_IMPL(rijndael256, aes_ni, 32, 32)
+MAKE_PARALLEL_FUNCS_XX_IMPL(aes128, aes_ni, 16)
+MAKE_PARALLEL_FUNCS_XX_IMPL(aes256, aes_ni, 16)
+MAKE_PARALLEL_FUNCS_XX_IMPL(rijndael256, aes_ni, 32)
+
+/* AES-128 / AES-256 ECB: dedicated same-key implementations instead of
+ * MAKE_PARALLEL_FUNCS_ECB_IMPL.
+ */
+static inline void aes128_aes_ni_ecb_samekey8(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1, m2, m3, m4, m5, m6, m7, m8;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 16]);
+	m2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 16]);
+	m3 = _mm_loadu_si128((const __m128i *)(const void *)&in[2 * 16]);
+	m4 = _mm_loadu_si128((const __m128i *)(const void *)&in[3 * 16]);
+	m5 = _mm_loadu_si128((const __m128i *)(const void *)&in[4 * 16]);
+	m6 = _mm_loadu_si128((const __m128i *)(const void *)&in[5 * 16]);
+	m7 = _mm_loadu_si128((const __m128i *)(const void *)&in[6 * 16]);
+	m8 = _mm_loadu_si128((const __m128i *)(const void *)&in[7 * 16]);
+	DO_ENC_BLOCK_128_128_x8(m1, m2, m3, m4, m5, m6, m7, m8, rk, rk, rk, rk, rk, rk, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 16], m1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 16], m2);
+	_mm_storeu_si128((__m128i *)(void *)&out[2 * 16], m3);
+	_mm_storeu_si128((__m128i *)(void *)&out[3 * 16], m4);
+	_mm_storeu_si128((__m128i *)(void *)&out[4 * 16], m5);
+	_mm_storeu_si128((__m128i *)(void *)&out[5 * 16], m6);
+	_mm_storeu_si128((__m128i *)(void *)&out[6 * 16], m7);
+	_mm_storeu_si128((__m128i *)(void *)&out[7 * 16], m8);
+}
+
+static inline void aes128_aes_ni_ecb_samekey4(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1, m2, m3, m4;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 16]);
+	m2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 16]);
+	m3 = _mm_loadu_si128((const __m128i *)(const void *)&in[2 * 16]);
+	m4 = _mm_loadu_si128((const __m128i *)(const void *)&in[3 * 16]);
+	DO_ENC_BLOCK_128_128_x4(m1, m2, m3, m4, rk, rk, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 16], m1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 16], m2);
+	_mm_storeu_si128((__m128i *)(void *)&out[2 * 16], m3);
+	_mm_storeu_si128((__m128i *)(void *)&out[3 * 16], m4);
+}
+
+static inline void aes128_aes_ni_ecb_samekey2(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1, m2;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 16]);
+	m2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 16]);
+	DO_ENC_BLOCK_128_128_x2(m1, m2, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 16], m1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 16], m2);
+}
+
+static inline void aes128_aes_ni_ecb_samekey1(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0]);
+	DO_ENC_BLOCK_128_128(m1, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0], m1);
+}
+
+static inline void aes256_aes_ni_ecb_samekey8(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1, m2, m3, m4, m5, m6, m7, m8;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 16]);
+	m2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 16]);
+	m3 = _mm_loadu_si128((const __m128i *)(const void *)&in[2 * 16]);
+	m4 = _mm_loadu_si128((const __m128i *)(const void *)&in[3 * 16]);
+	m5 = _mm_loadu_si128((const __m128i *)(const void *)&in[4 * 16]);
+	m6 = _mm_loadu_si128((const __m128i *)(const void *)&in[5 * 16]);
+	m7 = _mm_loadu_si128((const __m128i *)(const void *)&in[6 * 16]);
+	m8 = _mm_loadu_si128((const __m128i *)(const void *)&in[7 * 16]);
+	DO_ENC_BLOCK_128_256_x8(m1, m2, m3, m4, m5, m6, m7, m8, rk, rk, rk, rk, rk, rk, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 16], m1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 16], m2);
+	_mm_storeu_si128((__m128i *)(void *)&out[2 * 16], m3);
+	_mm_storeu_si128((__m128i *)(void *)&out[3 * 16], m4);
+	_mm_storeu_si128((__m128i *)(void *)&out[4 * 16], m5);
+	_mm_storeu_si128((__m128i *)(void *)&out[5 * 16], m6);
+	_mm_storeu_si128((__m128i *)(void *)&out[6 * 16], m7);
+	_mm_storeu_si128((__m128i *)(void *)&out[7 * 16], m8);
+}
+
+static inline void aes256_aes_ni_ecb_samekey4(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1, m2, m3, m4;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 16]);
+	m2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 16]);
+	m3 = _mm_loadu_si128((const __m128i *)(const void *)&in[2 * 16]);
+	m4 = _mm_loadu_si128((const __m128i *)(const void *)&in[3 * 16]);
+	DO_ENC_BLOCK_128_256_x4(m1, m2, m3, m4, rk, rk, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 16], m1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 16], m2);
+	_mm_storeu_si128((__m128i *)(void *)&out[2 * 16], m3);
+	_mm_storeu_si128((__m128i *)(void *)&out[3 * 16], m4);
+}
+
+static inline void aes256_aes_ni_ecb_samekey2(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1, m2;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 16]);
+	m2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 16]);
+	DO_ENC_BLOCK_128_256_x2(m1, m2, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 16], m1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 16], m2);
+}
+
+static inline void aes256_aes_ni_ecb_samekey1(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i m1;
+	m1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0]);
+	DO_ENC_BLOCK_128_256(m1, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0], m1);
+}
+
+WEAK int aes128_aes_ni_setkey_enc_ecb(rijndael_aes_ni_ctx_aes128_ecb *ctx, const uint8_t key[16]) {
+	return aes128_aes_ni_setkey_enc(ctx, key);
+}
+
+WEAK int aes128_aes_ni_enc_ecb(const rijndael_aes_ni_ctx_aes128_ecb *ctx, uint32_t nblocks, const uint8_t *in, uint8_t *out) {
+	uint32_t i = 0;
+
+	if ((ctx == NULL) || (ctx->rtype != AES128)) {
+		return -1;
+	}
+	for (; (i + 8) <= nblocks; i += 8) {
+		aes128_aes_ni_ecb_samekey8(ctx->rk, &in[i * 16], &out[i * 16]);
+	}
+	if ((nblocks - i) >= 4) {
+		aes128_aes_ni_ecb_samekey4(ctx->rk, &in[i * 16], &out[i * 16]);
+		i += 4;
+	}
+	if ((nblocks - i) >= 2) {
+		aes128_aes_ni_ecb_samekey2(ctx->rk, &in[i * 16], &out[i * 16]);
+		i += 2;
+	}
+	if (i < nblocks) {
+		aes128_aes_ni_ecb_samekey1(ctx->rk, &in[i * 16], &out[i * 16]);
+	}
+	return 0;
+}
+
+WEAK int aes256_aes_ni_setkey_enc_ecb(rijndael_aes_ni_ctx_aes256_ecb *ctx, const uint8_t key[32]) {
+	return aes256_aes_ni_setkey_enc(ctx, key);
+}
+
+WEAK int aes256_aes_ni_enc_ecb(const rijndael_aes_ni_ctx_aes256_ecb *ctx, uint32_t nblocks, const uint8_t *in, uint8_t *out) {
+	uint32_t i = 0;
+
+	if ((ctx == NULL) || (ctx->rtype != AES256)) {
+		return -1;
+	}
+	for (; (i + 8) <= nblocks; i += 8) {
+		aes256_aes_ni_ecb_samekey8(ctx->rk, &in[i * 16], &out[i * 16]);
+	}
+	if ((nblocks - i) >= 4) {
+		aes256_aes_ni_ecb_samekey4(ctx->rk, &in[i * 16], &out[i * 16]);
+		i += 4;
+	}
+	if ((nblocks - i) >= 2) {
+		aes256_aes_ni_ecb_samekey2(ctx->rk, &in[i * 16], &out[i * 16]);
+		i += 2;
+	}
+	if (i < nblocks) {
+		aes256_aes_ni_ecb_samekey1(ctx->rk, &in[i * 16], &out[i * 16]);
+	}
+	return 0;
+}
+
+/* Rijndael-256 ECB: same treatment as AES-128/AES-256 above. Rijndael-256 has
+ * 30 round keys, so the redundant reload the generic macro forces is even
+ * larger here: 120 round-key loads per 4-block group instead of 30. */
+static inline void rijndael256_aes_ni_ecb_samekey4(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4;
+	ml1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 32]);
+	mr1 = _mm_loadu_si128((const __m128i *)(const void *)&in[(0 * 32) + 16]);
+	ml2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 32]);
+	mr2 = _mm_loadu_si128((const __m128i *)(const void *)&in[(1 * 32) + 16]);
+	ml3 = _mm_loadu_si128((const __m128i *)(const void *)&in[2 * 32]);
+	mr3 = _mm_loadu_si128((const __m128i *)(const void *)&in[(2 * 32) + 16]);
+	ml4 = _mm_loadu_si128((const __m128i *)(const void *)&in[3 * 32]);
+	mr4 = _mm_loadu_si128((const __m128i *)(const void *)&in[(3 * 32) + 16]);
+	DO_ENC_BLOCK_256_256_x4(ml1, mr1, ml2, mr2, ml3, mr3, ml4, mr4, rk, rk, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 32], ml1);
+	_mm_storeu_si128((__m128i *)(void *)&out[(0 * 32) + 16], mr1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 32], ml2);
+	_mm_storeu_si128((__m128i *)(void *)&out[(1 * 32) + 16], mr2);
+	_mm_storeu_si128((__m128i *)(void *)&out[2 * 32], ml3);
+	_mm_storeu_si128((__m128i *)(void *)&out[(2 * 32) + 16], mr3);
+	_mm_storeu_si128((__m128i *)(void *)&out[3 * 32], ml4);
+	_mm_storeu_si128((__m128i *)(void *)&out[(3 * 32) + 16], mr4);
+}
+
+static inline void rijndael256_aes_ni_ecb_samekey2(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i ml1, mr1, ml2, mr2;
+	ml1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0 * 32]);
+	mr1 = _mm_loadu_si128((const __m128i *)(const void *)&in[(0 * 32) + 16]);
+	ml2 = _mm_loadu_si128((const __m128i *)(const void *)&in[1 * 32]);
+	mr2 = _mm_loadu_si128((const __m128i *)(const void *)&in[(1 * 32) + 16]);
+	DO_ENC_BLOCK_256_256_x2(ml1, mr1, ml2, mr2, rk, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0 * 32], ml1);
+	_mm_storeu_si128((__m128i *)(void *)&out[(0 * 32) + 16], mr1);
+	_mm_storeu_si128((__m128i *)(void *)&out[1 * 32], ml2);
+	_mm_storeu_si128((__m128i *)(void *)&out[(1 * 32) + 16], mr2);
+}
+
+static inline void rijndael256_aes_ni_ecb_samekey1(const __m128i *rk, const uint8_t *in, uint8_t *out) {
+	__m128i ml1, mr1;
+	ml1 = _mm_loadu_si128((const __m128i *)(const void *)&in[0]);
+	mr1 = _mm_loadu_si128((const __m128i *)(const void *)&in[16]);
+	DO_ENC_BLOCK_256_256(ml1, mr1, rk);
+	_mm_storeu_si128((__m128i *)(void *)&out[0], ml1);
+	_mm_storeu_si128((__m128i *)(void *)&out[16], mr1);
+}
+
+WEAK int rijndael256_aes_ni_setkey_enc_ecb(rijndael_aes_ni_ctx_rijndael256_ecb *ctx, const uint8_t key[32]) {
+	return rijndael256_aes_ni_setkey_enc(ctx, key);
+}
+
+WEAK int rijndael256_aes_ni_enc_ecb(const rijndael_aes_ni_ctx_rijndael256_ecb *ctx, uint32_t nblocks, const uint8_t *in, uint8_t *out) {
+	uint32_t i = 0;
+
+	if ((ctx == NULL) || (ctx->rtype != RIJNDAEL_256_256)) {
+		return -1;
+	}
+	for (; (i + 4) <= nblocks; i += 4) {
+		rijndael256_aes_ni_ecb_samekey4(ctx->rk, &in[i * 32], &out[i * 32]);
+	}
+	if ((nblocks - i) >= 2) {
+		rijndael256_aes_ni_ecb_samekey2(ctx->rk, &in[i * 32], &out[i * 32]);
+		i += 2;
+	}
+	if (i < nblocks) {
+		rijndael256_aes_ni_ecb_samekey1(ctx->rk, &in[i * 32], &out[i * 32]);
+	}
+	return 0;
+}
+
 
 #else /* !RIJNDAEL_AES_NI */
 /*
  * Dummy definition to avoid the empty translation unit ISO C warning
  */
 typedef int dummy;
-#endif
+#endif /* RIJNDAEL_AES_NI */
