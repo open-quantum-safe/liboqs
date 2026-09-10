@@ -13,4 +13,4 @@ for filename in os.listdir("."):
         print("added %s with KATSHA %s" % (alg, d[alg]))
 
 with open("kats.json", "w") as f:
-   json.dumps(d, f, indent=2, sort_keys=True)
+   json.dump(d, f, indent=2, sort_keys=True)
