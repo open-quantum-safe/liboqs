@@ -30,42 +30,6 @@
   "ML-DSA-44": [],
   "ML-DSA-65": [],
   "ML-DSA-87": [],
-  "SNOVA_24_5_4": [
-    "snova"
-  ],
-  "SNOVA_24_5_4_SHAKE": [
-    "snova"
-  ],
-  "SNOVA_24_5_4_SHAKE_esk": [
-    "snova"
-  ],
-  "SNOVA_24_5_4_esk": [
-    "snova"
-  ],
-  "SNOVA_24_5_5": [
-    "snova"
-  ],
-  "SNOVA_25_8_3": [
-    "snova"
-  ],
-  "SNOVA_29_6_5": [
-    "snova"
-  ],
-  "SNOVA_37_17_2": [
-    "snova"
-  ],
-  "SNOVA_37_8_4": [
-    "snova"
-  ],
-  "SNOVA_49_11_3": [
-    "snova"
-  ],
-  "SNOVA_56_25_2": [
-    "snova"
-  ],
-  "SNOVA_60_10_4": [
-    "snova"
-  ],
   "cross-rsdp-128-balanced": [
     "cross"
   ],
@@ -173,5 +137,25 @@
   ],
   "mqom3_cat5_gf2_shorter_ot": [
     "mqom"
-  ]
+  ],
+  "SNOVA_I_K": ["snova"],
+  "SNOVA_I_K_AES": ["snova"],
+  "SNOVA_I_B": ["snova"],
+  "SNOVA_I_B_AES": ["snova"],
+  "SNOVA_I_S": ["snova"],
+  "SNOVA_I_S_AES": ["snova"],
+  "SNOVA_I_X_AES": ["snova"],
+  "SNOVA_III_K": ["snova"],
+  "SNOVA_III_K_AES": ["snova"],
+  "SNOVA_III_B": ["snova"],
+  "SNOVA_III_B_AES": ["snova"],
+  "SNOVA_III_S": ["snova"],
+  "SNOVA_III_S_AES": ["snova"],
+  "SNOVA_III_X_AES": ["snova"],
+  "SNOVA_V_K": ["snova"],
+  "SNOVA_V_K_AES": ["snova"],
+  "SNOVA_V_B": ["snova"],
+  "SNOVA_V_B_AES": ["snova"],
+  "SNOVA_V_S": ["snova"],
+  "SNOVA_V_S_AES": ["snova"]
 }

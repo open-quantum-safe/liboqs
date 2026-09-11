@@ -4,33 +4,35 @@ principal-submitters:
 - Lih-Chung Wang
 - Chun-Yen Chou
 - Jintai Ding
+- Hao Guo
 - Yen-Liang Kuan
 - Jan Adriaan Leegwater
 - Ming-Siou Li
+- Peigen Li
 - Bo-Shu Tseng
 - Po-En Tseng
 - Chia-Chun Wang
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://snova.pqclab.org/
-nist-round: 2
-standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/snova-spec-round2-web.pdf)
+nist-round: 3
+standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-3/spec-files/snova-spec-round3-web.pdf)
   consideration
+spec-version: 3.0
 upstream-maintenance: Best effort
 upstream-statement-url: null
 oqs-support-tier: 3
-spec-version: Round 2
 primary-upstream:
-  source: https://github.com/vacuas/SNOVA/commit/1c3ca6f4f7286c0bde98d7d6f222cf63b9d52bff
-    with copy_from_upstream patches
+  source: https://github.com/PQCLAB-SNOVA/S/commit/9b29c1e332cbd85757c8d6362a57b9a8c8298a38
   spdx-license-identifier: MIT
 parameter-sets:
-- name: SNOVA_24_5_4
-  oqs_alg: OQS_SIG_alg_snova_24_5_4
+- name: SNOVA_I_K
+  alias: snova1k
+  oqs_alg: OQS_SIG_alg_SNOVA_I_K
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 1016
-  length-secret-key: 48
-  length-signature: 248
+  length-public-key: 376
+  length-secret-key: 96
+  length-signature: 528
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -70,13 +72,24 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SNOVA_24_5_4_SHAKE
-  oqs_alg: OQS_SIG_alg_SNOVA_24_5_4_SHAKE
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_I_K_AES
+  alias: snova1ka
+  oqs_alg: OQS_SIG_alg_SNOVA_I_K_AES
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 1016
-  length-secret-key: 48
-  length-signature: 248
+  length-public-key: 376
+  length-secret-key: 96
+  length-signature: 528
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -116,13 +129,24 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SNOVA_24_5_4_esk
-  oqs_alg: OQS_SIG_alg_snova_24_5_4_esk
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_I_B
+  alias: snova1b
+  oqs_alg: OQS_SIG_alg_SNOVA_I_B
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 1016
-  length-secret-key: 36848
-  length-signature: 248
+  length-public-key: 656
+  length-secret-key: 96
+  length-signature: 388
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -162,13 +186,24 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SNOVA_24_5_4_SHAKE_esk
-  oqs_alg: OQS_SIG_alg_SNOVA_24_5_4_SHAKE_esk
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_I_B_AES
+  alias: snova1ba
+  oqs_alg: OQS_SIG_alg_SNOVA_I_B_AES
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 1016
-  length-secret-key: 36848
-  length-signature: 248
+  length-public-key: 656
+  length-secret-key: 96
+  length-signature: 388
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -208,13 +243,138 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SNOVA_37_17_2
-  oqs_alg: OQS_SIG_alg_SNOVA_37_17_2
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_I_S
+  alias: snova1s
+  oqs_alg: OQS_SIG_alg_SNOVA_I_S
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 1016
+  length-secret-key: 96
+  length-signature: 272
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_I_S_AES
+  alias: snova1sa
+  oqs_alg: OQS_SIG_alg_SNOVA_I_S_AES
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 1016
+  length-secret-key: 96
+  length-signature: 272
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_I_X_AES
+  alias: snova1xa
+  oqs_alg: OQS_SIG_alg_SNOVA_I_X_AES
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 9842
   length-secret-key: 48
-  length-signature: 124
+  length-signature: 150
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -225,7 +385,7 @@ parameter-sets:
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
+    large-stack-usage: false
     default: true
   - upstream: primary-upstream
     upstream-id: avx2
@@ -241,26 +401,14 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-  - upstream: primary-upstream
-    upstream-id: neon
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Darwin
-      - Linux
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-- name: SNOVA_25_8_3
-  oqs_alg: OQS_SIG_alg_SNOVA_25_8_3
-  claimed-nist-level: 1
+- name: SNOVA_III_K
+  alias: snova3k
+  oqs_alg: OQS_SIG_alg_SNOVA_III_K
+  claimed-nist-level: 3
   claimed-security: EUF-CMA
-  length-public-key: 2320
-  length-secret-key: 48
-  length-signature: 165
+  length-public-key: 912
+  length-secret-key: 96
+  length-signature: 688
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -271,7 +419,7 @@ parameter-sets:
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
     default: true
   - upstream: primary-upstream
     upstream-id: avx2
@@ -286,7 +434,7 @@ parameter-sets:
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream: primary-upstream
     upstream-id: neon
     supported-platforms:
@@ -299,14 +447,310 @@ parameter-sets:
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: SNOVA_56_25_2
-  oqs_alg: OQS_SIG_alg_snova_56_25_2
+    default: true
+- name: SNOVA_III_K_AES
+  alias: snova3ka
+  oqs_alg: OQS_SIG_alg_SNOVA_III_K_AES
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 912
+  length-secret-key: 96
+  length-signature: 688
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_III_B
+  alias: snova3b
+  oqs_alg: OQS_SIG_alg_SNOVA_III_B
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 1416
+  length-secret-key: 96
+  length-signature: 532
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_III_B_AES
+  alias: snova3ba
+  oqs_alg: OQS_SIG_alg_SNOVA_III_B_AES
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 1416
+  length-secret-key: 96
+  length-signature: 532
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_III_S
+  alias: snova3s
+  oqs_alg: OQS_SIG_alg_SNOVA_III_S
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 2032
+  length-secret-key: 96
+  length-signature: 456
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_III_S_AES
+  alias: snova3sa
+  oqs_alg: OQS_SIG_alg_SNOVA_III_S_AES
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 2032
+  length-secret-key: 96
+  length-signature: 456
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_III_X_AES
+  alias: snova3xa
+  oqs_alg: OQS_SIG_alg_SNOVA_III_X_AES
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 31266
   length-secret-key: 48
-  length-signature: 178
+  length-signature: 218
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -317,7 +761,7 @@ parameter-sets:
     - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
+    large-stack-usage: false
     default: true
   - upstream: primary-upstream
     upstream-id: avx2
@@ -333,164 +777,14 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-  - upstream: primary-upstream
-    upstream-id: neon
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Darwin
-      - Linux
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-- name: SNOVA_49_11_3
-  oqs_alg: OQS_SIG_alg_snova_49_11_3
-  claimed-nist-level: 3
-  claimed-security: EUF-CMA
-  length-public-key: 6006
-  length-secret-key: 48
-  length-signature: 286
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: opt
-    supported-platforms: all
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-    default: true
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      required_flags:
-      - avx2
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-  - upstream: primary-upstream
-    upstream-id: neon
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Darwin
-      - Linux
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-- name: SNOVA_37_8_4
-  oqs_alg: OQS_SIG_alg_snova_37_8_4
-  claimed-nist-level: 3
-  claimed-security: EUF-CMA
-  length-public-key: 4112
-  length-secret-key: 48
-  length-signature: 376
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: opt
-    supported-platforms: all
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-    default: true
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      required_flags:
-      - avx2
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-  - upstream: primary-upstream
-    upstream-id: neon
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Darwin
-      - Linux
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-- name: SNOVA_24_5_5
-  oqs_alg: OQS_SIG_alg_SNOVA_24_5_5
-  claimed-nist-level: 3
-  claimed-security: EUF-CMA
-  length-public-key: 1579
-  length-secret-key: 48
-  length-signature: 379
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: opt
-    supported-platforms: all
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-    default: true
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      required_flags:
-      - avx2
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-  - upstream: primary-upstream
-    upstream-id: neon
-    supported-platforms:
-    - architecture: ARM64_V8
-      operating_systems:
-      - Darwin
-      - Linux
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
-- name: SNOVA_60_10_4
-  oqs_alg: OQS_SIG_alg_snova_60_10_4
+- name: SNOVA_V_K
+  alias: snova5k
+  oqs_alg: OQS_SIG_alg_SNOVA_V_K
   claimed-nist-level: 5
   claimed-security: EUF-CMA
-  length-public-key: 8016
-  length-secret-key: 48
-  length-signature: 576
+  length-public-key: 1216
+  length-secret-key: 96
+  length-signature: 896
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -530,13 +824,195 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: SNOVA_29_6_5
-  oqs_alg: OQS_SIG_alg_SNOVA_29_6_5
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_V_K_AES
+  alias: snova5ka
+  oqs_alg: OQS_SIG_alg_SNOVA_V_K_AES
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 1216
+  length-secret-key: 96
+  length-signature: 896
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_V_B
+  alias: snova5b
+  oqs_alg: OQS_SIG_alg_SNOVA_V_B
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 1891
+  length-secret-key: 96
+  length-signature: 691
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_V_B_AES
+  alias: snova5ba
+  oqs_alg: OQS_SIG_alg_SNOVA_V_B_AES
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 1891
+  length-secret-key: 96
+  length-signature: 691
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_V_S
+  alias: snova5s
+  oqs_alg: OQS_SIG_alg_SNOVA_V_S
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 2716
-  length-secret-key: 48
-  length-signature: 454
+  length-secret-key: 96
+  length-signature: 591
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -576,3 +1052,70 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
+- name: SNOVA_V_S_AES
+  alias: snova5sa
+  oqs_alg: OQS_SIG_alg_SNOVA_V_S_AES
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 2716
+  length-secret-key: 96
+  length-signature: 591
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Darwin
+      - Linux
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    default: true
