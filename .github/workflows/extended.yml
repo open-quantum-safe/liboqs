@@ -6,6 +6,29 @@ permissions:
 on: [workflow_call, workflow_dispatch]
 
 jobs:
+  # Regression coverage for PR #2515: run AES tests on ARM64 with
+  # Clang and AddressSanitizer, with OpenSSL AES disabled
+  regression-pull-2515:
+    name: AES-128-CTR IV heap overflow (PR 2515) regression
+    runs-on: ubuntu-24.04-arm
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      - name: Configure
+        run: |
+          mkdir build \
+          && cd build \
+          && cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug \
+            -DUSE_SANITIZER=Address -DOQS_USE_AES_OPENSSL=OFF .. \
+          && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        working-directory: build
+        run: ./tests/test_aes
 
   constant-time-x64:
     runs-on: ubuntu-latest
