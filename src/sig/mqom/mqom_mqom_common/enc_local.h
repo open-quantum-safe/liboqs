@@ -8,7 +8,7 @@
 /* ===================================== */
 /* ===================================== */
 /* === 128 bits security === */
-#if (MQOM2_PARAM_SECURITY == 128) && !defined(MQOM2_SEC128_OVERRIDE)
+#if (MQOM3_PARAM_SECURITY == 128) && !defined(MQOM3_SEC128_OVERRIDE)
 /* Our block encryption is based on Rijndael variants */
 #include "rijndael.h"
 /* For 128 bits security, we transparently use AES-128 */
@@ -20,106 +20,122 @@
 #define enc_ctx_pub_x4 rijndael_ctx_aes128_pub_x4
 #define enc_ctx_x8 rijndael_ctx_aes128_x8
 #define enc_ctx_pub_x8 rijndael_ctx_aes128_pub_x8
+#define enc_ctx_ecb rijndael_ctx_aes128_ecb
+#define enc_ctx_pub_ecb rijndael_ctx_aes128_pub_ecb
 
 static inline int enc_key_sched(enc_ctx *ctx, const uint8_t key[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc(ctx, key);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub(enc_ctx_pub *ctx, const uint8_t key[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc_pub(ctx, key);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_x2(enc_ctx_x2 *ctx, const uint8_t key1[16], const uint8_t key2[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc_x2(ctx, key1, key2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x2(enc_ctx_pub_x2 *ctx, const uint8_t key1[16], const uint8_t key2[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc_pub_x2(ctx, key1, key2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_x4(enc_ctx_x4 *ctx, const uint8_t key1[16], const uint8_t key2[16], const uint8_t key3[16], const uint8_t key4[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc_x4(ctx, key1, key2, key3, key4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x4(enc_ctx_pub_x4 *ctx, const uint8_t key1[16], const uint8_t key2[16], const uint8_t key3[16], const uint8_t key4[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc_pub_x4(ctx, key1, key2, key3, key4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_x8(enc_ctx_x8 *ctx, const uint8_t key1[16], const uint8_t key2[16], const uint8_t key3[16], const uint8_t key4[16], const uint8_t key5[16], const uint8_t key6[16], const uint8_t key7[16], const uint8_t key8[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc_x8(ctx, key1, key2, key3, key4, key5, key6, key7, key8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x8(enc_ctx_pub_x8 *ctx, const uint8_t key1[16], const uint8_t key2[16], const uint8_t key3[16], const uint8_t key4[16], const uint8_t key5[16], const uint8_t key6[16], const uint8_t key7[16], const uint8_t key8[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_setkey_enc_pub_x8(ctx, key1, key2, key3, key4, key5, key6, key7, key8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_key_sched_ecb(enc_ctx_ecb *ctx, const uint8_t key[16]) {
+	int ret;
+	MQOM3_SYM_MEASURE_PRE
+	ret = aes128_setkey_enc_ecb(ctx, key);
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_key_sched_pub_ecb(enc_ctx_pub_ecb *ctx, const uint8_t key[16]) {
+	int ret;
+	MQOM3_SYM_MEASURE_PRE
+	ret = aes128_setkey_enc_pub_ecb(ctx, key);
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 
 static inline int enc_encrypt(const enc_ctx *ctx, const uint8_t pt[16], uint8_t ct[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc(ctx, pt, ct);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_pub(const enc_ctx_pub *ctx, const uint8_t pt[16], uint8_t ct[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_pub(ctx, pt, ct);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const uint8_t pt1[16], const uint8_t pt2[16], uint8_t ct1[16], uint8_t ct2[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x2(ctx1, ctx2, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const uint8_t pt1[16], const uint8_t pt2[16], uint8_t ct1[16], uint8_t ct2[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x2_pub(ctx1, ctx2, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_x2(const enc_ctx_x2 *ctx, const uint8_t pt1[16], const uint8_t pt2[16], uint8_t ct1[16], uint8_t ct2[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x2_x2(ctx, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_pub_x2(const enc_ctx_pub_x2 *ctx, const uint8_t pt1[16], const uint8_t pt2[16], uint8_t ct1[16], uint8_t ct2[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x2_pub_x2(ctx, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -127,36 +143,36 @@ static inline int enc_encrypt_x4(const enc_ctx *ctx1, const enc_ctx *ctx2, const
                                  const uint8_t pt1[16], const uint8_t pt2[16], const uint8_t pt3[16], const uint8_t pt4[16],
                                  uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x4(ctx1, ctx2, ctx3, ctx4, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const enc_ctx_pub *ctx3, const enc_ctx_pub *ctx4,
                                      const uint8_t pt1[16], const uint8_t pt2[16], const uint8_t pt3[16], const uint8_t pt4[16],
                                      uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x4_pub(ctx1, ctx2, ctx3, ctx4, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_x4(const enc_ctx_x4 *ctx,
                                  const uint8_t pt1[16], const uint8_t pt2[16], const uint8_t pt3[16], const uint8_t pt4[16],
                                  uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x4_x4(ctx, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_pub_x4(const enc_ctx_pub_x4 *ctx,
                                      const uint8_t pt1[16], const uint8_t pt2[16], const uint8_t pt3[16], const uint8_t pt4[16],
                                      uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x4_pub_x4(ctx, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -167,9 +183,9 @@ static inline int enc_encrypt_x8(const enc_ctx *ctx1, const enc_ctx *ctx2, const
                                  uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16],
                                  uint8_t ct5[16], uint8_t ct6[16], uint8_t ct7[16], uint8_t ct8[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x8(ctx1, ctx2, ctx3, ctx4, ctx5, ctx6, ctx7, ctx8, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const enc_ctx_pub *ctx3, const enc_ctx_pub *ctx4,
@@ -179,9 +195,9 @@ static inline int enc_encrypt_x8_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub 
                                      uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16],
                                      uint8_t ct5[16], uint8_t ct6[16], uint8_t ct7[16], uint8_t ct8[16]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = aes128_enc_x8_pub(ctx1, ctx2, ctx3, ctx4, ctx5, ctx6, ctx7, ctx8, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_x8(const enc_ctx_x8 *ctx,
@@ -190,9 +206,9 @@ static inline int enc_encrypt_x8_x8(const enc_ctx_x8 *ctx,
                                  uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16],
                                  uint8_t ct5[16], uint8_t ct6[16], uint8_t ct7[16], uint8_t ct8[16]) {
         int ret;
-        MQOM2_SYM_MEASURE_PRE
+        MQOM3_SYM_MEASURE_PRE
         ret = aes128_enc_x8_x8(ctx, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-        MQOM2_SYM_MEASURE_POST
+        MQOM3_SYM_MEASURE_POST
         return ret;
 }
 static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
@@ -201,17 +217,30 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
                                      uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16],
                                      uint8_t ct5[16], uint8_t ct6[16], uint8_t ct7[16], uint8_t ct8[16]) {
         int ret;
-        MQOM2_SYM_MEASURE_PRE
+        MQOM3_SYM_MEASURE_PRE
         ret = aes128_enc_x8_pub_x8(ctx, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-        MQOM2_SYM_MEASURE_POST
+        MQOM3_SYM_MEASURE_POST
         return ret;
 }
-
+static inline int enc_encrypt_ecb(const enc_ctx_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	MQOM3_SYM_MEASURE_PRE
+	ret = aes128_enc_ecb(ctx, nblocks, in, out);
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_encrypt_pub_ecb(const enc_ctx_pub_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	MQOM3_SYM_MEASURE_PRE
+	ret = aes128_enc_pub_ecb(ctx, nblocks, in, out);
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
 
 /* ===================================== */
 /* ===================================== */
 /* === 192 bits security === */
-#elif MQOM2_PARAM_SECURITY == 192
+#elif MQOM3_PARAM_SECURITY == 192
 /* Our block encryption is based on Rijndael variants */
 #include "rijndael.h"
 
@@ -223,6 +252,8 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
 #define enc_ctx_pub_x4 rijndael_ctx_rijndael256_pub_x4
 #define enc_ctx_x8 rijndael_ctx_rijndael256_x8
 #define enc_ctx_pub_x8 rijndael_ctx_rijndael256_pub_x8
+#define enc_ctx_ecb rijndael_ctx_rijndael256_ecb
+#define enc_ctx_pub_ecb rijndael_ctx_rijndael256_pub_ecb
 
 /* Specifically for 192 bits, we need to adapt the underlying calls
  * as we use Rijndael-256-256 with expansion and truncation
@@ -230,7 +261,7 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
 static inline int enc_key_sched(enc_ctx *ctx, const uint8_t key[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key[32] = { 0 };
 	memcpy(exp_key, key, 24);
@@ -241,12 +272,12 @@ static inline int enc_key_sched(enc_ctx *ctx, const uint8_t key[24]) {
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub(enc_ctx_pub *ctx, const uint8_t key[24]) {
 	int ret = -1;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key[32] = { 0 };
 	memcpy(exp_key, key, 24);
@@ -257,14 +288,14 @@ static inline int enc_key_sched_pub(enc_ctx_pub *ctx, const uint8_t key[24]) {
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_key_sched_x2(enc_ctx_x2 *ctx, const uint8_t key1[24], const uint8_t key2[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key1[32] = { 0 };
 	uint8_t exp_key2[32] = { 0 };
@@ -277,13 +308,13 @@ static inline int enc_key_sched_x2(enc_ctx_x2 *ctx, const uint8_t key1[24], cons
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x2(enc_ctx_pub_x2 *ctx, const uint8_t key1[24], const uint8_t key2[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key1[32] = { 0 };
 	uint8_t exp_key2[32] = { 0 };
@@ -296,7 +327,7 @@ static inline int enc_key_sched_pub_x2(enc_ctx_pub_x2 *ctx, const uint8_t key1[2
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -304,7 +335,7 @@ err:
 static inline int enc_key_sched_x4(enc_ctx_x4 *ctx, const uint8_t key1[24], const uint8_t key2[24], const uint8_t key3[24], const uint8_t key4[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key1[32] = { 0 };
 	uint8_t exp_key2[32] = { 0 };
@@ -321,13 +352,13 @@ static inline int enc_key_sched_x4(enc_ctx_x4 *ctx, const uint8_t key1[24], cons
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x4(enc_ctx_pub_x4 *ctx, const uint8_t key1[24], const uint8_t key2[24], const uint8_t key3[24], const uint8_t key4[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key1[32] = { 0 };
 	uint8_t exp_key2[32] = { 0 };
@@ -344,14 +375,14 @@ static inline int enc_key_sched_pub_x4(enc_ctx_pub_x4 *ctx, const uint8_t key1[2
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_key_sched_x8(enc_ctx_x8 *ctx, const uint8_t key1[24], const uint8_t key2[24], const uint8_t key3[24], const uint8_t key4[24], const uint8_t key5[24], const uint8_t key6[24], const uint8_t key7[24], const uint8_t key8[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key1[32] = { 0 };
 	uint8_t exp_key2[32] = { 0 };
@@ -376,13 +407,13 @@ static inline int enc_key_sched_x8(enc_ctx_x8 *ctx, const uint8_t key1[24], cons
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x8(enc_ctx_pub_x8 *ctx, const uint8_t key1[24], const uint8_t key2[24], const uint8_t key3[24], const uint8_t key4[24], const uint8_t key5[24], const uint8_t key6[24], const uint8_t key7[24], const uint8_t key8[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Key expansion key || O^64 */
 	uint8_t exp_key1[32] = { 0 };
 	uint8_t exp_key2[32] = { 0 };
@@ -407,16 +438,53 @@ static inline int enc_key_sched_pub_x8(enc_ctx_pub_x8 *ctx, const uint8_t key1[2
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
+static inline int enc_key_sched_ecb(enc_ctx_ecb *ctx, const uint8_t key[24]) {
+	int ret = -1;
+
+	MQOM3_SYM_MEASURE_PRE
+	uint8_t exp_key[32] = { 0 };
+	memcpy(exp_key, key, 24);
+
+	ret = rijndael256_setkey_enc_ecb(ctx, exp_key);
+	ERR(ret, err);
+
+	ret = 0;
+err:
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_key_sched_pub_ecb(enc_ctx_pub_ecb *ctx, const uint8_t key[24]) {
+	int ret = -1;
+
+	MQOM3_SYM_MEASURE_PRE
+	uint8_t exp_key[32] = { 0 };
+	memcpy(exp_key, key, 24);
+
+	ret = rijndael256_setkey_enc_pub_ecb(ctx, exp_key);
+	ERR(ret, err);
+
+	ret = 0;
+err:
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+
 
 static inline int enc_encrypt(const enc_ctx *ctx, const uint8_t pt[24], uint8_t ct[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
-	uint8_t exp_pt[32] = { 0 }, exp_ct[32];
+	uint8_t exp_pt[32] = { 0 };
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[32];
+	uint8_t *exp_ct = exp_ct_buf;
+#else
+	uint8_t *exp_ct = exp_pt;
+#endif
 	memcpy(exp_pt, pt, 24);
 
 	/* Encrypt */
@@ -428,13 +496,17 @@ static inline int enc_encrypt(const enc_ctx *ctx, const uint8_t pt[24], uint8_t 
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	mqom_cleanse(exp_pt, sizeof(exp_pt));
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	mqom_cleanse(exp_ct_buf, sizeof(exp_ct_buf));
+#endif
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_pub(const enc_ctx_pub *ctx, const uint8_t pt[24], uint8_t ct[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
 	uint8_t exp_pt[32] = { 0 }, exp_ct[32];
 	memcpy(exp_pt, pt, 24);
@@ -448,7 +520,7 @@ static inline int enc_encrypt_pub(const enc_ctx_pub *ctx, const uint8_t pt[24], 
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -456,9 +528,15 @@ err:
 static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const uint8_t pt1[24], const uint8_t pt2[24], uint8_t ct1[24], uint8_t ct2[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
-	uint8_t exp_pt[2][32] = { 0 }, exp_ct[2][32];
+	uint8_t exp_pt[2][32] = { 0 };
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[2][32];
+	uint8_t (*exp_ct)[32] = exp_ct_buf;
+#else
+	uint8_t (*exp_ct)[32] = exp_pt;
+#endif
 	memcpy(exp_pt[0], pt1, 24);
 	memcpy(exp_pt[1], pt2, 24);
 	/* Encrypt */
@@ -471,13 +549,17 @@ static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	mqom_cleanse(exp_pt, sizeof(exp_pt));
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	mqom_cleanse(exp_ct_buf, sizeof(exp_ct_buf));
+#endif
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const uint8_t pt1[24], const uint8_t pt2[24], uint8_t ct1[24], uint8_t ct2[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
 	uint8_t exp_pt[2][32] = { 0 }, exp_ct[2][32];
 	memcpy(exp_pt[0], pt1, 24);
@@ -492,15 +574,21 @@ static inline int enc_encrypt_x2_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub 
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_x2(const enc_ctx_x2 *ctx, const uint8_t pt1[24], const uint8_t pt2[24], uint8_t ct1[24], uint8_t ct2[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
-	uint8_t exp_pt[2][32] = { 0 }, exp_ct[2][32];
+	uint8_t exp_pt[2][32] = { 0 };
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[2][32];
+	uint8_t (*exp_ct)[32] = exp_ct_buf;
+#else
+	uint8_t (*exp_ct)[32] = exp_pt;
+#endif
 	memcpy(exp_pt[0], pt1, 24);
 	memcpy(exp_pt[1], pt2, 24);
 	/* Encrypt */
@@ -513,13 +601,17 @@ static inline int enc_encrypt_x2_x2(const enc_ctx_x2 *ctx, const uint8_t pt1[24]
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	mqom_cleanse(exp_pt, sizeof(exp_pt));
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	mqom_cleanse(exp_ct_buf, sizeof(exp_ct_buf));
+#endif
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_pub_x2(const enc_ctx_pub_x2 *ctx, const uint8_t pt1[24], const uint8_t pt2[24], uint8_t ct1[24], uint8_t ct2[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
 	uint8_t exp_pt[2][32] = { 0 }, exp_ct[2][32];
 	memcpy(exp_pt[0], pt1, 24);
@@ -534,7 +626,7 @@ static inline int enc_encrypt_x2_pub_x2(const enc_ctx_pub_x2 *ctx, const uint8_t
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -543,9 +635,15 @@ static inline int enc_encrypt_x4(const enc_ctx *ctx1, const enc_ctx *ctx2, const
                                  uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
-	uint8_t exp_pt[4][32] = { 0 }, exp_ct[4][32];
+	uint8_t exp_pt[4][32] = { 0 };
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[4][32];
+	uint8_t (*exp_ct)[32] = exp_ct_buf;
+#else
+	uint8_t (*exp_ct)[32] = exp_pt;
+#endif
 	memcpy(exp_pt[0], pt1, 24);
 	memcpy(exp_pt[1], pt2, 24);
 	memcpy(exp_pt[2], pt3, 24);
@@ -563,14 +661,18 @@ static inline int enc_encrypt_x4(const enc_ctx *ctx1, const enc_ctx *ctx2, const
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	mqom_cleanse(exp_pt, sizeof(exp_pt));
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	mqom_cleanse(exp_ct_buf, sizeof(exp_ct_buf));
+#endif
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const enc_ctx_pub *ctx3, const enc_ctx_pub *ctx4,
                                      const uint8_t pt1[24], const uint8_t pt2[24], const uint8_t pt3[24], const uint8_t pt4[24],
                                      uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24]) {
 	int ret = -1;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
 	uint8_t exp_pt[4][32] = { 0 }, exp_ct[4][32];
 	memcpy(exp_pt[0], pt1, 24);
@@ -590,7 +692,7 @@ static inline int enc_encrypt_x4_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub 
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_x4(const enc_ctx_x4 *ctx,
@@ -598,9 +700,15 @@ static inline int enc_encrypt_x4_x4(const enc_ctx_x4 *ctx,
                                  uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24]) {
 	int ret = -1;
 
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
-	uint8_t exp_pt[4][32] = { 0 }, exp_ct[4][32];
+	uint8_t exp_pt[4][32] = { 0 };
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[4][32];
+	uint8_t (*exp_ct)[32] = exp_ct_buf;
+#else
+	uint8_t (*exp_ct)[32] = exp_pt;
+#endif
 	memcpy(exp_pt[0], pt1, 24);
 	memcpy(exp_pt[1], pt2, 24);
 	memcpy(exp_pt[2], pt3, 24);
@@ -618,14 +726,18 @@ static inline int enc_encrypt_x4_x4(const enc_ctx_x4 *ctx,
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	mqom_cleanse(exp_pt, sizeof(exp_pt));
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	mqom_cleanse(exp_ct_buf, sizeof(exp_ct_buf));
+#endif
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_pub_x4(const enc_ctx_pub_x4 *ctx,
                                      const uint8_t pt1[24], const uint8_t pt2[24], const uint8_t pt3[24], const uint8_t pt4[24],
                                      uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24]) {
 	int ret = -1;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
 	uint8_t exp_pt[4][32] = { 0 }, exp_ct[4][32];
 	memcpy(exp_pt[0], pt1, 24);
@@ -645,7 +757,7 @@ static inline int enc_encrypt_x4_pub_x4(const enc_ctx_pub_x4 *ctx,
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -656,9 +768,15 @@ static inline int enc_encrypt_x8(const enc_ctx *ctx1, const enc_ctx *ctx2, const
                                  uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24],
                                  uint8_t ct5[24], uint8_t ct6[24], uint8_t ct7[24], uint8_t ct8[24]) {
 	int ret = -1;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
-	uint8_t exp_pt[8][32] = { 0 }, exp_ct[8][32];
+	uint8_t exp_pt[8][32] = { 0 };
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[8][32];
+	uint8_t (*exp_ct)[32] = exp_ct_buf;
+#else
+	uint8_t (*exp_ct)[32] = exp_pt;
+#endif
 	memcpy(exp_pt[0], pt1, 24);
 	memcpy(exp_pt[1], pt2, 24);
 	memcpy(exp_pt[2], pt3, 24);
@@ -686,7 +804,11 @@ static inline int enc_encrypt_x8(const enc_ctx *ctx1, const enc_ctx *ctx2, const
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	mqom_cleanse(exp_pt, sizeof(exp_pt));
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	mqom_cleanse(exp_ct_buf, sizeof(exp_ct_buf));
+#endif
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const enc_ctx_pub *ctx3, const enc_ctx_pub *ctx4,
@@ -696,7 +818,7 @@ static inline int enc_encrypt_x8_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub 
                                      uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24],
                                      uint8_t ct5[24], uint8_t ct6[24], uint8_t ct7[24], uint8_t ct8[24]) {
 	int ret = -1;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
 	uint8_t exp_pt[8][32] = { 0 }, exp_ct[8][32];
 	memcpy(exp_pt[0], pt1, 24);
@@ -726,7 +848,7 @@ static inline int enc_encrypt_x8_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub 
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_x8(const enc_ctx_x8 *ctx,
@@ -735,9 +857,15 @@ static inline int enc_encrypt_x8_x8(const enc_ctx_x8 *ctx,
                                  uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24],
                                  uint8_t ct5[24], uint8_t ct6[24], uint8_t ct7[24], uint8_t ct8[24]) {
 	int ret = -1;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
-	uint8_t exp_pt[8][32] = { 0 }, exp_ct[8][32];
+	uint8_t exp_pt[8][32] = { 0 };
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[8][32];
+	uint8_t (*exp_ct)[32] = exp_ct_buf;
+#else
+	uint8_t (*exp_ct)[32] = exp_pt;
+#endif
 	memcpy(exp_pt[0], pt1, 24);
 	memcpy(exp_pt[1], pt2, 24);
 	memcpy(exp_pt[2], pt3, 24);
@@ -765,7 +893,11 @@ static inline int enc_encrypt_x8_x8(const enc_ctx_x8 *ctx,
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	mqom_cleanse(exp_pt, sizeof(exp_pt));
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	mqom_cleanse(exp_ct_buf, sizeof(exp_ct_buf));
+#endif
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
@@ -774,7 +906,7 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
                                      uint8_t ct1[24], uint8_t ct2[24], uint8_t ct3[24], uint8_t ct4[24],
                                      uint8_t ct5[24], uint8_t ct6[24], uint8_t ct7[24], uint8_t ct8[24]) {
 	int ret = -1;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	/* Plaintext expansion pt || 0^64 */
 	uint8_t exp_pt[8][32] = { 0 }, exp_ct[8][32];
 	memcpy(exp_pt[0], pt1, 24);
@@ -804,14 +936,103 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
 
 	ret = 0;
 err:
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+/* enc_encrypt_ecb / enc_encrypt_pub_ecb (192-bit): the native cipher block is 32 bytes
+ * but this security level truncates to 24-byte blocks, so each call must pad 24->32 on
+ * the way in and truncate 32->24 on the way out through a scratch buffer. nblocks is
+ * caller-controlled (e.g. PRG over an arbitrary-length output), so that scratch buffer
+ * cannot be sized to nblocks on the stack (VLA). Instead we chunk the work through a
+ * fixed-size MAX_ECB_NB_BLOCKS buffer, looping as many times as needed; ECB blocks are
+ * independent (no chaining), so this is exactly equivalent to a single nblocks-sized call.
+ * Under MEMORY_EFFICIENT_*, keep the scratch buffer small (8 blocks) to match the
+ * build's low-memory intent; otherwise favor throughput with a larger buffer (256 blocks). */
+#ifndef MAX_ECB_NB_BLOCKS
+#if defined(MEMORY_EFFICIENT_BLC) || defined(MEMORY_EFFICIENT_PIOP) || defined(MEMORY_EFFICIENT_KEYGEN)
+#define MAX_ECB_NB_BLOCKS 8
+#else
+#define MAX_ECB_NB_BLOCKS 256
+#endif
+#endif
+/* Overridable, and the chunking loops below advance by MAX_ECB_NB_BLOCKS through a
+ * scratch buffer of that many blocks: 0 gives a zero-length buffer and no progress. */
+#if MAX_ECB_NB_BLOCKS < 1
+#error "MAX_ECB_NB_BLOCKS must be at least 1"
+#endif
+
+static inline int enc_encrypt_ecb(const enc_ctx_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	unsigned int i;
+	uint32_t done, chunk;
+	uint8_t exp_pt[MAX_ECB_NB_BLOCKS][32];
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+	uint8_t exp_ct_buf[MAX_ECB_NB_BLOCKS][32];
+	uint8_t (*exp_ct)[32] = exp_ct_buf;
+#else
+	uint8_t (*exp_ct)[32] = exp_pt;
+#endif
+
+	MQOM3_SYM_MEASURE_PRE
+	for(done = 0; done < nblocks; done += chunk){
+		chunk = ((nblocks - done) < MAX_ECB_NB_BLOCKS) ? (nblocks - done) : MAX_ECB_NB_BLOCKS;
+		memset(exp_pt, 0, 32 * chunk);
+
+		for(i = 0; i < chunk; i++){
+			memcpy(exp_pt[i], &in[(done + i) * 24], 24);
+		}
+
+		ret = rijndael256_enc_ecb(ctx, chunk, (uint8_t*)exp_pt, (uint8_t*)exp_ct);
+		ERR(ret, err);
+
+		for(i = 0; i < chunk; i++){
+			memcpy(&out[(done + i) * 24], exp_ct[i], 24);
+		}
+	}
+
+err:
+	{
+		uint32_t wiped = (nblocks < MAX_ECB_NB_BLOCKS) ? nblocks : MAX_ECB_NB_BLOCKS;
+		mqom_cleanse(exp_pt, (size_t)32 * wiped);
+#ifdef RIJNDAEL_NO_INPUTS_ALIASING
+		mqom_cleanse(exp_ct_buf, (size_t)32 * wiped);
+#endif
+	}
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_encrypt_pub_ecb(const enc_ctx_pub_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	unsigned int i;
+	uint32_t done, chunk;
+	uint8_t exp_pt[MAX_ECB_NB_BLOCKS][32], exp_ct[MAX_ECB_NB_BLOCKS][32];
+
+	MQOM3_SYM_MEASURE_PRE
+	for(done = 0; done < nblocks; done += chunk){
+		chunk = ((nblocks - done) < MAX_ECB_NB_BLOCKS) ? (nblocks - done) : MAX_ECB_NB_BLOCKS;
+		memset(exp_pt, 0, 32 * chunk);
+
+		for(i = 0; i < chunk; i++){
+			memcpy(exp_pt[i], &in[(done + i) * 24], 24);
+		}
+
+		ret = rijndael256_enc_pub_ecb(ctx, chunk, (uint8_t*)exp_pt, (uint8_t*)exp_ct);
+		ERR(ret, err);
+
+		for(i = 0; i < chunk; i++){
+			memcpy(&out[(done + i) * 24], exp_ct[i], 24);
+		}
+	}
+
+err:
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 /* ===================================== */
 /* ===================================== */
 /* === 256 bits security === */
-#elif MQOM2_PARAM_SECURITY == 256
+#elif MQOM3_PARAM_SECURITY == 256
 /* Our block encryption is based on Rijndael variants */
 #include "rijndael.h"
 
@@ -823,109 +1044,125 @@ err:
 #define enc_ctx_pub_x4 rijndael_ctx_rijndael256_pub_x4
 #define enc_ctx_x8 rijndael_ctx_rijndael256_x8
 #define enc_ctx_pub_x8 rijndael_ctx_rijndael256_pub_x8
+#define enc_ctx_ecb rijndael_ctx_rijndael256_ecb
+#define enc_ctx_pub_ecb rijndael_ctx_rijndael256_pub_ecb
 
 /* For 256 bits security, we tyransparently use Rijndael-256-256 */
 static inline int enc_key_sched(enc_ctx *ctx, const uint8_t key[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc(ctx, key);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub(enc_ctx_pub *ctx, const uint8_t key[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc_pub(ctx, key);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_key_sched_x2(enc_ctx_x2 *ctx, const uint8_t key1[32], const uint8_t key2[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc_x2(ctx, key1, key2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x2(enc_ctx_pub_x2 *ctx, const uint8_t key1[32], const uint8_t key2[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc_pub_x2(ctx, key1, key2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_key_sched_x4(enc_ctx_x4 *ctx, const uint8_t key1[32], const uint8_t key2[32], const uint8_t key3[32], const uint8_t key4[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc_x4(ctx, key1, key2, key3, key4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x4(enc_ctx_pub_x4 *ctx, const uint8_t key1[32], const uint8_t key2[32], const uint8_t key3[32], const uint8_t key4[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc_pub_x4(ctx, key1, key2, key3, key4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_key_sched_x8(enc_ctx_x8 *ctx, const uint8_t key1[32], const uint8_t key2[32], const uint8_t key3[32], const uint8_t key4[32], const uint8_t key5[32], const uint8_t key6[32], const uint8_t key7[32], const uint8_t key8[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc_x8(ctx, key1, key2, key3, key4, key5, key6, key7, key8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_key_sched_pub_x8(enc_ctx_pub_x8 *ctx, const uint8_t key1[32], const uint8_t key2[32], const uint8_t key3[32], const uint8_t key4[32], const uint8_t key5[32], const uint8_t key6[32], const uint8_t key7[32], const uint8_t key8[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_setkey_enc_pub_x8(ctx, key1, key2, key3, key4, key5, key6, key7, key8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_encrypt(const enc_ctx *ctx, const uint8_t pt[32], uint8_t ct[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc(ctx, pt, ct);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_pub(const enc_ctx_pub *ctx, const uint8_t pt[32], uint8_t ct[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_pub(ctx, pt, ct);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
 static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const uint8_t pt1[32], const uint8_t pt2[32], uint8_t ct1[32], uint8_t ct2[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x2(ctx1, ctx2, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const uint8_t pt1[32], const uint8_t pt2[32], uint8_t ct1[32], uint8_t ct2[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x2_pub(ctx1, ctx2, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_x2(const enc_ctx_x2 *ctx, const uint8_t pt1[32], const uint8_t pt2[32], uint8_t ct1[32], uint8_t ct2[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x2_x2(ctx, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x2_pub_x2(const enc_ctx_pub_x2 *ctx, const uint8_t pt1[32], const uint8_t pt2[32], uint8_t ct1[32], uint8_t ct2[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x2_pub_x2(ctx, pt1, pt2, ct1, ct2);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_key_sched_ecb(enc_ctx_ecb *ctx, const uint8_t key[32]) {
+	int ret;
+	MQOM3_SYM_MEASURE_PRE
+	ret = rijndael256_setkey_enc_ecb(ctx, key);
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_key_sched_pub_ecb(enc_ctx_pub_ecb *ctx, const uint8_t key[32]) {
+	int ret;
+	MQOM3_SYM_MEASURE_PRE
+	ret = rijndael256_setkey_enc_pub_ecb(ctx, key);
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -933,36 +1170,36 @@ static inline int enc_encrypt_x4(const enc_ctx *ctx1, const enc_ctx *ctx2, const
                                  const uint8_t pt1[32], const uint8_t pt2[32], const uint8_t pt3[32], const uint8_t pt4[32],
                                  uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x4(ctx1, ctx2, ctx3, ctx4, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const enc_ctx_pub *ctx3, const enc_ctx_pub *ctx4,
                                      const uint8_t pt1[32], const uint8_t pt2[32], const uint8_t pt3[32], const uint8_t pt4[32],
                                      uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x4_pub(ctx1, ctx2, ctx3, ctx4, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_x4(const enc_ctx_x4 *ctx,
                                  const uint8_t pt1[32], const uint8_t pt2[32], const uint8_t pt3[32], const uint8_t pt4[32],
                                  uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x4_x4(ctx, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x4_pub_x4(const enc_ctx_pub_x4 *ctx,
                                      const uint8_t pt1[32], const uint8_t pt2[32], const uint8_t pt3[32], const uint8_t pt4[32],
                                      uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x4_pub_x4(ctx, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -973,9 +1210,9 @@ static inline int enc_encrypt_x8(const enc_ctx *ctx1, const enc_ctx *ctx2, const
                                  uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32],
                                  uint8_t ct5[32], uint8_t ct6[32], uint8_t ct7[32], uint8_t ct8[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x8(ctx1, ctx2, ctx3, ctx4, ctx5, ctx6, ctx7, ctx8, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub *ctx2, const enc_ctx_pub *ctx3, const enc_ctx_pub *ctx4,
@@ -985,9 +1222,9 @@ static inline int enc_encrypt_x8_pub(const enc_ctx_pub *ctx1, const enc_ctx_pub 
                                      uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32],
                                      uint8_t ct5[32], uint8_t ct6[32], uint8_t ct7[32], uint8_t ct8[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x8_pub(ctx1, ctx2, ctx3, ctx4, ctx5, ctx6, ctx7, ctx8, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_x8(const enc_ctx_x8 *ctx,
@@ -996,9 +1233,9 @@ static inline int enc_encrypt_x8_x8(const enc_ctx_x8 *ctx,
                                  uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32],
                                  uint8_t ct5[32], uint8_t ct6[32], uint8_t ct7[32], uint8_t ct8[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x8_x8(ctx, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
@@ -1007,9 +1244,23 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
                                      uint8_t ct1[32], uint8_t ct2[32], uint8_t ct3[32], uint8_t ct4[32],
                                      uint8_t ct5[32], uint8_t ct6[32], uint8_t ct7[32], uint8_t ct8[32]) {
 	int ret;
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	ret = rijndael256_enc_x8_pub_x8(ctx, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, ct1, ct2, ct3, ct4, ct5, ct6, ct7, ct8);
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_encrypt_ecb(const enc_ctx_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	MQOM3_SYM_MEASURE_PRE
+	ret = rijndael256_enc_ecb(ctx, nblocks, in, out);
+	MQOM3_SYM_MEASURE_POST
+	return ret;
+}
+static inline int enc_encrypt_pub_ecb(const enc_ctx_pub_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	MQOM3_SYM_MEASURE_PRE
+	ret = rijndael256_enc_pub_ecb(ctx, nblocks, in, out);
+	MQOM3_SYM_MEASURE_POST
 	return ret;
 }
 
@@ -1018,7 +1269,7 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx,
 /* The only case where we can legitimately end here is if we have 128 bits security
  * level and override it in another header ... If this is not the case, trigger a
  * compilation error. */
-#if !defined(MQOM2_SEC128_OVERRIDE)
+#if !defined(MQOM3_SEC128_OVERRIDE)
 #error "Sorry, unsupported security parameters: must be one of 128, 192, 256"
 #endif
 

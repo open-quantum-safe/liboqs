@@ -149,11 +149,23 @@
 #include "blas_u32.h"
 
 #define gf16v_mul_scalar        _gf16v_mul_scalar_u32
+
+#if defined(_BLAS_M4F_)
+void gf16v_madd_m4f(uint8_t *accu_c, const uint8_t *a, uint8_t gf16_b, unsigned num_byte);
+#define gf16v_madd              gf16v_madd_m4f
+#else
 #define gf16v_madd              _gf16v_madd_u32
+#endif
 
 #define gf256v_add              _gf256v_add_u32
 #define gf256v_mul_scalar       _gf256v_mul_scalar_u32
+
+#if defined(_BLAS_M4F_)
+void gf256v_madd_m4f(uint8_t *accu_c, const uint8_t *a, uint8_t gf256_b, unsigned num_byte);
+#define gf256v_madd             gf256v_madd_m4f
+#else
 #define gf256v_madd             _gf256v_madd_u32
+#endif
 
 #define gf256v_conditional_add  _gf256v_conditional_add_u32
 

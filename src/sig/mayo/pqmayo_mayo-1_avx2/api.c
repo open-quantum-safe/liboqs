@@ -40,7 +40,7 @@ crypto_sign_verify(const unsigned char *sig, size_t siglen,
                    const unsigned char *m, size_t mlen,
                    const unsigned char *pk) {
     if (siglen != CRYPTO_BYTES)
-        return -1;
+        return MAYO_ERR;
     return mayo_verify(MAYO_PARAMS, m, mlen, sig, pk);
 }
 

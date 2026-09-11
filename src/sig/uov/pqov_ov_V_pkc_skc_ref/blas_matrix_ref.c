@@ -12,6 +12,8 @@
 
 #include "params.h"   /// for macro  _USE_GF16
 
+#include "utils_malloc.h"   /// for the macro: PQOV_ALIGN
+
 /// This implementation depends on these vector functions :
 ///   0.  gf16v_mul_scalar
 ///       gf16v_madd
@@ -56,13 +58,12 @@ void gf16mat_64x64_sqmat_transpose(uint8_t *dest_mat, unsigned dest_vec_len, con
     gf256mat_transpose_32x32( dest_mat + dest_vec_len, dest_vec_len * 2, src_sqmat + 32, 64 ); // transpose odd rows
     // transpose 2x2 4-bit blocks
     for (int i = 0; i < 64; i += 2) {
-        uint32_t *row1 = (uint32_t *)(dest_mat + i    * dest_vec_len);
-        uint32_t *row2 = (uint32_t *)(dest_mat + (i + 1) * dest_vec_len);
-        for (int j = 0; j < 8; j++) {
-            uint32_t in1 = row1[j];
-            uint32_t in2 = row2[j];
-            row1[j] = (in1 & 0x0f0f0f0f) ^ ((in2 & 0x0f0f0f0f) << 4);
-            row2[j] = (in2 & 0xf0f0f0f0) ^ ((in1 & 0xf0f0f0f0) >> 4);
+        uint8_t *row1 = dest_mat + i    * dest_vec_len;
+        uint8_t *row2 = dest_mat + (i + 1) * dest_vec_len;
+        for (int j = 0; j < 32; j++) {
+            uint8_t tmp = ((row1[j] >> 4) ^ row2[j]) & 0x0f;
+            row1[j] ^= (tmp << 4);
+            row2[j] ^= tmp;
         }
     }
 }
@@ -84,13 +85,13 @@ void gf16mat_sqmat_transpose(uint8_t *dest_mat, unsigned dest_vec_len, const uin
 #endif  // #ifdef _GF16_TRANSPOSE_
 
 static
-unsigned gf16mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w_byte ) {
+unsigned gf16mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w_byte, unsigned offset ) {
     unsigned r8 = 1;
 
     for (unsigned i = 0; i < h; i++) {
         uint8_t *ai = mat + w_byte * i;
-        //unsigned i_start = i-(i&(_BLAS_UNIT_LEN_-1));
-        unsigned i_start = i >> 1;
+        unsigned idx = (offset << 1) + i;
+        unsigned i_start = (idx >> 1) - ((idx >> 1) & (_BLAS_UNIT_LEN_ - 1));
 #if defined( _GE_CONST_TIME_CADD_EARLY_STOP_ )   // defined in config.h
         unsigned stop = (i + _GE_EARLY_STOP_STEPS_GF16_ < h) ? i + _GE_EARLY_STOP_STEPS_GF16_ : h;
         for (unsigned j = i + 1; j < stop; j++) {
@@ -98,15 +99,15 @@ unsigned gf16mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w_by
         for (unsigned j = i + 1; j < h; j++) {
 #endif
             uint8_t *aj = mat + w_byte * j;
-            gf256v_conditional_add( ai + i_start, !gf16_is_nonzero(gf16v_get_ele(ai, i)), aj + i_start, w_byte - i_start );
+            gf256v_conditional_add( ai + i_start, !gf16_is_nonzero(gf16v_get_ele(ai, idx)), aj + i_start, w_byte - i_start );
         }
-        uint8_t pivot = gf16v_get_ele(ai, i);
+        uint8_t pivot = gf16v_get_ele(ai, idx);
         r8 &= gf16_is_nonzero(pivot);
         pivot = gf16_inv( pivot );
         gf16v_mul_scalar( ai + i_start, pivot, w_byte - i_start );
         for (unsigned j = i + 1; j < h; j++) {
             uint8_t *aj = mat + w_byte * j;
-            gf16v_madd( aj + i_start, ai + i_start, gf16v_get_ele(aj, i), w_byte - i_start );
+            gf16v_madd( aj + i_start, ai + i_start, gf16v_get_ele(aj, idx), w_byte - i_start );
         }
     }
     return r8;
@@ -115,21 +116,24 @@ unsigned gf16mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w_by
 unsigned gf16mat_gaussian_elim_ref(uint8_t *sqmat_a, uint8_t *constant, unsigned len) {
     //const unsigned MAX_H=64;
 #define MAX_H  (64)
-    uint8_t mat[MAX_H * (MAX_H + 4)] = {0};
+    PQOV_ALIGN uint8_t mat[MAX_H * ((MAX_H / 2) + _BLAS_UNIT_LEN_)] = {0};
 #undef MAX_H
 
     unsigned height = len;
     unsigned width_o  = len / 2;
-    unsigned width_n  = width_o + 4;
+    // pad the rows to a multiple of the blas unit and push the data to the tail,
+    // so that ai + i_start stays aligned once i_start is rounded down
+    unsigned width_n  = ((width_o + 1 + _BLAS_UNIT_LEN_ - 1) / _BLAS_UNIT_LEN_) * _BLAS_UNIT_LEN_;
+    unsigned offset   = width_n - width_o - 1;
 
     #ifdef _GF16_TRANSPOSE_
-    gf16mat_sqmat_transpose(mat, width_n, sqmat_a, width_o, height );
+    gf16mat_sqmat_transpose(mat + offset, width_n, sqmat_a, width_o, height );
     for (unsigned i = 0; i < height; i++) {
-        mat[i * width_n + width_o] = gf16v_get_ele(constant, i);
+        mat[i * width_n + offset + width_o] = gf16v_get_ele(constant, i);
     }
     #else
     for (unsigned i = 0; i < height; i++) {
-        uint8_t *ai = mat + i * width_n;
+        uint8_t *ai = mat + i * width_n + offset;
         for (unsigned j = 0; j < height; j++) {
             // transpose since sqmat_a is col-major
             gf16v_set_ele( ai, j, gf16v_get_ele(sqmat_a + j * width_o, i) );
@@ -138,10 +142,10 @@ unsigned gf16mat_gaussian_elim_ref(uint8_t *sqmat_a, uint8_t *constant, unsigned
     }
     #endif
 
-    unsigned char r8 = gf16mat_gauss_elim_row_echolen( mat, height, width_n );
+    unsigned char r8 = gf16mat_gauss_elim_row_echolen( mat, height, width_n, offset );
 
     for (unsigned i = 0; i < height; i++) {
-        uint8_t *ai = mat + i * width_n;
+        uint8_t *ai = mat + i * width_n + offset;
         memcpy( sqmat_a + i * width_o, ai, width_o ); // output a row-major matrix
         gf16v_set_ele(constant, i, ai[width_o] );
     }
@@ -149,22 +153,26 @@ unsigned gf16mat_gaussian_elim_ref(uint8_t *sqmat_a, uint8_t *constant, unsigned
 }
 
 void gf16mat_back_substitute_ref( uint8_t *constant, const uint8_t *sq_row_mat_a, unsigned len) {
-    #ifdef _GF16_TRANSPOSE_
 #define MAX_H  (64)
-    uint8_t mat[MAX_H * (MAX_H / 2)] = {0};
-#undef MAX_H
+    // the accumulator is copied into an aligned buffer wide enough for the
+    // padded lengths; the row above the diagonal is zero, so rounding the
+    // length up to the blas unit only adds zeros
+    PQOV_ALIGN uint8_t temp[(MAX_H / 2) + _BLAS_UNIT_LEN_] = {0};
     unsigned width_byte = (len + 1) / 2;
-    gf16mat_sqmat_transpose( mat, width_byte, sq_row_mat_a, width_byte, len );
+    memcpy( temp, constant, width_byte );
+
+    #ifdef _GF16_TRANSPOSE_
+    PQOV_ALIGN uint8_t mat[MAX_H * ((MAX_H / 2) + _BLAS_UNIT_LEN_)] = {0};
+    unsigned width_pad = ((width_byte + _BLAS_UNIT_LEN_ - 1) / _BLAS_UNIT_LEN_) * _BLAS_UNIT_LEN_;
+    gf16mat_sqmat_transpose( mat, width_pad, sq_row_mat_a, width_byte, len );
     for (unsigned i = len - 1; i > 0; i--) {
-        uint8_t *col = mat + i * width_byte;
+        uint8_t *col = mat + i * width_pad;
         gf16v_set_ele( col, i, 0 );
-        gf16v_madd( constant, col, gf16v_get_ele(constant, i), (i + 1) / 2 );
+        unsigned len2 = (((i + 1) / 2 + _BLAS_UNIT_LEN_ - 1) / _BLAS_UNIT_LEN_) * _BLAS_UNIT_LEN_;
+        gf16v_madd( temp, col, gf16v_get_ele(temp, i), len2 );
     }
     #else
-#define MAX_H  (64)
-    uint8_t column[MAX_H] = {0};
-#undef MAX_H
-    unsigned width_byte = (len + 1) / 2;
+    PQOV_ALIGN uint8_t column[(MAX_H / 2) + _BLAS_UNIT_LEN_] = {0};
     for (int i = len - 1; i > 0; i--) {
         for (int j = 0; j < i; j++) {
             // row-major -> column-major, i.e., transpose
@@ -172,9 +180,13 @@ void gf16mat_back_substitute_ref( uint8_t *constant, const uint8_t *sq_row_mat_a
             gf16v_set_ele( column, j, ele );
         }
         gf16v_set_ele( column, i, 0 );    // pad to last byte
-        gf16v_madd( constant, column, gf16v_get_ele(constant, i), (i + 1) / 2 );
+        unsigned len2 = (((unsigned)(i + 1) / 2 + _BLAS_UNIT_LEN_ - 1) / _BLAS_UNIT_LEN_) * _BLAS_UNIT_LEN_;
+        gf16v_madd( temp, column, gf16v_get_ele(temp, i), len2 );
     }
     #endif
+#undef MAX_H
+
+    memcpy( constant, temp, width_byte );
 }
 
 
@@ -194,13 +206,13 @@ void gf256mat_prod_ref(uint8_t *c, const uint8_t *matA, unsigned n_A_vec_byte, u
 //////////////////    Gaussian elimination + Back substitution for solving linear equations  //////////////////
 
 static
-unsigned gf256mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w ) {
+unsigned gf256mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w, unsigned offset ) {
     unsigned r8 = 1;
 
     for (unsigned i = 0; i < h; i++) {
         uint8_t *ai = mat + w * i;
-        //unsigned i_start = i-(i&(_BLAS_UNIT_LEN_-1));
-        unsigned i_start = i;
+        unsigned idx = offset + i;
+        unsigned i_start = idx - (idx & (_BLAS_UNIT_LEN_ - 1));
 
 #if defined( _GE_CONST_TIME_CADD_EARLY_STOP_ )   // defined in config.h
         unsigned stop = (i + _GE_EARLY_STOP_STEPS_GF256_ < h) ? i + _GE_EARLY_STOP_STEPS_GF256_ : h;
@@ -209,15 +221,15 @@ unsigned gf256mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w )
         for (unsigned j = i + 1; j < h; j++) {
 #endif
             uint8_t *aj = mat + w * j;
-            gf256v_conditional_add( ai + i_start, !gf256_is_nonzero(ai[i]), aj + i_start, w - i_start );
+            gf256v_conditional_add( ai + i_start, !gf256_is_nonzero(ai[idx]), aj + i_start, w - i_start );
         }
-        r8 &= gf256_is_nonzero(ai[i]);
-        uint8_t pivot = ai[i];
+        r8 &= gf256_is_nonzero(ai[idx]);
+        uint8_t pivot = ai[idx];
         pivot = gf256_inv( pivot );
         gf256v_mul_scalar( ai + i_start, pivot, w - i_start );
         for (unsigned j = i + 1; j < h; j++) {
             uint8_t *aj = mat + w * j;
-            gf256v_madd( aj + i_start, ai + i_start, aj[i], w - i_start );
+            gf256v_madd( aj + i_start, ai + i_start, aj[idx], w - i_start );
         }
     }
     return r8;
@@ -225,39 +237,50 @@ unsigned gf256mat_gauss_elim_row_echolen( uint8_t *mat, unsigned h, unsigned w )
 
 unsigned gf256mat_gaussian_elim_ref(uint8_t *sqmat_a, uint8_t *constant, unsigned len) {
     #define MAX_H 96
-    uint8_t mat[MAX_H * (MAX_H + 4)] = {0};
+    PQOV_ALIGN uint8_t mat[MAX_H * (MAX_H + _BLAS_UNIT_LEN_)] = {0};
     #undef MAX_H
 
     unsigned height = len;
-    unsigned width  = len + 4;
+    // pad the rows to a multiple of the blas unit and push the data to the tail,
+    // so that ai + i_start stays aligned once i_start is rounded down
+    unsigned width  = ((len + 1 + _BLAS_UNIT_LEN_ - 1) / _BLAS_UNIT_LEN_) * _BLAS_UNIT_LEN_;
+    unsigned offset = width - (len + 1);
 
     for (unsigned i = 0; i < height; i++) {
         uint8_t *ai = mat + i * width;
         for (unsigned j = 0; j < height; j++) {
-            ai[j] = sqmat_a[j * len + i];    // transpose since sqmat_a is col-major
+            ai[offset + j] = sqmat_a[j * len + i];    // transpose since sqmat_a is col-major
         }
-        ai[height] = constant[i];
+        ai[offset + height] = constant[i];
     }
-    unsigned char r8 = gf256mat_gauss_elim_row_echolen( mat, height, width );
+    unsigned char r8 = gf256mat_gauss_elim_row_echolen( mat, height, width, offset );
 
     for (unsigned i = 0; i < height; i++) {
         uint8_t *ai = mat + i * width;
-        memcpy( sqmat_a + i * len, ai, len );     // output a row-major matrix
-        constant[i] = ai[len];
+        memcpy( sqmat_a + i * len, ai + offset, len );     // output a row-major matrix
+        constant[i] = ai[offset + len];
     }
     return r8;
 }
 
 void gf256mat_back_substitute_ref( uint8_t *constant, const uint8_t *sq_row_mat_a, unsigned len) {
     #define MAX_H 96
-    uint8_t column[MAX_H];
+    // the accumulator is copied into an aligned buffer wide enough for the
+    // padded lengths; column is zero above the diagonal, so rounding the
+    // length up to the blas unit only adds zeros
+    PQOV_ALIGN uint8_t column[MAX_H + _BLAS_UNIT_LEN_] = {0};
+    PQOV_ALIGN uint8_t temp[MAX_H + _BLAS_UNIT_LEN_] = {0};
     #undef MAX_H
+    memcpy( temp, constant, len );
     for (int i = len - 1; i > 0; i--) {
         for (int j = 0; j < i; j++) {
             column[j] = sq_row_mat_a[j * len + i];    // row-major -> column-major, i.e., transpose
         }
-        gf256v_madd( constant, column, constant[i], i );
+        column[i] = 0;
+        unsigned len2 = (((unsigned)i + _BLAS_UNIT_LEN_ - 1) / _BLAS_UNIT_LEN_) * _BLAS_UNIT_LEN_;
+        gf256v_madd( temp, column, temp[i], len2 );
     }
+    memcpy( constant, temp, len );
 }
 
 

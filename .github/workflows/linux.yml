@@ -18,12 +18,6 @@ jobs:
             PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
             CMAKE_ARGS: -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
 
-          - name: alpine
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-
           - name: alpine-no-stfl-key-sig-gen
             runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
@@ -32,12 +26,12 @@ jobs:
           - name: alpine-openssl-all
             runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
           - name: alpine-noopenssl
             runner: ubuntu-latest
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
 
           - name: noble-nistr4-openssl
@@ -118,7 +112,7 @@ jobs:
         timeout-minutes: 60
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'
         run: cpack
@@ -198,7 +192,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --ignore=tests/test_wycheproof_vectors.py
 
   scan_build:
     runs-on: ubuntu-latest

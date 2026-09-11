@@ -14,15 +14,15 @@ principal-submitters:
 - Bo-Yin Yang
 crypto-assumption: multivariable quadratic equations, oil and vinegar
 website: https://www.uovsig.org/
-standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/uov-spec-round2-web.pdf)
+standardization-status: Under [NIST](https://csrc.nist.gov/Projects/pqc-dig-sig/round-3-additional-signatures)
   consideration
 upstream-maintenance: Best effort
 upstream-statement-url: null
 oqs-support-tier: 3
-nist-round: 2
-spec-version: NIST Round 2 (February 2025)
+nist-round: 3
+spec-version: NIST Round 3
 primary-upstream:
-  source: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
+  source: https://github.com/pqov/pqov/commit/fac2ec1fe6d8ea508eab4b98eb5341e1eed930a4
   spdx-license-identifier: CC0 OR Apache-2.0
 parameter-sets:
 - name: OV-Is
@@ -74,9 +74,9 @@ parameter-sets:
 - name: OV-Ip
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 278432
-  length-secret-key: 237896
-  length-signature: 128
+  length-public-key: 321300
+  length-secret-key: 278087
+  length-signature: 135
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -120,9 +120,9 @@ parameter-sets:
 - name: OV-III
   claimed-nist-level: 3
   claimed-security: EUF-CMA
-  length-public-key: 1225440
-  length-secret-key: 1044320
-  length-signature: 200
+  length-public-key: 1347912
+  length-secret-key: 1167440
+  length-signature: 209
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -166,9 +166,9 @@ parameter-sets:
 - name: OV-V
   claimed-nist-level: 5
   claimed-security: EUF-CMA
-  length-public-key: 2869440
-  length-secret-key: 2436704
-  length-signature: 260
+  length-public-key: 3232320
+  length-secret-key: 2801024
+  length-signature: 275
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -258,9 +258,9 @@ parameter-sets:
 - name: OV-Ip-pkc
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 43576
-  length-secret-key: 237896
-  length-signature: 128
+  length-public-key: 46591
+  length-secret-key: 278087
+  length-signature: 135
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -305,8 +305,8 @@ parameter-sets:
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 189232
-  length-secret-key: 1044320
-  length-signature: 200
+  length-secret-key: 1167440
+  length-signature: 209
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -351,8 +351,8 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 446992
-  length-secret-key: 2436704
-  length-signature: 260
+  length-secret-key: 2801024
+  length-signature: 275
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -442,9 +442,9 @@ parameter-sets:
 - name: OV-Ip-pkc-skc
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 43576
+  length-public-key: 46591
   length-secret-key: 32
-  length-signature: 128
+  length-signature: 135
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -490,7 +490,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 189232
   length-secret-key: 32
-  length-signature: 200
+  length-signature: 209
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -536,7 +536,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 446992
   length-secret-key: 32
-  length-signature: 260
+  length-signature: 275
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream

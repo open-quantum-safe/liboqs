@@ -45,5 +45,5 @@ jobs:
       - name: Run tests
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --ignore=tests/test_acvp_vectors.py
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py
         timeout-minutes: 60

@@ -4,16 +4,16 @@
 - **Main cryptographic assumption**: multivariable quadratic equations, oil and vinegar.
 - **Principal submitters**: Ward Beullens, Ming-Shing Chen, Jintai Ding, Boru Gong, Matthias J. Kannwischer, Jacques Patarin, Bo-Yuan Peng, Dieter Schmidt, Cheng-Jhih Shih, Chengdong Tao, Bo-Yin Yang.
 - **Authors' website**: https://www.uovsig.org/
-- **Specification version**: NIST Round 2 (February 2025).
+- **Specification version**: NIST Round 3.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
+  - **Source**: https://github.com/pqov/pqov/commit/fac2ec1fe6d8ea508eab4b98eb5341e1eed930a4
   - **Implementation license (SPDX-Identifier)**: CC0 OR Apache-2.0
 - **Optimized Implementation sources**:
   - **neon**:<a name="neon"></a>
-      - **Source**: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
+      - **Source**: https://github.com/pqov/pqov/commit/fac2ec1fe6d8ea508eab4b98eb5341e1eed930a4
       - **Implementation license (SPDX-Identifier)**: CC0 OR Apache-2.0
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/pqov/pqov/commit/33fa5278754a32064c55901c3a17d48b06cc2351
+      - **Source**: https://github.com/pqov/pqov/commit/fac2ec1fe6d8ea508eab4b98eb5341e1eed930a4
       - **Implementation license (SPDX-Identifier)**: CC0 OR Apache-2.0
 
 
@@ -27,17 +27,17 @@
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
 |:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
 |      OV-Is      | NA                    | EUF-CMA          |                    1 |                    412160 |                    348704 |                       96 |
-|      OV-Ip      | NA                    | EUF-CMA          |                    1 |                    278432 |                    237896 |                      128 |
-|     OV-III      | NA                    | EUF-CMA          |                    3 |                   1225440 |                   1044320 |                      200 |
-|      OV-V       | NA                    | EUF-CMA          |                    5 |                   2869440 |                   2436704 |                      260 |
+|      OV-Ip      | NA                    | EUF-CMA          |                    1 |                    321300 |                    278087 |                      135 |
+|     OV-III      | NA                    | EUF-CMA          |                    3 |                   1347912 |                   1167440 |                      209 |
+|      OV-V       | NA                    | EUF-CMA          |                    5 |                   3232320 |                   2801024 |                      275 |
 |    OV-Is-pkc    | NA                    | EUF-CMA          |                    1 |                     66576 |                    348704 |                       96 |
-|    OV-Ip-pkc    | NA                    | EUF-CMA          |                    1 |                     43576 |                    237896 |                      128 |
-|   OV-III-pkc    | NA                    | EUF-CMA          |                    3 |                    189232 |                   1044320 |                      200 |
-|    OV-V-pkc     | NA                    | EUF-CMA          |                    5 |                    446992 |                   2436704 |                      260 |
+|    OV-Ip-pkc    | NA                    | EUF-CMA          |                    1 |                     46591 |                    278087 |                      135 |
+|   OV-III-pkc    | NA                    | EUF-CMA          |                    3 |                    189232 |                   1167440 |                      209 |
+|    OV-V-pkc     | NA                    | EUF-CMA          |                    5 |                    446992 |                   2801024 |                      275 |
 |  OV-Is-pkc-skc  | NA                    | EUF-CMA          |                    1 |                     66576 |                        32 |                       96 |
-|  OV-Ip-pkc-skc  | NA                    | EUF-CMA          |                    1 |                     43576 |                        32 |                      128 |
-| OV-III-pkc-skc  | NA                    | EUF-CMA          |                    3 |                    189232 |                        32 |                      200 |
-|  OV-V-pkc-skc   | NA                    | EUF-CMA          |                    5 |                    446992 |                        32 |                      260 |
+|  OV-Ip-pkc-skc  | NA                    | EUF-CMA          |                    1 |                     46591 |                        32 |                      135 |
+| OV-III-pkc-skc  | NA                    | EUF-CMA          |                    3 |                    189232 |                        32 |                      209 |
+|  OV-V-pkc-skc   | NA                    | EUF-CMA          |                    5 |                    446992 |                        32 |                      275 |
 
 ## OV-Is implementation characteristics
 

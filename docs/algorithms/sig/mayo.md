@@ -4,16 +4,16 @@
 - **Main cryptographic assumption**: multivariable quadratic equations, oil and vinegar.
 - **Principal submitters**: Ward Beullens, Fabio Campos, Sofía Celi, Basil Hess, Matthias J. Kannwischer.
 - **Authors' website**: https://pqmayo.org
-- **Specification version**: NIST Round 2 (February 2025).
+- **Specification version**: NIST Round 3 (September 2026).
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106 with copy_from_upstream patches
+  - **Source**: https://github.com/PQCMayo/MAYO-C/commit/74de637a7c4a7f9fafa888183bc05f5cf920cd2d with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 - **Optimized Implementation sources**:
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106 with copy_from_upstream patches
+      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/74de637a7c4a7f9fafa888183bc05f5cf920cd2d with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
   - **neon**:<a name="neon"></a>
-      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/64e15c622dec1f59aa5bbaf7f7c8f4f20af75106 with copy_from_upstream patches
+      - **Source**: https://github.com/PQCMayo/MAYO-C/commit/74de637a7c4a7f9fafa888183bc05f5cf920cd2d with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
@@ -26,8 +26,8 @@
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
 |:---------------:|:----------------------|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1420 |                        24 |                      454 |
-|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      4912 |                        24 |                      186 |
+|     MAYO-1      | NA                    | EUF-CMA          |                    1 |                      1456 |                        24 |                      464 |
+|     MAYO-2      | NA                    | EUF-CMA          |                    1 |                      2928 |                        24 |                      239 |
 |     MAYO-3      | NA                    | EUF-CMA          |                    3 |                      2986 |                        32 |                      681 |
 |     MAYO-5      | NA                    | EUF-CMA          |                    5 |                      5554 |                        40 |                      964 |
 
