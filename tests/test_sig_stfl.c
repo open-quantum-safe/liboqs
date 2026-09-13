@@ -132,6 +132,19 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 	return 1;
 }
 
+#if defined(OQS_ENABLE_SIG_STFL_LMS) && defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN)
+/*
+ * Store hook for a throwaway key that is signed with once and then discarded.
+ * OQS_SECRET_KEY_LMS_set_store_cb() ignores a NULL context, so one must be passed.
+ */
+static OQS_STATUS discard_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
+	(void)key_buf;
+	(void)buf_len;
+	(void)context;
+	return OQS_SUCCESS;
+}
+#endif
+
 /*
  * Write stateful secret keys to disk.
  */
@@ -425,6 +438,12 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 #define TEST_LMS_OTS_TYPE_OFFSET 11
 #define TEST_LMS_TYPE_SHA256_H5 5U
 #define TEST_LMOTS_TYPE_SHA256_N32_W2 2U
+/* Cross-variant binding sub-case: a single-level signer and two objects that must
+ * reject it -- one differing only in Winternitz w (so only length_signature and the
+ * LM-OTS type code differ), one differing in HSS level count as well. */
+#define TEST_LMS_BIND_SIGNER "LMS_SHA256_H5_W2"        /* length_signature 4464, L=1 */
+#define TEST_LMS_BIND_OTHER_W "LMS_SHA256_H5_W8"       /* length_signature 1296, L=1 */
+#define TEST_LMS_BIND_OTHER_LEVELS "LMS_SHA256_H5_W8_H5_W8" /* length_signature 2644, L=2 */
 #endif
 
 /*
@@ -481,6 +500,88 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 	return OQS_SUCCESS;
 #endif
 }
+
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+/*
+ * Algorithm binding: a genuine public key and signature from one LMS variant must
+ * not verify through a different variant's OQS_SIG_STFL object.
+ *
+ * hss_validate_signature_init() takes the level count and both parameter-set type
+ * codes from the public key, so before the per-variant verify wrappers existed
+ * sig->verify was literally the same function for all LMS variants and every
+ * object accepted every other variant's signatures -- across Winternitz values,
+ * across signature lengths (an LMS_SHA256_H5_W8 object, length_signature 1296,
+ * accepted a 4464-byte LMS_SHA256_H5_W2 signature) and across HSS level counts.
+ * This mirrors the XMSS sub-case of test_invalid_sig for GHSA-2wxh-55qf-c7wg.
+ *
+ * @return OQS_SUCCESS if the foreign variants reject and the signer still accepts.
+ */
+static OQS_STATUS test_lms_algorithm_binding(const uint8_t *message, size_t message_len) {
+#ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+	/* Needs a genuine signature, so it can only run where signing is enabled. */
+	(void)message;
+	(void)message_len;
+	return OQS_SUCCESS;
+#else
+	static const char *const foreign[] = { TEST_LMS_BIND_OTHER_W, TEST_LMS_BIND_OTHER_LEVELS };
+	OQS_STATUS ret = OQS_ERROR;
+	OQS_SIG_STFL *signer = NULL;
+	OQS_SIG_STFL_SECRET_KEY *sk = NULL;
+	uint8_t *pk = NULL, *signature = NULL;
+	size_t signature_len = 0;
+	char context[] = "lms-binding-test";
+
+	signer = OQS_SIG_STFL_new(TEST_LMS_BIND_SIGNER);
+	if (signer == NULL) {
+		return OQS_SUCCESS; /* signer variant not enabled in this build */
+	}
+	sk = OQS_SIG_STFL_SECRET_KEY_new(TEST_LMS_BIND_SIGNER);
+	pk = OQS_MEM_malloc(signer->length_public_key);
+	signature = OQS_MEM_malloc(signer->length_signature);
+	if (sk == NULL || pk == NULL || signature == NULL) {
+		goto err;
+	}
+	signature_len = signer->length_signature;
+
+	if (OQS_SIG_STFL_keypair(signer, pk, sk) != OQS_SUCCESS) {
+		goto err;
+	}
+	/* keypair() builds secret_key_data, so the store hook is attached after it. */
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(sk, discard_secret_key, context);
+	if (OQS_SIG_STFL_sign(signer, signature, &signature_len, message, message_len, sk) != OQS_SUCCESS) {
+		goto err;
+	}
+
+	/* Control: the signature must still verify through its own variant. */
+	if (OQS_SIG_STFL_verify(signer, message, message_len, signature, signature_len, pk) != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: genuine %s signature rejected by its own object\n", TEST_LMS_BIND_SIGNER);
+		goto err;
+	}
+
+	for (size_t i = 0; i < sizeof(foreign) / sizeof(foreign[0]); i++) {
+		OQS_SIG_STFL *other = OQS_SIG_STFL_new(foreign[i]);
+		if (other == NULL) {
+			continue; /* variant not enabled in this build */
+		}
+		OQS_STATUS status = OQS_SIG_STFL_verify(other, message, message_len, signature, signature_len, pk);
+		OQS_SIG_STFL_free(other);
+		if (status == OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: %s object accepted a genuine %s signature\n",
+			        foreign[i], TEST_LMS_BIND_SIGNER);
+			goto err;
+		}
+	}
+
+	ret = OQS_SUCCESS;
+err:
+	OQS_MEM_insecure_free(pk);
+	OQS_MEM_insecure_free(signature);
+	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	OQS_SIG_STFL_free(signer);
+	return ret;
+#endif
+}
+#endif /* OQS_ENABLE_SIG_STFL_LMS */
 
 /*
  * This function tests verification of LMS signatures that are shorter than the
@@ -545,7 +646,7 @@ static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
 	}
 
 	OQS_SIG_STFL_free(sig);
-	return OQS_SUCCESS;
+	return test_lms_algorithm_binding(message, sizeof(message) - 1);
 #endif
 }
 

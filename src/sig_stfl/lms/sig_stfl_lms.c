@@ -54,6 +54,89 @@ static OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk
 
 static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
+/*
+ * OQS_LMS_ID_* encodes a variant as 0x0L H(1)W(1) ... H(L)W(L): a level-count
+ * byte followed by one nibble pair per level, where the nibbles are the RFC 8554
+ * registry codes for the LMS type (H5=5 .. H25=9) and the LM-OTS type
+ * (W1=1 .. W8=4). Recover L by finding the shift at which the leading byte is
+ * its own value; the encoding is 2 + 2L hex digits wide, so only one L matches.
+ *
+ * The id is taken as a uint64_t and L is capped at 7 because the encoding needs
+ * 8 + 8L bits: L = 7 is the largest that fits, and shifting by the full width of
+ * the type would be undefined. Every variant defined today has L of 1 or 2.
+ */
+#define LMS_ID_MAX_LEVELS 7
+
+static uint32_t lms_id_levels(uint64_t id) {
+	for (uint32_t l = 1; l <= LMS_ID_MAX_LEVELS; l++) {
+		if ((id >> (8 * l)) == (uint64_t)l) {
+			return l;
+		}
+	}
+	return 0;
+}
+
+static uint32_t lms_be32(const uint8_t *p) {
+	return ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16) |
+	       ((uint32_t)p[2] << 8) | (uint32_t)p[3];
+}
+
+/*
+ * Bind a verify call to the variant whose object the caller invoked it on.
+ *
+ * OQS_SIG_STFL_alg_lms_verify() is shared by every LMS variant and
+ * hss_validate_signature_init() derives the level count, the LMS type and the
+ * LM-OTS type from the public key alone, so without this check any LMS object
+ * accepts any other LMS variant's public key and signature. A serialised HSS
+ * public key is u32(L) || u32(lm_type) || u32(lm_ots) || I || T[1], which is
+ * exactly the level count and the first nibble pair of the variant's OQS_LMS_ID.
+ *
+ * This is the LMS counterpart of the per-variant checks the XMSS wrappers grew
+ * in ef70dea (signature_len) and 077e32a (public-key OID); LMS had no
+ * per-variant wrapper for them to live in. Rejecting here keeps the mismatch
+ * away from any code that derives buffer offsets from the public key.
+ */
+static OQS_STATUS oqs_lms_verify_variant(uint64_t oid, size_t variant_signature_len,
+        const uint8_t *message, size_t message_len,
+        const uint8_t *signature, size_t signature_len,
+        const uint8_t *public_key) {
+	if (public_key == NULL) {
+		return OQS_ERROR;
+	}
+	if (signature_len != variant_signature_len) {
+		return OQS_ERROR;
+	}
+	uint32_t levels = lms_id_levels(oid);
+	if (levels == 0) {
+		return OQS_ERROR;
+	}
+	uint32_t lm_type = (uint32_t)((oid >> (8 * levels - 4)) & 0xFU);
+	uint32_t lm_ots_type = (uint32_t)((oid >> (8 * levels - 8)) & 0xFU);
+
+	/*
+	 * Two serialisations reach this API and public_key_levels() accepts both:
+	 * the HSS form u32(L) || u32(lm_type) || u32(lm_ots) || I || T[1] that
+	 * OQS_SIG_STFL_alg_lms_*_keypair() emits, and the bare RFC 8554 LMS form
+	 * u32(lm_type) || u32(lm_ots) || I || T[1], used by the NIST verify vectors
+	 * added in #2435 (tests/KATs/sig_stfl/lms/LMS_SHA256_{H5,H10}_W1.rsp) and
+	 * only meaningful for a single-level key. The two cannot be confused: the
+	 * HSS form opens with a level count in 1..8 and the bare form with an LMS
+	 * type code in 5..9. Accept the key if it names this variant under either
+	 * form and leave the choice between them to hss_validate_signature_init(),
+	 * which disambiguates against the signature.
+	 */
+	bool hss_form = (lms_be32(public_key) == levels &&
+	                 lms_be32(public_key + 4) == lm_type &&
+	                 lms_be32(public_key + 8) == lm_ots_type);
+	bool lms_form = (levels == 1 &&
+	                 lms_be32(public_key) == lm_type &&
+	                 lms_be32(public_key + 4) == lm_ots_type);
+	if (!hss_form && !lms_form) {
+		return OQS_ERROR;
+	}
+	return OQS_SIG_STFL_alg_lms_verify(message, message_len, signature, signature_len, public_key);
+}
+
 // ======================== LMS Maccros ======================== //
 // macro to en/disable OQS_SIG_STFL-only structs used only in sig&gen case:
 #ifdef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
@@ -68,6 +151,13 @@ static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_
 #endif
 // generator for all alg-specific functions:
 #define LMS_ALG(lms_variant, LMS_VARIANT) \
+static OQS_STATUS OQS_SIG_STFL_alg_lms_##lms_variant##_verify(const uint8_t *message, size_t message_len, \
+                const uint8_t *signature, size_t signature_len, const uint8_t *public_key) { \
+        return oqs_lms_verify_variant(OQS_LMS_ID_##lms_variant, \
+                                      OQS_SIG_STFL_alg_lms_##lms_variant##_length_signature, \
+                                      message, message_len, signature, signature_len, public_key); \
+} \
+\
 OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_##lms_variant##_new(void) { \
 \
         OQS_SIG_STFL *sig = (OQS_SIG_STFL *)OQS_MEM_calloc(1, sizeof(OQS_SIG_STFL)); \
@@ -86,7 +176,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_##lms_variant##_new(void) { \
         sig->length_secret_key = OQS_SIG_STFL_alg_lms_length_private_key; \
         sig->length_signature = OQS_SIG_STFL_alg_lms_##lms_variant##_length_signature; \
 \
-        sig->verify = OQS_SIG_STFL_alg_lms_verify; \
+        sig->verify = OQS_SIG_STFL_alg_lms_##lms_variant##_verify; \
 \
         return sig;\
 } \
