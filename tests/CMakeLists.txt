@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: MIT
 
-option(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
-option(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN "Build test suite with support for MemorySanitizer-based detection of non-constant time behaviour." OFF)
-
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wbad-function-cast)

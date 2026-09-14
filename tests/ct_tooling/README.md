@@ -11,11 +11,11 @@ tests/ct_tooling/
 └── tools/
     ├── memsan/
     │   ├── false_positives/        # Directory containing false-positives suppression files
-    │   ├── issues/                 # Directory containing possible constant-time isues detected with Valgrind-Varlat
+    │   ├── issues/                 # Directory containing possible constant-time issues detected with MemSan
     │   └── README.md
     └── valgrind_varlat/
         ├── false_positives/        # Directory containing false-positives suppression files
-        ├── issues/                 # Directory containing possible constant-time isues detected with MemSan
+        ├── issues/                 # Directory containing possible constant-time issues detected with Valgrind-Varlat
         └── README.md
 ```
 
@@ -28,7 +28,7 @@ tests/ct_tooling/
 - **Purpose**: LLVM-based uninitialized memory error detection for constant-time analysis using MemorySanitizer
 - **Output**: Unique `SUMMARY: MemorySanitizer` lines for each warning output
 
-Both tools are driven by the single unified `ct_test.sh` script located at the root of `tests/ct_tooling/` and enforce a warning cap of 100,000 unique warnings per algorithm run. Once the cap is reached, further warnings are suppressed. All SLH-DSA signature variants are currently skipped during SIG tests due to the excessive time they require to execute. The tool used for testing is selected via the first argument:
+Both tools are driven by the single unified `ct_test.sh` script located at the root of `tests/ct_tooling/`. All SLH-DSA signature variants are currently skipped during SIG tests due to the excessive time they require to execute. The tool used for testing is selected via the first argument:
 
 ```bash
 ./ct_test.sh <tool> <compiler_version> <liboqs_build> <opt_flags...> <input>
@@ -45,14 +45,14 @@ Examples:
 ```bash
 ./ct_test.sh valgrind-varlat clang generic -O2 all
 ./ct_test.sh valgrind-varlat clang-20 auto -O3 -fno-tree-vectorize kems
-./ct_test.sh valgrind-varlat gcc-14 generic -O2 -fno-tree-vectorize Kyber768
+./ct_test.sh valgrind-varlat gcc-14 generic -O2 -fno-tree-vectorize ML-KEM-512
 ./ct_test.sh memsan clang generic -O1 ML-DSA-44
 ./ct_test.sh memsan clang-20 auto -O3 all
 ```
 
 The `local_testing_example.sh` script demonstrates how to use `ct_test.sh` to run CT tests locally across a variety of compilers, compiler versions, liboqs target builds, and optimization flags.
 
-The `ct-tooling-valgrind-varlat.yml` and `ct-tooling-memsan.yml` workflows also use `ct_test.sh` to execute CT tests in CI on user-selected algorithms (using [interactive-inputs](https://github.com/marketplace/actions/interactive-inputs)) when the workflows are manually triggered on GitHub Actions.
+The `ct-tooling.yml` workflow also uses `ct_test.sh` to execute CT tests in CI on user-selected algorithms (via workflow inputs) when the workflow is manually triggered on GitHub Actions.
 
 ### Configuration
 For Valgrind-Varlat configuration, see: [Valgrind-Varlat's README](tools/valgrind_varlat/README.md)
@@ -140,7 +140,7 @@ tests/ct_tooling/tools/<tool>/logs/
 
 The summary file for each run includes the compiler path, compiler version, target architecture, and compilation flags used, followed by a pass/fail line for each algorithm tested.
 
-### Cathegorizing warnings and false positive handling
+### Categorizing warnings and false positive handling
 This framework does not directly differentiate between false positives and issues directly. It must be manually maintained by contributors, who carefully analyze the framework's output and label them.  The label is for auditors. We assign "false positive" to a warning that is known not to be a security threat, and we store its suppression file in the corresponding file and subdirectory. We "raise an issue" about any other error, and we store the corresponding suppression file in the "issues" subdirectory. These can be found in `liboqs/tests/ct_tooling/tools/{valgrind_varlat, memsan}/{false_positives, issues}`. If you are unsure where your suppression file belongs, then save it to the "issues" subdirectory.
 
 The handling of false positives slightly differs between tools, with both using the output returned by the tool during execution to generate the final suppression files. This process is outlined in the READMEs within each tool's subdirectory.

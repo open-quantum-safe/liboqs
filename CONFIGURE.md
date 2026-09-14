@@ -241,15 +241,13 @@ This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE
 
 ## OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND
 
-This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.
-
-When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is made available to control whether liboqs is built using `-O3` optimization, as in a release build, or using the default "Debug" profile. By default, `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is `OFF`.
+This option enables Valgrind-based detection of non-constant time behaviour (timing side-channels) using `valgrind-varlat`. It is used in conjunction with the testing framework in `tests/ct_tooling/` (e.g., `tests/ct_tooling/ct_test.sh`). liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.
 
 **Default**: `OFF`.
 
 ## OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 
-Similar to [`OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND`](#OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND), this option enables constant-time testing using Clang's MemorySanitizer.
+Similar to [`OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND`](#OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND), this option enables constant-time testing using Clang's MemorySanitizer (`memsan`) in `tests/ct_tooling/`. liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug` and using the Clang compiler with MemorySanitizer flags.
 
 **Default**: `OFF`.
 
