@@ -30,35 +30,12 @@ jobs:
         working-directory: build
         run: ./tests/test_aes
 
-  constant-time-x64:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: generic
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-            SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
-          - name: extensions
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-            SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
-    container:
-      image: ${{ matrix.container }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
-      - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
-      - name: Build
-        run: ninja
-        working-directory: build
-      - name: Run tests
-        timeout-minutes: 360
-        run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
+  ct-tooling:
+    uses: ./.github/workflows/ct-tooling.yml
+    permissions:
+      contents: read
+    with:
+      algorithms: 'ML-KEM-512,ML-KEM-768,ML-KEM-1024'
 
   nistkat-x64:
     runs-on: ubuntu-latest

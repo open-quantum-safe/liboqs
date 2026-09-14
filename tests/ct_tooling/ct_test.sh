@@ -38,17 +38,22 @@ build() {
 
             cmake "${CMAKE_ARGS[@]}" \
                 -DCMAKE_C_FLAGS="$OPT_FLAG" \
-                -DOQS_ENABLE_TEST_CONSTANT_TIME=ON > /dev/null
+                -DOQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND=ON > /dev/null
             cmake --build . -j$(nproc) > /dev/null
             ;;
         memsan)
 
             # Generate suppression flags for all suppression files containing false positives
             SUP_DIR="$SCRIPT_DIR/tools/memsan/false_positives"
+            ISSUES_DIR="$SCRIPT_DIR/tools/memsan/issues"
             SUP_FLAGS=()
             for f in "$SUP_DIR"/*; do
                 [ -f "$f" ] || continue
                 SUP_FLAGS+=( "-fsanitize-ignorelist=$f" )
+            done
+            for f in "$ISSUES_DIR"/*; do
+                [ -f "$f" ] || continue
+                SUP_FLAGS+=( "--suppressions=$f" )
             done
 
             cmake "${CMAKE_ARGS[@]}" \
@@ -96,12 +101,6 @@ test() {
     mkdir -p "$OUTPUT_DIR"
     SUMMARY_FILE="$OUTPUT_DIR/${TEST_TYPE}_summary.txt"
 
-    COMPILER_PATH=$(grep -E '^CMAKE_C_COMPILER:.*=' "$BUILD_DIR"/CMakeCache.txt | head -n1 | cut -d'=' -f2- | tr -d '\r')
-    COMPILER_VERSION=$("$COMPILER_PATH" --version 2>&1 | head -n1)
-    ARCH="$(uname -m)"
-    COMP_FLAGS=$(grep "CMAKE_C_FLAGS:" "$BUILD_DIR/CMakeCache.txt" | cut -d'=' -f2-)
-    MAX_WARNINGS=100000
-
     # Check if this is first algorithm (header only once)
     if [[ ! -s "$SUMMARY_FILE" ]]; then
         {
@@ -116,8 +115,6 @@ test() {
         echo "" >> "$SUMMARY_FILE"
     fi
 
-    PASS_COUNT=0
-    FAIL_COUNT=0
     LOG_FILE="$OUTPUT_DIR/${ALGORITHM}_${TIMESTAMP}.log"
     echo -n "Testing $ALGORITHM ... " | tee -a "$SUMMARY_FILE"
 
@@ -128,140 +125,93 @@ test() {
         valgrind-varlat)
             # Generate suppression flags for all suppression files containing false positives
             SUP_DIR="$SCRIPT_DIR/tools/valgrind_varlat/false_positives"
+            ISSUES_DIR="SCRIPT_DIR/tools/valgrind_varlat/issues"
             SUP_FLAGS=()
-            for f in "$SUP_DIR"/*.txt; do
+            for f in "$SUP_DIR"/*; do
                 [ -f "$f" ] || continue
                 SUP_FLAGS+=( "--suppressions=$f" )
             done
-
+            for f in "$ISSUES_DIR"/*; do
+                [ -f "$f" ] || continue
+                SUP_FLAGS+=( "--suppressions=$f" )
+            done
             VALGRIND_OPTS=(
                 valgrind_varlat
                 --tool=memcheck
                 --gen-suppressions=all
-                "${SUP_FLAGS[@]}" # Include all suppression files
+                "${SUP_FLAGS[@]}"
                 --error-exitcode=123
                 --max-stackframe=20480000
                 --num-callers=20
-                --variable-latency-errors=yes # Enable the KyberSlash patch
+                --variable-latency-errors=yes
             )
     
-            : > "$LOG_FILE" ; : > "$LOG_FILE.hashes"; : > "$LOG_FILE.count"
-
+            : > "$LOG_FILE"; : > "$LOG_FILE.count"
             "${VALGRIND_OPTS[@]}" "$BUILD_DIR"/tests/$TEST_BINARY "$ALGORITHM" 2>&1 | awk \
                 -v log_file="$LOG_FILE" \
-                -v tmp_file="$LOG_FILE.tmp" \
-                -v hash_file="$LOG_FILE.hashes" \
-                -v count_file="$LOG_FILE.count" \
-                -v max_warnings="$MAX_WARNINGS" '
-                    # Extract unique suppression blocks from Valgrind output
+                -v count_file="$LOG_FILE.count" '
                     BEGIN {
-                        unique_warnings_count = 0;
-                        in_block = 0;         # Whether we are inside a { ... } block
-                        block = "";           # Current block content (including braces)
-                        suppress = 0;         # reached max_warnings
-
-                        # Preload known hashes if present
-                        while ((getline line < hash_file) > 0) {
-                            gsub(/\r$/, "", line);
-                            if (length(line) > 0) {
-                                seen[line] = 1;
-                            }
-                        }
-                        close(hash_file);
+                        unique_warnings_count = 0
+                        in_block = 0
+                        block = ""
                     }
-
                     {
-                        if (suppress) {
-                            if (in_block) {
-                                if ($0 ~ /^\}$/) { in_block = 0 }
-                            } else if ($0 ~ /^\{$/) {
-                                in_block = 1
-                            }
-                            next
-                        }
-
                         if (in_block) {
-                            block = block $0 "\n";
-                                
-                            # When } is encountered, it is the end of block: compute hash via tmp file
+                            block = block $0 "\n"
                             if ($0 ~ /^\}$/) {
-                                print block > tmp_file; close(tmp_file);
-                                cmd = "sha256sum \"" tmp_file "\"";
-                                cmd | getline line; close(cmd);
-                                hash = line; sub(/ .*/, "", hash);
-
-                                # If the hash is new, store it in seen[] and increase the count
-                                if (!(hash in seen)) {
-                                    print block >> log_file; close(log_file);
-                                    print "" >> log_file;      # spacer line between blocks
-                                    print hash >> hash_file; close(hash_file);
-                                    seen[hash] = 1;
-                                    unique_warnings_count++;
-
-                                    if (unique_warnings_count >= max_warnings) {
-                                        suppress = 1;
-                                    }
+                                # In-memory deduplication using entire block as associative array key
+                                if (!seen[block]++) {
+                                    print block >> log_file
+                                    print "" >> log_file
+                                    unique_warnings_count++
                                 }
-
-                                in_block = 0;
-                                block = "";
+                                in_block = 0
+                                block = ""
                             }
                             next
                         }
-
-                        # When { is detected, start a new block
                         if ($0 ~ /^\{$/) {
-                            in_block = 1;
-                            block = $0 "\n";
+                            in_block = 1
+                            block = $0 "\n"
                         }
                     }
-
                     END {
-                        print unique_warnings_count > count_file; close(count_file);
+                        print (unique_warnings_count + 0) > count_file
+                        close(count_file)
+                        close(log_file)
                     }
-                    '
+                '
             EXIT_CODE=${PIPESTATUS[0]}
             ERROR_COUNT=$(cat "$LOG_FILE.count" 2>/dev/null); ERROR_COUNT=${ERROR_COUNT:-0}
-            rm -f "$OUTPUT_DIR"/*.hashes "$OUTPUT_DIR"/*log.tmp
             ;;
         
         memsan)
-            touch "$LOG_FILE"
-
+            : > "$LOG_FILE"; : > "$LOG_FILE.count"
+            MSAN_OPTIONS="halt_on_error=0${MSAN_OPTIONS:+:$MSAN_OPTIONS}" \
             "$BUILD_DIR"/tests/$TEST_BINARY "$ALGORITHM" 2>&1 | awk \
                 -v log_file="$LOG_FILE" \
-                -v max_warnings="$MAX_WARNINGS" '
+                -v count_file="$LOG_FILE.count" '
+                BEGIN {
+                    warnings = 0
+                }
                 /^SUMMARY: MemorySanitizer:/ {
                     # memcmp/bcmp warnings are known false positives but -fsanitize-ignorelist has no effect because they are not compiled by clang
                     # Skip their warnings here instead.
                     if ($0 ~ / in (memcmp|bcmp)$/) next
-
-                    # Check if this exact SUMMARY was already logged and store it if not
-                    cmd = "grep -Fxq \"" $0 "\" " log_file
-                    if (system(cmd) != 0) {
+                    # In-memory deduplication using exact summary line as key
+                    if (!seen[$0]++) {
                         warnings++
                         print >> log_file
                         fflush(log_file)
                     }
-
-                    if (warnings >= max_warnings) {
-                        print warnings > log_file ".count"
-                        print "TERMINATED: Exceeded " max_warnings " warnings" >> log_file
-                        fflush(log_file)
-                        terminated = 1
-                        exit 1
-                    }
                 }
-                # Count and store the number of unique warnings obtained and store it
                 END {
-                    if (!terminated && warnings > 0) {
-                        print warnings > log_file ".count"
-                    } else if (!terminated) {
-                        print 0 > log_file ".count"
-                    }
+                    print (warnings + 0) > count_file
+                    close(count_file)
+                    close(log_file)
                 }
             '
-            EXIT_CODE=$?
+            EXIT_CODE=${PIPESTATUS[0]}
             ERROR_COUNT=$(cat "$LOG_FILE.count" 2>/dev/null); ERROR_COUNT=${ERROR_COUNT:-0}
             ;;
         *)
@@ -269,26 +219,16 @@ test() {
             ;;
     esac
 
-    if [ "$ERROR_COUNT" -eq "$MAX_WARNINGS" ]; then
-        echo "FAIL" | tee -a "$SUMMARY_FILE"
-        echo "  → Found $ERROR_COUNT warnings (warning cap reached — further warnings suppressed)" \
-            | tee -a "$SUMMARY_FILE"
-        ((++FAIL_COUNT))
-
-    elif [ "$ERROR_COUNT" -gt 0 ]; then
+    if [ "$ERROR_COUNT" -gt 0 ]; then
         echo "FAIL" | tee -a "$SUMMARY_FILE"
         echo "  → Found $ERROR_COUNT warnings" \
             | tee -a "$SUMMARY_FILE"
-        ((++FAIL_COUNT))
 
     elif [ $EXIT_CODE -ne 0 ]; then
         echo "FAIL (Exit code: $EXIT_CODE)" | tee -a "$SUMMARY_FILE"
-        ((++FAIL_COUNT))
 
     else
         echo "PASS" | tee -a "$SUMMARY_FILE"
-        ((++PASS_COUNT))
-
     fi
 
     rm -f "$OUTPUT_DIR"/*.count
@@ -362,6 +302,11 @@ notify "Preparing liboqs build (compiler=${COMPILER}, target=${TARGET}, flags=${
 build "$TOOL" "$COMPILER" "$TARGET" "$OPT_FLAG" "$BUILD_DIR" "$BUILD_INPUT"
 
 cd "$LIBOQS_DIR"
+
+COMPILER_PATH=$(grep -E '^CMAKE_C_COMPILER:.*=' "$BUILD_DIR"/CMakeCache.txt | head -n1 | cut -d'=' -f2- | tr -d '\r')
+COMPILER_VERSION=$("$COMPILER_PATH" --version 2>&1 | head -n1)
+ARCH="$(uname -m)"
+COMP_FLAGS=$(grep "CMAKE_C_FLAGS:" "$BUILD_DIR/CMakeCache.txt" | cut -d'=' -f2-)
 
 TIMESTAMP="$(date '+%Y%m%d_%H%M%S')"
 notify "Setting up ${TOOL} CT testing"
