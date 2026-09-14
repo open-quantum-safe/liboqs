@@ -3,7 +3,7 @@ fun:PQCP_MLKEM_NATIVE_MLKEM*_C_poly_reduce
 fun:PQCP_MLKEM_NATIVE_MLKEM*_X86_64_poly_frommsg
 fun:mlk_ct_memcmp
 fun:mlk_ct_cmov_zero
-fun:mlk_rej_uniform_scalar
+fun:mlk_rej_uniform_*
 fun:mlk_load32_littleendian
 fun:PQCP_MLKEM_NATIVE_MLKEM*_C_poly_frommsg
 fun:mlk_value_barrier_*

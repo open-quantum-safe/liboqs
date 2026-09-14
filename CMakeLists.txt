@@ -31,6 +31,13 @@ option(OQS_MEMOPT_BUILD "Build with memory-optimized implementations where avail
 option(OQS_USE_CUPQC "Utilize cuPQC as the backend for supported PQC algorithms." OFF)
 option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithms." OFF)
 # --- Test Configuration ---
+option(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
+option(OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN "Build test suite with support for MemorySanitizer-based detection of non-constant time behaviour." OFF)
+# Enable generic CT flag if any constant-time testing backend is enabled
+if(OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND OR OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
+    set(OQS_ENABLE_TEST_CONSTANT_TIME ON)
+endif()
+
 set(OQS_PYTEST_NUMPROCESSES "auto" CACHE STRING "Number of parallel processes for pytest (e.g., 'auto', '1', '2'). Useful for limiting memory usage on constrained CI/CD systems.")
 message(STATUS "OQS Testing: Pytest parallel workers set to '${OQS_PYTEST_NUMPROCESSES}'")
 

@@ -1,7 +1,7 @@
 # Valgrind-Varlat
 This directory uses [Daniel Bernstein's Kyberslash patches](https://kyberslash.cr.yp.to/papers.html) (valgrind-try-patch-20250805.txt and valgrind-varlat-patch-20250805.txt) and another patch including variable latency warnings in the suppression block (valgrind_varlat_sup_block.txt). These patches can also be found under the [ubuntu-latest directory of the ci-containers](https://github.com/open-quantum-safe/ci-containers/tree/main/ubuntu-latest) repository.
 
-Valgrind-Varlat handles false-positive warnings by storing their suppression block into `.txt` files within the `false_positives/` directory. These files are passed during the tools execution, successfully disregarding those warnings that are cathegorized as not constant-time issues after review.
+Valgrind-Varlat handles false-positive warnings by storing their suppression block into files within the `false_positives/` directory. These files are passed during the tools execution, successfully disregarding those warnings that are categorized as not constant-time issues after review.
 
 ## Valgrind-Varlat Install Requirements
 In order to successfully execute Valgrind-Varlat's test using the tooling developed in this subrepository follow the next steps:
@@ -51,7 +51,7 @@ echo "export PATH=\"$INSTALL_DIR/bin:\$PATH\"" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-To check whether the installation was successful, you can use the varlat tests provided in the Kyberslash patch. Compile valgrind/memcheck/tests/varlat.c  with `gcc -o varlat varlat.c` and execute `valgrind_varlat --tool=memcheck --variable-latency-errors=yes --gen-suppressions=all ./varlat`. If the output ressembles something like the following output, valgrind_varlat was installed successfully:
+To check whether the installation was successful, you can use the varlat tests provided in the Kyberslash patch. Compile valgrind/memcheck/tests/varlat.c  with `gcc -o varlat varlat.c` and execute `valgrind_varlat --tool=memcheck --variable-latency-errors=yes --gen-suppressions=all ./varlat`. If the output resembles something like the following output, valgrind_varlat was installed successfully:
 
 ```
 ==5335== Memcheck, a memory error detector
