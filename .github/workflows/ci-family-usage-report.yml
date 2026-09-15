@@ -1,0 +1,166 @@
+name: CI Family Usage Report
+
+# Periodically (default: weekly) generates a report showing how much
+# GitHub Actions CI compute time is spent per liboqs algorithm family.
+# All logic lives in a single script: scripts/ci_family_report.py
+# (subcommands: generate-definitions, build-matrix, measure-family,
+# merge, fetch-ci-data, report). See that script's docstring and
+# scripts/README.md for details.
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'   # every Monday at 03:00 UTC
+  workflow_dispatch:
+    inputs:
+      n_ci_runs:
+        description: 'Number of real CI runs to analyze for timing data'
+        default: '5'
+        required: false
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  N_CI_RUNS: ${{ github.event.inputs.n_ci_runs || '5' }}
+
+jobs:
+  generate-family-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate family definitions and build matrix
+        id: gen
+        run: |
+          python3 scripts/ci_family_report.py generate-definitions . --out family_definitions.json
+          python3 scripts/ci_family_report.py build-matrix family_definitions.json --github-output
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: family-definitions
+          path: family_definitions.json
+          retention-days: 14
+
+  profile-family:
+    needs: generate-family-matrix
+    runs-on: ubuntu-latest
+    # SLH-DSA (156 parameter variants including tests) can take noticeably
+    # longer than the other families -- hence the generous timeout.
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        family: ${{ fromJson(needs.generate-family-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake ninja-build libssl-dev
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: family-definitions
+
+      - name: "Measure family: ${{ matrix.family.type }}/${{ matrix.family.name }}"
+        run: |
+          mkdir -p results
+          python3 scripts/ci_family_report.py measure-family \
+            --type "${{ matrix.family.type }}" \
+            --name "${{ matrix.family.name }}" \
+            --defs family_definitions.json \
+            --repo . \
+            --out "results/${{ matrix.family.type }}_${{ matrix.family.name }}.csv"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: timing-${{ matrix.family.type }}-${{ matrix.family.name }}
+          path: results/*.csv
+          retention-days: 14
+
+  aggregate-and-report:
+    needs: profile-family
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read    # for actions/checkout
+      actions: read     # for the fetch-ci-data step (GitHub Actions API)
+      issues: write     # for the "publish report to tracking issue" step below
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: timing-*
+          merge-multiple: true
+          path: results/
+
+      - name: Merge individual measurements
+        run: python3 scripts/ci_family_report.py merge results/ --out oqs_family_timing.csv
+
+      - name: Fetch real CI job data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/ci_family_report.py fetch-ci-data \
+            --repo "${{ github.repository }}" \
+            --workflow pr.yml \
+            --n-runs "${{ env.N_CI_RUNS }}" \
+            --out ci_job_data.json
+
+      - name: Generate report
+        run: |
+          python3 scripts/ci_family_report.py report \
+            oqs_family_timing.csv ci_job_data.json \
+            --out-md report.md --out-csv report.csv
+
+      - name: Publish as job summary
+        run: cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-family-usage-report
+          path: |
+            report.md
+            report.csv
+            oqs_family_timing.csv
+            ci_job_data.json
+          retention-days: 90
+
+      # Persist the report history as comments on a single pinned tracking
+      # issue (created on first run) instead of committing files into the
+      # repo, so the repo tree and history stay clean. Only on scheduled
+      # runs, not manual test runs, so test runs don't clutter the issue.
+      # Requires 'issues: write' permission for this job.
+      - name: Publish report to tracking issue
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          ISSUE_TITLE: "CI family usage reports (automated)"
+        run: |
+          issue=$(gh issue list --state open --search "in:title \"$ISSUE_TITLE\"" \
+                    --json number,title \
+                    --jq ".[] | select(.title == \"$ISSUE_TITLE\") | .number" | head -n1)
+          if [ -z "$issue" ]; then
+            issue=$(gh issue create --title "$ISSUE_TITLE" \
+              --body "Weekly CI compute-time reports per algorithm family are posted as comments below (see .github/workflows/ci-family-usage-report.yml). Full CSV data is attached to each workflow run as an artifact (90-day retention)." \
+              | grep -oE '[0-9]+$')
+          fi
+          {
+            echo "## CI family usage report -- $(date +%F)"
+            echo
+            # Issue comments are capped at 65536 characters; keep headroom.
+            head -c 60000 report.md
+            if [ "$(wc -c < report.md)" -gt 60000 ]; then
+              echo
+              echo "_(truncated -- full report in this run's artifacts)_"
+            fi
+            echo
+            echo "_Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}_"
+          } > comment.md
+          gh issue comment "$issue" --body-file comment.md \
+            || echo "Posting comment failed -- report is still available as an artifact."
