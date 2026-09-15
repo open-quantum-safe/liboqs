@@ -1,0 +1,95 @@
+name: Public API mutation testing
+
+permissions:
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      enforce_baseline:
+        description: Fail when the focused mutation score drops below the recorded floor
+        required: false
+        default: false
+        type: boolean
+  workflow_dispatch:
+    inputs:
+      enforce_baseline:
+        description: Fail when the focused mutation score drops below the recorded floor
+        required: false
+        default: false
+        type: boolean
+  release:
+    types: [published]
+
+jobs:
+  mutation:
+    name: OQS-owned public API mutation score
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      BUILD_DIR: build/mutation
+      REPORT_DIR: build/mutation/mull-reports
+      MULL_DEB: Mull-18-0.34.0-LLVM-18.1.3-ubuntu-amd64-24.04.deb
+      MULL_TIMEOUT_MS: 30000
+      MULL_VERSION: 0.34.0
+      MULL_WORKERS: 4
+      ENFORCE_BASELINE: ${{ inputs.enforce_baseline && 'true' || 'false' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v4
+      - name: Install LLVM 18 and Mull
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-18 cmake curl libssl-dev ninja-build python3
+          curl -L --fail --retry 3 \
+            -o "/tmp/${MULL_DEB}" \
+            "https://github.com/mull-project/mull/releases/download/${MULL_VERSION}/${MULL_DEB}"
+          sudo apt-get install -y "/tmp/${MULL_DEB}"
+          MULL_FRONTEND="$(find /usr -type f -name mull-ir-frontend-18 -print -quit)"
+          MULL_RUNNER="$(command -v mull-runner-18)"
+          test -n "$MULL_FRONTEND"
+          test -n "$MULL_RUNNER"
+          echo "MULL_FRONTEND=$MULL_FRONTEND" >> "$GITHUB_ENV"
+          echo "MULL_RUNNER=$MULL_RUNNER" >> "$GITHUB_ENV"
+      - name: Prepare Mull build config
+        run: tests/mutation/run_public_input.sh prepare "$BUILD_DIR"
+      - name: Configure focused build
+        env:
+          MULL_CONFIG: ${{ github.workspace }}/build/mutation/mull-build.yml
+        run: |
+          cmake -S . -B "$BUILD_DIR" -GNinja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_C_COMPILER=clang-18 \
+            -DCMAKE_ASM_COMPILER=clang-18 \
+            "-DCMAKE_C_FLAGS=-fpass-plugin=${MULL_FRONTEND} -g -O0 -grecord-command-line" \
+            -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON \
+            -DOQS_ENABLE_SIG_STFL_XMSS=ON \
+            -DOQS_ENABLE_SIG_STFL_LMS=ON \
+            '-DOQS_MINIMAL_BUILD=KEM_bike_l1;KEM_hqc_1;KEM_ntruprime_sntrup761;KEM_ntru_hps2048509;SIG_mayo_1;SIG_snova_SNOVA_25_8_3;SIG_cross_rsdp_128_small;SIG_falcon_512;SIG_falcon_padded_512;SIG_STFL_xmss_sha256_h10;SIG_STFL_lms_sha256_h5_w1;SIG_STFL_lms_sha256_h5_w8'
+      - name: Build mutation test binaries
+        env:
+          MULL_CONFIG: ${{ github.workspace }}/build/mutation/mull-build.yml
+        run: cmake --build "$BUILD_DIR" --target test_kem test_sig test_sig_stfl
+      - name: Run focused mutation campaign
+        run: tests/mutation/run_public_input.sh run "$BUILD_DIR" "$REPORT_DIR"
+      - name: Summarize mutation results
+        run: |
+          if [ "$ENFORCE_BASELINE" = "true" ]; then
+            set -- --enforce-baseline
+          else
+            set --
+          fi
+          python3 tests/mutation/summarize.py \
+            --reports "$REPORT_DIR" \
+            --baseline tests/mutation/baseline.json \
+            --json-out "$REPORT_DIR/summary.json" \
+            --markdown-out "$REPORT_DIR/summary.md" \
+            "$@"
+          cat "$REPORT_DIR/summary.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload mutation reports
+        if: always()
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: public-api-mutation-reports
+          path: build/mutation/mull-reports/
+          if-no-files-found: error
