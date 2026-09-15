@@ -1552,14 +1552,31 @@ static void override_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *sta
 /**
  * \brief Trigger SHA3 internal callback dispatcher.
  *
- * This is required to trigger runtime AVX512/AVX2 detection and set
- * SHA3 default callbacks before test application callbacks are configured.
+ * First-use dispatch must not modify the default callback entries.
  */
-static void sha3_trigger_dispatcher(void) {
+static int sha3_trigger_dispatcher(void) {
+	int status = EXIT_SUCCESS;
+	struct OQS_SHA3_callbacks sha3_callbacks_before = sha3_default_callbacks;
 	OQS_SHA3_sha3_256_inc_ctx state;
 
 	OQS_SHA3_sha3_256_inc_init(&state);
 	OQS_SHA3_sha3_256_inc_ctx_release(&state);
+	if (sha3_callbacks_before.SHA3_sha3_256_inc_init != sha3_default_callbacks.SHA3_sha3_256_inc_init) {
+		printf("Failure! SHA3 first-use dispatch modified the default callbacks\n");
+		status = EXIT_FAILURE;
+	}
+
+	struct OQS_SHA3_x4_callbacks sha3_x4_callbacks_before = sha3_x4_default_callbacks;
+	OQS_SHA3_shake128_x4_inc_ctx x4_state;
+
+	OQS_SHA3_shake128_x4_inc_init(&x4_state);
+	OQS_SHA3_shake128_x4_inc_ctx_release(&x4_state);
+	if (sha3_x4_callbacks_before.SHA3_shake128_x4_inc_init != sha3_x4_default_callbacks.SHA3_shake128_x4_inc_init) {
+		printf("Failure! SHA3-x4 first-use dispatch modified the default callbacks\n");
+		status = EXIT_FAILURE;
+	}
+
+	return status;
 }
 #endif
 
@@ -1571,7 +1588,9 @@ int main(UNUSED int argc, UNUSED char **argv) {
 
 #ifdef OQS_USE_SHA3_AVX512VL
 	/* set SHA3 default callbacks */
-	sha3_trigger_dispatcher();
+	if (sha3_trigger_dispatcher() == EXIT_FAILURE) {
+		ret = EXIT_FAILURE;
+	}
 #endif
 	struct OQS_SHA3_callbacks sha3_callbacks = sha3_default_callbacks;
 
