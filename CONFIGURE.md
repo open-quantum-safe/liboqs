@@ -258,7 +258,7 @@ This option enables Valgrind-based detection of non-constant time behaviour (tim
 
 ## OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
 
-Similar to [`OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND`](#OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND), this option enables constant-time testing using Clang's MemorySanitizer (`memsan`) in `tests/ct_tooling/`. liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug` and using the Clang compiler with MemorySanitizer flags.
+Similar to Valgrind's tooling, this option enables constant-time testing using Clang's MemorySanitizer (`memsan`) in `tests/ct_tooling/`. liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug` and using the Clang compiler with MemorySanitizer flags.
 
 **Default**: `OFF`.
 
