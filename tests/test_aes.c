@@ -52,6 +52,35 @@ static int test_aes128_correctness(void) {
 	return EXIT_SUCCESS;
 }
 
+/* Appendix C.2 of FIPS 197 */
+static const uint8_t test_aes192_plaintext[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
+static const uint8_t test_aes192_key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17};
+static const uint8_t test_aes192_ciphertext[] = {0xdd, 0xa9, 0x7c, 0xa4, 0x86, 0x4c, 0xdf, 0xe0, 0x6e, 0xaf, 0x70, 0xa0, 0xec, 0x0d, 0x71, 0x91};
+
+static int test_aes192_correctness(void) {
+	uint8_t derived_ciphertext[16];
+	void *schedule = NULL;
+	OQS_AES192_ECB_load_schedule(test_aes192_key, &schedule);
+	OQS_AES192_ECB_enc_sch(test_aes192_plaintext, sizeof(test_aes192_plaintext), schedule, derived_ciphertext);
+	if (memcmp(test_aes192_ciphertext, derived_ciphertext, 16) != 0) {
+		printf("test_aes192_correctness ciphertext does not match\n");
+		OQS_print_hex_string("expected ciphertext", test_aes192_ciphertext, 16);
+		OQS_print_hex_string("derived  ciphertext", derived_ciphertext, 16);
+		OQS_AES192_free_schedule(schedule);
+		return EXIT_FAILURE;
+	}
+	OQS_AES192_free_schedule(schedule);
+
+	OQS_AES192_ECB_enc(test_aes192_plaintext, sizeof(test_aes192_plaintext), test_aes192_key, derived_ciphertext);
+	if (memcmp(test_aes192_ciphertext, derived_ciphertext, 16) != 0) {
+		printf("test_aes192_correctness one-shot ciphertext does not match\n");
+		OQS_print_hex_string("expected ciphertext", test_aes192_ciphertext, 16);
+		OQS_print_hex_string("derived  ciphertext", derived_ciphertext, 16);
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
+}
+
 // test vector #3 from https://tools.ietf.org/html/rfc3686#section-6
 static const uint8_t test_aes128ctr_key[] = {0x76, 0x91, 0xBE, 0x03, 0x5E, 0x50, 0x20, 0xA8, 0xAC, 0x6E, 0x61, 0x85, 0x29, 0xF9, 0xA0, 0xDC};
 static const uint8_t test_aes128ctr_iv[] = {0x00, 0xE0, 0x01, 0x7B, 0x27, 0x77, 0x7F, 0x3F, 0x4A, 0x17, 0x86, 0xF0, 0x00, 0x00, 0x00, 0x01};
@@ -127,6 +156,18 @@ static void speed_aes128(void) {
 	OQS_AES128_free_schedule(schedule_dec);
 }
 
+static void speed_aes192(void) {
+	uint8_t ciphertext[16];
+	void *schedule = NULL, *schedule_dec = NULL;
+	TIME_OPERATION_SECONDS({ OQS_AES192_ECB_load_schedule(test_aes192_key, &schedule); OQS_AES192_free_schedule(schedule); }, "OQS_AES192_ECB_load+free_sch", BENCH_DURATION);
+
+	OQS_AES192_ECB_load_schedule(test_aes192_key, &schedule);
+	TIME_OPERATION_SECONDS(OQS_AES192_ECB_enc_sch(test_aes192_plaintext, sizeof(test_aes192_plaintext), schedule, ciphertext), "OQS_AES192_ECB_enc_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES192_ECB_enc(test_aes192_plaintext, sizeof(test_aes192_plaintext), test_aes192_key, ciphertext), "OQS_AES192_ECB_enc", BENCH_DURATION);
+	OQS_AES192_free_schedule(schedule);
+	OQS_AES192_free_schedule(schedule_dec);
+}
+
 static void speed_aes256(void) {
 	uint8_t ciphertext[16];
 	void *schedule = NULL, *schedule_dec = NULL;
@@ -187,6 +228,10 @@ int main(int argc, char **argv) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
+	if (test_aes192_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
 
 	if (test_aes256_correctness() != EXIT_SUCCESS) {
 		OQS_destroy();
@@ -209,6 +254,7 @@ int main(int argc, char **argv) {
 		printf("=== test_aes performance ===\n");
 		PRINT_TIMER_HEADER
 		speed_aes128();
+		speed_aes192();
 		speed_aes256();
 		PRINT_TIMER_FOOTER
 	}
