@@ -23,7 +23,7 @@ static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr,
        *sha3_256_ptr, *sha3_384_ptr, *sha3_512_ptr,
        *shake128_ptr, *shake256_ptr;
 
-static EVP_CIPHER *aes128_ecb_ptr, *aes128_ctr_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
+static EVP_CIPHER *aes128_ecb_ptr, *aes128_ctr_ptr, *aes192_ecb_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 
 static void fetch_ossl_objects(void) {
 	sha256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA256", NULL);
@@ -38,12 +38,13 @@ static void fetch_ossl_objects(void) {
 
 	aes128_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-ECB", NULL);
 	aes128_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-CTR", NULL);
+	aes192_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-192-ECB", NULL);
 	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
 	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
 
 	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
 	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
-	        !aes128_ecb_ptr || !aes128_ctr_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
+	        !aes128_ecb_ptr || !aes128_ctr_ptr || !aes192_ecb_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
 		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
 	}
 }
@@ -81,6 +82,7 @@ static void free_ossl_objects(void) {
 	cleanup_evp_md(&shake256_ptr);
 	cleanup_evp_cipher(&aes128_ecb_ptr);
 	cleanup_evp_cipher(&aes128_ctr_ptr);
+	cleanup_evp_cipher(&aes192_ecb_ptr);
 	cleanup_evp_cipher(&aes256_ecb_ptr);
 	cleanup_evp_cipher(&aes256_ctr_ptr);
 }
@@ -93,7 +95,7 @@ void oqs_ossl_destroy(void) {
 #else
 	if (sha256_ptr || sha384_ptr || sha512_ptr || sha3_256_ptr ||
 	        sha3_384_ptr || sha3_512_ptr || shake128_ptr || shake256_ptr ||
-	        aes128_ecb_ptr || aes128_ctr_ptr || aes256_ecb_ptr || aes256_ctr_ptr) {
+	        aes128_ecb_ptr || aes128_ctr_ptr || aes192_ecb_ptr || aes256_ecb_ptr || aes256_ctr_ptr) {
 		free_ossl_objects();
 	}
 #endif
@@ -312,6 +314,23 @@ const EVP_CIPHER *oqs_aes_128_ctr(void) {
 	return aes128_ctr_ptr;
 #else
 	return OSSL_FUNC(EVP_aes_128_ctr)();
+#endif
+}
+
+const EVP_CIPHER *oqs_aes_192_ecb(void) {
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#if defined(OQS_USE_PTHREADS)
+	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
+		return NULL;
+	}
+#else
+	if (!aes192_ecb_ptr) {
+		fetch_ossl_objects();
+	}
+#endif
+	return aes192_ecb_ptr;
+#else
+	return OSSL_FUNC(EVP_aes_192_ecb)();
 #endif
 }
 

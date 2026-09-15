@@ -36,6 +36,8 @@ const EVP_CIPHER *oqs_aes_128_ecb(void);
 
 const EVP_CIPHER *oqs_aes_128_ctr(void);
 
+const EVP_CIPHER *oqs_aes_192_ecb(void);
+
 const EVP_CIPHER *oqs_aes_256_ecb(void);
 
 const EVP_CIPHER *oqs_aes_256_ctr(void);
