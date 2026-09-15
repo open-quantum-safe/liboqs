@@ -82,3 +82,19 @@ void OQS_AES256_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, const 
 void OQS_AES256_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blks) {
 	callbacks->AES256_CTR_inc_stream_blks(schedule, out, out_blks);
 }
+
+void OQS_AES192_ECB_load_schedule(const uint8_t *key, void **ctx) {
+	callbacks->AES192_ECB_load_schedule(key, ctx);
+}
+
+void OQS_AES192_free_schedule(void *ctx) {
+	callbacks->AES192_free_schedule(ctx);
+}
+
+void OQS_AES192_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
+	callbacks->AES192_ECB_enc(plaintext, plaintext_len, key, ciphertext);
+}
+
+void OQS_AES192_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
+	callbacks->AES192_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+}
