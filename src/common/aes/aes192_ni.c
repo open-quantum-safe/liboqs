@@ -34,7 +34,7 @@ static inline void KEY_192_ASSIST(__m128i *temp1, __m128i *temp2, __m128i *temp3
 }
 
 #define SHUFFLE_PD(a, b, imm) \
-	_mm_castpd_si128(_mm_shuffle_pd(_mm_castsi128_pd(a), _mm_castsi128_pd(b), imm))
+    _mm_castpd_si128(_mm_shuffle_pd(_mm_castsi128_pd(a), _mm_castsi128_pd(b), imm))
 
 static inline void aes192ni_setkey_encrypt(const unsigned char *key, __m128i rkeys[13]) {
 	__m128i temp1 = _mm_loadu_si128((const __m128i *)(key + 0));
