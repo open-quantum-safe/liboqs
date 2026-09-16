@@ -26,6 +26,8 @@ pytestmark = pytest.mark.skipif(
 # Configure a single KEM and no test targets: the position independent code
 # setting is global, so one algorithm exercises it just as well as all of them.
 COMMON_ARGS = [
+    "-GNinja",
+    "-DOQS_USE_OPENSSL=OFF",
     "-DOQS_BUILD_ONLY_LIB=ON",
     "-DOQS_MINIMAL_BUILD=KEM_ml_kem_512",
 ]
@@ -93,8 +95,3 @@ def test_position_independent_code_kept_for_shared_builds(tmp_path):
     assert len(pic_entries(entries)) == len(entries)
     # CMake hard-wraps warning text, so compare against whitespace-collapsed output.
     assert "not supported together with BUILD_SHARED_LIBS=ON" in " ".join(output.split())
-
-
-if __name__ == "__main__":
-    import sys
-    pytest.main(sys.argv)

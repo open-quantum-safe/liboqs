@@ -44,14 +44,8 @@ set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimizat
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-# liboqs is assembled from CMake OBJECT libraries, which do not inherit the
-# implicit position-independent code setting of the SHARED `oqs` target, so PIC
-# must be requested explicitly. Consumers that only ever link liboqs statically
-# (e.g. embedded targets without a GOT/PLT) may override this on the command
-# line or in a toolchain file.
-if(NOT DEFINED CMAKE_POSITION_INDEPENDENT_CODE)
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-elseif(BUILD_SHARED_LIBS AND NOT CMAKE_POSITION_INDEPENDENT_CODE)
+option(CMAKE_POSITION_INDEPENDENT_CODE "Build position-independent code" ON)
+if(BUILD_SHARED_LIBS AND NOT CMAKE_POSITION_INDEPENDENT_CODE)
     message(WARNING "CMAKE_POSITION_INDEPENDENT_CODE=OFF is not supported together with BUILD_SHARED_LIBS=ON; forcing it ON.")
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
