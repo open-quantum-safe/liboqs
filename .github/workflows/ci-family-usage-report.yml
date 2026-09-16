@@ -30,7 +30,7 @@ jobs:
     outputs:
       matrix: ${{ steps.gen.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
 
       - name: Generate family definitions and build matrix
         id: gen
@@ -38,7 +38,7 @@ jobs:
           python3 scripts/ci_family_report.py generate-definitions . --out family_definitions.json
           python3 scripts/ci_family_report.py build-matrix family_definitions.json --github-output
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # pin@v7
         with:
           name: family-definitions
           path: family_definitions.json
@@ -55,14 +55,14 @@ jobs:
       matrix:
         family: ${{ fromJson(needs.generate-family-matrix.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
 
       - name: Install build dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq cmake ninja-build libssl-dev
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # pin@v8
         with:
           name: family-definitions
 
@@ -76,7 +76,7 @@ jobs:
             --repo . \
             --out "results/${{ matrix.family.type }}_${{ matrix.family.name }}.csv"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # pin@v7
         with:
           name: timing-${{ matrix.family.type }}-${{ matrix.family.name }}
           path: results/*.csv
@@ -90,9 +90,9 @@ jobs:
       actions: read     # for the fetch-ci-data step (GitHub Actions API)
       issues: write     # for the "publish report to tracking issue" step below
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v7.0.1
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # pin@v8
         with:
           pattern: timing-*
           merge-multiple: true
@@ -120,7 +120,7 @@ jobs:
       - name: Publish as job summary
         run: cat report.md >> "$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # pin@v7
         with:
           name: ci-family-usage-report
           path: |
