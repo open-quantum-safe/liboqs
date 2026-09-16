@@ -1,0 +1,7 @@
+/external/
+kem/.*/.*/.*
+sig/.*/.*/.*
+xkcp_low
+patches
+scripts/copy_from_upstream/repos
+/.venv/

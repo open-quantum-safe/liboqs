@@ -23,7 +23,6 @@
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(uint8_t *sig,
-        size_t *siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
@@ -33,7 +32,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(uint8_t *sig,
         int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_signature_pre_hash_internal(uint8_t *sig,
-        size_t *siglen,
         const uint8_t *ph,
         size_t phlen,
         const uint8_t *ctx,
@@ -43,7 +41,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA44_C_signature_pre_hash_internal(uint8_t *sig,
         int hashalg);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(const uint8_t *sig,
-        size_t siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
@@ -52,7 +49,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(const uint8_t *sig,
         int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_verify_pre_hash_internal(const uint8_t *sig,
-        size_t siglen,
         const uint8_t *ph,
         size_t phlen,
         const uint8_t *ctx,
@@ -63,7 +59,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA44_C_verify_pre_hash_internal(const uint8_t *s
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(uint8_t *sig,
-        size_t *siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
@@ -73,7 +68,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(uint8_t *sig,
         int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_pre_hash_internal(uint8_t *sig,
-        size_t *siglen,
         const uint8_t *ph,
         size_t phlen,
         const uint8_t *ctx,
@@ -83,7 +77,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_pre_hash_internal(uint8_t *sig,
         int hashalg);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(const uint8_t *sig,
-        size_t siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
@@ -92,7 +85,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(const uint8_t *sig,
         int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_pre_hash_internal(const uint8_t *sig,
-        size_t siglen,
         const uint8_t *ph,
         size_t phlen,
         const uint8_t *ctx,
@@ -103,7 +95,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_pre_hash_internal(const uint8_t *s
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(uint8_t *sig,
-        size_t *siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
@@ -113,7 +104,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(uint8_t *sig,
         int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_signature_pre_hash_internal(uint8_t *sig,
-        size_t *siglen,
         const uint8_t *ph,
         size_t phlen,
         const uint8_t *ctx,
@@ -123,7 +113,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA87_C_signature_pre_hash_internal(uint8_t *sig,
         int hashalg);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(const uint8_t *sig,
-        size_t siglen,
         const uint8_t *m,
         size_t mlen,
         const uint8_t *pre,
@@ -132,7 +121,6 @@ extern int PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(const uint8_t *sig,
         int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_verify_pre_hash_internal(const uint8_t *sig,
-        size_t siglen,
         const uint8_t *ph,
         size_t phlen,
         const uint8_t *ctx,
@@ -427,17 +415,19 @@ static int sig_ver_vector_int(const char *method_name,
 		goto err;
 	}
 
-	if (!strcmp(method_name, "ML-DSA-44")) {
+	if (is_ml_dsa(method_name) && sigLen != sig->length_signature) {
+		rc = 1; /* fixed-length signature: reject length mismatch */
+	} else if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(sigVer_sig_bytes, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(sigVer_sig_bytes, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(sigVer_sig_bytes, sigVer_msg_bytes, msgLen, NULL, 0, sigVer_pk_bytes, 0);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -620,17 +610,19 @@ static int sig_ver_prehash_vector_ext(const char *method_name,
 
 	fh = stdout;
 
-	if (!strcmp(method_name, "ML-DSA-44")) {
+	if (is_ml_dsa(method_name) && sigLen != sig->length_signature) {
+		rc = 1; /* fixed-length signature: reject length mismatch */
+	} else if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_pre_hash_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, sigVer_ctx, sigVer_ctxLen, sigVer_pk_bytes, hashalg);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_verify_pre_hash_internal(sigVer_sig_bytes, sigVer_msg_bytes, msgLen, sigVer_ctx, sigVer_ctxLen, sigVer_pk_bytes, hashalg);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_pre_hash_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, sigVer_ctx, sigVer_ctxLen, sigVer_pk_bytes, hashalg);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_verify_pre_hash_internal(sigVer_sig_bytes, sigVer_msg_bytes, msgLen, sigVer_ctx, sigVer_ctxLen, sigVer_pk_bytes, hashalg);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_pre_hash_internal(sigVer_sig_bytes, sigLen, sigVer_msg_bytes, msgLen, sigVer_ctx, sigVer_ctxLen, sigVer_pk_bytes, hashalg);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_verify_pre_hash_internal(sigVer_sig_bytes, sigVer_msg_bytes, msgLen, sigVer_ctx, sigVer_ctxLen, sigVer_pk_bytes, hashalg);
 #endif
 	} else {
 		goto err;
@@ -694,15 +686,15 @@ static int sig_gen_vector_int(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(signature, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(signature, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(signature, sigGen_msg, sigGen_msgLen, NULL, 0, prng_output_stream, sigGen_sk, 0);
 #endif
 	} else if (!strncmp(method_name, "SLH_DSA", 7)) {
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -989,15 +981,15 @@ static int sig_gen_prehash_vector_ext(const char *method_name,
 
 	if (!strcmp(method_name, "ML-DSA-44")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
-		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_pre_hash_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, sigGen_ctx, sigGen_ctxLen, prng_output_stream, sigGen_sk, algo_name);
+		rc = PQCP_MLDSA_NATIVE_MLDSA44_C_signature_pre_hash_internal(signature, sigGen_msg, sigGen_msgLen, sigGen_ctx, sigGen_ctxLen, prng_output_stream, sigGen_sk, algo_name);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-65")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
-		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_pre_hash_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, sigGen_ctx, sigGen_ctxLen, prng_output_stream, sigGen_sk, algo_name);
+		rc = PQCP_MLDSA_NATIVE_MLDSA65_C_signature_pre_hash_internal(signature, sigGen_msg, sigGen_msgLen, sigGen_ctx, sigGen_ctxLen, prng_output_stream, sigGen_sk, algo_name);
 #endif
 	} else if (!strcmp(method_name, "ML-DSA-87")) {
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
-		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_pre_hash_internal(signature, &sigLen, sigGen_msg, sigGen_msgLen, sigGen_ctx, sigGen_ctxLen, prng_output_stream, sigGen_sk, algo_name);
+		rc = PQCP_MLDSA_NATIVE_MLDSA87_C_signature_pre_hash_internal(signature, sigGen_msg, sigGen_msgLen, sigGen_ctx, sigGen_ctxLen, prng_output_stream, sigGen_sk, algo_name);
 #endif
 	} else {
 		goto err;

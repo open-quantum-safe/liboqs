@@ -38,6 +38,10 @@
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_ntt_native(int32_t data[MLDSA_N])
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_ntt_aarch64_asm(data, mld_aarch64_ntt_zetas_layer123456,
                       mld_aarch64_ntt_zetas_layer78);
   return MLD_NATIVE_FUNC_SUCCESS;
@@ -46,6 +50,10 @@ static MLD_INLINE int mld_ntt_native(int32_t data[MLDSA_N])
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_intt_native(int32_t data[MLDSA_N])
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_intt_aarch64_asm(data, mld_aarch64_intt_zetas_layer78,
                        mld_aarch64_intt_zetas_layer123456);
   return MLD_NATIVE_FUNC_SUCCESS;
@@ -56,8 +64,8 @@ static MLD_INLINE int mld_rej_uniform_native(int32_t *r, unsigned len,
                                              const uint8_t *buf,
                                              unsigned buflen)
 {
-  if (len != MLDSA_N ||
-      buflen % 24 != 0) /* NEON support is mandatory for AArch64 */
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON) || len != MLDSA_N ||
+      buflen % 24 != 0)
   {
     return MLD_NATIVE_FUNC_FALLBACK;
   }
@@ -76,7 +84,8 @@ static MLD_INLINE int mld_rej_uniform_eta2_native(int32_t *r, unsigned len,
 {
   uint64_t outlen;
   /* AArch64 implementation assumes specific buffer lengths */
-  if (len != MLDSA_N || buflen != MLD_AARCH64_REJ_UNIFORM_ETA2_BUFLEN)
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON) || len != MLDSA_N ||
+      buflen != MLD_AARCH64_REJ_UNIFORM_ETA2_BUFLEN)
   {
     return MLD_NATIVE_FUNC_FALLBACK;
   }
@@ -104,7 +113,8 @@ static MLD_INLINE int mld_rej_uniform_eta4_native(int32_t *r, unsigned len,
 {
   uint64_t outlen;
   /* AArch64 implementation assumes specific buffer lengths */
-  if (len != MLDSA_N || buflen != MLD_AARCH64_REJ_UNIFORM_ETA4_BUFLEN)
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON) || len != MLDSA_N ||
+      buflen != MLD_AARCH64_REJ_UNIFORM_ETA4_BUFLEN)
   {
     return MLD_NATIVE_FUNC_FALLBACK;
   }
@@ -131,6 +141,10 @@ static MLD_INLINE int mld_rej_uniform_eta4_native(int32_t *r, unsigned len,
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_decompose_32_native(int32_t *a1, int32_t *a0)
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_poly_decompose_32_aarch64_asm(a1, a0);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -141,6 +155,10 @@ static MLD_INLINE int mld_poly_decompose_32_native(int32_t *a1, int32_t *a0)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_decompose_88_native(int32_t *a1, int32_t *a0)
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_poly_decompose_88_aarch64_asm(a1, a0);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -151,6 +169,10 @@ static MLD_INLINE int mld_poly_decompose_88_native(int32_t *a1, int32_t *a0)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_caddq_native(int32_t a[MLDSA_N])
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_poly_caddq_aarch64_asm(a);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -161,6 +183,10 @@ static MLD_INLINE int mld_poly_caddq_native(int32_t a[MLDSA_N])
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_use_hint_32_native(int32_t *a, const int32_t *h)
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_poly_use_hint_32_aarch64_asm(a, h);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -171,6 +197,10 @@ static MLD_INLINE int mld_poly_use_hint_32_native(int32_t *a, const int32_t *h)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_use_hint_88_native(int32_t *a, const int32_t *h)
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_poly_use_hint_88_aarch64_asm(a, h);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -181,6 +211,10 @@ static MLD_INLINE int mld_poly_use_hint_88_native(int32_t *a, const int32_t *h)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_chknorm_native(const int32_t *a, int32_t B)
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   return mld_poly_chknorm_aarch64_asm(a, B);
 }
 
@@ -189,6 +223,10 @@ static MLD_INLINE int mld_poly_chknorm_native(const int32_t *a, int32_t B)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyz_unpack_17_native(int32_t *r, const uint8_t *buf)
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_polyz_unpack_17_aarch64_asm(r, buf, mld_polyz_unpack_17_indices);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -200,6 +238,10 @@ static MLD_INLINE int mld_polyz_unpack_17_native(int32_t *r, const uint8_t *buf)
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_polyz_unpack_19_native(int32_t *r, const uint8_t *buf)
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_polyz_unpack_19_aarch64_asm(r, buf, mld_polyz_unpack_19_indices);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -213,6 +255,10 @@ MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int mld_poly_pointwise_montgomery_native(
     int32_t a[MLDSA_N], const int32_t b[MLDSA_N])
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_poly_pointwise_montgomery_aarch64_asm(a, b);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -225,6 +271,10 @@ static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l4_native(
     int32_t w[MLDSA_N], const int32_t u[4][MLDSA_N],
     const int32_t v[4][MLDSA_N])
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_polyvecl_pointwise_acc_montgomery_l4_aarch64_asm(w, u, v);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -236,6 +286,10 @@ static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l5_native(
     int32_t w[MLDSA_N], const int32_t u[5][MLDSA_N],
     const int32_t v[5][MLDSA_N])
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_polyvecl_pointwise_acc_montgomery_l5_aarch64_asm(w, u, v);
   return MLD_NATIVE_FUNC_SUCCESS;
 }
@@ -247,6 +301,10 @@ static MLD_INLINE int mld_polyvecl_pointwise_acc_montgomery_l7_native(
     int32_t w[MLDSA_N], const int32_t u[7][MLDSA_N],
     const int32_t v[7][MLDSA_N])
 {
+  if (!mld_sys_check_capability(MLD_SYS_CAP_AARCH64_NEON))
+  {
+    return MLD_NATIVE_FUNC_FALLBACK;
+  }
   mld_polyvecl_pointwise_acc_montgomery_l7_aarch64_asm(w, u, v);
   return MLD_NATIVE_FUNC_SUCCESS;
 }

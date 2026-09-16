@@ -26,7 +26,10 @@
 #include "debug.h"
 #include "verify.h"
 
-#if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || (MLKEM_K == 2 || MLKEM_K == 3)
+#if (!defined(MLK_CONFIG_NO_ENCAPS_API) ||                         \
+     !defined(MLK_CONFIG_NO_DECAPS_API)) &&                        \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 2 || \
+     MLKEM_K == 3)
 /* Reference: `poly_compress()` in the reference implementation @[REF],
  *            for ML-KEM-{512,768}.
  *            - In contrast to the reference implementation, we assume
@@ -158,6 +161,7 @@ __contract__(
   mlk_poly_compress_d10_c(r, a);
 }
 
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 /* Reference: `poly_decompress()` in the reference implementation @[REF],
  *            for ML-KEM-{512,768}. */
 MLK_STATIC_TESTABLE void mlk_poly_decompress_d4_c(
@@ -268,9 +272,14 @@ __contract__(
 
   mlk_poly_decompress_d10_c(r, a);
 }
-#endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 || MLKEM_K == 3 */
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
+#endif /* (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) &&         \
+          (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 || MLKEM_K == 3) \
+        */
 
-#if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4
+#if (!defined(MLK_CONFIG_NO_ENCAPS_API) ||  \
+     !defined(MLK_CONFIG_NO_DECAPS_API)) && \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
 /* Reference: `poly_compress()` in the reference implementation @[REF],
  *            for ML-KEM-1024.
  *            - In contrast to the reference implementation, we assume
@@ -409,6 +418,7 @@ __contract__(
   mlk_poly_compress_d11_c(r, a);
 }
 
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 /* Reference: `poly_decompress()` in the reference implementation @[REF],
  *            for ML-KEM-1024. */
 MLK_STATIC_TESTABLE void mlk_poly_decompress_d5_c(
@@ -554,8 +564,11 @@ __contract__(
   mlk_poly_decompress_d11_c(r, a);
 }
 
-#endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4 */
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
+#endif /* (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) && \
+          (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4) */
 
+#if !defined(MLK_CONFIG_NO_KEYPAIR_API) || !defined(MLK_CONFIG_NO_ENCAPS_API)
 /* Reference: `poly_tobytes()` in the reference implementation @[REF].
  *            - In contrast to the reference implementation, we assume
  *              unsigned canonical coefficients here.
@@ -620,7 +633,9 @@ void mlk_poly_tobytes(uint8_t r[MLKEM_POLYBYTES], const mlk_poly *a)
 
   mlk_poly_tobytes_c(r, a);
 }
+#endif /* !MLK_CONFIG_NO_KEYPAIR_API || !MLK_CONFIG_NO_ENCAPS_API */
 
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 /* Reference: `poly_frombytes()` in the reference implementation @[REF]. */
 MLK_STATIC_TESTABLE void mlk_poly_frombytes_c(mlk_poly *r,
                                               const uint8_t a[MLKEM_POLYBYTES])
@@ -668,7 +683,9 @@ void mlk_poly_frombytes(mlk_poly *r, const uint8_t a[MLKEM_POLYBYTES])
 
   mlk_poly_frombytes_c(r, a);
 }
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 /* Reference: `poly_frommsg()` in the reference implementation @[REF].
  *            - We use a value barrier around the bit-selection mask to
  *              reduce the risk of compiler-introduced branches.
@@ -706,7 +723,9 @@ void mlk_poly_frommsg(mlk_poly *r, const uint8_t msg[MLKEM_INDCPA_MSGBYTES])
   }
   mlk_assert_abs_bound(r, MLKEM_N, MLKEM_Q);
 }
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 /* Reference: `poly_tomsg()` in the reference implementation @[REF].
  *            - In contrast to the reference implementation, we assume
  *              unsigned canonical coefficients here.
@@ -735,6 +754,7 @@ void mlk_poly_tomsg(uint8_t msg[MLKEM_INDCPA_MSGBYTES], const mlk_poly *r)
     }
   }
 }
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 
 #else /* !MLK_CONFIG_MULTILEVEL_NO_SHARED */
 

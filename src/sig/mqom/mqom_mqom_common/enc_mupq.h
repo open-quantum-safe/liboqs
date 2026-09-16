@@ -43,6 +43,10 @@ typedef struct {
         enc_ctx_pub_x4 ctx2;
 } enc_ctx_pub_x8;
 
+/* ECB types correspond to classical types */
+typedef enc_ctx enc_ctx_ecb;
+typedef enc_ctx_pub enc_ctx_pub_ecb;
+
 /* Helpers to interleave two round keys, stolen from https://github.com/aadomn/aes/blob/master/opt32/fixslicing/aes_encrypt.c */
 #define SWAPMOVE(a, b, mask, n) ({                                                      \
         tmp = (b ^ (a >> n)) & mask;                                                    \
@@ -88,7 +92,7 @@ static inline void inv_shiftrows_3(uint32_t* rkey) {
 
 static inline void keys_packing(uint32_t* out, const unsigned char* in0,
                                 const unsigned char *in1, unsigned int i) {
-	MQOM2_SYM_MEASURE_PRE
+	MQOM3_SYM_MEASURE_PRE
 	uint32_t tmp;
 	out[0] = LE_LOAD_32(in0);
 	out[1] = LE_LOAD_32(in1);
@@ -136,17 +140,17 @@ static inline void keys_packing(uint32_t* out, const unsigned char* in0,
 		out[6] ^= 0xffffffff;
 		out[7] ^= 0xffffffff;
 	}
-	MQOM2_SYM_MEASURE_POST
+	MQOM3_SYM_MEASURE_POST
 }
 
-/* XXX: NOTE: on a x86 host, we force MQOM2_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE since
+/* XXX: NOTE: on a x86 host, we force MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE since
  * we cannot mix public and private AES .... */
 #if defined(__i386__) || defined(__x86_64__)
-#define MQOM2_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE
+#define MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE
 #endif
 
 static inline int enc_key_sched(enc_ctx *ctx, const uint8_t key[16]) {
-#if defined(MQOM2_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
+#if defined(MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
 	aes128_ecb_keyexp(&ctx->ctx_priv, key);
 #else
 	/* By default, and since our key schedule only deals with public data, we
@@ -196,9 +200,15 @@ static inline int enc_key_sched_pub_x8(enc_ctx_pub_x8 *ctx, const uint8_t key1[1
 	ret |= enc_key_sched_pub_x4(&ctx->ctx2, key5, key6, key7, key8);
 	return ret;
 }
+static inline int enc_key_sched_ecb(enc_ctx_ecb *ctx, const uint8_t key[16]) {
+	return enc_key_sched(ctx, key);
+}
+static inline int enc_key_sched_pub_ecb(enc_ctx_pub_ecb *ctx, const uint8_t key[16]) {
+	return enc_key_sched_pub(ctx, key);
+}
 
 static inline int enc_encrypt(const enc_ctx *ctx, const uint8_t pt[16], uint8_t ct[16]) {
-#if !defined(MQOM2_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
+#if !defined(MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
 	unsigned int i;
 	uint32_t *rk = (uint32_t*)(&ctx->ctx_pub);
 	uint32_t interleaved_keys[88];
@@ -207,6 +217,7 @@ static inline int enc_encrypt(const enc_ctx *ctx, const uint8_t pt[16], uint8_t 
 		keys_packing(&interleaved_keys[8 * i], (uint8_t*)&rk[4 * i], (uint8_t*)&rk[4 * i], i);
 	}
 	aes128_ecb(ct, pt, 1, (aes128ctx*)&interleaved_keys);
+	mqom_cleanse(interleaved_keys, sizeof(interleaved_keys));
 #else
 	aes128_ecb(ct, pt, 1, &ctx->ctx_priv);
 #endif
@@ -218,7 +229,7 @@ static inline int enc_encrypt_pub(const enc_ctx_pub *ctx, const uint8_t pt[16], 
 }
 
 static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const uint8_t pt1[16], const uint8_t pt2[16], uint8_t ct1[16], uint8_t ct2[16]) {
-#if !defined(MQOM2_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
+#if !defined(MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
 	unsigned int i;
 	uint32_t *rk1 = (uint32_t*)(&ctx1->ctx_pub);
 	uint32_t *rk2 = (uint32_t*)(&ctx2->ctx_pub);
@@ -238,7 +249,11 @@ static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const
 
 		memcpy(ct1, &ct[0], 16);
 		memcpy(ct2, &ct[16], 16);
+		mqom_cleanse(pt, sizeof(pt));
+		mqom_cleanse(ct, sizeof(ct));
+
 	}
+	mqom_cleanse(interleaved_keys, sizeof(interleaved_keys));
 #else
 	if (ctx1 == ctx2) {
 		uint8_t pt[32];
@@ -251,6 +266,9 @@ static inline int enc_encrypt_x2(const enc_ctx *ctx1, const enc_ctx *ctx2, const
 
 		memcpy(ct1, &ct[0], 16);
 		memcpy(ct2, &ct[16], 16);
+		mqom_cleanse(pt, sizeof(pt));
+		mqom_cleanse(ct, sizeof(ct));
+
 	} else {
 		aes128_ecb(ct1, pt1, 1, &ctx1->ctx_priv);
 		aes128_ecb(ct2, pt2, 1, &ctx2->ctx_priv);
@@ -294,7 +312,7 @@ static inline int enc_encrypt_x2_pub_x2(const enc_ctx_pub_x2 *ctx, const uint8_t
 static inline int enc_encrypt_x4(const enc_ctx *ctx1, const enc_ctx *ctx2, const enc_ctx *ctx3, const enc_ctx *ctx4,
                                  const uint8_t pt1[16], const uint8_t pt2[16], const uint8_t pt3[16], const uint8_t pt4[16],
                                  uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16]) {
-#if !defined(MQOM2_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
+#if !defined(MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
 	int ret = 0;
 	ret |= enc_encrypt_x2(ctx1, ctx2, pt1, pt2, ct1, ct2);
 	ret |= enc_encrypt_x2(ctx3, ctx4, pt3, pt4, ct3, ct4);
@@ -315,6 +333,9 @@ static inline int enc_encrypt_x4(const enc_ctx *ctx1, const enc_ctx *ctx2, const
 		memcpy(ct2, &ct[16], 16);
 		memcpy(ct3, &ct[32], 16);
 		memcpy(ct4, &ct[48], 16);
+		mqom_cleanse(pt, sizeof(pt));
+		mqom_cleanse(ct, sizeof(ct));
+
 	} else {
 		enc_encrypt_x2(ctx1, ctx2, pt1, pt2, ct1, ct2);
 		enc_encrypt_x2(ctx3, ctx4, pt3, pt4, ct3, ct4);
@@ -367,7 +388,7 @@ static inline int enc_encrypt_x8(const enc_ctx *ctx1, const enc_ctx *ctx2, const
                                  const uint8_t pt5[16], const uint8_t pt6[16], const uint8_t pt7[16], const uint8_t pt8[16],
                                  uint8_t ct1[16], uint8_t ct2[16], uint8_t ct3[16], uint8_t ct4[16],
                                  uint8_t ct5[16], uint8_t ct6[16], uint8_t ct7[16], uint8_t ct8[16]) {
-#if !defined(MQOM2_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
+#if !defined(MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
 	int ret = 0;
 	ret |= enc_encrypt_x4(ctx1, ctx2, ctx3, ctx4, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
 	ret |= enc_encrypt_x4(ctx5, ctx6, ctx7, ctx8, pt5, pt6, pt7, pt8, ct5, ct6, ct7, ct8);
@@ -396,6 +417,9 @@ static inline int enc_encrypt_x8(const enc_ctx *ctx1, const enc_ctx *ctx2, const
 		memcpy(ct6, &ct[80],  16);
 		memcpy(ct7, &ct[96],  16);
 		memcpy(ct8, &ct[112], 16);
+		mqom_cleanse(pt, sizeof(pt));
+		mqom_cleanse(ct, sizeof(ct));
+
 	} else {
 		enc_encrypt_x4(ctx1, ctx2, ctx3, ctx4, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
 		enc_encrypt_x4(ctx5, ctx6, ctx7, ctx8, pt5, pt6, pt7, pt8, ct5, ct6, ct7, ct8);
@@ -455,6 +479,27 @@ static inline int enc_encrypt_x8_pub_x8(const enc_ctx_pub_x8 *ctx, const uint8_t
 	ret  = enc_encrypt_x4_pub_x4(&ctx->ctx1, pt1, pt2, pt3, pt4, ct1, ct2, ct3, ct4);
 	ret |= enc_encrypt_x4_pub_x4(&ctx->ctx2, pt5, pt6, pt7, pt8, ct5, ct6, ct7, ct8);
 	return ret;
+}
+static inline int enc_encrypt_ecb(const enc_ctx_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+#if !defined(MQOM3_FOR_MUPQ_AES_GENERIC_KEYSCHEDULE)
+	unsigned int i;
+	uint32_t *rk = (uint32_t*)(&ctx->ctx_pub);
+	uint32_t interleaved_keys[88];
+	/* Transfer the keys from LUT to bitslice */
+	for (i = 0; i < 11; i++) {
+		keys_packing(&interleaved_keys[8 * i], (uint8_t*)&rk[4 * i], (uint8_t*)&rk[4 * i], i);
+	}
+	aes128_ecb(out, in, nblocks, (aes128ctx*)&interleaved_keys);
+	mqom_cleanse(interleaved_keys, sizeof(interleaved_keys));
+#else
+	aes128_ecb(out, in, nblocks, &ctx->ctx_priv);
+#endif
+	return 0;
+
+}
+static inline int enc_encrypt_pub_ecb(const enc_ctx_pub_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	aes128_ecb_publicinputs(out, in, nblocks, ctx);
+	return 0;
 }
 
 #endif /* __ENC_MUPQ_H__ */

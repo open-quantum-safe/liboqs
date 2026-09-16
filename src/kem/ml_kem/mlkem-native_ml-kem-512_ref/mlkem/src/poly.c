@@ -105,6 +105,7 @@ __contract__(
   return res;
 }
 
+#if !defined(MLK_CONFIG_NO_KEYPAIR_API)
 /* Reference: `poly_tomont()` in the reference implementation @[REF]. */
 MLK_STATIC_TESTABLE void mlk_poly_tomont_c(mlk_poly *r)
 __contract__(
@@ -142,6 +143,7 @@ void mlk_poly_tomont(mlk_poly *r)
 
   mlk_poly_tomont_c(r);
 }
+#endif /* !MLK_CONFIG_NO_KEYPAIR_API */
 
 /**
  * Constant-time conversion of signed representatives modulo MLKEM_Q within
@@ -241,6 +243,7 @@ void mlk_poly_add(mlk_poly *r, const mlk_poly *b)
   }
 }
 
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 /* Reference: `poly_sub()` in the reference implementation @[REF].
  *            - We use destructive version (output=first input) to avoid
  *              reasoning about aliasing in the CBMC specification */
@@ -259,6 +262,7 @@ void mlk_poly_sub(mlk_poly *r, const mlk_poly *b)
     r->coeffs[i] = (int16_t)(r->coeffs[i] - b->coeffs[i]);
   }
 }
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 
 #include "zetas.inc"
 
@@ -470,6 +474,7 @@ void mlk_poly_ntt(mlk_poly *r)
 }
 
 
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 /* Compute one layer of inverse NTT */
 
 /* Reference: Embedded into `invntt()` in the reference implementation @[REF] */
@@ -568,8 +573,8 @@ void mlk_poly_invntt_tomont(mlk_poly *r)
 
   mlk_poly_invntt_tomont_c(r);
 }
-
-#else /* !MLK_CONFIG_MULTILEVEL_NO_SHARED */
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
+#else  /* !MLK_CONFIG_MULTILEVEL_NO_SHARED */
 
 MLK_EMPTY_CU(mlk_poly)
 

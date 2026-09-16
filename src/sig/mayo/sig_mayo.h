@@ -6,9 +6,9 @@
 #include <oqs/oqs.h>
 
 #if defined(OQS_ENABLE_SIG_mayo_1)
-#define OQS_SIG_mayo_1_length_public_key 1420
+#define OQS_SIG_mayo_1_length_public_key 1456
 #define OQS_SIG_mayo_1_length_secret_key 24
-#define OQS_SIG_mayo_1_length_signature 454
+#define OQS_SIG_mayo_1_length_signature 464
 
 OQS_SIG *OQS_SIG_mayo_1_new(void);
 OQS_API OQS_STATUS OQS_SIG_mayo_1_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -19,9 +19,9 @@ OQS_API OQS_STATUS OQS_SIG_mayo_1_verify_with_ctx_str(const uint8_t *message, si
 #endif
 
 #if defined(OQS_ENABLE_SIG_mayo_2)
-#define OQS_SIG_mayo_2_length_public_key 4912
+#define OQS_SIG_mayo_2_length_public_key 2928
 #define OQS_SIG_mayo_2_length_secret_key 24
-#define OQS_SIG_mayo_2_length_signature 186
+#define OQS_SIG_mayo_2_length_signature 239
 
 OQS_SIG *OQS_SIG_mayo_2_new(void);
 OQS_API OQS_STATUS OQS_SIG_mayo_2_keypair(uint8_t *public_key, uint8_t *secret_key);

@@ -12,11 +12,12 @@
  */
 #include "../sys.h"
 
-#ifdef MLD_SYS_AARCH64
+#ifdef MLD_SYS_AARCH64_NEON
 #include "aarch64/meta.h"
 #endif
 
-#ifdef MLD_SYS_X86_64_AVX2
+/* The x86_64 backend requires toolchain support for the SysV ABI */
+#if defined(MLD_SYS_X86_64_AVX2) && defined(MLD_SYSV_ABI_SUPPORTED)
 #include "x86_64/meta.h"
 #endif
 

@@ -55,6 +55,7 @@
  *                  [0,..,MLKEM_Q-1].
  * @param[in]  seed Input public seed.
  */
+#if !defined(MLK_CONFIG_NO_KEYPAIR_API)
 static void mlk_pack_pk(uint8_t r[MLKEM_INDCPA_PUBLICKEYBYTES],
                         const mlk_polyvec *pk,
                         const uint8_t seed[MLKEM_SYMBYTES])
@@ -63,6 +64,7 @@ static void mlk_pack_pk(uint8_t r[MLKEM_INDCPA_PUBLICKEYBYTES],
   mlk_polyvec_tobytes(r, pk);
   mlk_memcpy(r + MLKEM_POLYVECBYTES, seed, MLKEM_SYMBYTES);
 }
+#endif /* !MLK_CONFIG_NO_KEYPAIR_API */
 
 /**
  * De-serialize public key from a byte array; approximate inverse of
@@ -75,6 +77,7 @@ static void mlk_pack_pk(uint8_t r[MLKEM_INDCPA_PUBLICKEYBYTES],
  * @param[out] seed     Output seed to generate matrix A.
  * @param[in]  packedpk Input serialized public key.
  */
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 static void mlk_unpack_pk(mlk_polyvec *pk, uint8_t seed[MLKEM_SYMBYTES],
                           const uint8_t packedpk[MLKEM_INDCPA_PUBLICKEYBYTES])
 {
@@ -86,6 +89,7 @@ static void mlk_unpack_pk(mlk_polyvec *pk, uint8_t seed[MLKEM_SYMBYTES],
    * specifications and proofs, however, do _not_ assume this, and instead
    * work with the easily provable bound by MLKEM_UINT12_LIMIT. */
 }
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 /**
  * Serialize the secret key.
@@ -95,12 +99,14 @@ static void mlk_unpack_pk(mlk_polyvec *pk, uint8_t seed[MLKEM_SYMBYTES],
  * @param[out] r  Output serialized secret key.
  * @param[in]  sk Input vector of polynomials (secret key).
  */
+#if !defined(MLK_CONFIG_NO_KEYPAIR_API)
 static void mlk_pack_sk(uint8_t r[MLKEM_INDCPA_SECRETKEYBYTES],
                         const mlk_polyvec *sk)
 {
   mlk_assert_bound_2d(sk->vec, MLKEM_K, MLKEM_N, 0, MLKEM_Q);
   mlk_polyvec_tobytes(r, sk);
 }
+#endif /* !MLK_CONFIG_NO_KEYPAIR_API */
 
 /**
  * De-serialize the secret key; inverse of mlk_pack_sk.
@@ -110,11 +116,13 @@ static void mlk_pack_sk(uint8_t r[MLKEM_INDCPA_SECRETKEYBYTES],
  * @param[out] sk       Output vector of polynomials (secret key).
  * @param[in]  packedsk Input serialized secret key.
  */
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 static void mlk_unpack_sk(mlk_polyvec *sk,
                           const uint8_t packedsk[MLKEM_INDCPA_SECRETKEYBYTES])
 {
   mlk_polyvec_frombytes(sk, packedsk);
 }
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 
 /**
  * Serialize the ciphertext as the concatenation of the compressed and
@@ -127,12 +135,14 @@ static void mlk_unpack_sk(mlk_polyvec *sk,
  * @param[in]  b Input vector of polynomials b.
  * @param[in]  v Input polynomial v.
  */
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 static void mlk_pack_ciphertext(uint8_t r[MLKEM_INDCPA_BYTES],
                                 const mlk_polyvec *b, mlk_poly *v)
 {
   mlk_polyvec_compress_du(r, b);
   mlk_poly_compress_dv(r + MLKEM_POLYVECCOMPRESSEDBYTES_DU, v);
 }
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 /**
  * De-serialize and decompress ciphertext from a byte array; approximate
@@ -144,12 +154,14 @@ static void mlk_pack_ciphertext(uint8_t r[MLKEM_INDCPA_BYTES],
  * @param[out] v Output polynomial v.
  * @param[in]  c Input serialized ciphertext.
  */
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 static void mlk_unpack_ciphertext(mlk_polyvec *b, mlk_poly *v,
                                   const uint8_t c[MLKEM_INDCPA_BYTES])
 {
   mlk_polyvec_decompress_du(b, c);
   mlk_poly_decompress_dv(v, c + MLKEM_POLYVECCOMPRESSEDBYTES_DU);
 }
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 
 /* Helper function to ensure that the polynomial entries in the output
  * of gen_matrix use the standard (bitreversed) ordering of coefficients.
@@ -345,6 +357,7 @@ __contract__(
  * @param[out] e    Output polynomial vector.
  * @param[in]  seed Seed bytes for sampling.
  */
+#if !defined(MLK_CONFIG_NO_KEYPAIR_API)
 static void mlk_keypair_getnoise_eta1(mlk_polyvec *pv, mlk_polyvec *e,
                                       const uint8_t seed[MLKEM_SYMBYTES])
 __contract__(
@@ -378,6 +391,7 @@ __contract__(
                             seed, 4, 5, 6, 7);
 #endif /* MLKEM_K == 4 */
 }
+#endif /* !MLK_CONFIG_NO_KEYPAIR_API */
 
 /**
  * Compute and fill the sp, ep, and epp polynomial structures needed by
@@ -391,6 +405,7 @@ __contract__(
  * @param[out] epp   Output polynomial.
  * @param[in]  coins Seed bytes for sampling.
  */
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 static void mlk_enc_getnoise_eta1_eta2(mlk_polyvec *sp, mlk_polyvec *ep,
                                        mlk_poly *epp,
                                        const uint8_t coins[MLKEM_SYMBYTES])
@@ -429,6 +444,7 @@ __contract__(
   mlk_poly_getnoise_eta2(epp, coins, 8);
 #endif /* MLKEM_K == 4 */
 }
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 
 /* Reference: `indcpa_keypair_derand()` in the reference implementation @[REF].
@@ -437,6 +453,7 @@ __contract__(
  *            - We use a mulcache to speed up matrix-vector multiplication.
  *            - We include buffer zeroization.
  */
+#if !defined(MLK_CONFIG_NO_KEYPAIR_API)
 MLK_INTERNAL_API
 int mlk_indcpa_keypair_derand(uint8_t pk[MLKEM_INDCPA_PUBLICKEYBYTES],
                               uint8_t sk[MLKEM_INDCPA_SECRETKEYBYTES],
@@ -508,6 +525,7 @@ cleanup:
   MLK_FREE(buf, uint8_t, 2 * MLKEM_SYMBYTES, context);
   return ret;
 }
+#endif /* !MLK_CONFIG_NO_KEYPAIR_API */
 
 /* Reference: `indcpa_enc()` in the reference implementation @[REF].
  *            - We use x4-batched versions of `poly_getnoise` to leverage
@@ -517,6 +535,7 @@ cleanup:
  *            - We use a mulcache to speed up matrix-vector multiplication.
  *            - We include buffer zeroization.
  */
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 MLK_INTERNAL_API
 int mlk_indcpa_enc(uint8_t c[MLKEM_INDCPA_BYTES],
                    const uint8_t m[MLKEM_INDCPA_MSGBYTES],
@@ -591,10 +610,12 @@ cleanup:
   MLK_FREE(seed, uint8_t, MLKEM_SYMBYTES, context);
   return ret;
 }
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 /* Reference: `indcpa_dec()` in the reference implementation @[REF].
  *            - We use a mulcache for the scalar product.
  *            - We include buffer zeroization. */
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 MLK_INTERNAL_API
 int mlk_indcpa_dec(uint8_t m[MLKEM_INDCPA_MSGBYTES],
                    const uint8_t c[MLKEM_INDCPA_BYTES],
@@ -637,6 +658,7 @@ cleanup:
   MLK_FREE(b, mlk_polyvec, 1, context);
   return ret;
 }
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 
 /* To facilitate single-compilation-unit (SCU) builds, undefine all macros.
  * Don't modify by hand -- this is auto-generated by scripts/autogen. */

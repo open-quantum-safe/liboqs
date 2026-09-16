@@ -27,6 +27,18 @@
 #define MIN_HSS_LEVELS 1    /* Minumum levels we allow */
 #define MAX_HSS_LEVELS 8    /* Maximum levels we allow */
 
+/* RFC 8554 u32 field width in serialized HSS/LMS structures */
+#define HSS_U32_LEN 4
+
+/*
+ * Incremental HSS signature prefix parsed by hss_validate_signature_init():
+ *   u32(levels-1) || u32(q) || u32(lm_ots_type)
+ */
+#define HSS_SIG_LEVELS_M1      0
+#define HSS_SIG_Q              (HSS_SIG_LEVELS_M1 + HSS_U32_LEN)
+#define HSS_SIG_LM_OTS         (HSS_SIG_Q + HSS_U32_LEN)
+#define HSS_SIG_INC_HEADER_LEN (HSS_SIG_LM_OTS + HSS_U32_LEN)
+
 /* This is the length of our internal seed values */
 #define SEED_LEN 32         /* Enough to make Grover's infeasible */
 

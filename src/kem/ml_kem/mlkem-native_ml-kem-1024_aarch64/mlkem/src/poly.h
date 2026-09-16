@@ -99,6 +99,7 @@ __contract__(
   return (int16_t)r;
 }
 
+#if !defined(MLK_CONFIG_NO_KEYPAIR_API)
 #define mlk_poly_tomont MLK_NAMESPACE(poly_tomont)
 /**
  * In-place conversion of all coefficients of a polynomial from the normal
@@ -119,6 +120,7 @@ __contract__(
   assigns(memory_slice(r, sizeof(mlk_poly)))
   ensures(array_abs_bound(r->coeffs, 0, MLKEM_N, MLKEM_Q))
 );
+#endif /* !MLK_CONFIG_NO_KEYPAIR_API */
 
 #define mlk_poly_mulcache_compute MLK_NAMESPACE(poly_mulcache_compute)
 /**
@@ -207,6 +209,7 @@ __contract__(
   assigns(memory_slice(r, sizeof(mlk_poly)))
 );
 
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 #define mlk_poly_sub MLK_NAMESPACE(poly_sub)
 /**
  * Subtract two polynomials; no modular reduction is performed.
@@ -231,6 +234,7 @@ __contract__(
   ensures(forall(k, 0, MLKEM_N, r->coeffs[k] == old(*r).coeffs[k] - b->coeffs[k]))
   assigns(memory_slice(r, sizeof(mlk_poly)))
 );
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 
 #define mlk_poly_ntt MLK_NAMESPACE(poly_ntt)
 /**
@@ -260,6 +264,7 @@ __contract__(
   ensures(array_abs_bound(r->coeffs, 0, MLKEM_N, MLK_NTT_BOUND))
 );
 
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 #define mlk_poly_invntt_tomont MLK_NAMESPACE(poly_invntt_tomont)
 /**
  * Compute the inverse negacyclic number-theoretic transform (NTT) of a
@@ -286,5 +291,6 @@ __contract__(
   assigns(memory_slice(r, sizeof(mlk_poly)))
   ensures(array_abs_bound(r->coeffs, 0, MLKEM_N, MLK_INVNTT_BOUND))
 );
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 #endif /* !MLK_POLY_H */

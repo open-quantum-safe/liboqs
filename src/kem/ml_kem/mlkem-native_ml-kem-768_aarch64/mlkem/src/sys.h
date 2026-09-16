@@ -37,6 +37,21 @@
 #define MLK_SYS_AARCH64
 #endif
 
+/* Check if the AArch64 compilation target supports NEON (Advanced SIMD).
+ *
+ * Some compilers also define __ARM_NEON__, but __ARM_NEON is the most reliable
+ * signal. Specifically, clang on Apple appears to keep __ARM_NEON__ set even if
+ * -march=armv8-a+nosimd is set.
+ *
+ * gcc 4.8 -- the first gcc version introducing Neon support -- sets neither
+ * __ARM_NEON nor __ARM_NEON__; in fact, there is no preprocessor signal that
+ * Neon is enabled. If you use gcc 4.8, you should set __ARM_NEON manually.
+ * gcc 4.9 onwards do set __ARM_NEON.
+ */
+#if defined(MLK_SYS_AARCH64) && defined(__ARM_NEON)
+#define MLK_SYS_AARCH64_NEON
+#endif
+
 /* Check if we're running on an AArch64 big endian system. */
 #if defined(__AARCH64EB__)
 #define MLK_SYS_AARCH64_EB
@@ -195,7 +210,7 @@
 #endif
 
 
-/* New X86_64 CPUs support Conflow-flow protection using the CET instructions.
+/* New X86_64 CPUs support control-flow protection using the CET instructions.
  * When enabled (through -fcf-protection=), all compilation units (including
  * empty ones) need to support CET for this to work.
  * For assembly, this means that source files need to signal support for
@@ -273,9 +288,12 @@
 typedef enum
 {
   /* x86_64 */
-  MLK_SYS_CAP_AVX2,
+  MLK_SYS_CAP_X86_64_AVX2,
   /* AArch64 */
-  MLK_SYS_CAP_SHA3
+  MLK_SYS_CAP_AARCH64_NEON,
+  MLK_SYS_CAP_AARCH64_SHA3,
+  /* Armv8.1-M */
+  MLK_SYS_CAP_ARMV81M_MVE
 } mlk_sys_cap;
 
 #if !defined(MLK_CONFIG_CUSTOM_CAPABILITY_FUNC)

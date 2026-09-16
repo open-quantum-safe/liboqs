@@ -12,7 +12,7 @@ OQS_SIG *OQS_SIG_uov_ov_Is_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_uov_ov_Is;
-	sig->alg_version = "Round 2";
+	sig->alg_version = "Round 3";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;

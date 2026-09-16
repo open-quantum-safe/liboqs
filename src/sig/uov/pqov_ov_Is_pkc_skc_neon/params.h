@@ -12,12 +12,12 @@
 
 //#define _4ROUND_AES_
 
-#if (!defined(_OV16_160_64))&&(!defined(_OV256_112_44))&&(!defined(_OV256_184_72))&&(!defined(_OV256_244_96))
+#if (!defined(_OV16_160_64))&&(!defined(_OV256_119_45))&&(!defined(_OV256_193_72))&&(!defined(_OV256_259_96))
 
 //#define _OV16_160_64
-#define _OV256_112_44
-// #define _OV256_184_72
-// #define _OV256_244_96
+#define _OV256_119_45
+// #define _OV256_193_72
+// #define _OV256_259_96
 #endif
 
 #if (!defined(_OV_CLASSIC))&&(!defined(_OV_PKC))&&(!defined(_OV_PKC_SKC))
@@ -36,23 +36,23 @@
 #define _HASH_LEN 32
 #define PQOV_NAMESPACE_PARAM Is
 
-#elif defined _OV256_112_44
+#elif defined _OV256_119_45
 #define _GFSIZE 256
-#define _PUB_N 112
-#define _PUB_M 44
+#define _PUB_N 119
+#define _PUB_M 45
 #define _HASH_LEN 32
 #define PQOV_NAMESPACE_PARAM Ip
 
-#elif defined _OV256_184_72
+#elif defined _OV256_193_72
 #define _GFSIZE 256
-#define _PUB_N 184
+#define _PUB_N 193
 #define _PUB_M 72
 #define _HASH_LEN 48
 #define PQOV_NAMESPACE_PARAM III
 
-#elif defined _OV256_244_96
+#elif defined _OV256_259_96
 #define _GFSIZE 256
-#define _PUB_N 244
+#define _PUB_N 259
 #define _PUB_M 96
 #define _HASH_LEN 64
 #define PQOV_NAMESPACE_PARAM V
@@ -133,10 +133,16 @@
 #endif
 
 
-#if defined(_BLAS_NEON_)
+#if defined(_BLAS_GFNI_)
+#define PQOV_NAMESPACE_IMPL avx2gfni
+#elif defined(_BLAS_NEON_)
 #define PQOV_NAMESPACE_IMPL neon
 #elif defined(_BLAS_AVX2_)
 #define PQOV_NAMESPACE_IMPL avx2
+#elif defined(_BLAS_SSE_)
+#define PQOV_NAMESPACE_IMPL ssse3
+#elif defined(_BLAS_UINT64_)
+#define PQOV_NAMESPACE_IMPL amd64
 #else
 #define PQOV_NAMESPACE_IMPL ref
 #endif

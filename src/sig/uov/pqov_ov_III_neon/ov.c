@@ -30,7 +30,71 @@
 #endif
 
 
-int ov_sign( uint8_t *signature, const sk_t *sk, const uint8_t *message, size_t mlen ) {
+#if defined(_OV_PKC_SKC)
+/// @brief  mat_l1 = v^Tr * S , with S = (P1 + P1^Tr) O + P2 left implicit.
+///
+/// @param[out] mat_l1   - the matrix of the linear system.
+/// @param[in]  P1       - P1 of the pk.
+/// @param[in]  P2       - P2 of the pk.
+/// @param[in]  O        - O of the sk.
+/// @param[in]  vinegar  - the vinegar vector.
+///
+static
+void l1_mat_from_p2( uint8_t *mat_l1, const uint8_t *P1, const uint8_t *P2,
+                     const uint8_t *O, const uint8_t *vinegar ) {
+    #if defined(_MUL_WITH_MULTAB_)
+    PQOV_ALIGN uint8_t vinegar_multabs[_V * 32];
+    gfv_generate_multabs( vinegar_multabs, vinegar, _V );
+    gfmat_prod_multab( mat_l1, P2, _O * _O_BYTE, _V, vinegar_multabs );
+    #else
+    gfmat_prod( mat_l1, P2, _O * _O_BYTE, _V, vinegar );
+    #endif
+
+    PQOV_ALIGN uint8_t p1_vinegar[_V * _O_BYTE];
+    gf256v_set_zero( p1_vinegar, sizeof(p1_vinegar) );
+    #if defined(_MUL_WITH_MULTAB_)
+    batch_2trimat_madd_multab( p1_vinegar, P1, vinegar_multabs, _V, _V_BYTE, 1, _O_BYTE );
+    #else
+    batch_2trimat_madd( p1_vinegar, P1, vinegar, _V, _V_BYTE, 1, _O_BYTE );
+    #endif
+
+    for (unsigned i = 0; i < _O; i++) {
+        const uint8_t *o_col = O + i * _V_BYTE;
+        uint8_t *mat_col = mat_l1 + i * _O_BYTE;
+        for (unsigned j = 0; j < _V; j++) {
+            gfv_madd( mat_col, p1_vinegar + j * _O_BYTE, gfv_get_ele( o_col, j ), _O_BYTE );
+        }
+    }
+}
+
+// expand_sk_implicit_s() leaves P2, not S, in sk->S.
+static inline
+void ov_calc_l1_mat( uint8_t *mat_l1, const sk_t *sk, const uint8_t *vinegar ) {
+    l1_mat_from_p2( mat_l1, sk->P1, sk->S, sk->O, vinegar );
+}
+
+#else
+/// @brief  mat_l1 = v^Tr * S .
+///
+/// @param[out] mat_l1   - the matrix of the linear system.
+/// @param[in]  S        - S of the sk.
+/// @param[in]  vinegar  - the vinegar vector.
+///
+static
+void l1_mat_from_s( uint8_t *mat_l1, const uint8_t *S, const uint8_t *vinegar ) {
+    gfmat_prod( mat_l1, S, _O * _O_BYTE, _V, vinegar );
+}
+
+static inline
+void ov_calc_l1_mat( uint8_t *mat_l1, const sk_t *sk, const uint8_t *vinegar ) {
+    l1_mat_from_s( mat_l1, sk->S, vinegar );
+}
+
+#endif
+
+
+static
+int ov_sign_core( uint8_t *signature, const sk_t *sk, const uint8_t *message, size_t mlen ) {
     // allocate temporary storage.
     uint8_t mat_l1[_O * _O_BYTE];
     uint8_t salt[_SALT_BYTE];
@@ -71,7 +135,7 @@ int ov_sign( uint8_t *signature, const sk_t *sk, const uint8_t *message, size_t 
 
 // generate linear system:
 // matrix
-        gfmat_prod( mat_l1, sk->S, _O * _O_BYTE, _V, vinegar );
+        ov_calc_l1_mat( mat_l1, sk, vinegar );
 // constant
         // Given vinegars, evaluate P1 with the vinegars
         batch_quad_trimat_eval( r_l1_F1, sk->P1, vinegar, _V, _O_BYTE );
@@ -125,6 +189,13 @@ int ov_sign( uint8_t *signature, const sk_t *sk, const uint8_t *message, size_t 
 }
 
 
+#if !defined(_OV_PKC_SKC)
+int ov_sign( uint8_t *signature, const sk_t *sk, const uint8_t *message, size_t mlen ) {
+    return ov_sign_core( signature, sk, message, mlen );
+}
+#endif
+
+
 static
 int _ov_verify( const uint8_t *message, size_t mlen, const uint8_t *salt, const unsigned char *digest_ck ) {
     unsigned char correct[_PUB_M_BYTE];
@@ -175,9 +246,9 @@ int ov_expand_and_sign( uint8_t *signature, const csk_t *csk, const uint8_t *mes
     sk_t *sk = &_sk;
     #endif
 
-    expand_sk( sk, csk->sk_seed );    // generating classic secret key.
+    expand_sk_implicit_s( sk, csk->sk_seed );    // S stays implicit; sk->S holds P2.
 
-    int r = ov_sign( signature, sk, message, mlen );
+    int r = ov_sign_core( signature, sk, message, mlen );
 
     #ifdef _MALLOC_
     ov_free(sk, sizeof(sk_t));

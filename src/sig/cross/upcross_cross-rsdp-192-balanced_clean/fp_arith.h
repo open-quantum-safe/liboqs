@@ -38,8 +38,6 @@
 #include "parameters.h"
 #include "restr_arith.h"
 
-#define NUM_BITS_P (BITS_TO_REPRESENT(P))
-
 #define FPRED_SINGLE(x) (((x) & 0x7F) + ((x) >> 7))
 #define FPRED_DOUBLE(x) FPRED_SINGLE(FPRED_SINGLE(x))
 #define FPRED_OPPOSITE(x) ((x) ^ 0x7F)

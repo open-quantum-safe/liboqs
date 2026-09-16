@@ -19,6 +19,8 @@
 #include "common.h"
 #include "poly.h"
 
+#if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_ETA1 == 2 || \
+    !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 #define mlk_poly_cbd2 MLK_NAMESPACE(poly_cbd2)
 /**
  * Given an array of uniformly random bytes, compute a polynomial with
@@ -32,6 +34,8 @@
  */
 MLK_INTERNAL_API
 void mlk_poly_cbd2(mlk_poly *r, const uint8_t buf[2 * MLKEM_N / 4]);
+#endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_ETA1 == 2 || \
+          !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_ETA1 == 3
 #define mlk_poly_cbd3 MLK_NAMESPACE(poly_cbd3)

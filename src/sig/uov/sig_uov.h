@@ -19,9 +19,9 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_Is_verify_with_ctx_str(const uint8_t *message,
 #endif
 
 #if defined(OQS_ENABLE_SIG_uov_ov_Ip)
-#define OQS_SIG_uov_ov_Ip_length_public_key 278432
-#define OQS_SIG_uov_ov_Ip_length_secret_key 237896
-#define OQS_SIG_uov_ov_Ip_length_signature 128
+#define OQS_SIG_uov_ov_Ip_length_public_key 321300
+#define OQS_SIG_uov_ov_Ip_length_secret_key 278087
+#define OQS_SIG_uov_ov_Ip_length_signature 135
 
 OQS_SIG *OQS_SIG_uov_ov_Ip_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_Ip_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -32,9 +32,9 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_Ip_verify_with_ctx_str(const uint8_t *message,
 #endif
 
 #if defined(OQS_ENABLE_SIG_uov_ov_III)
-#define OQS_SIG_uov_ov_III_length_public_key 1225440
-#define OQS_SIG_uov_ov_III_length_secret_key 1044320
-#define OQS_SIG_uov_ov_III_length_signature 200
+#define OQS_SIG_uov_ov_III_length_public_key 1347912
+#define OQS_SIG_uov_ov_III_length_secret_key 1167440
+#define OQS_SIG_uov_ov_III_length_signature 209
 
 OQS_SIG *OQS_SIG_uov_ov_III_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_III_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -45,9 +45,9 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_III_verify_with_ctx_str(const uint8_t *message
 #endif
 
 #if defined(OQS_ENABLE_SIG_uov_ov_V)
-#define OQS_SIG_uov_ov_V_length_public_key 2869440
-#define OQS_SIG_uov_ov_V_length_secret_key 2436704
-#define OQS_SIG_uov_ov_V_length_signature 260
+#define OQS_SIG_uov_ov_V_length_public_key 3232320
+#define OQS_SIG_uov_ov_V_length_secret_key 2801024
+#define OQS_SIG_uov_ov_V_length_signature 275
 
 OQS_SIG *OQS_SIG_uov_ov_V_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_V_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -71,9 +71,9 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_Is_pkc_verify_with_ctx_str(const uint8_t *mess
 #endif
 
 #if defined(OQS_ENABLE_SIG_uov_ov_Ip_pkc)
-#define OQS_SIG_uov_ov_Ip_pkc_length_public_key 43576
-#define OQS_SIG_uov_ov_Ip_pkc_length_secret_key 237896
-#define OQS_SIG_uov_ov_Ip_pkc_length_signature 128
+#define OQS_SIG_uov_ov_Ip_pkc_length_public_key 46591
+#define OQS_SIG_uov_ov_Ip_pkc_length_secret_key 278087
+#define OQS_SIG_uov_ov_Ip_pkc_length_signature 135
 
 OQS_SIG *OQS_SIG_uov_ov_Ip_pkc_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_Ip_pkc_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -85,8 +85,8 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_Ip_pkc_verify_with_ctx_str(const uint8_t *mess
 
 #if defined(OQS_ENABLE_SIG_uov_ov_III_pkc)
 #define OQS_SIG_uov_ov_III_pkc_length_public_key 189232
-#define OQS_SIG_uov_ov_III_pkc_length_secret_key 1044320
-#define OQS_SIG_uov_ov_III_pkc_length_signature 200
+#define OQS_SIG_uov_ov_III_pkc_length_secret_key 1167440
+#define OQS_SIG_uov_ov_III_pkc_length_signature 209
 
 OQS_SIG *OQS_SIG_uov_ov_III_pkc_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -98,8 +98,8 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_verify_with_ctx_str(const uint8_t *mes
 
 #if defined(OQS_ENABLE_SIG_uov_ov_V_pkc)
 #define OQS_SIG_uov_ov_V_pkc_length_public_key 446992
-#define OQS_SIG_uov_ov_V_pkc_length_secret_key 2436704
-#define OQS_SIG_uov_ov_V_pkc_length_signature 260
+#define OQS_SIG_uov_ov_V_pkc_length_secret_key 2801024
+#define OQS_SIG_uov_ov_V_pkc_length_signature 275
 
 OQS_SIG *OQS_SIG_uov_ov_V_pkc_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_V_pkc_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -123,9 +123,9 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_Is_pkc_skc_verify_with_ctx_str(const uint8_t *
 #endif
 
 #if defined(OQS_ENABLE_SIG_uov_ov_Ip_pkc_skc)
-#define OQS_SIG_uov_ov_Ip_pkc_skc_length_public_key 43576
+#define OQS_SIG_uov_ov_Ip_pkc_skc_length_public_key 46591
 #define OQS_SIG_uov_ov_Ip_pkc_skc_length_secret_key 32
-#define OQS_SIG_uov_ov_Ip_pkc_skc_length_signature 128
+#define OQS_SIG_uov_ov_Ip_pkc_skc_length_signature 135
 
 OQS_SIG *OQS_SIG_uov_ov_Ip_pkc_skc_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_Ip_pkc_skc_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -138,7 +138,7 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_Ip_pkc_skc_verify_with_ctx_str(const uint8_t *
 #if defined(OQS_ENABLE_SIG_uov_ov_III_pkc_skc)
 #define OQS_SIG_uov_ov_III_pkc_skc_length_public_key 189232
 #define OQS_SIG_uov_ov_III_pkc_skc_length_secret_key 32
-#define OQS_SIG_uov_ov_III_pkc_skc_length_signature 200
+#define OQS_SIG_uov_ov_III_pkc_skc_length_signature 209
 
 OQS_SIG *OQS_SIG_uov_ov_III_pkc_skc_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_skc_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -151,7 +151,7 @@ OQS_API OQS_STATUS OQS_SIG_uov_ov_III_pkc_skc_verify_with_ctx_str(const uint8_t 
 #if defined(OQS_ENABLE_SIG_uov_ov_V_pkc_skc)
 #define OQS_SIG_uov_ov_V_pkc_skc_length_public_key 446992
 #define OQS_SIG_uov_ov_V_pkc_skc_length_secret_key 32
-#define OQS_SIG_uov_ov_V_pkc_skc_length_signature 260
+#define OQS_SIG_uov_ov_V_pkc_skc_length_signature 275
 
 OQS_SIG *OQS_SIG_uov_ov_V_pkc_skc_new(void);
 OQS_API OQS_STATUS OQS_SIG_uov_ov_V_pkc_skc_keypair(uint8_t *public_key, uint8_t *secret_key);

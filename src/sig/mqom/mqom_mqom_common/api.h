@@ -4,11 +4,11 @@
 #include "common.h"
 #include "fields.h"
 
-#define CRYPTO_SECRETKEYBYTES ((long) MQOM2_SK_SIZE)
-#define CRYPTO_PUBLICKEYBYTES ((long) MQOM2_PK_SIZE)
-#define CRYPTO_BYTES ((long) MQOM2_SIG_SIZE)
+#define CRYPTO_SECRETKEYBYTES ((long) MQOM3_SK_SIZE)
+#define CRYPTO_PUBLICKEYBYTES ((long) MQOM3_PK_SIZE)
+#define CRYPTO_BYTES ((long) MQOM3_SIG_SIZE)
 
-#define CRYPTO_ALGNAME MQOM2_PARAM_LABEL
+#define CRYPTO_ALGNAME MQOM3_PARAM_LABEL
 #define CRYPTO_VERSION "1.00"
 
 /* Deal with namespacing:
@@ -20,7 +20,7 @@
 #define crypto_sign_open MQOM_PUBLIC_API_NAMESPACE(crypto_sign_open)
 #define crypto_sign_verify MQOM_PUBLIC_API_NAMESPACE(crypto_sign_verify)
 
-#if !defined(MQOM2_FOR_MUPQ) && !defined(MQOM2_FOR_LIBOQS)
+#if !defined(MQOM3_FOR_MUPQ) && !defined(MQOM3_FOR_LIBOQS)
 /*************************************************
 * Name:        crypto_sign_keypair
 *
@@ -104,7 +104,7 @@ int crypto_sign_open(unsigned char* m, unsigned long long* mlen, const unsigned 
                      unsigned long long smlen, const unsigned char *pk);
 #endif
 
-#if defined(MQOM2_FOR_MUPQ)
+#if defined(MQOM3_FOR_MUPQ)
 /***** API for MUPQ *******/
 int
 crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
@@ -130,7 +130,7 @@ crypto_sign_verify(const unsigned char  *sig, size_t siglen,
                    const unsigned char  *pk);
 #endif
 
-#if defined(MQOM2_FOR_LIBOQS)
+#if defined(MQOM3_FOR_LIBOQS)
 /***** API for lubOQS *******/
 int
 crypto_sign_keypair(unsigned char *pk, unsigned char *sk);

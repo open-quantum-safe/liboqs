@@ -19,6 +19,7 @@
  * @param val  Value asserted to be non-zero.
  */
 #define mld_debug_check_assert MLD_NAMESPACE(mldsa_debug_assert)
+MLD_INTERNAL_API
 void mld_debug_check_assert(const char *file, int line, const int val);
 
 /**
@@ -34,6 +35,7 @@ void mld_debug_check_assert(const char *file, int line, const int val);
  * @param     upper_bound_exclusive Exclusive upper bound.
  */
 #define mld_debug_check_bounds MLD_NAMESPACE(mldsa_debug_check_bounds)
+MLD_INTERNAL_API
 void mld_debug_check_bounds(const char *file, int line, const int32_t *ptr,
                             unsigned len, int64_t lower_bound_exclusive,
                             int64_t upper_bound_exclusive);

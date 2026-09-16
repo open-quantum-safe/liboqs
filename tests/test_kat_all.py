@@ -27,6 +27,8 @@ def test_sig(sig_name):
     kats = helpers.get_kats("sig")
     # slh dsa will run ACVP vectors instead
     if ("SLH_DSA" in sig_name): pytest.skip('slhdsa not enabled for KATs')
+    # the extmu variants have no KATs
+    if ("-extmu" in sig_name): pytest.skip('extmu variants not enabled for KATs')
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_sig'), sig_name, '--all'],

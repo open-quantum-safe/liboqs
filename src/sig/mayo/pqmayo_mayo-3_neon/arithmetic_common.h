@@ -95,6 +95,29 @@ static const unsigned char mayo_gf16_mul[256] __attribute__((aligned(32))) = {
     0x00,0x0f,0x0d,0x02,0x09,0x06,0x04,0x0b, 0x01,0x0e,0x0c,0x03,0x08,0x07,0x05,0x0a
 };
 
+// Ox = sum_c x[c] * O[:,c], with OT the row-major transpose of O (one row of
+// V_MAX padded bytes per column of O). Table-lookup based, so the per-element
+// volatile blocker of the scalar mul_f is avoided; the multiplication table
+// is built with a polynomial multiply (no secret-indexed lookup).
+#define MAYO_OT_STRIDE (((V_MAX + 15) / 16) * 16)
+
+static
+inline void mayo_Ot_rows_times_x(const unsigned char *OT, const unsigned char *x, unsigned char *Ox) {
+    uint8x16_t acc[MAYO_OT_STRIDE / 16];
+    for (size_t j = 0; j < MAYO_OT_STRIDE / 16; j++) {
+        acc[j] = vdupq_n_u8(0);
+    }
+    for (size_t c = 0; c < O_MAX; c++) {
+        uint8x16_t tab = gf16v_get_multab(x[c]);
+        for (size_t j = 0; j < MAYO_OT_STRIDE / 16; j++) {
+            acc[j] ^= vqtbl1q_u8(tab, vld1q_u8(OT + c * MAYO_OT_STRIDE + 16 * j));
+        }
+    }
+    for (size_t j = 0; j < MAYO_OT_STRIDE / 16; j++) {
+        vst1q_u8(Ox + 16 * j, acc[j]);
+    }
+}
+
 static
 inline void mayo_S1_multabs(const unsigned char *S1, uint8x16_t *S1_multabs) {
     size_t r;

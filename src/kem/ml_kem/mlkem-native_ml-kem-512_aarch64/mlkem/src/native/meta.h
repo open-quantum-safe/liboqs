@@ -10,7 +10,7 @@
  */
 #include "../sys.h"
 
-#ifdef MLK_SYS_AARCH64
+#ifdef MLK_SYS_AARCH64_NEON
 #include "aarch64/meta.h"
 #endif
 

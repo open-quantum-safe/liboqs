@@ -347,12 +347,13 @@ static const uint32_t rcon[14] = {
 /* Encryption key schedule */
 #define RIJNDAEL_SETKEY_ENC(ctx, key, rtype_) do { \
     uint32_t i;\
-    /* Get the round keys pointer as uint32_t (NOTE: buffer should be 4 bytes aligned) */\
-    uint32_t *RK = (uint32_t*)(ctx->rk);\
+    uint32_t *RK;\
 \
     if((ctx == NULL) || (key == NULL)){\
         goto err;\
     }\
+    /* Get the round keys pointer as uint32_t (NOTE: buffer should be 4 bytes aligned) */\
+    RK = (uint32_t*)(ctx->rk);\
     switch(rtype_){\
         case AES128:{\
             ctx->Nr = 10;\
@@ -920,13 +921,17 @@ MAKE_GENERIC_FUNCS_XX_IMPL(aes128, table, 16, 16)
 MAKE_GENERIC_FUNCS_XX_IMPL(aes256, table, 32, 16)
 MAKE_GENERIC_FUNCS_XX_IMPL(rijndael256, table, 32, 32)
 
+MAKE_GENERIC_FUNCS_ECB_IMPL(aes128, table, 16, 16)
+MAKE_GENERIC_FUNCS_ECB_IMPL(aes256, table, 32, 16)
+MAKE_GENERIC_FUNCS_ECB_IMPL(rijndael256, table, 32, 32)
+
 #if defined(__GNUC__) && (__GNUC__ >= 11)
 #pragma GCC diagnostic pop
 #endif
 
-#else /* */
+#else /* RIJNDAEL_AES_NI && !RIJNDAEL_TABLE */
 /*
  * Dummy definition to avoid the empty translation unit ISO C warning
  */
 typedef int dummy;
-#endif
+#endif /* !RIJNDAEL_AES_NI || RIJNDAEL_TABLE */

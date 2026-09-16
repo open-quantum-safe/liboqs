@@ -88,6 +88,20 @@ int expand_pk( pk_t *pk, const cpk_t *cpk );
 int expand_pk_predicate( pk_t *pk, const cpk_t *cpk, const unsigned char *predicate);
 
 
+#if defined(_OV_PKC_SKC)
+///
+/// @brief Generate secret key, leaving S implicit
+///
+/// Skips S = (P1 + P1^Tr) O + P2 .  On return sk->S holds P2, not S, and sk is
+/// only usable by the signing path that contracts with the vinegar vector.
+///
+/// @param[out] sk        - the secret key, with P2 in sk->S.
+/// @param[in]  sk_seed   - seed for generating the secret key.
+/// @return 0 for success. -1 otherwise.
+///
+#define expand_sk_implicit_s PQOV_NAMESPACE(expand_sk_implicit_s)
+int expand_sk_implicit_s( sk_t *sk, const unsigned char *sk_seed );
+#else
 ///
 /// @brief Generate secret key
 ///
@@ -97,6 +111,7 @@ int expand_pk_predicate( pk_t *pk, const cpk_t *cpk, const unsigned char *predic
 ///
 #define expand_sk PQOV_NAMESPACE(expand_sk)
 int expand_sk( sk_t *sk, const unsigned char *sk_seed );
+#endif
 
 
 ////////////////////////  Public map  ///////////////////////////////////
@@ -135,6 +150,7 @@ void ov_publicmap_pkc( unsigned char *z, const cpk_t *pk, const unsigned char *w
 
 
 
+#if !defined(_OV_PKC_SKC)
 ///
 /// @brief Signing function for classic secret key.
 ///
@@ -146,6 +162,7 @@ void ov_publicmap_pkc( unsigned char *z, const cpk_t *pk, const unsigned char *w
 ///
 #define ov_sign PQOV_NAMESPACE(ov_sign)
 int ov_sign( uint8_t *signature, const sk_t *sk, const uint8_t *message, size_t mlen );
+#endif
 
 ///
 /// @brief Verifying function.

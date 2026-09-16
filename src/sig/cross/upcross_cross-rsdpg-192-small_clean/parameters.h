@@ -100,6 +100,8 @@
 
 #define LOG2(L) ( (BITS_TO_REPRESENT(L) > BITS_TO_REPRESENT((L)-1)) ? (BITS_TO_REPRESENT((L)-1)) : (BITS_TO_REPRESENT(L)) )
 
+#define NUM_BITS_P (BITS_TO_REPRESENT(P))
+
 /***************** Derived parameters *****************************************/
 #define SEED_LENGTH_BYTES (SEC_MARGIN_LAMBDA/8)
 #define KEYPAIR_SEED_LENGTH_BYTES (2*(SEC_MARGIN_LAMBDA/8))

@@ -144,7 +144,8 @@ __contract__(
   ensures(array_bound(p, 0, MLKEM_N, 0, MLKEM_Q)));
 #endif /* MLK_USE_NATIVE_NTT_CUSTOM_ORDER */
 
-#if defined(MLK_USE_NATIVE_INTT)
+#if defined(MLK_USE_NATIVE_INTT) && \
+    (!defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API))
 /**
  * Compute the inverse negacyclic number-theoretic transform (NTT) of a
  * polynomial in place.
@@ -168,7 +169,8 @@ __contract__(
   ensures((return_value == MLK_NATIVE_FUNC_SUCCESS) ==> array_abs_bound(p, 0, MLKEM_N, MLK_INVNTT_BOUND))
   ensures((return_value == MLK_NATIVE_FUNC_FALLBACK) ==> array_unchanged(p, MLKEM_N))
 );
-#endif /* MLK_USE_NATIVE_INTT */
+#endif /* MLK_USE_NATIVE_INTT && (!MLK_CONFIG_NO_ENCAPS_API || \
+          !MLK_CONFIG_NO_DECAPS_API) */
 
 #if defined(MLK_USE_NATIVE_POLY_REDUCE)
 /**
@@ -191,7 +193,7 @@ __contract__(
 );
 #endif /* MLK_USE_NATIVE_POLY_REDUCE */
 
-#if defined(MLK_USE_NATIVE_POLY_TOMONT)
+#if defined(MLK_USE_NATIVE_POLY_TOMONT) && !defined(MLK_CONFIG_NO_KEYPAIR_API)
 /**
  * In-place conversion of all coefficients of a polynomial from the normal
  * domain to the Montgomery domain.
@@ -210,7 +212,7 @@ __contract__(
   ensures((return_value == MLK_NATIVE_FUNC_SUCCESS) ==> array_abs_bound(p, 0, MLKEM_N, MLKEM_Q))
   ensures((return_value == MLK_NATIVE_FUNC_FALLBACK) ==> array_unchanged(p, MLKEM_N))
 );
-#endif /* MLK_USE_NATIVE_POLY_TOMONT */
+#endif /* MLK_USE_NATIVE_POLY_TOMONT && !MLK_CONFIG_NO_KEYPAIR_API */
 
 #if defined(MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE)
 /**
@@ -340,7 +342,9 @@ __contract__(
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4 */
 #endif /* MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED */
 
-#if defined(MLK_USE_NATIVE_POLY_TOBYTES)
+#if defined(MLK_USE_NATIVE_POLY_TOBYTES) && \
+    (!defined(MLK_CONFIG_NO_KEYPAIR_API) || \
+     !defined(MLK_CONFIG_NO_ENCAPS_API))
 /**
  * Serialization of a polynomial with unsigned canonical coefficients.
  *
@@ -362,9 +366,11 @@ __contract__(
   assigns(memory_slice(r, MLKEM_POLYBYTES))
   ensures(return_value == MLK_NATIVE_FUNC_SUCCESS || return_value == MLK_NATIVE_FUNC_FALLBACK)
 );
-#endif /* MLK_USE_NATIVE_POLY_TOBYTES */
+#endif /* MLK_USE_NATIVE_POLY_TOBYTES && (!MLK_CONFIG_NO_KEYPAIR_API || \
+          !MLK_CONFIG_NO_ENCAPS_API) */
 
-#if defined(MLK_USE_NATIVE_POLY_FROMBYTES)
+#if defined(MLK_USE_NATIVE_POLY_FROMBYTES) && \
+    (!defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API))
 /**
  * Deserialization of a polynomial.
  *
@@ -386,7 +392,8 @@ __contract__(
   ensures(return_value == MLK_NATIVE_FUNC_SUCCESS || return_value == MLK_NATIVE_FUNC_FALLBACK)
   ensures((return_value == MLK_NATIVE_FUNC_SUCCESS) ==> array_bound(a, 0, MLKEM_N, 0, MLKEM_UINT12_LIMIT))
 );
-#endif /* MLK_USE_NATIVE_POLY_FROMBYTES */
+#endif /* MLK_USE_NATIVE_POLY_FROMBYTES && (!MLK_CONFIG_NO_ENCAPS_API || \
+          !MLK_CONFIG_NO_DECAPS_API) */
 
 #if defined(MLK_USE_NATIVE_REJ_UNIFORM)
 /**
@@ -419,6 +426,7 @@ __contract__(
 );
 #endif /* MLK_USE_NATIVE_REJ_UNIFORM */
 
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || (MLKEM_K == 2 || MLKEM_K == 3)
 #if defined(MLK_USE_NATIVE_POLY_COMPRESS_D4)
 /**
@@ -470,6 +478,7 @@ __contract__(
   ensures(return_value == MLK_NATIVE_FUNC_SUCCESS || return_value == MLK_NATIVE_FUNC_FALLBACK));
 #endif /* MLK_USE_NATIVE_POLY_COMPRESS_D10 */
 
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 #if defined(MLK_USE_NATIVE_POLY_DECOMPRESS_D4)
 /**
  * De-serialization and subsequent decompression (4 bits) of a polynomial;
@@ -525,6 +534,7 @@ __contract__(
   ensures(return_value == MLK_NATIVE_FUNC_SUCCESS || return_value == MLK_NATIVE_FUNC_FALLBACK)
   ensures((return_value == MLK_NATIVE_FUNC_SUCCESS) ==> array_bound(r, 0, MLKEM_N, 0, MLKEM_Q)));
 #endif /* MLK_USE_NATIVE_POLY_DECOMPRESS_D10 */
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 || MLKEM_K == 3 */
 
 #if defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4
@@ -578,6 +588,7 @@ __contract__(
   ensures(return_value == MLK_NATIVE_FUNC_SUCCESS || return_value == MLK_NATIVE_FUNC_FALLBACK));
 #endif /* MLK_USE_NATIVE_POLY_COMPRESS_D11 */
 
+#if !defined(MLK_CONFIG_NO_DECAPS_API)
 #if defined(MLK_USE_NATIVE_POLY_DECOMPRESS_D5)
 /**
  * De-serialization and subsequent decompression (5 bits) of a polynomial;
@@ -633,6 +644,8 @@ __contract__(
   ensures(return_value == MLK_NATIVE_FUNC_SUCCESS || return_value == MLK_NATIVE_FUNC_FALLBACK)
   ensures((return_value == MLK_NATIVE_FUNC_SUCCESS) ==> array_bound(r, 0, MLKEM_N, 0, MLKEM_Q)));
 #endif /* MLK_USE_NATIVE_POLY_DECOMPRESS_D11 */
+#endif /* !MLK_CONFIG_NO_DECAPS_API */
 #endif /* MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4 */
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
 
 #endif /* !MLK_NATIVE_API_H */

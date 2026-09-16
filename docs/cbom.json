@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:b5161e23-fb3b-41e7-8059-b2bcdd1c506b",
+  "serialNumber": "urn:uuid:7cf563c6-0035-47d9-9699-0706fae8826f",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-04-03T15:11:19.798141+00:00",
+    "timestamp": "2026-09-09T09:25:30.707537+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@45b7043723da6ae132e2a96432d1eaa44e1ccda6",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@66ec289a6086ab88d4d82a8f43a87dbd16490211",
       "name": "liboqs",
-      "version": "45b7043723da6ae132e2a96432d1eaa44e1ccda6"
+      "version": "66ec289a6086ab88d4d82a8f43a87dbd16490211"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@45b7043723da6ae132e2a96432d1eaa44e1ccda6",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@66ec289a6086ab88d4d82a8f43a87dbd16490211",
       "name": "liboqs",
-      "version": "45b7043723da6ae132e2a96432d1eaa44e1ccda6"
+      "version": "66ec289a6086ab88d4d82a8f43a87dbd16490211"
     },
     {
       "type": "cryptographic-asset",
@@ -3062,12 +3062,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_fast_r5:default:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ct:default:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3082,12 +3082,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_fast_r5:memopt:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ct:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3102,12 +3102,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_fast_r5:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ct:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3122,12 +3122,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_fast_r3:default:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ct:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3142,12 +3162,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_fast_r3:memopt:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ot:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3162,12 +3182,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_fast_r3:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ot:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3182,12 +3202,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_short_r5:default:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_fast_ot:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_short_r5",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_fast_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3202,12 +3242,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_short_r5:memopt:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ct:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_short_r5",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3222,12 +3262,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_short_r5:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ct:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_short_r5",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3242,12 +3282,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_short_r3:default:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ct:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3262,12 +3322,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_short_r3:memopt:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ot:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3282,12 +3342,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat1_gf16_short_r3:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ot:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat1_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3302,12 +3362,192 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_fast_r5:default:generic",
+      "bom-ref": "alg:mqom3_cat1_gf16_short_ot:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat1_gf16_short_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ct:memopt:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ct:avx2:x86_64",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ct:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ot:memopt:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ot:avx2:x86_64",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat1_gf2_shorter_ot:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat1_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3322,12 +3562,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_fast_r5:memopt:generic",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ct:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3342,12 +3582,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_fast_r5:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ct:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3362,12 +3602,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_fast_r3:default:generic",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ct:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3382,12 +3642,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_fast_r3:memopt:generic",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ot:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3402,72 +3662,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_fast_r3:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ot:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_fast_r3",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_short_r5:default:generic",
-      "name": "MQOM",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_short_r5",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_short_r5:memopt:generic",
-      "name": "MQOM",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_short_r5",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_short_r5:avx2:x86_64",
-      "name": "MQOM",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_short_r5",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3482,12 +3682,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_short_r3:default:generic",
+      "bom-ref": "alg:mqom3_cat3_gf16_fast_ot:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_fast_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3502,12 +3722,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_short_r3:memopt:generic",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ct:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3522,12 +3742,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat3_gf16_short_r3:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ct:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat3_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3542,12 +3762,272 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_fast_r5:default:generic",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ct:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ot:memopt:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ot:avx2:x86_64",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf16_short_ot:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf16_short_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ct:memopt:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ct:avx2:x86_64",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ct:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ot:memopt:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ot:avx2:x86_64",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat3_gf2_shorter_ot:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat3_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3562,12 +4042,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_fast_r5:memopt:generic",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ct:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3582,12 +4062,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_fast_r5:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ct:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_fast_r5",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3602,12 +4082,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_fast_r3:default:generic",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ct:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3622,12 +4122,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_fast_r3:memopt:generic",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ot:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3642,12 +4142,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_fast_r3:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ot:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_fast_r3",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3662,12 +4162,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_short_r5:default:generic",
+      "bom-ref": "alg:mqom3_cat5_gf16_fast_ot:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_short_r5",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_fast_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3682,12 +4202,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_short_r5:memopt:generic",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ct:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_short_r5",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3702,12 +4222,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_short_r5:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ct:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_short_r5",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ct",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3722,12 +4242,32 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_short_r3:default:generic",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ct:neon:armv8-a",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3742,12 +4282,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_short_r3:memopt:generic",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ot:memopt:generic",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3762,12 +4302,12 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:mqom2_cat5_gf16_short_r3:avx2:x86_64",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ot:avx2:x86_64",
       "name": "MQOM",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
-          "parameterSetIdentifier": "mqom2_cat5_gf16_short_r3",
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ot",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -3777,6 +4317,186 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf16_short_ot:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf16_short_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ct:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ct:memopt:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ct:avx2:x86_64",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ct:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ct",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ot:default:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ot:memopt:generic",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ot:avx2:x86_64",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:mqom3_cat5_gf2_shorter_ot:neon:armv8-a",
+      "name": "MQOM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "mqom3_cat5_gf2_shorter_ot",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "armv8-a"
         }
       }
     },
@@ -8367,7 +9087,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@45b7043723da6ae132e2a96432d1eaa44e1ccda6",
+      "ref": "pkg:github/open-quantum-safe/liboqs@66ec289a6086ab88d4d82a8f43a87dbd16490211",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -8521,42 +9241,78 @@
         "alg:ML-DSA-87:ref:generic",
         "alg:ML-DSA-87:x86_64:x86_64",
         "alg:ML-DSA-87:aarch64:armv8-a",
-        "alg:mqom2_cat1_gf16_fast_r5:default:generic",
-        "alg:mqom2_cat1_gf16_fast_r5:memopt:generic",
-        "alg:mqom2_cat1_gf16_fast_r5:avx2:x86_64",
-        "alg:mqom2_cat1_gf16_fast_r3:default:generic",
-        "alg:mqom2_cat1_gf16_fast_r3:memopt:generic",
-        "alg:mqom2_cat1_gf16_fast_r3:avx2:x86_64",
-        "alg:mqom2_cat1_gf16_short_r5:default:generic",
-        "alg:mqom2_cat1_gf16_short_r5:memopt:generic",
-        "alg:mqom2_cat1_gf16_short_r5:avx2:x86_64",
-        "alg:mqom2_cat1_gf16_short_r3:default:generic",
-        "alg:mqom2_cat1_gf16_short_r3:memopt:generic",
-        "alg:mqom2_cat1_gf16_short_r3:avx2:x86_64",
-        "alg:mqom2_cat3_gf16_fast_r5:default:generic",
-        "alg:mqom2_cat3_gf16_fast_r5:memopt:generic",
-        "alg:mqom2_cat3_gf16_fast_r5:avx2:x86_64",
-        "alg:mqom2_cat3_gf16_fast_r3:default:generic",
-        "alg:mqom2_cat3_gf16_fast_r3:memopt:generic",
-        "alg:mqom2_cat3_gf16_fast_r3:avx2:x86_64",
-        "alg:mqom2_cat3_gf16_short_r5:default:generic",
-        "alg:mqom2_cat3_gf16_short_r5:memopt:generic",
-        "alg:mqom2_cat3_gf16_short_r5:avx2:x86_64",
-        "alg:mqom2_cat3_gf16_short_r3:default:generic",
-        "alg:mqom2_cat3_gf16_short_r3:memopt:generic",
-        "alg:mqom2_cat3_gf16_short_r3:avx2:x86_64",
-        "alg:mqom2_cat5_gf16_fast_r5:default:generic",
-        "alg:mqom2_cat5_gf16_fast_r5:memopt:generic",
-        "alg:mqom2_cat5_gf16_fast_r5:avx2:x86_64",
-        "alg:mqom2_cat5_gf16_fast_r3:default:generic",
-        "alg:mqom2_cat5_gf16_fast_r3:memopt:generic",
-        "alg:mqom2_cat5_gf16_fast_r3:avx2:x86_64",
-        "alg:mqom2_cat5_gf16_short_r5:default:generic",
-        "alg:mqom2_cat5_gf16_short_r5:memopt:generic",
-        "alg:mqom2_cat5_gf16_short_r5:avx2:x86_64",
-        "alg:mqom2_cat5_gf16_short_r3:default:generic",
-        "alg:mqom2_cat5_gf16_short_r3:memopt:generic",
-        "alg:mqom2_cat5_gf16_short_r3:avx2:x86_64",
+        "alg:mqom3_cat1_gf16_fast_ct:default:generic",
+        "alg:mqom3_cat1_gf16_fast_ct:memopt:generic",
+        "alg:mqom3_cat1_gf16_fast_ct:avx2:x86_64",
+        "alg:mqom3_cat1_gf16_fast_ct:neon:armv8-a",
+        "alg:mqom3_cat1_gf16_fast_ot:default:generic",
+        "alg:mqom3_cat1_gf16_fast_ot:memopt:generic",
+        "alg:mqom3_cat1_gf16_fast_ot:avx2:x86_64",
+        "alg:mqom3_cat1_gf16_fast_ot:neon:armv8-a",
+        "alg:mqom3_cat1_gf16_short_ct:default:generic",
+        "alg:mqom3_cat1_gf16_short_ct:memopt:generic",
+        "alg:mqom3_cat1_gf16_short_ct:avx2:x86_64",
+        "alg:mqom3_cat1_gf16_short_ct:neon:armv8-a",
+        "alg:mqom3_cat1_gf16_short_ot:default:generic",
+        "alg:mqom3_cat1_gf16_short_ot:memopt:generic",
+        "alg:mqom3_cat1_gf16_short_ot:avx2:x86_64",
+        "alg:mqom3_cat1_gf16_short_ot:neon:armv8-a",
+        "alg:mqom3_cat1_gf2_shorter_ct:default:generic",
+        "alg:mqom3_cat1_gf2_shorter_ct:memopt:generic",
+        "alg:mqom3_cat1_gf2_shorter_ct:avx2:x86_64",
+        "alg:mqom3_cat1_gf2_shorter_ct:neon:armv8-a",
+        "alg:mqom3_cat1_gf2_shorter_ot:default:generic",
+        "alg:mqom3_cat1_gf2_shorter_ot:memopt:generic",
+        "alg:mqom3_cat1_gf2_shorter_ot:avx2:x86_64",
+        "alg:mqom3_cat1_gf2_shorter_ot:neon:armv8-a",
+        "alg:mqom3_cat3_gf16_fast_ct:default:generic",
+        "alg:mqom3_cat3_gf16_fast_ct:memopt:generic",
+        "alg:mqom3_cat3_gf16_fast_ct:avx2:x86_64",
+        "alg:mqom3_cat3_gf16_fast_ct:neon:armv8-a",
+        "alg:mqom3_cat3_gf16_fast_ot:default:generic",
+        "alg:mqom3_cat3_gf16_fast_ot:memopt:generic",
+        "alg:mqom3_cat3_gf16_fast_ot:avx2:x86_64",
+        "alg:mqom3_cat3_gf16_fast_ot:neon:armv8-a",
+        "alg:mqom3_cat3_gf16_short_ct:default:generic",
+        "alg:mqom3_cat3_gf16_short_ct:memopt:generic",
+        "alg:mqom3_cat3_gf16_short_ct:avx2:x86_64",
+        "alg:mqom3_cat3_gf16_short_ct:neon:armv8-a",
+        "alg:mqom3_cat3_gf16_short_ot:default:generic",
+        "alg:mqom3_cat3_gf16_short_ot:memopt:generic",
+        "alg:mqom3_cat3_gf16_short_ot:avx2:x86_64",
+        "alg:mqom3_cat3_gf16_short_ot:neon:armv8-a",
+        "alg:mqom3_cat3_gf2_shorter_ct:default:generic",
+        "alg:mqom3_cat3_gf2_shorter_ct:memopt:generic",
+        "alg:mqom3_cat3_gf2_shorter_ct:avx2:x86_64",
+        "alg:mqom3_cat3_gf2_shorter_ct:neon:armv8-a",
+        "alg:mqom3_cat3_gf2_shorter_ot:default:generic",
+        "alg:mqom3_cat3_gf2_shorter_ot:memopt:generic",
+        "alg:mqom3_cat3_gf2_shorter_ot:avx2:x86_64",
+        "alg:mqom3_cat3_gf2_shorter_ot:neon:armv8-a",
+        "alg:mqom3_cat5_gf16_fast_ct:default:generic",
+        "alg:mqom3_cat5_gf16_fast_ct:memopt:generic",
+        "alg:mqom3_cat5_gf16_fast_ct:avx2:x86_64",
+        "alg:mqom3_cat5_gf16_fast_ct:neon:armv8-a",
+        "alg:mqom3_cat5_gf16_fast_ot:default:generic",
+        "alg:mqom3_cat5_gf16_fast_ot:memopt:generic",
+        "alg:mqom3_cat5_gf16_fast_ot:avx2:x86_64",
+        "alg:mqom3_cat5_gf16_fast_ot:neon:armv8-a",
+        "alg:mqom3_cat5_gf16_short_ct:default:generic",
+        "alg:mqom3_cat5_gf16_short_ct:memopt:generic",
+        "alg:mqom3_cat5_gf16_short_ct:avx2:x86_64",
+        "alg:mqom3_cat5_gf16_short_ct:neon:armv8-a",
+        "alg:mqom3_cat5_gf16_short_ot:default:generic",
+        "alg:mqom3_cat5_gf16_short_ot:memopt:generic",
+        "alg:mqom3_cat5_gf16_short_ot:avx2:x86_64",
+        "alg:mqom3_cat5_gf16_short_ot:neon:armv8-a",
+        "alg:mqom3_cat5_gf2_shorter_ct:default:generic",
+        "alg:mqom3_cat5_gf2_shorter_ct:memopt:generic",
+        "alg:mqom3_cat5_gf2_shorter_ct:avx2:x86_64",
+        "alg:mqom3_cat5_gf2_shorter_ct:neon:armv8-a",
+        "alg:mqom3_cat5_gf2_shorter_ot:default:generic",
+        "alg:mqom3_cat5_gf2_shorter_ot:memopt:generic",
+        "alg:mqom3_cat5_gf2_shorter_ot:avx2:x86_64",
+        "alg:mqom3_cat5_gf2_shorter_ot:neon:armv8-a",
         "alg:SLH_DSA_PURE_SHA2_128S:slhdsa-c:generic",
         "alg:SLH_DSA_PURE_SHA2_128F:slhdsa-c:generic",
         "alg:SLH_DSA_PURE_SHA2_192S:slhdsa-c:generic",
@@ -9730,229 +10486,457 @@
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_fast_r5:default:generic",
+      "ref": "alg:mqom3_cat1_gf16_fast_ct:default:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_fast_r5:memopt:generic",
+      "ref": "alg:mqom3_cat1_gf16_fast_ct:memopt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_fast_r5:avx2:x86_64",
+      "ref": "alg:mqom3_cat1_gf16_fast_ct:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_fast_r3:default:generic",
+      "ref": "alg:mqom3_cat1_gf16_fast_ct:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_fast_r3:memopt:generic",
+      "ref": "alg:mqom3_cat1_gf16_fast_ot:default:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_fast_r3:avx2:x86_64",
+      "ref": "alg:mqom3_cat1_gf16_fast_ot:memopt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_short_r5:default:generic",
+      "ref": "alg:mqom3_cat1_gf16_fast_ot:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_short_r5:memopt:generic",
+      "ref": "alg:mqom3_cat1_gf16_fast_ot:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_short_r5:avx2:x86_64",
+      "ref": "alg:mqom3_cat1_gf16_short_ct:default:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_short_r3:default:generic",
+      "ref": "alg:mqom3_cat1_gf16_short_ct:memopt:generic",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_short_r3:memopt:generic",
+      "ref": "alg:mqom3_cat1_gf16_short_ct:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat1_gf16_short_r3:avx2:x86_64",
+      "ref": "alg:mqom3_cat1_gf16_short_ct:neon:armv8-a",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_fast_r5:default:generic",
+      "ref": "alg:mqom3_cat1_gf16_short_ot:default:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf16_short_ot:memopt:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf16_short_ot:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf16_short_ot:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ct:default:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ct:memopt:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ct:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ct:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ot:default:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ot:memopt:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ot:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat1_gf2_shorter_ot:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat3_gf16_fast_ct:default:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_fast_r5:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf16_fast_ct:memopt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_fast_r5:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf16_fast_ct:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_fast_r3:default:generic",
+      "ref": "alg:mqom3_cat3_gf16_fast_ct:neon:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_fast_r3:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf16_fast_ot:default:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_fast_r3:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf16_fast_ot:memopt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_short_r5:default:generic",
+      "ref": "alg:mqom3_cat3_gf16_fast_ot:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_short_r5:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf16_fast_ot:neon:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_short_r5:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf16_short_ct:default:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_short_r3:default:generic",
+      "ref": "alg:mqom3_cat3_gf16_short_ct:memopt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_short_r3:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf16_short_ct:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat3_gf16_short_r3:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf16_short_ct:neon:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_fast_r5:default:generic",
+      "ref": "alg:mqom3_cat3_gf16_short_ot:default:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_fast_r5:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf16_short_ot:memopt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_fast_r5:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf16_short_ot:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_fast_r3:default:generic",
+      "ref": "alg:mqom3_cat3_gf16_short_ot:neon:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_fast_r3:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ct:default:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_fast_r3:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ct:memopt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_short_r5:default:generic",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ct:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_short_r5:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ct:neon:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_short_r5:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ot:default:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_short_r3:default:generic",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ot:memopt:generic",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_short_r3:memopt:generic",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ot:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
     },
     {
-      "ref": "alg:mqom2_cat5_gf16_short_r3:avx2:x86_64",
+      "ref": "alg:mqom3_cat3_gf2_shorter_ot:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ct:default:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ct:memopt:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ct:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ct:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ot:default:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ot:memopt:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ot:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_fast_ot:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ct:default:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ct:memopt:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ct:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ct:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ot:default:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ot:memopt:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ot:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf16_short_ot:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ct:default:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ct:memopt:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ct:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ct:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ot:default:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ot:memopt:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ot:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:mqom3_cat5_gf2_shorter_ot:neon:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ]

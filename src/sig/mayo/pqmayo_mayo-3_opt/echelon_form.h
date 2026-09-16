@@ -25,18 +25,10 @@ ef_pack_m_vec(const unsigned char *in, uint64_t *out, int ncols) {
     int i;
     unsigned char *out8 = (unsigned char *)out;
     for(i = 0; i+1 < ncols; i += 2){
-#ifdef TARGET_BIG_ENDIAN
-        out8[(((i/2 + 8) / 8) * 8) - 1 - (i/2)%8]  = (in[i+0] << 0) | (in[i+1] << 4);
-#else
-        out8[i/2]  = (in[i+0] << 0) | (in[i+1] << 4);
-#endif
+        out8[MAYO_LIMB_BYTE(i/2)]  = (in[i+0] << 0) | (in[i+1] << 4);
     }
     if (ncols % 2 == 1){
-#ifdef TARGET_BIG_ENDIAN
-        out8[(((i/2 + 8) / 8) * 8) - 1 - (i/2)%8]  = (in[i+0] << 0);
-#else
-        out8[i/2]  = (in[i+0] << 0);
-#endif
+        out8[MAYO_LIMB_BYTE(i/2)]  = (in[i+0] << 0);
     }
 }
 
@@ -44,13 +36,8 @@ static inline void
 ef_unpack_m_vec(int legs, const uint64_t *in, unsigned char *out) {
     const unsigned char *in8 = (const unsigned char *)in;
     for(int i = 0; i < legs * 16; i += 2){
-#ifdef TARGET_BIG_ENDIAN
-        out[i]   = (in8[(((i/2 + 8) / 8) * 8) - 1 - (i/2)%8]) & 0xF;
-        out[i+1] = (in8[(((i/2 + 8) / 8) * 8) - 1 - (i/2)%8] >> 4);
-#else
-        out[i]   = (in8[i/2]) & 0xF;
-        out[i+1] = (in8[i/2] >> 4);
-#endif
+        out[i]   = (in8[MAYO_LIMB_BYTE(i/2)]) & 0xF;
+        out[i+1] = (in8[MAYO_LIMB_BYTE(i/2)] >> 4);
     }
 }
 

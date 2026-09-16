@@ -601,7 +601,8 @@ void mld_poly_challenge(mld_poly *c, const uint8_t seed[MLDSA_CTILDEBYTES])
     decreases(MLDSA_N - i)
   )
   {
-    /* This loop teminates only probabilistically, hence no decreases clause. */
+    /* This loop terminates only probabilistically, hence no decreases
+     * clause. */
     do
     __loop__(
       assigns(j, object_whole(buf), state, pos)
@@ -618,10 +619,10 @@ void mld_poly_challenge(mld_poly *c, const uint8_t seed[MLDSA_CTILDEBYTES])
 
     c->coeffs[i] = c->coeffs[j];
 
-    /* Reference: Compute coefficent value here in two steps to */
-    /* mixinf unsigned and signed arithmetic with implicit      */
-    /* conversions, and so that CBMC can keep track of ranges   */
-    /* to complete type-safety proof here.                      */
+    /* Reference: Compute coefficient value here in two steps to */
+    /* avoid mixing unsigned and signed arithmetic with implicit */
+    /* conversions, and so that CBMC can keep track of ranges    */
+    /* to complete type-safety proof here.                       */
 
     /* The least-significant bit of signs tells us if we want -1 or +1 */
     offset = 2 * (signs & 1);
@@ -694,6 +695,7 @@ void mld_polyeta_pack(uint8_t r[MLDSA_POLYETA_PACKEDBYTES], const mld_poly *a)
 #endif /* !MLD_CONFIG_NO_KEYPAIR_API */
 
 #if !defined(MLD_CONFIG_NO_KEYPAIR_API) || !defined(MLD_CONFIG_NO_SIGN_API)
+MLD_INTERNAL_API
 void mld_polyeta_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYETA_PACKEDBYTES])
 {
   unsigned int i;
@@ -893,38 +895,6 @@ void mld_polyz_unpack(mld_poly *r, const uint8_t a[MLDSA_POLYZ_PACKEDBYTES])
 
   mld_polyz_unpack_c(r, a);
 }
-
-MLD_INTERNAL_API
-void mld_polyw1_pack(uint8_t r[MLDSA_POLYW1_PACKEDBYTES], const mld_poly *a)
-{
-  unsigned int i;
-
-  mld_assert_bound(a->coeffs, MLDSA_N, 0, (MLDSA_Q - 1) / (2 * MLDSA_GAMMA2));
-
-#if MLD_CONFIG_PARAMETER_SET == 44
-  for (i = 0; i < MLDSA_N / 4; ++i)
-  __loop__(
-    invariant(i <= MLDSA_N/4)
-    decreases(MLDSA_N / 4 - i))
-  {
-    r[3 * i + 0] = (uint8_t)((a->coeffs[4 * i + 0]) & 0xFF);
-    r[3 * i + 0] |= (uint8_t)((a->coeffs[4 * i + 1] << 6) & 0xFF);
-    r[3 * i + 1] = (uint8_t)((a->coeffs[4 * i + 1] >> 2) & 0xFF);
-    r[3 * i + 1] |= (uint8_t)((a->coeffs[4 * i + 2] << 4) & 0xFF);
-    r[3 * i + 2] = (uint8_t)((a->coeffs[4 * i + 2] >> 4) & 0xFF);
-    r[3 * i + 2] |= (uint8_t)((a->coeffs[4 * i + 3] << 2) & 0xFF);
-  }
-#else  /* MLD_CONFIG_PARAMETER_SET == 44 */
-  for (i = 0; i < MLDSA_N / 2; ++i)
-  __loop__(
-    invariant(i <= MLDSA_N/2)
-    decreases(MLDSA_N / 2 - i))
-  {
-    r[i] =
-        (uint8_t)((a->coeffs[2 * i + 0] | (a->coeffs[2 * i + 1] << 4)) & 0xFF);
-  }
-#endif /* MLD_CONFIG_PARAMETER_SET != 44 */
-}
 #endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
 /* To facilitate single-compilation-unit (SCU) builds, undefine all macros. */
@@ -936,6 +906,5 @@ void mld_polyw1_pack(uint8_t r[MLDSA_POLYW1_PACKEDBYTES], const mld_poly *a)
 #undef mld_poly_decompose_c
 #undef mld_poly_use_hint_c
 #undef mld_polyz_unpack_c
-#undef MLD_POLY_UNIFORM_ETA_NBLOCKS
 #undef MLD_POLY_UNIFORM_ETA_NBLOCKS
 #undef MLD_POLY_UNIFORM_GAMMA1_NBLOCKS

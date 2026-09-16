@@ -40,8 +40,6 @@
 #include "parameters.h"
 #include "restr_arith.h"
 
-#define NUM_BITS_P (BITS_TO_REPRESENT(P))
-
 /* Reduction modulo P=509 as shown in:
  * Hacker's Delight, Second Edition, Chapter 10, Figure 10-4
  * Works for integers in the range [0,4294967295] i.e. all uint32_t */

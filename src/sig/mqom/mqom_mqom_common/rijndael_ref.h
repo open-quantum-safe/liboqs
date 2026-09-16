@@ -38,6 +38,13 @@
 #define rijndael256_ref_enc_x2_x2 MQOM_NAMESPACE(rijndael256_ref_enc_x2_x2)
 #define rijndael256_ref_enc_x4_x4 MQOM_NAMESPACE(rijndael256_ref_enc_x4_x4)
 #define rijndael256_ref_enc_x8_x8 MQOM_NAMESPACE(rijndael256_ref_enc_x8_x8)
+/**/
+#define aes128_ref_setkey_enc_ecb MQOM_NAMESPACE(aes128_ref_setkey_enc_ecb)
+#define aes256_ref_setkey_enc_ecb MQOM_NAMESPACE(aes256_ref_setkey_enc_ecb)
+#define rijndael256_ref_setkey_enc_ecb MQOM_NAMESPACE(rijndael256_ref_setkey_enc_ecb)
+#define aes128_ref_enc_ecb MQOM_NAMESPACE(aes128_ref_enc_ecb)
+#define aes256_ref_enc_ecb MQOM_NAMESPACE(aes256_ref_enc_ecb)
+#define rijndael256_ref_enc_ecb MQOM_NAMESPACE(rijndael256_ref_enc_ecb)
 
 /* The general Rijndael core context structure */
 typedef struct {
@@ -72,6 +79,10 @@ typedef struct {
 MAKE_GENERIC_CTX_XX(aes128, ref)
 MAKE_GENERIC_CTX_XX(aes256, ref)
 MAKE_GENERIC_CTX_XX(rijndael256, ref)
+/* ECB contexts */
+MAKE_GENERIC_CTX_ECB(aes128, ref)
+MAKE_GENERIC_CTX_ECB(aes256, ref)
+MAKE_GENERIC_CTX_ECB(rijndael256, ref)
 
 /* ==== Public API ==== */
 int aes128_ref_setkey_enc(rijndael_ref_ctx_aes128 *ctx, const uint8_t key[16]);
@@ -117,5 +128,9 @@ int rijndael256_ref_enc_x8(const rijndael_ref_ctx_rijndael256 *ctx1, const rijnd
 MAKE_GENERIC_FUNCS_XX_DECL(aes128, ref, 16, 16)
 MAKE_GENERIC_FUNCS_XX_DECL(aes256, ref, 32, 16)
 MAKE_GENERIC_FUNCS_XX_DECL(rijndael256, ref, 32, 32)
+
+MAKE_GENERIC_FUNCS_ECB_DECL(aes128, ref, 16, 16)
+MAKE_GENERIC_FUNCS_ECB_DECL(aes256, ref, 32, 16)
+MAKE_GENERIC_FUNCS_ECB_DECL(rijndael256, ref, 32, 32)
 
 #endif /* __RIJNDAEL_REF_H__ */

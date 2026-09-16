@@ -43,9 +43,11 @@ int sample_solution(const mayo_params_t *p, unsigned char *A,
     #ifdef MAYO_VARIANT
     (void) p;
     #endif
+#if !(defined(MAYO_AVX) || defined(MAYO_NEON))
     unsigned char finished;
     int col_upper_bound;
     unsigned char correct_column;
+#endif
 
     // x <- r
     for (int i = 0; i < k * o; i++) {
@@ -57,7 +59,11 @@ int sample_solution(const mayo_params_t *p, unsigned char *A,
     for (int i = 0; i < m; i++) {
         A[k * o + i * (k * o + 1)] = 0; // clear last col of A
     }
+#if defined(MAYO_AVX) || defined(MAYO_NEON)
+    EF_mat_vec_mul(A, r, Ar);
+#else
     mat_mul(A, r, Ar, k * o + 1, m, 1);
+#endif
 
     // move y - Ar to last column of matrix A
     for (int i = 0; i < m; i++) {
@@ -85,6 +91,9 @@ int sample_solution(const mayo_params_t *p, unsigned char *A,
     // the index of the first nonzero entry in each row is secret, which makes
     // things less efficient
 
+#if defined(MAYO_AVX) || defined(MAYO_NEON)
+    EF_backsub(A, x);
+#else
     for (int row = m - 1; row >= 0; row--) {
         finished = 0;
         col_upper_bound = MAYO_MIN(row + (32/(m-row)), k*o);
@@ -120,6 +129,7 @@ int sample_solution(const mayo_params_t *p, unsigned char *A,
             finished = finished | correct_column;
         }
     }
+#endif
     return 1;
 }
 

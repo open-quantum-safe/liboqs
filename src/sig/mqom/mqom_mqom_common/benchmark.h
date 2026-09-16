@@ -1,7 +1,7 @@
 #ifndef __BENCHMARK_H__
 #define __BENCHMARK_H__
 
-#define NUMBER_OF_BENCHES 19
+#define NUMBER_OF_BENCHES 21
 
 // Signing
 #define BS_BLC_COMMIT 0
@@ -26,11 +26,15 @@
 // Currently no detailed benchmark is performed on the
 //   verification algorithm
 
-// Others
-#define B_PIN_A 15
-#define B_PIN_B 16
-#define B_PIN_C 17
-#define B_PIN_D 18
+// Sign overhead (Fiat-Shamir hash chain, not covered by BLC/PIOP probes)
+#define BS_SIGN_HASH_MSG   15   // Hash_3: message hash before BLC.Commit
+#define BS_SIGN_HASH_FS    16   // Hash_1+2+4: alpha serialization + Fiat-Shamir after PIOP
+
+// User wildcard probes (no fixed semantics, available for ad-hoc instrumentation)
+#define B_PIN_A 17
+#define B_PIN_B 18
+#define B_PIN_C 19
+#define B_PIN_D 20
 
 #ifndef BENCHMARK
 #define __BENCHMARK_START__(label) {}

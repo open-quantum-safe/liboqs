@@ -50,6 +50,66 @@ static inline __m256i gf16v_mul( __m256i a, uint8_t b ) {
     return linear_transform_8x8_256b( multab_l, multab_h, a, _mm256_set1_epi8(0xf) );
 }
 
+// GF(16) mul-by-{1,2,4,8} matrices in vgf2p8affineqb encoding
+static const uint64_t mayo_gf16_gfni_base[4] = {
+    0x0102040810204080ULL, 0x0809020480902040ULL,
+    0x040c090240c09020ULL, 0x02060c092060c090ULL
+};
+
+// matrix for mul-by-a, composed from the base matrices (constant time)
+static inline uint64_t mayo_gfni_tab(unsigned char a) {
+    return (mayo_gf16_gfni_base[0] & (uint64_t) - (int64_t) (a & 1))
+         ^ (mayo_gf16_gfni_base[1] & (uint64_t) - (int64_t) ((a >> 1) & 1))
+         ^ (mayo_gf16_gfni_base[2] & (uint64_t) - (int64_t) ((a >> 2) & 1))
+         ^ (mayo_gf16_gfni_base[3] & (uint64_t) - (int64_t) ((a >> 3) & 1));
+}
+
+
+#ifdef MAYO_GFNI
+static const uint64_t MAYO_GF16_TAB[16] = {
+    0x0000000000000000ULL, 0x0102040810204080ULL,
+    0x0809020480902040ULL, 0x090b060c90b060c0ULL,
+    0x040c090240c09020ULL, 0x050e0d0a50e0d0a0ULL,
+    0x0c050b06c050b060ULL, 0x0d070f0ed070f0e0ULL,
+    0x02060c092060c090ULL, 0x0304080130408010ULL,
+    0x0a0f0e0da0f0e0d0ULL, 0x0b0d0a05b0d0a050ULL,
+    0x060a050b60a050b0ULL, 0x0708010370801030ULL,
+    0x0e03070fe03070f0ULL, 0x0f010307f0103070ULL,
+};
+ 
+static inline void mayo_gfni_tab32(__m256i a, uint64_t *out) {
+    const __m512i T0 = _mm512_loadu_si512((const __m512i *) MAYO_GF16_TAB);
+    const __m512i T1 = _mm512_loadu_si512((const __m512i *) (MAYO_GF16_TAB + 8));
+ 
+    __m128i lo = _mm256_castsi256_si128(a);
+    __m128i hi = _mm256_extracti128_si256(a, 1);
+ 
+    // Zero-extend each element byte to a qword index.  vpermt2q reads only the
+    // low 4 bits of each index, so any high-nibble junk in the input is ignored.
+    __m512i i0 = _mm512_cvtepu8_epi64(lo);
+    __m512i i1 = _mm512_cvtepu8_epi64(_mm_srli_si128(lo, 8));
+    __m512i i2 = _mm512_cvtepu8_epi64(hi);
+    __m512i i3 = _mm512_cvtepu8_epi64(_mm_srli_si128(hi, 8));
+ 
+    _mm512_storeu_si512((__m512i *) (out +  0), _mm512_permutex2var_epi64(T0, i0, T1));
+    _mm512_storeu_si512((__m512i *) (out +  8), _mm512_permutex2var_epi64(T0, i1, T1));
+    _mm512_storeu_si512((__m512i *) (out + 16), _mm512_permutex2var_epi64(T0, i2, T1));
+    _mm512_storeu_si512((__m512i *) (out + 24), _mm512_permutex2var_epi64(T0, i3, T1));
+}
+
+// out[i] = mayo_gfni_tab(in[i]), i < n. The batch bound is taken up front: written as
+// "i + 32 <= n" the tail leaves i unbounded and gcc warns about the indexing.
+static inline void mayo_gfni_tabs(const unsigned char *in, uint64_t *out, size_t n) {
+    const size_t batched = n & ~(size_t) 31;
+    for (size_t i = 0; i < batched; i += 32) {
+        mayo_gfni_tab32(_mm256_loadu_si256((const __m256i *) (in + i)), out + i);
+    }
+    for (size_t i = batched; i < n; i++) {
+        out[i] = mayo_gfni_tab(in[i]);
+    }
+}
+#endif
+
 #define O_AVX_ROUND_UP_ ((O_MAX + 1)/2*2)
 
 static 
@@ -84,6 +144,27 @@ inline void mayo_V_multabs(const unsigned char *V, __m256i *V_multabs){
 #if K_MAX % 2 == 1
         V_multabs[K_OVER_2*c + r/2] = tbl32_gf16_multab2(V[V_MAX*r + c]);
 #endif
+    }
+}
+
+// Ox = sum_c x[c] * O[:,c]; OT is O transposed (V_MAX padded bytes per column).
+// Shuffle-based, avoiding the scalar mul_f blocker.
+#define MAYO_OT_STRIDE (((V_MAX + 31) / 32) * 32)
+
+static
+inline void mayo_Ot_rows_times_x(const unsigned char *OT, const unsigned char *x, unsigned char *Ox) {
+    __m256i acc[MAYO_OT_STRIDE / 32];
+    for (size_t j = 0; j < MAYO_OT_STRIDE / 32; j++) {
+        acc[j] = _mm256_setzero_si256();
+    }
+    for (size_t c = 0; c < O_MAX; c++) {
+        __m256i tab = tbl32_gf16_multab2(x[c]);
+        for (size_t j = 0; j < MAYO_OT_STRIDE / 32; j++) {
+            acc[j] ^= _mm256_shuffle_epi8(tab, _mm256_loadu_si256((const __m256i *)(OT + c * MAYO_OT_STRIDE + 32 * j)));
+        }
+    }
+    for (size_t j = 0; j < MAYO_OT_STRIDE / 32; j++) {
+        _mm256_storeu_si256((__m256i *)(Ox + 32 * j), acc[j]);
     }
 }
 

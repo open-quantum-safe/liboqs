@@ -157,6 +157,12 @@ extern "C" {
 /**
  * Represents return values from functions.
  *
+ * Functions declared to return OQS_STATUS must return one of the values below.
+ * Algorithm implementations imported into liboqs must return OQS_SUCCESS on
+ * success and OQS_ERROR for generic failures. Implementations with their own
+ * status codes must translate them in the upstream integration layer before
+ * exposing the function to liboqs.
+ *
  * Callers should compare with the symbol rather than the individual value.
  * For example,
  *

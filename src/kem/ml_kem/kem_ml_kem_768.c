@@ -34,26 +34,26 @@ OQS_KEM *OQS_KEM_ml_kem_768_new(void) {
 	return kem;
 }
 
-extern int PQCP_MLKEM_NATIVE_MLKEM768_C_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_C_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_C_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand_oqs(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_enc_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_C_dec_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_ml_kem_768_x86_64)
-extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand_oqs(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 #if defined(OQS_ENABLE_KEM_ml_kem_768_aarch64)
-extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
-extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand_oqs(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
+extern int PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 #if defined(OQS_USE_CUPQC)
@@ -78,24 +78,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair_derand(uint8_t *public_key, uint8_
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand(public_key, secret_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_derand_oqs(public_key, secret_key, seed);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand_oqs(public_key, secret_key, seed);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand(public_key, secret_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_derand_oqs(public_key, secret_key, seed);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand_oqs(public_key, secret_key, seed);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand(public_key, secret_key, seed);
+	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_derand_oqs(public_key, secret_key, seed);
 #endif
 }
 
@@ -108,24 +108,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_keypair(uint8_t *public_key, uint8_t *secr
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_keypair_oqs(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_oqs(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_keypair_oqs(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_oqs(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair(public_key, secret_key);
+	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_keypair_oqs(public_key, secret_key);
 #endif
 }
 
@@ -134,26 +134,26 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_encaps_derand(uint8_t *ciphertext, uint8_t
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_derand_oqs(ciphertext, shared_secret, public_key, seed);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand_oqs(ciphertext, shared_secret, public_key, seed);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_derand_oqs(ciphertext, shared_secret, public_key, seed);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand(ciphertext, shared_secret, public_key, seed);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand_oqs(ciphertext, shared_secret, public_key, seed);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_768_icicle_cuda)
 	return (OQS_STATUS) icicle_ml_kem_768_enc_derand(ciphertext, shared_secret, public_key, seed);
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand(ciphertext, shared_secret, public_key, seed);
+	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_derand_oqs(ciphertext, shared_secret, public_key, seed);
 #endif
 }
 
@@ -166,24 +166,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_encaps(uint8_t *ciphertext, uint8_t *share
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_enc_oqs(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_oqs(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_enc_oqs(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_oqs(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_enc_oqs(ciphertext, shared_secret, public_key);
 #endif
 }
 
@@ -196,24 +196,24 @@ OQS_API OQS_STATUS OQS_KEM_ml_kem_768_decaps(uint8_t *shared_secret, const uint8
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_X86_64_dec_oqs(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec_oqs(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_ml_kem_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_AARCH64_dec_oqs(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec_oqs(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS) PQCP_MLKEM_NATIVE_MLKEM768_C_dec_oqs(shared_secret, ciphertext, secret_key);
 #endif
 }
 

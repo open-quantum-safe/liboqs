@@ -190,6 +190,10 @@ WEAK int aes128_ct64_setkey_enc_x8(rijndael_ct64_ctx_aes128_x8 *ctx, const uint8
 	return ret;
 }
 
+WEAK int aes128_ct64_setkey_enc_ecb(rijndael_ct64_ctx_aes128_ecb *ctx, const uint8_t key[16]) {
+	return aes128_ct64_setkey_enc_x2(ctx, key, key);
+}
+
 #else /* !RIJNDAEL_OPT_ARMV7M */
 WEAK int aes128_ct64_setkey_enc(rijndael_ct64_ctx_aes128 *ctx, const uint8_t key[16]) {
 	int ret = -1;
@@ -225,6 +229,9 @@ WEAK int aes128_ct64_setkey_enc_x2(rijndael_ct64_ctx_aes128_x2 *ctx, const uint8
 
 	ret = 0;
 err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(ctx_, sizeof(ctx_));
 	return ret;
 }
 
@@ -255,6 +262,9 @@ WEAK int aes128_ct64_setkey_enc_x4(rijndael_ct64_ctx_aes128_x4 *ctx, const uint8
 
 	ret = 0;
 err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(ctx_, sizeof(ctx_));
 	return ret;
 }
 
@@ -265,6 +275,34 @@ WEAK int aes128_ct64_setkey_enc_x8(rijndael_ct64_ctx_aes128_x8 *ctx, const uint8
 	ret  = aes128_ct64_setkey_enc_x4(&ctx->ctx1, key1, key2, key3, key4);
 	ret |= aes128_ct64_setkey_enc_x4(&ctx->ctx2, key5, key6, key7, key8);
 
+	return ret;
+}
+
+WEAK int aes128_ct64_setkey_enc_ecb(rijndael_ct64_ctx_aes128_ecb *ctx, const uint8_t key[16]) {
+	int ret = -1;
+	rijndael_ct64_ctx_aes128 ctx_;
+	rijndael_ct64_ctx_aes128 *cctx = &ctx_;
+	uint64_t *keys;
+
+	if (ctx == NULL) {
+		goto err;
+	}
+
+	BR_AES_CT64_KEYSCHED(cctx, key, AES128, CT_KEYSCHED);
+
+	keys = &ctx->interleaved_rkeys[0];
+	ctx->rtype = cctx->rtype;
+	ctx->Nr = cctx->Nr;
+	ctx->Nk = cctx->Nk;
+	ctx->Nb = cctx->Nb;
+
+	BITSLICE_KEYS(cctx, cctx, cctx, cctx, keys);
+
+	ret = 0;
+err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(&ctx_, sizeof(ctx_));
 	return ret;
 }
 #endif /* !RIJNDAEL_OPT_ARMV7M */
@@ -304,6 +342,9 @@ WEAK int aes256_ct64_setkey_enc_x2(rijndael_ct64_ctx_aes256_x2 *ctx, const uint8
 
 	ret = 0;
 err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(ctx_, sizeof(ctx_));
 	return ret;
 }
 
@@ -334,6 +375,9 @@ WEAK int aes256_ct64_setkey_enc_x4(rijndael_ct64_ctx_aes256_x4 *ctx, const uint8
 
 	ret = 0;
 err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(ctx_, sizeof(ctx_));
 	return ret;
 }
 
@@ -344,6 +388,34 @@ WEAK int aes256_ct64_setkey_enc_x8(rijndael_ct64_ctx_aes256_x8 *ctx, const uint8
 	ret  = aes256_ct64_setkey_enc_x4(&ctx->ctx1, key1, key2, key3, key4);
 	ret |= aes256_ct64_setkey_enc_x4(&ctx->ctx2, key5, key6, key7, key8);
 
+	return ret;
+}
+
+WEAK int aes256_ct64_setkey_enc_ecb(rijndael_ct64_ctx_aes256_ecb *ctx, const uint8_t key[32]) {
+	int ret = -1;
+	rijndael_ct64_ctx_aes256 ctx_;
+	rijndael_ct64_ctx_aes256 *cctx = &ctx_;
+	uint64_t *keys;
+
+	if (ctx == NULL) {
+		goto err;
+	}
+
+	BR_AES_CT64_KEYSCHED(cctx, key, AES256, CT_KEYSCHED);
+
+	keys = &ctx->interleaved_rkeys[0];
+	ctx->rtype = cctx->rtype;
+	ctx->Nr = cctx->Nr;
+	ctx->Nk = cctx->Nk;
+	ctx->Nb = cctx->Nb;
+
+	BITSLICE_KEYS(cctx, cctx, cctx, cctx, keys);
+
+	ret = 0;
+err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(&ctx_, sizeof(ctx_));
 	return ret;
 }
 
@@ -382,6 +454,9 @@ WEAK int rijndael256_ct64_setkey_enc_x2(rijndael_ct64_ctx_rijndael256_x2 *ctx, c
 
 	ret = 0;
 err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(ctx_, sizeof(ctx_));
 	return ret;
 }
 
@@ -406,6 +481,34 @@ WEAK int rijndael256_ct64_setkey_enc_x8(rijndael_ct64_ctx_rijndael256_x8 *ctx, c
 	return ret;
 }
 
+WEAK int rijndael256_ct64_setkey_enc_ecb(rijndael_ct64_ctx_rijndael256_ecb *ctx, const uint8_t key[32]) {
+	int ret = -1;
+	rijndael_ct64_ctx_rijndael256 ctx_;
+	rijndael_ct64_ctx_rijndael256 *cctx = &ctx_;
+	rijndael_ct64_ctx_rijndael256 *dummy_ctx = NULL;
+	uint64_t *keys;
+
+	if (ctx == NULL) {
+		goto err;
+	}
+
+	BR_AES_CT64_KEYSCHED(cctx, key, RIJNDAEL_256_256, CT_KEYSCHED);
+
+	keys = &ctx->interleaved_rkeys[0];
+	ctx->rtype = cctx->rtype;
+	ctx->Nr = cctx->Nr;
+	ctx->Nk = cctx->Nk;
+	ctx->Nb = cctx->Nb;
+
+	BITSLICE_KEYS(cctx, cctx, dummy_ctx, dummy_ctx, keys);
+
+	ret = 0;
+err:
+	/* ctx_ held a flat (non-bitsliced) copy of the round keys before
+	 * BITSLICE_KEYS repacked them into ctx->interleaved_rkeys; wipe it. */
+	rijndael_cleanse(&ctx_, sizeof(ctx_));
+	return ret;
+}
 
 // === AES-128 enc
 #if defined(RIJNDAEL_OPT_ARMV7M)
@@ -486,6 +589,27 @@ WEAK int aes128_ct64_enc_x4_x4(const rijndael_ct64_ctx_aes128_x4 *ctx, const uin
 	int ret = 0;
 	ret |= aes128_ct64_enc_x2_x2(&ctx->ctx1, plainText1, plainText2, cipherText1, cipherText2);
 	ret |= aes128_ct64_enc_x2_x2(&ctx->ctx2, plainText3, plainText4, cipherText3, cipherText4);
+	return ret;
+}
+
+WEAK int aes128_ct64_enc_ecb(const rijndael_ct64_ctx_aes128_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	unsigned int i;
+	unsigned int bsize = 16;
+
+	/* The ECB context contains 2 blocks */
+	i = 0;
+	while(i < nblocks){
+		if(((nblocks - i) & 1) == 0){
+			ret |= aes128_ct64_enc_x2_x2(ctx, &in[bsize * i], &in[bsize * (i+1)], &out[bsize * i], &out[bsize * (i+1)]);
+			i += 2;
+		}
+		else{
+			ret |= aes128_ct64_enc_x2_x2(ctx, &in[bsize * i], &in[bsize * i], &out[bsize * i], &out[bsize * i]);
+			i++;
+		}
+	}
+
 	return ret;
 }
 
@@ -583,6 +707,49 @@ WEAK int aes128_ct64_enc_x4_x4(const rijndael_ct64_ctx_aes128_x4 *ctx, const uin
 err:
 	return ret;
 }
+
+WEAK int aes128_ct64_enc_ecb(const rijndael_ct64_ctx_aes128_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	unsigned int i;
+	unsigned int bsize = 16;
+
+	/* The ECB context contains 4 blocks */
+	i = 0;
+	while(i < nblocks){
+		if(((nblocks - i) & 3) == 0){
+			ret |= aes128_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * (i+1)], &in[bsize * (i+2)], &in[bsize * (i+3)], &out[bsize * i], &out[bsize * (i+1)], &out[bsize * (i+2)], &out[bsize * (i+3)]);
+			i += 4;
+		}
+		else{
+			/* Only 1, 2 or 3 blocks can remain here: the caller's "& 3 == 0"
+			 * branch above already consumes any full multiple of 4. */
+			unsigned int remain = (nblocks - i) & 3;
+			switch(remain){
+				case 1:{
+					ret |= aes128_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * i], &in[bsize * i], &in[bsize * i], &out[bsize * i], &out[bsize * i], &out[bsize * i], &out[bsize * i]);
+					i += remain;
+					break;
+				}
+				case 2:{
+					ret |= aes128_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * (i+1)], &in[bsize * i], &in[bsize * (i+1)], &out[bsize * i], &out[bsize * (i+1)], &out[bsize * i], &out[bsize * (i+1)]);
+					i += remain;
+					break;
+				}
+				case 3:{
+					ret |= aes128_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * (i+1)], &in[bsize * (i+2)], &in[bsize * i], &out[bsize * i], &out[bsize * (i+1)], &out[bsize * (i+2)], &out[bsize * i]);
+					i += remain;
+					break;
+				}
+				default:{
+					break;
+				}
+			}
+		}
+	}
+
+	return ret;
+}
+
 #endif /* !RIJNDAEL_OPT_ARMV7M */
 
 WEAK int aes128_ct64_enc_x8(const rijndael_ct64_ctx_aes128 *ctx1, const rijndael_ct64_ctx_aes128 *ctx2, const rijndael_ct64_ctx_aes128 *ctx3, const rijndael_ct64_ctx_aes128 *ctx4,
@@ -727,6 +894,48 @@ WEAK int aes256_ct64_enc_x8_x8(const rijndael_ct64_ctx_aes256_x8 *ctx,
 	return ret;
 }
 
+WEAK int aes256_ct64_enc_ecb(const rijndael_ct64_ctx_aes256_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	unsigned int i;
+	unsigned int bsize = 16;
+
+	/* The ECB context contains 4 blocks */
+	i = 0;
+	while(i < nblocks){
+		if(((nblocks - i) & 3) == 0){
+			ret |= aes256_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * (i+1)], &in[bsize * (i+2)], &in[bsize * (i+3)], &out[bsize * i], &out[bsize * (i+1)], &out[bsize * (i+2)], &out[bsize * (i+3)]);
+			i += 4;
+		}
+		else{
+			/* Only 1, 2 or 3 blocks can remain here: the caller's "& 3 == 0"
+			 * branch above already consumes any full multiple of 4. */
+			unsigned int remain = (nblocks - i) & 3;
+			switch(remain){
+				case 1:{
+					ret |= aes256_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * i], &in[bsize * i], &in[bsize * i], &out[bsize * i], &out[bsize * i], &out[bsize * i], &out[bsize * i]);
+					i += remain;
+					break;
+				}
+				case 2:{
+					ret |= aes256_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * (i+1)], &in[bsize * i], &in[bsize * (i+1)], &out[bsize * i], &out[bsize * (i+1)], &out[bsize * i], &out[bsize * (i+1)]);
+					i += remain;
+					break;
+				}
+				case 3:{
+					ret |= aes256_ct64_enc_x4_x4(ctx, &in[bsize * i], &in[bsize * (i+1)], &in[bsize * (i+2)], &in[bsize * i], &out[bsize * i], &out[bsize * (i+1)], &out[bsize * (i+2)], &out[bsize * i]);
+					i += remain;
+					break;
+				}
+				default:{
+					break;
+				}
+			}
+		}
+	}
+
+	return ret;
+}
+
 // === Rijndael-256 enc
 WEAK int rijndael256_ct64_enc(const rijndael_ct64_ctx_rijndael256 *ctx, const uint8_t data_in[32], uint8_t data_out[32]) {
 	int ret = -1;
@@ -846,8 +1055,29 @@ WEAK int rijndael256_ct64_enc_x8_x8(const rijndael_ct64_ctx_rijndael256_x8 *ctx,
 	return ret;
 }
 
+WEAK int rijndael256_ct64_enc_ecb(const rijndael_ct64_ctx_rijndael256_ecb *ctx, uint32_t nblocks, const uint8_t* in, uint8_t* out) {
+	int ret = 0;
+	unsigned int i;
+	unsigned int bsize = 32;
 
-#else /* */
+	/* The ECB context contains 2 blocks */
+	i = 0;
+	while(i < nblocks){
+		if(((nblocks - i) & 1) == 0){
+			ret |= rijndael256_ct64_enc_x2_x2(ctx, &in[bsize * i], &in[bsize * (i+1)], &out[bsize * i], &out[bsize * (i+1)]);
+			i += 2;
+		}
+		else{
+			ret |= rijndael256_ct64_enc_x2_x2(ctx, &in[bsize * i], &in[bsize * i], &out[bsize * i], &out[bsize * i]);
+			i++;
+		}
+	}
+
+	return ret;
+}
+
+
+#else /* !RIJNDAEL_BITSLICE */
 /*
  * Dummy definition to avoid the empty translation unit ISO C warning
  */

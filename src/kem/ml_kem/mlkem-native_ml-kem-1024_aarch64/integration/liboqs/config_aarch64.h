@@ -84,16 +84,16 @@
 /******************************************************************************
  * Name:        MLK_CONFIG_USE_NATIVE_BACKEND_ARITH
  *
- * Description: Determines whether an native arithmetic backend should be used.
+ * Description: Determines whether a native arithmetic backend should be used.
  *
  *              The arithmetic backend covers performance critical functions
  *              such as the number-theoretic transform (NTT).
  *
  *              If this option is unset, the C backend will be used.
  *
- *              If this option is set, the arithmetic backend to be use is
+ *              If this option is set, the arithmetic backend to be used is
  *              determined by MLK_CONFIG_ARITH_BACKEND_FILE: If the latter is
- *              unset, the default backend for your the target architecture
+ *              unset, the default backend for your target architecture
  *              will be used. If set, it must be the name of a backend metadata
  *              file.
  *
@@ -129,7 +129,7 @@
  *              with mlkem-native.
  *
  *              If set, it must be the name of a file serving as the
- *              replacement for mlkem/fips202/fips202.h, and exposing
+ *              replacement for mlkem/src/fips202/fips202.h, and exposing
  *              the same API (see FIPS202.md).
  *
  *****************************************************************************/
@@ -146,7 +146,7 @@
  *              with mlkem-native.
  *
  *              If set, it must be the name of a file serving as the
- *              replacement for mlkem/fips202/fips202x4.h, and exposing
+ *              replacement for mlkem/src/fips202/fips202x4.h, and exposing
  *              the same API (see FIPS202.md).
  *
  *****************************************************************************/
@@ -177,7 +177,7 @@
  *              on the stack.
  *
  *              If you need bullet-proof zeroization of the stack, you need to
- *              consider additional measures instead of of what this feature
+ *              consider additional measures instead of what this feature
  *              provides. In this case, you can set mlk_zeroize to a no-op.
  *
  *****************************************************************************/
@@ -196,7 +196,7 @@
  * Name:        MLK_CONFIG_CUSTOM_RANDOMBYTES
  *
  * Description: mlkem-native does not provide a secure randombytes
- *              implementation. Such an implementation has to provided by the
+ *              implementation. Such an implementation has to be provided by the
  *              consumer.
  *
  *              If this option is not set, mlkem-native expects a function
@@ -250,8 +250,8 @@ static MLK_INLINE int mlk_randombytes(uint8_t *ptr, size_t len)
  *              generated keypair before it can be exported.
  *
  *              Set this option if such a check should be implemented.
- *              In this case, crypto_kem_keypair_derand and crypto_kem_keypair
- *              will return a non-zero error code if the PCT failed.
+ *              In this case, keypair_derand and keypair will return
+ *              MLK_ERR_PCT_FAIL if the PCT failed.
  *
  *              NOTE: This feature will drastically lower the performance of
  *              key generation.

@@ -2,6 +2,16 @@
  * Copyright (c) The mldsa-native project authors
  * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
  */
+
+/* References
+ * ==========
+ *
+ * - [FIPS204]
+ *   FIPS 204 Module-Lattice-Based Digital Signature Standard
+ *   National Institute of Standards and Technology
+ *   https://csrc.nist.gov/pubs/fips/204/final
+ */
+
 #ifndef MLD_PACKING_H
 #define MLD_PACKING_H
 
@@ -12,6 +22,9 @@
 #define mld_pack_sk_s1 MLD_NAMESPACE_KL(pack_sk_s1)
 /**
  * Bit-pack the s1 component into the secret key.
+ *
+ * @spec{Partially implements @[FIPS204, Algorithm 24, skEncode] (s1
+ * component).}
  *
  * @param[out] sk Output byte array.
  * @param[in]  s1 Pointer to vector s1.
@@ -33,6 +46,9 @@ __contract__(
  *
  * s1 must already be packed via mld_pack_sk_s1, and t0 via
  * mld_compute_pack_t0_t1.
+ *
+ * @spec{Partially implements @[FIPS204, Algorithm 24, skEncode] (rho, key, tr,
+ * s2 components).}
  *
  * @param[out] sk  Output byte array.
  * @param[in]  rho Byte array containing rho.
@@ -64,6 +80,9 @@ __contract__(
 /**
  * Bit-pack challenge c into sig = (c, z, h).
  *
+ * @spec{Partially implements @[FIPS204, Algorithm 26, sigEncode] (c
+ * component).}
+ *
  * @param[out] sig Output byte array.
  * @param[in]  c   Pointer to challenge hash.
  */
@@ -79,6 +98,14 @@ __contract__(
 #define mld_pack_sig_h MLD_NAMESPACE_KL(pack_sig_h)
 /**
  * Compute hints from (w0, w1) and pack them into the hint section of sig.
+ *
+ * @spec{Combines the hint computation @[FIPS204, Algorithm 39, MakeHint] with
+ * the packing @[FIPS204, Algorithm 20, HintBitPack] (the h component of
+ * @[FIPS204, Algorithm 26, sigEncode]): it computes the hint vector h from
+ * (w0, w1) and packs it, rather than receiving a ready-made h as HintBitPack
+ * does. The hints are computed via mld_make_hint (rounding.h), a specialized
+ * MakeHint valid only for the values arising during signing; see the block
+ * comment in mld_attempt_signature_generation (sign.c).}
  *
  * @param[in,out] sig Byte array containing signature.
  * @param[in]     w0  Pointer to low part of input vector.
@@ -98,9 +125,7 @@ __contract__(
   requires(memory_no_alias(sig, MLDSA_CRYPTO_BYTES))
   requires(memory_no_alias(w0, sizeof(mld_polyveck)))
   requires(memory_no_alias(w1, sizeof(mld_polyveck)))
-  assigns(memory_slice(
-    sig + MLDSA_CTILDEBYTES + MLDSA_L * MLDSA_POLYZ_PACKEDBYTES,
-    MLDSA_POLYVECH_PACKEDBYTES))
+  assigns(memory_slice(sig + MLDSA_SIG_H_OFFSET, MLDSA_POLYVECH_PACKEDBYTES))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL)
 );
 
@@ -110,6 +135,9 @@ __contract__(
  *
  * The c and h components are packed separately using mld_pack_sig_c and
  * mld_pack_sig_h.
+ *
+ * @spec{Partially implements @[FIPS204, Algorithm 26, sigEncode] (one
+ * polynomial of the z component).}
  *
  * @param[in,out] sig Output byte array.
  * @param[in]     zi  Pointer to a single polynomial in z.
@@ -132,6 +160,9 @@ __contract__(
 /**
  * Unpack a single polynomial of the t1 component of a public key
  * pk = (rho, t1).
+ *
+ * @spec{Partially implements @[FIPS204, Algorithm 23, pkDecode] (one polynomial
+ * of t1).}
  *
  * @param[out] t1 Pointer to output polynomial t1[i].
  * @param[in]  pk Byte array containing bit-packed pk.
@@ -156,6 +187,8 @@ __contract__(
  * Unpack secret key sk = (rho, tr, key, t0, s1, s2).
  *
  * NOTE: In REDUCE_RAM mode, s1/s2/t0 borrow from sk rather than copying.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 25, skDecode].}
  *
  * @param[out] rho Output byte array for rho.
  * @param[out] tr  Output byte array for tr.
@@ -193,11 +226,9 @@ __contract__(
       array_abs_bound(s2->vec.vec[k2].coeffs, 0, MLDSA_N, MLD_NTT_BOUND)))
   )
   MLD_IF_REDUCE_RAM(
-    ensures(s1->packed == old(sk) + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES)
-    ensures(s2->packed == old(sk) + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES +
-                          MLDSA_L * MLDSA_POLYETA_PACKEDBYTES)
-    ensures(t0->packed == old(sk) + 2 * MLDSA_SEEDBYTES + MLDSA_TRBYTES +
-                          (MLDSA_L + MLDSA_K) * MLDSA_POLYETA_PACKEDBYTES)
+    ensures(s1->packed == old(sk) + MLDSA_SK_S1_OFFSET)
+    ensures(s2->packed == old(sk) + MLDSA_SK_S2_OFFSET)
+    ensures(t0->packed == old(sk) + MLDSA_SK_T0_OFFSET)
   )
 );
 #endif /* !MLD_CONFIG_NO_SIGN_API */
@@ -218,6 +249,9 @@ __contract__(
  * Callers must invoke this for every i in [0, 1, .., MLDSA_K - 1]; if any
  * call returns MLD_ERR_FAIL the encoding is malformed and the signature must
  * be rejected.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 21, HintBitUnpack] (one row; part of
+ * @[FIPS204, Algorithm 27, sigDecode]).}
  *
  * @param[out] h   Pointer to output polynomial h[i].
  * @param[in]  sig Signature buffer.

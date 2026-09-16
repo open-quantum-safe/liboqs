@@ -23,6 +23,14 @@
 
 
 //
+// memcpy for the unaligned accesses in the u32/u64 blas fallbacks.
+//
+#ifndef PQOV_MEMCPY
+#define PQOV_MEMCPY memcpy
+#endif
+
+
+//
 // The following macros choose optimizations for basic linear algebra functions.
 // It is currently defined from the makefile
 //

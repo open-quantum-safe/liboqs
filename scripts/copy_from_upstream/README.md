@@ -92,6 +92,19 @@ implementations:
         required_flags: [avx2]
 ```
 
+### Return Value Contract
+
+The generated KEM and signature dispatchers cast implementation return values
+to `OQS_STATUS`. Every implementation entry point invoked by a generated
+dispatcher, whether named explicitly in `META.yml` or selected by convention,
+must therefore return a documented `OQS_STATUS` value. In particular,
+successful operations return `OQS_SUCCESS` and generic failures return
+`OQS_ERROR`. An upstream whose native API uses different status codes must
+translate them in the upstream integration layer before exposing the entry
+point to liboqs. An integration-specific wrapper referenced by `META.yml` is one
+way to do so. Native status values not defined by `OQS_STATUS` must not reach a
+generated dispatcher.
+
 ### Common Dependencies
 
 Shared code used by multiple implementations is declared in a commons YAML file (referenced by `common_meta_path` in the upstream entry):

@@ -7,10 +7,22 @@
 #define _BLAS_U32_H_
 
 #include "gf16.h"
+#include "config.h"
 
 #include <string.h>
 #include <stdint.h>
 
+
+// Unaligned 32-bit access, for the paths the aligned kernels below cannot take.
+static inline uint32_t _load_u32(const uint8_t *a) {
+    uint32_t r;
+    PQOV_MEMCPY(&r, a, 4);
+    return r;
+}
+
+static inline void _store_u32(uint8_t *a, uint32_t r) {
+    PQOV_MEMCPY(a, &r, 4);
+}
 
 
 static inline void _gf256v_add_u32_aligned(uint8_t *accu_b, const uint8_t *a, unsigned _num_byte) {
@@ -37,6 +49,12 @@ static inline void _gf256v_add_u32(uint8_t *accu_b, const uint8_t *a, unsigned _
         return;
     }
 
+    while ( _num_byte >= 4 ) {
+        _store_u32( accu_b, _load_u32(accu_b) ^ _load_u32(a) );
+        a += 4;
+        accu_b += 4;
+        _num_byte -= 4;
+    }
     while ( _num_byte ) {
         _num_byte--;
         accu_b[_num_byte] ^= a[_num_byte];
@@ -75,7 +93,14 @@ static inline void _gf256v_conditional_add_u32(uint8_t *accu_b, uint8_t conditio
         return;
     }
 
-    uint8_t pr_u8 = ((uint8_t)0) - condition;
+    uint32_t pr_u32 = ((uint32_t) 0) - ((uint32_t) condition);
+    uint8_t pr_u8 = pr_u32 & 0xff;
+    while ( _num_byte >= 4 ) {
+        _store_u32( accu_b, _load_u32(accu_b) ^ (_load_u32(a) & pr_u32) );
+        a += 4;
+        accu_b += 4;
+        _num_byte -= 4;
+    }
     while ( _num_byte ) {
         _num_byte--;
         accu_b[_num_byte] ^= a[_num_byte] & pr_u8;
@@ -134,15 +159,7 @@ static inline void _gf16v_mul_scalar_u32(uint8_t *a, uint8_t gf16_b, unsigned _n
     } t;
 
     while ( _num_byte >= 4 ) {
-        t.u8[0] = a[0];
-        t.u8[1] = a[1];
-        t.u8[2] = a[2];
-        t.u8[3] = a[3];
-        t.u32 = gf16v_mul_u32(t.u32, gf16_b);
-        a[0] = t.u8[0];
-        a[1] = t.u8[1];
-        a[2] = t.u8[2];
-        a[3] = t.u8[3];
+        _store_u32( a, gf16v_mul_u32( _load_u32(a), gf16_b ) );
         a += 4;
         _num_byte -= 4;
     }
@@ -209,15 +226,7 @@ static inline void _gf256v_mul_scalar_u32(uint8_t *a, uint8_t b, unsigned _num_b
     } t;
 
     while ( _num_byte >= 4 ) {
-        t.u8[0] = a[0];
-        t.u8[1] = a[1];
-        t.u8[2] = a[2];
-        t.u8[3] = a[3];
-        t.u32 = gf256v_mul_u32(t.u32, b);
-        a[0] = t.u8[0];
-        a[1] = t.u8[1];
-        a[2] = t.u8[2];
-        a[3] = t.u8[3];
+        _store_u32( a, gf256v_mul_u32( _load_u32(a), b ) );
         a += 4;
         _num_byte -= 4;
     }
@@ -285,15 +294,7 @@ static inline void _gf16v_madd_u32(uint8_t *accu_c, const uint8_t *a, uint8_t gf
     } t;
 
     while ( _num_byte >= 4 ) {
-        t.u8[0] = a[0];
-        t.u8[1] = a[1];
-        t.u8[2] = a[2];
-        t.u8[3] = a[3];
-        t.u32 = gf16v_mul_u32(t.u32, gf16_b);
-        accu_c[0] ^= t.u8[0];
-        accu_c[1] ^= t.u8[1];
-        accu_c[2] ^= t.u8[2];
-        accu_c[3] ^= t.u8[3];
+        _store_u32( accu_c, _load_u32(accu_c) ^ gf16v_mul_u32( _load_u32(a), gf16_b ) );
         a += 4;
         accu_c += 4;
         _num_byte -= 4;
@@ -361,15 +362,7 @@ static inline void _gf256v_madd_u32(uint8_t *accu_c, const uint8_t *a, uint8_t g
     } t;
 
     while ( _num_byte >= 4 ) {
-        t.u8[0] = a[0];
-        t.u8[1] = a[1];
-        t.u8[2] = a[2];
-        t.u8[3] = a[3];
-        t.u32 = gf256v_mul_u32(t.u32, gf256_b);
-        accu_c[0] ^= t.u8[0];
-        accu_c[1] ^= t.u8[1];
-        accu_c[2] ^= t.u8[2];
-        accu_c[3] ^= t.u8[3];
+        _store_u32( accu_c, _load_u32(accu_c) ^ gf256v_mul_u32( _load_u32(a), gf256_b ) );
         a += 4;
         accu_c += 4;
         _num_byte -= 4;

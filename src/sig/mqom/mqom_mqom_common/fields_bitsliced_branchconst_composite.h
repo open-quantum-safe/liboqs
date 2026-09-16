@@ -1,5 +1,5 @@
-#ifndef __FIELDS_BITSLICED_BRANCHCONST_H__
-#define __FIELDS_BITSLICED_BRANCHCONST_H__
+#ifndef __FIELDS_BITSLICED_BRANCHCONST_COMPOSITE_H__
+#define __FIELDS_BITSLICED_BRANCHCONST_COMPOSITE_H__
 
 #include "fields_handling.h"
 
@@ -38,11 +38,13 @@ static inline void gf256_bitslice32_vect_unpack_pre_composite(uint32_t x_bitslic
 }
 
 static inline void gf256_bitslice32_vect_pack_gf2_composite(uint8_t x, uint32_t x_bitsliced[8], uint32_t index32) {
-	x_bitsliced[0] |= (x << index32);
+	/* Cast before shifting: x is a uint8_t, so it would promote to int and
+	 * x << 31 would set the sign bit of a signed 32-bit type (UB). */
+	x_bitsliced[0] |= ((uint32_t) x << index32);
 }
 
 static inline void gf256_bitslice32_vect_pack_gf16_composite(uint8_t x, uint32_t x_bitsliced[8], uint32_t index32) {
-	uint8_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
+	uint32_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
 	x_bitsliced[0] |= ((b0 ^ b2) << index32);
 	//x_bitsliced[1] |= ((0) << index32);
 	x_bitsliced[2] |= ((b2) << index32);
@@ -107,25 +109,25 @@ do {                                                    \
 } while (0)
 
 static inline void gf256_bitslice32_mult_composite(uint32_t res[8], const uint32_t x[8], const uint32_t y[8]) {
-	/* Charge toutes les tranches en registres (évite rereads SRAM) */
+	/* Load all bit-slices into registers (avoids SRAM re-reads) */
 	const uint32_t x0 = x[0], x1 = x[1], x2 = x[2], x3 = x[3];
 	const uint32_t x4 = x[4], x5 = x[5], x6 = x[6], x7 = x[7];
 	const uint32_t y0 = y[0], y1 = y[1], y2 = y[2], y3 = y[3];
 	const uint32_t y4 = y[4], y5 = y[5], y6 = y[6], y7 = y[7];
 
-	/* Sommes xl ^ xh (en regs) */
+	/* Cross-sums xl ^ xh (in registers) */
 	const uint32_t xs0 = x0 ^ x4;
 	const uint32_t xs1 = x1 ^ x5;
 	const uint32_t xs2 = x2 ^ x6;
 	const uint32_t xs3 = x3 ^ x7;
 
-	/* Sommes yl ^ yh (en regs) */
+	/* Cross-sums yl ^ yh (in registers) */
 	const uint32_t ys0 = y0 ^ y4;
 	const uint32_t ys1 = y1 ^ y5;
 	const uint32_t ys2 = y2 ^ y6;
 	const uint32_t ys3 = y3 ^ y7;
 
-	/* Trois produits GF(16) enregs: r0 = (x0+x1)*(yl+yh), r1 = x0*yl, r2 = x1*yh */
+	/* Three GF(16) products in registers: r0 = (xl+xh)*(yl+yh), r1 = xl*yl, r2 = xh*yh */
 	uint32_t r0_0, r0_1, r0_2, r0_3;
 	uint32_t r1_0, r1_1, r1_2, r1_3;
 	uint32_t r2_0, r2_1, r2_2, r2_3;
@@ -134,7 +136,7 @@ static inline void gf256_bitslice32_mult_composite(uint32_t res[8], const uint32
 	GF16_MUL(r1_0, r1_1, r1_2, r1_3, x0, x1, x2, x3, y0, y1, y2, y3);
 	GF16_MUL(r2_0, r2_1, r2_2, r2_3, x4, x5, x6, x7, y4, y5, y6, y7);
 
-	/* Réduction quadratique (même motif que niveau inférieur), tout en regs */
+	/* Quadratic reduction (same pattern as the lower level), all in registers */
 	uint32_t o0, o1, o2, o3;
 	GF16_MUL_CST(o0, o1, o2, o3, r2_0, r2_1, r2_2, r2_3);
 	o0 ^= r1_0;
@@ -147,7 +149,7 @@ static inline void gf256_bitslice32_mult_composite(uint32_t res[8], const uint32
 	uint32_t o6 = r0_2 ^ r1_2;
 	uint32_t o7 = r0_3 ^ r1_3;
 
-	/* Un seul burst d'écritures (8 words) */
+	/* Single write burst (8 words) */
 	res[0] = o0;
 	res[1] = o1;
 	res[2] = o2;
@@ -236,10 +238,6 @@ static inline void gf256_bitslice32_mult_hybrid_gf2_composite(uint32_t res[8], u
 
 static inline void gf256_bitslice32_mult_hybrid_gf16_composite(uint32_t res[8], uint8_t x, const uint32_t y[8]) {
 	x = (x & 1) ^ (-((x >> 1) & 1) & 0xE0) ^ (-((x >> 2) & 1) & 0x5D) ^ (-(x >> 3) & 0xB0);
-	gf256_bitslice32_mult_hybrid_composite(res, x, y);
-}
-
-static inline void gf256_bitslice32_mult_hybrid_gf256_composite(uint32_t res[8], uint8_t x, const uint32_t y[8]) {
 	gf256_bitslice32_mult_hybrid_composite(res, x, y);
 }
 
@@ -471,11 +469,13 @@ static inline void gf256to2_bitslice32_vect_unpack_pre_composite(uint32_t x_bits
 }
 
 static inline void gf256to2_bitslice32_vect_pack_gf2_composite(uint8_t x, uint32_t x_bitsliced[16], uint32_t index32) {
-	x_bitsliced[0] |= (x << index32);
+	/* Cast before shifting: x is a uint8_t, so it would promote to int and
+	 * x << 31 would set the sign bit of a signed 32-bit type (UB). */
+	x_bitsliced[0] |= ((uint32_t) x << index32);
 }
 
 static inline void gf256to2_bitslice32_vect_pack_gf16_composite(uint8_t x, uint32_t x_bitsliced[16], uint32_t index32) {
-	uint8_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
+	uint32_t b0 = x & 0x01, b1 = (x >> 1) & 0x01, b2 = (x >> 2) & 0x01, b3 = (x >> 3) & 0x01;
 	x_bitsliced[0] |= ((b0 ^ b2) << index32);
 	//x_bitsliced[1] |= ((0) << index32);
 	x_bitsliced[2] |= ((b2) << index32);
@@ -484,13 +484,6 @@ static inline void gf256to2_bitslice32_vect_pack_gf16_composite(uint8_t x, uint3
 	x_bitsliced[5] |= ((b1 ^ b3) << index32);
 	x_bitsliced[6] |= ((b1 ^ b2) << index32);
 	x_bitsliced[7] |= ((b1 ^ b3) << index32);
-}
-
-static inline void gf256to2_bitslice32_vect_pack_gf256_composite(uint8_t x, uint32_t x_bitsliced[16], uint32_t index32) {
-	for (uint32_t k = 0; k < 8; k++) {
-		uint32_t b = (x >> k) & 0x01;
-		x_bitsliced[k] |= (b << index32);
-	}
 }
 
 static inline void gf256to2_bitslice32_vect_pack_gf256to2_composite(uint16_t x, uint32_t x_bitsliced[16], uint32_t index32) {
@@ -555,10 +548,6 @@ static inline void gf256to2_bitslice32_mult_hybrid_gf16_composite(uint32_t res[1
 	gf256to2_bitslice32_mult_hybrid_composite(res, (uint16_t) x, y);
 }
 
-static inline void gf256to2_bitslice32_mult_hybrid_gf256_composite(uint32_t res[16], uint8_t x, const uint32_t y[16]) {
-	gf256to2_bitslice32_mult_hybrid_composite(res, (uint16_t) x, y);
-}
-
 #if defined(FIELDS_BITSLICE_PUBLIC_JUMP)
 static inline void gf256to2_bitslice32_mult_hybrid_public_composite(uint32_t res[16], uint16_t x, const uint32_t y[16]) {
 	uint8_t x1, x0;
@@ -582,5 +571,5 @@ static inline void gf256to2_bitslice32_mult_hybrid_public_composite(uint32_t res
 }
 #endif
 
-#endif /* __FIELDS_BITSLICED_BRANCHCONST_H__ */
+#endif /* __FIELDS_BITSLICED_BRANCHCONST_COMPOSITE_H__ */
 

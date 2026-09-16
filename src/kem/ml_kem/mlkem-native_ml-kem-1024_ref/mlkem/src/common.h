@@ -2,6 +2,22 @@
  * Copyright (c) The mlkem-native project authors
  * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
  */
+
+/* References
+ * ==========
+ *
+ * - [FIPS140_3_IG]
+ *   Implementation Guidance for FIPS 140-3 and the Cryptographic Module
+ *   Validation Program
+ *   National Institute of Standards and Technology
+ *   https://csrc.nist.gov/projects/cryptographic-module-validation-program/fips-140-3-ig-announcements
+ *
+ * - [FIPS203]
+ *   FIPS 203 Module-Lattice-Based Key-Encapsulation Mechanism Standard
+ *   National Institute of Standards and Technology
+ *   https://csrc.nist.gov/pubs/fips/203/final
+ */
+
 #ifndef MLK_COMMON_H
 #define MLK_COMMON_H
 
@@ -64,7 +80,7 @@
 #define MLK_NAMESPACE_K(s) MLK_CONCAT(MLK_NAMESPACE_PREFIX_K, s)
 
 /* On Apple platforms, we need to emit leading underscore
- * in front of assembly symbols. We thus introducee a separate
+ * in front of assembly symbols. We thus introduce a separate
  * namespace wrapper for ASM symbols. */
 #if !defined(__APPLE__)
 #define MLK_ASM_NAMESPACE(sym) MLK_NAMESPACE(sym)
@@ -122,7 +138,15 @@
 #endif
 
 #if defined(MLK_CONFIG_NO_RANDOMIZED_API) && defined(MLK_CONFIG_KEYGEN_PCT)
-#error Bad configuration: MLK_CONFIG_NO_RANDOMIZED_API is incompatible with MLK_CONFIG_KEYGEN_PCT as the current PCT implementation requires crypto_kem_enc()
+#error Bad configuration: MLK_CONFIG_NO_RANDOMIZED_API is incompatible with MLK_CONFIG_KEYGEN_PCT as the current PCT implementation requires enc()
+#endif
+
+#if defined(MLK_CONFIG_NO_ENCAPS_API) && defined(MLK_CONFIG_KEYGEN_PCT)
+#error Bad configuration: MLK_CONFIG_NO_ENCAPS_API is incompatible with MLK_CONFIG_KEYGEN_PCT as the current PCT implementation requires enc()
+#endif
+
+#if defined(MLK_CONFIG_NO_DECAPS_API) && defined(MLK_CONFIG_KEYGEN_PCT)
+#error Bad configuration: MLK_CONFIG_NO_DECAPS_API is incompatible with MLK_CONFIG_KEYGEN_PCT as the current PCT implementation requires dec()
 #endif
 
 #if defined(MLK_CONFIG_USE_NATIVE_BACKEND_ARITH)
@@ -188,36 +212,11 @@
 #error Bad configuration: MLK_CONFIG_CUSTOM_ALLOC_FREE must be set together with MLK_CUSTOM_ALLOC and MLK_CUSTOM_FREE
 #endif
 
-/*
- * If the integration wants to provide a context parameter for use in
- * platform-specific hooks, then it should define this parameter.
- *
- * The MLK_CONTEXT_PARAMETERS_n macros are intended to be used with macros
- * defining the function names and expand to either pass or discard the context
- * argument as required by the current build.  If there is no context parameter
- * requested then these are removed from the prototypes and from all calls.
- */
-#ifdef MLK_CONFIG_CONTEXT_PARAMETER
-#define MLK_CONTEXT_PARAMETERS_0(context) (context)
-#define MLK_CONTEXT_PARAMETERS_1(arg0, context) (arg0, context)
-#define MLK_CONTEXT_PARAMETERS_2(arg0, arg1, context) (arg0, arg1, context)
-#define MLK_CONTEXT_PARAMETERS_3(arg0, arg1, arg2, context) \
-  (arg0, arg1, arg2, context)
-#define MLK_CONTEXT_PARAMETERS_4(arg0, arg1, arg2, arg3, context) \
-  (arg0, arg1, arg2, arg3, context)
-#else /* MLK_CONFIG_CONTEXT_PARAMETER */
-#define MLK_CONTEXT_PARAMETERS_0(context) ()
-#define MLK_CONTEXT_PARAMETERS_1(arg0, context) (arg0)
-#define MLK_CONTEXT_PARAMETERS_2(arg0, arg1, context) (arg0, arg1)
-#define MLK_CONTEXT_PARAMETERS_3(arg0, arg1, arg2, context) (arg0, arg1, arg2)
-#define MLK_CONTEXT_PARAMETERS_4(arg0, arg1, arg2, arg3, context) \
-  (arg0, arg1, arg2, arg3)
-#endif /* !MLK_CONFIG_CONTEXT_PARAMETER */
-
-#if defined(MLK_CONFIG_CONTEXT_PARAMETER_TYPE) != \
-    defined(MLK_CONFIG_CONTEXT_PARAMETER)
-#error MLK_CONFIG_CONTEXT_PARAMETER_TYPE must be defined if and only if MLK_CONFIG_CONTEXT_PARAMETER is defined
-#endif
+/* Context-parameter machinery (MLK_CONTEXT_PARAMETERS_n and related config
+ * checks). Kept in a separate, level-generic header for readability; included
+ * here so it is available to the allocation macros below and to all consumers
+ * of common.h. */
+#include "context.h"
 
 #if !defined(MLK_CONFIG_CUSTOM_ALLOC_FREE)
 /* Default: stack allocation */
@@ -237,6 +236,7 @@
 #define MLK_FREE(v, T, N, context)                     \
   do                                                   \
   {                                                    \
+    MLK_CONTEXT_UNUSED(context);                       \
     mlk_zeroize(mlk_alloc_##v, sizeof(mlk_alloc_##v)); \
     (v) = NULL;                                        \
   } while (0)
@@ -268,14 +268,28 @@
 
 /****************************** Error codes ***********************************/
 
-/* Generic failure condition */
+/* Generic failure condition. Currently not returned by any function;
+ * reserved for failures that no more specific code covers. */
 #define MLK_ERR_FAIL (-1)
 /* An allocation failed. This can only happen if MLK_CONFIG_CUSTOM_ALLOC_FREE
  * is defined and the provided MLK_CUSTOM_ALLOC can fail. */
 #define MLK_ERR_OUT_OF_MEMORY (-2)
-/* An rng failure occured. Might be due to insufficient entropy or
+/* An RNG failure occurred. Might be due to insufficient entropy or
  * system misconfiguration. */
 #define MLK_ERR_RNG_FAIL (-3)
+/* Public key validation failed: the @[FIPS203, Section 7.2, 'modulus check']
+ * found a coefficient outside [0,q-1]. Returned by check_pk and by the
+ * encapsulation API. */
+#define MLK_ERR_INVALID_PK (-4)
+/* Secret key validation failed: the @[FIPS203, Section 7.3, 'hash check']
+ * found the embedded public key hash inconsistent. Returned by check_sk and
+ * by the decapsulation API. */
+#define MLK_ERR_INVALID_SK (-5)
+/* The 'Pairwise Consistency Test' @[FIPS140_3_IG, p.87] and
+ * @[FIPS203, Section 7.1, Pairwise Consistency] failed. Only possible when
+ * MLK_CONFIG_KEYGEN_PCT is enabled; signals that the freshly generated key
+ * pair failed its encaps/decaps self-test. */
+#define MLK_ERR_PCT_FAIL (-6)
 
 #endif /* !__ASSEMBLER__ */
 

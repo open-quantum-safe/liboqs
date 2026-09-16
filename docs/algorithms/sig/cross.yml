@@ -29,7 +29,7 @@ upstream-statement-url: https://github.com/CROSS-signature/CROSS-lib-oqs/blob/ma
 oqs-support-tier: 3
 spec-version: 2.2 + PQClean and OQS patches
 primary-upstream:
-  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/179d61b8b59e524fba86954f7fa269495650030a
+  source: https://github.com/CROSS-signature/CROSS-lib-oqs/commit/ce9933c7023a7aace4ac05b779995334a9996e6a
   spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: cross-rsdp-128-balanced

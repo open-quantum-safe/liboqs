@@ -582,7 +582,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat1_gf16_fast_r3")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat1_gf16_fast_ct")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -592,7 +592,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat1_gf16_fast_r5")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat1_gf16_fast_ot")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -602,7 +602,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat1_gf16_short_r3")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat1_gf16_short_ct")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -612,7 +612,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat1_gf16_short_r5")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat1_gf16_short_ot")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -622,7 +622,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat3_gf16_fast_r3")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat1_gf2_shorter_ct")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -632,7 +632,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat3_gf16_fast_r5")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat1_gf2_shorter_ot")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -642,7 +642,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat3_gf16_short_r3")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat3_gf16_fast_ct")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -652,7 +652,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat3_gf16_short_r5")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat3_gf16_fast_ot")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -662,7 +662,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat5_gf16_fast_r3")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat3_gf16_short_ct")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -672,7 +672,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat5_gf16_fast_r5")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat3_gf16_short_ot")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -682,7 +682,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat5_gf16_short_r3")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat3_gf2_shorter_ct")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
@@ -692,7 +692,67 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "mqom2_cat5_gf16_short_r5")) {
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat3_gf2_shorter_ot")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat5_gf16_fast_ct")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat5_gf16_fast_ot")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat5_gf16_short_ct")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat5_gf16_short_ot")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat5_gf2_shorter_ct")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "mqom3_cat5_gf2_shorter_ot")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);

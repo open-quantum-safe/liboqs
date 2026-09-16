@@ -11,7 +11,10 @@ typedef enum {
 	TRI_INF = 2,
 } matrix_type;
 
-/* Common macro for GF(2) matrix multiplication */
+/* Common macro for GF(2) matrix multiplication
+ *
+ * PRECONDITION: n must be a multiple of 8, and Y must hold n/8 bytes.
+ */
 #define GF2_MAT_MULT(A, X, Y, n, mtype, fun) do { \
         uint32_t i, j, shift; \
         /* We perform our multiplication row by row with a vector to vector multiplication \
@@ -21,7 +24,7 @@ typedef enum {
                 case REG:{ \
                         for(i = 0; i < n; i += 8){ \
                                 Y[i / 8] = 0; \
-                                for(j = 0; j < 8; j++){ \
+                                for(j = 0; (j < 8) && ((i + j) < n); j++){ \
                                         Y[i / 8] |= (fun(&A[(n / 8) * (i + j)], X, n) << j); \
                                 } \
                         } \
@@ -31,7 +34,7 @@ typedef enum {
                         for(i = 0; i < n; i += 8){ \
                                 Y[i / 8] = 0; \
                                 shift = i; \
-                                for(j = 0; j < 8; j++){ \
+                                for(j = 0; (j < 8) && ((i + j) < n); j++){ \
                                         Y[i / 8] |= (fun(&A[((n / 8) * (i + j)) + (shift / 8)], &X[shift / 8], n - shift) << j); \
                                 } \
                         } \
@@ -40,7 +43,7 @@ typedef enum {
                 case TRI_INF:{ \
                         for(i = 0; i < n; i += 8){ \
                                 Y[i / 8] = 0; \
-                                for(j = 0; j < 8; j++){ \
+                                for(j = 0; (j < 8) && ((i + j) < n); j++){ \
                                         Y[i / 8] |= (fun(&A[(n / 8) * (i + j)], X, ((i + 8))) << j); \
                                 } \
                         } \
@@ -136,8 +139,6 @@ typedef enum {
 #define GF256to2_MAT_MULT GF256_MAT_MULT
 #define GF2_GF256to2_MAT_MULT GF2_GF256_MAT_MULT
 #define GF256to2_GF2_MAT_MULT GF256_GF2_MAT_MULT
-#define GF256_GF4_MAT_MULT GF256_GF2_MAT_MULT
-#define GF256to2_GF4_MAT_MULT GF256_GF2_MAT_MULT
 #define GF256_GF16_MAT_MULT GF256_GF2_MAT_MULT
 #define GF256to2_GF16_MAT_MULT GF256_GF2_MAT_MULT
 

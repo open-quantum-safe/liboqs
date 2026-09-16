@@ -16,13 +16,15 @@ def test_kem(kem_name):
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
-    kats = helpers.get_kats("sig")
-    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
+    if not(helpers.is_sig_enabled_by_name(sig_name)):
+        pytest.skip('Not enabled')
+    if "extmu" in sig_name:
+        pytest.skip("ML-DSA ExtMu will not be benchmarked")
     helpers.run_subprocess( [helpers.path_to_executable('speed_sig'), sig_name, "-f"])
 
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
-def test_sig(sig_stfl_name):
+def test_sig_stfl(sig_stfl_name):
     # Define the list of LMS varients to allow
     names_to_allow = ["LMS_SHA256_H5_W1", "LMS_SHA256_H5_W2", 
                         "LMS_SHA256_H5_W4",
