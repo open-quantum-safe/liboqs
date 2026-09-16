@@ -39,7 +39,7 @@ jobs:
 
       # Upload the built binary and script as an artifact
       - name: Upload artifacts
-        uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: built-binary
           path: build/tests/
