@@ -115,10 +115,6 @@
     "all": "7319a96d4b0bd4c762b021489b2e993651ace5cfca971e6041b5979dd409a67f",
     "single": "866b1ffdb5ab9d947a3efe620b74f9b7b9ca367a253ddacb9e677ed4e6753321"
   },
-  "SNOVA_III_X_AES": {
-    "all": "027b4e2950a8c180ccb353003b290c67563af2583627b92f1722cd6057f1450b",
-    "single": "a5f81db635abdade85c99a9176ce582e5dedcb67f541f291c3d0517aca34863e"
-  },
   "SNOVA_I_B": {
     "all": "70a922c794eb7e67886e5a884bb578c7d3ad0b2228cd1050eaf9c07b1f89798b",
     "single": "8811d4215b528a740fbbd53b175bb55a68eb2cbf4c3753723dc08c79404095c3"
@@ -142,10 +138,6 @@
   "SNOVA_I_S_AES": {
     "all": "28e35c86ad7394f5eb4ba89c3609ba0b9eb47d16172609fdaa46389dafee955d",
     "single": "5b72fa17637db16f7c0d8f83e775736dbb0d6bbf86ebd685e8c02acff91c7f4c"
-  },
-  "SNOVA_I_X_AES": {
-    "all": "c47e199f3d60965854e64696426f6fc453b13ce9cd6cc022c7ff02d6a5dfa8f0",
-    "single": "080a72b127d60da338ae0fef5cd09977c906a03fdba9201ae9897fd82f3c1e49"
   },
   "SNOVA_V_B": {
     "all": "3d823a1918f968f82138d0984a565fa59f3309166bb42fc238a9a49fd04f3093",

@@ -315,8 +315,6 @@
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_I_S_AES_memopt 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_I_S_AES_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_I_S_AES_neon 1
-#cmakedefine OQS_ENABLE_SIG_snova_SNOVA_I_X_AES 1
-#cmakedefine OQS_ENABLE_SIG_snova_SNOVA_I_X_AES_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_K 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_K_memopt 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_K_avx2 1
@@ -341,8 +339,6 @@
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_S_AES_memopt 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_S_AES_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_S_AES_neon 1
-#cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_X_AES 1
-#cmakedefine OQS_ENABLE_SIG_snova_SNOVA_III_X_AES_avx2 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_V_K 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_V_K_memopt 1
 #cmakedefine OQS_ENABLE_SIG_snova_SNOVA_V_K_avx2 1

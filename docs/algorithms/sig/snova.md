@@ -32,14 +32,12 @@
 |  SNOVA\_I\_B\_AES  | snova1ba              | EUF-CMA          |                    1 |                       656 |                        96 |                      388 |
 |    SNOVA\_I\_S     | snova1s               | EUF-CMA          |                    1 |                      1016 |                        96 |                      272 |
 |  SNOVA\_I\_S\_AES  | snova1sa              | EUF-CMA          |                    1 |                      1016 |                        96 |                      272 |
-|  SNOVA\_I\_X\_AES  | snova1xa              | EUF-CMA          |                    1 |                      9842 |                        48 |                      150 |
 |   SNOVA\_III\_K    | snova3k               | EUF-CMA          |                    3 |                       912 |                        96 |                      688 |
 | SNOVA\_III\_K\_AES | snova3ka              | EUF-CMA          |                    3 |                       912 |                        96 |                      688 |
 |   SNOVA\_III\_B    | snova3b               | EUF-CMA          |                    3 |                      1416 |                        96 |                      532 |
 | SNOVA\_III\_B\_AES | snova3ba              | EUF-CMA          |                    3 |                      1416 |                        96 |                      532 |
 |   SNOVA\_III\_S    | snova3s               | EUF-CMA          |                    3 |                      2032 |                        96 |                      456 |
 | SNOVA\_III\_S\_AES | snova3sa              | EUF-CMA          |                    3 |                      2032 |                        96 |                      456 |
-| SNOVA\_III\_X\_AES | snova3xa              | EUF-CMA          |                    3 |                     31266 |                        48 |                      218 |
 |    SNOVA\_V\_K     | snova5k               | EUF-CMA          |                    5 |                      1216 |                        96 |                      896 |
 |  SNOVA\_V\_K\_AES  | snova5ka              | EUF-CMA          |                    5 |                      1216 |                        96 |                      896 |
 |    SNOVA\_V\_B     | snova5b               | EUF-CMA          |                    5 |                      1891 |                        96 |                      691 |
@@ -115,15 +113,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
-## SNOVA\_I\_X\_AES implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## SNOVA\_III\_K implementation characteristics
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
@@ -187,15 +176,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | neon                     | ARM64\_V8                   | Darwin,Linux                    | None                    | True                               | True                                           | True                 |
 | [Primary Source](#primary-source) | memopt                   | All                         | All                             | None                    | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-## SNOVA\_III\_X\_AES implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | opt                      | All                         | All                             | None                    | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux                           | AVX2                    | True                               | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

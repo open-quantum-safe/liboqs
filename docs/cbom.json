@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:7cf563c6-0035-47d9-9699-0706fae8826f",
+  "serialNumber": "urn:uuid:f2006179-6bc4-458a-ad7d-6baebcab6e60",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-09T09:25:30.707537+00:00",
+    "timestamp": "2026-09-16T07:12:12.278055+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@66ec289a6086ab88d4d82a8f43a87dbd16490211",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
       "name": "liboqs",
-      "version": "66ec289a6086ab88d4d82a8f43a87dbd16490211"
+      "version": "5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@66ec289a6086ab88d4d82a8f43a87dbd16490211",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
       "name": "liboqs",
-      "version": "66ec289a6086ab88d4d82a8f43a87dbd16490211"
+      "version": "5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1"
     },
     {
       "type": "cryptographic-asset",
@@ -8102,46 +8102,6 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_I_X_AES:opt:generic",
-      "name": "SNOVA",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "SNOVA_I_X_AES",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 1,
-          "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_I_X_AES:avx2:x86_64",
-      "name": "SNOVA",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "SNOVA_I_X_AES",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 1,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
       "bom-ref": "alg:SNOVA_III_K:opt:generic",
       "name": "SNOVA",
       "cryptoProperties": {
@@ -8617,46 +8577,6 @@
           ],
           "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_III_X_AES:opt:generic",
-      "name": "SNOVA",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "SNOVA_III_X_AES",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "generic"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:SNOVA_III_X_AES:avx2:x86_64",
-      "name": "SNOVA",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "SNOVA_III_X_AES",
-          "primitive": "signature",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "x86_64"
         }
       }
     },
@@ -9887,7 +9807,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@66ec289a6086ab88d4d82a8f43a87dbd16490211",
+      "ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -10293,8 +10213,6 @@
         "alg:SNOVA_I_S_AES:avx2:x86_64",
         "alg:SNOVA_I_S_AES:neon:armv8-a",
         "alg:SNOVA_I_S_AES:memopt:generic",
-        "alg:SNOVA_I_X_AES:opt:generic",
-        "alg:SNOVA_I_X_AES:avx2:x86_64",
         "alg:SNOVA_III_K:opt:generic",
         "alg:SNOVA_III_K:avx2:x86_64",
         "alg:SNOVA_III_K:neon:armv8-a",
@@ -10319,8 +10237,6 @@
         "alg:SNOVA_III_S_AES:avx2:x86_64",
         "alg:SNOVA_III_S_AES:neon:armv8-a",
         "alg:SNOVA_III_S_AES:memopt:generic",
-        "alg:SNOVA_III_X_AES:opt:generic",
-        "alg:SNOVA_III_X_AES:avx2:x86_64",
         "alg:SNOVA_V_K:opt:generic",
         "alg:SNOVA_V_K:avx2:x86_64",
         "alg:SNOVA_V_K:neon:armv8-a",
@@ -11950,20 +11866,6 @@
       ]
     },
     {
-      "ref": "alg:SNOVA_I_X_AES:opt:generic",
-      "dependsOn": [
-        "alg:sha3",
-        "alg:aes"
-      ]
-    },
-    {
-      "ref": "alg:SNOVA_I_X_AES:avx2:x86_64",
-      "dependsOn": [
-        "alg:sha3",
-        "alg:aes"
-      ]
-    },
-    {
       "ref": "alg:SNOVA_III_K:opt:generic",
       "dependsOn": [
         "alg:sha3",
@@ -12126,20 +12028,6 @@
     },
     {
       "ref": "alg:SNOVA_III_S_AES:memopt:generic",
-      "dependsOn": [
-        "alg:sha3",
-        "alg:aes"
-      ]
-    },
-    {
-      "ref": "alg:SNOVA_III_X_AES:opt:generic",
-      "dependsOn": [
-        "alg:sha3",
-        "alg:aes"
-      ]
-    },
-    {
-      "ref": "alg:SNOVA_III_X_AES:avx2:x86_64",
       "dependsOn": [
         "alg:sha3",
         "alg:aes"

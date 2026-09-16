@@ -65,14 +65,12 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_snova_SNOVA_I_B_AES,
 		OQS_SIG_alg_snova_SNOVA_I_S,
 		OQS_SIG_alg_snova_SNOVA_I_S_AES,
-		OQS_SIG_alg_snova_SNOVA_I_X_AES,
 		OQS_SIG_alg_snova_SNOVA_III_K,
 		OQS_SIG_alg_snova_SNOVA_III_K_AES,
 		OQS_SIG_alg_snova_SNOVA_III_B,
 		OQS_SIG_alg_snova_SNOVA_III_B_AES,
 		OQS_SIG_alg_snova_SNOVA_III_S,
 		OQS_SIG_alg_snova_SNOVA_III_S_AES,
-		OQS_SIG_alg_snova_SNOVA_III_X_AES,
 		OQS_SIG_alg_snova_SNOVA_V_K,
 		OQS_SIG_alg_snova_SNOVA_V_K_AES,
 		OQS_SIG_alg_snova_SNOVA_V_B,
@@ -623,13 +621,6 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_I_X_AES)) {
-#ifdef OQS_ENABLE_SIG_snova_SNOVA_I_X_AES
-		return 1;
-#else
-		return 0;
-#endif
-
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_III_K)) {
 #ifdef OQS_ENABLE_SIG_snova_SNOVA_III_K
 		return 1;
@@ -667,13 +658,6 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_III_S_AES)) {
 #ifdef OQS_ENABLE_SIG_snova_SNOVA_III_S_AES
-		return 1;
-#else
-		return 0;
-#endif
-
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_III_X_AES)) {
-#ifdef OQS_ENABLE_SIG_snova_SNOVA_III_X_AES
 		return 1;
 #else
 		return 0;
@@ -2146,13 +2130,6 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_I_X_AES)) {
-#ifdef OQS_ENABLE_SIG_snova_SNOVA_I_X_AES
-		return OQS_SIG_snova_SNOVA_I_X_AES_new();
-#else
-		return NULL;
-#endif
-
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_III_K)) {
 #ifdef OQS_ENABLE_SIG_snova_SNOVA_III_K
 		return OQS_SIG_snova_SNOVA_III_K_new();
@@ -2191,13 +2168,6 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_III_S_AES)) {
 #ifdef OQS_ENABLE_SIG_snova_SNOVA_III_S_AES
 		return OQS_SIG_snova_SNOVA_III_S_AES_new();
-#else
-		return NULL;
-#endif
-
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_snova_SNOVA_III_X_AES)) {
-#ifdef OQS_ENABLE_SIG_snova_SNOVA_III_X_AES
-		return OQS_SIG_snova_SNOVA_III_X_AES_new();
 #else
 		return NULL;
 #endif

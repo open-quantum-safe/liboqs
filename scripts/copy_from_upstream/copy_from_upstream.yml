@@ -495,11 +495,6 @@ sigs:
         pretty_name_full: SNOVA_I_S_AES
         signed_msg_order: sig_then_msg
       -
-        scheme: "SNOVA_I_X_AES"
-        pqclean_scheme: SNOVA_I_X_AES
-        pretty_name_full: SNOVA_I_X_AES
-        signed_msg_order: sig_then_msg
-      -
         scheme: "SNOVA_III_K"
         pqclean_scheme: SNOVA_III_K
         pretty_name_full: SNOVA_III_K
@@ -528,11 +523,6 @@ sigs:
         scheme: "SNOVA_III_S_AES"
         pqclean_scheme: SNOVA_III_S_AES
         pretty_name_full: SNOVA_III_S_AES
-        signed_msg_order: sig_then_msg
-      -
-        scheme: "SNOVA_III_X_AES"
-        pqclean_scheme: SNOVA_III_X_AES
-        pretty_name_full: SNOVA_III_X_AES
         signed_msg_order: sig_then_msg
       -
         scheme: "SNOVA_V_K"

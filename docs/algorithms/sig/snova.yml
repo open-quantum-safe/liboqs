@@ -367,40 +367,6 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     default: true
-- name: SNOVA_I_X_AES
-  alias: snova1xa
-  oqs_alg: OQS_SIG_alg_SNOVA_I_X_AES
-  claimed-nist-level: 1
-  claimed-security: EUF-CMA
-  length-public-key: 9842
-  length-secret-key: 48
-  length-signature: 150
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: opt
-    supported-platforms: all
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-    default: true
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      required_flags:
-      - avx2
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
 - name: SNOVA_III_K
   alias: snova3k
   oqs_alg: OQS_SIG_alg_SNOVA_III_K
@@ -743,40 +709,6 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     default: true
-- name: SNOVA_III_X_AES
-  alias: snova3xa
-  oqs_alg: OQS_SIG_alg_SNOVA_III_X_AES
-  claimed-nist-level: 3
-  claimed-security: EUF-CMA
-  length-public-key: 31266
-  length-secret-key: 48
-  length-signature: 218
-  implementations-switch-on-runtime-cpu-features: true
-  implementations:
-  - upstream: primary-upstream
-    upstream-id: opt
-    supported-platforms: all
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
-    default: true
-  - upstream: primary-upstream
-    upstream-id: avx2
-    supported-platforms:
-    - architecture: x86_64
-      operating_systems:
-      - Linux
-      required_flags:
-      - avx2
-    common-crypto:
-    - SHA3: liboqs
-    - AES: liboqs
-    no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: true
 - name: SNOVA_V_K
   alias: snova5k
   oqs_alg: OQS_SIG_alg_SNOVA_V_K

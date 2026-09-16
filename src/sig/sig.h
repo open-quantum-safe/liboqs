@@ -132,8 +132,6 @@ extern "C" {
 #define OQS_SIG_alg_snova_SNOVA_I_S "SNOVA_I_S"
 /** Algorithm identifier for SNOVA_I_S_AES */
 #define OQS_SIG_alg_snova_SNOVA_I_S_AES "SNOVA_I_S_AES"
-/** Algorithm identifier for SNOVA_I_X_AES */
-#define OQS_SIG_alg_snova_SNOVA_I_X_AES "SNOVA_I_X_AES"
 /** Algorithm identifier for SNOVA_III_K */
 #define OQS_SIG_alg_snova_SNOVA_III_K "SNOVA_III_K"
 /** Algorithm identifier for SNOVA_III_K_AES */
@@ -146,8 +144,6 @@ extern "C" {
 #define OQS_SIG_alg_snova_SNOVA_III_S "SNOVA_III_S"
 /** Algorithm identifier for SNOVA_III_S_AES */
 #define OQS_SIG_alg_snova_SNOVA_III_S_AES "SNOVA_III_S_AES"
-/** Algorithm identifier for SNOVA_III_X_AES */
-#define OQS_SIG_alg_snova_SNOVA_III_X_AES "SNOVA_III_X_AES"
 /** Algorithm identifier for SNOVA_V_K */
 #define OQS_SIG_alg_snova_SNOVA_V_K "SNOVA_V_K"
 /** Algorithm identifier for SNOVA_V_K_AES */
@@ -520,7 +516,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 82 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 80 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

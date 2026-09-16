@@ -83,19 +83,6 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_I_S_AES_sign_with_ctx_str(uint8_t *signat
 OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_I_S_AES_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
 #endif
 
-#if defined(OQS_ENABLE_SIG_snova_SNOVA_I_X_AES)
-#define OQS_SIG_snova_SNOVA_I_X_AES_length_public_key 9842
-#define OQS_SIG_snova_SNOVA_I_X_AES_length_secret_key 48
-#define OQS_SIG_snova_SNOVA_I_X_AES_length_signature 150
-
-OQS_SIG *OQS_SIG_snova_SNOVA_I_X_AES_new(void);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_I_X_AES_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_I_X_AES_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_I_X_AES_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_I_X_AES_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_I_X_AES_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
-#endif
-
 #if defined(OQS_ENABLE_SIG_snova_SNOVA_III_K)
 #define OQS_SIG_snova_SNOVA_III_K_length_public_key 912
 #define OQS_SIG_snova_SNOVA_III_K_length_secret_key 96
@@ -172,19 +159,6 @@ OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_S_AES_sign(uint8_t *signature, size_t
 OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_S_AES_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_S_AES_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_S_AES_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
-#endif
-
-#if defined(OQS_ENABLE_SIG_snova_SNOVA_III_X_AES)
-#define OQS_SIG_snova_SNOVA_III_X_AES_length_public_key 31266
-#define OQS_SIG_snova_SNOVA_III_X_AES_length_secret_key 48
-#define OQS_SIG_snova_SNOVA_III_X_AES_length_signature 218
-
-OQS_SIG *OQS_SIG_snova_SNOVA_III_X_AES_new(void);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_X_AES_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_X_AES_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_X_AES_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_X_AES_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_snova_SNOVA_III_X_AES_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx, size_t ctxlen, const uint8_t *public_key);
 #endif
 
 #if defined(OQS_ENABLE_SIG_snova_SNOVA_V_K)
