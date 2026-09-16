@@ -351,7 +351,7 @@ err:
 WEAK int aes128_ref_enc(const rijndael_ref_ctx_aes128 *ctx, const uint8_t data_in[16], uint8_t data_out[16]) {
 	int ret = -1;
 
-	if (ctx->rtype != AES128) {
+	if ((ctx == NULL) || (ctx->rtype != AES128)) {
 		goto err;
 	}
 
@@ -399,7 +399,7 @@ WEAK int aes128_ref_enc_x8(const rijndael_ref_ctx_aes128 *ctx1, const rijndael_r
 WEAK int aes256_ref_enc(const rijndael_ref_ctx_aes256 *ctx, const uint8_t data_in[16], uint8_t data_out[16]) {
 	int ret = -1;
 
-	if (ctx->rtype != AES256) {
+	if ((ctx == NULL) || (ctx->rtype != AES256)) {
 		goto err;
 	}
 
@@ -448,7 +448,7 @@ WEAK int aes256_ref_enc_x8(const rijndael_ref_ctx_aes256 *ctx1, const rijndael_r
 WEAK int rijndael256_ref_enc(const rijndael_ref_ctx_rijndael256 *ctx, const uint8_t data_in[32], uint8_t data_out[32]) {
 	int ret = -1;
 
-	if (ctx->rtype != RIJNDAEL_256_256) {
+	if ((ctx == NULL) || (ctx->rtype != RIJNDAEL_256_256)) {
 		goto err;
 	}
 
@@ -501,9 +501,13 @@ MAKE_GENERIC_FUNCS_XX_IMPL(aes128, ref, 16, 16)
 MAKE_GENERIC_FUNCS_XX_IMPL(aes256, ref, 32, 16)
 MAKE_GENERIC_FUNCS_XX_IMPL(rijndael256, ref, 32, 32)
 
-#else /* !RIJNDAEL_CONSTANT_TIME_REF, */
+MAKE_GENERIC_FUNCS_ECB_IMPL(aes128, ref, 16, 16)
+MAKE_GENERIC_FUNCS_ECB_IMPL(aes256, ref, 32, 16)
+MAKE_GENERIC_FUNCS_ECB_IMPL(rijndael256, ref, 32, 32)
+
+#else /* !RIJNDAEL_CONSTANT_TIME_REF */
 /*
  * Dummy definition to avoid the empty translation unit ISO C warning
  */
 typedef int dummy;
-#endif
+#endif /* RIJNDAEL_CONSTANT_TIME_REF */

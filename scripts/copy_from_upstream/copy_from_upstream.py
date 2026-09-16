@@ -317,7 +317,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                         for imp in implementations:
                             upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
                             if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
-                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) \
                                             not in upstream['ignore'])):
                                 imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
@@ -424,7 +424,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                         for imp in implementations:
                             upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
                             if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
-                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) \
                                             not in upstream['ignore'])):
                                 imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)

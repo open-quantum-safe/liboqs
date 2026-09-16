@@ -7,24 +7,20 @@ principal-submitters:
 - Matthieu Rivain
 crypto-assumption: Computing the solution of a Multivariate Quadratic problem.
 website: https://mqom.org/
-nist-round: 2
-standardization-status: Under [NIST](https://csrc.nist.gov/csrc/media/Projects/pqc-dig-sig/documents/round-2/spec-files/mqom-spec-round2-web.pdf)
-  consideration
-upstream-maintenance: Actively maintained
-upstream-statement-url: https://github.com/mqom/mqom-v2/blob/main/integration/liboqs/SUPPORT.md
-oqs-support-tier: 3
-spec-version: NIST Round 2
+nist-round: 3
+standardization-status: Under [NIST](https://csrc.nist.gov/projects/pqc-dig-sig) consideration
+spec-version: NIST Round 3
 primary-upstream:
-  source: https://github.com/mqom/mqom-v2/commit/ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7
+  source: https://github.com/mqom/mqom-v3/commit/df26239dd22f194371003f403ec1a9920772b769
   spdx-license-identifier: MIT
 parameter-sets:
-- name: mqom2_cat1_gf16_fast_r5
-  oqs_alg: OQS_SIG_mqom2_cat1_gf16_fast_r5
+- name: mqom3_cat1_gf16_fast_ct
+  oqs_alg: OQS_SIG_mqom3_cat1_gf16_fast_ct
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 60
-  length-secret-key: 88
-  length-signature: 3280
+  length-public-key: 64
+  length-secret-key: 96
+  length-signature: 3316
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -62,13 +58,28 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat1_gf16_fast_r3
-  oqs_alg: OQS_SIG_mqom2_cat1_gf16_fast_r3
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat1_gf16_fast_ot
+  oqs_alg: OQS_SIG_mqom3_cat1_gf16_fast_ot
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 60
-  length-secret-key: 88
-  length-signature: 3484
+  length-public-key: 64
+  length-secret-key: 96
+  length-signature: 3316
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -106,13 +117,28 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat1_gf16_short_r5
-  oqs_alg: OQS_SIG_mqom2_cat1_gf16_short_r5
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat1_gf16_short_ct
+  oqs_alg: OQS_SIG_mqom3_cat1_gf16_short_ct
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 60
-  length-secret-key: 88
-  length-signature: 2916
+  length-public-key: 64
+  length-secret-key: 96
+  length-signature: 2932
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -150,13 +176,28 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat1_gf16_short_r3
-  oqs_alg: OQS_SIG_mqom2_cat1_gf16_short_r3
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat1_gf16_short_ot
+  oqs_alg: OQS_SIG_mqom3_cat1_gf16_short_ot
   claimed-nist-level: 1
   claimed-security: EUF-CMA
-  length-public-key: 60
-  length-secret-key: 88
-  length-signature: 3060
+  length-public-key: 64
+  length-secret-key: 96
+  length-signature: 2932
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -194,13 +235,146 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat3_gf16_fast_r5
-  oqs_alg: OQS_SIG_mqom2_cat3_gf16_fast_r5
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat1_gf2_shorter_ct
+  oqs_alg: OQS_SIG_mqom3_cat1_gf2_shorter_ct
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 52
+  length-secret-key: 72
+  length-signature: 2492
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat1_gf2_shorter_ot
+  oqs_alg: OQS_SIG_mqom3_cat1_gf2_shorter_ot
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 52
+  length-secret-key: 72
+  length-signature: 2492
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat3_gf16_fast_ct
+  oqs_alg: OQS_SIG_mqom3_cat3_gf16_fast_ct
   claimed-nist-level: 3
   claimed-security: EUF-CMA
-  length-public-key: 90
-  length-secret-key: 132
-  length-signature: 7738
+  length-public-key: 96
+  length-secret-key: 144
+  length-signature: 7564
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -235,13 +409,27 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat3_gf16_fast_r3
-  oqs_alg: OQS_SIG_mqom2_cat3_gf16_fast_r3
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat3_gf16_fast_ot
+  oqs_alg: OQS_SIG_mqom3_cat3_gf16_fast_ot
   claimed-nist-level: 3
   claimed-security: EUF-CMA
-  length-public-key: 90
-  length-secret-key: 132
-  length-signature: 8224
+  length-public-key: 96
+  length-secret-key: 144
+  length-signature: 7660
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -276,13 +464,27 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat3_gf16_short_r5
-  oqs_alg: OQS_SIG_mqom2_cat3_gf16_short_r5
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat3_gf16_short_ct
+  oqs_alg: OQS_SIG_mqom3_cat3_gf16_short_ct
   claimed-nist-level: 3
   claimed-security: EUF-CMA
-  length-public-key: 90
-  length-secret-key: 132
-  length-signature: 6496
+  length-public-key: 96
+  length-secret-key: 144
+  length-signature: 6556
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -317,13 +519,27 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat3_gf16_short_r3
-  oqs_alg: OQS_SIG_mqom2_cat3_gf16_short_r3
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat3_gf16_short_ot
+  oqs_alg: OQS_SIG_mqom3_cat3_gf16_short_ot
   claimed-nist-level: 3
   claimed-security: EUF-CMA
-  length-public-key: 90
-  length-secret-key: 132
-  length-signature: 6820
+  length-public-key: 96
+  length-secret-key: 144
+  length-signature: 6556
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -358,13 +574,137 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat5_gf16_fast_r5
-  oqs_alg: OQS_SIG_mqom2_cat5_gf16_fast_r5
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat3_gf2_shorter_ct
+  oqs_alg: OQS_SIG_mqom3_cat3_gf2_shorter_ct
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 78
+  length-secret-key: 108
+  length-signature: 5932
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat3_gf2_shorter_ot
+  oqs_alg: OQS_SIG_mqom3_cat3_gf2_shorter_ot
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 78
+  length-secret-key: 108
+  length-signature: 5890
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat5_gf16_fast_ct
+  oqs_alg: OQS_SIG_mqom3_cat5_gf16_fast_ct
   claimed-nist-level: 5
   claimed-security: EUF-CMA
-  length-public-key: 122
-  length-secret-key: 180
-  length-signature: 13772
+  length-public-key: 128
+  length-secret-key: 192
+  length-signature: 13540
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -399,13 +739,27 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat5_gf16_fast_r3
-  oqs_alg: OQS_SIG_mqom2_cat5_gf16_fast_r3
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat5_gf16_fast_ot
+  oqs_alg: OQS_SIG_mqom3_cat5_gf16_fast_ot
   claimed-nist-level: 5
   claimed-security: EUF-CMA
-  length-public-key: 122
-  length-secret-key: 180
-  length-signature: 14708
+  length-public-key: 128
+  length-secret-key: 192
+  length-signature: 13380
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -440,13 +794,27 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat5_gf16_short_r5
-  oqs_alg: OQS_SIG_mqom2_cat5_gf16_short_r5
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat5_gf16_short_ct
+  oqs_alg: OQS_SIG_mqom3_cat5_gf16_short_ct
   claimed-nist-level: 5
   claimed-security: EUF-CMA
-  length-public-key: 122
-  length-secret-key: 180
-  length-signature: 12014
+  length-public-key: 128
+  length-secret-key: 192
+  length-signature: 12100
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -481,13 +849,27 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
-- name: mqom2_cat5_gf16_short_r3
-  oqs_alg: OQS_SIG_mqom2_cat5_gf16_short_r3
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat5_gf16_short_ot
+  oqs_alg: OQS_SIG_mqom3_cat5_gf16_short_ot
   claimed-nist-level: 5
   claimed-security: EUF-CMA
-  length-public-key: 122
-  length-secret-key: 180
-  length-signature: 12664
+  length-public-key: 128
+  length-secret-key: 192
+  length-signature: 11716
   implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream: primary-upstream
@@ -522,3 +904,130 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat5_gf2_shorter_ct
+  oqs_alg: OQS_SIG_mqom3_cat5_gf2_shorter_ct
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 104
+  length-secret-key: 144
+  length-signature: 10836
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+- name: mqom3_cat5_gf2_shorter_ot
+  oqs_alg: OQS_SIG_mqom3_cat5_gf2_shorter_ot
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 104
+  length-secret-key: 144
+  length-signature: 10804
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: default
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+    default: true
+  - upstream: primary-upstream
+    upstream-id: memopt
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+  - upstream: primary-upstream
+    upstream-id: neon
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - sha3
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: true
+upstream-maintenance: Actively maintained
+upstream-statement-url: https://github.com/mqom/mqom-v3/blob/main/integration/liboqs/SUPPORT.md
+oqs-support-tier: 3

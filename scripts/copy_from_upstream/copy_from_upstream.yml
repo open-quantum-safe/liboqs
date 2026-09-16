@@ -103,9 +103,9 @@ upstreams:
     patches: [snova-unused-param.patch]
   -
     name: mqom
-    git_url: https://github.com/mqom/mqom-v2.git
+    git_url: https://github.com/mqom/mqom-v3.git
     git_branch: main
-    git_commit: ec6b7fa86e232a25f8b2f151a4b4eebb8e81b5e7
+    git_commit: df26239dd22f194371003f403ec1a9920772b769
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/META_{pretty_name_full}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
@@ -530,62 +530,92 @@ sigs:
     upstream_location: mqom
     schemes:
       -
-        scheme: "mqom2_cat1_gf16_fast_r3"
-        pqclean_scheme: mqom2_cat1_gf16_fast_r3
-        pretty_name_full: mqom2_cat1_gf16_fast_r3
+        scheme: "mqom3_cat1_gf16_fast_ct"
+        pqclean_scheme: mqom3_cat1_gf16_fast_ct
+        pretty_name_full: mqom3_cat1_gf16_fast_ct
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat1_gf16_fast_r5"
-        pqclean_scheme: mqom2_cat1_gf16_fast_r5
-        pretty_name_full: mqom2_cat1_gf16_fast_r5
+        scheme: "mqom3_cat1_gf16_fast_ot"
+        pqclean_scheme: mqom3_cat1_gf16_fast_ot
+        pretty_name_full: mqom3_cat1_gf16_fast_ot
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat1_gf16_short_r3"
-        pqclean_scheme: mqom2_cat1_gf16_short_r3
-        pretty_name_full: mqom2_cat1_gf16_short_r3
+        scheme: "mqom3_cat1_gf16_short_ct"
+        pqclean_scheme: mqom3_cat1_gf16_short_ct
+        pretty_name_full: mqom3_cat1_gf16_short_ct
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat1_gf16_short_r5"
-        pqclean_scheme: mqom2_cat1_gf16_short_r5
-        pretty_name_full: mqom2_cat1_gf16_short_r5
+        scheme: "mqom3_cat1_gf16_short_ot"
+        pqclean_scheme: mqom3_cat1_gf16_short_ot
+        pretty_name_full: mqom3_cat1_gf16_short_ot
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat3_gf16_fast_r3"
-        pqclean_scheme: mqom2_cat3_gf16_fast_r3
-        pretty_name_full: mqom2_cat3_gf16_fast_r3
+        scheme: "mqom3_cat1_gf2_shorter_ct"
+        pqclean_scheme: mqom3_cat1_gf2_shorter_ct
+        pretty_name_full: mqom3_cat1_gf2_shorter_ct
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat3_gf16_fast_r5"
-        pqclean_scheme: mqom2_cat3_gf16_fast_r5
-        pretty_name_full: mqom2_cat3_gf16_fast_r5
+        scheme: "mqom3_cat1_gf2_shorter_ot"
+        pqclean_scheme: mqom3_cat1_gf2_shorter_ot
+        pretty_name_full: mqom3_cat1_gf2_shorter_ot
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat3_gf16_short_r3"
-        pqclean_scheme: mqom2_cat3_gf16_short_r3
-        pretty_name_full: mqom2_cat3_gf16_short_r3
+        scheme: "mqom3_cat3_gf16_fast_ct"
+        pqclean_scheme: mqom3_cat3_gf16_fast_ct
+        pretty_name_full: mqom3_cat3_gf16_fast_ct
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat3_gf16_short_r5"
-        pqclean_scheme: mqom2_cat3_gf16_short_r5
-        pretty_name_full: mqom2_cat3_gf16_short_r5
+        scheme: "mqom3_cat3_gf16_fast_ot"
+        pqclean_scheme: mqom3_cat3_gf16_fast_ot
+        pretty_name_full: mqom3_cat3_gf16_fast_ot
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat5_gf16_fast_r3"
-        pqclean_scheme: mqom2_cat5_gf16_fast_r3
-        pretty_name_full: mqom2_cat5_gf16_fast_r3
+        scheme: "mqom3_cat3_gf16_short_ct"
+        pqclean_scheme: mqom3_cat3_gf16_short_ct
+        pretty_name_full: mqom3_cat3_gf16_short_ct
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat5_gf16_fast_r5"
-        pqclean_scheme: mqom2_cat5_gf16_fast_r5
-        pretty_name_full: mqom2_cat5_gf16_fast_r5
+        scheme: "mqom3_cat3_gf16_short_ot"
+        pqclean_scheme: mqom3_cat3_gf16_short_ot
+        pretty_name_full: mqom3_cat3_gf16_short_ot
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat5_gf16_short_r3"
-        pqclean_scheme: mqom2_cat5_gf16_short_r3
-        pretty_name_full: mqom2_cat5_gf16_short_r3
+        scheme: "mqom3_cat3_gf2_shorter_ct"
+        pqclean_scheme: mqom3_cat3_gf2_shorter_ct
+        pretty_name_full: mqom3_cat3_gf2_shorter_ct
         signed_msg_order: msg_then_sig
       -
-        scheme: "mqom2_cat5_gf16_short_r5"
-        pqclean_scheme: mqom2_cat5_gf16_short_r5
-        pretty_name_full: mqom2_cat5_gf16_short_r5
+        scheme: "mqom3_cat3_gf2_shorter_ot"
+        pqclean_scheme: mqom3_cat3_gf2_shorter_ot
+        pretty_name_full: mqom3_cat3_gf2_shorter_ot
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom3_cat5_gf16_fast_ct"
+        pqclean_scheme: mqom3_cat5_gf16_fast_ct
+        pretty_name_full: mqom3_cat5_gf16_fast_ct
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom3_cat5_gf16_fast_ot"
+        pqclean_scheme: mqom3_cat5_gf16_fast_ot
+        pretty_name_full: mqom3_cat5_gf16_fast_ot
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom3_cat5_gf16_short_ct"
+        pqclean_scheme: mqom3_cat5_gf16_short_ct
+        pretty_name_full: mqom3_cat5_gf16_short_ct
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom3_cat5_gf16_short_ot"
+        pqclean_scheme: mqom3_cat5_gf16_short_ot
+        pretty_name_full: mqom3_cat5_gf16_short_ot
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom3_cat5_gf2_shorter_ct"
+        pqclean_scheme: mqom3_cat5_gf2_shorter_ct
+        pretty_name_full: mqom3_cat5_gf2_shorter_ct
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "mqom3_cat5_gf2_shorter_ot"
+        pqclean_scheme: mqom3_cat5_gf2_shorter_ot
+        pretty_name_full: mqom3_cat5_gf2_shorter_ot
         signed_msg_order: msg_then_sig

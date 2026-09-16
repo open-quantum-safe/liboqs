@@ -43,6 +43,13 @@
 #define rijndael256_aes_ni_enc_x2_x2 MQOM_NAMESPACE(rijndael256_aes_ni_enc_x2_x2)
 #define rijndael256_aes_ni_enc_x4_x4 MQOM_NAMESPACE(rijndael256_aes_ni_enc_x4_x4)
 #define rijndael256_aes_ni_enc_x8_x8 MQOM_NAMESPACE(rijndael256_aes_ni_enc_x8_x8)
+/**/
+#define aes128_aes_ni_setkey_enc_ecb MQOM_NAMESPACE(aes128_aes_ni_setkey_enc_ecb)
+#define aes256_aes_ni_setkey_enc_ecb MQOM_NAMESPACE(aes256_aes_ni_setkey_enc_ecb)
+#define rijndael256_aes_ni_setkey_enc_ecb MQOM_NAMESPACE(rijndael256_aes_ni_setkey_enc_ecb)
+#define aes128_aes_ni_enc_ecb MQOM_NAMESPACE(aes128_aes_ni_enc_ecb)
+#define aes256_aes_ni_enc_ecb MQOM_NAMESPACE(aes256_aes_ni_enc_ecb)
+#define rijndael256_aes_ni_enc_ecb MQOM_NAMESPACE(rijndael256_aes_ni_enc_ecb)
 
 /* Header for AES-NI intrinsics */
 #include <wmmintrin.h>
@@ -73,6 +80,10 @@ typedef struct {
 MAKE_GENERIC_CTX_XX(aes128, aes_ni)
 MAKE_GENERIC_CTX_XX(aes256, aes_ni)
 MAKE_GENERIC_CTX_XX(rijndael256, aes_ni)
+/* ECB contexts */
+MAKE_GENERIC_CTX_ECB(aes128, aes_ni)
+MAKE_GENERIC_CTX_ECB(aes256, aes_ni)
+MAKE_GENERIC_CTX_ECB(rijndael256, aes_ni)
 
 /* ==== Public API ==== */
 int aes128_aes_ni_setkey_enc(rijndael_aes_ni_ctx_aes128 *ctx, const uint8_t key[16]);
@@ -118,5 +129,9 @@ int rijndael256_aes_ni_enc_x8(const rijndael_aes_ni_ctx_rijndael256 *ctx1, const
 MAKE_GENERIC_FUNCS_XX_DECL(aes128, aes_ni, 16, 16)
 MAKE_GENERIC_FUNCS_XX_DECL(aes256, aes_ni, 32, 16)
 MAKE_GENERIC_FUNCS_XX_DECL(rijndael256, aes_ni, 32, 32)
+
+MAKE_GENERIC_FUNCS_ECB_DECL(aes128, aes_ni, 16, 16)
+MAKE_GENERIC_FUNCS_ECB_DECL(aes256, aes_ni, 32, 16)
+MAKE_GENERIC_FUNCS_ECB_DECL(rijndael256, aes_ni, 32, 32)
 
 #endif /* __RIJNDAEL_AES_NI_H__ */

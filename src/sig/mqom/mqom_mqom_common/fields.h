@@ -25,74 +25,74 @@
 /* Adapt our types definition depending on the parameters */
 /* ==== Base field definition ====== */
 /* ==== Base field is GF(2) */
-#if MQOM2_PARAM_BASE_FIELD == 1
+#if MQOM3_PARAM_BASE_FIELD == 1
 typedef uint8_t field_base_elt; /* GF(2) */
 #define FIELD_BASE_PREFIX gf2
 #define FIELD_BASE_LOG2_CARD 1
 #define FIELD_BASE_PACKING(num) ((num) / 8)
-/* ==== Base field is GF(4) */
-#elif MQOM2_PARAM_BASE_FIELD == 2
-typedef uint8_t field_base_elt; /* GF(4) */
-#define FIELD_BASE_PREFIX gf4
-#define FIELD_BASE_LOG2_CARD 2
-#define FIELD_BASE_PACKING(num) ((num) / 4)
 /* ==== Base field is GF(16) */
-#elif MQOM2_PARAM_BASE_FIELD == 4
+#elif MQOM3_PARAM_BASE_FIELD == 4
 typedef uint8_t field_base_elt; /* GF(16) */
 #define FIELD_BASE_PREFIX gf16
 #define FIELD_BASE_LOG2_CARD 4
 #define FIELD_BASE_PACKING(num) ((num) / 2)
-/* ==== Base field is GF(256) */
-#elif MQOM2_PARAM_BASE_FIELD == 8
-typedef uint8_t field_base_elt; /* GF(256) */
-#define FIELD_BASE_PREFIX gf256
-#define FIELD_BASE_LOG2_CARD 8
-#define FIELD_BASE_PACKING(num) (num)
 #else
-#error "Error: MQOM2_PARAM_BASE_FIELD is neither GF(2), nor GF(4), nor GF(16), nor GF(256)! Please choose one of those"
+#error "Error: MQOM3_PARAM_BASE_FIELD is neither GF(2) nor GF(16)! Please choose one of those"
+#endif
+
+/* Sanity checks on fields deserializers */
+#if (FIELD_BASE_LOG2_CARD == 1) && ((MQOM3_PARAM_MQ_N % 8) != 0)
+#error "GF(2) base field requires MQOM3_PARAM_MQ_N to be a multiple of 8 (field_gf2_parse would overflow)"
+#endif
+#if (FIELD_BASE_LOG2_CARD == 4) && ((MQOM3_PARAM_MQ_N % 2) != 0)
+#error "GF(16) base field requires MQOM3_PARAM_MQ_N to be even (field_gf16_parse would overflow)"
+#endif
+/* Sanity check for M and MU */
+#if (MQOM3_PARAM_MQ_M % MQOM3_PARAM_MU) != 0
+#error "MQOM3_PARAM_MQ_M must be a multiple of MQOM3_PARAM_MU"
 #endif
 
 
 /* ==== Extension field definition ====== */
 /* ==== Extension field is GF(256) */
-#if MQOM2_PARAM_EXT_FIELD == 8
+#if MQOM3_PARAM_EXT_FIELD == 8
 typedef uint8_t field_ext_elt; /* GF(256) */
 #define FIELD_EXT_PREFIX gf256
 #define FIELD_EXT_LOG2_CARD 8
 #define FIELD_EXT_PACKING(num) (num)
 /* ==== Base field is GF(256^2) */
-#elif MQOM2_PARAM_EXT_FIELD == 16
+#elif MQOM3_PARAM_EXT_FIELD == 16
 typedef uint16_t field_ext_elt; /* GF(256^2) = GF(2^16) */
 #define FIELD_EXT_PREFIX gf256to2
 #define FIELD_EXT_LOG2_CARD 16
 #define FIELD_EXT_PACKING(num) (num)
 #else
-#error "Error: MQOM2_PARAM_EXT_FIELD is neither GF(256) nor GF(256^2)! Please choose one of those"
+#error "Error: MQOM3_PARAM_EXT_FIELD is neither GF(256) nor GF(256^2)! Please choose one of those"
 #endif
 
 
-/* Some helper to deal with false "hybrid" GF(256) and GF(256) situations */
-/**/
-#define gf256_gf256_constant_vect_mult_ref gf256_constant_vect_mult_ref
-#define gf256_gf256_vect_mult_ref gf256_vect_mult_ref
-#define gf256_gf256_mat_mult_ref gf256_mat_mult_ref
-/**/
-#define gf256_gf256_constant_vect_mult_avx2 gf256_constant_vect_mult_avx2
-#define gf256_gf256_vect_mult_avx2 gf256_vect_mult_avx2
-#define gf256_gf256_mat_mult_avx2 gf256_mat_mult_avx2
-/**/
-#define gf256_gf256_constant_vect_mult_avx512 gf256_constant_vect_mult_avx512
-#define gf256_gf256_vect_mult_avx512 gf256_vect_mult_avx512
-#define gf256_gf256_mat_mult_avx512 gf256_mat_mult_avx512
-
+/* The four field backends are mutually exclusive. Without this the cascade
+ * below would silently pick the first one that matches and drop the others, so
+ * e.g. "make FIELDS_AVX512=1 FIELDS_REF=1" would quietly build portable C.
+ * Same discipline as rijndael/rijndael.h, which guards its own backends.
+ * (defined(X) evaluates to 0 or 1 inside #if, so the sum counts them.) */
+#if (defined(FIELDS_REF) + defined(FIELDS_AVX2) + defined(FIELDS_AVX512) + defined(FIELDS_NEON)) > 1
+#error "Error: FIELDS_REF, FIELDS_AVX2, FIELDS_AVX512 and FIELDS_NEON are mutually exclusive, pick exactly one"
+#endif
 
 /* This file adapts the fields definition depending on the compilation */
-#if !defined(FIELDS_REF) && !defined(FIELDS_AVX2) && !defined(FIELDS_AVX512)
+#if !defined(FIELDS_REF) && !defined(FIELDS_AVX2) && !defined(FIELDS_AVX512) && !defined(FIELDS_NEON)
 #if defined(__AVX512BW__) && defined(__AVX512F__) && defined(__AVX512VL__) && defined(__AVX512VPOPCNTDQ__) && defined(__AVX512VBMI__)
 #define FIELDS_AVX512
 #else
 #ifdef __AVX2__
 #define FIELDS_AVX2
+#elif (defined(__ARM_NEON) || defined(__ARM_NEON__)) && !defined(MQOM3_TARGET_IS_BIG_ENDIAN)
+/* Big endian ARM deliberately falls through to FIELDS_REF: the NEON GF(256^2)
+ * path mixes the byte view and the uint16_t view of the same register (see the
+ * #error in fields_arm_neon.h), and no big endian ARM target is testable here.
+ * The reference backend already handles big endian explicitly. */
+#define FIELDS_NEON
 #else
 #define FIELDS_REF
 #endif
@@ -120,6 +120,9 @@ static const char fields_conf[] = "Fields ref implementation (pure C, SWAR x4 ci
 #define FIELD_IMPLEMENTATION_SUFFIX ref
 #elif defined(FIELDS_AVX2)
 #include "fields_avx2.h"
+#if !defined(__AVX2__)
+#error "FIELDS_AVX2 selected but the compiler does not target AVX2: add -mavx2 (or -march=native)"
+#endif
 #if defined(__GFNI__) && !defined(NO_GFNI)
 static const char fields_conf[] = "Fields AVX2 implementation with GFNI";
 #else
@@ -128,12 +131,26 @@ static const char fields_conf[] = "Fields AVX2 implementation (without GFNI)";
 #define FIELD_IMPLEMENTATION_SUFFIX avx2
 #elif defined(FIELDS_AVX512)
 #include "fields_avx512.h"
+#if !(defined(__AVX512BW__) && defined(__AVX512F__) && defined(__AVX512VL__) && defined(__AVX512VPOPCNTDQ__) && defined(__AVX512VBMI__))
+#error "FIELDS_AVX512 selected but the compiler does not target AVX-512: add -mavx512bw -mavx512f -mavx512vl -mavx512vpopcntdq -mavx512vbmi"
+#endif
 #if defined(__GFNI__) && !defined(NO_GFNI)
 static const char fields_conf[] = "Fields AVX512 implementation with GFNI";
 #else
 static const char fields_conf[] = "Fields AVX512 implementation (without GFNI)";
 #endif
 #define FIELD_IMPLEMENTATION_SUFFIX avx512
+#elif defined(FIELDS_NEON)
+#include "fields_arm_neon.h"
+#if !(defined(__ARM_NEON) || defined(__ARM_NEON__))
+#error "FIELDS_NEON selected but the compiler does not target NEON (e.g. -mfpu=neon on ARMv7)"
+#endif
+#ifdef __aarch64__
+static const char fields_conf[] = "Fields ARM NEON implementation (AArch64)";
+#else
+static const char fields_conf[] = "Fields ARM NEON implementation (ARMv7)";
+#endif
+#define FIELD_IMPLEMENTATION_SUFFIX neon
 #else
 #error "Error: no low-level field implementation detected ..."
 #endif
@@ -155,6 +172,7 @@ static const char fields_conf[] = "Fields AVX512 implementation (without GFNI)";
 #define _field_ext_mult concat3(FIELD_EXT_PREFIX, _mult_, FIELD_IMPLEMENTATION_SUFFIX)
 #define _field_ext_constant_vect_mult concat3(FIELD_EXT_PREFIX, _constant_vect_mult_, FIELD_IMPLEMENTATION_SUFFIX)
 #define _field_ext_vect_mult concat3(FIELD_EXT_PREFIX, _vect_mult_, FIELD_IMPLEMENTATION_SUFFIX)
+#define _field_ext_vect_mult_multiple_public concat3(FIELD_EXT_PREFIX, _vect_mult_multiple_public_, FIELD_IMPLEMENTATION_SUFFIX)
 #define _field_ext_mat_mult concat3(FIELD_EXT_PREFIX, _mat_mult_, FIELD_IMPLEMENTATION_SUFFIX)
 /* Hybrid multiplications */
 #define _field_base_ext_constant_vect_mult concat5(FIELD_BASE_PREFIX, _, FIELD_EXT_PREFIX, _constant_vect_mult_, FIELD_IMPLEMENTATION_SUFFIX)
@@ -176,6 +194,10 @@ static inline void field_ext_constant_vect_mult(field_ext_elt a, const field_ext
 
 static inline field_ext_elt field_ext_vect_mult(const field_ext_elt *a, const field_ext_elt *b, uint32_t len) {
 	return _field_ext_vect_mult(a, b, len);
+}
+
+static inline void field_ext_vect_mult_multiple_public(field_ext_elt* const *c, const field_ext_elt *a, field_ext_elt const* const *b, uint32_t len, uint32_t n) {
+	_field_ext_vect_mult_multiple_public(c, a, b, len, n);
 }
 
 static inline void field_ext_mat_mult(const field_ext_elt *A, const field_ext_elt *X, field_ext_elt *Y, uint32_t n, matrix_type mtype) {
@@ -228,22 +250,57 @@ static inline void field_ext_vect_add(const field_ext_elt *a, const field_ext_el
 	return;
 }
 
+/* The cast below truncates to FIELD_EXT_LOG2_CARD bits. Since i ranges over
+ * [0, NB_EVALS-1] and the Gray code is a bijection on that range, the extension
+ * field must hold at least NB_EVALS distinct elements: otherwise two evaluation
+ * indices would silently share an evaluation point, breaking soundness without
+ * any test failing. */
+#if MQOM3_PARAM_NB_EVALS_LOG > FIELD_EXT_LOG2_CARD
+#error "get_evaluation_point requires MQOM3_PARAM_NB_EVALS_LOG <= FIELD_EXT_LOG2_CARD"
+#endif
+
+/* Lower bound, the counterpart of the check above. */
+#if MQOM3_PARAM_NB_EVALS_LOG < 3
+#error "BLC_ConvertToLineEval requires MQOM3_PARAM_NB_EVALS_LOG >= 3 (leaves are processed in groups of 8)"
+#endif
+
 static inline field_ext_elt get_evaluation_point(uint16_t i) {
 	// Gray code
 	return (field_ext_elt) (i ^ (i >> 1));
 }
 
-static inline uint8_t get_gray_code_bit_position(uint16_t i) {
-	uint32_t g1 = i ^ (i >> 1);
-	uint32_t g2 = (i + 1 < MQOM2_PARAM_NB_EVALS) ? (i + 1) ^ ((i + 1) >> 1) : 0;
-	uint32_t diff = g1 ^ g2;
-
+/* Closed form, no search: gray(n-1) and gray(n) differ in exactly one bit, the
+ * one at position ctz(n) (the "ruler sequence").
+ */
+/* Count trailing zeros of a non-zero word. Kept separate from the function
+ * below so that the portability choice and the Gray-code arithmetic stay
+ * readable independently of one another. */
+static inline uint8_t gray_code_ctz(uint32_t n) {
+#if defined(__GNUC__) || defined(__clang__)
+	return (uint8_t) __builtin_ctz(n);
+#else
 	uint8_t index = 0;
-	while ((diff & 1) == 0) {
-		diff >>= 1;
+
+	while ((n & 1u) == 0u) {
+		n >>= 1;
 		index++;
 	}
 	return index;
+#endif
+}
+
+/* Sanity check on leaf index as it is passed as uint16_t */
+#if MQOM3_PARAM_NB_EVALS > 65536
+#error "get_gray_code_bit_position takes a uint16_t leaf index: MQOM3_PARAM_NB_EVALS must be <= 65536"
+#endif
+static inline uint8_t get_gray_code_bit_position(uint16_t i) {
+	uint32_t n = (uint32_t) i + 1;
+
+	if (n < (uint32_t) MQOM3_PARAM_NB_EVALS) {
+		return gray_code_ctz(n);
+	}
+
+	return (MQOM3_PARAM_NB_EVALS_LOG > 0) ? (uint8_t) (MQOM3_PARAM_NB_EVALS_LOG - 1) : 0;
 }
 
 #endif /* __FIELDS_H__ */
