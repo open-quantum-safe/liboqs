@@ -1,12 +1,13 @@
 upstreams:
   -
     name: the-sqisign
-    git_url: https://github.com/SQISign/the-sqisign.git
-    git_branch: main
-    git_commit: 7358e8786e2990fbf68ec2171606966d16872ddc
+    git_url: https://github.com/bhess/the-sqisign.git
+    git_branch: liboqs-staging
+    git_commit: c42b52f273ac800c0213053c8b3f186b1269285b
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pqclean_scheme}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
+    patches: [sqisign-mem.patch]
   -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git

@@ -94,7 +94,10 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_mqom_mqom3_cat5_gf16_short_ct,
 		OQS_SIG_alg_mqom_mqom3_cat5_gf16_short_ot,
 		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ct,
-		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
+		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot,
+		OQS_SIG_alg_sqisign_p324_3,
+		OQS_SIG_alg_sqisign_p500_27,
+		OQS_SIG_alg_sqisign_p664_17,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 		OQS_SIG_alg_slh_dsa_pure_sha2_128s,
 		OQS_SIG_alg_slh_dsa_pure_sha2_128f,
@@ -826,6 +829,27 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot)) {
 #ifdef OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sqisign_p324_3)) {
+#ifdef OQS_ENABLE_SIG_sqisign_p324_3
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sqisign_p500_27)) {
+#ifdef OQS_ENABLE_SIG_sqisign_p500_27
+		return 1;
+#else
+		return 0;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sqisign_p664_17)) {
+#ifdef OQS_ENABLE_SIG_sqisign_p664_17
 		return 1;
 #else
 		return 0;
@@ -2336,6 +2360,27 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot)) {
 #ifdef OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot
 		return OQS_SIG_mqom_mqom3_cat5_gf2_shorter_ot_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sqisign_p324_3)) {
+#ifdef OQS_ENABLE_SIG_sqisign_p324_3
+		return OQS_SIG_sqisign_p324_3_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sqisign_p500_27)) {
+#ifdef OQS_ENABLE_SIG_sqisign_p500_27
+		return OQS_SIG_sqisign_p500_27_new();
+#else
+		return NULL;
+#endif
+
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sqisign_p664_17)) {
+#ifdef OQS_ENABLE_SIG_sqisign_p664_17
+		return OQS_SIG_sqisign_p664_17_new();
 #else
 		return NULL;
 #endif

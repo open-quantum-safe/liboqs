@@ -267,6 +267,11 @@ cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf16_short_ct "" ON "OQS_E
 cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf16_short_ot "" ON "OQS_ENABLE_SIG_MQOM" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ct "" ON "OQS_ENABLE_SIG_MQOM" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot "" ON "OQS_ENABLE_SIG_MQOM" OFF)
+
+option(OQS_ENABLE_SIG_SQISIGN "Enable sqisign algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p324_3 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p500_27 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p664_17 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 ##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_SIG_SLH_DSA "Enable slh_dsa algorithm family" ON)
@@ -1570,6 +1575,25 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEON_INSTRUCTIONSOQS_USE_ARM_SHA3_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot_neon "" ON "OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot" OFF)
+endif()
+endif()
+
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_ADX_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p324_3_broadwell "" ON "OQS_ENABLE_SIG_sqisign_p324_3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_ADX_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p500_27_broadwell "" ON "OQS_ENABLE_SIG_sqisign_p500_27" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_ADX_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p664_17_broadwell "" ON "OQS_ENABLE_SIG_sqisign_p664_17" OFF)
 endif()
 endif()
 
