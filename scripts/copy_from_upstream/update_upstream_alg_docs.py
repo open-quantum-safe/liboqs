@@ -24,13 +24,14 @@ def store_yaml(filename, contents, encoding='utf-8'):
     with open(filename, mode='w', encoding=encoding) as fh:
         yaml.dump(contents, fh, sort_keys=False, allow_unicode=True)
 
-def fetch_upstream(liboqs_root, upstream_info):
+def fetch_upstream(liboqs_root, upstream_info, local=False):
     work_dir_root = os.path.join(liboqs_root, 'scripts', 'copy_from_upstream', 'repos')
     os.makedirs(work_dir_root, exist_ok=True)
 
     work_dir = os.path.join(work_dir_root, upstream_info['name'])
     work_dotgit = os.path.join(work_dir, '.git')
-    if not os.path.exists(work_dotgit):
+    # a local upstream's working tree is used as-is, so never (re)fetch it
+    if not local and not os.path.exists(work_dotgit):
         shell(['git', 'init', work_dir])
         shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_info['git_url']])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_info['git_url']])
@@ -97,7 +98,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                oqs_yaml = load_yaml(oqs_yaml_path)
 
             upstream_base_url = ui['git_url'][:-len(".git")]
-            # upstream is special: We will take the upstream git commit information 
+            # upstream is special: We will take the upstream git commit information
             # (possibly with added patch comment) as it is what drove the update
 
             # Need to check if yml is of old format. If so, update to new format
@@ -226,7 +227,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 
-# Merge documentation in liboqs_root/docs/algorithms/kem/kem['name'].yml with 
+# Merge documentation in liboqs_root/docs/algorithms/kem/kem['name'].yml with
 # upstream information from libjade (patched with copy_from_upstream.py):
 # Args:
 # kems: List of kems in copy_from_libjade.yml
@@ -265,7 +266,7 @@ def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=
                         if kem['name'] in patchfilename:
                             patches_done=" with copy_from_upstream patches"
                 if 'formally-verified-upstreams' in oqs_yaml and upstream['name'] in oqs_yaml['formally-verified-upstreams']:
-                    
+
                     lhs = oqs_yaml['formally-verified-upstreams'][upstream['name']]['source']
                 else:
                     lhs = ''
@@ -297,7 +298,7 @@ def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
         if write_changes:
             store_yaml(oqs_yaml_path, oqs_yaml)
-            
+
 
 
 def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes=False):
@@ -340,7 +341,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 oqs_yaml['principal-submitters'] = rhs_if_not_equal(oqs_yaml['principal-submitters'], upstream_yaml['principal-submitters'], "principal-submitters")
 
                 upstream_base_url = ui['git_url'][:-len(".git")]
-                # upstream is special: We will take the upstream git commit information 
+                # upstream is special: We will take the upstream git commit information
                 # (possibly with added patch comment) as it is what drove the update
 
                 # Need to check if yml is of old format. If so, update to new format
@@ -452,7 +453,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 
-def do_it(liboqs_root, upstream_location='upstream'):
+def do_it(liboqs_root, upstream_location='upstream', local_upstreams=()):
    global DEBUG
    if liboqs_root == None:
       parser = argparse.ArgumentParser()
@@ -477,7 +478,7 @@ def do_it(liboqs_root, upstream_location='upstream'):
 
    for upstream in instructions['upstreams']:
      if 'git_url' in upstream.keys():
-       upstream['upstream_root'] = fetch_upstream(liboqs_root, upstream)
+       upstream['upstream_root'] = fetch_upstream(liboqs_root, upstream, upstream['name'] in local_upstreams)
 
    if upstream_location == 'libjade':
      update_libjade_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
