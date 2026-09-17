@@ -28,8 +28,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbosity", type=int)
 parser.add_argument("-k", "--keep_data", action='store_true', help='Keep upstream code in the "repos" folder')
 parser.add_argument("-d", "--delete", action='store_true', help='Delete untracked files from implementation directories')
-parser.add_argument("-l", "--local_upstream", action='append', default=[], metavar='NAME',
-                    help='Use "repos/NAME" as-is (no git fetch/reset, no patches) and never delete it; may be repeated')
 parser.add_argument("operation", choices=["copy", "verify", "libjade"])
 args = parser.parse_args()
 
@@ -41,9 +39,6 @@ else:
 keepdata = True if args.keep_data else False
 
 delete = True if args.delete else False
-
-# upstreams whose working tree in repos/<name> is used as-is and never deleted
-local_upstreams = set(args.local_upstream)
 
 if 'LIBOQS_DIR' not in os.environ:
     print("Must set environment variable LIBOQS_DIR")
@@ -79,22 +74,6 @@ def shell(command, expect=0):
         if ret.stderr:
             print(ret.stderr.decode("utf-8"))
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
-
-def remove_repos():
-    """Delete fetched upstreams in 'repos', keeping any --local_upstream working trees."""
-    if keepdata:
-        return
-    if not local_upstreams:
-        shutil.rmtree('repos')
-        return
-    with os.scandir('repos') as entries:
-        for entry in entries:
-            if entry.name in local_upstreams:
-                continue
-            if entry.is_dir(follow_symlinks=False):
-                shutil.rmtree(entry.path)
-            else:
-                os.remove(entry.path)
 
 # Generate template from specified scheme to replace old file in 'copy' mode
 # but preserves additions made to file in prior runs of 'libjade' mode
@@ -206,9 +185,6 @@ def load_instructions(file='copy_from_upstream.yml'):
     upstreams = {}
     for upstream in instructions['upstreams']:
         upstreams[upstream['name']] = upstream
-    unknown_local_upstreams = local_upstreams - upstreams.keys()
-    if unknown_local_upstreams:
-        raise Exception("--local_upstream {} not found in {}.".format(", ".join(sorted(unknown_local_upstreams)), file))
 
     def _fetch_and_process_upstream(upstream):
         # Each upstream is fetched into its own independent 'repos/<name>'
@@ -225,27 +201,17 @@ def load_instructions(file='copy_from_upstream.yml'):
         work_dir = os.path.join('repos', upstream_name)
         work_dotgit = os.path.join(work_dir, '.git')
 
-        is_local = upstream_name in local_upstreams
-        if is_local:
-            # Leave the working tree exactly as it is so that uncommitted
-            # changes survive: no git init/fetch/reset and no patches.
-            if not os.path.isdir(work_dir):
-                raise Exception("--local_upstream {}: directory {} does not exist.".format(upstream_name, work_dir))
-            print("Using local upstream {} as-is from {}".format(upstream_name, work_dir))
-            if upstream.get('patches'):
-                print("Warning: not applying patches to local upstream {}: {}".format(upstream_name, ", ".join(upstream['patches'])))
+        if not os.path.exists(work_dir):
+          os.makedirs(work_dir)
+          if not os.path.exists(work_dotgit):
+            shell(['git', 'init', work_dir])
+            shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
+        if file == 'copy_from_libjade.yml':
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_branch])
         else:
-            if not os.path.exists(work_dir):
-              os.makedirs(work_dir)
-              if not os.path.exists(work_dotgit):
-                shell(['git', 'init', work_dir])
-                shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
-            if file == 'copy_from_libjade.yml':
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_branch])
-            else:
-                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
+            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
         if file == 'copy_from_libjade.yml':
             try:
                 version = subprocess.run(['jasminc', '-version'], capture_output=True).stdout.decode('utf-8').strip().split(' ')[-1]
@@ -257,7 +223,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                 print('Jasmin compiler not found; must add `jasminc` to PATH.')
                 exit(1)
             shell(['make', '-C', os.path.join(work_dir, 'src')])
-        if 'patches' in upstream and not is_local:
+        if 'patches' in upstream:
             for patch in upstream['patches']:
                 patch_file = os.path.join('patches', patch)
                 shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
@@ -351,7 +317,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                         for imp in implementations:
                             upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
                             if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
-                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) \
                                             not in upstream['ignore'])):
                                 imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
@@ -458,7 +424,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                         for imp in implementations:
                             upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
                             if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
-                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) \
                                             not in upstream['ignore'])):
                                 imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
@@ -873,14 +839,15 @@ def copy_from_upstream(slh_dsa_inst: dict):
             json.dump(kats[t], f, indent=2, sort_keys=True)
             f.write("\n")
 
-    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], local_upstreams=local_upstreams)
+    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
     sys.path.insert(1, os.path.join(os.environ['LIBOQS_DIR'], 'scripts'))
     import update_docs_from_yaml
     import update_cbom
     update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
     update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
-    remove_repos()
+    if not keepdata:
+        shutil.rmtree('repos')
 
 # Copy algorithms from libjade specified in copy_from_libjade.yml, apply
 # patches and generate select templates
@@ -902,14 +869,15 @@ def copy_from_libjade():
             json.dump(kats[t], f, indent=2, sort_keys=True)
             f.write("\n")
 
-    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade', local_upstreams=local_upstreams)
+    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
 
     sys.path.insert(1, os.path.join(os.environ['LIBOQS_DIR'], 'scripts'))
     import update_docs_from_yaml
     import update_cbom
     update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
     update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
-    remove_repos()
+    if not keepdata:
+        shutil.rmtree('repos')
 
 
 def verify_from_upstream():
@@ -966,7 +934,7 @@ def verify_from_upstream():
 
     patch_list = []
     for upstream in instructions['upstreams']:
-        if 'patches' in upstream and upstream['name'] not in local_upstreams:
+        if 'patches' in upstream:
             patch_list.extend(upstream['patches'])
 
     print("-----\nTotal schemes: {} - {} match upstream up to local patches, {} differ".format(validated + differ, validated, differ))
@@ -980,7 +948,7 @@ def verify_from_upstream():
 
     if not keepdata:
         shutil.rmtree(basedir)
-    remove_repos()
+        shutil.rmtree('repos')
 
     if (differ > 0):
         exit(1)
