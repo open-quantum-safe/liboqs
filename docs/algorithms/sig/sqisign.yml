@@ -1,0 +1,154 @@
+name: SQIsign
+type: signature
+principal-submitters:
+- Marius A. Aardal
+- Gora Adj
+- Diego F. Aranha
+- Andrea Basso
+- Giacomo Borin
+- Isaac Andrés Canales Martínez
+- Jorge Chávez-Saab
+- Maria Corte-Real Santos
+- Pierrick Dartois
+- Luca De Feo
+- Max Duparc
+- Thomas Espitau
+- Jonathan Komada Eriksen
+- Tako Boris Fouotsa
+- Décio Luiz Gazzoni Filho
+- Basil Hess
+- Riccardo Invernizzi
+- David Kohel
+- Antonin Leroux
+- Patrick Longa
+- Luciano Maino
+- Michael Meyer
+- Marzio Mula
+- Kohei Nakagawa
+- Hiroshi Onuki
+- Lorenz Panny
+- Sikhar Patranabis
+- Christophe Petit
+- Giacomo Pope
+- Krijn Reijnders
+- Damien Robert
+- Francisco Rodríguez-Henríquez
+- Sina Schaeffler
+- Frederik Vercauteren
+- Alexandre Wallet
+- Benjamin Wesolowski
+- Wessel van Woerden
+crypto-assumption: Hardness of the supersingular endomorphism ring problem.
+website: https://sqisign.org/
+nist-round: 3
+standardization-status: Under [NIST](https://sqisign.org/spec/sqisign-20260901.pdf) consideration
+spec-version: 3.0
+oqs-support-tier: 3
+upstream-maintenance: Best effort
+upstream-statement-url: null
+primary-upstream:
+  source: https://github.com/SQISign/the-sqisign/commit/7358e8786e2990fbf68ec2171606966d16872ddc
+  spdx-license-identifier: Apache-2.0
+parameter-sets:
+- name: SQIsign-p324-3
+  oqs_alg: OQS_SIG_alg_sqisign_p324_3
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 83
+  length-secret-key: 270
+  length-signature: 200
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+    common-crypto:
+    - SHA3: liboqs
+  - upstream: primary-upstream
+    upstream-id: broadwell
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - adx
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SQIsign-p500-27
+  oqs_alg: OQS_SIG_alg_sqisign_p500_27
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 129
+  length-secret-key: 417
+  length-signature: 306
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+    common-crypto:
+    - SHA3: liboqs
+  - upstream: primary-upstream
+    upstream-id: broadwell
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - adx
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SQIsign-p664-17
+  oqs_alg: OQS_SIG_alg_sqisign_p664_17
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 169
+  length-secret-key: 549
+  length-signature: 406
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+    common-crypto:
+    - SHA3: liboqs
+  - upstream: primary-upstream
+    upstream-id: broadwell
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - adx
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
