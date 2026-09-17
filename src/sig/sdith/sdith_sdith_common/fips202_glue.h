@@ -33,7 +33,6 @@ static inline void Keccak_HashFinal(Keccak_HashInstance* inst, void* hashval) {
   }
 }
 
-// owaldron TODO need to release `Keccak_HashInstance` eventually...
 static inline void Keccak_HashSqueeze(Keccak_HashInstance* inst, void* data, uint64_t databitlen) {
   if (inst->shake == 128) {
     OQS_SHA3_shake128_inc_squeeze(data, databitlen >> 3, &inst->shake128_state);
