@@ -1,7 +1,13 @@
 #include <string.h>
 
 #include "aes128_ctrle.h"
+
+#ifndef SDITH3_FOR_LIBOQS
 #include "aes_ansi_ref.h"
+#else
+#include "aes_glue.h"
+#endif
+
 
 
 /* -------- batched key schedule (ref: just loop the scalar x1) -------- */
@@ -31,10 +37,23 @@ static inline void aes128_nocarry_ref_impl(void* out, const void* round_keys, co
   ctr128_t ctr;
   uint8_t* oo = (uint8_t*)out;
   memcpy(ctr.v8, ctr_block, 16);
+#ifndef SDITH3_FOR_LIBOQS
+  /* reference implementation */
   for (uint64_t i = 0; i < nblocks; ++i) {
     aes128_encrypt_1block_ref(oo + 16 * i, ctr.v8, round_keys);
     ctr.v64[0] += 1;  // low-64 increment only, no middle carry
   }
+#else
+  /* LIBOQS implementation */
+  void* schedule = NULL;
+  OQS_AES128_ECB_load_schedule(round_keys, &schedule);
+  for (uint64_t i = 0; i < nblocks; ++i) {
+    memcpy(oo + 16 * i, ctr.v8, 16);
+    ctr.v64[0] += 1;  // low-64 increment only, no middle carry
+  }
+  OQS_AES128_ECB_enc_sch(oo, 16 * nblocks, schedule, oo);
+  OQS_AES128_free_schedule(schedule);
+#endif
 }
 EXPORT void aes128_ctrle_nocarry_1block_ref(void* out, const void* round_keys, const void* ctr_block) {
   aes128_nocarry_ref_impl(out, round_keys, ctr_block, 1);
