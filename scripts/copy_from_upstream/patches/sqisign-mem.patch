@@ -1,0 +1,58 @@
+diff --git a/src/common/generic/mem.c b/src/common/generic/mem.c
+--- a/src/common/generic/mem.c
++++ b/src/common/generic/mem.c
+@@ -1,23 +1,15 @@
+ // SPDX-License-Identifier: Apache-2.0
+ 
+ #include <mem.h>
+-#include <string.h>
+-#include <stdlib.h>
++#include <oqs/common.h>
+ 
+ void
+ sqisign_secure_free(void *mem, size_t size)
+ {
+-    if (mem) {
+-        typedef void *(*memset_t)(void *, int, size_t);
+-        static volatile memset_t memset_func = memset;
+-        memset_func(mem, 0, size);
+-        free(mem);
+-    }
++    OQS_MEM_secure_free(mem, size);
+ }
+ void
+ sqisign_secure_clear(void *mem, size_t size)
+ {
+-    typedef void *(*memset_t)(void *, int, size_t);
+-    static volatile memset_t memset_func = memset;
+-    memset_func(mem, 0, size);
++    OQS_MEM_cleanse(mem, size);
+ }
+diff --git a/src/quaternion/ref/lvlx/test/random_input_generation.c b/src/quaternion/ref/lvlx/test/random_input_generation.c
+--- a/src/quaternion/ref/lvlx/test/random_input_generation.c
++++ b/src/quaternion/ref/lvlx/test/random_input_generation.c
+@@ -1,5 +1,5 @@
+ #include "quaternion_tests.h"
+-#include <stdlib.h>
++#include <oqs/common.h>
+ #include <stdio.h>
+ #include <prng.h>
+ 
+@@ -50,7 +50,7 @@
+                                                 int iterations)
+ {
+     quat_ideal_t *ideals;
+-    ideals = malloc(iterations * sizeof(quat_ideal_t));
++    ideals = OQS_MEM_malloc(iterations * sizeof(quat_ideal_t));
+     for (int i = 0; i < iterations; i++)
+         quat_ideal_init(&(ideals[i]));
+     int randret = quat_test_input_random_ideal_generation(ideals, norm_bitsize, iterations);
+@@ -61,7 +61,7 @@
+             ibz_copy(&(norms[iter]), &(ideals[iter].norm));
+         }
+     }
+-    free(ideals);
++    OQS_MEM_insecure_free(ideals);
+     return (randret);
+ }
+ 
