@@ -91,6 +91,54 @@
     "all": "31aebc803483ef47be9e0249e9105a08a8f1660bf0d6eca5051221fc04477e05",
     "single": "38c8e18ffe94cdc331294cb05b0e28b8b0cc7903db5331cee4c88cb84e61450a"
   },
+  "SDitH3-L1-gf2-fast": {
+    "all": "8b3b847405bb92a4140af6b0c03dfbd9629732d93015e7dd429e233c00e0ddb2",
+    "single": "41ccb6bad2eefe684dca736393e8c29bec7f2f3672492df6cff17c84f333cc03"
+  },
+  "SDitH3-L1-gf2-fast-cipherpow": {
+    "all": "893dbf70bbb7e7d5ff870d9d40da846e297ac5c69648d80118ee02e54bb47d58",
+    "single": "ce37d051dba74715aa3b5286970b688e2828a685279630e0ceac68b79c2e5607"
+  },
+  "SDitH3-L1-gf2-short": {
+    "all": "873711fb0690ae4ab5e40674e5450ce1113999aea5aaf35a7e5e2f72fb5c0537",
+    "single": "d50d495fd8a0f2cb0463fcd3aef1398cf84b94bf0aff0fd69b5a1026b47e2047"
+  },
+  "SDitH3-L1-gf2-short-cipherpow": {
+    "all": "5772f0d8473f9408001506db63b962ca9b2c7d12fcce60c5f73369d5e92b39cd",
+    "single": "cc0d9688a9c4b5f99e90746657da5cdd1804b5012b3c934975599512d5061e4c"
+  },
+  "SDitH3-L3-gf2-fast": {
+    "all": "577cf4397deaa4a97b8fffd6f9e3e1166f023eb0bafc2661fd8879a272ef4e0e",
+    "single": "b4778b069b8c58c803cb8bc8e3d4557c67e0ec5555a6ba2e82186beb0fdb1309"
+  },
+  "SDitH3-L3-gf2-fast-cipherpow": {
+    "all": "0e56d3d02ddb8dbb4b8e4afcb2871895a6cc02ddc2e8b075f9d3d449c5a68223",
+    "single": "e14a0f9964f77f455f633e5a498a0efc9657a7393c07a2226f730864aca79966"
+  },
+  "SDitH3-L3-gf2-short": {
+    "all": "4fa8c3dde2e8a6e458d5f90711fa146d3bea867df840f3c92ccb2bb25e3fd648",
+    "single": "7fa8b98407d4ac073a01c754824b66d8c0a8f6eb1e984082593e1d101c83c9e1"
+  },
+  "SDitH3-L3-gf2-short-cipherpow": {
+    "all": "22da728e98b2a7fa83609b38cbbfd71016126a989cd79087b27021146359ec4b",
+    "single": "e8a4ba0d333235fa061b79de0d65bc3932b73b6ee2322b3b6ed4fb3598356b4f"
+  },
+  "SDitH3-L5-gf2-fast": {
+    "all": "d2b7eed450896d25daee050677fdec8728ba05e11be183caa26d62522a70bd88",
+    "single": "9ea0519ec21823dd72be5c81a8617decc67cff01345c2a93a7b1421fd59474e8"
+  },
+  "SDitH3-L5-gf2-fast-cipherpow": {
+    "all": "2e80ec07e42009d5b632dd8bd28297d3b73ccc289e24ea1d8fa7d0e783ebbe92",
+    "single": "d5622fa5a18563a873dc3eb8aa4c324b64843dbc2449856d94ab5960941b0c90"
+  },
+  "SDitH3-L5-gf2-short": {
+    "all": "477968076025d4bda5db0239ec48e19a4e174a660d0fda11e7d937b9c36c2c1d",
+    "single": "e37006ef04589adff3fb96948e35e370e4540d10bbf4a4c6c22eff83c8942062"
+  },
+  "SDitH3-L5-gf2-short-cipherpow": {
+    "all": "9a5ec5e323ca8f291464e1ee8203d08d4070bfe44f020890c0af814e8cdfe3a3",
+    "single": "097cc28abf7afc193824ed98bf145ac8239a7f23757a687f30f3683f9b4e5495"
+  },
   "SNOVA_III_B": {
     "all": "e8d7d7facc29e50333a88bb34b027c502b3ac4fd26ac6dbd5d95712bdb8d9d91",
     "single": "7175ce45fbd3e6b7eca08de8df339a8bb24116531478d1afa2f1e8cf7e59ace9"
