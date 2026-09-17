@@ -1,0 +1,63 @@
+diff --git a/integration/liboqs/sqisign_p324_3.yml b/integration/liboqs/sqisign_p324_3.yml
+--- a/integration/liboqs/sqisign_p324_3.yml
++++ b/integration/liboqs/sqisign_p324_3.yml
+@@ -47,7 +47,7 @@
+   - name: ref
+     version: round2
+     folder_name: .
+-    compile_opts: '-DSQISIGN_BUILD_TYPE_REF=ON -DSQISIGN_VARIANT=p324_3 -DSQISIGN_GF_IMPL_REF=ON -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -Wno-missing-braces -fno-strict-aliasing'
++    compile_opts: '-DSQISIGN_BUILD_TYPE_REF=ON -DSQISIGN_VARIANT=p324_3 -DSQISIGN_GF_IMPL_REF=ON -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1'
+     signature_keypair: sqisign_p324_3_ref_crypto_sign_keypair
+     signature_signature: sqisign_p324_3_ref_crypto_sign_signature
+     signature_verify: sqisign_p324_3_ref_crypto_sign_verify
+@@ -56,7 +56,7 @@
+   - name: broadwell
+     version: round2
+     folder_name: .
+-    compile_opts: '-DSQISIGN_BUILD_TYPE_BROADWELL=ON -DSQISIGN_VARIANT=p324_3 -DSQISIGN_GF_IMPL_SAT64 -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -DRADIX_64 -Wno-missing-braces -fno-strict-aliasing'
++    compile_opts: '-DSQISIGN_BUILD_TYPE_BROADWELL=ON -DSQISIGN_VARIANT=p324_3 -DSQISIGN_GF_IMPL_SAT64 -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -DRADIX_64'
+     signature_keypair: sqisign_p324_3_broadwell_crypto_sign_keypair
+     signature_signature: sqisign_p324_3_broadwell_crypto_sign_signature
+     signature_verify: sqisign_p324_3_broadwell_crypto_sign_verify
+diff --git a/integration/liboqs/sqisign_p500_27.yml b/integration/liboqs/sqisign_p500_27.yml
+--- a/integration/liboqs/sqisign_p500_27.yml
++++ b/integration/liboqs/sqisign_p500_27.yml
+@@ -47,7 +47,7 @@
+   - name: ref
+     version: round2
+     folder_name: .
+-    compile_opts: '-DSQISIGN_BUILD_TYPE_REF=ON -DSQISIGN_VARIANT=p500_27 -DSQISIGN_GF_IMPL_REF=ON -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -Wno-missing-braces -fno-strict-aliasing'
++    compile_opts: '-DSQISIGN_BUILD_TYPE_REF=ON -DSQISIGN_VARIANT=p500_27 -DSQISIGN_GF_IMPL_REF=ON -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1'
+     signature_keypair: sqisign_p500_27_ref_crypto_sign_keypair
+     signature_signature: sqisign_p500_27_ref_crypto_sign_signature
+     signature_verify: sqisign_p500_27_ref_crypto_sign_verify
+@@ -56,7 +56,7 @@
+   - name: broadwell
+     version: round2
+     folder_name: .
+-    compile_opts: '-DSQISIGN_BUILD_TYPE_BROADWELL=ON -DSQISIGN_VARIANT=p500_27 -DSQISIGN_GF_IMPL_SAT64 -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -DRADIX_64 -Wno-missing-braces -fno-strict-aliasing'
++    compile_opts: '-DSQISIGN_BUILD_TYPE_BROADWELL=ON -DSQISIGN_VARIANT=p500_27 -DSQISIGN_GF_IMPL_SAT64 -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -DRADIX_64'
+     signature_keypair: sqisign_p500_27_broadwell_crypto_sign_keypair
+     signature_signature: sqisign_p500_27_broadwell_crypto_sign_signature
+     signature_verify: sqisign_p500_27_broadwell_crypto_sign_verify
+diff --git a/integration/liboqs/sqisign_p664_17.yml b/integration/liboqs/sqisign_p664_17.yml
+--- a/integration/liboqs/sqisign_p664_17.yml
++++ b/integration/liboqs/sqisign_p664_17.yml
+@@ -47,7 +47,7 @@
+   - name: ref
+     version: round2
+     folder_name: .
+-    compile_opts: '-DSQISIGN_BUILD_TYPE_REF=ON -DSQISIGN_VARIANT=p664_17 -DSQISIGN_GF_IMPL_REF=ON -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -Wno-missing-braces -fno-strict-aliasing'
++    compile_opts: '-DSQISIGN_BUILD_TYPE_REF=ON -DSQISIGN_VARIANT=p664_17 -DSQISIGN_GF_IMPL_REF=ON -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1'
+     signature_keypair: sqisign_p664_17_ref_crypto_sign_keypair
+     signature_signature: sqisign_p664_17_ref_crypto_sign_signature
+     signature_verify: sqisign_p664_17_ref_crypto_sign_verify
+@@ -56,7 +56,7 @@
+   - name: broadwell
+     version: round2
+     folder_name: .
+-    compile_opts: '-DSQISIGN_BUILD_TYPE_BROADWELL=ON -DSQISIGN_VARIANT=p664_17 -DSQISIGN_GF_IMPL_SAT64 -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -DRADIX_64 -Wno-missing-braces -fno-strict-aliasing'
++    compile_opts: '-DSQISIGN_BUILD_TYPE_BROADWELL=ON -DSQISIGN_VARIANT=p664_17 -DSQISIGN_GF_IMPL_SAT64 -DENABLE_SIGN=ON -DSQISIGN_NAMESPACE_GENERIC_AS_VARIANT=1 -DRADIX_64'
+     signature_keypair: sqisign_p664_17_broadwell_crypto_sign_keypair
+     signature_signature: sqisign_p664_17_broadwell_crypto_sign_signature
+     signature_verify: sqisign_p664_17_broadwell_crypto_sign_verify
