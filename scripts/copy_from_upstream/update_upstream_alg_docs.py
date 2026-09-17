@@ -24,14 +24,13 @@ def store_yaml(filename, contents, encoding='utf-8'):
     with open(filename, mode='w', encoding=encoding) as fh:
         yaml.dump(contents, fh, sort_keys=False, allow_unicode=True)
 
-def fetch_upstream(liboqs_root, upstream_info, local=False):
+def fetch_upstream(liboqs_root, upstream_info):
     work_dir_root = os.path.join(liboqs_root, 'scripts', 'copy_from_upstream', 'repos')
     os.makedirs(work_dir_root, exist_ok=True)
 
     work_dir = os.path.join(work_dir_root, upstream_info['name'])
     work_dotgit = os.path.join(work_dir, '.git')
-    # a local upstream's working tree is used as-is, so never (re)fetch it
-    if not local and not os.path.exists(work_dotgit):
+    if not os.path.exists(work_dotgit):
         shell(['git', 'init', work_dir])
         shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_info['git_url']])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_info['git_url']])
@@ -453,7 +452,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 
-def do_it(liboqs_root, upstream_location='upstream', local_upstreams=()):
+def do_it(liboqs_root, upstream_location='upstream'):
    global DEBUG
    if liboqs_root == None:
       parser = argparse.ArgumentParser()
@@ -478,7 +477,7 @@ def do_it(liboqs_root, upstream_location='upstream', local_upstreams=()):
 
    for upstream in instructions['upstreams']:
      if 'git_url' in upstream.keys():
-       upstream['upstream_root'] = fetch_upstream(liboqs_root, upstream, upstream['name'] in local_upstreams)
+       upstream['upstream_root'] = fetch_upstream(liboqs_root, upstream)
 
    if upstream_location == 'libjade':
      update_libjade_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
