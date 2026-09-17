@@ -372,6 +372,7 @@ EXPORT void sdith_sign(const signature_parameters* sig_params,       //
   par.vole_params.xof.xof_seed(&hash_aux_ctx, hash_com, 2 * par.lambda_bytes);
   par.vole_params.xof.xof_seed(&hash_aux_ctx, sign.corr_u, (par.tau - 1) * par.Lbyte);
   par.vole_params.xof.xof_finalize_and_output(&hash_aux_ctx, hash_aux, 2 * par.lambda_bytes);
+  par.vole_params.xof.xof_ctx_release(&hash_aux_ctx);
 
   uint8_t* const rvp_u_cchk = u;
   uint8_t* const rvp_v_cchk = v2;
@@ -415,6 +416,7 @@ EXPORT void sdith_sign(const signature_parameters* sig_params,       //
   par.vole_params.xof.xof_seed(&hash_lines_ctx, cchk_res_v, par.cchk_matrix_nrows * par.lambda_bytes);
   par.vole_params.xof.xof_seed(&hash_lines_ctx, sign.circuit_in_pub, (par.num_inputs_pairs + 7) >> 3);
   par.vole_params.xof.xof_finalize_and_output(&hash_lines_ctx, hash_lines, 2 * par.lambda_bytes);
+  par.vole_params.xof.xof_ctx_release(&hash_lines_ctx);
 
   // --------------------------------------
   // Phase 3: PIOP protocol (prover side)
@@ -425,6 +427,7 @@ EXPORT void sdith_sign(const signature_parameters* sig_params,       //
   par.vole_params.xof.xof_init_and_seed(&chall_rng, hash_lines, 2 * par.lambda_bytes);
   par.vole_params.xof.xof_finalize_and_output(&chall_rng, chall_a, par.lambda_bytes * par.rsd_codim_limbs);
   par.vole_params.xof.xof_output(&chall_rng, chall_unitary, par.lambda_bytes * par.rsd_w);
+  par.vole_params.xof.xof_ctx_release(&chall_rng);
 
   rsd_public_key_times_challenge_ref(                         //
       &par.vole_params, par.rsd_w, par.rsd_n, par.rsd_codim,  //
@@ -475,6 +478,7 @@ EXPORT void sdith_sign(const signature_parameters* sig_params,       //
   par.vole_params.xof.xof_seed(&hash_piop_ctx, cz_pub_full, par.degree * par.lambda_bytes);
   par.vole_params.xof.xof_seed(&hash_piop_ctx, message, message_bytes);
   par.vole_params.xof.xof_finalize_and_output(&hash_piop_ctx, sign.hash_piop, 2 * par.lambda_bytes);
+  par.vole_params.xof.xof_ctx_release(&hash_piop_ctx);
 
   // --------------------------------------
   // Phase 3: Open one random evaluation
@@ -690,6 +694,7 @@ EXPORT uint8_t sdith_verify(const signature_parameters* sig_params,       //
   par.vole_params.xof.xof_seed(&verif_hash_aux_ctx, verif_hash_com, 2 * par.lambda_bytes);
   par.vole_params.xof.xof_seed(&verif_hash_aux_ctx, sign.corr_u, (par.tau - 1) * par.Lbyte);
   par.vole_params.xof.xof_finalize_and_output(&verif_hash_aux_ctx, verif_hash_aux, 2 * par.lambda_bytes);
+  par.vole_params.xof.xof_ctx_release(&verif_hash_aux_ctx);
 
   // vole consistency check
   both_vole_consistency_check_matrix(&par.vole_params, par.L, verif_cchk_matrix, verif_hash_aux, 2 * par.lambda_bytes);
@@ -703,6 +708,7 @@ EXPORT uint8_t sdith_verify(const signature_parameters* sig_params,       //
   par.vole_params.xof.xof_seed(&verif_hash_lines_ctx, verif_cchk_res_v, par.cchk_matrix_nrows * par.lambda_bytes);
   par.vole_params.xof.xof_seed(&verif_hash_lines_ctx, sign.circuit_in_pub, (par.num_inputs_pairs + 7) >> 3);
   par.vole_params.xof.xof_finalize_and_output(&verif_hash_lines_ctx, verif_hash_lines, 2 * par.lambda_bytes);
+  par.vole_params.xof.xof_ctx_release(&verif_hash_lines_ctx);
 
   // --------------------------------------
   // PIOP Protocol (verifier's side)
@@ -736,6 +742,7 @@ EXPORT uint8_t sdith_verify(const signature_parameters* sig_params,       //
   par.vole_params.xof.xof_finalize_and_output(&verif_chall_rng, verif_chall_a, par.lambda_bytes * par.rsd_codim_limbs);
   // note: the chall unitary are only needed if the mux tree contains one non-binary arity
   par.vole_params.xof.xof_output(&verif_chall_rng, verif_chall_unitary, par.lambda_bytes * par.rsd_w);
+  par.vole_params.xof.xof_ctx_release(&verif_chall_rng);
 
   rsd_public_key_times_challenge_ref(&par.vole_params, par.rsd_w, par.rsd_n, par.rsd_codim,  //
                                      verif_chall_a_H, verif_chall_a_y,                       //
@@ -789,6 +796,7 @@ EXPORT uint8_t sdith_verify(const signature_parameters* sig_params,       //
     par.vole_params.xof.xof_seed(&verif_hash_piop_ctx, cz_pub_full, par.degree * par.lambda_bytes);
     par.vole_params.xof.xof_seed(&verif_hash_piop_ctx, message, message_bytes);
     par.vole_params.xof.xof_finalize_and_output(&verif_hash_piop_ctx, verif_hash_piop, 2 * par.lambda_bytes);
+    par.vole_params.xof.xof_ctx_release(&verif_hash_piop_ctx);
     VERIFY_OR_FAIL(memcmp(verif_hash_piop, sign.hash_piop, 2 * par.lambda_bytes) == 0, "invalid hash_piop");
   }
 

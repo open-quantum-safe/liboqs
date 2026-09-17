@@ -112,7 +112,7 @@ upstreams:
   - name: sdith
     git_url: https://github.com/owaldron/sdith
     git_branch: feat/liboqs-integration
-    git_commit: 35ac3b13e5ff996e1dd605eedf07008bf5b666a4
+    git_commit: 0a0b7667f67496a43c2c95a7ac680386251a052a
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/schemes/META_{pretty_name_full}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'

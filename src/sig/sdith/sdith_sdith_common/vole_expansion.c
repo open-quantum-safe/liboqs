@@ -4,7 +4,10 @@
 #include "ggm.h"
 #include "sdith_prng.h"
 #include "vole_private.h"
+
+#ifndef SDITH3_FOR_LIBOQS
 #include "KeccakSpongetimes4.h"
+#endif
 
 #ifndef NDEBUG
 #define MSTACK_DEF(bytelen)                              \
@@ -26,8 +29,11 @@
   stack_cur += bytelen
 #endif
 
+#ifndef SDITH3_FOR_LIBOQS
+// these don't appear to be used here at all, so no corresponding liboqs implimentaion is added
 #define BATCH_XOF_STRIDE (((sizeof(KeccakWidth1600times4_SpongeInstance) + 31) / 32) * 32)
 #define BATCH_XOF(base, idx) ((KeccakWidth1600times4_SpongeInstance*)((uint8_t*)(base) + (idx) * BATCH_XOF_STRIDE))
+#endif
 
 /** @brief converts delta0 to delta1
  * delta0 has kappa*tau bits, encoding tau grey code encodings
@@ -232,11 +238,13 @@ EXPORT void prover_generate_midsize_grey_vole_from_seeds_bfs_ct_ref(  //
   // bound first (it commits all lambda bits, whereas the tweaked salts drop the
   // low GGM_TWEAK_BITS and the top prefix bits), then the per-rep subhashes.
   vole_params->xof_vector.finalize_and_output(commit_xofs, TAU, subhashes_ptrs, 2 * LAMBDA_BYTES);
+  vole_params->xof_vector.ctx_release(commit_xofs, TAU);
   xof_ctx commits_xof;
   vole_params->xof.xof_init_and_seed(&commits_xof, &HASH_BAVC_PREFIX, 1);
   vole_params->xof.xof_seed(&commits_xof, global_salt, LAMBDA_BYTES);
   vole_params->xof.xof_seed(&commits_xof, subhashes, 2 * TAU * LAMBDA_BYTES);
   vole_params->xof.xof_finalize_and_output(&commits_xof, commits_hash, 2 * LAMBDA_BYTES);
+  vole_params->xof.xof_ctx_release(&commits_xof);
 }
 
 /**
@@ -506,11 +514,13 @@ EXPORT void verifier_open_midsize_grey_vole_from_seeds_bfs_ref(  //
   // now, hash the per-rep subhashes into the final commits hash (same layout as
   // the prover's): commits_hash = H(HASH_BAVC_PREFIX, global_salt, subhashes).
   vole_params->xof_vector.finalize_and_output(commit_xofs, TAU, subhashes_ptrs, 2 * LAMBDA_BYTES);
+  vole_params->xof_vector.ctx_release(commit_xofs, TAU);
   xof_ctx commits_xof;
   vole_params->xof.xof_init_and_seed(&commits_xof, &HASH_BAVC_PREFIX, 1);
   vole_params->xof.xof_seed(&commits_xof, global_salt, LAMBDA_BYTES);
   vole_params->xof.xof_seed(&commits_xof, subhashes, 2 * TAU * LAMBDA_BYTES);
   vole_params->xof.xof_finalize_and_output(&commits_xof, commits_hash, 2 * LAMBDA_BYTES);
+  vole_params->xof.xof_ctx_release(&commits_xof);
 
   // postprocess q using delta
   const uint64_t* deltap64 = delta1;
@@ -786,6 +796,7 @@ EXPORT void both_vole_consistency_check_matrix(         //
   xof_ctx cchk_matrix_rng;
   vole_params->xof.xof_init_and_seed(&cchk_matrix_rng, chk_seed1, chk_seed1_bytes);
   vole_params->xof.xof_finalize_and_output(&cchk_matrix_rng, chk_matrix, cchk_nrows * cchk_col_bytes);
+  vole_params->xof.xof_ctx_release(&cchk_matrix_rng);
   // mask last columns with zeroes if needed
   uint8_t cchk_last_mask = 0xFF >> ((-cchk_ncols) & 7);
   uint8_t* const cm = (uint8_t*)chk_matrix;
