@@ -41,7 +41,8 @@ principal-submitters:
 crypto-assumption: Hardness of the supersingular endomorphism ring problem.
 website: https://sqisign.org/
 nist-round: 3
-standardization-status: Under [NIST](https://sqisign.org/spec/sqisign-20260901.pdf) consideration
+standardization-status: Under [NIST](https://sqisign.org/spec/sqisign-20260901.pdf)
+  consideration
 spec-version: 3.0
 oqs-support-tier: 3
 upstream-maintenance: Best effort
