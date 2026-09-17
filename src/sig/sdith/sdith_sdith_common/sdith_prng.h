@@ -3,6 +3,10 @@
 
 #include "commons.h"
 
+#ifdef SDITH3_FOR_LIBOQS
+#include <oqs/sha3_ops.h>
+#endif
+
 /**
  * Domain separation of the GGM tree and vole PRNGs.
  *
@@ -259,9 +263,20 @@ EXPORT void vole_rng_ext_cat5_rijndael256_ctrle_ref(void* out, uint64_t out_byte
 EXPORT void vole_rng_ext_cat5_rijndael256_ctrle_avx2(void* out, uint64_t out_bytes, const void* salt256,
                                                      const void* extseed, uint64_t repet_idx);
 
+
+#ifndef SDITH3_FOR_LIBOQS
 typedef struct xof_ctx_t {
   uint64_t DUMMY[224 / 8];
 } xof_ctx;
+#else
+typedef struct xof_ctx_t {
+  uint32_t shake;  // 128 or 256, set by Keccak_HashInitialize_SHAKE*
+  union {
+    OQS_SHA3_shake128_inc_ctx shake128_state;
+    OQS_SHA3_shake256_inc_ctx shake256_state;
+  };
+} xof_ctx;
+#endif
 
 typedef void XOF_INIT_F(xof_ctx* xof);
 EXPORT void xof_init_shake128(xof_ctx* xof);
@@ -288,6 +303,11 @@ typedef void XOF_FINALIZE_AND_OUTPUT_F(xof_ctx* xof, void* out, uint64_t out_byt
 EXPORT void xof_finalize_and_output_shake128(xof_ctx* xof, void* out, uint64_t out_bytes);
 EXPORT void xof_finalize_and_output_shake256(xof_ctx* xof, void* out, uint64_t out_bytes);
 
+// liboqs requires context be released. When not using liboqs, context is on the stack and this is a no-op.
+typedef void XOF_CTX_RELEASE_F(xof_ctx* xof);
+EXPORT void xof_ctx_release_shake128(xof_ctx* xof);
+EXPORT void xof_ctx_release_shake256(xof_ctx* xof);
+
 typedef struct xof_functions_t {
   XOF_INIT_F* xof_init;
   XOF_SEED_F* xof_seed;
@@ -295,6 +315,7 @@ typedef struct xof_functions_t {
   XOF_OUTPUT_F* xof_output;
   XOF_INIT_AND_SEED_F* xof_init_and_seed;
   XOF_FINALIZE_AND_OUTPUT_F* xof_finalize_and_output;
+  XOF_CTX_RELEASE_F* xof_ctx_release;
 } xof_functions;
 
 static const xof_functions xof_shake128 = {
@@ -303,7 +324,8 @@ static const xof_functions xof_shake128 = {
     xof_finalize_shake128,            //
     xof_output_shake128,              //
     xof_init_and_seed_shake128,       //
-    xof_finalize_and_output_shake128  //
+    xof_finalize_and_output_shake128, //
+    xof_ctx_release_shake128          //
 };
 static const xof_functions xof_shake256 = {
     xof_init_shake256,                //
@@ -311,7 +333,8 @@ static const xof_functions xof_shake256 = {
     xof_finalize_shake256,            //
     xof_output_shake256,              //
     xof_init_and_seed_shake256,       //
-    xof_finalize_and_output_shake256  //
+    xof_finalize_and_output_shake256, //
+    xof_ctx_release_shake256          //
 };
 
 typedef struct xof_vector_ctx_t xof_vector_ctx;
@@ -332,25 +355,33 @@ typedef void XOF_VECTOR_FINALIZE_AND_OUTPUT_F(xof_vector_ctx* xof, uint64_t num_
 EXPORT void xof_vector_finalize_and_output_shake128(xof_vector_ctx* xof, uint64_t num_xofs, uint8_t** out_hashes, uint64_t hash_bytes);
 EXPORT void xof_vector_finalize_and_output_shake256(xof_vector_ctx* xof, uint64_t num_xofs, uint8_t** out_hashes, uint64_t hash_bytes);
 
+// liboqs requires context be released. When not using liboqs, context is on the stack and this is a no-op.
+typedef void XOF_VECTOR_CTX_RELEASE_F(xof_vector_ctx* xof, uint64_t num_xofs);
+EXPORT void xof_vector_ctx_release_shake128(xof_vector_ctx* xof, uint64_t num_xofs);
+EXPORT void xof_vector_ctx_release_shake256(xof_vector_ctx* xof, uint64_t num_xofs);
+
 typedef struct xof_vector_functions_t {
   XOF_VECTOR_CTX_BYTES_F* ctx_bytes;
   XOF_VECTOR_INIT_AND_SEED_F* init_and_seed;
   XOF_VECTOR_SEED_F* seed;
   XOF_VECTOR_FINALIZE_AND_OUTPUT_F* finalize_and_output;
+  XOF_VECTOR_CTX_RELEASE_F* ctx_release;
 } xof_vector_functions;
 
 static const xof_vector_functions xof_vector_shake128 = {
   xof_vector_ctx_bytes_shake128,                //
   xof_vector_init_and_seed_shake128,                //
   xof_vector_seed_shake128,            //
-  xof_vector_finalize_and_output_shake128 //
+  xof_vector_finalize_and_output_shake128, //
+  xof_vector_ctx_release_shake128        //
 };
 
 static const xof_vector_functions xof_vector_shake256 = {
   xof_vector_ctx_bytes_shake256,                //
   xof_vector_init_and_seed_shake256,                //
   xof_vector_seed_shake256,            //
-  xof_vector_finalize_and_output_shake256 //
+  xof_vector_finalize_and_output_shake256, //
+  xof_vector_ctx_release_shake256        //
 };
 
 

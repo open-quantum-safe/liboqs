@@ -165,6 +165,7 @@ EXPORT void proofow_init_cipher_cat1_avx(                             //
   xof_seed_shake128(&xof, h_piop, H_PIOP_BYTES);
   xof_finalize_shake128(&xof);
   xof_output_shake128(&xof, s->p, 64);  // covers p0,p1,k0,k1
+  xof_ctx_release_shake128(&xof);
   s->p[0].v64[1] |= UINT64_C(1) << 63;  // ensures the msb of p0 is 1
   s->p[1].v64[1] |= UINT64_C(1) << 63;  // ensures the msb of p1 is 1
   s->k[0].v64[0] &= UINT64_C(-2);       // ensures the lsb of k0 is 0
@@ -187,6 +188,7 @@ EXPORT int proofow_grind_w_cipher_cat1_avx(proofow_ctx_t* proofow_state, bitvec_
   xof_seed_shake128(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake128(&xof, s->c, 32); // covers c0, c1
   xof_finalize_and_output_shake128(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake128(&xof);
   *ctr_in_out = ctr;
   return 1;
 }
@@ -207,6 +209,7 @@ EXPORT int proofow_verify_w_cipher_cat1_avx(proofow_ctx_t* proofow_state, bitvec
   xof_seed_shake128(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake128(&xof, s->c, 32);                          // covers c0, c1
   xof_finalize_and_output_shake128(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake128(&xof);
   return 1;
 }
 
@@ -233,6 +236,7 @@ EXPORT void proofow_init_cipher_cat5_avx(                             //
   xof_seed_shake256(&xof, h_piop, H_PIOP_BYTES);
   xof_finalize_shake256(&xof);
   xof_output_shake256(&xof, s->p, 128);  // covers p0,p1,k0,k1 (32 bytes each)
+  xof_ctx_release_shake256(&xof);
   s->p[0].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p0 is 1
   s->p[1].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p1 is 1
   s->k[0].v64[0] &= UINT64_C(-2);        // ensures the lsb of k0 is 0
@@ -255,6 +259,7 @@ EXPORT int proofow_grind_w_cipher_cat5_avx(proofow_ctx_t* proofow_state, bitvec_
   xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake256(&xof, s->c, 64);                          // covers c0, c1 (32 bytes each)
   xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake256(&xof);
   *ctr_in_out = ctr;
   return 1;
 }
@@ -275,6 +280,7 @@ EXPORT int proofow_verify_w_cipher_cat5_avx(proofow_ctx_t* proofow_state, bitvec
   xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake256(&xof, s->c, 64);                          // covers c0, c1 (32 bytes each)
   xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake256(&xof);
   return 1;
 }
 
@@ -301,6 +307,7 @@ EXPORT void proofow_init_cipher_cat3_avx(                             //
   xof_seed_shake256(&xof, h_piop, H_PIOP_BYTES);
   xof_finalize_shake256(&xof);
   xof_output_shake256(&xof, s->p, 128);  // covers p0,p1,k0,k1 (32 bytes each)
+  xof_ctx_release_shake256(&xof);
   s->p[0].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p0 is 1
   s->p[1].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p1 is 1
   s->k[0].v64[0] &= UINT64_C(-2);        // ensures the lsb of k0 is 0
@@ -323,6 +330,7 @@ EXPORT int proofow_grind_w_cipher_cat3_avx(proofow_ctx_t* proofow_state, bitvec_
   xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake256(&xof, s->c, 64);                          // covers c0, c1 (32 bytes each)
   xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake256(&xof);
   *ctr_in_out = ctr;
   return 1;
 }
@@ -343,6 +351,7 @@ EXPORT int proofow_verify_w_cipher_cat3_avx(proofow_ctx_t* proofow_state, bitvec
   xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake256(&xof, s->c, 64);                          // covers c0, c1 (32 bytes each)
   xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake256(&xof);
   return 1;
 }
 // --- matrix_rng (avx2) ---------------------------------------------------------

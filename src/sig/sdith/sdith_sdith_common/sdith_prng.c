@@ -3,9 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef SDITH3_FOR_LIBOQS
 #include "aes128_ctrle.h"
-#include "KeccakHash.h"
-#include "KeccakHashtimes4.h"
+#include "fips202_glue.h"
+#include "fips202x4_glue.h"
+#else
+#include "../aes/aes128_ctrle.h"
+#include "../sha3/KeccakHash.h"
+#include "../sha3/KeccakHashtimes4.h"
+#endif
+
 #include "rijndael256_ctrle.h"
 #include "sdith_prng_private.h"
 #include "vole_private.h"
@@ -212,6 +219,21 @@ EXPORT void xof_finalize_and_output_shake256(xof_ctx* xof, void* out, uint64_t o
   Keccak_HashSqueeze(inst, out, out_bytes << 3);
 }
 
+EXPORT void xof_ctx_release_shake128(xof_ctx* xof) {
+  #ifndef SDITH3_FOR_LIBOQS
+  (void)xof;  // no-op
+  #else
+  OQS_SHA3_shake128_inc_ctx_release(&xof->shake128_state);
+  #endif
+}
+EXPORT void xof_ctx_release_shake256(xof_ctx* xof) {
+  #ifndef SDITH3_FOR_LIBOQS
+  (void)xof;  // no-op
+  #else
+  OQS_SHA3_shake256_inc_ctx_release(&xof->shake256_state);
+  #endif
+}
+
 // vector shake function
 
 static const uint64_t SINGLE_XOF_STRIDE = (sizeof(KeccakWidth1600_SpongeInstance) + 31) & UINT64_C(-32);
@@ -316,6 +338,43 @@ EXPORT void xof_vector_finalize_and_output_shake256(xof_vector_ctx* xof, uint64_
   xof_vector_finalize_and_output_shake128(xof, num_xofs, out_hashes, hash_bytes); // same
 }
 
+EXPORT void xof_vector_ctx_release_shake128(xof_vector_ctx* xof, uint64_t num_xofs) {
+  #ifndef SDITH3_FOR_LIBOQS
+  (void)xof;  // no-op
+  (void)num_xofs;  // no-op
+  #else
+  const uint64_t num_batches = num_xofs >> UINT64_C(2);
+  const uint64_t num_remainder = num_xofs & UINT64_C(3);
+  void* sbase = BATCH_XOF(xof, num_batches);
+  for (uint64_t b = 0; b < num_batches; ++b) {
+    KeccakWidth1600times4_SpongeInstance* const inst = BATCH_XOF(xof, b);
+    OQS_SHA3_shake128_x4_inc_ctx_release(&inst->shake128_state);
+  }
+  for (uint64_t r = 0; r < num_remainder; ++r) {
+    KeccakWidth1600_SpongeInstance* const inst = SINGLE_XOF(sbase, r);
+    OQS_SHA3_shake128_inc_ctx_release(&inst->shake128_state);
+  }
+  #endif
+}
+EXPORT void xof_vector_ctx_release_shake256(xof_vector_ctx* xof, uint64_t num_xofs) {
+  #ifndef SDITH3_FOR_LIBOQS
+  (void)xof;  // no-op
+  (void)num_xofs;  // no-op
+  #else
+  const uint64_t num_batches = num_xofs >> UINT64_C(2);
+  const uint64_t num_remainder = num_xofs & UINT64_C(3);
+  void* sbase = BATCH_XOF(xof, num_batches);
+  for (uint64_t b = 0; b < num_batches; ++b) {
+    KeccakWidth1600times4_SpongeInstance* const inst = BATCH_XOF(xof, b);
+    OQS_SHA3_shake256_x4_inc_ctx_release(&inst->shake256_state);
+  }
+  for (uint64_t r = 0; r < num_remainder; ++r) {
+    KeccakWidth1600_SpongeInstance* const inst = SINGLE_XOF(sbase, r);
+    OQS_SHA3_shake256_inc_ctx_release(&inst->shake256_state);
+  }
+  #endif
+}
+
 // cipher-based proof of work
 
 EXPORT uint64_t bytes_of_proofow_ctx_cipher_cat1() { return sizeof(struct proofow_state128_t); }
@@ -339,6 +398,7 @@ EXPORT void proofow_init_cipher_cat1_ref(                             //
   xof_seed_shake128(&xof, h_piop, H_PIOP_BYTES);
   xof_finalize_shake128(&xof);
   xof_output_shake128(&xof, s->p, 64);  // covers p0,p1,k0,k1
+  xof_ctx_release_shake128(&xof);
   s->p[0].v64[1] |= UINT64_C(1) << 63;  // ensures the msb of p0 is 1
   s->p[1].v64[1] |= UINT64_C(1) << 63;  // ensures the msb of p1 is 1
   s->k[0].v64[0] &= UINT64_C(-2);       // ensures the lsb of k0 is 0
@@ -364,6 +424,7 @@ EXPORT int proofow_grind_w_cipher_cat1_ref(proofow_ctx_t* proofow_state, bitvec_
       xof_seed_shake128(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
       xof_seed_shake128(&xof, s->c, 32); // covers c0, c1
       xof_finalize_and_output_shake128(&xof, delta0_out, s->delta0_out_bytes);
+      xof_ctx_release_shake128(&xof);
       *ctr_in_out = ctr;
       return 1;
     }
@@ -390,6 +451,7 @@ EXPORT int proofow_verify_w_cipher_cat1_ref(proofow_ctx_t* proofow_state, bitvec
   xof_seed_shake128(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake128(&xof, s->c, 32);                          // covers c0, c1
   xof_finalize_and_output_shake128(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake128(&xof);
   return 1;
 }
 
@@ -416,6 +478,7 @@ EXPORT void proofow_init_cipher_cat5_ref(                            //
   xof_seed_shake256(&xof, h_piop, H_PIOP_BYTES);
   xof_finalize_shake256(&xof);
   xof_output_shake256(&xof, s->p, 128);  // covers p0,p1,k0,k1 (32 bytes each)
+  xof_ctx_release_shake256(&xof);
   s->p[0].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p0 is 1
   s->p[1].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p1 is 1
   s->k[0].v64[0] &= UINT64_C(-2);        // ensures the lsb of k0 is 0
@@ -441,6 +504,7 @@ EXPORT int proofow_grind_w_cipher_cat5_ref(proofow_ctx_t* proofow_state, bitvec_
       xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
       xof_seed_shake256(&xof, s->c, 64);  // covers c0, c1 (32 bytes each)
       xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+      xof_ctx_release_shake256(&xof);
       *ctr_in_out = ctr;
       return 1;
     }
@@ -467,6 +531,7 @@ EXPORT int proofow_verify_w_cipher_cat5_ref(proofow_ctx_t* proofow_state, bitvec
   xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake256(&xof, s->c, 64);                          // covers c0, c1 (32 bytes each)
   xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake256(&xof);
   return 1;
 }
 
@@ -495,6 +560,7 @@ EXPORT void proofow_init_cipher_cat3_ref(                            //
   xof_seed_shake256(&xof, h_piop, H_PIOP_BYTES);
   xof_finalize_shake256(&xof);
   xof_output_shake256(&xof, s->p, 128);  // covers p0,p1,k0,k1 (32 bytes each)
+  xof_ctx_release_shake256(&xof);
   s->p[0].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p0 is 1
   s->p[1].v64[3] |= UINT64_C(1) << 63;   // ensures the msb of p1 is 1
   s->k[0].v64[0] &= UINT64_C(-2);        // ensures the lsb of k0 is 0
@@ -520,6 +586,7 @@ EXPORT int proofow_grind_w_cipher_cat3_ref(proofow_ctx_t* proofow_state, bitvec_
       xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
       xof_seed_shake256(&xof, s->c, 64);  // covers c0, c1 (32 bytes each)
       xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+      xof_ctx_release_shake256(&xof);
       *ctr_in_out = ctr;
       return 1;
     }
@@ -546,6 +613,7 @@ EXPORT int proofow_verify_w_cipher_cat3_ref(proofow_ctx_t* proofow_state, bitvec
   xof_seed_shake256(&xof, &ctr, PROOFOW_CTR_REVEALED_BYTES);  // always 4 bytes
   xof_seed_shake256(&xof, s->c, 64);                          // covers c0, c1 (32 bytes each)
   xof_finalize_and_output_shake256(&xof, delta0_out, s->delta0_out_bytes);
+  xof_ctx_release_shake256(&xof);
   return 1;
 }
 
@@ -581,6 +649,7 @@ EXPORT int proofow_grind_w_shake_cat1(  //
     xof_init_and_seed_shake128(&ctx, s->h_piop, H_PIOP_BYTES);
     xof_seed_shake128(&ctx, &ctr, 4);
     xof_finalize_and_output_shake128(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
+    xof_ctx_release_shake128(&ctx);
     if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) == 0) {
       *ctr_in_out = ctr;
       memcpy(delta0_out, s->delta0_and_vgrind, s->delta0_out_bytes);
@@ -604,6 +673,7 @@ EXPORT int proofow_verify_w_shake_cat1(  //
   xof_init_and_seed_shake128(&ctx, s->h_piop, H_PIOP_BYTES);
   xof_seed_shake128(&ctx, &ctr, 4);
   xof_finalize_and_output_shake128(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
+  xof_ctx_release_shake128(&ctx);
   if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) != 0) return 0;
   memcpy(delta0_out, s->delta0_and_vgrind, s->delta0_out_bytes);
   return 1;
@@ -639,6 +709,7 @@ EXPORT int proofow_grind_w_shake_cat3(  //
     xof_init_and_seed_shake256(&ctx, s->h_piop, H_PIOP_BYTES);
     xof_seed_shake256(&ctx, &ctr, 4);
     xof_finalize_and_output_shake256(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
+    xof_ctx_release_shake256(&ctx);
     if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) == 0) {
       *ctr_in_out = ctr;
       memcpy(delta0_out, s->delta0_and_vgrind, s->delta0_out_bytes);
@@ -662,6 +733,7 @@ EXPORT int proofow_verify_w_shake_cat3(  //
   xof_init_and_seed_shake256(&ctx, s->h_piop, H_PIOP_BYTES);
   xof_seed_shake256(&ctx, &ctr, 4);
   xof_finalize_and_output_shake256(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
+  xof_ctx_release_shake256(&ctx);
   if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) != 0) return 0;
   memcpy(delta0_out, s->delta0_and_vgrind, s->delta0_out_bytes);
   return 1;
@@ -696,7 +768,8 @@ EXPORT int proofow_grind_w_shake_cat5(  //
   for (uint64_t ctr = *ctr_in_out; ctr < CTR_MAX; ctr++) {
     xof_init_and_seed_shake256(&ctx, s->h_piop, H_PIOP_BYTES);
     xof_seed_shake256(&ctx, &ctr, 4);
-    xof_finalize_and_output_shake128(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
+    xof_finalize_and_output_shake256(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
+    xof_ctx_release_shake256(&ctx);
     if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) == 0) {
       *ctr_in_out = ctr;
       memcpy(delta0_out, s->delta0_and_vgrind, s->delta0_out_bytes);
@@ -719,9 +792,13 @@ EXPORT int proofow_verify_w_shake_cat5(  //
   xof_ctx ctx __attribute((aligned(16)));
   xof_init_and_seed_shake256(&ctx, s->h_piop, H_PIOP_BYTES);
   xof_seed_shake256(&ctx, &ctr, 4);
-  xof_finalize_and_output_shake128(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
-  if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) != 0) return 0;
+  xof_finalize_and_output_shake256(&ctx, s->delta0_and_vgrind, s->delta0_and_vgrind_bytes);
+  if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) != 0) {
+    xof_ctx_release_shake256(&ctx);
+    return 0;
+  }
   memcpy(delta0_out, s->delta0_and_vgrind, s->delta0_out_bytes);
+  xof_ctx_release_shake256(&ctx);
   return 1;
 }
 
@@ -752,8 +829,10 @@ EXPORT int proofow_verify_w_shake_cat5(  //
         if (extract_kappabit_uint(s->w, s->kappa_tau, buf[j]) == 0) {                         \
           *ctr_in_out = ctr + j;                                                             \
           memcpy(delta0_out, buf[j], s->delta0_out_bytes);                                   \
+          xof_vector_ctx_release_##SHAKE(xv, 4);                                             \
           return 1;                                                                          \
         }                                                                                    \
+      xof_vector_ctx_release_##SHAKE(xv, 4);                                                 \
     }                                                                                        \
     for (; ctr < CTR_MAX; ctr++) { /* <4 tail, byte-identical scalar path */                 \
       xof_ctx c __attribute((aligned(16)));                                                  \
@@ -763,8 +842,10 @@ EXPORT int proofow_verify_w_shake_cat5(  //
       if (extract_kappabit_uint(s->w, s->kappa_tau, s->delta0_and_vgrind) == 0) {             \
         *ctr_in_out = ctr;                                                                   \
         memcpy(delta0_out, s->delta0_and_vgrind, s->delta0_out_bytes);                       \
+        xof_ctx_release_##SHAKE(&c);                                                         \
         return 1;                                                                            \
       }                                                                                      \
+      xof_ctx_release_##SHAKE(&c);                                                           \
     }                                                                                        \
     return 0;                                                                                \
   }
