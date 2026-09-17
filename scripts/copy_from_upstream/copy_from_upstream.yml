@@ -7,6 +7,7 @@ upstreams:
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pqclean_scheme}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
+    patches: [sqisign-mem.patch]
   -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git

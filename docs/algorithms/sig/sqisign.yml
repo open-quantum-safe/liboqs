@@ -49,6 +49,7 @@ upstream-maintenance: Best effort
 upstream-statement-url: null
 primary-upstream:
   source: https://github.com/SQISign/the-sqisign/commit/7358e8786e2990fbf68ec2171606966d16872ddc
+    with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: SQIsign-p324-3

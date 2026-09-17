@@ -1,5 +1,5 @@
 #include "quaternion_tests.h"
-#include <stdlib.h>
+#include <oqs/common.h>
 #include <stdio.h>
 #include <prng.h>
 
@@ -50,7 +50,7 @@ quat_test_input_random_ideal_lattice_generation(quat_lattice_t *lattices,
                                                 int iterations)
 {
     quat_ideal_t *ideals;
-    ideals = malloc(iterations * sizeof(quat_ideal_t));
+    ideals = OQS_MEM_malloc(iterations * sizeof(quat_ideal_t));
     for (int i = 0; i < iterations; i++)
         quat_ideal_init(&(ideals[i]));
     int randret = quat_test_input_random_ideal_generation(ideals, norm_bitsize, iterations);
@@ -61,7 +61,7 @@ quat_test_input_random_ideal_lattice_generation(quat_lattice_t *lattices,
             ibz_copy(&(norms[iter]), &(ideals[iter].norm));
         }
     }
-    free(ideals);
+    OQS_MEM_insecure_free(ideals);
     return (randret);
 }
 
