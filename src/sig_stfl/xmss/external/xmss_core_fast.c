@@ -267,7 +267,7 @@ static void treehash_init(const xmss_params *params,
         gen_leaf_wots(params, stack+stackoffset*params->n, sk_seed, pub_seed, ltree_addr, ots_addr);
         stacklevels[stackoffset] = 0;
         stackoffset++;
-        if (params->tree_height - params->bds_k > 0 && i == 3) {
+        if (params->tree_height > params->bds_k && i == 3) {
             memcpy(state->treehash[0].node, stack+stackoffset*params->n, params->n);
         }
         while (stackoffset>1 && stacklevels[stackoffset-1] == stacklevels[stackoffset-2]) {
@@ -441,7 +441,7 @@ static char bds_state_update(const xmss_params *params,
 
     state->stacklevels[state->stackoffset] = 0;
     state->stackoffset++;
-    if (params->tree_height - params->bds_k > 0 && idx == 3) {
+    if (params->tree_height > params->bds_k && idx == 3) {
         memcpy(state->treehash[0].node, state->stack+state->stackoffset*params->n, params->n);
     }
     while (state->stackoffset>1 && state->stacklevels[state->stackoffset-1] == state->stacklevels[state->stackoffset-2]) {
@@ -646,7 +646,7 @@ int xmss_core_sign(const xmss_params *params,
     const unsigned char *pub_root = sk + params->index_bytes + 2*params->n;
     int ret;
 
-    uint16_t i = 0;
+    unsigned int i = 0;
 
     // TODO (from upstream) refactor BDS state not to need separate treehash instances
     bds_state state;
