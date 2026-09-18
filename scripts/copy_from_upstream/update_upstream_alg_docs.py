@@ -97,7 +97,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                oqs_yaml = load_yaml(oqs_yaml_path)
 
             upstream_base_url = ui['git_url'][:-len(".git")]
-            # upstream is special: We will take the upstream git commit information 
+            # upstream is special: We will take the upstream git commit information
             # (possibly with added patch comment) as it is what drove the update
 
             # Need to check if yml is of old format. If so, update to new format
@@ -226,7 +226,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 
-# Merge documentation in liboqs_root/docs/algorithms/kem/kem['name'].yml with 
+# Merge documentation in liboqs_root/docs/algorithms/kem/kem['name'].yml with
 # upstream information from libjade (patched with copy_from_upstream.py):
 # Args:
 # kems: List of kems in copy_from_libjade.yml
@@ -265,7 +265,7 @@ def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=
                         if kem['name'] in patchfilename:
                             patches_done=" with copy_from_upstream patches"
                 if 'formally-verified-upstreams' in oqs_yaml and upstream['name'] in oqs_yaml['formally-verified-upstreams']:
-                    
+
                     lhs = oqs_yaml['formally-verified-upstreams'][upstream['name']]['source']
                 else:
                     lhs = ''
@@ -297,7 +297,7 @@ def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
         if write_changes:
             store_yaml(oqs_yaml_path, oqs_yaml)
-            
+
 
 
 def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes=False):
@@ -340,7 +340,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 oqs_yaml['principal-submitters'] = rhs_if_not_equal(oqs_yaml['principal-submitters'], upstream_yaml['principal-submitters'], "principal-submitters")
 
                 upstream_base_url = ui['git_url'][:-len(".git")]
-                # upstream is special: We will take the upstream git commit information 
+                # upstream is special: We will take the upstream git commit information
                 # (possibly with added patch comment) as it is what drove the update
 
                 # Need to check if yml is of old format. If so, update to new format

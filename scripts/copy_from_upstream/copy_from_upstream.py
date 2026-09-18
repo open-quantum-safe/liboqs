@@ -76,7 +76,7 @@ def shell(command, expect=0):
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 # Generate template from specified scheme to replace old file in 'copy' mode
-# but preserves additions made to file in prior runs of 'libjade' mode 
+# but preserves additions made to file in prior runs of 'libjade' mode
 def generator(destination_file_path, template_filename, delimiter, family, scheme_desired):
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
@@ -338,7 +338,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
                                                          location.format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
-                    # This is to override any implememtations provided by the default upstream that 
+                    # This is to override any implememtations provided by the default upstream that
                     # are also specifically specified
                     for arch in family['arch_specific_upstream_locations']:
                         if arch in scheme['scheme_paths']:
@@ -445,7 +445,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
                                                          location.format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
-                    # This is to override any implememtations provided by the default upstream that 
+                    # This is to override any implememtations provided by the default upstream that
                     # are also specifically specified
                     for arch in family['arch_specific_upstream_locations']:
                         if arch in scheme['scheme_paths']:
@@ -604,7 +604,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
                         else:
                             if preserve_folder_structure:
                                 subprocess.run(
-                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.dirname(s))])                    
+                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.dirname(s))])
                             else:
                                 subprocess.run(
                                     ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
@@ -622,7 +622,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             ul = family['arch_specific_upstream_locations'][impl]
         elif 'arch_specific_upstream_locations' in scheme and impl in scheme['arch_specific_upstream_locations']:
             ul = scheme['arch_specific_upstream_locations'][impl]
-        
+
         os.remove(os.path.join(dst_basedir, 'src', family['type'], family['name'],
                                '{}_{}_{}'.format(ul, scheme['pqclean_scheme'], impl),
                                'Makefile'))
@@ -790,7 +790,7 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     family,
                     scheme,
                 )
-        
+
         if with_libjade:
             replacer_contextual(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
@@ -803,10 +803,10 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
 
 
 def copy_from_upstream(slh_dsa_inst: dict):
-    """Integrate upstreams implementations and algorithms described in 
+    """Integrate upstreams implementations and algorithms described in
     copy_from_upstream.yml.
 
-    :param slh_dsa_inst: instruction for integrating SLH-DSA, only used for 
+    :param slh_dsa_inst: instruction for integrating SLH-DSA, only used for
     rendering alg_support.cmake
     """
     for t in ["kem", "sig"]:
@@ -849,11 +849,11 @@ def copy_from_upstream(slh_dsa_inst: dict):
     if not keepdata:
         shutil.rmtree('repos')
 
-# Copy algorithms from libjade specified in copy_from_libjade.yml, apply 
+# Copy algorithms from libjade specified in copy_from_libjade.yml, apply
 # patches and generate select templates
 # Can be run independant of 'copy' mode.
-# When adding an algorithm to copy_from_libjade.yml, the boolean 
-# 'libjade_implementation' and list of implementation 'libjade_implementations' 
+# When adding an algorithm to copy_from_libjade.yml, the boolean
+# 'libjade_implementation' and list of implementation 'libjade_implementations'
 # must updated for the relevant algorithm in copy_from_upstream.yml
 def copy_from_libjade():
     for t in ["kem", "sig"]:
