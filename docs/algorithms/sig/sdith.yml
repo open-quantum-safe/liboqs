@@ -1,0 +1,465 @@
+name: SDITH
+type: signature
+principal-submitters:
+- Carlos Aguilar Melchor
+- Slim Bettaieb
+- Loïc Bidoux
+- Thibauld Feneuil
+- Philippe Gaborit
+- Nicolas Gama
+- Shay Gueron
+- James Howe
+- Andreas Hülsing
+- David Joseph
+- Antoine Joux
+- Mukul Kulkarni
+- Edoardo Persichetti
+- Tovohery H. Randrianarisoa
+- Matthieu Rivain
+- Dongze Yue
+crypto-assumption: Hardness of syndrom decoding problem for random linear codes on
+  a finite field.
+website: https://sdith.org/
+nist-round: 3
+standardization-status: Under [NIST](https://csrc.nist.gov/projects/pqc-dig-sig) consideration
+spec-version: NIST Round 3
+primary-upstream:
+  source: https://github.com/owaldron/sdith/commit/4343e660f4175f0b76a909a21cff312fe6544c2e
+  spdx-license-identifier: Apache-2.0
+parameter-sets:
+- name: SDitH3-L1-gf2-short
+  oqs_alg: OQS_SIG_sdith_sdith3_l1_gf2_short
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 70
+  length-secret-key: 147
+  length-signature: 3721
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L1-gf2-short-cipherpow
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_short_cipherpow
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 70
+  length-secret-key: 147
+  length-signature: 3721
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L1-gf2-fast
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 70
+  length-secret-key: 147
+  length-signature: 4914
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L1-gf2-fast-cipherpow
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast_cipherpow
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 70
+  length-secret-key: 147
+  length-signature: 4914
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L3-gf2-short
+  oqs_alg: OQS_SIG_sdith_sdith3_l3_gf2_short
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 98
+  length-secret-key: 208
+  length-signature: 8484
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L3-gf2-short-cipherpow
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_short_cipherpow
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 98
+  length-secret-key: 208
+  length-signature: 8484
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L3-gf2-fast
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 98
+  length-secret-key: 208
+  length-signature: 10852
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L3-gf2-fast-cipherpow
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast_cipherpow
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 98
+  length-secret-key: 208
+  length-signature: 10452
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L5-gf2-short
+  oqs_alg: OQS_SIG_sdith_sdith3_l5_gf2_short
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 132
+  length-secret-key: 275
+  length-signature: 15147
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L5-gf2-short-cipherpow
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_short_cipherpow
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 132
+  length-secret-key: 275
+  length-signature: 15147
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L5-gf2-fast
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 132
+  length-secret-key: 275
+  length-signature: 19144
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: SDitH3-L5-gf2-fast-cipherpow
+  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast_cipherpow
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 132
+  length-secret-key: 275
+  length-signature: 19144
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - aes
+      - avx
+      - avx2
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    - AES: primary-upstream
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+upstream-maintenance: Actively maintained
+upstream-statement-url: NA
+oqs-support-tier: 3
+auxiliary-submitters: []
