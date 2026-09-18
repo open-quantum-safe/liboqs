@@ -77,6 +77,13 @@ static OQS_STATUS example_stack(void) {
 
 		return OQS_ERROR;
 	}
+        /*shared secrets comparision checking - author tanvi medapati*/
+        if(memcmp(shared_secret_e, shared_secret_d, OQS_KEM_ml_kem_768_length_shared_secret)!=0){
+                fprintf(stderr, "error : shared secrets do not match.\n");
+                cleanup_stack(secret_key, OQS_KEM_ml_kem_768_length_secret_key, shared_secret_e, shared_secret_d, OQS_KEM_ml_kem_768_length_shared_secret);
+                return OQS_ERROR;
+        }
+        printf("[example_stack] shared secrets match.");
 	printf("[example_stack] OQS_KEM_ml_kem_768 operations completed.\n");
 
 	return OQS_SUCCESS; // success!
