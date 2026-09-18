@@ -174,18 +174,18 @@ static void deep_state_swap(const xmss_params *params,
     const size_t t_size = ((params->tree_height + 1) > ((1 << params->bds_k) - params->bds_k - 1)
          ? (params->tree_height + 1)
          : ((1 << params->bds_k) - params->bds_k - 1))
-        * params->n;
+        * (size_t)params->n;
     unsigned char *t = OQS_MEM_malloc(t_size);
     if (t == NULL) {
         return;
     }
     unsigned int i;
 
-    memswap(a->stack, b->stack, t, (params->tree_height + 1) * params->n);
+    memswap(a->stack, b->stack, t, (unsigned long long)(params->tree_height + 1) * params->n);
     memswap(&a->stackoffset, &b->stackoffset, t, sizeof(a->stackoffset));
     memswap(a->stacklevels, b->stacklevels, t, params->tree_height + 1);
-    memswap(a->auth, b->auth, t, params->tree_height * params->n);
-    memswap(a->keep, b->keep, t, (params->tree_height >> 1) * params->n);
+    memswap(a->auth, b->auth, t, (unsigned long long)params->tree_height * params->n);
+    memswap(a->keep, b->keep, t, (unsigned long long)(params->tree_height >> 1) * params->n);
 
     for (i = 0; i < params->tree_height - params->bds_k; i++) {
         memswap(&a->treehash[i].h, &b->treehash[i].h, t, sizeof(a->treehash[i].h));
@@ -195,7 +195,7 @@ static void deep_state_swap(const xmss_params *params,
         memswap(a->treehash[i].node, b->treehash[i].node, t, params->n);
     }
 
-    memswap(a->retain, b->retain, t, ((1 << params->bds_k) - params->bds_k - 1) * params->n);
+    memswap(a->retain, b->retain, t, (unsigned long long)((1 << params->bds_k) - params->bds_k - 1) * params->n);
     memswap(&a->next_leaf, &b->next_leaf, t, sizeof(a->next_leaf));
 
     OQS_MEM_secure_free(t, t_size);
@@ -773,14 +773,14 @@ int xmss_core_sign(const xmss_params *params,
     *smlen += params->wots_sig_bytes;
 
     // the auth path was already computed during the previous round
-    memcpy(sm, state.auth, params->tree_height*params->n);
+    memcpy(sm, state.auth, (size_t)params->tree_height * params->n);
 
     if (idx < (1ULL << params->tree_height) - 1) {
         bds_round(params, &state, (const unsigned long)idx, sk_seed, pub_seed, ots_addr);
         bds_treehash_update(params, &state, (params->tree_height - params->bds_k) >> 1, sk_seed, pub_seed, ots_addr);
     }
 
-    *smlen += params->tree_height*params->n;
+    *smlen += (unsigned long long)params->tree_height * params->n;
 
     /* Write the updated BDS state back into sk. */
     xmss_serialize_state(params, sk, &state);
@@ -810,9 +810,9 @@ int xmssmt_core_keypair(const xmss_params *params,
 
     // TODO (from upstream) refactor BDS state not to need separate treehash instances
     const size_t states_size = (2*params->d - 1)* sizeof(bds_state);
-    const size_t treehash_size = ((2*params->d - 1) * (params->tree_height - params->bds_k))* sizeof(treehash_inst);
+    const size_t treehash_size = (size_t)(2*params->d - 1) * (params->tree_height - params->bds_k) * sizeof(treehash_inst);
     bds_state *states = OQS_MEM_calloc(2*params->d - 1, sizeof(bds_state));
-    treehash_inst *treehash = OQS_MEM_calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
+    treehash_inst *treehash = OQS_MEM_calloc((size_t)(2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
     if (states == NULL || treehash == NULL) {
         return -1;
     }
@@ -887,11 +887,11 @@ int xmssmt_core_sign(const xmss_params *params,
 
     // TODO (from upstream) refactor BDS state not to need separate treehash instances
     const size_t states_size = (2*params->d - 1)* sizeof(bds_state);
-    const size_t treehash_size = (2*params->d - 1) * (params->tree_height - params->bds_k) * sizeof(treehash_inst);
+    const size_t treehash_size = (size_t)(2*params->d - 1) * (params->tree_height - params->bds_k) * sizeof(treehash_inst);
     const size_t tmp_size = 5 * params->n +
                                 params->padding_len + params->n + 32;
     bds_state *states = OQS_MEM_calloc(2*params->d - 1, sizeof(bds_state));
-    treehash_inst *treehash = OQS_MEM_calloc((2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
+    treehash_inst *treehash = OQS_MEM_calloc((size_t)(2*params->d - 1) * (params->tree_height - params->bds_k), sizeof(treehash_inst));
     unsigned char *tmp = OQS_MEM_malloc(5 * params->n +
                                 params->padding_len + params->n + 32);
     if (states == NULL || treehash == NULL || tmp == NULL) {
@@ -1031,9 +1031,9 @@ int xmssmt_core_sign(const xmss_params *params,
     sm += params->wots_sig_bytes;
     *smlen += params->wots_sig_bytes;
 
-    memcpy(sm, states[0].auth, params->tree_height*params->n);
-    sm += params->tree_height*params->n;
-    *smlen += params->tree_height*params->n;
+    memcpy(sm, states[0].auth, (size_t)params->tree_height * params->n);
+    sm += (size_t)params->tree_height * params->n;
+    *smlen += (unsigned long long)params->tree_height * params->n;
 
     // prepare signature of remaining layers
     for (i = 1; i < params->d; i++) {
@@ -1048,9 +1048,9 @@ int xmssmt_core_sign(const xmss_params *params,
             ret = -1;
             goto cleanup;
         }
-        memcpy(sm, states[i].auth, params->tree_height*params->n);
-        sm += params->tree_height*params->n;
-        *smlen += params->tree_height*params->n;
+        memcpy(sm, states[i].auth, (size_t)params->tree_height * params->n);
+        sm += (size_t)params->tree_height * params->n;
+        *smlen += (unsigned long long)params->tree_height * params->n;
     }
 
     updates = (params->tree_height - params->bds_k) >> 1;
