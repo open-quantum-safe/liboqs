@@ -495,15 +495,15 @@ static OQS_STATUS test_reject_mismatched_lms_key(void) {
 #if !defined(OQS_ENABLE_SIG_STFL_LMS) || !defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN)
 	return OQS_SUCCESS;
 #else
-	const char *big = "LMS_SHA256_H5_W1";   /* length_signature 8688 */
-	const char *small = "LMS_SHA256_H5_W8";  /* length_signature 1296 */
+	const char *lms_big = "LMS_SHA256_H5_W1";   /* length_signature 8688 */
+	const char *lms_small = "LMS_SHA256_H5_W8";  /* length_signature 1296 */
 	OQS_STATUS ret = OQS_ERROR;
 	uint8_t *pk = NULL, *blob = NULL;
 	size_t bloblen = 0;
 
-	OQS_SIG_STFL *sig_big = OQS_SIG_STFL_new(big);
-	OQS_SIG_STFL_SECRET_KEY *sk_big = OQS_SIG_STFL_SECRET_KEY_new(big);
-	OQS_SIG_STFL_SECRET_KEY *sk_small = OQS_SIG_STFL_SECRET_KEY_new(small);
+	OQS_SIG_STFL *sig_big = OQS_SIG_STFL_new(lms_big);
+	OQS_SIG_STFL_SECRET_KEY *sk_big = OQS_SIG_STFL_SECRET_KEY_new(lms_big);
+	OQS_SIG_STFL_SECRET_KEY *sk_small = OQS_SIG_STFL_SECRET_KEY_new(lms_small);
 	if (sig_big == NULL || sk_big == NULL || sk_small == NULL) {
 		goto cleanup;
 	}
