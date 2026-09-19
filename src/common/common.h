@@ -15,6 +15,10 @@
 
 #include <oqs/oqsconfig.h>
 
+#ifdef OQS_USE_OPENSSL
+#include <openssl/opensslconf.h>
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
