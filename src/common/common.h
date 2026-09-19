@@ -15,10 +15,6 @@
 
 #include <oqs/oqsconfig.h>
 
-#ifdef OQS_USE_OPENSSL
-#include <openssl/opensslconf.h>
-#endif
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -90,40 +86,6 @@ extern "C" {
       exit(EXIT_FAILURE);                                                      \
     }                                                                          \
   } while (0)
-
-/**
- * This macro is intended to replace those assert()s
- * involving side-effecting statements in aes/aes_ossl.c.
- *
- * assert() becomes a no-op when -DNDEBUG is defined,
- * which causes compilation failures when the statement
- * being checked also results in side-effects.
- *
- * This is a temporary workaround until a better error
- * handling strategy is developed.
- */
-#ifdef OQS_USE_OPENSSL
-#ifdef OPENSSL_NO_STDIO
-#define OQS_OPENSSL_GUARD(x)                                                   \
-  do {                                                                         \
-    if (1 != (x)) {                                                            \
-      fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n",   \
-              x);                                                              \
-      exit(EXIT_FAILURE);                                                      \
-    }                                                                          \
-  } while (0)
-#else // OPENSSL_NO_STDIO
-#define OQS_OPENSSL_GUARD(x)                                                   \
-  do {                                                                         \
-    if (1 != (x)) {                                                            \
-      fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n",   \
-              x);                                                              \
-      OSSL_FUNC(ERR_print_errors_fp)(stderr);                                  \
-      exit(EXIT_FAILURE);                                                      \
-    }                                                                          \
-  } while (0)
-#endif // OPENSSL_NO_STDIO
-#endif // OQS_USE_OPENSSL
 
 /**
  * Certain functions (such as OQS_randombytes_openssl in
