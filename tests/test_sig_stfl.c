@@ -483,6 +483,60 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 }
 
 /*
+ * A serialised LMS/HSS secret key carries its own parameter set, and every LMS
+ * variant shares the same 64-byte private-key length, so a key for one variant
+ * deserialises into any other variant's object. oqs_sig_stfl_lms_sign then emits
+ * sig_bytes of the deserialised key into a buffer the caller sized to the
+ * object's own length_signature, overrunning it when the deserialised variant
+ * has the larger signature. Deserialising a key whose signature length does not
+ * match the object's variant must be rejected.
+ */
+static OQS_STATUS test_reject_mismatched_lms_key(void) {
+#if !defined(OQS_ENABLE_SIG_STFL_LMS) || !defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN)
+	return OQS_SUCCESS;
+#else
+	const char *lms_big = "LMS_SHA256_H5_W1";   /* length_signature 8688 */
+	const char *lms_small = "LMS_SHA256_H5_W8";  /* length_signature 1296 */
+	OQS_STATUS ret = OQS_ERROR;
+	uint8_t *pk = NULL, *blob = NULL;
+	size_t bloblen = 0;
+
+	OQS_SIG_STFL *sig_big = OQS_SIG_STFL_new(lms_big);
+	OQS_SIG_STFL_SECRET_KEY *sk_big = OQS_SIG_STFL_SECRET_KEY_new(lms_big);
+	OQS_SIG_STFL_SECRET_KEY *sk_small = OQS_SIG_STFL_SECRET_KEY_new(lms_small);
+	if (sig_big == NULL || sk_big == NULL || sk_small == NULL) {
+		goto cleanup;
+	}
+
+	pk = OQS_MEM_malloc(sig_big->length_public_key);
+	if (pk == NULL) {
+		goto cleanup;
+	}
+	if (OQS_SIG_STFL_keypair(sig_big, pk, sk_big) != OQS_SUCCESS) {
+		goto cleanup;
+	}
+	if (OQS_SIG_STFL_SECRET_KEY_serialize(&blob, &bloblen, sk_big) != OQS_SUCCESS) {
+		goto cleanup;
+	}
+
+	/* The H5_W1 key (8688-byte signature) must not load into the H5_W8 object
+	 * (1296-byte signature); pre-fix it did, and signing overran the buffer. */
+	if (OQS_SIG_STFL_SECRET_KEY_deserialize(sk_small, blob, bloblen, NULL) == OQS_SUCCESS) {
+		goto cleanup;
+	}
+
+	ret = OQS_SUCCESS;
+cleanup:
+	OQS_MEM_secure_free(blob, bloblen);
+	OQS_MEM_insecure_free(pk);
+	OQS_SIG_STFL_SECRET_KEY_free(sk_small);
+	OQS_SIG_STFL_SECRET_KEY_free(sk_big);
+	OQS_SIG_STFL_free(sig_big);
+	return ret;
+#endif
+}
+
+/*
  * This function tests verification of LMS signatures that are shorter than the
  * header the parser reads. The signature buffers are allocated at exactly the
  * length passed to verify so that a sanitizer build observes any over-read.
@@ -1183,6 +1237,9 @@ void *test_correctness_wrapper(void *arg) {
 		td->rc2 = test_invalid_sig(td->alg_name);
 	} else if (strstr(td->alg_name, "LMS") != NULL) {
 		td->rc2 = test_invalid_sig_lms(td->alg_name);
+		if (td->rc2 == OQS_SUCCESS) {
+			td->rc2 = test_reject_mismatched_lms_key();
+		}
 	}
 	OQS_thread_stop();
 	return NULL;
@@ -1457,6 +1514,9 @@ err:
 		rc2 = test_invalid_sig(alg_name);
 	} else if (strstr(alg_name, "LMS") != NULL) {
 		rc2 = test_invalid_sig_lms(alg_name);
+		if (rc2 == OQS_SUCCESS) {
+			rc2 = test_reject_mismatched_lms_key();
+		}
 	}
 
 	OQS_destroy();

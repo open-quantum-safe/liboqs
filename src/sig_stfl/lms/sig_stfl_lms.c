@@ -49,9 +49,6 @@ OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_keypair(uint8_t *public_key
 /* Convert LMS secret key object to byte string */
 static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
-/* Insert lms byte string in an LMS secret key object */
-static OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context);
-
 static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
 // ======================== LMS Maccros ======================== //
@@ -102,6 +99,10 @@ OQS_STATUS OQS_SIG_STFL_alg_lms_##lms_variant##_keypair(uint8_t *public_key, OQS
         return OQS_SUCCESS;\
 }\
 \
+static OQS_STATUS OQS_SECRET_KEY_LMS_##lms_variant##_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context) {\
+        return oqs_deserialize_lms_key(sk, sk_buf, sk_len, context, OQS_SIG_STFL_alg_lms_##lms_variant##_length_signature);\
+}\
+\
 OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_##LMS_VARIANT##_new(void) {\
 \
         OQS_SIG_STFL_SECRET_KEY *sk = OQS_MEM_calloc(1, sizeof(OQS_SIG_STFL_SECRET_KEY));\
@@ -114,7 +115,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_##LMS_VARIANT##_new(void) {\
 \
         sk->serialize_key = OQS_SECRET_KEY_LMS_serialize_key;\
 \
-        sk->deserialize_key = OQS_SECRET_KEY_LMS_deserialize_key;\
+        sk->deserialize_key = OQS_SECRET_KEY_LMS_##lms_variant##_deserialize_key;\
 \
         sk->lock_key = NULL;\
 \
@@ -280,11 +281,6 @@ static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(uint8_t **sk_buf_ptr, size_t 
 		sk->unlock_key(sk->mutex);
 	}
 	return status;
-}
-
-/* Insert lms byte string in an LMS secret key object */
-static OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context) {
-	return oqs_deserialize_lms_key(sk, sk_buf, sk_len, context);
 }
 
 static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
