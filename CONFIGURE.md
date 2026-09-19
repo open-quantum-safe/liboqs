@@ -6,6 +6,7 @@ The following options can be passed to CMake before the build file generation pr
 - [BUILD_SHARED_LIBS](#BUILD_SHARED_LIBS)
 - [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE)
 - [CMAKE_INSTALL_PREFIX](#CMAKE_INSTALL_PREFIX)
+- [CMAKE_POSITION_INDEPENDENT_CODE](#CMAKE_POSITION_INDEPENDENT_CODE)
 - [OQS_ALGS_ENABLED](#OQS_ALGS_ENABLED)
 - [OQS_BUILD_ONLY_LIB](#OQS_BUILD_ONLY_LIB)
 - [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG)
@@ -65,6 +66,16 @@ The exact compilation commands can be found in `compile_commands.json` under the
 ## CMAKE_INSTALL_PREFIX
 
 See the [CMake documentation](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html).
+
+## CMAKE_POSITION_INDEPENDENT_CODE
+
+Can be set to `ON` or `OFF`. When `ON`, liboqs is compiled as position independent code (`-fPIC` on GCC and Clang).
+
+**Default**: `ON`.
+
+liboqs is assembled from CMake `OBJECT` libraries, which do not inherit the implicit position independent code setting of a shared library target, so this is enabled by default rather than left to CMake.
+Consumers that only ever link liboqs statically, such as embedded targets that provide no global offset table or procedure linkage table, can set it to `OFF` on the command line or in a toolchain file.
+Setting it to `OFF` together with [BUILD_SHARED_LIBS](#BUILD_SHARED_LIBS) `ON` is not supported; in that case liboqs emits a warning and keeps position independent code enabled.
 
 ## OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG
 
