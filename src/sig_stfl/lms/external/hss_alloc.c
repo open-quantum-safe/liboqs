@@ -52,7 +52,7 @@ static size_t compute_level_memory_usage(int i, unsigned subtree_size,
             /* the size of each subtree */
         size_t size_subtree = sizeof(struct subtree) + MALLOC_OVERHEAD +
                                size_hash * (((size_t)2<<subtree_size)-1);
-        size_t size_stack = (num_subtrees-1) * size_hash * j * subtree_size;
+        size_t size_stack = (size_t)(num_subtrees-1) * size_hash * j * subtree_size;
         memory_used += num_subtrees * size_subtree + size_stack;
         stack_total += size_stack;
     }
@@ -61,7 +61,7 @@ static size_t compute_level_memory_usage(int i, unsigned subtree_size,
     int num_subtrees = 1 + have_next_subtree;  /* No BUILDING subtrees */
     size_t size_subtree = sizeof(struct subtree) + MALLOC_OVERHEAD +
                                size_hash * (((size_t)2<<top_subtree_size)-1);
-    size_t size_stack = (num_subtrees-1) * size_hash * j * subtree_size;
+    size_t size_stack = (size_t)(num_subtrees-1) * size_hash * j * subtree_size;
     memory_used += num_subtrees * size_subtree + size_stack;
     stack_total += size_stack;
 
@@ -503,7 +503,7 @@ printf( "Allocation = %ld\n", initial_mem_target - mem_target + best_mem ); /* D
                     s->stack = NULL;
                 } else {
                     s->stack = &stack[stack_index];
-                    stack_index += hash_size[i] * levels_below;
+                    stack_index += (size_t)hash_size[i] * levels_below;
                 }
             }
 

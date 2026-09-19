@@ -74,7 +74,7 @@ bool lm_validate_signature(
 
     merkle_index_t count_nodes = (merkle_index_t)1 << height;
 
-    if (signature_len != n * height) return false;  /* We expect the auth */
+    if (signature_len != (size_t)n * height) return false;  /* We expect the auth */
                                     /* path to be there as the last element */
     if (count >= count_nodes) return false;  /* Index out of range */
     merkle_index_t node_num = count + count_nodes;

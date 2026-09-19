@@ -827,8 +827,8 @@ bool hss_generate_working_key(
         for (n = 0; n < p_order->count_nodes; n++ ) {
             if (p_order->prev_node && n == p_order->prev_index) continue;
 
-            hash_subtree( &subtree->nodes[ hash_size * (lower_index + n)],
-                          &sub->h[ hash_size * sub->num_hashes * n ],
+            hash_subtree( &subtree->nodes[ (merkle_index_t)hash_size * (lower_index + n)],
+                          &sub->h[ (merkle_index_t)hash_size * sub->num_hashes * n ],
                           sub->level, sub->node_num_first_target + n,
                           hash_size, tree->h, I);
         }
