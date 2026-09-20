@@ -1,0 +1,4 @@
+pytest==9.1.1
+pytest-xdist==3.8.0
+pyyaml==6.0.3
+requests==2.34.2
