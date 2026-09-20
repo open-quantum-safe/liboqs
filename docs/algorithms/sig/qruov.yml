@@ -1,0 +1,1286 @@
+name: QR-UOV
+type: signature
+principal-submitters:
+- Rika Akiyama
+- Hiroki Furue
+- Yasuhiko Ikematsu
+- Fumitaka Hoshino
+- Koha Kinjo
+- Haruhisa Kosuge
+- Satoshi Nakamura
+- Shingo Orihara
+- Tsuyoshi Takagi
+- Kimihiro Yamakoshi
+crypto-assumption: multivariate quadratic equations, oil and vinegar
+nist-round: 3
+standardization-status: Under [NIST](https://csrc.nist.gov/Projects/pqc-dig-sig/round-3-additional-signatures)
+  consideration
+spec-version: NIST Round 3
+upstream-maintenance: Best effort
+upstream-statement-url: null
+oqs-support-tier: 3
+primary-upstream:
+  source: https://github.com/0rlych1kk4/round3/commit/36e9a7efadd6bfbba5e8d619507eb158ac60ad16
+  spdx-license-identifier: 0BSD
+parameter-sets:
+- name: QRUOV-1q127L10-aes
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 11041
+  length-secret-key: 32
+  length-signature: 541
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q127L10-shake
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 11041
+  length-secret-key: 32
+  length-signature: 541
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q127L3-aes
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 24256
+  length-secret-key: 32
+  length-signature: 200
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q127L3-shake
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 24256
+  length-secret-key: 32
+  length-signature: 200
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q31L10-aes
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 12266
+  length-secret-key: 32
+  length-signature: 435
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q31L10-shake
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 12266
+  length-secret-key: 32
+  length-signature: 435
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q31L3-aes
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 23641
+  length-secret-key: 32
+  length-signature: 157
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q31L3-shake
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 23641
+  length-secret-key: 32
+  length-signature: 157
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q7L10-aes
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 20641
+  length-secret-key: 32
+  length-signature: 331
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-1q7L10-shake
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 20641
+  length-secret-key: 32
+  length-signature: 331
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q127L10-aes
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 35454
+  length-secret-key: 32
+  length-signature: 821
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q127L10-shake
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 35454
+  length-secret-key: 32
+  length-signature: 821
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q127L3-aes
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 71884
+  length-secret-key: 32
+  length-signature: 292
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q127L3-shake
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 71884
+  length-secret-key: 32
+  length-signature: 292
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q31L10-aes
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 34391
+  length-secret-key: 32
+  length-signature: 643
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q31L10-shake
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 34391
+  length-secret-key: 32
+  length-signature: 643
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q31L3-aes
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 70976
+  length-secret-key: 32
+  length-signature: 233
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q31L3-shake
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 70976
+  length-secret-key: 32
+  length-signature: 233
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q7L10-aes
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 55141
+  length-secret-key: 32
+  length-signature: 489
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-3q7L10-shake
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 55141
+  length-secret-key: 32
+  length-signature: 489
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q127L10-aes
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 63541
+  length-secret-key: 32
+  length-signature: 1039
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q127L10-shake
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 63541
+  length-secret-key: 32
+  length-signature: 1039
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q127L3-aes
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 173660
+  length-secret-key: 32
+  length-signature: 392
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q127L3-shake
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 173660
+  length-secret-key: 32
+  length-signature: 392
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q31L10-aes
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 58516
+  length-secret-key: 32
+  length-signature: 807
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q31L10-shake
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 58516
+  length-secret-key: 32
+  length-signature: 807
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q31L3-aes
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 158405
+  length-secret-key: 32
+  length-signature: 306
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q31L3-shake
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 158405
+  length-secret-key: 32
+  length-signature: 306
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q7L10-aes
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 135391
+  length-secret-key: 32
+  length-signature: 662
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+- name: QRUOV-5q7L10-shake
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 135391
+  length-secret-key: 32
+  length-signature: 662
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    default: true
+  - upstream: primary-upstream
+    upstream-id: opt
+    supported-platforms: []
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - aes
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+website: https://info.isl.ntt.co.jp/crypt/eng/qr-uov/

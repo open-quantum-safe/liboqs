@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:f2006179-6bc4-458a-ad7d-6baebcab6e60",
+  "serialNumber": "urn:uuid:8aef1183-a364-451a-be1d-f35fc5b2cef3",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-16T07:12:12.278055+00:00",
+    "timestamp": "2026-09-22T16:48:43.819494+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
       "name": "liboqs",
-      "version": "5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1"
+      "version": "078c4d3c73b982de8d7a1665d68073bfdaf48147"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
       "name": "liboqs",
-      "version": "5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1"
+      "version": "078c4d3c73b982de8d7a1665d68073bfdaf48147"
     },
     {
       "type": "cryptographic-asset",
@@ -4497,6 +4497,606 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q127L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q127L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q127L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q127L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q127L3-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q127L3-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q127L3-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q127L3-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q31L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q31L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q31L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q31L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q31L3-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q31L3-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q31L3-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q31L3-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q7L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q7L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-1q7L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-1q7L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q127L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q127L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q127L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q127L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q127L3-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q127L3-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q127L3-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q127L3-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q31L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q31L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q31L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q31L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q31L3-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q31L3-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q31L3-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q31L3-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q7L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q7L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-3q7L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-3q7L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q127L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q127L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q127L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q127L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q127L3-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q127L3-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q127L3-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q127L3-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q31L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q31L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q31L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q31L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q31L3-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q31L3-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q31L3-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q31L3-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q7L10-aes:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q7L10-aes",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:QRUOV-5q7L10-shake:avx2:x86_64",
+      "name": "QR-UOV",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "QRUOV-5q7L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
         }
       }
     },
@@ -9807,7 +10407,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
+      "ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -10033,6 +10633,36 @@
         "alg:mqom3_cat5_gf2_shorter_ot:memopt:generic",
         "alg:mqom3_cat5_gf2_shorter_ot:avx2:x86_64",
         "alg:mqom3_cat5_gf2_shorter_ot:neon:armv8-a",
+        "alg:QRUOV-1q127L10-aes:avx2:x86_64",
+        "alg:QRUOV-1q127L10-shake:avx2:x86_64",
+        "alg:QRUOV-1q127L3-aes:avx2:x86_64",
+        "alg:QRUOV-1q127L3-shake:avx2:x86_64",
+        "alg:QRUOV-1q31L10-aes:avx2:x86_64",
+        "alg:QRUOV-1q31L10-shake:avx2:x86_64",
+        "alg:QRUOV-1q31L3-aes:avx2:x86_64",
+        "alg:QRUOV-1q31L3-shake:avx2:x86_64",
+        "alg:QRUOV-1q7L10-aes:avx2:x86_64",
+        "alg:QRUOV-1q7L10-shake:avx2:x86_64",
+        "alg:QRUOV-3q127L10-aes:avx2:x86_64",
+        "alg:QRUOV-3q127L10-shake:avx2:x86_64",
+        "alg:QRUOV-3q127L3-aes:avx2:x86_64",
+        "alg:QRUOV-3q127L3-shake:avx2:x86_64",
+        "alg:QRUOV-3q31L10-aes:avx2:x86_64",
+        "alg:QRUOV-3q31L10-shake:avx2:x86_64",
+        "alg:QRUOV-3q31L3-aes:avx2:x86_64",
+        "alg:QRUOV-3q31L3-shake:avx2:x86_64",
+        "alg:QRUOV-3q7L10-aes:avx2:x86_64",
+        "alg:QRUOV-3q7L10-shake:avx2:x86_64",
+        "alg:QRUOV-5q127L10-aes:avx2:x86_64",
+        "alg:QRUOV-5q127L10-shake:avx2:x86_64",
+        "alg:QRUOV-5q127L3-aes:avx2:x86_64",
+        "alg:QRUOV-5q127L3-shake:avx2:x86_64",
+        "alg:QRUOV-5q31L10-aes:avx2:x86_64",
+        "alg:QRUOV-5q31L10-shake:avx2:x86_64",
+        "alg:QRUOV-5q31L3-aes:avx2:x86_64",
+        "alg:QRUOV-5q31L3-shake:avx2:x86_64",
+        "alg:QRUOV-5q7L10-aes:avx2:x86_64",
+        "alg:QRUOV-5q7L10-shake:avx2:x86_64",
         "alg:SLH_DSA_PURE_SHA2_128S:slhdsa-c:generic",
         "alg:SLH_DSA_PURE_SHA2_128F:slhdsa-c:generic",
         "alg:SLH_DSA_PURE_SHA2_192S:slhdsa-c:generic",
@@ -11693,6 +12323,186 @@
     },
     {
       "ref": "alg:mqom3_cat5_gf2_shorter_ot:neon:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q127L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q127L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q127L3-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q127L3-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q31L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q31L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q31L3-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q31L3-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q7L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-1q7L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q127L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q127L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q127L3-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q127L3-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q31L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q31L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q31L3-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q31L3-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q7L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-3q7L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q127L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q127L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q127L3-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q127L3-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q31L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q31L10-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q31L3-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q31L3-shake:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q7L10-aes:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:QRUOV-5q7L10-shake:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ]
