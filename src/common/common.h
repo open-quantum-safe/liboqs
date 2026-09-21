@@ -140,11 +140,15 @@ extern "C" {
  *
  * By default the visibility of all the symbols is defined to "hidden"
  * Only the library API should be marked as default
+ * On Windows, symbols are marked as exported only when building as a shared
+ * library.
  *
  * Example: OQS_API return_value function_name(void);
  */
-#if defined(_WIN32)
+#if defined(_WIN32) && defined(BUILD_SHARED_LIBS)
 #define OQS_API __declspec(dllexport)
+#elif defined(_WIN32)
+#define OQS_API
 #else
 #define OQS_API __attribute__((visibility("default")))
 #endif
