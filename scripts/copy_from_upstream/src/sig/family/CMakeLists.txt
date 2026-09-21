@@ -10,8 +10,26 @@ set(_{{ family|upper }}_OBJS "")
         {%- if not common_dep['include_only'] %}
 
 if({% for used_by in common_deps_usedby[common_dep['name']] -%}OQS_ENABLE_SIG_{{ family }}_{{ used_by['scheme_c'] }}{%- if used_by['impl_name'] != default_implementation %}_{{ used_by['impl_name'] }}{% endif -%}{%- if not loop.last %} OR {% endif -%}{%- endfor -%})
-    add_library({{ family }}_{{ common_dep['name'] }} OBJECT {% for source_file in common_dep['sources_addl']|sort -%}{{ upstream_location }}_{{ common_dep['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
+    add_library({{ family }}_{{ common_dep['name'] }} OBJECT
+        {# The common dependency's own sources #}
+        {%- for source_file in common_dep['sources_addl']|sort %} {{ upstream_location }}_{{ common_dep['name'] }}/{{ source_file }}
+        {%- endfor %}
+        {# Plus the sources of every include-only common dependency it builds on #}
+        {%- if common_dep['common_dep'] %}
+            {%- for base in common_deps %}
+                {%- if base['include_only'] and base['name'] in common_dep['common_dep'].split() %}
+                    {%- for sf in base['sources_addl']|sort %} {{ upstream_location }}_{{ base['name'] }}/{{ sf }}
+                    {%- endfor %}
+                {%- endif %}
+            {%- endfor %}
+        {%- endif -%}
+)
     target_include_directories({{ family }}_{{ common_dep['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ upstream_location }}_{{ common_dep['name'] }})
+        {%- if common_dep['common_dep'] %}
+            {%- for sibling in common_dep['common_dep'].split() %}
+    target_include_directories({{ family }}_{{ common_dep['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ upstream_location }}_{{ sibling }})
+            {%- endfor %}
+        {%- endif %}
         {%- if common_dep['required_flags'] %}
     target_compile_options({{ family }}_{{ common_dep['name'] }} PRIVATE {%- for flag in common_dep['required_flags'] %}{%- if flag == 'arm_sha3' %} -march=armv8-a+crypto+sha3 {%- else -%}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endif -%}{%- endfor -%})
         {%- endif %}
@@ -46,8 +64,13 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
         {%- if common_deps is defined %}
             {%- for cdep in common_deps %}
-                {%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'] %}
+                {%- if 'common_dep' in impl and cdep['name'] in impl['common_dep'] %}
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ upstream_location }}_{{ cdep['name'] }})
+                    {%- if cdep['common_dep'] %}
+                        {%- for base in cdep['common_dep'].split() %}
+    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ upstream_location }}_{{ base }})
+                        {%- endfor %}
+                    {%- endif %}
                 {%- endif %}
             {%- endfor %}
         {%- endif %}

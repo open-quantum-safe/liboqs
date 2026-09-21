@@ -20,6 +20,12 @@
 #include <immintrin.h>
 #include <stdint.h>
 
+/* liboqs links one shared copy of this code into every scheme variant, so the
+ * internal symbols need a namespace of their own. See gen_namespace.sh. */
+#ifdef SDITH3_FOR_LIBOQS
+#include "sdith_namespace.h"
+#endif
+
 /* new round key = g ^ w ^ (w<<4) ^ (w<<8) ^ (w<<12), with g broadcast to all 4 words.
  * The w-terms are a byte-word prefix-XOR of w, which factors into log steps:
  *   a = w ^ (w<<4)      -> [w0, w0^w1, w1^w2, w2^w3]
