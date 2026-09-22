@@ -226,7 +226,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
 
         /* Compute the root node of this subtree. */
         compute_root(params, root, leaf, idx_leaf, sm, pub_seed, node_addr, compute_root_buf, thash_buf);
-        sm += params->tree_height*params->n;
+        sm += (size_t)params->tree_height * params->n;
     }
 
     /* Check if the root node equals the root node in the public key. */
