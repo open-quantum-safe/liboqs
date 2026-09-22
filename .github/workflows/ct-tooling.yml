@@ -53,6 +53,7 @@ jobs:
     container:
       image: openquantumsafe/ci-ubuntu-latest:latest
     strategy:
+      fail-fast: false
       matrix:
         algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
         compiler: [gcc, clang]
@@ -84,6 +85,7 @@ jobs:
           ./ct_test.sh valgrind-varlat ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$ALGORITHM"
 
       - name: Upload valgrind_varlat logs
+        if: always()
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
           name: valgrind_varlat_${{ matrix.algorithm }}_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
@@ -96,6 +98,7 @@ jobs:
     container:
       image: openquantumsafe/ci-ubuntu-latest:latest
     strategy:
+      fail-fast: false
       matrix:
         algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
         compiler: [clang]
@@ -118,6 +121,7 @@ jobs:
           ./ct_test.sh memsan ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$ALGORITHM"
 
       - name: Upload memsan logs
+        if: always()
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
           name: memsan_${{ matrix.algorithm }}_${{ matrix.compiler }}_${{matrix.liboqs_build}}_${{ matrix.opt_flag }}_logs
