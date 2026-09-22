@@ -103,6 +103,7 @@ static bool oqs_lms_parameters_match_oid(uint32_t oid, unsigned levels, const pa
 	return true;
 }
 
+#ifdef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
 static bool oqs_lms_private_key_matches_oid(uint32_t oid, const uint8_t *private_key) {
 	unsigned levels = 0;
 	param_set_t lm_type[MAX_HSS_LEVELS] = {0};
@@ -114,13 +115,21 @@ static bool oqs_lms_private_key_matches_oid(uint32_t oid, const uint8_t *private
 
 	return oqs_lms_parameters_match_oid(oid, levels, lm_type, lm_ots_type);
 }
+#endif
 
 /*
  * Classify pk as HSS vs LMS-native using pk/sig headers.
  * HSS pk: u32(L) || u32(lm_type) || u32(lm_ots) || ...
  * LMS pk: u32(lm_type) || u32(lm_ots) || ...
+ *
+ * This mirrors is_hss_public_key() in external/hss_verify_inc.c so that the
+ * wrapper and the verifier classify a public key identically; keep the two
+ * in sync.
  */
-static bool oqs_lms_is_hss_public_key(const uint8_t *public_key, const uint8_t *signature) {
+static bool oqs_lms_is_hss_public_key(const uint8_t *public_key, const uint8_t *signature, size_t signature_len) {
+	if (signature_len < HSS_SIG_INC_HEADER_LEN) {
+		return false;
+	}
 	uint_fast32_t sig_levels = (uint_fast32_t)get_bigendian(signature, 4) + 1U;
 	uint_fast32_t sig_lm_ots = (uint_fast32_t)get_bigendian(signature + 8, 4);
 	uint_fast32_t pk_levels = (uint_fast32_t)get_bigendian(public_key, 4);
@@ -151,7 +160,7 @@ static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signatu
 	if (signature_len != hss_get_signature_len(levels, lm_type, lm_ots_type)) {
 		return false;
 	}
-	if (oqs_lms_is_hss_public_key(public_key, signature)) {
+	if (oqs_lms_is_hss_public_key(public_key, signature, signature_len)) {
 		if ((unsigned)get_bigendian(public_key, 4) != levels ||
 		        (param_set_t)get_bigendian(public_key + 4, 4) != lm_type[0] ||
 		        (param_set_t)get_bigendian(public_key + 8, 4) != lm_ots_type[0] ||
@@ -162,7 +171,8 @@ static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signatu
 	           oqs_lms_type_list_contains((param_set_t)get_bigendian(public_key, 4)) &&
 	           oqs_lmots_type_list_contains((param_set_t)get_bigendian(public_key + 4, 4))) {
 		if ((param_set_t)get_bigendian(public_key, 4) != lm_type[0] ||
-		        (param_set_t)get_bigendian(public_key + 4, 4) != lm_ots_type[0]) {
+		        (param_set_t)get_bigendian(public_key + 4, 4) != lm_ots_type[0] ||
+		        (unsigned)get_bigendian(signature, 4) + 1U != levels) {
 			return false;
 		}
 	} else {

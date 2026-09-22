@@ -12,6 +12,12 @@
 
 #include <oqs/oqs.h>
 
+#if defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN) && \
+	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1) && \
+	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8)
+#define OQS_LMS_REGRESSIONS_ENABLED 1
+#endif
+
 static int failures = 0;
 
 #define CHECK(cond, msg) do { \
@@ -28,6 +34,7 @@ static int failures = 0;
 	} \
 } while (0)
 
+#ifdef OQS_LMS_REGRESSIONS_ENABLED
 static OQS_STATUS store_success(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
 	(void)sk_buf;
 	(void)sk_buf_len;
@@ -84,10 +91,9 @@ static void guarded_buffer_free(guarded_buffer *guard) {
 	}
 }
 #endif
+#endif /* OQS_LMS_REGRESSIONS_ENABLED */
 
-#if defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN) && \
-	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1) && \
-	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8)
+#ifdef OQS_LMS_REGRESSIONS_ENABLED
 static void test_lms_contracts(void) {
 	static const uint8_t message[] = "LMS security regression";
 	OQS_SIG_STFL *large_sig = NULL, *small_sig = NULL;
@@ -197,9 +203,7 @@ cleanup:
 
 int main(void) {
 	OQS_init();
-#if defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN) && \
-	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1) && \
-	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8)
+#ifdef OQS_LMS_REGRESSIONS_ENABLED
 	test_lms_contracts();
 #endif
 	OQS_destroy();
