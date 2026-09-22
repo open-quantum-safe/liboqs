@@ -115,6 +115,30 @@ static bool oqs_lms_private_key_matches_oid(uint32_t oid, const uint8_t *private
 	return oqs_lms_parameters_match_oid(oid, levels, lm_type, lm_ots_type);
 }
 
+/*
+ * Classify pk as HSS vs LMS-native using pk/sig headers.
+ * HSS pk: u32(L) || u32(lm_type) || u32(lm_ots) || ...
+ * LMS pk: u32(lm_type) || u32(lm_ots) || ...
+ */
+static bool oqs_lms_is_hss_public_key(const uint8_t *public_key, const uint8_t *signature) {
+	uint_fast32_t sig_levels = (uint_fast32_t)get_bigendian(signature, 4) + 1U;
+	uint_fast32_t sig_lm_ots = (uint_fast32_t)get_bigendian(signature + 8, 4);
+	uint_fast32_t pk_levels = (uint_fast32_t)get_bigendian(public_key, 4);
+	param_set_t pk_lm_type = (param_set_t)get_bigendian(public_key + 4, 4);
+	param_set_t pk_lm_ots = (param_set_t)get_bigendian(public_key + 8, 4);
+
+	if (sig_levels < MIN_HSS_LEVELS || sig_levels > MAX_HSS_LEVELS) {
+		return false;
+	}
+	if (pk_levels != sig_levels) {
+		return false;
+	}
+	if (pk_lm_ots != sig_lm_ots) {
+		return false;
+	}
+	return oqs_lms_type_list_contains(pk_lm_type) && oqs_lmots_type_list_contains(pk_lm_ots);
+}
+
 static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	unsigned levels = 0;
 	param_set_t lm_type[MAX_HSS_LEVELS] = {0};
@@ -127,10 +151,21 @@ static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signatu
 	if (signature_len != hss_get_signature_len(levels, lm_type, lm_ots_type)) {
 		return false;
 	}
-	if ((unsigned)get_bigendian(public_key, 4) != levels ||
-	        (param_set_t)get_bigendian(public_key + 4, 4) != lm_type[0] ||
-	        (param_set_t)get_bigendian(public_key + 8, 4) != lm_ots_type[0] ||
-	        (unsigned)get_bigendian(signature, 4) + 1U != levels) {
+	if (oqs_lms_is_hss_public_key(public_key, signature)) {
+		if ((unsigned)get_bigendian(public_key, 4) != levels ||
+		        (param_set_t)get_bigendian(public_key + 4, 4) != lm_type[0] ||
+		        (param_set_t)get_bigendian(public_key + 8, 4) != lm_ots_type[0] ||
+		        (unsigned)get_bigendian(signature, 4) + 1U != levels) {
+			return false;
+		}
+	} else if (levels == 1 &&
+	           oqs_lms_type_list_contains((param_set_t)get_bigendian(public_key, 4)) &&
+	           oqs_lmots_type_list_contains((param_set_t)get_bigendian(public_key + 4, 4))) {
+		if ((param_set_t)get_bigendian(public_key, 4) != lm_type[0] ||
+		        (param_set_t)get_bigendian(public_key + 4, 4) != lm_ots_type[0]) {
+			return false;
+		}
+	} else {
 		return false;
 	}
 
