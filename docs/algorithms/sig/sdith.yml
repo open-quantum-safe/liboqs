@@ -24,7 +24,7 @@ nist-round: 3
 standardization-status: Under [NIST](https://csrc.nist.gov/projects/pqc-dig-sig) consideration
 spec-version: NIST Round 3
 primary-upstream:
-  source: https://github.com/owaldron/sdith/commit/e297eab65fe9f820295c3de4c96f4b855dddcb60
+  source: https://github.com/owaldron/sdith/commit/8a4bf13e932358f95c5117a492992d7552352dc6
   spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: SDitH3-L1-gf2-short
