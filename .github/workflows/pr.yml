@@ -56,6 +56,10 @@ jobs:
     needs: check-push-result
     uses: ./.github/workflows/platforms.yml
 
+  qruov-implementations:
+    needs: check-push-result
+    uses: ./.github/workflows/qruov-implementations.yml
+
   code-coverage:
     needs: check-push-result
     if: needs.check-push-result.outputs.skip_basic == 'false'
