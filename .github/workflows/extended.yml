@@ -30,39 +30,17 @@ jobs:
         working-directory: build
         run: ./tests/test_aes
 
-  resolve-alg-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.algs.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
-      - name: Resolve algorithms
-        id: algs
-        run: |
-          python3 -m pip install --require-hashes -r .github/workflows/requirements.txt
-          python3 - <<'PY'
-          import os, sys, json, re
-          sys.path.insert(0, 'tests')
-          import helpers
-          all_algs = helpers.available_kems_by_name() + helpers.available_sigs_by_name()
-          legacy_algorithms = [a for a in all_algs]
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-            f.write(f"matrix={json.dumps(legacy_algorithms)}\n")
-          PY
-
   constant-time-x64:
-    needs: [resolve-alg-matrix]
     runs-on: ubuntu-latest
     container:
       image: openquantumsafe/ci-ubuntu-latest:latest
     strategy:
       fail-fast: false
       matrix:
-        algorithm: ${{ fromJson(needs.resolve-alg-matrix.outputs.matrix) }}
+        type: [kems, sigs]
         compiler: [gcc]
         liboqs_build: [generic, haswell]
         opt_flag: [-O0]
-      max-parallel: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
@@ -71,19 +49,52 @@ jobs:
         shell: bash
         env:
           OPT_FLAG: ${{ matrix.opt_flag }}
-          ALGORITHM: ${{ matrix.algorithm }}
+          TYPE: ${{ matrix.type }}
         run: |
           set -eu -o pipefail
           cd "$GITHUB_WORKSPACE/tests/ct_tooling"
           chmod +x ct_test.sh
-          ./ct_test.sh valgrind-varlat ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$ALGORITHM"
+          ./ct_test.sh valgrind-varlat ${{ matrix.compiler }} ${{ matrix.liboqs_build }} "$OPT_FLAG" "$TYPE"
 
       - name: Upload valgrind_varlat logs
+        if: always()
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
-          name: valgrind_varlat_${{ matrix.algorithm }}_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
+          name: valgrind_varlat_${{ matrix.type }}_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
           path: |
             tests/ct_tooling/tools/valgrind_varlat/logs/**
+
+  constant-time-falcon-x64:
+    runs-on: ubuntu-latest
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+
+      - name: Run valgrind tests on Falcon
+        shell: bash
+        run: |
+          set -u -o pipefail
+          cd "$GITHUB_WORKSPACE/tests/ct_tooling"
+          chmod +x ct_test.sh
+          FAILED=0
+          for target in generic haswell; do
+            for alg in Falcon-512 Falcon-1024 Falcon-padded-512 Falcon-padded-1024; do
+              ./ct_test.sh valgrind gcc "$target" -O0 "$alg" || FAILED=1
+            done
+          done
+          if [ "$FAILED" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Upload valgrind logs
+        if: always()
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        with:
+          name: valgrind_varlat_falcon_extended_tests_logs
+          path: |
+            tests/ct_tooling/tools/valgrind/logs/**
 
   nistkat-x64:
     runs-on: ubuntu-latest
