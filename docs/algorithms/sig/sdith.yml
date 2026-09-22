@@ -24,7 +24,7 @@ nist-round: 3
 standardization-status: Under [NIST](https://csrc.nist.gov/projects/pqc-dig-sig) consideration
 spec-version: NIST Round 3
 primary-upstream:
-  source: https://github.com/owaldron/sdith/commit/8a4bf13e932358f95c5117a492992d7552352dc6
+  source: https://github.com/owaldron/sdith/commit/f4f6c2ec162404215dd77f91972653080cf5ffe1
   spdx-license-identifier: Apache-2.0
 parameter-sets:
 - name: SDitH3-L1-gf2-short
@@ -38,7 +38,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -64,7 +68,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L1-gf2-short-cipherpow
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_short_cipherpow
+  oqs_alg: OQS_SIG_sdith_sdith3_l1_gf2_short_cipherpow
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 70
@@ -74,7 +78,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -100,7 +108,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L1-gf2-fast
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast
+  oqs_alg: OQS_SIG_sdith_sdith3_l1_gf2_fast
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 70
@@ -110,7 +118,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -136,17 +148,21 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L1-gf2-fast-cipherpow
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast_cipherpow
+  oqs_alg: OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 70
   length-secret-key: 147
-  length-signature: 4914
+  length-signature: 4643
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -182,7 +198,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -208,7 +228,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L3-gf2-short-cipherpow
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_short_cipherpow
+  oqs_alg: OQS_SIG_sdith_sdith3_l3_gf2_short_cipherpow
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 98
@@ -218,7 +238,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -244,7 +268,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L3-gf2-fast
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast
+  oqs_alg: OQS_SIG_sdith_sdith3_l3_gf2_fast
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 98
@@ -254,7 +278,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -280,7 +308,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L3-gf2-fast-cipherpow
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast_cipherpow
+  oqs_alg: OQS_SIG_sdith_sdith3_l3_gf2_fast_cipherpow
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 98
@@ -290,7 +318,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -326,7 +358,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -352,7 +388,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L5-gf2-short-cipherpow
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_short_cipherpow
+  oqs_alg: OQS_SIG_sdith_sdith3_l5_gf2_short_cipherpow
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 132
@@ -362,7 +398,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -388,7 +428,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L5-gf2-fast
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast
+  oqs_alg: OQS_SIG_sdith_sdith3_l5_gf2_fast
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 132
@@ -398,7 +438,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -424,7 +468,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: SDitH3-L5-gf2-fast-cipherpow
-  oqs_alg: OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast_cipherpow
+  oqs_alg: OQS_SIG_sdith_sdith3_l5_gf2_fast_cipherpow
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 132
@@ -434,7 +478,11 @@ parameter-sets:
   implementations:
   - upstream: primary-upstream
     upstream-id: ref
-    supported-platforms: all
+    supported-platforms:
+    - architecture: 64-bit
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     - AES: liboqs
@@ -459,7 +507,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-upstream-maintenance: Actively maintained
-upstream-statement-url: NA
+upstream-maintenance: TBD
+upstream-statement-url: null
 oqs-support-tier: 3
 auxiliary-submitters: []

@@ -35,10 +35,9 @@
 #define CASSERT_ALIGNMENT CREQUIRE_ALIGNMENT
 #endif
 
-
-
-#if defined(_WIN32) || defined(__APPLE__)
-#define __always_inline inline __attribute((always_inline))
+// Some platforms don't provide __always_inline, so it needs to be defined here for use.
+#if defined(_WIN32) || defined(__APPLE__) || !defined(__always_inline)
+#define __always_inline inline __attribute__((always_inline))
 #endif
 
 __always_inline uint64_t alignment_of(uint64_t x) { return (x ^ (x - 1)) >> 1; }

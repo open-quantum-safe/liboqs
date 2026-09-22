@@ -47,7 +47,7 @@ OQS_API OQS_STATUS OQS_SIG_sdith_sdith3_l1_gf2_fast_verify_with_ctx_str(const ui
 #if defined(OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast_cipherpow)
 #define OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow_length_public_key 70
 #define OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow_length_secret_key 147
-#define OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow_length_signature 4914
+#define OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow_length_signature 4643
 
 OQS_SIG *OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow_new(void);
 OQS_API OQS_STATUS OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow_keypair(uint8_t *public_key, uint8_t *secret_key);
