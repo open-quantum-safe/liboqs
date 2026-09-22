@@ -67,7 +67,7 @@ jobs:
             opt_flag: "-O2 -fno-vectorize"
           - compiler: gcc
             opt_flag: "-O3 -fno-vectorize"
-      max-parallel: 5
+      max-parallel: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
@@ -86,7 +86,7 @@ jobs:
       - name: Upload valgrind_varlat logs
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
-          name: valgrind_varlat_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
+          name: valgrind_varlat_${{ matrix.algorithm }}_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
           path: |
             tests/ct_tooling/tools/valgrind_varlat/logs/**
 
@@ -101,7 +101,7 @@ jobs:
         compiler: [clang]
         liboqs_build: [generic, auto]
         opt_flag: [-O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-vectorize", "-O3 -fno-vectorize"]
-      max-parallel: 5
+      max-parallel: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
@@ -120,6 +120,6 @@ jobs:
       - name: Upload memsan logs
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
         with:
-          name: memsan_${{ matrix.compiler }}_${{matrix.liboqs_build}}_${{ matrix.opt_flag }}_logs
+          name: memsan_${{ matrix.algorithm }}_${{ matrix.compiler }}_${{matrix.liboqs_build}}_${{ matrix.opt_flag }}_logs
           path: |
             tests/ct_tooling/tools/memsan/logs/**
