@@ -53,7 +53,7 @@ build() {
             done
             for f in "$ISSUES_DIR"/*; do
                 [ -f "$f" ] || continue
-                SUP_FLAGS+=( "--suppressions=$f" )
+                SUP_FLAGS+=( "-fsanitize-ignorelist=$f" )
             done
 
             cmake "${CMAKE_ARGS[@]}" \
@@ -125,7 +125,7 @@ test() {
         valgrind-varlat)
             # Generate suppression flags for all suppression files containing false positives
             SUP_DIR="$SCRIPT_DIR/tools/valgrind_varlat/false_positives"
-            ISSUES_DIR="SCRIPT_DIR/tools/valgrind_varlat/issues"
+            ISSUES_DIR="$SCRIPT_DIR/tools/valgrind_varlat/issues"
             SUP_FLAGS=()
             for f in "$SUP_DIR"/*; do
                 [ -f "$f" ] || continue
@@ -219,19 +219,23 @@ test() {
             ;;
     esac
 
+    RETVAL=0
     if [ "$ERROR_COUNT" -gt 0 ]; then
         echo "FAIL" | tee -a "$SUMMARY_FILE"
         echo "  → Found $ERROR_COUNT warnings" \
             | tee -a "$SUMMARY_FILE"
+        RETVAL=1
 
     elif [ $EXIT_CODE -ne 0 ]; then
         echo "FAIL (Exit code: $EXIT_CODE)" | tee -a "$SUMMARY_FILE"
+        RETVAL=1
 
     else
         echo "PASS" | tee -a "$SUMMARY_FILE"
     fi
 
     rm -f "$OUTPUT_DIR"/*.count
+    return $RETVAL
 }
 
 get_available_algs() {
@@ -337,13 +341,20 @@ case "$INPUT" in
         ;;
 esac
 
+ANY_FAILED=0
+
 for KEM in "${RUN_KEMS[@]}"; do
-    test "$TOOL" "$BUILD_DIR" kem "$COMPILER" "$TARGET" "$KEM" "$SCRIPT_DIR"
+    test "$TOOL" "$BUILD_DIR" kem "$COMPILER" "$TARGET" "$KEM" "$SCRIPT_DIR" || ANY_FAILED=1
 done
 
 for SIG in "${RUN_SIGS[@]}"; do
-    test "$TOOL" "$BUILD_DIR" sig "$COMPILER" "$TARGET" "$SIG" "$SCRIPT_DIR"
+    test "$TOOL" "$BUILD_DIR" sig "$COMPILER" "$TARGET" "$SIG" "$SCRIPT_DIR" || ANY_FAILED=1
 done
 
 notify "Finished ${TOOL} CT testing"
 echo ""
+
+# CI workflow fails if warning are encountered during testing
+if [ "$ANY_FAILED" -ne 0 ]; then
+    exit 1
+fi
