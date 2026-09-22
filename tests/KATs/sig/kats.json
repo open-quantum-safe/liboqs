@@ -92,93 +92,123 @@
     "single": "38c8e18ffe94cdc331294cb05b0e28b8b0cc7903db5331cee4c88cb84e61450a"
   },
   "QRUOV-1q127L10-aes": {
+    "all": "362e942e6785fc1022728e4e139ffd4faec1b208ecd9a35ad9085c05a02b2eee",
     "single": "5c52fd986f4707d79962955558823e7814dc155f4d770db35f008a321389d13f"
   },
   "QRUOV-1q127L10-shake": {
+    "all": "7e1edfc9b3753413b8ecfef792e1dcf0d65c59c044091b1cabfd7f374bddcc6f",
     "single": "d3cbec7d9dbf2dcbbe6d596fb8d6d4e5a40a23eb59fc9e298fca9c5a551fcbf7"
   },
   "QRUOV-1q127L3-aes": {
+    "all": "7dac7e48ef68fbed6868090fe4ed78744a3e338d4eef2777af95df7f519da260",
     "single": "d4ca715e0176de76d477e069559c873b964e2b08b505eca652d60342b2f6ec23"
   },
   "QRUOV-1q127L3-shake": {
+    "all": "30fd0cfa97d00bbcc95c0f716474f8c1b3cd0cfac52063a0c807fe1545f8ec89",
     "single": "568404eb31f7e61aea6930c402ec8258127df835dbb291d941ed5aa0fb485963"
   },
   "QRUOV-1q31L10-aes": {
+    "all": "4d2b42deb99fd9dcb029813be5054e2ac8461912ba04f82b87dd9039044f0a27",
     "single": "74c24984bd9d8120ded9c671c1b28b39fc73306b2f1825e171ea0c018bd93a1d"
   },
   "QRUOV-1q31L10-shake": {
+    "all": "6fb30ce650a1c3ffe10983cbe043449af34d495a9bfe7524dc7423045d7073f8",
     "single": "a8624aaf02565ef7a51bc5488d71d395ee6aad1fce9e634a051cc3a9fb700a2c"
   },
   "QRUOV-1q31L3-aes": {
+    "all": "16835618131c0626e2fadda724d4bf6c28940e73252f8acc25d55094c7eaf88d",
     "single": "e84219beba200af1fb0b63e2217e891a62abf6f27d6d3a0262b532b6d31058c1"
   },
   "QRUOV-1q31L3-shake": {
+    "all": "28eac9b8f12cf0f95637fd4e7aec557eaa05501ec07326270af946a21d9c3ce4",
     "single": "6fbaae9a77a09a709b5e9931f46f3a6aa10c1006d3dd3c96b26949d28f9f26a5"
   },
   "QRUOV-1q7L10-aes": {
+    "all": "bbb52628070b8cbbabbc750766e287726941321bc34eb6c8a1098e0726a8a2ac",
     "single": "e1d8d09223f527c8e26f65e81f7226c3d6798149fb14b6c84cde22756f1d51e7"
   },
   "QRUOV-1q7L10-shake": {
+    "all": "515f60ed1bcc5a3a7bd5b302bde090d3aa13b1c0ba4d9893ea017a64b8307673",
     "single": "e92d582bb4940745e8f828c8ae52325f25978d4fcc77ea59d4ffde7756999902"
   },
   "QRUOV-3q127L10-aes": {
+    "all": "20af8880ea03361f85d210c5fc602d642f19f4b51f73a80a0de1a3151147280f",
     "single": "baf668a5a8312960cdb9720af9e73c822cd0dc8aa5f45491d06919149bcf2ca7"
   },
   "QRUOV-3q127L10-shake": {
+    "all": "44e2317d8eb17dc487773886281156c9d94ef6c354024d8f7ec3e94805f93e64",
     "single": "597c96418f16c23af7d4ff4ec131f911308e83444b43747f2aa6e69ef7e70274"
   },
   "QRUOV-3q127L3-aes": {
+    "all": "f52666ff168a85cd1f2711ac67c32d624b228a836320046ce7f723fc3f953d10",
     "single": "0fb1d48025001ce9f0cd3265c193f9878220bcf914ad99d9fe65dc31135c104f"
   },
   "QRUOV-3q127L3-shake": {
+    "all": "537eadd104ba1894092512b479bb290d35877be9f21990cee9b289b0b2b7354d",
     "single": "a216627d7c48f1143f03b84d4a8e716e5bbd7dcc29f3c56932c091e8cebe9fb9"
   },
   "QRUOV-3q31L10-aes": {
+    "all": "11d92462834c0f77fb3265d6a2291ea0d1f11173e055b6409575f8b5d31fb01c",
     "single": "a9eff2041a9b0ab920673bc4ab7810ed4b8902cbf157dacf75590d7f15dcbdfd"
   },
   "QRUOV-3q31L10-shake": {
+    "all": "f0d5b738787e9cb41bea03e7c45ecd21a35764cf67e5325beaac0397647ed11c",
     "single": "ca3d64136457b5ec8e3c2a9167a929c2c97bce0ce7468dac6eac7f78dcb472d6"
   },
   "QRUOV-3q31L3-aes": {
+    "all": "9f0c9341b87dfb12ab46cce13b6ea10860d1ca0e496a5da6e7fa508aed39d638",
     "single": "78ab615e2565acfebc476e3974525fe423c9d64f3ab0da7495f4042a81a4ebe8"
   },
   "QRUOV-3q31L3-shake": {
+    "all": "891584468fc15acedd7fce2a9bf3b0bfc310c93fba26e1adf0bbf2d8e1c30495",
     "single": "fdc0bbb786585c998c0f02eb5c997a0b8917e6e6431efdc5d1ee8d7e1c7f4291"
   },
   "QRUOV-3q7L10-aes": {
+    "all": "7590a131da5b88cb90215555ba8ff07a7a43fb1385dc6c0e97a8a89c66b629c8",
     "single": "5f7e69168531400dd4dc7481f80f072bca72ab73e468d6fe11ff73f1e65e658c"
   },
   "QRUOV-3q7L10-shake": {
+    "all": "20a6c533ba467efc486d61f508a7ed6bbced1c01d662941a988b0d0c05762e6e",
     "single": "c980003a6565216fc145aaaf6ae12b3f4e0d7867fc7475bbebc1c3bdbc1268f2"
   },
   "QRUOV-5q127L10-aes": {
+    "all": "52bb279bc3837c4f29fad7cafa4ed825055cc82652d2a72b94138403fb7d7353",
     "single": "eaa0d8c32a8d625f8fff87038c76d0fbcffefd2815cf330244375eb8a0f58550"
   },
   "QRUOV-5q127L10-shake": {
+    "all": "9d6ddb46361c8d459c242c6497ab7b64cff378387690195eacc33c759f1a0e59",
     "single": "76b68325d1d104612becedb94b9c88629640d2d9ff466f3378513d0b838dcb53"
   },
   "QRUOV-5q127L3-aes": {
+    "all": "bb31c2f1d570fb16c98d61ea8c1e5301e2e66ecdacf29fa3f1f971780616fc4b",
     "single": "d2d160bbb6f0f9402ccf284b4a020c03bdc552d1d476e6dd442eb5dd971a7482"
   },
   "QRUOV-5q127L3-shake": {
+    "all": "7433f6bf241f3f8ec6b213dd836b132d074e79a9d4c4504ca2bdcd89c319be62",
     "single": "250bfcf69ece8b45ea78db78226288ed2aeba85a7fd9b7a72c3865f744045060"
   },
   "QRUOV-5q31L10-aes": {
+    "all": "fc6271eb47c61f39fd1fcede11cde96d40afe95e22ec9a780cbbd6837f2c99d5",
     "single": "12927998b2455092877955800c448e6c364ba993b8c99813543f261a466c7167"
   },
   "QRUOV-5q31L10-shake": {
+    "all": "07cd0afcb350f7fa668ebe04cf338d9ebf8b642ae192dfe1081ce6e63b92a756",
     "single": "c956526b7672cb7efc8c6038b9b6085c2de187aaa9269167ca60bf75bf0ee07f"
   },
   "QRUOV-5q31L3-aes": {
+    "all": "b3f185272630aa7e5b873ec7302261adea84d2abc0784035b17ae37423e810a3",
     "single": "390662fd5fa14ac7951491a45ff2c226c9e5299112d7b3d6ce7640616e61f6bd"
   },
   "QRUOV-5q31L3-shake": {
+    "all": "92a68015c95059d2b3f5b5da97f8425c6fb50a69b99c9c421b11e90dcba74adb",
     "single": "7be273ec6555a551f28b472868fcd821bd85b2325659c26fb66355b33626f31a"
   },
   "QRUOV-5q7L10-aes": {
+    "all": "7b304ac5a9a88ff055b9f2eb0ac7f20f0b7e06420f1d70e5d87dda9f1657d542",
     "single": "ac5c6d0f26d4a9320ef2c2806c8ea763623ea3a6f66dbf334d2b1512ff686982"
   },
   "QRUOV-5q7L10-shake": {
+    "all": "97f422568fc3e0f468930f23c82fd89e3822c3b421096db1aeb9b46208ee8448",
     "single": "4d23b0b9cb780a2ccbd7c6558b3fc51c3b7ccb9df4c867e36d455524399dc0e7"
   },
   "SNOVA_III_B": {
