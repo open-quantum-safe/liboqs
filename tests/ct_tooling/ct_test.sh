@@ -34,7 +34,7 @@ build() {
     local CMAKE_ARGS=("-S .." "-G Ninja" "${MINIMAL_BUILD_ARG[@]}" "-DCMAKE_C_COMPILER=$COMP_V" "-DOQS_OPT_TARGET=$LIBOQS_BUILD" "-DCMAKE_BUILD_TYPE=Debug" "-DOQS_USE_OPENSSL=OFF" "-DOQS_DIST_BUILD=OFF")
 
     case "$TOOL" in
-        valgrind-varlat)
+        valgrind-varlat|valgrind)
 
             cmake "${CMAKE_ARGS[@]}" \
                 -DCMAKE_C_FLAGS="$OPT_FLAG" \
@@ -93,6 +93,12 @@ test() {
         return 0
     fi
 
+    # Skip Falcon for valgrind-varlat (known issue with AVX2 vector float operations in valgrind_varlat)
+    if [[ "$TOOL" == "valgrind-varlat" && "$ALGORITHM" == *Falcon* ]]; then
+        echo "Skipping ${UPPER_TYPE} ${ALGORITHM} for valgrind-varlat (tested separately with valgrind)"
+        return 0
+    fi
+
     LOG_DIR="${SCRIPT_DIR}/tools/${TOOL//-/_}/logs/${COMP_V}_${TARGET}"
     mkdir -p "$LOG_DIR"
     CURRENT_RUN_DIR="$LOG_DIR/$SANITIZED_OPT_FLAG"
@@ -122,7 +128,7 @@ test() {
 
     # Execute CT tests based on the tool selected
     case "$TOOL" in
-        valgrind-varlat)
+        valgrind-varlat|valgrind)
             # Generate suppression flags for all suppression files containing false positives
             SUP_DIR="$SCRIPT_DIR/tools/valgrind_varlat/false_positives"
             ISSUES_DIR="$SCRIPT_DIR/tools/valgrind_varlat/issues"
@@ -135,15 +141,23 @@ test() {
                 [ -f "$f" ] || continue
                 SUP_FLAGS+=( "--suppressions=$f" )
             done
+
+            VALGRIND_BIN="valgrind_varlat"
+            VARLAT_FLAGS=( "--variable-latency-errors=yes" )
+            if [[ "$TOOL" == "valgrind" ]]; then
+                VALGRIND_BIN="valgrind"
+                VARLAT_FLAGS=()
+            fi
+
             VALGRIND_OPTS=(
-                valgrind_varlat
+                "$VALGRIND_BIN"
                 --tool=memcheck
                 --gen-suppressions=all
                 "${SUP_FLAGS[@]}"
                 --error-exitcode=123
                 --max-stackframe=20480000
                 --num-callers=20
-                --variable-latency-errors=yes
+                "${VARLAT_FLAGS[@]}"
             )
     
             : > "$LOG_FILE"; : > "$LOG_FILE.count"
@@ -170,7 +184,7 @@ test() {
                             }
                             next
                         }
-                        if ($0 ~ /^\{$/) {
+                        if ($0 ~ /^(=+[0-9]+=+\s*)?\{$/) {
                             in_block = 1
                             block = $0 "\n"
                         }
@@ -251,8 +265,9 @@ for alg in helpers.available_"$ALG_TYPE"s_by_name():
 
 # Read inputs from arguments
 if [ "$#" -lt 4 ]; then
-    echo "Usage: $0 <compiler_version> <target> <opt_flags...> <input>"
-    echo "Example: $0 clang-20 generic -O2 -fno-tree-vectorize all"
+    echo "Usage: $0 <tool> <compiler_version> <target> <opt_flags...> <input>"
+    echo "Tools: valgrind-varlat, valgrind, memsan"
+    echo "Example: $0 valgrind-varlat clang-20 generic -O2 -fno-tree-vectorize all"
     exit 1
 fi
 
