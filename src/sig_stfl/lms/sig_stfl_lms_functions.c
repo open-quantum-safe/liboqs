@@ -307,7 +307,7 @@ OQS_STATUS oqs_sig_stfl_lms_verify_with_oid(const uint8_t *message, size_t messa
 		return OQS_ERROR;
 	}
 	if (expected_oid != 0 && (signature_len != expected_signature_len ||
-	                         !oqs_lms_public_inputs_match_oid(expected_oid, signature, signature_len, public_key))) {
+	                          !oqs_lms_public_inputs_match_oid(expected_oid, signature, signature_len, public_key))) {
 		return OQS_ERROR;
 	}
 

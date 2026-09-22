@@ -13,25 +13,25 @@
 #include <oqs/oqs.h>
 
 #if defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN) && \
-	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1) && \
-	defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8)
+    defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1) && \
+    defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8)
 #define OQS_LMS_REGRESSIONS_ENABLED 1
 #endif
 
 static int failures = 0;
 
 #define CHECK(cond, msg) do { \
-	if (!(cond)) { \
-		fprintf(stderr, "FAIL: %s\n", msg); \
-		failures++; \
-	} \
+    if (!(cond)) { \
+        fprintf(stderr, "FAIL: %s\n", msg); \
+        failures++; \
+    } \
 } while (0)
 
 #define REQUIRE(cond, msg) do { \
-	if (!(cond)) { \
-		CHECK(false, msg); \
-		goto cleanup; \
-	} \
+    if (!(cond)) { \
+        CHECK(false, msg); \
+        goto cleanup; \
+    } \
 } while (0)
 
 #ifdef OQS_LMS_REGRESSIONS_ENABLED
