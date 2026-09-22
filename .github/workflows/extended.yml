@@ -96,6 +96,135 @@ jobs:
         timeout-minutes: 360
         run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
+  # QR-UOV ships three implementations per parameter set, and all three
+  # produce identical KAT vectors. A build that silently fell back to `ref`
+  # would therefore pass every existing test while covering nothing, which is
+  # how `opt` came to ship for 30 parameter sets without being compiled
+  # anywhere. Each job below asserts which implementation it actually got
+  # before it runs anything.
+  #
+  # All three set OQS_DIST_BUILD=OFF deliberately. Under a dist build the
+  # generated wrapper keeps a run-time CPU check and falls back to `ref` when
+  # the host lacks AVX2, BMI2 or AES, so the compile-time define alone would
+  # not tell us which code executed. With the dist build off there is no
+  # run-time branch and the define does imply the code path, which is what
+  # makes the assertion meaningful.
+  qruov-implementations:
+    name: QR-UOV ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ref
+            # Portable C, and this family's default implementation.
+            IMPLEMENTATION: ref
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_USE_AVX2_INSTRUCTIONS=OFF -DOQS_USE_BMI2_INSTRUCTIONS=OFF -DOQS_USE_AES_INSTRUCTIONS=OFF
+          - name: avx2
+            # The optimised x86-64 path.
+            IMPLEMENTATION: avx2
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_USE_AVX2_INSTRUCTIONS=ON -DOQS_USE_BMI2_INSTRUCTIONS=ON -DOQS_USE_AES_INSTRUCTIONS=ON
+          - name: opt
+            # Ships but is not selectable through any option: see
+            # tests/test_cmake_option_coverage.py. Reached here only by
+            # setting the cache variables directly, so that the sources in the
+            # tarball are still built and KAT-checked on x86-64 while the
+            # ARM64 behaviour is investigated. This says nothing about ARM64.
+            IMPLEMENTATION: opt
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_USE_AVX2_INSTRUCTIONS=OFF -DOQS_USE_BMI2_INSTRUCTIONS=OFF -DOQS_USE_AES_INSTRUCTIONS=OFF
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      - name: Set the opt cache variables
+        if: matrix.IMPLEMENTATION == 'opt'
+        id: force_opt
+        run: |
+          set -eu
+          # Scheme names are matched as [A-Za-z0-9]+, which keeps anything
+          # that reaches the shell below to that character set.
+          schemes=$(grep -oE 'OQS_ENABLE_SIG_qruov_[A-Za-z0-9]+_avx2' .CMake/alg_support.cmake \
+                    | sed -e 's/^OQS_ENABLE_SIG_qruov_//' -e 's/_avx2$//' | sort -u)
+          count=$(printf '%s\n' "$schemes" | grep -c . || true)
+          if [ "$count" -eq 0 ]; then
+            echo "Found no QR-UOV schemes in .CMake/alg_support.cmake" >&2
+            exit 1
+          fi
+          flags=""
+          for scheme in $schemes; do
+            flags="$flags -DOQS_ENABLE_SIG_qruov_${scheme}_opt=ON"
+          done
+          echo "flags=$flags" >> "$GITHUB_OUTPUT"
+      - name: Configure
+        env:
+          FORCE_OPT: ${{ steps.force_opt.outputs.flags }}
+        run: |
+          mkdir build && cd build
+          cmake -GNinja -DOQS_MINIMAL_BUILD="SIG_qruov" ${{ matrix.CMAKE_ARGS }} $FORCE_OPT .. \
+            && cmake -LA -N ..
+      - name: Confirm the intended implementation was selected
+        env:
+          IMPLEMENTATION: ${{ matrix.IMPLEMENTATION }}
+        run: |
+          set -eu
+          header=build/include/oqs/oqsconfig.h
+          # helpers.py reads this same path to decide what is enabled, so if
+          # it is missing every KAT would skip and pytest would still exit 0.
+          test -s "$header" || { echo "missing or empty $header" >&2; exit 1; }
+
+          # Without this the avx2 assertion below would be vacuous: a dist
+          # build dispatches at run time and falls back to ref on a host
+          # without the instructions, so the define would not imply the path.
+          if grep -qE '^#define OQS_DIST_BUILD' "$header"; then
+            echo "OQS_DIST_BUILD is set; the implementation would be chosen at run time" >&2
+            exit 1
+          fi
+
+          # `|| true` would also swallow a real grep error (exit 2) and
+          # yield an empty string, and `[ "" -ne 0 ]` inside an `if` is read
+          # as false rather than tripping `set -e`. Tolerate only "no match".
+          count_impl () {
+            grep -cE "^#define OQS_ENABLE_SIG_qruov_[A-Za-z0-9]+_$1 " "$header" || [ $? -eq 1 ]
+          }
+          # `ref` is the family default, so it is carried by the bare scheme
+          # option rather than by a define of its own.
+          schemes=$(grep -cE "^#define OQS_ENABLE_SIG_qruov_[A-Za-z0-9]+ " "$header" || [ $? -eq 1 ])
+          opt=$(count_impl opt)
+          avx2=$(count_impl avx2)
+          echo "schemes=$schemes opt=$opt avx2=$avx2 expected=$IMPLEMENTATION"
+
+          if [ "$schemes" -eq 0 ]; then
+            echo "No QR-UOV schemes were enabled at all" >&2
+            exit 1
+          fi
+
+          case "$IMPLEMENTATION" in
+            ref)
+              [ "$opt" -eq 0 ] && [ "$avx2" -eq 0 ] \
+                || { echo "Wanted ref only, got opt=$opt avx2=$avx2" >&2; exit 1; }
+              ;;
+            avx2)
+              [ "$avx2" -eq "$schemes" ] && [ "$opt" -eq 0 ] \
+                || { echo "Wanted avx2 for all $schemes schemes, got avx2=$avx2 opt=$opt" >&2; exit 1; }
+              ;;
+            opt)
+              # The wrapper selects with `#if _opt / #elif _avx2`, so opt wins
+              # wherever both are defined. Keeping avx2 off states the intent
+              # rather than relying on that ordering.
+              [ "$opt" -eq "$schemes" ] && [ "$avx2" -eq 0 ] \
+                || { echo "Wanted opt for all $schemes schemes, got opt=$opt avx2=$avx2" >&2; exit 1; }
+              ;;
+          esac
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        # Matches nistkat-x64, which is the other job that runs test_kat_all:
+        # 30 parameter sets at 100 vectors each is slow on ref in particular.
+        timeout-minutes: 360
+        run: mkdir -p tmp && python3 -m pytest --verbose --numprocesses=auto -k QRUOV tests/test_kat.py tests/test_kat_all.py
+
   libjadecheck:
     name: Check libjade code is properly integrated
     runs-on: ubuntu-latest
@@ -166,7 +295,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --numprocesses=logical --dist load --maxschedchunk=1 --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --numprocesses=logical --dist load --maxschedchunk=1 --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
 
   address-sanitizer-stfl:
     name: ASAN with STFL key generation
@@ -183,7 +312,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1 --maxprocesses=10
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1 --maxprocesses=10
 
   stfl-tests:
     name: STFL key generation tests
@@ -215,7 +344,7 @@ jobs:
         timeout-minutes: 90
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
 
   slhdsa-openssl330-test:
     name: SLH-DSA with OpenSSL 3.3.0
@@ -261,7 +390,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 90
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1
 
   slhdsa-linux-tests:
     name: SLH-DSA Linux platform tests
@@ -302,7 +431,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 90
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
 
   slhdsa-windows-arm64-tests:
     name: SLH-DSA Windows arm64 tests
@@ -340,7 +469,7 @@ jobs:
         run: pip.exe install --require-hashes -r .github\workflows\requirements.txt
       - name: Run tests
         run: |
-          python -m pytest --numprocesses=logical --dist load --maxschedchunk=1 -vv --maxfail=10 --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --durations=0 --junitxml=build\test-results\pytest\test-results.xml
+          python -m pytest --numprocesses=logical --dist load --maxschedchunk=1 -vv --maxfail=10 --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_kat_all.py --durations=0 --junitxml=build\test-results\pytest\test-results.xml
 
   slhdsa-macos-tests:
     name: SLH-DSA macOS tests
@@ -366,7 +495,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --durations=0 --numprocesses=logical --dist load --maxschedchunk=1
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_kat_all.py --durations=0 --numprocesses=logical --dist load --maxschedchunk=1
 
   acvp-tests:
     name: Run ACVP vector tests
@@ -423,7 +552,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
 
   full-code-coverage:
     name: Run full code coverage with ACVP tests
