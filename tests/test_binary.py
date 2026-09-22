@@ -67,6 +67,35 @@ def test_non_executable_stack():
             flags = chunks[6]
             assert(flags == 'RW')
 
+# On Windows, OQS_API must not expand to __declspec(dllexport) in a static build:
+# that leaves /EXPORT: linker directives in oqs.lib, so anything linking it
+# re-exports the entire liboqs API.
+
+@helpers.filtered_test
+@pytest.mark.skipif(not(sys.platform.startswith("win")), reason="Only supported on Windows")
+def test_static_lib_does_not_export_api():
+    build_dir = helpers.get_current_build_dir_name()
+    with open(os.path.join(build_dir, 'include', 'oqs', 'oqsconfig.h')) as fh:
+        if any(line.startswith('#define BUILD_SHARED_LIBS') for line in fh):
+            pytest.skip('Only applies to builds with a static library')
+
+    libs = glob.glob(os.path.join(build_dir, 'lib', '**', '*.lib'), recursive=True)
+    assert any(lib.endswith('oqs.lib') for lib in libs), "Unable to find oqs.lib under {}".format(os.path.join(build_dir, 'lib'))
+
+    # MSVC stores linker directives as plain ASCII in the .drectve section,
+    # so they can be found without dumpbin being on PATH.
+    exporting = []
+    for lib in libs:
+        with open(lib, 'rb') as fh:
+            if b'/export:oqs_' in fh.read().lower():
+                exporting.append(lib)
+
+    if len(exporting) > 0:
+        for lib in exporting:
+            print("Static library re-exports the liboqs API: {}".format(lib))
+
+    assert(len(exporting) == 0)
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
