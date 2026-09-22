@@ -3,6 +3,7 @@
 import helpers
 import os
 import pytest
+import re
 import sys
 import glob
 
@@ -83,11 +84,14 @@ def test_static_lib_does_not_export_api():
     assert any(lib.endswith('oqs.lib') for lib in libs), "Unable to find oqs.lib under {}".format(os.path.join(build_dir, 'lib'))
 
     # MSVC stores linker directives as plain ASCII in the .drectve section,
-    # so they can be found without dumpbin being on PATH.
+    # so they can be found without dumpbin being on PATH. On 32-bit x86 the
+    # exported name carries a leading underscore (/EXPORT:_OQS_...), and
+    # MinGW writes -export: rather than /EXPORT:.
+    export_directive = re.compile(rb'[/-]export:_?oqs_', re.IGNORECASE)
     exporting = []
     for lib in libs:
         with open(lib, 'rb') as fh:
-            if b'/export:oqs_' in fh.read().lower():
+            if export_directive.search(fh.read()):
                 exporting.append(lib)
 
     if len(exporting) > 0:
