@@ -12,6 +12,39 @@ extern "C" {
 #include <openssl/rand.h>
 
 #if defined(OQS_USE_OPENSSL)
+
+/**
+ * This macro is intended to replace those assert()s
+ * involving side-effecting statements in aes/aes_ossl.c.
+ *
+ * assert() becomes a no-op when -DNDEBUG is defined,
+ * which causes compilation failures when the statement
+ * being checked also results in side-effects.
+ *
+ * This is a temporary workaround until a better error
+ * handling strategy is developed.
+ */
+#ifdef OPENSSL_NO_STDIO
+#define OQS_OPENSSL_GUARD(x)                                                   \
+  do {                                                                         \
+    if (1 != (x)) {                                                            \
+      fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n",   \
+              x);                                                              \
+      exit(EXIT_FAILURE);                                                      \
+    }                                                                          \
+  } while (0)
+#else // OPENSSL_NO_STDIO
+#define OQS_OPENSSL_GUARD(x)                                                   \
+  do {                                                                         \
+    if (1 != (x)) {                                                            \
+      fprintf(stderr, "Error return value from OpenSSL API: %d. Exiting.\n",   \
+              x);                                                              \
+      OSSL_FUNC(ERR_print_errors_fp)(stderr);                                  \
+      exit(EXIT_FAILURE);                                                      \
+    }                                                                          \
+  } while (0)
+#endif // OPENSSL_NO_STDIO
+
 void oqs_ossl_destroy(void);
 
 void oqs_thread_stop(void);
