@@ -5,6 +5,10 @@
 
 set(_ML_DSA_OBJS "")
 
+if(OQS_MEMOPT_BUILD)
+    add_compile_definitions(MLD_CONFIG_REDUCE_RAM)
+endif()
+
 if(OQS_ENABLE_SIG_ml_dsa_44 OR OQS_ENABLE_SIG_ml_dsa_44_extmu)
     add_library(ml_dsa_44_ref OBJECT sig_ml_dsa_44.c mldsa-native_ml-dsa-44_ref/integration/liboqs/sig_glue.c mldsa-native_ml-dsa-44_ref/mldsa/src/ct.c mldsa-native_ml-dsa-44_ref/mldsa/src/debug.c mldsa-native_ml-dsa-44_ref/mldsa/src/packing.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly.c mldsa-native_ml-dsa-44_ref/mldsa/src/poly_kl.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec.c mldsa-native_ml-dsa-44_ref/mldsa/src/polyvec_lazy.c mldsa-native_ml-dsa-44_ref/mldsa/src/sign.c)
     target_compile_options(ml_dsa_44_ref PUBLIC -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="integration/liboqs/config_c.h")
