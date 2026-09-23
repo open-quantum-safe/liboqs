@@ -1,68 +1,93 @@
-# All
+# Valgrind suppression file for SNOVA
+
+# q=16
 
 {
-   Processing during public key expansion
+   Rejection sampling when no valid solution was found, no GFNI
    Memcheck:Cond
-   fun:gen_a_FqS
-   fun:gen_A_B_Q_P
+   src:snova_opt_16.c:1290
 }
 
 {
-   Processing during public key expansion
-   Memcheck:Value8
-   ...
-   fun:gen_A_B_Q_P
-}
-
-# opt
-
-{
-    Restart when a signature could not be generated
-    Memcheck:Cond
-    fun:_snova_*_sign_digest_core_opt
-    fun:_snova_*_sign_digest*
-    fun:_snova_*_sign
-}
-
-# avx2
-
-{
-   Restart when a signature could not be generated
+   Rejection sampling when no valid solution was found, no GFNI
    Memcheck:Cond
-   fun:_snova_*_sign_digest_core_gnl_vtl
-   fun:_snova_*_sign_digest*
-   fun:_snova_*_sign
+   src:snova_opt_16.c:1322
+}
+
+# q=16, l=2
+
+{
+   Rejection sampling when no valid solution was found
+   Memcheck:Cond
+   src:snova_opt_16_2.c:1373
 }
 
 {
-   Table lookup depending only on public data
-   Memcheck:Value8
-   fun:_snova_*_calc_LR_J_vtl
-   fun:_snova_*_sign_digest_core_gnl_vtl
-   fun:_snova_*_sign_digest*
-   fun:_snova_*_sign
+   Rejection sampling when no valid solution was found
+   Memcheck:Cond
+   src:snova_opt_16_2.c:1405
+}
+
+# q=16, AVX2
+
+{
+   Rejection sampling when no valid solution was found, no GFNI
+   Memcheck:Cond
+   src:snova_avx2_16.c:6731
+}
+
+{
+   Rejection sampling when no valid solution was found, no GFNI
+   Memcheck:Cond
+   src:snova_avx2_16.c:6787
+}
+
+{
+   Obscure error message on a fixed for loop
+   Memcheck:Cond
+   src:snova_avx2_16.c:4099
 }
 
 {
    Lookup depending on public data
    Memcheck:Value8
-   src:snova_plasma_vec_gnl_sign.h:218
+   src:snova_avx2_16.c:3947
 }
 
 {
    Lookup depending on public data
    Memcheck:Value8
-   src:snova_plasma_vec_gnl_sign.h:227
+   src:snova_avx2_16.c:3963
+}
+
+{
+   Lookup, always only depending on public data
+   Memcheck:Value8
+   fun:rct_vtl128
 }
 
 {
    Lookup depending on public data
    Memcheck:Value8
-   src:snova_plasma_vec_gnl_sign.h:255
+   src:snova_avx2_16.c:4899
 }
 
 {
-   Lookup depending on public data
+   Lookup, always only depending on public data
    Memcheck:Value8
-   src:snova_plasma_vec_gnl_sign.h:264
+   fun:rct_sj_bc128_pub
+}
+
+{
+   Lookup, always only depending on public data
+   Memcheck:Value8
+   fun:rct_sj_bc256_pub
+}
+
+# q=16, memopt
+
+{
+   Rejection sampling when no valid solution was found
+   Memcheck:Cond
+   src:snova_memopt_16.c:840
 }
