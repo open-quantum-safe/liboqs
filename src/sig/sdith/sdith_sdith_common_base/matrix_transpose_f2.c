@@ -51,7 +51,7 @@ EXPORT void transpose_256_256_naive(void* out, const void* in) {
   }
 }
 
-__always_inline void transpose8(uint8_t *a, uint64_t stride) {
+SDITH_ALWAYS_INLINE void transpose8(uint8_t *a, uint64_t stride) {
     int j, k;
     uint64_t m, t;
     m = 0x0F;
@@ -64,7 +64,7 @@ __always_inline void transpose8(uint8_t *a, uint64_t stride) {
     }
 }
 
-__always_inline void transpose64(uint64_t *a, uint64_t stride) {
+SDITH_ALWAYS_INLINE void transpose64(uint64_t *a, uint64_t stride) {
     int j, k;
     uint64_t m, t;
     m = 0x00000000FFFFFFFFULL;
@@ -77,7 +77,8 @@ __always_inline void transpose64(uint64_t *a, uint64_t stride) {
     }
 }
 
-__always_inline void transpose64_unaligned(uint8_t *a, uint64_t byte_stride) 
+/* Not called anywhere in the current build; kept as a utility. */
+SDITH_MAYBE_UNUSED SDITH_ALWAYS_INLINE void transpose64_unaligned(uint8_t *a, uint64_t byte_stride) 
 {
     uint64_t tmp[64];
     for (size_t i = 0; i < 64; i++)
@@ -91,7 +92,7 @@ __always_inline void transpose64_unaligned(uint8_t *a, uint64_t byte_stride)
     }
 }
 
-__always_inline void transpose128(__uint128_t *a, uint64_t stride) {
+SDITH_ALWAYS_INLINE void transpose128(__uint128_t *a, uint64_t stride) {
     int j, k;
     __uint128_t m, t;
     m = 1;

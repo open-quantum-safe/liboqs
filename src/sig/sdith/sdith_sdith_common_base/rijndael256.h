@@ -7,6 +7,8 @@
 #include "sdith_namespace.h"
 #endif
 
+#include "sdith_inline.h"
+
 #ifdef __cplusplus
 #define EXPORT extern "C"
 #include <cstdint>

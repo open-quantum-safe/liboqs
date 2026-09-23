@@ -6,11 +6,11 @@
 - **Authors' website**: https://sdith.org/
 - **Specification version**: NIST Round 3.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/owaldron/sdith/commit/f4f6c2ec162404215dd77f91972653080cf5ffe1
+  - **Source**: https://github.com/owaldron/sdith/commit/36be33c293a652bda7470b6b2b5b613c5c4efc7d
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 - **Optimized Implementation sources**:
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/owaldron/sdith/commit/f4f6c2ec162404215dd77f91972653080cf5ffe1
+      - **Source**: https://github.com/owaldron/sdith/commit/36be33c293a652bda7470b6b2b5b613c5c4efc7d
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 

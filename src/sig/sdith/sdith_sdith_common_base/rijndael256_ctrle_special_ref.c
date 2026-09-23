@@ -3,10 +3,6 @@
 #include "rijndael256.h"
 #include "rijndael256_ctrle.h"
 
-#if defined(_WIN32) || defined(__APPLE__)
-#define __always_inline inline __attribute((always_inline))
-#endif
-
 /* -------- batched key schedule (ref: just loop the scalar x1) -------- */
 EXPORT void rijndael256_key_schedule_x1_ref(void* rk0, const void* k0) { rijndael256_key_schedule_ref(rk0, k0); }
 EXPORT void rijndael256_key_schedule_x2_ref(void* rk0, void* rk1, const void* k0, const void* k1) {

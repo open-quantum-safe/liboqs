@@ -55,7 +55,6 @@ uint32_t floor_log2i_compat(uint32_t x) {
   }
   if (t >> 1) {
     res += 1;
-    t >>= 1;
   }
   return res;
 }
@@ -116,7 +115,7 @@ void quickSort(uint32_t arr[], int low, int high) {
   }
 }
 
-__always_inline uint32_t extract_kappabit_uint_inline(uint64_t kappa, uint64_t bitpos, const uint64_t* data) {
+SDITH_ALWAYS_INLINE uint32_t extract_kappabit_uint_inline(uint64_t kappa, uint64_t bitpos, const uint64_t* data) {
   const uint64_t kappa_mask = (UINT64_C(1) << kappa) - 1;
   uint64_t limb_pos = bitpos >> 6;
   uint64_t limb_rem = bitpos & UINT64_C(63);
@@ -126,7 +125,7 @@ __always_inline uint32_t extract_kappabit_uint_inline(uint64_t kappa, uint64_t b
     return ((data[limb_pos] >> limb_rem) | (data[limb_pos + 1] << (64 - limb_rem))) & kappa_mask;
   }
 }
-__always_inline void xorto_kappabit_uint_inline(uint64_t kappa, uint64_t bitpos, uint64_t* data, uint64_t value) {
+SDITH_ALWAYS_INLINE void xorto_kappabit_uint_inline(uint64_t kappa, uint64_t bitpos, uint64_t* data, uint64_t value) {
   const uint64_t kappa_mask = (UINT64_C(1) << kappa) - 1;
   uint64_t limb_pos = bitpos >> 6;
   uint64_t limb_rem = bitpos & UINT64_C(63);

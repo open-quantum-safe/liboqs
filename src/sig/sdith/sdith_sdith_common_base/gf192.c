@@ -9,15 +9,15 @@
 const gf192 GF192_ZERO = {.v64 = {0, 0, 0}};
 const gf192 GF192_ONE = {.v64 = {1, 0, 0}};
 
-__always_inline uint8_t gf192p_equals(const gf192* const a, const gf192* const b) {
+SDITH_ALWAYS_INLINE uint8_t gf192p_equals(const gf192* const a, const gf192* const b) {
   return memcmp(a->v, b->v, 24) == 0;
 }
 
-__always_inline void gf192p_sum(gf192* const res, const gf192* const a, const gf192* const b) {
+SDITH_ALWAYS_INLINE void gf192p_sum(gf192* const res, const gf192* const a, const gf192* const b) {
   gf192_sum_ref(res, a, b);
 }
 
-__always_inline uint8_t gf192p_bitof(const gf192* const a, const uint64_t position) {
+SDITH_ALWAYS_INLINE uint8_t gf192p_bitof(const gf192* const a, const uint64_t position) {
   CREQUIRE(position >= 0 && position < 192, "bad bit position %" PRIu64, position);
   const uint64_t q8 = position >> 3;
   const uint64_t r8 = position & 7;
@@ -66,7 +66,7 @@ void gf192p_rsh(gf192* const res, const gf192* const a, const uint64_t amount) {
   res->v64[2] = o[2];
 }
 
-__always_inline void gf192p_mul(gf192* const res, const gf192* const a, const gf192* const b) {
+SDITH_ALWAYS_INLINE void gf192p_mul(gf192* const res, const gf192* const a, const gf192* const b) {
   gf192_product_ref(res, a, b);
 }
 

@@ -9,15 +9,15 @@
 const gf256 GF256_ZERO = {.v64 = {0, 0, 0, 0}};
 const gf256 GF256_ONE = {.v64 = {1, 0, 0, 0}};
 
-__always_inline uint8_t gf256p_equals(const gf256* const a, const gf256* const b) {
+SDITH_ALWAYS_INLINE uint8_t gf256p_equals(const gf256* const a, const gf256* const b) {
   return memcmp(a->v, b->v, 32) == 0;
 }
 
-__always_inline void gf256p_sum(gf256* const res, const gf256* const a, const gf256* const b) {
+SDITH_ALWAYS_INLINE void gf256p_sum(gf256* const res, const gf256* const a, const gf256* const b) {
   gf256_sum_ref(res, a, b);
 }
 
-__always_inline uint8_t gf256p_bitof(const gf256* const a, const uint64_t position) {
+SDITH_ALWAYS_INLINE uint8_t gf256p_bitof(const gf256* const a, const uint64_t position) {
   CREQUIRE(position >= 0 && position < 256, "bad bit position %" PRIu64, position);
   const uint64_t q8 = position >> 3;
   const uint64_t r8 = position & 7;
@@ -66,7 +66,7 @@ void gf256p_rsh(gf256* const res, const gf256* const a, const uint64_t amount) {
   res->v64[3] = o[3];
 }
 
-__always_inline void gf256p_mul(gf256* const res, const gf256* const a, const gf256* const b) {
+SDITH_ALWAYS_INLINE void gf256p_mul(gf256* const res, const gf256* const a, const gf256* const b) {
   gf256_product_ref(res, a, b);
 }
 

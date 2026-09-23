@@ -162,7 +162,7 @@ EXPORT void gf192_flambda_product_pclmul(flambda_t* res, const flambda_t* a, con
 // res = sum_i x[i . x_byte_slice]*y[i] (accumulated on top of res if accumulate).
 // The clmul products are aggregated per Karatsuba term across the whole vector
 // (6 accumulators) and a single reduction is done at the end.
-static __always_inline void gf192_dot_product_core_pclmul(gf192* res, const uint8_t* x, const uint64_t x_byte_slice,
+SDITH_ALWAYS_INLINE void gf192_dot_product_core_pclmul(gf192* res, const uint8_t* x, const uint64_t x_byte_slice,
                                                           const gf192* y, const uint64_t size,
                                                           const int accumulate) {
   const __m128i p = _mm_set_epi64x(0, GF192_P);

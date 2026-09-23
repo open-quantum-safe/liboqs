@@ -4,11 +4,11 @@
 const gf128 GF128_ZERO = {.v128 = 0};
 const gf128 GF128_ONE = {.v128 = 1};
 
-__always_inline uint8_t gf128p_equals(const gf128* const a, const gf128* const b) { return a->v128 == b->v128; }
+SDITH_ALWAYS_INLINE uint8_t gf128p_equals(const gf128* const a, const gf128* const b) { return a->v128 == b->v128; }
 
 void gf128p_sum(gf128* const res, const gf128* const a, const gf128* const b) { gf128_sum_ref(res, a, b); }
 
-__always_inline uint8_t gf128p_bitof(const gf128* const a, const uint64_t position) {
+SDITH_ALWAYS_INLINE uint8_t gf128p_bitof(const gf128* const a, const uint64_t position) {
   CREQUIRE(position >= 0 && position < 128, "bad bit position %" PRIu64, position);
   return (a->v128 >> position) & 1;
 }

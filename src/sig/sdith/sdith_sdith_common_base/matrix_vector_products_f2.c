@@ -15,7 +15,7 @@ static inline uint8_t bitvec_get_value(const bitvec_t* v, uint64_t idx) {
     return ( (vec[idx/8] >> (idx%8)) & 1 );
 }
 
-static __always_inline void bitvec_xor_inline_ref(uint64_t bytelen, bitvec_t* res, const bitvec_t* a,
+SDITH_ALWAYS_INLINE void bitvec_xor_inline_ref(uint64_t bytelen, bitvec_t* res, const bitvec_t* a,
                                                   const bitvec_t* b) {
   uint8_t* r = (uint8_t*)res;
   const uint8_t* aa = (uint8_t*)a;

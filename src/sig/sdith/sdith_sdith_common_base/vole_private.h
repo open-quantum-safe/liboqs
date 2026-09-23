@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "commons.h"
+#include "sdith_inline.h"
 #include "ggm.h"
 #include "sdith_algebra.h"
 #include "sdith_arithmetic.h"
@@ -35,12 +36,7 @@
 #define CASSERT_ALIGNMENT CREQUIRE_ALIGNMENT
 #endif
 
-// Some platforms don't provide __always_inline, so it needs to be defined here for use.
-#if defined(_WIN32) || defined(__APPLE__) || !defined(__always_inline)
-#define __always_inline inline __attribute__((always_inline))
-#endif
-
-__always_inline uint64_t alignment_of(uint64_t x) { return (x ^ (x - 1)) >> 1; }
+SDITH_ALWAYS_INLINE uint64_t alignment_of(uint64_t x) { return (x ^ (x - 1)) >> 1; }
 
 // irreducible polynomial constant for GF128
 #define GF128_PV 0b10000111
@@ -79,7 +75,7 @@ union gf256_t {
 // integer multiplier is constant-time on the targets we care about, incl.
 // Cortex-M4 UMULL). gf_clmul64 combines three gf_bmul32 (Karatsuba) into a
 // full 64x64->128 carryless product.
-static __always_inline uint64_t gf_bmul32(uint32_t x, uint32_t y) {
+SDITH_ALWAYS_INLINE uint64_t gf_bmul32(uint32_t x, uint32_t y) {
   uint32_t x0 = x & 0x11111111u, x1 = x & 0x22222222u, x2 = x & 0x44444444u, x3 = x & 0x88888888u;
   uint32_t y0 = y & 0x11111111u, y1 = y & 0x22222222u, y2 = y & 0x44444444u, y3 = y & 0x88888888u;
   uint64_t z0 = (uint64_t)x0 * y0 ^ (uint64_t)x1 * y3 ^ (uint64_t)x2 * y2 ^ (uint64_t)x3 * y1;
@@ -90,7 +86,7 @@ static __always_inline uint64_t gf_bmul32(uint32_t x, uint32_t y) {
   z2 &= 0x4444444444444444ull; z3 &= 0x8888888888888888ull;
   return z0 | z1 | z2 | z3;
 }
-static __always_inline void gf_clmul64(uint64_t a, uint64_t b, uint64_t* hi, uint64_t* lo) {
+SDITH_ALWAYS_INLINE void gf_clmul64(uint64_t a, uint64_t b, uint64_t* hi, uint64_t* lo) {
   uint32_t a0 = (uint32_t)a, a1 = (uint32_t)(a >> 32), b0 = (uint32_t)b, b1 = (uint32_t)(b >> 32);
   uint64_t z0 = gf_bmul32(a0, b0);
   uint64_t z2 = gf_bmul32(a1, b1);

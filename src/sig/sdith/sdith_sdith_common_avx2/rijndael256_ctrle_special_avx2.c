@@ -37,7 +37,7 @@ void rijndael256_key_schedule_x4_avx2(void* rk0, void* rk1, void* rk2, void* rk3
 enum { R256_ROUNDS = 14 };
 
 /* encrypt n (1..4) interleaved blocks: plaintext in (lo[k],hi[k]) -> ciphertext to out. */
-static __always_inline void sdith_rij_encN(uint8_t* out, const uint8_t* rk, __m128i* lo, __m128i* hi, int n) {
+SDITH_ALWAYS_INLINE void sdith_rij_encN(uint8_t* out, const uint8_t* rk, __m128i* lo, __m128i* hi, int n) {
   const __m128i RMASK = _mm_set_epi32(0x03020d0c, 0x0f0e0908, 0x0b0a0504, 0x07060100);
   const __m128i BMASK = _mm_set_epi32(0x80000000, 0x80800000, 0x80800000, 0x80808000);
 
@@ -71,7 +71,7 @@ static __always_inline void sdith_rij_encN(uint8_t* out, const uint8_t* rk, __m1
 }
 
 /* block halves for base with only its low 64 bits incremented by i (no carry). */
-static __always_inline void sdith_rij_ctr_lo(__m128i base_lo, __m128i base_hi, uint64_t i,  //
+SDITH_ALWAYS_INLINE void sdith_rij_ctr_lo(__m128i base_lo, __m128i base_hi, uint64_t i,  //
                                              __m128i* lo, __m128i* hi) {
   *lo = _mm_add_epi64(base_lo, _mm_set_epi64x(0, (long long)i));
   *hi = base_hi;

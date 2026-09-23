@@ -211,8 +211,10 @@ EXPORT void rsd_public_key_times_challenge_ref(          //
   vole_params->matrix_prg.matrix_rng_init(&h_rng, pk_seed, rsd_codim);
   vole_params->matrix_prg.matrix_rng_preprocess_chall(&h_rng, scratch, chall_a);
   vole_params->matrix_prg.matrix_rng_rows_times_chall(&h_rng, dest, scratch, 0, n_minus_k);
+#ifndef NDEBUG
   dest += n_minus_k * lambda_bytes;
   CASSERT(dest == chall_a_H + rsd_n * lambda_bytes, "bug!");
+#endif  // NDEBUG
 }
 
 /** unary encoding of the solution (for mux circuits). Constant-time in the

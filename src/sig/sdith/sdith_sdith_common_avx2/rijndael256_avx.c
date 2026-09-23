@@ -46,18 +46,18 @@ static const uint8_t r256_rcon[KEY_SCHEDULE_ROUNDS] = {0x01, 0x02, 0x04, 0x08, 0
 // The w-terms are a byte-word prefix-XOR of w, factored into log steps to drop one
 // pslldq + one xor per half per round (the schedule is port-5 bound). Byte-identical:
 //   a = w ^ (w<<4); t = a ^ (a<<8); result = t ^ g.
-static __always_inline __m128i r256_cascade(__m128i w, __m128i g) {
+SDITH_ALWAYS_INLINE __m128i r256_cascade(__m128i w, __m128i g) {
   __m128i a = _mm_xor_si128(w, SLL(w, 4));
   __m128i t = _mm_xor_si128(a, SLL(a, 8));
   return _mm_xor_si128(t, g);
 }
 
 // g for the low half (i%8==0): SubWord(RotWord(w7)) ^ rcon, broadcast.
-static __always_inline __m128i r256_g_lo(__m128i hi, int rc) {
+SDITH_ALWAYS_INLINE __m128i r256_g_lo(__m128i hi, int rc) {
   return AESENCLAST(SHUF8(hi, R256_RWBC), _mm_set1_epi32(rc));
 }
 // g for the high half (i%8==4): SubWord(w3 of the updated lo), broadcast.
-static __always_inline __m128i r256_g_hi(__m128i lo) {
+SDITH_ALWAYS_INLINE __m128i r256_g_hi(__m128i lo) {
   return AESENCLAST(SHUF8(lo, R256_WBC), _mm_setzero_si128());
 }
 
