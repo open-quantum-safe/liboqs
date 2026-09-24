@@ -104,6 +104,26 @@ struct OQS_AES_callbacks {
 	 * Implementation of function OQS_AES256_CTR_inc_stream_blks.
 	 */
 	void (*AES256_CTR_inc_stream_blks)(void *ctx, uint8_t *out, size_t out_blks);
+
+	/**
+	 * Implementation of function OQS_AES192_ECB_load_schedule.
+	 */
+	void (*AES192_ECB_load_schedule)(const uint8_t *key, void **ctx);
+
+	/**
+	 * Implementation of function OQS_AES192_free_schedule.
+	 */
+	void (*AES192_free_schedule)(void *ctx);
+
+	/**
+	 * Implementation of function OQS_AES192_ECB_enc.
+	 */
+	void (*AES192_ECB_enc)(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
+
+	/**
+	 * Implementation of function OQS_AES192_ECB_enc_sch.
+	 */
+	void (*AES192_ECB_enc_sch)(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
 };
 
 /**
