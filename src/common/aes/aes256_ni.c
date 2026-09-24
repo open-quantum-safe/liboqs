@@ -173,7 +173,20 @@ void oqs_aes256_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule
 
 void oqs_aes256_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	for (size_t block = 0; block < plaintext_len / 16; block++) {
+	const __m128i *rkeys = ((const aes256ctx *) schedule)->sk_exp;
+	const size_t nblocks = plaintext_len / 16;
+	size_t block = 0;
+	/* Four blocks at a time with interleaved AESENC chains, then the remainder one at a time. */
+	for (; block + 4 <= nblocks; block += 4) {
+		const uint8_t *in = plaintext + (16 * block);
+		aes256ni_encrypt_x4(rkeys,
+		                    _mm_loadu_si128((const __m128i *)(in + 0)),
+		                    _mm_loadu_si128((const __m128i *)(in + 16)),
+		                    _mm_loadu_si128((const __m128i *)(in + 32)),
+		                    _mm_loadu_si128((const __m128i *)(in + 48)),
+		                    ciphertext + (16 * block));
+	}
+	for (; block < nblocks; block++) {
 		oqs_aes256_enc_sch_block_ni(plaintext + (16 * block), schedule, ciphertext + (16 * block));
 	}
 }
