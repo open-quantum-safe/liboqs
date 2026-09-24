@@ -19,7 +19,7 @@ typedef struct {
 	__m128i iv;
 } aes256ctx;
 
-#define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
+#define BE_TO_UINT32(n) (((uint32_t)((uint8_t *) &(n))[0] << 24) | ((uint32_t)((uint8_t *) &(n))[1] << 16) | ((uint32_t)((uint8_t *) &(n))[2] << 8) | ((uint32_t)((uint8_t *) &(n))[3] << 0))
 
 // From crypto_core/aes256encrypt/dolbeau/aesenc-int
 static inline void aes256ni_setkey_encrypt(const unsigned char *key, __m128i rkeys[15]) {
