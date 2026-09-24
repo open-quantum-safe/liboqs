@@ -246,9 +246,9 @@ static void AES192_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_
 
 static void AES192_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
-	AES192_ECB_load_schedule(key, &schedule);
-	AES192_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
-	AES192_free_schedule(schedule);
+	OQS_AES192_ECB_load_schedule(key, &schedule);
+	OQS_AES192_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+	OQS_AES192_free_schedule(schedule);
 }
 
 struct OQS_AES_callbacks aes_default_callbacks = {
