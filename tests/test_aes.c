@@ -393,41 +393,57 @@ static int test_aes256ctr_stream_blks(void) {
 	return EXIT_SUCCESS;
 }
 
+/* Bulk buffers for the multi-block benchmarks: 256 blocks, i.e. 64 four-block
+ * groups, so that the interleaved paths of the backends dominate. */
+#define BENCH_BULK_BYTES 4096
+static uint8_t bench_bulk_in[BENCH_BULK_BYTES];
+static uint8_t bench_bulk_out[BENCH_BULK_BYTES];
+
 static void speed_aes128(void) {
 	uint8_t ciphertext[16];
-	void *schedule = NULL, *schedule_dec = NULL;
+	void *schedule = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule); OQS_AES128_free_schedule(schedule); }, "OQS_AES128_ECB_load+free_sch", BENCH_DURATION);
 
 	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule);
-	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, ciphertext), "OQS_AES128_ECB_enc_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, ciphertext), "OQS_AES128_ECB_enc_sch 1 blk", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc_sch(bench_bulk_in, BENCH_BULK_BYTES, schedule, bench_bulk_out), "OQS_AES128_ECB_enc_sch 256 blk", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc(test_aes128_plaintext, sizeof(test_aes128_plaintext), test_aes128_key, ciphertext), "OQS_AES128_ECB_enc", BENCH_DURATION);
 	OQS_AES128_free_schedule(schedule);
-	OQS_AES128_free_schedule(schedule_dec);
+
+	/* CTR gets its own schedule: on the OpenSSL backend the ECB and CTR contexts differ. */
+	OQS_AES128_CTR_inc_init(test_aes128_key, &schedule);
+	TIME_OPERATION_SECONDS(OQS_AES128_CTR_inc_stream_iv(test_aes_ctr_iv, sizeof(test_aes_ctr_iv), schedule, bench_bulk_out, BENCH_BULK_BYTES), "OQS_AES128_CTR_stream_iv 256 blk", BENCH_DURATION);
+	OQS_AES128_free_schedule(schedule);
 }
 
 static void speed_aes192(void) {
 	uint8_t ciphertext[16];
-	void *schedule = NULL, *schedule_dec = NULL;
+	void *schedule = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES192_ECB_load_schedule(test_aes192_key, &schedule); OQS_AES192_free_schedule(schedule); }, "OQS_AES192_ECB_load+free_sch", BENCH_DURATION);
 
 	OQS_AES192_ECB_load_schedule(test_aes192_key, &schedule);
-	TIME_OPERATION_SECONDS(OQS_AES192_ECB_enc_sch(test_aes192_plaintext, sizeof(test_aes192_plaintext), schedule, ciphertext), "OQS_AES192_ECB_enc_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES192_ECB_enc_sch(test_aes192_plaintext, sizeof(test_aes192_plaintext), schedule, ciphertext), "OQS_AES192_ECB_enc_sch 1 blk", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES192_ECB_enc_sch(bench_bulk_in, BENCH_BULK_BYTES, schedule, bench_bulk_out), "OQS_AES192_ECB_enc_sch 256 blk", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(OQS_AES192_ECB_enc(test_aes192_plaintext, sizeof(test_aes192_plaintext), test_aes192_key, ciphertext), "OQS_AES192_ECB_enc", BENCH_DURATION);
 	OQS_AES192_free_schedule(schedule);
-	OQS_AES192_free_schedule(schedule_dec);
 }
 
 static void speed_aes256(void) {
 	uint8_t ciphertext[16];
-	void *schedule = NULL, *schedule_dec = NULL;
+	void *schedule = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule); OQS_AES256_free_schedule(schedule); }, "OQS_AES256_ECB_load+free_sch", BENCH_DURATION);
 
 	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule);
-	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc_sch(test_aes256_plaintext, sizeof(test_aes256_plaintext), schedule, ciphertext), "OQS_AES256_ECB_enc_sch", BENCH_DURATION);
-
+	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc_sch(test_aes256_plaintext, sizeof(test_aes256_plaintext), schedule, ciphertext), "OQS_AES256_ECB_enc_sch 1 blk", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc_sch(bench_bulk_in, BENCH_BULK_BYTES, schedule, bench_bulk_out), "OQS_AES256_ECB_enc_sch 256 blk", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc(test_aes256_plaintext, sizeof(test_aes256_plaintext), test_aes256_key, ciphertext), "OQS_AES256_ECB_enc", BENCH_DURATION);
 	OQS_AES256_free_schedule(schedule);
-	OQS_AES256_free_schedule(schedule_dec);
+
+	OQS_AES256_CTR_inc_init(test_aes256_key, &schedule);
+	TIME_OPERATION_SECONDS(OQS_AES256_CTR_inc_stream_iv(test_aes_ctr_iv, sizeof(test_aes_ctr_iv), schedule, bench_bulk_out, BENCH_BULK_BYTES), "OQS_AES256_CTR_stream_iv 256 blk", BENCH_DURATION);
+	OQS_AES256_CTR_inc_iv(test_aes_ctr_iv, sizeof(test_aes_ctr_iv), schedule);
+	TIME_OPERATION_SECONDS(OQS_AES256_CTR_inc_stream_blks(schedule, bench_bulk_out, BENCH_BULK_BYTES / 16), "OQS_AES256_CTR_stream_blks 256 blk", BENCH_DURATION);
+	OQS_AES256_free_schedule(schedule);
 }
 
 extern struct OQS_AES_callbacks aes_default_callbacks;
