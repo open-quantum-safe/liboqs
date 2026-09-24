@@ -118,6 +118,19 @@ static const uint8_t test_aes256_ecb_ciphertext[64] = {
 	0x23, 0x30, 0x4b, 0x7a, 0x39, 0xf9, 0xf3, 0xff, 0x06, 0x7d, 0x8d, 0x8f, 0x9e, 0x24, 0xec, 0xc7
 };
 
+/* Checks that the bytes of buf beyond len were left untouched (still zero), so
+ * that a multi-block implementation writing past the requested length is
+ * caught even when the prefix is correct. */
+static int check_untouched_tail(const char *name, const char *what, const uint8_t *buf, size_t len, size_t buf_len) {
+	for (size_t i = len; i < buf_len; i++) {
+		if (buf[i] != 0) {
+			printf("%s %s wrote past the requested length (%zu bytes)\n", name, what, len);
+			return EXIT_FAILURE;
+		}
+	}
+	return EXIT_SUCCESS;
+}
+
 typedef void (*aes_ecb_load_schedule_fn)(const uint8_t *key, void **schedule);
 typedef void (*aes_ecb_free_schedule_fn)(void *schedule);
 typedef void (*aes_ecb_enc_sch_fn)(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
@@ -126,20 +139,22 @@ typedef void (*aes_ecb_enc_fn)(const uint8_t *plaintext, const size_t plaintext_
 static int test_aes_ecb_multiblock(const char *name, const uint8_t *key, const uint8_t *ciphertext64,
                                    aes_ecb_load_schedule_fn load_schedule, aes_ecb_free_schedule_fn free_schedule,
                                    aes_ecb_enc_sch_fn enc_sch, aes_ecb_enc_fn enc) {
-	/* Five blocks: the four SP 800-38A blocks followed by the first block
-	 * again, so that a single call covers both a full four-block group and a
-	 * one-block tail. In ECB mode the repeated block must encrypt identically. */
-	uint8_t plaintext[80];
-	uint8_t expected[80];
-	uint8_t derived[80];
+	/* Nine blocks: the four SP 800-38A blocks twice, then the first block
+	 * again. Every whole-block length from one to nine blocks is tested, so
+	 * that a backend's four-block loop runs zero, one and two times and every
+	 * tail length of zero to three blocks occurs. In ECB mode repeated blocks
+	 * must encrypt identically. */
+	uint8_t plaintext[144];
+	uint8_t expected[144];
+	uint8_t derived[144];
 	memcpy(plaintext, test_aes_ecb_plaintext, 64);
-	memcpy(plaintext + 64, test_aes_ecb_plaintext, 16);
+	memcpy(plaintext + 64, test_aes_ecb_plaintext, 64);
+	memcpy(plaintext + 128, test_aes_ecb_plaintext, 16);
 	memcpy(expected, ciphertext64, 64);
-	memcpy(expected + 64, ciphertext64, 16);
+	memcpy(expected + 64, ciphertext64, 64);
+	memcpy(expected + 128, ciphertext64, 16);
 
-	const size_t lengths[] = {64, 80};
-	for (size_t i = 0; i < sizeof(lengths) / sizeof(lengths[0]); i++) {
-		size_t len = lengths[i];
+	for (size_t len = 16; len <= sizeof(plaintext); len += 16) {
 		void *schedule = NULL;
 		memset(derived, 0, sizeof(derived));
 		load_schedule(key, &schedule);
@@ -151,12 +166,34 @@ static int test_aes_ecb_multiblock(const char *name, const uint8_t *key, const u
 			OQS_print_hex_string("derived  ciphertext", derived, len);
 			return EXIT_FAILURE;
 		}
+		if (check_untouched_tail(name, "enc_sch", derived, len, sizeof(derived)) != EXIT_SUCCESS) {
+			return EXIT_FAILURE;
+		}
 		memset(derived, 0, sizeof(derived));
 		enc(plaintext, len, key, derived);
 		if (memcmp(expected, derived, len) != 0) {
 			printf("%s one-shot ciphertext does not match (%zu bytes)\n", name, len);
 			OQS_print_hex_string("expected ciphertext", expected, len);
 			OQS_print_hex_string("derived  ciphertext", derived, len);
+			return EXIT_FAILURE;
+		}
+		if (check_untouched_tail(name, "one-shot", derived, len, sizeof(derived)) != EXIT_SUCCESS) {
+			return EXIT_FAILURE;
+		}
+		/* FrodoKEM encrypts its public matrix in place, so a multi-block path
+		 * must read every input block of a group before writing any output. */
+		memcpy(derived, plaintext, len);
+		memset(derived + len, 0, sizeof(derived) - len);
+		load_schedule(key, &schedule);
+		enc_sch(derived, len, schedule, derived);
+		free_schedule(schedule);
+		if (memcmp(expected, derived, len) != 0) {
+			printf("%s in-place ciphertext does not match (%zu bytes)\n", name, len);
+			OQS_print_hex_string("expected ciphertext", expected, len);
+			OQS_print_hex_string("derived  ciphertext", derived, len);
+			return EXIT_FAILURE;
+		}
+		if (check_untouched_tail(name, "in-place", derived, len, sizeof(derived)) != EXIT_SUCCESS) {
 			return EXIT_FAILURE;
 		}
 	}

@@ -74,6 +74,7 @@ void OQS_AES128_free_schedule(void *ctx);
  * @param plaintext_len Length on the plaintext in bytes. Must be a multiple of 16.
  * @param key           Key to be used for encryption.
  * @param ciphertext    Pointer to a block of memory which >= in size to the plaintext block. The result will be written here.
+ *                      May be the same buffer as plaintext (in-place encryption); the two must not otherwise overlap.
  * @warning plaintext_len must be a multiple of 16.
  */
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
@@ -156,6 +157,7 @@ void OQS_AES256_free_schedule(void *ctx);
  * @param plaintext_len Length on the plaintext in bytes. Must be a multiple of 16.
  * @param key           Key to be used for encryption.
  * @param ciphertext    Pointer to a block of memory which >= in size to the plaintext block. The result will be written here.
+ *                      May be the same buffer as plaintext (in-place encryption); the two must not otherwise overlap.
  * @warning plaintext_len must be a multiple of 16.
  */
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
@@ -218,6 +220,7 @@ void OQS_AES192_free_schedule(void *ctx);
  * @param plaintext_len Length of the plaintext in bytes. Must be a multiple of 16.
  * @param key           Key to be used for encryption (24 bytes).
  * @param ciphertext    Pointer to a block of memory which >= in size to the plaintext block. The result will be written here.
+ *                      May be the same buffer as plaintext (in-place encryption); the two must not otherwise overlap.
  * @warning plaintext_len must be a multiple of 16.
  */
 void OQS_AES192_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
