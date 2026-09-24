@@ -136,7 +136,7 @@ static uint32_t UINT32_TO_BE(const uint32_t x) {
 	y.bytes[3] = x & 0xFF;
 	return y.val;
 }
-#define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
+#define BE_TO_UINT32(n) (((uint32_t)((uint8_t *) &(n))[0] << 24) | ((uint32_t)((uint8_t *) &(n))[1] << 16) | ((uint32_t)((uint8_t *) &(n))[2] << 8) | ((uint32_t)((uint8_t *) &(n))[3] << 0))
 
 
 void oqs_aes128_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t out_blks) {
