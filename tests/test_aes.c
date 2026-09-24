@@ -289,6 +289,110 @@ static int test_aes256ctr_correctness(void) {
 	return EXIT_SUCCESS;
 }
 
+/* Multi-block CTR test vectors. The keys and the initial counter block are
+ * those of NIST SP 800-38A, Appendix F.5, and the first four keystream blocks
+ * are the "Output Block" values listed there (F.5.1 for AES-128, F.5.5 for
+ * AES-256). Blocks five to nine continue the same counter, f0f1...fdff03 to
+ * f0f1...fdff07, and were generated with OpenSSL 3. No carry leaves the low
+ * 32 bits over this range, so the 32-bit counter increment used by liboqs
+ * agrees with the 128-bit increment of SP 800-38A. Nine blocks let a single
+ * call cover two four-block groups and a tail. */
+static const uint8_t test_aes_ctr_iv[16] = {0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff};
+
+/* Appendix F.5.1, CTR-AES128.Encrypt, with the key of F.1.1 */
+static const uint8_t test_aes128_ctr_keystream[144] = {
+	0xec, 0x8c, 0xdf, 0x73, 0x98, 0x60, 0x7c, 0xb0, 0xf2, 0xd2, 0x16, 0x75, 0xea, 0x9e, 0xa1, 0xe4,
+	0x36, 0x2b, 0x7c, 0x3c, 0x67, 0x73, 0x51, 0x63, 0x18, 0xa0, 0x77, 0xd7, 0xfc, 0x50, 0x73, 0xae,
+	0x6a, 0x2c, 0xc3, 0x78, 0x78, 0x89, 0x37, 0x4f, 0xbe, 0xb4, 0xc8, 0x1b, 0x17, 0xba, 0x6c, 0x44,
+	0xe8, 0x9c, 0x39, 0x9f, 0xf0, 0xf1, 0x98, 0xc6, 0xd4, 0x0a, 0x31, 0xdb, 0x15, 0x6c, 0xab, 0xfe,
+	0xb0, 0x0d, 0x47, 0xf8, 0x14, 0x8a, 0x91, 0x0e, 0xf0, 0x68, 0x30, 0x97, 0x90, 0x4b, 0xa5, 0x02,
+	0x58, 0x99, 0x44, 0x5a, 0x4d, 0xe1, 0x01, 0xf5, 0x13, 0xca, 0xd1, 0x98, 0x7d, 0x89, 0xe9, 0x1b,
+	0x3b, 0xd9, 0xac, 0x79, 0x49, 0xde, 0x2b, 0xf9, 0x65, 0x69, 0xac, 0x38, 0x43, 0xf8, 0x72, 0x42,
+	0x7d, 0x9a, 0xce, 0x80, 0x47, 0xc3, 0x53, 0x09, 0x15, 0x5a, 0xb8, 0xa8, 0xf0, 0x85, 0x97, 0xb1,
+	0xb7, 0x9c, 0xb9, 0x26, 0x40, 0xee, 0x48, 0x97, 0x95, 0xaf, 0x36, 0x15, 0x2a, 0xb3, 0xf6, 0x3b
+};
+
+/* Appendix F.5.5, CTR-AES256.Encrypt, with the key of F.1.5 */
+static const uint8_t test_aes256_ctr_keystream[144] = {
+	0x0b, 0xdf, 0x7d, 0xf1, 0x59, 0x17, 0x16, 0x33, 0x5e, 0x9a, 0x8b, 0x15, 0xc8, 0x60, 0xc5, 0x02,
+	0x5a, 0x6e, 0x69, 0x9d, 0x53, 0x61, 0x19, 0x06, 0x54, 0x33, 0x86, 0x3c, 0x8f, 0x65, 0x7b, 0x94,
+	0x1b, 0xc1, 0x2c, 0x9c, 0x01, 0x61, 0x0d, 0x5d, 0x0d, 0x8b, 0xd6, 0xa3, 0x37, 0x8e, 0xca, 0x62,
+	0x29, 0x56, 0xe1, 0xc8, 0x69, 0x35, 0x36, 0xb1, 0xbe, 0xe9, 0x9c, 0x73, 0xa3, 0x15, 0x76, 0xb6,
+	0x8b, 0x77, 0xff, 0xe0, 0xd9, 0x7c, 0x09, 0x92, 0xd7, 0xf7, 0x0e, 0x1c, 0xe9, 0xcf, 0xc3, 0xb7,
+	0x4c, 0xeb, 0x67, 0x82, 0x60, 0x06, 0x08, 0x83, 0x6c, 0xa2, 0xcb, 0x45, 0x25, 0x9a, 0x85, 0xad,
+	0x19, 0xce, 0x53, 0xfc, 0x30, 0x15, 0x81, 0x72, 0xd5, 0x57, 0x1c, 0x40, 0xee, 0x41, 0x59, 0x68,
+	0x34, 0x6f, 0x29, 0x09, 0xbe, 0xcd, 0x61, 0x03, 0x64, 0x27, 0xdc, 0x9b, 0x2b, 0xd7, 0x6d, 0xe6,
+	0xde, 0xbd, 0x93, 0x7d, 0x4a, 0x6e, 0xed, 0x09, 0xd6, 0x4f, 0xf3, 0x29, 0x2b, 0xc1, 0x8e, 0x70
+};
+
+typedef void (*aes_ctr_inc_init_fn)(const uint8_t *key, void **schedule);
+typedef void (*aes_ctr_inc_stream_iv_fn)(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len);
+
+static int test_aes_ctr_multiblock(const char *name, const uint8_t *key, const uint8_t *keystream144,
+                                   aes_ctr_inc_init_fn inc_init, aes_ecb_free_schedule_fn free_schedule,
+                                   aes_ctr_inc_stream_iv_fn stream_iv) {
+	/* Every whole-block length from one to nine blocks, plus lengths that end
+	 * in a partial block before and after a four-block group. */
+	const size_t lengths[] = {16, 32, 48, 64, 80, 96, 112, 128, 144, 36, 100};
+	uint8_t derived[144];
+	for (size_t i = 0; i < sizeof(lengths) / sizeof(lengths[0]); i++) {
+		size_t len = lengths[i];
+		void *schedule = NULL;
+		memset(derived, 0, sizeof(derived));
+		inc_init(key, &schedule);
+		stream_iv(test_aes_ctr_iv, sizeof(test_aes_ctr_iv), schedule, derived, len);
+		free_schedule(schedule);
+		if (memcmp(keystream144, derived, len) != 0) {
+			printf("%s keystream does not match (%zu bytes)\n", name, len);
+			OQS_print_hex_string("expected keystream", keystream144, len);
+			OQS_print_hex_string("derived  keystream", derived, len);
+			return EXIT_FAILURE;
+		}
+		if (check_untouched_tail(name, "stream_iv", derived, len, sizeof(derived)) != EXIT_SUCCESS) {
+			return EXIT_FAILURE;
+		}
+	}
+	return EXIT_SUCCESS;
+}
+
+static int test_aes128ctr_multiblock_correctness(void) {
+	return test_aes_ctr_multiblock("test_aes128ctr_multiblock_correctness", test_aes128_ecb_key, test_aes128_ctr_keystream,
+	                               OQS_AES128_CTR_inc_init, OQS_AES128_free_schedule, OQS_AES128_CTR_inc_stream_iv);
+}
+
+static int test_aes256ctr_multiblock_correctness(void) {
+	return test_aes_ctr_multiblock("test_aes256ctr_multiblock_correctness", test_aes256_ecb_key, test_aes256_ctr_keystream,
+	                               OQS_AES256_CTR_inc_init, OQS_AES256_free_schedule, OQS_AES256_CTR_inc_stream_iv);
+}
+
+/* OQS_AES256_CTR_inc_stream_blks() carries the counter in the schedule from
+ * one call to the next. Produce the same nine keystream blocks through several
+ * call patterns, so that the counter is checked across four-block groups and
+ * their tails, both within a call and between calls. */
+static int test_aes256ctr_stream_blks(void) {
+	static const size_t patterns[][4] = {{9, 0, 0, 0}, {4, 5, 0, 0}, {5, 4, 0, 0}, {1, 4, 4, 0}, {3, 3, 3, 0}, {2, 7, 0, 0}};
+	uint8_t derived[144];
+	for (size_t p = 0; p < sizeof(patterns) / sizeof(patterns[0]); p++) {
+		void *schedule = NULL;
+		size_t offset = 0;
+		memset(derived, 0, sizeof(derived));
+		OQS_AES256_CTR_inc_init(test_aes256_ecb_key, &schedule);
+		OQS_AES256_CTR_inc_iv(test_aes_ctr_iv, sizeof(test_aes_ctr_iv), schedule);
+		for (size_t c = 0; c < 4 && patterns[p][c] > 0; c++) {
+			OQS_AES256_CTR_inc_stream_blks(schedule, derived + offset, patterns[p][c]);
+			offset += 16 * patterns[p][c];
+		}
+		OQS_AES256_free_schedule(schedule);
+		if (memcmp(test_aes256_ctr_keystream, derived, sizeof(derived)) != 0) {
+			printf("test_aes256ctr_stream_blks keystream does not match (call pattern %zu)\n", p);
+			OQS_print_hex_string("expected keystream", test_aes256_ctr_keystream, sizeof(derived));
+			OQS_print_hex_string("derived  keystream", derived, sizeof(derived));
+			return EXIT_FAILURE;
+		}
+	}
+	return EXIT_SUCCESS;
+}
+
 static void speed_aes128(void) {
 	uint8_t ciphertext[16];
 	void *schedule = NULL, *schedule_dec = NULL;
@@ -381,6 +485,10 @@ int main(int argc, char **argv) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
+	if (test_aes128ctr_multiblock_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
 	if (test_aes192_correctness() != EXIT_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;
@@ -399,6 +507,14 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 	if (test_aes256ctr_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+	if (test_aes256ctr_multiblock_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+	if (test_aes256ctr_stream_blks() != EXIT_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
