@@ -1,0 +1,38 @@
+name: FAEST-EM-128S
+type: signature
+principal-submitters:
+  - Carsten Baum
+  - Waard Beullens
+  - Lennart Braun
+  - Cyprien Delpech de Saint Guilhem
+  - Michael Klooß
+  - Christian Majenz
+  - Shibam Mukherjee
+  - Emmanuela Orsini
+  - Sebastian Ramacher
+  - Christian Rechberger
+  - Lawrence Roy
+  - Peter Scholl
+crypto-assumption: Syndrome decoding in the random code model and AES.
+website: https://faest.info/
+spec-version: 3.0
+claimed-nist-level: 1
+claimed-security: EUF-CMA
+length-public-key: 32
+length-secret-key: 32
+length-signature: 3466
+nistkat-sha256: ee087b31592cbd1eabc34882fbe22d3c5d270b92ada1e4aab5be5588dc9cbd2e
+implementations:
+  - name: ref
+    version: 3.0
+    folder_name: liboqs:scripts/copy_from_upstream/faest/generated/faest-em-128s
+    signature_keypair: PQCLEAN_FAEST_EM_128S_REF_crypto_sign_keypair
+    signature_signature: PQCLEAN_FAEST_EM_128S_REF_crypto_sign_signature
+    signature_verify: PQCLEAN_FAEST_EM_128S_REF_crypto_sign_verify
+    compile_opts: -DOQS -DHAVE_CONFIG_H
+    sources: api.h crypto_sign.c faest_em_128s.c faest_em_128s.h
+    common_dep: faest_common
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    supported-platforms: all
