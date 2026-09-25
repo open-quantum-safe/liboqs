@@ -109,7 +109,8 @@ jobs:
           ! (grep '^\(CRYPTO\|ERR\|EVP\|OPENSSL\|RAND\)_' undefined-syms.txt)
         working-directory: build
       - name: Upgrade pytest-xdist on Ubuntu 22.04
-        # image's pytest 2.5.0 predates `--maxschedchunk` flag
+        # image's pytest-xdist 2.5.0 predates `--maxschedchunk` flag
+        # install sufficient versions that is still compatible with the image's pytest
         if: contains(matrix.container, 'jammy')
         run: pip install -q "pytest-xdist>=3.2,<3.6"
       - name: Run tests
