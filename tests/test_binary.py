@@ -33,7 +33,16 @@ def test_namespace():
             symbols.append(line)
 
     # ideally this would be just ['oqs', 'pqclean'], but contains exceptions (e.g., providing compat implementations of unavailable platform functions)
-    namespaces = ['oqs', 'pqclean', 'keccak', 'pqcrystals', 'pqmayo', 'init', 'fini', 'seedexpander', '__x86.get_pc_thunk', 'libjade', 'jade', '__jade', '__jasmin_syscall', 'pqcp', 'pqov', '_snova', 'sha3', 'slh', 'sha2', 'shake', 'hash', 'openssh', 'hqc', 'pqchqc']
+    namespaces = [
+        'oqs', 'pqclean', 'keccak', 'pqcrystals', 'pqmayo', 'init', 'fini', 'seedexpander',
+        '__x86.get_pc_thunk', 'libjade', 'jade', '__jade', '__jasmin_syscall', 'pqcp', 'pqov',
+        '_snova', 'sha3', 'slh', 'sha2', 'shake', 'hash', 'openssh', 'hqc', 'pqchqc',
+        # FAEST (faest-ref common + per-parameter symbols)
+        'aes', 'aes128', 'aes192', 'aes256', 'alloc', 'bavc', 'bf128', 'bf192', 'bf2', 'bf256',
+        'bf384', 'bf576', 'bf768', 'bf8', 'decode', 'expand', 'extract', 'faest', 'free',
+        'generic', 'h0', 'h1', 'h2', 'h3', 'h4', 'h5', 'leaf', 'masked', 'owf', 'prg', 'rand',
+        'rijndael192', 'rijndael256', 'transpose', 'vole', 'xor', 'zk',
+    ]
     non_namespaced = []
 
     for symbolstr in symbols:

@@ -1,4 +1,40 @@
 {
+  "FAEST-128F": {
+    "single": "a8dc23f6d66282f529c1cf52288566cc0af8650910aa0b00a3c7acc9be380bc9"
+  },
+  "FAEST-128S": {
+    "single": "ac36ff496db5b30a8c4df1768100c0e804c4b627c8df85be27ebd3a14001ca13"
+  },
+  "FAEST-192F": {
+    "single": "0d8d585f17687dfad35159b02ebf9d7ed96983bcf4630fe1062f5a0690a3f632"
+  },
+  "FAEST-192S": {
+    "single": "cdff1a6fc7d81eb03522b968a9af6e0db6295e00410c95ea6330c2bf1fa97148"
+  },
+  "FAEST-256F": {
+    "single": "77db00b2d70791ed8f710bb226722357c5e155dc0ce596e9356aaf8d80f46f90"
+  },
+  "FAEST-256S": {
+    "single": "5573247ebd897e38930942910772d58b7fbfe969793a8326180f173131492295"
+  },
+  "FAEST-EM-128F": {
+    "single": "585e5adc1a1edb610eeec10148e246db86758d0f77fc27137def3a2ab7238a2f"
+  },
+  "FAEST-EM-128S": {
+    "single": "ee087b31592cbd1eabc34882fbe22d3c5d270b92ada1e4aab5be5588dc9cbd2e"
+  },
+  "FAEST-EM-192F": {
+    "single": "19d56fcb425264ee609c1da98622baa26bd349ab2ac6635a9c1a5338b691480f"
+  },
+  "FAEST-EM-192S": {
+    "single": "7855c8018fb3a60994722be77b44b0c14902303c649f2b80afa5c21911d0f676"
+  },
+  "FAEST-EM-256F": {
+    "single": "c27139ced48f1bfecc0ced01e3ee03377623f562c86e98fcc3b47dafa7872799"
+  },
+  "FAEST-EM-256S": {
+    "single": "3aaf2e891cade204aef3e92e3fc39dd2ee8e6eeaf4cf37ed8ec1888ae6903150"
+  },
   "Falcon-1024": {
     "all": "46f9682ebf6fd31bae60c3191ed1a6c56aa09fb4945a266f86732a90c6c4db67",
     "single": "e699d88eb214fef30597385f40814baeb84ac505d5f05f5c257b0726fc4530b8"

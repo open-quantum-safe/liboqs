@@ -1,0 +1,26 @@
+/*
+ *  SPDX-License-Identifier: MIT
+ */
+
+#ifndef FAEST_LIBOQS_API_@PARAM@_H
+#define FAEST_LIBOQS_API_@PARAM@_H
+
+#include <stddef.h>
+#include <stdint.h>
+
+#define CRYPTO_PUBLICKEYBYTES @PK_SIZE@
+#define CRYPTO_SECRETKEYBYTES @SK_SIZE@
+#define CRYPTO_BYTES @SIG_SIZE@
+#define CRYPTO_ALGNAME "faest_@PARAM_L@"
+
+#define crypto_sign_keypair PQCLEAN_FAEST_@PARAM@_REF_crypto_sign_keypair
+#define crypto_sign_signature PQCLEAN_FAEST_@PARAM@_REF_crypto_sign_signature
+#define crypto_sign_verify PQCLEAN_FAEST_@PARAM@_REF_crypto_sign_verify
+
+int crypto_sign_keypair(uint8_t* pk, uint8_t* sk);
+int crypto_sign_signature(uint8_t* sig, size_t* siglen, const uint8_t* m, size_t mlen,
+                          const uint8_t* sk);
+int crypto_sign_verify(const uint8_t* sig, size_t siglen, const uint8_t* m, size_t mlen,
+                       const uint8_t* pk);
+
+#endif
