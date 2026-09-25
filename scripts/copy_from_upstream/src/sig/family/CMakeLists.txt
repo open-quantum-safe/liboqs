@@ -43,7 +43,6 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%}{%- if common_deps is defined %}{%- for cdep in common_deps %}{%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'] %} {% for sf in cdep['sources_addl']|sort -%}{{ upstream_location }}_{{ cdep['name'] }}/{{ sf }}{%- if not loop.last %} {% endif -%}{%- endfor %}{%- endif %}{%- endfor %}{%- endif -%})
         {%- endif %}
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
-    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
         {%- if common_deps is defined %}
             {%- for cdep in common_deps %}
                 {%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'] %}
@@ -51,6 +50,7 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
                 {%- endif %}
             {%- endfor %}
         {%- endif %}
+    target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {%- for flag in impl['required_flags'] %}{%- if flag == 'arm_sha3' %} -march=armv8-a+crypto+sha3 {%- else -%}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endif -%}{%- endfor -%})
         {%- endif %}

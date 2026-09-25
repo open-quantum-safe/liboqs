@@ -267,6 +267,20 @@ cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf16_short_ct "" ON "OQS_E
 cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf16_short_ot "" ON "OQS_ENABLE_SIG_MQOM" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ct "" ON "OQS_ENABLE_SIG_MQOM" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot "" ON "OQS_ENABLE_SIG_MQOM" OFF)
+
+option(OQS_ENABLE_SIG_FAEST "Enable faest algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_128s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_128f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_128s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_128f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_192s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_192f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_192s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_192f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_256s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_256f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_256s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_256f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 ##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_SIG_SLH_DSA "Enable slh_dsa algorithm family" ON)
@@ -1572,6 +1586,7 @@ if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS AND OQS_USE_ARM_NEO
     cmake_dependent_option(OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot_neon "" ON "OQS_ENABLE_SIG_mqom_mqom3_cat5_gf2_shorter_ot" OFF)
 endif()
 endif()
+
 
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_END
 
