@@ -92,7 +92,19 @@ jobs:
           "OV-Is-pkc-skc",
           "OV-Ip-pkc-skc",
           "OV-III-pkc-skc",
-          "OV-V-pkc-skc"
+          "OV-V-pkc-skc",
+          "FAEST-128S",
+          "FAEST-128F",
+          "FAEST-EM-128S",
+          "FAEST-EM-128F",
+          "FAEST-192S",
+          "FAEST-192F",
+          "FAEST-EM-192S",
+          "FAEST-EM-192F",
+          "FAEST-256S",
+          "FAEST-256F",
+          "FAEST-EM-256S",
+          "FAEST-EM-256F"
         ]
       max-parallel: 1 # No parallel jobs to not compromise the pull-push operations of the benchmarking actions below
 

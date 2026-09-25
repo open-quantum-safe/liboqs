@@ -6,6 +6,7 @@ import argparse
 import concurrent.futures
 import copy
 import glob
+import importlib.util
 import jinja2
 import os
 import shutil
@@ -43,6 +44,22 @@ delete = True if args.delete else False
 if 'LIBOQS_DIR' not in os.environ:
     print("Must set environment variable LIBOQS_DIR")
     exit(1)
+
+LIBOQS_PATH_PREFIX = 'liboqs:'
+
+
+def is_liboqs_path(path):
+    return isinstance(path, str) and path.startswith(LIBOQS_PATH_PREFIX)
+
+
+def resolve_liboqs_path(path):
+    return os.path.join(os.environ['LIBOQS_DIR'], path[len(LIBOQS_PATH_PREFIX):])
+
+
+def resolve_upstream_meta_path(upstream, relative_path, work_dir):
+    if upstream.get('meta_root') == 'liboqs':
+        return os.path.join(os.environ['LIBOQS_DIR'], relative_path)
+    return os.path.join(work_dir, relative_path)
 
 # scours the documentation for non-upstream KEMs
 # returns the number of documented ones
@@ -233,7 +250,8 @@ def load_instructions(file='copy_from_upstream.yml'):
                 shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'commit', '-m', 'Applied {}'.format(patch_file)])
 
         if 'common_meta_path' in upstream:
-            common_meta_path_full = os.path.join(work_dir, upstream['common_meta_path'])
+            common_meta_path_full = resolve_upstream_meta_path(
+                upstream, upstream['common_meta_path'], work_dir)
             common_deps = yaml.safe_load(
                 file_get_contents(common_meta_path_full))
             for common_dep in common_deps['commons']:
@@ -284,9 +302,14 @@ def load_instructions(file='copy_from_upstream.yml'):
             # upstream_check(scheme)
             if not 'kem_meta_paths' in scheme:
                 scheme['kem_meta_paths'] = {}
-                scheme['kem_meta_paths']['default'] = os.path.join('repos', scheme['upstream_location'],
-                                                       upstreams[scheme['upstream_location']][
-                                                           'kem_meta_path'].format_map(scheme))
+                upstream = upstreams[scheme['upstream_location']]
+                kem_meta_path = upstream['kem_meta_path'].format_map(scheme)
+                if upstream.get('meta_root') == 'liboqs':
+                    scheme['kem_meta_paths']['default'] = os.path.join(
+                        os.environ['LIBOQS_DIR'], kem_meta_path)
+                else:
+                    scheme['kem_meta_paths']['default'] = os.path.join(
+                        'repos', scheme['upstream_location'], kem_meta_path)
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['kem_meta_paths']['extras'] = {}
@@ -391,9 +414,14 @@ def load_instructions(file='copy_from_upstream.yml'):
             # upstream_check(scheme)
             if not 'sig_meta_paths' in scheme:
                 scheme['sig_meta_paths'] = {}
-                scheme['sig_meta_paths']['default'] = os.path.join('repos', scheme['upstream_location'],
-                                                       upstreams[scheme['upstream_location']][
-                                                           'sig_meta_path'].format_map(scheme))
+                upstream = upstreams[scheme['upstream_location']]
+                sig_meta_path = upstream['sig_meta_path'].format_map(scheme)
+                if upstream.get('meta_root') == 'liboqs':
+                    scheme['sig_meta_paths']['default'] = os.path.join(
+                        os.environ['LIBOQS_DIR'], sig_meta_path)
+                else:
+                    scheme['sig_meta_paths']['default'] = os.path.join(
+                        'repos', scheme['upstream_location'], sig_meta_path)
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['sig_meta_paths']:
                         scheme['sig_meta_paths']['extras'] = {}
@@ -486,6 +514,48 @@ def load_instructions(file='copy_from_upstream.yml'):
     return instructions
 
 
+def verify_faest_integration_artifacts(faest_ref_dir):
+    """Ensure committed liboqs FAEST integration files match pinned faest-ref."""
+    faest_ref = Path(faest_ref_dir)
+    if not faest_ref.is_dir():
+        return
+    faest_generate = Path(__file__).resolve().parent / 'faest' / 'generate.py'
+    if not faest_generate.is_file():
+        return
+    spec = importlib.util.spec_from_file_location('faest_generate', faest_generate)
+    if spec is None or spec.loader is None:
+        return
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    stale = mod.check_stale(faest_ref.resolve())
+    if stale:
+        raise RuntimeError(
+            "FAEST integration artifacts are out of date relative to repos/faest-ref. "
+            f"Run scripts/copy_from_upstream/faest/generate.py and recommit. "
+            f"First stale file: {stale[0]}"
+        )
+
+
+def annotate_faest_common_allocator_ignores(srcfolder):
+    """Mark libc allocator call sites for liboqs memory convention checks."""
+    faest_generate = Path(__file__).resolve().parent / 'faest' / 'generate.py'
+    if not faest_generate.is_file():
+        return
+    spec = importlib.util.spec_from_file_location('faest_generate', faest_generate)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    annotate = module.annotate_memory_check_ignores
+    for path in Path(srcfolder).rglob('*'):
+        if path.suffix not in {'.c', '.h'} or not path.is_file():
+            continue
+        if path.name in {'config.h', 'parameters.h'}:
+            continue
+        text = path.read_text()
+        updated = annotate(text)
+        if updated != text:
+            path.write_text(updated)
+
+
 # Copy over all files for a given impl in a family using scheme
 # Returns list of all relative source files
 def handle_common_deps(common_dep, family, dst_basedir):
@@ -517,15 +587,18 @@ def handle_common_deps(common_dep, family, dst_basedir):
     # We checked before that 'sources' are available in the common dependency
     srcs = common_dep['sources']
     for s in srcs:
-        # Copy with flat directory structure (no subfolders)
-        if os.path.isfile(os.path.join(origfolder, s)):
-            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+        src = resolve_liboqs_path(s) if is_liboqs_path(s) else os.path.join(origfolder, s)
+        if os.path.isfile(src):
+            dest = os.path.join(srcfolder, os.path.basename(s))
+            subprocess.run(['cp', src, dest])
         else:
             # For directories, copy contents flat
-            for root, _, files in os.walk(os.path.join(origfolder, s)):
+            for root, _, files in os.walk(src):
                 for f in files:
                     subprocess.run(['cp', os.path.join(root, f), os.path.join(srcfolder, f)])
 
+    if family['name'] == 'faest':
+        annotate_faest_common_allocator_ignores(srcfolder)
 
     extensions = ['.c', '.s']
     ffs = []
@@ -561,7 +634,10 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             of = i['folder_name']
         else:
             of = impl
-        origfolder = os.path.join(scheme['scheme_paths'][impl], of)
+        if is_liboqs_path(of):
+            origfolder = resolve_liboqs_path(of)
+        else:
+            origfolder = os.path.join(scheme['scheme_paths'][impl], of)
         upstream_location = i['upstream']['name']
         srcfolder = os.path.join(dst_basedir, 'src', family['type'], family['name'],
                              '{}_{}_{}'.format(upstream_location, scheme['pqclean_scheme'], impl))
@@ -846,6 +922,7 @@ def copy_from_upstream(slh_dsa_inst: dict):
     import update_cbom
     update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
     update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
+    verify_faest_integration_artifacts(os.path.join('repos', 'faest-ref'))
     if not keepdata:
         shutil.rmtree('repos')
 

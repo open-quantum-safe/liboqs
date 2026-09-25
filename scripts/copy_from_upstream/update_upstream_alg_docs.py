@@ -20,6 +20,11 @@ def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
         return yaml.safe_load(fh.read())
 
+def resolve_upstream_meta_path(liboqs_root, upstream_info, relative_path):
+    if upstream_info.get('meta_root') == 'liboqs':
+        return os.path.join(liboqs_root, relative_path)
+    return os.path.join(upstream_info['upstream_root'], relative_path)
+
 def store_yaml(filename, contents, encoding='utf-8'):
     with open(filename, mode='w', encoding=encoding) as fh:
         yaml.dump(contents, fh, sort_keys=False, allow_unicode=True)
@@ -138,7 +143,8 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
             # hence use helper function get_oqs_yaml(alg_name)
             for scheme in kem['schemes']:
                 meta_yaml_path_template = ui['kem_meta_path']
-                upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
+                upstream_meta_path = resolve_upstream_meta_path(
+                    liboqs_root, ui, meta_yaml_path_template.format_map(scheme))
                 if DEBUG > 0:
                     print("Examining {}'s META.yml.".format(scheme['pretty_name_full']))
                 upstream_yaml = load_yaml(upstream_meta_path)
@@ -178,8 +184,8 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                         if impl['upstream'] in ouis:
                             upstream_name = impl['upstream']
                             meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
-                            opt_upstream_root = ouis[upstream_name]['upstream_root']
-                            upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
+                            upstream_meta_path = resolve_upstream_meta_path(
+                                liboqs_root, ouis[upstream_name], meta_yaml_path_template.format_map(scheme))
                             upstream_yaml = load_yaml(upstream_meta_path)
 
                         for upstream_impl in upstream_yaml['implementations']:
@@ -192,7 +198,8 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                         if (uir != None) and ('common_dep' in uir):
                             current_ui = ouis[upstream_name] if impl['upstream'] in ouis else ui
                             if 'common_meta_path' in current_ui:
-                                upstream_common_path = os.path.join(current_ui['upstream_root'], current_ui['common_meta_path'])
+                                upstream_common_path = resolve_upstream_meta_path(
+                                    liboqs_root, current_ui, current_ui['common_meta_path'])
                             else:
                                 upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
                             upstream_common_yaml = load_yaml(upstream_common_path)
@@ -245,7 +252,8 @@ def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=
         # hence use helper function get_oqs_yaml(alg_name)
         for scheme in kem['schemes']:
             scheme['family'] = kem['name']
-            upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
+            upstream_meta_path = resolve_upstream_meta_path(
+                liboqs_root, ui, meta_yaml_path_template.format_map(scheme))
             upstream_yaml = load_yaml(upstream_meta_path)
 
             oqs_yaml['type'] = rhs_if_not_equal(oqs_yaml['type'], upstream_yaml['type'], "type")
@@ -331,7 +339,8 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
             # hence use helper function get_oqs_yaml(alg_name)
             for scheme in sig['schemes']:
                 meta_yaml_path_template = ui['sig_meta_path']
-                upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
+                upstream_meta_path = resolve_upstream_meta_path(
+                    liboqs_root, ui, meta_yaml_path_template.format_map(scheme))
                 if DEBUG > 0:
                     print("Examining {}'s META.yml.".format(scheme['pretty_name_full']))
                 upstream_yaml = load_yaml(upstream_meta_path)
@@ -398,8 +407,8 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                     if impl['upstream'] in ouis:
                         upstream_name = impl['upstream']
                         meta_yaml_path_template = ouis[upstream_name]['sig_meta_path']
-                        opt_upstream_root = ouis[upstream_name]['upstream_root']
-                        upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
+                        upstream_meta_path = resolve_upstream_meta_path(
+                            liboqs_root, ouis[upstream_name], meta_yaml_path_template.format_map(scheme))
                         upstream_yaml = load_yaml(upstream_meta_path)
 
                     for upstream_impl in upstream_yaml['implementations']:
@@ -418,7 +427,8 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                     if (uir != None) and ('common_dep' in uir):
                         current_ui = ouis[upstream_name] if impl['upstream'] in ouis else ui
                         if 'common_meta_path' in current_ui:
-                            upstream_common_path = os.path.join(current_ui['upstream_root'], current_ui['common_meta_path'])
+                            upstream_common_path = resolve_upstream_meta_path(
+                                liboqs_root, current_ui, current_ui['common_meta_path'])
                         else:
                             upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
                         upstream_common_yaml = load_yaml(upstream_common_path)
