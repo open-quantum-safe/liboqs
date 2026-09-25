@@ -1,0 +1,38 @@
+name: FAEST-192S
+type: signature
+principal-submitters:
+  - Carsten Baum
+  - Waard Beullens
+  - Lennart Braun
+  - Cyprien Delpech de Saint Guilhem
+  - Michael Klooß
+  - Christian Majenz
+  - Shibam Mukherjee
+  - Emmanuela Orsini
+  - Sebastian Ramacher
+  - Christian Rechberger
+  - Lawrence Roy
+  - Peter Scholl
+crypto-assumption: Syndrome decoding in the random code model and AES.
+website: https://faest.info/
+spec-version: 3.0
+claimed-nist-level: 3
+claimed-security: EUF-CMA
+length-public-key: 48
+length-secret-key: 40
+length-signature: 9410
+nistkat-sha256: cdff1a6fc7d81eb03522b968a9af6e0db6295e00410c95ea6330c2bf1fa97148
+implementations:
+  - name: ref
+    version: 3.0
+    folder_name: liboqs:scripts/copy_from_upstream/faest/generated/faest-192s
+    signature_keypair: PQCLEAN_FAEST_192S_REF_crypto_sign_keypair
+    signature_signature: PQCLEAN_FAEST_192S_REF_crypto_sign_signature
+    signature_verify: PQCLEAN_FAEST_192S_REF_crypto_sign_verify
+    compile_opts: -DOQS -DHAVE_CONFIG_H
+    sources: api.h crypto_sign.c faest_192s.c faest_192s.h
+    common_dep: faest_common
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    supported-platforms: all
