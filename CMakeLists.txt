@@ -34,11 +34,16 @@ option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithm
 set(OQS_PYTEST_NUMPROCESSES "auto" CACHE STRING "Number of parallel processes for pytest (e.g., 'auto', '1', '2'). Useful for limiting memory usage on constrained CI/CD systems.")
 message(STATUS "OQS Testing: Pytest parallel workers set to '${OQS_PYTEST_NUMPROCESSES}'")
 
-# Libfuzzer isn't supported on gcc
-if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
-    option(OQS_BUILD_FUZZ_TESTS "Build fuzz test suite" OFF)
+option(OQS_BUILD_FUZZ_TESTS "Build fuzz test suite" OFF)
+if(OQS_BUILD_FUZZ_TESTS)  # validate configuration
+    if(OQS_BUILD_ONLY_LIB)
+        message(FATAL_ERROR "Invalid build configuration: fuzz targets cannot be built with OQS_BUILD_ONLY_LIB")
+    endif()
+    if(NOT ${CMAKE_C_COMPILER_ID} MATCHES "Clang")
+        message(FATAL_ERROR "Invalid compiler: fuzz targets cannot be built except with Clang")
+    endif()
 endif()
-
+# TODO: compile-and-link test against minimal LLVMFuzerTestOneInput
 
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
 
