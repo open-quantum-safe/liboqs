@@ -1,0 +1,52 @@
+# SQIsign is not constant-time in this round. Suppress every report reached
+# through a namespaced sqisign_* frame (one exception at the bottom).
+
+{
+   SQIsign is not constant-time in this round (Cond)
+   Memcheck:Cond
+   ...
+   fun:sqisign_*
+}
+
+{
+   SQIsign is not constant-time in this round (Value1)
+   Memcheck:Value1
+   ...
+   fun:sqisign_*
+}
+
+{
+   SQIsign is not constant-time in this round (Value2)
+   Memcheck:Value2
+   ...
+   fun:sqisign_*
+}
+
+{
+   SQIsign is not constant-time in this round (Value4)
+   Memcheck:Value4
+   ...
+   fun:sqisign_*
+}
+
+{
+   SQIsign is not constant-time in this round (Value8)
+   Memcheck:Value8
+   ...
+   fun:sqisign_*
+}
+
+{
+   SQIsign is not constant-time in this round (Value16)
+   Memcheck:Value16
+   ...
+   fun:sqisign_*
+}
+
+# Valgrind cannot unwind past its own memmove intercept, so this report has no
+# sqisign_* frame; origin is the poisoned RNG seed entering prng_seed.
+{
+   SQIsign is not constant-time in this round (poisoned seed through memmove)
+   Memcheck:Value8
+   fun:memmove
+}

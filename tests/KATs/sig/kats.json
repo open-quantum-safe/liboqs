@@ -163,6 +163,18 @@
     "all": "7b38a7646319bc4e19e1f23ed51fc7c5aaa7d55ea644a8ef2644618d7a5e35b7",
     "single": "4210e5701cce2dae12f7a6d9764fff71644884b26f796bcf386a5b05ff079469"
   },
+  "SQIsign-p324-3": {
+    "all": "9a69a77a5587fdf8025b80b930bdd7ca645ae2dad7bbeb3647059247b48cae5f",
+    "single": "594fa002bbf5cf84a56fee8bb5c71053bc8d29332a047718bda1417be00e429b"
+  },
+  "SQIsign-p500-27": {
+    "all": "5ad9108e024d7645e723a85a74d5e05013fea06d0ff7d8f8c1c90b0243fe99d6",
+    "single": "6f0c6415d175480461092426bfbd16cb8e8429fb4b5ac369c70f93200d4b63a1"
+  },
+  "SQIsign-p664-17": {
+    "all": "f32a30c78f1e325350e6288a12c38d7f315e13cfd38a00faf40053899b977195",
+    "single": "b2f077402c2cfd4ecc3085dde680dccc8b91de1b29bfdaef2cc4d02fc2708c2e"
+  },
   "cross-rsdp-128-balanced": {
     "all": "7b12a6f71166cde8289c732b3107eaa21edf59c2f336b0921a62faa93980de77",
     "single": "1261083807232119c1f0a5b0d9f958fb8cf8e5a7b897cc4b7c30336cf12da989"

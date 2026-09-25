@@ -1,5 +1,14 @@
 upstreams:
   -
+    name: the-sqisign
+    git_url: https://github.com/bhess/the-sqisign.git
+    git_branch: liboqs-staging
+    git_commit: c42b52f273ac800c0213053c8b3f186b1269285b
+    sig_scheme_path: '.'
+    sig_meta_path: 'integration/liboqs/{pqclean_scheme}.yml'
+    common_meta_path: 'integration/liboqs/META_Common.yml'
+    patches: [sqisign-mem.patch]
+  -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git
     git_branch: next-release
@@ -649,3 +658,23 @@ sigs:
         pqclean_scheme: mqom3_cat5_gf2_shorter_ot
         pretty_name_full: mqom3_cat5_gf2_shorter_ot
         signed_msg_order: msg_then_sig
+  -
+    name: sqisign
+    default_implementation: ref
+    upstream_location: the-sqisign
+    schemes:
+      -
+        scheme: "p324_3"
+        pqclean_scheme: sqisign_p324_3
+        pretty_name_full: SQIsign-p324-3
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "p500_27"
+        pqclean_scheme: sqisign_p500_27
+        pretty_name_full: SQIsign-p500-27
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "p664_17"
+        pqclean_scheme: sqisign_p664_17
+        pretty_name_full: SQIsign-p664-17
+        signed_msg_order: sig_then_msg
