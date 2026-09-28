@@ -37,6 +37,7 @@
 #include <oqs/common.h>
 
 #define AES128_KEYBYTES 16
+#define AES192_KEYBYTES 24
 #define AES256_KEYBYTES 32
 #define AESCTR_NONCEBYTES 12
 #define AES_BLOCKBYTES 16
@@ -46,6 +47,12 @@ typedef struct {
 	uint64_t sk_exp[PQC_AES128_STATESIZE];
 	uint8_t iv[AES_BLOCKBYTES];
 } aes128ctx;
+
+#define PQC_AES192_STATESIZE 104
+typedef struct {
+	uint64_t sk_exp[PQC_AES192_STATESIZE];
+	uint8_t iv[AES_BLOCKBYTES];
+} aes192ctx;
 
 #define PQC_AES256_STATESIZE 120
 typedef struct {
@@ -57,6 +64,11 @@ typedef struct {
 	uint32_t sk_exp[44];
 	uint8_t iv[16];
 } aes128ctx_nobitslice;
+
+typedef struct {
+	uint32_t sk_exp[52];
+	uint8_t iv[16];
+} aes192ctx_nobitslice;
 
 typedef struct {
 	uint32_t sk_exp[60];
@@ -685,8 +697,17 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	aes128ctx *ctx = (aes128ctx *) *_schedule;
 	uint64_t skey[22];
-	br_aes_ct64_keysched(skey, key, 16);
+	br_aes_ct64_keysched(skey, key, AES128_KEYBYTES);
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 10);
+}
+
+void oqs_aes192_load_schedule_c(const uint8_t *key, void **_schedule) {
+	*_schedule = OQS_MEM_malloc(sizeof(aes192ctx));
+	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
+	aes192ctx *ctx = (aes192ctx *) *_schedule;
+	uint64_t skey[26];
+	br_aes_ct64_keysched(skey, key, AES192_KEYBYTES);
+	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 12);
 }
 
 void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
@@ -694,7 +715,7 @@ void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	aes256ctx *ctx = (aes256ctx *) *_schedule;
 	uint64_t skey[30];
-	br_aes_ct64_keysched(skey, key, 32);
+	br_aes_ct64_keysched(skey, key, AES256_KEYBYTES);
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 14);
 }
 
@@ -723,9 +744,16 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 	}
 }
 
+void oqs_aes192_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
+	*_schedule = OQS_MEM_malloc(sizeof(aes192ctx_nobitslice));
+	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
+	uint32_t *schedule = ((aes192ctx_nobitslice *) *_schedule)->sk_exp;
+	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, AES192_KEYBYTES);
+}
+
 void oqs_aes256_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes256ctx_nobitslice));
-	assert(*_schedule != NULL);
+	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	uint32_t *schedule = ((aes256ctx_nobitslice *) *_schedule)->sk_exp;
 	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 32);
 }
@@ -758,7 +786,7 @@ void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
 
 void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx_nobitslice));
-	assert(*_schedule != NULL);
+	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	uint32_t *schedule = ((aes128ctx_nobitslice *) *_schedule)->sk_exp;
 	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 16);
 }
@@ -795,6 +823,12 @@ void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_l
 	aes_ecb(ciphertext, plaintext, plaintext_len / 16, ctx->sk_exp, 10);
 }
 
+void oqs_aes192_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
+	assert(plaintext_len % 16 == 0);
+	const aes192ctx *ctx = (const aes192ctx *) schedule;
+	aes_ecb(ciphertext, plaintext, plaintext_len / 16, ctx->sk_exp, 12);
+}
+
 void oqs_aes128_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	const aes128ctx *ctx = (const aes128ctx *) schedule;
 	aes_ctr(out, out_len, iv, iv_len, ctx->sk_exp, 10);
@@ -828,10 +862,23 @@ void oqs_aes128_free_schedule_c(void *schedule) {
 	}
 }
 
+void oqs_aes192_free_schedule_c(void *schedule) {
+	if (schedule != NULL) {
+		aes192ctx *ctx = (aes192ctx *) schedule;
+		OQS_MEM_secure_free(ctx, sizeof(aes192ctx));
+	}
+}
+
 void oqs_aes256_free_schedule_c(void *schedule) {
 	if (schedule != NULL) {
 		aes256ctx *ctx = (aes256ctx *) schedule;
 		OQS_MEM_secure_free(ctx, sizeof(aes256ctx));
+	}
+}
+
+void oqs_aes192_free_schedule_no_bitslice(void *schedule) {
+	if (schedule != NULL) {
+		OQS_MEM_secure_free(schedule, sizeof(aes192ctx_nobitslice));
 	}
 }
 

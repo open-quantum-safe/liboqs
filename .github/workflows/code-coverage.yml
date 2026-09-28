@@ -38,7 +38,7 @@ jobs:
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
         run: |
-          python3 -m pytest --verbose --numprocesses=auto \
+          python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
           tests/test_cmdline.py \
           tests/test_kat.py
       - name: Run lcov

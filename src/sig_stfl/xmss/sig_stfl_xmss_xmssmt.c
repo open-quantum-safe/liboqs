@@ -69,6 +69,19 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_keypair(XMSS_UNUSED_ATT uint8
 }\
 \
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {\
+        if (secret_key == NULL || secret_key->secret_key_data == NULL) {\
+                return OQS_ERROR;\
+        }\
+        /* Reject secret keys whose OID disagrees with the variant the caller invoked. */\
+        /* The OID is part of the key material and selects every buffer offset used by */\
+        /* xmss_core_sign, so a deserialized key naming a larger parameter set reads and */\
+        /* writes past both secret_key_data and the caller's signature buffer. */\
+        const uint8_t *sk_oid_bytes = (const uint8_t *)secret_key->secret_key_data;\
+        uint32_t sk_oid = ((uint32_t)sk_oid_bytes[0] << 24) | ((uint32_t)sk_oid_bytes[1] << 16)\
+                        | ((uint32_t)sk_oid_bytes[2] <<  8) | ((uint32_t)sk_oid_bytes[3]);\
+        if (sk_oid != (uint32_t)OQS_SIG_STFL_alg_xmss##xmss_v##_oid) {\
+                return OQS_ERROR;\
+        }\
         return OQS_SIG_STFL_alg_xmss##mt##_sign(signature, signature_len, message, message_len, secret_key);\
 }\
 \
@@ -92,9 +105,32 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_verify(const uint8_t *message
 }\
 \
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key) {\
+        if (remain == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {\
+                return OQS_ERROR;\
+        }\
+        /* Reject secret keys whose OID disagrees with the variant the caller invoked. */\
+        /* xmss_remaining_signatures re-parses the OID and reads the index using */\
+        /* parameter-set-specific index_bytes, so a foreign OID can read past */\
+        /* secret_key_data. */\
+        const uint8_t *sk_oid_bytes = (const uint8_t *)secret_key->secret_key_data;\
+        uint32_t sk_oid = ((uint32_t)sk_oid_bytes[0] << 24) | ((uint32_t)sk_oid_bytes[1] << 16)\
+                        | ((uint32_t)sk_oid_bytes[2] <<  8) | ((uint32_t)sk_oid_bytes[3]);\
+        if (sk_oid != (uint32_t)OQS_SIG_STFL_alg_xmss##xmss_v##_oid) {\
+                return OQS_ERROR;\
+        }\
         return OQS_SIG_STFL_alg_xmss##mt##_sigs_remaining(remain, secret_key);\
 }\
 \
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss##xmss_v##_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {\
+        if (total == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {\
+                return OQS_ERROR;\
+        }\
+        /* Reject secret keys whose OID disagrees with the variant the caller invoked. */\
+        const uint8_t *sk_oid_bytes = (const uint8_t *)secret_key->secret_key_data;\
+        uint32_t sk_oid = ((uint32_t)sk_oid_bytes[0] << 24) | ((uint32_t)sk_oid_bytes[1] << 16)\
+                        | ((uint32_t)sk_oid_bytes[2] <<  8) | ((uint32_t)sk_oid_bytes[3]);\
+        if (sk_oid != (uint32_t)OQS_SIG_STFL_alg_xmss##xmss_v##_oid) {\
+                return OQS_ERROR;\
+        }\
         return OQS_SIG_STFL_alg_xmss##mt##_sigs_total(total, secret_key);\
 }

@@ -39,12 +39,12 @@ jobs:
           - name: generic
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+            PYTEST_ARGS: --numprocesses=auto --dist load --maxschedchunk=1 -k 'test_constant_time'
             SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
           - name: extensions
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+            PYTEST_ARGS: --numprocesses=auto --dist load --maxschedchunk=1 -k 'test_constant_time'
             SKIP_ALGS: 'SLH_DSA_(SHA2|SHA3|SHAKE_128)(.)*'
     container:
       image: ${{ matrix.container }}
@@ -166,7 +166,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --numprocesses=logical --dist load --maxschedchunk=1 --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
 
   address-sanitizer-stfl:
     name: ASAN with STFL key generation
@@ -183,7 +183,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1 --maxprocesses=10
 
   stfl-tests:
     name: STFL key generation tests
@@ -261,7 +261,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 90
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1
 
   slhdsa-linux-tests:
     name: SLH-DSA Linux platform tests
@@ -340,7 +340,7 @@ jobs:
         run: pip.exe install --require-hashes -r .github\workflows\requirements.txt
       - name: Run tests
         run: |
-          python -m pytest --numprocesses=auto -vv --maxfail=10 --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --durations=0 --junitxml=build\test-results\pytest\test-results.xml
+          python -m pytest --numprocesses=logical --dist load --maxschedchunk=1 -vv --maxfail=10 --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --durations=0 --junitxml=build\test-results\pytest\test-results.xml
 
   slhdsa-macos-tests:
     name: SLH-DSA macOS tests
@@ -366,7 +366,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --durations=0
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_kat_all.py --durations=0 --numprocesses=logical --dist load --maxschedchunk=1
 
   acvp-tests:
     name: Run ACVP vector tests
@@ -455,7 +455,7 @@ jobs:
         working-directory: build
       - name: Run tests
         run: |
-          python3 -m pytest --verbose --numprocesses=auto \
+          python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
           tests/test_acvp_vectors.py \
           tests/test_cmdline.py \
           tests/test_kat.py
