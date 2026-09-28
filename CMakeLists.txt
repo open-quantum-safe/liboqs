@@ -35,6 +35,8 @@ set(OQS_PYTEST_NUMPROCESSES "auto" CACHE STRING "Number of parallel processes fo
 message(STATUS "OQS Testing: Pytest parallel workers set to '${OQS_PYTEST_NUMPROCESSES}'")
 
 # --- Fuzz Test Configuration ---
+# All configuration validations are performed here in the top-level list file.
+# After this section, fuzz tests are gated behind OQS_BUILD_FUZZ_TESTS only
 option(OQS_BUILD_FUZZ_TESTS "Build fuzz test suite" OFF)
 
 function(probe_libfuzzer cflags ldflags)
