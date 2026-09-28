@@ -108,11 +108,6 @@ jobs:
           nm -gu lib/liboqs.so | sed -n 's/^[[:space:]]*[Uw] \([^_].*\)/\1/p' > undefined-syms.txt &&
           ! (grep '^\(CRYPTO\|ERR\|EVP\|OPENSSL\|RAND\)_' undefined-syms.txt)
         working-directory: build
-      - name: Upgrade pytest-xdist on Ubuntu 22.04
-        # image's pytest-xdist 2.5.0 predates `--maxschedchunk` flag
-        # install sufficient versions that is still compatible with the image's pytest
-        if: contains(matrix.container, 'jammy')
-        run: pip install -q "pytest-xdist>=3.2,<3.6"
       - name: Run tests
         timeout-minutes: 60
         env:
@@ -195,10 +190,6 @@ jobs:
       - name: Build
         run: ninja
         working-directory: build
-      - name: Upgrade pytest-xdist on Ubuntu 22.04
-        # image's pytest-xdist 2.5.0 predates `--maxschedchunk` flag
-        # install sufficient versions that is still compatible with the image's pytest
-        run: pip install -q "pytest-xdist>=3.2,<3.6"
       - name: Run tests
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1
