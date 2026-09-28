@@ -17,6 +17,7 @@ import json
 import platform
 import update_upstream_alg_docs
 import copy_from_slh_dsa_c
+from upstream_platforms import normalize_platform
 from copy import deepcopy
 
 # kats of all algs
@@ -243,7 +244,7 @@ def load_instructions(file='copy_from_upstream.yml'):
                 common_dep['sources'] = common_dep['sources'].split(" ")
                 if 'supported_platforms' in common_dep:
                     for i in range(len(common_dep['supported_platforms'])):
-                        req = common_dep['supported_platforms'][i]
+                        req = normalize_platform(common_dep['supported_platforms'][i])
                         common_dep['required_flags'] = req['required_flags']
             upstream['commons'] = dict(map(lambda x: (x['name'], x), common_deps['commons'] ))
 
@@ -715,18 +716,8 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     # also add suitable defines:
                     try:
                         for i in range(len(impl['supported_platforms'])):
-                            req = impl['supported_platforms'][i]
-                            # if compiling for ARM64_V8, asimd/neon is implied and will cause errors
-                            # when provided to the compiler; OQS uses the term ARM_NEON
-                            if req['architecture'] == 'arm_8':
-                                req['architecture'] = 'ARM64_V8'
+                            req = normalize_platform(impl['supported_platforms'][i])
                             if 'required_flags' in req:
-                                if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
-                                    req['required_flags'].remove('asimd')
-                                    req['required_flags'].append('arm_neon')
-                                if req['architecture'] == 'ARM64_V8' and 'sha3' in req['required_flags']:
-                                    req['required_flags'].remove('sha3')
-                                    req['required_flags'].append('arm_sha3')
                                 impl['required_flags'] = req['required_flags']
                                 family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
