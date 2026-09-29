@@ -12,7 +12,7 @@ OQS_SIG *OQS_SIG_sqisign_p500_27_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_sqisign_p500_27;
-	sig->alg_version = "round2";
+	sig->alg_version = "round3";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
@@ -42,6 +42,12 @@ extern int sqisign_p500_27_broadwell_crypto_sign_signature(uint8_t *sig, size_t 
 extern int sqisign_p500_27_broadwell_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 #endif
 
+#if defined(OQS_ENABLE_SIG_sqisign_p500_27_arm64)
+extern int sqisign_p500_27_arm64_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+extern int sqisign_p500_27_arm64_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
+extern int sqisign_p500_27_arm64_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+#endif
+
 OQS_API OQS_STATUS OQS_SIG_sqisign_p500_27_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_sqisign_p500_27_broadwell)
 #if defined(OQS_DIST_BUILD)
@@ -53,6 +59,8 @@ OQS_API OQS_STATUS OQS_SIG_sqisign_p500_27_keypair(uint8_t *public_key, uint8_t 
 		return (OQS_STATUS) sqisign_p500_27_ref_crypto_sign_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_SIG_sqisign_p500_27_arm64)
+	return (OQS_STATUS) sqisign_p500_27_arm64_crypto_sign_keypair(public_key, secret_key);
 #else
 	return (OQS_STATUS) sqisign_p500_27_ref_crypto_sign_keypair(public_key, secret_key);
 #endif
@@ -69,6 +77,8 @@ OQS_API OQS_STATUS OQS_SIG_sqisign_p500_27_sign(uint8_t *signature, size_t *sign
 		return (OQS_STATUS) sqisign_p500_27_ref_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_SIG_sqisign_p500_27_arm64)
+	return (OQS_STATUS) sqisign_p500_27_arm64_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #else
 	return (OQS_STATUS) sqisign_p500_27_ref_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #endif
@@ -85,6 +95,8 @@ OQS_API OQS_STATUS OQS_SIG_sqisign_p500_27_verify(const uint8_t *message, size_t
 		return (OQS_STATUS) sqisign_p500_27_ref_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_SIG_sqisign_p500_27_arm64)
+	return (OQS_STATUS) sqisign_p500_27_arm64_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #else
 	return (OQS_STATUS) sqisign_p500_27_ref_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif
