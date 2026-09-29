@@ -109,6 +109,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
 
+      - name: Install llvm-symbolizer
+        run: apt-get update && apt-get install -y llvm
+
       - name: Run memsan tests
         shell: bash
         env:
