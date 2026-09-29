@@ -1586,14 +1586,32 @@ endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p324_3_arm64 "" ON "OQS_ENABLE_SIG_sqisign_p324_3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_ADX_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p500_27_broadwell "" ON "OQS_ENABLE_SIG_sqisign_p500_27" OFF)
 endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p500_27_arm64 "" ON "OQS_ENABLE_SIG_sqisign_p500_27" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_ADX_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p664_17_broadwell "" ON "OQS_ENABLE_SIG_sqisign_p664_17" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p664_17_arm64 "" ON "OQS_ENABLE_SIG_sqisign_p664_17" OFF)
 endif()
 endif()
 
