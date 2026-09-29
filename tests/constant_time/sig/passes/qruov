@@ -1,0 +1,31 @@
+# Valgrind suppression file for QR-UOV (all parameter sets, ref implementation).
+# Each entry below branches only on data that is discarded or published.
+
+# Rejection sampling branches on whether a PRG byte equals q. Rejected bytes
+# are discarded, so this reveals which positions were resampled, not the
+# values that were kept.
+{
+   Rejection sampling of PRG output
+   Memcheck:Cond
+   src:fastop.h:15
+}
+
+{
+   Rejection sampling of PRG output
+   Memcheck:Cond
+   src:fastop.h:17
+}
+
+{
+   Rejection sampling of PRG output
+   Memcheck:Cond
+   src:fastop.h:20
+}
+
+# An inconsistent linear system is discarded and signing retries with fresh
+# randomness, so this reveals only that a discarded attempt was retried.
+{
+   Consistency check of the prepared linear system before a retry
+   Memcheck:Cond
+   src:linsys.c:140
+}
