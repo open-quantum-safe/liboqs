@@ -192,6 +192,30 @@ extern "C" {
 #define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ct "mqom3_cat5_gf2_shorter_ct"
 /** Algorithm identifier for mqom3_cat5_gf2_shorter_ot */
 #define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot "mqom3_cat5_gf2_shorter_ot"
+/** Algorithm identifier for FAEST-128S */
+#define OQS_SIG_alg_faest_128s "FAEST-128S"
+/** Algorithm identifier for FAEST-128F */
+#define OQS_SIG_alg_faest_128f "FAEST-128F"
+/** Algorithm identifier for FAEST-EM-128S */
+#define OQS_SIG_alg_faest_em_128s "FAEST-EM-128S"
+/** Algorithm identifier for FAEST-EM-128F */
+#define OQS_SIG_alg_faest_em_128f "FAEST-EM-128F"
+/** Algorithm identifier for FAEST-192S */
+#define OQS_SIG_alg_faest_192s "FAEST-192S"
+/** Algorithm identifier for FAEST-192F */
+#define OQS_SIG_alg_faest_192f "FAEST-192F"
+/** Algorithm identifier for FAEST-EM-192S */
+#define OQS_SIG_alg_faest_em_192s "FAEST-EM-192S"
+/** Algorithm identifier for FAEST-EM-192F */
+#define OQS_SIG_alg_faest_em_192f "FAEST-EM-192F"
+/** Algorithm identifier for FAEST-256S */
+#define OQS_SIG_alg_faest_256s "FAEST-256S"
+/** Algorithm identifier for FAEST-256F */
+#define OQS_SIG_alg_faest_256f "FAEST-256F"
+/** Algorithm identifier for FAEST-EM-256S */
+#define OQS_SIG_alg_faest_em_256s "FAEST-EM-256S"
+/** Algorithm identifier for FAEST-EM-256F */
+#define OQS_SIG_alg_faest_em_256f "FAEST-EM-256F"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 /** Algorithm identifier for slh_dsa_pure_sha2_128s */
@@ -516,7 +540,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 80 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 92 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -785,6 +809,9 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_MQOM
 #include <oqs/sig_mqom.h>
 #endif /* OQS_ENABLE_SIG_MQOM */
+#ifdef OQS_ENABLE_SIG_FAEST
+#include <oqs/sig_faest.h>
+#endif /* OQS_ENABLE_SIG_FAEST */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_SLH_DSA

@@ -1,0 +1,255 @@
+name: FAEST
+type: signature
+principal-submitters:
+- Carsten Baum
+- Waard Beullens
+- Lennart Braun
+- Cyprien Delpech de Saint Guilhem
+- Michael Klooß
+- Christian Majenz
+- Shibam Mukherjee
+- Emmanuela Orsini
+- Sebastian Ramacher
+- Christian Rechberger
+- Lawrence Roy
+- Peter Scholl
+crypto-assumption: Syndrome decoding in the random code model and AES.
+website: https://faest.info/
+nist-round: 3
+standardization-status: Under [NIST](https://csrc.nist.gov/Projects/pqc-dig-sig) consideration
+upstream-maintenance: Actively maintained
+upstream-statement-url: https://github.com/open-quantum-safe/liboqs/blob/main/scripts/copy_from_upstream/faest/SUPPORT.md
+oqs-support-tier: 3
+spec-version: 3.0
+primary-upstream:
+  source: https://github.com/faest-sign/faest-ref/commit/fe428d05a8cbea9c38fbb9266e43fba2c80b621d
+  spdx-license-identifier: MIT
+parameter-sets:
+- name: FAEST-128S
+  oqs_alg: OQS_SIG_faest_128s
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 32
+  length-secret-key: 32
+  length-signature: 4066
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-128F
+  oqs_alg: OQS_SIG_faest_128f
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 32
+  length-secret-key: 32
+  length-signature: 5170
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-EM-128S
+  oqs_alg: OQS_SIG_faest_em_128s
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 32
+  length-secret-key: 32
+  length-signature: 3466
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-EM-128F
+  oqs_alg: OQS_SIG_faest_em_128f
+  claimed-nist-level: 1
+  claimed-security: EUF-CMA
+  length-public-key: 32
+  length-secret-key: 32
+  length-signature: 4170
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-192S
+  oqs_alg: OQS_SIG_faest_192s
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 48
+  length-secret-key: 40
+  length-signature: 9410
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-192F
+  oqs_alg: OQS_SIG_faest_192f
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 48
+  length-secret-key: 40
+  length-signature: 11738
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-EM-192S
+  oqs_alg: OQS_SIG_faest_em_192s
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 48
+  length-secret-key: 48
+  length-signature: 7874
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-EM-192F
+  oqs_alg: OQS_SIG_faest_em_192f
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 48
+  length-secret-key: 48
+  length-signature: 9818
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-256S
+  oqs_alg: OQS_SIG_faest_256s
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 48
+  length-secret-key: 48
+  length-signature: 16626
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-256F
+  oqs_alg: OQS_SIG_faest_256f
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 48
+  length-secret-key: 48
+  length-signature: 20856
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-EM-256S
+  oqs_alg: OQS_SIG_faest_em_256s
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 64
+  length-secret-key: 64
+  length-signature: 14554
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
+- name: FAEST-EM-256F
+  oqs_alg: OQS_SIG_faest_em_256f
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 64
+  length-secret-key: 64
+  length-signature: 18084
+  implementations-switch-on-runtime-cpu-features: false
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: true
+    default: true
