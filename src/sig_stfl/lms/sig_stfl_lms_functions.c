@@ -723,7 +723,7 @@ OQS_STATUS oqs_serialize_lms_key(uint8_t **sk_key, size_t *sk_len, const OQS_SIG
  * Writes secret key + aux data if present
  * key_len is priv key length + aux length
  */
-OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context) {
+OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context, size_t expected_signature_len) {
 
 	oqs_lms_key_data *lms_key_data = NULL;
 	uint8_t *lms_sk = NULL;
@@ -757,6 +757,19 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *s
 	                           lm_ots_type,
 	                           NULL,
 	                           (void *)sk_buf)) {
+		return OQS_ERROR;
+	}
+
+	/*
+	 * The private key length is the constant PRIVATE_KEY_LEN for every LMS
+	 * parameter set, so the length check above cannot tell one variant from
+	 * another. Reject a blob whose embedded parameter set produces a signature
+	 * of a different length than the variant this object was created for;
+	 * otherwise oqs_sig_stfl_lms_sign derives sig_len from the loaded key and
+	 * writes it past the caller's signature buffer, which is sized to the
+	 * object's own length_signature.
+	 */
+	if (hss_get_signature_len(levels, lm_type, lm_ots_type) != expected_signature_len) {
 		return OQS_ERROR;
 	}
 
