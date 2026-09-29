@@ -123,6 +123,24 @@ static OQS_STATUS sig_test_correctness(const char *method_name, bool bitflips_al
 		goto err;
 	}
 
+	/* A signature shorter than the SLH-DSA parameter set's n-byte randomizer must
+	   be rejected before Hmsg reads it; verifying against a 1-byte buffer used to
+	   read out of bounds in the slh_dsa verify path. */
+	if (!strncmp(sig->method_name, "SLH_DSA", 7)) {
+		uint8_t *short_sig = OQS_MEM_malloc(1);
+		if (short_sig == NULL) {
+			fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
+			goto err;
+		}
+		short_sig[0] = 0;
+		rc = OQS_SIG_verify(sig, message, message_len, short_sig, 1, public_key);
+		OQS_MEM_insecure_free(short_sig);
+		if (rc != OQS_ERROR) {
+			fprintf(stderr, "ERROR: OQS_SIG_verify accepted a truncated signature\n");
+			goto err;
+		}
+	}
+
 	if (extended_tests) {
 		rc = test_sig_bitflip(sig, message, message_len, signature, signature_len, public_key, bitflips_all, bitflips, false, NULL, 0);
 		OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
