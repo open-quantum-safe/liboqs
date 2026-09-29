@@ -6,11 +6,11 @@
 - **Authors' website**: https://sqisign.org/
 - **Specification version**: 3.0.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/bhess/the-sqisign/commit/c42b52f273ac800c0213053c8b3f186b1269285b with copy_from_upstream patches
+  - **Source**: https://github.com/bhess/the-sqisign/commit/945a1e7b4178d27994456eeff1a0c97df3222728 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 - **Optimized Implementation sources**:
   - **broadwell**:<a name="broadwell"></a>
-      - **Source**: https://github.com/bhess/the-sqisign/commit/c42b52f273ac800c0213053c8b3f186b1269285b with copy_from_upstream patches
+      - **Source**: https://github.com/bhess/the-sqisign/commit/945a1e7b4178d27994456eeff1a0c97df3222728 with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
 
 
