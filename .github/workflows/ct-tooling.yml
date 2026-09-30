@@ -57,7 +57,7 @@ jobs:
       matrix:
         algorithm: ${{ fromJson(needs.resolve-matrix.outputs.matrix) }}
         compiler: [gcc, clang]
-        liboqs_build: [generic, auto]
+        liboqs_build: [generic, haswell]
         opt_flag: [-O0, -O1, -O2, -O3, -Os, -Ofast, "-O2 -fno-tree-vectorize", "-O3 -fno-tree-vectorize", "-O2 -fno-vectorize", "-O3 -fno-vectorize"]
         exclude:
           - compiler: clang
