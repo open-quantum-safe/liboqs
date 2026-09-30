@@ -1,9 +1,7 @@
 name: Automatically label stale issues and pull requests
 
 permissions:
-  actions: write
-  issues: write
-  pull-requests: write
+  contents: read
 
 on:
   schedule:
@@ -26,6 +24,9 @@ jobs:
   label-inactive-issues-pr:
     name: Label inactive issues and pull requests
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     env:
       STALE_ISSUE_DELAY: ${{ inputs.staleIssueDelay || 180 }}
       STALE_PULL_DELAY: ${{ inputs.stalePullDelay || 30 }}
