@@ -1,0 +1,34 @@
+name: Automatically label stale issues and pull requests
+
+permissions:
+  actions: write
+  issues: write
+  pull-requests: write
+
+on:
+  schedule:
+    # 5 am UTC everyday ~= 1 am or midnight America/Toronto
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+jobs:
+  label-inactive-issues-pr:
+    name: Label inactive issues and pull requests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label inactive issues and pull requests
+        uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # pin@v11
+        with:
+          days-before-issue-stale: 180
+          days-before-issue-close: -1
+          stale-issue-label: "stale"
+          stale-issue-message: >
+            This issue has been inactive for 180 days and flagged for
+            maintainer review. It will not be automatically closed.
+          days-before-pr-stale: 30
+          stale-pr-label: "stale"
+          stale-pr-message: >
+            This pull request has been inactive for 30 days and flagged for
+            maintainer review. It will not be automatically closed.
+          days-before-pr-close: -1
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
