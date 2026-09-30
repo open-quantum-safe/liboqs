@@ -62,6 +62,49 @@ static inline void aes128_armv8_encrypt(const unsigned char *rkeys, const unsign
 	vst1q_u8(out, temp);
 }
 
+// Four blocks at a time, with the AESE/AESMC chains interleaved so that the
+// latency of one chain is hidden behind the other three.
+static inline void aes128_armv8_encrypt_x4(const unsigned char *rkeys, const unsigned char *in, unsigned char *out) {
+	uint8x16_t t0 = vld1q_u8(in);
+	uint8x16_t t1 = vld1q_u8(in + 16);
+	uint8x16_t t2 = vld1q_u8(in + 32);
+	uint8x16_t t3 = vld1q_u8(in + 48);
+	uint8x16_t rk;
+
+#define AESEMCX4(OFFSET) \
+    rk = vld1q_u8(rkeys + (OFFSET)); \
+    t0 = vaesmcq_u8(vaeseq_u8(t0, rk)); \
+    t1 = vaesmcq_u8(vaeseq_u8(t1, rk)); \
+    t2 = vaesmcq_u8(vaeseq_u8(t2, rk)); \
+    t3 = vaesmcq_u8(vaeseq_u8(t3, rk))
+
+	AESEMCX4(0);
+	AESEMCX4(16);
+	AESEMCX4(32);
+	AESEMCX4(48);
+	AESEMCX4(64);
+	AESEMCX4(80);
+	AESEMCX4(96);
+	AESEMCX4(112);
+	AESEMCX4(128);
+
+	rk = vld1q_u8(rkeys + 144);
+	t0 = vaeseq_u8(t0, rk);
+	t1 = vaeseq_u8(t1, rk);
+	t2 = vaeseq_u8(t2, rk);
+	t3 = vaeseq_u8(t3, rk);
+	rk = vld1q_u8(rkeys + 160);
+	t0 = veorq_u8(t0, rk);
+	t1 = veorq_u8(t1, rk);
+	t2 = veorq_u8(t2, rk);
+	t3 = veorq_u8(t3, rk);
+
+	vst1q_u8(out, t0);
+	vst1q_u8(out + 16, t1);
+	vst1q_u8(out + 32, t2);
+	vst1q_u8(out + 48, t3);
+}
+
 void oqs_aes128_enc_sch_block_armv8(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
 	const unsigned char *schedule = (const unsigned char *) _schedule;
 	aes128_armv8_encrypt(schedule, plaintext, ciphertext);
@@ -70,8 +113,14 @@ void oqs_aes128_enc_sch_block_armv8(const uint8_t *plaintext, const void *_sched
 void oqs_aes128_ecb_enc_sch_armv8(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
 	const aes128ctx *ctx = (const aes128ctx *) schedule;
+	const unsigned char *rkeys = (const unsigned char *) ctx->sk_exp;
+	const size_t nblocks = plaintext_len / 16;
+	size_t block = 0;
 
-	for (size_t block = 0; block < plaintext_len / 16; block++) {
+	for (; block + 4 <= nblocks; block += 4) {
+		aes128_armv8_encrypt_x4(rkeys, plaintext + (16 * block), ciphertext + (16 * block));
+	}
+	for (; block < nblocks; block++) {
 		oqs_aes128_enc_sch_block_armv8(plaintext + (16 * block), (const void *) ctx->sk_exp, ciphertext + (16 * block));
 	}
 }
@@ -87,31 +136,53 @@ static uint32_t UINT32_TO_BE(const uint32_t x) {
 	y.bytes[3] = x & 0xFF;
 	return y.val;
 }
-#define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
+#define BE_TO_UINT32(n) (((uint32_t)((uint8_t *) &(n))[0] << 24) | ((uint32_t)((uint8_t *) &(n))[1] << 16) | ((uint32_t)((uint8_t *) &(n))[2] << 8) | ((uint32_t)((uint8_t *) &(n))[3] << 0))
 
+/* Fills four consecutive counter blocks. Bytes 0 to 11 are the nonce and
+ * bytes 12 to 15 the big-endian 32-bit counter, laid out exactly as the
+ * single-block path lays them out; the counter wraps modulo 2^32 as there. */
+static inline void aes128_armv8_ctr_blocks_x4(uint8_t blocks[64], const uint8_t *nonce, uint32_t ctr) {
+	for (size_t i = 0; i < 4; i++) {
+		uint32_t ctr_be = UINT32_TO_BE(ctr + (uint32_t) i);
+		memcpy(blocks + 16 * i, nonce, 12);
+		memcpy(blocks + 16 * i + 12, (uint8_t *) &ctr_be, 4);
+	}
+}
 
 void oqs_aes128_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t out_blks) {
 	aes128ctx *ctx = (aes128ctx *) schedule;
+	const unsigned char *rkeys = (const unsigned char *) ctx->sk_exp;
 	uint8_t *block = ctx->iv;
+	uint8_t blocks[64];
 	uint32_t ctr;
 	uint32_t ctr_be;
 	memcpy(&ctr_be, &block[12], 4);
 	ctr = BE_TO_UINT32(ctr_be);
+	while (out_blks >= 4) {
+		aes128_armv8_ctr_blocks_x4(blocks, block, ctr);
+		aes128_armv8_encrypt_x4(rkeys, blocks, out);
+		out += 64;
+		out_blks -= 4;
+		ctr += 4;
+	}
 	while (out_blks >= 1) {
-		oqs_aes128_enc_sch_block_armv8(block, schedule, out);
+		ctr_be = UINT32_TO_BE(ctr);
+		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
+		aes128_armv8_encrypt(rkeys, block, out);
 		out += 16;
 		out_blks--;
 		ctr++;
-		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
 	}
+	/* Leave the counter of the next block in the schedule for the next call. */
+	ctr_be = UINT32_TO_BE(ctr);
+	memcpy(&block[12], (uint8_t *) &ctr_be, 4);
 }
 
 void oqs_aes128_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	uint8_t block[16];
+	const unsigned char *rkeys = (const unsigned char *) ((const aes128ctx *) schedule)->sk_exp;
+	uint8_t blocks[64];
 	uint32_t ctr;
 	uint32_t ctr_be;
-	memcpy(block, iv, 12);
 	if (iv_len == 12) {
 		ctr = 0;
 	} else if (iv_len == 16) {
@@ -120,10 +191,18 @@ void oqs_aes128_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const 
 	} else {
 		exit(EXIT_FAILURE);
 	}
+	while (out_len >= 64) {
+		aes128_armv8_ctr_blocks_x4(blocks, iv, ctr);
+		aes128_armv8_encrypt_x4(rkeys, blocks, out);
+		out += 64;
+		out_len -= 64;
+		ctr += 4;
+	}
+	memcpy(blocks, iv, 12);
 	while (out_len >= 16) {
 		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		oqs_aes128_enc_sch_block_armv8(block, schedule, out);
+		memcpy(&blocks[12], (uint8_t *) &ctr_be, 4);
+		aes128_armv8_encrypt(rkeys, blocks, out);
 		out += 16;
 		out_len -= 16;
 		ctr++;
@@ -131,8 +210,8 @@ void oqs_aes128_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const 
 	if (out_len > 0) {
 		uint8_t tmp[16];
 		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		oqs_aes128_enc_sch_block_armv8(block, schedule, tmp);
+		memcpy(&blocks[12], (uint8_t *) &ctr_be, 4);
+		aes128_armv8_encrypt(rkeys, blocks, tmp);
 		memcpy(out, tmp, out_len);
 	}
 }
