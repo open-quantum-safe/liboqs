@@ -192,6 +192,30 @@ extern "C" {
 #define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ct "mqom3_cat5_gf2_shorter_ct"
 /** Algorithm identifier for mqom3_cat5_gf2_shorter_ot */
 #define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot "mqom3_cat5_gf2_shorter_ot"
+/** Algorithm identifier for SDitH3-L1-gf2-short */
+#define OQS_SIG_alg_sdith_sdith3_l1_gf2_short "SDitH3-L1-gf2-short"
+/** Algorithm identifier for SDitH3-L1-gf2-short-cipherpow */
+#define OQS_SIG_alg_sdith_sdith3_l1_gf2_short_cipherpow "SDitH3-L1-gf2-short-cipherpow"
+/** Algorithm identifier for SDitH3-L1-gf2-fast */
+#define OQS_SIG_alg_sdith_sdith3_l1_gf2_fast "SDitH3-L1-gf2-fast"
+/** Algorithm identifier for SDitH3-L1-gf2-fast-cipherpow */
+#define OQS_SIG_alg_sdith_sdith3_l1_gf2_fast_cipherpow "SDitH3-L1-gf2-fast-cipherpow"
+/** Algorithm identifier for SDitH3-L3-gf2-short */
+#define OQS_SIG_alg_sdith_sdith3_l3_gf2_short "SDitH3-L3-gf2-short"
+/** Algorithm identifier for SDitH3-L3-gf2-short-cipherpow */
+#define OQS_SIG_alg_sdith_sdith3_l3_gf2_short_cipherpow "SDitH3-L3-gf2-short-cipherpow"
+/** Algorithm identifier for SDitH3-L3-gf2-fast */
+#define OQS_SIG_alg_sdith_sdith3_l3_gf2_fast "SDitH3-L3-gf2-fast"
+/** Algorithm identifier for SDitH3-L3-gf2-fast-cipherpow */
+#define OQS_SIG_alg_sdith_sdith3_l3_gf2_fast_cipherpow "SDitH3-L3-gf2-fast-cipherpow"
+/** Algorithm identifier for SDitH3-L5-gf2-short */
+#define OQS_SIG_alg_sdith_sdith3_l5_gf2_short "SDitH3-L5-gf2-short"
+/** Algorithm identifier for SDitH3-L5-gf2-short-cipherpow */
+#define OQS_SIG_alg_sdith_sdith3_l5_gf2_short_cipherpow "SDitH3-L5-gf2-short-cipherpow"
+/** Algorithm identifier for SDitH3-L5-gf2-fast */
+#define OQS_SIG_alg_sdith_sdith3_l5_gf2_fast "SDitH3-L5-gf2-fast"
+/** Algorithm identifier for SDitH3-L5-gf2-fast-cipherpow */
+#define OQS_SIG_alg_sdith_sdith3_l5_gf2_fast_cipherpow "SDitH3-L5-gf2-fast-cipherpow"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 /** Algorithm identifier for slh_dsa_pure_sha2_128s */
@@ -516,7 +540,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 80 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 92 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -785,6 +809,9 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_MQOM
 #include <oqs/sig_mqom.h>
 #endif /* OQS_ENABLE_SIG_MQOM */
+#ifdef OQS_ENABLE_SIG_SDITH
+#include <oqs/sig_sdith.h>
+#endif /* OQS_ENABLE_SIG_SDITH */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_SLH_DSA

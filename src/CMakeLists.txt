@@ -71,7 +71,20 @@ if(OQS_ENABLE_SIG_MQOM)
     add_subdirectory(sig/mqom)
     set(SIG_OBJS ${SIG_OBJS} ${MQOM_OBJS})
 endif()
+if(OQS_ENABLE_SIG_SDITH)
+    add_subdirectory(sig/sdith)
+    set(SIG_OBJS ${SIG_OBJS} ${SDITH_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
+
+# SDitH is imported upstream code that is not yet free of compiler warnings
+# This prevents those warnings from being treated as errors and blocking CI
+# In the future, we hope to remove this once the upstream code is cleaned up
+# Tracked by https://github.com/open-quantum-safe/liboqs/issues/2588
+if(OQS_ENABLE_SIG_SDITH)
+    get_property(_sdith_targets DIRECTORY sig/sdith PROPERTY BUILDSYSTEM_TARGETS)
+    set_target_properties(${_sdith_targets} PROPERTIES COMPILE_WARNING_AS_ERROR OFF)
+endif()
 
 if(OQS_ENABLE_SIG_SLH_DSA)
     add_subdirectory(sig/slh_dsa)
