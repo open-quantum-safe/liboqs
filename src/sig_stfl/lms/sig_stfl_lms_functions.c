@@ -71,6 +71,10 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 		return OQS_ERROR;
 	}
 
+	/* The error path below cleanses *signature_length bytes of the caller's
+	 * buffer, so the length has to be defined before the first goto err. */
+	*signature_length = 0;
+
 	/* Lock secret to ensure OTS use */
 	if ((secret_key->lock_key) && (secret_key->mutex)) {
 		secret_key->lock_key(secret_key->mutex);
@@ -569,7 +573,7 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 	                         0);
 	if (!w) {
 		hss_free_working_key(w);
-		return 0;
+		return -1;
 	}
 
 	/* Now, go through the file list, and generate the signatures for each */
@@ -579,7 +583,7 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 	sig_len = hss_get_signature_len_from_working_key(w);
 	if (sig_len == 0) {
 		hss_free_working_key(w);
-		return 0;
+		return -1;
 	}
 
 	sig = OQS_MEM_malloc(sig_len);

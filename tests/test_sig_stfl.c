@@ -441,6 +441,70 @@ static OQS_STATUS discard_secret_key(uint8_t *key_buf, size_t buf_len, void *con
 #define TEST_LMS_OTS_TYPE_OFFSET 11
 #define TEST_LMS_TYPE_SHA256_H5 5U
 #define TEST_LMOTS_TYPE_SHA256_N32_W2 2U
+#ifdef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+/* Guard byte for the signature buffer, and a stand-in for the indeterminate content of
+ * a caller's signature_len, large enough to run past a buffer of exactly that size. */
+#define TEST_LMS_SIG_GUARD 0xa5U
+#define TEST_LMS_SIG_OVERRUN 64
+
+/* Store callback for keys whose signatures are not kept. The LMS setter ignores a NULL
+ * context, so one has to be passed. */
+static char lms_discard_context[] = "discard";
+static OQS_STATUS discard_lms_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
+	(void)key_buf;
+	(void)buf_len;
+	(void)context;
+	return OQS_SUCCESS;
+}
+
+/*
+ * Using a key to exhaustion is an error path a stateful signer reaches in normal
+ * operation: once the index passes the last one-time key, hss_load_private_key fails,
+ * and sign has to report that rather than claim success with neither the signature nor
+ * its length written.
+ * @param method_name: The name of the signature algorithm to test.
+ * @return OQS_SUCCESS if the first signature past the last one-time key is refused.
+ */
+static OQS_STATUS test_lms_exhausted_key(const char *method_name) {
+	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
+	OQS_SIG_STFL_SECRET_KEY *sk = (sig == NULL) ? NULL : OQS_SIG_STFL_SECRET_KEY_new(method_name);
+	uint8_t *public_key = (sig == NULL) ? NULL : OQS_MEM_malloc(sig->length_public_key);
+	uint8_t *signature = (sig == NULL) ? NULL : OQS_MEM_malloc(sig->length_signature);
+	uint8_t message[] = "test";
+	unsigned long long total = 0;
+	OQS_STATUS status = OQS_ERROR;
+
+	if (sig == NULL || sk == NULL || public_key == NULL || signature == NULL) {
+		goto out;
+	}
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(sk, discard_lms_secret_key, lms_discard_context);
+	if (OQS_SIG_STFL_keypair(sig, public_key, sk) != OQS_SUCCESS ||
+	        OQS_SIG_STFL_sigs_total(sig, &total, sk) != OQS_SUCCESS) {
+		goto out;
+	}
+
+	/* sigs_total counts the one-time keys, so the call after the last of them is the
+	 * one under test; the bound only keeps the loop finite. */
+	for (unsigned long long i = 0; i < total + 2; i++) {
+		size_t signature_len = 0;
+		if (OQS_SIG_STFL_sign(sig, signature, &signature_len, message, sizeof(message) - 1, sk) != OQS_SUCCESS) {
+			status = (signature_len == 0) ? OQS_SUCCESS : OQS_ERROR;
+			goto out;
+		}
+		if (signature_len != sig->length_signature) {
+			/* Reported success without producing a signature. */
+			goto out;
+		}
+	}
+
+out:
+	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(signature);
+	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	OQS_SIG_STFL_free(sig);
+	return status;
+}
+#endif
 #endif
 
 /*
@@ -611,6 +675,43 @@ static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
 			return OQS_ERROR;
 		}
 	}
+
+#ifdef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
+	/* A failed sign has to report the failure and leave the caller's buffer alone.
+	 * signature_len is an output parameter, so the wrapper cannot read it: the cleanse
+	 * on its error path used to zero that many bytes of the signature buffer. The
+	 * buffer is allocated at exactly length_signature so a sanitizer build observes the
+	 * over-write, and the guard bytes catch the part of it that lands inside. */
+	OQS_SIG_STFL_SECRET_KEY *sk = OQS_SIG_STFL_SECRET_KEY_new(method_name);
+	uint8_t *sig_buf = OQS_MEM_malloc(sig->length_signature);
+	if (sk == NULL || sig_buf == NULL) {
+		OQS_MEM_insecure_free(sig_buf);
+		OQS_SIG_STFL_SECRET_KEY_free(sk);
+		OQS_SIG_STFL_free(sig);
+		return OQS_ERROR;
+	}
+	memset(sig_buf, TEST_LMS_SIG_GUARD, sig->length_signature);
+
+	/* No store callback is set, so this takes the "No Secure-store set" path. */
+	size_t sign_len = sig->length_signature + TEST_LMS_SIG_OVERRUN;
+	OQS_STATUS sign_status = OQS_SIG_STFL_sign(sig, sig_buf, &sign_len, message, sizeof(message) - 1, sk);
+	bool clobbered = (sig_buf[0] != TEST_LMS_SIG_GUARD) ||
+	                 (sig_buf[sig->length_signature - 1] != TEST_LMS_SIG_GUARD);
+	OQS_MEM_insecure_free(sig_buf);
+	OQS_SIG_STFL_SECRET_KEY_free(sk);
+	if (sign_status == OQS_SUCCESS || sign_len != 0 || clobbered) {
+		OQS_SIG_STFL_free(sig);
+		return OQS_ERROR;
+	}
+
+	/* Exhausting a key costs one signature per one-time key, so run this on the
+	 * smallest parameter set only. */
+	if (strcmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1) == 0 &&
+	        test_lms_exhausted_key(method_name) != OQS_SUCCESS) {
+		OQS_SIG_STFL_free(sig);
+		return OQS_ERROR;
+	}
+#endif
 
 	OQS_SIG_STFL_free(sig);
 	return OQS_SUCCESS;
