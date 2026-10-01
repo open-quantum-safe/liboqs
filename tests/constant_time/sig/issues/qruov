@@ -1,0 +1,42 @@
+# Valgrind suppression file for QR-UOV (all parameter sets, ref implementation).
+# QR-UOV does not claim constant-time signing (see docs/algorithms/sig/qruov.yml,
+# no-secret-dependent-branching-claimed: false). These are the secret-dependent
+# operations that valgrind reports, recorded so they are tracked rather than
+# silenced.
+
+# The pivot search branches on the zero pattern of a matrix derived from the
+# secret key, which leaks pivot positions and rank.
+{
+   Pivot search in the LU decomposition of a secret-derived matrix
+   Memcheck:Cond
+   src:linsys.c:38
+}
+
+# A cache-timing channel, although the table is small (q bytes).
+{
+   Field inversion by table lookup indexed by a secret-derived pivot
+   Memcheck:Value8
+   src:gf.h:53
+}
+
+# The branch is on the signature vector s, which is published in canonical
+# form, but whether it was negated reveals one bit about the value computed
+# before canonicalisation. Believed harmless; recorded here rather than in
+# passes until that is confirmed.
+{
+   Canonicalisation of the signature vector s
+   Memcheck:Cond
+   src:qruov_common.c:22
+}
+
+{
+   Canonicalisation of the signature vector s
+   Memcheck:Cond
+   src:qruov_common.c:31
+}
+
+{
+   Canonicalisation of the signature vector s
+   Memcheck:Cond
+   src:qruov_common.c:33
+}
