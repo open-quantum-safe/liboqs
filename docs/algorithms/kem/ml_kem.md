@@ -16,6 +16,9 @@
   - **aarch64**:<a name="aarch64"></a>
       - **Source**: https://github.com/pq-code-package/mlkem-native/commit/d1b2fe782888bdb761a50336012923180be7f502
       - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
+  - **ppc64le**:<a name="ppc64le"></a>
+      - **Source**: https://github.com/pq-code-package/mlkem-native/commit/d1b2fe782888bdb761a50336012923180be7f502
+      - **Implementation license (SPDX-Identifier)**: MIT or Apache-2.0 or ISC
   - **cupqc-cuda**:<a name="cupqc-cuda"></a>
       - **Source**: https://github.com/open-quantum-safe/liboqs-cupqc-meta/commit/b026f4e5475cd9c20c2082c7d9bad80e5b0ba89e
       - **Implementation license (SPDX-Identifier)**: Apache-2.0
@@ -44,6 +47,7 @@
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
 | [Primary Source](#primary-source) | x86\_64                  | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
 | [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                 |
+| [Primary Source](#primary-source) | ppc64le                  | ppc64le                     | Linux                           | POWER8_VECTOR           | True                               | False                                          | False                 |
 |     [cupqc-cuda](#cupqc-cuda)     | cuda                     | CUDA                        | Linux,Darwin                    | None                    | False                              | False                                          | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
@@ -57,6 +61,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | x86\_64                  | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
+| [Primary Source](#primary-source) | ppc64le                  | ppc64le                     | Linux                           | POWER8_VECTOR           | True                               | False                                          | False                |
 |     [cupqc-cuda](#cupqc-cuda)     | cuda                     | CUDA                        | Linux,Darwin                    | None                    | False                              | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
@@ -68,6 +73,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | x86\_64                  | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
+| [Primary Source](#primary-source) | ppc64le                  | ppc64le                     | Linux                           | POWER8_VECTOR           | True                               | False                                          | False                |
 |     [cupqc-cuda](#cupqc-cuda)     | cuda                     | CUDA                        | Linux,Darwin                    | None                    | False                              | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
