@@ -3,6 +3,12 @@
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+if(${OQS_BUILD_FUZZ_TESTS} AND NOT DEFINED ENV{LIB_FUZZING_ENGINE})
+  # Only add instrumentation to C files, do not add to assembly files
+  # use <COMPILE_LANGUAGE:C,CXX> if we need to instrument C++
+  add_compile_options("$<$<COMPILE_LANGUAGE:C>:-fsanitize=fuzzer-no-link,address>")
+endif()
+
 add_subdirectory(common)
 
 # initialize KEM|SIG_OBJS for --warn-uninitialized
@@ -98,6 +104,11 @@ add_library(oqs kem/kem.c
 
 # Internal library to be used only by test programs
 add_library(oqs-internal STATIC ${INTERNAL_OBJS})
+
+if(${OQS_BUILD_FUZZ_TESTS} AND NOT DEFINED ENV{LIB_FUZZING_ENGINE})
+    target_link_options(oqs PUBLIC -fsanitize=address)
+    target_link_options(oqs-internal PUBLIC -fsanitize=address)
+endif()
 
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})

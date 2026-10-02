@@ -96,7 +96,7 @@ if(OQS_BUILD_FUZZ_TESTS)
         set(FUZZING_COMPILE_FLAGS "")
         set(FUZZING_LINK_FLAGS "${FUZZING_ENGINE}")
     else()
-        set(FUZZING_COMPILE_FLAGS "-fsanitize=fuzzer,address")
+        set(FUZZING_COMPILE_FLAGS "-fsanitize=fuzzer-no-link,address")
         set(FUZZING_LINK_FLAGS "-fsanitize=fuzzer,address")
     endif()
 
