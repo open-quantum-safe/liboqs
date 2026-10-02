@@ -572,7 +572,6 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 	                         0,
 	                         0);
 	if (!w) {
-		hss_free_working_key(w);
 		return -1;
 	}
 
