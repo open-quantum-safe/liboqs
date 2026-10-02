@@ -8,3 +8,4 @@ config-variables:
 self-hosted-runner:
   labels:
     - oqs-x64
+    - liboqs-ppc

@@ -129,7 +129,7 @@ When built for use on a single machine, the library will only include the best a
 
 Note: `CPUFEATURE` in `OQS_USE_CPUFEATURE_INSTRUCTIONS` should be replaced with the specific CPU feature as noted below.
 
-These can be set to `ON` or `OFF` and take effect if liboqs is built for use on a single machine. By default, the CPU features are automatically determined and set to `ON` or `OFF` based on the CPU features available on the build system. The default values can be overridden by providing CMake build options. The available options on x86-64 are: `OQS_USE_ADX_INSTRUCTIONS`, `OQS_USE_AES_INSTRUCTIONS`, `OQS_USE_AVX_INSTRUCTIONS`, `OQS_USE_AVX2_INSTRUCTIONS`, `OQS_USE_AVX512_INSTRUCTIONS`, `OQS_USE_BMI1_INSTRUCTIONS`, `OQS_USE_BMI2_INSTRUCTIONS`, `OQS_USE_PCLMULQDQ_INSTRUCTIONS`, `OQS_USE_VPCLMULQDQ_INSTRUCTIONS`, `OQS_USE_POPCNT_INSTRUCTIONS`, `OQS_USE_SSE_INSTRUCTIONS`, `OQS_USE_SSE2_INSTRUCTIONS` and `OQS_USE_SSE3_INSTRUCTIONS`. The available options on ARM64v8 are `OQS_USE_ARM_AES_INSTRUCTIONS`, `OQS_USE_ARM_SHA2_INSTRUCTIONS`, `OQS_USE_ARM_SHA3_INSTRUCTIONS` and `OQS_USE_ARM_NEON_INSTRUCTIONS`.
+These can be set to `ON` or `OFF` and take effect if liboqs is built for use on a single machine. By default, the CPU features are automatically determined and set to `ON` or `OFF` based on the CPU features available on the build system. The default values can be overridden by providing CMake build options. The available options on x86-64 are: `OQS_USE_ADX_INSTRUCTIONS`, `OQS_USE_AES_INSTRUCTIONS`, `OQS_USE_AVX_INSTRUCTIONS`, `OQS_USE_AVX2_INSTRUCTIONS`, `OQS_USE_AVX512_INSTRUCTIONS`, `OQS_USE_BMI1_INSTRUCTIONS`, `OQS_USE_BMI2_INSTRUCTIONS`, `OQS_USE_PCLMULQDQ_INSTRUCTIONS`, `OQS_USE_VPCLMULQDQ_INSTRUCTIONS`, `OQS_USE_POPCNT_INSTRUCTIONS`, `OQS_USE_SSE_INSTRUCTIONS`, `OQS_USE_SSE2_INSTRUCTIONS` and `OQS_USE_SSE3_INSTRUCTIONS`. The available options on ARM64v8 are `OQS_USE_ARM_AES_INSTRUCTIONS`, `OQS_USE_ARM_SHA2_INSTRUCTIONS`, `OQS_USE_ARM_SHA3_INSTRUCTIONS` and `OQS_USE_ARM_NEON_INSTRUCTIONS`. The available option on ppc64le is `OQS_USE_POWER8_VECTOR_INSTRUCTIONS`.
 
 **Default**: Options valid on the build machine.
 
@@ -214,9 +214,9 @@ By default,
 
 ## OQS_OPT_TARGET
 
-An optimization target. Only has an effect if the compiler is GCC or Clang and `OQS_DIST_BUILD=OFF`. Can take any valid input to the `-march` (on x86-64) or `-mcpu` (on ARM32v7 or ARM64v8) option for `CMAKE_C_COMPILER`. Can also be set to one of the following special values.
+An optimization target. Only has an effect if the compiler is GCC or Clang and `OQS_DIST_BUILD=OFF`. Can take any valid input to the `-march` (on x86-64) or `-mcpu` (on ARM32v7, ARM64v8 or ppc64le) option for `CMAKE_C_COMPILER`. Can also be set to one of the following special values.
   - `auto`: Use `-march=native` or `-mcpu=native` (if the compiler supports it).
-  - `generic`: Use `-march=x86-64` on x86-64, or `-mcpu=cortex-a5` on ARM32v7, or `-mcpu=cortex-a53` on ARM64v8.
+  - `generic`: Use `-march=x86-64` on x86-64, or `-mcpu=cortex-a5` on ARM32v7, or `-mcpu=cortex-a53` on ARM64v8, or `-mcpu=power8` on ppc64le.
 
 **Default**: `auto`.
 

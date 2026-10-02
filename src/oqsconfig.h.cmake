@@ -65,6 +65,8 @@
 #cmakedefine OQS_USE_ARM_SHA3_INSTRUCTIONS 1
 #cmakedefine OQS_USE_ARM_NEON_INSTRUCTIONS 1
 
+#cmakedefine OQS_USE_POWER8_VECTOR_INSTRUCTIONS 1
+
 #cmakedefine OQS_SPEED_USE_ARM_PMU 1
 
 #cmakedefine OQS_ENABLE_TEST_CONSTANT_TIME 1
@@ -153,16 +155,19 @@
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_aarch64 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_512_ppc64le 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_512_icicle_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_aarch64 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_768_ppc64le 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_768_icicle_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_aarch64 1
+#cmakedefine OQS_ENABLE_KEM_ml_kem_1024_ppc64le 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_cuda 1
 #cmakedefine OQS_ENABLE_KEM_ml_kem_1024_icicle_cuda 1
 
