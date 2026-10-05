@@ -1,5 +1,18 @@
 // SPDX-License-Identifier: MIT
 
+/*
+ * This test needs LMS and stateful key and signature generation, both of
+ * which are off by default; otherwise it reports "Skipped." and exits 0.
+ *
+ * cmake -S . -B build -GNinja \
+ *     -DOQS_ENABLE_SIG_STFL_LMS=ON \
+ *     -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON \
+ * && ninja -C build \
+ * && ./build/tests/test_sig_stfl_lms_regressions
+ *
+ * pytest runs it as test_cmdline.py::test_sig_stfl_lms_regressions.
+ */
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -231,6 +244,9 @@ int main(void) {
 	OQS_init();
 #ifdef OQS_LMS_REGRESSIONS_ENABLED
 	test_lms_contracts();
+	fputs(failures == 0 ? "Ok.\n" : "Failed.\n", stderr);
+#else
+	fputs("Skipped.\n", stderr);
 #endif
 	OQS_destroy();
 	return failures == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
