@@ -35,11 +35,19 @@ static int failures = 0;
 } while (0)
 
 #ifdef OQS_LMS_REGRESSIONS_ENABLED
+/* context points to a size_t counting how many times the callback ran */
 static OQS_STATUS store_success(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
 	(void)sk_buf;
 	(void)sk_buf_len;
-	(void)context;
+	(*(size_t *)context)++;
 	return OQS_SUCCESS;
+}
+
+static OQS_STATUS store_failure(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
+	(void)sk_buf;
+	(void)sk_buf_len;
+	(*(size_t *)context)++;
+	return OQS_ERROR;
 }
 
 static bool all_bytes_equal(const uint8_t *buf, size_t len, uint8_t value) {
@@ -104,6 +112,7 @@ static void test_lms_contracts(void) {
 	uint8_t *serialized = NULL;
 	size_t large_signature_len = 0, small_signature_len = 0, serialized_len = 0;
 	unsigned long long total = 0;
+	size_t store_success_calls = 0, store_failure_calls = 0;
 #if !defined(_WIN32)
 	guarded_buffer guard = {0};
 #endif
@@ -132,10 +141,11 @@ static void test_lms_contracts(void) {
 	CHECK(OQS_SIG_STFL_SECRET_KEY_deserialize(small_sk, serialized, serialized_len, NULL) == OQS_ERROR,
 	      "LMS rejects cross-parameter secret-key deserialize");
 
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(large_sk, store_success, NULL);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(large_sk, store_success, &store_success_calls);
 	REQUIRE(OQS_SIG_STFL_sign(large_sig, large_signature, &large_signature_len,
 	                          message, sizeof(message) - 1U, large_sk) == OQS_SUCCESS,
 	        "LMS large sign");
+	CHECK(store_success_calls == 1, "LMS stores the updated key once per signature");
 	CHECK(OQS_SIG_STFL_verify(large_sig, message, sizeof(message) - 1U,
 	                          large_signature, large_signature_len, large_pk) == OQS_SUCCESS,
 	      "LMS self verification");
@@ -165,9 +175,23 @@ static void test_lms_contracts(void) {
 	CHECK(all_bytes_equal(small_signature + small_sig->length_signature, 32U, 0xA5),
 	      "LMS early error does not cleanse beyond output capacity");
 
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(error_sk, store_failure, &store_failure_calls);
+	memset(small_signature, 0xA5, small_sig->length_signature + 32U);
+	small_signature_len = small_sig->length_signature + 32U;
+	CHECK(OQS_SIG_STFL_sign(small_sig, small_signature, &small_signature_len,
+	                        message, sizeof(message) - 1U, error_sk) == OQS_ERROR,
+	      "LMS sign with failing secure store fails");
+	CHECK(store_failure_calls == 1, "LMS invokes failing secure store once");
+	CHECK(small_signature_len == 0, "LMS store failure zeroes output length");
+	CHECK(all_bytes_equal(small_signature, small_sig->length_signature, 0),
+	      "LMS store failure cleanses produced signature");
+	CHECK(all_bytes_equal(small_signature + small_sig->length_signature, 32U, 0xA5),
+	      "LMS store failure does not cleanse beyond output capacity");
+
 	REQUIRE(OQS_SIG_STFL_keypair(small_sig, small_pk, exhaustion_sk) == OQS_SUCCESS,
 	        "LMS exhaustion keypair");
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(exhaustion_sk, store_success, NULL);
+	store_success_calls = 0;
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(exhaustion_sk, store_success, &store_success_calls);
 	REQUIRE(OQS_SIG_STFL_sigs_total(small_sig, &total, exhaustion_sk) == OQS_SUCCESS,
 	        "LMS sigs_total");
 	CHECK(total == 32ULL, "LMS H5 reports all 32 usable leaves");
@@ -177,11 +201,13 @@ static void test_lms_contracts(void) {
 		                          message, sizeof(message) - 1U, exhaustion_sk) == OQS_SUCCESS,
 		        "LMS signs every advertised leaf");
 	}
+	CHECK(store_success_calls == total, "LMS stores the updated key after every signature");
 	small_signature_len = small_sig->length_signature;
 	CHECK(OQS_SIG_STFL_sign(small_sig, small_signature, &small_signature_len,
 	                        message, sizeof(message) - 1U, exhaustion_sk) == OQS_ERROR,
 	      "LMS exhausted key returns error");
 	CHECK(small_signature_len == 0, "LMS exhausted key zeroes output length");
+	CHECK(store_success_calls == total, "LMS exhausted key does not store");
 
 cleanup:
 #if !defined(_WIN32)
