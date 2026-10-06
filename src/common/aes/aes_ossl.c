@@ -38,6 +38,13 @@ static void AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0);
 }
 
+static void AES128_ECB_rekey(const uint8_t *key, void *schedule) {
+	struct key_schedule *ks = (struct key_schedule *) schedule;
+	// cipher MUST be NULL to avoid the reset at openssl/evp_enc.c:174
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, NULL, NULL, key, NULL));
+}
+
+
 static void AES128_free_schedule(void *schedule) {
 	if (schedule != NULL) {
 		struct key_schedule *ks = (struct key_schedule *) schedule;
@@ -273,4 +280,5 @@ struct OQS_AES_callbacks aes_default_callbacks = {
 	.AES192_free_schedule = AES192_free_schedule,
 	.AES192_ECB_enc = AES192_ECB_enc,
 	.AES192_ECB_enc_sch = AES192_ECB_enc_sch,
+	.AES128_ECB_rekey = AES128_ECB_rekey,
 };
