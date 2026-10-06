@@ -30,12 +30,12 @@ When the counter is down to 0, signature generation fails. Applications can quer
 
 liboqs does not provide a platform mutex. On every platform, applications must install **all three** of `lock`, `unlock`, and `mutex`, or install **none** of them. LMS signing and secret-key serialization fail closed if only part of that tuple is set. Building liboqs with `OQS_USE_PTHREADS` does not lock secret keys; the application still has to install the tuple.
 
-### Single-threaded use
+**Single-threaded use**
 
 In a single-threaded program, leave `lock`, `unlock`, and `mutex` unset. LMS then serializes and signs without attempting to lock. This is valid on Linux, macOS, Windows, and embedded builds, including when pthreads is not enabled (MSVC, MinGW/MSYS/Cygwin, and `OQS_EMBEDDED_BUILD`).
 
 Do not register no-op lock/unlock callbacks without a mutex: LMS treats that as an incomplete tuple and returns `OQS_ERROR`.
 
-### Multi-threaded use
+**Multi-threaded use**
 
 When more than one thread may sign or serialize the same stateful secret key, supply a complete tuple. Pass a pointer to the application's mutex object as `mutex`. The lock/unlock callbacks must operate on that object. Destroy the synchronization object only after `OQS_SIG_STFL_SECRET_KEY_free`.
