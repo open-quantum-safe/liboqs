@@ -211,6 +211,42 @@
     "all": "97f422568fc3e0f468930f23c82fd89e3822c3b421096db1aeb9b46208ee8448",
     "single": "4d23b0b9cb780a2ccbd7c6558b3fc51c3b7ccb9df4c867e36d455524399dc0e7"
   },
+  "SDitH3-L1-gf2-fast": {
+    "single": "41ccb6bad2eefe684dca736393e8c29bec7f2f3672492df6cff17c84f333cc03"
+  },
+  "SDitH3-L1-gf2-fast-cipherpow": {
+    "single": "ce37d051dba74715aa3b5286970b688e2828a685279630e0ceac68b79c2e5607"
+  },
+  "SDitH3-L1-gf2-short": {
+    "single": "d50d495fd8a0f2cb0463fcd3aef1398cf84b94bf0aff0fd69b5a1026b47e2047"
+  },
+  "SDitH3-L1-gf2-short-cipherpow": {
+    "single": "cc0d9688a9c4b5f99e90746657da5cdd1804b5012b3c934975599512d5061e4c"
+  },
+  "SDitH3-L3-gf2-fast": {
+    "single": "b4778b069b8c58c803cb8bc8e3d4557c67e0ec5555a6ba2e82186beb0fdb1309"
+  },
+  "SDitH3-L3-gf2-fast-cipherpow": {
+    "single": "e14a0f9964f77f455f633e5a498a0efc9657a7393c07a2226f730864aca79966"
+  },
+  "SDitH3-L3-gf2-short": {
+    "single": "7fa8b98407d4ac073a01c754824b66d8c0a8f6eb1e984082593e1d101c83c9e1"
+  },
+  "SDitH3-L3-gf2-short-cipherpow": {
+    "single": "e8a4ba0d333235fa061b79de0d65bc3932b73b6ee2322b3b6ed4fb3598356b4f"
+  },
+  "SDitH3-L5-gf2-fast": {
+    "single": "9ea0519ec21823dd72be5c81a8617decc67cff01345c2a93a7b1421fd59474e8"
+  },
+  "SDitH3-L5-gf2-fast-cipherpow": {
+    "single": "d5622fa5a18563a873dc3eb8aa4c324b64843dbc2449856d94ab5960941b0c90"
+  },
+  "SDitH3-L5-gf2-short": {
+    "single": "e37006ef04589adff3fb96948e35e370e4540d10bbf4a4c6c22eff83c8942062"
+  },
+  "SDitH3-L5-gf2-short-cipherpow": {
+    "single": "097cc28abf7afc193824ed98bf145ac8239a7f23757a687f30f3683f9b4e5495"
+  },
   "SNOVA_III_B": {
     "all": "e8d7d7facc29e50333a88bb34b027c502b3ac4fd26ac6dbd5d95712bdb8d9d91",
     "single": "7175ce45fbd3e6b7eca08de8df339a8bb24116531478d1afa2f1e8cf7e59ace9"
