@@ -1,0 +1,85 @@
+# These suppressions need to be verified as false positives
+# This is tracked at https://github.com/open-quantum-safe/liboqs/issues/2609
+{
+   TODO: verify CT claims
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_partition
+}
+{
+   TODO: verify CT claims
+   Memcheck:Cond
+   src:rsd.c:61 # fun:oqs_sig_private_sdith_avx2_rsd_generate_random_instance_ref
+   fun:oqs_sig_private_sdith_avx2_sdith_keygen
+   fun:oqs_sig_pubapi_sdith3_*_crypto_sign_keypair
+   fun:OQS_SIG_sdith_sdith3_*_keypair
+   fun:OQS_SIG_keypair
+}
+{
+   TODO: verify CT claims
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_bitvec_is_zero_nonct
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   TODO: verify CT claims
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_estimate_topen
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   TODO: verify CT claims (vole_expansion.c:665/672/681)
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_full_ggm_tree_open_sibling_path_from_root
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   TODO: verify CT claims
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_*_proofow_grind_avx2
+   fun:oqs_sig_private_sdith_avx2_proofow_grind_w_cipher_cat?_avx
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   TODO: verify CT claims ()
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_proofow_grind_w_shake_cat?_4way
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   TODO: verify CT claims
+   Memcheck:Cond
+   src:matrix_vector_products_f2_avx2.c:423 # fun:matrix_vector_product_f2_block_256
+   fun:oqs_sig_private_sdith_avx2_matrix_f2_times_vector_flambda_avx2
+   fun:oqs_sig_private_sdith_avx2_prover_vole_consistency_check
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   TODO: verify the address lookup is downstream of public data
+   Memcheck:Value8
+   fun:_mm256_loadu_si256
+   fun:matrix_vector_product_f2_block_256
+   fun:oqs_sig_private_sdith_avx2_matrix_f2_times_vector_flambda_avx2
+   fun:oqs_sig_private_sdith_avx2_prover_vole_consistency_check
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:OQS_SIG_sign
+}
