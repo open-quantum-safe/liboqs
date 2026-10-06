@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:8aef1183-a364-451a-be1d-f35fc5b2cef3",
+  "serialNumber": "urn:uuid:034d9c34-dde5-4578-b1b5-7e0d6a8eb0a1",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-22T16:48:43.819494+00:00",
+    "timestamp": "2026-10-21T19:20:51.339360+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@8f74956f5a81a4e1b748c8b06b6e057ce13fda2f",
       "name": "liboqs",
-      "version": "078c4d3c73b982de8d7a1665d68073bfdaf48147"
+      "version": "8f74956f5a81a4e1b748c8b06b6e057ce13fda2f"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@8f74956f5a81a4e1b748c8b06b6e057ce13fda2f",
       "name": "liboqs",
-      "version": "078c4d3c73b982de8d7a1665d68073bfdaf48147"
+      "version": "8f74956f5a81a4e1b748c8b06b6e057ce13fda2f"
     },
     {
       "type": "cryptographic-asset",
@@ -5088,6 +5088,246 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "parameterSetIdentifier": "QRUOV-5q7L10-shake",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L1-gf2-short:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L1-gf2-short",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L1-gf2-short-cipherpow:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L1-gf2-short-cipherpow",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L1-gf2-fast:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L1-gf2-fast",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L1-gf2-fast-cipherpow:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L1-gf2-fast-cipherpow",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L3-gf2-short:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L3-gf2-short",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L3-gf2-short-cipherpow:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L3-gf2-short-cipherpow",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L3-gf2-fast:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L3-gf2-fast",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L3-gf2-fast-cipherpow:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L3-gf2-fast-cipherpow",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L5-gf2-short:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L5-gf2-short",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L5-gf2-short-cipherpow:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L5-gf2-short-cipherpow",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L5-gf2-fast:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L5-gf2-fast",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SDitH3-L5-gf2-fast-cipherpow:avx2:x86_64",
+      "name": "SDITH",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SDitH3-L5-gf2-fast-cipherpow",
           "primitive": "signature",
           "executionEnvironment": "software-plain-ram",
           "cryptoFunctions": [
@@ -10407,7 +10647,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
+      "ref": "pkg:github/open-quantum-safe/liboqs@8f74956f5a81a4e1b748c8b06b6e057ce13fda2f",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -10663,6 +10903,18 @@
         "alg:QRUOV-5q31L3-shake:avx2:x86_64",
         "alg:QRUOV-5q7L10-aes:avx2:x86_64",
         "alg:QRUOV-5q7L10-shake:avx2:x86_64",
+        "alg:SDitH3-L1-gf2-short:avx2:x86_64",
+        "alg:SDitH3-L1-gf2-short-cipherpow:avx2:x86_64",
+        "alg:SDitH3-L1-gf2-fast:avx2:x86_64",
+        "alg:SDitH3-L1-gf2-fast-cipherpow:avx2:x86_64",
+        "alg:SDitH3-L3-gf2-short:avx2:x86_64",
+        "alg:SDitH3-L3-gf2-short-cipherpow:avx2:x86_64",
+        "alg:SDitH3-L3-gf2-fast:avx2:x86_64",
+        "alg:SDitH3-L3-gf2-fast-cipherpow:avx2:x86_64",
+        "alg:SDitH3-L5-gf2-short:avx2:x86_64",
+        "alg:SDitH3-L5-gf2-short-cipherpow:avx2:x86_64",
+        "alg:SDitH3-L5-gf2-fast:avx2:x86_64",
+        "alg:SDitH3-L5-gf2-fast-cipherpow:avx2:x86_64",
         "alg:SLH_DSA_PURE_SHA2_128S:slhdsa-c:generic",
         "alg:SLH_DSA_PURE_SHA2_128F:slhdsa-c:generic",
         "alg:SLH_DSA_PURE_SHA2_192S:slhdsa-c:generic",
@@ -12505,6 +12757,90 @@
       "ref": "alg:QRUOV-5q7L10-shake:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L1-gf2-short:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L1-gf2-short-cipherpow:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L1-gf2-fast:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L1-gf2-fast-cipherpow:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L3-gf2-short:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L3-gf2-short-cipherpow:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L3-gf2-fast:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L3-gf2-fast-cipherpow:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L5-gf2-short:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L5-gf2-short-cipherpow:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L5-gf2-fast:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SDitH3-L5-gf2-fast-cipherpow:avx2:x86_64",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
