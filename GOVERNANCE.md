@@ -47,7 +47,7 @@ Responsibilities:
 
 - Further the goals of the project.
 - Monitor and respond to GitHub issues.
-- Review and merge pull requests in cooperation with other Committers.
+- Review and merge pull requests in cooperation with other Committers following the [review guidelines](https://github.com/open-quantum-safe/tsc/blob/main/guidelines/reviews.md).
 - Assist with security releases when required.
 - Jointly agree on general and technical guidelines for the project.
 - Jointly agree project priorities.
