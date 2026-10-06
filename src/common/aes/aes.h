@@ -29,6 +29,20 @@ extern "C" {
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **ctx);
 
 /**
+ * Function to replace the key in an ECB key schedule allocated via
+ * OQS_AES128_ECB_load_schedule.
+ *
+ * This is useful when performing several encryptions in series under different
+ * keys, since it avoids freeing and reallocating a key schedule per key.
+ *
+ * @param key            The new key.
+ * @param ctx            Abstract data structure for a key schedule created using
+ * OQS_AES128_ECB_load_schedule.
+ * @warning the key schedule held in `ctx` will be overwritten.
+ */
+void OQS_AES128_ECB_rekey(const uint8_t *key, void *ctx);
+
+/**
  * Function to initialize a context and fill a key schedule given an initial key for
  * use in CTR mode.
  *

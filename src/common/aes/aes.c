@@ -19,6 +19,10 @@ void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	callbacks->AES128_ECB_load_schedule(key, schedule);
 }
 
+void OQS_AES128_ECB_rekey(const uint8_t *key, void *schedule) {
+	callbacks->AES128_ECB_rekey(key, schedule);
+}
+
 void OQS_AES128_CTR_inc_init(const uint8_t *key, void **_schedule) {
 	callbacks->AES128_CTR_inc_init(key, _schedule);
 }
