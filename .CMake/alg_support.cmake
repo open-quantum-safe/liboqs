@@ -97,6 +97,17 @@ cmake_dependent_option(OQS_ENABLE_KEM_bike_l1 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_bike_l3 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_bike_l5 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 
+# SDitH is not supported on Windows: its reference code uses __uint128_t and GCC/Clang function
+# attributes, neither of which MSVC provides.
+# SDitH is also not supported on S390X or PPC64 (big endian): the code reinterprets uint64_t and
+# __uint128_t words as byte strings in several places (e.g. the AES-CTR domain separation in
+# sdith_prng_private.h and the proof-of-work counter in the signature), so it is little endian only.
+cmake_dependent_option(OQS_ENABLE_SIG_SDITH "Enable sdith algorithm family" ON "NOT WIN32; NOT ARCH_S390X; NOT ARCH_PPC64" OFF)
+# SDitH doesn't work on any 32-bit platform: __uint128_t requires 128-bit int support
+if(CMAKE_SIZEOF_VOID_P MATCHES "4")
+set(OQS_ENABLE_SIG_SDITH OFF)
+endif()
+
 option(OQS_ENABLE_KEM_FRODOKEM "Enable Frodo algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_640_aes "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_640_shake "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
