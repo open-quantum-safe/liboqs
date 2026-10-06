@@ -673,9 +673,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	secret_key = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
 	secret_key_rd = OQS_SIG_STFL_SECRET_KEY_new(sig->method_name);
 
-	OQS_SIG_STFL_SECRET_KEY_SET_lock(secret_key, lock_sk_key);
-	OQS_SIG_STFL_SECRET_KEY_SET_unlock(secret_key, unlock_sk_key);
-
 	file_store = convert_method_name_to_file_name(sig->method_name);
 	if (file_store == NULL) {
 		fprintf(stderr, "%s: file_store is null\n", __func__);
@@ -686,7 +683,13 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 	context = strdup(((file_store)));
 	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, save_secret_key, (void *)context);
 
+	/*
+	 * The lock, unlock and mutex must be set together or not at all; a partial
+	 * set makes locking fail. Without pthreads there is no mutex, so set none.
+	 */
 #if OQS_USE_PTHREADS
+	OQS_SIG_STFL_SECRET_KEY_SET_lock(secret_key, lock_sk_key);
+	OQS_SIG_STFL_SECRET_KEY_SET_unlock(secret_key, unlock_sk_key);
 	OQS_SIG_STFL_SECRET_KEY_SET_mutex(secret_key, sk_lock);
 #endif
 	public_key = OQS_MEM_malloc(sig->length_public_key + 2 * sizeof(magic_t));

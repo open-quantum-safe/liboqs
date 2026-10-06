@@ -200,10 +200,13 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_SHARED_LIBS)
     endif()
 endif()
 
+add_executable(test_sig_stfl_lms_regressions test_sig_stfl_lms_regressions.c)
+target_link_libraries(test_sig_stfl_lms_regressions PRIVATE ${TEST_DEPS})
+
 add_executable(speed_sig_stfl speed_sig_stfl.c)
 target_link_libraries(speed_sig_stfl PRIVATE ${TEST_DEPS})
 
-set(SIG_STFL_TESTS kat_sig_stfl test_sig_stfl speed_sig_stfl)
+set(SIG_STFL_TESTS kat_sig_stfl test_sig_stfl test_sig_stfl_lms_regressions speed_sig_stfl)
 
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})

@@ -1583,35 +1583,41 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void
 	sk->mutex = mutex;
 }
 
-/* OQS_SIG_STFL_SECRET_KEY_lock  */
-OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk) {
+static OQS_STATUS oqs_sig_stfl_secret_key_validate_lock_tuple(const OQS_SIG_STFL_SECRET_KEY *sk) {
 	if (sk == NULL) {
+		return OQS_ERROR;
+	}
+
+	if (sk->lock_key == NULL && sk->unlock_key == NULL && sk->mutex == NULL) {
+		return OQS_SUCCESS;
+	}
+
+	if (sk->lock_key == NULL || sk->unlock_key == NULL || sk->mutex == NULL) {
+		return OQS_ERROR;
+	}
+
+	return OQS_SUCCESS;
+}
+
+/* OQS_SIG_STFL_SECRET_KEY_lock  */
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (oqs_sig_stfl_secret_key_validate_lock_tuple(sk) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	}
 	if (sk->lock_key == NULL) {
 		return OQS_SUCCESS;
 	}
 
-	// Try to lock the private key but the mutex is unset.
-	if (sk->mutex == NULL) {
-		return OQS_ERROR;
-	}
-
 	return (sk->lock_key(sk->mutex));
 }
 
 /* OQS_SIG_STFL_SECRET_KEY_unlock */
-OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk) {
-	if (sk == NULL) {
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(const OQS_SIG_STFL_SECRET_KEY *sk) {
+	if (oqs_sig_stfl_secret_key_validate_lock_tuple(sk) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	}
 	if (sk->unlock_key == NULL) {
 		return OQS_SUCCESS;
-	}
-
-	// Try to unlock the private key but the mutex is unset.
-	if (sk->mutex == NULL) {
-		return OQS_ERROR;
 	}
 
 	return (sk->unlock_key(sk->mutex));
