@@ -177,7 +177,7 @@ void theta_DBL_couple_point_iter(theta_couple_point_t *out,
  * @param ker T1, T2 and T1-T2. couple points on E12[2^(n+2)]
  * @param E34 Output: the codomain curve
  * @param P12 Input/Output: pointer to points to be pushed through the isogeny (in-place)
- * @param numP: length of the list of points given in P12 (can be zero)
+ * @param numP: length of the list of points given in P12 (0 to 3: at most one basis)
  * @returns 1 on success 0 on failure
  *
  */
@@ -201,7 +201,7 @@ int theta_chain_compute_and_eval(uint16_t n,
  * @param E34 Output: the codomain curve. Only E3 was computed.
  * @param P12 Input/Output: pointer to points to be pushed through the isogeny. Only points on E3 where computed
  * (in-place)
- * @param numP: length of the list of points given in P12 (can be zero)
+ * @param numP: length of the list of points given in P12 (0 to 3: at most one basis)
  * @returns 1 on success 0 on failure
  *
  */
@@ -225,7 +225,7 @@ int theta_chain_compute_and_eval_E1(uint16_t n,
  * @param E34 Output: the codomain curve. Only E4 was computed.
  * @param P12 Input/Output: pointer to points to be pushed through the isogeny. Only points on E4 where computed
  *            (in-place)
- * @param numP: length of the list of points given in P12 (can be zero)
+ * @param numP: length of the list of points given in P12 (0 to 3: at most one basis)
  * @returns 1 on success 0 on failure
  *
  */
@@ -247,7 +247,7 @@ int theta_chain_compute_and_eval_E2(uint16_t n,
  * @param ker T1, T2 and T1-T2. couple points on E12[2^(n+2)]
  * @param E34 Output: the codomain curve
  * @param P12 Input/Output: pointer to points to be pushed through the isogeny (in-place)
- * @param numP: length of the list of points given in P12 (can be zero)
+ * @param numP: length of the list of points given in P12 (0 to 3: at most one basis)
  * @returns 1 on success 0 on failure
  *
  */

@@ -32,6 +32,7 @@ uint32_t fp2_is_square(const fp2_t *x);
 void fp2_sqrt(fp2_t *x);
 uint32_t fp2_sqrt_verify(fp2_t *a);
 void fp2_half(fp2_t *x, const fp2_t *y);
+/** @brief Batch inversion in place; requires 1 <= len <= 12 (the largest SQIsign batch). */
 void fp2_batched_inv(fp2_t *x, int len);
 void fp2_pow_vartime(fp2_t *out, const fp2_t *x, const digit_t *exp, const int size);
 void fp2_print(const char *name, const fp2_t *a);

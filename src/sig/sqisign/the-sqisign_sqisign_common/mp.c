@@ -585,6 +585,7 @@ mp_divmod_schoolbook(digit_t *q, digit_t *r, const digit_t *u, int ulen, const d
         return;
     }
 
+    // D2n1n can pass a 2n-limb dividend with n <= IBZ_NLIMBS; normalization adds one carry limb.
     assert(vlen <= IBZ_NLIMBS && ulen <= 2 * IBZ_NLIMBS);
     unsigned shift = mp_clz_digit(v[vlen - 1]);
     digit_t vn[IBZ_NLIMBS];
@@ -791,6 +792,7 @@ static void mp_div_d2n1n(digit_t *Q, digit_t *R, const digit_t *A, const digit_t
 
 // Burnikel-Ziegler Alg.2 (D3n2n): divides a 3n-word A by a 2n-word B, B[2n-1] != 0,
 // producing a quotient Qhat of n+1 words and a remainder R of 2n words (0 <= R < B).
+// D2n1n halves its n before calling this helper, so n <= floor(IBZ_NLIMBS/2).
 static void
 mp_div_d3n2n(digit_t *Qhat, digit_t *R, const digit_t *A, const digit_t *B, int n)
 {
@@ -854,7 +856,7 @@ mp_div_d2n1n(digit_t *Q, digit_t *R, const digit_t *A, const digit_t *B, int n)
 
 // Burnikel-Ziegler's unsigned division of u by v (non-CT), via blockwise long division
 // using mp_div_d2n1n as the "single big digit" quotient step (block size n = vlen).
-// u may have any length >= 1 word (including ulen < vlen, or leading zero words).
+// u and v have at most IBZ_NLIMBS words (including ulen < vlen, or leading zero words in u).
 // v must be trimmed to its true significant length (v[vlen-1] != 0).
 static void
 mp_div_unsigned(digit_t *q, digit_t *r, const digit_t *u, int ulen, const digit_t *v, int vlen)
@@ -908,6 +910,8 @@ mp_div_unsigned(digit_t *q, digit_t *r, const digit_t *u, int ulen, const digit_
 }
 
 // Returns the exact word count mp_div_unsigned for q (non-CT).
+// Rounding ulen+1 up to a multiple of vlen, then adding one, gives at most
+// ulen + vlen + 1 <= 2*IBZ_NLIMBS + 1 words, including block padding and carry.
 static int
 mp_div_qlen(int ulen, int vlen)
 {
@@ -2040,6 +2044,7 @@ mp_lehmer_inner(ddigit_t x, ddigit_t y, sdigit_t *A_out, sdigit_t *B_out, sdigit
 }
 
 // result = A*u + B*v: A, B are signed single-digit values and u, v are nonnegative len1/len2-word.
+// Multiplication by a single digit needs at most IBZ_NLIMBS+1 limbs; adding the products needs one more.
 static void
 mp_lehmer_combine(digit_t *result,
                   int reslen,
@@ -2659,6 +2664,7 @@ mp_mul_high(digit_t *r, const digit_t *a, int la, const digit_t *b, int lb, unsi
     if (c0 < 0)
         c0 = 0; // keep + 2 >= la + lb: degenerates to the exact full product, then truncated
     int next = la + lb - c0;
+    // ibz_sqrt_floor uses keep = 2*L+2, L <= ceil(IBZ_NLIMBS/2)+1; allow two guard limbs.
     digit_t ext[2 * ((IBZ_NLIMBS + 1) / 2 + 1) + 4];
     assert(next <= (int)(sizeof(ext) / sizeof(*ext)));
     memset(ext, 0, (size_t)next * sizeof(digit_t));
@@ -2728,6 +2734,7 @@ ibz_sqrt_floor(ibz_t *sqrt, const ibz_t *a)
     if (b_eff == 0) {
         ibz_set(sqrt, 0, 1);
     } else {
+        // m = ceil(n_eff/2), with n_eff <= IBZ_NLIMBS for an ibz_t input.
         enum
         {
             MAX_M = (IBZ_NLIMBS + 1) / 2

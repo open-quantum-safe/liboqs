@@ -121,10 +121,10 @@ theta_chain_compute_impl(uint16_t n,
         debug_print("T1.P1 does not have correct order");
 #endif
 
-    // points to evaluate throughout the chain
+    // SQIsign evaluates at most one basis (P, Q, P-Q) throughout the chain.
     theta_point_t pts[3];
 
-    // init chain
+    // n <= TORSION_EVEN_POWER <= bitlength(p), so halving needs at most LOG2P+1 stack entries.
     const uint8_t space = LOG2P + 1;
 
     uint16_t todo[LOG2P + 1];

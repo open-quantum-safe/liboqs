@@ -27,7 +27,9 @@ ibz_rounded_div(ibz_t *q, const ibz_t *a, const ibz_t *b)
     // ibz_div is assumed to round a/b towards 0 for positive b
     ibz_abs(&abs_b, b);
     // q is of same sign as a*b (and 0 if a is 0)
-    ibz_set(&sign_q, ((sdigit_t)2 * (ibz_cmp(a, &ibz_const_zero) >= 0) - 1) * (2 * (ibz_cmp(b, &ibz_const_zero) >= 0) - 1), 2);
+    ibz_set(&sign_q,
+            ((sdigit_t)2 * (ibz_cmp(a, &ibz_const_zero) >= 0) - 1) * (2 * (ibz_cmp(b, &ibz_const_zero) >= 0) - 1),
+            2);
     ibz_div(q, &r, a, b);
     ibz_abs(&r, &r);
     ibz_add(&r, &r, &r);
