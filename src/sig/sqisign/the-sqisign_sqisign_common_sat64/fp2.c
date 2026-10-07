@@ -59,6 +59,7 @@ fp2_inv(fp2_t *x)
 void
 fp2_batched_inv(fp2_t *x, int len)
 {
+    // Largest SQIsign batch: curve C, two x-coordinates and nine z-coordinates in cubical_normalization_dlog.
     assert(len >= 1 && len <= 12);
     fp2_t t1[12], t2[12];
     fp2_t inverse;

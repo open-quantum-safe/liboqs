@@ -58,7 +58,8 @@ iso_isogeny_2chain_with_strategy(ec_curve_t *curve, const ec_point_t *kernel, co
     if (isog_len < 2 || isog_len > TORSION_EVEN_POWER || isog_len % 2)
         return -1;
 
-    // Stack of remaining kernel points and their associated orders
+    // Stack of remaining kernel points and their associated orders.
+    // isog_len <= TORSION_EVEN_POWER <= bitlength(p), so halving needs at most LOG2P+1 entries.
     ec_point_t splits[LOG2P + 1];
     uint16_t todo[LOG2P + 1];
     splits[0] = *kernel;
