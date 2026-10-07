@@ -136,6 +136,13 @@ if(OQS_BUILD_FUZZ_TESTS AND CMAKE_C_COMPILER_ID MATCHES "Clang")
         COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
         LINK_FLAGS "${FUZZING_LINK_FLAGS}"
     )
+elseif(OQS_BUILD_FUZZ_TESTS)
+    # The harnesses need -fsanitize=fuzzer, so they are only generated for Clang.
+    # Without this the configure succeeds and quietly produces no fuzz targets.
+    message(WARNING
+        "OQS_BUILD_FUZZ_TESTS is ON but the C compiler is "
+        "'${CMAKE_C_COMPILER_ID}', not Clang. No fuzz targets will be built. "
+        "Reconfigure with -DCMAKE_C_COMPILER=clang to build them.")
 endif()
 
 # Stateful SIG API tests

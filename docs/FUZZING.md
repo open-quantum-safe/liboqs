@@ -29,13 +29,19 @@ Building fuzz tests is very similar to building normally with some optional
 steps to target different types of bugs. The most basic ways to build the
 fuzz tests is as follows;
 
+The harnesses are built with libFuzzer, so the fuzz tests require Clang.
+`OQS_BUILD_FUZZ_TESTS` has no effect with any other compiler, and configuring
+with one emits a warning and builds no fuzz targets.
+
 ```bash
 mkdir build && cd build
-cmake -GNinja -DOQS_BUILD_FUZZ_TESTS=ON ..
+cmake -GNinja -DCMAKE_C_COMPILER=clang -DOQS_BUILD_FUZZ_TESTS=ON ..
 ninja
 ```
 
-`OQS_BUILD_FUZZ_TESTS` will build two test binaries: `tests/fuzz_test_sig` and `tests/fuzz_test_kem`.
+`OQS_BUILD_FUZZ_TESTS` will build four test binaries: `tests/fuzz_test_sig`,
+`tests/fuzz_test_kem`, `tests/fuzz_test_sig_stfl_lms` and
+`tests/fuzz_test_sig_stfl_xmss`.
 
 The fuzzer will run indefinitely or;
 - until it finds a bug and crashes,
