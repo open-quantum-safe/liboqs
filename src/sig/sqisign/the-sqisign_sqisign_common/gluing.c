@@ -61,7 +61,7 @@ gluing_special_xDBLADD(ec_point_t *R,
     fp2_mul(&S->z, &S->z, &PQ->x);
 }
 
-// batch normalize ec points
+// Normalize the two kernel generators on both curves (four points).
 // assume no one is 0 (i.e.z = 0).
 static void
 batch_ec_normalise_points(ec_point_t *Pts, uint8_t len)
