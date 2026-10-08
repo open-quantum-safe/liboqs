@@ -443,6 +443,15 @@ static OQS_STATUS discard_secret_key(uint8_t *key_buf, size_t buf_len, void *con
 #define TEST_LMOTS_TYPE_SHA256_N32_W2 2U
 #endif
 
+#if defined(OQS_ENABLE_SIG_STFL_xmss_sha256_h10)
+/*
+ * Shared XMSS verify entry that the per-variant wrappers delegate to. It forwards
+ * straight to xmss_sign_open / xmssmt_core_sign_open without the wrapper's length
+ * check, so it is used below to exercise the core's own length guard directly.
+ */
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify_xmss_sha256_h10(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+#endif
+
 /*
  * This function is used to test the invalid signature verification.
  * @param method_name: The name of the signature algorithm to test.
@@ -475,6 +484,29 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		OQS_SIG_STFL_free(sig);
 		return OQS_ERROR;
 	}
+
+#if defined(OQS_ENABLE_SIG_STFL_xmss_sha256_h10)
+	// Sub-case 1b (xmss_commons.c core guard): the check above rides on the per-variant
+	// wrapper. The shared verify entry the wrappers delegate to, xmssmt_core_sign_open,
+	// used to read params->sig_bytes from the signature without checking its length.
+	// Drive that entry point directly with a heap signature far shorter than sig_bytes so
+	// a sanitizer build observes any over-read; it must be rejected.
+	if (strcmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h10) == 0) {
+		size_t truncated_len = 32;
+		uint8_t *truncated_sig = OQS_MEM_malloc(truncated_len);
+		if (truncated_sig == NULL) {
+			OQS_SIG_STFL_free(sig);
+			return OQS_ERROR;
+		}
+		memset(truncated_sig, 0, truncated_len);
+		status = OQS_SIG_STFL_alg_xmss_verify_xmss_sha256_h10(message, sizeof(message) - 1, truncated_sig, truncated_len, pk);
+		OQS_MEM_insecure_free(truncated_sig);
+		if (status == OQS_SUCCESS) {
+			OQS_SIG_STFL_free(sig);
+			return OQS_ERROR;
+		}
+	}
+#endif
 
 	// Sub-case 2 (GHSA-2wxh-55qf-c7wg): correctly-sized signature buffer for the declared
 	// algorithm, but the pk's OID bytes reference a different parameter set. Pre-fix, this
