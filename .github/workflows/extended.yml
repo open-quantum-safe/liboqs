@@ -60,30 +60,41 @@ jobs:
         timeout-minutes: 360
         run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
-  nistkat-x64:
-    runs-on: ubuntu-latest
+  nistkat:
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: generic
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: generic-libjade
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions-libjade
+            runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST}}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-    container:
-      image: ${{ matrix.container }}
+          - name: generic-ppc64le
+            runner: liboqs-ppc
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+          - name: extensions-ppc64le
+            runner: liboqs-ppc
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
+            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
+    container: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
