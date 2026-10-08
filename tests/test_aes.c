@@ -52,6 +52,69 @@ static int test_aes128_correctness(void) {
 	return EXIT_SUCCESS;
 }
 
+static const uint8_t test_aes128_rekey_key[] = {0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
+static const uint8_t test_aes128_rekey_plaintext[] = {0x6b, 0xc1, 0xbe, 0xe2, 0x2e, 0x40, 0x9f, 0x96, 0xe9, 0x3d, 0x7e, 0x11, 0x73, 0x93, 0x17, 0x2a};
+static const uint8_t test_aes128_rekey_ciphertext[] = {0x3a, 0xd7, 0x7b, 0xb4, 0x0d, 0x7a, 0x36, 0x60, 0xa8, 0x9e, 0xca, 0xf3, 0x24, 0x66, 0xef, 0x97};
+
+// Returns EXIT_SUCCESS if the two blocks match, EXIT_FAILURE otherwise
+static int test_aes128_block_matches(const char *stage, const uint8_t *expected, const uint8_t *derived) {
+	if (memcmp(expected, derived, 16) == 0) {
+		return EXIT_SUCCESS;
+	}
+	printf("test_aes128_ecb_rekey %s ciphertext does not match\n", stage);
+	OQS_print_hex_string("expected ciphertext", expected, 16);
+	OQS_print_hex_string("derived  ciphertext", derived, 16);
+	return EXIT_FAILURE;
+}
+
+static int test_aes128_ecb_rekey(void) {
+	uint8_t derived_ciphertext[16];
+	uint8_t oneshot_ciphertext[16];
+	int rc = EXIT_FAILURE;
+	void *schedule = NULL;
+
+	// First encryption sanity test
+	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule);
+	OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, derived_ciphertext);
+	if (test_aes128_block_matches("initial", test_aes128_ciphertext, derived_ciphertext) != EXIT_SUCCESS) {
+		goto cleanup;
+	}
+
+	// Re-keying to a new key must produce the expected ciphertext for that (new) key
+	OQS_AES128_ECB_rekey(test_aes128_rekey_key, schedule);
+	OQS_AES128_ECB_enc_sch(test_aes128_rekey_plaintext, sizeof(test_aes128_rekey_plaintext), schedule, derived_ciphertext);
+	if (test_aes128_block_matches("rekeyed", test_aes128_rekey_ciphertext, derived_ciphertext) != EXIT_SUCCESS) {
+		goto cleanup;
+	}
+
+	// Re-key encryption should agree with a one-shot encryption (without a rekey)
+	OQS_AES128_ECB_enc(test_aes128_rekey_plaintext, sizeof(test_aes128_rekey_plaintext), test_aes128_rekey_key, oneshot_ciphertext);
+	if (test_aes128_block_matches("rekeyed vs one-shot", oneshot_ciphertext, derived_ciphertext) != EXIT_SUCCESS) {
+		goto cleanup;
+	}
+
+	// Verify that we can return to the original key
+	OQS_AES128_ECB_rekey(test_aes128_key, schedule);
+	OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, derived_ciphertext);
+	if (test_aes128_block_matches("rekeyed back", test_aes128_ciphertext, derived_ciphertext) != EXIT_SUCCESS) {
+		goto cleanup;
+	}
+
+	// Repeatedly re-keying to the same key should continue to work
+	for (int i = 0; i < 4; i++) {
+		OQS_AES128_ECB_rekey(test_aes128_rekey_key, schedule);
+		OQS_AES128_ECB_enc_sch(test_aes128_rekey_plaintext, sizeof(test_aes128_rekey_plaintext), schedule, derived_ciphertext);
+		if (test_aes128_block_matches("repeatedly rekeyed", test_aes128_rekey_ciphertext, derived_ciphertext) != EXIT_SUCCESS) {
+			goto cleanup;
+		}
+	}
+
+	rc = EXIT_SUCCESS;
+cleanup:
+	OQS_AES128_free_schedule(schedule);
+	return rc;
+}
+
 /* Appendix C.2 of FIPS 197 */
 static const uint8_t test_aes192_plaintext[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
 static const uint8_t test_aes192_key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17};
@@ -290,6 +353,10 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 	if (test_aes128ctr_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+	if (test_aes128_ecb_rekey() != EXIT_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}

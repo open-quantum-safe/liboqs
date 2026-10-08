@@ -46,6 +46,14 @@ static void AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	);
 }
 
+static void AES128_ECB_rekey(const uint8_t *key, void *_schedule) {
+	C_OR_NI_OR_ARM(
+	    oqs_aes128_rekey_c(key, _schedule),
+	    oqs_aes128_rekey_ni(key, _schedule),
+	    oqs_aes128_rekey_no_bitslice(key, _schedule)
+	);
+}
+
 static void AES128_CTR_inc_init(const uint8_t *key, void **_schedule) {
 	AES128_ECB_load_schedule(key, _schedule);
 }
@@ -223,6 +231,7 @@ struct OQS_AES_callbacks aes_default_callbacks = {
 	.AES192_free_schedule = AES192_free_schedule,
 	.AES192_ECB_enc = AES192_ECB_enc,
 	.AES192_ECB_enc_sch = AES192_ECB_enc_sch,
+	.AES128_ECB_rekey = AES128_ECB_rekey,
 };
 
 void OQS_AES_init(void) {

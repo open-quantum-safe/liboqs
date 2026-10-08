@@ -124,6 +124,11 @@ struct OQS_AES_callbacks {
 	 * Implementation of function OQS_AES192_ECB_enc_sch.
 	 */
 	void (*AES192_ECB_enc_sch)(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
+
+	/**
+	 * Implementation of function OQS_AES128_ECB_rekey.
+	 */
+	void (*AES128_ECB_rekey)(const uint8_t *key, void *ctx);
 };
 
 /**

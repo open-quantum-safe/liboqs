@@ -183,5 +183,17 @@
   "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S": ["slh_dsa"],
   "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F": ["slh_dsa"],
   "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S": ["slh_dsa"],
-  "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F": ["slh_dsa"]
+  "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F": ["slh_dsa"],
+  "SDitH3-L1-gf2-short": ["sdith"],
+  "SDitH3-L1-gf2-short-cipherpow": ["sdith"],
+  "SDitH3-L1-gf2-fast": ["sdith"],
+  "SDitH3-L1-gf2-fast-cipherpow": ["sdith"],
+  "SDitH3-L3-gf2-short": ["sdith"],
+  "SDitH3-L3-gf2-short-cipherpow": ["sdith"],
+  "SDitH3-L3-gf2-fast": ["sdith"],
+  "SDitH3-L3-gf2-fast-cipherpow": ["sdith"],
+  "SDitH3-L5-gf2-short": ["sdith"],
+  "SDitH3-L5-gf2-short-cipherpow": ["sdith"],
+  "SDitH3-L5-gf2-fast": ["sdith"],
+  "SDitH3-L5-gf2-fast-cipherpow": ["sdith"]
 }

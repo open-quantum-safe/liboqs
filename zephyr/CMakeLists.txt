@@ -156,6 +156,12 @@ if(CONFIG_LIBOQS)
                 set(OQS_ENABLE_SIG_MQOM OFF)
         endif()
 
+        if(CONFIG_LIBOQS_ENABLE_SIG_SDITH)
+                set(OQS_ENABLE_SIG_SDITH ON)
+        else()
+                set(OQS_ENABLE_SIG_SDITH OFF)
+        endif()
+
         # Add the actual liboqs targets
         add_subdirectory(.. build)
 

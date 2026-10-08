@@ -48,12 +48,20 @@ static inline void aes128ni_setkey_encrypt(const unsigned char *key, __m128i rke
 	rkeys[idx++] = temp0;
 }
 
+static void oqs_aes128_load_schedule_into_ni(const uint8_t *key, void *schedule) {
+	OQS_EXIT_IF_NULLPTR(schedule, "AES");
+	aes128ctx *ctx = (aes128ctx *) schedule;
+	__m128i *rkeys = ctx->sk_exp;
+	aes128ni_setkey_encrypt(key, rkeys);
+}
+
 void oqs_aes128_load_schedule_ni(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx));
-	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	assert(*_schedule != NULL);
-	__m128i *schedule = ((aes128ctx *) *_schedule)->sk_exp;
-	aes128ni_setkey_encrypt(key, schedule);
+	oqs_aes128_load_schedule_into_ni(key, *_schedule);
+}
+
+void oqs_aes128_rekey_ni(const uint8_t *key, void *_schedule) {
+	oqs_aes128_load_schedule_into_ni(key, _schedule);
 }
 
 void oqs_aes128_load_iv_ni(const uint8_t *iv, size_t iv_len, void *_schedule) {

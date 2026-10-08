@@ -237,10 +237,11 @@ def load_instructions(file='copy_from_upstream.yml'):
             common_deps = yaml.safe_load(
                 file_get_contents(common_meta_path_full))
             for common_dep in common_deps['commons']:
-                if not 'folder_name' in common_dep or not 'sources' in common_dep:
-                    raise Exception("folder_name and sources required in common dependencies.")
+                if not 'folder_name' in common_dep or not ('sources' in common_dep or 'common_dep' in common_dep):
+                    raise Exception("folder_name, and either sources or common_dep, required in common dependencies.")
                 common_dep['include_only'] = common_dep.get('include_only', False)
-                common_dep['sources'] = common_dep['sources'].split(" ")
+                # A common that only absorbs other commons has no sources of its own.
+                common_dep['sources'] = common_dep['sources'].split(" ") if common_dep.get('sources') else []
                 if 'supported_platforms' in common_dep:
                     for i in range(len(common_dep['supported_platforms'])):
                         req = common_dep['supported_platforms'][i]
@@ -360,7 +361,13 @@ def load_instructions(file='copy_from_upstream.yml'):
                     impl['common_dep'] = impl['common_dep'].split()
                     sname = scheme['pretty_name_full']
                     uloc = scheme['upstream_location']
-                    for cdep_name in impl['common_dep']:
+                    cdep_names = list(impl['common_dep'])
+                    # Common deps of other commons are also added to the list of common_deps
+                    for cdep_name in cdep_names:
+                        for nested in upstreams[uloc]['commons'][cdep_name].get('common_dep', '').split():
+                            if nested not in cdep_names:
+                                cdep_names.append(nested)
+                    for cdep_name in cdep_names:
                         cdep = upstreams[uloc]['commons'][cdep_name]
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
@@ -471,7 +478,13 @@ def load_instructions(file='copy_from_upstream.yml'):
                     impl['common_dep'] = impl['common_dep'].split()
                     sname = scheme['pretty_name_full']
                     uloc = scheme['upstream_location']
-                    for cdep_name in impl['common_dep']:
+                    cdep_names = list(impl['common_dep'])
+                    # Common deps of other commons are also added to the list of common_deps
+                    for cdep_name in cdep_names:
+                        for nested in upstreams[uloc]['commons'][cdep_name].get('common_dep', '').split():
+                            if nested not in cdep_names:
+                                cdep_names.append(nested)
+                    for cdep_name in cdep_names:
                         cdep = upstreams[uloc]['commons'][cdep_name]
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
