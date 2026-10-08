@@ -94,6 +94,14 @@ upstreams:
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
   -
+    name: qruov
+    git_url: https://github.com/0rlych1kk4/round3.git
+    git_branch: feat/liboqs-integration
+    git_commit: 36e9a7efadd6bfbba5e8d619507eb158ac60ad16
+    sig_scheme_path: '.'
+    sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
+    common_meta_path: 'integration/liboqs/META_Common.yml'
+  -
     name: snova
     git_url: https://github.com/PQCLAB-SNOVA/SNOVA
     git_branch: main
@@ -394,6 +402,161 @@ sigs:
         pqclean_scheme: cross-rsdpg-256-small
         pretty_name_full: cross-rsdpg-256-small
         signed_msg_order: msg_then_sig
+  -
+    name: qruov
+    default_implementation: ref
+    upstream_location: qruov
+    schemes:
+      -
+        scheme: "1q7L10aes"
+        pqclean_scheme: qruov_1q7L10_aes
+        pretty_name_full: QRUOV-1q7L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q7L10shake"
+        pqclean_scheme: qruov_1q7L10_shake
+        pretty_name_full: QRUOV-1q7L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q31L3aes"
+        pqclean_scheme: qruov_1q31L3_aes
+        pretty_name_full: QRUOV-1q31L3-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q31L3shake"
+        pqclean_scheme: qruov_1q31L3_shake
+        pretty_name_full: QRUOV-1q31L3-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q31L10aes"
+        pqclean_scheme: qruov_1q31L10_aes
+        pretty_name_full: QRUOV-1q31L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q31L10shake"
+        pqclean_scheme: qruov_1q31L10_shake
+        pretty_name_full: QRUOV-1q31L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q127L3aes"
+        pqclean_scheme: qruov_1q127L3_aes
+        pretty_name_full: QRUOV-1q127L3-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q127L3shake"
+        pqclean_scheme: qruov_1q127L3_shake
+        pretty_name_full: QRUOV-1q127L3-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q127L10aes"
+        pqclean_scheme: qruov_1q127L10_aes
+        pretty_name_full: QRUOV-1q127L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "1q127L10shake"
+        pqclean_scheme: qruov_1q127L10_shake
+        pretty_name_full: QRUOV-1q127L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q7L10aes"
+        pqclean_scheme: qruov_3q7L10_aes
+        pretty_name_full: QRUOV-3q7L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q7L10shake"
+        pqclean_scheme: qruov_3q7L10_shake
+        pretty_name_full: QRUOV-3q7L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q31L3aes"
+        pqclean_scheme: qruov_3q31L3_aes
+        pretty_name_full: QRUOV-3q31L3-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q31L3shake"
+        pqclean_scheme: qruov_3q31L3_shake
+        pretty_name_full: QRUOV-3q31L3-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q31L10aes"
+        pqclean_scheme: qruov_3q31L10_aes
+        pretty_name_full: QRUOV-3q31L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q31L10shake"
+        pqclean_scheme: qruov_3q31L10_shake
+        pretty_name_full: QRUOV-3q31L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q127L3aes"
+        pqclean_scheme: qruov_3q127L3_aes
+        pretty_name_full: QRUOV-3q127L3-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q127L3shake"
+        pqclean_scheme: qruov_3q127L3_shake
+        pretty_name_full: QRUOV-3q127L3-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q127L10aes"
+        pqclean_scheme: qruov_3q127L10_aes
+        pretty_name_full: QRUOV-3q127L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3q127L10shake"
+        pqclean_scheme: qruov_3q127L10_shake
+        pretty_name_full: QRUOV-3q127L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q7L10aes"
+        pqclean_scheme: qruov_5q7L10_aes
+        pretty_name_full: QRUOV-5q7L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q7L10shake"
+        pqclean_scheme: qruov_5q7L10_shake
+        pretty_name_full: QRUOV-5q7L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q31L3aes"
+        pqclean_scheme: qruov_5q31L3_aes
+        pretty_name_full: QRUOV-5q31L3-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q31L3shake"
+        pqclean_scheme: qruov_5q31L3_shake
+        pretty_name_full: QRUOV-5q31L3-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q31L10aes"
+        pqclean_scheme: qruov_5q31L10_aes
+        pretty_name_full: QRUOV-5q31L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q31L10shake"
+        pqclean_scheme: qruov_5q31L10_shake
+        pretty_name_full: QRUOV-5q31L10-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q127L3aes"
+        pqclean_scheme: qruov_5q127L3_aes
+        pretty_name_full: QRUOV-5q127L3-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q127L3shake"
+        pqclean_scheme: qruov_5q127L3_shake
+        pretty_name_full: QRUOV-5q127L3-shake
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q127L10aes"
+        pqclean_scheme: qruov_5q127L10_aes
+        pretty_name_full: QRUOV-5q127L10-aes
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5q127L10shake"
+        pqclean_scheme: qruov_5q127L10_shake
+        pretty_name_full: QRUOV-5q127L10-shake
+        signed_msg_order: sig_then_msg
   -
     name: uov
     default_implementation: ref
