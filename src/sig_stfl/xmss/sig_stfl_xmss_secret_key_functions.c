@@ -148,14 +148,9 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_acquire_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
 		return OQS_ERROR;
 	}
 
-	/* Lock the key if possible, otherwise return OQS_ERROR because the lock_key, unlock_key and mutex are not defined.*/
-	if ((sk->lock_key != NULL) && (sk->mutex != NULL) && (sk->unlock_key != NULL)) {
-		if (sk->lock_key(sk->mutex) != OQS_SUCCESS) {
-			return OQS_ERROR;
-		}
-	}
-
-	return OQS_SUCCESS;
+	/* Fail closed on a partial lock tuple, like the LMS paths do: the
+	 * public helper rejects incomplete (lock, unlock, mutex) tuples. */
+	return OQS_SIG_STFL_SECRET_KEY_lock(sk);
 }
 
 OQS_STATUS OQS_SECRET_KEY_XMSS_release_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
@@ -163,12 +158,7 @@ OQS_STATUS OQS_SECRET_KEY_XMSS_release_lock(const OQS_SIG_STFL_SECRET_KEY *sk) {
 		return OQS_ERROR;
 	}
 
-	/* Unlock the key if possible, otherwise return OQS_ERROR because the lock_key, unlock_key and mutex are not defined. */
-	if ((sk->unlock_key != NULL) && (sk->mutex != NULL) && (sk->lock_key != NULL)) {
-		if (sk->unlock_key(sk->mutex) != OQS_SUCCESS) {
-			return OQS_ERROR;
-		}
-	}
-
-	return OQS_SUCCESS;
+	/* Fail closed on a partial lock tuple, like the LMS paths do: the
+	 * public helper rejects incomplete (lock, unlock, mutex) tuples. */
+	return OQS_SIG_STFL_SECRET_KEY_unlock(sk);
 }
