@@ -31,3 +31,8 @@ jobs:
     uses: ./.github/workflows/sig-bench.yml
     permissions:
       contents: write
+
+  mutation-public-api:
+    uses: ./.github/workflows/mutation.yml
+    with:
+      enforce_baseline: false
