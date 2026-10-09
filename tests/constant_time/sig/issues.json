@@ -183,5 +183,8 @@
   "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192S": ["slh_dsa"],
   "SLH_DSA_SHAKE_256_PREHASH_SHAKE_192F": ["slh_dsa"],
   "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256S": ["slh_dsa"],
-  "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F": ["slh_dsa"]
+  "SLH_DSA_SHAKE_256_PREHASH_SHAKE_256F": ["slh_dsa"],
+  "SQIsign-p324-3": ["sqisign"],
+  "SQIsign-p500-27": ["sqisign"],
+  "SQIsign-p664-17": ["sqisign"]
 }
