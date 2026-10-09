@@ -93,7 +93,7 @@ Please see [SECURITY.md](SECURITY.md#security-policy) for details on how to repo
 #### Platform limitations
 
 In order to optimize support effort,
-- not all algorithms are equally well supported on all platforms. In case of questions, it is first advised to review the [documentation files for each algorithm](docs/algorithms).
+- not all algorithms are equally well supported on all platforms. In case of questions, it is first advised to review the [documentation files for each algorithm](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms).
 - not all compilers are equally well supported. For example, at least v7.1.0 of the GNU compiler is required.
 
 #### Support limitations
