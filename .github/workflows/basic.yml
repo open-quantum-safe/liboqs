@@ -165,8 +165,6 @@ jobs:
       SIG_NAME: ml_dsa_44
       CC: clang
       CXX: clang++
-      CFLAGS: -fsanitize=fuzzer-no-link,address
-      LDFLAGS: -fsanitize=address
     steps:
       - name: Create random build folder
         run: tmp_build=$(mktemp -d) && echo "RANDOM_BUILD_DIR=$tmp_build" >> $GITHUB_ENV
@@ -189,7 +187,7 @@ jobs:
         working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
       - name: Short fuzz check (30s)
-        run: ./tests/fuzz_test_sig -max_total_time=30
+        run: ./tests/fuzz/fuzz_test_sig -max_total_time=30
         working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
   nixflakecheck:
